@@ -14,14 +14,18 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>${spring.version}</version>
-
+        </dependency>
+        <!-- Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
         </dependency>
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -36,6 +40,7 @@
         </dependency>
     </dependencies>
     <properties>
+        <junit.version>4.10</junit.version>
         <spring.version>3.1.2.RELEASE</spring.version>
         <servlet.version>3.0.1</servlet.version>
     </properties>
@@ -57,6 +62,10 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.5.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
             </plugin>
         </plugins>
         <finalName>haku</finalName>
