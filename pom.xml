@@ -40,6 +40,7 @@
         </dependency>
     </dependencies>
     <properties>
+        <project.svn.base>https://penaali.hard.ware.fi/svn/generic/${project.artifactId}</project.svn.base>
         <junit.version>4.10</junit.version>
         <spring.version>3.1.2.RELEASE</spring.version>
         <servlet.version>3.0.1</servlet.version>
@@ -67,8 +68,44 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <!-- explicitly define maven-deploy-plugin after other to force exec
+                                order -->
+                <artifactId>maven-deploy-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <tagBase>${project.svn.base}/releases</tagBase>
+                </configuration>
+            </plugin>
         </plugins>
+
+
         <finalName>haku</finalName>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>oph-sade-artifactory</id>
+            <name>oph-sade-artifactory-releases</name>
+            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-release-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>oph-sade-artifactory</id>
+            <name>oph-sade-artifactory-snapshots</name>
+            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
 	
