@@ -18,6 +18,21 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="fi.vm.sade.oppija"/>
+
+
+    <bean id="mongo" class="com.mongodb.Mongo">
+        <constructor-arg>
+            <bean class="com.mongodb.MongoURI">
+                <constructor-arg value="${mongodb.url}"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <bean id="db" class="fi.vm.sade.oppija.haku.dao.DBFactoryBean">
+        <property name="mongo" ref="mongo"/>
+        <property name="name" value="${mongo.db.name}"/>
+    </bean>
+
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>

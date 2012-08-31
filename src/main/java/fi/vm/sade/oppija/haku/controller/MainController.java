@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 public class MainController {
     @PostConstruct
     public void init() {
-        System.out.println("imit");
+        System.out.println("init");
     }
 
     @RequestMapping("/foo")
