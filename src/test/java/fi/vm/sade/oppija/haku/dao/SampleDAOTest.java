@@ -19,16 +19,18 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
 public class SampleDAOTest {
+    private static final String KEY = "eka";
+    private static final String VALUE = "value";
     @Autowired
     SampleDAO sampleDAO;
 
     @Test
     public void testInsertAndList() throws Exception {
         final HashMap<String, String> map = new HashMap<String, String>();
-        map.put("eka", "value");
+        map.put(KEY, VALUE);
         sampleDAO.insert(map);
         final Map result = sampleDAO.listAll();
-        assertEquals(result.get("eka"), map.get("eka"));
+        assertEquals(result.get(KEY), map.get(KEY));
     }
 
 
