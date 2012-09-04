@@ -20,7 +20,6 @@ public class ApplicationPeriodController {
 
     @Autowired
     public ApplicationPeriodController(final ApplicationPeriodService applicationPeriodService) {
-        System.out.println("StudyApplicationController");
         this.applicationPeriodService = applicationPeriodService;
     }
 
