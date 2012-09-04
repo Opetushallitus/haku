@@ -12,9 +12,10 @@ import java.util.Map;
 @Service
 public class ApplicationPeriodService {
 
-    @Autowired
+
     final ApplicationPeriodDAO applicationPeriodDAO;
 
+    @Autowired
     public ApplicationPeriodService(final ApplicationPeriodDAO applicationPeriodDAO) {
         this.applicationPeriodDAO = applicationPeriodDAO;
     }
