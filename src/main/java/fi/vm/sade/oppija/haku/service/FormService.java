@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class StudyApplicationProcessService {
+public class FormService {
 
-    public List<Map<String, Object>> listStudyApplicationProcesses(final String studyApplicationId) {
+    public List<Map<String, Object>> getForms(final String formId) {
         final ArrayList<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
         return maps;
     }
 
-    public Map<String, Object> getStudyApplicationProcess(final String studyApplicationId, final String studyApplicationProcessId) {
+    public Map<String, Object> getStudyApplicationProcess(final String applicationPeriodId, final String formId) {
         return new HashMap<String, Object>();
     }
 
