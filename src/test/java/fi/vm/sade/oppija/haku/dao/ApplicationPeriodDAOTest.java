@@ -20,17 +20,11 @@ public class ApplicationPeriodDAOTest {
     public void testInsertApplicationPeriod() {
         Map<String, Object> applicationPeriod = testDataCreator.createForm();
 
-
         applicationPeriodDAO.insert(applicationPeriod);
 
     }
 
     private Map<String, Object> createForm() {
-        // input question
-
-        // help text question
-
-        // checkbox question
 
         return testDataCreator.createForm();
     }
