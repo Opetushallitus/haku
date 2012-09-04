@@ -9,4 +9,6 @@ public interface ApplicationPeriodDAO {
 
     Map<String, Object> find(String applicationPeriodId);
 
+    Map<String, Object> findForm(String applicationPeriod, String form);
+
 }

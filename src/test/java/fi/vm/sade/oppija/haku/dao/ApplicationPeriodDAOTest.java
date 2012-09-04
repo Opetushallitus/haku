@@ -8,6 +8,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Map;
 
+import static org.junit.Assert.assertNotNull;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
 public class ApplicationPeriodDAOTest {
@@ -21,12 +23,12 @@ public class ApplicationPeriodDAOTest {
         Map<String, Object> applicationPeriod = testDataCreator.createApplicationPeriod();
 
         applicationPeriodDAO.insert(applicationPeriod);
-
     }
 
-    private Map<String, Object> createForm() {
-
-        return testDataCreator.createForm();
+    @Test
+    public void testFindForm() {
+        Map<String, Object> form = applicationPeriodDAO.findForm("YHTEISHAKU", "1234");
+        assertNotNull(form);
     }
 
 }

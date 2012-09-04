@@ -24,6 +24,17 @@ public class ApplicationPeriodDAOMongoImpl extends AbstractDAOMongoImpl implemen
     }
 
     @Override
+    public Map<String, Object> findForm(String applicationPeriod, String form) {
+        DBObject queryObject = new BasicDBObject();
+        queryObject.put("id", applicationPeriod);
+        queryObject.put("form.id", form);
+
+        return (Map<String, Object>) getCollection().findOne().get("form");
+    }
+
+
+
+    @Override
     public String getCollectionName() {
         return "haku";
     }
