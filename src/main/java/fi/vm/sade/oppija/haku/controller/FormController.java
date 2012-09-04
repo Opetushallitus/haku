@@ -25,7 +25,7 @@ public class FormController {
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.GET)
     public ModelAndView getFormsAsHtml(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
-        final Map<String, Object> data = formService.getStudyApplicationProcess(applicationPeriodId, formId);
+        final Map<String, Object> data = formService.getForm(applicationPeriodId, formId);
         final ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("template");
         modelAndView.addObject("data", data);
@@ -41,6 +41,6 @@ public class FormController {
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public Map getStudyApplicationProcessAsJson(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
-        return formService.getStudyApplicationProcess(applicationPeriodId, formId);
+        return formService.getForm(applicationPeriodId, formId);
     }
 }

@@ -9,6 +9,6 @@ public interface ApplicationPeriodDAO {
 
     void insert(Map<String, Object> map);
 
-    DBObject find(String applicationPeriodId);
+    Map find(String applicationPeriodId);
 
 }

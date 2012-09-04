@@ -1,25 +1,30 @@
 package fi.vm.sade.oppija.haku.service;
 
 
+import fi.vm.sade.oppija.haku.dao.ApplicationPeriodDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class ApplicationPeriodService {
 
-    public List<Map<String, Object>> getApplicationPeriods() {
-        final ArrayList<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
-        return maps;
+    @Autowired
+    final ApplicationPeriodDAO applicationPeriodDAO;
+
+    public ApplicationPeriodService(final ApplicationPeriodDAO applicationPeriodDAO) {
+        this.applicationPeriodDAO = applicationPeriodDAO;
     }
 
-    public Map<String, Object> getApplicationPeriod(final String id) {
-        final HashMap<String, Object> data = new HashMap<String, Object>();
-        data.put("name", "Ville");
-        return data;
+    public List<Map<String, Object>> getApplicationPeriods() {
+        return new ArrayList<Map<String, Object>>();
+    }
+
+    public Map<String, Object> getApplicationPeriod(final String applicationPeriodId) {
+        return applicationPeriodDAO.find(applicationPeriodId);
     }
 
 }

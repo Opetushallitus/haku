@@ -16,12 +16,12 @@ public class ApplicationPeriodDAOMongoImpl extends AbstractDAOMongoImpl implemen
     }
 
     @Override
-    public DBObject find(String applicationPeriodId) {
+    public Map<String, Object> find(String applicationPeriodId) {
         DBObject o = new BasicDBObject();
         o.put("id", applicationPeriodId);
 
         DBObject applicationPeriod = getCollection().findOne(o);
-        return applicationPeriod;
+        return applicationPeriod.toMap();
     }
 
     @Override
