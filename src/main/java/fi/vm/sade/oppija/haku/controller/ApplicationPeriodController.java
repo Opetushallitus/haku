@@ -44,8 +44,12 @@ public class ApplicationPeriodController {
         logger.debug("getApplicationPeriodAsHtml ", applicationPeriodId);
         final Map<String, Object> data = applicationPeriodService.getApplicationPeriod(applicationPeriodId);
         final ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("template");
+        modelAndView.setViewName("form");
         modelAndView.addObject("data", data);
+        final Map<String, Object> form = (Map<String, Object>) data.get("form");
+        List<Map<String, Object>> categories = (List<Map<String, Object>>) form.get("categories");
+        modelAndView.addObject("categories", categories);
+        modelAndView.addObject("questions", categories.get(0).get("questions"));
         return modelAndView;
     }
 }

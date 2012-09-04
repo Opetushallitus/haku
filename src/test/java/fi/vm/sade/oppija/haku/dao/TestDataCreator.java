@@ -14,7 +14,7 @@ public class TestDataCreator {
 
         // application period that the form belongs to
         Map<String, Object> applicationPeriod = new HashMap<String, Object>();
-        applicationPeriod.put("id", "YHTEISHAKU");
+        applicationPeriod.put("id", "yhteishaku");
         applicationPeriod.put("form", form);
         return applicationPeriod;
     }
@@ -23,15 +23,15 @@ public class TestDataCreator {
         // input question
         Map<String, Object> question1 = new HashMap<String, Object>();
         question1.put("id", "question1");
-        question1.put("type", "INPUT");
-        question1.put("label", "Etunimet");
+        question1.put("type", "text");
+        question1.put("description", "Etunimet");
 
         // help text question
         Map<String, Object> question2 = new HashMap<String, Object>();
         question2.put("id", "question2");
         question2.put("type", "HELP_TEXT");
         question2.put("related_question", "question1");
-        question2.put("text", "Syötä etunimet kuten ne ovat passissa.");
+        question2.put("description", "Syötä etunimet kuten ne ovat passissa.");
 
         // first category
         Map<String, Object> category1 = new HashMap<String, Object>();
@@ -39,12 +39,17 @@ public class TestDataCreator {
         List<Map<String, Object>> questions1 = new ArrayList<Map<String, Object>>();
         questions1.add(question1);
         questions1.add(question2);
-        category1.put("questions", questions1);
 
+        Map<String, Object> question4 = new HashMap<String, Object>();
+        question4.put("id", "question3");
+        question4.put("type", "checkbox");
+        question4.put("description", "Pohjakoulutus");
+        questions1.add(question4);
+        category1.put("questions", questions1);
         // checkbox question
         Map<String, Object> question3 = new HashMap<String, Object>();
         question3.put("id", "question3");
-        question3.put("type", "CHECKBOX");
+        question3.put("type", "checkbox");
         question3.put("label", "Pohjakoulutus");
         List<String> options = new ArrayList<String>();
         options.add("Suomalainen ylioppilastutkinto");

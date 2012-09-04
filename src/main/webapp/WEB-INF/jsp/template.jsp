@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>sdfgsdf ${studyApplication['name']}</title>
+        <title>sdfgsdf ${data['name']}</title>
     </head>
     <body>
         <div>

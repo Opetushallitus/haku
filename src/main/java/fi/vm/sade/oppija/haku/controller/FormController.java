@@ -33,7 +33,7 @@ public class FormController {
         final Map<String, Object> data = formService.getForm(applicationPeriodId, formId);
         logger.debug("form ", data);
         final ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("template");
+        modelAndView.setViewName("form");
         modelAndView.addObject("data", data);
         return modelAndView;
     }
