@@ -10,7 +10,7 @@ import java.util.Map;
 public class ApplicationPeriodDAOMongoImpl extends AbstractDAOMongoImpl implements ApplicationPeriodDAO {
 
     @Override
-    public void insert(Map<Object, Object> map) {
+    public void insert(Map<String, Object> map) {
         getCollection().insert(new BasicDBObject(map));
     }
 

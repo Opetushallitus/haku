@@ -5,6 +5,6 @@ import java.util.Map;
 
 public interface ApplicationPeriodDAO {
 
-    void insert(Map<Object, Object> map);
+    void insert(Map<String, Object> map);
 
 }

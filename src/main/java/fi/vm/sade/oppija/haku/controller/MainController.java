@@ -23,7 +23,7 @@ public class MainController {
     @RequestMapping("/foo")
     public ModelAndView helloWorld() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("helloWorld");
+        mav.setViewName("helloWorld1");
         mav.addObject("message", new HashMap<String, Object>());
         return mav;
     }
