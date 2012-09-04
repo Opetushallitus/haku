@@ -40,15 +40,15 @@ public class TestDataCreator {
         questions.add(question3);
         category1.put("questions", questions);
 
-        Map<String, Object> application = new HashMap<String, Object>();
-        application.put("id", "1234");
+        Map<String, Object> form = new HashMap<String, Object>();
+        form.put("id", "1234");
         List<Map<String, Object>> categories = new ArrayList<Map<String, Object>>();
         categories.add(category1);
-        application.put("categories", categories);
+        form.put("categories", categories);
 
         Map<String, Object> applicationPeriod = new HashMap<String, Object>();
         applicationPeriod.put("id", "YHTEISHAKU");
-        applicationPeriod.put("application", application);
+        applicationPeriod.put("form", form);
         return applicationPeriod;
     }
 }
