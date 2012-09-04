@@ -6,13 +6,12 @@ import fi.vm.sade.oppija.haku.dao.DBFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import java.util.Map;
 
-public class AbstractDAOMongoImpl {
+public abstract class AbstractDAOMongoImpl {
 
     @Autowired
-    private DBFactoryBean factoryBean;
-    private DB db;
+    protected DBFactoryBean factoryBean;
+    protected DB db;
 
     @PostConstruct
     public void init() throws Exception {
@@ -20,7 +19,9 @@ public class AbstractDAOMongoImpl {
     }
 
     public DBCollection getCollection() {
-        return db.getCollection("haku");
+        return db.getCollection(getCollectionName());
     }
+
+    public abstract String getCollectionName();
 
 }

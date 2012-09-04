@@ -14,4 +14,8 @@ public class ApplicationPeriodDAOMongoImpl extends AbstractDAOMongoImpl implemen
         getCollection().insert(new BasicDBObject(map));
     }
 
+    @Override
+    public String getCollectionName() {
+        return "haku";
+    }
 }
