@@ -23,29 +23,41 @@ public class TestDataCreator {
         question2.put("related_question", "question1");
         question2.put("text", "Syötä etunimet kuten ne ovat passissa.");
 
+        // first category
+        Map<String, Object> category1 = new HashMap<String, Object>();
+        category1.put("id", "OMATTIEDOT");
+        List<Map<String, Object>> questions1 = new ArrayList<Map<String, Object>>();
+        questions1.add(question1);
+        questions1.add(question2);
+        category1.put("questions", questions1);
+
         // checkbox question
         Map<String, Object> question3 = new HashMap<String, Object>();
         question3.put("id", "question3");
         question3.put("type", "CHECKBOX");
         question3.put("label", "Pohjakoulutus");
-        question3.put("option1", "Suomalainen ylioppilastutkinto");
-        question3.put("option2", "IB-tutkinto");
-        question3.put("option3", "EB-tutkinto");
+        List<String> options = new ArrayList<String>();
+        options.add("Suomalainen ylioppilastutkinto");
+        options.add("IB-tutkinto");
+        options.add("EB-tutkinto");
+        question3.put("options", options);
 
-        Map<String, Object> category1 = new HashMap<String, Object>();
-        category1.put("id", "OMATTIEDOT");
-        List<Map<String, Object>> questions = new ArrayList<Map<String, Object>>();
-        questions.add(question1);
-        questions.add(question2);
-        questions.add(question3);
-        category1.put("questions", questions);
+        // second category
+        Map<String, Object> category2 = new HashMap<String, Object>();
+        category2.put("id", "KOULUTUSTAUSTA");
+        List<Map<String, Object>> questions2 = new ArrayList<Map<String, Object>>();
+        questions2.add(question3);
+        category2.put("questions", questions2);
 
+        // the actual form
         Map<String, Object> form = new HashMap<String, Object>();
         form.put("id", "1234");
         List<Map<String, Object>> categories = new ArrayList<Map<String, Object>>();
         categories.add(category1);
+        categories.add(category2);
         form.put("categories", categories);
 
+        // application period that the form belongs to
         Map<String, Object> applicationPeriod = new HashMap<String, Object>();
         applicationPeriod.put("id", "YHTEISHAKU");
         applicationPeriod.put("form", form);
