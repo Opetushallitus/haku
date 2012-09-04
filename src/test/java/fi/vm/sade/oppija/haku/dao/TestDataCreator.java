@@ -9,6 +9,16 @@ public class TestDataCreator {
     public TestDataCreator() {
     }
 
+    public Map<String, Object> createApplicationPeriod() {
+        Map<String, Object> form = createForm();
+
+        // application period that the form belongs to
+        Map<String, Object> applicationPeriod = new HashMap<String, Object>();
+        applicationPeriod.put("id", "YHTEISHAKU");
+        applicationPeriod.put("form", form);
+        return applicationPeriod;
+    }
+
     public Map<String, Object> createForm() {
         // input question
         Map<String, Object> question1 = new HashMap<String, Object>();
@@ -57,10 +67,7 @@ public class TestDataCreator {
         categories.add(category2);
         form.put("categories", categories);
 
-        // application period that the form belongs to
-        Map<String, Object> applicationPeriod = new HashMap<String, Object>();
-        applicationPeriod.put("id", "YHTEISHAKU");
-        applicationPeriod.put("form", form);
-        return applicationPeriod;
+        return form;
     }
+
 }

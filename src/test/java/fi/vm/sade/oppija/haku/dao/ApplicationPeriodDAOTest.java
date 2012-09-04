@@ -18,7 +18,7 @@ public class ApplicationPeriodDAOTest {
 
     @Test
     public void testInsertApplicationPeriod() {
-        Map<String, Object> applicationPeriod = testDataCreator.createForm();
+        Map<String, Object> applicationPeriod = testDataCreator.createApplicationPeriod();
 
         applicationPeriodDAO.insert(applicationPeriod);
 
