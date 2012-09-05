@@ -55,25 +55,10 @@ public class FormController {
         final Map<String, Object> data = formService.findForm(applicationPeriodId, formId);
         final List<Map<String, Object>> categories = (List<Map<String, Object>>) data.get("categories");
 
-        final ModelAndView modelAndView = new ModelAndView();
-
-        String prev = null;
-        String next = null;
-
-        for (int i = 0; i < categories.size(); i++) {
-            if (categories.get(i).get("id").equals(categoryId)) {
-                modelAndView.addObject("category", categories.get(i));
-                if (i > 0) {
-                    prev = (String) categories.get(i - 1).get("id");
-                }
-                if (i < categories.size() - 1) {
-                    next = (String) categories.get(i + 1).get("id");
-                }
-            }
-        }
-        modelAndView.setViewName("category");
-        modelAndView.addObject("prev", prev);
-        modelAndView.addObject("next", next);
-        return modelAndView;
+        final ModelAndView model = new ModelAndView("category");
+        model.addObject("formModel", new FormModel(categories, categoryId));
+        return model;
     }
+
+
 }

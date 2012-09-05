@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>${category['id']}</title>
+        <title>${formModel.currentCategoryId}</title>
     </head>
     <body>
         <div>
@@ -11,7 +11,7 @@
         </div>
 
         <div>
-            <c:forEach var="question" items="${category['questions']}">
+            <c:forEach var="question" items="${formModel.currentCategory['questions']}">
                 <c:choose>
                     <c:when test="${question['type'] eq 'INPUT'}">
                         <label for="${question['id']}">${question['label']}</label>
@@ -23,8 +23,8 @@
         </div>
 
         <div>
-            <a href="${prev}">Edellinen</a>
-            <a href="${next}">Seuraava</a>
+            <a href="${formModel.prev}">Edellinen</a>
+            <a href="${formModel.next}">Seuraava</a>
         </div>
     </body>
 </html>
