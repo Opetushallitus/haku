@@ -1,6 +1,6 @@
 package fi.vm.sade.oppija.haku.controller;
 
-import fi.vm.sade.oppija.haku.service.ApplicationPeriodService;
+import fi.vm.sade.oppija.haku.service.FormService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +19,17 @@ public class FormController {
 
     private final static Logger logger = LoggerFactory.getLogger(FormController.class);
 
-    final ApplicationPeriodService applicationPeriodService;
+    final FormService formService;
 
     @Autowired
-    public FormController(final ApplicationPeriodService applicationPeriodService) {
-        this.applicationPeriodService = applicationPeriodService;
+    public FormController(final FormService formService) {
+        this.formService = formService;
     }
 
     @RequestMapping(value = "/{applicationPeriodId}", method = RequestMethod.GET)
     public ModelAndView getApplicationPeriod(@PathVariable final String applicationPeriodId) {
         logger.debug("getApplicationPeriod {}", applicationPeriodId);
-        final Map<String, Object> data = applicationPeriodService.getApplicationPeriod(applicationPeriodId);
+        final Map<String, Object> data = formService.getApplicationPeriod(applicationPeriodId);
         final ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("form");
         modelAndView.addObject("data", data);
@@ -41,13 +41,10 @@ public class FormController {
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.GET)
-    public ModelAndView getForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
+    public String getForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
         logger.debug("getForm {}, {}", new Object[]{applicationPeriodId, formId});
-        final Map<String, Object> data = applicationPeriodService.findForm(applicationPeriodId, formId);
-        final ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("forms");
-        modelAndView.addObject("data", data);
-        return modelAndView;
+        final Map<String, Object> firstCategory = formService.findFirstCategory(applicationPeriodId, formId);
+        return "redirect:" + formId + "/" + firstCategory.get("id");
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}", method = RequestMethod.GET)
@@ -55,7 +52,7 @@ public class FormController {
                                     @PathVariable final String formId,
                                     @PathVariable final String categoryId) {
         logger.debug("getCategory {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId});
-        final Map<String, Object> data = applicationPeriodService.findForm(applicationPeriodId, formId);
+        final Map<String, Object> data = formService.findForm(applicationPeriodId, formId);
         final List<Map<String, Object>> categories = (List<Map<String, Object>>) data.get("categories");
 
         final ModelAndView modelAndView = new ModelAndView();
