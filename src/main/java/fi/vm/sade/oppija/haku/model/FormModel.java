@@ -1,4 +1,6 @@
-package fi.vm.sade.oppija.haku.controller;
+package fi.vm.sade.oppija.haku.model;
+
+import fi.vm.sade.oppija.haku.model.Link;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.haku.controller;
 
+import fi.vm.sade.oppija.haku.model.FormModel;
 import fi.vm.sade.oppija.haku.service.FormService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

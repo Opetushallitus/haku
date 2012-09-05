@@ -1,4 +1,4 @@
-package fi.vm.sade.oppija.haku.controller;
+package fi.vm.sade.oppija.haku.model;
 
 import java.util.Map;
 
