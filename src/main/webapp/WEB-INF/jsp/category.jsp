@@ -7,7 +7,9 @@
     </head>
     <body>
         <div>
-
+             <c:forEach var="categoryLink" items="${formModel.categoryLinks}">
+                 <a href="${categoryLink.ref}">${categoryLink.label}</a>&nbsp;
+            </c:forEach>
         </div>
 
         <div>
@@ -23,8 +25,16 @@
         </div>
 
         <div>
-            <a href="${formModel.prev}">Edellinen</a>
-            <a href="${formModel.next}">Seuraava</a>
+            <c:choose>
+                <c:when test="${formModel.prevAvailable}">
+                    <a href="${formModel.prev.ref}">Edellinen</a>
+                </c:when>
+            </c:choose>
+            <c:choose>
+                <c:when test="${formModel.nextAvailable}">
+                    <a href="${formModel.next.ref}">Seuraava</a>
+                </c:when>
+            </c:choose>
         </div>
     </body>
 </html>

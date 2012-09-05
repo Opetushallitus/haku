@@ -28,20 +28,28 @@ public class FormModel {
         }
     }
 
-    public String getPrev() {
-        String id = null;
-        if (currentCategoryIndex > 0) {
-            id = categories.get(currentCategoryIndex - 1).get("id").toString();
+    public Link getPrev() {
+        Link link = null;
+        if (isPrevAvailable()) {
+            link = categoryLinks.get(currentCategoryIndex - 1);
         }
-        return id;
+        return link;
     }
 
-    public String getNext() {
-        String id = null;
-        if (currentCategoryIndex < categories.size() - 1) {
-            id = categories.get(currentCategoryIndex + 1).get("id").toString();
+    public boolean isPrevAvailable() {
+        return currentCategoryIndex > 0;
+    }
+
+    public Link getNext() {
+        Link link = null;
+        if (isNextAvailable()) {
+            link = categoryLinks.get(currentCategoryIndex + 1);
         }
-        return id;
+        return link;
+    }
+
+    public boolean isNextAvailable() {
+        return currentCategoryIndex < categories.size() - 1;
     }
 
     public String getCurrentCategoryId() {
