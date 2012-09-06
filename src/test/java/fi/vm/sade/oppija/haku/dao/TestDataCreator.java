@@ -1,9 +1,6 @@
 package fi.vm.sade.oppija.haku.dao;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TestDataCreator {
     public TestDataCreator() {
@@ -21,75 +18,92 @@ public class TestDataCreator {
 
     public Map<String, Object> createForm() {
         // last name question
-        Map<String, Object> questionLastname = new HashMap<String, Object>();
-        questionLastname.put("id", "lastname");
-        questionLastname.put("type", "input");
-        questionLastname.put("description", "Sukunimi");
+        Map<String, Object> questionLastname = createTextQuestion("Sukunimi");
 
         // first name question
-        Map<String, Object> questionFirstname = new HashMap<String, Object>();
-        questionFirstname.put("id", "firstname");
-        questionFirstname.put("type", "input");
-        questionFirstname.put("description", "Etunimet");
+        Map<String, Object> questionFirstname = createTextQuestion("Etunimet");
 
         // sex question
-        Map<String, Object> questionSex = new HashMap<String, Object>();
-        questionSex.put("id", "sex");
-        questionSex.put("description", "Sukupuoli");
-        questionSex.put("type", "radiogroup");
-        Map<String, Object> sexMaleOption = new HashMap<String, Object>();
-        sexMaleOption.put("id", "male");
-        sexMaleOption.put("description", "mies");
-        Map<String, Object> sexFemaleOption = new HashMap<String, Object>();
-        sexFemaleOption.put("id", "female");
-        sexFemaleOption.put("description", "nainen");
-        List<Map<String, Object>> sexQuestionOptions = new ArrayList<Map<String, Object>>();
-        sexQuestionOptions.add(sexMaleOption);
-        sexQuestionOptions.add(sexFemaleOption);
-        questionSex.put("options", sexQuestionOptions);
+        Map<String, Object> questionSex = createRadioGroup("Sukupuoli", "mies", "nainen");
 
         // personal info question group
-        Map<String, Object> questionGroupPersonalInfo = new HashMap<String, Object>();
-        questionGroupPersonalInfo.put("title", "Henkilötiedot");
-        List<Map<String, Object>> questionsPersonalInfo = new ArrayList<Map<String, Object>>();
-        questionsPersonalInfo.add(questionLastname);
-        questionsPersonalInfo.add(questionFirstname);
-        questionsPersonalInfo.add(questionSex);
-        questionGroupPersonalInfo.put("questions", questionsPersonalInfo);
-
+        Map<String, Object> questionGroupPersonalInfo = createQuestionGroup("Henkilötiedot", questionFirstname, questionLastname, questionSex);
 
         // first category
-        Map<String, Object> categoryPersonalInfo = new HashMap<String, Object>();
-        categoryPersonalInfo.put("id", "OMATTIEDOT");
-        List<Map<String, Object>> questionGroupsPersonalInfo = new ArrayList<Map<String, Object>>();
-        questionGroupsPersonalInfo.add(questionGroupPersonalInfo);
-        categoryPersonalInfo.put("questionGroups", questionGroupsPersonalInfo);
-
-
+        Map<String, Object> categoryPersonalInfo = createCategory(questionGroupPersonalInfo, "OMATTIEDOT");
 
         //  background question group
-        Map<String, Object> questionGroupBackground = new HashMap<String, Object>();
-        questionGroupBackground.put("title", "Koulutustausta");
-        List<Map<String, Object>> questionsBackground = new ArrayList<Map<String, Object>>();
-
-        questionGroupBackground.put("questions", questionsPersonalInfo);
+        Map<String, Object> questionGroupBackground = createQuestionGroup("Koulutustausta", questionFirstname, questionLastname, questionSex);
 
         // second category
-        Map<String, Object> categoryBackground = new HashMap<String, Object>();
-        categoryBackground.put("id", "KOULUTUSTAUSTA");
-        List<Map<String, Object>> questionGroupsBackground = new ArrayList<Map<String, Object>>();
-        questionGroupsBackground.add(questionGroupBackground);
-        categoryBackground.put("questionsGroups", questionGroupsBackground);
+        Map<String, Object> categoryBackground = createCategory(questionGroupBackground, "KOULUTUSTAUSTA");
 
         // the actual form
-        Map<String, Object> form = new HashMap<String, Object>();
-        form.put("id", "1234");
-        List<Map<String, Object>> categories = new ArrayList<Map<String, Object>>();
-        categories.add(categoryPersonalInfo);
-        categories.add(categoryBackground);
-        form.put("categories", categories);
 
+        return createForm("1234", categoryPersonalInfo, categoryBackground);
+    }
+
+    private Map<String, Object> createForm(String id, Map<String, Object>... categories) {
+        Map<String, Object> form = new HashMap<String, Object>();
+        form.put("id", id);
+        form.put("categories", Arrays.asList(categories));
         return form;
+    }
+
+    private Map<String, Object> createCategory(Map<String, Object> questionGroup, String id) {
+        Map<String, Object> categoryPersonalInfo = new HashMap<String, Object>();
+        categoryPersonalInfo.put("id", id);
+        List<Map<String, Object>> questionGroupsPersonalInfo = new ArrayList<Map<String, Object>>();
+        questionGroupsPersonalInfo.add(questionGroup);
+        categoryPersonalInfo.put("questionGroups", questionGroupsPersonalInfo);
+        return categoryPersonalInfo;
+    }
+
+    private Map<String, Object> createQuestionGroup(String title, Map<String, Object>... questions) {
+        Map<String, Object> questionGroupPersonalInfo = new HashMap<String, Object>();
+        questionGroupPersonalInfo.put("title", title);
+        questionGroupPersonalInfo.put("questions", Arrays.asList(questions));
+        return questionGroupPersonalInfo;
+    }
+
+    private Map<String, Object> createRadioGroup(String description, String... options) {
+        Map<String, Object> questionSex = new HashMap<String, Object>();
+        questionSex.put("id", createId(description));
+        questionSex.put("description", description);
+        questionSex.put("type", "radiogroup");
+        addOptions(questionSex, options);
+        return questionSex;
+    }
+
+    private void addOptions(Map<String, Object> question, String... options) {
+        List<Map<String, Object>> questionOptions = new ArrayList<Map<String, Object>>();
+        for (String option : options) {
+            addOption(questionOptions, option);
+        }
+        question.put("options", questionOptions);
+    }
+
+    private void addOption(List<Map<String, Object>> sexQuestionOptions, String description) {
+        Map<String, Object> sexMaleOption = new HashMap<String, Object>();
+        sexMaleOption.put("description", description);
+        sexMaleOption.put("id", description);
+        sexQuestionOptions.add(sexMaleOption);
+    }
+
+    private Map<String, Object> createTextQuestion(String sukunimi) {
+        return createQuestion(sukunimi, "input");
+    }
+
+    private Map<String, Object> createQuestion(String description, String type) {
+        Map<String, Object> questionLastname = new HashMap<String, Object>();
+        questionLastname.put("id", createId(description));
+        questionLastname.put("type", type);
+        questionLastname.put("description", description);
+        return questionLastname;
+    }
+
+    private String createId(String description) {
+        return description + "_" + System.currentTimeMillis();
     }
 
 }
