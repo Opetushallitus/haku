@@ -13,7 +13,7 @@ public class Link {
 
     public Link(final Map<String, Object> map) {
         ref = map.get("id").toString();
-        label = map.get("id").toString();
+        label = map.get("label").toString();
     }
 
     public String getRef() {

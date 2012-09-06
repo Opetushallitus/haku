@@ -13,14 +13,30 @@
         </div>
 
         <div>
-            <c:forEach var="question" items="${formModel.currentCategory['questions']}">
-                <c:choose>
-                    <c:when test="${question['type'] eq 'INPUT'}">
-                        <label for="${question['id']}">${question['label']}</label>
-                        <input type="text" name="firstname" />
-                        <div>${question['help_text']}</div>
-                    </c:when>
-                </c:choose>
+            <c:forEach var="questionsGroup" items="${formModel.currentCategory['questionsGroups']}">
+                <fieldset>
+                    <legend><c:out value="${questionsGroup['title']}"/></legend>
+
+                    <c:forEach var="question" items="${questionsGroup['questions']}">
+                        <c:choose>
+                            <c:when test="${question['type'] eq 'input'}">
+                                <label for="${question['id']}">${question['description']}</label>
+                                <input type="text" name="firstname" />
+                                <div>${question['help_text']}</div>
+                            </c:when>
+
+                             <c:when test="${question['type'] eq 'radiogroup'}">
+                                <fieldset>
+                                    <legend><c:out value="${question['description']}"/></legend>
+                                        <c:forEach var="option" items="${question['options']}">
+                                            <input type="radio" name="${question['id']}" /> ${option['description']}<br />
+                                        </c:forEach>
+                                </fieldset>
+                            </c:when>
+                        </c:choose>
+                    </c:forEach>
+                    
+                </fieldset>
             </c:forEach>
         </div>
 
