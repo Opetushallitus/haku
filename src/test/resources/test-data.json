@@ -1,0 +1,79 @@
+{
+	"id" : "yhteishaku",
+	"form" : {
+		"id" : "yhteishakulomake-id",
+		"categories" : [
+			{
+				"id" : "OMATTIEDOT",
+				"questionGroups" : [
+					{
+						"title" : "Henkilötiedot",
+						"questions" : [
+							{
+								"id" : "lastname",
+								"description" : "Sukunimi",
+								"type" : "input"
+							},
+							{
+								"id" : "firstname",
+								"description" : "Etunimet",
+								"type" : "input"
+							},
+							{
+								"id" : "sex",
+								"description" : "Sukupuoli",
+								"type" : "radiogroup",
+								"options" : [
+									{
+										"id" : "male",
+										"description" : "mies"
+									},
+									{
+										"id" : "female",
+										"description" : "nainen"
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"id" : "KOULUTUSTAUSTA",
+				"questionsGroups" : [
+					{
+						"title" : "Koulutustausta",
+						"questions" : [
+							{
+								"id" : "lastname",
+								"description" : "Sukunimi",
+								"type" : "input"
+							},
+							{
+								"id" : "firstname",
+								"description" : "Etunimet",
+								"type" : "input"
+							},
+							{
+								"id" : "sex",
+								"description" : "Sukupuoli",
+								"type" : "radiogroup",
+								"options" : [
+									{
+										"id" : "male",
+										"description" : "mies"
+									},
+									{
+										"id" : "female",
+										"description" : "nainen"
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}
+
