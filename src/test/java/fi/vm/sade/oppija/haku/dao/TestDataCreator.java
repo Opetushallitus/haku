@@ -33,7 +33,7 @@ public class TestDataCreator {
         Map<String, Object> categoryPersonalInfo = createCategory(questionGroupPersonalInfo, "OMATTIEDOT");
 
         //  background question group
-        Map<String, Object> questionGroupBackground = createQuestionGroup("Koulutustausta", questionFirstname, questionLastname, questionSex);
+        Map<String, Object> questionGroupBackground = createQuestionGroup("Koulutustausta", createTextQuestion("Minulla on tutkinto seuraavasta oppilaitoksesta"), createTextQuestion("Joku muu, mikä?"));
 
         // second category
         Map<String, Object> categoryBackground = createCategory(questionGroupBackground, "KOULUTUSTAUSTA");
