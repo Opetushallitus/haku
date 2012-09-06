@@ -19,6 +19,7 @@ import java.io.*;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,6 +40,7 @@ public class ApplicationPeriodDAOTest extends AbstractDAOTest {
     public void testFindAll() {
         List applicationPeriods = applicationPeriodDAO.findAll();
         assertNotNull(applicationPeriods);
+        assertEquals("Found insufficient number of applicationPeriods", 1, applicationPeriods.size());
     }
 
     @Test
