@@ -15,7 +15,7 @@ import javax.annotation.PreDestroy;
  * @since 1.1
  */
 public class DBFactoryBean implements FactoryBean<DB> {
-    private Mongo mongo;
+    protected Mongo mongo;
     private String name;
 
     @PostConstruct
