@@ -29,7 +29,7 @@ public class ApplicationPeriodDAOMongoImpl extends AbstractDAOMongoImpl implemen
         queryObject.put("id", applicationPeriod);
         queryObject.put("form.id", form);
 
-        return (Map<String, Object>) getCollection().findOne().get("form");
+        return (Map<String, Object>) getCollection().findOne(queryObject).get("form");
     }
 
 
