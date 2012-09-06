@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.*;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
@@ -32,6 +33,12 @@ public class ApplicationPeriodDAOTest extends AbstractDAOTest {
     public void testInsertApplicationPeriod() {
         Map<String, Object> applicationPeriod = testDataCreator.createApplicationPeriod();
         applicationPeriodDAO.insert(applicationPeriod);
+    }
+
+    @Test
+    public void testFindAll() {
+        List applicationPeriods = applicationPeriodDAO.findAll();
+        assertNotNull(applicationPeriods);
     }
 
     @Test

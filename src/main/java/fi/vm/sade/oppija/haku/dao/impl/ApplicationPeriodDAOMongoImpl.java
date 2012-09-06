@@ -1,10 +1,12 @@
 package fi.vm.sade.oppija.haku.dao.impl;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.haku.dao.ApplicationPeriodDAO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -24,6 +26,11 @@ public class ApplicationPeriodDAOMongoImpl extends AbstractDAOMongoImpl implemen
     }
 
     @Override
+    public List findAll() {
+        return getCollection().find(new BasicDBObject()).toArray();
+    }
+
+    @Override
     public Map<String, Object> findForm(String applicationPeriod, String form) {
         DBObject queryObject = new BasicDBObject();
         queryObject.put("id", applicationPeriod);
@@ -31,8 +38,6 @@ public class ApplicationPeriodDAOMongoImpl extends AbstractDAOMongoImpl implemen
 
         return (Map<String, Object>) getCollection().findOne(queryObject).get("form");
     }
-
-
 
     @Override
     public String getCollectionName() {
