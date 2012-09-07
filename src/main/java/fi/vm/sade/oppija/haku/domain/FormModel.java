@@ -14,4 +14,8 @@ public class FormModel {
     ApplicationPeriod getApplicationPeriodById(String id) {
         return applicationPerioidMap.get(id);
     }
+
+    public void addApplicationPeriod(ApplicationPeriod applicationPeriod) {
+        applicationPerioidMap.put(applicationPeriod.getId(), applicationPeriod);
+    }
 }

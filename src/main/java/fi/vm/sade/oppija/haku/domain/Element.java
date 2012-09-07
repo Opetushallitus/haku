@@ -41,4 +41,10 @@ public abstract class Element {
     public String getHelp() {
         return help;
     }
+
+    public void addChild(Element child) {
+        this.children.add(child);
+    }
+
+
 }

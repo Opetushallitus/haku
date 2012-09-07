@@ -20,4 +20,14 @@ public class Form extends Titled {
         return categories.get(categoryId);
     }
 
+    public void addCategory(Category category) {
+        this.categories.put(category.getId(), category);
+    }
+
+    public void produceCategoryMap() {
+        for (Element child : children) {
+            if (child instanceof Category) addCategory((Category) child);
+        }
+    }
+
 }
