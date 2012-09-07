@@ -26,11 +26,15 @@ public class ApplicationPeriod {
         return !now.before(starts) && !now.after(end);
     }
 
-    Form getFormById(String id) {
+    public void addForm(Form form) {
+        this.forms.put(form.getId(), form);
+    }
+
+    public Form getFormById(String id) {
         return forms.get(id);
     }
 
-    Category getGategory(String formId, String categoryId) {
+    public Category getGategory(String formId, String categoryId) {
         return getFormById(formId).getCategory(categoryId);
     }
 
