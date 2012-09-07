@@ -7,9 +7,9 @@ import fi.vm.sade.oppija.haku.domain.Question;
  * @version 9/7/122:04 PM}
  * @since 1.1
  */
-public class Radio extends Question {
+public class Radio extends OptionQuestion {
 
-    protected Radio(String id) {
+    public Radio(String id) {
         super(id);
     }
 }
