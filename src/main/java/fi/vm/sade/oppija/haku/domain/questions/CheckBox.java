@@ -4,12 +4,11 @@ import fi.vm.sade.oppija.haku.domain.Question;
 
 /**
  * @author jukka
- * @version 9/7/122:04 PM}
+ * @version 9/7/122:15 PM}
  * @since 1.1
  */
-public class Radio extends Question {
-
-    protected Radio(String id) {
+public class CheckBox extends Question {
+    public CheckBox(String id) {
         super(id);
     }
 }

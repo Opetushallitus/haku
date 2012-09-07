@@ -4,12 +4,11 @@ import fi.vm.sade.oppija.haku.domain.Question;
 
 /**
  * @author jukka
- * @version 9/7/122:04 PM}
+ * @version 9/7/122:16 PM}
  * @since 1.1
  */
-public class Radio extends Question {
-
-    protected Radio(String id) {
+public class MultiSelect extends Question {
+    public MultiSelect(String id) {
         super(id);
     }
 }
