@@ -26,7 +26,7 @@ public class TestController {
         this.formService = formService;
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
     public ModelAndView getApplicationPeriod(@PathVariable final String applicationPeriodId) {
         logger.debug("getApplicationPeriod {}", applicationPeriodId);
         final Map<String, Object> data = formService.getApplicationPeriod(applicationPeriodId);
