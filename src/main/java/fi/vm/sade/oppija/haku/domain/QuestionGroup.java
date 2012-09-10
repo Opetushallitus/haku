@@ -9,4 +9,8 @@ public class QuestionGroup extends Titled {
     public QuestionGroup(String id) {
         super(id);
     }
+
+    public QuestionGroup(String id, String title) {
+        super(id, title);
+    }
 }
