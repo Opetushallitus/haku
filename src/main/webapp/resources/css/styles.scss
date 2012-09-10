@@ -1,0 +1,129 @@
+/**************************
+ MIXIN
+/**************************/
+
+$gutter: 0.625%;
+$grid-column-width: 6.25%;
+
+@mixin grid($span) {
+    float: left;
+    margin-right: $gutter;
+    margin-left: $gutter;
+    width: ($grid-column-width * $span) - ($gutter * 2);
+}
+
+@mixin vertical-list {
+
+    ul {
+        list-style-type: none;
+        clear: both;
+        
+        li {
+            float: left;
+        }
+    }
+}
+
+@mixin horizontal-list {
+
+    ul {
+        list-style-type: none;
+        clear: both;
+        
+        li {
+            float: left;
+        }
+    }
+}
+
+.grid16-1 { @include grid(1); }
+.grid16-2 { @include grid(2); }
+.grid16-3 { @include grid(3); }
+.grid16-4 { @include grid(4); }
+.grid16-5 { @include grid(5); }
+.grid16-6 { @include grid(6); }
+.grid16-7 { @include grid(7); }
+.grid16-8 { @include grid(8); }
+.grid16-9 { @include grid(9); }
+.grid16-10 { @include grid(10); }
+.grid16-11 { @include grid(11); }
+.grid16-12 { @include grid(12); }
+.grid16-13 { @include grid(13); }
+.grid16-14 { @include grid(14); }
+.grid16-15 { @include grid(15); }
+.grid16-16 { @include grid(16); }
+
+.clear {
+	clear: both;
+}
+
+
+/**************************
+ LAYOUT
+/**************************/
+#wrapper {
+	min-width: 960px;
+	margin: 0 auto;
+}
+
+#main-navigation {
+	height: 30px;
+	width: 100%;
+	background: #eee;
+}
+
+#content-area {
+	margin-top: 20px;
+}
+
+footer {
+	margin-top: 20px;
+	background: #eee;
+	border: 1px solid #ccc;
+}
+
+/**************************
+ PAGE-NAVIGATION
+/**************************/
+#page-navigation {
+	border: 1px solid #ccc;
+
+	h3 {
+		margin: 0;
+		padding: 1em 0;
+	}
+
+	.page-navigation-header {
+		background: #eee;
+	}
+
+	.page-navigation-content {
+
+		@include vertical-list;
+		
+	}
+}
+
+/**************************
+APPLICATION CONTENT
+/**************************/
+#hakuprosessi {
+
+	border: 1px solid #ccc;
+	background: #eee;
+
+	.application-navigation {
+
+		@include horizontal-list;
+		li {
+			margin-right: 10px; 
+		}
+	}
+}
+
+/**************************
+ TYPOGRAPHY
+/**************************/
+body {
+	font: 62.5%;
+}

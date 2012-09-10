@@ -1,0 +1,157 @@
+/**************************
+ MIXIN
+/**************************/
+.grid16-1 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 5%; }
+
+.grid16-2 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 11.25%; }
+
+.grid16-3 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 17.5%; }
+
+.grid16-4 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 23.75%; }
+
+.grid16-5 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 30%; }
+
+.grid16-6 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 36.25%; }
+
+.grid16-7 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 42.5%; }
+
+.grid16-8 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 48.75%; }
+
+.grid16-9 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 55%; }
+
+.grid16-10 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 61.25%; }
+
+.grid16-11 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 67.5%; }
+
+.grid16-12 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 73.75%; }
+
+.grid16-13 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 80%; }
+
+.grid16-14 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 86.25%; }
+
+.grid16-15 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 92.5%; }
+
+.grid16-16 {
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+  width: 98.75%; }
+
+.clear {
+  clear: both; }
+
+/**************************
+ LAYOUT
+/**************************/
+#wrapper {
+  min-width: 960px;
+  margin: 0 auto; }
+
+#main-navigation {
+  height: 30px;
+  width: 100%;
+  background: #eee; }
+
+#content-area {
+  margin-top: 20px; }
+
+footer {
+  margin-top: 20px;
+  background: #eee;
+  border: 1px solid #ccc; }
+
+/**************************
+ PAGE-NAVIGATION
+/**************************/
+#page-navigation {
+  border: 1px solid #ccc; }
+  #page-navigation h3 {
+    margin: 0;
+    padding: 1em 0; }
+  #page-navigation .page-navigation-header {
+    background: #eee; }
+  #page-navigation .page-navigation-content ul {
+    list-style-type: none;
+    clear: both; }
+    #page-navigation .page-navigation-content ul li {
+      float: left; }
+
+/**************************
+APPLICATION CONTENT
+/**************************/
+#hakuprosessi {
+  border: 1px solid #ccc;
+  background: #eee; }
+  #hakuprosessi .application-navigation ul {
+    list-style-type: none;
+    clear: both; }
+    #hakuprosessi .application-navigation ul li {
+      float: left; }
+  #hakuprosessi .application-navigation li {
+    margin-right: 10px; }
+
+/**************************
+ TYPOGRAPHY
+/**************************/
+body {
+  font: 62.5%; }
