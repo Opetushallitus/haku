@@ -47,12 +47,24 @@ public abstract class Element {
         return help;
     }
 
-    public void addChild(Element child) {
+    public Element addChild(Element child) {
         this.children.add(child);
+        return this;
     }
 
     public void addAttribute(final String key, final String value) {
         this.attributes.add(new Attribute(key, value));
+    }
+
+    public String getAttributeString() {
+        StringBuilder attrStr = new StringBuilder();
+        for (Attribute attribute : attributes) {
+            attrStr.append(attribute.key);
+            attrStr.append("=\"");
+            attrStr.append(attribute.value);
+            attrStr.append("\"");
+        }
+        return attrStr.toString();
     }
 
 }

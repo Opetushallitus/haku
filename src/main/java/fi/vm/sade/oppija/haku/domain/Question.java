@@ -6,11 +6,9 @@ package fi.vm.sade.oppija.haku.domain;
  * @since 1.1
  */
 public abstract class Question extends Titled {
-    public Question(final String id) {
-        super(id);
-    }
 
-    protected Question(String id, String title) {
+    public Question(final String id, final String title, final String name) {
         super(id, title);
+        this.addAttribute("name", name);
     }
 }

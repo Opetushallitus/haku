@@ -6,7 +6,7 @@ package fi.vm.sade.oppija.haku.domain;
  * @since 1.1
  */
 public class Option extends Titled {
-    public Option(String id) {
-        super(id);
+    public Option(final String id, final String title) {
+        super(id, title);
     }
 }

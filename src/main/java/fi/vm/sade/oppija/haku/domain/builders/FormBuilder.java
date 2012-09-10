@@ -11,8 +11,8 @@ import fi.vm.sade.oppija.haku.domain.Form;
  */
 public class FormBuilder extends ElementBuilder {
 
-    public FormBuilder(String id) {
-        super(new Form(id));
+    public FormBuilder(final String id, final String name) {
+        super(new Form(id, name));
     }
 
     @Override

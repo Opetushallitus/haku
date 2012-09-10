@@ -10,11 +10,7 @@ public class Category extends Titled {
     private transient Category next;
     private transient Category prev;
 
-    public Category(String id) {
-        super(id);
-    }
-
-    public Category(String id, String title) {
+    public Category(final String id, final String title) {
         super(id, title);
     }
 
@@ -26,7 +22,6 @@ public class Category extends Titled {
         this.prev = prev;
     }
 
-
     public void initChain(Category prev) {
         if (prev != null) {
             setPrev(prev);
@@ -34,11 +29,11 @@ public class Category extends Titled {
         }
     }
 
-    public boolean hasNext() {
+    public boolean isHasNext() {
         return next != null;
     }
 
-    public boolean hasPrev() {
+    public boolean isHasPrev() {
         return prev != null;
     }
 

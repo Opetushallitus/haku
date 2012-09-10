@@ -6,11 +6,8 @@ package fi.vm.sade.oppija.haku.domain;
  * @since 1.1
  */
 public class QuestionGroup extends Titled {
-    public QuestionGroup(String id) {
-        super(id);
-    }
 
-    public QuestionGroup(String id, String title) {
+    public QuestionGroup(final String id, final String title) {
         super(id, title);
     }
 }

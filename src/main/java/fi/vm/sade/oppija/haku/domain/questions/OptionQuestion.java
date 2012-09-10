@@ -9,9 +9,8 @@ public abstract class OptionQuestion extends Question {
 
     private final List<Option> options = new ArrayList<Option>();
 
-
-    public OptionQuestion(final String id) {
-        super(id);
+    protected OptionQuestion(final String id, final String title, final String name) {
+        super(id, title, name);
     }
 
     public void addOption(final String value, final String title) {

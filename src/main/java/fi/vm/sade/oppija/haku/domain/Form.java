@@ -11,15 +11,19 @@ import java.util.Map;
 public class Form extends Titled {
 
     private Navigation navigation = new Navigation("top");
-
+    private String firstCategoryId;
     final transient Map<String, Category> categories = new HashMap<String, Category>();
 
-    public Form(String id) {
-        super(id);
+    public Form(final String id, final String title) {
+        super(id, title);
     }
 
     public Category getCategory(String categoryId) {
         return categories.get(categoryId);
+    }
+
+    public Category getFirstCategory() {
+        return categories.get(firstCategoryId);
     }
 
     private void addCategory(Category category, Category prev) {
@@ -35,9 +39,14 @@ public class Form extends Titled {
                 final Category child1 = (Category) child;
                 addCategory(child1, prev);
                 prev = child1;
+                if (firstCategoryId == null) {
+                    firstCategoryId = child.getId();
+                }
             }
         }
     }
 
-
+    public Navigation getNavigation() {
+        return navigation;
+    }
 }

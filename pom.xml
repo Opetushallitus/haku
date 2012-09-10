@@ -26,6 +26,11 @@
             <version>1.2</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.1</version>
+        </dependency>
         <!-- Testing -->
         <dependency>
             <groupId>junit</groupId>
@@ -74,12 +79,12 @@
             <artifactId>spring-test</artifactId>
             <version>3.1.1.RELEASE</version>
         </dependency>
-
         <dependency>
             <groupId>org.codehaus.gmaven.runtime</groupId>
             <artifactId>gmaven-runtime-2.0</artifactId>
             <version>1.4</version>
         </dependency>
+
     </dependencies>
     <properties>
         <project.svn.base>https://penaali.hard.ware.fi/svn/generic/${project.artifactId}</project.svn.base>

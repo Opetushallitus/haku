@@ -14,5 +14,7 @@ public class Link extends Element {
         attributes.add(new Attribute("href", href));
     }
 
-
+    public String getValue() {
+        return value;
+    }
 }

@@ -8,11 +8,8 @@ import fi.vm.sade.oppija.haku.domain.Question;
  * @since 1.1
  */
 public class TextArea extends Question {
-    public TextArea(String id) {
-        super(id);
-    }
 
-    public TextArea(String id, String title) {
-        super(id, title);
+    public TextArea(final String id, final String title, final String name) {
+        super(id, title, name);
     }
 }

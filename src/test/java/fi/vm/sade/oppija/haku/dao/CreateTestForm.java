@@ -21,11 +21,11 @@ public class CreateTestForm {
 
     @Test
     public void test() throws Exception {
-        final Category cat1 = new Category("cat1");
-        final Question question = new TextQuestion("id");
+        final Category cat1 = new Category("cat1", "cat1");
+        final Question question = new TextQuestion("id", "id", "id");
         cat1.addChild(question);
         final Element element = new ElementBuilder(cat1).build();
-        final Form form = new FormBuilder("1").withChild(element).build();
+        final Form form = new FormBuilder("1", "1").withChild(element).build();
         final ApplicationPeriod applicationPeriod = new ApplicationPeriodBuilder("" + System.currentTimeMillis()).withForm(form).build();
         final FormModel model = new FormModelBuilder().withApplicationPeriods(applicationPeriod).build();
 

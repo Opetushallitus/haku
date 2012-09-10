@@ -7,22 +7,14 @@ package fi.vm.sade.oppija.haku.domain;
  */
 public abstract class Titled extends Element {
 
-    String title = "";
+    final String title;
 
-    public Titled(String id) {
+    public Titled(final String id, final String title) {
         super(id);
+        this.title = title;
     }
 
     public String getTitle() {
         return title;
-    }
-
-    protected Titled(String id, String title) {
-        super(id);
-        this.title = title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 }
