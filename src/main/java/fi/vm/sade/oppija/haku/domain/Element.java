@@ -55,5 +55,4 @@ public abstract class Element {
         this.attributes.add(new Attribute(key, value));
     }
 
-
 }

@@ -1,5 +1,7 @@
 package fi.vm.sade.oppija.haku.controller;
 
+import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.haku.domain.Form;
 import fi.vm.sade.oppija.haku.domain.QuestionGroup;
 import fi.vm.sade.oppija.haku.domain.questions.*;
 import fi.vm.sade.oppija.haku.service.FormService;
@@ -11,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Map;
 
 
 @Controller
@@ -90,18 +90,18 @@ public class FormController {
     @RequestMapping(value = "/{applicationPeriodId}", method = RequestMethod.GET)
     public ModelAndView getApplicationPeriod(@PathVariable final String applicationPeriodId) {
         logger.debug("getApplicationPeriod {}", applicationPeriodId);
-        final Map<String, Object> data = formService.getApplicationPeriod(applicationPeriodId);
+        final ApplicationPeriod activePeriodById = formService.getModel().getActivePeriodById(applicationPeriodId);
         final ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("applicationPeriod");
-        modelAndView.addObject("data", data);
+        modelAndView.addObject("data", activePeriodById);
         return modelAndView;
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.GET)
     public String getForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
         logger.debug("getForm {}, {}", new Object[]{applicationPeriodId, formId});
-        final Map<String, Object> firstCategory = formService.findFirstCategory(applicationPeriodId, formId);
-        return "redirect:" + formId + "/" + firstCategory.get("id");
+        final Form formById = formService.getModel().getActivePeriodById(applicationPeriodId).getFormById(formId);
+        return "redirect:" + formId + "/" + formById.getId();
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}", method = RequestMethod.GET)

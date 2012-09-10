@@ -10,7 +10,9 @@ import java.util.Map;
  */
 public class Form extends Titled {
 
-    final Map<String, Category> categories = new HashMap<String, Category>();
+    private Navigation navigation = new Navigation("top");
+
+    final transient Map<String, Category> categories = new HashMap<String, Category>();
 
     public Form(String id) {
         super(id);
@@ -20,14 +22,22 @@ public class Form extends Titled {
         return categories.get(categoryId);
     }
 
-    public void addCategory(Category category) {
+    private void addCategory(Category category, Category prev) {
         this.categories.put(category.getId(), category);
+        category.initChain(prev);
+        navigation.addChild(category.asLink());
     }
 
     public void produceCategoryMap() {
+        Category prev = null;
         for (Element child : children) {
-            if (child instanceof Category) addCategory((Category) child);
+            if (child instanceof Category) {
+                final Category child1 = (Category) child;
+                addCategory(child1, prev);
+                prev = child1;
+            }
         }
     }
+
 
 }

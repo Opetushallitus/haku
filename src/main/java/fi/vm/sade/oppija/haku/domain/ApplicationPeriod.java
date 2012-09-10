@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.haku.domain;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,12 +13,15 @@ import java.util.Map;
 public class ApplicationPeriod {
     private final String id;
     Date starts = new Date();
-    Date end = new Date();
+    Date end;
 
     final Map<String, Form> forms = new HashMap<String, Form>();
 
     public ApplicationPeriod(String id) {
         this.id = id;
+        final Calendar instance = Calendar.getInstance();
+        instance.roll(Calendar.YEAR, 1);
+        end = new Date(instance.getTimeInMillis());
     }
 
     public boolean isActive() {

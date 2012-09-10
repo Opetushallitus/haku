@@ -8,9 +8,11 @@ package fi.vm.sade.oppija.haku.domain;
 public class Link extends Element {
     final String value;
 
-    public Link(String id, String value, String href) {
-        super(id);
+    public Link(String value, String href) {
+        super(System.currentTimeMillis() + "");
         this.value = value;
         attributes.add(new Attribute("href", href));
     }
+
+
 }
