@@ -10,7 +10,7 @@ public abstract class OptionQuestion extends Question {
     private final List<Option> options = new ArrayList<Option>();
 
 
-    public OptionQuestion(String id) {
+    public OptionQuestion(final String id) {
         super(id);
     }
 
@@ -26,7 +26,7 @@ public abstract class OptionQuestion extends Question {
         private final String value;
         private final String title;
 
-        private Option(String value, String title) {
+        public Option(String value, String title) {
             this.value = value;
             this.title = title;
         }

@@ -6,7 +6,7 @@ package fi.vm.sade.oppija.haku.domain;
  * @since 1.1
  */
 public abstract class Question extends Titled {
-    public Question(String id) {
+    public Question(final String id) {
         super(id);
     }
 

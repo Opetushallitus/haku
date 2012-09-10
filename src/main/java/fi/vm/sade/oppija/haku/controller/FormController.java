@@ -1,10 +1,7 @@
 package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.domain.QuestionGroup;
-import fi.vm.sade.oppija.haku.domain.questions.CheckBox;
-import fi.vm.sade.oppija.haku.domain.questions.Radio;
-import fi.vm.sade.oppija.haku.domain.questions.TextArea;
-import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
+import fi.vm.sade.oppija.haku.domain.questions.*;
 import fi.vm.sade.oppija.haku.service.FormService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +76,11 @@ public class FormController {
         radio.addOption("nainen", "Nainen");
         questionGroup.addChild(radio);
         questionGroup2.addChild(radio);
-
+        MultiSelect multiSelect = new MultiSelect("autot");
+        multiSelect.setTitle("Autot");
+        multiSelect.addOption("nissan", "Nissan");
+        multiSelect.addOption("toyota", "Toyota");
+        questionGroup.addChild(multiSelect);
         final ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("elements/QuestionGroup");
         modelAndView.addObject("element", questionGroup);

@@ -13,10 +13,11 @@ import java.util.Set;
 public abstract class Element {
 
     final String id;
-    String type = this.getClass().getSimpleName();
-    List<Element> children = new ArrayList<Element>();
-    Set<Attribute> attributes = new HashSet<Attribute>();
+    final String type = this.getClass().getSimpleName();
     String help = "";
+
+    final List<Element> children = new ArrayList<Element>();
+    final Set<Attribute> attributes = new HashSet<Attribute>();
 
     protected Element(String id) {
         this.id = id;
@@ -38,12 +39,20 @@ public abstract class Element {
         return attributes;
     }
 
+    public void setHelp(String help) {
+        this.help = help;
+    }
+
     public String getHelp() {
         return help;
     }
 
     public void addChild(Element child) {
         this.children.add(child);
+    }
+
+    public void addAttribute(final String key, final String value) {
+        this.attributes.add(new Attribute(key, value));
     }
 
 

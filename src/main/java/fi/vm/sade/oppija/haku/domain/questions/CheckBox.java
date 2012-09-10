@@ -12,9 +12,8 @@ import java.util.List;
  */
 public class CheckBox extends OptionQuestion {
 
-    private final List<Option> options = new ArrayList<Option>();
-
-    public CheckBox(String id) {
+    public CheckBox(final String id) {
         super(id);
     }
+
 }

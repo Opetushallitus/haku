@@ -9,7 +9,7 @@ import fi.vm.sade.oppija.haku.domain.Question;
  */
 public class Radio extends OptionQuestion {
 
-    public Radio(String id) {
+    public Radio(final String id) {
         super(id);
     }
 }

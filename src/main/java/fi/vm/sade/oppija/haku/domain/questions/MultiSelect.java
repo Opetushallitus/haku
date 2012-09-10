@@ -7,8 +7,8 @@ import fi.vm.sade.oppija.haku.domain.Question;
  * @version 9/7/122:16 PM}
  * @since 1.1
  */
-public class MultiSelect extends Question {
-    public MultiSelect(String id) {
+public class MultiSelect extends OptionQuestion {
+    public MultiSelect(final String id) {
         super(id);
     }
 }

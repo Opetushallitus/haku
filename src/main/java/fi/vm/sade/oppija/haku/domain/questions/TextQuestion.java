@@ -8,7 +8,7 @@ import fi.vm.sade.oppija.haku.domain.Question;
  * @since 1.1
  */
 public class TextQuestion extends Question {
-    public TextQuestion(String id) {
+    public TextQuestion(final String id) {
         super(id);
     }
 
