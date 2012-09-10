@@ -2,6 +2,7 @@ package fi.vm.sade.oppija.haku.dao.impl;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 
 /**
