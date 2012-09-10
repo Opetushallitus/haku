@@ -2,13 +2,9 @@ package fi.vm.sade.oppija.haku.dao.impl;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 
-import java.util.Map;
-
 /**
- *
  * @author hannu
  */
 public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormModelDAO {
@@ -22,7 +18,7 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
 
     @Override
     public FormModel find() {
-        return (FormModel)getCollection().findOne();
+        return (FormModel) getCollection().findOne();
     }
 
     @Override

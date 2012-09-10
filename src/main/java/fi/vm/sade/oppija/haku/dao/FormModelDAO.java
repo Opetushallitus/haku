@@ -1,9 +1,8 @@
-package fi.vm.sade.oppija.haku.dao.impl;
+package fi.vm.sade.oppija.haku.dao;
 
 import fi.vm.sade.oppija.haku.domain.FormModel;
 
 /**
- *
  * @author hannu
  */
 public interface FormModelDAO {
