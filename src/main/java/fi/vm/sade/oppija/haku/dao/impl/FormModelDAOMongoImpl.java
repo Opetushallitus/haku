@@ -19,7 +19,7 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
 
     @Override
     public FormModel find() {
-        return (FormModel) getCollection().findOne();
+        return (FormModel) getCollection().findOne().get(FORM_MODEL);
     }
 
     @Override
