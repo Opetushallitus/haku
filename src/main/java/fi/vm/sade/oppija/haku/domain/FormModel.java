@@ -9,7 +9,16 @@ import java.util.Map;
  * @since 1.1
  */
 public class FormModel {
-    Map<String, ApplicationPeriod> applicationPerioidMap = new HashMap<String, ApplicationPeriod>();
+
+    final Map<String, ApplicationPeriod> applicationPerioidMap;
+
+    public FormModel() {
+        this.applicationPerioidMap = new HashMap<String, ApplicationPeriod>();
+    }
+
+    public FormModel(Map<String, ApplicationPeriod> applicationPeriods) {
+        this.applicationPerioidMap = applicationPeriods;
+    }
 
     ApplicationPeriod getApplicationPeriodById(String id) {
         return applicationPerioidMap.get(id);
