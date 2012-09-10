@@ -46,4 +46,20 @@ public class ApplicationPeriod {
     public Map<String, Form> getForms() {
         return forms;
     }
+
+    public Date getStarts() {
+        return starts;
+    }
+
+    public void setStarts(Date starts) {
+        this.starts = starts;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
+    }
 }
