@@ -5,7 +5,6 @@ import fi.vm.sade.oppija.haku.domain.questions.CheckBox;
 import fi.vm.sade.oppija.haku.domain.questions.Radio;
 import fi.vm.sade.oppija.haku.domain.questions.TextArea;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
-import fi.vm.sade.oppija.haku.model.FormModel;
 import fi.vm.sade.oppija.haku.service.FormService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,7 +109,7 @@ public class FormController {
                                     @PathVariable final String categoryId) {
         logger.debug("getCategory {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId});
         final ModelAndView model = new ModelAndView("category");
-        model.addObject("formModel", new FormModel(formService.findCategories(applicationPeriodId, formId), categoryId));
+        // model.addObject("formModel", new FormModel(formService.findCategories(applicationPeriodId, formId), categoryId));
         return model;
     }
 
