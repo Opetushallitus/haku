@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.awt.*;
-import java.util.List;
 import java.util.Map;
 
 
@@ -94,12 +92,8 @@ public class FormController {
         logger.debug("getApplicationPeriod {}", applicationPeriodId);
         final Map<String, Object> data = formService.getApplicationPeriod(applicationPeriodId);
         final ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("form");
+        modelAndView.setViewName("applicationPeriod");
         modelAndView.addObject("data", data);
-        final Map<String, Object> form = (Map<String, Object>) data.get("form");
-        List<Map<String, Object>> categories = (List<Map<String, Object>>) form.get("categories");
-        modelAndView.addObject("categories", categories);
-        modelAndView.addObject("questions", categories.get(0).get("questions"));
         return modelAndView;
     }
 
@@ -115,11 +109,8 @@ public class FormController {
                                     @PathVariable final String formId,
                                     @PathVariable final String categoryId) {
         logger.debug("getCategory {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId});
-        final Map<String, Object> data = formService.findForm(applicationPeriodId, formId);
-        final List<Map<String, Object>> categories = (List<Map<String, Object>>) data.get("categories");
-
         final ModelAndView model = new ModelAndView("category");
-        model.addObject("formModel", new FormModel(categories, categoryId));
+        model.addObject("formModel", new FormModel(formService.findCategories(applicationPeriodId, formId), categoryId));
         return model;
     }
 

@@ -10,4 +10,8 @@ public class Category extends Titled {
     public Category(String id) {
         super(id);
     }
+
+    public Category(String id, String title) {
+        super(id, title);
+    }
 }

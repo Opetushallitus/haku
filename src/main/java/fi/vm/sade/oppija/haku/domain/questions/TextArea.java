@@ -11,4 +11,8 @@ public class TextArea extends Question {
     public TextArea(String id) {
         super(id);
     }
+
+    public TextArea(String id, String title) {
+        super(id, title);
+    }
 }

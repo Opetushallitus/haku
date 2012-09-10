@@ -1,6 +1,7 @@
 package fi.vm.sade.oppija.haku.domain;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -10,10 +11,10 @@ import java.util.Map;
  */
 public class ApplicationPeriod {
     private final String id;
-    Date starts;
-    Date end;
+    Date starts = new Date();
+    Date end = new Date();
 
-    Map<String, Form> forms;
+    final Map<String, Form> forms = new HashMap<String, Form>();
 
     public ApplicationPeriod(String id) {
         this.id = id;
@@ -40,5 +41,9 @@ public class ApplicationPeriod {
 
     public String getId() {
         return id;
+    }
+
+    public Map<String, Form> getForms() {
+        return forms;
     }
 }

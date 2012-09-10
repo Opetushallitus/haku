@@ -27,4 +27,8 @@ public class FormModel {
     public void addApplicationPeriod(ApplicationPeriod applicationPeriod) {
         applicationPerioidMap.put(applicationPeriod.getId(), applicationPeriod);
     }
+
+    public Map<String, ApplicationPeriod> getApplicationPerioidMap() {
+        return applicationPerioidMap;
+    }
 }

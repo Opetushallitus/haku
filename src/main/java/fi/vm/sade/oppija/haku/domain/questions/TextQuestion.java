@@ -11,4 +11,8 @@ public class TextQuestion extends Question {
     public TextQuestion(String id) {
         super(id);
     }
+
+    public TextQuestion(String id, String title) {
+        super(id, title);
+    }
 }

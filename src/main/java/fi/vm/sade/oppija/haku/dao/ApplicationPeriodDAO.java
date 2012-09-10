@@ -1,7 +1,6 @@
 package fi.vm.sade.oppija.haku.dao;
 
 
-import java.util.List;
 import java.util.Map;
 
 public interface ApplicationPeriodDAO {
@@ -10,7 +9,7 @@ public interface ApplicationPeriodDAO {
 
     Map<String, Object> find(String applicationPeriodId);
 
-    List findAll();
+    Map<String, Map<String, Object>> findAll();
 
     Map<String, Object> findForm(String applicationPeriod, String form);
 }

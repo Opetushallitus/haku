@@ -9,4 +9,8 @@ public abstract class Question extends Titled {
     public Question(String id) {
         super(id);
     }
+
+    protected Question(String id, String title) {
+        super(id, title);
+    }
 }

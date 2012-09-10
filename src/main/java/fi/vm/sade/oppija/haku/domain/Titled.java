@@ -17,6 +17,11 @@ public abstract class Titled extends Element {
         return title;
     }
 
+    protected Titled(String id, String title) {
+        super(id);
+        this.title = title;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }

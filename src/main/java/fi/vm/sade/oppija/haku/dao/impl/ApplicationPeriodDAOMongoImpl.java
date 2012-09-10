@@ -1,11 +1,12 @@
 package fi.vm.sade.oppija.haku.dao.impl;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.haku.dao.ApplicationPeriodDAO;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +27,15 @@ public class ApplicationPeriodDAOMongoImpl extends AbstractDAOMongoImpl implemen
     }
 
     @Override
-    public List findAll() {
-        return getCollection().find(new BasicDBObject()).toArray();
+    public Map<String, Map<String, Object>> findAll() {
+        final DBCursor dbObjects = getCollection().find();
+        final List<DBObject> dbObjects1 = dbObjects.toArray();
+        Map<String, Map<String, Object>> map = new HashMap<String, Map<String, Object>>();
+        for (DBObject dbObject : dbObjects1) {
+            final Map<String, Object> haku = toMap(dbObject);
+            map.put(haku.get("id").toString(), haku);
+        }
+        return map;
     }
 
     @Override
