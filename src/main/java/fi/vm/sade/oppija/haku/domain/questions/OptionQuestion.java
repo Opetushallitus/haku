@@ -9,7 +9,7 @@ public abstract class OptionQuestion extends Question {
 
     private final List<Option> options = new ArrayList<Option>();
 
-    protected OptionQuestion(@JsonProperty(value = "id") final String id, final String title, final String name) {
+    protected OptionQuestion(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title, @JsonProperty(value = "name") final String name) {
         super(id, title, name);
     }
 

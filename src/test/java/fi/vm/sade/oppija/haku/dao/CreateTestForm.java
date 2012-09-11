@@ -2,13 +2,8 @@ package fi.vm.sade.oppija.haku.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.haku.domain.*;
-import fi.vm.sade.oppija.haku.domain.builders.ApplicationPeriodBuilder;
-import fi.vm.sade.oppija.haku.domain.builders.ElementBuilder;
-import fi.vm.sade.oppija.haku.domain.builders.FormBuilder;
-import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
-import fi.vm.sade.oppija.haku.domain.questions.Question;
-import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,29 +48,21 @@ public class CreateTestForm {
     }
 
     private FormModel createForm() {
-        final Category cat1 = new Category("cat1", "kategoria1");
-        final Question question = new TextQuestion("id", "otsikko", "nimi");
-        question.setHelp("foo");
-        cat1.addChild(question);
-        final Element element = new ElementBuilder(cat1).build();
-        final Form form = new FormBuilder("1", "name").withChild(element).build();
-        final ApplicationPeriod applicationPeriod = new ApplicationPeriodBuilder("" + System.currentTimeMillis()).withForm(form).build();
-        return new FormModelBuilder().withApplicationPeriods(applicationPeriod).build();
+        return new FormModelDummyMemoryDaoImpl().getModel();
     }
 
 
     @Test
     public void testDeserialize() throws IOException {
-
         ObjectMapper mapper = new ObjectMapper();
         final FormModel form1 = createForm();
         final String id = form1.getApplicationPerioidMap().keySet().iterator().next();
         final FormModel formModel = mapper.readValue(serialize(form1), FormModel.class);
         final ApplicationPeriod activePeriodById = formModel.getApplicationPeriodById(id);
 
-        final Form formById = activePeriodById.getFormById("1");
+        final Form formById = activePeriodById.getForms().entrySet().iterator().next().getValue();
         formById.init();
-        final Category cat1 = formById.getCategory("cat1");
+        final Category cat1 = formById.getFirstCategory();
         final List<Element> children = cat1.getChildren();
         assertEquals(children.get(0).getHelp(), "foo");
     }

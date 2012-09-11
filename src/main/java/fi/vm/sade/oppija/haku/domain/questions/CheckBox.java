@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CheckBox extends OptionQuestion {
 
-    public CheckBox(@JsonProperty(value = "id") final String id, String title, String name) {
+    public CheckBox(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") String title, @JsonProperty(value = "name") String name) {
         super(id, title, name);
     }
 

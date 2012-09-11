@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @since 1.1
  */
 public class MultiSelect extends OptionQuestion {
-    public MultiSelect(@JsonProperty(value = "id") final String id, final String title, final String name) {
+    public MultiSelect(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title, @JsonProperty(value = "name") final String name) {
         super(id, title, name);
     }
 }

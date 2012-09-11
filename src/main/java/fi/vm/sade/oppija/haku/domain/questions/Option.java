@@ -13,7 +13,7 @@ public class Option extends Titled {
     private String value;
     private String title;
 
-    public Option(@JsonProperty(value = "id") String id, String value, String title) {
+    public Option(@JsonProperty(value = "id") String id, @JsonProperty(value = "value") String value, @JsonProperty(value = "title") String title) {
         super(id, title);
         this.value = value;
         this.title = title;
