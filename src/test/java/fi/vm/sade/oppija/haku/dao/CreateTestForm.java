@@ -71,7 +71,7 @@ public class CreateTestForm {
         final FormModel form1 = createForm();
         final String id = form1.getApplicationPerioidMap().keySet().iterator().next();
         final FormModel formModel = mapper.readValue(serialize(form1), FormModel.class);
-        final ApplicationPeriod activePeriodById = formModel.getActivePeriodById(id);
+        final ApplicationPeriod activePeriodById = formModel.getApplicationPeriodById(id);
 
         final Form formById = activePeriodById.getFormById("1");
         formById.init();

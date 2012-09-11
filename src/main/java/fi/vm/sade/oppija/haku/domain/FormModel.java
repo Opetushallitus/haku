@@ -2,7 +2,6 @@ package fi.vm.sade.oppija.haku.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,11 +27,8 @@ public class FormModel {
         this.applicationPerioidMap = applicationPeriods;
     }
 
-    public ApplicationPeriod getActivePeriodById(String id) {
-        final ApplicationPeriod applicationPeriod = applicationPerioidMap.get(id);
-        if (applicationPeriod == null) throw new ResourceNotFoundException("not found");
-        if (!applicationPeriod.isActive()) throw new ResourceNotFoundException("Not active");
-        return applicationPeriod;
+    public ApplicationPeriod getApplicationPeriodById(String id) {
+        return applicationPerioidMap.get(id);
     }
 
     public void addApplicationPeriod(ApplicationPeriod applicationPeriod) {

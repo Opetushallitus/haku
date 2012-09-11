@@ -1,11 +1,15 @@
 package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
-import junit.framework.TestCase;
+import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
+import org.junit.Test;
 
-public class FormControllerTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
 
+public class FormControllerTest {
+
+    @Test
     public void testGetForm() throws Exception {
         final String formId = "yhteishaku";
         final String firstCategoryId = "henkilotiedot";
@@ -14,20 +18,13 @@ public class FormControllerTest extends TestCase {
         String expected = "redirect:" + formId + "/" + firstCategoryId;
         assertEquals(expected, actual);
     }
+
+    @Test(expected = ResourceNotFoundException.class)
     public void testGetFormNotFound() throws Exception {
         final String formId = "yhteishaku";
         final String firstCategoryId = "henkilotiedot";
         FormController formController = new FormController(new FormModelDummyMemoryDaoImpl(formId, firstCategoryId));
-        String actual = formController.getForm("test", "väärä");
-        String expected = "redirect:" + formId + "/" + firstCategoryId;
-        assertEquals(expected, actual);
+        formController.getForm("test", "väärä");
     }
 
-    public void testGetCategory() throws Exception {
-
-    }
-
-    public void testSaveCategory() throws Exception {
-
-    }
 }

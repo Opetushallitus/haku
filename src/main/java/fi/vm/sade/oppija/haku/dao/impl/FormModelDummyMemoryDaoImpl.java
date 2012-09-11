@@ -2,6 +2,7 @@ package fi.vm.sade.oppija.haku.dao.impl;
 
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.*;
+import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.domain.questions.DropdownSelect;
 import fi.vm.sade.oppija.haku.domain.questions.Radio;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
@@ -9,7 +10,6 @@ import fi.vm.sade.oppija.haku.service.FormService;
 import org.springframework.stereotype.Service;
 
 @Service("FormModelDummyMemoryDao")
-
 public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     final ApplicationPeriod applicationPeriod;
@@ -123,11 +123,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         throw new RuntimeException("Insert not implemented");
     }
 
-    @Override
-    public void delete(FormModel formModel) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
     private Element createRequiredTextQuestion(final String id, final String name) {
         TextQuestion textQuestion = new TextQuestion(id, name, name);
         textQuestion.addAttribute("required", "required");
@@ -140,7 +135,26 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     @Override
-    public Form getActiveForm(String applicationPeriodId, String formId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public void delete(FormModel formModel) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    @Override
+    public Form getActiveForm(String applicationPeriodId, String formId) {
+        try {
+            return formModel.getApplicationPeriodById(applicationPeriodId).getFormById(formId);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("");
+        }
+    }
+
+    @Override
+    public Category getFirstCategory(String applicationPeriodId, String formId) {
+        try {
+            return this.getActiveForm(applicationPeriodId, formId).getFirstCategory();
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("");
+        }
+    }
+
 }
