@@ -2,6 +2,8 @@ package fi.vm.sade.oppija.haku.dao.impl;
 
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.*;
+import fi.vm.sade.oppija.haku.domain.questions.DropdownSelect;
+import fi.vm.sade.oppija.haku.domain.questions.Radio;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
 import org.springframework.stereotype.Service;
 
@@ -15,40 +17,94 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO {
         this.applicationPeriod = new ApplicationPeriod("test");
         formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
-        Category category1 = new Category("222", "Henkilötiedot");
-        Category category2 = new Category("223", "Koulutustausta");
-        Category category3 = new Category("224", "Hakutoiveet");
-        Category category4 = new Category("225", "Osaaminen");
+        Category henkilötiedot = new Category("henkilotiedot", "Henkilötiedot");
+        Category koulutustausta = new Category("koulutustausta", "Koulutustausta");
+        Category yhteenveto = new Category("yhteenveto", "yhteenveto");
+
         Form form = new Form("yhteishaku", "yhteishaku");
-        form.addChild(category1);
-        form.addChild(category2);
-        form.addChild(category3);
-        form.addChild(category4);
+        form.addChild(henkilötiedot);
+        form.addChild(koulutustausta);
+        form.addChild(yhteenveto);
         form.produceCategoryMap();
 
         applicationPeriod.addForm(form);
 
-        QuestionGroup questionGroup = new QuestionGroup("1", "Henkilötiedot");
-        category1.addChild(questionGroup);
-        category2.addChild(questionGroup);
-        category3.addChild(questionGroup);
-        category4.addChild(questionGroup);
+        QuestionGroup henkilötiedotRyhmä = new QuestionGroup("Henkilotiedot", "Henkilötiedot");
+        QuestionGroup koulutustaustaRyhmä = new QuestionGroup("Koulutustausta", "Koulutustausta");
+        QuestionGroup yhteenvetoRyhmä = new QuestionGroup("yhteenveto", "yhteenveto");
+        henkilötiedot.addChild(henkilötiedotRyhmä);
+        koulutustausta.addChild(koulutustaustaRyhmä);
+        yhteenveto.addChild(yhteenvetoRyhmä);
 
-        TextQuestion äidinkieli = new TextQuestion("15", "Äidinkieli", "Äidinkieli");
-        äidinkieli.setHelp("Minkä värinen on äitisi kieli?");
-        questionGroup.addChild(new TextQuestion("2", "Sukunimi", "Sukunimi"))
-                .addChild(createRequiredTextQuestion("3", "Etunimi"))
-                .addChild(new TextQuestion("4", "Kutsumanimi", "Kutsumanimi"))
-                .addChild(new TextQuestion("5", "Henkilötunnus", "Henkilötunnus"))
-                .addChild(new TextQuestion("6", "Sukupuoli", "Sukupuoli"))
-                .addChild(new TextQuestion("8", "Sähköposti", "Sähköposti"))
+        DropdownSelect äidinkieli = new DropdownSelect("äidinkieli", "Äidinkieli", "äidinkieli");
+        äidinkieli.addOption("Suomi", "Suomi");
+        äidinkieli.addOption("Ruotsi", "Ruotsi");
+        äidinkieli.addAttribute("placeholder", "Valitse Äidinkieli");
+        äidinkieli.addAttribute("required", "required");
+
+        DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", "Kansalaisuus", "kansalaisuus");
+        kansalaisuus.addOption("Suomi", "Suomi");
+        kansalaisuus.addOption("Ruotsi", "Ruotsi");
+        kansalaisuus.addAttribute("placeholder", "Valitse kansalaisuus");
+        kansalaisuus.addAttribute("required", "required");
+
+        DropdownSelect kotikunta = new DropdownSelect("kotikunta", "Kotikunta", "kotikunta");
+        kotikunta.addOption("Jalasjärvi", "Jalasjärvi");
+        kotikunta.addOption("Janakkala", "Janakkala");
+        kotikunta.addOption("Joensuu", "Joensuu");
+        kotikunta.addOption("Jokioinen", "Jokioinen");
+        kotikunta.addOption("Jomala", "Jomala");
+        kotikunta.addAttribute("placeholder", "Valitse kotikunta");
+        kotikunta.addAttribute("required", "required");
+
+        TextQuestion henkilötunnus = new TextQuestion("Henkilötunnus", "Henkilötunnus", "Henkilötunnus");
+        henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
+        henkilötunnus.addAttribute("title", "ppkkvv*****");
+        henkilötunnus.addAttribute("required", "required");
+        henkilötunnus.addAttribute("pattern", "[0-9]{6}.[0-9]{4}");
+        TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", "Kutsumanimi", "Kutsumanimi");
+        kutsumanimi.setHelp("Valitse kutsumanimeksi jokin virallisista etunimistäsi");
+        kutsumanimi.addAttribute("required", "required");
+        TextQuestion sähköposti = new TextQuestion("Sähköposti", "Sähköposti", "Sähköposti");
+        sähköposti.setHelp("Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti.");
+
+        Radio sukupuoli = new Radio("Sukupuoli", "Sukupuoli", "Sukupuoli");
+        sukupuoli.addOption("Nainen", "Nainen");
+        sukupuoli.addOption("Mies", "Mies");
+        sukupuoli.addAttribute("required", "required");
+
+        DropdownSelect asuinmaa = new DropdownSelect("Asuinmaa", "Asuinmaa", "Asuinmaa");
+        asuinmaa.addOption("Suomi", "Suomi");
+        asuinmaa.addOption("Ruotsi", "Ruotsi");
+        asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
+        asuinmaa.addAttribute("required", "required");
+        Element postinumero = createRequiredTextQuestion("Postinumero", "Postinumero");
+        postinumero.addAttribute("required", "required");
+        postinumero.addAttribute("pattern", "[0-9]{5}");
+        postinumero.addAttribute("title", "#####");
+        henkilötiedotRyhmä.addChild(createRequiredTextQuestion("Sukunimi", "Sukunimi"))
+                .addChild(createRequiredTextQuestion("Etunimet", "Etunimet"))
+                .addChild(kutsumanimi)
+                .addChild(henkilötunnus)
+                .addChild(sukupuoli)
+                .addChild(sähköposti)
                 .addChild(new TextQuestion("9", "Matkapuhelinnumero", "Matkapuhelinnumero"))
-                .addChild(new TextQuestion("10", "Asuinmaa", "Asuinmaa"))
-                .addChild(new TextQuestion("11", "Lähiosoite", "Lähiosoite"))
-                .addChild(new TextQuestion("12", "Postinumero", "Postinumero"))
-                .addChild(new TextQuestion("13", "Kotikunta", "Kotikunta"))
-                .addChild(new TextQuestion("14", "Kansalaisuus", "Kansalaisuus"))
+                .addChild(asuinmaa)
+                .addChild(createRequiredTextQuestion("Lähiosoite", "Lähiosoite"))
+                .addChild(postinumero)
+                .addChild(kotikunta)
+                .addChild(kansalaisuus)
                 .addChild(äidinkieli);
+
+        Radio voimassaoleva = new Radio("voimassaoleva", "Onko sinulla voimassa oleva tutkinnonsuoritusoikeus korkeakouluasteella?", "voimassaoleva");
+        voimassaoleva.addOption("Ei", "Ei ole");
+        voimassaoleva.addOption("Kyllä", "Kyllä seuraavaan tutkintoon");
+        voimassaoleva.addAttribute("required", "required");
+
+        koulutustaustaRyhmä.addChild(voimassaoleva);
+
+        yhteenvetoRyhmä.addChild(henkilötiedotRyhmä).addChild(koulutustaustaRyhmä);
+
     }
 
     @Override
