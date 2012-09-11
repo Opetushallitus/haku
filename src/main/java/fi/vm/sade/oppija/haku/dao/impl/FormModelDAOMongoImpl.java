@@ -5,8 +5,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.haku.service.FormModelHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Map;
 
@@ -15,6 +18,14 @@ import java.util.Map;
  */
 @Service("formModelDAOMongoImpl")
 public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormModelDAO {
+
+    @Autowired
+    FormModelHolder holder;
+
+    @PostConstruct
+    public void init() {
+        holder.updateModel(find());
+    }
 
     @Override
     public String getCollectionName() {
