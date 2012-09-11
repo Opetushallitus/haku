@@ -1,3 +1,15 @@
+
+/**************************
+ DEFAULT VARIABLES
+/**************************/
+$background-color: #eee;
+$border-color: #ccc;
+
+
+$default-border: 1px solid $border-color;
+
+
+
 /**************************
  MIXIN
 /**************************/
@@ -15,6 +27,8 @@ $grid-column-width: 6.25%;
 @mixin vertical-list {
 
     ul {
+    	
+    	padding-left: 0;
         list-style-type: none;
         clear: both;
         
@@ -27,6 +41,7 @@ $grid-column-width: 6.25%;
 @mixin horizontal-list {
 
     ul {
+
         list-style-type: none;
         clear: both;
         
@@ -76,17 +91,21 @@ $grid-column-width: 6.25%;
 	margin-top: 20px;
 }
 
+.column-content {
+	padding: 5px;
+	border: $default-border;
+}
+
 footer {
 	margin-top: 20px;
 	background: #eee;
-	border: 1px solid #ccc;
+	border: $default-border;
 }
 
 /**************************
  PAGE-NAVIGATION
 /**************************/
 #page-navigation {
-	border: 1px solid #ccc;
 
 	h3 {
 		margin: 0;
@@ -109,7 +128,7 @@ APPLICATION CONTENT
 /**************************/
 #hakuprosessi {
 
-	border: 1px solid #ccc;
+	border: $default-border;
 	background: #eee;
 
 	.application-navigation {
@@ -119,6 +138,14 @@ APPLICATION CONTENT
 			margin-right: 10px; 
 		}
 	}
+
+	.application-help {
+		border: $default-border;
+	}
+
+	.application-content {
+		margin-top: 20px;
+	}
 }
 
 /**************************
@@ -126,4 +153,26 @@ APPLICATION CONTENT
 /**************************/
 body {
 	font: 62.5%;
+}
+
+a {
+
+	text-decoration: none;
+	color: #00f;
+
+	&.disabled {
+		color: #888;
+	}
+
+	&:hover {
+		text-decoration: underline;
+	}
+
+	&:active {
+		text-decoration: underline;
+	}
+
+	&:visited {
+		text-decoration: underline;
+	}
 }
