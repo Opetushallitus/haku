@@ -5,10 +5,11 @@ import fi.vm.sade.oppija.haku.domain.*;
 import fi.vm.sade.oppija.haku.domain.questions.DropdownSelect;
 import fi.vm.sade.oppija.haku.domain.questions.Radio;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
+import fi.vm.sade.oppija.haku.service.FormService;
 import org.springframework.stereotype.Service;
 
 @Service("FormModelDummyMemoryDao")
-public class FormModelDummyMemoryDaoImpl implements FormModelDAO {
+public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     final ApplicationPeriod applicationPeriod;
     private FormModel formModel;
@@ -121,5 +122,10 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO {
         TextQuestion textQuestion = new TextQuestion(id, name, name);
         textQuestion.addAttribute("required", "required");
         return textQuestion;
+    }
+
+    @Override
+    public FormModel getModel() {
+        return formModel;
     }
 }
