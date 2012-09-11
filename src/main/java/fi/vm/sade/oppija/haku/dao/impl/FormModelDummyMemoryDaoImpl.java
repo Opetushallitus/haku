@@ -3,9 +3,7 @@ package fi.vm.sade.oppija.haku.dao.impl;
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.*;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.haku.domain.questions.DropdownSelect;
-import fi.vm.sade.oppija.haku.domain.questions.Radio;
-import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
+import fi.vm.sade.oppija.haku.domain.questions.*;
 import fi.vm.sade.oppija.haku.service.FormService;
 import org.springframework.stereotype.Service;
 
@@ -107,7 +105,14 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         voimassaoleva.addOption("Kyllä", "Kyllä seuraavaan tutkintoon");
         voimassaoleva.addAttribute("required", "required");
 
+        CheckBox checkBox = new CheckBox("tausta", "Merkitse, josta väitä vastaa koulutustaustaasi.", "tausta");
+        checkBox.addOption("korkeakoulu_avoin", "Olen suorittanyt korkeakoulun edellyttämät avoimen korkeakoulun opinnot.");
+        checkBox.addOption("korkeakoulu_muu", "Minulla on muu korkeakoulu kelpoisuus");
         koulutustaustaRyhmä.addChild(voimassaoleva);
+        koulutustaustaRyhmä.addChild(checkBox);
+
+        TextArea textArea = new TextArea("vapaa", "Kerro miksi haet juuri meille", "name");
+        koulutustaustaRyhmä.addChild(textArea);
 
         yhteenvetoRyhmä.addChild(henkilötiedotRyhmä).addChild(koulutustaustaRyhmä);
 
