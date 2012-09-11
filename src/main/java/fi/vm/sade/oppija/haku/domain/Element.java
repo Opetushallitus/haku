@@ -1,5 +1,10 @@
 package fi.vm.sade.oppija.haku.domain;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,16 +15,20 @@ import java.util.Set;
  * @version 9/7/1210:29 AM}
  * @since 1.1
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public abstract class Element {
 
     final String id;
-    final String type = this.getClass().getSimpleName();
+
+    transient String type = this.getClass().getSimpleName();
+
     String help = "";
 
     final List<Element> children = new ArrayList<Element>();
     final Set<Attribute> attributes = new HashSet<Attribute>();
 
-    protected Element(String id) {
+
+    protected Element(@JsonProperty String id) {
         this.id = id;
     }
 
@@ -27,6 +36,7 @@ public abstract class Element {
         return id;
     }
 
+    @JsonIgnore
     public String getType() {
         return type;
     }
@@ -56,6 +66,7 @@ public abstract class Element {
         this.attributes.add(new Attribute(key, value));
     }
 
+    @JsonIgnore
     public String getAttributeString() {
         StringBuilder attrStr = new StringBuilder();
         for (Attribute attribute : attributes) {

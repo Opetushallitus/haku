@@ -31,7 +31,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         form.addChild(henkilötiedot);
         form.addChild(koulutustausta);
         form.addChild(yhteenveto);
-        form.produceCategoryMap();
+        form.init();
 
         applicationPeriod.addForm(form);
 
@@ -123,6 +123,11 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         throw new RuntimeException("Insert not implemented");
     }
 
+    @Override
+    public void delete(FormModel formModel) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     private Element createRequiredTextQuestion(final String id, final String name) {
         TextQuestion textQuestion = new TextQuestion(id, name, name);
         textQuestion.addAttribute("required", "required");
@@ -132,5 +137,10 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     @Override
     public FormModel getModel() {
         return formModel;
+    }
+
+    @Override
+    public Form getActiveForm(String applicationPeriodId, String formId) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

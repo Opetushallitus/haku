@@ -1,6 +1,7 @@
 package fi.vm.sade.oppija.haku.domain.questions;
 
-import fi.vm.sade.oppija.haku.domain.Question;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 /**
  * @author jukka
@@ -9,7 +10,7 @@ import fi.vm.sade.oppija.haku.domain.Question;
  */
 public class TextArea extends Question {
 
-    public TextArea(final String id, final String title, final String name) {
+    public TextArea(@JsonProperty(value = "id") final String id, final String title, final String name) {
         super(id, title, name);
     }
 }

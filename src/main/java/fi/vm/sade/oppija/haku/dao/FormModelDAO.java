@@ -10,4 +10,6 @@ public interface FormModelDAO {
     FormModel find();
 
     void insert(FormModel formModel);
+
+    void delete(FormModel formModel);
 }

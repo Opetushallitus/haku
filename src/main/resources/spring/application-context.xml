@@ -17,7 +17,7 @@
     <mvc:annotation-driven/>
 
     <context:annotation-config/>
-    <context:component-scan base-package="fi.vm.sade.oppija"/>
+    <context:component-scan base-package="fi.vm.sade"/>
 
 
     <bean id="mongo" class="com.mongodb.Mongo">

@@ -23,7 +23,7 @@ public class FormBuilder extends ElementBuilder {
 
     public Form build() {
         final Form form = (Form) element;
-        form.produceCategoryMap();
+        form.init();
         return form;
     }
 }

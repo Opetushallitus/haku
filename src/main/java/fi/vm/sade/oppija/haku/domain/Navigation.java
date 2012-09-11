@@ -1,5 +1,7 @@
 package fi.vm.sade.oppija.haku.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author jukka
  * @version 9/7/1210:50 AM}
@@ -7,7 +9,7 @@ package fi.vm.sade.oppija.haku.domain;
  */
 public class Navigation extends Element {
 
-    public Navigation(String id) {
+    public Navigation(@JsonProperty(value = "id") String id) {
         super(id);
     }
 

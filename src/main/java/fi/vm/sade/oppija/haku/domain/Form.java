@@ -1,5 +1,8 @@
 package fi.vm.sade.oppija.haku.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,20 +13,18 @@ import java.util.Map;
  */
 public class Form extends Titled {
 
-    private Navigation navigation = new Navigation("top");
-    private String firstCategoryId;
+    private transient Navigation navigation = new Navigation("top");
+
+    private transient String firstCategoryId;
+
     final transient Map<String, Category> categories = new HashMap<String, Category>();
 
-    public Form(final String id, final String title) {
+    public Form(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
     }
 
     public Category getCategory(String categoryId) {
         return categories.get(categoryId);
-    }
-
-    public Category getFirstCategory() {
-        return categories.get(firstCategoryId);
     }
 
     private void addCategory(Category category, Category prev) {
@@ -32,7 +33,7 @@ public class Form extends Titled {
         navigation.addChild(category.asLink());
     }
 
-    public void produceCategoryMap() {
+    public void init() {
         Category prev = null;
         for (Element child : children) {
             if (child instanceof Category) {
@@ -46,7 +47,13 @@ public class Form extends Titled {
         }
     }
 
+    @JsonIgnore
     public Navigation getNavigation() {
         return navigation;
+    }
+
+    @JsonIgnore
+    public Category getFirstCategory() {
+        return getCategory(firstCategoryId);
     }
 }

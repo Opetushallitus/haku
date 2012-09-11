@@ -1,6 +1,6 @@
 package fi.vm.sade.oppija.haku.domain.questions;
 
-import fi.vm.sade.oppija.haku.domain.Question;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author jukka
@@ -9,7 +9,7 @@ import fi.vm.sade.oppija.haku.domain.Question;
  */
 public class TextQuestion extends Question {
 
-    public TextQuestion(final String id, final String title, final String name) {
+    public TextQuestion(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title, @JsonProperty(value = "name") final String name) {
         super(id, title, name);
     }
 }
