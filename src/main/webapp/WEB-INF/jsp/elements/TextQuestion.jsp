@@ -4,4 +4,5 @@
 
 <input type="text" id="${element.id}" ${element.attributeString}/>
 
-<div>${element.help}</div>
+<div>${element.help}</div> 
+<!-- <span class="help">${element.help}</span> -->

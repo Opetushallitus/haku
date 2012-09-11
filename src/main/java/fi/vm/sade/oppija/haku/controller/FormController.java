@@ -39,7 +39,7 @@ public class FormController {
                                     @PathVariable final String categoryId) {
         logger.debug("getCategory {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        final ModelAndView modelAndView = new ModelAndView("form");
+        final ModelAndView modelAndView = new ModelAndView("default");
         modelAndView.addObject("category", activeForm.getCategory(categoryId));
         modelAndView.addObject("form", activeForm);
         return modelAndView;
