@@ -58,13 +58,17 @@ public class CreateTestForm {
         final FormModel form1 = createForm();
         final String id = form1.getApplicationPerioidMap().keySet().iterator().next();
         final FormModel formModel = mapper.readValue(serialize(form1), FormModel.class);
+        final List<Element> children = getCategoryChilds(id, formModel);
+        assertEquals(children.get(0).getId(), getCategoryChilds(id, form1).get(0).getId());
+    }
+
+    private List<Element> getCategoryChilds(String id, FormModel formModel) {
         final ApplicationPeriod activePeriodById = formModel.getApplicationPeriodById(id);
 
         final Form formById = activePeriodById.getForms().entrySet().iterator().next().getValue();
         formById.init();
         final Category cat1 = formById.getFirstCategory();
-        final List<Element> children = cat1.getChildren();
-        assertEquals(children.get(0).getHelp(), "foo");
+        return cat1.getChildren();
     }
 
     @Test
