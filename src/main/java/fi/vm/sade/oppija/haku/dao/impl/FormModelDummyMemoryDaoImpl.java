@@ -9,20 +9,25 @@ import fi.vm.sade.oppija.haku.service.FormService;
 import org.springframework.stereotype.Service;
 
 @Service("FormModelDummyMemoryDao")
+
 public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     final ApplicationPeriod applicationPeriod;
     private FormModel formModel;
 
     public FormModelDummyMemoryDaoImpl() {
+        this("yhteishaku", "henkilotiedot");
+    }
+
+    public FormModelDummyMemoryDaoImpl(final String formId, final String firstCategoryId) {
         this.applicationPeriod = new ApplicationPeriod("test");
         formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
-        Category henkilötiedot = new Category("henkilotiedot", "Henkilötiedot");
+        Category henkilötiedot = new Category(firstCategoryId, "Henkilötiedot");
         Category koulutustausta = new Category("koulutustausta", "Koulutustausta");
         Category yhteenveto = new Category("yhteenveto", "yhteenveto");
 
-        Form form = new Form("yhteishaku", "yhteishaku");
+        Form form = new Form(formId, "yhteishaku");
         form.addChild(henkilötiedot);
         form.addChild(koulutustausta);
         form.addChild(yhteenveto);

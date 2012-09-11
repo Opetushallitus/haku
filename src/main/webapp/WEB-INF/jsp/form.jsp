@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="/haku/resources/css/styles.css" type="text/css">
-        <title>${form.title}</title>
+        <title>${form.title} - ${category.title}</title>
     </head>
     <body>
 

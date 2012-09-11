@@ -2,6 +2,6 @@
 
 <label for="${element.id}">${element.title}</label>
 
-<input type="text" id="${element.id}" ${link.attributeString}"/>
+<input type="text" id="${element.id}" ${element.attributeString}/>
 
 <div>${element.help}</div>
