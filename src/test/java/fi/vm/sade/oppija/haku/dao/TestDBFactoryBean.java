@@ -10,11 +10,11 @@ public class TestDBFactoryBean extends DBFactoryBean {
 
     @Override
     public void shutDown() {
-//        try {
-//            getObject().dropDatabase();
-//        } catch (Exception e) {
-//            logger.warn("Could not drop test database.");
-//        }
+        try {
+            getObject().dropDatabase();
+        } catch (Exception e) {
+            logger.warn("Could not drop test database.");
+        }
 
         mongo.close();
     }
