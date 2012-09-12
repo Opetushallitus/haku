@@ -6,6 +6,8 @@ import com.mongodb.DBObject;
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.service.FormModelHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +21,19 @@ import java.util.Map;
 @Service("formModelDAOMongoImpl")
 public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormModelDAO {
 
+    private final static Logger log = LoggerFactory.getLogger(FormModelDAOMongoImpl.class);
+
     @Autowired
     FormModelHolder holder;
 
     @PostConstruct
-    public void init() {
-        holder.updateModel(find());
+    public void init() throws Exception {
+        super.init();
+        try {
+            holder.updateModel(find());
+        } catch (Exception ignored) {
+            log.warn("No model found ! ");
+        }
     }
 
     @Override

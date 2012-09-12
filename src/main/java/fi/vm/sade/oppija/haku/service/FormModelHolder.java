@@ -22,6 +22,11 @@ public class FormModelHolder {
         return formModel;
     }
 
+    /**
+     * this must be triggered when model changes!
+     *
+     * @param model new model
+     */
     public synchronized void updateModel(FormModel model) {
         this.formModel = model;
 

@@ -3,20 +3,13 @@ package fi.vm.sade.oppija.haku.dao;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
+import fi.vm.sade.oppija.haku.tools.FileHandling;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 
 /**
- *
  * Abstract base class for DAO tests.
  * Runs common initialization and tear down tasks like test data insertion
  * and deletion.
@@ -32,28 +25,7 @@ public abstract class AbstractDAOTest {
 
     @BeforeClass
     public static void readTestData() {
-        StringBuffer buffer = new StringBuffer();
-
-        try {
-            Resource testDataResource = new ClassPathResource("test-data.json");
-
-            BufferedReader reader = new BufferedReader(new FileReader(testDataResource.getFile()));
-
-            String newLine = reader.readLine();
-
-            while (newLine != null) {
-
-                buffer.append(newLine);
-                newLine = reader.readLine();
-            }
-
-            reader.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        StringBuilder buffer = FileHandling.readStreamFromFile("test-data.json");
 
         testDataObject = (DBObject) JSON.parse(buffer.toString());
     }
