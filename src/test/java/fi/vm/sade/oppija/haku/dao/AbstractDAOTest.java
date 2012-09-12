@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 /**
  * Abstract base class for DAO tests.
  * Runs common initialization and tear down tasks like test data insertion
@@ -25,7 +26,8 @@ public abstract class AbstractDAOTest {
 
     @BeforeClass
     public static void readTestData() {
-        StringBuilder buffer = new FileHandling().readStreamFromFile("test-data.json");
+
+        StringBuilder buffer = new FileHandling().readFile(ClassLoader.getSystemResourceAsStream("test-data.json"));
 
         testDataObject = (DBObject) JSON.parse(buffer.toString());
     }
