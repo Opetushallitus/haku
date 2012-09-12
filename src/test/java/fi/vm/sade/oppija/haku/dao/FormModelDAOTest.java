@@ -27,7 +27,7 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
-public class FormModelDAOTest {
+public class FormModelDAOTest extends AbstractDAOTest {
 
     @Autowired
     @Qualifier("formModelDAOMongoImpl")
@@ -80,7 +80,6 @@ public class FormModelDAOTest {
         final String id = getPeriodId(form);
         final String id1 = getPeriodId(formModel);
         assertEquals(id, id1);
-        formModelDAO.delete(formModel);
     }
 
     private String getPeriodId(FormModel form) {
