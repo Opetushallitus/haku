@@ -1,4 +1,6 @@
-package fi.vm.sade.oppija.haku.domain;
+package fi.vm.sade.oppija.haku.domain.elements;
+
+import fi.vm.sade.oppija.haku.domain.Attribute;
 
 /**
  * @author jukka

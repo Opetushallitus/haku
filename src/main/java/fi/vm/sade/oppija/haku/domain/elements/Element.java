@@ -1,9 +1,10 @@
-package fi.vm.sade.oppija.haku.domain;
+package fi.vm.sade.oppija.haku.domain.elements;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import fi.vm.sade.oppija.haku.domain.Attribute;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,8 +25,8 @@ public abstract class Element {
 
     String help = "";
 
-    final List<Element> children = new ArrayList<Element>();
-    final Set<Attribute> attributes = new HashSet<Attribute>();
+    protected final List<Element> children = new ArrayList<Element>();
+    protected final Set<Attribute> attributes = new HashSet<Attribute>();
 
 
     protected Element(@JsonProperty String id) {
@@ -70,9 +71,9 @@ public abstract class Element {
     public String getAttributeString() {
         StringBuilder attrStr = new StringBuilder();
         for (Attribute attribute : attributes) {
-            attrStr.append(attribute.key);
+            attrStr.append(attribute.getKey());
             attrStr.append("=\"");
-            attrStr.append(attribute.value);
+            attrStr.append(attribute.getValue());
             attrStr.append("\"");
         }
         return attrStr.toString();

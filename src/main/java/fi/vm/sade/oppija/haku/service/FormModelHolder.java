@@ -1,8 +1,8 @@
 package fi.vm.sade.oppija.haku.service;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.haku.domain.Form;
 import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.haku.domain.elements.Form;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

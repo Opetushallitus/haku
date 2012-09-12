@@ -1,7 +1,7 @@
 package fi.vm.sade.oppija.haku.domain.questions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.vm.sade.oppija.haku.domain.Titled;
+import fi.vm.sade.oppija.haku.domain.elements.Titled;
 
 /**
  * @author jukka

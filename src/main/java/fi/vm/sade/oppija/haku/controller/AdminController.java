@@ -1,7 +1,7 @@
 package fi.vm.sade.oppija.haku.controller;
 
-import fi.vm.sade.oppija.haku.domain.Attachment;
 import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.haku.domain.elements.Attachment;
 import fi.vm.sade.oppija.haku.service.AdminService;
 import fi.vm.sade.oppija.haku.service.FormModelHolder;
 import org.springframework.beans.factory.annotation.Autowired;

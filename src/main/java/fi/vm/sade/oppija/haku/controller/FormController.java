@@ -1,7 +1,7 @@
 package fi.vm.sade.oppija.haku.controller;
 
-import fi.vm.sade.oppija.haku.domain.Category;
-import fi.vm.sade.oppija.haku.domain.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.FormService;
 import org.slf4j.Logger;

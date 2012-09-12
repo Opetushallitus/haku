@@ -1,7 +1,7 @@
 package fi.vm.sade.oppija.haku.domain.builders;
 
-import fi.vm.sade.oppija.haku.domain.Element;
-import fi.vm.sade.oppija.haku.domain.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Element;
+import fi.vm.sade.oppija.haku.domain.elements.Form;
 
 
 /**

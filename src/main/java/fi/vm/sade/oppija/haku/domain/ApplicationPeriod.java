@@ -1,6 +1,8 @@
 package fi.vm.sade.oppija.haku.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Form;
 
 import java.util.Calendar;
 import java.util.Date;

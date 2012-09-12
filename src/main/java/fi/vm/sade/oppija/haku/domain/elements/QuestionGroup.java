@@ -1,4 +1,4 @@
-package fi.vm.sade.oppija.haku.domain;
+package fi.vm.sade.oppija.haku.domain.elements;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,8 +1,8 @@
 package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.haku.domain.Category;
-import fi.vm.sade.oppija.haku.domain.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;

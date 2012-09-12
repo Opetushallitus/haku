@@ -1,7 +1,7 @@
 package fi.vm.sade.oppija.haku.domain.builders;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.haku.domain.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Form;
 
 /**
  * @author jukka

@@ -1,7 +1,12 @@
 package fi.vm.sade.oppija.haku.dao.impl;
 
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
-import fi.vm.sade.oppija.haku.domain.*;
+import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Element;
+import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.domain.elements.QuestionGroup;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.domain.questions.*;
 import fi.vm.sade.oppija.haku.service.FormService;
