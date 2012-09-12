@@ -50,7 +50,7 @@ public class CommandLineTooling {
             System.err.println("Export destination must be a directory");
             System.exit(1);
         }
-        final DBCursor dbObjects = getService().getCollection().find();
+        final DBCursor dbObjects = getService().getAll();
         for (DBObject dbObject : dbObjects) {
             final String contentAsString = JSON.serialize(dbObject);
             final String filename = createFilename(file, dbObject);

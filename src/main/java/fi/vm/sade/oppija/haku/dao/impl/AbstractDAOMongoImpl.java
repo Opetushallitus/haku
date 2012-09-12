@@ -14,14 +14,14 @@ public abstract class AbstractDAOMongoImpl {
     protected DB db;
 
     @PostConstruct
-    public void init() throws Exception {
+    protected void init() throws Exception {
         this.db = factoryBean.getObject();
     }
 
-    public DBCollection getCollection() {
+    protected DBCollection getCollection() {
         return db.getCollection(getCollectionName());
     }
 
-    public abstract String getCollectionName();
+    protected abstract String getCollectionName();
 
 }

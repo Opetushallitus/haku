@@ -1,10 +1,11 @@
 package fi.vm.sade.oppija.haku.dao.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.haku.converter.FormModelToBasicDBObject;
+import fi.vm.sade.oppija.haku.converter.MapToFormModelConverter;
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.service.FormModelHolder;
@@ -26,7 +27,8 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
     @Autowired
     FormModelHolder holder;
 
-    private FormModelToBasicDBObject converter;
+    private final FormModelToBasicDBObject toDbObject = new FormModelToBasicDBObject();
+    private final MapToFormModelConverter mapToFormModelConverter = new MapToFormModelConverter();
 
     @PostConstruct
     public void init() throws Exception {
@@ -46,16 +48,13 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
     @Override
     public FormModel find() {
         final DBObject one = getCollection().findOne();
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(one.toMap(), FormModel.class);
+        return mapToFormModelConverter.convert(one.toMap());
     }
 
     @Override
     public void insert(FormModel formModel) {
-        converter = new FormModelToBasicDBObject();
-        final BasicDBObject basicDBObject = converter.convert(formModel);
+        final BasicDBObject basicDBObject = toDbObject.convert(formModel);
         getCollection().insert(basicDBObject);
-
     }
 
 
@@ -71,7 +70,11 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
 
     @Override
     public void delete(FormModel formModel) {
-        final BasicDBObject basicDBObject = converter.convert(formModel);
+        final BasicDBObject basicDBObject = toDbObject.convert(formModel);
         getCollection().remove(basicDBObject);
+    }
+
+    public DBCursor getAll() {
+        return getCollection().find();
     }
 }

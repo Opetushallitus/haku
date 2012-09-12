@@ -1,11 +1,9 @@
 package fi.vm.sade.oppija.haku.converter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import org.springframework.core.convert.converter.Converter;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -16,19 +14,13 @@ import java.util.Map;
 
 public class FormModelToBasicDBObject implements Converter<FormModel, BasicDBObject> {
 
+    private final FormModelToMapConverter formModelToMapConverter = new FormModelToMapConverter();
+
     @Override
     public BasicDBObject convert(FormModel formModel) {
-        try {
-            Map formModelMap = serialize(formModel, Map.class);
-            return new BasicDBObject(formModelMap);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Map formModelMap = formModelToMapConverter.convert(formModel);
+        return new BasicDBObject(formModelMap);
     }
 
-    private Map serialize(FormModel model, Class<Map> dbObjectClass) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(model, dbObjectClass);
-    }
 
 }
