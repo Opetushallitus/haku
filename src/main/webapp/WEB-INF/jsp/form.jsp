@@ -3,6 +3,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
+        <META http-equiv="Content-Type" content="text/html;charset=UTF-8">
         <meta charset="utf-8" />
         <link rel="stylesheet" href="/haku/resources/css/styles.css" type="text/css">
         <title>${form.title} - ${category.title}</title>
@@ -14,7 +15,7 @@
                  <a ${link.attributeString}>${link.value}</a>&nbsp;
             </c:forEach>
         </div>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div>
 
                 <c:forEach var="child" items="${category.children}">
