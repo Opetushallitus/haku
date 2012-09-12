@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 /**
  * @author jukka
@@ -39,19 +40,6 @@ public class FormModelDAOTest extends AbstractDAOTest {
         System.out.println(serialize(model));
     }
 
-    private String serialize(FormModel model) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        final StringWriter w = new StringWriter();
-        mapper.writeValue(w, model);
-        return w.toString();
-    }
-
-    private FormModel createForm() {
-        return new FormModelDummyMemoryDaoImpl().getModel();
-    }
-
-
     @Test
     public void testDeserialize() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -60,15 +48,6 @@ public class FormModelDAOTest extends AbstractDAOTest {
         final FormModel formModel = mapper.readValue(serialize(form1), FormModel.class);
         final List<Element> children = getCategoryChilds(id, formModel);
         assertEquals(children.get(0).getId(), getCategoryChilds(id, form1).get(0).getId());
-    }
-
-    private List<Element> getCategoryChilds(String id, FormModel formModel) {
-        final ApplicationPeriod activePeriodById = formModel.getApplicationPeriodById(id);
-
-        final Form formById = activePeriodById.getForms().entrySet().iterator().next().getValue();
-        formById.init();
-        final Category cat1 = formById.getFirstCategory();
-        return cat1.getChildren();
     }
 
     @Test
@@ -82,10 +61,40 @@ public class FormModelDAOTest extends AbstractDAOTest {
         assertEquals(id, id1);
     }
 
+    @Test
+    public void testFind() {
+        FormModel formModel = formModelDAO.find();
+        assertNotNull("Could not retrieve FormModel", formModel);
+        assertNotNull("Found FormModel does not include an application period map", formModel.getApplicationPerioidMap());
+        assertEquals("Found incorrect amount of forms", 1, formModel.getApplicationPerioidMap().get("test").getForms().size());
+
+    }
+
+    private String serialize(FormModel model) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        final StringWriter w = new StringWriter();
+        mapper.writeValue(w, model);
+        return w.toString();
+    }
+
+    private FormModel createForm() {
+        return new FormModelDummyMemoryDaoImpl().getModel();
+    }
+
+
+    private List<Element> getCategoryChilds(String id, FormModel formModel) {
+        final ApplicationPeriod activePeriodById = formModel.getApplicationPeriodById(id);
+
+        final Form formById = activePeriodById.getForms().entrySet().iterator().next().getValue();
+        formById.init();
+        final Category cat1 = formById.getFirstCategory();
+        return cat1.getChildren();
+    }
+
     private String getPeriodId(FormModel form) {
         final Map<String, ApplicationPeriod> applicationPerioidMap = form.getApplicationPerioidMap();
         final ApplicationPeriod applicationPeriod = applicationPerioidMap.entrySet().iterator().next().getValue();
         return applicationPeriod.getId();
     }
-
 }
