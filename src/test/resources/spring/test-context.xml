@@ -13,7 +13,7 @@
 
     <bean id="db" class="fi.vm.sade.oppija.haku.dao.TestDBFactoryBean">
         <property name="mongo" ref="mongo"/>
-        <property name="name" value="hakulomake-test-db"/>
+        <property name="name" value="${mongo.test-db.name}"/>
     </bean>
 
 </beans>
