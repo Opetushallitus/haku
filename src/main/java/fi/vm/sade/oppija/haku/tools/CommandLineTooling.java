@@ -83,8 +83,8 @@ public class CommandLineTooling {
         final StringBuilder stringBuilder = new FileHandling().readStreamFromFile(filename);
         final String s = stringBuilder.toString();
         log.info("inserting file " + filename);
-        log.debug("with content " + s);
-        formModelDAOMongoImpl.getCollection().insert((DBObject) JSON.parse(s));
+        formModelDAOMongoImpl.insertModelAsJsonString(stringBuilder);
+
         log.info("done");
     }
 

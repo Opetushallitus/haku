@@ -128,6 +128,11 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         throw new RuntimeException("Insert not implemented");
     }
 
+    @Override
+    public void insertModelAsJsonString(StringBuilder builder) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     private Element createRequiredTextQuestion(final String id, final String name) {
         TextQuestion textQuestion = new TextQuestion(id, name, name);
         textQuestion.addAttribute("required", "required");

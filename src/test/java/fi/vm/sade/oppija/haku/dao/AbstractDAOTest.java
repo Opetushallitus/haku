@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 /**
  * Abstract base class for DAO tests.
  * Runs common initialization and tear down tasks like test data insertion

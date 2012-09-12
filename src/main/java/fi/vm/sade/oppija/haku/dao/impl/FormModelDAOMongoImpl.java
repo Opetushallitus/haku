@@ -3,6 +3,8 @@ package fi.vm.sade.oppija.haku.dao.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
+import fi.vm.sade.oppija.haku.converter.FormModelToBasicDBObject;
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.service.FormModelHolder;
@@ -12,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author hannu
@@ -25,6 +25,8 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
 
     @Autowired
     FormModelHolder holder;
+
+    private FormModelToBasicDBObject converter;
 
     @PostConstruct
     public void init() throws Exception {
@@ -48,31 +50,28 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
         return mapper.convertValue(one.toMap(), FormModel.class);
     }
 
-    private Map serialize(FormModel model, Class<Map> dbObjectClass) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(model, dbObjectClass);
-    }
-
-
     @Override
     public void insert(FormModel formModel) {
-        final BasicDBObject basicDBObject = toBasicDbObject(formModel);
+        converter = new FormModelToBasicDBObject();
+        final BasicDBObject basicDBObject = converter.convert(formModel);
         getCollection().insert(basicDBObject);
 
     }
 
-    private BasicDBObject toBasicDbObject(FormModel formModel) {
-        try {
-            Map formModelMap = serialize(formModel, Map.class);
-            return new BasicDBObject(formModelMap);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+    @Override
+    public void insertModelAsJsonString(StringBuilder builder) {
+        getCollection().drop();
+        final String json = builder.toString();
+        log.debug("with content " + json);
+        getCollection().insert((DBObject) JSON.parse(json));
+        holder.updateModel(find());
     }
+
 
     @Override
     public void delete(FormModel formModel) {
-        final BasicDBObject o = toBasicDbObject(formModel);
-        getCollection().remove(o);
+        final BasicDBObject basicDBObject = converter.convert(formModel);
+        getCollection().remove(basicDBObject);
     }
 }
