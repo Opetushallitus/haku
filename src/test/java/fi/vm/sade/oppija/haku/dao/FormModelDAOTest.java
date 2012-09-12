@@ -27,7 +27,7 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
-public class CreateTestForm {
+public class FormModelDAOTest {
 
     @Autowired
     @Qualifier("formModelDAOMongoImpl")
