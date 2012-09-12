@@ -149,7 +149,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         try {
             return formModel.getApplicationPeriodById(applicationPeriodId).getFormById(formId);
         } catch (Exception e) {
-            throw new ResourceNotFoundException("");
+            throw new ResourceNotFoundException("Not found");
         }
     }
 
@@ -158,7 +158,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         try {
             return this.getActiveForm(applicationPeriodId, formId).getFirstCategory();
         } catch (Exception e) {
-            throw new ResourceNotFoundException("");
+            throw new ResourceNotFoundException("Not found");
         }
     }
 

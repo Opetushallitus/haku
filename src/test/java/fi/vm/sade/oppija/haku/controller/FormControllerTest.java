@@ -1,30 +1,84 @@
 package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
+import fi.vm.sade.oppija.haku.domain.Category;
+import fi.vm.sade.oppija.haku.domain.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.web.servlet.ModelAndView;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 
 public class FormControllerTest {
 
+    private final String applicationPeriodId = "test";
+    private final String formId = "yhteishaku";
+    private final String firstCategoryId = "henkilotiedot";
+    private FormController formController;
+
+
+    @Before
+    public void setUp() throws Exception {
+        this.formController = new FormController(new FormModelDummyMemoryDaoImpl(formId, firstCategoryId));
+    }
+
     @Test
-    public void testGetForm() throws Exception {
-        final String formId = "yhteishaku";
-        final String firstCategoryId = "henkilotiedot";
-        FormController formController = new FormController(new FormModelDummyMemoryDaoImpl(formId, firstCategoryId));
-        String actual = formController.getForm("test", formId);
+    public void testGetFormAndRedirectToFirstCategory() throws Exception {
+        String actual = formController.getFormAndRedirectToFirstCategory("test", formId);
         String expected = "redirect:" + formId + "/" + firstCategoryId;
         assertEquals(expected, actual);
     }
 
     @Test(expected = ResourceNotFoundException.class)
-    public void testGetFormNotFound() throws Exception {
-        final String formId = "yhteishaku";
-        final String firstCategoryId = "henkilotiedot";
-        FormController formController = new FormController(new FormModelDummyMemoryDaoImpl(formId, firstCategoryId));
-        formController.getForm("test", "väärä");
+    public void testGetFormAndRedirectToFirstCategoryNotFound() throws Exception {
+        formController.getFormAndRedirectToFirstCategory(applicationPeriodId, "väärä");
     }
 
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetFormAndRedirectToFirstCategoryNullFromId() throws Exception {
+        formController.getFormAndRedirectToFirstCategory(applicationPeriodId, null);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetFormAndRedirectToFirstCategoryNullApplicationId() throws Exception {
+        formController.getFormAndRedirectToFirstCategory(null, formId);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetFormAndRedirectToFirstCategoryNullApplicationIdAndFormId() throws Exception {
+        formController.getFormAndRedirectToFirstCategory(null, null);
+    }
+
+    @Test
+    public void testGetCategoryMVCategory() throws Exception {
+        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
+        assertEquals(firstCategoryId, ((Category) actualModelAndView.getModel().get("category")).getId());
+    }
+
+    @Test
+    public void testGetCategoryMVForm() throws Exception {
+        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
+        assertEquals(formId, ((Form) actualModelAndView.getModel().get("form")).getId());
+    }
+
+    @Test
+    public void testGetCategoryModelSize() throws Exception {
+        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
+        assertEquals(2, actualModelAndView.getModel().size());
+    }
+
+    @Test
+    public void testGetCategoryView() throws Exception {
+        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
+        assertEquals(FormController.DEFAULT_VIEW, actualModelAndView.getViewName());
+    }
+
+    @Test
+    public void testGetCategoryWrongView() throws Exception {
+        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
+        assertNotSame(null, actualModelAndView.getViewName());
+    }
 }

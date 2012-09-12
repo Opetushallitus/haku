@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class FormController {
 
     private final static Logger logger = LoggerFactory.getLogger(FormController.class);
+    public static final String DEFAULT_VIEW = "default";
 
     final FormService formService;
 
@@ -27,8 +28,8 @@ public class FormController {
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.GET)
-    public String getForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
-        logger.debug("getForm {}, {}", new Object[]{applicationPeriodId, formId});
+    public String getFormAndRedirectToFirstCategory(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
+        logger.debug("getFormAndRedirectToFirstCategory {}, {}", new Object[]{applicationPeriodId, formId});
         Category firstCategory = formService.getFirstCategory(applicationPeriodId, formId);
         return "redirect:" + formId + "/" + firstCategory.getId();
     }
@@ -39,7 +40,7 @@ public class FormController {
                                     @PathVariable final String categoryId) {
         logger.debug("getCategory {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        final ModelAndView modelAndView = new ModelAndView("default");
+        final ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         modelAndView.addObject("category", activeForm.getCategory(categoryId));
         modelAndView.addObject("form", activeForm);
         return modelAndView;
@@ -50,7 +51,7 @@ public class FormController {
                                @PathVariable final String formId,
                                @PathVariable final String categoryId,
                                @RequestBody final MultiValueMap<String, String> values) {
-        logger.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, values.size()});
+        logger.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, values});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         Category category = activeForm.getCategory(categoryId);
         String nextId;
@@ -63,7 +64,12 @@ public class FormController {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ModelAndView handleAllExceptions(Throwable t) {
+    public ModelAndView handleResourceNotFoundExceptions(ResourceNotFoundException e) {
+        return new ModelAndView("error");
+    }
+
+    @ExceptionHandler(Throwable.class)
+    public ModelAndView handleExceptions(Throwable t) {
         return new ModelAndView("error");
     }
 
