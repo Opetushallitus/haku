@@ -3,12 +3,14 @@ package fi.vm.sade.oppija.haku.tools;
 import java.io.*;
 
 public class FileHandling {
-    public static StringBuilder readStreamFromFile(String arg) {
+
+
+    public StringBuilder readStreamFromFile(String arg) {
         final InputStream streamFromFile = getStreamFromFile(arg);
         return readFile(streamFromFile);
     }
 
-    public static InputStream getStreamFromFile(String arg) {
+    public InputStream getStreamFromFile(String arg) {
         try {
             return new FileInputStream(new File(arg));
         } catch (Exception e) {
@@ -16,7 +18,7 @@ public class FileHandling {
         }
     }
 
-    public static StringBuilder readFile(InputStream inputStream) {
+    public StringBuilder readFile(InputStream inputStream) {
         StringBuilder buffer = new StringBuilder();
 
         BufferedReader reader = null;
@@ -43,13 +45,26 @@ public class FileHandling {
         return buffer;
     }
 
-    public static void close(Closeable closeable) {
+    public void close(Closeable closeable) {
         try {
             if (closeable != null) {
                 closeable.close();
             }
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    public void writeFile(String filename, String contentAsString) {
+
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(new File(filename));
+            fileWriter.write(contentAsString);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } finally {
+            close(fileWriter);
         }
     }
 }

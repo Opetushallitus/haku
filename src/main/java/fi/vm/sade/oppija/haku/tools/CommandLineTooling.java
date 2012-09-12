@@ -4,6 +4,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDAOMongoImpl;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -38,23 +39,31 @@ public class CommandLineTooling {
                 importAll(args);
             }
             case EXPORT:
-                exportAll(args);
+                exportAll(args[1]);
         }
     }
 
-    private static void exportAll(String[] args) {
-        final boolean directory = new File(args[1]).isDirectory();
+    private static void exportAll(String foldername) {
+        final File file = new File(foldername);
+        final boolean directory = file.isDirectory();
         if (!directory) {
             System.err.println("Export destination must be a directory");
             System.exit(1);
         }
         final DBCursor dbObjects = getService().getCollection().find();
         for (DBObject dbObject : dbObjects) {
-            final String serialize = JSON.serialize(dbObject);
-            System.out.println(serialize);
-            //TODO:write file
+            final String contentAsString = JSON.serialize(dbObject);
+            final String filename = createFilename(file, dbObject);
+            log.info("writing file: " + filename);
+            new FileHandling().writeFile(filename, contentAsString);
         }
 
+    }
+
+    private static String createFilename(File file, DBObject dbObject) {
+        final ObjectId objectId = (ObjectId) dbObject.get("_id");
+        final String id = (String) dbObject.get("id");
+        return file.getPath() + "/" + objectId.toStringMongod() + "_" + id + ".json";
     }
 
     private static void importAll(String[] args) {
@@ -71,7 +80,7 @@ public class CommandLineTooling {
 
     private static void read(String filename) {
         final FormModelDAOMongoImpl formModelDAOMongoImpl = getService();
-        final StringBuilder stringBuilder = FileHandling.readStreamFromFile(filename);
+        final StringBuilder stringBuilder = new FileHandling().readStreamFromFile(filename);
         final String s = stringBuilder.toString();
         log.info("inserting file " + filename);
         log.debug("with content " + s);

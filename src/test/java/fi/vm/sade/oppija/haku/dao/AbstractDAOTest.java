@@ -25,7 +25,7 @@ public abstract class AbstractDAOTest {
 
     @BeforeClass
     public static void readTestData() {
-        StringBuilder buffer = FileHandling.readStreamFromFile("test-data.json");
+        StringBuilder buffer = new FileHandling().readStreamFromFile("test-data.json");
 
         testDataObject = (DBObject) JSON.parse(buffer.toString());
     }
