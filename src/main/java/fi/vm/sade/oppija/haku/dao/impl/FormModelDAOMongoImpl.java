@@ -59,11 +59,12 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
 
 
     @Override
-    public void insertModelAsJsonString(StringBuilder builder) {
-        getCollection().drop();
+    public synchronized void insertModelAsJsonString(StringBuilder builder) {
         final String json = builder.toString();
         log.debug("with content " + json);
-        getCollection().insert((DBObject) JSON.parse(json));
+        final DBObject dbObject = (DBObject) JSON.parse(json);
+        getCollection().drop();
+        getCollection().insert(dbObject);
         holder.updateModel(find());
     }
 
