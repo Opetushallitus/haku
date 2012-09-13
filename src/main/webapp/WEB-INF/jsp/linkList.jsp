@@ -3,15 +3,16 @@
 <!DOCTYPE HTML>
 <html lang="fi">
     <head>
+        <META http-equiv="Content-Type" content="text/html;charset=UTF-8">
         <meta charset="utf-8" />
         <link rel="stylesheet" href="/haku/resources/css/styles.css" type="text/css">
-        <title>Resurssivirhe</title>
+        <title></title>
     </head>
     <body>
-        Pyytämääsi resurssia ei löytynyt!
-       <fieldset>
-            <legend><c:out value="${message}"/></legend>
-            <pre><c:out value="${stackTrace}"/></pre>
-        </fieldset>
+        <ul>
+            <c:forEach var="item" items="${linkList}">
+                <li><a href="${path}${item}">${item}</a></li>
+            </c:forEach>
+        </ul>
     </body>
 </html>

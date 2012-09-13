@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author jukka
@@ -43,6 +40,10 @@ public class ApplicationPeriod {
         assert end != null;
         final Date now = new Date();
         return !now.before(starts) && !now.after(end);
+    }
+
+    public Set<String> getFormIds() {
+        return this.forms.keySet();
     }
 
     public void addForm(Form form) {

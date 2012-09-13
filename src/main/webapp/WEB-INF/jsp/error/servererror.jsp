@@ -9,5 +9,9 @@
     </head>
     <body>
         Palvelu ei pystynyt käsittelemään pyyntöäsi!
+        <fieldset>
+            <legend><c:out value="${message}"/></legend>
+            <pre><c:out value="${stackTrace}"/></pre>
+        </fieldset>
     </body>
 </html>
