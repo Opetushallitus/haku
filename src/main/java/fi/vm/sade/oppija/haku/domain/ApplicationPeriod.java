@@ -41,7 +41,7 @@ public class ApplicationPeriod {
         final Date now = new Date();
         return !now.before(starts) && !now.after(end);
     }
-
+    @JsonIgnore
     public Set<String> getFormIds() {
         return this.forms.keySet();
     }
