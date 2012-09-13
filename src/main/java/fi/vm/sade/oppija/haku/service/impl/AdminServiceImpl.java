@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author jukka
@@ -25,10 +26,15 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void replaceModel(MultipartFile file) {
         try {
-            final StringBuilder stringBuilder = new FileHandling().readFile(file.getInputStream());
-            formModelDAO.insertModelAsJsonString(stringBuilder);
+            replaceModel(file.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void replaceModel(InputStream inputStream) {
+        final StringBuilder stringBuilder = new FileHandling().readFile(inputStream);
+        formModelDAO.insertModelAsJsonString(stringBuilder);
     }
 }

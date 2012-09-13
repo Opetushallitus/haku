@@ -2,6 +2,8 @@ package fi.vm.sade.oppija.haku.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
+
 /**
  * @author jukka
  * @version 9/12/123:44 PM}
@@ -10,4 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface AdminService {
 
     void replaceModel(MultipartFile file);
+
+    void replaceModel(InputStream inputStream);
 }
