@@ -41,7 +41,7 @@ public class AdminController {
 
     private ModelAndView toAdminForm() {
         final ModelAndView modelAndView = new ModelAndView("admin/admin");
-        modelAndView.addObject(new Attachment("file", "Lataa malli json-objektina"));
+        modelAndView.addObject("attachment", new Attachment("file", "Lataa malli json-objektina"));
         return modelAndView;
     }
 

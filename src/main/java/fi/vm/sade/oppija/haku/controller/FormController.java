@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -63,14 +64,15 @@ public class FormController {
         return "redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + nextId;
     }
 
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ModelAndView handleResourceNotFoundExceptions(ResourceNotFoundException e) {
-        return new ModelAndView("error");
+        return new ModelAndView("error/notfound");
     }
 
     @ExceptionHandler(Throwable.class)
     public ModelAndView handleExceptions(Throwable t) {
-        return new ModelAndView("error");
+        return new ModelAndView("error/servererror");
     }
 
 
