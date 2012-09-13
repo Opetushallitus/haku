@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -11,7 +12,7 @@ import java.util.*;
  * @version 9/7/1210:26 AM}
  * @since 1.1
  */
-public class ApplicationPeriod {
+public class ApplicationPeriod implements Serializable {
     private String id;
     Date starts = new Date();
     Date end;
@@ -41,6 +42,7 @@ public class ApplicationPeriod {
         final Date now = new Date();
         return !now.before(starts) && !now.after(end);
     }
+
     @JsonIgnore
     public Set<String> getFormIds() {
         return this.forms.keySet();

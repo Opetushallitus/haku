@@ -54,18 +54,30 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
     @Override
     public void insert(FormModel formModel) {
         final BasicDBObject basicDBObject = toDbObject.convert(formModel);
-        getCollection().insert(basicDBObject);
+        dropAndInsert(basicDBObject);
     }
 
 
     @Override
-    public synchronized void insertModelAsJsonString(StringBuilder builder) {
+    public void insertModelAsJsonString(StringBuilder builder) {
         final String json = builder.toString();
         log.debug("with content " + json);
-        final DBObject dbObject = (DBObject) JSON.parse(json);
-        getCollection().drop();
-        getCollection().insert(dbObject);
+
+        //we do this via model, as this quarantees validness of data
+        final BasicDBObject convert1 = validateJson(json);
+        dropAndInsert(convert1);
         holder.updateModel(find());
+    }
+
+    private synchronized void dropAndInsert(BasicDBObject convert1) {
+        getCollection().drop();
+        getCollection().insert(convert1);
+    }
+
+    private BasicDBObject validateJson(String json) {
+        final DBObject dbObject = (DBObject) JSON.parse(json);
+        final FormModel convert = mapToFormModelConverter.convert((dbObject.toMap()));
+        return toDbObject.convert(convert);
     }
 
 

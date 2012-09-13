@@ -3,6 +3,7 @@ package fi.vm.sade.oppija.haku.domain;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import java.util.Map;
  * @version 9/7/1210:25 AM}
  * @since 1.1
  */
-public class FormModel {
+public class FormModel implements Serializable {
 
     @JsonDeserialize(using = ObjectIdDeserializer.class)
     @JsonSerialize(using = ObjectIdSerializer.class)

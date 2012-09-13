@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import fi.vm.sade.oppija.haku.domain.Attribute;
 import fi.vm.sade.oppija.haku.domain.questions.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +37,7 @@ import java.util.Set;
                 @JsonSubTypes.Type(value = Category.class)
         }
 )
-public abstract class Element {
+public abstract class Element implements Serializable {
 
     final String id;
 

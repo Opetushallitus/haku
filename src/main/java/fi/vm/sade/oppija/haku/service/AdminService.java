@@ -1,6 +1,6 @@
 package fi.vm.sade.oppija.haku.service;
 
-import org.springframework.web.multipart.MultipartFile;
+import fi.vm.sade.oppija.haku.domain.FormModel;
 
 import java.io.InputStream;
 
@@ -11,7 +11,9 @@ import java.io.InputStream;
  */
 public interface AdminService {
 
-    void replaceModel(MultipartFile file);
+    public void replaceModel(String file);
 
-    void replaceModel(InputStream inputStream);
+    public void replaceModel(InputStream inputStream);
+
+    public void replaceModel(FormModel model);
 }

@@ -16,4 +16,9 @@
         <property name="name" value="${mongo.test-db.name}"/>
     </bean>
 
+    <bean id="remoteAdminService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl" value="http://localhost:8080/haku/remoting/AdminService"/>
+        <property name="serviceInterface" value="fi.vm.sade.oppija.haku.service.AdminService"/>
+    </bean>
+
 </beans>

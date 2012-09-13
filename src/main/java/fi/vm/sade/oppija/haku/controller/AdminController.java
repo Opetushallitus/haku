@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+
 /**
  * @author jukka
  * @version 9/12/1210:14 AM}
@@ -46,9 +48,9 @@ public class AdminController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView receiveFile(@RequestParam("file") MultipartFile file) {
+    public ModelAndView receiveFile(@RequestParam("file") MultipartFile file) throws IOException {
 
-        adminService.replaceModel(file);
+        adminService.replaceModel(file.getInputStream());
         return toAdminForm();
     }
 
