@@ -33,7 +33,7 @@ public class AdminController {
         return toAdminForm();
     }
 
-    @RequestMapping(value = "/model", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/model", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public FormModel asJson() {
         return formModelHolder.getModel();

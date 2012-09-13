@@ -3,8 +3,10 @@ package fi.vm.sade.oppija.haku.domain.elements;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import fi.vm.sade.oppija.haku.domain.Attribute;
+import fi.vm.sade.oppija.haku.domain.questions.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,7 +18,24 @@ import java.util.Set;
  * @version 9/7/1210:29 AM}
  * @since 1.1
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = Attachment.class),
+                @JsonSubTypes.Type(value = CheckBox.class),
+                @JsonSubTypes.Type(value = DropdownSelect.class),
+                @JsonSubTypes.Type(value = MultiSelect.class),
+                @JsonSubTypes.Type(value = Option.class),
+                @JsonSubTypes.Type(value = Radio.class),
+                @JsonSubTypes.Type(value = TextArea.class),
+                @JsonSubTypes.Type(value = Attachment.class),
+                @JsonSubTypes.Type(value = Navigation.class),
+                @JsonSubTypes.Type(value = Link.class),
+                @JsonSubTypes.Type(value = QuestionGroup.class),
+                @JsonSubTypes.Type(value = TextQuestion.class),
+                @JsonSubTypes.Type(value = Category.class)
+        }
+)
 public abstract class Element {
 
     final String id;

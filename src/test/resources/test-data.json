@@ -3,102 +3,102 @@
   "applicationPerioidMap" : {
     "test" : {
       "id" : "test",
-      "starts" : 1347460501097,
-      "end" : 1378996501097,
+      "starts" : 1347531158748,
+      "end" : 1379067158748,
       "forms" : {
         "yhteishaku" : {
-          "@class" : "fi.vm.sade.oppija.haku.domain.elements.Form",
+          "type" : "Form",
           "id" : "yhteishaku",
           "title" : "yhteishaku",
           "help" : "",
           "children" : [ {
-            "@class" : "fi.vm.sade.oppija.haku.domain.elements.Category",
+            "type" : "Category",
             "id" : "henkilotiedot",
             "title" : "Henkilötiedot",
             "help" : "",
             "children" : [ {
-              "@class" : "fi.vm.sade.oppija.haku.domain.elements.QuestionGroup",
+              "type" : "QuestionGroup",
               "id" : "Henkilotiedot",
               "title" : "Henkilötiedot",
               "help" : "",
               "children" : [ {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                "type" : "TextQuestion",
                 "id" : "Sukunimi",
                 "title" : "Sukunimi",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 } ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                "type" : "TextQuestion",
                 "id" : "Etunimet",
                 "title" : "Etunimet",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 } ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                "type" : "TextQuestion",
                 "id" : "Kutsumanimi",
                 "title" : "Kutsumanimi",
                 "help" : "Valitse kutsumanimeksi jokin virallisista etunimistäsi",
                 "children" : [ ],
                 "attributes" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 } ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                "type" : "TextQuestion",
                 "id" : "Henkilötunnus",
                 "title" : "Henkilötunnus",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
-                  "key" : "pattern",
-                  "value" : "[0-9]{6}.[0-9]{4}"
-                }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "placeholder",
                   "value" : "ppkkvv*****"
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
+                  "key" : "pattern",
+                  "value" : "[0-9]{6}.[0-9]{4}"
+                }, {
+                  "type" : "Attribute",
                   "key" : "title",
                   "value" : "ppkkvv*****"
                 } ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.Radio",
+                "type" : "Radio",
                 "id" : "Sukupuoli",
                 "title" : "Sukupuoli",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 } ],
                 "options" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Nainen",
                   "title" : "Nainen",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Mies",
                   "title" : "Mies",
                   "help" : "",
@@ -106,45 +106,45 @@
                   "attributes" : [ ]
                 } ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                "type" : "TextQuestion",
                 "id" : "Sähköposti",
                 "title" : "Sähköposti",
                 "help" : "Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti.",
                 "children" : [ ],
                 "attributes" : [ ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                "type" : "TextQuestion",
                 "id" : "9",
                 "title" : "Matkapuhelinnumero",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.DropdownSelect",
+                "type" : "DropdownSelect",
                 "id" : "Asuinmaa",
                 "title" : "Asuinmaa",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "placeholder",
                   "value" : "Valitse kansalaisuus"
                 } ],
                 "options" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Suomi",
                   "title" : "Suomi",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Ruotsi",
                   "title" : "Ruotsi",
                   "help" : "",
@@ -152,89 +152,89 @@
                   "attributes" : [ ]
                 } ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                "type" : "TextQuestion",
                 "id" : "Lähiosoite",
                 "title" : "Lähiosoite",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 } ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                "type" : "TextQuestion",
                 "id" : "Postinumero",
                 "title" : "Postinumero",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "pattern",
                   "value" : "[0-9]{5}"
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
+                  "key" : "required",
+                  "value" : "required"
+                }, {
+                  "type" : "Attribute",
                   "key" : "title",
                   "value" : "#####"
-                }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
-                  "key" : "required",
-                  "value" : "required"
                 } ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.DropdownSelect",
+                "type" : "DropdownSelect",
                 "id" : "kotikunta",
                 "title" : "Kotikunta",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "placeholder",
                   "value" : "Valitse kotikunta"
                 } ],
                 "options" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Jalasjärvi",
                   "title" : "Jalasjärvi",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Janakkala",
                   "title" : "Janakkala",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Joensuu",
                   "title" : "Joensuu",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Jokioinen",
                   "title" : "Jokioinen",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Jomala",
                   "title" : "Jomala",
                   "help" : "",
@@ -242,31 +242,31 @@
                   "attributes" : [ ]
                 } ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.DropdownSelect",
+                "type" : "DropdownSelect",
                 "id" : "kansalaisuus",
                 "title" : "Kansalaisuus",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "placeholder",
                   "value" : "Valitse kansalaisuus"
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 } ],
                 "options" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Suomi",
                   "title" : "Suomi",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Ruotsi",
                   "title" : "Ruotsi",
                   "help" : "",
@@ -274,31 +274,31 @@
                   "attributes" : [ ]
                 } ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.DropdownSelect",
+                "type" : "DropdownSelect",
                 "id" : "äidinkieli",
                 "title" : "Äidinkieli",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "placeholder",
                   "value" : "Valitse Äidinkieli"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "required",
+                  "value" : "required"
                 } ],
                 "options" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Suomi",
                   "title" : "Suomi",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Ruotsi",
                   "title" : "Ruotsi",
                   "help" : "",
@@ -310,37 +310,37 @@
             } ],
             "attributes" : [ ]
           }, {
-            "@class" : "fi.vm.sade.oppija.haku.domain.elements.Category",
+            "type" : "Category",
             "id" : "koulutustausta",
             "title" : "Koulutustausta",
             "help" : "",
             "children" : [ {
-              "@class" : "fi.vm.sade.oppija.haku.domain.elements.QuestionGroup",
+              "type" : "QuestionGroup",
               "id" : "Koulutustausta",
               "title" : "Koulutustausta",
               "help" : "",
               "children" : [ {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.Radio",
+                "type" : "Radio",
                 "id" : "voimassaoleva",
                 "title" : "Onko sinulla voimassa oleva tutkinnonsuoritusoikeus korkeakouluasteella?",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 } ],
                 "options" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Ei",
                   "title" : "Ei ole",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "Kyllä",
                   "title" : "Kyllä seuraavaan tutkintoon",
                   "help" : "",
@@ -348,23 +348,23 @@
                   "attributes" : [ ]
                 } ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.CheckBox",
+                "type" : "CheckBox",
                 "id" : "tausta",
                 "title" : "Merkitse, josta väitä vastaa koulutustaustaasi.",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ ],
                 "options" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501097",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "korkeakoulu_avoin",
                   "title" : "Olen suorittanyt korkeakoulun edellyttämät avoimen korkeakoulun opinnot.",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                  "id" : "1347460501098",
+                  "type" : "Option",
+                  "id" : "1347531158748",
                   "value" : "korkeakoulu_muu",
                   "title" : "Minulla on muu korkeakoulu kelpoisuus",
                   "help" : "",
@@ -372,17 +372,17 @@
                   "attributes" : [ ]
                 } ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextArea",
+                "type" : "TextArea",
                 "id" : "vapaa",
                 "title" : "Kerro miksi haet juuri meille",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "cols",
                   "value" : "20"
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                  "type" : "Attribute",
                   "key" : "rows",
                   "value" : "3"
                 } ]
@@ -391,98 +391,98 @@
             } ],
             "attributes" : [ ]
           }, {
-            "@class" : "fi.vm.sade.oppija.haku.domain.elements.Category",
+            "type" : "Category",
             "id" : "yhteenveto",
             "title" : "yhteenveto",
             "help" : "",
             "children" : [ {
-              "@class" : "fi.vm.sade.oppija.haku.domain.elements.QuestionGroup",
+              "type" : "QuestionGroup",
               "id" : "yhteenveto",
               "title" : "yhteenveto",
               "help" : "",
               "children" : [ {
-                "@class" : "fi.vm.sade.oppija.haku.domain.elements.QuestionGroup",
+                "type" : "QuestionGroup",
                 "id" : "Henkilotiedot",
                 "title" : "Henkilötiedot",
                 "help" : "",
                 "children" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                  "type" : "TextQuestion",
                   "id" : "Sukunimi",
                   "title" : "Sukunimi",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   } ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                  "type" : "TextQuestion",
                   "id" : "Etunimet",
                   "title" : "Etunimet",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   } ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                  "type" : "TextQuestion",
                   "id" : "Kutsumanimi",
                   "title" : "Kutsumanimi",
                   "help" : "Valitse kutsumanimeksi jokin virallisista etunimistäsi",
                   "children" : [ ],
                   "attributes" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   } ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                  "type" : "TextQuestion",
                   "id" : "Henkilötunnus",
                   "title" : "Henkilötunnus",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
-                    "key" : "pattern",
-                    "value" : "[0-9]{6}.[0-9]{4}"
-                  }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "placeholder",
                     "value" : "ppkkvv*****"
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
+                    "key" : "pattern",
+                    "value" : "[0-9]{6}.[0-9]{4}"
+                  }, {
+                    "type" : "Attribute",
                     "key" : "title",
                     "value" : "ppkkvv*****"
                   } ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Radio",
+                  "type" : "Radio",
                   "id" : "Sukupuoli",
                   "title" : "Sukupuoli",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   } ],
                   "options" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Nainen",
                     "title" : "Nainen",
                     "help" : "",
                     "children" : [ ],
                     "attributes" : [ ]
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Mies",
                     "title" : "Mies",
                     "help" : "",
@@ -490,45 +490,45 @@
                     "attributes" : [ ]
                   } ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                  "type" : "TextQuestion",
                   "id" : "Sähköposti",
                   "title" : "Sähköposti",
                   "help" : "Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti.",
                   "children" : [ ],
                   "attributes" : [ ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                  "type" : "TextQuestion",
                   "id" : "9",
                   "title" : "Matkapuhelinnumero",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.DropdownSelect",
+                  "type" : "DropdownSelect",
                   "id" : "Asuinmaa",
                   "title" : "Asuinmaa",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "placeholder",
                     "value" : "Valitse kansalaisuus"
                   } ],
                   "options" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Suomi",
                     "title" : "Suomi",
                     "help" : "",
                     "children" : [ ],
                     "attributes" : [ ]
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Ruotsi",
                     "title" : "Ruotsi",
                     "help" : "",
@@ -536,89 +536,89 @@
                     "attributes" : [ ]
                   } ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                  "type" : "TextQuestion",
                   "id" : "Lähiosoite",
                   "title" : "Lähiosoite",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   } ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextQuestion",
+                  "type" : "TextQuestion",
                   "id" : "Postinumero",
                   "title" : "Postinumero",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "pattern",
                     "value" : "[0-9]{5}"
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
+                    "key" : "required",
+                    "value" : "required"
+                  }, {
+                    "type" : "Attribute",
                     "key" : "title",
                     "value" : "#####"
-                  }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
-                    "key" : "required",
-                    "value" : "required"
                   } ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.DropdownSelect",
+                  "type" : "DropdownSelect",
                   "id" : "kotikunta",
                   "title" : "Kotikunta",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "placeholder",
                     "value" : "Valitse kotikunta"
                   } ],
                   "options" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Jalasjärvi",
                     "title" : "Jalasjärvi",
                     "help" : "",
                     "children" : [ ],
                     "attributes" : [ ]
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Janakkala",
                     "title" : "Janakkala",
                     "help" : "",
                     "children" : [ ],
                     "attributes" : [ ]
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Joensuu",
                     "title" : "Joensuu",
                     "help" : "",
                     "children" : [ ],
                     "attributes" : [ ]
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Jokioinen",
                     "title" : "Jokioinen",
                     "help" : "",
                     "children" : [ ],
                     "attributes" : [ ]
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Jomala",
                     "title" : "Jomala",
                     "help" : "",
@@ -626,31 +626,31 @@
                     "attributes" : [ ]
                   } ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.DropdownSelect",
+                  "type" : "DropdownSelect",
                   "id" : "kansalaisuus",
                   "title" : "Kansalaisuus",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "placeholder",
                     "value" : "Valitse kansalaisuus"
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   } ],
                   "options" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Suomi",
                     "title" : "Suomi",
                     "help" : "",
                     "children" : [ ],
                     "attributes" : [ ]
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Ruotsi",
                     "title" : "Ruotsi",
                     "help" : "",
@@ -658,31 +658,31 @@
                     "attributes" : [ ]
                   } ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.DropdownSelect",
+                  "type" : "DropdownSelect",
                   "id" : "äidinkieli",
                   "title" : "Äidinkieli",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "placeholder",
                     "value" : "Valitse Äidinkieli"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "required",
+                    "value" : "required"
                   } ],
                   "options" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Suomi",
                     "title" : "Suomi",
                     "help" : "",
                     "children" : [ ],
                     "attributes" : [ ]
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Ruotsi",
                     "title" : "Ruotsi",
                     "help" : "",
@@ -692,32 +692,32 @@
                 } ],
                 "attributes" : [ ]
               }, {
-                "@class" : "fi.vm.sade.oppija.haku.domain.elements.QuestionGroup",
+                "type" : "QuestionGroup",
                 "id" : "Koulutustausta",
                 "title" : "Koulutustausta",
                 "help" : "",
                 "children" : [ {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.Radio",
+                  "type" : "Radio",
                   "id" : "voimassaoleva",
                   "title" : "Onko sinulla voimassa oleva tutkinnonsuoritusoikeus korkeakouluasteella?",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   } ],
                   "options" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Ei",
                     "title" : "Ei ole",
                     "help" : "",
                     "children" : [ ],
                     "attributes" : [ ]
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "Kyllä",
                     "title" : "Kyllä seuraavaan tutkintoon",
                     "help" : "",
@@ -725,23 +725,23 @@
                     "attributes" : [ ]
                   } ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.CheckBox",
+                  "type" : "CheckBox",
                   "id" : "tausta",
                   "title" : "Merkitse, josta väitä vastaa koulutustaustaasi.",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ ],
                   "options" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501097",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "korkeakoulu_avoin",
                     "title" : "Olen suorittanyt korkeakoulun edellyttämät avoimen korkeakoulun opinnot.",
                     "help" : "",
                     "children" : [ ],
                     "attributes" : [ ]
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.questions.Option",
-                    "id" : "1347460501098",
+                    "type" : "Option",
+                    "id" : "1347531158748",
                     "value" : "korkeakoulu_muu",
                     "title" : "Minulla on muu korkeakoulu kelpoisuus",
                     "help" : "",
@@ -749,17 +749,17 @@
                     "attributes" : [ ]
                   } ]
                 }, {
-                  "@class" : "fi.vm.sade.oppija.haku.domain.questions.TextArea",
+                  "type" : "TextArea",
                   "id" : "vapaa",
                   "title" : "Kerro miksi haet juuri meille",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "cols",
                     "value" : "20"
                   }, {
-                    "@class" : "fi.vm.sade.oppija.haku.domain.Attribute",
+                    "type" : "Attribute",
                     "key" : "rows",
                     "value" : "3"
                   } ]
