@@ -3,34 +3,45 @@ package fi.vm.sade.oppija.haku.it;
 
 import net.sourceforge.jwebunit.util.TestingEngineRegistry;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 /**
  * @author Hannu Lyytikainen
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/test-context.xml")
-public class FormIT {
+public class FormIT extends AbstractRemoteTest {
+
+    @BeforeClass
+    public static void prepare() {
+        setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);    // use HtmlUnit
+        setBaseUrl("http://localhost:8080/haku");
+
+    }
 
     @Before
-    public void prepare() {
-        setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);    // use HtmlUnit
-        setBaseUrl("http://localhost:6543/haku");
-
+    public void setUp() throws Exception {
+        this.path = "navigation-test.json";
     }
 
     @Test
-    public void testTest() {
-        beginAt("");
-        //clickLink("personallink");
-
+    public void testApplicationPeriod() {
+        beginAt("/fi/");
+        assertLinkPresent("test");
     }
 
+    @Test
+    public void testForm() throws Exception {
+        beginAt("/fi/test");
+        assertLinkPresent("yhteishaku");
+    }
+
+    @Test
+    public void testCategory() throws Exception {
+        beginAt("/fi/test/yhteishaku/henkilotiedot");
+        assertLinkPresent("nav-henkilotiedot");
+        assertLinkPresent("nav-koulutustausta");
+        assertLinkPresent("nav-yhteenveto");
+    }
 }

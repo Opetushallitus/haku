@@ -59,7 +59,7 @@
 								<ul>
 								    <c:forEach var="link" items="${form.navigation.children}" varStatus="status">
                                      <li class="item">
-                                        <a ${link.attributeString}>${link.value}</a>&nbsp;
+                                        <a id="nav-${link.id}" ${link.attributeString}>${link.value}</a>&nbsp;
                                      </li>
                                      <c:if test="${not status.last}">
                                         <li class="spacer">></li>
@@ -74,7 +74,7 @@
 							<div class="clear"></div>
 							<div class="application-content">
 								<div class="form-wrapper grid16-12">
-									<form id="haku-henkilotiedot" method="post">
+									<form id="form-${category.id}" method="post">
                                         <c:forEach var="child" items="${category.children}">
                                             <c:set var="element" value="${child}" scope="request"/>
                                             <jsp:include page="elements/${child.type}.jsp"/>
@@ -82,15 +82,15 @@
 
                                         <c:choose>
                                             <c:when test="${category.hasPrev}">
-                                                <input type="submit" value="Edellinen" />
+                                                <input name="nav-prev" type="submit" value="Edellinen" />
                                             </c:when>
                                         </c:choose>
                                         <c:choose>
                                             <c:when test="${category.hasNext}">
-                                                <input type="submit" value="Seuraava" />
+                                                <input name="nav-next" type="submit" value="Seuraava" />
                                             </c:when>
                                             <c:when test="${!category.hasNext}">
-                                                <input type="submit" value="Tallenna" />
+                                                <input name="nav-save" type="submit" value="Tallenna" />
                                             </c:when>
                                         </c:choose>
   

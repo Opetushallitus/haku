@@ -11,7 +11,7 @@ public class Link extends Element {
     final String value;
 
     public Link(String value, String href) {
-        super(System.currentTimeMillis() + "");
+        super(href);
         this.value = value;
         attributes.add(new Attribute("href", href));
     }

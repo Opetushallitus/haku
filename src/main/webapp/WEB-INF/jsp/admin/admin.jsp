@@ -24,7 +24,7 @@
             </div>
             <div>
 
-                        <input type="submit" value="Tallenna" />
+                        <input type="submit" name="tallenna" value="Tallenna" />
 
             </div>
         </form>

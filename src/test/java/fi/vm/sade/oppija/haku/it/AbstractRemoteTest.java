@@ -2,7 +2,7 @@ package fi.vm.sade.oppija.haku.it;
 
 import fi.vm.sade.oppija.haku.service.AdminService;
 import fi.vm.sade.oppija.haku.tools.FileHandling;
-import org.junit.Test;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,17 +19,17 @@ import java.io.IOException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
-public class RemoteTestIT {
+public abstract class AbstractRemoteTest {
 
     @Autowired
     @Qualifier("remoteAdminService")
     private AdminService adminService;
+    protected String path = "test-data.json";
 
 
-    @Test
-    public void test() throws IOException {
-        final StringBuilder stringBuilder = new FileHandling().readFile(new ClassPathResource("test-data.json").getInputStream());
+    @Before
+    public void init() throws IOException {
+        final StringBuilder stringBuilder = new FileHandling().readFile(new ClassPathResource(path).getInputStream());
         adminService.replaceModel(stringBuilder.toString());
-
     }
 }
