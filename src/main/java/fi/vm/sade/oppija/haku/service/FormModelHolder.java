@@ -1,12 +1,7 @@
 package fi.vm.sade.oppija.haku.service;
 
-import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.elements.Form;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author jukka
@@ -29,13 +24,7 @@ public class FormModelHolder {
      */
     public synchronized void updateModel(FormModel model) {
         this.formModel = model;
-
-        //init forms
-        for (Map.Entry<String, ApplicationPeriod> stringApplicationPeriodEntry : model.getApplicationPerioidMap().entrySet()) {
-            final Set<Map.Entry<String, Form>> entries = stringApplicationPeriodEntry.getValue().getForms().entrySet();
-            for (Map.Entry<String, Form> entry : entries) {
-                entry.getValue().init();
-            }
-        }
+        new FormModelInitializer(model).initModel();
     }
+
 }

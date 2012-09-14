@@ -3,6 +3,7 @@ package fi.vm.sade.oppija.haku.converter;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.haku.service.FormModelInitializer;
 import org.springframework.core.convert.converter.Converter;
 
 /**
@@ -14,6 +15,8 @@ public class JsonStringToFormModelConverter implements Converter<String, FormMod
     @Override
     public FormModel convert(String json) {
         final DBObject dbObject = (DBObject) JSON.parse(json);
-        return new MapToFormModelConverter().convert((dbObject.toMap()));
+        final FormModel convert = new MapToFormModelConverter().convert((dbObject.toMap()));
+        new FormModelInitializer(convert).initModel();
+        return convert;
     }
 }
