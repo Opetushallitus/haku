@@ -4,6 +4,42 @@
 /**************************
  MIXIN
 /**************************/
+/**************************
+ ELEMENT SPACING
+/**************************/
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  padding-top: 0;
+  margin-bottom: 0.5em; }
+
+p {
+  margin-top: 0; }
+
+/**************************
+ LAYOUT
+/**************************/
+#wrapper {
+  min-width: 960px;
+  margin: 0 auto; }
+
+#main-navigation {
+  height: 30px;
+  width: 100%;
+  background: #eee; }
+
+#content-area {
+  margin-top: 20px;
+  overflow: hidden; }
+
+.column-content {
+  padding: 10px;
+  border: 1px solid #cccccc; }
+
+footer {
+  margin-top: 20px;
+  background: #eee;
+  border: 1px solid #cccccc; }
+
 .grid16-1 {
   float: left;
   margin-right: 0.625%;
@@ -104,30 +140,6 @@
   clear: both; }
 
 /**************************
- LAYOUT
-/**************************/
-#wrapper {
-  min-width: 960px;
-  margin: 0 auto; }
-
-#main-navigation {
-  height: 30px;
-  width: 100%;
-  background: #eee; }
-
-#content-area {
-  margin-top: 20px; }
-
-.column-content {
-  padding: 5px;
-  border: 1px solid #cccccc; }
-
-footer {
-  margin-top: 20px;
-  background: #eee;
-  border: 1px solid #cccccc; }
-
-/**************************
  PAGE-NAVIGATION
 /**************************/
 #page-navigation h3 {
@@ -145,20 +157,29 @@ footer {
 /**************************
 APPLICATION CONTENT
 /**************************/
-#hakuprosessi {
+.application-navigation {
   border: 1px solid #cccccc;
   background: #eee; }
-  #hakuprosessi .application-navigation ul {
+  .application-navigation ul {
     list-style-type: none;
     clear: both; }
-    #hakuprosessi .application-navigation ul li {
+    .application-navigation ul li {
       float: left; }
-  #hakuprosessi .application-navigation li {
+  .application-navigation li {
     margin-right: 10px; }
-  #hakuprosessi .application-help {
-    border: 1px solid #cccccc; }
-  #hakuprosessi .application-content {
-    margin-top: 20px; }
+
+.application-content {
+  margin-top: 20px; }
+  .application-content ul.inputs {
+    list-style-type: none;
+    padding-left: 0; }
+    .application-content ul.inputs label {
+      display: inline-block;
+      width: 150px;
+      padding-right: 30px;
+      text-align: right; }
+    .application-content ul.inputs input {
+      display: inline; }
 
 /**************************
  TYPOGRAPHY
@@ -177,3 +198,10 @@ a {
     text-decoration: underline; }
   a:visited {
     text-decoration: underline; }
+
+strong {
+  font-size: 1.3em;
+  font-weight: bold; }
+
+.application-content .hint {
+  color: #888; }

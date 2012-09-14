@@ -11,9 +11,10 @@
 			<nav id="main-navigation">
 				<h3>Oppijan verkkopalvelun päänavigaatio</h3>
 			</nav>
-			<div id="content-area">
-				<div class="page-column">
-					<div class="column-content">
+			<section id="content-area"> 
+				
+				<section class="page-column grid16-4">
+					<div class="column-content ">
 						<aside id="page-navigation">
 							<div class="page-navigation-header">
 								<h3>Koulutuskori</h3>
@@ -47,15 +48,16 @@
 							</div>
 						</aside>
 					</div>
-				</div>
-				<div class="page-column">
+				</section>
+
+				<section class="page-column grid16-12">
 					<div class="column-content">
 						<div id="hakuprosessi">
-							<hgroup id="page-topic">
-								<h1>Hakulomake</h1>
-								<h3>Korkeakoulujen yhteishaku, syksy 2012</h3>
-							</hgroup>
 
+							<hgroup id="page-topic">
+								<h1><strong>Hakulomake</strong> - Korkeakoulujen yhteishaku, syksy 2012</h1>
+							</hgroup>
+							
 							<div class="application-navigation">
 								<ul>
 									<li class="item">
@@ -91,38 +93,65 @@
 									</li>
 									<div class="clear"></div>	
 								</ul>
-							</div> <!-- application-navigation -->
+							</div> 
 
-							<div class="clear"></div>
 							<div class="application-content">
-								<div class="form-wrapper grid16-12">
-									<form id="haku-henkilötiedot">
-										<fieldset>Henkilötiedot</fieldset>
-										<span class="hint">Täytä henkilötietosi</span>
-									</form>
+								<div class="application-form-wrapper grid16-12">
+									<div class="application-form ">
+										<form id="haku-henkilötiedot">
+											<h3>Henkilötiedot</h3>
+											<h4>Täytä henkilötietosi</h4>
+											<ul class="inputs">
+												<li class="inputfield">
+													<label>Sukunimi<span class="mandatory-field">*</span></label>
+													<input type="text" id="lastname" />
+												</li>
+												<li class="inputfield">
+													<label>Etunimi<span class="mandatory-field">*</span></label>
+													<input type="text" id="firstname" />
+												</li>
+												<li class="inputfield">
+													<label>Kutsumanmi<span class="mandatory-field">*</span></label>
+													<input type="text" id="callingname" /><span class="hint">Valitse kutsumanimeksi jokin virallisista etunimistäsi.</span>
+												</li>
+												<li class="inputfield">
+													<label>Henkilötunnus<span class="mandatory-field">*</span></label>
+													<input type="text" id="personalID" /><span class="hint">Jos sinulla ei ole suomalaista henkilötunnusta merkitse vain</span>
+												</li>
+												<li class="inputfield">
+													<label>Sukupuoli<span class="mandatory-field">*</span></label>
+													<input type="text" id="gender" />
+												</li>
+												<li class="inputfield">
+													<label>Sähköpostia</span></label>
+													<input type="text" id="email" />
+												</li>
+											</ul>
+										</form>
+									</div>
 								</div>
 								<div class="application-help grid16-4">
-									<h4>Lorem</h4>
+									<h4>sähköpostiosoite</h4>
+									<p>jos annat vääriä tietoja, se voi johtaa opiskeluoikeuden purkuun</p>
+									<h4>matkapuhelinnumero</h4>
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua.</p>
-									<p>Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-									<h4>Ipsum</h4>
+									tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+									quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+									consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+									cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+									proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+									<h4>Lähiosoite ja postinumero</h4>
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur.</p>
-									<p>Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
+									tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
 								</div>
+								
 							</div> <!-- application-content -->
+							<div class="clear"></div>
 						</div>
 					</div>
-				</div> 
-			</div> <!-- content-area -->
+				</section>
+				<div class="clear"></div>
+			</section> <!-- content-area -->
 			<div class="clear"></div>
 			<footer>
 				<div class="footer-content">

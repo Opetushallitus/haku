@@ -51,26 +51,23 @@ $grid-column-width: 6.25%;
     }
 }
 
-.grid16-1 { @include grid(1); }
-.grid16-2 { @include grid(2); }
-.grid16-3 { @include grid(3); }
-.grid16-4 { @include grid(4); }
-.grid16-5 { @include grid(5); }
-.grid16-6 { @include grid(6); }
-.grid16-7 { @include grid(7); }
-.grid16-8 { @include grid(8); }
-.grid16-9 { @include grid(9); }
-.grid16-10 { @include grid(10); }
-.grid16-11 { @include grid(11); }
-.grid16-12 { @include grid(12); }
-.grid16-13 { @include grid(13); }
-.grid16-14 { @include grid(14); }
-.grid16-15 { @include grid(15); }
-.grid16-16 { @include grid(16); }
 
-.clear {
-	clear: both;
+
+
+
+/**************************
+ ELEMENT SPACING
+/**************************/
+h1,h2,h3,h4,h5,h6 {
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: 0.5em;
 }
+
+p {
+    margin-top: 0;
+}
+
 
 
 /**************************
@@ -89,10 +86,11 @@ $grid-column-width: 6.25%;
 
 #content-area {
 	margin-top: 20px;
+	overflow: hidden;
 }
 
 .column-content {
-	padding: 5px;
+	padding: 10px;
 	border: $default-border;
 }
 
@@ -101,6 +99,28 @@ footer {
 	background: #eee;
 	border: $default-border;
 }
+
+.grid16-1 { @include grid(1); }
+.grid16-2 { @include grid(2); }
+.grid16-3 { @include grid(3); }
+.grid16-4 { @include grid(4); }
+.grid16-5 { @include grid(5); }
+.grid16-6 { @include grid(6); }
+.grid16-7 { @include grid(7); }
+.grid16-8 { @include grid(8); }
+.grid16-9 { @include grid(9); }
+.grid16-10 { @include grid(10); }
+.grid16-11 { @include grid(11); }
+.grid16-12 { @include grid(12); }
+.grid16-13 { @include grid(13); }
+.grid16-14 { @include grid(14); }
+.grid16-15 { @include grid(15); }
+.grid16-16 { @include grid(16); }
+
+.clear {
+    clear: both;
+}
+
 
 /**************************
  PAGE-NAVIGATION
@@ -126,27 +146,35 @@ footer {
 /**************************
 APPLICATION CONTENT
 /**************************/
-#hakuprosessi {
-
+.application-navigation {
 	border: $default-border;
 	background: #eee;
-
-	.application-navigation {
-
-		@include horizontal-list;
-		li {
-			margin-right: 10px; 
-		}
-	}
-
-	.application-help {
-		border: $default-border;
-	}
-
-	.application-content {
-		margin-top: 20px;
+	@include horizontal-list;
+	li {
+		margin-right: 10px; 
 	}
 }
+
+.application-content {
+	margin-top: 20px;
+
+    ul.inputs {
+        list-style-type: none;
+        padding-left: 0;
+
+        label {
+            display: inline-block;
+            width: 150px;
+            padding-right:30px;
+            text-align: right;
+        }
+
+        input {
+            display: inline;
+        }
+    }
+}
+
 
 /**************************
  TYPOGRAPHY
@@ -175,4 +203,15 @@ a {
 	&:visited {
 		text-decoration: underline;
 	}
+}
+
+strong {
+	font-size: 1.3em;
+	font-weight: bold;
+}
+
+.application-content {
+    .hint {
+        color: #888;        
+    }
 }
