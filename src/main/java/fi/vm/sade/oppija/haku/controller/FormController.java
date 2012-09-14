@@ -36,7 +36,7 @@ public class FormController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView listApplicationPeriods() {
         logger.debug("listApplicationPeriods");
-        Map<String, ApplicationPeriod> applicationPerioidMap = formService.getModel().getApplicationPerioidMap();
+        Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
         final ModelAndView modelAndView = new ModelAndView(LINK_LIST_VIEW);
         modelAndView.addObject(LINK_LIST_VIEW, applicationPerioidMap.keySet());
         return modelAndView;
@@ -45,7 +45,7 @@ public class FormController {
     @RequestMapping(value = "/{applicationPeriodId}", method = RequestMethod.GET)
     public ModelAndView listForms(@PathVariable final String applicationPeriodId) {
         logger.debug("listForms");
-        ApplicationPeriod applicaionPeriod = formService.getModel().getApplicationPeriodById(applicationPeriodId);
+        ApplicationPeriod applicaionPeriod = formService.getApplicationPeriodById(applicationPeriodId);
         final ModelAndView modelAndView = new ModelAndView(LINK_LIST_VIEW);
         modelAndView.addObject("path", applicaionPeriod.getId() + "/");
         modelAndView.addObject(LINK_LIST_VIEW, applicaionPeriod.getFormIds());

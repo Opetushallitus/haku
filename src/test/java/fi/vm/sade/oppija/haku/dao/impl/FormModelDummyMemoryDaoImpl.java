@@ -12,6 +12,8 @@ import fi.vm.sade.oppija.haku.domain.questions.*;
 import fi.vm.sade.oppija.haku.service.FormService;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service("FormModelDummyMemoryDao")
 public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
@@ -144,7 +146,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         return textQuestion;
     }
 
-    @Override
+
     public FormModel getModel() {
         return formModel;
     }
@@ -170,6 +172,16 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         } catch (Exception e) {
             throw new ResourceNotFoundException("Not found");
         }
+    }
+
+    @Override
+    public Map<String, ApplicationPeriod> getApplicationPerioidMap() {
+        return getModel().getApplicationPerioidMap();
+    }
+
+    @Override
+    public ApplicationPeriod getApplicationPeriodById(final String applicationPeriodId) {
+        return getModel().getApplicationPeriodById(applicationPeriodId);
     }
 
 }

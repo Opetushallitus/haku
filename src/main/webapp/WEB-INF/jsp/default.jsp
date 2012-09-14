@@ -62,7 +62,7 @@
                                         <a ${link.attributeString}>${link.value}</a>&nbsp;
                                      </li>
                                      <c:if test="${not status.last}">
-                                        <li class="spacer">-></li>
+                                        <li class="spacer">></li>
                                      </c:if>
                                     </c:forEach>
 									<div class="clear"></div>

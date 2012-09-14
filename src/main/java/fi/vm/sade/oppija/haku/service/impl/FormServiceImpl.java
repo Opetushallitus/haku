@@ -11,21 +11,30 @@ import fi.vm.sade.oppija.haku.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class FormServiceImpl implements FormService {
 
-    @Autowired
-    FormModelHolder holder;
 
-    @Override
-    public FormModel getModel() {
-        return holder.getModel();
+    private final FormModelHolder holder;
+
+    @Autowired
+    public FormServiceImpl(final FormModelHolder holder) {
+        this.holder = holder;
+    }
+
+    private FormModel getModel() {
+        FormModel model = holder.getModel();
+        if (model == null) {
+            if (model == null) throw new ResourceNotFoundException("Model not found");
+        }
+        return model;
     }
 
     @Override
     public Form getActiveForm(String applicationPeriodId, String formId) {
         FormModel model = getModel();
-        if (model == null) throw new ResourceNotFoundException("Model not found");
         ApplicationPeriod applicationPeriod = model.getApplicationPeriodById(applicationPeriodId);
         if (applicationPeriod == null) throw new ResourceNotFoundException("not found");
         if (!applicationPeriod.isActive()) throw new ResourceNotFoundException("Not active");
@@ -39,6 +48,17 @@ public class FormServiceImpl implements FormService {
             throw new ResourceNotFoundException("First category not found");
         }
         return firstCategory;
+    }
+
+    @Override
+    public Map<String, ApplicationPeriod> getApplicationPerioidMap() {
+        FormModel model = getModel();
+        return model.getApplicationPerioidMap();
+    }
+
+    @Override
+    public ApplicationPeriod getApplicationPeriodById(String applicationPeriodId) {
+        return getModel().getApplicationPeriodById(applicationPeriodId);
     }
 
 

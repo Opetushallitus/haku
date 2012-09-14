@@ -63,11 +63,11 @@ $gnuplot << PLOT
 set terminal png
 set output "${output}.png"
 set title "ab -c $concurrency -n $requests $url"
-set size 1,0.7
+set size 1,1
 set grid y
-set xlabel "request"
-set ylabel "response time (ms)"
-plot "${output}" using 9 smooth sbezier with lines title "request/ms"
+set xlabel "Request"
+set ylabel "Response Time (ms)"
+plot "${output}" using 10 smooth sbezier with lines title "% served in time (ms)"
 quit
 PLOT
 
