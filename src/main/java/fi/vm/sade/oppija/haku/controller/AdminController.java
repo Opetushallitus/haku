@@ -41,6 +41,15 @@ public class AdminController {
         return formModelHolder.getModel();
     }
 
+    @RequestMapping(value = "/model/edit", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    public ModelAndView editModel() {
+        final FormModel model = formModelHolder.getModel();
+
+        final ModelAndView modelAndView = new ModelAndView("editModel");
+        modelAndView.addObject("model", model);
+        return modelAndView;
+    }
+
     private ModelAndView toAdminForm() {
         final ModelAndView modelAndView = new ModelAndView("admin/admin");
         modelAndView.addObject("attachment", new Attachment("file", "Lataa malli json-objektina"));

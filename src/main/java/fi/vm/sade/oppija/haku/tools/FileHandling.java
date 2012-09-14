@@ -11,11 +11,19 @@ public class FileHandling {
     }
 
     public InputStream getStreamFromFile(String arg) {
+        return getStream(new File(arg));
+    }
+
+    public InputStream getStream(File file) {
         try {
-            return new FileInputStream(new File(arg));
+            return new FileInputStream(file);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public StringBuilder getStringFromFile(File file) {
+        return readFile(getStream(file));
     }
 
     public StringBuilder readFile(InputStream inputStream) {

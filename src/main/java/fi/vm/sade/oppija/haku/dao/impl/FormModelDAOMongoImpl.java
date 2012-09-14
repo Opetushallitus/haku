@@ -3,8 +3,8 @@ package fi.vm.sade.oppija.haku.dao.impl;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.haku.converter.FormModelToBasicDBObject;
+import fi.vm.sade.oppija.haku.converter.JsonStringToFormModelConverter;
 import fi.vm.sade.oppija.haku.converter.MapToFormModelConverter;
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.FormModel;
@@ -75,9 +75,8 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
     }
 
     private BasicDBObject validateJson(String json) {
-        final DBObject dbObject = (DBObject) JSON.parse(json);
-        final FormModel convert = mapToFormModelConverter.convert((dbObject.toMap()));
-        return toDbObject.convert(convert);
+        final FormModel converted = new JsonStringToFormModelConverter().convert(json);
+        return toDbObject.convert(converted);
     }
 
 
