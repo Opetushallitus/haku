@@ -15,6 +15,9 @@ h1, h2, h3, h4, h5, h6 {
 p {
   margin-top: 0; }
 
+span.mandatory-field {
+  padding-left: 5px; }
+
 /**************************
  LAYOUT
 /**************************/
@@ -173,13 +176,15 @@ APPLICATION CONTENT
   .application-content ul.inputs {
     list-style-type: none;
     padding-left: 0; }
-    .application-content ul.inputs label {
-      display: inline-block;
-      width: 150px;
-      padding-right: 30px;
-      text-align: right; }
-    .application-content ul.inputs input {
-      display: inline; }
+    .application-content ul.inputs li.inputfield {
+      margin-bottom: 10px; }
+      .application-content ul.inputs li.inputfield label.field-description {
+        display: inline-block;
+        width: 150px;
+        padding-right: 30px;
+        text-align: right; }
+      .application-content ul.inputs li.inputfield input {
+        display: inline; }
 
 /**************************
  TYPOGRAPHY
@@ -205,3 +210,6 @@ strong {
 
 .application-content .hint {
   color: #888; }
+
+span.mandatory-field {
+  color: red; }

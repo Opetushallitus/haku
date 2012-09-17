@@ -68,6 +68,9 @@ p {
     margin-top: 0;
 }
 
+span.mandatory-field {
+    padding-left: 5px;
+}
 
 
 /**************************
@@ -146,6 +149,7 @@ footer {
 /**************************
 APPLICATION CONTENT
 /**************************/
+
 .application-navigation {
 	border: $default-border;
 	background: #eee;
@@ -162,18 +166,25 @@ APPLICATION CONTENT
         list-style-type: none;
         padding-left: 0;
 
-        label {
-            display: inline-block;
-            width: 150px;
-            padding-right:30px;
-            text-align: right;
-        }
+        li.inputfield {
 
-        input {
-            display: inline;
+            margin-bottom: 10px;
+
+            label.field-description {
+                display: inline-block;
+                width: 150px;
+                padding-right:30px;
+                text-align: right;
+            }
+
+            input {
+                display: inline;
+            }
         }
     }
 }
+
+
 
 
 /**************************
@@ -214,4 +225,8 @@ strong {
     .hint {
         color: #888;        
     }
+}
+
+span.mandatory-field {
+    color: red;
 }

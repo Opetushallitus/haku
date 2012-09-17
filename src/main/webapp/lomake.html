@@ -103,29 +103,84 @@
 											<h4>Täytä henkilötietosi</h4>
 											<ul class="inputs">
 												<li class="inputfield">
-													<label>Sukunimi<span class="mandatory-field">*</span></label>
+													<label for="lastname" class="field-description">Sukunimi<span class="mandatory-field">*</span></label>
 													<input type="text" id="lastname" />
 												</li>
 												<li class="inputfield">
-													<label>Etunimi<span class="mandatory-field">*</span></label>
+													<label for="firstname" class="field-description">Etunimi<span class="mandatory-field">*</span></label>
 													<input type="text" id="firstname" />
 												</li>
 												<li class="inputfield">
-													<label>Kutsumanmi<span class="mandatory-field">*</span></label>
+													<label for="callingname" class="field-description">Kutsumanmi<span class="mandatory-field">*</span></label>
 													<input type="text" id="callingname" /><span class="hint">Valitse kutsumanimeksi jokin virallisista etunimistäsi.</span>
 												</li>
 												<li class="inputfield">
-													<label>Henkilötunnus<span class="mandatory-field">*</span></label>
+													<label for="personalID" class="field-description">Henkilötunnus<span class="mandatory-field">*</span></label>
 													<input type="text" id="personalID" /><span class="hint">Jos sinulla ei ole suomalaista henkilötunnusta merkitse vain</span>
 												</li>
 												<li class="inputfield">
-													<label>Sukupuoli<span class="mandatory-field">*</span></label>
+													<label for="gender" class="field-description">Sukupuoli<span class="mandatory-field">*</span></label>
 													<input type="text" id="gender" />
 												</li>
 												<li class="inputfield">
-													<label>Sähköpostia</span></label>
-													<input type="text" id="email" />
+													<label class="field-description">Sukupuoli</label>
+													<input type="radio" id="man" /><label for="man">Mies</label>
+													<input type="radio" id="woman" /><label for="woman">Nainen</label>
 												</li>
+												<li class="inputfield">
+													<label for="email" class="field-description">Sähköpostiosoite</label>
+													<input type="text" id="email" /><span class="hint">Kirjoita tähän sähköpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti.</span>
+												</li>
+												<li class="inputfield">
+													<label class="field-description">Matkapuhelinnumero</label>
+													<select id="countrycode">
+														<option>+358</option>
+													</select>
+													<input type="text" id="phonenumber" />
+												</li>
+												<li class="inputfield">
+													<label for="country" class="field-description">Asuinmaa<span class="mandatory-field">*</span></label>
+													<select id="country">
+														<option>Suomi</option>
+														<option>Ruotsi</option>
+														<option>Saksa</option>
+													</select>
+												</li>
+												<li class="inputfield">
+													<label for="address" class="field-description">Lähiosoite<span class="mandatory-field">*</span></label>
+													<input type="text" id="address" />
+												</li>
+												<li class="inputfield">
+													<label for="zipcode" class="field-description">Postinumero<span class="mandatory-field">*</span></label>
+													<input type="text" id="zipcode" />
+													<span class="hint">Kirjoita tähän osoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti.</span>
+												</li>
+												<li class="inputfield">
+													<label for="city" class="field-description">Kotikunta<span class="mandatory-field">*</span></label>
+													<select id="city">
+														<option>Helsinki</option>
+														<option>Tampere</option>
+													</select>
+												</li>
+												<li class="inputfield">
+													<label for="citizenshit" id="country" class="field-description">Kansalaisuus<span class="mandatory-field">*</span></label>
+													<select id="citizenshit">
+														<option>Suomi</option>
+														<option>Ruotsi</option>
+														<option>Saksa</option>
+													</select>
+												</li>
+
+												<li class="inputfield">
+													<label for="native-language" id="country" class="field-description">Äidinkieli<span class="mandatory-field">*</span></label>
+													<select id="native-language">
+														<option>Suomi</option>
+														<option>Ruotsi</option>
+														<option>Saksa</option>
+													</select>
+												</li>
+
+
 											</ul>
 										</form>
 									</div>
