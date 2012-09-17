@@ -15,12 +15,12 @@
                  <a ${link.attributeString}>${link.value}</a>&nbsp;
             </c:forEach>
         </div>
-        <form method="post" accept-charset="iso-8859-1" action="edit/foo" charset="UTF-8" enctype="multipart/form-data">
+        <form method="post" accept-charset="utf-8"  action="edit/foo" enctype="multipart/form-data">
             <div>
 
 
-                    <textarea name="model" id="model" rows="200" cols="200">
-                    ${model}
+                    <textarea name="model" id="model" rows="200" cols="200" >
+                        <c:out value="${model}"/>
                     </textarea>
 
             </div>
