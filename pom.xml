@@ -8,6 +8,11 @@
     <artifactId>haku</artifactId>
     <packaging>war</packaging>
     <name>Oppijan verkkopalvelu :: Haku</name>
+    <parent>
+        <groupId>fi.vm.sade.generic</groupId>
+        <artifactId>build-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
     <dependencies>
         <dependency>
@@ -131,7 +136,6 @@
         <spring.version>3.1.2.RELEASE</spring.version>
         <servlet.version>3.0.1</servlet.version>
         <mongo.version>2.8.0</mongo.version>
-        <clover.version>3.1.4</clover.version>
         <slf4j.version>1.6.6</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -216,57 +220,6 @@
     <profiles>
 
 
-        <profile>
-            <id>clover.all</id>
-            <properties>
-                <checkstyle.skip>true</checkstyle.skip>
-                <checkstyle.excludes>**/*.java</checkstyle.excludes>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.atlassian.maven.plugins</groupId>
-                        <artifactId>maven-clover2-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>clover</id>
-                                <goals>
-                                    <goal>setup</goal>
-                                    <goal>optimize</goal>
-                                    <goal>snapshot</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>clover</goal>
-                                    <goal>log</goal>
-                                    <!-- <goal>check</goal> disable check until we have selenium testi
-                                                       up and running in bamboo -->
-                                    <goal>save-history</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <reporting>
-                <plugins>
-                    <plugin>
-                        <groupId>com.atlassian.maven.plugins</groupId>
-                        <artifactId>maven-clover2-plugin</artifactId>
-                        <version>${clover.version}</version>
-                    </plugin>
-                </plugins>
-            </reporting>
-            <dependencies>
-                <dependency>
-                    <groupId>com.cenqua.clover</groupId>
-                    <artifactId>clover</artifactId>
-                    <version>${clover.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
         <profile>
             <id>integration-test</id>
             <activation>
