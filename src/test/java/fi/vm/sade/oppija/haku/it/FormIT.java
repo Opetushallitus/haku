@@ -11,7 +11,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 /**
  * @author Hannu Lyytikainen
  */
-public class FormIT extends AbstractRemoteTest {
+public class FormIT extends AbstractIT {
 
     @BeforeClass
     public static void prepare() {
@@ -22,7 +22,7 @@ public class FormIT extends AbstractRemoteTest {
 
     @Before
     public void setUp() throws Exception {
-        this.path = "navigation-test.json";
+        this.jsonModelFileName = "navigation-test.json";
     }
 
     @Test

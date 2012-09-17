@@ -1,35 +1,30 @@
 package fi.vm.sade.oppija.haku.it;
 
-import fi.vm.sade.oppija.haku.service.AdminService;
-import fi.vm.sade.oppija.haku.tools.FileHandling;
+import fi.vm.sade.oppija.haku.converter.FormModelToJsonString;
+import fi.vm.sade.oppija.haku.domain.FormModel;
+import net.sourceforge.jwebunit.util.TestingEngineRegistry;
 import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
+
+import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 /**
  * @author jukka
  * @version 9/13/123:42 PM}
  * @since 1.1
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/test-context.xml")
 public abstract class AbstractRemoteTest {
 
-    @Autowired
-    @Qualifier("remoteAdminService")
-    private AdminService adminService;
-    protected String path = "test-data.json";
-
+    protected FormModel formModel;
 
     @Before
     public void init() throws IOException {
-        final StringBuilder stringBuilder = new FileHandling().readFile(new ClassPathResource(path).getInputStream());
-        adminService.replaceModel(stringBuilder.toString());
+        setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
+        setBaseUrl("http://localhost:8080/haku");
+        beginAt("/fi/admin/edit");
+        final String convert = new FormModelToJsonString().convert(formModel);
+        setTextField("model", convert);
+        submit("tallenna");
     }
 }

@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.haku.domain;
 
+import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
@@ -22,7 +23,8 @@ public class FormModelFactoryTest {
     @Test
     public void testBuilderFrom() throws Exception {
         final FormModel formModel = new FormModelBuilder().withDefaults().addChildToCategory(new TextQuestion("doo", "foo", "foo")).build();
-        assertEquals("doo", formModel.getApplicationPeriodById("test").getFormById("test").getFirstCategory().getChildren().get(0).getId());
+        final FormModelHelper formModelHelper = new FormModelHelper(formModel);
+        assertEquals("doo", formModelHelper.getFirstCategoryChild().getId());
     }
 
     @Test

@@ -23,8 +23,4 @@
         <property name="maxUploadSize" value="100000"/>
     </bean>
 
-    <bean name="adminExporter" class="org.springframework.remoting.caucho.HessianServiceExporter">
-        <property name="service" ref="adminService"/>
-        <property name="serviceInterface" value="fi.vm.sade.oppija.haku.service.AdminService"/>
-    </bean>
 </beans>

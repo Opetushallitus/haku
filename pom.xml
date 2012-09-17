@@ -8,11 +8,11 @@
     <artifactId>haku</artifactId>
     <packaging>war</packaging>
     <name>Oppijan verkkopalvelu :: Haku</name>
-    <parent>
+    <!--<parent>
         <groupId>fi.vm.sade.generic</groupId>
         <artifactId>build-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-    </parent>
+    </parent>-->
 
     <dependencies>
         <dependency>
@@ -25,29 +25,6 @@
             <artifactId>spring-web</artifactId>
             <version>${spring.version}</version>
         </dependency>
-        <!-- for it only -->
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>2.2.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-remoting</artifactId>
-            <version>2.0.8</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.caucho</groupId>
-            <artifactId>hessian</artifactId>
-            <version>3.1.5</version>
-        </dependency>
-        <!-- /for it only -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>

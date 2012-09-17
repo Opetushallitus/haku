@@ -15,10 +15,10 @@ public class FormModelBuilder {
 
     FormModel formModel = new FormModel();
 
-    ApplicationPeriodBuilder applicationPeriodBuilder = new ApplicationPeriodBuilder(createId());
-    private FormBuilder formBuilder = new FormBuilder(createId(), "test");
+    ApplicationPeriodBuilder applicationPeriodBuilder = new ApplicationPeriodBuilder("yhteishaku");
+    private Category category = new Category("kategoria", "category1");
 
-    private Category category = new Category(createId(), "category1");
+    private FormBuilder formBuilder = new FormBuilder("form", "test");
 
     final Form form = formBuilder.withChild(category).build();
 
