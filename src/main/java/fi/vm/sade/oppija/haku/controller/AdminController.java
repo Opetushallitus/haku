@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -52,7 +53,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/edit/foo", method = RequestMethod.POST, consumes = "multipart/form-data; charset=UTF-8")
-    public String doActualEdit(@RequestParam("model") String json) {
+    public String doActualEdit(HttpServletRequest request, @RequestParam("model") String json) {
         adminService.replaceModel(json);
         return "redirect:/";
     }
