@@ -15,7 +15,7 @@
                  <a ${link.attributeString}>${link.value}</a>&nbsp;
             </c:forEach>
         </div>
-        <form method="post" accept-charset="utf-8"  action="edit/foo" enctype="multipart/form-data">
+        <form method="post" accept-charset="utf-8"  action="edit/post" enctype="multipart/form-data">
             <div>
 
 
