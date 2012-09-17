@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.haku.controller;
 
+import fi.vm.sade.oppija.haku.converter.FormModelToJsonString;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.elements.Attachment;
 import fi.vm.sade.oppija.haku.service.AdminService;
@@ -41,14 +42,21 @@ public class AdminController {
         return formModelHolder.getModel();
     }
 
-    @RequestMapping(value = "/model/edit", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/edit", method = RequestMethod.GET, produces = "text/html; charset=UTF-8")
     public ModelAndView editModel() {
         final FormModel model = formModelHolder.getModel();
-
-        final ModelAndView modelAndView = new ModelAndView("editModel");
-        modelAndView.addObject("model", model);
+        final ModelAndView modelAndView = new ModelAndView("admin/editModel");
+        final String convert = new FormModelToJsonString().convert(model);
+        modelAndView.addObject("model", convert);
         return modelAndView;
     }
+
+    @RequestMapping(value = "/edit/foo", method = RequestMethod.POST, consumes = "multipart/form-data; charset=UTF-8")
+    public String doActualEdit(@RequestParam("model") String json) {
+        adminService.replaceModel(json);
+        return "redirect:/";
+    }
+
 
     private ModelAndView toAdminForm() {
         final ModelAndView modelAndView = new ModelAndView("admin/admin");

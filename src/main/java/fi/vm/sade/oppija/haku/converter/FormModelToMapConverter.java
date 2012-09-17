@@ -1,6 +1,7 @@
 package fi.vm.sade.oppija.haku.converter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import org.springframework.core.convert.converter.Converter;
 
@@ -15,6 +16,7 @@ public class FormModelToMapConverter implements Converter<FormModel, Map> {
     @Override
     public Map convert(FormModel formModel) {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
         return mapper.convertValue(formModel, Map.class);
     }
 }

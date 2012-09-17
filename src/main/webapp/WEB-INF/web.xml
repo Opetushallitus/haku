@@ -23,7 +23,6 @@
         <url-pattern>/fi/*</url-pattern>
     </servlet-mapping>
 
-
     <servlet>
         <servlet-name>adminExporter</servlet-name>
         <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
