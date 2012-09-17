@@ -23,6 +23,7 @@ import javax.annotation.PostConstruct;
 public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormModelDAO {
 
     private final static Logger log = LoggerFactory.getLogger(FormModelDAOMongoImpl.class);
+    private static final String COLLECTION_FORM_MODEL = "haku";
 
     @Autowired
     FormModelHolder holder;
@@ -42,7 +43,7 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
 
     @Override
     public String getCollectionName() {
-        return "haku";
+        return COLLECTION_FORM_MODEL;
     }
 
     @Override
