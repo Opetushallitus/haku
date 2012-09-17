@@ -1,8 +1,10 @@
 package fi.vm.sade.oppija.haku.it;
 
 import fi.vm.sade.oppija.haku.FormModelHelper;
+import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -10,17 +12,17 @@ import java.io.IOException;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 public class TextQuestionIT extends AbstractRemoteTest {
+    protected FormModel formModel;
+    private FormModelHelper formModelHelper;
 
-    private final FormModelHelper formModelHelper;
-
-    public TextQuestionIT() {
-        formModel = new FormModelBuilder().withDefaults().addChildToCategory(new TextQuestion("sukunimi", "foo", "foo")).build();
-        this.formModelHelper = new FormModelHelper(formModel);
+    @Before
+    public void init() throws IOException {
+        formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextQuestion("sukunimi", "foo", "foo"));
+        this.formModelHelper = initModel(formModel);
     }
 
     @Test
     public void testFormExists() throws IOException {
-
         beginAt(formModelHelper.getStartUrl());
         final String formId = formModelHelper.getFirstCategoryFormId();
         assertFormPresent(formId);

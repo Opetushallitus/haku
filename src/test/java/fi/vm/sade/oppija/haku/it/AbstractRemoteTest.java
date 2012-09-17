@@ -1,11 +1,9 @@
 package fi.vm.sade.oppija.haku.it;
 
+import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.converter.FormModelToJsonString;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import net.sourceforge.jwebunit.util.TestingEngineRegistry;
-import org.junit.Before;
-
-import java.io.IOException;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
@@ -16,15 +14,14 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  */
 public abstract class AbstractRemoteTest {
 
-    protected FormModel formModel;
 
-    @Before
-    public void init() throws IOException {
+    protected FormModelHelper initModel(FormModel formModel1) {
         setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
         setBaseUrl("http://localhost:8080/haku");
         beginAt("/fi/admin/edit");
-        final String convert = new FormModelToJsonString().convert(formModel);
+        final String convert = new FormModelToJsonString().convert(formModel1);
         setTextField("model", convert);
         submit("tallenna");
+        return new FormModelHelper(formModel1);
     }
 }

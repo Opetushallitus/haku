@@ -63,4 +63,8 @@ public class FormModelBuilder {
         }
         return this;
     }
+
+    public FormModel buildDefaultFormWithFields(Element... elements) {
+        return this.withDefaults().addChildToCategory(elements).build();
+    }
 }
