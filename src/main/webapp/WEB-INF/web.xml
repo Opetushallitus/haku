@@ -40,7 +40,8 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    
+
+    <!-- this must be the first filter in chain! -->
     <filter>
         <filter-name>encoding-filter</filter-name>
         <filter-class>

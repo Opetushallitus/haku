@@ -52,7 +52,7 @@ public class AdminController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/edit/foo", method = RequestMethod.POST, consumes = "multipart/form-data; charset=UTF-8")
+    @RequestMapping(value = "/edit/post", method = RequestMethod.POST, consumes = "multipart/form-data; charset=UTF-8")
     public String doActualEdit(HttpServletRequest request, @RequestParam("model") String json) {
         adminService.replaceModel(json);
         return "redirect:/";
