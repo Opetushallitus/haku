@@ -33,14 +33,16 @@ public class TextQuestionIT extends AbstractRemoteTest {
         beginAt(formModelHelper.getStartUrl());
         assertElementPresent("sukunimi");
     }
+
     @Test
     public void testLabelExists() throws IOException {
-        beginAt("/fi/h/yh/textquestion");
+        beginAt(formModelHelper.getStartUrl());
         assertElementPresent("label-sukunimi");
     }
+
     @Test
     public void testHelpExists() throws IOException {
-        beginAt("/fi/h/yh/textquestion");
+        beginAt(formModelHelper.getStartUrl());
         assertElementPresent("help-sukunimi");
     }
 }

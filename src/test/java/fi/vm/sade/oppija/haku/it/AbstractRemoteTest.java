@@ -12,16 +12,17 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  * @version 9/13/123:42 PM}
  * @since 1.1
  */
-public abstract class AbstractRemoteTest {
+public abstract class AbstractRemoteTest extends TomcatContainerTest {
 
 
     protected FormModelHelper initModel(FormModel formModel1) {
         setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
-        setBaseUrl("http://localhost:8080/haku");
+        setBaseUrl(getBaseUrl());
         beginAt("/fi/admin/edit");
         final String convert = new FormModelToJsonString().convert(formModel1);
         setTextField("model", convert);
         submit("tallenna");
         return new FormModelHelper(formModel1);
     }
+
 }

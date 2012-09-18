@@ -10,6 +10,7 @@ public class NavigationIT extends AbstractIT {
 
     public NavigationIT() {
         jsonModelFileName = "navigation-test.json";
+        //
     }
 
     @Test
@@ -19,18 +20,21 @@ public class NavigationIT extends AbstractIT {
         assertLinkPresent("nav-koulutustausta");
         assertLinkPresent("nav-yhteenveto");
     }
+
     @Test
     public void testFirstGategoryNavButtons() throws IOException {
         beginAt("/fi/test/yhteishaku/henkilotiedot");
         assertSubmitButtonPresent("nav-next");
         assertSubmitButtonNotPresent("nav-prev");
     }
+
     @Test
     public void testMiddleGategoryNavButtons() throws IOException {
         beginAt("/fi/test/yhteishaku/koulutustausta");
         assertSubmitButtonPresent("nav-next");
         assertSubmitButtonPresent("nav-prev");
     }
+
     @Test
     public void testLastGategoryNavButtons() throws IOException {
         beginAt("/fi/test/yhteishaku/yhteenveto");

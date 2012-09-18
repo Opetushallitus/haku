@@ -1,9 +1,9 @@
 package fi.vm.sade.oppija.haku.it;
 
 
+import fi.vm.sade.oppija.haku.RootPackageMarker;
 import net.sourceforge.jwebunit.util.TestingEngineRegistry;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
@@ -13,16 +13,16 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  */
 public class FormIT extends AbstractIT {
 
-    @BeforeClass
-    public static void prepare() {
-        setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);    // use HtmlUnit
-        setBaseUrl("http://localhost:8080/haku");
-
+    public FormIT() {
+        new RootPackageMarker();
+        this.jsonModelFileName = "navigation-test.json";
     }
 
     @Before
     public void setUp() throws Exception {
-        this.jsonModelFileName = "navigation-test.json";
+        setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);    // use HtmlUnit
+        setBaseUrl(getBaseUrl());
+
     }
 
     @Test

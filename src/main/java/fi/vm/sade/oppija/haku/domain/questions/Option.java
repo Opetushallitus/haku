@@ -15,6 +15,7 @@ public class Option extends Titled {
 
     public Option(@JsonProperty(value = "id") String id, @JsonProperty(value = "value") String value, @JsonProperty(value = "title") String title) {
         super(id, title);
+        addAttribute("id", id);
         this.value = value;
         this.title = title;
     }

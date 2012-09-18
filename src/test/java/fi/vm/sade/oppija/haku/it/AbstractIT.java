@@ -13,7 +13,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  * @author Hannu Lyytikainen
  */
 
-public abstract class AbstractIT {
+public abstract class AbstractIT extends TomcatContainerTest {
 
 
     protected String jsonModelFileName;
@@ -21,11 +21,12 @@ public abstract class AbstractIT {
     @Before
     public void init() throws IOException {
         setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
-        setBaseUrl("http://localhost:8080/haku");
+        setBaseUrl(getBaseUrl());
         beginAt("/fi/admin");
         ClassPathResource classPathResource = new ClassPathResource(jsonModelFileName);
         String absolutePath = classPathResource.getFile().getAbsolutePath();
         setTextField("file", absolutePath);
         submit("tallenna");
     }
+
 }
