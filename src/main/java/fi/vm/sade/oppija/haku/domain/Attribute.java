@@ -16,8 +16,8 @@ public class Attribute implements Serializable {
     String value;
 
     public Attribute(@JsonProperty(value = "key") String key, @JsonProperty(value = "value") String value) {
-        this.key = key;
-        this.value = value;
+        this.key = key.toString();
+        this.value = value.toString();
     }
 
     public String getKey() {
