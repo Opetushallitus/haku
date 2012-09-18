@@ -47,19 +47,19 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         koulutustausta.addChild(koulutustaustaRyhmä);
         yhteenveto.addChild(yhteenvetoRyhmä);
 
-        DropdownSelect äidinkieli = new DropdownSelect("äidinkieli", "Äidinkieli", "äidinkieli");
+        DropdownSelect äidinkieli = new DropdownSelect("äidinkieli", "Äidinkieli");
         äidinkieli.addOption("suomi", "Suomi", "Suomi");
         äidinkieli.addOption("ruotsi", "Ruotsi", "Ruotsi");
         äidinkieli.addAttribute("placeholder", "Valitse Äidinkieli");
         äidinkieli.addAttribute("required", "required");
 
-        DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", "Kansalaisuus", "kansalaisuus");
+        DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", "Kansalaisuus");
         kansalaisuus.addOption("suomi", "Suomi", "Suomi");
         kansalaisuus.addOption("ruotsi", "Ruotsi", "Ruotsi");
         kansalaisuus.addAttribute("placeholder", "Valitse kansalaisuus");
         kansalaisuus.addAttribute("required", "required");
 
-        DropdownSelect kotikunta = new DropdownSelect("kotikunta", "Kotikunta", "kotikunta");
+        DropdownSelect kotikunta = new DropdownSelect("kotikunta", "Kotikunta");
         kotikunta.addOption("jalasjarvi, ", "Jalasjärvi", "Jalasjärvi");
         kotikunta.addOption("janakkala", "Janakkala", "Janakkala");
         kotikunta.addOption("joensuu", "Joensuu", "Joensuu");
@@ -68,23 +68,23 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         kotikunta.addAttribute("placeholder", "Valitse kotikunta");
         kotikunta.addAttribute("required", "required");
 
-        TextQuestion henkilötunnus = new TextQuestion("Henkilötunnus", "Henkilötunnus", "Henkilötunnus");
+        TextQuestion henkilötunnus = new TextQuestion("Henkilötunnus", "Henkilötunnus");
         henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
         henkilötunnus.addAttribute("title", "ppkkvv*****");
         henkilötunnus.addAttribute("required", "required");
         henkilötunnus.addAttribute("pattern", "[0-9]{6}.[0-9]{4}");
-        TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", "Kutsumanimi", "Kutsumanimi");
+        TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", "Kutsumanimi");
         kutsumanimi.setHelp("Valitse kutsumanimeksi jokin virallisista etunimistäsi");
         kutsumanimi.addAttribute("required", "required");
-        TextQuestion sähköposti = new TextQuestion("Sähköposti", "Sähköposti", "Sähköposti");
+        TextQuestion sähköposti = new TextQuestion("Sähköposti", "Sähköposti");
         sähköposti.setHelp("Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti.");
 
-        Radio sukupuoli = new Radio("Sukupuoli", "Sukupuoli", "Sukupuoli");
+        Radio sukupuoli = new Radio("Sukupuoli", "Sukupuoli");
         sukupuoli.addOption("nainen", "Nainen", "Nainen");
         sukupuoli.addOption("mies", "Mies", "Mies");
         sukupuoli.addAttribute("required", "required");
 
-        DropdownSelect asuinmaa = new DropdownSelect("Asuinmaa", "Asuinmaa", "Asuinmaa");
+        DropdownSelect asuinmaa = new DropdownSelect("Asuinmaa", "Asuinmaa");
         asuinmaa.addOption("suomi", "Suomi", "Suomi");
         asuinmaa.addOption("ruotsi", "Ruotsi", "Ruotsi");
         asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
@@ -99,7 +99,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                 .addChild(henkilötunnus)
                 .addChild(sukupuoli)
                 .addChild(sähköposti)
-                .addChild(new TextQuestion("9", "Matkapuhelinnumero", "Matkapuhelinnumero"))
+                .addChild(new TextQuestion("9", "Matkapuhelinnumero"))
                 .addChild(asuinmaa)
                 .addChild(createRequiredTextQuestion("Lähiosoite", "Lähiosoite"))
                 .addChild(postinumero)
@@ -107,18 +107,18 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                 .addChild(kansalaisuus)
                 .addChild(äidinkieli);
 
-        Radio voimassaoleva = new Radio("voimassaoleva", "Onko sinulla voimassa oleva tutkinnonsuoritusoikeus korkeakouluasteella?", "voimassaoleva");
+        Radio voimassaoleva = new Radio("voimassaoleva", "Onko sinulla voimassa oleva tutkinnonsuoritusoikeus korkeakouluasteella?");
         voimassaoleva.addOption("ei", "Ei", "Ei ole");
         voimassaoleva.addOption("kylla", "Kyllä", "Kyllä seuraavaan tutkintoon");
         voimassaoleva.addAttribute("required", "required");
 
-        CheckBox checkBox = new CheckBox("tausta", "Merkitse, jos väite vastaa koulutustaustaasi.", "tausta");
+        CheckBox checkBox = new CheckBox("tausta", "Merkitse, jos väite vastaa koulutustaustaasi.");
         checkBox.addOption("avoin", "korkeakoulu_avoin", "Olen suorittanyt korkeakoulun edellyttämät avoimen korkeakoulun opinnot.");
         checkBox.addOption("muu", "korkeakoulu_muu", "Minulla on muu korkeakoulu kelpoisuus");
         koulutustaustaRyhmä.addChild(voimassaoleva);
         koulutustaustaRyhmä.addChild(checkBox);
 
-        TextArea textArea = new TextArea("vapaa", "Kerro miksi haet juuri meille", "name");
+        TextArea textArea = new TextArea("vapaa", "Kerro miksi haet juuri meille");
         koulutustaustaRyhmä.addChild(textArea);
 
         yhteenvetoRyhmä.addChild(henkilötiedotRyhmä).addChild(koulutustaustaRyhmä);
@@ -141,7 +141,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     private Element createRequiredTextQuestion(final String id, final String name) {
-        TextQuestion textQuestion = new TextQuestion(id, name, name);
+        TextQuestion textQuestion = new TextQuestion(id, name);
         textQuestion.addAttribute("required", "required");
         return textQuestion;
     }

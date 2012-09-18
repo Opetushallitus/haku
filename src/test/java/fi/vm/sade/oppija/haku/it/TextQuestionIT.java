@@ -17,7 +17,7 @@ public class TextQuestionIT extends AbstractRemoteTest {
 
     @Before
     public void init() throws IOException {
-        formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextQuestion("sukunimi", "foo", "foo"));
+        formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextQuestion("sukunimi", "foo"));
         this.formModelHelper = initModel(formModel);
     }
 

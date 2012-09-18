@@ -72,7 +72,7 @@ public class FormController {
         final ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         modelAndView.addObject("category", activeForm.getCategory(categoryId));
         modelAndView.addObject("form", activeForm);
-        modelAndView.addObject("formData", userFormData.getFormData());
+        modelAndView.addObject("categoryData", userFormData.getCategoryData(categoryId));
         return modelAndView;
     }
 
@@ -82,7 +82,7 @@ public class FormController {
                                @PathVariable final String categoryId,
                                @RequestBody final MultiValueMap<String, String> values) {
         logger.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, values});
-        userFormData.setValue(values.toSingleValueMap());
+        userFormData.setValue(categoryId, values.toSingleValueMap());
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         Category category = activeForm.getCategory(categoryId);
         String nextId;

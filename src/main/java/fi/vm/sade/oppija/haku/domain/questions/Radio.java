@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Radio extends OptionQuestion {
 
-    public Radio(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title, @JsonProperty(value = "name") final String name) {
-        super(id, title, name);
+    public Radio(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+        super(id, title);
     }
 }

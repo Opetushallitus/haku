@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @since 1.1
  */
 public class DropdownSelect extends OptionQuestion {
-    public DropdownSelect(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title, @JsonProperty(value = "name") final String name) {
-        super(id, title, name);
+    public DropdownSelect(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+        super(id, title);
     }
 }

@@ -10,7 +10,9 @@ import fi.vm.sade.oppija.haku.domain.elements.Titled;
  */
 public abstract class Question extends Titled {
 
-    protected Question(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title, @JsonProperty(value = "name") String name) {
+    protected Question(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title) {
         super(id, title);
+        addAttribute("id", id);
+        addAttribute("name", id);
     }
 }

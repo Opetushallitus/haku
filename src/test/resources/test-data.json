@@ -1,778 +1,1355 @@
 {
-  "_id" : null,
-  "applicationPerioidMap" : {
-    "test" : {
-      "id" : "test",
-      "starts" : 1347881273601,
-      "end" : 1379417273601,
-      "forms" : {
-        "yhteishaku" : {
-          "type" : "Form",
-          "id" : "yhteishaku",
-          "title" : "yhteishaku",
-          "help" : "",
-          "children" : [ {
-            "type" : "Category",
-            "id" : "henkilotiedot",
-            "title" : "Henkilötiedot",
-            "help" : "",
-            "children" : [ {
-              "type" : "QuestionGroup",
-              "id" : "Henkilotiedot",
-              "title" : "Henkilötiedot",
-              "help" : "",
-              "children" : [ {
-                "type" : "TextQuestion",
-                "id" : "Sukunimi",
-                "title" : "Sukunimi",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                } ]
-              }, {
-                "type" : "TextQuestion",
-                "id" : "Etunimet",
-                "title" : "Etunimet",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                } ]
-              }, {
-                "type" : "TextQuestion",
-                "id" : "Kutsumanimi",
-                "title" : "Kutsumanimi",
-                "help" : "Valitse kutsumanimeksi jokin virallisista etunimistäsi",
-                "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                } ]
-              }, {
-                "type" : "TextQuestion",
-                "id" : "Henkilötunnus",
-                "title" : "Henkilötunnus",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "title",
-                  "value" : "ppkkvv*****"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "pattern",
-                  "value" : "[0-9]{6}.[0-9]{4}"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "placeholder",
-                  "value" : "ppkkvv*****"
-                } ]
-              }, {
-                "type" : "Radio",
-                "id" : "Sukupuoli",
-                "title" : "Sukupuoli",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                } ],
-                "options" : [ {
-                  "type" : "Option",
-                  "id" : "nainen",
-                  "value" : "Nainen",
-                  "title" : "Nainen",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                }, {
-                  "type" : "Option",
-                  "id" : "mies",
-                  "value" : "Mies",
-                  "title" : "Mies",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                } ]
-              }, {
-                "type" : "TextQuestion",
-                "id" : "Sähköposti",
-                "title" : "Sähköposti",
-                "help" : "Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti.",
-                "children" : [ ],
-                "attributes" : [ ]
-              }, {
-                "type" : "TextQuestion",
-                "id" : "9",
-                "title" : "Matkapuhelinnumero",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ ]
-              }, {
-                "type" : "DropdownSelect",
-                "id" : "Asuinmaa",
-                "title" : "Asuinmaa",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "placeholder",
-                  "value" : "Valitse kansalaisuus"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                } ],
-                "options" : [ {
-                  "type" : "Option",
-                  "id" : "suomi",
-                  "value" : "Suomi",
-                  "title" : "Suomi",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                }, {
-                  "type" : "Option",
-                  "id" : "ruotsi",
-                  "value" : "Ruotsi",
-                  "title" : "Ruotsi",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                } ]
-              }, {
-                "type" : "TextQuestion",
-                "id" : "Lähiosoite",
-                "title" : "Lähiosoite",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                } ]
-              }, {
-                "type" : "TextQuestion",
-                "id" : "Postinumero",
-                "title" : "Postinumero",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "title",
-                  "value" : "#####"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "pattern",
-                  "value" : "[0-9]{5}"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                } ]
-              }, {
-                "type" : "DropdownSelect",
-                "id" : "kotikunta",
-                "title" : "Kotikunta",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "placeholder",
-                  "value" : "Valitse kotikunta"
-                } ],
-                "options" : [ {
-                  "type" : "Option",
-                  "id" : "jalasjarvi, ",
-                  "value" : "Jalasjärvi",
-                  "title" : "Jalasjärvi",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                }, {
-                  "type" : "Option",
-                  "id" : "janakkala",
-                  "value" : "Janakkala",
-                  "title" : "Janakkala",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                }, {
-                  "type" : "Option",
-                  "id" : "joensuu",
-                  "value" : "Joensuu",
-                  "title" : "Joensuu",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                }, {
-                  "type" : "Option",
-                  "id" : "jokioinen",
-                  "value" : "Jokioinen",
-                  "title" : "Jokioinen",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                }, {
-                  "type" : "Option",
-                  "id" : "jomala",
-                  "value" : "Jomala",
-                  "title" : "Jomala",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                } ]
-              }, {
-                "type" : "DropdownSelect",
-                "id" : "kansalaisuus",
-                "title" : "Kansalaisuus",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "placeholder",
-                  "value" : "Valitse kansalaisuus"
-                } ],
-                "options" : [ {
-                  "type" : "Option",
-                  "id" : "suomi",
-                  "value" : "Suomi",
-                  "title" : "Suomi",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                }, {
-                  "type" : "Option",
-                  "id" : "ruotsi",
-                  "value" : "Ruotsi",
-                  "title" : "Ruotsi",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                } ]
-              }, {
-                "type" : "DropdownSelect",
-                "id" : "äidinkieli",
-                "title" : "Äidinkieli",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "placeholder",
-                  "value" : "Valitse Äidinkieli"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                } ],
-                "options" : [ {
-                  "type" : "Option",
-                  "id" : "suomi",
-                  "value" : "Suomi",
-                  "title" : "Suomi",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                }, {
-                  "type" : "Option",
-                  "id" : "ruotsi",
-                  "value" : "Ruotsi",
-                  "title" : "Ruotsi",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                } ]
-              } ],
-              "attributes" : [ ]
-            } ],
-            "attributes" : [ ]
-          }, {
-            "type" : "Category",
-            "id" : "koulutustausta",
-            "title" : "Koulutustausta",
-            "help" : "",
-            "children" : [ {
-              "type" : "QuestionGroup",
-              "id" : "Koulutustausta",
-              "title" : "Koulutustausta",
-              "help" : "",
-              "children" : [ {
-                "type" : "Radio",
-                "id" : "voimassaoleva",
-                "title" : "Onko sinulla voimassa oleva tutkinnonsuoritusoikeus korkeakouluasteella?",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                } ],
-                "options" : [ {
-                  "type" : "Option",
-                  "id" : "ei",
-                  "value" : "Ei",
-                  "title" : "Ei ole",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                }, {
-                  "type" : "Option",
-                  "id" : "kylla",
-                  "value" : "Kyllä",
-                  "title" : "Kyllä seuraavaan tutkintoon",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                } ]
-              }, {
-                "type" : "CheckBox",
-                "id" : "tausta",
-                "title" : "Merkitse, jos väite vastaa koulutustaustaasi.",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ ],
-                "options" : [ {
-                  "type" : "Option",
-                  "id" : "avoin",
-                  "value" : "korkeakoulu_avoin",
-                  "title" : "Olen suorittanyt korkeakoulun edellyttämät avoimen korkeakoulun opinnot.",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                }, {
-                  "type" : "Option",
-                  "id" : "muu",
-                  "value" : "korkeakoulu_muu",
-                  "title" : "Minulla on muu korkeakoulu kelpoisuus",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                } ]
-              }, {
-                "type" : "TextArea",
-                "id" : "vapaa",
-                "title" : "Kerro miksi haet juuri meille",
-                "help" : "",
-                "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "rows",
-                  "value" : "3"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "cols",
-                  "value" : "20"
-                } ]
-              } ],
-              "attributes" : [ ]
-            } ],
-            "attributes" : [ ]
-          }, {
-            "type" : "Category",
-            "id" : "yhteenveto",
-            "title" : "yhteenveto",
-            "help" : "",
-            "children" : [ {
-              "type" : "QuestionGroup",
-              "id" : "yhteenveto",
-              "title" : "yhteenveto",
-              "help" : "",
-              "children" : [ {
-                "type" : "QuestionGroup",
-                "id" : "Henkilotiedot",
-                "title" : "Henkilötiedot",
-                "help" : "",
-                "children" : [ {
-                  "type" : "TextQuestion",
-                  "id" : "Sukunimi",
-                  "title" : "Sukunimi",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  } ]
-                }, {
-                  "type" : "TextQuestion",
-                  "id" : "Etunimet",
-                  "title" : "Etunimet",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  } ]
-                }, {
-                  "type" : "TextQuestion",
-                  "id" : "Kutsumanimi",
-                  "title" : "Kutsumanimi",
-                  "help" : "Valitse kutsumanimeksi jokin virallisista etunimistäsi",
-                  "children" : [ ],
-                  "attributes" : [ {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  } ]
-                }, {
-                  "type" : "TextQuestion",
-                  "id" : "Henkilötunnus",
-                  "title" : "Henkilötunnus",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ {
-                    "type" : "Attribute",
-                    "key" : "title",
-                    "value" : "ppkkvv*****"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "pattern",
-                    "value" : "[0-9]{6}.[0-9]{4}"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "placeholder",
-                    "value" : "ppkkvv*****"
-                  } ]
-                }, {
-                  "type" : "Radio",
-                  "id" : "Sukupuoli",
-                  "title" : "Sukupuoli",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  } ],
-                  "options" : [ {
-                    "type" : "Option",
-                    "id" : "nainen",
-                    "value" : "Nainen",
-                    "title" : "Nainen",
-                    "help" : "",
-                    "children" : [ ],
+    "_id" : null,
+    "applicationPerioidMap" : {
+        "test" : {
+            "id" : "test",
+            "starts" : 1347953654140,
+            "end" : 1379489654140,
+            "forms" : {
+                "yhteishaku" : {
+                    "type" : "Form",
+                    "id" : "yhteishaku",
+                    "title" : "yhteishaku",
+                    "help" : null,
+                    "children" : [
+                        {
+                            "type" : "Category",
+                            "id" : "henkilotiedot",
+                            "title" : "Henkilötiedot",
+                            "help" : null,
+                            "children" : [
+                                {
+                                    "type" : "QuestionGroup",
+                                    "id" : "Henkilotiedot",
+                                    "title" : "Henkilötiedot",
+                                    "help" : null,
+                                    "children" : [
+                                        {
+                                            "type" : "TextQuestion",
+                                            "id" : "Sukunimi",
+                                            "title" : "Sukunimi",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "type",
+                                                    "value" : "text"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "Sukunimi"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "required",
+                                                    "value" : "required"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "Sukunimi"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "TextQuestion",
+                                            "id" : "Etunimet",
+                                            "title" : "Etunimet",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "Etunimet"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "required",
+                                                    "value" : "required"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "type",
+                                                    "value" : "text"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "Etunimet"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "TextQuestion",
+                                            "id" : "Kutsumanimi",
+                                            "title" : "Kutsumanimi",
+                                            "help" : "Valitse kutsumanimeksi jokin virallisista etunimistäsi",
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "Kutsumanimi"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "type",
+                                                    "value" : "text"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "Kutsumanimi"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "required",
+                                                    "value" : "required"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "TextQuestion",
+                                            "id" : "Henkilötunnus",
+                                            "title" : "Henkilötunnus",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "Henkilötunnus"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "placeholder",
+                                                    "value" : "ppkkvv*****"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "pattern",
+                                                    "value" : "[0-9]{6}.[0-9]{4}"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "Henkilötunnus"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "type",
+                                                    "value" : "text"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "required",
+                                                    "value" : "required"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "title",
+                                                    "value" : "ppkkvv*****"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "Radio",
+                                            "id" : "Sukupuoli",
+                                            "title" : "Sukupuoli",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "Sukupuoli"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "required",
+                                                    "value" : "required"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "Sukupuoli"
+                                                }
+                                            ],
+                                            "options" : [
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "nainen",
+                                                    "value" : "Nainen",
+                                                    "title" : "Nainen",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                },
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "mies",
+                                                    "value" : "Mies",
+                                                    "title" : "Mies",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "TextQuestion",
+                                            "id" : "Sähköposti",
+                                            "title" : "Sähköposti",
+                                            "help" : "Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti.",
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "Sähköposti"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "type",
+                                                    "value" : "text"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "Sähköposti"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "TextQuestion",
+                                            "id" : "9",
+                                            "title" : "Matkapuhelinnumero",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "9"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "9"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "type",
+                                                    "value" : "text"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "DropdownSelect",
+                                            "id" : "Asuinmaa",
+                                            "title" : "Asuinmaa",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "Asuinmaa"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "placeholder",
+                                                    "value" : "Valitse kansalaisuus"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "Asuinmaa"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "required",
+                                                    "value" : "required"
+                                                }
+                                            ],
+                                            "options" : [
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "suomi",
+                                                    "value" : "Suomi",
+                                                    "title" : "Suomi",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                },
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "ruotsi",
+                                                    "value" : "Ruotsi",
+                                                    "title" : "Ruotsi",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "TextQuestion",
+                                            "id" : "Lähiosoite",
+                                            "title" : "Lähiosoite",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "Lähiosoite"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "type",
+                                                    "value" : "text"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "required",
+                                                    "value" : "required"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "Lähiosoite"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "TextQuestion",
+                                            "id" : "Postinumero",
+                                            "title" : "Postinumero",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "Postinumero"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "pattern",
+                                                    "value" : "[0-9]{5}"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "type",
+                                                    "value" : "text"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "title",
+                                                    "value" : "#####"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "Postinumero"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "required",
+                                                    "value" : "required"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "required",
+                                                    "value" : "required"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "DropdownSelect",
+                                            "id" : "kotikunta",
+                                            "title" : "Kotikunta",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "required",
+                                                    "value" : "required"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "kotikunta"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "kotikunta"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "placeholder",
+                                                    "value" : "Valitse kotikunta"
+                                                }
+                                            ],
+                                            "options" : [
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "jalasjarvi, ",
+                                                    "value" : "Jalasjärvi",
+                                                    "title" : "Jalasjärvi",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                },
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "janakkala",
+                                                    "value" : "Janakkala",
+                                                    "title" : "Janakkala",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                },
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "joensuu",
+                                                    "value" : "Joensuu",
+                                                    "title" : "Joensuu",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                },
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "jokioinen",
+                                                    "value" : "Jokioinen",
+                                                    "title" : "Jokioinen",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                },
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "jomala",
+                                                    "value" : "Jomala",
+                                                    "title" : "Jomala",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "DropdownSelect",
+                                            "id" : "kansalaisuus",
+                                            "title" : "Kansalaisuus",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "kansalaisuus"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "placeholder",
+                                                    "value" : "Valitse kansalaisuus"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "kansalaisuus"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "required",
+                                                    "value" : "required"
+                                                }
+                                            ],
+                                            "options" : [
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "suomi",
+                                                    "value" : "Suomi",
+                                                    "title" : "Suomi",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                },
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "ruotsi",
+                                                    "value" : "Ruotsi",
+                                                    "title" : "Ruotsi",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "DropdownSelect",
+                                            "id" : "äidinkieli",
+                                            "title" : "Äidinkieli",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "placeholder",
+                                                    "value" : "Valitse Äidinkieli"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "äidinkieli"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "required",
+                                                    "value" : "required"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "äidinkieli"
+                                                }
+                                            ],
+                                            "options" : [
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "suomi",
+                                                    "value" : "Suomi",
+                                                    "title" : "Suomi",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                },
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "ruotsi",
+                                                    "value" : "Ruotsi",
+                                                    "title" : "Ruotsi",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "attributes" : [ ]
+                                }
+                            ],
+                            "attributes" : [ ]
+                        },
+                        {
+                            "type" : "Category",
+                            "id" : "koulutustausta",
+                            "title" : "Koulutustausta",
+                            "help" : null,
+                            "children" : [
+                                {
+                                    "type" : "QuestionGroup",
+                                    "id" : "Koulutustausta",
+                                    "title" : "Koulutustausta",
+                                    "help" : null,
+                                    "children" : [
+                                        {
+                                            "type" : "Radio",
+                                            "id" : "voimassaoleva",
+                                            "title" : "Onko sinulla voimassa oleva tutkinnonsuoritusoikeus korkeakouluasteella?",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "required",
+                                                    "value" : "required"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "voimassaoleva"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "voimassaoleva"
+                                                }
+                                            ],
+                                            "options" : [
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "ei",
+                                                    "value" : "Ei",
+                                                    "title" : "Ei ole",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                },
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "kylla",
+                                                    "value" : "Kyllä",
+                                                    "title" : "Kyllä seuraavaan tutkintoon",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "CheckBox",
+                                            "id" : "tausta",
+                                            "title" : "Merkitse, jos väite vastaa koulutustaustaasi.",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "tausta"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "tausta"
+                                                }
+                                            ],
+                                            "options" : [
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "avoin",
+                                                    "value" : "korkeakoulu_avoin",
+                                                    "title" : "Olen suorittanyt korkeakoulun edellyttämät avoimen korkeakoulun opinnot.",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                },
+                                                {
+                                                    "type" : "Option",
+                                                    "id" : "muu",
+                                                    "value" : "korkeakoulu_muu",
+                                                    "title" : "Minulla on muu korkeakoulu kelpoisuus",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [ ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type" : "TextArea",
+                                            "id" : "vapaa",
+                                            "title" : "Kerro miksi haet juuri meille",
+                                            "help" : null,
+                                            "children" : [ ],
+                                            "attributes" : [
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "name",
+                                                    "value" : "vapaa"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "cols",
+                                                    "value" : "20"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "rows",
+                                                    "value" : "3"
+                                                },
+                                                {
+                                                    "type" : "Attribute",
+                                                    "key" : "id",
+                                                    "value" : "vapaa"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "attributes" : [ ]
+                                }
+                            ],
+                            "attributes" : [ ]
+                        },
+                        {
+                            "type" : "Category",
+                            "id" : "yhteenveto",
+                            "title" : "yhteenveto",
+                            "help" : null,
+                            "children" : [
+                                {
+                                    "type" : "QuestionGroup",
+                                    "id" : "yhteenveto",
+                                    "title" : "yhteenveto",
+                                    "help" : null,
+                                    "children" : [
+                                        {
+                                            "type" : "QuestionGroup",
+                                            "id" : "Henkilotiedot",
+                                            "title" : "Henkilötiedot",
+                                            "help" : null,
+                                            "children" : [
+                                                {
+                                                    "type" : "TextQuestion",
+                                                    "id" : "Sukunimi",
+                                                    "title" : "Sukunimi",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "type",
+                                                            "value" : "text"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "Sukunimi"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "required",
+                                                            "value" : "required"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "Sukunimi"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "TextQuestion",
+                                                    "id" : "Etunimet",
+                                                    "title" : "Etunimet",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "Etunimet"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "required",
+                                                            "value" : "required"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "type",
+                                                            "value" : "text"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "Etunimet"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "TextQuestion",
+                                                    "id" : "Kutsumanimi",
+                                                    "title" : "Kutsumanimi",
+                                                    "help" : "Valitse kutsumanimeksi jokin virallisista etunimistäsi",
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "Kutsumanimi"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "type",
+                                                            "value" : "text"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "Kutsumanimi"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "required",
+                                                            "value" : "required"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "TextQuestion",
+                                                    "id" : "Henkilötunnus",
+                                                    "title" : "Henkilötunnus",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "Henkilötunnus"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "placeholder",
+                                                            "value" : "ppkkvv*****"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "pattern",
+                                                            "value" : "[0-9]{6}.[0-9]{4}"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "Henkilötunnus"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "type",
+                                                            "value" : "text"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "required",
+                                                            "value" : "required"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "title",
+                                                            "value" : "ppkkvv*****"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "Radio",
+                                                    "id" : "Sukupuoli",
+                                                    "title" : "Sukupuoli",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "Sukupuoli"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "required",
+                                                            "value" : "required"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "Sukupuoli"
+                                                        }
+                                                    ],
+                                                    "options" : [
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "nainen",
+                                                            "value" : "Nainen",
+                                                            "title" : "Nainen",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        },
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "mies",
+                                                            "value" : "Mies",
+                                                            "title" : "Mies",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "TextQuestion",
+                                                    "id" : "Sähköposti",
+                                                    "title" : "Sähköposti",
+                                                    "help" : "Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti.",
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "Sähköposti"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "type",
+                                                            "value" : "text"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "Sähköposti"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "TextQuestion",
+                                                    "id" : "9",
+                                                    "title" : "Matkapuhelinnumero",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "9"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "9"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "type",
+                                                            "value" : "text"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "DropdownSelect",
+                                                    "id" : "Asuinmaa",
+                                                    "title" : "Asuinmaa",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "Asuinmaa"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "placeholder",
+                                                            "value" : "Valitse kansalaisuus"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "Asuinmaa"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "required",
+                                                            "value" : "required"
+                                                        }
+                                                    ],
+                                                    "options" : [
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "suomi",
+                                                            "value" : "Suomi",
+                                                            "title" : "Suomi",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        },
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "ruotsi",
+                                                            "value" : "Ruotsi",
+                                                            "title" : "Ruotsi",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "TextQuestion",
+                                                    "id" : "Lähiosoite",
+                                                    "title" : "Lähiosoite",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "Lähiosoite"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "type",
+                                                            "value" : "text"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "required",
+                                                            "value" : "required"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "Lähiosoite"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "TextQuestion",
+                                                    "id" : "Postinumero",
+                                                    "title" : "Postinumero",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "Postinumero"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "pattern",
+                                                            "value" : "[0-9]{5}"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "type",
+                                                            "value" : "text"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "title",
+                                                            "value" : "#####"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "Postinumero"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "required",
+                                                            "value" : "required"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "required",
+                                                            "value" : "required"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "DropdownSelect",
+                                                    "id" : "kotikunta",
+                                                    "title" : "Kotikunta",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "required",
+                                                            "value" : "required"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "kotikunta"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "kotikunta"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "placeholder",
+                                                            "value" : "Valitse kotikunta"
+                                                        }
+                                                    ],
+                                                    "options" : [
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "jalasjarvi, ",
+                                                            "value" : "Jalasjärvi",
+                                                            "title" : "Jalasjärvi",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        },
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "janakkala",
+                                                            "value" : "Janakkala",
+                                                            "title" : "Janakkala",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        },
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "joensuu",
+                                                            "value" : "Joensuu",
+                                                            "title" : "Joensuu",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        },
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "jokioinen",
+                                                            "value" : "Jokioinen",
+                                                            "title" : "Jokioinen",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        },
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "jomala",
+                                                            "value" : "Jomala",
+                                                            "title" : "Jomala",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "DropdownSelect",
+                                                    "id" : "kansalaisuus",
+                                                    "title" : "Kansalaisuus",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "kansalaisuus"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "placeholder",
+                                                            "value" : "Valitse kansalaisuus"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "kansalaisuus"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "required",
+                                                            "value" : "required"
+                                                        }
+                                                    ],
+                                                    "options" : [
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "suomi",
+                                                            "value" : "Suomi",
+                                                            "title" : "Suomi",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        },
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "ruotsi",
+                                                            "value" : "Ruotsi",
+                                                            "title" : "Ruotsi",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "DropdownSelect",
+                                                    "id" : "äidinkieli",
+                                                    "title" : "Äidinkieli",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "placeholder",
+                                                            "value" : "Valitse Äidinkieli"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "äidinkieli"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "required",
+                                                            "value" : "required"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "äidinkieli"
+                                                        }
+                                                    ],
+                                                    "options" : [
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "suomi",
+                                                            "value" : "Suomi",
+                                                            "title" : "Suomi",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        },
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "ruotsi",
+                                                            "value" : "Ruotsi",
+                                                            "title" : "Ruotsi",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "attributes" : [ ]
+                                        },
+                                        {
+                                            "type" : "QuestionGroup",
+                                            "id" : "Koulutustausta",
+                                            "title" : "Koulutustausta",
+                                            "help" : null,
+                                            "children" : [
+                                                {
+                                                    "type" : "Radio",
+                                                    "id" : "voimassaoleva",
+                                                    "title" : "Onko sinulla voimassa oleva tutkinnonsuoritusoikeus korkeakouluasteella?",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "required",
+                                                            "value" : "required"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "voimassaoleva"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "voimassaoleva"
+                                                        }
+                                                    ],
+                                                    "options" : [
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "ei",
+                                                            "value" : "Ei",
+                                                            "title" : "Ei ole",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        },
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "kylla",
+                                                            "value" : "Kyllä",
+                                                            "title" : "Kyllä seuraavaan tutkintoon",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "CheckBox",
+                                                    "id" : "tausta",
+                                                    "title" : "Merkitse, jos väite vastaa koulutustaustaasi.",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "tausta"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "tausta"
+                                                        }
+                                                    ],
+                                                    "options" : [
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "avoin",
+                                                            "value" : "korkeakoulu_avoin",
+                                                            "title" : "Olen suorittanyt korkeakoulun edellyttämät avoimen korkeakoulun opinnot.",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        },
+                                                        {
+                                                            "type" : "Option",
+                                                            "id" : "muu",
+                                                            "value" : "korkeakoulu_muu",
+                                                            "title" : "Minulla on muu korkeakoulu kelpoisuus",
+                                                            "help" : null,
+                                                            "children" : [ ],
+                                                            "attributes" : [ ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type" : "TextArea",
+                                                    "id" : "vapaa",
+                                                    "title" : "Kerro miksi haet juuri meille",
+                                                    "help" : null,
+                                                    "children" : [ ],
+                                                    "attributes" : [
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "name",
+                                                            "value" : "vapaa"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "cols",
+                                                            "value" : "20"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "rows",
+                                                            "value" : "3"
+                                                        },
+                                                        {
+                                                            "type" : "Attribute",
+                                                            "key" : "id",
+                                                            "value" : "vapaa"
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "attributes" : [ ]
+                                        }
+                                    ],
+                                    "attributes" : [ ]
+                                }
+                            ],
+                            "attributes" : [ ]
+                        }
+                    ],
                     "attributes" : [ ]
-                  }, {
-                    "type" : "Option",
-                    "id" : "mies",
-                    "value" : "Mies",
-                    "title" : "Mies",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  } ]
-                }, {
-                  "type" : "TextQuestion",
-                  "id" : "Sähköposti",
-                  "title" : "Sähköposti",
-                  "help" : "Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti.",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                }, {
-                  "type" : "TextQuestion",
-                  "id" : "9",
-                  "title" : "Matkapuhelinnumero",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ]
-                }, {
-                  "type" : "DropdownSelect",
-                  "id" : "Asuinmaa",
-                  "title" : "Asuinmaa",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ {
-                    "type" : "Attribute",
-                    "key" : "placeholder",
-                    "value" : "Valitse kansalaisuus"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  } ],
-                  "options" : [ {
-                    "type" : "Option",
-                    "id" : "suomi",
-                    "value" : "Suomi",
-                    "title" : "Suomi",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  }, {
-                    "type" : "Option",
-                    "id" : "ruotsi",
-                    "value" : "Ruotsi",
-                    "title" : "Ruotsi",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  } ]
-                }, {
-                  "type" : "TextQuestion",
-                  "id" : "Lähiosoite",
-                  "title" : "Lähiosoite",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  } ]
-                }, {
-                  "type" : "TextQuestion",
-                  "id" : "Postinumero",
-                  "title" : "Postinumero",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "title",
-                    "value" : "#####"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "pattern",
-                    "value" : "[0-9]{5}"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  } ]
-                }, {
-                  "type" : "DropdownSelect",
-                  "id" : "kotikunta",
-                  "title" : "Kotikunta",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "placeholder",
-                    "value" : "Valitse kotikunta"
-                  } ],
-                  "options" : [ {
-                    "type" : "Option",
-                    "id" : "jalasjarvi, ",
-                    "value" : "Jalasjärvi",
-                    "title" : "Jalasjärvi",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  }, {
-                    "type" : "Option",
-                    "id" : "janakkala",
-                    "value" : "Janakkala",
-                    "title" : "Janakkala",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  }, {
-                    "type" : "Option",
-                    "id" : "joensuu",
-                    "value" : "Joensuu",
-                    "title" : "Joensuu",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  }, {
-                    "type" : "Option",
-                    "id" : "jokioinen",
-                    "value" : "Jokioinen",
-                    "title" : "Jokioinen",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  }, {
-                    "type" : "Option",
-                    "id" : "jomala",
-                    "value" : "Jomala",
-                    "title" : "Jomala",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  } ]
-                }, {
-                  "type" : "DropdownSelect",
-                  "id" : "kansalaisuus",
-                  "title" : "Kansalaisuus",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "placeholder",
-                    "value" : "Valitse kansalaisuus"
-                  } ],
-                  "options" : [ {
-                    "type" : "Option",
-                    "id" : "suomi",
-                    "value" : "Suomi",
-                    "title" : "Suomi",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  }, {
-                    "type" : "Option",
-                    "id" : "ruotsi",
-                    "value" : "Ruotsi",
-                    "title" : "Ruotsi",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  } ]
-                }, {
-                  "type" : "DropdownSelect",
-                  "id" : "äidinkieli",
-                  "title" : "Äidinkieli",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ {
-                    "type" : "Attribute",
-                    "key" : "placeholder",
-                    "value" : "Valitse Äidinkieli"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  } ],
-                  "options" : [ {
-                    "type" : "Option",
-                    "id" : "suomi",
-                    "value" : "Suomi",
-                    "title" : "Suomi",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  }, {
-                    "type" : "Option",
-                    "id" : "ruotsi",
-                    "value" : "Ruotsi",
-                    "title" : "Ruotsi",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  } ]
-                } ],
-                "attributes" : [ ]
-              }, {
-                "type" : "QuestionGroup",
-                "id" : "Koulutustausta",
-                "title" : "Koulutustausta",
-                "help" : "",
-                "children" : [ {
-                  "type" : "Radio",
-                  "id" : "voimassaoleva",
-                  "title" : "Onko sinulla voimassa oleva tutkinnonsuoritusoikeus korkeakouluasteella?",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  } ],
-                  "options" : [ {
-                    "type" : "Option",
-                    "id" : "ei",
-                    "value" : "Ei",
-                    "title" : "Ei ole",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  }, {
-                    "type" : "Option",
-                    "id" : "kylla",
-                    "value" : "Kyllä",
-                    "title" : "Kyllä seuraavaan tutkintoon",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  } ]
-                }, {
-                  "type" : "CheckBox",
-                  "id" : "tausta",
-                  "title" : "Merkitse, jos väite vastaa koulutustaustaasi.",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ ],
-                  "options" : [ {
-                    "type" : "Option",
-                    "id" : "avoin",
-                    "value" : "korkeakoulu_avoin",
-                    "title" : "Olen suorittanyt korkeakoulun edellyttämät avoimen korkeakoulun opinnot.",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  }, {
-                    "type" : "Option",
-                    "id" : "muu",
-                    "value" : "korkeakoulu_muu",
-                    "title" : "Minulla on muu korkeakoulu kelpoisuus",
-                    "help" : "",
-                    "children" : [ ],
-                    "attributes" : [ ]
-                  } ]
-                }, {
-                  "type" : "TextArea",
-                  "id" : "vapaa",
-                  "title" : "Kerro miksi haet juuri meille",
-                  "help" : "",
-                  "children" : [ ],
-                  "attributes" : [ {
-                    "type" : "Attribute",
-                    "key" : "rows",
-                    "value" : "3"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "cols",
-                    "value" : "20"
-                  } ]
-                } ],
-                "attributes" : [ ]
-              } ],
-              "attributes" : [ ]
-            } ],
-            "attributes" : [ ]
-          } ],
-          "attributes" : [ ]
+                }
+            }
         }
-      }
     }
-  }
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TextQuestion extends Question {
 
-    public TextQuestion(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title, @JsonProperty(value = "name") final String name) {
-        super(id, title, name);
+    public TextQuestion(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+        super(id, title);
+
+        addAttribute("type", "text");
     }
 }

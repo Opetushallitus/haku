@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TextArea extends Question {
 
-    public TextArea(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title, @JsonProperty(value = "name") final String name) {
-        super(id, title, name);
+    public TextArea(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+        super(id, title);
         addAttribute("rows", "3");
         addAttribute("cols", "20");
     }

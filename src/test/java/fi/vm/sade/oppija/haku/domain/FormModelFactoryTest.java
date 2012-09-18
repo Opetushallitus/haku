@@ -22,7 +22,7 @@ public class FormModelFactoryTest {
 
     @Test
     public void testBuilderFrom() throws Exception {
-        final FormModel formModel = new FormModelBuilder().withDefaults().addChildToCategory(new TextQuestion("doo", "foo", "foo")).build();
+        final FormModel formModel = new FormModelBuilder().withDefaults().addChildToCategory(new TextQuestion("doo", "foo")).build();
         final FormModelHelper formModelHelper = new FormModelHelper(formModel);
         assertEquals("doo", formModelHelper.getFirstCategoryChild().getId());
     }
@@ -30,7 +30,7 @@ public class FormModelFactoryTest {
     @Test
     public void testBuilderWithCategory() throws Exception {
         final Category category = new Category("ekaKategoria", "ensimmäinen kategoria");
-        final FormModel formModel = new FormModelBuilder(category).withDefaults().addChildToCategory(new TextQuestion("doo", "foo", "foo")).build();
+        final FormModel formModel = new FormModelBuilder(category).withDefaults().addChildToCategory(new TextQuestion("doo", "foo")).build();
         assertEquals("doo", category.getChildren().get(0).getId());
     }
 }

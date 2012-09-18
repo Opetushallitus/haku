@@ -9,8 +9,8 @@ public abstract class OptionQuestion extends Question {
 
     private final List<Option> options = new ArrayList<Option>();
 
-    protected OptionQuestion(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title, @JsonProperty(value = "name") final String name) {
-        super(id, title, name);
+    protected OptionQuestion(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+        super(id, title);
     }
 
     public void addOption(final String id, final String value, final String title) {

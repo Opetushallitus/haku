@@ -23,7 +23,7 @@ public class TextAreaIT extends AbstractRemoteTest {
 
     @Before
     public void init() throws IOException {
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextArea("vapaa_teksti", "foo", "foo"));
+        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextArea("vapaa_teksti", "foo"));
         this.formModelHelper = initModel(formModel);
     }
 
