@@ -13,8 +13,8 @@ public abstract class OptionQuestion extends Question {
         super(id, title, name);
     }
 
-    public void addOption(final String value, final String title) {
-        this.options.add(new Option(System.currentTimeMillis() + "", value, title));
+    public void addOption(final String id, final String value, final String title) {
+        this.options.add(new Option(id, value, title));
     }
 
     public List<Option> getOptions() {

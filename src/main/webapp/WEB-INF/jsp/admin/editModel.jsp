@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="/haku/resources/css/styles.css" type="text/css">
         <title>admin</title>
     </head>
+
     <body>
 
         <div>
@@ -15,22 +16,16 @@
                  <a ${link.attributeString}>${link.value}</a>&nbsp;
             </c:forEach>
         </div>
+        
         <form method="post" accept-charset="utf-8"  action="edit/post" enctype="multipart/form-data">
             <div>
-
-
-                    <textarea name="model" id="model" rows="200" cols="200" >
-                        <c:out value="${model}"/>
-                    </textarea>
-
+                <textarea name="model" id="model" rows="200" cols="200" ><c:out value="${model}"/></textarea>
             </div>
             <div>
-
-                        <input name="tallenna" type="submit" value="Tallenna" />
-
+                <input name="tallenna" type="submit" value="Tallenna" />
             </div>
         </form>
 
-
     </body>
+
 </html>

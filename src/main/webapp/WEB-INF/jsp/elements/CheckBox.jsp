@@ -3,6 +3,7 @@
 <fieldset>
     <legend><c:out value="${element.title}"/></legend>
     <c:forEach var="option" items="${element.options}">
-        <input type="checkbox" name="${element.title}" value="${option.value}" ${element.attributeString}/>${option.title}<br />
+        <c:set value="${parentId}.${option.id}" var="id" scope="page"/>
+        <input type="checkbox" name="${id}" value="${option.value}" ${(formData[id] eq option.value) ? "checked=\"checked\"" : ""} ${element.attributeString}/>${option.title}<br />
     </c:forEach>
 </fieldset>

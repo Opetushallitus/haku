@@ -5,6 +5,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.FormService;
+import fi.vm.sade.oppija.haku.service.UserFormData;
 import org.codehaus.plexus.util.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +29,12 @@ public class FormController {
 
     final FormService formService;
 
+    final UserFormData userFormData;
+
     @Autowired
-    public FormController(@Qualifier("formServiceImpl") final FormService formService) {
+    public FormController(@Qualifier("formServiceImpl") final FormService formService, final UserFormData userFormData) {
         this.formService = formService;
+        this.userFormData = userFormData;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -68,6 +72,7 @@ public class FormController {
         final ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         modelAndView.addObject("category", activeForm.getCategory(categoryId));
         modelAndView.addObject("form", activeForm);
+        modelAndView.addObject("formData", userFormData.getFormData());
         return modelAndView;
     }
 
@@ -77,6 +82,7 @@ public class FormController {
                                @PathVariable final String categoryId,
                                @RequestBody final MultiValueMap<String, String> values) {
         logger.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, values});
+        userFormData.setValue(values.toSingleValueMap());
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         Category category = activeForm.getCategory(categoryId);
         String nextId;
