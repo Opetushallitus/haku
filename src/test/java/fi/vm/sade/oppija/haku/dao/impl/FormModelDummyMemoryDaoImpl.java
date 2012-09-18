@@ -30,21 +30,38 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         formModel.addApplicationPeriod(applicationPeriod);
         Category henkilötiedot = new Category(firstCategoryId, "Henkilötiedot");
         Category koulutustausta = new Category("koulutustausta", "Koulutustausta");
+        Category hakutoiveet = new Category("hakutoiveet", "Hakutoiveet");
+        Category arvosanat = new Category("arvosanat", "Arvosanat");
+        Category lisätiedot = new Category("lisatiedot", "Lisätiedot");
+        Category esikatselu = new Category("esikatselu", "Esikatselu");
         Category yhteenveto = new Category("yhteenveto", "yhteenveto");
 
         Form form = new Form(formId, "yhteishaku");
         form.addChild(henkilötiedot);
         form.addChild(koulutustausta);
+        form.addChild(hakutoiveet);
+        form.addChild(arvosanat);
+        form.addChild(lisätiedot);
+        form.addChild(esikatselu);
         form.addChild(yhteenveto);
         form.init();
 
         applicationPeriod.addForm(form);
 
-        QuestionGroup henkilötiedotRyhmä = new QuestionGroup("Henkilotiedot", "Henkilötiedot");
-        QuestionGroup koulutustaustaRyhmä = new QuestionGroup("Koulutustausta", "Koulutustausta");
-        QuestionGroup yhteenvetoRyhmä = new QuestionGroup("yhteenveto", "yhteenveto");
+        QuestionGroup henkilötiedotRyhmä = new QuestionGroup("HenkilotiedotGrp", "Henkilötiedot");
+        QuestionGroup koulutustaustaRyhmä = new QuestionGroup("KoulutustaustaGrp", "Koulutustausta");
+        QuestionGroup hakutoiveetRyhmä = new QuestionGroup("hakutoiveetGrp", "Hakutoiveet");
+        QuestionGroup arvosanatRyhmä = new QuestionGroup("arvosanatGrp", "Arvosanat");
+        QuestionGroup lisätiedotRyhmä = new QuestionGroup("lisatiedotGrp", "Lisätiedot");
+        QuestionGroup esikatselutRyhmä = new QuestionGroup("esikatseluGrp", "Esikatselu");
+        QuestionGroup yhteenvetoRyhmä = new QuestionGroup("yhteenvetoGrp", "yhteenveto");
+
         henkilötiedot.addChild(henkilötiedotRyhmä);
         koulutustausta.addChild(koulutustaustaRyhmä);
+        hakutoiveet.addChild(hakutoiveetRyhmä);
+        arvosanat.addChild(arvosanatRyhmä);
+        lisätiedot.addChild(lisätiedotRyhmä);
+        esikatselu.addChild(esikatselutRyhmä);
         yhteenveto.addChild(yhteenvetoRyhmä);
 
         DropdownSelect äidinkieli = new DropdownSelect("äidinkieli", "Äidinkieli");
@@ -73,15 +90,16 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         henkilötunnus.addAttribute("title", "ppkkvv*****");
         henkilötunnus.addAttribute("required", "required");
         henkilötunnus.addAttribute("pattern", "[0-9]{6}.[0-9]{4}");
+        henkilötunnus.setHelp("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi");
         TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", "Kutsumanimi");
         kutsumanimi.setHelp("Valitse kutsumanimeksi jokin virallisista etunimistäsi");
         kutsumanimi.addAttribute("required", "required");
         TextQuestion sähköposti = new TextQuestion("Sähköposti", "Sähköposti");
-        sähköposti.setHelp("Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti.");
+        sähköposti.setHelp("Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.");
 
         Radio sukupuoli = new Radio("Sukupuoli", "Sukupuoli");
-        sukupuoli.addOption("nainen", "Nainen", "Nainen");
         sukupuoli.addOption("mies", "Mies", "Mies");
+        sukupuoli.addOption("nainen", "Nainen", "Nainen");
         sukupuoli.addAttribute("required", "required");
 
         DropdownSelect asuinmaa = new DropdownSelect("Asuinmaa", "Asuinmaa");
@@ -93,13 +111,18 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
         postinumero.addAttribute("title", "#####");
+        postinumero.setHelp("Kirjoita tähän osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, kuten valintakirjeen tai kutsun pääsykokeeseen.");
+        TextQuestion matkapuhelinnumero = new TextQuestion("matkapuhelinnumero", "Matkapuhelinnumero");
+        matkapuhelinnumero.setHelp("Kirjoita tähän matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.");
+        kotikunta.setHelp("Kotikunta on tyypillisesti se kunta, jossa asut.");
+        äidinkieli.setHelp("Jos omaa äidinkieltäsi ei löydy valintalistasta, valitse äidinkieleksesi..");
         henkilötiedotRyhmä.addChild(createRequiredTextQuestion("Sukunimi", "Sukunimi"))
                 .addChild(createRequiredTextQuestion("Etunimet", "Etunimet"))
                 .addChild(kutsumanimi)
                 .addChild(henkilötunnus)
                 .addChild(sukupuoli)
                 .addChild(sähköposti)
-                .addChild(new TextQuestion("9", "Matkapuhelinnumero"))
+                .addChild(matkapuhelinnumero)
                 .addChild(asuinmaa)
                 .addChild(createRequiredTextQuestion("Lähiosoite", "Lähiosoite"))
                 .addChild(postinumero)
@@ -107,23 +130,52 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                 .addChild(kansalaisuus)
                 .addChild(äidinkieli);
 
-        Radio voimassaoleva = new Radio("voimassaoleva", "Onko sinulla voimassa oleva tutkinnonsuoritusoikeus korkeakouluasteella?");
-        voimassaoleva.addOption("ei", "Ei", "Ei ole");
-        voimassaoleva.addOption("kylla", "Kyllä", "Kyllä seuraavaan tutkintoon");
-        voimassaoleva.addAttribute("required", "required");
-
-        CheckBox checkBox = new CheckBox("tausta", "Merkitse, jos väite vastaa koulutustaustaasi.");
-        checkBox.addOption("avoin", "korkeakoulu_avoin", "Olen suorittanyt korkeakoulun edellyttämät avoimen korkeakoulun opinnot.");
-        checkBox.addOption("muu", "korkeakoulu_muu", "Minulla on muu korkeakoulu kelpoisuus");
-        koulutustaustaRyhmä.addChild(voimassaoleva);
-        koulutustaustaRyhmä.addChild(checkBox);
 
         TextArea textArea = new TextArea("vapaa", "Kerro miksi haet juuri meille");
-        koulutustaustaRyhmä.addChild(textArea);
-
+        createKoulutustausta(koulutustaustaRyhmä);
+        createHakutoiveet(hakutoiveetRyhmä);
         yhteenvetoRyhmä.addChild(henkilötiedotRyhmä).addChild(koulutustaustaRyhmä);
+        yhteenvetoRyhmä.addChild(textArea);
 
     }
+
+    private void createHakutoiveet(QuestionGroup hakutoiveetRyhmä) {
+        hakutoiveetRyhmä.setHelp("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.");
+    }
+
+    private void createKoulutustausta(QuestionGroup koulutustaustaRyhmä) {
+        Radio millatutkinnolla = new Radio("millatutkinnolla", "Millä tutkinnolla haet opiskelupaikkaa?");
+        for (int i = 0; i < 10; i++) {
+            millatutkinnolla.addOption("tutkinto" + i, "tutkinto" + i, "Lorem ipsum sit dolor amet " + i);
+        }
+
+        Radio peruskoulu2012 = new Radio("peruskoulu2012", "Saatko peruskoulun päättötodistuksen hakukeväänä 2012?");
+        peruskoulu2012.addOption("kylla", "Kyllä", "Kyllä");
+        peruskoulu2012.addOption("ei", "Ei", "en, lorem ipsum sed diam bla bla bla nonummy nihb euismod");
+        peruskoulu2012.addAttribute("required", "required");
+
+        DropdownSelect tutkinnonOpetuskieli = new DropdownSelect("opetuskieli", "Mikä oli tukintosi opetuskieli");
+        tutkinnonOpetuskieli.addOption("suomi", "Suomi", "Suomi");
+        tutkinnonOpetuskieli.addOption("ruotsi", "Ruotsi", "Ruotsi");
+        tutkinnonOpetuskieli.addAttribute("placeholder", "Tutkintosi opetuskieli");
+        tutkinnonOpetuskieli.setHelp("Merkitse tähän lorem ipsum sit ame bla bla lorem ipsum sit ame bla bla lorem ipsum sit ame bla bla lorem ipsum sit ame bla bla");
+
+        CheckBox suorittanut = new CheckBox("suorittanut", "Merkitse tähän, jos olet suorittanut jonkun seuraavista");
+        for (int i = 0; i < 5; i++) {
+            suorittanut.addOption("suorittanut" + i, "suorittanut " + i, "Olen suorittanut opetuksen " + i + ".");
+        }
+
+        Radio jotain = new Radio("jotain", "Lorem ipsum sit dolor amet?");
+        jotain.addOption("ei", "Ei", "En");
+        jotain.addOption("kylla", "Kyllä", "Kyllä");
+        jotain.addAttribute("required", "required");
+
+        koulutustaustaRyhmä.addChild(millatutkinnolla);
+        koulutustaustaRyhmä.addChild(peruskoulu2012);
+        koulutustaustaRyhmä.addChild(suorittanut);
+        koulutustaustaRyhmä.addChild(jotain);
+    }
+
 
     @Override
     public FormModel find() {

@@ -80,18 +80,13 @@ public class FormController {
     public String saveCategory(@PathVariable final String applicationPeriodId,
                                @PathVariable final String formId,
                                @PathVariable final String categoryId,
-                               @RequestBody final MultiValueMap<String, String> values) {
-        logger.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, values});
-        userFormData.setValue(categoryId, values.toSingleValueMap());
+                               @RequestBody final MultiValueMap<String, String> multiValues) {
+        logger.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
+        Map<String, String> values = multiValues.toSingleValueMap();
+        userFormData.setValue(categoryId, values);
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        Category category = activeForm.getCategory(categoryId);
-        String nextId;
-        if (category.isHasNext()) {
-            nextId = category.getNext().getId();
-        } else {
-            nextId = activeForm.getFirstCategory().getId();
-        }
-        return "redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + nextId;
+        Category category = getRedirectCategory(categoryId, values, activeForm);
+        return "redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + category.getId();
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
@@ -109,6 +104,16 @@ public class FormController {
         modelAndView.addObject("stackTrace", ExceptionUtils.getFullStackTrace(t));
         modelAndView.addObject("message", t.getMessage());
         return modelAndView;
+    }
+
+    private Category getRedirectCategory(final String categoryId, final Map<String, String> values, final Form activeForm) {
+        Category category = activeForm.getCategory(categoryId);
+        if (values.get("nav-next") != null && category.isHasNext()) {
+            category = category.getNext();
+        } else if (values.get("nav-prev") != null && category.isHasPrev()) {
+            category = category.getPrev();
+        }
+        return category;
     }
 
 
