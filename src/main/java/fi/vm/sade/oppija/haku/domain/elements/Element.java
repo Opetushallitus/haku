@@ -9,10 +9,7 @@ import fi.vm.sade.oppija.haku.domain.Attribute;
 import fi.vm.sade.oppija.haku.domain.questions.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author jukka
@@ -40,13 +37,10 @@ import java.util.Set;
 public abstract class Element implements Serializable {
 
     final String id;
-
     transient String type = this.getClass().getSimpleName();
-
-    String help = "";
-
-    protected final List<Element> children = new ArrayList<Element>();
-    protected final Set<Attribute> attributes = new HashSet<Attribute>();
+    String help;
+    final List<Element> children = new ArrayList<Element>();
+    final Set<Attribute> attributes = new HashSet<Attribute>();
 
 
     protected Element(@JsonProperty String id) {
@@ -67,10 +61,10 @@ public abstract class Element implements Serializable {
     }
 
     public Set<Attribute> getAttributes() {
-        return attributes;
+        return Collections.unmodifiableSet(attributes);
     }
 
-    public void setHelp(String help) {
+    public void setHelp(final String help) {
         this.help = help;
     }
 
@@ -94,7 +88,7 @@ public abstract class Element implements Serializable {
             attrStr.append(attribute.getKey());
             attrStr.append("=\"");
             attrStr.append(attribute.getValue());
-            attrStr.append("\"");
+            attrStr.append("\" ");
         }
         return attrStr.toString();
     }
