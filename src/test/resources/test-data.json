@@ -3,8 +3,8 @@
   "applicationPerioidMap" : {
     "test" : {
       "id" : "test",
-      "starts" : 1347531158748,
-      "end" : 1379067158748,
+      "starts" : 1347881273601,
+      "end" : 1379417273601,
       "forms" : {
         "yhteishaku" : {
           "type" : "Form",
@@ -62,19 +62,19 @@
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
-                  "key" : "placeholder",
+                  "key" : "title",
                   "value" : "ppkkvv*****"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
                 }, {
                   "type" : "Attribute",
                   "key" : "pattern",
                   "value" : "[0-9]{6}.[0-9]{4}"
                 }, {
                   "type" : "Attribute",
-                  "key" : "title",
+                  "key" : "required",
+                  "value" : "required"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "placeholder",
                   "value" : "ppkkvv*****"
                 } ]
               }, {
@@ -90,7 +90,7 @@
                 } ],
                 "options" : [ {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "nainen",
                   "value" : "Nainen",
                   "title" : "Nainen",
                   "help" : "",
@@ -98,7 +98,7 @@
                   "attributes" : [ ]
                 }, {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "mies",
                   "value" : "Mies",
                   "title" : "Mies",
                   "help" : "",
@@ -127,16 +127,16 @@
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                }, {
-                  "type" : "Attribute",
                   "key" : "placeholder",
                   "value" : "Valitse kansalaisuus"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "required",
+                  "value" : "required"
                 } ],
                 "options" : [ {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "suomi",
                   "value" : "Suomi",
                   "title" : "Suomi",
                   "help" : "",
@@ -144,7 +144,7 @@
                   "attributes" : [ ]
                 }, {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "ruotsi",
                   "value" : "Ruotsi",
                   "title" : "Ruotsi",
                   "help" : "",
@@ -170,20 +170,20 @@
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
-                  "key" : "pattern",
-                  "value" : "[0-9]{5}"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                }, {
-                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 }, {
                   "type" : "Attribute",
                   "key" : "title",
                   "value" : "#####"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "pattern",
+                  "value" : "[0-9]{5}"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "required",
+                  "value" : "required"
                 } ]
               }, {
                 "type" : "DropdownSelect",
@@ -202,7 +202,7 @@
                 } ],
                 "options" : [ {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "jalasjarvi, ",
                   "value" : "Jalasjärvi",
                   "title" : "Jalasjärvi",
                   "help" : "",
@@ -210,7 +210,7 @@
                   "attributes" : [ ]
                 }, {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "janakkala",
                   "value" : "Janakkala",
                   "title" : "Janakkala",
                   "help" : "",
@@ -218,7 +218,7 @@
                   "attributes" : [ ]
                 }, {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "joensuu",
                   "value" : "Joensuu",
                   "title" : "Joensuu",
                   "help" : "",
@@ -226,7 +226,7 @@
                   "attributes" : [ ]
                 }, {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "jokioinen",
                   "value" : "Jokioinen",
                   "title" : "Jokioinen",
                   "help" : "",
@@ -234,7 +234,7 @@
                   "attributes" : [ ]
                 }, {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "jomala",
                   "value" : "Jomala",
                   "title" : "Jomala",
                   "help" : "",
@@ -249,16 +249,16 @@
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
-                  "key" : "placeholder",
-                  "value" : "Valitse kansalaisuus"
-                }, {
-                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "placeholder",
+                  "value" : "Valitse kansalaisuus"
                 } ],
                 "options" : [ {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "suomi",
                   "value" : "Suomi",
                   "title" : "Suomi",
                   "help" : "",
@@ -266,7 +266,7 @@
                   "attributes" : [ ]
                 }, {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "ruotsi",
                   "value" : "Ruotsi",
                   "title" : "Ruotsi",
                   "help" : "",
@@ -290,7 +290,7 @@
                 } ],
                 "options" : [ {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "suomi",
                   "value" : "Suomi",
                   "title" : "Suomi",
                   "help" : "",
@@ -298,7 +298,7 @@
                   "attributes" : [ ]
                 }, {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "ruotsi",
                   "value" : "Ruotsi",
                   "title" : "Ruotsi",
                   "help" : "",
@@ -332,7 +332,7 @@
                 } ],
                 "options" : [ {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "ei",
                   "value" : "Ei",
                   "title" : "Ei ole",
                   "help" : "",
@@ -340,7 +340,7 @@
                   "attributes" : [ ]
                 }, {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "kylla",
                   "value" : "Kyllä",
                   "title" : "Kyllä seuraavaan tutkintoon",
                   "help" : "",
@@ -350,13 +350,13 @@
               }, {
                 "type" : "CheckBox",
                 "id" : "tausta",
-                "title" : "Merkitse, josta väitä vastaa koulutustaustaasi.",
+                "title" : "Merkitse, jos väite vastaa koulutustaustaasi.",
                 "help" : "",
                 "children" : [ ],
                 "attributes" : [ ],
                 "options" : [ {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "avoin",
                   "value" : "korkeakoulu_avoin",
                   "title" : "Olen suorittanyt korkeakoulun edellyttämät avoimen korkeakoulun opinnot.",
                   "help" : "",
@@ -364,7 +364,7 @@
                   "attributes" : [ ]
                 }, {
                   "type" : "Option",
-                  "id" : "1347531158748",
+                  "id" : "muu",
                   "value" : "korkeakoulu_muu",
                   "title" : "Minulla on muu korkeakoulu kelpoisuus",
                   "help" : "",
@@ -379,12 +379,12 @@
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
-                  "key" : "cols",
-                  "value" : "20"
-                }, {
-                  "type" : "Attribute",
                   "key" : "rows",
                   "value" : "3"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "cols",
+                  "value" : "20"
                 } ]
               } ],
               "attributes" : [ ]
@@ -446,19 +446,19 @@
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
-                    "key" : "placeholder",
+                    "key" : "title",
                     "value" : "ppkkvv*****"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
                   }, {
                     "type" : "Attribute",
                     "key" : "pattern",
                     "value" : "[0-9]{6}.[0-9]{4}"
                   }, {
                     "type" : "Attribute",
-                    "key" : "title",
+                    "key" : "required",
+                    "value" : "required"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "placeholder",
                     "value" : "ppkkvv*****"
                   } ]
                 }, {
@@ -474,7 +474,7 @@
                   } ],
                   "options" : [ {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "nainen",
                     "value" : "Nainen",
                     "title" : "Nainen",
                     "help" : "",
@@ -482,7 +482,7 @@
                     "attributes" : [ ]
                   }, {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "mies",
                     "value" : "Mies",
                     "title" : "Mies",
                     "help" : "",
@@ -511,16 +511,16 @@
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  }, {
-                    "type" : "Attribute",
                     "key" : "placeholder",
                     "value" : "Valitse kansalaisuus"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "required",
+                    "value" : "required"
                   } ],
                   "options" : [ {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "suomi",
                     "value" : "Suomi",
                     "title" : "Suomi",
                     "help" : "",
@@ -528,7 +528,7 @@
                     "attributes" : [ ]
                   }, {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "ruotsi",
                     "value" : "Ruotsi",
                     "title" : "Ruotsi",
                     "help" : "",
@@ -554,20 +554,20 @@
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
-                    "key" : "pattern",
-                    "value" : "[0-9]{5}"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  }, {
-                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   }, {
                     "type" : "Attribute",
                     "key" : "title",
                     "value" : "#####"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "pattern",
+                    "value" : "[0-9]{5}"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "required",
+                    "value" : "required"
                   } ]
                 }, {
                   "type" : "DropdownSelect",
@@ -586,7 +586,7 @@
                   } ],
                   "options" : [ {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "jalasjarvi, ",
                     "value" : "Jalasjärvi",
                     "title" : "Jalasjärvi",
                     "help" : "",
@@ -594,7 +594,7 @@
                     "attributes" : [ ]
                   }, {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "janakkala",
                     "value" : "Janakkala",
                     "title" : "Janakkala",
                     "help" : "",
@@ -602,7 +602,7 @@
                     "attributes" : [ ]
                   }, {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "joensuu",
                     "value" : "Joensuu",
                     "title" : "Joensuu",
                     "help" : "",
@@ -610,7 +610,7 @@
                     "attributes" : [ ]
                   }, {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "jokioinen",
                     "value" : "Jokioinen",
                     "title" : "Jokioinen",
                     "help" : "",
@@ -618,7 +618,7 @@
                     "attributes" : [ ]
                   }, {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "jomala",
                     "value" : "Jomala",
                     "title" : "Jomala",
                     "help" : "",
@@ -633,16 +633,16 @@
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
-                    "key" : "placeholder",
-                    "value" : "Valitse kansalaisuus"
-                  }, {
-                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "placeholder",
+                    "value" : "Valitse kansalaisuus"
                   } ],
                   "options" : [ {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "suomi",
                     "value" : "Suomi",
                     "title" : "Suomi",
                     "help" : "",
@@ -650,7 +650,7 @@
                     "attributes" : [ ]
                   }, {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "ruotsi",
                     "value" : "Ruotsi",
                     "title" : "Ruotsi",
                     "help" : "",
@@ -674,7 +674,7 @@
                   } ],
                   "options" : [ {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "suomi",
                     "value" : "Suomi",
                     "title" : "Suomi",
                     "help" : "",
@@ -682,7 +682,7 @@
                     "attributes" : [ ]
                   }, {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "ruotsi",
                     "value" : "Ruotsi",
                     "title" : "Ruotsi",
                     "help" : "",
@@ -709,7 +709,7 @@
                   } ],
                   "options" : [ {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "ei",
                     "value" : "Ei",
                     "title" : "Ei ole",
                     "help" : "",
@@ -717,7 +717,7 @@
                     "attributes" : [ ]
                   }, {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "kylla",
                     "value" : "Kyllä",
                     "title" : "Kyllä seuraavaan tutkintoon",
                     "help" : "",
@@ -727,13 +727,13 @@
                 }, {
                   "type" : "CheckBox",
                   "id" : "tausta",
-                  "title" : "Merkitse, josta väitä vastaa koulutustaustaasi.",
+                  "title" : "Merkitse, jos väite vastaa koulutustaustaasi.",
                   "help" : "",
                   "children" : [ ],
                   "attributes" : [ ],
                   "options" : [ {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "avoin",
                     "value" : "korkeakoulu_avoin",
                     "title" : "Olen suorittanyt korkeakoulun edellyttämät avoimen korkeakoulun opinnot.",
                     "help" : "",
@@ -741,7 +741,7 @@
                     "attributes" : [ ]
                   }, {
                     "type" : "Option",
-                    "id" : "1347531158748",
+                    "id" : "muu",
                     "value" : "korkeakoulu_muu",
                     "title" : "Minulla on muu korkeakoulu kelpoisuus",
                     "help" : "",
@@ -756,12 +756,12 @@
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
-                    "key" : "cols",
-                    "value" : "20"
-                  }, {
-                    "type" : "Attribute",
                     "key" : "rows",
                     "value" : "3"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "cols",
+                    "value" : "20"
                   } ]
                 } ],
                 "attributes" : [ ]
