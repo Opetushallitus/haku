@@ -48,23 +48,23 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         yhteenveto.addChild(yhteenvetoRyhmä);
 
         DropdownSelect äidinkieli = new DropdownSelect("äidinkieli", "Äidinkieli", "äidinkieli");
-        äidinkieli.addOption("Suomi", "Suomi");
-        äidinkieli.addOption("Ruotsi", "Ruotsi");
+        äidinkieli.addOption("suomi", "Suomi", "Suomi");
+        äidinkieli.addOption("ruotsi", "Ruotsi", "Ruotsi");
         äidinkieli.addAttribute("placeholder", "Valitse Äidinkieli");
         äidinkieli.addAttribute("required", "required");
 
         DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", "Kansalaisuus", "kansalaisuus");
-        kansalaisuus.addOption("Suomi", "Suomi");
-        kansalaisuus.addOption("Ruotsi", "Ruotsi");
+        kansalaisuus.addOption("suomi", "Suomi", "Suomi");
+        kansalaisuus.addOption("ruotsi", "Ruotsi", "Ruotsi");
         kansalaisuus.addAttribute("placeholder", "Valitse kansalaisuus");
         kansalaisuus.addAttribute("required", "required");
 
         DropdownSelect kotikunta = new DropdownSelect("kotikunta", "Kotikunta", "kotikunta");
-        kotikunta.addOption("Jalasjärvi", "Jalasjärvi");
-        kotikunta.addOption("Janakkala", "Janakkala");
-        kotikunta.addOption("Joensuu", "Joensuu");
-        kotikunta.addOption("Jokioinen", "Jokioinen");
-        kotikunta.addOption("Jomala", "Jomala");
+        kotikunta.addOption("jalasjarvi, ", "Jalasjärvi", "Jalasjärvi");
+        kotikunta.addOption("janakkala", "Janakkala", "Janakkala");
+        kotikunta.addOption("joensuu", "Joensuu", "Joensuu");
+        kotikunta.addOption("jokioinen", "Jokioinen", "Jokioinen");
+        kotikunta.addOption("jomala", "Jomala", "Jomala");
         kotikunta.addAttribute("placeholder", "Valitse kotikunta");
         kotikunta.addAttribute("required", "required");
 
@@ -80,13 +80,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         sähköposti.setHelp("Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti.");
 
         Radio sukupuoli = new Radio("Sukupuoli", "Sukupuoli", "Sukupuoli");
-        sukupuoli.addOption("Nainen", "Nainen");
-        sukupuoli.addOption("Mies", "Mies");
+        sukupuoli.addOption("nainen", "Nainen", "Nainen");
+        sukupuoli.addOption("mies", "Mies", "Mies");
         sukupuoli.addAttribute("required", "required");
 
         DropdownSelect asuinmaa = new DropdownSelect("Asuinmaa", "Asuinmaa", "Asuinmaa");
-        asuinmaa.addOption("Suomi", "Suomi");
-        asuinmaa.addOption("Ruotsi", "Ruotsi");
+        asuinmaa.addOption("suomi", "Suomi", "Suomi");
+        asuinmaa.addOption("ruotsi", "Ruotsi", "Ruotsi");
         asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
         asuinmaa.addAttribute("required", "required");
         Element postinumero = createRequiredTextQuestion("Postinumero", "Postinumero");
@@ -108,13 +108,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                 .addChild(äidinkieli);
 
         Radio voimassaoleva = new Radio("voimassaoleva", "Onko sinulla voimassa oleva tutkinnonsuoritusoikeus korkeakouluasteella?", "voimassaoleva");
-        voimassaoleva.addOption("Ei", "Ei ole");
-        voimassaoleva.addOption("Kyllä", "Kyllä seuraavaan tutkintoon");
+        voimassaoleva.addOption("ei", "Ei", "Ei ole");
+        voimassaoleva.addOption("kylla", "Kyllä", "Kyllä seuraavaan tutkintoon");
         voimassaoleva.addAttribute("required", "required");
 
-        CheckBox checkBox = new CheckBox("tausta", "Merkitse, josta väitä vastaa koulutustaustaasi.", "tausta");
-        checkBox.addOption("korkeakoulu_avoin", "Olen suorittanyt korkeakoulun edellyttämät avoimen korkeakoulun opinnot.");
-        checkBox.addOption("korkeakoulu_muu", "Minulla on muu korkeakoulu kelpoisuus");
+        CheckBox checkBox = new CheckBox("tausta", "Merkitse, jos väite vastaa koulutustaustaasi.", "tausta");
+        checkBox.addOption("avoin", "korkeakoulu_avoin", "Olen suorittanyt korkeakoulun edellyttämät avoimen korkeakoulun opinnot.");
+        checkBox.addOption("muu", "korkeakoulu_muu", "Minulla on muu korkeakoulu kelpoisuus");
         koulutustaustaRyhmä.addChild(voimassaoleva);
         koulutustaustaRyhmä.addChild(checkBox);
 

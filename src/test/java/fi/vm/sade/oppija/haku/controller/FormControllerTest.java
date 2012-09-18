@@ -4,6 +4,7 @@ import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.haku.service.UserFormData;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,7 +23,7 @@ public class FormControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        this.formController = new FormController(new FormModelDummyMemoryDaoImpl(formId, firstCategoryId));
+        this.formController = new FormController(new FormModelDummyMemoryDaoImpl(formId, firstCategoryId), new UserFormData());
     }
 
     @Test
@@ -67,7 +68,7 @@ public class FormControllerTest {
     @Test
     public void testGetCategoryModelSize() throws Exception {
         ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
-        assertEquals(2, actualModelAndView.getModel().size());
+        assertEquals(3, actualModelAndView.getModel().size());
     }
 
     @Test
