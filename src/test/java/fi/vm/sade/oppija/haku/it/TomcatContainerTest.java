@@ -11,6 +11,7 @@ import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class TomcatContainerTest {
      * The tomcat instance.
      */
     private Tomcat mTomcat;
+    private static File webApp;
 
     private static WebArchive addWebResourcesTo(WebArchive archive) {
         final File webAppDirectory = new File(WEBAPP_SRC);
@@ -70,8 +72,16 @@ public class TomcatContainerTest {
         mTomcat.getHost().setDeployOnStartup(true);
     }
 
+    @BeforeClass
+    public static void doPackage() throws IOException {
+        webApp = createPackage();
+    }
+
     private void createWebApp() throws IOException {
-        String contextPath = getContextPath();
+        mTomcat.addWebapp(mTomcat.getHost(), getContextPath(), webApp.getAbsolutePath());
+    }
+
+    private static File createPackage() throws IOException {
         final File workDir = new File(mWorkingDir);
         if (!workDir.exists()) {
             boolean ignored = workDir.mkdirs();
@@ -80,18 +90,18 @@ public class TomcatContainerTest {
         File oldWebApp = new File(webApp.getAbsolutePath());
         FileUtils.deleteDirectory(oldWebApp);
         new ZipExporterImpl(createWebArchive()).exportTo(new File(mWorkingDir + "/" + packageName()), true);
-        mTomcat.addWebapp(mTomcat.getHost(), contextPath, webApp.getAbsolutePath());
+        return webApp;
     }
 
     private String getContextPath() {
         return "/" + getApplicationId();
     }
 
-    private String packageName() {
+    private static String packageName() {
         return getApplicationId() + ".war";
     }
 
-    private WebArchive createWebArchive() {
+    private static WebArchive createWebArchive() {
         MavenDependencyResolver resolver = DependencyResolvers.use(MavenDependencyResolver.class);
         final File[] files = resolver.loadEffectivePom("pom.xml").importAllDependencies().resolveAsFiles();
         return addWebResourcesTo(ShrinkWrap.create(WebArchive.class, packageName()).setWebXML(new File(WEBAPP_SRC, "WEB-INF/web.xml"))
@@ -100,7 +110,7 @@ public class TomcatContainerTest {
 
     }
 
-    public String getApplicationId() {
+    public static String getApplicationId() {
         return "haku";
     }
 
