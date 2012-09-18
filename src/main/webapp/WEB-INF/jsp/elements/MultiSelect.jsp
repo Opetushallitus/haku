@@ -4,7 +4,7 @@
     <select multiple="multiple" name="${element.id}" id="${element.id}">
         <c:forEach var="option" items="${element.options}">
             <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
-            <option name="${optionId}" value="${option.value}">${option.title}</option>
+            <option name="${optionId}" value="${option.value}" ${option.attributeString}>${option.title}</option>
         </c:forEach>
     </select>
 </fieldset>

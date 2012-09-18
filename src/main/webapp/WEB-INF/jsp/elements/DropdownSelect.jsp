@@ -3,10 +3,10 @@
 
 <label for="label-${element.id}">${element.title}</label>
 
-<select name="${element.id}" ${link.attributeString}>
+<select ${element.attributeString}>
     <c:forEach var="option" items="${element.options}">
         <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
-        <option name="${optionId}" value="${option.value}" ${(categoryData[element.id] eq option.value) ? "selected=\"selected\"" : ""}>${option.title}</option>
+        <option name="${optionId}" value="${option.value}" ${(categoryData[element.id] eq option.value) ? "selected=\"selected\"" : ""} ${option.attributeString}>${option.title}</option>
     </c:forEach>
 </select>
 
