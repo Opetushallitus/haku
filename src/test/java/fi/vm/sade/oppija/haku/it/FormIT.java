@@ -1,7 +1,6 @@
 package fi.vm.sade.oppija.haku.it;
 
 
-import fi.vm.sade.oppija.haku.RootPackageMarker;
 import net.sourceforge.jwebunit.util.TestingEngineRegistry;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +13,6 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 public class FormIT extends AbstractIT {
 
     public FormIT() {
-        new RootPackageMarker();
         this.jsonModelFileName = "navigation-test.json";
     }
 
