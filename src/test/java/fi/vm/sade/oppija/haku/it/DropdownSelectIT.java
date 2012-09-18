@@ -35,7 +35,6 @@ public class DropdownSelectIT extends AbstractRemoteTest {
     public void testInputExists() throws IOException {
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);
-        dumpHtml();
         assertElementPresent("select");
         final IElement select = getElementById("select");
         assertEquals(2, select.getChildren().size());

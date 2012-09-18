@@ -35,7 +35,6 @@ public class MultiSelectIT extends AbstractRemoteTest {
     public void testInputExists() throws IOException {
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);
-        dumpHtml();
         assertElementPresent("multiselect");
         final IElement multiselect = getElementById("multiselect");
         assertEquals(2, multiselect.getChildren().size());
