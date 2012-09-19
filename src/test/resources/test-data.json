@@ -3,8 +3,8 @@
   "applicationPerioidMap" : {
     "test" : {
       "id" : "test",
-      "starts" : 1347968273201,
-      "end" : 1379504273201,
+      "starts" : 1348032706649,
+      "end" : 1379568706649,
       "forms" : {
         "yhteishaku" : {
           "type" : "Form",
@@ -29,20 +29,20 @@
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
+                  "key" : "id",
+                  "value" : "Sukunimi"
+                }, {
+                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 }, {
                   "type" : "Attribute",
-                  "key" : "id",
+                  "key" : "name",
                   "value" : "Sukunimi"
                 }, {
                   "type" : "Attribute",
                   "key" : "type",
                   "value" : "text"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "name",
-                  "value" : "Sukunimi"
                 } ]
               }, {
                 "type" : "TextQuestion",
@@ -56,15 +56,15 @@
                   "value" : "required"
                 }, {
                   "type" : "Attribute",
+                  "key" : "id",
+                  "value" : "Etunimet"
+                }, {
+                  "type" : "Attribute",
                   "key" : "type",
                   "value" : "text"
                 }, {
                   "type" : "Attribute",
                   "key" : "name",
-                  "value" : "Etunimet"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "id",
                   "value" : "Etunimet"
                 } ]
               }, {
@@ -79,7 +79,7 @@
                   "value" : "required"
                 }, {
                   "type" : "Attribute",
-                  "key" : "name",
+                  "key" : "id",
                   "value" : "Kutsumanimi"
                 }, {
                   "type" : "Attribute",
@@ -87,7 +87,7 @@
                   "value" : "text"
                 }, {
                   "type" : "Attribute",
-                  "key" : "id",
+                  "key" : "name",
                   "value" : "Kutsumanimi"
                 } ]
               }, {
@@ -114,16 +114,16 @@
                   "value" : "Henkilötunnus"
                 }, {
                   "type" : "Attribute",
+                  "key" : "type",
+                  "value" : "text"
+                }, {
+                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 }, {
                   "type" : "Attribute",
                   "key" : "id",
                   "value" : "Henkilötunnus"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "type",
-                  "value" : "text"
                 } ]
               }, {
                 "type" : "Radio",
@@ -137,11 +137,11 @@
                   "value" : "required"
                 }, {
                   "type" : "Attribute",
-                  "key" : "id",
+                  "key" : "name",
                   "value" : "Sukupuoli"
                 }, {
                   "type" : "Attribute",
-                  "key" : "name",
+                  "key" : "id",
                   "value" : "Sukupuoli"
                 } ],
                 "options" : [ {
@@ -173,16 +173,16 @@
                 "type" : "TextQuestion",
                 "id" : "Sähköposti",
                 "title" : "Sähköposti",
-                "help" : "Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.",
+                "help" : "Kirjoita tähän sähköpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.",
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
-                  "key" : "type",
-                  "value" : "text"
-                }, {
-                  "type" : "Attribute",
                   "key" : "id",
                   "value" : "Sähköposti"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "type",
+                  "value" : "text"
                 }, {
                   "type" : "Attribute",
                   "key" : "name",
@@ -215,7 +215,7 @@
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
-                  "key" : "name",
+                  "key" : "id",
                   "value" : "Asuinmaa"
                 }, {
                   "type" : "Attribute",
@@ -227,7 +227,7 @@
                   "value" : "Valitse kansalaisuus"
                 }, {
                   "type" : "Attribute",
-                  "key" : "id",
+                  "key" : "name",
                   "value" : "Asuinmaa"
                 } ],
                 "options" : [ {
@@ -263,16 +263,16 @@
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
+                  "key" : "required",
+                  "value" : "required"
+                }, {
+                  "type" : "Attribute",
                   "key" : "type",
                   "value" : "text"
                 }, {
                   "type" : "Attribute",
                   "key" : "id",
                   "value" : "Lähiosoite"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
                 }, {
                   "type" : "Attribute",
                   "key" : "name",
@@ -286,20 +286,20 @@
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
-                  "key" : "id",
-                  "value" : "Postinumero"
+                  "key" : "title",
+                  "value" : "#####"
                 }, {
                   "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
                 }, {
                   "type" : "Attribute",
-                  "key" : "name",
-                  "value" : "Postinumero"
+                  "key" : "type",
+                  "value" : "text"
                 }, {
                   "type" : "Attribute",
-                  "key" : "title",
-                  "value" : "#####"
+                  "key" : "name",
+                  "value" : "Postinumero"
                 }, {
                   "type" : "Attribute",
                   "key" : "pattern",
@@ -310,8 +310,8 @@
                   "value" : "required"
                 }, {
                   "type" : "Attribute",
-                  "key" : "type",
-                  "value" : "text"
+                  "key" : "id",
+                  "value" : "Postinumero"
                 } ]
               }, {
                 "type" : "DropdownSelect",
@@ -321,20 +321,20 @@
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
+                  "key" : "name",
+                  "value" : "kotikunta"
                 }, {
                   "type" : "Attribute",
-                  "key" : "placeholder",
-                  "value" : "Valitse kotikunta"
+                  "key" : "required",
+                  "value" : "required"
                 }, {
                   "type" : "Attribute",
                   "key" : "id",
                   "value" : "kotikunta"
                 }, {
                   "type" : "Attribute",
-                  "key" : "name",
-                  "value" : "kotikunta"
+                  "key" : "placeholder",
+                  "value" : "Valitse kotikunta"
                 } ],
                 "options" : [ {
                   "type" : "Option",
@@ -405,11 +405,11 @@
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
-                  "key" : "id",
+                  "key" : "name",
                   "value" : "kansalaisuus"
                 }, {
                   "type" : "Attribute",
-                  "key" : "name",
+                  "key" : "id",
                   "value" : "kansalaisuus"
                 }, {
                   "type" : "Attribute",
@@ -457,15 +457,15 @@
                   "value" : "required"
                 }, {
                   "type" : "Attribute",
+                  "key" : "id",
+                  "value" : "äidinkieli"
+                }, {
+                  "type" : "Attribute",
                   "key" : "placeholder",
                   "value" : "Valitse Äidinkieli"
                 }, {
                   "type" : "Attribute",
                   "key" : "name",
-                  "value" : "äidinkieli"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "id",
                   "value" : "äidinkieli"
                 } ],
                 "options" : [ {
@@ -515,11 +515,11 @@
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
-                  "key" : "name",
+                  "key" : "id",
                   "value" : "millatutkinnolla"
                 }, {
                   "type" : "Attribute",
-                  "key" : "id",
+                  "key" : "name",
                   "value" : "millatutkinnolla"
                 } ],
                 "options" : [ {
@@ -651,16 +651,16 @@
                 "children" : [ ],
                 "attributes" : [ {
                   "type" : "Attribute",
-                  "key" : "required",
-                  "value" : "required"
-                }, {
-                  "type" : "Attribute",
                   "key" : "id",
                   "value" : "peruskoulu2012"
                 }, {
                   "type" : "Attribute",
                   "key" : "name",
                   "value" : "peruskoulu2012"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "required",
+                  "value" : "required"
                 } ],
                 "options" : [ {
                   "type" : "Option",
@@ -775,12 +775,12 @@
                   "value" : "jotain"
                 }, {
                   "type" : "Attribute",
-                  "key" : "id",
-                  "value" : "jotain"
-                }, {
-                  "type" : "Attribute",
                   "key" : "required",
                   "value" : "required"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "id",
+                  "value" : "jotain"
                 } ],
                 "options" : [ {
                   "type" : "Option",
@@ -835,7 +835,30 @@
               "id" : "arvosanatGrp",
               "title" : "Arvosanat",
               "help" : null,
-              "children" : [ ],
+              "children" : [ {
+                "type" : "TextArea",
+                "id" : "arvosanat",
+                "title" : "Arvosanat",
+                "help" : null,
+                "children" : [ ],
+                "attributes" : [ {
+                  "type" : "Attribute",
+                  "key" : "id",
+                  "value" : "arvosanat"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "rows",
+                  "value" : "3"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "name",
+                  "value" : "arvosanat"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "cols",
+                  "value" : "20"
+                } ]
+              } ],
               "attributes" : [ ]
             } ],
             "attributes" : [ ]
@@ -849,7 +872,30 @@
               "id" : "lisatiedotGrp",
               "title" : "Lisätiedot",
               "help" : null,
-              "children" : [ ],
+              "children" : [ {
+                "type" : "TextArea",
+                "id" : "vapaa",
+                "title" : "Lisätietoja, sana on vapaa",
+                "help" : null,
+                "children" : [ ],
+                "attributes" : [ {
+                  "type" : "Attribute",
+                  "key" : "id",
+                  "value" : "vapaa"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "rows",
+                  "value" : "3"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "name",
+                  "value" : "vapaa"
+                }, {
+                  "type" : "Attribute",
+                  "key" : "cols",
+                  "value" : "20"
+                } ]
+              } ],
               "attributes" : [ ]
             } ],
             "attributes" : [ ]
@@ -862,20 +908,6 @@
               "type" : "QuestionGroup",
               "id" : "esikatseluGrp",
               "title" : "Esikatselu",
-              "help" : null,
-              "children" : [ ],
-              "attributes" : [ ]
-            } ],
-            "attributes" : [ ]
-          }, {
-            "type" : "Category",
-            "id" : "yhteenveto",
-            "title" : "yhteenveto",
-            "help" : null,
-            "children" : [ {
-              "type" : "QuestionGroup",
-              "id" : "yhteenvetoGrp",
-              "title" : "yhteenveto",
               "help" : null,
               "children" : [ {
                 "type" : "QuestionGroup",
@@ -890,20 +922,20 @@
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
+                    "key" : "id",
+                    "value" : "Sukunimi"
+                  }, {
+                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   }, {
                     "type" : "Attribute",
-                    "key" : "id",
+                    "key" : "name",
                     "value" : "Sukunimi"
                   }, {
                     "type" : "Attribute",
                     "key" : "type",
                     "value" : "text"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "name",
-                    "value" : "Sukunimi"
                   } ]
                 }, {
                   "type" : "TextQuestion",
@@ -917,15 +949,15 @@
                     "value" : "required"
                   }, {
                     "type" : "Attribute",
+                    "key" : "id",
+                    "value" : "Etunimet"
+                  }, {
+                    "type" : "Attribute",
                     "key" : "type",
                     "value" : "text"
                   }, {
                     "type" : "Attribute",
                     "key" : "name",
-                    "value" : "Etunimet"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "id",
                     "value" : "Etunimet"
                   } ]
                 }, {
@@ -940,7 +972,7 @@
                     "value" : "required"
                   }, {
                     "type" : "Attribute",
-                    "key" : "name",
+                    "key" : "id",
                     "value" : "Kutsumanimi"
                   }, {
                     "type" : "Attribute",
@@ -948,7 +980,7 @@
                     "value" : "text"
                   }, {
                     "type" : "Attribute",
-                    "key" : "id",
+                    "key" : "name",
                     "value" : "Kutsumanimi"
                   } ]
                 }, {
@@ -975,16 +1007,16 @@
                     "value" : "Henkilötunnus"
                   }, {
                     "type" : "Attribute",
+                    "key" : "type",
+                    "value" : "text"
+                  }, {
+                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   }, {
                     "type" : "Attribute",
                     "key" : "id",
                     "value" : "Henkilötunnus"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "type",
-                    "value" : "text"
                   } ]
                 }, {
                   "type" : "Radio",
@@ -998,11 +1030,11 @@
                     "value" : "required"
                   }, {
                     "type" : "Attribute",
-                    "key" : "id",
+                    "key" : "name",
                     "value" : "Sukupuoli"
                   }, {
                     "type" : "Attribute",
-                    "key" : "name",
+                    "key" : "id",
                     "value" : "Sukupuoli"
                   } ],
                   "options" : [ {
@@ -1034,16 +1066,16 @@
                   "type" : "TextQuestion",
                   "id" : "Sähköposti",
                   "title" : "Sähköposti",
-                  "help" : "Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.",
+                  "help" : "Kirjoita tähän sähköpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.",
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
-                    "key" : "type",
-                    "value" : "text"
-                  }, {
-                    "type" : "Attribute",
                     "key" : "id",
                     "value" : "Sähköposti"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "type",
+                    "value" : "text"
                   }, {
                     "type" : "Attribute",
                     "key" : "name",
@@ -1076,7 +1108,7 @@
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
-                    "key" : "name",
+                    "key" : "id",
                     "value" : "Asuinmaa"
                   }, {
                     "type" : "Attribute",
@@ -1088,7 +1120,7 @@
                     "value" : "Valitse kansalaisuus"
                   }, {
                     "type" : "Attribute",
-                    "key" : "id",
+                    "key" : "name",
                     "value" : "Asuinmaa"
                   } ],
                   "options" : [ {
@@ -1124,16 +1156,16 @@
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
+                    "key" : "required",
+                    "value" : "required"
+                  }, {
+                    "type" : "Attribute",
                     "key" : "type",
                     "value" : "text"
                   }, {
                     "type" : "Attribute",
                     "key" : "id",
                     "value" : "Lähiosoite"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
                   }, {
                     "type" : "Attribute",
                     "key" : "name",
@@ -1147,20 +1179,20 @@
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
-                    "key" : "id",
-                    "value" : "Postinumero"
+                    "key" : "title",
+                    "value" : "#####"
                   }, {
                     "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
                   }, {
                     "type" : "Attribute",
-                    "key" : "name",
-                    "value" : "Postinumero"
+                    "key" : "type",
+                    "value" : "text"
                   }, {
                     "type" : "Attribute",
-                    "key" : "title",
-                    "value" : "#####"
+                    "key" : "name",
+                    "value" : "Postinumero"
                   }, {
                     "type" : "Attribute",
                     "key" : "pattern",
@@ -1171,8 +1203,8 @@
                     "value" : "required"
                   }, {
                     "type" : "Attribute",
-                    "key" : "type",
-                    "value" : "text"
+                    "key" : "id",
+                    "value" : "Postinumero"
                   } ]
                 }, {
                   "type" : "DropdownSelect",
@@ -1182,20 +1214,20 @@
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
+                    "key" : "name",
+                    "value" : "kotikunta"
                   }, {
                     "type" : "Attribute",
-                    "key" : "placeholder",
-                    "value" : "Valitse kotikunta"
+                    "key" : "required",
+                    "value" : "required"
                   }, {
                     "type" : "Attribute",
                     "key" : "id",
                     "value" : "kotikunta"
                   }, {
                     "type" : "Attribute",
-                    "key" : "name",
-                    "value" : "kotikunta"
+                    "key" : "placeholder",
+                    "value" : "Valitse kotikunta"
                   } ],
                   "options" : [ {
                     "type" : "Option",
@@ -1266,11 +1298,11 @@
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
-                    "key" : "id",
+                    "key" : "name",
                     "value" : "kansalaisuus"
                   }, {
                     "type" : "Attribute",
-                    "key" : "name",
+                    "key" : "id",
                     "value" : "kansalaisuus"
                   }, {
                     "type" : "Attribute",
@@ -1318,15 +1350,15 @@
                     "value" : "required"
                   }, {
                     "type" : "Attribute",
+                    "key" : "id",
+                    "value" : "äidinkieli"
+                  }, {
+                    "type" : "Attribute",
                     "key" : "placeholder",
                     "value" : "Valitse Äidinkieli"
                   }, {
                     "type" : "Attribute",
                     "key" : "name",
-                    "value" : "äidinkieli"
-                  }, {
-                    "type" : "Attribute",
-                    "key" : "id",
                     "value" : "äidinkieli"
                   } ],
                   "options" : [ {
@@ -1369,11 +1401,11 @@
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
-                    "key" : "name",
+                    "key" : "id",
                     "value" : "millatutkinnolla"
                   }, {
                     "type" : "Attribute",
-                    "key" : "id",
+                    "key" : "name",
                     "value" : "millatutkinnolla"
                   } ],
                   "options" : [ {
@@ -1505,16 +1537,16 @@
                   "children" : [ ],
                   "attributes" : [ {
                     "type" : "Attribute",
-                    "key" : "required",
-                    "value" : "required"
-                  }, {
-                    "type" : "Attribute",
                     "key" : "id",
                     "value" : "peruskoulu2012"
                   }, {
                     "type" : "Attribute",
                     "key" : "name",
                     "value" : "peruskoulu2012"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "required",
+                    "value" : "required"
                   } ],
                   "options" : [ {
                     "type" : "Option",
@@ -1629,12 +1661,12 @@
                     "value" : "jotain"
                   }, {
                     "type" : "Attribute",
-                    "key" : "id",
-                    "value" : "jotain"
-                  }, {
-                    "type" : "Attribute",
                     "key" : "required",
                     "value" : "required"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "id",
+                    "value" : "jotain"
                   } ],
                   "options" : [ {
                     "type" : "Option",
@@ -1664,29 +1696,87 @@
                 } ],
                 "attributes" : [ ]
               }, {
-                "type" : "TextArea",
-                "id" : "vapaa",
-                "title" : "Kerro miksi haet juuri meille",
-                "help" : null,
+                "type" : "QuestionGroup",
+                "id" : "hakutoiveetGrp",
+                "title" : "Hakutoiveet",
+                "help" : "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
                 "children" : [ ],
-                "attributes" : [ {
-                  "type" : "Attribute",
-                  "key" : "rows",
-                  "value" : "3"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "name",
-                  "value" : "vapaa"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "id",
-                  "value" : "vapaa"
-                }, {
-                  "type" : "Attribute",
-                  "key" : "cols",
-                  "value" : "20"
-                } ]
+                "attributes" : [ ]
+              }, {
+                "type" : "QuestionGroup",
+                "id" : "arvosanatGrp",
+                "title" : "Arvosanat",
+                "help" : null,
+                "children" : [ {
+                  "type" : "TextArea",
+                  "id" : "arvosanat",
+                  "title" : "Arvosanat",
+                  "help" : null,
+                  "children" : [ ],
+                  "attributes" : [ {
+                    "type" : "Attribute",
+                    "key" : "id",
+                    "value" : "arvosanat"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "rows",
+                    "value" : "3"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "name",
+                    "value" : "arvosanat"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "cols",
+                    "value" : "20"
+                  } ]
+                } ],
+                "attributes" : [ ]
+              }, {
+                "type" : "QuestionGroup",
+                "id" : "lisatiedotGrp",
+                "title" : "Lisätiedot",
+                "help" : null,
+                "children" : [ {
+                  "type" : "TextArea",
+                  "id" : "vapaa",
+                  "title" : "Lisätietoja, sana on vapaa",
+                  "help" : null,
+                  "children" : [ ],
+                  "attributes" : [ {
+                    "type" : "Attribute",
+                    "key" : "id",
+                    "value" : "vapaa"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "rows",
+                    "value" : "3"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "name",
+                    "value" : "vapaa"
+                  }, {
+                    "type" : "Attribute",
+                    "key" : "cols",
+                    "value" : "20"
+                  } ]
+                } ],
+                "attributes" : [ ]
               } ],
+              "attributes" : [ ]
+            } ],
+            "attributes" : [ ]
+          }, {
+            "type" : "Category",
+            "id" : "yhteenveto",
+            "title" : "yhteenveto",
+            "help" : null,
+            "children" : [ {
+              "type" : "QuestionGroup",
+              "id" : "yhteenvetoGrp",
+              "title" : "yhteenveto",
+              "help" : "Kiitos, hakemuksesi on vastaanotettu",
+              "children" : [ ],
               "attributes" : [ ]
             } ],
             "attributes" : [ ]

@@ -131,11 +131,17 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                 .addChild(äidinkieli);
 
 
-        TextArea textArea = new TextArea("vapaa", "Kerro miksi haet juuri meille");
+        TextArea textArea = new TextArea("arvosanat", "Arvosanat");
         createKoulutustausta(koulutustaustaRyhmä);
         createHakutoiveet(hakutoiveetRyhmä);
-        yhteenvetoRyhmä.addChild(henkilötiedotRyhmä).addChild(koulutustaustaRyhmä);
-        yhteenvetoRyhmä.addChild(textArea);
+        TextArea lisätiedotText = new TextArea("vapaa", "Lisätietoja, sana on vapaa");
+        lisätiedotRyhmä.addChild(lisätiedotText);
+        arvosanatRyhmä.addChild(textArea);
+
+        esikatselutRyhmä.addChild(henkilötiedotRyhmä).
+                addChild(koulutustaustaRyhmä).addChild(hakutoiveetRyhmä).addChild(arvosanatRyhmä).addChild(lisätiedotRyhmä);
+
+        yhteenvetoRyhmä.setHelp("Kiitos, hakemuksesi on vastaanotettu");
 
     }
 
