@@ -4,4 +4,4 @@
 <div>
     <textarea id="${element.id}" name="${element.id}" ${element.attributeString}><c:out value="${categoryData[element.id]}"/></textarea>
 </div>
-<div>${element.help}</div>
+<div class="ehelp">${element.help}</div>
