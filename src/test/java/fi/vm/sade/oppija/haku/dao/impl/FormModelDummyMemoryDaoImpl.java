@@ -95,7 +95,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         kutsumanimi.setHelp("Valitse kutsumanimeksi jokin virallisista etunimistäsi");
         kutsumanimi.addAttribute("required", "required");
         TextQuestion sähköposti = new TextQuestion("Sähköposti", "Sähköposti");
-        sähköposti.setHelp("Kirjoita tähän sähköopstiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.");
+        sähköposti.setHelp("Kirjoita tähän sähköpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.");
 
         Radio sukupuoli = new Radio("Sukupuoli", "Sukupuoli");
         sukupuoli.addOption("mies", "Mies", "Mies");

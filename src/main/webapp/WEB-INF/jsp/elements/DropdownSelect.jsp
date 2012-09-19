@@ -10,4 +10,4 @@
     </c:forEach>
 </select>
 
-<div>${element.help}</div>
+<div class="ehelp">${element.help}</div>
