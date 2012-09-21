@@ -5,11 +5,6 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author jukka
- * @version 9/11/122:47 PM}
- * @since 1.1
- */
 @Component("session")
 public class UserFormData {
     private Map<String, Map<String, String>> formData = new HashMap<String, Map<String, String>>();

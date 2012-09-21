@@ -10,6 +10,7 @@ import fi.vm.sade.oppija.haku.domain.elements.QuestionGroup;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.domain.questions.*;
 import fi.vm.sade.oppija.haku.service.FormService;
+import fi.vm.sade.oppija.haku.validation.Validator;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -240,6 +241,11 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     @Override
     public ApplicationPeriod getApplicationPeriodById(final String applicationPeriodId) {
         return getModel().getApplicationPeriodById(applicationPeriodId);
+    }
+
+    @Override
+    public Map<String, Validator> getCategoryValidators(String applicationPeriodId, String formId, String categoryId) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
 }

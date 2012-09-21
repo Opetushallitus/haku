@@ -8,9 +8,12 @@ import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.FormModelHolder;
 import fi.vm.sade.oppija.haku.service.FormService;
+import fi.vm.sade.oppija.haku.validation.Validator;
+import fi.vm.sade.oppija.haku.validation.validators.RequiredFieldValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -59,6 +62,16 @@ public class FormServiceImpl implements FormService {
     @Override
     public ApplicationPeriod getApplicationPeriodById(String applicationPeriodId) {
         return getModel().getApplicationPeriodById(applicationPeriodId);
+    }
+
+    @Override
+    public Map<String, Validator> getCategoryValidators(String applicationPeriodId, String formId, String categoryId) {
+        RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator("Sukunimi on pakollinen kenttä", "Sukunimi");
+        HashMap<String, Validator> validators = new HashMap<String, Validator>();
+        if ("henkilotiedot".equals(categoryId)) {
+            validators.put(requiredFieldValidator.fieldName, requiredFieldValidator);
+        }
+        return validators;
     }
 
 

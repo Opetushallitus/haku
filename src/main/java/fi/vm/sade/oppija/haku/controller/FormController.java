@@ -6,6 +6,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.UserFormData;
+import fi.vm.sade.oppija.haku.validation.FormValidator;
 import org.codehaus.plexus.util.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,8 @@ public class FormController {
     private final static Logger logger = LoggerFactory.getLogger(FormController.class);
     public static final String DEFAULT_VIEW = "default";
     public static final String LINK_LIST_VIEW = "linkList";
+    public static final String ERROR_NOTFOUND = "error/notfound";
+    public static final String ERROR_SERVERERROR = "error/servererror";
 
     final FormService formService;
 
@@ -77,41 +80,60 @@ public class FormController {
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-    public String saveCategory(@PathVariable final String applicationPeriodId,
-                               @PathVariable final String formId,
-                               @PathVariable final String categoryId,
-                               @RequestBody final MultiValueMap<String, String> multiValues) {
+    public ModelAndView saveCategory(@PathVariable final String applicationPeriodId,
+                                     @PathVariable final String formId,
+                                     @PathVariable final String categoryId,
+                                     @RequestBody final MultiValueMap<String, String> multiValues) {
         logger.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         Map<String, String> values = multiValues.toSingleValueMap();
         userFormData.setValue(categoryId, values);
+        ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
+
+        FormValidator formValidator = new FormValidator();
+        Map<String, String> errors = formValidator.validate(values, formService.getCategoryValidators(applicationPeriodId, formId, categoryId));
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        Category category = getRedirectCategory(categoryId, values, activeForm);
-        return "redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + category.getId();
+        Category category = getNextCategory(categoryId, values, activeForm, errors);
+        if (errors.isEmpty()) {
+            modelAndView = new ModelAndView("redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + category.getId());
+        } else {
+            modelAndView.addObject("errors", errors);
+            modelAndView.addObject("category", activeForm.getCategory(categoryId));
+            modelAndView.addObject("form", activeForm);
+            modelAndView.addObject("categoryData", userFormData.getCategoryData(categoryId));
+        }
+        return modelAndView;
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ModelAndView handleResourceNotFoundExceptions(ResourceNotFoundException e) {
-        ModelAndView modelAndView = new ModelAndView("error/notfound");
+    public ModelAndView resourceNotFoundExceptions(ResourceNotFoundException e) {
+        ModelAndView modelAndView = new ModelAndView(ERROR_NOTFOUND);
         modelAndView.addObject("stackTrace", ExceptionUtils.getFullStackTrace(e));
         modelAndView.addObject("message", e.getMessage());
         return modelAndView;
     }
 
     @ExceptionHandler(Throwable.class)
-    public ModelAndView handleExceptions(Throwable t) {
-        ModelAndView modelAndView = new ModelAndView("error/servererror");
+    public ModelAndView exceptions(Throwable t) {
+        ModelAndView modelAndView = new ModelAndView(ERROR_SERVERERROR);
         modelAndView.addObject("stackTrace", ExceptionUtils.getFullStackTrace(t));
         modelAndView.addObject("message", t.getMessage());
         return modelAndView;
     }
 
-    private Category getRedirectCategory(final String categoryId, final Map<String, String> values, final Form activeForm) {
+    private Category getNextCategory(final String categoryId, final Map<String, String> values, final Form activeForm, Map<String, String> errors) {
         Category category = activeForm.getCategory(categoryId);
+        if (errors.isEmpty()) {
+            category = selectNextPrevOrCurrent(values, category);
+        }
+        return category;
+    }
+
+    private Category selectNextPrevOrCurrent(Map<String, String> values, Category category) {
         if (values.get("nav-next") != null && category.isHasNext()) {
-            category = category.getNext();
+            return category.getNext();
         } else if (values.get("nav-prev") != null && category.isHasPrev()) {
-            category = category.getPrev();
+            return category = category.getPrev();
         }
         return category;
     }

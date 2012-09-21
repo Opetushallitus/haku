@@ -82,4 +82,28 @@ public class FormControllerTest {
         ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
         assertNotSame(null, actualModelAndView.getViewName());
     }
+
+    @Test
+    public void testResourceNotFoundExceptionMessage() throws Exception {
+        String message = "text";
+        ResourceNotFoundException rnfv = new ResourceNotFoundException(message);
+        ModelAndView modelAndView = formController.resourceNotFoundExceptions(rnfv);
+        assertEquals(message, modelAndView.getModel().get("message"));
+    }
+
+    @Test
+    public void testResourceNotFoundExceptionView() throws Exception {
+        String message = "text";
+        ResourceNotFoundException rnfv = new ResourceNotFoundException(message);
+        ModelAndView modelAndView = formController.resourceNotFoundExceptions(rnfv);
+        assertEquals(FormController.ERROR_NOTFOUND, modelAndView.getViewName());
+    }
+
+    @Test
+    public void testExceptions() throws Exception {
+        String message = "text";
+        NullPointerException nullPointerException = new NullPointerException(message);
+        ModelAndView modelAndView = formController.exceptions(nullPointerException);
+        assertEquals(FormController.ERROR_SERVERERROR, modelAndView.getViewName());
+    }
 }

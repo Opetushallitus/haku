@@ -26,19 +26,8 @@
     <div class="container">
         <div class="application-content">
                 <form id="form-${category.id}" method="post">
-                    <c:choose>
-                        <c:when test="${category.hasPrev}">
-                            <input class="nav-prev" name="nav-prev" type="submit" value="Edellinen"/>
-                        </c:when>
-                    </c:choose>
-                    <c:choose>
-                        <c:when test="${category.hasNext}">
-                            <input class="nav-next" name="nav-next" type="submit" value="Seuraava"/>
-                        </c:when>
-                        <c:when test="${!category.hasNext}">
-                            <input class="nav-save" name="nav-save" type="submit" value="Tallenna"/>
-                        </c:when>
-                    </c:choose>
+
+                    <jsp:include page="prev_next_buttons.jsp"/>
 
                     <c:forEach var="child" items="${category.children}">
                         <c:set var="element" value="${child}" scope="request"/>
@@ -46,19 +35,8 @@
                         <jsp:include page="elements/${child.type}.jsp"/>
                     </c:forEach>
 
-                    <c:choose>
-                        <c:when test="${category.hasPrev}">
-                            <input class="nav-prev" name="nav-prev" type="submit" value="Edellinen"/>
-                        </c:when>
-                    </c:choose>
-                    <c:choose>
-                        <c:when test="${category.hasNext}">
-                            <input class="nav-next" name="nav-next" type="submit" value="Seuraava"/>
-                        </c:when>
-                        <c:when test="${!category.hasNext}">
-                            <input class="nav-save" name="nav-save" type="submit" value="Tallenna"/>
-                        </c:when>
-                    </c:choose>
+                    <jsp:include page="prev_next_buttons.jsp"/>
+
                 </form>
         </div>
     </div>

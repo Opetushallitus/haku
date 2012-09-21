@@ -65,3 +65,7 @@ label {
 
 .nav-next {
 }
+.required_field {
+    font-size: small;
+    color: red;
+}
