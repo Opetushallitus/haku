@@ -37,9 +37,11 @@ public class CommandExecutor {
         switch (command) {
             case IMPORT: {
                 importAll(args);
+                break;
             }
             case EXPORT:
                 exportAll(args[1]);
+                break;
         }
     }
 
