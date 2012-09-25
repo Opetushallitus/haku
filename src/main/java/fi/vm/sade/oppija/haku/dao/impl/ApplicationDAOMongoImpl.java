@@ -7,6 +7,7 @@ import fi.vm.sade.oppija.haku.service.Application;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -27,7 +28,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         dbObject.put("userId", userId);
         dbObject.put("applicationId", applicationId);
 
-        application.setApplicationData(getCollection().findOne().toMap());
+        application.setApplicationData((Map<String, Map<String, String>>)getCollection().findOne().toMap().get("applicationData"));
 
         return application;
     }
