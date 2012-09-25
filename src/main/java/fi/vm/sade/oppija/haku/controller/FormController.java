@@ -7,6 +7,7 @@ import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.UserFormData;
 import fi.vm.sade.oppija.haku.validation.FormValidator;
+import fi.vm.sade.oppija.haku.validation.ValidationResult;
 import org.codehaus.plexus.util.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,13 +91,13 @@ public class FormController {
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
 
         FormValidator formValidator = new FormValidator();
-        Map<String, String> errors = formValidator.validate(values, formService.getCategoryValidators(applicationPeriodId, formId, categoryId));
+        ValidationResult validationResult = formValidator.validate(values, formService.getCategoryValidators(applicationPeriodId, formId, categoryId));
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        Category category = getNextCategory(categoryId, values, activeForm, errors);
-        if (errors.isEmpty()) {
+        Category category = getNextCategory(categoryId, values, activeForm, validationResult);
+        if (!validationResult.hasErrors()) {
             modelAndView = new ModelAndView("redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + category.getId());
         } else {
-            modelAndView.addObject("errors", errors);
+            modelAndView.addObject("validationResult", validationResult);
             modelAndView.addObject("category", activeForm.getCategory(categoryId));
             modelAndView.addObject("form", activeForm);
             modelAndView.addObject("categoryData", userFormData.getCategoryData(categoryId));
@@ -121,9 +122,9 @@ public class FormController {
         return modelAndView;
     }
 
-    private Category getNextCategory(final String categoryId, final Map<String, String> values, final Form activeForm, Map<String, String> errors) {
+    private Category getNextCategory(final String categoryId, final Map<String, String> values, final Form activeForm, ValidationResult errors) {
         Category category = activeForm.getCategory(categoryId);
-        if (errors.isEmpty()) {
+        if (!errors.hasErrors()) {
             category = selectNextPrevOrCurrent(values, category);
         }
         return category;

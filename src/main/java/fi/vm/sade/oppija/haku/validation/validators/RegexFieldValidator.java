@@ -6,11 +6,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegexpFieldValidator extends FieldValidator {
+public class RegexFieldValidator extends FieldValidator {
 
     final Pattern pattern;
 
-    public RegexpFieldValidator(final String errorMessage, final String fieldName, final String pattern) {
+
+    public  RegexFieldValidator(final String errorMessage, final String fieldName, final String pattern) {
         super(errorMessage, fieldName);
         this.pattern = Pattern.compile(pattern);
     }

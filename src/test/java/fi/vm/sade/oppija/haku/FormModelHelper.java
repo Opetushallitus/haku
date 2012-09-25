@@ -36,7 +36,7 @@ public class FormModelHelper {
         return getFirstApplicationPerioid().getForms().values().iterator().next();
     }
 
-    private ApplicationPeriod getFirstApplicationPerioid() {
+    public ApplicationPeriod getFirstApplicationPerioid() {
         return formModel.getApplicationPerioidMap().entrySet().iterator().next().getValue();
     }
 
