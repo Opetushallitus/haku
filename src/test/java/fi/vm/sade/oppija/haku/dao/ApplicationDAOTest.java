@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -29,11 +30,19 @@ public class ApplicationDAOTest extends AbstractDAOTest {
 
     @Test
     public void testFindApplication() {
-
-
        Application application = applicationDAO.find("randomuser", "generated_application_id");
-
         assertNotNull("Query returned null", application);
+    }
+
+    @Test
+    public void testUpdateApplication() {
+        Application application = applicationDAO.find("randomuser", "generated_application_id");
+        application.getApplicationData().get("personal_info").put("firstnameid", "Joe");
+
+        applicationDAO.update(application);
+
+        Application newApplication = applicationDAO.find("randomuser", "generated_application_id");
+        assertEquals("Could not update first name in application", "Joe", newApplication.getApplicationData().get("personal_info").get("firstnameid"));
     }
 
     @Test
