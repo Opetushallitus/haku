@@ -10,16 +10,34 @@ public class Application {
     private String userId;
     private String applicationId;
 
-    private Map<String, Map<String, String>> formData = new HashMap<String, Map<String, String>>();
+    public Map<String, Map<String, String>> getApplicationData() {
+        return applicationData;
+    }
+
+    public void setApplicationData(Map<String, Map<String, String>> applicationData) {
+        this.applicationData = applicationData;
+    }
+
+    private Map<String, Map<String, String>> applicationData;
+
+    public Application() {
+        this.applicationData = new HashMap<String, Map<String, String>>();
+    }
+
+    public Application(String userId, String applicationId) {
+        this.userId = userId;
+        this.applicationId = applicationId;
+        this.applicationData = new HashMap<String, Map<String, String>>();
+    }
 
     public Map<String, String> getCategoryData(final String categoryId) {
-        return formData.get(categoryId);
+        return applicationData.get(categoryId);
     }
 
     public void setValue(final String categoryId, final Map<String, String> values) {
         final HashMap<String, String> newValues = new HashMap<String, String>();
         newValues.putAll(values);
-        this.formData.put(categoryId, newValues);
+        this.applicationData.put(categoryId, newValues);
     }
 
     public String getUserId() {
@@ -37,4 +55,6 @@ public class Application {
     public void setApplicationId(String applicationId) {
         this.applicationId = applicationId;
     }
+
+
 }

@@ -2,12 +2,16 @@ package fi.vm.sade.oppija.haku.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,5 +104,15 @@ public class FormModelDAOTest extends AbstractDAOTest {
         final Map<String, ApplicationPeriod> applicationPerioidMap = form.getApplicationPerioidMap();
         final ApplicationPeriod applicationPeriod = applicationPerioidMap.entrySet().iterator().next().getValue();
         return applicationPeriod.getId();
+    }
+
+    @Override
+    protected String getCollectionName() {
+        return "haku";
+    }
+
+    @Override
+    protected DBObject getTestDataObject() {
+        return applicationPeriodTestDataObject;
     }
 }

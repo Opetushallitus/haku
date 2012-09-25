@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.haku.dao;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
@@ -21,21 +22,25 @@ public abstract class AbstractDAOTest {
     @Autowired
     TestDBFactoryBean dbFactory;
 
-    private static DBObject testDataObject;
+    protected static DBObject applicationPeriodTestDataObject;
+    protected static DBObject applicationTestDataObject;
 
     @BeforeClass
     public static void readTestData() {
 
-        StringBuilder buffer = new FileHandling().readFile(ClassLoader.getSystemResourceAsStream("test-data.json"));
+        StringBuilder applicationPeriodBuffer = new FileHandling().readFile(ClassLoader.getSystemResourceAsStream("test-data.json"));
+        applicationPeriodTestDataObject = (DBObject) JSON.parse(applicationPeriodBuffer.toString());
 
-        testDataObject = (DBObject) JSON.parse(buffer.toString());
+        StringBuilder applicationBuffer = new FileHandling().readFile(ClassLoader.getSystemResourceAsStream("application-test-data.json"));
+        applicationTestDataObject = (DBObject) JSON.parse(applicationBuffer.toString());
+
     }
 
     @Before
     public void insertTestData() {
 
         try {
-            dbFactory.getObject().getCollection("haku").insert(testDataObject);
+            dbFactory.getObject().getCollection(getCollectionName()).insert(getTestDataObject());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,10 +50,13 @@ public abstract class AbstractDAOTest {
     @After
     public void removeTestData() {
         try {
-            dbFactory.getObject().getCollection("haku").remove(new BasicDBObject());
+            dbFactory.getObject().getCollection(getCollectionName()).remove(new BasicDBObject());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
+    protected abstract String getCollectionName();
+    protected abstract DBObject getTestDataObject();
 }
