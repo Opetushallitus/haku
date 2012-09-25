@@ -30,14 +30,8 @@ public interface ApplicationDAO {
     Application find(String userId, String applicationId);
 
     /**
-     * Insert a new application.
-     *
-     * @param application application
-     */
-    void insert(Application application);
-
-    /**
-     * Update single application.
+     * Update single application. If the application can not be found
+     * in the db, a new one is inserted.
      *
      * @param application application to be updated
      */

@@ -39,13 +39,13 @@ public class ApplicationDAOTest extends AbstractDAOTest {
     @Test
     public void testInsertApplication() {
         Application application = createApplication();
-        applicationDAO.insert(application);
+        applicationDAO.update(application);
 
     }
 
     private Application createApplication() {
 
-        Application application = new Application("randomuser", "generted_application_id");
+        Application application = new Application("testuser", "generted_application_id");
 
         Map<String, Map<String, String>> applicationData = new HashMap<String, Map<String, String>>();
         HashMap<String, String> category = new HashMap<String, String>();

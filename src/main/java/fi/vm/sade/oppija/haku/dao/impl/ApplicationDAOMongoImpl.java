@@ -33,17 +33,18 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     }
 
     @Override
-    public void insert(Application application) {
-        DBObject dbObject = new BasicDBObject();
-        dbObject.put("userId", application.getUserId());
-        dbObject.put("applicationId", application.getApplicationId());
-        dbObject.put("applicationData", application.getApplicationData());
-        getCollection().insert(dbObject);
-    }
-
-    @Override
     public void update(Application application) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        DBObject query = new BasicDBObject();
+        query.put("userId", application.getUserId());
+        query.put("applicationId", application.getApplicationId());
+
+        DBObject newApplication = new BasicDBObject();
+        newApplication.put("userId", application.getUserId());
+        newApplication.put("applicationId", application.getApplicationId());
+        newApplication.put("applicationData", application.getApplicationData());
+
+        getCollection().update(query, newApplication, true, false);
+
     }
 
     @Override
