@@ -4,7 +4,7 @@ import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.haku.service.UserFormData;
+import fi.vm.sade.oppija.haku.service.Application;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,7 +23,7 @@ public class FormControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        this.formController = new FormController(new FormModelDummyMemoryDaoImpl(formId, firstCategoryId), new UserFormData());
+        this.formController = new FormController(new FormModelDummyMemoryDaoImpl(formId, firstCategoryId), new Application());
     }
 
     @Test

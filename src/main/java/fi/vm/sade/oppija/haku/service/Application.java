@@ -6,7 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component("session")
-public class UserFormData {
+public class Application {
+    private String userId;
+    private String applicationId;
+
     private Map<String, Map<String, String>> formData = new HashMap<String, Map<String, String>>();
 
     public Map<String, String> getCategoryData(final String categoryId) {
@@ -19,4 +22,19 @@ public class UserFormData {
         this.formData.put(categoryId, newValues);
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
+    }
 }

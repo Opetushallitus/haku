@@ -5,7 +5,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.FormService;
-import fi.vm.sade.oppija.haku.service.UserFormData;
+import fi.vm.sade.oppija.haku.service.Application;
 import fi.vm.sade.oppija.haku.validation.FormValidator;
 import fi.vm.sade.oppija.haku.validation.ValidationResult;
 import org.codehaus.plexus.util.ExceptionUtils;
@@ -33,12 +33,12 @@ public class FormController {
 
     final FormService formService;
 
-    final UserFormData userFormData;
+    final Application application;
 
     @Autowired
-    public FormController(@Qualifier("formServiceImpl") final FormService formService, final UserFormData userFormData) {
+    public FormController(@Qualifier("formServiceImpl") final FormService formService, final Application application) {
         this.formService = formService;
-        this.userFormData = userFormData;
+        this.application = application;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -76,7 +76,7 @@ public class FormController {
         final ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         modelAndView.addObject("category", activeForm.getCategory(categoryId));
         modelAndView.addObject("form", activeForm);
-        modelAndView.addObject("categoryData", userFormData.getCategoryData(categoryId));
+        modelAndView.addObject("categoryData", application.getCategoryData(categoryId));
         return modelAndView;
     }
 
@@ -87,7 +87,7 @@ public class FormController {
                                      @RequestBody final MultiValueMap<String, String> multiValues) {
         logger.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         Map<String, String> values = multiValues.toSingleValueMap();
-        userFormData.setValue(categoryId, values);
+        application.setValue(categoryId, values);
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
 
         FormValidator formValidator = new FormValidator();
@@ -100,7 +100,7 @@ public class FormController {
             modelAndView.addObject("validationResult", validationResult);
             modelAndView.addObject("category", activeForm.getCategory(categoryId));
             modelAndView.addObject("form", activeForm);
-            modelAndView.addObject("categoryData", userFormData.getCategoryData(categoryId));
+            modelAndView.addObject("categoryData", application.getCategoryData(categoryId));
         }
         return modelAndView;
     }
