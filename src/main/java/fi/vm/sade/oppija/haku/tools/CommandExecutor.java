@@ -29,7 +29,7 @@ public class CommandExecutor {
     }
 
     private void usage() {
-        System.err.print("USAGE CommandLineTooling [command] [file]");
+        System.out.print("USAGE CommandLineTooling [command] [file]");
     }
 
     protected void createCommand() {
@@ -48,7 +48,7 @@ public class CommandExecutor {
         final boolean directory = file.isDirectory();
         if (!directory) {
             usage();
-            System.err.println("Export destination must be a directory");
+            System.out.println("Export destination must be a directory");
             return;
         }
         final DBCursor dbObjects = getService().getAll();
@@ -56,9 +56,13 @@ public class CommandExecutor {
             final String contentAsString = JSON.serialize(dbObject);
             final String filename = createFilename(file, dbObject);
             log.info("writing file: " + filename);
-            new FileHandling().writeFile(filename, contentAsString);
+            write(contentAsString, filename);
         }
 
+    }
+
+    protected void write(String contentAsString, String filename) {
+        new FileHandling().writeFile(filename, contentAsString);
     }
 
     protected String createFilename(File file, DBObject dbObject) {

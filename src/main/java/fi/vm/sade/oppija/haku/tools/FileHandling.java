@@ -59,7 +59,7 @@ public class FileHandling {
                 closeable.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 
@@ -70,7 +70,7 @@ public class FileHandling {
             fileWriter = new FileWriter(new File(filename));
             fileWriter.write(contentAsString);
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } finally {
             close(fileWriter);
         }
