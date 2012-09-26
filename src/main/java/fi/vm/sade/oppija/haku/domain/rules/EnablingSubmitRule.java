@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author jukka
@@ -11,7 +12,7 @@ import java.util.HashMap;
  * @since 1.1
  */
 public class EnablingSubmitRule extends Element {
-    final HashMap<String, Element> related = new HashMap<String, Element>();
+    final Map<String, Element> related = new HashMap<String, Element>();
 
     public EnablingSubmitRule(@JsonProperty String id) {
         super("rule-enabled-" + id);
@@ -26,7 +27,7 @@ public class EnablingSubmitRule extends Element {
     }
 
 
-    public HashMap<String, Element> getRelated() {
+    public Map<String, Element> getRelated() {
         return related;
     }
 }

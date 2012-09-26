@@ -18,7 +18,7 @@ public class Attribute implements Serializable {
     private final String key;
     private final String value;
 
-    public Attribute(final @JsonProperty(value = "key") String key, final @JsonProperty(value = "value") String value) {
+    public Attribute(@JsonProperty(value = "key") final String key, @JsonProperty(value = "value") final String value) {
         assert key != null;
         assert value != null;
         this.key = key;
