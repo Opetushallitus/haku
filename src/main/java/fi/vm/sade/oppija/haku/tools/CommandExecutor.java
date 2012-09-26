@@ -11,17 +11,19 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 public class CommandExecutor {
     final static Logger log = LoggerFactory.getLogger(CommandLineTooling.class);
-    private final String[] args;
+    private final List<String> args;
 
     public CommandExecutor(String[] args) {
-        this.args = args;
+        this.args = Arrays.asList(args);
     }
 
     public void execute() {
-        if (args.length < 2 || !fileExists(args[1])) {
+        if (args.size() < 2 || !fileExists(args.get(1))) {
             usage();
             return;
         }
@@ -29,18 +31,18 @@ public class CommandExecutor {
     }
 
     private void usage() {
-        System.out.print("USAGE CommandLineTooling [command] [file]");
+        log.info("USAGE CommandLineTooling [command] [file]");
     }
 
     protected void createCommand() {
-        Command command = Command.valueOf(args[0].toUpperCase());
+        Command command = Command.valueOf(args.get(0).toUpperCase());
         switch (command) {
             case IMPORT: {
-                importAll(args);
+                importAll();
                 break;
             }
             case EXPORT:
-                exportAll(args[1]);
+                exportAll(args.get(1));
                 break;
         }
     }
@@ -50,7 +52,7 @@ public class CommandExecutor {
         final boolean directory = file.isDirectory();
         if (!directory) {
             usage();
-            System.out.println("Export destination must be a directory");
+            log.info("Export destination must be a directory");
             return;
         }
         final DBCursor dbObjects = getService().getAll();
@@ -73,9 +75,8 @@ public class CommandExecutor {
         return file.getPath() + "/" + objectId.toStringMongod() + "_" + id + ".json";
     }
 
-    protected void importAll(String[] args) {
-        for (int i = 1; i < args.length; i++) {
-            String arg = args[i];
+    protected void importAll() {
+        for (String arg : args) {
             read(arg);
         }
     }
