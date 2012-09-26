@@ -14,6 +14,7 @@ public class ValidationResult {
 
     public ValidationResult(Map<String, String> errors) {
         this.errors = Collections.unmodifiableMap(errors);
+        this.activeForm = null;
     }
 
     public boolean hasErrors() {
