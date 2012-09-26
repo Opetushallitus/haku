@@ -51,7 +51,7 @@ public class FileHandling {
             fileWriter = new FileWriter(new File(filename));
             fileWriter.write(contentAsString);
         } catch (IOException e) {
-            e.printStackTrace();
+           LOG.error("Error writing file", e);
         } finally {
             IOUtils.closeQuietly(fileWriter);
         }
