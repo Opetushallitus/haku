@@ -15,7 +15,7 @@ import java.io.IOException;
  * @since 1.1
  */
 public class FormModelFactory {
-    public static final Logger log = LoggerFactory.getLogger(FormModelFactory.class);
+    public static final Logger LOG = LoggerFactory.getLogger(FormModelFactory.class);
 
     public static FormModel fromJSONString(String json) {
         return new JsonStringToFormModelConverter().convert(json);
@@ -41,7 +41,7 @@ public class FormModelFactory {
         try {
             json = new FileHandling().readFile(file.getInputStream());
         } catch (IOException e) {
-            log.error("", e);
+            LOG.error("", e);
         }
         return new JsonStringToFormModelConverter().convert(json);
     }

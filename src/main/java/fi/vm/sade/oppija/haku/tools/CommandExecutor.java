@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class CommandExecutor {
-    public static final Logger log = LoggerFactory.getLogger(CommandLineTooling.class);
+    public static final Logger LOG = LoggerFactory.getLogger(CommandLineTooling.class);
     private final List<String> args;
 
     public CommandExecutor(String[] args) {
@@ -32,7 +32,7 @@ public class CommandExecutor {
     }
 
     private void usage() {
-        log.info("USAGE CommandLineTooling [command] [file]");
+        LOG.info("USAGE CommandLineTooling [command] [file]");
     }
 
     protected void createCommand() {
@@ -55,14 +55,14 @@ public class CommandExecutor {
         final boolean directory = file.isDirectory();
         if (!directory) {
             usage();
-            log.info("Export destination must be a directory");
+            LOG.info("Export destination must be a directory");
             return;
         }
         final DBCursor dbObjects = getService().getAll();
         for (DBObject dbObject : dbObjects) {
             final String contentAsString = JSON.serialize(dbObject);
             final String filename = createFilename(file, dbObject);
-            log.info("writing file: " + filename);
+            LOG.info("writing file: " + filename);
             write(contentAsString, filename);
         }
 
@@ -90,9 +90,9 @@ public class CommandExecutor {
 
     protected void read(String filename) {
         final String content = getStringBuilder(filename);
-        log.info("inserting file " + filename);
+        LOG.info("inserting file " + filename);
         doInsert(content);
-        log.info("done");
+        LOG.info("done");
     }
 
     protected void doInsert(final String jsonString) {

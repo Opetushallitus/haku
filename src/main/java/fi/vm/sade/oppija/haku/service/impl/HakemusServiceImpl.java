@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @Service
 public class HakemusServiceImpl implements HakemusService {
-    private static final Logger log = LoggerFactory.getLogger(HakemusServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HakemusServiceImpl.class);
 
     @Autowired
     private Application application;
@@ -67,11 +67,11 @@ public class HakemusServiceImpl implements HakemusService {
         // TODO: remove when authentication is implemented
         //--
         if (hakemusId.getUserId() != null) {
-            log.debug("posted category with userid: " + hakemusId.getUserId() + " and form id: " + hakemusId.getApplicationPeriodId() + "-" + hakemusId.getFormId());
+            LOG.debug("posted category with userid: " + hakemusId.getUserId() + " and form id: " + hakemusId.getApplicationPeriodId() + "-" + hakemusId.getFormId());
             if (application.getApplicationId() == null || application.getUserId() == null) {
                 application.setApplicationId(hakemusId.getApplicationPeriodId() + "-" + hakemusId.getFormId());
                 application.setUserId(hakemusId.getUserId());
-                log.debug("application: " + application.getUserId());
+                LOG.debug("application: " + application.getUserId());
             }
             applicationDAO.update(application);
         }
