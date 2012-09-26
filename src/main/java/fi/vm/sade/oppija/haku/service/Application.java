@@ -1,11 +1,13 @@
 package fi.vm.sade.oppija.haku.service;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Component("session")
+@Component
+@Scope("session")
 public class Application {
     private String userId;
     private String applicationId;
