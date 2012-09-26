@@ -1,8 +1,11 @@
 package fi.vm.sade.oppija.haku.dao;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.haku.service.Application;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +13,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -27,6 +34,34 @@ public class ApplicationDAOTest extends AbstractDAOTest {
     @Autowired
     @Qualifier("applicationDAOMongoImpl")
     private ApplicationDAO applicationDAO;
+
+    protected static List<DBObject> applicationTestDataObjects = new ArrayList<DBObject>();
+
+    @BeforeClass
+    public static void readTestData() {
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            List testObjects = mapper.readValue(getSystemResourceAsStream("application-test-data.json"), List.class);
+            for (Object testObject : testObjects) {
+                applicationTestDataObjects.add(new BasicDBObject((Map)testObject));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Before
+    public void insertTestData() {
+
+        try {
+            dbFactory.getObject().getCollection(getCollectionName()).insert(applicationTestDataObjects);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Test
     public void testFindApplication() {
@@ -71,8 +106,4 @@ public class ApplicationDAOTest extends AbstractDAOTest {
         return "hakemus";
     }
 
-    @Override
-    protected DBObject getTestDataObject() {
-        return applicationTestDataObject;
-    }
 }

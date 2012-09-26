@@ -1,1 +1,2 @@
-{ "userId" : "randomuser", "applicationId" : "generated_application_id", "applicationData" : { "personal_info" : { "lastname" : "Opiskelija", "firstnameid" : "Onni" } } }
+[{ "userId" : "randomuser", "applicationId" : "generated_application_id", "applicationData" : { "personal_info" : { "lastname" : "Opiskelija", "firstnameid" : "Onni" } } },
+{ "userId" : "otheruser", "applicationId" : "generated_application_id", "applicationData" : { "personal_info" : { "lastname" : "Ahkera", "firstnameid" : "Anni" } } }]

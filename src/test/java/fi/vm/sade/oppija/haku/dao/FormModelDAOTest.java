@@ -4,14 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.tools.FileHandling;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,7 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
@@ -41,6 +45,27 @@ public class FormModelDAOTest extends AbstractDAOTest {
     @Autowired
     @Qualifier("formModelDAOMongoImpl")
     FormModelDAO formModelDAO;
+
+    protected static DBObject applicationPeriodTestDataObject;
+
+    @BeforeClass
+    public static void readTestData() {
+
+        StringBuilder applicationPeriodBuffer = new FileHandling().readFile(getSystemResourceAsStream("test-data.json"));
+        applicationPeriodTestDataObject = (DBObject) JSON.parse(applicationPeriodBuffer.toString());
+
+    }
+
+    @Before
+    public void insertTestData() {
+
+        try {
+            dbFactory.getObject().getCollection(getCollectionName()).insert(applicationPeriodTestDataObject);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Test
     public void test() throws Exception {
@@ -111,8 +136,4 @@ public class FormModelDAOTest extends AbstractDAOTest {
         return "haku";
     }
 
-    @Override
-    protected DBObject getTestDataObject() {
-        return applicationPeriodTestDataObject;
-    }
 }

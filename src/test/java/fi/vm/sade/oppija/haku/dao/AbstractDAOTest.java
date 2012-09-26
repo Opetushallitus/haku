@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.haku.dao;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -9,6 +10,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import static java.lang.ClassLoader.getSystemResourceAsStream;
 
 /**
  * Abstract base class for DAO tests.
@@ -22,31 +29,6 @@ public abstract class AbstractDAOTest {
     @Autowired
     TestDBFactoryBean dbFactory;
 
-    protected static DBObject applicationPeriodTestDataObject;
-    protected static DBObject applicationTestDataObject;
-
-    @BeforeClass
-    public static void readTestData() {
-
-        StringBuilder applicationPeriodBuffer = new FileHandling().readFile(ClassLoader.getSystemResourceAsStream("test-data.json"));
-        applicationPeriodTestDataObject = (DBObject) JSON.parse(applicationPeriodBuffer.toString());
-
-        StringBuilder applicationBuffer = new FileHandling().readFile(ClassLoader.getSystemResourceAsStream("application-test-data.json"));
-        applicationTestDataObject = (DBObject) JSON.parse(applicationBuffer.toString());
-
-    }
-
-    @Before
-    public void insertTestData() {
-
-        try {
-            dbFactory.getObject().getCollection(getCollectionName()).insert(getTestDataObject());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
     @After
     public void removeTestData() {
         try {
@@ -58,5 +40,4 @@ public abstract class AbstractDAOTest {
     }
 
     protected abstract String getCollectionName();
-    protected abstract DBObject getTestDataObject();
 }
