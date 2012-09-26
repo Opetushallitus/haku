@@ -5,8 +5,7 @@ import org.junit.Test;
 
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ElementTest {
     final Element testElement;
@@ -35,19 +34,35 @@ public class ElementTest {
         assertTrue(actual.contains("k1=\"v1\" ") && actual.contains("k2=\"v2\" "));
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testNullKeyAttributeString() throws Exception {
-        testElement.addAttribute(null, "v");
+
+    @Test
+    public void testNullKeyAttributeString() throws AssertionError {
+        try {
+            testElement.addAttribute(null, "v");
+            fail();
+        } catch (AssertionError e) {
+            // expected=AssertionError.class cannot be used here, because junit uses it internally
+        }
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testNullValueAttributeString() throws Exception {
-        testElement.addAttribute(null, "v");
+    @Test
+    public void testNullValueAttributeString() {
+        try {
+            testElement.addAttribute(null, "v");
+            fail();
+        } catch (AssertionError e) {
+            // expected=AssertionError.class cannot be used here, because junit uses it internally
+        }
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testNullKeyAndValueAttributeString() throws Exception {
-        testElement.addAttribute(null, null);
+        try {
+            testElement.addAttribute(null, null);
+            fail();
+        } catch (AssertionError e) {
+            // expected=AssertionError.class cannot be used here, because junit uses it internally
+        }
     }
 
     @Test(expected = UnsupportedOperationException.class)
