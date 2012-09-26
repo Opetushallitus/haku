@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.haku.controller;
 
+import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
@@ -19,6 +20,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 
@@ -33,6 +35,10 @@ public class FormController {
 
     final FormService formService;
 
+    @Autowired
+    @Qualifier("applicationDAOMongoImpl")
+    private ApplicationDAO applicationDAO;
+
     final Application application;
 
     @Autowired
@@ -44,6 +50,24 @@ public class FormController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView listApplicationPeriods() {
         logger.debug("listApplicationPeriods");
+        Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
+        final ModelAndView modelAndView = new ModelAndView(LINK_LIST_VIEW);
+        modelAndView.addObject(LINK_LIST_VIEW, applicationPerioidMap.keySet());
+        return modelAndView;
+    }
+
+    /**
+     * Temporary method for saving user id into session.
+     * TODO: remove when authentication is implemented
+     *
+     * @param userid
+     * @return
+     */
+    @RequestMapping(value = "/", method = RequestMethod.GET, params="userid")
+    public ModelAndView listApplicationPeriodsWithUser(@RequestParam("userid") String userid, HttpSession session) {
+        logger.debug("listApplicationPeriods with user: " + userid);
+        session.setAttribute("userid", userid);
+
         Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
         final ModelAndView modelAndView = new ModelAndView(LINK_LIST_VIEW);
         modelAndView.addObject(LINK_LIST_VIEW, applicationPerioidMap.keySet());
@@ -84,10 +108,25 @@ public class FormController {
     public ModelAndView saveCategory(@PathVariable final String applicationPeriodId,
                                      @PathVariable final String formId,
                                      @PathVariable final String categoryId,
-                                     @RequestBody final MultiValueMap<String, String> multiValues) {
+                                     @RequestBody final MultiValueMap<String, String> multiValues,
+                                     HttpSession session) {
         logger.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         Map<String, String> values = multiValues.toSingleValueMap();
         application.setValue(categoryId, values);
+
+        // TODO: remove when authentication is implemented
+        //--
+        if (session.getAttribute("userid") != null) {
+            logger.debug("posted category with userid: " + session.getAttribute("userid") + " and form id: " + applicationPeriodId + "-" + formId);
+            if (application.getApplicationId() == null || application.getUserId() == null) {
+                application.setApplicationId(applicationPeriodId + "-" + formId);
+                application.setUserId((String)session.getAttribute("userid"));
+                logger.debug("application: " + application.getUserId());
+            }
+            applicationDAO.update(application);
+        }
+        //--
+
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
 
         FormValidator formValidator = new FormValidator();
