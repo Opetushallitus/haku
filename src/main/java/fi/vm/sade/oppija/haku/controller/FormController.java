@@ -1,13 +1,13 @@
 package fi.vm.sade.oppija.haku.controller;
 
-import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.haku.service.Application;
 import fi.vm.sade.oppija.haku.service.FormService;
-import fi.vm.sade.oppija.haku.validation.FormValidator;
+import fi.vm.sade.oppija.haku.service.HakemusService;
 import fi.vm.sade.oppija.haku.validation.ValidationResult;
 import org.codehaus.plexus.util.ExceptionUtils;
 import org.slf4j.Logger;
@@ -35,17 +35,12 @@ public class FormController {
     public static final String USER_ID = "userid";
 
     final FormService formService;
+    private final HakemusService hakemusService;
 
     @Autowired
-    @Qualifier("applicationDAOMongoImpl")
-    private ApplicationDAO applicationDAO;
-
-    final Application application;
-
-    @Autowired
-    public FormController(@Qualifier("formServiceImpl") final FormService formService, final Application application) {
+    public FormController(@Qualifier("formServiceImpl") final FormService formService, HakemusService hakemusService) {
         this.formService = formService;
-        this.application = application;
+        this.hakemusService = hakemusService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -64,7 +59,7 @@ public class FormController {
      * @param userid
      * @return
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET, params= USER_ID)
+    @RequestMapping(value = "/", method = RequestMethod.GET, params = USER_ID)
     public ModelAndView listApplicationPeriodsWithUser(@RequestParam(USER_ID) String userid, HttpSession session) {
         logger.debug("listApplicationPeriods with user: " + userid);
         session.setAttribute(USER_ID, userid);
@@ -95,13 +90,15 @@ public class FormController {
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}", method = RequestMethod.GET)
     public ModelAndView getCategory(@PathVariable final String applicationPeriodId,
                                     @PathVariable final String formId,
-                                    @PathVariable final String categoryId) {
+                                    @PathVariable final String categoryId,
+                                    HttpSession session) {
         logger.debug("getCategory {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         final ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         modelAndView.addObject("category", activeForm.getCategory(categoryId));
         modelAndView.addObject("form", activeForm);
-        modelAndView.addObject("categoryData", application.getCategoryData(categoryId));
+        final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), categoryId, (String) session.getAttribute(USER_ID));
+        modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getValues());
         return modelAndView;
     }
 
@@ -113,37 +110,24 @@ public class FormController {
                                      HttpSession session) {
         logger.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         Map<String, String> values = multiValues.toSingleValueMap();
-        application.setValue(categoryId, values);
 
-        // TODO: remove when authentication is implemented
-        //--
-        if (session.getAttribute(USER_ID) != null) {
-            logger.debug("posted category with userid: " + session.getAttribute(USER_ID) + " and form id: " + applicationPeriodId + "-" + formId);
-            if (application.getApplicationId() == null || application.getUserId() == null) {
-                application.setApplicationId(applicationPeriodId + "-" + formId);
-                application.setUserId((String)session.getAttribute(USER_ID));
-                logger.debug("application: " + application.getUserId());
-            }
-            applicationDAO.update(application);
-        }
-        //--
+        final HakemusId hakemusId = new HakemusId(applicationPeriodId, formId, categoryId, (String) session.getAttribute(USER_ID));
+        final Hakemus hakemus = new Hakemus(hakemusId, values);
+        hakemusService.save(hakemus);
+        ValidationResult validationResult = hakemus.getValidationResult();
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
-
-        FormValidator formValidator = new FormValidator();
-        ValidationResult validationResult = formValidator.validate(values, formService.getCategoryValidators(applicationPeriodId, formId, categoryId));
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        Category category = getNextCategory(categoryId, values, activeForm, validationResult);
         if (!validationResult.hasErrors()) {
-            modelAndView = new ModelAndView("redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + category.getId());
+            modelAndView = new ModelAndView("redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + validationResult.getCategory().getId());
         } else {
             modelAndView.addObject("validationResult", validationResult);
-            modelAndView.addObject("category", activeForm.getCategory(categoryId));
-            modelAndView.addObject("form", activeForm);
-            modelAndView.addObject("categoryData", application.getCategoryData(categoryId));
+            modelAndView.addObject("category", validationResult.getCategory());
+            modelAndView.addObject("form", validationResult.getActiveForm());
+            modelAndView.addObject("categoryData", hakemus.getValues());
         }
         return modelAndView;
     }
+
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -160,23 +144,6 @@ public class FormController {
         modelAndView.addObject("stackTrace", ExceptionUtils.getFullStackTrace(t));
         modelAndView.addObject("message", t.getMessage());
         return modelAndView;
-    }
-
-    private Category getNextCategory(final String categoryId, final Map<String, String> values, final Form activeForm, ValidationResult errors) {
-        Category category = activeForm.getCategory(categoryId);
-        if (!errors.hasErrors()) {
-            category = selectNextPrevOrCurrent(values, category);
-        }
-        return category;
-    }
-
-    private Category selectNextPrevOrCurrent(Map<String, String> values, Category category) {
-        if (values.get("nav-next") != null && category.isHasNext()) {
-            return category.getNext();
-        } else if (values.get("nav-prev") != null && category.isHasPrev()) {
-            return category.getPrev();
-        }
-        return category;
     }
 
 

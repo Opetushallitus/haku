@@ -7,6 +7,8 @@
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="/haku/resources/css/test.css" type="text/css">
     <title>${form.title} - ${category.title}</title>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 </head>
 <body>
 

@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import fi.vm.sade.oppija.haku.domain.Attribute;
 import fi.vm.sade.oppija.haku.domain.questions.*;
+import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -31,10 +31,11 @@ import java.util.*;
                 @JsonSubTypes.Type(value = Link.class),
                 @JsonSubTypes.Type(value = QuestionGroup.class),
                 @JsonSubTypes.Type(value = TextQuestion.class),
-                @JsonSubTypes.Type(value = Category.class)
+                @JsonSubTypes.Type(value = Category.class),
+                @JsonSubTypes.Type(value = EnablingSubmitRule.class)
         }
 )
-public abstract class Element implements Serializable {
+public abstract class Element {
 
     final String id;
     transient String type = this.getClass().getSimpleName();

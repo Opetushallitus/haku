@@ -15,7 +15,7 @@ public class CommandExecutorTest {
         final ArrayList<String> strings = new ArrayList<String>();
         strings.add("export");
         strings.add(System.getProperty("java.io.tmpdir"));
-        new CommandExecutor(strings.toArray(new String[strings.size()])).execute();
+        new MockCommandExecutor(strings.toArray(new String[strings.size()])).execute();
     }
 
     @Test
@@ -53,6 +53,11 @@ public class CommandExecutorTest {
         @Override
         protected StringBuilder getStringBuilder(String filename) {
             return new StringBuilder(filename);
+        }
+
+        @Override
+        protected void write(String contentAsString, String filename) {
+
         }
     }
 

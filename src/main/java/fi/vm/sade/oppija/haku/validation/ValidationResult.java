@@ -1,11 +1,16 @@
 package fi.vm.sade.oppija.haku.validation;
 
 
+import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Form;
+
 import java.util.Collections;
 import java.util.Map;
 
 public class ValidationResult {
     private final Map<String, String> errors;
+    private Category category;
+    private Form activeForm;
 
     public ValidationResult(Map<String, String> errors) {
         this.errors = Collections.unmodifiableMap(errors);
@@ -21,5 +26,17 @@ public class ValidationResult {
 
     public int errorCount() {
         return errors.size();
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Form getActiveForm() {
+        return activeForm;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
