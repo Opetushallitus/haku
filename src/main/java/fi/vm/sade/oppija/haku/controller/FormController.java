@@ -32,6 +32,7 @@ public class FormController {
     public static final String LINK_LIST_VIEW = "linkList";
     public static final String ERROR_NOTFOUND = "error/notfound";
     public static final String ERROR_SERVERERROR = "error/servererror";
+    public static final String USER_ID = "userid";
 
     final FormService formService;
 
@@ -63,10 +64,10 @@ public class FormController {
      * @param userid
      * @return
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET, params="userid")
-    public ModelAndView listApplicationPeriodsWithUser(@RequestParam("userid") String userid, HttpSession session) {
+    @RequestMapping(value = "/", method = RequestMethod.GET, params= USER_ID)
+    public ModelAndView listApplicationPeriodsWithUser(@RequestParam(USER_ID) String userid, HttpSession session) {
         logger.debug("listApplicationPeriods with user: " + userid);
-        session.setAttribute("userid", userid);
+        session.setAttribute(USER_ID, userid);
 
         Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
         final ModelAndView modelAndView = new ModelAndView(LINK_LIST_VIEW);
@@ -116,11 +117,11 @@ public class FormController {
 
         // TODO: remove when authentication is implemented
         //--
-        if (session.getAttribute("userid") != null) {
-            logger.debug("posted category with userid: " + session.getAttribute("userid") + " and form id: " + applicationPeriodId + "-" + formId);
+        if (session.getAttribute(USER_ID) != null) {
+            logger.debug("posted category with userid: " + session.getAttribute(USER_ID) + " and form id: " + applicationPeriodId + "-" + formId);
             if (application.getApplicationId() == null || application.getUserId() == null) {
                 application.setApplicationId(applicationPeriodId + "-" + formId);
-                application.setUserId((String)session.getAttribute("userid"));
+                application.setUserId((String)session.getAttribute(USER_ID));
                 logger.debug("application: " + application.getUserId());
             }
             applicationDAO.update(application);
