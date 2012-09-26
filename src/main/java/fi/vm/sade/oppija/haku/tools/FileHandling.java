@@ -1,10 +1,14 @@
 package fi.vm.sade.oppija.haku.tools;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
 public class FileHandling {
+
+    public static final Logger LOG = LoggerFactory.getLogger(FileHandling.class);
 
 
     public String readStreamFromFile(String arg) {
@@ -25,26 +29,19 @@ public class FileHandling {
     }
 
     public String getStringFromFile(File file) {
-        return readFile(getStream(file));
+        InputStream stream = getStream(file);
+        String content = readFile(stream);
+        IOUtils.closeQuietly(stream);
+        return content;
     }
 
     public String readFile(InputStream inputStream) {
         try {
             return IOUtils.toString(inputStream, "UTF-8");
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            LOG.error("Error reading stream", e);
         }
         return null;
-    }
-
-    public void close(Closeable closeable) {
-        try {
-            if (closeable != null) {
-                closeable.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void writeFile(String filename, String contentAsString) {
@@ -56,7 +53,7 @@ public class FileHandling {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            close(fileWriter);
+            IOUtils.closeQuietly(fileWriter);
         }
     }
 }
