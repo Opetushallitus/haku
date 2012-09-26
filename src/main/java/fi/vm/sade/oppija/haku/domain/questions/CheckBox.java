@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CheckBox extends OptionQuestion {
 
+
+    private static final long serialVersionUID = -2148643791482712654L;
+
     public CheckBox(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") String title) {
         super(id, title);
     }

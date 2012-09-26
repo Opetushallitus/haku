@@ -10,6 +10,8 @@ import fi.vm.sade.oppija.haku.domain.elements.Titled;
  */
 public class Option extends Titled {
 
+    private static final long serialVersionUID = 7365195779313847673L;
+
     private String value;
     private String title;
 

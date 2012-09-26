@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Radio extends OptionQuestion {
 
+    private static final long serialVersionUID = 5782376533955721032L;
+
     public Radio(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
     }

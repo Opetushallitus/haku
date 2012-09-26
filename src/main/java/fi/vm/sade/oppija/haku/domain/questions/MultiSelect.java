@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @since 1.1
  */
 public class MultiSelect extends OptionQuestion {
+
+    private static final long serialVersionUID = 4643744222922168865L;
+
     public MultiSelect(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
     }

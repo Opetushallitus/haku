@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TextArea extends Question {
 
+    private static final long serialVersionUID = 3485187810260760341L;
+
     public TextArea(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
         addAttribute("rows", "3");
