@@ -179,6 +179,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+		<clover.base>/data00/atlassian/application-data/bamboo/clover_haku</clover.base>
+		<clover.outputDirectory>${clover.base}/output/${project.groupId}-${project.artifactId}</clover.outputDirectory>
+
+				
     </properties>
     <repositories>
         <repository>
@@ -321,10 +325,8 @@
 				<clover.version>3.1.4</clover.version>
 				<clover.fullRunEvery>500</clover.fullRunEvery>
 				<clover.generateHistorical>true</clover.generateHistorical>
-				<clover.base>/data00/atlassian/application-data/bamboo/clover_haku</clover.base>
 				<clover.historyDir>${clover.base}/history/${project.groupId}-${project.artifactId}</clover.historyDir>
 				<clover.snapshot>${clover.base}/snapshot/${project.groupId}-${project.artifactId}/clover.snapshot</clover.snapshot>
-				<clover.outputDirectory>${clover.base}/output/${project.groupId}-${project.artifactId}</clover.outputDirectory>
 				<clover.cloverDatabase>${clover.base}/db/${project.groupId}-${project.artifactId}/clover.db</clover.cloverDatabase>
 			</properties>
 
@@ -410,7 +412,7 @@
 				<!-- The absolute or relative path of the clover xml report file. Used 
 					only if sonar.dynamicAnalysis is reuseReports. -->
 				<sonar.core.codeCoveragePlugin>clover</sonar.core.codeCoveragePlugin>
-				<sonar.clover.reportPath>${project.build.directory}/site/clover/clover.xml</sonar.clover.reportPath>
+				<sonar.clover.reportPath>${clover.outputDirectory}/clover.xml</sonar.clover.reportPath>
 
 				<!-- EXAMPLE FOR MYSQL 
 				mysqldump -usonar -pDx4k7T23x3ox8yS sonar > sonar.db.bak.sql
