@@ -11,7 +11,7 @@ public interface FormModelDAO {
 
     void insert(FormModel formModel);
 
-    void insertModelAsJsonString(StringBuilder builder);
+    void insertModelAsJsonString(String jsonString);
 
     void delete(FormModel formModel);
 }

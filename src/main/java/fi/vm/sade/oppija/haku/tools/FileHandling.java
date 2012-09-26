@@ -1,11 +1,13 @@
 package fi.vm.sade.oppija.haku.tools;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.*;
 
 public class FileHandling {
 
 
-    public StringBuilder readStreamFromFile(String arg) {
+    public String readStreamFromFile(String arg) {
         final InputStream streamFromFile = getStreamFromFile(arg);
         return readFile(streamFromFile);
     }
@@ -22,35 +24,17 @@ public class FileHandling {
         }
     }
 
-    public StringBuilder getStringFromFile(File file) {
+    public String getStringFromFile(File file) {
         return readFile(getStream(file));
     }
 
-    public StringBuilder readFile(InputStream inputStream) {
-        StringBuilder buffer = new StringBuilder();
-
-        BufferedReader reader = null;
+    public String readFile(InputStream inputStream) {
         try {
-
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String newLine = reader.readLine();
-
-            while (newLine != null) {
-
-                buffer.append(newLine);
-                newLine = reader.readLine();
-            }
-
-            reader.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            close(inputStream);
-            close(reader);
+            return IOUtils.toString(inputStream, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        return buffer;
+        return null;
     }
 
     public void close(Closeable closeable) {

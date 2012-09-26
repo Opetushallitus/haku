@@ -27,7 +27,7 @@ import java.util.Map;
 @Controller
 public class FormController {
 
-    private final static Logger logger = LoggerFactory.getLogger(FormController.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
     public static final String DEFAULT_VIEW = "default";
     public static final String LINK_LIST_VIEW = "linkList";
     public static final String ERROR_NOTFOUND = "error/notfound";
@@ -45,7 +45,7 @@ public class FormController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView listApplicationPeriods() {
-        logger.debug("listApplicationPeriods");
+        LOGGER.debug("listApplicationPeriods");
         Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
         final ModelAndView modelAndView = new ModelAndView(LINK_LIST_VIEW);
         modelAndView.addObject(LINK_LIST_VIEW, applicationPerioidMap.keySet());
@@ -61,7 +61,7 @@ public class FormController {
      */
     @RequestMapping(value = "/", method = RequestMethod.GET, params = USER_ID)
     public ModelAndView listApplicationPeriodsWithUser(@RequestParam(USER_ID) String userid, HttpSession session) {
-        logger.debug("listApplicationPeriods with user: " + userid);
+        LOGGER.debug("listApplicationPeriods with user: " + userid);
         session.setAttribute(USER_ID, userid);
 
         Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
@@ -72,7 +72,7 @@ public class FormController {
 
     @RequestMapping(value = "/{applicationPeriodId}", method = RequestMethod.GET)
     public ModelAndView listForms(@PathVariable final String applicationPeriodId) {
-        logger.debug("listForms");
+        LOGGER.debug("listForms");
         ApplicationPeriod applicaionPeriod = formService.getApplicationPeriodById(applicationPeriodId);
         final ModelAndView modelAndView = new ModelAndView(LINK_LIST_VIEW);
         modelAndView.addObject("path", applicaionPeriod.getId() + "/");
@@ -82,7 +82,7 @@ public class FormController {
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.GET)
     public String getFormAndRedirectToFirstCategory(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
-        logger.debug("getFormAndRedirectToFirstCategory {}, {}", new Object[]{applicationPeriodId, formId});
+        LOGGER.debug("getFormAndRedirectToFirstCategory {}, {}", new Object[]{applicationPeriodId, formId});
         Category firstCategory = formService.getFirstCategory(applicationPeriodId, formId);
         return "redirect:" + formId + "/" + firstCategory.getId();
     }
@@ -92,7 +92,7 @@ public class FormController {
                                     @PathVariable final String formId,
                                     @PathVariable final String categoryId,
                                     HttpSession session) {
-        logger.debug("getCategory {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId});
+        LOGGER.debug("getCategory {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         final ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         modelAndView.addObject("category", activeForm.getCategory(categoryId));
@@ -108,7 +108,7 @@ public class FormController {
                                      @PathVariable final String categoryId,
                                      @RequestBody final MultiValueMap<String, String> multiValues,
                                      HttpSession session) {
-        logger.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
+        LOGGER.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         Map<String, String> values = multiValues.toSingleValueMap();
 
         final HakemusId hakemusId = new HakemusId(applicationPeriodId, formId, categoryId, (String) session.getAttribute(USER_ID));

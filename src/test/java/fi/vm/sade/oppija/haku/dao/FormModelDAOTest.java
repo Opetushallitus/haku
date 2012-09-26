@@ -2,7 +2,6 @@ package fi.vm.sade.oppija.haku.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
@@ -12,7 +11,6 @@ import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.tools.FileHandling;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -51,8 +49,8 @@ public class FormModelDAOTest extends AbstractDAOTest {
     @BeforeClass
     public static void readTestData() {
 
-        StringBuilder applicationPeriodBuffer = new FileHandling().readFile(getSystemResourceAsStream("test-data.json"));
-        applicationPeriodTestDataObject = (DBObject) JSON.parse(applicationPeriodBuffer.toString());
+        String content = new FileHandling().readFile(getSystemResourceAsStream("test-data.json"));
+        applicationPeriodTestDataObject = (DBObject) JSON.parse(content);
 
     }
 

@@ -22,7 +22,7 @@ import javax.annotation.PostConstruct;
 @Service("formModelDAOMongoImpl")
 public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormModelDAO {
 
-    private final static Logger log = LoggerFactory.getLogger(FormModelDAOMongoImpl.class);
+    private final static Logger LOG = LoggerFactory.getLogger(FormModelDAOMongoImpl.class);
     private static final String COLLECTION_FORM_MODEL = "haku";
 
     @Autowired
@@ -37,7 +37,7 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
         try {
             holder.updateModel(find());
         } catch (Exception ignored) {
-            log.warn("No model found ! ");
+            LOG.warn("No model found ! ");
         }
     }
 
@@ -60,9 +60,8 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
 
 
     @Override
-    public void insertModelAsJsonString(StringBuilder builder) {
-        final String json = builder.toString();
-        log.debug("with content " + json);
+    public void insertModelAsJsonString(final String json) {
+        LOG.debug("with content " + json);
 
         //we do this via model, as this quarantees validness of data
         final BasicDBObject convert1 = validateJson(json);

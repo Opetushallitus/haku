@@ -23,14 +23,14 @@ public class AdminServiceImpl implements AdminService {
     private FormModelDAO formModelDAO;
 
     @Override
-    public void replaceModel(String file) {
-        formModelDAO.insertModelAsJsonString(new StringBuilder(file));
+    public void replaceModel(String json) {
+        formModelDAO.insertModelAsJsonString(json);
     }
 
     @Override
     public void replaceModel(InputStream inputStream) {
-        final StringBuilder stringBuilder = new FileHandling().readFile(inputStream);
-        formModelDAO.insertModelAsJsonString(stringBuilder);
+        final String json = new FileHandling().readFile(inputStream);
+        formModelDAO.insertModelAsJsonString(json);
     }
 
 

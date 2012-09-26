@@ -11,9 +11,9 @@ import java.io.InputStream;
  */
 public interface AdminService {
 
-    public void replaceModel(String file);
+    void replaceModel(String file);
 
-    public void replaceModel(InputStream inputStream);
+    void replaceModel(InputStream inputStream);
 
-    public void replaceModel(FormModel model);
+    void replaceModel(FormModel model);
 }

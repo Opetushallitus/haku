@@ -47,13 +47,9 @@ public class CommandExecutorTest {
         }
 
         @Override
-        protected void doInsert(StringBuilder stringBuilder) {
+        protected void doInsert(final String json) {
         }
 
-        @Override
-        protected StringBuilder getStringBuilder(String filename) {
-            return new StringBuilder(filename);
-        }
 
         @Override
         protected void write(String contentAsString, String filename) {

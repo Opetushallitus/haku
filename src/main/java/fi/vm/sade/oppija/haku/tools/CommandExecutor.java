@@ -44,6 +44,8 @@ public class CommandExecutor {
             case EXPORT:
                 exportAll(args.get(1));
                 break;
+            default:
+                break;
         }
     }
 
@@ -86,18 +88,18 @@ public class CommandExecutor {
     }
 
     protected void read(String filename) {
-        final StringBuilder stringBuilder = getStringBuilder(filename);
+        final String content = getStringBuilder(filename);
         log.info("inserting file " + filename);
-        doInsert(stringBuilder);
+        doInsert(content);
         log.info("done");
     }
 
-    protected void doInsert(StringBuilder stringBuilder) {
+    protected void doInsert(final String jsonString) {
         final FormModelDAOMongoImpl formModelDAOMongoImpl = getService();
-        formModelDAOMongoImpl.insertModelAsJsonString(stringBuilder);
+        formModelDAOMongoImpl.insertModelAsJsonString(jsonString);
     }
 
-    protected StringBuilder getStringBuilder(String filename) {
+    protected String getStringBuilder(String filename) {
         return new FileHandling().readStreamFromFile(filename);
     }
 

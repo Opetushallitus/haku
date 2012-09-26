@@ -14,6 +14,9 @@ import java.util.Map;
  */
 public class FormModel implements Serializable {
 
+
+    private static final long serialVersionUID = -530066716898062722L;
+
     @JsonDeserialize(using = ObjectIdDeserializer.class)
     @JsonSerialize(using = ObjectIdSerializer.class)
     private org.bson.types.ObjectId _id;

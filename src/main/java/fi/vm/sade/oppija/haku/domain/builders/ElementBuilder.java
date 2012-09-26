@@ -8,7 +8,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Element;
  * @since 1.1
  */
 public class ElementBuilder {
-    final protected Element element;
+    protected final Element element;
 
     public ElementBuilder(Element element) {
         this.element = element;

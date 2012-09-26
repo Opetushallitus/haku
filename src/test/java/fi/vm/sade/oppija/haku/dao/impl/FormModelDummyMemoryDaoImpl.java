@@ -195,7 +195,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     @Override
-    public void insertModelAsJsonString(StringBuilder builder) {
+    public void insertModelAsJsonString(String builder) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 

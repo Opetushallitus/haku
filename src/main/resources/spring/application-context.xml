@@ -25,5 +25,11 @@
         <!-- one of the properties available; the maximum file size in bytes -->
         <property name="maxUploadSize" value="1000000"/>
     </bean>
+    <bean id="HttpSolrServer"
+          class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+        <constructor-arg>
+            <value>http://localhost:8080/solr/core0</value>
+        </constructor-arg>
+    </bean>
 
 </beans>

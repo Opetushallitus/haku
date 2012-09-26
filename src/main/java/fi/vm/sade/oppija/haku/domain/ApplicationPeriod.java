@@ -13,9 +13,12 @@ import java.util.*;
  * @since 1.1
  */
 public class ApplicationPeriod implements Serializable {
+
+    private static final long serialVersionUID = 709005625385191180L;
+
     private String id;
-    Date starts = new Date();
-    Date end;
+    private Date starts = new Date();
+    private Date end;
 
     final Map<String, Form> forms = new HashMap<String, Form>();
 

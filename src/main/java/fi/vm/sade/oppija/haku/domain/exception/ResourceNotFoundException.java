@@ -6,7 +6,7 @@ package fi.vm.sade.oppija.haku.domain.exception;
  * @since 1.1
  */
 public class ResourceNotFoundException extends RuntimeException {
-    public ResourceNotFoundException(String message) {
+    public ResourceNotFoundException(final String message) {
         super(message);
     }
 }
