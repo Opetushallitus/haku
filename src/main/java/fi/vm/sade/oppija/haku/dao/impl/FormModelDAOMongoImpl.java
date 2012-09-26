@@ -22,7 +22,7 @@ import javax.annotation.PostConstruct;
 @Service("formModelDAOMongoImpl")
 public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormModelDAO {
 
-    private final static Logger LOG = LoggerFactory.getLogger(FormModelDAOMongoImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FormModelDAOMongoImpl.class);
     private static final String COLLECTION_FORM_MODEL = "haku";
 
     @Autowired

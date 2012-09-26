@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @Service
 public class HakemusServiceImpl implements HakemusService {
-    private final static Logger log = LoggerFactory.getLogger(HakemusServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(HakemusServiceImpl.class);
 
     @Autowired
     private Application application;

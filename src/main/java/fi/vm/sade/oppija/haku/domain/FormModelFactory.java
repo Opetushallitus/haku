@@ -15,7 +15,7 @@ import java.io.IOException;
  * @since 1.1
  */
 public class FormModelFactory {
-    final static Logger log = LoggerFactory.getLogger(FormModelFactory.class);
+    public static final Logger log = LoggerFactory.getLogger(FormModelFactory.class);
 
     public static FormModel fromJSONString(String json) {
         return new JsonStringToFormModelConverter().convert(json);
@@ -24,7 +24,7 @@ public class FormModelFactory {
     public static FormModel fromFileName(String filename) {
         final FileHandling fileHandling = new FileHandling();
         final String content = fileHandling.readStreamFromFile(filename);
-        return new JsonStringToFormModelConverter().convert(content.toString());
+        return new JsonStringToFormModelConverter().convert(content);
     }
 
     public static FormModel fromFile(File file) {

@@ -1,12 +1,11 @@
 package fi.vm.sade.oppija.haku.dao;
 
-import com.mongodb.WriteConcern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TestDBFactoryBean extends DBFactoryBean {
 
-    private final static Logger logger = LoggerFactory.getLogger(TestDBFactoryBean.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestDBFactoryBean.class);
 
     @Override
     public void shutDown() {

@@ -13,9 +13,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class CommandExecutor {
-    final static Logger log = LoggerFactory.getLogger(CommandLineTooling.class);
+    public static final Logger log = LoggerFactory.getLogger(CommandLineTooling.class);
     private final List<String> args;
 
     public CommandExecutor(String[] args) {
@@ -35,7 +36,7 @@ public class CommandExecutor {
     }
 
     protected void createCommand() {
-        Command command = Command.valueOf(args.get(0).toUpperCase());
+        Command command = Command.valueOf(args.get(0).toUpperCase(Locale.getDefault()));
         switch (command) {
             case IMPORT: {
                 importAll();
