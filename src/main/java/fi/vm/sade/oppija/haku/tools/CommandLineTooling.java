@@ -8,6 +8,8 @@ package fi.vm.sade.oppija.haku.tools;
 public class CommandLineTooling {
 
 
+    private CommandLineTooling() {}
+
     public static void main(final String[] args) {
         final CommandExecutor commandExecutor = new CommandExecutor(args);
         commandExecutor.execute();
