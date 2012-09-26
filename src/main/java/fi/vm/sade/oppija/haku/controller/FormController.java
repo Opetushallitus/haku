@@ -5,8 +5,8 @@ import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.Application;
+import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.validation.FormValidator;
 import fi.vm.sade.oppija.haku.validation.ValidationResult;
 import org.codehaus.plexus.util.ExceptionUtils;
@@ -173,7 +173,7 @@ public class FormController {
         if (values.get("nav-next") != null && category.isHasNext()) {
             return category.getNext();
         } else if (values.get("nav-prev") != null && category.isHasPrev()) {
-            return category = category.getPrev();
+            return category.getPrev();
         }
         return category;
     }
