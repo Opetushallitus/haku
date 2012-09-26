@@ -102,7 +102,7 @@
         <dependency>
             <groupId>com.cenqua.clover</groupId>
             <artifactId>clover</artifactId>
-            <version>3.1.7</version>
+            <version>3.1.4</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.gmaven.runtime</groupId>
@@ -217,6 +217,7 @@
                 <!-- explicitly define maven-deploy-plugin after other to force exec
                order -->
                 <artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
                 <executions>
                     <execution>
                         <id>deploy</id>
@@ -313,6 +314,86 @@
                 </plugins>
             </build>
         </profile>
+		
+		<profile>
+			<id>clover</id>
+			<properties>
+				<clover.version>3.1.4</clover.version>
+				<clover.fullRunEvery>500</clover.fullRunEvery>
+				<clover.generateHistorical>true</clover.generateHistorical>
+				<clover.base>/data00/atlassian/application-data/bamboo/clover_haku</clover.base>
+				<clover.historyDir>${clover.base}/history/${project.groupId}-${project.artifactId}</clover.historyDir>
+				<clover.snapshot>${clover.base}/snapshot/${project.groupId}-${project.artifactId}/clover.snapshot</clover.snapshot>
+				<clover.outputDirectory>${clover.base}/output/${project.groupId}-${project.artifactId}</clover.outputDirectory>
+				<clover.cloverDatabase>${clover.base}/db/${project.groupId}-${project.artifactId}/clover.db</clover.cloverDatabase>
+			</properties>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.atlassian.maven.plugins</groupId>
+						<artifactId>maven-clover2-plugin</artifactId>
+						<version>${clover.version}</version>
+						<configuration>
+							<license><![CDATA[rpRQNMNVbDQGOEFKsVQKeIihqPnFbdDEHvvNdDVKJlFhJhe
+									  mj2KgKqUCcBA763sFqgbibB52L0Cp0MzNnhQ88tyJuOnONl
+									  mQQqssopQmnQMMroQMPVTqPQRnpqrQNQOPTtWuTusvWnvSs
+									  vtWXTmTTTTSosUoWSxxStWuswtMRnmnmUUnppnpuqqmmmmm
+									  UUnppnpuqqmmmmmUU6fkkfpeWEXqflkXiW2lXoaWlcW5arZ
+									  XqflkUUor]]></license>
+							<snapshot>${clover.snapshot}</snapshot>
+							<singleCloverDatabase>${clover.singleCloverDatabase}</singleCloverDatabase>
+							<cloverDatabase>${clover.cloverDatabase}</cloverDatabase>
+							<outputDirectory>${clover.outputDirectory}</outputDirectory>
+							<generateHistorical>${clover.generateHistorical}</generateHistorical>
+							<historyDir>${clover.historyDir}</historyDir>
+							<alwaysReport>true</alwaysReport>
+							<generateXml>true</generateXml>
+							<includesAllSourceRoots>true</includesAllSourceRoots>
+							<!--
+							<includes>
+								<include>**/api/**/*.java</include>
+								<include>some/path/MyFile.java</include>
+								[...]
+							</includes>
+							<excludes>
+								<exclude>**/*Test/java</exclude>
+								[...]
+							</excludes>
+							<targetPercentage>50%</targetPercentage>
+							-->
+						</configuration>
+						<executions>
+							<execution>
+								<id>clover</id>
+								<goals>
+									<goal>setup</goal>
+									<goal>optimize</goal>
+									<goal>snapshot</goal>
+								</goals>
+							</execution>
+							<execution>
+								<phase>verify</phase>
+								<goals>
+									<goal>clover</goal>
+									<goal>log</goal>
+									<!-- <goal>check</goal> disable check until we have selenium testi 
+										up and running in bamboo -->
+									<goal>save-history</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>com.cenqua.clover</groupId>
+					<artifactId>clover</artifactId>
+					<version>${clover.version}</version>
+				</dependency>
+			</dependencies>
+		</profile>
 		
 		<profile>
 			<id>sonar</id>
