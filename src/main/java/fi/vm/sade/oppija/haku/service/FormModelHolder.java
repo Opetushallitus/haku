@@ -22,9 +22,9 @@ public class FormModelHolder {
      *
      * @param model new model
      */
-    public synchronized void updateModel(FormModel model) {
-        this.formModel = model;
+    public void updateModel(final FormModel model) {
         new FormModelInitializer(model).initModel();
+        this.formModel = model;
     }
 
 }

@@ -30,7 +30,7 @@ public class FormServiceImpl implements FormService {
     private FormModel getModel() {
         FormModel model = holder.getModel();
         if (model == null) {
-            if (model == null) throw new ResourceNotFoundException("Model not found");
+            throw new ResourceNotFoundException("Model not found");
         }
         return model;
     }
@@ -39,8 +39,12 @@ public class FormServiceImpl implements FormService {
     public Form getActiveForm(String applicationPeriodId, String formId) {
         FormModel model = getModel();
         ApplicationPeriod applicationPeriod = model.getApplicationPeriodById(applicationPeriodId);
-        if (applicationPeriod == null) throw new ResourceNotFoundException("not found");
-        if (!applicationPeriod.isActive()) throw new ResourceNotFoundException("Not active");
+        if (applicationPeriod == null) {
+            throw new ResourceNotFoundException("not found");
+        }
+        if (!applicationPeriod.isActive()) {
+            throw new ResourceNotFoundException("Not active");
+        }
         return applicationPeriod.getFormById(formId);
     }
 
