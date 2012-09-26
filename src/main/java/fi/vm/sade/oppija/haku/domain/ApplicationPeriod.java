@@ -32,10 +32,10 @@ public class ApplicationPeriod implements Serializable {
         end = new Date(instance.getTimeInMillis());
     }
 
-    public ApplicationPeriod(String id, Date starts, Date end) {
+    public ApplicationPeriod(final String id, final Date starts, final Date end) {
         this.id = id;
-        this.starts = starts;
-        this.end = end;
+        this.starts = new Date(starts.getTime());
+        this.end = new Date(end.getTime());
     }
 
     @JsonIgnore
@@ -51,15 +51,15 @@ public class ApplicationPeriod implements Serializable {
         return this.forms.keySet();
     }
 
-    public void addForm(Form form) {
+    public void addForm(final Form form) {
         this.forms.put(form.getId(), form);
     }
 
-    public Form getFormById(String id) {
+    public Form getFormById(final String id) {
         return forms.get(id);
     }
 
-    public Category getGategory(String formId, String categoryId) {
+    public Category getGategory(final String formId, final String categoryId) {
         return getFormById(formId).getCategory(categoryId);
     }
 
@@ -75,15 +75,15 @@ public class ApplicationPeriod implements Serializable {
         return starts;
     }
 
-    public void setStarts(Date starts) {
-        this.starts = starts;
+    public void setStarts(final Date starts) {
+        this.starts = new Date(starts.getTime());
     }
 
     public Date getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
-        this.end = end;
+    public void setEnd(final Date end) {
+        this.end = new Date(end.getTime());
     }
 }
