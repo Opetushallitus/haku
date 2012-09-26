@@ -33,10 +33,6 @@ public class FormModelBuilder {
         return formModel;
     }
 
-    private String createId() {
-        return "test";
-    }
-
     public FormModelBuilder withApplicationPeriods(ApplicationPeriod... periods) {
         for (ApplicationPeriod applicationPeriod : periods) {
             this.formModel.addApplicationPeriod(applicationPeriod);
