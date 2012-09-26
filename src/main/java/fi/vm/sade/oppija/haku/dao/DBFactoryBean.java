@@ -29,7 +29,7 @@ public class DBFactoryBean implements FactoryBean<DB> {
     }
 
     @Override
-    public DB getObject() throws Exception {
+    public DB getObject() {
         return mongo.getDB(name);
     }
 
