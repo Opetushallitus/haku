@@ -179,8 +179,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<clover.base>/data00/atlassian/application-data/bamboo/clover_haku</clover.base>
-		<clover.outputDirectory>${clover.base}/output/${project.groupId}-${project.artifactId}</clover.outputDirectory>
+		<clover.base>${basedir}/.clover</clover.base>
+		<clover.outputDirectory>${clover.base}/output</clover.outputDirectory>
 
 				
     </properties>
@@ -325,9 +325,9 @@
 				<clover.version>3.1.4</clover.version>
 				<clover.fullRunEvery>500</clover.fullRunEvery>
 				<clover.generateHistorical>true</clover.generateHistorical>
-				<clover.historyDir>${clover.base}/history/${project.groupId}-${project.artifactId}</clover.historyDir>
-				<clover.snapshot>${clover.base}/snapshot/${project.groupId}-${project.artifactId}/clover.snapshot</clover.snapshot>
-				<clover.cloverDatabase>${clover.base}/db/${project.groupId}-${project.artifactId}/clover.db</clover.cloverDatabase>
+				<clover.historyDir>${clover.base}/history</clover.historyDir>
+				<clover.snapshot>${clover.base}/snapshot/clover.snapshot</clover.snapshot>
+				<clover.cloverDatabase>${clover.base}/db/clover.db</clover.cloverDatabase>
 			</properties>
 
 			<build>
