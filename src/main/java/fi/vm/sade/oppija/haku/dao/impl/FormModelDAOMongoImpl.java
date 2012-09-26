@@ -32,7 +32,7 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
     private final MapToFormModelConverter mapToFormModelConverter = new MapToFormModelConverter();
 
     @PostConstruct
-    public void init() throws Exception {
+    public void init()  {
         super.init();
         try {
             holder.updateModel(find());

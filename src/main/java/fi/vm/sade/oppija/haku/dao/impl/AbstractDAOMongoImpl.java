@@ -14,7 +14,7 @@ public abstract class AbstractDAOMongoImpl {
     protected DB db;
 
     @PostConstruct
-    protected void init() throws Exception {
+    protected void init() {
         this.db = factoryBean.getObject();
     }
 
