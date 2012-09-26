@@ -39,7 +39,7 @@ public class DropdownSelectIT extends AbstractRemoteTest {
         final IElement select = getElementById("select");
         assertEquals(2, select.getChildren().size());
         assertEquals("select", select.getName());
-        final IElement elementById = getElementById("select.value1");
+        final IElement elementById = getElementById("select_value1");
         assertEquals("option", elementById.getName());
     }
 }

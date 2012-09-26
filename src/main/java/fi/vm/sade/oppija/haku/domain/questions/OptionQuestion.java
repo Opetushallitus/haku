@@ -15,7 +15,7 @@ public abstract class OptionQuestion extends Question {
     }
 
     public void addOption(final String id, final String value, final String title) {
-        this.options.add(new Option(this.getId() + "_" + id, value, title));
+        this.options.add(new Option(this.getId() + ID_DELIMITER + id, value, title));
     }
 
     public List<Option> getOptions() {

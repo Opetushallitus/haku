@@ -39,7 +39,7 @@ public class MultiSelectIT extends AbstractRemoteTest {
         final IElement multiselect = getElementById("multiselect");
         assertEquals(2, multiselect.getChildren().size());
         assertEquals("select", multiselect.getName());
-        final IElement elementById = getElementById("multiselect.value1");
+        final IElement elementById = getElementById("multiselect_value1");
         assertEquals("option", elementById.getName());
     }
 }

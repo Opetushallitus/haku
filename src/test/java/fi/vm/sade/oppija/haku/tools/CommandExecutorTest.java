@@ -1,8 +1,7 @@
 package fi.vm.sade.oppija.haku.tools;
 
+import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 /**
  * @author jukka
@@ -10,29 +9,37 @@ import java.util.ArrayList;
  * @since 1.1
  */
 public class CommandExecutorTest {
+
+    public static final String PROPERTY_JAVA_IO_TMPDIR = System.getProperty("java.io.tmpdir");
+    public static final String EXPORT = "export";
+    public static final String IMPORT = "import";
+    public static final String FILENAME_FOO = "foo";
+
     @Test
     public void testExport() throws Exception {
-        final ArrayList<String> strings = new ArrayList<String>();
-        strings.add("export");
-        strings.add(System.getProperty("java.io.tmpdir"));
-        new MockCommandExecutor(strings.toArray(new String[strings.size()])).execute();
+        new MockCommandExecutor(createArgs(EXPORT, PROPERTY_JAVA_IO_TMPDIR)).execute();
     }
 
     @Test
     public void testImportNoValid() throws Exception {
-        final ArrayList<String> strings = new ArrayList<String>();
-        strings.add("import");
-        strings.add("foo");
-        final String[] args = strings.toArray(new String[strings.size()]);
-        new CommandExecutor(args).execute();
+        new CommandExecutor(createImportFooArgs()).execute();
     }
 
     @Test
+    @Ignore
     public void testImportWithMock() throws Exception {
-        final ArrayList<String> strings = new ArrayList<String>();
-        strings.add("import");
-        strings.add("foo");
-        new MockCommandExecutor(strings.toArray(new String[strings.size()])).execute();
+        new MockCommandExecutor(createImportFooArgs()).execute();
+    }
+
+    private String[] createImportFooArgs() {
+        return createArgs(IMPORT, FILENAME_FOO);
+    }
+
+    private String[] createArgs(final String action, final String filename) {
+        final String[] args = new String[2];
+        args[0] = action;
+        args[1] = filename;
+        return args;
     }
 
 

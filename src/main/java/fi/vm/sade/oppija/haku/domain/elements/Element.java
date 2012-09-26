@@ -36,7 +36,7 @@ import java.util.*;
         }
 )
 public abstract class Element {
-
+    public static final String ID_DELIMITER = "_";
     final String id;
     transient String type = this.getClass().getSimpleName();
     String help;
