@@ -10,11 +10,10 @@ import java.util.Map;
 public class ValidationResult {
     private final Map<String, String> errors;
     private Category category;
-    private Form activeForm;
+    //private Form activeForm;
 
     public ValidationResult(Map<String, String> errors) {
         this.errors = Collections.unmodifiableMap(errors);
-        this.activeForm = null;
     }
 
     public boolean hasErrors() {
@@ -34,7 +33,7 @@ public class ValidationResult {
     }
 
     public Form getActiveForm() {
-        return activeForm;
+        return null;
     }
 
     public void setCategory(Category category) {
