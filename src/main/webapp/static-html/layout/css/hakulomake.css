@@ -21,7 +21,7 @@
 .form-steps li span
 {
 	display:block;
-	line-height:48px;
+	line-height:54px;
 	position:relative;
 	padding:0px 4px 0px 52px;
 	text-decoration:none;
@@ -47,15 +47,15 @@
 	top:0px;
 	left:0px;
 	vertical-align:middle;
-	width:48px;
-	height:48px;
-	line-height:48px;
+	width:54px;
+	height:54px;
+	line-height:54px;
 	text-align:center;
 	margin:0px 0px;
 	padding:0px;
 	font-size:24px;
 	font-weight:bold;
-	background-image:url('../img/form-steps-index-sprite.png');
+	background-image:url('../img/form-steps-index-sprite_idle-hover-selected-active-disabled.png');
 	background-repeat:no-repeat;
 	background-position:right center;
 }
@@ -63,15 +63,30 @@
 .form-steps li a .index
 {
 	color:#3e3e3e;
-	background-position:left center;
+	background-position:0px center;
 }
 
-.form-steps li a:hover .index,
 .form-steps li a.current .index
 {
 	color:#149dca;
-	background-position:center center;
+	background-position:-162px center;
 }
+
+.form-steps li a:hover .index,
+.form-steps li a.current:hover .index
+{
+	color:#149dca;
+	background-position:-54px center;
+}
+
+.form-steps li a:active .index,
+.form-steps li a.current:active  .index
+{
+	color:#149dca;
+	background-position:-108px center;
+}
+
+
 
 /*** Form generic
 ************************************************/
