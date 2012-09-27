@@ -1,0 +1,162 @@
+
+
+/*** Form elements
+************************************************/
+
+
+button
+{
+	cursor:pointer;
+}
+
+button.link,
+input[type="button"].link
+{
+	display:inline;
+	background:none;
+	border:none;
+	margin:0px;
+	padding:0px;
+	line-height:inherit;
+	font-size:inherit;
+	font-family:inherit;
+	color:#149dca;
+}
+
+fieldset
+{
+	border:none;
+	padding:0px;
+	margin:0px;
+}
+
+fieldset legend
+{
+	padding:0px;
+}
+
+
+label, .label
+{
+	line-height:2em;
+}
+
+input[type="text"], select
+{
+    background-color: #EEEEEE;
+    background-image: none;
+    border: none;
+    box-shadow: 0 1px 1px #B5B5B5 inset, 0 -1px 4px rgba(0, 0, 0, 0.05) inset;
+	color: #676767;
+	padding: 0px 0px 0px 0.769em;
+    border-radius: 4px 4px 4px 4px;
+    font-size: 1em;
+	height:2em;
+	line-height:2em;
+	vertical-align:middle;
+}
+
+select
+{
+	line-height:1.231em;
+	padding-top:0.385em;
+	padding-bottom:0.385em;
+}
+
+
+select option
+{
+	padding: 0px 0px 0px 0.769em;
+	vertical-align:middle;
+}
+
+
+/*** Field container styles
+************************************************/
+
+
+/*** Input(text), Select
+**********************************/
+
+.field-container-select
+{
+	padding:0px 2px 0px 0px;
+}
+
+.field-container-text
+{
+	padding:0px 0.923em 0px 0px;
+}
+
+
+.field-container-select select,
+.field-container-text input[type="text"]
+{
+	width:100%;
+
+}
+
+
+/*** Input(radio), Input(checkbox)
+**********************************/
+
+.field-container-radio,
+.field-container-checkbox
+{
+	padding:0px 0px 0px 2em;
+	position:relative;
+}
+
+
+.field-container-radio input[type="radio"],
+.field-container-checkbox input[type="checkbox"]
+{
+	position:absolute;
+	top:0.2em;
+	left:0px;
+}
+
+
+
+
+/*** Form row structure
+************************************************/
+
+.form-row
+{
+	margin:1.5em 0px;
+	clear:both;
+}
+
+.form-row-label
+{
+	float:left;
+	width:173px;
+	padding:0px 17px 0px 0px;
+	text-align:right;
+}
+
+.form-row-content
+{
+	float:left;
+	width:300px;
+	max-width:390px;
+}
+
+/*** Form item structure
+************************************************/
+
+.form-item
+{
+
+}
+
+.form-item-label
+{
+	color:#000000;
+}
+
+.form-item-content
+{
+	padding:0px 0px 0px 1em;
+}
