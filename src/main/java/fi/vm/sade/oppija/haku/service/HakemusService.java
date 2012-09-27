@@ -2,6 +2,9 @@ package fi.vm.sade.oppija.haku.service;
 
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.validation.ValidationResult;
+
+import java.util.Map;
 
 /**
  * @author jukka
@@ -9,7 +12,7 @@ import fi.vm.sade.oppija.haku.domain.HakemusId;
  * @since 1.1
  */
 public interface HakemusService {
-    void save(Hakemus hakemus);
-
     Hakemus getHakemus(HakemusId hakemusId);
+
+    ValidationResult save(HakemusId hakemusId, Map<String, String> values);
 }

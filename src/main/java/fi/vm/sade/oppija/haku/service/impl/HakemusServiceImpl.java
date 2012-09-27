@@ -10,6 +10,7 @@ import fi.vm.sade.oppija.haku.service.HakemusService;
 import fi.vm.sade.oppija.haku.service.SessionDataHolder;
 import fi.vm.sade.oppija.haku.validation.FormValidator;
 import fi.vm.sade.oppija.haku.validation.ValidationResult;
+import fi.vm.sade.oppija.haku.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +39,16 @@ public class HakemusServiceImpl implements HakemusService {
         this.formService = formService;
     }
 
+
     @Override
-    public void save(Hakemus hakemus) {
+    public ValidationResult save(HakemusId hakemusId, Map<String, String> values) {
+        final Hakemus hakemus = getHakemus(hakemusId);
+        hakemus.getValues().putAll(values);
+
         ValidationResult validationResult = validate(hakemus);
+        // Validation based on rule events, should be skipped?
         updateApplication(hakemus);
-        hakemus.setValidationResult(validationResult);
+        return validationResult;
     }
 
     @Override
@@ -61,7 +67,8 @@ public class HakemusServiceImpl implements HakemusService {
     private ValidationResult validate(Hakemus hakemus) {
         final HakemusId hakemusId = hakemus.getHakemusId();
         FormValidator formValidator = new FormValidator();
-        ValidationResult validationResult = formValidator.validate(hakemus.getValues(), formService.getCategoryValidators(hakemusId.getApplicationPeriodId(), hakemusId.getFormId(), hakemusId.getCategoryId()));
+        final Map<String, Validator> categoryValidators = formService.getCategoryValidators(hakemusId.getApplicationPeriodId(), hakemusId.getFormId(), hakemusId.getCategoryId());
+        ValidationResult validationResult = formValidator.validate(hakemus.getValues(), categoryValidators);
         Form activeForm = formService.getActiveForm(hakemusId.getApplicationPeriodId(), hakemusId.getFormId());
         Category category = getNextCategory(hakemusId.getCategoryId(), hakemus.getValues(), activeForm, validationResult);
         validationResult.setCategory(category);

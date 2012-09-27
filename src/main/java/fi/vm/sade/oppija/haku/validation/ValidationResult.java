@@ -4,11 +4,10 @@ package fi.vm.sade.oppija.haku.validation;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
 
-public class ValidationResult implements Serializable {
+public class ValidationResult {
     private final Map<String, String> errors;
     private transient Category category;
 
@@ -40,7 +39,4 @@ public class ValidationResult implements Serializable {
         this.category = category;
     }
 
-    public boolean isValid() {
-        return hasErrors();
-    }
 }

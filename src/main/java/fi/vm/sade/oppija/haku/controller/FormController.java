@@ -1,7 +1,6 @@
 package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
@@ -112,9 +111,8 @@ public class FormController {
         Map<String, String> values = multiValues.toSingleValueMap();
 
         final HakemusId hakemusId = new HakemusId(applicationPeriodId, formId, categoryId, (String) session.getAttribute(USER_ID));
-        final Hakemus hakemus = new Hakemus(hakemusId, values);
-        hakemusService.save(hakemus);
-        ValidationResult validationResult = hakemus.getValidationResult();
+
+        ValidationResult validationResult = hakemusService.save(hakemusId, values);
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         if (!validationResult.hasErrors()) {
@@ -123,7 +121,7 @@ public class FormController {
             modelAndView.addObject("validationResult", validationResult);
             modelAndView.addObject("category", validationResult.getCategory());
             modelAndView.addObject("form", validationResult.getActiveForm());
-            modelAndView.addObject("categoryData", hakemus.getValues());
+            modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getValues());
         }
         return modelAndView;
     }
