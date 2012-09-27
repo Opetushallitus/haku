@@ -5,9 +5,9 @@ import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.service.Application;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
+import fi.vm.sade.oppija.haku.service.SessionDataHolder;
 import fi.vm.sade.oppija.haku.validation.FormValidator;
 import fi.vm.sade.oppija.haku.validation.ValidationResult;
 import org.slf4j.Logger;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,32 +27,39 @@ import java.util.Map;
 public class HakemusServiceImpl implements HakemusService {
     private static final Logger LOG = LoggerFactory.getLogger(HakemusServiceImpl.class);
 
-    @Autowired
-    private Application application;
+    private final ApplicationDAO sessionDataHolder;
+    private final ApplicationDAO applicationDAO;
+    private final FormService formService;
 
     @Autowired
-    @Qualifier("applicationDAOMongoImpl")
-    private ApplicationDAO applicationDAO;
-
-    @Autowired
-    @Qualifier("formServiceImpl")
-    private FormService formService;
+    public HakemusServiceImpl(@Qualifier("sessionDataHolder") SessionDataHolder sessionDataHolder, @Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO, @Qualifier("formServiceImpl") FormService formService) {
+        this.sessionDataHolder = sessionDataHolder;
+        this.applicationDAO = applicationDAO;
+        this.formService = formService;
+    }
 
     @Override
     public void save(Hakemus hakemus) {
-        application.setValue(hakemus.getHakemusId().getCategoryId(), hakemus.getValues());
-        ValidationResult validationResult = validateAndSave(hakemus);
+        ValidationResult validationResult = validate(hakemus);
+        updateApplication(hakemus);
         hakemus.setValidationResult(validationResult);
     }
 
     @Override
     public Hakemus getHakemus(HakemusId hakemusId) {
-        return new Hakemus(hakemusId, new HashMap<String, String>());
+        return selectDao(hakemusId).find(hakemusId);
     }
 
-    private ValidationResult validateAndSave(Hakemus hakemus) {
+    private ApplicationDAO selectDao(HakemusId hakemusId) {
+        if (hakemusId.isUserKnown()) {
+            return applicationDAO;
+        }
+        return sessionDataHolder;
+    }
+
+
+    private ValidationResult validate(Hakemus hakemus) {
         final HakemusId hakemusId = hakemus.getHakemusId();
-        updateApplication(hakemusId);
         FormValidator formValidator = new FormValidator();
         ValidationResult validationResult = formValidator.validate(hakemus.getValues(), formService.getCategoryValidators(hakemusId.getApplicationPeriodId(), hakemusId.getFormId(), hakemusId.getCategoryId()));
         Form activeForm = formService.getActiveForm(hakemusId.getApplicationPeriodId(), hakemusId.getFormId());
@@ -62,20 +68,8 @@ public class HakemusServiceImpl implements HakemusService {
         return validationResult;
     }
 
-    private void updateApplication(HakemusId hakemusId) {
-
-        // TODO: remove when authentication is implemented
-        //--
-        if (hakemusId.getUserId() != null) {
-            LOG.debug("posted category with userid: " + hakemusId.getUserId() + " and form id: " + hakemusId.getApplicationPeriodId() + "-" + hakemusId.getFormId());
-            if (application.getApplicationId() == null || application.getUserId() == null) {
-                application.setApplicationId(hakemusId.getApplicationPeriodId() + "-" + hakemusId.getFormId());
-                application.setUserId(hakemusId.getUserId());
-                LOG.debug("application: " + application.getUserId());
-            }
-            applicationDAO.update(application);
-        }
-        //--
+    private void updateApplication(Hakemus hakemus) {
+        selectDao(hakemus.getHakemusId()).update(hakemus);
     }
 
     private Category getNextCategory(final String categoryId, final Map<String, String> values, final Form activeForm, ValidationResult errors) {

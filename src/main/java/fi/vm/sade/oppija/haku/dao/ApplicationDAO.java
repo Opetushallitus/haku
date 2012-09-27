@@ -1,5 +1,7 @@
 package fi.vm.sade.oppija.haku.dao;
 
+import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.service.Application;
 
 import java.util.List;
@@ -15,15 +17,14 @@ public interface ApplicationDAO {
      * Retrieves all applications by a specific user.
      *
      * @param userId user id
-     * @return  list of applications
+     * @return list of applications
      */
     List<Application> findAllByUserId(String userId);
 
     /**
      * Find Application by userId and applicationId.
      *
-     *
-     * @param userId user identifier
+     * @param userId        user identifier
      * @param applicationId application id
      * @return application
      */
@@ -37,4 +38,7 @@ public interface ApplicationDAO {
      */
     void update(Application application);
 
+    public void update(Hakemus hakemus);
+
+    Hakemus find(HakemusId hakemusId);
 }

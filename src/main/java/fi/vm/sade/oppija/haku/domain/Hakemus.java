@@ -2,6 +2,7 @@ package fi.vm.sade.oppija.haku.domain;
 
 import fi.vm.sade.oppija.haku.validation.ValidationResult;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Map;
  * @version 9/26/122:48 PM}
  * @since 1.1
  */
-public class Hakemus {
+public class Hakemus implements Serializable {
     private final HakemusId hakemusId;
     private final Map<String, String> values;
     private ValidationResult validationResult;

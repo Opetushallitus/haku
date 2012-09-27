@@ -9,7 +9,6 @@ import fi.vm.sade.oppija.haku.domain.questions.Option;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -45,7 +44,6 @@ public class HideChildsIT extends AbstractRemoteTest {
     }
 
     @Test
-    @Ignore
     public void testInputExistsNoJavaScript() throws IOException {
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);
@@ -56,7 +54,6 @@ public class HideChildsIT extends AbstractRemoteTest {
         assertElementNotPresent("ekaryhma");
         assertElementNotPresent("alikysymys1");
         // assertButtonPresent("rule-enabled-checkbox.checkbox_value");
-        clickButton("rule-enabled-checkbox_checkbox_value");
         checkCheckbox("checkbox_value");
         assertElementPresent("alikysymys1");
 
