@@ -55,7 +55,7 @@
 	padding:0px;
 	font-size:24px;
 	font-weight:bold;
-	background-image:url(form-steps-index-sprite.png);
+	background-image:url('../img/form-steps-index-sprite.png');
 	background-repeat:no-repeat;
 	background-position:right center;
 }
@@ -111,7 +111,7 @@ select, select:focus, select:active
 	height:21px;
 
 	color:transparent;
-	background-image:url(help-icon.png);
+	background-image:url('../img/help-icon.png');
 	background-position:center center;
 	background-repeat:no-repeat;
 }
@@ -259,7 +259,7 @@ select, select:focus, select:active
 .applicant-grades thead tr th
 {
 	background-color:#dde9f0;
-	background-image:url(texture-angled-lines.gif);
+	background-image:url('../img/texture-angled-lines.gif');
 	background-repeat:repeat;
 	background-position:top left;
 	font-size:1.385em;
