@@ -16,4 +16,8 @@ public class Language extends Subject {
         super(id, title);
         this.scope = scope;
     }
+
+    public List<String> getScope() {
+        return scope;
+    }
 }

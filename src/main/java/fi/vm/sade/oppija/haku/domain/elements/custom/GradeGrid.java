@@ -36,5 +36,31 @@ public class GradeGrid extends Titled {
         this.subjects = subjects;
     }
 
+    public String getRegistryGradesTitle() {
+        return registryGradesTitle;
+    }
 
+    public String getAlteringGradesTitle() {
+        return alteringGradesTitle;
+    }
+
+    public String getGradesTitle() {
+        return gradesTitle;
+    }
+
+    public String getCommonSubjectColumnTitle() {
+        return commonSubjectColumnTitle;
+    }
+
+    public String getOptionalSubjectColumnTitle() {
+        return optionalSubjectColumnTitle;
+    }
+
+    public List<Integer> getGradeRange() {
+        return gradeRange;
+    }
+
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
 }

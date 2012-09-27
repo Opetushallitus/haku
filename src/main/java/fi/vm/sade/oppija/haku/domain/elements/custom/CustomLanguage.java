@@ -18,4 +18,7 @@ public class CustomLanguage extends Language {
         this.languages = languages;
     }
 
+    public List<String> getLanguages() {
+        return languages;
+    }
 }

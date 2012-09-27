@@ -7,12 +7,17 @@ import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.QuestionGroup;
+import fi.vm.sade.oppija.haku.domain.elements.custom.GradeGrid;
+import fi.vm.sade.oppija.haku.domain.elements.custom.Subject;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.domain.questions.*;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.validation.Validator;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Service("FormModelDummyMemoryDao")
@@ -131,18 +136,45 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                 .addChild(kansalaisuus)
                 .addChild(äidinkieli);
 
-
-        TextArea textArea = new TextArea("arvosanat", "Arvosanat");
         createKoulutustausta(koulutustaustaRyhmä);
         createHakutoiveet(hakutoiveetRyhmä);
+        createArvosanat(arvosanatRyhmä);
+
         TextArea lisätiedotText = new TextArea("vapaa", "Lisätietoja, sana on vapaa");
         lisätiedotRyhmä.addChild(lisätiedotText);
-        arvosanatRyhmä.addChild(textArea);
 
         esikatselutRyhmä.addChild(henkilötiedotRyhmä).
                 addChild(koulutustaustaRyhmä).addChild(hakutoiveetRyhmä).addChild(arvosanatRyhmä).addChild(lisätiedotRyhmä);
 
         yhteenvetoRyhmä.setHelp("Kiitos, hakemuksesi on vastaanotettu");
+
+    }
+
+    private void createArvosanat(QuestionGroup arvosanatRyhmä) {
+
+        List<Integer> gradeRange = new ArrayList<Integer>();
+        gradeRange.add(10);
+        gradeRange.add(9);
+        gradeRange.add(8);
+        gradeRange.add(7);
+        gradeRange.add(6);
+        gradeRange.add(5);
+        gradeRange.add(4);
+
+        Subject finnish = new Subject("subject_finnish", "Äidinkieli");
+        Subject math = new Subject("subject_math", "Matematiikka");
+        Subject biology = new Subject("subject_biology", "Biologia");
+
+        List<Subject> subjects = new ArrayList<Subject>();
+        subjects.add(finnish);
+        subjects.add(math);
+        subjects.add(biology);
+
+        GradeGrid gradeGrid = new GradeGrid("gradegrid", "Arvosanat", "Arvosanat TOR-rekisterissä",
+                "Poikkeavat Arvosanat", "Arvosanat", "Yhteinen oppiaine", "Valinnaisaine", gradeRange, subjects);
+
+        arvosanatRyhmä.addChild(gradeGrid);
+
 
     }
 
