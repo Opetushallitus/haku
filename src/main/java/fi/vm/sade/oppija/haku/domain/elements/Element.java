@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import fi.vm.sade.oppija.haku.domain.Attribute;
+import fi.vm.sade.oppija.haku.domain.elements.custom.AddLanguage;
+import fi.vm.sade.oppija.haku.domain.elements.custom.CustomLanguage;
+import fi.vm.sade.oppija.haku.domain.elements.custom.Language;
 import fi.vm.sade.oppija.haku.domain.questions.*;
 import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
 
@@ -32,7 +35,10 @@ import java.util.*;
                 @JsonSubTypes.Type(value = QuestionGroup.class),
                 @JsonSubTypes.Type(value = TextQuestion.class),
                 @JsonSubTypes.Type(value = Category.class),
-                @JsonSubTypes.Type(value = EnablingSubmitRule.class)
+                @JsonSubTypes.Type(value = EnablingSubmitRule.class),
+                @JsonSubTypes.Type(value = Language.class),
+                @JsonSubTypes.Type(value = CustomLanguage.class),
+                @JsonSubTypes.Type(value = AddLanguage.class)
         }
 )
 public abstract class Element {
