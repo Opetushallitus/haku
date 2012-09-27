@@ -139,6 +139,13 @@ hr
     width: 73.75%;
 }
 
+.grid16-16 {
+	float: left;
+	margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 98.75%;
+}
+
 
 
 /*** Siteheader
