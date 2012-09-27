@@ -5,9 +5,17 @@ html, body
 
 body{
 	font-family:helvetica, arial, sans-serif;
-	font-size:13px;
+	font-size:0.813em;
+	background-color:#f8f8f8;
+	color:#3e3e3e;
+	line-height:1.3em;
 }
 
+input, textarea, select, option
+{
+	font-family:inherit;
+	font-size:inherit;
+}
 
 /*** Basic styles
 **************************************************************/
@@ -15,38 +23,43 @@ body{
 h1, h2, h3, h4,
 .h1, .h2, .h3, .h4
 {
-
+	display:block;
+	font-weight:bold;
+	color:#000000;
 }
 
 h1, .h1
 {
-
+	font-size:1.846em;
 }
 
 h2, .h2
 {
-
+	font-size:1.385em;
 }
 
 h3, .h3
 {
-
+	font-size:1.154em;
 }
 
 h4, .h4
 {
-
+	font-size:1em;
 }
 
-footer
-{
-    color: #000000;
-}
 
 
 
 /*** Links
 ************************************************/
+
+a
+{
+	color:#149dca;
+}
+
+
 
 /*** Lists
 ************************************************/
@@ -57,14 +70,61 @@ footer
 /*** Form elements
 ************************************************/
 
+
+button
+{
+	cursor:pointer;
+}
+
+button.link,
+input[type="button"].link
+{
+	display:inline;
+	background:none;
+	border:none;
+	margin:0px;
+	padding:0px;
+	line-height:inherit;
+	font-size:inherit;
+	font-family:inherit;
+	color:#149dca;
+}
+
+fieldset
+{
+	border:none;
+	padding:0px;
+	margin:0px;
+}
+
+fieldset legend
+{
+	padding:0px;
+}
+
+
 /*** Misc
 ************************************************/
+
+hr
+{
+	display:block;
+	margin:0.5em 0px;
+	height:1px;
+	width:100%;
+	border:none;
+	background-color:#feba00;
+}
+
 
 .clear
 {
 	clear:both;
 }
 
+
+.set-left{float:left;}
+.set-right{float:right;}
 
 
 /*** Structure
@@ -75,134 +135,512 @@ footer
 	
 }
 
-#wrapper
+#site
 {
-	width:960px;
-    background: none repeat scroll 0 0 #F8F8F8;
-	border: 1px solid #DCDCDC;
-    border-top-width: 0;
-    margin: 0 auto;
-    padding: 0 0 10px;
+	
 }
 
 #siteheader
 {
-    background: url("navigation-divider.jpg") repeat-x scroll left bottom #F8F8F8;
-    padding: 10px 0;
+   background-color:#ffffff;
 }
 
-#page
-{
-
-}
-
-#header
-{
-
-}
-
-#footer
-{
-
-    background: none repeat scroll 0 0 #FFFFFF;
-    border: 1px solid #DCDCDC;
-    border-radius: 3px 3px 3px 3px;
-    clear: both;
-    margin: 0 0.625%;
-
-}
-
-#footer .footer-container
-{
-    background: none repeat scroll 0 0 #DCDCDC;
-    border: 1px solid #DCDCDC;
-    border-radius: 3px 3px 3px 3px;
-    margin: 0.625%;
-    padding: 10px 0;
-}
-
-
-/*** Grid
-************************************************/
-
-
-.grid16-4
-{
-    float: left;
-    margin-left: 0.625%;
-    margin-right: 0.625%;
-    width: 23.75%;
-}
-
-.grid-container
-{
-	padding:0px 10%;
-}
-
-
-/*** Header
+/*** Siteheader
 **************************************************************/
 
-#header
+#siteheader
 {
-	margin: 0 0.625%;
-	padding:15px 0px 10px 0px;
+
+}
+
+#siteheader .line
+{
+	width:100%;
+	height:5px;
+	background-color:#3cafd4;
+	
+	box-shadow: inset 0px 2px 2px -2px #006285;
+	
+}
+
+#siteheader .sitelogo
+{
+	float:left;
+}
+
+#siteheader .actions
+{
+	float:right;
+	padding:0px 2em 0px;
+}
+
+#siteheader .actions ul
+{
+	display:inline-block;
+	vertical-align:bottom;
+	margin:0px;
+
+}
+
+#siteheader .actions ul li
+{
+	
+	list-style:none;
+}
+
+#siteheader .actions ul li a
+{
+	color:#010101;
+	text-decoration:none;
+}
+
+#siteheader .actions ul li a:hover
+{
+
 }
 
 
 /*** Navigation
-************************************************/
+**************************************************************/
 
-ul.level1
+.navigation
+{
+	display:inline-block;
+	background-color:#149ecb;
+	border:solid 4px #ffffff;
+	margin:0.5em;
+	height:3.077em;
+	box-shadow:0px 0px 1px 0px #c4c4c4;
+	border-radius:6px;
+}
+
+.menu-level-1
 {
 	margin:0px;
 	padding:0px;
 }
 
-ul.level1 li
+.menu-level-1 li
 {
-	float:left;
 	list-style:none;
+	display:inline-block;
 }
 
-ul.level1 li a
+.menu-level-1 li a
 {
 	display:block;
-    border: 4px solid #FFFFFF;
-    border-radius: 3px 3px 3px 3px;
-    box-shadow: 2px 2px 2px 0 #A2A2A2;
-    margin-right: 5px;
-    position: relative;
-	font-weight:bold;
+	height:3.077em;
+	line-height:3.077em;
+	padding:0px 1em;
+	color:#ffffff;
 	text-decoration:none;
 }
 
-ul.level1 li a span
+.menu-level-1 li.home a
 {
 	display:block;
-	padding:3px 20px;
-	border-radius: 3px 3px 3px 3px;
-	background-color:#149ecb;
-	color:#ffffff;
+	height:3.077em;
+	width:3.077em;
+	line-height:3.077em;
+	padding:0px;
+	color:transparent;
 }
 
-ul.level1 li a:hover span
+/*** Application form
+**************************************************************/
+
+/*** Form step navigation
+************************************************/
+
+.form-steps
 {
-	background-color:#0f7a9d;
+	margin:0px;
+	padding:0px;
 }
 
-ul.level1 li a.current span
+.form-steps li
 {
-	background-color:#2b4561;
+	list-style:none;
+	display:block;
+	float:left;
+}
+
+.form-steps li a,
+.form-steps li span
+{
+	display:block;
+	line-height:48px;
+	position:relative;
+	padding:0px 4px 0px 52px;
+	text-decoration:none;
+	color:#9f9f9f;
+}
+
+.form-steps li a
+{
+	color:#3e3e3e;
+	font-weight:bold;
+}
+
+.form-steps li a:hover,
+.form-steps li a.current
+{
+	color:#149dca;
+}
+
+.form-steps .index
+{
+	display:block;
+	position:absolute;
+	top:0px;
+	left:0px;
+	vertical-align:middle;
+	width:48px;
+	height:48px;
+	line-height:48px;
+	text-align:center;
+	margin:0px 0px;
+	padding:0px;
+	font-size:24px;
+	font-weight:bold;
+	background-image:url(form-steps-index-sprite.png);
+	background-repeat:no-repeat;
+	background-position:right center;
+}
+
+.form-steps li a .index
+{
+	color:#3e3e3e;
+	background-position:left center;
+}
+
+.form-steps li a:hover .index,
+.form-steps li a.current .index
+{
+	color:#149dca;
+	background-position:center center;
+}
+
+/*** Form generic
+************************************************/
+
+form.form
+{
+	display:block;
+	background-color:#ffffff;
+	border:solid 4px #ffffff;
+	margin:0.5em;
+	padding:1.538em;
+	box-shadow:0px 0px 1px 0px #c4c4c4, inset 0px 0px 1px 0px #c4c4c4;
+	border-radius:6px;
+}
+
+small
+{
+	color:#8d8d8d;
+}
+
+input, input:focus,
+select, select:focus, select:active
+{
+	outline:none;
 }
 
 
 
 
+.form-row
+{
+	margin:1.5em 0px;
+	clear:both;
+}
+
+.form-row-label
+{
+	float:left;
+	width:173px;
+	padding:0px 17px 0px 0px;
+	text-align:right;
+}
+
+.form-row-content
+{
+	float:left;
+	width:300px;
+	max-width:390px;
+}
+
+.form-item-label
+{
+	color:#000000;
+}
+
+.form-item-content
+{
+	padding:0px 0px 0px 1em;
+}
+
+.field-container-select
+{
+
+}
+
+.field-container-text
+{
+
+}
+
+label, .label
+{
+	line-height:2em;
+}
+
+input[type="text"], select
+{
+    background-color: #EEEEEE;
+    background-image: none;
+    border: none;
+    box-shadow: 0 1px 1px #B5B5B5 inset, 0 -1px 4px rgba(0, 0, 0, 0.05) inset;
+	color: #676767;
+	padding: 0px 0px 0px 0.769em;
+    border-radius: 4px 4px 4px 4px;
+    font-size: 1em;
+	height:2em;
+	line-height:2em;
+	vertical-align:middle;
+}
+
+select
+{
+	line-height:1.231em;
+	padding-top:0.385em;
+	padding-bottom:0.385em;
+}
+
+
+select option
+{
+	padding: 0px 0px 0px 0.769em;
+	vertical-align:middle;
+}
+
+.field-container-select
+{
+	padding:0px 2px 0px 0px;
+}
+
+.field-container-text
+{
+	padding:0px 0.923em 0px 0px;
+}
+
+
+.field-container-select select,
+.field-container-text input[type="text"]
+{
+	width:100%;
+
+}
 
 
 
 
+.field-container-radio,
+.field-container-checkbox
+{
+	padding:0px 0px 0px 2em;
+	position:relative;
+}
 
 
+.field-container-radio input[type="radio"],
+.field-container-checkbox input[type="checkbox"]
+{
+	position:absolute;
+	top:0.2em;
+	left:0px;
+}
+
+.field-container-radio small
+{
+
+}
+
+
+
+.helplink
+{
+	float:right;
+	display:block;
+	width:20px;
+	height:21px;
+
+	color:transparent;
+	background-image:url(help-icon.png);
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+
+
+/*** Acceptance preference table
+************************************************/
+
+
+.preference-sort tbody tr td
+{
+	border:solid 1px #e1e1e1;
+	border-top-color:#ececec;
+	border-bottom-color:#c2c2c2;
+	vertical-align:top;
+	padding:2em 1.5em;
+	background-color:#ffffff;
+}
+
+.preference-sort tbody tr:nth-child(odd) td
+{
+	background-color:#f9fbfc;
+}
+
+.preference-sort button.reset
+{
+	float:right;
+	
+}
+
+.preference-sort .index
+{
+	text-align:center;
+}
+
+.preference-sort .index .up,
+.preference-sort .index .down
+{
+	border:solid 16px #000000;
+	width:0px;
+	height:0px;
+	border-left-color:transparent;
+	border-right-color:transparent;
+	background-color:transparent;
+	padding:0px;
+	margin:2px;
+	position:relative;
+}
+
+.preference-sort .index .up{	border-top-width:0px;}
+.preference-sort .index .down{border-bottom-width:0px;}
+
+.preference-sort .index .up span,
+.preference-sort .index .down span
+{
+	border:solid 15px #feba00;
+	width:0px;
+	height:0px;
+	overflow:hidden;
+	border-left-color:transparent;
+	border-right-color:transparent;
+	background-color:transparent;
+	padding:0px;
+	margin:0px;
+	position:absolute;
+	left:-15px;
+}
+
+.preference-sort .index .up span{border-top-width:0px;bottom:-16px;}
+.preference-sort .index .down span{border-bottom-width:0px;top:-15px;}
+
+.preference-sort .index .up:hover span{border-top-width:0px;bottom:-15px;}
+.preference-sort .index .down:hover span{border-bottom-width:0px;top:-16px;}
+
+.preference-sort .index .up:active span,
+.preference-sort .index .up:focus span
+{
+	left:-14px;
+	bottom:-16px;
+	border-width:14px;
+	border-top-width:0px;
+}
+
+.preference-sort .index .down:active span,
+.preference-sort .index .down:focus span
+{
+	left:-14px;
+	top:-14px;
+	border-width:14px;
+	border-bottom-width:0px;
+}
+
+
+.preference-sort .index .label
+{
+	text-transform:uppercase;
+}
+
+.preference-sort .preference-fields
+{
+	margin-right:1.5em;
+	float:right;
+}
+
+.preference-sort .preference-fields .form-row
+{
+	margin: 1em 100px 0px 0px;
+}
+
+.preference-sort .preference-fields .form-row:first-child
+{
+	margin-top: 0px;
+}
+
+.preference-sort .preference-fields .form-row-label
+{
+	width:83px;
+	float:left;
+}
+
+.preference-sort .preference-fields .form-row-content
+{
+	margin-left:100px;
+	float:none;
+	width:100%;
+}
+
+
+/*** Grades table
+************************************************/
+
+.applicant-grades thead tr th,
+.applicant-grades thead tr td,
+.applicant-grades tbody tr td
+{
+	border:solid 1px #e1e1e1;
+	border-top-color:#ececec;
+	border-bottom-color:#c2c2c2;
+	vertical-align:top;
+	padding:0.5em 1.5em;
+	line-height:2em;
+	background-color:#ffffff;
+}
+
+.applicant-grades thead tr th
+{
+	background-color:#dde9f0;
+	background-image:url(texture-angled-lines.gif);
+	background-repeat:repeat;
+	background-position:top left;
+	font-size:1.385em;
+	line-height:1.5em;
+	text-shadow:0px 1px 1px #ffffff;
+}
+
+.applicant-grades thead tr td
+{
+	background-color:#e3eef3;
+	text-transform:uppercase;
+}
+
+
+.applicant-grades tbody tr:nth-child(even) td
+{
+	background-color:#f3f7f9;
+}
 

@@ -18,35 +18,53 @@ var formStep = {
 	build:function(){
 		formStep.setTriggers();
 	},
-	change:function(params){
-		if (params == 'next' || params == 'previous')
+	change:function(param){
+		// Next and Previous buttons
+		if (param == 'next' || param == 'previous')
 		{
-			if (params == 'next')
+			index = parseInt($('form[data-form-step-id]').attr('data-form-step-id'));
+			
+			if (param == 'next')
 			{
-				
+				window.location.href = formStep.stepUrls[index+1];
 			}
 			else
 			{
-				
+				window.location.href = formStep.stepUrls[index-1];
 			}
 		}
-		else if ()
+		else if(param.indexOf('goto') != -1)
 		{
-		
+			params = param.split(':');
+			index = params[1];
+			
+			window.location.href = formStep.stepUrls[index];
 		}
+
 	},
 	setTriggers:function(){
 		$('button[data-form-step-action]').click(function(event){
 			event.preventDefault();
-			$(this).attr('data-form-step-action');
-
+			params = $(this).attr('data-form-step-action');
+			formStep.change(params);
+		});
+		
+		$('a[data-form-step-action]').click(function(event){
+			event.preventDefault();
+			params = $(this).attr('data-form-step-action');
+			formStep.change(params);
 		});
 	}
-	}
+}
 	
 	
+$('button').click(function(event){
+	event.preventDefault();
+});
 	
 	
+formStep.build();
+
 }
 }
 

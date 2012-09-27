@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 
@@ -68,86 +68,133 @@
 	<h2>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2012</h2>
 
 	<ul class="form-steps">
-		<li><a href="#"><span class="index">1</span>Henkilötiedot &gt;</a></li>
-		<li><a href="#" class="current"><span class="index">2</span>Koulutustausta &gt;</a></li>
-		<li><span><span class="index">4</span>Hakutoiveet &gt;</span></li>
-		<li><span><span class="index">5</span>Arvosanat &gt;</span></li>
-		<li><span><span class="index">6</span>Lisätiedot &gt;</span></li>
-		<li><span><span class="index">7</span>Esikatselu &gt;</span></li>
-		<li><span><span class="index">8</span>Valmis</span></li>
+		<li><a href="index.html"><span class="index">1</span>Henkilötiedot &gt;</a></li>
+		<li><a href="koulutustausta.html" class="current"><span class="index">2</span>Koulutustausta &gt;</a></li>
+		<li><span><span class="index">3</span>Hakutoiveet &gt;</span></li>
+		<li><span><span class="index">4</span>Arvosanat &gt;</span></li>
+		<li><span><span class="index">5</span>Lisätiedot &gt;</span></li>
+		<li><span><span class="index">6</span>Esikatselu &gt;</span></li>
+		<li><span><span class="index">7</span>Valmis</span></li>
 	</ul>
 	<div class="clear"></div>
 
 </div>
 
-<form id="applicationform" action="" method="post" class="form">
+<form id="applicationform" action="" method="post" class="form" data-form-step-id="2">
+
+	<div class="set-left">
+		<button class="" data-form-step-action="previous"><span>Edellinen</span></button>
+	</div>
 
 	<div class="set-right">
-		<a href="#">Esikatselu</a>
-		<button class=""><span>Seuraava</span></button>
+				<button class="link" data-form-step-action="goto:6">Esikatselu</button>
+		<button class="" data-form-step-action="next"><span>Seuraava</span></button>
 	</div>
 	<div class="clear"></div>
 
 <fieldset>
-	<legend class="h3">Henkilötiedot</legend>
+	<legend class="h3">Koulutustausta</legend>
 	<hr/>
 	<a href="#" class="helplink">?</a>
-
-	<div class="form-row">
-		<label class="form-row-label" for="Sukunimi">Sukunimi*</label>
-		<div class="form-row-content">
-			<div class="field-container-text">
-				<input required="required" id="Sukunimi" name="Sukunimi" value="" type="text" />
-			</div>
-		</div>
-		<div class="clear"></div>
-	</div>
-
-	<div class="form-row">
-		<label class="form-row-label" for="Etunimet">Etunimet*</label>
-		<div class="form-row-content">
-			<div class="field-container-text">
-				<input required="required" name="Etunimet" id="Etunimet" value="" type="text" />
-			</div>
-		</div>
-		<div class="clear"></div>
-	</div>
-
-	<div class="form-row">
-		<label class="form-row-label" for="Kutsumanimi">Kutsumanimi*</label>
-		<div class="form-row-content">
-			<div class="field-container-text">
-				<input id="Kutsumanimi" name="Kutsumanimi" required="required" value="" type="text" />
-			</div>
-			<small>Valitse kutsumanimeksi jokin virallisista etunimistäsi</small>
-		</div>
-		<div class="clear"></div>
-	</div>
+	<p>
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nisi nisl, dignissim id molestie non, vehicula eu risus. Donec eu magna neque, eget sodales lacus. Vivamus eget enim justo, sed consectetur enim. Curabitur nisl erat, egestas ut facilisis vel, interdum ac risus. 
+	</p>
 	
-	<div class="form-row">
-		<label class="form-row-label" for="Henkilötunnus">Henkilötunnus*</label>		
-		<div class="form-row-content">
-			<div class="field-container-text">
-				<input required="required" id="Henkilötunnus" pattern="[0-9]{6}.[0-9]{4}" name="Henkilötunnus" title="ppkkvv*****" placeholder="ppkkvv*****" value="" type="text" />
-			</div>
-			<small>Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi</small>
-		</div>
-		<div class="clear"></div>
-	</div>
+	<p>
+	Cras dui lorem, vulputate vitae eleifend tincidunt, pharetra ultrices eros. Aenean posuere, dui ac fermentum malesuada, ipsum leo molestie metus, nec bibendum diam magna vitae metus. Cras malesuada, enim sit amet rutrum consectetur, risus ante pretium tortor, vel malesuada orci urna ut urna. 
+	</p>
 	
-	<fieldset class="form-row">
-		<legend class="form-row-label">Sukupuoli</legend>
+	<p>
+	Donec vel orci nulla. Nulla facilisi. Sed massa orci, ultrices eget vehicula vel, euismod in sapien. Phasellus quis nunc massa, tincidunt ultricies eros.
+	<p>
+	
+	<hr/>
+	<fieldset class="form-item">
+		<legend class="form-item-label">Millä tutkinnolla haet opiskelupaikkaa?</legend>
+		<div class="form-item-content">
 		
-		<div class="form-row-content">
-		
-			<div class="field-conatiner-radio">
-				<input name="Sukupuoli" value="Mies" id="Sukupuoli-mies" type="radio" />
-				<label for="Sukupuoli-mies">Mies</label>
+			<div class="field-container-radio">
+				<input name="Tutkinto" value="1" id="Tutkinto-1" type="radio" />
+				<label for="Tutkinto-1">Tutkinto-1</label>
+			</div>
+
+			<div class="field-container-radio">
+					<input name="Tutkinto" value="2" id="Tutkinto-2" type="radio" />
+					<label for="Tutkinto-2">Tutkinto-2</label>
+			</div>
+
+			<div class="field-container-radio">
+				<input name="Tutkinto" value="3" id="Tutkinto-3" type="radio" />
+				<label for="Tutkinto-3">Tutkinto-3</label>
+				<br/>
+				<small>Lorem ipsum dolor sit amet</smalL>
+			</div>
+
+			<div class="field-container-radio">
+				<input name="Tutkinto" value="4" id="Tutkinto-4" type="radio" />
+				<label for="Tutkinto-4">Tutkinto-4</label>
 			</div>
 			
-			<div class="field-conatiner-radio">
-				<input name="Sukupuoli" value="Nainen" id="Sukupuoli-nainen" type="radio" />
-				<label for="Sukupuoli-nainen">Nainen</label>
+			
+		</div>
+		<div class="clear"></div>
+	</fieldset>
+
+	<hr/>
+	
+	<fieldset class="form-item">
+		<legend class="form-item-label">Saatko peruskoulun päättötodistuksen hakukeväänä 2012?</legend>
+		<div class="form-item-content">
+		
+			<div class="field-container-radio">
+				<input name="Todistus-hakukeväänä" value="Kyllä" id="Todistus-hakukeväänä-Kyllä" type="radio" />
+				<label for="Todistus-hakukeväänä-Kyllä">Kyllä</label>
+			</div>
+
+			<div class="field-container-radio">
+					<input name="Todistus-hakukeväänä" value="Ei" id="Todistus-hakukeväänä-Ei" type="radio" />
+					<label for="Todistus-hakukeväänä-Ei">En, lorem ipsum dolor sit amet</label>
+					<input type="text" name="Todistus-hakukeväänä-Info"/>
+			</div>
+
+		</div>
+		<div class="clear"></div>
+	</fieldset>
+	
+	<div class="form-item">
+		<label class="form-item-label" for="tutkinnon-opetuskieli">Äidinkieli*</label>
+		<div class="form-item-content">
+			<div class="field-container-select">
+				<select required="required" name="tutkinnon.opetuskieli" placeholder="Valitse tutkinnon opetuskieli" id="tutkinnon-opetuskieli">
+					<option name="tutkinnon-opetuskieli-suomi" value="Suomi" selected="selected" id="tutkinnon-opetuskieli-suomi">Suomi</option>
+					<option name="tutkinnon-opetuskieli-ruotsi" value="Ruotsi" id="tutkinnon-opetuskieli-ruotsi">Ruotsi</option>
+				</select>
+			</div>
+			<small>Merkitse tähän lorem ipsum dolor sit amet</small>
+		</div>
+		<div class="clear"></div>
+	</div>
+	
+	
+	<fieldset class="form-item">
+		<legend class="form-item-label">Merkitse tähän, jos olet suorittanut jonkun seuraavista</legend>
+		<div class="form-item-content">
+		
+			<div class="field-container-checkbox">
+				<input name="Suoritukset" value="Perusopetus" id="Suoritukset-Perusopetus" type="checkbox" />
+				<label for="Suoritukset-Perusopetus">Perusopetuksen lorem ipsum sit dolor amet</label>
+			</div>
+
+			<div class="field-container-checkbox">
+				<input name="Suoritukset" value="Vammaisten valmentava" id="Suoritukset-Vammaisten-valmentava" type="checkbox" />
+				<label for="Suoritukset-Vammaisten-valmentava">Vammaisten valmentava lorem ipsum sit dolor amet</label>
+			</div>
+			
+			<div class="field-container-checkbox">
+				<input name="Suoritukset" value="Ammatillisen valmentava" id="Suoritukset-Ammatillisen-valmentava" type="checkbox" />
+				<label for="Suoritukset-Ammatillisen-valmentava">Ammatillisen-valmentava lorem ipsum sit dolor amet</label>
+				<br/>
+				<small>jdfkljalfdjöalsd</small>
 			</div>
 
 		</div>
@@ -156,100 +203,10 @@
 	
 	
 	
-	<div class="form-row">
-		<label class="form-row-label" for="Sähköposti">Sähköposti*</label>
-		<div class="form-row-content">
-			<div class="field-container-text">
-				<input id="Sähköposti" name="Sähköposti" type="text" required="required" />
-			</div>
-			<small>Kirjoita tähän 
-sähköpostiosoite, johon haluat vastaanottaa opiskelijavalintaan 
-liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen 
-hakemuksen perille menosta tähän sähköpostiosoitteeseen.</small>
-		</div>
-		<div class="clear"></div>
-	</div>
-	
-	<div class="form-row">
-		<label class="form-row-label" for="Asuinmaa">Asuinmaa*</label>
-		<div class="form-row-content">
-			<div class="field-container-select">
-				<select name="Asuinmaa" placeholder="Valitse kansalaisuus" id="Asuinmaa" required="required">
-					<option name="Asuinmaa.Asuinmaa.suomi" value="Suomi" selected="selected" id="Asuinmaa-suomi">Suomi</option>
-					<option name="Asuinmaa.Asuinmaa.ruotsi" value="Ruotsi" id="Asuinmaa-ruotsi">Ruotsi</option>
-				</select>
-			</div>
-		</div>
-		<div class="clear"></div>
-	</div>
-	
-	<div class="form-row">
-		<label class="form-row-label" for="Lähiosoite">Lähiosoite*</label>
-		<div class="form-row-content">
-			<div class="field-container-text">
-				<input required="required" name="Lähiosoite" id="Lähiosoite" value="" type="text" />
-			</div>
-		</div>
-		<div class="clear"></div>
-	</div>
-	
-	<div class="form-row">
-		<label class="form-row-label" for="Postinumero">Postinumero*</label>
-		<div class="form-row-content">
-			<div class="field-container-text">
-				<input required="required" pattern="[0-9]{5}" name="Postinumero" id="Postinumero" title="#####" value="" type="text" />
-			</div>
-			<small>Kirjoita tähän osoite, 
-johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, kuten 
-valintakirjeen tai kutsun pääsykokeeseen.</small>
-		</div>
-		<div class="clear"></div>
-	</div>
-	
-	<div class="form-row">
-		<label class="form-row-label" for="kotikunta">Kotikunta*</label>
-		<div class="form-row-content">
-			<div class="field-container-select">
-				<select name="kotikunta" placeholder="Valitse kotikunta" required="required" id="kotikunta">
-					<option name="kotikunta.kotikunta.jalasjarvi, " value="Jalasjärvi" selected="selected" id="kotikunta-jalasjarvi, ">Jalasjärvi</option>
-					<option name="kotikunta.kotikunta.janakkala" value="Janakkala" id="kotikunta-janakkala">Janakkala</option>
-					<option name="kotikunta.kotikunta.joensuu" value="Joensuu" id="kotikunta-joensuu">Joensuu</option>
-					<option name="kotikunta.kotikunta.jokioinen" value="Jokioinen" id="kotikunta-jokioinen">Jokioinen</option>
-					<option name="kotikunta.kotikunta.jomala" value="Jomala" id="kotikunta-jomala">Jomala</option>
-				</select>
-			</div>
-			<small>Kotikunta on tyypillisesti se kunta, jossa asut.</small>
-		</div>
-		<div class="clear"></div>
-	</div>
 	
 	
-	<div class="form-row">
-		<label class="form-row-label" for="kansalaisuus">Kansalaisuus*</label>
-		<div class="form-row-content">
-			<div class="field-container-select">
-				<select id="kansalaisuus" placeholder="Valitse kansalaisuus" name="kansalaisuus" required="required">
-					<option name="kansalaisuus.kansalaisuus.suomi" value="Suomi" selected="selected" id="kansalaisuus-suomi">Suomi</option>
-					<option name="kansalaisuus.kansalaisuus.ruotsi" value="Ruotsi" id="kansalaisuus-ruotsi">Ruotsi</option>
-				</select>
-			</div>
-		</div>
-		<div class="clear"></div>
-	</div>
 	
 	
-	<div class="form-row">
-		<label class="form-row-label" for="äidinkieli">Äidinkieli*</label>
-		<div class="form-row-content">
-			<div class="field-container-select">
-				<select required="required" name="äidinkieli" placeholder="Valitse Äidinkieli" id="äidinkieli">
-					<option name="äidinkieli.äidinkieli.suomi" value="Suomi" selected="selected" id="äidinkieli-suomi">Suomi</option>
-					<option name="äidinkieli.äidinkieli.ruotsi" value="Ruotsi" id="äidinkieli-ruotsi">Ruotsi</option>
-				</select>
-			</div>
-		</div>
-		<div class="clear"></div>
-	</div>
 	
 	
 	
@@ -257,9 +214,13 @@ valintakirjeen tai kutsun pääsykokeeseen.</small>
 	<hr/>
 </fieldset>
 
+	<div class="set-left">
+		<button class="" data-form-step-action="previous"><span>Edellinen</span></button>
+	</div>
+
 	<div class="set-right">
-		<a href="#">Esikatselu</a>
-		<button class=""><span>Seuraava</span></button>
+				<button class="link" data-form-step-action="goto:6">Esikatselu</button>
+		<button class="" data-form-step-action="next"><span>Seuraava</span></button>
 	</div>
 	<div class="clear"></div>
 

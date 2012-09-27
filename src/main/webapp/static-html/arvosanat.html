@@ -70,30 +70,30 @@
 	<ul class="form-steps">
 		<li><a href="index.html"><span class="index">1</span>Henkilötiedot &gt;</a></li>
 		<li><a href="koulutustausta.html"><span class="index">2</span>Koulutustausta &gt;</a></li>
-		<li><a href="hakutoiveet.html" class="current"><span class="index">4</span>Hakutoiveet &gt;</a></li>
-		<li><span><span class="index">5</span>Arvosanat &gt;</span></li>
-		<li><span><span class="index">6</span>Lisätiedot &gt;</span></li>
-		<li><span><span class="index">7</span>Esikatselu &gt;</span></li>
-		<li><span><span class="index">8</span>Valmis</span></li>
+		<li><a href="hakutoiveet.html"><span class="index">3</span>Hakutoiveet &gt;</a></li>
+		<li><a href="arvosanat.html" class="current"><span class="index">4</span>Arvosanat &gt;</a></li>
+		<li><span><span class="index">5</span>Lisätiedot &gt;</span></li>
+		<li><span><span class="index">6</span>Esikatselu &gt;</span></li>
+		<li><span><span class="index">7</span>Valmis</span></li>
 	</ul>
 	<div class="clear"></div>
 
 </div>
 
-<form id="applicationform" action="" method="post" class="form" data-form-step-id="3">
+<form id="applicationform" action="" method="post" class="form" data-form-step-id="4">
 
 	<div class="set-left">
 		<button class="" data-form-step-action="previous"><span>Edellinen</span></button>
 	</div>
 
 	<div class="set-right">
-		<a href="#" data-form-step-action="goto:6">Esikatselu</a>
+				<button class="link" data-form-step-action="goto:6">Esikatselu</button>
 		<button class="" data-form-step-action="next"><span>Seuraava</span></button>
 	</div>
 	<div class="clear"></div>
 
 <fieldset>
-	<legend class="h3">Hakutoiveet</legend>
+	<legend class="h3">Arvosanat</legend>
 	<hr/>
 	<a href="#" class="helplink">?</a>
 	<p>
@@ -109,120 +109,251 @@
 	<p>
 	
 
-	<table class="preference-sort">
+	<table class="applicant-grades">
+		<thead>
+			<tr>
+				<th></th>
+				<th colspan="2">Arvosanat TOR-rekisterissä</th>
+				<th colspan="2">Poikkeavat arvosanat</th>
+			</tr>
+			<tr>
+				<td>Oppiaine</td>
+				<td>Yhteinen oppiaine</td>
+				<td>Valinnaisaine</td>
+				<td>Yhteinen oppiaine</td>
+				<td>Valinnaisaine</td>
+			</tr>
+		</thead>
 		<tbody>
 			<tr>
-				<td class="index">
-					Hakutoive 1<br/>
-					<button class="down"><span>Alas</span></button>
+				<td>Äidinkieli ja kirjallisuus</td>
+				<td>8</td>
+				<td></td>
+				<td>
+					<div class="field-container-select">
+						<select name="arvosana-1" placeholder="Valitse" id="arvosana-1">
+							<option></option>
+							<option>Ei arvosanaa</option>
+							<option>10</option>
+							<option>9</option>
+							<option>8</option>
+							<option>7</option>
+							<option>6</option>
+							<option>5</option>
+							<option>4</option>
+						</select>
+					</div>
 				</td>
 				<td>
-					<button class="reset">Tyhjennä</button>
-					<div class="preference-fields">
-
-						<div class="form-row">
-							<label class="form-row-label" for="Hakutoive1-Opetuspiste">Opetuspiste</label>
-							<div class="form-row-content">
-								<div class="field-container-text">
-									<input id="Hakutoive1-Opetuspiste" name="Hakutoive1-Opetuspiste" value="" type="text" />
-								</div>
-							</div>
-							<div class="clear"></div>
-						</div>
-										
-						<div class="form-row">
-							<label class="form-row-label" for="Hakutoive1-Koulutus">Koulutus</label>
-							<div class="form-row-content">
-								<div class="field-container-select">
-									<select id="Hakutoive1-Koulutus" placeholder="Valitse koulutus" name="Hakutoive1-Koulutus">
-										<option name="Hakutoive1-Koulutus-1" value="Autoala">Autoala</option>
-										<option name="Hakutoive1-Koulutus-2" value="Ruotsi">Ruotsi</option>
-									</select>
-								</div>
-							</div>
-							<div class="clear"></div>
-						</div>
-
-						
-						
+					<div class="field-container-select">
+						<select name="arvosana-1" placeholder="Valitse" id="arvosana-1">
+							<option></option>
+							<option>Ei arvosanaa</option>
+							<option>10</option>
+							<option>9</option>
+							<option>8</option>
+							<option>7</option>
+							<option>6</option>
+							<option>5</option>
+							<option>4</option>
+						</select>
 					</div>
 				</td>
 			</tr>
-			
 			<tr>
-				<td class="index">
-					Hakutoive 2<br/>
-					<button class="up"><span>Ylös</span></button><br/>
-					<button class="down"><span>Alas</span></button>
+				<td>A1-kieli
+					<select name="arvosana-2-aihe" placeholder="Valitse" id="arvosana-1">
+						<option></option>
+						<option>englanti</option>
+						<option>ranska</option>
+						<option>ruotsi</option>
+						<option>saksa</option>
+						<option>suomi</option>
+						<option>venäjä</option>
+						<option>-</option>
+						<option>espanja</option>
+						<option>esperanto</option>
+						<option>italia</option>
+						<option>japani</option>
+						<option>kiina</option>
+						<option>kreikka</option>
+						<option>latina</option>
+						<option>latvia, lätti</option>
+						<option>liettua</option>
+						<option>norja</option>
+						<option>portugali</option>
+						<option>saame, intarin-</option>
+						<option>saame, pohjois-</option>
+						<option>saame, koltta-</option>
+						<option>unkari</option>
+						<option>viro, eesti</option>
+					</select>
+				</td>
+				<td>8</td>
+				<td></td>
+				<td>
+					<div class="field-container-select">
+						<select name="arvosana-1" placeholder="Valitse" id="arvosana-1">
+							<option></option>
+							<option>Ei arvosanaa</option>
+							<option>10</option>
+							<option>9</option>
+							<option>8</option>
+							<option>7</option>
+							<option>6</option>
+							<option>5</option>
+							<option>4</option>
+						</select>
+					</div>
 				</td>
 				<td>
-					<button class="reset">Tyhjennä</button>
-					<div class="preference-fields">
-
-						<div class="form-row">
-							<label class="form-row-label" for="Hakutoive2-Opetuspiste">Opetuspiste</label>
-							<div class="form-row-content">
-								<div class="field-container-text">
-									<input id="Hakutoive2-Opetuspiste" name="Hakutoive2-Opetuspiste" value="" type="text" />
-								</div>
-							</div>
-							<div class="clear"></div>
-						</div>
-										
-						<div class="form-row">
-							<label class="form-row-label" for="Hakutoive2-Koulutus">Koulutus</label>
-							<div class="form-row-content">
-								<div class="field-container-select">
-									<select id="Hakutoive2-Koulutus" placeholder="Valitse koulutus" name="Hakutoive1-Koulutus">
-										<option name="Hakutoive2-Koulutus-1" value="Autoala">Autoala</option>
-										<option name="Hakutoive2-Koulutus-2" value="Ruotsi">Ruotsi</option>
-									</select>
-								</div>
-							</div>
-							<div class="clear"></div>
-						</div>
-
+					<div class="field-container-select">
+						<select name="arvosana-1" placeholder="Valitse" id="arvosana-1">
+							<option></option>
+							<option>Ei arvosanaa</option>
+							<option>10</option>
+							<option>9</option>
+							<option>8</option>
+							<option>7</option>
+							<option>6</option>
+							<option>5</option>
+							<option>4</option>
+						</select>
 					</div>
 				</td>
 			</tr>
-			
 			<tr>
-				<td class="index">
-					Hakutoive 3<br/>
-					<button class="up"><span>Ylös</span></button>
+				<td>B1-kieli
+					<select name="arvosana-3-aihe" placeholder="Valitse" id="arvosana-1">
+						<option></option>
+						<option>englanti</option>
+						<option>ranska</option>
+						<option>ruotsi</option>
+						<option>saksa</option>
+						<option>suomi</option>
+						<option>venäjä</option>
+						<option>-</option>
+						<option>espanja</option>
+						<option>esperanto</option>
+						<option>italia</option>
+						<option>japani</option>
+						<option>kiina</option>
+						<option>kreikka</option>
+						<option>latina</option>
+						<option>latvia, lätti</option>
+						<option>liettua</option>
+						<option>norja</option>
+						<option>portugali</option>
+						<option>saame, intarin-</option>
+						<option>saame, pohjois-</option>
+						<option>saame, koltta-</option>
+						<option>unkari</option>
+						<option>viro, eesti</option>
+					</select>
+				</td>
+				<td>8</td>
+				<td></td>
+				<td>
+					<div class="field-container-select">
+						<select name="arvosana-1" placeholder="Valitse" id="arvosana-1">
+							<option></option>
+							<option>Ei arvosanaa</option>
+							<option>10</option>
+							<option>9</option>
+							<option>8</option>
+							<option>7</option>
+							<option>6</option>
+							<option>5</option>
+							<option>4</option>
+						</select>
+					</div>
 				</td>
 				<td>
-					<button class="reset">Tyhjennä</button>
-					<div class="preference-fields">
-
-						<div class="form-row">
-							<label class="form-row-label" for="Hakutoive3-Opetuspiste">Opetuspiste</label>
-							<div class="form-row-content">
-								<div class="field-container-text">
-									<input id="Hakutoive3-Opetuspiste" name="Hakutoive3-Opetuspiste" value="" type="text" />
-								</div>
-							</div>
-							<div class="clear"></div>
-						</div>
-										
-						<div class="form-row">
-							<label class="form-row-label" for="Hakutoive3-Koulutus">Koulutus</label>
-							<div class="form-row-content">
-								<div class="field-container-select">
-									<select id="Hakutoive3-Koulutus" placeholder="Valitse koulutus" name="Hakutoive3-Koulutus">
-										<option name="Hakutoive3-Koulutus-1" value="Autoala">Autoala</option>
-										<option name="Hakutoive3-Koulutus-2" value="Ruotsi">Ruotsi</option>
-									</select>
-								</div>
-							</div>
-							<div class="clear"></div>
-						</div>
-
+					<div class="field-container-select">
+						<select name="arvosana-1" placeholder="Valitse" id="arvosana-1">
+							<option></option>
+							<option>Ei arvosanaa</option>
+							<option>10</option>
+							<option>9</option>
+							<option>8</option>
+							<option>7</option>
+							<option>6</option>
+							<option>5</option>
+							<option>4</option>
+						</select>
 					</div>
 				</td>
 			</tr>
-			
-			
+			<tr>
+				<td>Kieli
+					<select name="arvosana-3-taso" placeholder="Valitse" id="arvosana-1">
+						<option></option>
+						<option>A1</option>
+						<option>A2</option>
+						<option>B1</option>
+						<option>B2</option>
+						<option>B3</option>
+					</select>
+					<select name="arvosana-3-aihe" placeholder="Valitse" id="arvosana-1">
+						<option></option>
+						<option>englanti</option>
+						<option>ranska</option>
+						<option>ruotsi</option>
+						<option>saksa</option>
+						<option>suomi</option>
+						<option>venäjä</option>
+						<option>-</option>
+						<option>espanja</option>
+						<option>esperanto</option>
+						<option>italia</option>
+						<option>japani</option>
+						<option>kiina</option>
+						<option>kreikka</option>
+						<option>latina</option>
+						<option>latvia, lätti</option>
+						<option>liettua</option>
+						<option>norja</option>
+						<option>portugali</option>
+						<option>saame, intarin-</option>
+						<option>saame, pohjois-</option>
+						<option>saame, koltta-</option>
+						<option>unkari</option>
+						<option>viro, eesti</option>
+					</select>
+				</td>
+				<td>8</td>
+				<td></td>
+				<td>
+					<div class="field-container-select">
+						<select name="arvosana-1" placeholder="Valitse" id="arvosana-1">
+							<option></option>
+							<option>Ei arvosanaa</option>
+							<option>10</option>
+							<option>9</option>
+							<option>8</option>
+							<option>7</option>
+							<option>6</option>
+							<option>5</option>
+							<option>4</option>
+						</select>
+					</div>
+				</td>
+				<td>
+					<div class="field-container-select">
+						<select name="arvosana-1" placeholder="Valitse" id="arvosana-1">
+							<option></option>
+							<option>Ei arvosanaa</option>
+							<option>10</option>
+							<option>9</option>
+							<option>8</option>
+							<option>7</option>
+							<option>6</option>
+							<option>5</option>
+							<option>4</option>
+						</select>
+					</div>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 	
@@ -238,7 +369,7 @@
 	</div>
 
 	<div class="set-right">
-		<a href="#" data-form-step-action="goto:6">Esikatselu</a>
+				<button class="link" data-form-step-action="goto:6">Esikatselu</button>
 		<button class="" data-form-step-action="next"><span>Seuraava</span></button>
 	</div>
 	<div class="clear"></div>
