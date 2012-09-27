@@ -112,6 +112,35 @@ hr
    background-color:#ffffff;
 }
 
+/*** Grid
+************************************************/
+
+
+.grid16-4
+{
+    float: left;
+    margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 23.75%;
+}
+
+.grid16-8 {
+    float: left;
+    margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 48.75%;
+}
+
+.grid16-12
+{
+    float: left;
+    margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 73.75%;
+}
+
+
+
 /*** Siteheader
 **************************************************************/
 
