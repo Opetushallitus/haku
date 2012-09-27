@@ -4,6 +4,26 @@
 ************************************************/
 
 
+/*** Fieldset
+**********************************/
+
+fieldset
+{
+	border:none;
+	padding:0px;
+	margin:0px;
+}
+
+fieldset legend
+{
+	padding:0px;
+}
+
+
+
+/***  Buttons
+**********************************/
+
 button
 {
 	cursor:pointer;
@@ -23,23 +43,83 @@ input[type="button"].link
 	color:#149dca;
 }
 
-fieldset
+
+button.left,
+button.right
 {
+	display:inline-block;
 	border:none;
 	padding:0px;
-	margin:0px;
+	height:28px;
+	line-height:28px;
+	background-color:transparent;
+	background-repeat:no-repeat;
 }
 
-fieldset legend
+button.left span,
+button.right span
 {
-	padding:0px;
+	display:block;
+	height:28px;
+	line-height:28px;
+	position:relative;
+	top:-1px;
+	background-repeat:no-repeat;
 }
 
+button.left
+{
+	margin:0px 0px 0px 30px;
+	background-image:url('../img/button-left-sprite_idle-hover-selected-disabled.png');
+	background-position:right -112px;
+}
+
+button.left span
+{
+	margin:0px -21px 0px 0px;
+	border:none;
+	padding:0px 0px 0px 30px;
+	right:30px;
+	background-image:url('../img/button-left-sprite_idle-hover-selected-disabled.png');
+	background-position:left 0px;
+}
+
+button.left:hover{background-position:right -140px;}
+button.left:hover span{background-position:left -28px;}
+button.left:focus, button.left:active{background-position:right -140px;}
+button.left:focus span, button.left:active span{background-position:left -28px;}
+
+button.right
+{
+	margin:0px 30px 0px 0px;
+	background-image:url('../img/button-right-sprite_idle-hover-selected-disabled.png');
+	background-position:left -112px;
+}
+
+button.right span
+{
+	margin:0px 0px 0px -21px;
+	padding:0px 30px 0px 0px;
+	left:30px;
+	background-image:url('../img/button-right-sprite_idle-hover-selected-disabled.png');
+	background-position:right 0px;
+}
+
+button.right:hover{background-position:left -140px;}
+button.right:hover span{background-position:right -28px;}
+button.right:focus, button.right:active{background-position:left -140px;}
+button.right:focus span, button.right:active span{background-position:right -28px;}
+
+/***  Label
+**********************************/
 
 label, .label
 {
 	line-height:2em;
 }
+
+/***  Input(text), select
+**********************************/
 
 input[type="text"], select
 {
