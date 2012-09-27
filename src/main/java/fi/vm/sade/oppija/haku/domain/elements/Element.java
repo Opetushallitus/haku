@@ -36,7 +36,6 @@ import java.util.*;
                 @JsonSubTypes.Type(value = TextQuestion.class),
                 @JsonSubTypes.Type(value = Category.class),
                 @JsonSubTypes.Type(value = EnablingSubmitRule.class),
-                @JsonSubTypes.Type(value = Language.class),
                 @JsonSubTypes.Type(value = CustomLanguage.class),
                 @JsonSubTypes.Type(value = AddLanguage.class)
         }
