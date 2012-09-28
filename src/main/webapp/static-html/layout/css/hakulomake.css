@@ -131,6 +131,28 @@ select, select:focus, select:active
 	background-repeat:no-repeat;
 }
 
+.summary-table td
+{
+	vertical-align:top;
+}
+
+.summary-table .label
+{
+	color:#000000;
+	font-weight:bold;
+	text-align:right;
+	padding-right:1em;
+	line-height:inherit;
+}
+
+.summary-table .sublabel
+{
+	color:#000000;
+	text-align:right;
+	padding-right:1em;
+}
+
+
 
 /*** Acceptance preference table
 ************************************************/

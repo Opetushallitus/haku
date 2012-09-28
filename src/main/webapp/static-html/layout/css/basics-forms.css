@@ -168,6 +168,19 @@ select option
 	vertical-align:middle;
 }
 
+/***  Input(checkbox), Input(radio)
+**********************************/
+
+.js-checkbox
+{
+
+}
+
+.js-radio
+{
+
+}
+
 
 /*** Field container styles
 ************************************************/
@@ -207,13 +220,14 @@ select option
 
 
 .field-container-radio input[type="radio"],
-.field-container-checkbox input[type="checkbox"]
+.field-container-radio .js-radio
+.field-container-checkbox input[type="checkbox"],
+.field-container-checkbox .js-checkbox
 {
 	position:absolute;
 	top:0.2em;
 	left:0px;
 }
-
 
 
 

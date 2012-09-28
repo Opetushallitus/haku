@@ -172,6 +172,19 @@ hakemuksen perille menosta tähän sähköpostiosoitteeseen.</small>
 	</div>
 	
 	<div class="form-row">
+		<label class="form-row-label" for="Puhelin">Matkapuhelinnumero</label>
+		<div class="form-row-content">
+			<select name="Puhelin-maakoodi" id="Asuinmaa" required="required">
+				<option value="+358" selected="selected">+358- (Suomi)</option>
+				<option value="+123">+123 (Ruotsi)</option>
+			</select>
+			<input id="Puhelin" name="Puhelin" type="text" required="required" placeholder="0701234567"/>
+			<small>Kirjoita tähän matkapuhelinnumerosi, jotta sinuun saa tarvittaessa yhteyden.</small>
+		</div>
+		<div class="clear"></div>
+	</div>
+	
+	<div class="form-row">
 		<label class="form-row-label" for="Asuinmaa">Asuinmaa*</label>
 		<div class="form-row-content">
 			<div class="field-container-select">
