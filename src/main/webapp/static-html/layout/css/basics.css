@@ -110,7 +110,7 @@ hr
 
 #site
 {
-	
+	background: white;
 }
 
 #siteheader
@@ -340,4 +340,26 @@ hr
 .tabsheet
 {
 	display:none;
+}
+
+
+
+
+
+/*** Notelist
+************************************************/
+
+#notelist 
+{
+	border: 1px solid #bdbdbd;
+}
+
+#notelist .heading 
+{
+	background: transparent url('layout/img/table-header-bg.png') repeat top left;
+}
+
+#notelist .content 
+{
+
 }
