@@ -43,29 +43,42 @@ input[type="button"].link
 	color:#149dca;
 }
 
-
-button.left,
-button.right
+button
 {
 	display:inline-block;
-	border:none;
+	border:transparent 0px solid;
 	padding:0px;
 	height:28px;
 	line-height:28px;
 	background-color:transparent;
 	background-repeat:no-repeat;
+	margin:0px 7px 0px 0px;
+	background-image:url('../img/button-sprite_idle-hover-selected-disabled.png');
+	background-position:left 0px;
 }
-
-button.left span,
-button.right span
+button span
 {
 	display:block;
 	height:28px;
 	line-height:28px;
 	position:relative;
 	top:-1px;
+	left:8px;
 	background-repeat:no-repeat;
+	margin:0px 0px 0px 0px;
+	border:none;
+	padding:0px 11px 0px 0px;
+	background-image:url('../img/button-sprite_idle-hover-selected-disabled.png');
+	background-position:right -112px;
 }
+
+button:hover{background-position:left -28px;}
+button:hover span{background-position:right -140px;}
+button:focus, button:active{background-position:left -56px;}
+button:focus span, button:active span{background-position:right -168px;}
+button:disabled{background-position:left -84px;}
+button:disabled span{background-position:right -196px;}
+
 
 button.left
 {
@@ -79,15 +92,17 @@ button.left span
 	margin:0px -21px 0px 0px;
 	border:none;
 	padding:0px 0px 0px 30px;
-	right:30px;
+	left:-30px;
 	background-image:url('../img/button-left-sprite_idle-hover-selected-disabled.png');
 	background-position:left 0px;
 }
 
 button.left:hover{background-position:right -140px;}
 button.left:hover span{background-position:left -28px;}
-button.left:focus, button.left:active{background-position:right -140px;}
-button.left:focus span, button.left:active span{background-position:left -28px;}
+button.left:focus, button.left:active{background-position:right -168px;}
+button.left:focus span, button.left:active span{background-position:left -56px;}
+button.left:disabled{background-position:right -196px;}
+button.left:disabled span{background-position:left -84px;}
 
 button.right
 {
@@ -107,8 +122,11 @@ button.right span
 
 button.right:hover{background-position:left -140px;}
 button.right:hover span{background-position:right -28px;}
-button.right:focus, button.right:active{background-position:left -140px;}
-button.right:focus span, button.right:active span{background-position:right -28px;}
+button.right:focus, button.right:active{background-position:left -168px;}
+button.right:focus span, button.right:active span{background-position:right -56px;}
+button.right:disabled{background-position:left -196px;}
+button.right:disabled span{background-position:right -84px;}
+
 
 /***  Label
 **********************************/
