@@ -23,8 +23,8 @@ public class NavigationEvent extends AbstractEvent {
 
     @Autowired
     public NavigationEvent(EventHandler eventHandler, @Qualifier("formServiceImpl") FormService formService) {
-        super(eventHandler);
         this.formService = formService;
+        eventHandler.addPostValidateEvent(this);
     }
 
     @Override

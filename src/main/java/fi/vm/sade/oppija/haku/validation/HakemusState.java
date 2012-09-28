@@ -11,6 +11,7 @@ public class HakemusState {
     private static final String HAKEMUS_KEY = "categoryData";
     private final Map<String, String> errors;
     private final Map<String, Object> modelObjects = new HashMap<String, Object>();
+    private boolean mustValidate = true;
 
     public HakemusState(Hakemus hakemus) {
         this.errors = new HashMap<String, String>();
@@ -51,4 +52,7 @@ public class HakemusState {
         return (Hakemus) modelObjects.get(HAKEMUS_KEY);
     }
 
+    public boolean mustValidate() {
+        return mustValidate;
+    }
 }

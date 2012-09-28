@@ -35,7 +35,7 @@ public class ValidationEvent extends AbstractEvent {
 
     @Autowired
     public ValidationEvent(EventHandler eventHandler, @Qualifier("formServiceImpl") FormService formService) {
-        super(eventHandler);
         this.formService = formService;
+        eventHandler.addValidationEvent(this);
     }
 }

@@ -1,7 +1,6 @@
 package fi.vm.sade.oppija.haku.event;
 
 import fi.vm.sade.oppija.haku.validation.HakemusState;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author jukka
@@ -9,13 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @since 1.1
  */
 public abstract class AbstractEvent implements Event {
-    private EventHandler eventHandler;
-
-    @Autowired
-    public AbstractEvent(EventHandler eventHandler) {
-        eventHandler.addEvent(this);
-    }
-
     @Override
     public abstract void process(HakemusState hakemusState);
 }

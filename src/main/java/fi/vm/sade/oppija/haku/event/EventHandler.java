@@ -14,16 +14,39 @@ import java.util.List;
 @Service
 public class EventHandler {
 
-    List<Event> list = new ArrayList<Event>();
+    List<Event> beforeValidate = new ArrayList<Event>();
+    List<Event> validationEvent = new ArrayList<Event>();
+    List<Event> postValidate = new ArrayList<Event>();
+
+    public EventHandler() {
+    }
 
     public void processEvents(HakemusState hakemusState) {
-        for (Event event : list) {
+        for (Event event : beforeValidate) {
             event.process(hakemusState);
+        }
+        if (hakemusState.mustValidate()) {
+            for (Event event : validationEvent) {
+                event.process(hakemusState);
+            }
+        }
+        if (!hakemusState.hasErrors()) {
+            for (Event event : postValidate) {
+                event.process(hakemusState);
+            }
         }
     }
 
 
-    public void addEvent(Event event) {
-        this.list.add(event);
+    public void addBeforeValidationEvent(Event event) {
+        this.beforeValidate.add(event);
+    }
+
+    public void addValidationEvent(Event event) {
+        this.validationEvent.add(event);
+    }
+
+    public void addPostValidateEvent(Event event) {
+        this.validationEvent.add(event);
     }
 }
