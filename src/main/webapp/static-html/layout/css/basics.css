@@ -49,7 +49,10 @@ h4, .h4
 	font-size:1em;
 }
 
-
+.bold 
+{ 
+	font-weight: bold; 
+}
 
 
 /*** Links
