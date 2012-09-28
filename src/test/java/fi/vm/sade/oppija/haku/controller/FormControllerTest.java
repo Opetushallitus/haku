@@ -27,7 +27,6 @@ public class FormControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        final FormModelDummyMemoryDaoImpl formService = new FormModelDummyMemoryDaoImpl();
         final EventHandler eventHandler = new EventHandler();
         this.formController = new FormController(new FormModelDummyMemoryDaoImpl(formId, firstCategoryId), new HakemusServiceImpl(new SessionDataHolder(), new ApplicationDAOMongoImpl(), eventHandler));
     }

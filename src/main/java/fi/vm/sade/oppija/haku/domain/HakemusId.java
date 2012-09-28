@@ -1,13 +1,11 @@
 package fi.vm.sade.oppija.haku.domain;
 
-import java.io.Serializable;
-
 /**
  * @author jukka
  * @version 9/26/123:02 PM}
  * @since 1.1
  */
-public class HakemusId implements Serializable {
+public class HakemusId {
     private final String applicationPeriodId;
     private final String formId;
     private final String categoryId;
