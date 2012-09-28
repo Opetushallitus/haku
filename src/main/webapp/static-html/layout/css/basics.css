@@ -93,6 +93,9 @@ hr
 .set-left{float:left;}
 .set-right{float:right;}
 
+.left-intend-1 { padding-left: 10px; }
+.left-intend-2 { padding-left: 20px; }
+.left-intend-3 { padding-left: 30px; }
 
 /*** Structure
 **************************************************************/
