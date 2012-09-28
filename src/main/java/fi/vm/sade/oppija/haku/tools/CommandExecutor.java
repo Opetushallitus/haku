@@ -79,7 +79,7 @@ public class CommandExecutor {
     }
 
     protected void importAll() {
-        for (String arg : args) {
+        for (String arg : args.subList(1, args.size())) {
             read(arg);
         }
     }

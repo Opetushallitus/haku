@@ -3,6 +3,7 @@ package fi.vm.sade.oppija.haku.service.impl;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
@@ -64,19 +65,18 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public ApplicationPeriod getApplicationPeriodById(String applicationPeriodId) {
-        return getModel().getApplicationPeriodById(applicationPeriodId);
-    }
-
-    @Override
-    public Map<String, Validator> getCategoryValidators(String applicationPeriodId, String formId, String categoryId) {
+    public Map<String, Validator> getCategoryValidators(HakemusId hakemusId) {
         RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator("Sukunimi on pakollinen kenttä", "Sukunimi");
         HashMap<String, Validator> validators = new HashMap<String, Validator>();
-        if ("henkilotiedot".equals(categoryId)) {
+        if ("henkilotiedot".equals(hakemusId.getCategoryId())) {
             validators.put(requiredFieldValidator.fieldName, requiredFieldValidator);
         }
         return validators;
     }
 
+    @Override
+    public ApplicationPeriod getApplicationPeriodById(String applicationPeriodId) {
+        return getModel().getApplicationPeriodById(applicationPeriodId);
+    }
 
 }

@@ -3,6 +3,7 @@ package fi.vm.sade.oppija.haku.dao.impl;
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
@@ -16,7 +17,6 @@ import fi.vm.sade.oppija.haku.validation.Validator;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -276,8 +276,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     @Override
-    public Map<String, Validator> getCategoryValidators(String applicationPeriodId, String formId, String categoryId) {
+    public Map<String, Validator> getCategoryValidators(HakemusId hakemusId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
-
 }

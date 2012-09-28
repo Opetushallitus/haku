@@ -1,18 +1,20 @@
 package fi.vm.sade.oppija.haku.validation;
 
 
-import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ValidationResult {
     private final Map<String, String> errors;
-    private transient Category category;
+    private final Map<String, Object> modelObjects = new HashMap<String, Object>();
 
-    public ValidationResult(Map<String, String> errors) {
-        this.errors = Collections.unmodifiableMap(errors);
+    public ValidationResult(Hakemus hakemus) {
+        this.errors = new HashMap<String, String>();
+        modelObjects.put("categoryData", hakemus);
+        modelObjects.put("errorMessages", errors);
     }
 
     public boolean hasErrors() {
@@ -27,16 +29,21 @@ public class ValidationResult {
         return errors.size();
     }
 
-    public Category getCategory() {
-        return category;
-    }
 
     public Form getActiveForm() {
         return null;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void addError(String key, String message) {
+        this.errors.put(key, message);
+    }
+
+    public void addModelObject(String key, Object data) {
+        this.modelObjects.put(key, data);
+    }
+
+    public Map<String, Object> getModelObjects() {
+        return modelObjects;
     }
 
 }

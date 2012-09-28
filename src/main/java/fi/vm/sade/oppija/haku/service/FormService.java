@@ -1,6 +1,7 @@
 package fi.vm.sade.oppija.haku.service;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.validation.Validator;
@@ -17,5 +18,5 @@ public interface FormService {
 
     ApplicationPeriod getApplicationPeriodById(final String applicationPeriodId);
 
-    Map<String, Validator> getCategoryValidators(final String applicationPeriodId, final String formId, final String categoryId);
+    Map<String, Validator> getCategoryValidators(HakemusId hakemusId);
 }

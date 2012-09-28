@@ -1,6 +1,5 @@
 package fi.vm.sade.oppija.haku.tools;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -25,8 +24,7 @@ public class CommandExecutorTest {
         new CommandExecutor(createImportFooArgs()).execute();
     }
 
-    @Test
-    @Ignore
+    @Test(expected = RuntimeException.class)
     public void testImportWithMock() throws Exception {
         new MockCommandExecutor(createImportFooArgs()).execute();
     }

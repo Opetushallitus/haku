@@ -1,5 +1,8 @@
 package fi.vm.sade.oppija.haku.validation.validators;
 
+import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
+import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.validation.FormValidator;
 import fi.vm.sade.oppija.haku.validation.ValidationResult;
 import fi.vm.sade.oppija.haku.validation.Validator;
@@ -19,7 +22,9 @@ public class RegexFieldValidatorTest extends TestCase {
 
     final Map<String, String> values = new HashMap<String, String>();
     final Map<String, Validator> validators = new HashMap<String, Validator>();
-    private FormValidator formValidator = new FormValidator();
+
+    final Hakemus hakemus = new Hakemus(new HakemusId("test", "yhteishaku", "henkilotiedot", null), values);
+    private FormValidator formValidator = new MockFormValidator(new FormModelDummyMemoryDaoImpl());
 
     @Test
     public void testValidateValid() throws Exception {
@@ -31,7 +36,7 @@ public class RegexFieldValidatorTest extends TestCase {
     public void testValidateInValid() throws Exception {
         createValidator(PATTERN);
         values.put(FIELD_NAME, INVALID_VALUE);
-        ValidationResult validationResult = formValidator.validate(values, validators);
+        ValidationResult validationResult = formValidator.validate(hakemus);
         assertTrue(validationResult.hasErrors());
         assertEquals(validationResult.getErrorMessages().get(FIELD_NAME), ERROR_MESSAGE);
     }
@@ -40,7 +45,7 @@ public class RegexFieldValidatorTest extends TestCase {
     public void testErrorMessage() throws Exception {
         createValidator(PATTERN);
         values.put(FIELD_NAME, INVALID_VALUE);
-        ValidationResult validationResult = formValidator.validate(values, validators);
+        ValidationResult validationResult = formValidator.validate(hakemus);
         assertEquals(ERROR_MESSAGE, validationResult.getErrorMessages().get(FIELD_NAME));
     }
 
@@ -58,6 +63,17 @@ public class RegexFieldValidatorTest extends TestCase {
     private ValidationResult createValidValidationResult() {
         createValidator(PATTERN);
         values.put(FIELD_NAME, VALID_VALUE);
-        return formValidator.validate(values, validators);
+        return formValidator.validate(hakemus);
+    }
+
+    private class MockFormValidator extends FormValidator {
+        public MockFormValidator(FormModelDummyMemoryDaoImpl formModelDummyMemoryDao) {
+            super(formModelDummyMemoryDao);
+        }
+
+        @Override
+        protected Map<String, Validator> getValidators(Hakemus hakemus) {
+            return validators;
+        }
     }
 }

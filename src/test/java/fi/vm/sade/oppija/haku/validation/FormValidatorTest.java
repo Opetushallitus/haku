@@ -1,5 +1,8 @@
 package fi.vm.sade.oppija.haku.validation;
 
+import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
+import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.validation.validators.RequiredFieldValidator;
 import org.junit.Test;
 
@@ -15,48 +18,57 @@ public class FormValidatorTest {
     RequiredFieldValidator requiredFieldValidator;
 
     public FormValidatorTest() {
-        this.formValidator = new FormValidator();
         requiredFieldValidator = new RequiredFieldValidator("etunimi", "Etunimi on pakollinen kenttä");
+    }
+
+    private class MockService extends FormModelDummyMemoryDaoImpl {
+        Map<String, Validator> validators = new HashMap<String, Validator>();
+
+        public MockService() {
+            super();
+        }
+
+        @Override
+        public Map<String, Validator> getCategoryValidators(HakemusId hakemusId) {
+            return validators;
+        }
+
+        public void setValidators(Map<String, Validator> validators) {
+            this.validators = validators;
+        }
     }
 
     @Test
     public void testNoValidation() throws Exception {
         Map<String, String> values = new HashMap<String, String>();
-        Map<String, Validator> validators = new HashMap<String, Validator>();
-        ValidationResult validationResult = formValidator.validate(values, validators);
+        formValidator = new FormValidator(new MockService());
+        ValidationResult validationResult = formValidator.validate(createHakemus(values));
         assertFalse(validationResult.hasErrors());
     }
 
-    @Test
-    public void testNullValues() throws Exception {
-        Map<String, String> values = null;
-        Map<String, Validator> validators = new HashMap<String, Validator>();
-        ValidationResult validationResult = formValidator.validate(values, validators);
-        assertFalse(validationResult.hasErrors());
+    private Hakemus createHakemus(Map<String, String> values) {
+        return new Hakemus(new HakemusId("test", "yhteishaku", "henkilotiedot", ""), values);
     }
 
-    @Test
-    public void testNullValidators() throws Exception {
-        Map<String, String> values = new HashMap<String, String>();
-        Map<String, Validator> validators = null;
-        ValidationResult validationResult = formValidator.validate(values, validators);
-        assertFalse(validationResult.hasErrors());
+    private ValidationResult validate(Map<String, String> values, Map<String, Validator> validators) {
+        createValidator(validators);
+        return formValidator.validate(createHakemus(values));
     }
 
-    @Test
-    public void testNullValuesAndValidators() throws Exception {
-        Map<String, String> values = null;
-        Map<String, Validator> validators = null;
-        ValidationResult validationResult = formValidator.validate(values, validators);
-        assertFalse(validationResult.hasErrors());
+    private FormValidator createValidator(Map<String, Validator> validators) {
+        final MockService formService = new MockService();
+        formService.setValidators(validators);
+        formValidator = new FormValidator(formService);
+        return formValidator;
     }
+
 
     @Test
     public void testRequiredValueMissing() throws Exception {
         Map<String, String> values = new HashMap<String, String>();
         Map<String, Validator> validators = new HashMap<String, Validator>();
         validators.put(requiredFieldValidator.fieldName, requiredFieldValidator);
-        ValidationResult validationResult = formValidator.validate(values, validators);
+        ValidationResult validationResult = validate(values, validators);
         assertTrue(validationResult.hasErrors());
         assertEquals(requiredFieldValidator.getErrorMessage(), validationResult.getErrorMessages().get(requiredFieldValidator.fieldName));
     }
@@ -67,7 +79,7 @@ public class FormValidatorTest {
         values.put(requiredFieldValidator.fieldName, "Urho");
         Map<String, Validator> validators = new HashMap<String, Validator>();
         validators.put(requiredFieldValidator.fieldName, requiredFieldValidator);
-        ValidationResult validationResult = formValidator.validate(values, validators);
+        ValidationResult validationResult = validate(values, validators);
         assertFalse(validationResult.hasErrors());
     }
 
@@ -80,7 +92,7 @@ public class FormValidatorTest {
         Map<String, Validator> validators = new HashMap<String, Validator>();
         validators.put(requiredFieldValidator.fieldName, requiredFieldValidator);
         validators.put(sukunimiFieldValidator.fieldName, sukunimiFieldValidator);
-        ValidationResult validationResult = formValidator.validate(values, validators);
+        ValidationResult validationResult = validate(values, validators);
         assertFalse(validationResult.hasErrors());
     }
 
@@ -91,7 +103,7 @@ public class FormValidatorTest {
         Map<String, Validator> validators = new HashMap<String, Validator>();
         validators.put(requiredFieldValidator.fieldName, requiredFieldValidator);
         validators.put(sukunimiFieldValidator.fieldName, sukunimiFieldValidator);
-        ValidationResult validationResult = formValidator.validate(values, validators);
+        ValidationResult validationResult = validate(values, validators);
         assertTrue(validationResult.hasErrors());
     }
 
@@ -101,7 +113,7 @@ public class FormValidatorTest {
         values.put(requiredFieldValidator.fieldName, null);
         Map<String, Validator> validators = new HashMap<String, Validator>();
         validators.put(requiredFieldValidator.fieldName, requiredFieldValidator);
-        ValidationResult validationResult = formValidator.validate(values, validators);
+        ValidationResult validationResult = validate(values, validators);
         assertTrue(validationResult.hasErrors());
 
     }

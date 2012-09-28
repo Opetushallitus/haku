@@ -116,12 +116,13 @@ public class FormController {
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         if (!validationResult.hasErrors()) {
-            modelAndView = new ModelAndView("redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + validationResult.getCategory().getId());
+
+            final Category category = (Category) validationResult.getModelObjects().get("category");
+            modelAndView = new ModelAndView("redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + category.getId());
         } else {
-            modelAndView.addObject("validationResult", validationResult);
-            modelAndView.addObject("category", validationResult.getCategory());
-            modelAndView.addObject("form", validationResult.getActiveForm());
-            modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getValues());
+            for (Map.Entry<String, Object> stringObjectEntry : validationResult.getModelObjects().entrySet()) {
+                modelAndView.addObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());
+            }
         }
         return modelAndView;
     }

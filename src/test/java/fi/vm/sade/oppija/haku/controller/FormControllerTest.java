@@ -7,6 +7,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.SessionDataHolder;
 import fi.vm.sade.oppija.haku.service.impl.HakemusServiceImpl;
+import fi.vm.sade.oppija.haku.validation.FormValidator;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpSession;
@@ -26,7 +27,8 @@ public class FormControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        this.formController = new FormController(new FormModelDummyMemoryDaoImpl(formId, firstCategoryId), new HakemusServiceImpl(new SessionDataHolder(), new ApplicationDAOMongoImpl(), new FormModelDummyMemoryDaoImpl()));
+        final FormModelDummyMemoryDaoImpl formService = new FormModelDummyMemoryDaoImpl();
+        this.formController = new FormController(new FormModelDummyMemoryDaoImpl(formId, firstCategoryId), new HakemusServiceImpl(new SessionDataHolder(), new ApplicationDAOMongoImpl(), new FormValidator(formService)));
     }
 
     @Test
