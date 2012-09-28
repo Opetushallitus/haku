@@ -7,7 +7,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
-import fi.vm.sade.oppija.haku.validation.ValidationResult;
+import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.codehaus.plexus.util.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,15 +112,15 @@ public class FormController {
 
         final HakemusId hakemusId = new HakemusId(applicationPeriodId, formId, categoryId, (String) session.getAttribute(USER_ID));
 
-        ValidationResult validationResult = hakemusService.save(hakemusId, values);
+        HakemusState hakemusState = hakemusService.save(hakemusId, values);
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
-        if (!validationResult.hasErrors()) {
+        if (!hakemusState.hasErrors()) {
 
-            final Category category = (Category) validationResult.getModelObjects().get("category");
+            final Category category = (Category) hakemusState.getModelObjects().get("category");
             modelAndView = new ModelAndView("redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + category.getId());
         } else {
-            for (Map.Entry<String, Object> stringObjectEntry : validationResult.getModelObjects().entrySet()) {
+            for (Map.Entry<String, Object> stringObjectEntry : hakemusState.getModelObjects().entrySet()) {
                 modelAndView.addObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());
             }
         }

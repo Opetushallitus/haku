@@ -1,6 +1,6 @@
 package fi.vm.sade.oppija.haku.domain;
 
-import fi.vm.sade.oppija.haku.validation.ValidationResult;
+import fi.vm.sade.oppija.haku.validation.HakemusState;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.Map;
 public class Hakemus implements Serializable {
     private final HakemusId hakemusId;
     private final Map<String, String> values;
-    private ValidationResult validationResult;
+    private HakemusState hakemusState;
 
 
     public Hakemus(HakemusId id, Map<String, String> values) {
@@ -25,15 +25,15 @@ public class Hakemus implements Serializable {
         return values;
     }
 
-    public ValidationResult getValidationResult() {
-        return validationResult;
+    public HakemusState getHakemusState() {
+        return hakemusState;
     }
 
     public HakemusId getHakemusId() {
         return hakemusId;
     }
 
-    public void setValidationResult(ValidationResult validationResult) {
-        this.validationResult = validationResult;
+    public void setHakemusState(HakemusState hakemusState) {
+        this.hakemusState = hakemusState;
     }
 }

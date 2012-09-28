@@ -7,13 +7,14 @@ import fi.vm.sade.oppija.haku.domain.elements.Form;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ValidationResult {
+public class HakemusState {
+    private static final String HAKEMUS_KEY = "categoryData";
     private final Map<String, String> errors;
     private final Map<String, Object> modelObjects = new HashMap<String, Object>();
 
-    public ValidationResult(Hakemus hakemus) {
+    public HakemusState(Hakemus hakemus) {
         this.errors = new HashMap<String, String>();
-        modelObjects.put("categoryData", hakemus);
+        modelObjects.put(HAKEMUS_KEY, hakemus);
         modelObjects.put("errorMessages", errors);
     }
 
@@ -44,6 +45,10 @@ public class ValidationResult {
 
     public Map<String, Object> getModelObjects() {
         return modelObjects;
+    }
+
+    public Hakemus getHakemus() {
+        return (Hakemus) modelObjects.get(HAKEMUS_KEY);
     }
 
 }

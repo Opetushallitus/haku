@@ -3,10 +3,10 @@ package fi.vm.sade.oppija.haku.service.impl;
 import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.event.EventHandler;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import fi.vm.sade.oppija.haku.service.SessionDataHolder;
-import fi.vm.sade.oppija.haku.validation.FormValidator;
-import fi.vm.sade.oppija.haku.validation.ValidationResult;
+import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,25 +26,31 @@ public class HakemusServiceImpl implements HakemusService {
 
     private final ApplicationDAO sessionDataHolder;
     private final ApplicationDAO applicationDAO;
-    private final FormValidator formValidator;
+    private final EventHandler eventHandler;
 
     @Autowired
-    public HakemusServiceImpl(@Qualifier("sessionDataHolder") SessionDataHolder sessionDataHolder, @Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO, FormValidator formValidator) {
+    public HakemusServiceImpl(@Qualifier("sessionDataHolder") SessionDataHolder sessionDataHolder, @Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO, EventHandler eventHandler) {
         this.sessionDataHolder = sessionDataHolder;
         this.applicationDAO = applicationDAO;
-        this.formValidator = formValidator;
+        this.eventHandler = eventHandler;
     }
 
 
     @Override
-    public ValidationResult save(HakemusId hakemusId, Map<String, String> values) {
+    public HakemusState save(HakemusId hakemusId, Map<String, String> values) {
+        final Hakemus hakemus = mergeValues(hakemusId, values);
+
+        final HakemusState hakemusState = new HakemusState(hakemus);
+        eventHandler.processEvents(hakemusState);
+
+        updateApplication(hakemus);
+        return hakemusState;
+    }
+
+    private Hakemus mergeValues(HakemusId hakemusId, Map<String, String> values) {
         final Hakemus hakemus = getHakemus(hakemusId);
         hakemus.getValues().putAll(values);
-
-        ValidationResult validationResult = validate(hakemus);
-        // Validation based on rule events, should be skipped?
-        updateApplication(hakemus);
-        return validationResult;
+        return hakemus;
     }
 
     @Override
@@ -60,10 +66,6 @@ public class HakemusServiceImpl implements HakemusService {
         return dao;
     }
 
-
-    private ValidationResult validate(Hakemus hakemus) {
-        return formValidator.validate(hakemus);
-    }
 
     private void updateApplication(Hakemus hakemus) {
         selectDao(hakemus.getHakemusId()).update(hakemus);

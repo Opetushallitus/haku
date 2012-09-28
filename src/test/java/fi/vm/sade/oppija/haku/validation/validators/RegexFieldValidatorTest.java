@@ -1,10 +1,9 @@
 package fi.vm.sade.oppija.haku.validation.validators;
 
-import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.validation.FormValidator;
-import fi.vm.sade.oppija.haku.validation.ValidationResult;
+import fi.vm.sade.oppija.haku.validation.HakemusState;
 import fi.vm.sade.oppija.haku.validation.Validator;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -24,35 +23,37 @@ public class RegexFieldValidatorTest extends TestCase {
     final Map<String, Validator> validators = new HashMap<String, Validator>();
 
     final Hakemus hakemus = new Hakemus(new HakemusId("test", "yhteishaku", "henkilotiedot", null), values);
-    private FormValidator formValidator = new MockFormValidator(new FormModelDummyMemoryDaoImpl());
+    private FormValidator formValidator = new FormValidator(validators);
 
     @Test
     public void testValidateValid() throws Exception {
-        ValidationResult validationResult = createValidValidationResult();
-        assertFalse(validationResult.hasErrors());
+        HakemusState hakemusState = createValidValidationResult();
+        assertFalse(hakemusState.hasErrors());
     }
 
     @Test
     public void testValidateInValid() throws Exception {
         createValidator(PATTERN);
         values.put(FIELD_NAME, INVALID_VALUE);
-        ValidationResult validationResult = formValidator.validate(hakemus);
-        assertTrue(validationResult.hasErrors());
-        assertEquals(validationResult.getErrorMessages().get(FIELD_NAME), ERROR_MESSAGE);
+        HakemusState hakemusState = new HakemusState(hakemus);
+        formValidator.validate(hakemusState);
+        assertTrue(hakemusState.hasErrors());
+        assertEquals(hakemusState.getErrorMessages().get(FIELD_NAME), ERROR_MESSAGE);
     }
 
     @Test
     public void testErrorMessage() throws Exception {
         createValidator(PATTERN);
         values.put(FIELD_NAME, INVALID_VALUE);
-        ValidationResult validationResult = formValidator.validate(hakemus);
-        assertEquals(ERROR_MESSAGE, validationResult.getErrorMessages().get(FIELD_NAME));
+        HakemusState hakemusState = new HakemusState(hakemus);
+        formValidator.validate(hakemusState);
+        assertEquals(ERROR_MESSAGE, hakemusState.getErrorMessages().get(FIELD_NAME));
     }
 
     @Test
     public void testErrorMessageNotExists() throws Exception {
-        ValidationResult validationResult = createValidValidationResult();
-        assertEquals(null, validationResult.getErrorMessages().get(FIELD_NAME + 1));
+        HakemusState hakemusState = createValidValidationResult();
+        assertEquals(null, hakemusState.getErrorMessages().get(FIELD_NAME + 1));
     }
 
     private void createValidator(final String pattern) {
@@ -60,20 +61,12 @@ public class RegexFieldValidatorTest extends TestCase {
         validators.put(FIELD_NAME, regexFieldValidator);
     }
 
-    private ValidationResult createValidValidationResult() {
+    private HakemusState createValidValidationResult() {
         createValidator(PATTERN);
         values.put(FIELD_NAME, VALID_VALUE);
-        return formValidator.validate(hakemus);
+        HakemusState hakemusState = new HakemusState(hakemus);
+        formValidator.validate(hakemusState);
+        return hakemusState;
     }
 
-    private class MockFormValidator extends FormValidator {
-        public MockFormValidator(FormModelDummyMemoryDaoImpl formModelDummyMemoryDao) {
-            super(formModelDummyMemoryDao);
-        }
-
-        @Override
-        protected Map<String, Validator> getValidators(Hakemus hakemus) {
-            return validators;
-        }
-    }
 }

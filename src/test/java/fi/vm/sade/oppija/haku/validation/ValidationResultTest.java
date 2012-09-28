@@ -16,8 +16,8 @@ public class ValidationResultTest {
 
     @Test
     public void testHasErrors() throws Exception {
-        ValidationResult validationResult = new ValidationResult(createHakemus());
-        assertFalse(validationResult.hasErrors());
+        HakemusState hakemusState = new HakemusState(createHakemus());
+        assertFalse(hakemusState.hasErrors());
     }
 
     private Hakemus createHakemus() {
@@ -26,34 +26,34 @@ public class ValidationResultTest {
 
     @Test
     public void testHasErrorsWithErrors() throws Exception {
-        ValidationResult validationResult = createValidationResultContainingOneError();
-        assertTrue(validationResult.hasErrors());
+        HakemusState hakemusState = createValidationResultContainingOneError();
+        assertTrue(hakemusState.hasErrors());
     }
 
     @Test
     public void testGetErrors() throws Exception {
-        ValidationResult validationResult = createValidationResultContainingOneError();
-        assertEquals(validationResult.errorCount(), 1);
+        HakemusState hakemusState = createValidationResultContainingOneError();
+        assertEquals(hakemusState.errorCount(), 1);
     }
 
     @Test
     public void testSize() throws Exception {
-        ValidationResult validationResult = new ValidationResult(createHakemus());
-        assertEquals(0, validationResult.errorCount());
+        HakemusState hakemusState = new HakemusState(createHakemus());
+        assertEquals(0, hakemusState.errorCount());
 
     }
 
     @Test
     public void testSizeOne() throws Exception {
-        ValidationResult validationResult = createValidationResultContainingOneError();
-        assertEquals(1, validationResult.errorCount());
+        HakemusState hakemusState = createValidationResultContainingOneError();
+        assertEquals(1, hakemusState.errorCount());
 
     }
 
-    private ValidationResult createValidationResultContainingOneError() {
+    private HakemusState createValidationResultContainingOneError() {
 
-        final ValidationResult validationResult = new ValidationResult(createHakemus());
-        validationResult.addError(FIELD_NAME, TEST_MESSAGE);
-        return validationResult;
+        final HakemusState hakemusState = new HakemusState(createHakemus());
+        hakemusState.addError(FIELD_NAME, TEST_MESSAGE);
+        return hakemusState;
     }
 }
