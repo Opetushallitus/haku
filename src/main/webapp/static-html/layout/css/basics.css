@@ -362,20 +362,51 @@ hr
 
 
 
+/*** Sidemenu
+************************************************/
+
+#sidemenu .heading 
+{
+	background: transparent url('../img/table-header-bg.png') repeat top left;
+	border: 1px solid #bdbdbd;
+}
+
+#sidemenu .heading h2 
+{
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	color: #149dca;
+}
+
+#sidemenu .sidemenu-content {
+	border-left: 1px solid #bdbdbd;
+	border-right: 1px solid #bdbdbd;
+}
+
+
 /*** Notelist
 ************************************************/
 
 #notelist 
 {
-	border: 1px solid #bdbdbd;
+	
 }
 
-#notelist .heading 
+
+
+/*** Compare
+************************************************/
+#compare 
 {
-	background: transparent url('layout/img/table-header-bg.png') repeat top left;
+	
 }
 
-#notelist .content 
-{
 
+/*** Authentication
+************************************************/
+
+#authentication {
+	
 }
