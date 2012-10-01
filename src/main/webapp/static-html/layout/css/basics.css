@@ -382,6 +382,9 @@ hr
 
 /*** Sidemenu
 ************************************************/
+#sidemenu {
+	border-bottom: 1px solid #bdbdbd;
+}
 
 #sidemenu .heading 
 {
@@ -402,8 +405,31 @@ hr
 #sidemenu .sidemenu-content {
 	border-left: 1px solid #bdbdbd;
 	border-right: 1px solid #bdbdbd;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
+#sidemenu ul {
+	margin: 0 0 0 15px;
+	padding-left: 0;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+#sidemenu p {
+	margin: 0;
+	padding-top: 10px;
+}
+
+#sidemenu .sidemenu-content div {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+#sidemenu legend {
+	padding-bottom: 5px;
+}
 
 /*** Notelist
 ************************************************/
