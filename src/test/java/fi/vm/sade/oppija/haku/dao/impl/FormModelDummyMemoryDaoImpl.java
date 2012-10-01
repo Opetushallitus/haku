@@ -9,6 +9,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.QuestionGroup;
 import fi.vm.sade.oppija.haku.domain.elements.custom.GradeGrid;
+import fi.vm.sade.oppija.haku.domain.elements.custom.LanguageRow;
 import fi.vm.sade.oppija.haku.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.domain.questions.*;
@@ -168,9 +169,26 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         SubjectRow math = new SubjectRow("subject_math", "Matematiikka");
         SubjectRow biology = new SubjectRow("subject_biology", "Biologia");
 
-        gradeGrid.addChild(finnish).addChild(math).addChild(biology);
+        LanguageRow a1 = new LanguageRow("lang_a1", "A1-kieli");
+        LanguageRow b1 = new LanguageRow("lang_b1", "B1-kieli");
+        addLanguagesToLanguageRow(a1);
+        addLanguagesToLanguageRow(b1);
+
+
+
+        gradeGrid.addChild(finnish).addChild(math).addChild(biology).addChild(a1).addChild(b1);
 
         arvosanatRyhmä.addChild(gradeGrid);
+
+    }
+
+    private void addLanguagesToLanguageRow(LanguageRow languageRow) {
+        languageRow.addOption("eng", "eng", "englanti");
+        languageRow.addOption("swe", "swe", "ruotsi");
+        languageRow.addOption("fra", "fra", "ranska");
+        languageRow.addOption("ger", "ger", "saksa");
+        languageRow.addOption("rus", "rus", "venäjä");
+        languageRow.addOption("fin", "fin", "suomi");
 
     }
 

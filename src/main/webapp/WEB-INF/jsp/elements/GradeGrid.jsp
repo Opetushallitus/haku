@@ -18,10 +18,10 @@
 		</thead>
 		<tbody>
 		    <c:forEach var="child" items="${element.children}">
-
+            <c:set var="element" value="${child}" scope="request"/>
 
 			<tr>
-				<td><c:out value="${child.title}"/></td>
+				<td><jsp:include page="${child.type}.jsp"/></td>
 				<td>8</td>
 				<td></td>
 				<td>
