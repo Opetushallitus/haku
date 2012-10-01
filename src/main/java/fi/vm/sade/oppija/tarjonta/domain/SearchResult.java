@@ -25,4 +25,8 @@ public class SearchResult {
     public Set<String> getSortFields() {
         return sortFields;
     }
+
+    public int getSize() {
+        return items.size();
+    }
 }

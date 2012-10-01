@@ -3,13 +3,19 @@
 <schema name="tarjontatiedot" version="0.1">
 
     <fields>
-        <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false"/>
-        <field name="name" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="title" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="description" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="location" type="location" indexed="true" stored="true"/>
-        <field name="content" type="text_general" indexed="false" stored="true" multiValued="false"/>
-        <field name="url" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="tunniste" type="string" indexed="true" stored="true" required="true" multiValued="false"/>
+        <field name="nimi" type="text_general" indexed="true" stored="true" multiValued="false"/>
+        <field name="otsikko" type="text_general" indexed="true" stored="true" multiValued="false"/>
+        <field name="kuvaus" type="text_general" indexed="true" stored="true" multiValued="false"/>
+        <field name="sisalto" type="text_general" indexed="false" stored="true" multiValued="false"/>
+        <field name="linkki" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="tutkintoonjohtava" type="boolean" indexed="true" stored="true" multiValued="false"/>
+        <field name="koulutustyyppi" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="pohjakoulutus" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="koulutuksen_kieli" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="opetusmuoto" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="oppilaitostyyppi" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="sijainti" type="location" indexed="true" stored="true"/>
         <field name="last_modified" type="date" indexed="true" stored="true"/>
         <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
         <!-- catchall field, containing all other searchable text fields (implemented
@@ -18,13 +24,13 @@
     </fields>
 
 
-    <uniqueKey>id</uniqueKey>
-    <defaultSearchField>name</defaultSearchField>
+    <uniqueKey>tunniste</uniqueKey>
+    <defaultSearchField>nimi</defaultSearchField>
 
-    <copyField source="name" dest="text"/>
-    <copyField source="title" dest="text"/>
-    <copyField source="description" dest="text"/>
-    <copyField source="content" dest="text"/>
+    <copyField source="nimi" dest="text"/>
+    <copyField source="otsikko" dest="text"/>
+    <copyField source="kuvaus" dest="text"/>
+    <copyField source="sisalto" dest="text"/>
 
     <types>
         <!-- The StrField type is not analyzed, but indexed/stored verbatim. -->

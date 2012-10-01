@@ -10,7 +10,7 @@ package fi.vm.sade.oppija.tarjonta.domain;
 public class IdSearchParameters extends SearchParameters {
 
     public IdSearchParameters(final String term) {
-        super("id", term, null, null, null, null, "*");
+        super("tunniste", term, null, null, null, null, "*");
     }
 
     private IdSearchParameters(String searchField, String term, String sortOrder, String sortField, Integer start, Integer rows, String... fields) {

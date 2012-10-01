@@ -2,87 +2,89 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
-<head>
 
-    <title>Opetushallitus</title>
-
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link href="/haku/static-html/layout/css/screen.css" type="text/css" rel="stylesheet"/>
-    <link href="/haku/static-html/layout/jquery/jquery-ui-theme/jquery-ui-1.8.23.custom.css" rel="stylesheet"
-          type="text/css"/>
-    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic' rel='stylesheet'
-          type='text/css'>
-    <script src="/haku/static-html/layout/jquery/jquery-1.8.0.min.js" type="text/javascript"></script>
-    <script src="/haku/static-html/layout/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
-    <script src="/haku/static-html/layout/javascript/master.js" type="text/javascript"></script>
-
-</head>
-
+    <jsp:include page="head.jsp"/>
+    
 <body>
+<div id="viewport">
+    <div id="overlay"></div>
+    <div id="site">
 
-<div id="siteheader">
+        <jsp:include page="siteheader.jsp"/>
 
-    <div class="sitelogo">
-        <a href="index.html">Sivuston logo</a>
+        <jsp:include page="navigation.jsp"/>
+
+        <div class="search">
+            <form>
+                <input type="text" name="term" required="required" value="${parameters.term}"/>
+                <input type="submit" value="Hae"/>
+            </form>
+        </div>
+
+        <section id="vapaasanahaku" class="content-container">
+
+
+            <div class="grid16-12">
+
+                <div class="tabs">
+                    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="haut" class="tab current"><span>Koulutuksia (<c:out value="${searchResult.size}"/> kpl)</span></a>
+                    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="koulutukset" class="tab"><span>Koulutustietoa (12 kpl)</span></a>
+                    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakukohteet" class="tab"><span>Tarinoita (3 kpl)</span></a>
+                </div>
+
+
+                <section id="koulutuksia" class="tabsheets">
+
+                    <form id="hakutulokset" action="" method="post">
+                        <div class="grid16-6">
+                            <jsp:include page="filters.jsp"/>
+                        </div>
+
+                        <div class="grid16-10">
+                            <h1>Hakusana: <c:out value="${parameters.term}"/></h1>
+
+
+                            <div class="field-container-select set-right">
+                                <select name="Aakkosjarjestys" placeholder="Järjestä aakkosittain" id="Aakkosjarjestys">
+                                    <option name="Aakkosjarjestys.Aakkosjarjestys.laskeva" value="Kevät 2013"
+                                            selected="selected" id="Aakkosjarjestys-laskeva">laskeva
+                                    </option>
+                                    <option name="Aakkosjarjestys.Aakkosjarjestys.nouseva" value="Syksy 2014"
+                                            id="Aakkosjarjestys-nouseva">nouseva
+                                    </option>
+                                </select>
+                            </div>
+
+                            <button class="set-right">
+                                <span><span>aakkosjärjestys</span></span>
+                            </button>
+                            <c:forEach var="item" items="${searchResult.items}">
+                                <div class="form-row">
+                                    <ul class="minimal set-left">
+                                        <a href="tarjontatiedot/${item['tunniste']}"><c:out
+                                                value="${item['nimi']}"/></a>
+                                    </ul>
+                                    <div class="set-right"><input type="checkbox"/><span class="label">Lisää muistilistaan</span>
+                                    </div>
+                                </div>
+                            </c:forEach>
+
+                        </div>
+                        <div class="clear"></div>
+                    </form>
+                </section>
+            </div>
+
+            <aside id="sidemenu" class="grid16-4">
+                <jsp:include page="notelist.jsp"/>
+                <jsp:include page="compare.jsp"/>
+                <jsp:include page="authentication.jsp"/>
+            </aside>
+
+            <div class="clear"></div>
+        </section>
     </div>
-
-    <div class="actions">
-
-        <ul>
-            <li><a href="#">Kirjaudu ulos</a></li>
-            <li><a href="#">Mikko mallikas</a></li>
-        </ul>
-
-        <ul>
-            <li><a href="#">Sanasto</a></li>
-            <li><a href="#">Kysy neuvoa</a></li>
-            <li><a href="#">Hakuajat</a></li>
-        </ul>
-
-        <ul>
-            <li><a href="#">På svenska</a></li>
-            <li><a href="#">in English</a></li>
-            <li><a href="#">Mobiili</a></li>
-            <li><a href="#">Tekstiversio</a></li>
-        </ul>
-
-        <div class="clear"></div>
-    </div>
-
-    <div class="line clear"></div>
-</div>
-
-<div id="sitecontent">
-
-    <div class="navigation">
-        <ul class="menu-level-1">
-            <li class="home"><a href="index.html">Etusivu</a></li>
-            <li><a href="#">Dolor sit</a></li>
-            <li><a href="#">Consectetuer</a></li>
-            <li><a href="#">Adipiscing elit</a></li>
-            <li><a href="#">Quis nostrud</a></li>
-        </ul>
-    </div>
-    <div class="search">
-        <form>
-            <input type="text" name="term" required="required" value="${parameters.term}"/>
-            <input type="submit" value="Hae"/>
-        </form>
-    </div>
-    <div class="results">
-        <ul>
-            <c:forEach var="item" items="${searchResult.items}">
-                <li>
-                    <div class=item_name>
-                        <a href="tarjontatiedot/${item['id']}"><c:out value="${item['name']}"/></a>
-                    </div>
-                </li>
-            </c:forEach>
-        </ul>
-    </div>
-    <div class="content">
-
-    </div>
+    <footer></footer>
 </div>
 </body>
 </html>

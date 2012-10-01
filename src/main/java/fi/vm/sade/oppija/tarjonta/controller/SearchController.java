@@ -35,8 +35,8 @@ public class SearchController {
                                                 @RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                                 @RequestParam(value = "rows", required = false) Integer rows) {
         String[] fields = new String[2];
-        fields[0] = "id";
-        fields[1] = "name";
+        fields[0] = "tunniste";
+        fields[1] = "nimi";
         return new SearchParameters("text", term, sortOrder, sortField, start, rows, fields);
     }
 

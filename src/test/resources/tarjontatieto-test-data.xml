@@ -1,17 +1,30 @@
 <add>
     <doc>
-        <field name="id">1</field>
-        <field name="name">Liikunnanohjauksen perustutkinto</field>
-        <field name="title">title</field>
-        <field name="description">description</field>
-        <field name="content">content</field>
-        <field name="url">/haku/fi/yhteishaku/form</field>
+        <field name="tunniste">1</field>
+        <field name="nimi">Liikunnanohjauksen perustutkinto</field>
+        <field name="otsikko">title</field>
+        <field name="kuvaus">description</field>
+        <field name="sisalto">content</field>
+        <field name="linkki">/haku/fi/yhteishaku/form</field>
+        <field name="tutkintoonjohtava">true</field>
+        <field name="koulutustyyppi">Lukiokoulutus</field>
+        <field name="pohjakoulutus">Perusopetus</field>
+        <field name="koulutuksen_kieli">Suomi</field>
+        <field name="opetusmuoto">Monimuoto-opetus</field>
+        <field name="oppilaitostyyppi">Kaikki</field>
     </doc>
     <doc>
-        <field name="id">2</field>
-        <field name="name">Valmentajan ammattitutkinto</field>
-        <field name="title">title</field>
-        <field name="description">description</field>
-        <field name="url">/haku/fi/yhteishaku/form</field>
+        <field name="tunniste">1</field>
+        <field name="nimi">Valmentajan ammattitutkinto</field>
+        <field name="otsikko">title</field>
+        <field name="kuvaus">description</field>
+        <field name="sisalto">content</field>
+        <field name="linkki">/haku/fi/yhteishaku/form</field>
+        <field name="tutkintoonjohtava">false</field>
+        <field name="koulutustyyppi">Lukiokoulutus</field>
+        <field name="pohjakoulutus">Perusopetus</field>
+        <field name="koulutuksen_kieli">Suomi</field>
+        <field name="opetusmuoto">Monimuoto-opetus</field>
+        <field name="oppilaitostyyppi">Kaikki</field>
     </doc>
 </add>
