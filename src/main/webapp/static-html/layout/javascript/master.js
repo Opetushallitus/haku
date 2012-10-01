@@ -2,6 +2,31 @@ $(document).ready(function(){
 /* Master.js begins */
 
 
+var applicationBasket = {
+	build:function(){
+		applicationBasket.setTriggers();
+	},
+	setTriggers:function(){
+		// Trigger on replacement radio
+		$('body').on('click', '[data-basket-action]', function(event){
+			event.preventDefault();
+			
+			action = $(this).attr('data-basket-action');
+			if(action == 'hide'){
+				$('[data-basket-action="show"]').show();
+				$('.application-basket').hide();
+			}
+			else if(action == 'show')
+			{
+				$('[data-basket-action="show"]').hide();
+				$('.application-basket').show();
+			}
+			
+		});
+	}
+}
+
+
 var formReplacements = {
 	settings : {
 		checkboxAmount : 0,
@@ -10,42 +35,54 @@ var formReplacements = {
 	build:function(){
 		// Generate replacements, set triggers
 		formReplacements.jsCheckbox.generate();
+		formReplacements.jsRadio.generate();
 		formReplacements.setTriggers();
 	},
-	jsCheckbox: {
+	jsCheckbox : {
 		generate:function(){
 			var id = 0;
 		
-			// todo: on rerun, exclude inputs that have js-checkbox
+			// Generate javascript replacement for all new checkboxes
 			$('input[type="checkbox"]:not([data-js-checkbox-id])').each(function(){
 				
+				// Get id for checkbox
 				id = formReplacements.settings.checkboxAmount;
 				
+				// Add pairing id to input and label
 				$(this).attr('data-js-checkbox-id', id);
+				field_id = $(this).attr('id');
+				$('label[for="'+field_id+'"]').attr('data-js-checkbox-id', id);
+				
+				// Generate replacement element with pairing id, and hide original input
 				html = '<span class="js-checkbox" data-js-checkbox-id="'+id+'">&#8302;</span>'
 				$(this).before(html).css({'display':'none'});
 				
+				// Check & set checked status
 				if($(this).prop('checked') == true || $(this).attr('checked') == true)
 				{
 					$(this).attr('checked', 'checked');
 					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('selected');
 				}
 				
+				// Check & set disabled status
 				if($(this).prop('disabled') == true || $(this).attr('disabled') == true)
 				{
 					$(this).attr('disabled', 'disabled');
 					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('disabled');
 				}
+
 				
+				// Set id for next checkbox
 				formReplacements.settings.checkboxAmount = id+1;
 			});
 		},
 		change:function(id){
-			console.log(id);
+		
+			// Get paired elements
 			input = $('input[data-js-checkbox-id="'+id+'"]');
 			replacement = $('.js-checkbox[data-js-checkbox-id="'+id+'"]');
-			console.log(input);
-			console.log(replacement);
+
+			// Change checked status
 			if (replacement.hasClass('selected'))
 			{
 				replacement.removeClass('selected');
@@ -58,10 +95,67 @@ var formReplacements = {
 			}
 		}
 	},
-	jsRadio:function(){
-	
+	jsRadio : {
+		generate:function(){
+			var id = 0;
+		
+			// Generate javascript replacement for all new checkboxes
+			$('input[type="radio"]:not([data-js-radio-id])').each(function(){
+				
+				// Get id for radio
+				id = formReplacements.settings.radioAmount;
+				
+				// Add pairing id to input and label
+				$(this).attr('data-js-radio-id', id);
+				field_id = $(this).attr('id');
+				$('label[for="'+field_id+'"]').attr('data-js-radio-id', id);
+				
+				// Generate replacement element with pairing id, and hide original input
+				html = '<span class="js-radio" data-js-radio-id="'+id+'">&#8302;</span>'
+				$(this).before(html).css({'display':'none'});
+				
+				// Check & set checked status
+				if($(this).prop('checked') == true || $(this).attr('checked') == true)
+				{
+					$(this).attr('checked', 'checked');
+					$('.js-radio[data-js-radio-id="'+id+'"]').addClass('selected');
+				}
+				
+				// Check & set disabled status
+				if($(this).prop('disabled') == true || $(this).attr('disabled') == true)
+				{
+					$(this).attr('disabled', 'disabled');
+					$('.js-radio[data-js-radio-id="'+id+'"]').addClass('disabled');
+				}
+				
+				// Set id for next radio
+				formReplacements.settings.radioAmount = id+1;
+			});
+		},
+		change:function(){
+		
+			// Get paired elements
+			input = $('input[data-js-radio-id="'+id+'"]');
+			replacement = $('.js-radio[data-js-radio-id="'+id+'"]');
+			
+			// Set checked status
+			replacement.addClass('selected');
+			input.attr('checked', 'checked');
+			
+			// Determine other radio fields in same set
+			name = input.attr('name');
+			other_inputs = $('input[name="'+name+'"]:not([data-js-radio-id="'+id+'"])');
+			
+			// Set unchecked status on other radio fields in the same set
+			other_inputs.each(function(){
+				this_id = $(this).attr('data-js-radio-id');
+				$('.js-radio[data-js-radio-id="'+this_id+'"]').removeClass('selected');
+				$(this).removeAttr('checked');
+			});
+		}
 	},
 	setTriggers:function(){
+		// Trigger on replacement checkbox 
 		$('body').on('click', '.js-checkbox', function(event){
 			event.preventDefault();
 			if (typeof $(this).attr('data-js-checkbox-id') != 'undefined' && !$(this).hasClass('disabled'))
@@ -70,9 +164,40 @@ var formReplacements = {
 				formReplacements.jsCheckbox.change(id);
 			}
 		});
+		
+		// Trigger on replacement radio
+		$('body').on('click', '.js-radio', function(event){
+			event.preventDefault();
+			if (typeof $(this).attr('data-js-radio-id') != 'undefined' && !$(this).hasClass('disabled'))
+			{
+				id = parseInt($(this).attr('data-js-radio-id'));
+				formReplacements.jsRadio.change(id);
+			}
+		});
+		
+		// Trigger on replacement checkbox label
+		$('body').on('click', 'label[data-js-checkbox-id]', function(event){
+			event.preventDefault();
+			id = parseInt($(this).attr('data-js-checkbox-id'));
+			if (!$('.js-checkbox[data-js-checkbox-id="'+id+'"]').hasClass('disabled'))
+			{
+				formReplacements.jsCheckbox.change(id);
+			}
+		});
+		
+		// Trigger on replacement radio label
+		$('body').on('click', 'label[data-js-radio-id]', function(event){
+			event.preventDefault();
+			id = parseInt($(this).attr('data-js-radio-id'));
+			if (!$('.js-radio[data-js-radio-id="'+id+'"]').hasClass('disabled'))
+			{
+				formReplacements.jsRadio.change(id);
+			}
+		});
 	}
 }
 
+applicationBasket.build();
 formReplacements.build();
 
 

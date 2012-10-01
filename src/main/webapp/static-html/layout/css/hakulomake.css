@@ -165,6 +165,7 @@ select, select:focus, select:active
 	position:relative;
 	overflow:hidden;
 	border-radius: 5px;
+	display:none;
 }
 
 
@@ -218,7 +219,7 @@ select, select:focus, select:active
 
 .application-basket thead tr th:first-child
 {
-	box-shadow:inset 4px 0px 4px -4px #000000, inset 0px 4px 4px -4px #000000, inset -4px 0px 4px -4px #000000;
+	box-shadow:inset 8px 0px 4px -8px #a9a9a9, inset 0px 8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9;
 }
 
 .application-basket thead tr td
@@ -242,13 +243,13 @@ select, select:focus, select:active
 .application-basket thead tr td:first-child,
 .application-basket tbody tr td:first-child
 {
-	box-shadow:inset 8px 0px 4px -8px #000000;
+	box-shadow:inset 8px 0px 4px -8px #a9a9a9;
 }
 
 .application-basket thead tr td:last-child,
 .application-basket tbody tr td:last-child
 {
-	box-shadow:inset -8px 0px 4px -8px #000000;
+	box-shadow:inset -8px 0px 4px -8px #a9a9a9;
 }
 
 .application-basket tfoot tr td
@@ -262,7 +263,7 @@ select, select:focus, select:active
 
 .application-basket tfoot tr td:first-child
 {
-	box-shadow:inset 4px 0px 4px -4px #000000, inset 0px -4px 4px -4px #000000, inset -4px 0px 4px -4px #000000;
+	box-shadow:inset 8px 0px 4px -8px #a9a9a9, inset 0px -8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9;
 }
 
 

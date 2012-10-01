@@ -203,13 +203,6 @@ select option
 	background-position:-48px center;
 }
 
-.js-checkbox.disabled
-{
-	background-position:0px center;
-	cursor:default;
-	opacity:0.5;
-}
-
 .js-checkbox.partail.disabled
 {
 	background-position:-24px center;
@@ -232,22 +225,26 @@ select option
 	overflow:hidden;
 	background-image:url(../img/sim-checkbox-sprite.png);
 	background-repeat:no-repeat;
-	background-position:center left;
+	background-position:0px center;
 	cursor:pointer;
 }
 
 .js-radio.selected
 {
+	background-position:-24px center;
 }
 
 .js-radio.selected.disabled
 {
+	background-position:-24px center;
 }
 
 .js-checkbox.disabled,
 .js-radio.disabled
 {
+	background-position:0px center;
 	cursor:default;
+	opacity:0.5;
 }
 
 /*** Field container styles
@@ -272,7 +269,7 @@ select option
 .field-container-text input[type="text"]
 {
 	width:100%;
-
+	max-width:440px;
 }
 
 
