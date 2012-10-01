@@ -393,9 +393,10 @@ hr
 {
 	margin-top: 0;
 	margin-bottom: 0;
-	padding-top: 10px;
-	padding-bottom: 10px;
+	padding-top: 15px;
+	padding-bottom: 15px;
 	color: #149dca;
+	padding-left: 15px;
 }
 
 #sidemenu .sidemenu-content {
@@ -407,18 +408,18 @@ hr
 /*** Notelist
 ************************************************/
 
-#notelist 
+#notelist h2
 {
-	
+	background: transparent url('../img/muistilista_ikoni.png') no-repeat 95% bottom;
 }
 
 
 
 /*** Compare
 ************************************************/
-#compare 
+#compare h2
 {
-	
+	background: transparent url('../img/vertailu_ikoni.png') no-repeat 95% bottom;	
 }
 
 
