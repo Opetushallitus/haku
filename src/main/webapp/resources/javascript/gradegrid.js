@@ -3,7 +3,8 @@
 var gradegrid = {
 
     addLanguage: function() {
-        //implement here
+
+        $("#gradegrid-table tr.gradegrid-language-row:last").after('<tr><td colspan="5">new lang</td></tr>')
 
     }
 }

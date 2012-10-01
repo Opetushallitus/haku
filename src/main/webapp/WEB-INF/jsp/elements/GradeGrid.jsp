@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script type="text/javascript" src="/haku/resources/javascript/gradegrid.js"></script>
 
-	<table class="applicant-grades">
+	<table id="gradegrid-table" class="applicant-grades">
 		<thead>
 			<tr>
 				<th></th>
@@ -18,6 +18,7 @@
 		</thead>
 		<tbody>
 		    <c:forEach var="subject" items="${element.subjectsBeforeLanguages}">
+		        <c:set var="subject" value="${subject}" scope="request"/>
 			    <tr>
 				    <td><jsp:include page="gradegrid/SubjectRow.jsp"/></td>
 				    <td>8</td>
@@ -32,7 +33,8 @@
             </c:forEach>
 
             <c:forEach var="language" items="${element.languages}">
-                <tr>
+                <c:set var="language" value="${language}" scope="request"/>
+                <tr class="gradegrid-language-row">
                     <td><jsp:include page="gradegrid/LanguageRow.jsp"/></td>
                 	<td>8</td>
                 	<td></td>
@@ -46,17 +48,12 @@
             </c:forEach>
             <tr>
                 <td colspan=5>
-
-
-                    <p id="add_language_button" >Lisää kieli (s)</p>
-
-
+                    <p id="add_language_button" >Lisaa kieli (s)</p>
                 </td>
-
             </tr>
 
             <c:forEach var="subject" items="${element.subjectsAfterLanguages}">
-                <c:set var="element" value="${subject}" scope="request"/>
+                <c:set var="subject" value="${subject}" scope="request"/>
             	<tr>
             	    <td><jsp:include page="gradegrid/SubjectRow.jsp"/></td>
             		<td>8</td>
