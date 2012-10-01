@@ -9,7 +9,7 @@
 				<th colspan="2"><c:out value="${element.alteringGradesTitle}"/></th>
 			</tr>
 			<tr>
-				<td>Oppiaine - static</td>
+				<td>Oppiaine(s)</td>
 				<td><c:out value="${element.commonSubjectColumnTitle}"/></td>
 				<td><c:out value="${element.optionalSubjectColumnTitle}"/></td>
 				<td><c:out value="${element.commonSubjectColumnTitle}"/></td>
@@ -17,11 +17,11 @@
 			</tr>
 		</thead>
 		<tbody>
-		    <c:forEach var="subject" items="${element.subjects}">
+		    <c:forEach var="child" items="${element.children}">
 
 
 			<tr>
-				<td><c:out value="${subject.title}"/></td>
+				<td><c:out value="${child.title}"/></td>
 				<td>8</td>
 				<td></td>
 				<td>

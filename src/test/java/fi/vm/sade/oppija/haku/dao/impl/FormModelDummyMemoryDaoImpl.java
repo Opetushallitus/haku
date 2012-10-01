@@ -161,20 +161,16 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         gradeRange.add(5);
         gradeRange.add(4);
 
+        GradeGrid gradeGrid = new GradeGrid("gradegrid", "Arvosanat", "Arvosanat TOR-rekisterissä",
+                "Poikkeavat Arvosanat", "Arvosanat", "Yhteinen oppiaine", "Valinnaisaine", gradeRange);
+
         Subject finnish = new Subject("subject_finnish", "Äidinkieli");
         Subject math = new Subject("subject_math", "Matematiikka");
         Subject biology = new Subject("subject_biology", "Biologia");
 
-        List<Subject> subjects = new ArrayList<Subject>();
-        subjects.add(finnish);
-        subjects.add(math);
-        subjects.add(biology);
-
-        GradeGrid gradeGrid = new GradeGrid("gradegrid", "Arvosanat", "Arvosanat TOR-rekisterissä",
-                "Poikkeavat Arvosanat", "Arvosanat", "Yhteinen oppiaine", "Valinnaisaine", gradeRange, subjects);
+        gradeGrid.addChild(finnish).addChild(math).addChild(biology);
 
         arvosanatRyhmä.addChild(gradeGrid);
-
 
     }
 
