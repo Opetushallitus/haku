@@ -449,6 +449,16 @@ hr
 	background: transparent url('../img/muistilista_ikoni.png') no-repeat 95% bottom;
 }
 
+.notelist-simple {
+	padding: 10px;
+	border-left: 1px solid #bdbdbd;
+	background: #fffaeb;
+	margin-bottom: 20px;
+}
+
+.notelist-simple li {
+	padding-bottom: 10px;
+}
 
 
 /*** Compare
@@ -459,9 +469,43 @@ hr
 }
 
 
-/*** Authentication
+/*** Infobox
 ************************************************/
 
-#authentication {
-	
+.infobox {
+	background: #f8f8f8;
+	padding: 10px;
+	margin-bottom: 20px;
+	border: 1px solid #bdbdbd;
+}
+
+.infobox .emphasized {
+	font-weight: bold;
+}
+
+.infobox .heading {
+	padding-top: 10px;
+}
+
+
+
+/*** hierarchy list
+************************************************/
+
+.hierarchy-list {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.hierarchy-list .lvl-1 {
+	padding-left: 20px;
+	font-weight: bold;
+}
+
+.hierarchy-list .lvl-2 {
+	padding-left: 40px;
+}
+
+.hierarchy-list .lvl-3 {
+	padding-left: 60px;
 }
