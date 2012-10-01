@@ -105,7 +105,7 @@ public class CommandExecutor {
     }
 
     protected FormModelDAOMongoImpl getService() {
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/spring/haku-context.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/spring/application-context.xml");
         return applicationContext.getBean("formModelDAOMongoImpl", FormModelDAOMongoImpl.class);
     }
 

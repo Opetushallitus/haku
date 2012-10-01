@@ -5,10 +5,11 @@
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
     <import resource="classpath:spring/application-context.xml"/>
 
     <context:property-placeholder
-            location="classpath:haku-test.properties"
+            location="classpath:haku.properties"
             ignore-resource-not-found="true"/>
 
     <bean id="db" class="fi.vm.sade.oppija.haku.dao.TestDBFactoryBean">
