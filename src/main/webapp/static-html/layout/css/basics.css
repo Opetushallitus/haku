@@ -118,6 +118,10 @@ hr
 .left-intend-2 { padding-left: 20px; }
 .left-intend-3 { padding-left: 30px; }
 
+.module {
+	padding-bottom: 20px;
+}
+
 /*** Structure
 **************************************************************/
 
@@ -384,6 +388,7 @@ hr
 ************************************************/
 #sidemenu {
 	border-bottom: 1px solid #bdbdbd;
+	color: #a0a0a0;
 }
 
 #sidemenu .heading 
@@ -408,6 +413,11 @@ hr
 	padding-bottom: 10px;
 	padding-left: 10px;
 	padding-right: 10px;
+	background: #f8f8f8;
+}
+
+#sidemenu .sidemenu-content a {
+	display: block;
 }
 
 #sidemenu ul {
