@@ -9,16 +9,16 @@ import java.util.List;
  */
 public class CustomLanguageRow extends LanguageRow {
 
-    private List<String> languages;
+    private List<String> scopeOptions;
 
     public CustomLanguageRow(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
                              @JsonProperty(value = "scope") List<String> scope,
-                             @JsonProperty(value = "languages") List<String> languages) {
+                             @JsonProperty(value = "scopeOptions") List<String> languages) {
         super(id, title, scope);
-        this.languages = languages;
+        this.scopeOptions = languages;
     }
 
-    public List<String> getLanguages() {
-        return languages;
+    public List<String> getScopeOptions() {
+        return scopeOptions;
     }
 }
