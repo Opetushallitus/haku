@@ -1,0 +1,17 @@
+<add>
+    <doc>
+        <field name="id">1</field>
+        <field name="name">Liikunnanohjauksen perustutkinto</field>
+        <field name="title">title</field>
+        <field name="description">description</field>
+        <field name="content">content</field>
+        <field name="url">/haku/fi/yhteishaku/form</field>
+    </doc>
+    <doc>
+        <field name="id">2</field>
+        <field name="name">Valmentajan ammattitutkinto</field>
+        <field name="title">title</field>
+        <field name="description">description</field>
+        <field name="url">/haku/fi/yhteishaku/form</field>
+    </doc>
+</add>

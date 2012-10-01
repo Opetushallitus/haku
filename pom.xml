@@ -192,6 +192,23 @@
             <version>2.0.0-alpha-1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr</artifactId>
+            <version>4.0.0-BETA</version>
+            <type>war</type>
+            <scope>tomcat</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-core</artifactId>
+            <version>4.0.0-BETA</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.sonar-plugins</groupId>
+            <artifactId>sonar-clover-plugin</artifactId>
+            <version>2.8</version>
+        </dependency>
         <!-- /it -->
 
 
@@ -300,6 +317,18 @@
                    </execution>
                </executions>
            </plugin> -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tomcat-maven-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <addContextWarDependencies>true</addContextWarDependencies>
+                    <systemProperties>
+                        <solr.solr.home>${project.build.directory}/classes/solr</solr.solr.home>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+
         </plugins>
         <finalName>haku</finalName>
     </build>
