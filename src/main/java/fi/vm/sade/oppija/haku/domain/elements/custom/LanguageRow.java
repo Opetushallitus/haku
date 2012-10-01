@@ -9,15 +9,15 @@ import java.util.List;
  */
 public class LanguageRow extends SubjectRow {
 
-    private List<String> scope;
+    private List<String> languageOptions;
 
     public LanguageRow(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
-                       @JsonProperty(value = "scope") List<String> scope) {
+                       @JsonProperty(value = "languages") List<String> languages) {
         super(id, title);
-        this.scope = scope;
+        this.languageOptions = languages;
     }
 
-    public List<String> getScope() {
-        return scope;
+    public List<String> getLanguageOptions() {
+        return languageOptions;
     }
 }
