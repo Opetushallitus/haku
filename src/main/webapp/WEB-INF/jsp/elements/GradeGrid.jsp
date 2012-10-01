@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<script type="text/javascript" src="/haku/resources/javascript/gradegrid.js"></script>
 
 	<table class="applicant-grades">
 		<thead>
@@ -17,44 +17,57 @@
 			</tr>
 		</thead>
 		<tbody>
-		    <c:forEach var="child" items="${element.children}">
-            <c:set var="element" value="${child}" scope="request"/>
+		    <c:forEach var="subject" items="${element.subjectsBeforeLanguages}">
+			    <tr>
+				    <td><jsp:include page="gradegrid/SubjectRow.jsp"/></td>
+				    <td>8</td>
+				    <td></td>
+				    <td>
+				        <jsp:include page="gradegrid/gradeselect.jsp"/>
+				    </td>
+				    <td>
+					    <jsp:include page="gradegrid/gradeselect.jsp"/>
+				    </td>
+			    </tr>
+            </c:forEach>
 
-			<tr>
-				<td><jsp:include page="${child.type}.jsp"/></td>
-				<td>8</td>
-				<td></td>
-				<td>
-					<div class="field-container-select">
-						<select name="arvosana-1" placeholder="Valitse" id="arvosana-1">
-							<option></option>
-							<option>Ei arvosanaa</option>
-							<option>10</option>
-							<option>9</option>
-							<option>8</option>
-							<option>7</option>
-							<option>6</option>
-							<option>5</option>
-							<option>4</option>
-						</select>
-					</div>
-				</td>
-				<td>
-					<div class="field-container-select">
-						<select name="arvosana-1" placeholder="Valitse" id="arvosana-2">
-							<option></option>
-							<option>Ei arvosanaa</option>
-							<option>10</option>
-							<option>9</option>
-							<option>8</option>
-							<option>7</option>
-							<option>6</option>
-							<option>5</option>
-							<option>4</option>
-						</select>
-					</div>
-				</td>
-			</tr>
+            <c:forEach var="language" items="${element.languages}">
+                <tr>
+                    <td><jsp:include page="gradegrid/LanguageRow.jsp"/></td>
+                	<td>8</td>
+                	<td></td>
+                	<td>
+                	    <jsp:include page="gradegrid/gradeselect.jsp"/>
+                	</td>
+                	<td>
+                	    <jsp:include page="gradegrid/gradeselect.jsp"/>
+                	</td>
+                </tr>
+            </c:forEach>
+            <tr>
+                <td colspan=5>
+
+
+                    <p id="add_language_button" >Lisää kieli (s)</p>
+
+
+                </td>
+
+            </tr>
+
+            <c:forEach var="subject" items="${element.subjectsAfterLanguages}">
+                <c:set var="element" value="${subject}" scope="request"/>
+            	<tr>
+            	    <td><jsp:include page="gradegrid/SubjectRow.jsp"/></td>
+            		<td>8</td>
+            		<td></td>
+            		<td>
+            		    <jsp:include page="gradegrid/gradeselect.jsp"/>
+            	    </td>
+            		<td>
+            		    <jsp:include page="gradegrid/gradeselect.jsp"/>
+            		</td>
+                </tr>
             </c:forEach>
 
 		</tbody>

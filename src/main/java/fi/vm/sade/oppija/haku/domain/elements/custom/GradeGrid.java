@@ -18,6 +18,11 @@ public class GradeGrid extends Titled {
     private String gradesTitle;
     private String commonSubjectColumnTitle;
     private String optionalSubjectColumnTitle;
+
+    private List<SubjectRow> subjectsBeforeLanguages;
+    private List<LanguageRow> languages;
+    private List<SubjectRow> subjectsAfterLanguages;
+
     private List<Integer> gradeRange;
 
     public GradeGrid(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
@@ -26,6 +31,9 @@ public class GradeGrid extends Titled {
                      @JsonProperty(value = "gradesTitle") String gradesTitle,
                      @JsonProperty(value = "commonSubjectColumnTitle") String commonSubjectColumnTitle,
                      @JsonProperty(value = "optionalSubjectColumnTitle") String optionalSubjectColumnTitle,
+                     @JsonProperty(value = "subjectsBeforeLanguages") List<SubjectRow> subjectsBeforeLanguages,
+                     @JsonProperty(value = "languages") List<LanguageRow> languages,
+                     @JsonProperty(value = "subjectsAfterLanguages") List<SubjectRow> subjectsAfterLanguages,
                      @JsonProperty(value = "gradeRange") List<Integer> gradeRange) {
         super(id, title);
         this.registryGradesTitle = registryGradesTitle;
@@ -33,6 +41,9 @@ public class GradeGrid extends Titled {
         this.gradesTitle = gradesTitle;
         this.commonSubjectColumnTitle = commonSubjectColumnTitle;
         this.optionalSubjectColumnTitle = optionalSubjectColumnTitle;
+        this.subjectsBeforeLanguages = subjectsBeforeLanguages;
+        this.languages = languages;
+        this.subjectsAfterLanguages = subjectsAfterLanguages;
         this.gradeRange = gradeRange;
     }
 
@@ -58,5 +69,17 @@ public class GradeGrid extends Titled {
 
     public List<Integer> getGradeRange() {
         return gradeRange;
+    }
+
+    public List<SubjectRow> getSubjectsBeforeLanguages() {
+        return subjectsBeforeLanguages;
+    }
+
+    public List<LanguageRow> getLanguages() {
+        return languages;
+    }
+
+    public List<SubjectRow> getSubjectsAfterLanguages() {
+        return subjectsAfterLanguages;
     }
 }

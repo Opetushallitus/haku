@@ -17,10 +17,9 @@ public class CustomLanguageRow extends LanguageRow {
     private List<Option> scopeOptions;
 
     public CustomLanguageRow(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
-                             @JsonProperty(value = "scope") List<String> scope,
-                             @JsonProperty(value = "scopeOptions") List<String> languages) {
+                             @JsonProperty(value = "scopeOptions") List<Option> scopeOptions) {
         super(id, title);
-
+        this.scopeOptions = scopeOptions;
     }
 
     public void addScopeOption(final String id, final String value, final String title) {
@@ -30,4 +29,5 @@ public class CustomLanguageRow extends LanguageRow {
     public List<Option> getScopeOptions() {
         return scopeOptions;
     }
+
 }

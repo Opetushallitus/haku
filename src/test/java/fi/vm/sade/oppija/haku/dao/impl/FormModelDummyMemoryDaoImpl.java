@@ -162,21 +162,28 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         gradeRange.add(5);
         gradeRange.add(4);
 
-        GradeGrid gradeGrid = new GradeGrid("gradegrid", "Arvosanat", "Arvosanat TOR-rekisterissä",
-                "Poikkeavat Arvosanat", "Arvosanat", "Yhteinen oppiaine", "Valinnaisaine", gradeRange);
-
         SubjectRow finnish = new SubjectRow("subject_finnish", "Äidinkieli");
-        SubjectRow math = new SubjectRow("subject_math", "Matematiikka");
-        SubjectRow biology = new SubjectRow("subject_biology", "Biologia");
+        List<SubjectRow> subjectRowsBefore = new ArrayList<SubjectRow>();
+        subjectRowsBefore.add(finnish);
 
         LanguageRow a1 = new LanguageRow("lang_a1", "A1-kieli");
         LanguageRow b1 = new LanguageRow("lang_b1", "B1-kieli");
         addLanguagesToLanguageRow(a1);
         addLanguagesToLanguageRow(b1);
+        ArrayList<LanguageRow> languageRows = new ArrayList<LanguageRow>();
+        languageRows.add(a1);
+        languageRows.add(b1);
 
+        SubjectRow math = new SubjectRow("subject_math", "Matematiikka");
+        SubjectRow biology = new SubjectRow("subject_biology", "Biologia");
+        ArrayList<SubjectRow> subjectRowsAfter = new ArrayList<SubjectRow>();
+        subjectRowsAfter.add(math);
+        subjectRowsAfter.add(biology);
 
+        GradeGrid gradeGrid = new GradeGrid("gradegrid", "Arvosanat", "Arvosanat TOR-rekisterissä",
+                "Poikkeavat Arvosanat", "Arvosanat", "Yhteinen oppiaine", "Valinnaisaine", subjectRowsBefore, languageRows,
+                subjectRowsAfter, gradeRange);
 
-        gradeGrid.addChild(finnish).addChild(math).addChild(biology).addChild(a1).addChild(b1);
 
         arvosanatRyhmä.addChild(gradeGrid);
 
