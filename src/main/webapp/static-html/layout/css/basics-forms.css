@@ -49,6 +49,8 @@ button
 	border:none;
 	margin:0px;
 	padding:0px;
+	display:inline-block;
+	vertical-align:middle;
 }
 
 button span
@@ -72,7 +74,7 @@ button span span
 	position:relative;
 	left:5px;
 	background-repeat:no-repeat;
-	margin:0px 0px 0px 0px;
+	margin:0px;
 	border:none;
 	padding:0px 11px 0px 6px;
 	background-image:url('../img/button-sprite_idle-hover-selected-disabled.png');
@@ -178,7 +180,7 @@ select option
 /***  Input(checkbox), Input(radio)
 **********************************/
 
-.sim-checkbox
+.js-checkbox
 {
 	display:inline-block;
 	vertical-align:middle;
@@ -187,34 +189,41 @@ select option
 	overflow:hidden;
 	background-image:url(../img/sim-checkbox-sprite.png);
 	background-repeat:no-repeat;
-	background-position:center 0px;
+	background-position:0px center;
 	cursor:pointer;
 }
 
-.sim-checkbox.partail
+.js-checkbox.partail
 {
 	background-position:-24px center;
 }
 
-.sim-checkbox.selected
+.js-checkbox.selected
 {
 	background-position:-48px center;
 }
 
-.sim-checkbox.partail.disabled
+.js-checkbox.disabled
 {
 	background-position:0px center;
+	cursor:default;
+	opacity:0.5;
 }
 
-.sim-checkbox.selected.disabled
+.js-checkbox.partail.disabled
 {
-	background-position:0px center;
+	background-position:-24px center;
+}
+
+.js-checkbox.selected.disabled
+{
+	background-position:-48px center;
 }
 
 
 
 
-.sim-radio
+.js-radio
 {
 	display:inline-block;
 	vertical-align:middle;
@@ -227,16 +236,16 @@ select option
 	cursor:pointer;
 }
 
-.sim-radio.selected
+.js-radio.selected
 {
 }
 
-.sim-radio.selected.disabled
+.js-radio.selected.disabled
 {
 }
 
-.sim-checkbox.disabled,
-.sim-radio.disabled
+.js-checkbox.disabled,
+.js-radio.disabled
 {
 	cursor:default;
 }
@@ -279,9 +288,9 @@ select option
 
 
 .field-container-radio input[type="radio"],
-.field-container-radio .sim-radio
+.field-container-radio .js-radio,
 .field-container-checkbox input[type="checkbox"],
-.field-container-checkbox .sim-checkbox
+.field-container-checkbox .js-checkbox
 {
 	position:absolute;
 	top:0.2em;

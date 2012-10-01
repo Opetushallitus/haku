@@ -2,6 +2,81 @@ $(document).ready(function(){
 /* Master.js begins */
 
 
+var formReplacements = {
+	settings : {
+		checkboxAmount : 0,
+		radioAmount : 0
+	},
+	build:function(){
+		// Generate replacements, set triggers
+		formReplacements.jsCheckbox.generate();
+		formReplacements.setTriggers();
+	},
+	jsCheckbox: {
+		generate:function(){
+			var id = 0;
+		
+			// todo: on rerun, exclude inputs that have js-checkbox
+			$('input[type="checkbox"]:not([data-js-checkbox-id])').each(function(){
+				
+				id = formReplacements.settings.checkboxAmount;
+				
+				$(this).attr('data-js-checkbox-id', id);
+				html = '<span class="js-checkbox" data-js-checkbox-id="'+id+'">&#8302;</span>'
+				$(this).before(html).css({'display':'none'});
+				
+				if($(this).prop('checked') == true || $(this).attr('checked') == true)
+				{
+					$(this).attr('checked', 'checked');
+					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('selected');
+				}
+				
+				if($(this).prop('disabled') == true || $(this).attr('disabled') == true)
+				{
+					$(this).attr('disabled', 'disabled');
+					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('disabled');
+				}
+				
+				formReplacements.settings.checkboxAmount = id+1;
+			});
+		},
+		change:function(id){
+			console.log(id);
+			input = $('input[data-js-checkbox-id="'+id+'"]');
+			replacement = $('.js-checkbox[data-js-checkbox-id="'+id+'"]');
+			console.log(input);
+			console.log(replacement);
+			if (replacement.hasClass('selected'))
+			{
+				replacement.removeClass('selected');
+				input.removeAttr('checked');
+			}
+			else
+			{
+				replacement.addClass('selected');
+				input.attr('checked', 'checked');
+			}
+		}
+	},
+	jsRadio:function(){
+	
+	},
+	setTriggers:function(){
+		$('body').on('click', '.js-checkbox', function(event){
+			event.preventDefault();
+			if (typeof $(this).attr('data-js-checkbox-id') != 'undefined' && !$(this).hasClass('disabled'))
+			{
+				id = parseInt($(this).attr('data-js-checkbox-id'));
+				formReplacements.jsCheckbox.change(id);
+			}
+		});
+	}
+}
+
+formReplacements.build();
+
+
+
 var protoFunctions = {
 build:function(){
 	
