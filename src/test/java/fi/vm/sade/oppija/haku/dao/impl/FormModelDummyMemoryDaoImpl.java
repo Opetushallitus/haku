@@ -9,7 +9,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.QuestionGroup;
 import fi.vm.sade.oppija.haku.domain.elements.custom.GradeGrid;
-import fi.vm.sade.oppija.haku.domain.elements.custom.Subject;
+import fi.vm.sade.oppija.haku.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.domain.questions.*;
 import fi.vm.sade.oppija.haku.service.FormService;
@@ -164,9 +164,9 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         GradeGrid gradeGrid = new GradeGrid("gradegrid", "Arvosanat", "Arvosanat TOR-rekisterissä",
                 "Poikkeavat Arvosanat", "Arvosanat", "Yhteinen oppiaine", "Valinnaisaine", gradeRange);
 
-        Subject finnish = new Subject("subject_finnish", "Äidinkieli");
-        Subject math = new Subject("subject_math", "Matematiikka");
-        Subject biology = new Subject("subject_biology", "Biologia");
+        SubjectRow finnish = new SubjectRow("subject_finnish", "Äidinkieli");
+        SubjectRow math = new SubjectRow("subject_math", "Matematiikka");
+        SubjectRow biology = new SubjectRow("subject_biology", "Biologia");
 
         gradeGrid.addChild(finnish).addChild(math).addChild(biology);
 

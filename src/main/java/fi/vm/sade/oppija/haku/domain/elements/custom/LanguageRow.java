@@ -7,12 +7,12 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class Language extends Subject {
+public class LanguageRow extends SubjectRow {
 
     private List<String> scope;
 
-    public Language(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
-                    @JsonProperty(value = "scope") List<String> scope) {
+    public LanguageRow(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
+                       @JsonProperty(value = "scope") List<String> scope) {
         super(id, title);
         this.scope = scope;
     }

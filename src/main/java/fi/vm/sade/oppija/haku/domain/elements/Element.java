@@ -35,10 +35,10 @@ import java.util.*;
                 @JsonSubTypes.Type(value = Category.class),
                 @JsonSubTypes.Type(value = EnablingSubmitRule.class),
                 @JsonSubTypes.Type(value = GradeGrid.class),
-                @JsonSubTypes.Type(value = Subject.class),
-                @JsonSubTypes.Type(value = Language.class),
-                @JsonSubTypes.Type(value = CustomLanguage.class),
-                @JsonSubTypes.Type(value = AddLanguage.class)
+                @JsonSubTypes.Type(value = SubjectRow.class),
+                @JsonSubTypes.Type(value = LanguageRow.class),
+                @JsonSubTypes.Type(value = CustomLanguageRow.class),
+                @JsonSubTypes.Type(value = AddLanguageRow.class)
         }
 )
 public abstract class Element {

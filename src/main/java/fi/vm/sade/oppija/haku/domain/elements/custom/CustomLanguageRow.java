@@ -7,13 +7,13 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class CustomLanguage extends Language {
+public class CustomLanguageRow extends LanguageRow {
 
     private List<String> languages;
 
-    public CustomLanguage(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
-                          @JsonProperty(value = "scope") List<String> scope,
-                          @JsonProperty(value = "languages") List<String> languages) {
+    public CustomLanguageRow(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
+                             @JsonProperty(value = "scope") List<String> scope,
+                             @JsonProperty(value = "languages") List<String> languages) {
         super(id, title, scope);
         this.languages = languages;
     }
