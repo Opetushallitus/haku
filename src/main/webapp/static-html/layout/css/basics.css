@@ -192,6 +192,52 @@ hr
 
 
 
+/*** Breadcrumb
+**************************************************************/
+#breadcrumb {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+#breadcrumb ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+#breadcrumb .home {
+	padding-left: 0;
+}
+
+#breadcrumb a {
+	display: block;
+	text-decoration: none;
+}
+
+#breadcrumb .current a {
+	color: #3e3e3e;
+}
+
+#breadcrumb .home a {
+	background: transparent url('../img/breadcrumb-home.png') no-repeat left center;
+	width: 19px;
+	height: 17px;
+	display: block;
+}
+
+#breadcrumb .breadcrumb-item {
+	padding-left: 25px; 
+	background: transparent url('../img/breadcrumb-arrow.png') no-repeat left center;
+}
+
+#breadcrumb li {
+	display: inline-block;
+	vertical-align: middle;
+	padding-right: 10px;
+}
+
+
+
 /*** Siteheader
 **************************************************************/
 

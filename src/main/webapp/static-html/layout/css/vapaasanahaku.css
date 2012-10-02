@@ -1,4 +1,4 @@
-.vapaasanahaku {
+.vapaasanahakutulos {
     background: white;
 }
 
@@ -23,3 +23,8 @@
     padding-left: 20px;
 }
 
+#searchfield {
+    height: 50px;
+    width: 100%;
+    background: transparent url('../img/table-header-bg.png') repeat left top;
+}
