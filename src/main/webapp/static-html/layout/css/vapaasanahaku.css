@@ -23,8 +23,28 @@
     padding-left: 20px;
 }
 
-#searchfield {
-    height: 50px;
+
+/*** searchfield
+**************************************************************/
+#searchfield-wrapper {
+    height: 40px;
     width: 100%;
     background: transparent url('../img/table-header-bg.png') repeat left top;
+    margin-bottom: 15px;
+}
+
+#searchfield {
+    width: 20%;
+    line-height: 40px;
+    vertical-align: middle;
+    margin: 0 auto;
+}
+
+#searchfield .search {
+    width: 100%;
+    background-image: url('../img/icon-search.png');
+    background-repeat: no-repeat;
+    background-position: 95% center;
+    padding-right: 50px;    
+
 }

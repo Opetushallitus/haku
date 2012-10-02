@@ -230,6 +230,11 @@ hr
 	background: transparent url('../img/breadcrumb-arrow.png') no-repeat left center;
 }
 
+#breadcrumb .breadcrumb-item a:hover,
+#breadcrumb .breadcrumb-item a:active {
+	text-shadow: 0 0 3px #ccc;
+}
+
 #breadcrumb li {
 	display: inline-block;
 	vertical-align: middle;
