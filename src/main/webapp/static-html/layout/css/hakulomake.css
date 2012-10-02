@@ -1,6 +1,11 @@
 /*** Application form
 **************************************************************/
 
+#sitecontent .content
+{
+	margin:0.5em;
+}
+
 /*** Form step navigation
 ************************************************/
 
@@ -126,10 +131,15 @@ select, select:focus, select:active
 	height:21px;
 
 	color:transparent;
-	background-image:url('../img/help-icon.png');
-	background-position:center center;
+	background-image:url('../img/help-icon-sprite_idle-hover-selected-disabled.png');
+	background-position:0px center;
 	background-repeat:no-repeat;
 }
+
+.helplink:hover{background-position:-20px center;}
+.helplink:active, .helplink:focus{background-position:-40px center;}
+.helplink:disabled, .helplink.disabled{background-position:-60px center;}
+
 
 .form-summary-table td
 {
@@ -153,6 +163,17 @@ select, select:focus, select:active
 }
 
 
+.form-summary-table .extra
+{
+	padding-left:1em;
+}
+
+
+button.legend-align
+{
+	margin-top:-26px;
+
+}
 
 
 /*** Application-basket

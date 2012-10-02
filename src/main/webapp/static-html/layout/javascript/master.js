@@ -13,13 +13,13 @@ var applicationBasket = {
 			
 			action = $(this).attr('data-basket-action');
 			if(action == 'hide'){
-				$('[data-basket-action="show"]').show();
-				$('.application-basket').hide();
+				$('[data-basket-action="show"]').delay(400).fadeIn(400);
+				$('.application-basket').slideUp(400);
 			}
 			else if(action == 'show')
 			{
-				$('[data-basket-action="show"]').hide();
-				$('.application-basket').show();
+				$('[data-basket-action="show"]').hide(0);
+				$('.application-basket').slideDown(400);
 			}
 			
 		});

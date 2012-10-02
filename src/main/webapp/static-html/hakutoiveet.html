@@ -132,15 +132,20 @@
 					<tr>
 				</tfoot>
 			</table>
-			<button class="close" data-basket-action="hide"><span><span>Sulje muistilista</span></span></button>
+			<button class="close arrow-up" data-basket-action="hide"><span><span>Sulje muistilista</span></span></button>
 		</div>
 	</div>
 
-	<button class="set-right" data-basket-action="show"><span><span>Näytä muistilista</span></span></button>
+	<button class="set-right arrow-down" data-basket-action="show"><span><span>Näytä muistilista</span></span></button>
 	
 	<h1>Hakulomake</h1>
 	<h2>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2012</h2>
 
+	<button class="arrow-down" data-basket-action="show" disabled="disabled"><span><span>Näytä muistilista</span></span></button>
+	<button class="arrow-up" data-basket-action="show" disabled="disabled"><span><span>Sulje muistilista</span></span></button>
+	<button class="print" disabled="disabled"><span><span>Tulosta</span></span></button>
+	<button class="pdf" disabled="disabled"><span><span>Tallenna PDF</span></span></button>
+	
 	<ul class="form-steps">
 		<li><a href="index.html"><span class="index">1</span>Henkilötiedot &gt;</a></li>
 		<li><a href="koulutustausta.html"><span class="index">2</span>Koulutustausta &gt;</a></li>
@@ -197,9 +202,9 @@
 						<div class="form-row">
 							<label class="form-row-label" for="Hakutoive1-Opetuspiste">Opetuspiste</label>
 							<div class="form-row-content">
-								<div class="field-container-text">
-									<input id="Hakutoive1-Opetuspiste" name="Hakutoive1-Opetuspiste" value="" type="text" />
-								</div>
+								<span class="label">
+									<strong>Ammatti-instituutti Iisakki</strong>, Parkano
+								</span>
 							</div>
 							<div class="clear"></div>
 						</div>
@@ -209,7 +214,7 @@
 							<div class="form-row-content">
 								<div class="field-container-select">
 									<select id="Hakutoive1-Koulutus" placeholder="Valitse koulutus" name="Hakutoive1-Koulutus">
-										<option name="Hakutoive1-Koulutus-1" value="Autoala">Autoala</option>
+										<option name="Hakutoive1-Koulutus-1" value="Autoala" selected="selected">Autoala</option>
 										<option name="Hakutoive1-Koulutus-2" value="Ruotsi">Ruotsi</option>
 									</select>
 								</div>
@@ -217,6 +222,73 @@
 							<div class="clear"></div>
 						</div>
 
+						<fieldset class="form-item">
+							<legend class="form-item-label">Donec vel orci nulla. Nulla facilisi. Sed massa orci, ultrices eget vehicula vel, euismod in sapien. <br/>Merkitse tähän, jos joku seuraavista koskee sinua:</legend>
+							<div class="form-item-content">
+							
+								<div class="field-container-checkbox">
+									<input name="Suoritukset" value="Perusopetus" id="Suoritukset-Perusopetus" type="checkbox" />
+									<label for="Suoritukset-Perusopetus">Perusopetuksen lorem ipsum sit dolor amet</label>
+								</div>
+
+								<div class="field-container-checkbox">
+									<input name="Suoritukset" value="Vammaisten valmentava" id="Suoritukset-Vammaisten-valmentava" type="checkbox" />
+									<label for="Suoritukset-Vammaisten-valmentava">Vammaisten valmentava lorem ipsum sit dolor amet</label>
+								</div>
+								
+								<div class="field-container-checkbox">
+									<input name="Suoritukset" value="Ammatillisen valmentava" id="Suoritukset-Ammatillisen-valmentava" type="checkbox" />
+									<label for="Suoritukset-Ammatillisen-valmentava">Ammatillisen-valmentava lorem ipsum sit dolor amet</label>
+									<br/>
+									<small>Lorem ipsum dolor sit amet</small>
+								</div>
+
+							</div>
+							<div class="clear"></div>
+						</fieldset>
+						
+						
+						<fieldset class="form-item">
+							<legend class="form-item-label">Tässä koulutuksessa lorem ipsum dolor sit amet?</legend>
+							<div class="form-item-content">
+							
+								<div class="field-container-radio">
+									<input name="extra-1" value="Kyllä" id="extra-1-1" type="radio" />
+									<label for="extra-1-1">Ei</label>
+								</div>
+
+								<div class="field-container-radio">
+										<input name="extra-1" value="Ei" id="extra-1-2" type="radio" />
+										<label for="extra-1-2">Kyllä. Lorem ipsum dolor sit amet</label>
+								</div>
+
+							</div>
+							<div class="clear"></div>
+						</fieldset>
+											
+						<fieldset class="form-item">
+							<legend class="form-item-label">Tässä koulutuksessa lorem ipsum dolor sit amet?</legend>
+							<div class="form-item-content">
+							
+								<div class="field-container-radio">
+									<input name="extra-2" value="Kyllä" id="extra-2-1" type="radio" />
+									<label for="extra-2-1">Ei en ole osallistunut pääsykokeeseen</label>
+								</div>
+
+								<div class="field-container-radio">
+										<input name="extra-2" value="Ei" id="extra-2-2" type="radio" />
+										<label for="extra-2-2">En, lorem ipsum dolor sit amet</label>
+								</div>
+
+								<div class="field-container-radio">
+										<input name="extra-2" value="Ei" id="extra-2-3" type="radio" />
+										<label for="extra-2-3">Kyllä, lorem ipsum dolor sit amet</label>
+								</div>
+								
+								
+							</div>
+							<div class="clear"></div>
+						</fieldset>
 						
 						
 					</div>

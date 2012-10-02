@@ -11,7 +11,7 @@ fieldset
 {
 	border:none;
 	padding:0px;
-	margin:0px;
+	margin:1em 0px;
 }
 
 fieldset legend
@@ -42,6 +42,9 @@ input[type="button"].link
 	font-family:inherit;
 	color:#149dca;
 }
+
+/***  Basic button
+************************/
 
 button
 {
@@ -88,6 +91,81 @@ button:focus span span, button:active span span{background-position:right -168px
 button:disabled span{background-position:left -84px;}
 button:disabled span span{background-position:right -196px;}
 
+/***  Print button
+************************/
+
+button.print span,
+button.print span span
+{
+	background-image:url('../img/button-print-sprite_idle-hover-selected-disabled.png');
+}
+
+button.print span span
+{
+	padding-left:30px;
+}
+
+/***  Pdf button
+************************/
+
+button.pdf span,
+button.pdf span span
+{
+	background-image:url('../img/button-pdf-sprite_idle-hover-selected-disabled.png');
+}
+
+button.pdf span span
+{
+	padding-left:25px;
+}
+
+/***  Arrow down button
+************************/
+
+button.arrow-down span,
+button.arrow-down span span
+{
+	background-image:url('../img/button-arrow-down-sprite_idle-hover-selected-disabled.png');
+}
+
+button.arrow-down span
+{
+	margin-right:33px;
+}
+
+button.arrow-down span span
+{
+	padding-right:33px;
+	margin-right:0px;
+	margin-left:-27px;
+	left:33px;
+}
+
+/***  Arrow up button
+************************/
+
+button.arrow-up span,
+button.arrow-up span span
+{
+	background-image:url('../img/button-arrow-up-sprite_idle-hover-selected-disabled.png');
+}
+
+button.arrow-up span
+{
+	margin-right:33px;
+}
+
+button.arrow-up span span
+{
+	padding-right:33px;
+	margin-right:0px;
+	margin-left:-27px;
+	left:33px;
+}
+
+
+/***  Left direction button
+************************/
 
 button.left span
 {
@@ -112,6 +190,9 @@ button.left:focus span, button.left:active span{background-position:right -168px
 button.left:focus span span, button.left:active span span{background-position:left -56px;}
 button.left:disabled span{background-position:right -196px;}
 button.left:disabled span span{background-position:left -84px;}
+
+/***  Right direction button
+************************/
 
 button.right span
 {
@@ -325,7 +406,8 @@ select option
 
 .form-item
 {
-
+	margin:1.5em 0px;
+	clear:both;
 }
 
 .form-item-label
