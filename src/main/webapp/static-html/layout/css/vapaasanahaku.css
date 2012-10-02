@@ -1,6 +1,4 @@
-.vapaasanahakutulos {
-    background: white;
-}
+
 
 .minimal {
     list-style-type: none;
@@ -10,6 +8,9 @@
 .form-row ul {
     margin: 0;
 }
+
+/*** Misc
+**************************************************************/
 
 .toprow {
     padding-top: 20px;
