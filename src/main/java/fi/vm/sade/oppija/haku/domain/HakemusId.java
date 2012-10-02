@@ -42,10 +42,6 @@ public class HakemusId implements Serializable {
         return userId != null;
     }
 
-    @Override
-    public String toString() {
-        return applicationPeriodId + "-" + formId + "-" + userId;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -56,6 +52,7 @@ public class HakemusId implements Serializable {
 
         if (applicationPeriodId != null ? !applicationPeriodId.equals(hakemusId.applicationPeriodId) : hakemusId.applicationPeriodId != null)
             return false;
+        if (categoryId != null ? !categoryId.equals(hakemusId.categoryId) : hakemusId.categoryId != null) return false;
         if (formId != null ? !formId.equals(hakemusId.formId) : hakemusId.formId != null) return false;
         if (userId != null ? !userId.equals(hakemusId.userId) : hakemusId.userId != null) return false;
 
@@ -66,6 +63,7 @@ public class HakemusId implements Serializable {
     public int hashCode() {
         int result = applicationPeriodId != null ? applicationPeriodId.hashCode() : 0;
         result = 31 * result + (formId != null ? formId.hashCode() : 0);
+        result = 31 * result + (categoryId != null ? categoryId.hashCode() : 0);
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
         return result;
     }

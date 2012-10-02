@@ -26,11 +26,12 @@ public class HideChildsIT extends AbstractRemoteTest {
 
     @Before
     public void init() throws IOException {
-        final CheckBox checkBox = new CheckBox("checkbox", "foo");
+        final CheckBox checkBox = new CheckBox("checkbox", "Valitse jotain");
         checkBox.addOption("value", "value", "title");
         checkBox.addOption("value2", "value2", "title2");
 
         final Option option = checkBox.getOptions().get(0);
+        final Option option2 = checkBox.getOptions().get(1);
 
         final QuestionGroup questionGroup = new QuestionGroup("ekaryhma", "ekaryhma");
         questionGroup.addChild(new TextQuestion("alikysymys1", "alikysymys1"));
@@ -39,12 +40,16 @@ public class HideChildsIT extends AbstractRemoteTest {
         final EnablingSubmitRule enablingSubmitRule = new EnablingSubmitRule(option.getId());
         enablingSubmitRule.setRelated(option, questionGroup);
 
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox, enablingSubmitRule);
+        final EnablingSubmitRule enablingSubmitRule2 = new EnablingSubmitRule(option2.getId());
+        final TextQuestion textQuestion = new TextQuestion("alikysymys3", "alikysymys3");
+        enablingSubmitRule2.setRelated(option2, textQuestion);
+
+        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox, enablingSubmitRule, enablingSubmitRule2);
         this.formModelHelper = initModel(formModel);
     }
 
     @Test
-    public void testInputExistsNoJavaScript() throws IOException {
+    public void testInputExistsWithJavaScript() throws IOException {
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);
         dumpHtml();

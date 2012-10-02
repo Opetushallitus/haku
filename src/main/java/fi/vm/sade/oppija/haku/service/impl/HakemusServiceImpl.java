@@ -38,19 +38,13 @@ public class HakemusServiceImpl implements HakemusService {
 
     @Override
     public HakemusState save(HakemusId hakemusId, Map<String, String> values) {
-        final Hakemus hakemus = mergeValues(hakemusId, values);
+        final Hakemus hakemus = new Hakemus(hakemusId, values);
 
         final HakemusState hakemusState = new HakemusState(hakemus);
         eventHandler.processEvents(hakemusState);
 
         updateApplication(hakemus);
         return hakemusState;
-    }
-
-    private Hakemus mergeValues(HakemusId hakemusId, Map<String, String> values) {
-        final Hakemus hakemus = getHakemus(hakemusId);
-        hakemus.getValues().putAll(values);
-        return hakemus;
     }
 
     @Override

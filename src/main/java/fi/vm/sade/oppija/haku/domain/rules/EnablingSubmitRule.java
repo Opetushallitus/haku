@@ -12,20 +12,16 @@ import java.util.Map;
  * @since 1.1
  */
 public class EnablingSubmitRule extends Element {
+    private static final String RULE_PREFIX = "rule-enabled-";
     final Map<String, Element> related = new HashMap<String, Element>();
 
-    public EnablingSubmitRule(@JsonProperty String id) {
-        super("rule-enabled-" + id);
-    }
-
-    public EnablingSubmitRule() {
-        super("" + System.currentTimeMillis());
+    public EnablingSubmitRule(@JsonProperty(value = "id") String id) {
+        super(id);
     }
 
     public void setRelated(Element child, Element questionGroup) {
-        this.related.put("rule-enabled-" + child.getId(), questionGroup);
+        this.related.put(child.getId(), questionGroup);
     }
-
 
     public Map<String, Element> getRelated() {
         return related;

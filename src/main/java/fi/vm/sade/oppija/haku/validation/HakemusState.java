@@ -8,19 +8,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HakemusState {
-    private static final String HAKEMUS_KEY = "categoryData";
+    private static final String HAKEMUS_KEY = "hakemus";
     private final Map<String, String> errors;
     private final Map<String, Object> modelObjects = new HashMap<String, Object>();
     private boolean mustValidate = true;
+    private boolean redirected = false;
 
     public HakemusState(Hakemus hakemus) {
         this.errors = new HashMap<String, String>();
         modelObjects.put(HAKEMUS_KEY, hakemus);
+        modelObjects.put("categoryData", hakemus.getValues());
         modelObjects.put("errorMessages", errors);
     }
 
     public boolean hasErrors() {
         return !errors.isEmpty();
+    }
+
+    public boolean isRedirected() {
+        return redirected;
     }
 
     public Map<String, String> getErrorMessages() {

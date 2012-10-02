@@ -115,7 +115,7 @@ public class FormController {
         HakemusState hakemusState = hakemusService.save(hakemusId, values);
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
-        if (!hakemusState.hasErrors()) {
+        if (hakemusState.isRedirected()) {
 
             final Category category = (Category) hakemusState.getModelObjects().get("category");
             modelAndView = new ModelAndView("redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + category.getId());
@@ -124,6 +124,7 @@ public class FormController {
                 modelAndView.addObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());
             }
         }
+        LOGGER.debug(modelAndView.getModel().toString());
         return modelAndView;
     }
 
