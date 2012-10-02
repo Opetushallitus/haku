@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Hannu Lyytikainen
  */
-public class LanguageRow extends OptionQuestion {
+public class LanguageRow extends SubjectRow {
 
     public LanguageRow(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title) {
         super(id, title);

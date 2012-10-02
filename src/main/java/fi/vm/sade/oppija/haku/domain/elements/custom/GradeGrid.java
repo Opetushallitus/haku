@@ -2,6 +2,7 @@ package fi.vm.sade.oppija.haku.domain.elements.custom;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.vm.sade.oppija.haku.domain.elements.Titled;
+import fi.vm.sade.oppija.haku.domain.questions.Option;
 
 import java.util.List;
 
@@ -23,6 +24,8 @@ public class GradeGrid extends Titled {
     private List<LanguageRow> languages;
     private List<SubjectRow> subjectsAfterLanguages;
 
+    private List<Option> scopeOptions;
+    private List<Option> languageOptions;
     private List<Integer> gradeRange;
 
     public GradeGrid(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
@@ -34,6 +37,8 @@ public class GradeGrid extends Titled {
                      @JsonProperty(value = "subjectsBeforeLanguages") List<SubjectRow> subjectsBeforeLanguages,
                      @JsonProperty(value = "languages") List<LanguageRow> languages,
                      @JsonProperty(value = "subjectsAfterLanguages") List<SubjectRow> subjectsAfterLanguages,
+                     @JsonProperty(value = "scopeOptions") List<Option> scopeOptions,
+                     @JsonProperty(value = "languageOptions") List<Option> languageOptions,
                      @JsonProperty(value = "gradeRange") List<Integer> gradeRange) {
         super(id, title);
         this.registryGradesTitle = registryGradesTitle;
@@ -44,6 +49,8 @@ public class GradeGrid extends Titled {
         this.subjectsBeforeLanguages = subjectsBeforeLanguages;
         this.languages = languages;
         this.subjectsAfterLanguages = subjectsAfterLanguages;
+        this.scopeOptions = scopeOptions;
+        this.languageOptions = languageOptions;
         this.gradeRange = gradeRange;
     }
 
@@ -81,5 +88,13 @@ public class GradeGrid extends Titled {
 
     public List<SubjectRow> getSubjectsAfterLanguages() {
         return subjectsAfterLanguages;
+    }
+
+    public List<Option> getScopeOptions() {
+        return scopeOptions;
+    }
+
+    public List<Option> getLanguageOptions() {
+        return languageOptions;
     }
 }

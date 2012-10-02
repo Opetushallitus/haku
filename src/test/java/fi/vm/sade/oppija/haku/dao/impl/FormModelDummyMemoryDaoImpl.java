@@ -168,8 +168,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         LanguageRow a1 = new LanguageRow("lang_a1", "A1-kieli");
         LanguageRow b1 = new LanguageRow("lang_b1", "B1-kieli");
-        addLanguagesToLanguageRow(a1);
-        addLanguagesToLanguageRow(b1);
+
         ArrayList<LanguageRow> languageRows = new ArrayList<LanguageRow>();
         languageRows.add(a1);
         languageRows.add(b1);
@@ -180,22 +179,26 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         subjectRowsAfter.add(math);
         subjectRowsAfter.add(biology);
 
+        List<Option> languageOptions=  new ArrayList<Option>();
+        languageOptions.add(new Option("langoption_" + "eng", "eng", "englanti"));
+        languageOptions.add(new Option("langoption_" + "swe", "swe", "ruotsi"));
+        languageOptions.add(new Option("langoption_" + "fra", "fra", "ranska"));
+        languageOptions.add(new Option("langoption_" + "ger", "ger", "saksa"));
+        languageOptions.add(new Option("langoption_" + "rus", "rus", "venäjä"));
+        languageOptions.add(new Option("langoption_" + "fin", "fin", "suomi"));
+
+        List<Option> scopeOptions =  new ArrayList<Option>();
+        scopeOptions.add(new Option("scopeoption_" + "a1", "a1", "A1"));
+        scopeOptions.add(new Option("scopeoption_" + "a2", "a2", "A2"));
+        scopeOptions.add(new Option("scopeoption_" + "b1", "b1", "B1"));
+        scopeOptions.add(new Option("scopeoption_" + "b2", "b2", "B2"));
+        scopeOptions.add(new Option("scopeoption_" + "b3", "b3", "B3"));
+
         GradeGrid gradeGrid = new GradeGrid("gradegrid", "Arvosanat", "Arvosanat TOR-rekisterissä",
                 "Poikkeavat Arvosanat", "Arvosanat", "Yhteinen oppiaine", "Valinnaisaine", subjectRowsBefore, languageRows,
-                subjectRowsAfter, gradeRange);
-
+                subjectRowsAfter, scopeOptions, languageOptions, gradeRange);
 
         arvosanatRyhmä.addChild(gradeGrid);
-
-    }
-
-    private void addLanguagesToLanguageRow(LanguageRow languageRow) {
-        languageRow.addOption("eng", "eng", "englanti");
-        languageRow.addOption("swe", "swe", "ruotsi");
-        languageRow.addOption("fra", "fra", "ranska");
-        languageRow.addOption("ger", "ger", "saksa");
-        languageRow.addOption("rus", "rus", "venäjä");
-        languageRow.addOption("fin", "fin", "suomi");
 
     }
 
