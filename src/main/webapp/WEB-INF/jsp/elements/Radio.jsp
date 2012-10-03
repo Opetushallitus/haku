@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"
            prefix="c" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags"%>
 <fieldset class="form-row">
     <legend class="form-row-label"><c:out value="${element.title}"/></legend>
     <div class="form-row-content">
@@ -15,4 +16,5 @@
 
     </div>
     <div class="clear"></div>
+    <haku:viewChilds element="${element}"/>
 </fieldset>

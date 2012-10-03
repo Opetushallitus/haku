@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags"%>
 <fieldset>
     <legend><c:out value="${element.title}"/></legend>
     <select multiple="multiple" name="${element.id}" id="${element.id}">
@@ -7,4 +8,5 @@
             <option name="${optionId}" value="${option.value}" ${option.attributeString}>${option.title}</option>
         </c:forEach>
     </select>
+     <haku:viewChilds element="${element}"/>
 </fieldset>

@@ -39,16 +39,18 @@ public class ShowChildsIT extends AbstractRemoteTest {
 
         final EnablingSubmitRule enablingSubmitRule = new EnablingSubmitRule(option.getId(), ".*");
         enablingSubmitRule.setRelated(option, questionGroup);
+        option.addChild(enablingSubmitRule);
 
         final EnablingSubmitRule enablingSubmitRule2 = new EnablingSubmitRule(option2.getId(), ".*");
-        final TextQuestion textQuestion = new TextQuestion("alikysymys3", "alikysymys3");
+        final TextQuestion textQuestion = new TextQuestion("laitakolmenollaa", "Laita kolme nollaa tähän");
         enablingSubmitRule2.setRelated(option2, textQuestion);
-
+        option2.addChild(enablingSubmitRule2);
 
         final EnablingSubmitRule enablingSubmitRule3 = new EnablingSubmitRule(textQuestion.getId(), "[0]{3}");
         enablingSubmitRule3.setRelated(textQuestion, new TextQuestion("tamanakyykolmellanollalla", "tamanakyykolmellanollalla"));
+        textQuestion.addChild(enablingSubmitRule3);
 
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox, enablingSubmitRule, enablingSubmitRule2, enablingSubmitRule3);
+        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox);
         this.formModelHelper = initModel(formModel);
     }
 
@@ -57,7 +59,6 @@ public class ShowChildsIT extends AbstractRemoteTest {
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);
         dumpHtml();
-        setScriptingEnabled(false);
         assertElementPresent("checkbox_value");
         assertElementPresent("checkbox_value2");
         assertElementNotPresent("ekaryhma");

@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags"%>
 <div class=question>
     <label for="label-${element.id}">${element.title}</label>
 
@@ -12,4 +12,5 @@
     </select>
 
     <div class="ehelp">${element.help}</div>
+    <haku:viewChilds element="${element}"/>
 </div>
