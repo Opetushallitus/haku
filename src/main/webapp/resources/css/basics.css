@@ -99,11 +99,16 @@ img.set-left
 hr
 {
 	display:block;
-	margin:0.5em 0px;
+	margin:1.5em 0px;
 	height:1px;
 	width:100%;
 	border:none;
 	background-color:#feba00;
+}
+
+fieldset hr
+{
+	margin:0.5em 0px;
 }
 
 
@@ -550,15 +555,40 @@ hr
 	padding-left: 0;
 }
 
-.hierarchy-list .lvl-1 {
+.hierarchy-list ul {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.hierarchy-list li {
 	padding-left: 20px;
+}
+
+.hierarchy-list .lvl-1 > li {
 	font-weight: bold;
 }
 
-.hierarchy-list .lvl-2 {
-	padding-left: 40px;
+.hierarchy-list .lvl-1 > li.closed {
+	background: transparent url("../img/arrow-right.png") no-repeat left top;
 }
 
-.hierarchy-list .lvl-3 {
-	padding-left: 60px;
+.hierarchy-list .lvl-1 > li.open {
+	background: transparent url("../img/arrow-down.png") no-repeat left top;
 }
+
+.hierarchy-list .lvl-1 > li.closed > ul {
+	display: none;	
+}
+
+.hierarchy-list .lvl-1 > li.open > ul {
+	display: block;
+}
+
+.hierarchy-list .lvl-2 {
+	font-weight: normal;
+}
+
+.hierarchy-list li.lvl-1.open {
+	background: transparent url("../img/arrow-down.png") no-repeat left center;
+}
+

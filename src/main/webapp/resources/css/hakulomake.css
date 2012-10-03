@@ -122,25 +122,6 @@ select, select:focus, select:active
 
 
 
-
-.helplink
-{
-	float:right;
-	display:block;
-	width:20px;
-	height:21px;
-
-	color:transparent;
-	background-image:url('../img/help-icon-sprite_idle-hover-selected-disabled.png');
-	background-position:0px center;
-	background-repeat:no-repeat;
-}
-
-.helplink:hover{background-position:-20px center;}
-.helplink:active, .helplink:focus{background-position:-40px center;}
-.helplink:disabled, .helplink.disabled{background-position:-60px center;}
-
-
 .form-summary-table td
 {
 	vertical-align:top;
@@ -173,6 +154,18 @@ button.legend-align
 {
 	margin-top:-26px;
 
+}
+
+
+.application-number
+{
+	font-size:1.154em;
+	color:#000000;
+}
+
+.application-number .number
+{
+	color:#149dca;
 }
 
 
@@ -388,7 +381,7 @@ button.legend-align
 .preference-sort .preference-fields
 {
 	margin-right:1.5em;
-	float:right;
+	float:left;
 }
 
 .preference-sort .preference-fields .form-row

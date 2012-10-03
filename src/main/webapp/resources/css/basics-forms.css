@@ -19,6 +19,10 @@ fieldset legend
 	padding:0px;
 }
 
+fieldset small
+{
+	display:block;
+}
 
 
 /***  Buttons
@@ -90,6 +94,15 @@ button:focus span, button:active span{background-position:left -56px;}
 button:focus span span, button:active span span{background-position:right -168px;}
 button:disabled span{background-position:left -84px;}
 button:disabled span span{background-position:right -196px;}
+
+/***  Primary button
+************************/
+
+button.primary span,
+button.primary span span
+{
+	background-image:url('../img/button-primary-sprite_idle-hover-selected-disabled.png');
+}
 
 /***  Print button
 ************************/
@@ -218,6 +231,85 @@ button.right:disabled span{background-position:left -196px;}
 button.right:disabled span span{background-position:right -84px;}
 
 
+/***  Plus button
+************************/
+
+
+
+button.plus span
+{
+	width:22px;
+	height:22px;
+	margin:0px;
+	padding:0px;
+	border:none; 
+	background-image:url('../img/button-plus-sprite_idle-hover-selected-disabled.png');
+	background-position:0px center;
+}
+
+button.plus:hover span{background-position:-22px center;}
+button.plus:focus span, button.plus:active span{background-position:-44px center;}
+button.plus:disabled span{background-position:-66px center;}
+
+
+button.plus span span
+{
+	display:none;
+}
+
+
+/***  Remove button/link
+************************/
+
+.remove
+
+{
+	display:inline-block;
+	vertical-align:middle;
+	width:24px;
+	height:24px;
+	margin:0px;
+	padding:0px;
+	border:none; 
+	background-image:url('../img/remove-sprite_idle-hover-selected-disabled.png');
+	background-position:0px center;
+	overflow:hidden;
+	color:transparent;
+}
+
+.remove:hover {background-position:-24px center;}
+.remove:focus, .remove:active {background-position:-48px center;}
+.remove:disabled {background-position:-72px center;}
+
+button.remove span
+{
+	display:none;
+}
+
+/***  Help link
+************************/
+
+
+.helplink
+{
+	float:right;
+	display:block;
+	width:20px;
+	height:21px;
+
+	color:transparent;
+	background-image:url('../img/help-icon-sprite_idle-hover-selected-disabled.png');
+	background-position:0px center;
+	background-repeat:no-repeat;
+}
+
+.helplink:hover{background-position:-20px center;}
+.helplink:active, .helplink:focus{background-position:-40px center;}
+.helplink:disabled, .helplink.disabled{background-position:-60px center;}
+
+
+
+
 /***  Label
 **********************************/
 
@@ -268,13 +360,14 @@ select option
 	width:24px;
 	height:24px;
 	overflow:hidden;
-	background-image:url(../img/sim-checkbox-sprite.png);
+	background-image:url(../img/checkbox-sprite_unchecked-hover-checked-disabled-disabledchecked.png);
 	background-repeat:no-repeat;
 	background-position:0px center;
 	cursor:pointer;
 }
 
-.js-checkbox.partail
+.js-checkbox:hover,
+.js-checkbox.hover
 {
 	background-position:-24px center;
 }
@@ -284,14 +377,14 @@ select option
 	background-position:-48px center;
 }
 
-.js-checkbox.partail.disabled
+.js-checkbox.disabled
 {
-	background-position:-24px center;
+	background-position:-72px center;
 }
 
 .js-checkbox.selected.disabled
 {
-	background-position:-48px center;
+	background-position:-96px center;
 }
 
 
@@ -304,26 +397,36 @@ select option
 	width:24px;
 	height:24px;
 	overflow:hidden;
-	background-image:url(../img/sim-checkbox-sprite.png);
+	background-image:url(../img/radio-sprite_unchecked-hover-checked-disabled-disabledchecked.png);
 	background-repeat:no-repeat;
 	background-position:0px center;
 	cursor:pointer;
 }
 
-.js-radio.selected
+.js-radio:hover,
+.js-radio.hover
 {
 	background-position:-24px center;
 }
 
+.js-radio.selected
+{
+	background-position:-48px center;
+}
+
+.js-radio.disabled
+{
+	background-position:-72px center;
+}
+
 .js-radio.selected.disabled
 {
-	background-position:-24px center;
+	background-position:-96px center;
 }
 
 .js-checkbox.disabled,
 .js-radio.disabled
 {
-	background-position:0px center;
 	cursor:default;
 	opacity:0.5;
 }
