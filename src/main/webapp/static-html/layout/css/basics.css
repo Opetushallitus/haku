@@ -99,11 +99,16 @@ img.set-left
 hr
 {
 	display:block;
-	margin:0.5em 0px;
+	margin:1.5em 0px;
 	height:1px;
 	width:100%;
 	border:none;
 	background-color:#feba00;
+}
+
+fieldset hr
+{
+	margin:0.5em 0px;
 }
 
 

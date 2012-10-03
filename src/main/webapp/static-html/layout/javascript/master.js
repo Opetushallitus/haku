@@ -176,6 +176,7 @@ var formReplacements = {
 		});
 		
 		// Trigger on replacement checkbox label
+		// Click
 		$('body').on('click', 'label[data-js-checkbox-id]', function(event){
 			event.preventDefault();
 			id = parseInt($(this).attr('data-js-checkbox-id'));
@@ -185,13 +186,36 @@ var formReplacements = {
 			}
 		});
 		
+		// Hover
+		$('body').on("hover", 'label[data-js-checkbox-id]', function(e) {
+			id = parseInt($(this).attr('data-js-checkbox-id'));
+			if(e.type == "mouseenter") {
+				$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('hover');
+			}
+			else if (e.type == "mouseleave") {
+				$('.js-checkbox[data-js-checkbox-id="'+id+'"]').removeClass('hover');
+			}
+		});
+		
 		// Trigger on replacement radio label
+		// Click
 		$('body').on('click', 'label[data-js-radio-id]', function(event){
 			event.preventDefault();
 			id = parseInt($(this).attr('data-js-radio-id'));
 			if (!$('.js-radio[data-js-radio-id="'+id+'"]').hasClass('disabled'))
 			{
 				formReplacements.jsRadio.change(id);
+			}
+		});
+		
+		// Hover
+		$('body').on("hover", 'label[data-js-radio-id]', function(e) {
+			id = parseInt($(this).attr('data-js-radio-id'));
+			if(e.type == "mouseenter") {
+				$('.js-radio[data-js-radio-id="'+id+'"]').addClass('hover');
+			}
+			else if (e.type == "mouseleave") {
+				$('.js-radio[data-js-radio-id="'+id+'"]').removeClass('hover');
 			}
 		});
 	}
