@@ -3,13 +3,10 @@
 		<thead>
 			<tr>
 				<th></th>
-				<th colspan="2"><c:out value="${element.registryGradesTitle}"/></th>
-				<th colspan="2"><c:out value="${element.alteringGradesTitle}"/></th>
+				<th colspan="2"><c:out value="${element.gradesTitle}"/></th>
 			</tr>
 			<tr>
-				<td>Oppiaine(s)</td>
-				<td><c:out value="${element.commonSubjectColumnTitle}"/></td>
-				<td><c:out value="${element.optionalSubjectColumnTitle}"/></td>
+				<td><c:out value="${element.subjectTitle}"/></td>
 				<td><c:out value="${element.commonSubjectColumnTitle}"/></td>
 				<td><c:out value="${element.optionalSubjectColumnTitle}"/></td>
 			</tr>
@@ -20,8 +17,6 @@
 		        <c:set var="subject" value="${subject}" scope="request"/>
 			    <tr>
 				    <td><jsp:include page="gradegrid/SubjectRow.jsp"/></td>
-				    <td>8</td>
-				    <td></td>
 				    <td>
 				        <jsp:include page="gradegrid/gradeselect.jsp"/>
 				    </td>
@@ -36,8 +31,6 @@
                 <c:set var="language" value="${language}" scope="request"/>
                 <tr class="gradegrid-language-row">
                     <td><jsp:include page="gradegrid/LanguageRow.jsp"/></td>
-                	<td>8</td>
-                	<td></td>
                 	<td>
                 	    <jsp:include page="gradegrid/gradeselect.jsp"/>
                 	</td>
@@ -49,8 +42,8 @@
 
             <!-- add new language row -->
             <tr>
-                <td colspan=5>
-                    <p id="add_language_button" >Lisaa kieli (s)</p>
+                <td colspan=3>
+                    <p id="add_language_button" ><c:out value="${element.addLanguageLabel}"/></p>
                 </td>
             </tr>
 
@@ -59,8 +52,6 @@
                 <c:set var="subject" value="${subject}" scope="request"/>
             	<tr>
             	    <td><jsp:include page="gradegrid/SubjectRow.jsp"/></td>
-            		<td>8</td>
-            		<td></td>
             		<td>
             		    <jsp:include page="gradegrid/gradeselect.jsp"/>
             	    </td>
@@ -74,7 +65,7 @@
                 included into the table to add new languages 
                 this always has to be the last row-->
             <tr style="display: none">
-                <td>Kieli
+                <td><c:out value="${element.customLanguageTitle}"/>
                 <select>
                     <option></option>
                     <c:forEach var="scopeOption" items="${element.scopeOptions}">
@@ -88,8 +79,6 @@
                     </c:forEach>
                 </select>
                 </td>
-                <td></td>
-                <td></td>
                 <td>
                     <div class="field-container-select">
                         <select name="arvosana-1" placeholder="Valitse">

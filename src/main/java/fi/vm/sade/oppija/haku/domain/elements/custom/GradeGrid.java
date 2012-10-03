@@ -19,10 +19,16 @@ public class GradeGrid extends Titled {
     private String alteringGradesTitle;
     // title for grade columns if a grade registry is absent
     private String gradesTitle;
-    // title for common subject grade column (Yleinen oppiaine etc)
+    // title for subject names column
+    private String subjectTitle;
+    // title for common subject grade column ('Yleinen oppiaine' etc)
     private String commonSubjectColumnTitle;
-    // title for optional subject grade column (Valinnaisaine etc)
+    // title for optional subject grade column ('Valinnaisaine' etc)
     private String optionalSubjectColumnTitle;
+    // label shown in custom language row ('Kieli' etc)
+    private String customLanguageTitle;
+    // label text for add language button
+    private String addLanguageLabel;
 
     // subjects that are listed before languages
     private List<SubjectRow> subjectsBeforeLanguages;
@@ -42,8 +48,11 @@ public class GradeGrid extends Titled {
                      @JsonProperty(value = "registryGradesTitle") String registryGradesTitle,
                      @JsonProperty(value = "alteringGradesTitle") String alteringGradesTitle,
                      @JsonProperty(value = "gradesTitle") String gradesTitle,
+                     @JsonProperty(value = "subjectTitle") String subjectTitle,
                      @JsonProperty(value = "commonSubjectColumnTitle") String commonSubjectColumnTitle,
                      @JsonProperty(value = "optionalSubjectColumnTitle") String optionalSubjectColumnTitle,
+                     @JsonProperty(value = "customLanguageTitle") String customLanguageTitle,
+                     @JsonProperty(value = "addLanguageLabel") String addLanguageLabel,
                      @JsonProperty(value = "subjectsBeforeLanguages") List<SubjectRow> subjectsBeforeLanguages,
                      @JsonProperty(value = "languages") List<LanguageRow> languages,
                      @JsonProperty(value = "subjectsAfterLanguages") List<SubjectRow> subjectsAfterLanguages,
@@ -54,8 +63,11 @@ public class GradeGrid extends Titled {
         this.registryGradesTitle = registryGradesTitle;
         this.alteringGradesTitle = alteringGradesTitle;
         this.gradesTitle = gradesTitle;
+        this.subjectTitle = subjectTitle;
         this.commonSubjectColumnTitle = commonSubjectColumnTitle;
         this.optionalSubjectColumnTitle = optionalSubjectColumnTitle;
+        this.customLanguageTitle = customLanguageTitle;
+        this.addLanguageLabel = addLanguageLabel;
         this.subjectsBeforeLanguages = subjectsBeforeLanguages;
         this.languages = languages;
         this.subjectsAfterLanguages = subjectsAfterLanguages;
@@ -106,5 +118,17 @@ public class GradeGrid extends Titled {
 
     public List<Option> getLanguageOptions() {
         return languageOptions;
+    }
+
+    public String getSubjectTitle() {
+        return subjectTitle;
+    }
+
+    public String getCustomLanguageTitle() {
+        return customLanguageTitle;
+    }
+
+    public String getAddLanguageLabel() {
+        return addLanguageLabel;
     }
 }
