@@ -95,6 +95,15 @@ button:focus span span, button:active span span{background-position:right -168px
 button:disabled span{background-position:left -84px;}
 button:disabled span span{background-position:right -196px;}
 
+/***  Primary button
+************************/
+
+button.primary span,
+button.primary span span
+{
+	background-image:url('../img/button-primary-sprite_idle-hover-selected-disabled.png');
+}
+
 /***  Print button
 ************************/
 

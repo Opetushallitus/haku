@@ -26,6 +26,70 @@ var applicationBasket = {
 	}
 }
 
+var popupWindow = {
+	defaults :{
+		height : 600,
+		width : 400,
+		resizable : 'yes',
+		scrollbars : 'yes',
+		toolbar : 'no',
+		menubar : 'no',
+		location : 'yes',
+		directories : 'no',
+		status : 'yes'
+	},
+	build:function(){
+		popupWindow.setTriggers();
+	},
+	generate:function(url, name, settings){
+		
+		// Get default settings
+		var popupSettings = popupWindow.defaults;
+		
+		// If settings are specified, override defaults
+		if(typeof settings != 'undefined')
+		{
+			settings = settings.split(',');
+
+			for (i in settings)
+			{
+				setting = settings[i].split('=');
+				popupSettings[setting[0]] = setting[1];
+			}
+		}
+		
+		// Turn settings into settings string
+		var settings = [];
+		for (i in popupSettings)
+		{
+			settings.push(i+'='+popupSettings[i]);
+		}
+		settings = settings.join(',');
+
+		var popup = window.open(url,name,settings);
+		if (window.focus) {popup.focus()}
+	},
+	close:function(){
+		
+	},
+	setTriggers:function(){
+		$('body').on('click', '[data-popup="open"]', function(event){
+			event.preventDefault();
+
+				url = $(this).attr('href');
+				name = $(this).attr('data-popup-name');
+				settings = $(this).attr('data-popup-settings');
+				popupWindow.generate(url, name, settings);
+		});
+		
+		$('body').on('click', '[data-popup="close"]', function(event){
+			event.preventDefault();
+			window.close();
+		});
+	}
+
+}
+
 
 var formReplacements = {
 	settings : {
@@ -316,6 +380,7 @@ var hierarchyList = {
 
 applicationBasket.build();
 formReplacements.build();
+popupWindow.build();
 tabsMenu.build();
 hierarchyList.build();
 
