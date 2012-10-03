@@ -18,8 +18,8 @@
 <div id="sitecontent">
 
     <div class="content">
-        <h3>Hakulomake</h3>
-        <h4>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2012</h4>
+        <h1>Hakulomake</h1>
+        <h2>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2012</h2>
         <ul class="form-steps">
             <c:forEach var="link" items="${form.navigation.children}" varStatus="status">
                 <li><a id="nav-${link.id}" ${link.attributeString}
@@ -30,7 +30,7 @@
         <div class="clear"></div>
     </div>
 
-    <form id="form-${category.id}" method="post">
+    <form id="form-${category.id}" class="form" method="post">
 
         <jsp:include page="prev_next_buttons.jsp"/>
 

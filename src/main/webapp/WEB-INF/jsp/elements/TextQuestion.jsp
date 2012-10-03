@@ -1,8 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<div class=question>
-    <label id="label-${element.id}" for="${element.id}">${element.title}</label>
-
-    <input ${element.attributeString} value="${categoryData[element.id]}"/><span class="required_field">${errorMessages[element.id]}</span>
-
-    <div class="ehelp" id="help-${element.id}">${element.help}</div>
+<div class="form-row">
+    <label id="label-${element.id}" for="${element.id}" class="form-row-label">${element.title}</label>
+    <div class="form-row-content">
+        <div class="field-container-text">
+            <input ${element.attributeString} value="${categoryData[element.id]}"/><span class="required_field">${errorMessages[element.id]}</span>
+        </div
+        <small>${element.help}</small>
+    </div>
+    <div class="clear"></div>
 </div>
+
