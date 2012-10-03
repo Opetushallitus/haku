@@ -7,8 +7,7 @@ import fi.vm.sade.oppija.haku.domain.questions.Option;
 import java.util.List;
 
 /**
- * Grid element that is used to gather grade information from user. Child elements
- * are used to list different subjects in the grid.
+ * Grid element that is used to gather grade information from user.
  *
  * @author Hannu Lyytikainen
  */
