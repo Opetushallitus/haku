@@ -129,6 +129,9 @@ fieldset hr
 	padding-bottom: 20px;
 }
 
+
+
+
 /*** Structure
 **************************************************************/
 
@@ -149,7 +152,6 @@ fieldset hr
 
 /*** Grid
 ************************************************/
-
 
 .grid16-4
 {
@@ -197,7 +199,17 @@ fieldset hr
     width: 98.75%;
 }
 
+.width-25 {
+	width: 25%;
+}
 
+.width-50 {
+	width: 50%;
+}
+
+.width-75 {
+	width: 75%;
+}
 
 /*** Breadcrumb
 **************************************************************/
@@ -362,7 +374,7 @@ fieldset hr
 
 .tabs .tab
 {
-	color:#3E3E3E;
+	color: #aaa;
 	background-color:#ffffff;
 	display:inline-block;
 	border:solid 1px #bdbdbd;
@@ -374,6 +386,7 @@ fieldset hr
 
 .tabs .tab.current
 {
+	color:#3E3E3E;
 	border-bottom-width:0px;
 	padding-bottom:2px;
 }
@@ -381,7 +394,7 @@ fieldset hr
 .tabs .tab span
 {
 	display:block;
-	padding:0px 40px;
+	padding:0px 20px;
 	height:36px;
 	line-height:36px;
 	
@@ -401,6 +414,7 @@ fieldset hr
 .tabs .tab:hover span
 {
 	background: #e6e6e6; /* Old browsers */
+	color: #888;
 	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2U2ZTZlNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmNWY1ZjUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
 	background: -moz-linear-gradient(top,  #e6e6e6 0%, #f5f5f5 100%); /* FF3.6+ */
@@ -547,6 +561,35 @@ fieldset hr
 
 
 
+/*** Definition list
+************************************************/
+.definitions {
+
+}
+
+.definitions .row {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.definitions li {
+	display: inline-block;
+}
+
+
+.definitions .term {
+	width: 75%;
+	text-align: right;
+}
+
+
+.definitions .description {
+	font-weight: bold;
+	float: right;
+}
+
+
+
 /*** hierarchy list
 ************************************************/
 
@@ -566,6 +609,11 @@ fieldset hr
 
 .hierarchy-list .lvl-1 > li {
 	font-weight: bold;
+}
+
+.hierarchy-list .lvl-1 > li > ul {
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 .hierarchy-list .lvl-1 > li.closed {
