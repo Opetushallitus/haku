@@ -9,6 +9,7 @@
     <title>${form.title} - ${category.title}</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
     <script src="/haku/resources/javascript/rules.js"></script>
+    <script src="/haku/resources/javascript/master.js"></script>
 </head>
 <body>
 <div id="viewport">
