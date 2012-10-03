@@ -8,9 +8,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.QuestionGroup;
-import fi.vm.sade.oppija.haku.domain.elements.custom.GradeGrid;
-import fi.vm.sade.oppija.haku.domain.elements.custom.LanguageRow;
-import fi.vm.sade.oppija.haku.domain.elements.custom.SubjectRow;
+import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.domain.questions.*;
 import fi.vm.sade.oppija.haku.service.FormService;
@@ -205,6 +203,22 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     private void createHakutoiveet(QuestionGroup hakutoiveetRyhmä) {
         hakutoiveetRyhmä.setHelp("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.");
+        SortableTable sortableTable = new SortableTable("preferencelist", "Hakutoiveet");
+        PreferenceRow pr1 = new PreferenceRow("preference1", "Hakutoive 1");
+        PreferenceRow pr2 = new PreferenceRow("preference2", "Hakutoive 2");
+        PreferenceRow pr3 = new PreferenceRow("preference3", "Hakutoive 3");
+        sortableTable.addChild(pr1);
+        sortableTable.addChild(pr2);
+        sortableTable.addChild(pr3);
+        addEducationsToPreferenceRow(pr1);
+        addEducationsToPreferenceRow(pr2);
+        addEducationsToPreferenceRow(pr3);
+        hakutoiveetRyhmä.addChild(sortableTable);
+    }
+
+    private void addEducationsToPreferenceRow(PreferenceRow preferenceRow) {
+        preferenceRow.addOption("1", "autoala", "Autoala");
+        preferenceRow.addOption("2", "ruotsi", "Ruotsi");
     }
 
     private void createKoulutustausta(QuestionGroup koulutustaustaRyhmä) {
