@@ -46,8 +46,10 @@ public abstract class Element {
     final String id;
     transient String type = this.getClass().getSimpleName();
     String help;
-    final List<Element> children = new ArrayList<Element>();
+    protected final List<Element> children = new ArrayList<Element>();
     final Set<Attribute> attributes = new HashSet<Attribute>();
+
+    protected Map<String, Element> childById = new HashMap<String, Element>();
 
 
     protected Element(@JsonProperty String id) {
@@ -81,6 +83,7 @@ public abstract class Element {
 
     public Element addChild(Element child) {
         this.children.add(child);
+        this.childById.put(child.getId(), child);
         return this;
     }
 
@@ -100,4 +103,7 @@ public abstract class Element {
         return attrStr.toString();
     }
 
+    public Map<String, Element> getChildById() {
+        return childById;
+    }
 }

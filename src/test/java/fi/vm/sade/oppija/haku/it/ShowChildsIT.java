@@ -20,7 +20,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  * @version 9/20/123:26 PM}
  * @since 1.1
  */
-public class HideChildsIT extends AbstractRemoteTest {
+public class ShowChildsIT extends AbstractRemoteTest {
 
     private FormModelHelper formModelHelper;
 
@@ -37,14 +37,18 @@ public class HideChildsIT extends AbstractRemoteTest {
         questionGroup.addChild(new TextQuestion("alikysymys1", "alikysymys1"));
         questionGroup.addChild(new TextQuestion("alikysymys2", "alikysymys2"));
 
-        final EnablingSubmitRule enablingSubmitRule = new EnablingSubmitRule(option.getId());
+        final EnablingSubmitRule enablingSubmitRule = new EnablingSubmitRule(option.getId(), ".*");
         enablingSubmitRule.setRelated(option, questionGroup);
 
-        final EnablingSubmitRule enablingSubmitRule2 = new EnablingSubmitRule(option2.getId());
+        final EnablingSubmitRule enablingSubmitRule2 = new EnablingSubmitRule(option2.getId(), ".*");
         final TextQuestion textQuestion = new TextQuestion("alikysymys3", "alikysymys3");
         enablingSubmitRule2.setRelated(option2, textQuestion);
 
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox, enablingSubmitRule, enablingSubmitRule2);
+
+        final EnablingSubmitRule enablingSubmitRule3 = new EnablingSubmitRule(textQuestion.getId(), "[0]{3}");
+        enablingSubmitRule3.setRelated(textQuestion, new TextQuestion("tamanakyykolmellanollalla", "tamanakyykolmellanollalla"));
+
+        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox, enablingSubmitRule, enablingSubmitRule2, enablingSubmitRule3);
         this.formModelHelper = initModel(formModel);
     }
 
@@ -53,7 +57,7 @@ public class HideChildsIT extends AbstractRemoteTest {
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);
         dumpHtml();
-        // setScriptingEnabled(false);
+        setScriptingEnabled(false);
         assertElementPresent("checkbox_value");
         assertElementPresent("checkbox_value2");
         assertElementNotPresent("ekaryhma");
