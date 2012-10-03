@@ -5,7 +5,7 @@
     <div class="form-row-content">
         <div class="field-container-text">
             <input ${element.attributeString} value="${categoryData[element.id]}"/><span class="required_field">${errorMessages[element.id]}</span>
-        </div
+        </div>
         <small>${element.help}</small>
     </div>
     <div class="clear"></div>
