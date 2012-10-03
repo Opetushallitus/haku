@@ -279,10 +279,7 @@ var tabsMenu = {
 			});
 		}
 	}
-/*
-$('[data-basket-action="show"]').delay(400).fadeIn(400);
-				$('.application-basket').slideUp(400);
-*/
+
 var hierarchyList = {
 	build: function() {
 		hierarchyList.load();
