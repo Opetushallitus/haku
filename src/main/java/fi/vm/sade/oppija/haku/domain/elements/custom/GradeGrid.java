@@ -13,18 +13,29 @@ import java.util.List;
  */
 public class GradeGrid extends Titled {
 
+    // title for column that holds grades retrieved from an external registry
     private String registryGradesTitle;
+    // title for columns that are altered from the ones that are retrieved from a registry
     private String alteringGradesTitle;
+    // title for grade columns if a grade registry is absent
     private String gradesTitle;
+    // title for common subject grade column (Yleinen oppiaine etc)
     private String commonSubjectColumnTitle;
+    // title for optional subject grade column (Valinnaisaine etc)
     private String optionalSubjectColumnTitle;
 
+    // subjects that are listed before languages
     private List<SubjectRow> subjectsBeforeLanguages;
+    // languages
     private List<LanguageRow> languages;
+    // subjects that are listed under the 'Add language' row
     private List<SubjectRow> subjectsAfterLanguages;
 
+    // possible language scopes (A1, B1 etc)
     private List<Option> scopeOptions;
+    // different languages
     private List<Option> languageOptions;
+    // list of possible grades
     private List<Integer> gradeRange;
 
     public GradeGrid(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
