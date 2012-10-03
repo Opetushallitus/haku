@@ -7,7 +7,7 @@ html, body
 body{
 	font-family: 'PT Sans', helvetica, arial, sans-serif;
 	font-size:0.813em;
-	background-color:#f8f8f8;
+	background-color:#ffffff;
 	color:#3e3e3e;
 	line-height:1.3em;
 }
@@ -49,7 +49,7 @@ h4, .h4
 	font-size:1em;
 }
 
-.bold 
+b, strong, .bold 
 { 
 	font-weight: bold; 
 }
@@ -142,7 +142,7 @@ fieldset hr
 
 #site
 {
-	background: white;
+	background: #ffffff;
 }
 
 #siteheader
