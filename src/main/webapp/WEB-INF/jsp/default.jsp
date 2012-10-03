@@ -11,6 +11,10 @@
     <script src="/haku/resources/javascript/rules.js"></script>
 </head>
 <body>
+<div id="viewport">
+<div id="overlay">
+</div>
+<div id="site">
 <div id="sitecontent">
 
     <div class="content">
@@ -26,24 +30,23 @@
         <div class="clear"></div>
     </div>
 
-    <div class="container">
-        <div class="application-content">
-                <form id="form-${category.id}" method="post">
+    <form id="form-${category.id}" method="post">
 
-                    <jsp:include page="prev_next_buttons.jsp"/>
+        <jsp:include page="prev_next_buttons.jsp"/>
 
-                    <c:forEach var="child" items="${category.children}">
-                        <c:set var="element" value="${child}" scope="request"/>
-                        <c:set var="parentId" value="${form.id}.${category.id}" scope="request"/>
-                        <jsp:include page="elements/${child.type}.jsp"/>
-                    </c:forEach>
+        <c:forEach var="child" items="${category.children}">
+            <c:set var="element" value="${child}" scope="request"/>
+            <c:set var="parentId" value="${form.id}.${category.id}" scope="request"/>
+            <jsp:include page="elements/${child.type}.jsp"/>
+        </c:forEach>
 
-                    <jsp:include page="prev_next_buttons.jsp"/>
+        <jsp:include page="prev_next_buttons.jsp"/>
 
-                </form>
-        </div>
-    </div>
+    </form>
+
 <div id="sitecontent">
+</div>
+</div>
 </body>
 </html>
 
