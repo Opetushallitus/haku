@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
-    <link rel="stylesheet" href="/haku/resources/css/test.css" type="text/css">
+    <link rel="stylesheet" href="/haku/resources/css/screen.css" type="text/css">
     <title>${form.title} - ${category.title}</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
     <script src="/haku/resources/javascript/rules.js"></script>
