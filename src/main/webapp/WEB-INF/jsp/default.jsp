@@ -11,20 +11,21 @@
     <script src="/haku/resources/javascript/rules.js"></script>
 </head>
 <body>
+<div id="sitecontent">
 
-    <div class="header">
+    <div class="content">
         <h3>Hakulomake</h3>
         <h4>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2012</h4>
-        <div class="application-navigation">
-            <ol class="rounded-list">
-                <c:forEach var="link" items="${form.navigation.children}" varStatus="status">
-                    <li class="item">
-                        <a id="nav-${link.id}" ${link.attributeString}>${link.value}</a>&nbsp;<c:if test="${not status.last}">></c:if>
-                    </li>
-                </c:forEach>
-            </ol>
-        </div>
+        <ul class="form-steps">
+            <c:forEach var="link" items="${form.navigation.children}" varStatus="status">
+                <li><a id="nav-${link.id}" ${link.attributeString}
+                    <c:if test="${link.id eq category.id}">class="current"</c:if>>
+                    <span class="index">${status.count}</span>${link.value} <c:if test="${not status.last}">&gt;</c:if></a></li>
+            </c:forEach>
+        </ul>
+        <div class="clear"></div>
     </div>
+
     <div class="container">
         <div class="application-content">
                 <form id="form-${category.id}" method="post">
@@ -42,7 +43,7 @@
                 </form>
         </div>
     </div>
-
+<div id="sitecontent">
 </body>
 </html>
 
