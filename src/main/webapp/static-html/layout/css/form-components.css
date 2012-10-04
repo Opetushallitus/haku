@@ -24,6 +24,11 @@ fieldset small
 	display:block;
 }
 
+fieldset hr
+{
+	margin:0.5em 0px;
+}
+
 
 /***  Buttons
 **********************************/
