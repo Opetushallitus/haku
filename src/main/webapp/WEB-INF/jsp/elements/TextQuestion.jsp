@@ -6,7 +6,7 @@
         <div class="field-container-text">
             <input ${element.attributeString} value="${categoryData[element.id]}"/><span class="required_field">${errorMessages[element.id]}</span>
         </div>
-        <small>${element.help}</small>
+        <div id="help-${element.id}"><small>${element.help}</small></div>
     </div>
     <div class="clear"></div>
     <haku:viewChilds element="${element}"/>
