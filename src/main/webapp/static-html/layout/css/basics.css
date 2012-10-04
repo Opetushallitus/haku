@@ -533,6 +533,46 @@ fieldset hr
 }
 
 
+
+
+/*** Removable items
+************************************************/
+.removable-items li {
+	line-height: 24px;
+}
+
+.removable-items a.item {
+	display: inline-block !important;
+}
+
+.removable-items a.btn-remove {
+	float: right;
+	display: inline-block;
+}
+
+a.btn-remove {
+	background-image: url('../img/remove-sprite_idle-hover-selected-disabled.png');
+	background-position: left top;
+	background-repeat: no-repeat;
+	width: 24px;
+	height: 24px;
+}
+
+a.btn-remove:hover {
+	background-position: -24px top;
+}
+
+a.btn-remove:active {
+	background-position: -48px top;
+}
+
+a.btn-remove.disabled {
+	background-position: -72px top;
+}
+
+
+
+
 /*** Compare
 ************************************************/
 #compare h2
