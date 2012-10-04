@@ -1,165 +1,58 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<div class="grid16-6">
-    <ul class="minimal">
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Näytä vain tutkintoon johtava koulutus</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Haku meneillään juuri nyt</span>
-        </li>
-    </ul>
-
-    <legend class="h3">KOULUTUSTYYPPI</legend>
-    <ul class="minimal">
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Lukiokoulutus</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Ammatillinen koulutus</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Ammatti- tai erikoisammattitutkinto</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Ammattikorkeakoulututkinto</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Ylempi ammattikorkeakoulututkinto</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">kandidaatin tutkinto</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Maisterin tutkinto</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Lisä- ja täydennyskoulutus</span>
-        </li>
-    </ul>
-
-
-    <legend class="h3">POHJAKOULUTUS</legend>
-    <ul class="minimal">
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Perusopetus (peruskoulu)</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Lukio / Ylioppilas</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Ammatillinen perustutkinto (120 ov)</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Ammatti- tai erikoisammattitutkinto</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">kouluasteen, oppiasteen tai ammatillisen korkea-asteen tutkinto</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Ammattikorkeakoulututkinto</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Kandidaatin tutkinto</span>
-        </li>
-    </ul>
-
-
-    <legend class="h3">KOULUTUKSEN KIELI</legend>
-    <ul class="minimal">
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Suomi</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Ruotsi</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Englanti</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Muut</span>
-        </li>
-    </ul>
-
-
-    <legend class="h3">OPETUKSEN MUOTO</legend>
-    <ul class="minimal">
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Lähiopetus</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Monimuoto-opetus</span>
-        </li>
-        <li class="field-container-checbox">
-            <input type="checkbox"/>
-            <span class="label">Etäopetus</span>
-        </li>
-    </ul>
-
-    <div class="module">
-        <legend class="h3">OPPILAITOSTYYPPI</legend>
-        <div class="field-container-select">
-            <select name="Oppilaitostyyppi" placeholder="Valitse kansalaisuus" id="Oppilaitostyyppi"
-                    required="required">
-                <option name="Oppilaitostyyppi.Oppilaitostyyppi.suomi" value="Kaikki" selected="selected"
-                        id="Oppilaitostyyppi-suomi">Kaikki
-                </option>
-                <option name="Oppilaitostyyppi.Oppilaitostyyppi.ruotsi" value="Ammattikoulu"
-                        id="Oppilaitostyyppi-ruotsi">Ammattikoulu
-                </option>
-            </select>
-        </div>
-    </div>
-
-    <div class="module">
-        <legend class="h3">OPINTOJEN ALKAMISAJANKOHTA</legend>
-        <div class="field-container-select">
-            <select name="Alkamisajankohta" placeholder="Valitse kansalaisuus" id="Alkamisajankohta"
-                    required="required">
-                <option name="Alkamisajankohta.Alkamisajankohta.suomi" value="Kevät 2013" selected="selected"
-                        id="Alkamisajankohta-suomi">Kevät 2013
-                </option>
-                <option name="Alkamisajankohta.Alkamisajankohta.ruotsi" value="Syksy 2014" id="Alkamisajankohta-ruotsi">
-                    Syksy 2014
-                </option>
-            </select>
-        </div>
-    </div>
-
-    <div class="module">
-        <legend class="h3">SIJAINTI</legend>
-        <input type="text" value="" id="Sijainti"/>
-        <button>
-            <span><span>plusbutton</span></span>
-        </button>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<form id="hakutulokset" action="/haku/fi/tarjontatiedot" method="GET">
+    <input type="hidden" name="text" value="<c:out value='${parameters.text}'/>">
+    <div class="grid16-6">
         <ul class="minimal">
             <li class="field-container-checbox">
-                <input type="checkbox"/>
-                <span class="label">Näytä myös ne koulutukset, joiden hakuaika on päättynyt.</span>
+                <input type="checkbox" name="tutkintoon_johtava" value="true"/>
+                <span class="label">Näytä vain tutkintoon johtava koulutus</span>
+            </li>
+            <li class="field-container-checbox">
+                <input type="checkbox" name="haku_nyt"/>
+                <span class="label">Haku meneillään juuri nyt</span>
             </li>
         </ul>
+
+
+        <c:forEach var="filter" items="${filters}">
+            <legend class="h3"><c:out value="${filter.name}"/></legend>
+            <ul class="minimal">
+                <c:forEach var="filterValue" items="${filter.filterValues}" varStatus="index">
+                    <li class="field-container-checbox">
+                        <input class="haku_suodatin" type="checkbox" name='<c:out value="${filter.name}"/>' value='<c:out value="${filterValue.name}"/>' ${ (parameters.filters[filter.name][filterValue.name] eq filterValue.name) ? 'checked=checked' : ''} ></input>
+
+                        <span class="label"><c:out value="${filterValue.label}" /></span>
+                    </li>
+                </c:forEach>
+            </ul>
+        </c:forEach>
+
+        <div class="module">
+            <legend class="h3">OPINTOJEN ALKAMISAJANKOHTA</legend>
+            <div class="field-container-select">
+                <select name="Alkamisajankohta" placeholder="Valitse alkamisajankohta" id="Alkamisajankohta"
+                        required="required">
+                    <option name="alkamisajankohta" value="Kevät 2013" selected="selected">Kevät 2013</option>
+                    <option name="alkamisajankohta" value="Kevät 2013">Syksy 2014</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="module">
+            <legend class="h3">SIJAINTI</legend>
+            <input type="text" value="" id="Sijainti"/>
+            <button>
+                <span><span>plusbutton</span></span>
+            </button>
+
+            <ul class="minimal">
+                <li class="field-container-checbox">
+                    <input type="checkbox" name="näytä_päättyneet"/>
+                    <span class="label">Näytä myös ne koulutukset, joiden hakuaika on päättynyt.</span>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
+    <input type="submit" value="päivitä" id="update">
+</form>

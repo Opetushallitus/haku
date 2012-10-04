@@ -1,51 +1,55 @@
 package fi.vm.sade.oppija.tarjonta.domain;
 
+import java.util.Map;
+import java.util.Set;
+
 public class SearchParameters {
 
-    private final String searchField;
-    private final String term;
-    private final String sortOrder;
-    private final String sortField;
-    private final Integer start;
-    private final Integer rows;
-    private final String[] fields;
+    private final String text;
+    private final SortParameters sortParameters;
+    private final PagingParameters pagingParameters;
+    private final Set<String> fields;
+    private final Map<String, Map<String, String>> filters;
 
-    public SearchParameters(final String searchField, final String term, final String sortOrder, final String sortField, final Integer start, final Integer rows, final String... fields) {
-        assert term != null;
-        this.searchField = searchField;
-        this.term = term;
-        this.sortOrder = sortOrder;
-        this.sortField = sortField;
-        this.start = start;
-        this.rows = rows;
+    public SearchParameters(Map<String, Map<String, String>> filters) {
+        this(null, null, null, null, filters);
+    }
+
+    public SearchParameters(final String text, final Set<String> fields, final SortParameters sortParameters, final PagingParameters pagingParameters, final Map<String, Map<String, String>> filters) {
+        this.text = text;
         this.fields = fields;
+        this.pagingParameters = pagingParameters;
+        this.sortParameters = sortParameters;
+        this.filters = filters;
     }
 
-    public String getSearchField() {
-        return searchField;
+    public SortParameters getSortParameters() {
+        return sortParameters;
     }
 
-    public String getTerm() {
-        return term;
+    public PagingParameters getPagingParameters() {
+        return pagingParameters;
     }
 
-    public String getSortOrder() {
-        return sortOrder;
-    }
-
-    public String getSortField() {
-        return sortField;
-    }
-
-    public Integer getStart() {
-        return start;
-    }
-
-    public Integer getRows() {
-        return rows;
-    }
-
-    public String[] getFields() {
+    public Set<String> getFields() {
         return fields;
+    }
+
+    public Map<String, Map<String, String>> getFilters() {
+        return filters;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    @Override
+    public String toString() {
+        return "SearchParameters{" +
+                "sortParameters=" + sortParameters +
+                ", pagingParameters=" + pagingParameters +
+                ", fields=" + fields +
+                ", filters=" + filters +
+                '}';
     }
 }

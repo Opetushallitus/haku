@@ -9,12 +9,12 @@
         <field name="kuvaus" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="sisalto" type="text_general" indexed="false" stored="true" multiValued="false"/>
         <field name="linkki" type="string" indexed="false" stored="true" multiValued="false"/>
-        <field name="tutkintoonjohtava" type="boolean" indexed="true" stored="true" multiValued="false"/>
         <field name="koulutustyyppi" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="pohjakoulutus" type="string" indexed="true" stored="true" multiValued="false"/>
-        <field name="koulutuksen_kieli" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="koulutuskieli" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="opetusmuoto" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="oppilaitostyyppi" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="tutkintoon_johtava" type="boolean" indexed="true" stored="true" multiValued="false"/>
         <field name="sijainti" type="location" indexed="true" stored="true"/>
         <field name="last_modified" type="date" indexed="true" stored="true"/>
         <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>

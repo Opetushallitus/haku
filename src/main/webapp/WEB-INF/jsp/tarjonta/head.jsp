@@ -11,6 +11,12 @@
           rel='stylesheet'/>
     <script src="/haku/static-html/layout/jquery/jquery-1.8.0.min.js" type="text/javascript"></script>
     <script src="/haku/static-html/layout/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
-    <script src="/haku/static-html/layout/javascript/master.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".haku_suodatin").click(function() {
+                $('#hakutulokset').submit();
+            });
+        })
+    </script>
 
 </head>
