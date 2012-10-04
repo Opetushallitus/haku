@@ -5,14 +5,12 @@ import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
-@Ignore
 public class TextQuestionIT extends AbstractRemoteTest {
     protected FormModel formModel;
     private FormModelHelper formModelHelper;
