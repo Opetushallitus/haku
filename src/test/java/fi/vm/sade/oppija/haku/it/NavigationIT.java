@@ -1,13 +1,14 @@
 package fi.vm.sade.oppija.haku.it;
 
+import net.sourceforge.jwebunit.api.IElement;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
-@Ignore
 public class NavigationIT extends AbstractIT {
 
     public NavigationIT() {
@@ -26,22 +27,22 @@ public class NavigationIT extends AbstractIT {
     @Test
     public void testFirstGategoryNavButtons() throws IOException {
         beginAt("/fi/test/yhteishaku/henkilotiedot");
-        assertSubmitButtonPresent("nav-next");
-        assertSubmitButtonNotPresent("nav-prev");
+        assertElementPresentByXPath("//button[@name='nav-next']");
+        assertElementNotPresentByXPath("//button[@name='nav-prev']");
     }
 
     @Test
     public void testMiddleGategoryNavButtons() throws IOException {
         beginAt("/fi/test/yhteishaku/koulutustausta");
-        assertSubmitButtonPresent("nav-next");
-        assertSubmitButtonPresent("nav-prev");
+        assertElementPresentByXPath("//button[@name='nav-next']");
+        assertElementPresentByXPath("//button[@name='nav-prev']");
     }
 
     @Test
     public void testLastGategoryNavButtons() throws IOException {
         beginAt("/fi/test/yhteishaku/yhteenveto");
-        assertSubmitButtonNotPresent("nav-next");
-        assertSubmitButtonPresent("nav-prev");
-        assertSubmitButtonPresent("nav-save");
+        assertElementNotPresentByXPath("//button[@name='nav-next']");
+        assertElementPresentByXPath("//button[@name='nav-prev']");
+        assertElementPresentByXPath("//button[@name='nav-save']");
     }
 }
