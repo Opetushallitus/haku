@@ -9,6 +9,7 @@ import fi.vm.sade.oppija.haku.domain.questions.Option;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  * @version 9/20/123:26 PM}
  * @since 1.1
  */
+@Ignore
 public class ShowChildsIT extends AbstractRemoteTest {
 
     private FormModelHelper formModelHelper;

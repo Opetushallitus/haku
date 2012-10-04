@@ -1,11 +1,13 @@
 package fi.vm.sade.oppija.haku.it;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
+@Ignore
 public class NavigationIT extends AbstractIT {
 
     public NavigationIT() {

@@ -6,6 +6,7 @@ import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.haku.domain.questions.Option;
 import fi.vm.sade.oppija.haku.domain.questions.Radio;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
  * @version 9/18/121:44 PM}
  * @since 1.1
  */
+@Ignore
 public class RadioGroupIT extends AbstractRemoteTest {
 
     private FormModelHelper formModelHelper;
