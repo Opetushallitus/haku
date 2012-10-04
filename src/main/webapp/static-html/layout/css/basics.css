@@ -563,30 +563,17 @@ fieldset hr
 
 /*** Definition list
 ************************************************/
-.definitions {
 
+.definitions td.description {
+	padding-left: 20px;
+	font-weight: bold;
 }
 
-.definitions .row {
-	list-style-type: none;
-	padding-left: 0;
-}
-
-.definitions li {
-	display: inline-block;
-}
-
-
-.definitions .term {
-	width: 75%;
+.definitions td.term {
 	text-align: right;
 }
 
 
-.definitions .description {
-	font-weight: bold;
-	float: right;
-}
 
 
 
@@ -609,11 +596,11 @@ fieldset hr
 
 .hierarchy-list .lvl-1 > li {
 	font-weight: bold;
+	padding-bottom: 10px;
 }
 
 .hierarchy-list .lvl-1 > li > ul {
 	padding-top: 10px;
-	padding-bottom: 10px;
 }
 
 .hierarchy-list .lvl-1 > li.closed {
@@ -638,5 +625,9 @@ fieldset hr
 
 .hierarchy-list li.lvl-1.open {
 	background: transparent url("../img/arrow-down.png") no-repeat left center;
+}
+
+#sidemenu .hierarchy-list ul {
+	margin-left: 0;
 }
 
