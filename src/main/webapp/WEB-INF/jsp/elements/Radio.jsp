@@ -8,9 +8,9 @@
     <c:forEach var="option" items="${element.options}" varStatus="status">
         <div class="field-container-radio">
             <c:set var="id" value="${element.id}.${option.id}"/>
-            <input  id="${id}" type="radio" name="${element.id}"
+            <input type="radio" name="${element.id}"
                 value="${option.value}" ${(categoryData[element.id] eq option.value) ? "checked=\"checked\"" : ""} ${option.attributeString}/>
-            <label for="${id}">${option.title}</label>
+            <label for="${option.id}">${option.title}</label>
         </div>
     </c:forEach>
 
