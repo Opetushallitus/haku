@@ -12,7 +12,7 @@
         <button class="right" name="nav-next" type="submit"><span><span>Seuraava</span></span></button>
     </c:when>
     <c:when test="${!category.hasNext}">
-        <button class="right" name="nav-save" type="submit"><span><span>Seuraava</span></span></button>
+        <button class="right" name="nav-save" type="submit"><span><span>Tallenna</span></span></button>
     </c:when>
 </c:choose>
 </div>
