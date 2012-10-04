@@ -12,24 +12,28 @@
     <script src="/haku/resources/javascript/master.js"></script>
 </head>
 <body>
-<div id="viewport">
-<div id="overlay">
-</div>
-<div id="site">
-<div id="sitecontent">
+    <div id="viewport">
 
-    <div class="content">
-        <h1>Hakulomake</h1>
-        <h2>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2012</h2>
-        <ul class="form-steps">
-            <c:forEach var="link" items="${form.navigation.children}" varStatus="status">
-                <li><a id="nav-${link.id}" ${link.attributeString}
-                    <c:if test="${link.id eq category.id}">class="current"</c:if>>
-                    <span class="index">${status.count}</span>${link.value} <c:if test="${not status.last}">&gt;</c:if></a></li>
-            </c:forEach>
-        </ul>
-        <div class="clear"></div>
-    </div>
+
+        <div id="overlay">
+        </div>
+
+        <div id="site">
+
+        <div id="sitecontent">
+
+        <div class="content">
+            <h1>Hakulomake</h1>
+            <h2>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2012</h2>
+            <ul class="form-steps">
+                <c:forEach var="link" items="${form.navigation.children}" varStatus="status">
+                    <li><a id="nav-${link.id}" ${link.attributeString}
+                        <c:if test="${link.id eq category.id}">class="current"</c:if>>
+                        <span class="index">${status.count}</span>${link.value} <c:if test="${not status.last}">&gt;</c:if></a></li>
+                </c:forEach>
+            </ul>
+            <div class="clear"></div>
+        </div>
 
     <form id="form-${category.id}" class="form" method="post">
 
@@ -45,7 +49,7 @@
 
     </form>
 
-<div id="sitecontent">
+</div>
 </div>
 </div>
 </body>
