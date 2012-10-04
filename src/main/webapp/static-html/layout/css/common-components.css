@@ -13,6 +13,59 @@
 
 */
 
+/*** Image figure, Video Figure
+************************************************/
+
+
+figure.image,
+figure.video
+{
+	display:inline-block;
+	position:relative;
+	max-width:100%;
+	margin:0px;
+}
+
+figure.image img,
+figure.video img,
+figure.video video,
+figure.video embed
+{
+	display:block;
+}
+
+figure.image figcaption,
+figure.video figcaption
+{
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	width:90%;
+	max-height:70%;
+	overflow:hidden;
+	padding:0.7em 5%;
+	background-color:rgba(0,0,0,0.5);
+	color:#ffffff;
+	text-shadow:0px 0px 2px #000000;
+}
+
+figure.set-right
+{
+	margin-left:2em;
+	margin-right:0px;
+}
+
+figure.set-left
+{
+	margin-left:0px;
+	margin-right:2em;
+}
+
+figure.set-center
+{
+	margin-left:auto;
+	margin-right:auto;
+}
 
 /*** Removable items
 ************************************************/
@@ -324,8 +377,11 @@ a.btn-remove.disabled {
 #searchfield-wrapper {
     height: 40px;
     width: 100%;
-    background: transparent url('../img/table-header-bg.png') repeat left top;
     margin-bottom: 15px;
+	
+	background: url("../img/texture-angled-lines.gif") repeat scroll left top transparent;
+	box-shadow:inset 0px 0px 2px 0px #c4c4c4;
+	background-color:#f9f9f9;
 }
 
 #searchfield {

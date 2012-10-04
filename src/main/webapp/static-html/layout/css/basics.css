@@ -32,23 +32,28 @@ h1, h2, h3, h4,
 h1, .h1
 {
 	font-size:1.846em;
+	line-height:1.3em;
 }
 
 h2, .h2
 {
 	font-size:1.385em;
+	line-height:1.3em;
 }
 
 h3, .h3
 {
 	font-size:1.154em;
+	line-height:1.3em;
 }
 
 h4, .h4
 {
 	font-size:1em;
+	font-weight:normal;
+	line-height:1.3em;
 	text-transform:uppercase;
-	color:;
+	color:#149ecb;
 }
 
 b, strong, .bold 
@@ -78,6 +83,11 @@ a
 
 /*** Images
 ************************************************/
+
+img
+{
+	max-width:100%;
+}
 
 a img
 {
@@ -120,15 +130,29 @@ fieldset hr
 }
 
 
+
 .set-left{float:left;}
 .set-right{float:right;}
+.set-center
+{
+	margin-left:auto;
+	margin-right:auto;
+}
 
 .left-intend-1 { padding-left: 10px; }
 .left-intend-2 { padding-left: 20px; }
 .left-intend-3 { padding-left: 30px; }
 
-.module {
-	padding-bottom: 20px;
+.module 
+{
+	padding-bottom: 2em;
+}
+
+.module.bottom-border
+{
+	padding-bottom: 1em;
+	border-bottom:2px solid #3caed4;
+	margin-bottom:1em;
 }
 
 .pagetitle {
@@ -154,6 +178,19 @@ fieldset hr
 {
    background-color:#ffffff;
 }
+
+#sitefooter
+{
+	margin-left: 0.625%;
+    margin-right: 0.625%;
+	margin-bottom:3em;
+	border:4px solid #ffffff;
+	background-color:#dcdcdc;
+    padding: 1em 0;
+    border-radius: 3px 3px 3px 3px;
+	box-shadow:0px 0px 1px 1px #dcdcdc;
+}
+
 
 /*** Grid
 ************************************************/
@@ -217,6 +254,27 @@ fieldset hr
 }
 
 
+/*** Responsive grid (test)
+************************************************/
+
+@media screen and (max-width: 600px) {
+	body
+	{
+		font-size:0.688em;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.content-container .grid16-8,
+	.content-container .grid16-4,
+	.content-container .grid16-16
+	{
+		float: left;
+		margin-left: 0.625%;
+		margin-right: 0.625%;
+		width: 98.75%;
+	}
+}
 
 
 
