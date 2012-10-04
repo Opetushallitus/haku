@@ -43,7 +43,7 @@
             <!-- add new language row -->
             <tr>
                 <td colspan=3>
-                    <p id="add_language_button" ><c:out value="${element.addLanguageLabel}"/></p>
+                    <button id="add_language_button" class="link" type="button"><c:out value="${element.addLanguageLabel}"/></button>
                 </td>
             </tr>
 
