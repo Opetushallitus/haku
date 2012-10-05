@@ -2,7 +2,6 @@ package fi.vm.sade.oppija.haku.dao;
 
 import com.mongodb.util.JSONParseException;
 import fi.vm.sade.oppija.haku.service.AdminService;
-import fi.vm.sade.oppija.haku.service.FormModelHolder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,6 @@ import java.io.IOException;
 public class AdminServiceTest {
     @Autowired
     AdminService adminService;
-
-    @Autowired
-    FormModelHolder holder;
 
     @Test(expected = JSONParseException.class)
     public void testInvalidContent() throws IOException {

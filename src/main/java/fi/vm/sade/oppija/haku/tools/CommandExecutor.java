@@ -1,9 +1,9 @@
 package fi.vm.sade.oppija.haku.tools;
 
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
+import fi.vm.sade.oppija.haku.converter.FormModelToJsonString;
+import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDAOMongoImpl;
+import fi.vm.sade.oppija.haku.domain.FormModel;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ import java.util.Locale;
 
 public class CommandExecutor {
     public static final Logger LOG = LoggerFactory.getLogger(CommandLineTooling.class);
-    private final List<String> args;
+    private List<String> args;
 
     public CommandExecutor(String[] args) {
         this.args = Arrays.asList(args);
@@ -58,24 +58,25 @@ public class CommandExecutor {
             LOG.info("Export destination must be a directory");
             return;
         }
-        final DBCursor dbObjects = getService().getAll();
-        for (DBObject dbObject : dbObjects) {
-            final String contentAsString = JSON.serialize(dbObject);
-            final String filename = createFilename(file, dbObject);
-            LOG.info("writing file: " + filename);
-            write(contentAsString, filename);
-        }
+        export(file);
 
+    }
+
+    protected void export(File file) {
+        final FormModel model = getService().find();
+        final String contentAsString = new FormModelToJsonString().convert(model);
+        final String filename = createFilename(file, model);
+        LOG.info("writing file: " + filename);
+        write(contentAsString, filename);
     }
 
     protected void write(String contentAsString, String filename) {
         new FileHandling().writeFile(filename, contentAsString);
     }
 
-    protected String createFilename(File file, DBObject dbObject) {
-        final ObjectId objectId = (ObjectId) dbObject.get("_id");
-        final String id = (String) dbObject.get("id");
-        return file.getPath() + "/" + objectId.toStringMongod() + "_" + id + ".json";
+    protected String createFilename(File folder, FormModel dbObject) {
+        final ObjectId objectId = dbObject.get_id();
+        return folder.getPath() + "/" + objectId.toStringMongod() + ".json";
     }
 
     protected void importAll() {
@@ -96,7 +97,7 @@ public class CommandExecutor {
     }
 
     protected void doInsert(final String jsonString) {
-        final FormModelDAOMongoImpl formModelDAOMongoImpl = getService();
+        final FormModelDAO formModelDAOMongoImpl = getService();
         formModelDAOMongoImpl.insertModelAsJsonString(jsonString);
     }
 
@@ -104,8 +105,8 @@ public class CommandExecutor {
         return new FileHandling().readStreamFromFile(filename);
     }
 
-    protected FormModelDAOMongoImpl getService() {
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/spring/application-context.xml");
+    protected FormModelDAO getService() {
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/spring/command-line-context.xml");
         return applicationContext.getBean("formModelDAOMongoImpl", FormModelDAOMongoImpl.class);
     }
 

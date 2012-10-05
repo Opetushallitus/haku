@@ -8,7 +8,8 @@ import fi.vm.sade.oppija.haku.domain.elements.Element;
  * @version 9/20/124:49 PM}
  * @since 1.1
  */
-public class EnablingSubmitRule extends Element {
+public class EnablingSubmitRule extends Rule {
+
 
     private final String expression;
 
@@ -17,12 +18,14 @@ public class EnablingSubmitRule extends Element {
         this.expression = expression;
     }
 
-    public void setRelated(Element option, Element target) {
-        getChildById().put(option.getId(), target);
+    public void setRelated(Element parent, Element target) {
+        getChildById().put(parent.getId(), target);
         children.add(target);
     }
 
     public String getExpression() {
         return expression;
     }
+
+
 }

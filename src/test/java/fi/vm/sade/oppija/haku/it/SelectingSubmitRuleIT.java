@@ -7,8 +7,11 @@ import fi.vm.sade.oppija.haku.domain.questions.Radio;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
+
+import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 /**
  * @author jukka
@@ -25,12 +28,27 @@ public class SelectingSubmitRuleIT extends AbstractRemoteTest {
         final Radio child = new Radio("sukupuoli", "sukupuoli");
         child.addOption("mies", "mies", "Mies");
         child.addOption("nainen", "nainen", "Nainen");
-        SelectingSubmitRule selectingSubmitRule = new SelectingSubmitRule("foo", "\\d{6}\\S\\d{2}[13579]\\w", child.getOptions().get(0));
-        selectingSubmitRule.addChild(child);
-        textQuestion.addChild(selectingSubmitRule);
+        SelectingSubmitRule selectingSubmitRule = new SelectingSubmitRule(textQuestion.getId(), child.getId());
+        selectingSubmitRule.addBinding(textQuestion, child, "\\d{6}\\S\\d{2}[13579]\\w", child.getOptions().get(0));
+        selectingSubmitRule.addBinding(textQuestion, child, "\\d{6}\\S\\d{2}[24680]\\w", child.getOptions().get(1));
 
 
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(textQuestion);
+        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(selectingSubmitRule);
         this.formModelHelper = initModel(formModel);
+    }
+
+
+    @Test
+    public void testInputMale() throws IOException {
+        final String startUrl = formModelHelper.getStartUrl();
+        beginAt(startUrl);
+        setScriptingEnabled(false);
+        assertElementPresent("hetu");
+        assertElementNotPresent("sukupuoli");
+        setTextField("hetu", "010101-111X");
+        dumpHtml();
+        assertElementPresent("sukupuoli_mies");
+        submit();
+        assertRadioOptionSelected("sukupuoli", "mies");
     }
 }

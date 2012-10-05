@@ -8,7 +8,7 @@
        </script>
     <c:set var="key" value="${element.id}"/>
     <c:choose>
-        <c:when test="${!empty categoryData[key]}">
+        <c:when test="${not empty categoryData[key]}">
             <c:if test="${haku:evaluate(categoryData[key], element.expression)}">
                 <c:set var="child" value="${element.childById[key]}"/>
                 <c:set var="element" value="${element.childById[key]}" scope="request"/>

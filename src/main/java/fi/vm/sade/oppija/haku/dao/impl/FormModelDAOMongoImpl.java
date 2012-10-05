@@ -1,7 +1,6 @@
 package fi.vm.sade.oppija.haku.dao.impl;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.haku.converter.FormModelToBasicDBObject;
 import fi.vm.sade.oppija.haku.converter.JsonStringToFormModelConverter;
@@ -32,7 +31,7 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
     private final MapToFormModelConverter mapToFormModelConverter = new MapToFormModelConverter();
 
     @PostConstruct
-    public void init()  {
+    public void init() {
         super.init();
         try {
             holder.updateModel(find());
@@ -84,9 +83,5 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
     public void delete(FormModel formModel) {
         final BasicDBObject basicDBObject = toDbObject.convert(formModel);
         getCollection().remove(basicDBObject);
-    }
-
-    public DBCursor getAll() {
-        return getCollection().find();
     }
 }

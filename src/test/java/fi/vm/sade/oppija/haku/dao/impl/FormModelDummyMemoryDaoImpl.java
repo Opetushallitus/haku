@@ -11,6 +11,7 @@ import fi.vm.sade.oppija.haku.domain.elements.QuestionGroup;
 import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.domain.questions.*;
+import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.validation.Validator;
 import org.springframework.stereotype.Service;
@@ -90,8 +91,9 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         kotikunta.addAttribute("placeholder", "Valitse kotikunta");
         kotikunta.addAttribute("required", "required");
 
-        TextQuestion henkilötunnus = new TextQuestion("Henkilötunnus", "Henkilötunnus");
+        TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", "Henkilötunnus");
         henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
+        henkilötunnus.addAttribute("onChange", "submit()");
         henkilötunnus.addAttribute("title", "ppkkvv*****");
         henkilötunnus.addAttribute("required", "required");
         henkilötunnus.addAttribute("pattern", "[0-9]{6}.[0-9]{4}");
@@ -106,6 +108,10 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         sukupuoli.addOption("mies", "Mies", "Mies");
         sukupuoli.addOption("nainen", "Nainen", "Nainen");
         sukupuoli.addAttribute("required", "required");
+
+        SelectingSubmitRule autofillhetu = new SelectingSubmitRule(henkilötunnus.getId(), sukupuoli.getId());
+        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[13579]\\w", sukupuoli.getOptions().get(0));
+        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[24680]\\w", sukupuoli.getOptions().get(1));
 
         DropdownSelect asuinmaa = new DropdownSelect("Asuinmaa", "Asuinmaa");
         asuinmaa.addOption("suomi", "Suomi", "Suomi");
@@ -124,8 +130,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         henkilötiedotRyhmä.addChild(createRequiredTextQuestion("Sukunimi", "Sukunimi"))
                 .addChild(createRequiredTextQuestion("Etunimet", "Etunimet"))
                 .addChild(kutsumanimi)
-                .addChild(henkilötunnus)
-                .addChild(sukupuoli)
+                .addChild(autofillhetu)
                 .addChild(sähköposti)
                 .addChild(matkapuhelinnumero)
                 .addChild(asuinmaa)
@@ -177,7 +182,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         subjectRowsAfter.add(math);
         subjectRowsAfter.add(biology);
 
-        List<Option> languageOptions=  new ArrayList<Option>();
+        List<Option> languageOptions = new ArrayList<Option>();
         languageOptions.add(new Option("langoption_" + "eng", "eng", "englanti"));
         languageOptions.add(new Option("langoption_" + "swe", "swe", "ruotsi"));
         languageOptions.add(new Option("langoption_" + "fra", "fra", "ranska"));
@@ -185,7 +190,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         languageOptions.add(new Option("langoption_" + "rus", "rus", "venäjä"));
         languageOptions.add(new Option("langoption_" + "fin", "fin", "suomi"));
 
-        List<Option> scopeOptions =  new ArrayList<Option>();
+        List<Option> scopeOptions = new ArrayList<Option>();
         scopeOptions.add(new Option("scopeoption_" + "a1", "a1", "A1"));
         scopeOptions.add(new Option("scopeoption_" + "a2", "a2", "A2"));
         scopeOptions.add(new Option("scopeoption_" + "b1", "b1", "B1"));
@@ -318,4 +323,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     public Map<String, Validator> getCategoryValidators(HakemusId hakemusId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+
 }

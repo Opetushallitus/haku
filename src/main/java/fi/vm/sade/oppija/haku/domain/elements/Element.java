@@ -9,6 +9,7 @@ import fi.vm.sade.oppija.haku.domain.Attribute;
 import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.questions.*;
 import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
+import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
 
 import java.util.*;
 
@@ -34,6 +35,7 @@ import java.util.*;
                 @JsonSubTypes.Type(value = TextQuestion.class),
                 @JsonSubTypes.Type(value = Category.class),
                 @JsonSubTypes.Type(value = EnablingSubmitRule.class),
+                @JsonSubTypes.Type(value = SelectingSubmitRule.class),
                 @JsonSubTypes.Type(value = GradeGrid.class),
                 @JsonSubTypes.Type(value = SubjectRow.class),
                 @JsonSubTypes.Type(value = LanguageRow.class),
@@ -50,8 +52,6 @@ public abstract class Element {
     String help;
     protected final List<Element> children = new ArrayList<Element>();
     final Set<Attribute> attributes = new HashSet<Attribute>();
-
-    protected Map<String, Element> childById = new HashMap<String, Element>();
 
 
     protected Element(@JsonProperty String id) {
@@ -85,7 +85,6 @@ public abstract class Element {
 
     public Element addChild(Element child) {
         this.children.add(child);
-        this.childById.put(child.getId(), child);
         return this;
     }
 
@@ -105,7 +104,4 @@ public abstract class Element {
         return attrStr.toString();
     }
 
-    public Map<String, Element> getChildById() {
-        return childById;
-    }
 }
