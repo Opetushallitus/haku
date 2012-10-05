@@ -391,7 +391,7 @@ a.btn-remove.disabled {
 }
 
 #searchfield {
-    width: 20%;
+    width: 30%;
     margin: 0 auto;
     position: relative;
     line-height: 40px;
@@ -399,7 +399,7 @@ a.btn-remove.disabled {
 }
 
 #searchfield input {
-    width: 80%;
+    width: 70%;
     padding-right: 30px;
 }
 
