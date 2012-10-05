@@ -12,7 +12,7 @@ public class HakemusState {
     private final Map<String, String> errors;
     private final Map<String, Object> modelObjects = new HashMap<String, Object>();
     private boolean mustValidate = true;
-    private boolean redirected = false;
+    private boolean redirected = true;
 
     public HakemusState(Hakemus hakemus) {
         this.errors = new HashMap<String, String>();
