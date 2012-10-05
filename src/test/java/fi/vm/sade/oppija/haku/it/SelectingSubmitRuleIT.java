@@ -24,6 +24,7 @@ public class SelectingSubmitRuleIT extends AbstractRemoteTest {
     @Before
     public void init() throws IOException {
         final TextQuestion textQuestion = new TextQuestion("hetu", "Henkilötunnus");
+        textQuestion.addAttribute("onchange", "submit()");
 
         final Radio child = new Radio("sukupuoli", "sukupuoli");
         child.addOption("mies", "mies", "Mies");

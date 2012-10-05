@@ -11,6 +11,9 @@
     <jsp:include page="${element.type}.jsp"/>
     <c:set var="element" value="${savedValue}"/>
     <c:set var="key" value="${element.id}"/>
+     <noscript>
+            <input type="submit" id="selecting-submit" name="selecting-submit" value="Ok"/>
+    </noscript>
     <c:choose>
         <c:when test="${not empty categoryData[key]}">
             <c:forEach var="rule" items="${element.expressions}">
@@ -32,6 +35,5 @@
         </c:otherwise>
 
     </c:choose>
-       <input type="submit" id="selecting-submit" name="selecting-submit" value="Ok"/>
 
 </div>
