@@ -151,6 +151,7 @@
 
 .menu-level-1 li a
 {
+	font-weight:bold;
     display:block;
     height:3.077em;
     line-height:3.077em;

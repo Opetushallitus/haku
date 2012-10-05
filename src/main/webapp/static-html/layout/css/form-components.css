@@ -381,6 +381,11 @@ select option
 	background-position:-24px center;
 }
 
+.js-checkbox.focus
+{
+	background-position:-24px center;
+}
+
 .js-checkbox.selected
 {
 	background-position:-48px center;
@@ -414,6 +419,11 @@ select option
 
 .js-radio:hover,
 .js-radio.hover
+{
+	background-position:-24px center;
+}
+
+.js-radio.focus
 {
 	background-position:-24px center;
 }
@@ -474,6 +484,7 @@ select option
 {
 	padding:0px 0px 0px 2em;
 	position:relative;
+	
 }
 
 

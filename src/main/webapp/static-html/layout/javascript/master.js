@@ -119,7 +119,7 @@ var formReplacements = {
 				
 				// Generate replacement element with pairing id, and hide original input
 				html = '<span class="js-checkbox" data-js-checkbox-id="'+id+'">&#8302;</span>'
-				$(this).before(html).css({'display':'none'});
+				$(this).before(html).css({'left':'-1.5em'});
 				
 				// Check & set checked status
 				if($(this).prop('checked') == true || $(this).attr('checked') == true)
@@ -176,7 +176,7 @@ var formReplacements = {
 				
 				// Generate replacement element with pairing id, and hide original input
 				html = '<span class="js-radio" data-js-radio-id="'+id+'">&#8302;</span>'
-				$(this).before(html).css({'display':'none'});
+				$(this).before(html).css({'left':'-1em'});
 				
 				// Check & set checked status
 				if($(this).prop('checked') == true || $(this).attr('checked') == true)
@@ -201,11 +201,7 @@ var formReplacements = {
 			// Get paired elements
 			input = $('input[data-js-radio-id="'+id+'"]');
 			replacement = $('.js-radio[data-js-radio-id="'+id+'"]');
-			
-			// Set checked status
-			replacement.addClass('selected');
-			input.attr('checked', 'checked');
-			
+
 			// Determine other radio fields in same set
 			name = input.attr('name');
 			other_inputs = $('input[name="'+name+'"]:not([data-js-radio-id="'+id+'"])');
@@ -216,6 +212,10 @@ var formReplacements = {
 				$('.js-radio[data-js-radio-id="'+this_id+'"]').removeClass('selected');
 				$(this).removeAttr('checked');
 			});
+			
+			// Set checked status
+			replacement.addClass('selected');
+			input.attr('checked', 'checked');
 		}
 	},
 	setTriggers:function(){
@@ -239,49 +239,107 @@ var formReplacements = {
 			}
 		});
 		
-		// Trigger on replacement checkbox label
-		// Click
-		$('body').on('click', 'label[data-js-checkbox-id]', function(event){
-			event.preventDefault();
-			id = parseInt($(this).attr('data-js-checkbox-id'));
-			if (!$('.js-checkbox[data-js-checkbox-id="'+id+'"]').hasClass('disabled'))
-			{
-				formReplacements.jsCheckbox.change(id);
-			}
-		});
 		
-		// Hover
-		$('body').on("hover", 'label[data-js-checkbox-id]', function(e) {
-			id = parseInt($(this).attr('data-js-checkbox-id'));
-			if(e.type == "mouseenter") {
-				$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('hover');
+		// Trigger on checkbox
+		// Click, Focus, Blur
+		$('body').on({
+			click : function(event){
+				/* event.preventDefault(); */
+				if (typeof $(this).attr('data-js-checkbox-id') != 'undefined' && !$(this).hasClass('disabled'))
+				{
+					id = parseInt($(this).attr('data-js-checkbox-id'));
+					formReplacements.jsCheckbox.change(id);
+				}
+			},
+			focusin : function(){
+				if (typeof $(this).attr('data-js-checkbox-id') != 'undefined' && !$(this).hasClass('disabled'))
+				{
+					id = parseInt($(this).attr('data-js-checkbox-id'));
+					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('focus');
+				}
+			},
+			focusout : function(){
+				if (typeof $(this).attr('data-js-checkbox-id') != 'undefined' && !$(this).hasClass('disabled'))
+				{
+					id = parseInt($(this).attr('data-js-checkbox-id'));
+					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').removeClass('focus');
+				}
 			}
-			else if (e.type == "mouseleave") {
-				$('.js-checkbox[data-js-checkbox-id="'+id+'"]').removeClass('hover');
+		}, 'input[type="checkbox"][data-js-checkbox-id]');
+
+		
+		// Trigger on radio
+		// Click, Focus, Blur
+		$('body').on({
+			click : function(event){
+				/* event.preventDefault(); */
+				if (typeof $(this).attr('data-js-radio-id') != 'undefined' && !$(this).hasClass('disabled'))
+				{
+					id = parseInt($(this).attr('data-js-radio-id'));
+					formReplacements.jsRadio.change(id);
+				}
+			},
+			focusin : function(){
+				if (typeof $(this).attr('data-js-radio-id') != 'undefined' && !$(this).hasClass('disabled'))
+				{
+					id = parseInt($(this).attr('data-js-radio-id'));
+					$('.js-radio[data-js-radio-id="'+id+'"]').addClass('focus');
+				}
+			},
+			focusout : function(){
+				if (typeof $(this).attr('data-js-radio-id') != 'undefined' && !$(this).hasClass('disabled'))
+				{
+					id = parseInt($(this).attr('data-js-radio-id'));
+					$('.js-radio[data-js-radio-id="'+id+'"]').removeClass('focus');
+				}
 			}
-		});
+		}, 'input[type="radio"][data-js-radio-id]');
+
+		
+		// Trigger on replacement checkbox label
+		// Click, hover
+		$('body').on({
+			click : function(event){
+				event.preventDefault();
+				id = parseInt($(this).attr('data-js-checkbox-id'));
+				if (!$('.js-checkbox[data-js-checkbox-id="'+id+'"]').hasClass('disabled'))
+				{
+					formReplacements.jsCheckbox.change(id);
+				}
+			},
+			hover : function(e) {
+				id = parseInt($(this).attr('data-js-checkbox-id'));
+				if(e.type == "mouseenter") {
+					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('hover');
+				}
+				else if (e.type == "mouseleave") {
+					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').removeClass('hover');
+				}
+			}
+		}, 'label[data-js-checkbox-id]');
+
 		
 		// Trigger on replacement radio label
-		// Click
-		$('body').on('click', 'label[data-js-radio-id]', function(event){
-			event.preventDefault();
-			id = parseInt($(this).attr('data-js-radio-id'));
-			if (!$('.js-radio[data-js-radio-id="'+id+'"]').hasClass('disabled'))
-			{
-				formReplacements.jsRadio.change(id);
+		// Click, hover
+		$('body').on({
+			click : function(event){
+				event.preventDefault();
+				id = parseInt($(this).attr('data-js-radio-id'));
+				if (!$('.js-radio[data-js-radio-id="'+id+'"]').hasClass('disabled'))
+				{
+					formReplacements.jsRadio.change(id);
+				}
+			},
+			hover : function(e) {
+				id = parseInt($(this).attr('data-js-radio-id'));
+				if(e.type == "mouseenter") {
+					$('.js-radio[data-js-radio-id="'+id+'"]').addClass('hover');
+				}
+				else if (e.type == "mouseleave") {
+					$('.js-radio[data-js-radio-id="'+id+'"]').removeClass('hover');
+				}
 			}
-		});
-		
-		// Hover
-		$('body').on("hover", 'label[data-js-radio-id]', function(e) {
-			id = parseInt($(this).attr('data-js-radio-id'));
-			if(e.type == "mouseenter") {
-				$('.js-radio[data-js-radio-id="'+id+'"]').addClass('hover');
-			}
-			else if (e.type == "mouseleave") {
-				$('.js-radio[data-js-radio-id="'+id+'"]').removeClass('hover');
-			}
-		});
+		}, 'label[data-js-radio-id]');
 	}
 }
 
