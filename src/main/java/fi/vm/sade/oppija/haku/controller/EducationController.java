@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Controller for education institute search
  * @author Mikko Majapuro
  */
 @Controller
@@ -28,11 +28,7 @@ public class EducationController {
     @RequestMapping(value = "/institute/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = TERM)
     @ResponseBody
     public List<Opetuspiste> search(@RequestParam(TERM) String term) {
-        List<Opetuspiste> result = new ArrayList<Opetuspiste>();
-        Opetuspiste op = new Opetuspiste("1", "Koulu1");
-        Opetuspiste op2 = new Opetuspiste("2", "Koulu2");
-        result.add(op);
-        result.add(op2);
+        List<Opetuspiste> result = educationService.searchEducationInstitutes(term);
         return result;
     }
 }

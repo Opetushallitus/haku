@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 /**
+ *
  * @author Mikko Majapuro
  */
 public class Opetuspiste implements Serializable {
     private String id;
     private String name;
+    private String key;
 
     public Opetuspiste() {
 
@@ -18,6 +20,7 @@ public class Opetuspiste implements Serializable {
     public Opetuspiste(@JsonProperty(value = "id") final String id, @JsonProperty(value = "name") final String name) {
         this.id = id;
         this.name = name;
+        this.key = name.toLowerCase();
     }
 
     public String getId() {
@@ -34,5 +37,13 @@ public class Opetuspiste implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }
