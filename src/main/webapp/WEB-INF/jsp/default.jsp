@@ -6,6 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="/haku/resources/css/screen.css" type="text/css">
+    <link rel="stylesheet" href="/haku/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
     <title>${form.title} - ${category.title}</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
