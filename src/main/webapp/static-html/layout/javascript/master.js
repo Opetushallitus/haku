@@ -119,7 +119,7 @@ var formReplacements = {
 				
 				// Generate replacement element with pairing id, and hide original input
 				html = '<span class="js-checkbox" data-js-checkbox-id="'+id+'">&#8302;</span>'
-				$(this).before(html).css({'left':'-1.5em'});
+				$(this).before(html).css({'left':'-2em'});
 				
 				// Check & set checked status
 				if($(this).prop('checked') == true || $(this).attr('checked') == true)
@@ -145,7 +145,10 @@ var formReplacements = {
 			// Get paired elements
 			input = $('input[data-js-checkbox-id="'+id+'"]');
 			replacement = $('.js-checkbox[data-js-checkbox-id="'+id+'"]');
-
+			
+			// Set focus
+			input.focus();
+			
 			// Change checked status
 			if (replacement.hasClass('selected'))
 			{
@@ -176,7 +179,7 @@ var formReplacements = {
 				
 				// Generate replacement element with pairing id, and hide original input
 				html = '<span class="js-radio" data-js-radio-id="'+id+'">&#8302;</span>'
-				$(this).before(html).css({'left':'-1em'});
+				$(this).before(html).css({'left':'-2em'});
 				
 				// Check & set checked status
 				if($(this).prop('checked') == true || $(this).attr('checked') == true)
@@ -213,9 +216,9 @@ var formReplacements = {
 				$(this).removeAttr('checked');
 			});
 			
-			// Set checked status
+			// Set checked status and focus
 			replacement.addClass('selected');
-			input.attr('checked', 'checked');
+			input.attr('checked', 'checked').focus();
 		}
 	},
 	setTriggers:function(){
