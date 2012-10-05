@@ -18,10 +18,12 @@
 			    <tr>
 				    <td><jsp:include page="gradegrid/SubjectRow.jsp"/></td>
 				    <td>
+				        <c:set var="gradeSelectId" value="common-${subject.id}" scope="request"/>
 				        <jsp:include page="gradegrid/gradeselect.jsp"/>
 				    </td>
 				    <td>
-					    <jsp:include page="gradegrid/gradeselect.jsp"/>
+                        <c:set var="gradeSelectId" value="optional-${subject.id}" scope="request"/>
+                	    <jsp:include page="gradegrid/gradeselect.jsp"/>
 				    </td>
 			    </tr>
             </c:forEach>
@@ -51,11 +53,15 @@
             <c:forEach var="subject" items="${element.subjectsAfterLanguages}">
                 <c:set var="subject" value="${subject}" scope="request"/>
             	<tr>
-            	    <td><jsp:include page="gradegrid/SubjectRow.jsp"/></td>
+            	    <td>
+            	        <jsp:include page="gradegrid/SubjectRow.jsp"/>
+            	    </td>
             		<td>
+            		    <c:set var="gradeSelectId" value="common-${subject.id}" scope="request"/>
             		    <jsp:include page="gradegrid/gradeselect.jsp"/>
             	    </td>
             		<td>
+            		    <c:set var="gradeSelectId" value="optional-${subject.id}" scope="request"/>
             		    <jsp:include page="gradegrid/gradeselect.jsp"/>
             		</td>
                 </tr>
