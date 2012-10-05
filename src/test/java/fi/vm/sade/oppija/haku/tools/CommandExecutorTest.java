@@ -15,6 +15,11 @@ public class CommandExecutorTest {
     public static final String FILENAME_FOO = "foo";
 
     @Test
+    public void testImportWithValid() throws Exception {
+        new CommandExecutor(createArgs(IMPORT, "src/test/resources/test-data.json")).execute();
+    }
+
+    @Test
     public void testExport() throws Exception {
         new MockCommandExecutor(createArgs(EXPORT, PROPERTY_JAVA_IO_TMPDIR)).execute();
     }
