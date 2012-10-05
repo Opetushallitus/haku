@@ -545,3 +545,31 @@ select option
 
 /*** Search result
 ************************************************/
+
+.search-result {
+
+}
+
+.search-result .field-container-checkbox {
+	
+}
+
+.search-result .result {
+	list-style-type: none;
+	padding-left: 0;
+	margin-top: 0;
+	margin-right: 0 !important;
+	float: left;
+	width: 70%;
+}
+
+.search-result .result li {
+	padding-right: 2em;
+}
+
+.search-result .result-options {
+	padding: 0;
+	margin: 0;
+	width: 30%;
+	float: left;
+}
