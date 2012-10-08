@@ -54,7 +54,7 @@ public class HakemusId implements Serializable {
     }
 
     public static HakemusId fromKey(String key) {
-        final String[] split = key.split("//");
+        final String[] split = key.split("_");
         return new HakemusId(split[0], split[1], split[2], split[3]);
     }
 
