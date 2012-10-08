@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class HakemusId implements Serializable {
 
     private static final long serialVersionUID = 8484849312020479901L;
-    
+
     private final String applicationPeriodId;
     private final String formId;
     private final String categoryId;
@@ -61,16 +61,27 @@ public class HakemusId implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         HakemusId hakemusId = (HakemusId) o;
 
-        if (applicationPeriodId != null ? !applicationPeriodId.equals(hakemusId.applicationPeriodId) : hakemusId.applicationPeriodId != null)
+        if (applicationPeriodId != null ? !applicationPeriodId.equals(hakemusId.applicationPeriodId) : hakemusId.applicationPeriodId != null) {
             return false;
-        if (categoryId != null ? !categoryId.equals(hakemusId.categoryId) : hakemusId.categoryId != null) return false;
-        if (formId != null ? !formId.equals(hakemusId.formId) : hakemusId.formId != null) return false;
-        if (userId != null ? !userId.equals(hakemusId.userId) : hakemusId.userId != null) return false;
+        }
+        if (categoryId != null ? !categoryId.equals(hakemusId.categoryId) : hakemusId.categoryId != null) {
+            return false;
+        }
+        if (formId != null ? !formId.equals(hakemusId.formId) : hakemusId.formId != null) {
+            return false;
+        }
+        if (userId != null ? !userId.equals(hakemusId.userId) : hakemusId.userId != null) {
+            return false;
+        }
 
         return true;
     }
