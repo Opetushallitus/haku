@@ -38,8 +38,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     @Override
     public Hakemus find(HakemusId hakemusId) {
         DBObject dbObject = new BasicDBObject();
-        dbObject.put("hakemusid", hakemusId.asKey());
-        final DBObject one = getCollection().findOne();
+        dbObject.put("hakemusId", hakemusId.asKey());
+        final DBObject one = getCollection().findOne(dbObject);
         Map<String, String> map = new HashMap<String, String>();
         if (one != null) {
             map = (Map<String, String>) one.toMap().get("hakemusData");
