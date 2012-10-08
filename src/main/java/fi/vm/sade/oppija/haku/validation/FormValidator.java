@@ -1,26 +1,17 @@
 package fi.vm.sade.oppija.haku.validation;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-public class FormValidator {
+public final class FormValidator {
 
-    private final Map<String, Validator> validators;
-
-    @Autowired
-    public FormValidator(Map<String, Validator> validators) {
-        this.validators = validators;
-    }
-
-    public void validate(HakemusState hakemusState) {
-        for (Map.Entry<String, Validator> validatorEntry : validators.entrySet()) {
-            Validator validator = validatorEntry.getValue();
-            String valueAndValidatorKey = validatorEntry.getKey();
-            if (!validator.validate(hakemusState.getHakemus().getValues())) {
-                hakemusState.addError(valueAndValidatorKey, validator.getErrorMessage());
-            }
+    public static ValidationResult validate(final List<Validator> validators, final Map<String, String> values) {
+        List<ValidationResult> validationResults = new ArrayList<ValidationResult>();
+        for (Validator validator : validators) {
+            validationResults.add(validator.validate(values));
         }
+        return new ValidationResult(validationResults);
     }
 
 

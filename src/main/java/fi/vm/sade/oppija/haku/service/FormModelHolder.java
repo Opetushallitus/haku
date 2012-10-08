@@ -12,9 +12,14 @@ import org.springframework.stereotype.Service;
 public class FormModelHolder {
 
     private FormModel formModel;
+    private ValidatorContainer validatorContainer;
 
     public FormModel getModel() {
         return formModel;
+    }
+
+    public ValidatorContainer getValidatorContainer() {
+        return this.validatorContainer;
     }
 
     /**
@@ -23,8 +28,11 @@ public class FormModelHolder {
      * @param model new model
      */
     public void updateModel(final FormModel model) {
-        new FormModelInitializer(model).initModel();
+        FormModelInitializer formModelInitializer = new FormModelInitializer(model);
+        formModelInitializer.initModel();
         this.formModel = model;
+        this.validatorContainer = formModelInitializer.collectValidators();
     }
+
 
 }

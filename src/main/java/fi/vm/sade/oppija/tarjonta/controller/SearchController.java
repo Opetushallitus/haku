@@ -54,8 +54,8 @@ public class SearchController {
 
     @ModelAttribute(PAGING_PARAMETERS)
     public PagingParameters getPagingParameters(@RequestParam(value = "start", required = false) Integer start,
-                                                @RequestParam(value = "count", required = false) Integer count) {
-        return new PagingParameters(start, count);
+                                                @RequestParam(value = "rows", required = false) Integer rows) {
+        return new PagingParameters(start, rows);
     }
 
     @ModelAttribute(FILTERS)
@@ -64,10 +64,11 @@ public class SearchController {
                                                        @RequestParam(value = OPETUSMUOTO, required = false) String[] opetusmuoto,
                                                        @RequestParam(value = OPPILAITOSTYYPPI, required = false) String[] oppilaitostyyppi) {
         Map<String, Map<String, String>> filters = new HashMap<String, Map<String, String>>();
-        filters.put(KOULUTUSTYYPPI, new ArrayParametersToMap().convert(koulutustyyppi));
-        filters.put(KOULUTUSKIELI, new ArrayParametersToMap().convert(koulutuskieli));
+        arrayParametersToMap = new ArrayParametersToMap();
+        filters.put(KOULUTUSTYYPPI, arrayParametersToMap.convert(koulutustyyppi));
+        filters.put(KOULUTUSKIELI, arrayParametersToMap.convert(koulutuskieli));
         filters.put(OPETUSMUOTO, arrayParametersToMap.convert(opetusmuoto));
-        filters.put(OPPILAITOSTYYPPI, new ArrayParametersToMap().convert(oppilaitostyyppi));
+        filters.put(OPPILAITOSTYYPPI, arrayParametersToMap.convert(oppilaitostyyppi));
         return filters;
     }
 
@@ -79,7 +80,7 @@ public class SearchController {
         HashSet<String> fields = new HashSet<String>();
         fields.add("id");
         fields.add("name");
-        filters.put(SEARCH_PARAMETER, new ArrayParametersToMap().convert(new String[]{text}));
+        filters.put(SEARCH_PARAMETER, arrayParametersToMap.convert(new String[]{text}));
         return new SearchParameters(text, fields, sortParameters, pagingParameters, filters);
     }
 

@@ -1,72 +1,64 @@
 package fi.vm.sade.oppija.haku.validation.validators;
 
-import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.HakemusId;
-import fi.vm.sade.oppija.haku.validation.FormValidator;
-import fi.vm.sade.oppija.haku.validation.HakemusState;
-import fi.vm.sade.oppija.haku.validation.Validator;
-import junit.framework.TestCase;
+import fi.vm.sade.oppija.haku.validation.ValidationResult;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegexFieldValidatorTest extends TestCase {
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-    public static final String ERROR_MESSAGE = "Virhe";
+public class RegexFieldValidatorTest {
+
+    public static final String ERROR_MESSAGE = "kenttä on virheellinen";
     public static final String FIELD_NAME = "kenttä";
     public static final String PATTERN = "[A-Za-z]{3}";
-    public static final String VALID_VALUE = "ABC";
-    public static final String INVALID_VALUE = "AB";
+    public static final String TEST_VALUE = "ABC";
 
-    final Map<String, String> values = new HashMap<String, String>();
-    final Map<String, Validator> validators = new HashMap<String, Validator>();
+    private Map<String, String> values;
 
-    final Hakemus hakemus = new Hakemus(new HakemusId("test", "yhteishaku", "henkilotiedot", null), values);
-    private FormValidator formValidator = new FormValidator(validators);
+    @Before
+    public void setUp() throws Exception {
+        values = new HashMap<String, String>();
+    }
 
     @Test
     public void testValidateValid() throws Exception {
-        HakemusState hakemusState = createValidValidationResult();
-        assertFalse(hakemusState.hasErrors());
+        values.put(FIELD_NAME, TEST_VALUE);
+        RegexFieldValidator validator = createValidator(TEST_VALUE);
+        ValidationResult validationResult = validator.validate(values);
+        assertFalse(validationResult.hasErrors());
     }
 
     @Test
-    public void testValidateInValid() throws Exception {
-        createValidator(PATTERN);
-        values.put(FIELD_NAME, INVALID_VALUE);
-        HakemusState hakemusState = new HakemusState(hakemus);
-        formValidator.validate(hakemusState);
-        assertTrue(hakemusState.hasErrors());
-        assertEquals(hakemusState.getErrorMessages().get(FIELD_NAME), ERROR_MESSAGE);
+    public void testValidateInvalid() throws Exception {
+        values.put(FIELD_NAME, TEST_VALUE + "Ä");
+        RegexFieldValidator validator = createValidator(TEST_VALUE);
+        ValidationResult validationResult = validator.validate(values);
+        assertTrue(validationResult.hasErrors());
     }
 
     @Test
-    public void testErrorMessage() throws Exception {
-        createValidator(PATTERN);
-        values.put(FIELD_NAME, INVALID_VALUE);
-        HakemusState hakemusState = new HakemusState(hakemus);
-        formValidator.validate(hakemusState);
-        assertEquals(ERROR_MESSAGE, hakemusState.getErrorMessages().get(FIELD_NAME));
+    public void testValidatePattern() throws Exception {
+        values.put(FIELD_NAME, TEST_VALUE);
+        RegexFieldValidator validator = createValidator(PATTERN);
+        ValidationResult validationResult = validator.validate(values);
+        assertFalse(validationResult.hasErrors());
     }
 
-    @Test
-    public void testErrorMessageNotExists() throws Exception {
-        HakemusState hakemusState = createValidValidationResult();
-        assertEquals(null, hakemusState.getErrorMessages().get(FIELD_NAME + 1));
+    @Test(expected = NullPointerException.class)
+    public void testNullPattern() throws Exception {
+        values.put(FIELD_NAME, TEST_VALUE);
+        RegexFieldValidator validator = createValidator(null);
     }
 
-    private void createValidator(final String pattern) {
-        RegexFieldValidator regexFieldValidator = new RegexFieldValidator(ERROR_MESSAGE, FIELD_NAME, pattern);
-        validators.put(FIELD_NAME, regexFieldValidator);
+
+    private RegexFieldValidator createValidator(final String pattern) {
+        return new RegexFieldValidator(FIELD_NAME, ERROR_MESSAGE, pattern);
+
     }
 
-    private HakemusState createValidValidationResult() {
-        createValidator(PATTERN);
-        values.put(FIELD_NAME, VALID_VALUE);
-        HakemusState hakemusState = new HakemusState(hakemus);
-        formValidator.validate(hakemusState);
-        return hakemusState;
-    }
 
 }

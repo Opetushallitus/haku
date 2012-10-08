@@ -146,6 +146,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         TextArea lisätiedotText = new TextArea("vapaa", "Lisätietoja, sana on vapaa");
         lisätiedotRyhmä.addChild(lisätiedotText);
+        lisätiedotText.addAttribute("required", "required");
 
         esikatselutRyhmä.addChild(henkilötiedotRyhmä).
                 addChild(koulutustaustaRyhmä).addChild(hakutoiveetRyhmä).addChild(arvosanatRyhmä).addChild(lisätiedotRyhmä);
@@ -320,7 +321,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     @Override
-    public Map<String, Validator> getCategoryValidators(HakemusId hakemusId) {
+    public List<Validator> getCategoryValidators(HakemusId hakemusId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

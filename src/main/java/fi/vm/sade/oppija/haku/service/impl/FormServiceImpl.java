@@ -10,11 +10,10 @@ import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.FormModelHolder;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.validation.Validator;
-import fi.vm.sade.oppija.haku.validation.validators.RequiredFieldValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -65,13 +64,8 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public Map<String, Validator> getCategoryValidators(HakemusId hakemusId) {
-        RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator("Sukunimi on pakollinen kenttä", "Sukunimi");
-        HashMap<String, Validator> validators = new HashMap<String, Validator>();
-        if ("henkilotiedot".equals(hakemusId.getCategoryId())) {
-            validators.put(requiredFieldValidator.fieldName, requiredFieldValidator);
-        }
-        return validators;
+    public List<Validator> getCategoryValidators(HakemusId hakemusId) {
+        return holder.getValidatorContainer().getCategoryValidators(hakemusId.getCategoryId());
     }
 
     @Override

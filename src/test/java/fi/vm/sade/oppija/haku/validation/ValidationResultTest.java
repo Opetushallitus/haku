@@ -1,10 +1,10 @@
 package fi.vm.sade.oppija.haku.validation;
 
-import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.HakemusId;
+import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -13,47 +13,42 @@ public class ValidationResultTest {
 
     public static final String TEST_MESSAGE = "test message";
     public static final String FIELD_NAME = "test";
+    private ValidationResult validationResult;
 
-    @Test
-    public void testHasErrors() throws Exception {
-        HakemusState hakemusState = new HakemusState(createHakemus());
-        assertFalse(hakemusState.hasErrors());
-    }
-
-    private Hakemus createHakemus() {
-        return new Hakemus(new HakemusId("", "", "", ""), new HashMap<String, String>());
+    @Before
+    public void setUp() throws Exception {
+        this.validationResult = new ValidationResult();
     }
 
     @Test
-    public void testHasErrorsWithErrors() throws Exception {
-        HakemusState hakemusState = createValidationResultContainingOneError();
-        assertTrue(hakemusState.hasErrors());
+    public void testHasErrorsFalse() throws Exception {
+        assertFalse(validationResult.hasErrors());
     }
 
     @Test
-    public void testGetErrors() throws Exception {
-        HakemusState hakemusState = createValidationResultContainingOneError();
-        assertEquals(hakemusState.errorCount(), 1);
+    public void testHasErrorsTrue() throws Exception {
+        validationResult = new ValidationResult("key", "error");
+        assertTrue(validationResult.hasErrors());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testHasErrorsNullMap() throws Exception {
+        final Map<String, String> errors = null;
+        validationResult = new ValidationResult(errors);
+        assertFalse(validationResult.hasErrors());
+    }
+    @Test(expected = NullPointerException.class)
+    public void testHasErrorsNullList() throws Exception {
+        final List<ValidationResult> validationResults = null;
+        validationResult = new ValidationResult(validationResults);
+        assertFalse(validationResult.hasErrors());
     }
 
     @Test
-    public void testSize() throws Exception {
-        HakemusState hakemusState = new HakemusState(createHakemus());
-        assertEquals(0, hakemusState.errorCount());
-
+    public void testGetMessages() throws Exception {
+        Map<String, String> errorMessages = validationResult.getErrorMessages();
+        assertEquals(0, errorMessages.size());
     }
 
-    @Test
-    public void testSizeOne() throws Exception {
-        HakemusState hakemusState = createValidationResultContainingOneError();
-        assertEquals(1, hakemusState.errorCount());
 
-    }
-
-    private HakemusState createValidationResultContainingOneError() {
-
-        final HakemusState hakemusState = new HakemusState(createHakemus());
-        hakemusState.addError(FIELD_NAME, TEST_MESSAGE);
-        return hakemusState;
-    }
 }

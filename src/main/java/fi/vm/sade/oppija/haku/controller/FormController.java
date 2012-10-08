@@ -115,13 +115,16 @@ public class FormController {
         HakemusState hakemusState = hakemusService.save(hakemusId, values);
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
-        if (hakemusState.isRedirected()) {
-
+        if (hakemusState.isValid()) {
             final Category category = (Category) hakemusState.getModelObjects().get("category");
             modelAndView = new ModelAndView("redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + category.getId());
         } else {
             for (Map.Entry<String, Object> stringObjectEntry : hakemusState.getModelObjects().entrySet()) {
+                System.out.println(stringObjectEntry.getKey());
                 modelAndView.addObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());
+                Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+                modelAndView.addObject("category", activeForm.getCategory(categoryId));
+                modelAndView.addObject("form", activeForm);
             }
         }
         LOGGER.debug(modelAndView.getModel().toString());

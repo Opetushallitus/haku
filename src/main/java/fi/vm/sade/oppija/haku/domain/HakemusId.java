@@ -16,6 +16,7 @@ import java.io.Serializable;
 public class HakemusId implements Serializable {
 
     private static final long serialVersionUID = 8484849312020479901L;
+    
     private final String applicationPeriodId;
     private final String formId;
     private final String categoryId;

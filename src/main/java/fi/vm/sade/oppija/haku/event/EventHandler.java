@@ -30,7 +30,7 @@ public class EventHandler {
                 event.process(hakemusState);
             }
         }
-        if (!hakemusState.hasErrors()) {
+        if (!hakemusState.isValid()) {
             for (Event event : postValidate) {
                 event.process(hakemusState);
             }

@@ -12,7 +12,6 @@ public class HakemusState {
     private final Map<String, String> errors;
     private final Map<String, Object> modelObjects = new HashMap<String, Object>();
     private boolean mustValidate = true;
-    private boolean redirected = true;
 
     public HakemusState(Hakemus hakemus) {
         this.errors = new HashMap<String, String>();
@@ -21,12 +20,8 @@ public class HakemusState {
         modelObjects.put("errorMessages", errors);
     }
 
-    public boolean hasErrors() {
-        return !errors.isEmpty();
-    }
-
-    public boolean isRedirected() {
-        return redirected;
+    public boolean isValid() {
+        return errors.isEmpty();
     }
 
     public Map<String, String> getErrorMessages() {
@@ -42,7 +37,11 @@ public class HakemusState {
         return null;
     }
 
-    public void addError(String key, String message) {
+    public void addError(Map<String, String> errorMessages) {
+        this.errors.putAll(errorMessages);
+    }
+
+    public void addError(final String key, final String message) {
         this.errors.put(key, message);
     }
 
