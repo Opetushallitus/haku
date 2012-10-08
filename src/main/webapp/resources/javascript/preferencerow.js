@@ -18,6 +18,11 @@
                         }
                     }));
                 });
+            },
+            change: function (ev, ui) {
+                if (!ui.item) {
+                    $(this).val("");
+                }
             }
         });
     });

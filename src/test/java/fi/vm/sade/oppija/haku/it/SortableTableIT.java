@@ -12,9 +12,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static junit.framework.Assert.assertEquals;
-import static net.sourceforge.jwebunit.junit.JWebUnit.assertElementPresent;
-import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
-import static net.sourceforge.jwebunit.junit.JWebUnit.getElementById;
+import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 /**
  * Sortable table integration tests

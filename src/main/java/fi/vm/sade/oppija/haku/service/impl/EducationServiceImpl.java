@@ -20,7 +20,7 @@ public class EducationServiceImpl implements EducationService {
 
     public EducationServiceImpl() {
         // populate test data
-        for (int i = 0; i < 100; ++i) {
+        for (int i = 0; i < 1000; ++i) {
             Opetuspiste op = new Opetuspiste(String.valueOf(i), "Koulu" + i);
             institutes.add(op);
         }
