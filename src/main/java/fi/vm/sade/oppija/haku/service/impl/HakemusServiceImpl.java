@@ -22,14 +22,16 @@ import java.util.Map;
  */
 @Service
 public class HakemusServiceImpl implements HakemusService {
-    private static final Logger LOG = LoggerFactory.getLogger(HakemusServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HakemusServiceImpl.class);
 
     private final ApplicationDAO sessionDataHolder;
     private final ApplicationDAO applicationDAO;
     private final EventHandler eventHandler;
 
     @Autowired
-    public HakemusServiceImpl(@Qualifier("sessionDataHolder") SessionDataHolder sessionDataHolder, @Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO, EventHandler eventHandler) {
+    public HakemusServiceImpl(final @Qualifier("sessionDataHolder") SessionDataHolder sessionDataHolder,
+                              final @Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
+                              final EventHandler eventHandler) {
         this.sessionDataHolder = sessionDataHolder;
         this.applicationDAO = applicationDAO;
         this.eventHandler = eventHandler;
@@ -38,6 +40,7 @@ public class HakemusServiceImpl implements HakemusService {
 
     @Override
     public HakemusState save(HakemusId hakemusId, Map<String, String> values) {
+        LOGGER.info("save");
         final Hakemus hakemus = new Hakemus(hakemusId, values);
 
         final HakemusState hakemusState = new HakemusState(hakemus);

@@ -17,7 +17,6 @@ import java.util.Locale;
 public class EducationServiceImpl implements EducationService {
 
     private List<Opetuspiste> institutes = new ArrayList<Opetuspiste>();
-    private static int MAX_RESULTS = 10;
 
     public EducationServiceImpl() {
         // populate test data
@@ -35,6 +34,7 @@ public class EducationServiceImpl implements EducationService {
             for (Opetuspiste o : institutes) {
                 if (o.getKey().startsWith(term)) {
                     result.add(o);
+                    int MAX_RESULTS = 10;
                     if (result.size() >= MAX_RESULTS) {
                         break;
                     }

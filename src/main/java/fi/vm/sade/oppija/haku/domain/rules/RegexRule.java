@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  */
 public class RegexRule {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(RegexRule.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegexRule.class);
 
     public static boolean evaluate(String value, String expression) {
         final Pattern compile = Pattern.compile(expression);

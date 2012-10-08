@@ -72,7 +72,7 @@ public class ApplicationPeriod implements Serializable {
     }
 
     public Date getStarts() {
-        return starts;
+        return new Date(starts.getTime());
     }
 
     public void setStarts(final Date starts) {
@@ -80,7 +80,7 @@ public class ApplicationPeriod implements Serializable {
     }
 
     public Date getEnd() {
-        return end;
+        return new Date(end.getTime());
     }
 
     public void setEnd(final Date end) {
