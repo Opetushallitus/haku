@@ -34,9 +34,11 @@
                 <tr class="gradegrid-language-row">
                     <td><jsp:include page="gradegrid/LanguageRow.jsp"/></td>
                 	<td>
+                	    <c:set var="gradeSelectId" value="common-${language.id}" scope="request"/>
                 	    <jsp:include page="gradegrid/gradeselect.jsp"/>
                 	</td>
                 	<td>
+                	    <c:set var="gradeSelectId" value="optional-${language.id}" scope="request"/>
                 	    <jsp:include page="gradegrid/gradeselect.jsp"/>
                 	</td>
                 </tr>

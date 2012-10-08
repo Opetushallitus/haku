@@ -5,6 +5,7 @@
     <c:forEach var="option" items="${element.languageOptions}">
         <c:set value="${language.id}.${option.id}" var="optionId" scope="page"/>
         <option name="${optionId}"
-                value="${option.value}" ${option.attributeString}>${option.title}</option>
+                value="${option.value}" ${option.attributeString}
+                    ${(categoryData[language.id] eq option.value) ? "selected=\"selected\"" : ""}>${option.title}</option>
     </c:forEach>
 </select>
