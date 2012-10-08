@@ -20,9 +20,9 @@
             <c:if test="${haku:evaluate(categoryData[key], rule.value.regex)}">
                 <c:set var="value" value="${rule.value.option.value}" scope="request"/>
                 <c:set var="element" value="${element.childById[element.target]}" scope="request"/>
+                <c:set var="disabled" value="true" scope="request"/>
                 <jsp:include page="${element.childById[element.target].type}.jsp">
                     <jsp:param name="element" value="${element.childById[rule.key]}"/>
-                    <jsp:param name="disabled" value="true"/>
                     <jsp:param name="value" value="${value}"/>
                 </jsp:include>
             </c:if>
