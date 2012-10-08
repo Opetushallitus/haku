@@ -178,6 +178,9 @@
     line-height:3.077em;
     padding:0px;
     color:transparent;
+	background-image: url("../img/menu-level-1-home.png");
+	background-repeat:no-repeat;
+	background-position:center center;
 }
 
 .menu-level-2-heading
@@ -224,7 +227,7 @@
 
 }
 
-.menu-level-2 li.current a
+.menu-level-2 li a.current
 {
 	font-weight:bold;
 	background-color:#ebf3f7;
@@ -234,3 +237,12 @@
 	border-bottom-color:#ebf3f7;
 }
 
+.menu-level-3 
+{
+	padding:0px;
+}
+
+.menu-level-3 li a
+{
+	padding-left:2.5em;
+}

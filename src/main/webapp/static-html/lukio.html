@@ -20,36 +20,40 @@
 
                 <header id="siteheader">
 
-                    <div class="sitelogo">
-                        <a href="index.html">Sivuston logo</a>
-                    </div>
+					<div class="header-container">
+				
+						<div class="sitelogo">
+							<a href="index.html">Sivuston logo</a>
+						</div>
 
-                    <div class="actions">
+						<div class="actions">
 
-                        <ul>
-                            <li><a href="#">Kirjaudu ulos</a></li>
-                            <li><a href="#">Mikko mallikas</a></li>
-                        </ul>
+							<ul>
+								<li><a href="#">Kirjaudu ulos</a></li>
+								<li><a href="#">Mikko mallikas</a></li>
+							</ul>
 
-                        <ul>
-                            <li><a href="#">Sanasto</a></li>
-                            <li><a href="#">Kysy neuvoa</a></li>
-                            <li><a href="#">Hakuajat</a></li>
-                        </ul>
+							<ul>
+								<li><a href="#">Sanasto</a></li>
+								<li><a href="#">Kysy neuvoa</a></li>
+								<li><a href="#">Hakuajat</a></li>
+							</ul>
 
-                        <ul>
-                            <li><a href="#">På svenska</a></li>
-                            <li><a href="#">in English</a></li>
-                            <li><a href="#">Mobiili</a></li>
-                            <li><a href="#">Tekstiversio</a></li>
-                        </ul>
+							<ul>
+								<li><a href="#">På svenska</a></li>
+								<li><a href="#">in English</a></li>
+								<li><a href="#">Mobiili</a></li>
+								<li><a href="#">Tekstiversio</a></li>
+							</ul>
 
-                        <div class="clear"></div>
-                    </div>
+							<div class="clear"></div>
+						</div>
+						
+					</div>
                     
                     <div class="line clear"></div>
                 </header>
-					
+                
 				<section id="page">
 					
 					<section id="pageheader" class="grid16-16">
@@ -67,12 +71,18 @@
 						</nav>
 
 						<div id="searchfield-wrapper">
-							<div id="searchfield">
-								<input type="text" class="search" />
-							</div>
+                            <div id="searchfield">
+                                <div class="field-container-text">
+                                    <input type="text" />
+                                </div>
+                                <button class="btn-search">
+                                    <span><span></span></span>
+                                </button>
+                            </div>
 						</div>
 
 					</section>
+					<div class="clear"></div>
 
 					<section class="content-container">
 
@@ -85,7 +95,15 @@
 									<li><a href="#">Lukiokoulutus</a></li>
 									<li><a href="#">Lukiokoulutus aikuisille</a></li>
 									<li><a href="#">Lisää lukiokoulutuksesta</a></li>
-									<li class="current"><a href="#">Vieläkin lisää lukiokoulutuksesta</a></li>
+									<li><a href="#" class="current">Vieläkin lisää lukiokoulutuksesta</a>
+										<ul class="menu-level-3">
+											<li><a href="#">Lorem ipsum</a></li>
+											<li><a href="#">Dolor sit amet</a></li>
+											<li><a href="#">Consectuer adipiscing</a></li>
+											<li><a href="#" class="current">Maecenas fermentum</a></li>
+											<li><a href="#">Phasellus nec venenatis</a></li>
+										</ul>
+									</li>
 									<li><a href="#">Kaikki lukiokoulutuksesta</a></li>
 								</ul>
 							</nav>
@@ -151,7 +169,7 @@
 							
 							<div class="module bottom-border">
 								<h4>Katso myös</h4>
-								<ul>
+								<ul class="unstyled">
 									<li><a href="">Lorem ipsum</a></li>
 									<li><a href="">dolor sit amet</a></li>
 									<li><a href="">virescit vulnere</a></li>
@@ -221,7 +239,7 @@
 								<img src="content/logo-opetus-ja-kulttuuriministerio.png">
 							</div>
 							<div class="grid16-8 footer-logo">
-								<img src="content/logo-oph.png">
+								<img src="content/logo-oph_fin_vaaka.png">
 							</div>
 						</div>
 						

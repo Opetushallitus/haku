@@ -1,6 +1,7 @@
 
 /* CONTENTS
     
+	Image figure, Video Figure
     Removable items
     Tab sheet
     Sidemenu
@@ -421,4 +422,18 @@ a.btn-remove.disabled {
 .btn-search span {
     background: none;
     display: block;
+}
+
+/*** Unstyled list
+**************************************************************/
+
+ul.unstyled
+{
+	padding:0px;
+}
+
+ul.unstyled li
+{
+	list-style:none;
+	margin:1em 0px;
 }
