@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author jukka
@@ -20,6 +19,7 @@ import java.util.List;
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SessionDataHolder implements Serializable, ApplicationDAO {
 
+    private static final long serialVersionUID = -3751714345380438532L;
     private HashMap<HakemusId, Hakemus> map = new HashMap<HakemusId, Hakemus>();
 
     public Hakemus find(HakemusId id) {
@@ -29,21 +29,6 @@ public class SessionDataHolder implements Serializable, ApplicationDAO {
             map.put(id, hakemus);
         }
         return hakemus;
-    }
-
-    @Override
-    public List<Application> findAllByUserId(String userId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public Application find(String userId, String applicationId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void update(Application application) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void update(Hakemus hakemus) {

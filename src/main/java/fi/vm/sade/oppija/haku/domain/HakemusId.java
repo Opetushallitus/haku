@@ -1,21 +1,27 @@
 package fi.vm.sade.oppija.haku.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.io.Serializable;
+
 
 /**
  * @author jukka
  * @version 9/26/123:02 PM}
  * @since 1.1
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class HakemusId implements Serializable {
 
-    private static final long serialVersionUID = -6584775919268318934L;
+    private static final long serialVersionUID = 8484849312020479901L;
     private final String applicationPeriodId;
     private final String formId;
     private final String categoryId;
     private final String userId;
 
-    public HakemusId(String applicationPeriodId, String formId, String categoryId, String userid) {
+    public HakemusId(@JsonProperty(value = "applicationPeriodId") String applicationPeriodId, @JsonProperty(value = "formId") String formId, @JsonProperty(value = "categoryId") String categoryId, @JsonProperty(value = "userId") String userid) {
         this.applicationPeriodId = applicationPeriodId;
         this.formId = formId;
         this.categoryId = categoryId;
@@ -38,10 +44,19 @@ public class HakemusId implements Serializable {
         return applicationPeriodId;
     }
 
+    @JsonIgnore
     public boolean isUserKnown() {
         return userId != null;
     }
 
+    public String asKey() {
+        return applicationPeriodId + '_' + formId + "_" + categoryId + "_" + userId;
+    }
+
+    public static HakemusId fromKey(String key) {
+        final String[] split = key.split("//");
+        return new HakemusId(split[0], split[1], split[2], split[3]);
+    }
 
     @Override
     public boolean equals(Object o) {
