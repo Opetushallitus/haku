@@ -1,9 +1,6 @@
 package fi.vm.sade.oppija.haku.domain.elements.custom;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.vm.sade.oppija.haku.domain.questions.OptionQuestion;
-
-import java.util.List;
 
 /**
  * Renders as a language grade row in grade grid. Title is used to hold the scope

@@ -3,9 +3,9 @@ package fi.vm.sade.oppija.haku.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 /**
- *
  * @author Mikko Majapuro
  */
 public class Opetuspiste implements Serializable {
@@ -20,7 +20,7 @@ public class Opetuspiste implements Serializable {
     public Opetuspiste(@JsonProperty(value = "id") final String id, @JsonProperty(value = "name") final String name) {
         this.id = id;
         this.name = name;
-        this.key = name.toLowerCase();
+        this.key = name.toLowerCase(Locale.getDefault());
     }
 
     public String getId() {

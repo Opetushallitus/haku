@@ -10,20 +10,7 @@ import fi.vm.sade.oppija.haku.domain.HakemusId;
  */
 public interface ApplicationDAO {
 
+    void update(Hakemus hakemus);
 
-    /**
-     * Update single application. If the application can not be found
-     * in the db, a new one is inserted.
-     *
-     * @param hakemus application to be updated
-     */
-    public void update(Hakemus hakemus);
-
-    /**
-     * Find Application by userId and applicationId.
-     *
-     * @param hakemusId application identifier
-     * @return hakemus
-     */
     Hakemus find(HakemusId hakemusId);
 }
