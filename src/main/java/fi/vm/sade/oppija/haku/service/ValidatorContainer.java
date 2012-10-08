@@ -26,6 +26,10 @@ public class ValidatorContainer {
     }
 
     public List<Validator> getCategoryValidators(final String category) {
-        return Collections.unmodifiableList(categoryValidators.get(category));
+        List<Validator> list = categoryValidators.get(category);
+        if (list == null) {
+            return Collections.unmodifiableList(new ArrayList<Validator>());
+        }
+        return Collections.unmodifiableList(list);
     }
 }
