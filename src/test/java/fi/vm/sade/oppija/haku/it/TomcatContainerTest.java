@@ -72,7 +72,7 @@ public class TomcatContainerTest {
 
     private void createTomcat() {
         mTomcat = new Tomcat();
-        mTomcat.setPort(12456);
+        mTomcat.setPort(getPort());
 
         mTomcat.setBaseDir(mWorkingDir);
         mTomcat.getHost().setAppBase(mWorkingDir);
@@ -99,7 +99,7 @@ public class TomcatContainerTest {
         System.setProperty("solr.solr.home", new File("target/resources/solr").getAbsolutePath());
         org.apache.commons.io.FileUtils.copyDirectoryToDirectory(new File(RESOURCES_SRC), target);
 
-        System.setProperty("tarjonta.index.url", "http://localhost:8898/solr/");
+        System.setProperty("tarjonta.index.url", "http://localhost:" + getPort() + "/solr/");
 
         for (File file : org.apache.commons.io.FileUtils.listFiles(target, null, true)) {
             if (file.getName().equals(".svn")) {
@@ -149,7 +149,7 @@ public class TomcatContainerTest {
     }
 
     public int getPort() {
-        return mTomcat.getConnector().getLocalPort();
+        return 12456;
     }
 
     protected String getBaseUrl() {
