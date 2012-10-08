@@ -23,6 +23,8 @@ import java.io.IOException;
  */
 public class TomcatContainerTest {
     private static final String WEBAPP_SRC = "src/main/webapp";
+    private static final String RESOURCES_SRC = "src/main/resources";
+
     /**
      * The temporary directory in which Tomcat and the app are deployed.
      */
@@ -32,15 +34,20 @@ public class TomcatContainerTest {
      */
     private Tomcat mTomcat;
     private static File webApp;
+    private static File solr;
 
     private static WebArchive addWebResourcesTo(WebArchive archive) {
         final File webAppDirectory = new File(WEBAPP_SRC);
         for (File file : org.apache.commons.io.FileUtils.listFiles(webAppDirectory, null, true)) {
-            if (!file.isDirectory() && !file.getName().equals(".svn")) {
+            if (isValidFilename(file)) {
                 archive.addAsWebResource(file, file.getPath().substring(WEBAPP_SRC.length()));
             }
         }
         return archive;
+    }
+
+    private static boolean isValidFilename(File file) {
+        return !file.isDirectory() && !file.getName().equals(".svn");
     }
 
     @Before
@@ -66,6 +73,7 @@ public class TomcatContainerTest {
     private void createTomcat() {
         mTomcat = new Tomcat();
         mTomcat.setPort(0);
+
         mTomcat.setBaseDir(mWorkingDir);
         mTomcat.getHost().setAppBase(mWorkingDir);
         mTomcat.getHost().setAutoDeploy(true);
@@ -79,6 +87,22 @@ public class TomcatContainerTest {
 
     private void createWebApp() throws IOException {
         mTomcat.addWebapp(mTomcat.getHost(), getContextPath(), webApp.getAbsolutePath());
+
+
+        prepareSolr();
+        mTomcat.addWebapp(mTomcat.getHost(), "/solr", solr.getAbsolutePath());
+
+    }
+
+    private void prepareSolr() throws IOException {
+        final File target = new File("target");
+        System.setProperty("solr.solr.home", new File("target/resources/solr").getAbsolutePath());
+        org.apache.commons.io.FileUtils.copyDirectoryToDirectory(new File(RESOURCES_SRC), target);
+        for (File file : org.apache.commons.io.FileUtils.listFiles(target, null, true)) {
+            if (file.getName().equals(".svn")) {
+                file.delete();
+            }
+        }
     }
 
     private static File createPackage() throws IOException {
@@ -104,6 +128,13 @@ public class TomcatContainerTest {
     private static WebArchive createWebArchive() {
         MavenDependencyResolver resolver = DependencyResolvers.use(MavenDependencyResolver.class);
         final File[] files = resolver.loadEffectivePom("pom.xml").importAllDependencies().resolveAsFiles();
+
+        for (File file : files) {
+            final String name = file.getName();
+            if (name.endsWith(".war") && name.contains("solr")) {
+                solr = file;
+            }
+        }
         return addWebResourcesTo(ShrinkWrap.create(WebArchive.class, packageName()).setWebXML(new File(WEBAPP_SRC, "WEB-INF/web.xml"))
                 .addPackages(true, RootPackageMarker.class.getPackage())).addAsLibraries(files);
 
