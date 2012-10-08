@@ -4,6 +4,7 @@ import fi.vm.sade.oppija.haku.converter.FormModelToJsonString;
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDAOMongoImpl;
 import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.haku.domain.FormModelFactory;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,19 +91,19 @@ public class CommandExecutor {
     }
 
     protected void read(String filename) {
-        final String content = getStringBuilder(filename);
+        final FormModel content = getModel(filename);
         LOG.info("inserting file " + filename);
         doInsert(content);
         LOG.info("done");
     }
 
-    protected void doInsert(final String jsonString) {
+    protected void doInsert(final FormModel formModel) {
         final FormModelDAO formModelDAOMongoImpl = getService();
-        formModelDAOMongoImpl.insertModelAsJsonString(jsonString);
+        formModelDAOMongoImpl.insert(formModel);
     }
 
-    protected String getStringBuilder(String filename) {
-        return new FileHandling().readStreamFromFile(filename);
+    protected FormModel getModel(String filename) {
+        return FormModelFactory.fromFileName(filename);
     }
 
     protected FormModelDAO getService() {

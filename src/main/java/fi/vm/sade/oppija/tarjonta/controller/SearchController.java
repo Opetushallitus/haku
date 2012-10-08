@@ -3,6 +3,8 @@ package fi.vm.sade.oppija.tarjonta.controller;
 import fi.vm.sade.oppija.tarjonta.converter.ArrayParametersToMap;
 import fi.vm.sade.oppija.tarjonta.domain.*;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.Map;
 @Controller
 public class SearchController {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
     public static final String VIEW_NAME_ITEMS = "tarjonta/tarjontatiedot";
     public static final String VIEW_NAME_ITEM = "tarjonta/tarjontatieto";
@@ -101,7 +104,7 @@ public class SearchController {
         SearchParameters searchParameters = new SearchParameters(filters);
         Map<String, Object> searchResult = service.searchById(searchParameters);
         ModelAndView modelAndView = new ModelAndView(VIEW_NAME_ITEM);
-        System.out.println(searchResult);
+        LOGGER.debug("searchResult: ", searchResult);
         modelAndView.addObject(MODEL_NAME, searchResult);
         return modelAndView;
     }

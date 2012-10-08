@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.haku.tools;
 
+import fi.vm.sade.oppija.haku.domain.FormModel;
 import org.junit.Test;
 
 /**
@@ -57,7 +58,7 @@ public class CommandExecutorTest {
         }
 
         @Override
-        protected void doInsert(final String json) {
+        protected void doInsert(final FormModel formModel) {
         }
 
 
