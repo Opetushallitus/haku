@@ -43,7 +43,7 @@ public class SearchServiceSolrImpl implements SearchService {
         query.addFacetField(field);
         Set<String> uniqNames = new HashSet<String>();
         try {
-            QueryResponse rsp = httpSolrServer.query(query);
+            QueryResponse rsp = createQuery(query);
             List<FacetField> facetFields = rsp.getFacetFields();
             for (FacetField facetField : facetFields) {
                 List<FacetField.Count> values = facetField.getValues();
@@ -58,11 +58,15 @@ public class SearchServiceSolrImpl implements SearchService {
 
     }
 
+    protected QueryResponse createQuery(SolrQuery query) throws SolrServerException {
+        return httpSolrServer.query(query);
+    }
+
     private SearchResult query(final SearchParameters searchParameters) {
         List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
         try {
             SolrQuery query = createQuery(searchParameters);
-            QueryResponse rsp = httpSolrServer.query(query);
+            QueryResponse rsp = createQuery(query);
             for (SolrDocument doc : rsp.getResults()) {
                 results.add(doc.getFieldValueMap());
             }
