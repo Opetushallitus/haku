@@ -118,10 +118,7 @@ hr
 	background-color:#feba00;
 }
 
-fieldset hr
-{
-	margin:0.5em 0px;
-}
+
 
 
 .clear
@@ -179,7 +176,17 @@ fieldset hr
    background-color:#ffffff;
 }
 
-#sitefooter
+#siteheader .header-container,
+#sitefooter,
+#sitecontent, /* Remove this when #sitecontent has been replaced with #page in every instance*/
+#page
+{
+	width:auto;
+	max-width:1140px;
+	margin:0px auto;
+}
+
+#sitefooter .footer-container
 {
 	margin-left: 0.625%;
     margin-right: 0.625%;

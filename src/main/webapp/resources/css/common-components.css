@@ -69,6 +69,11 @@ figure.set-center
 
 /*** Removable items
 ************************************************/
+.removable-items {
+    list-style-type: none;
+    margin-left: 0 !important;
+}
+
 .removable-items li {
     line-height: 24px;
 }
@@ -198,12 +203,16 @@ a.btn-remove.disabled {
 #sidemenu {
     border-bottom: 1px solid #bdbdbd;
     color: #a0a0a0;
+    background: #F8F8F8;
+    border-left: 1px solid #bdbdbd;
+    border-right: 1px solid #bdbdbd;
 }
 
 #sidemenu .heading 
 {
     background: transparent url('../img/table-header-bg.png') repeat top left;
-    border: 1px solid #bdbdbd;
+    border-top: 1px solid #bdbdbd;
+    border-bottom: 1px solid #bdbdbd;
 }
 
 #sidemenu .heading h2 
@@ -217,12 +226,9 @@ a.btn-remove.disabled {
 }
 
 #sidemenu .sidemenu-content {
-    border-left: 1px solid #bdbdbd;
-    border-right: 1px solid #bdbdbd;
     padding-bottom: 10px;
     padding-left: 10px;
     padding-right: 10px;
-    background: #f8f8f8;
 }
 
 #sidemenu .sidemenu-content a {
@@ -250,7 +256,7 @@ a.btn-remove.disabled {
     padding-bottom: 5px;
 }
 
-/*** Notelist
+/*** Sidemenu - Notelist
 ************************************************/
 
 #notelist h2
@@ -274,11 +280,18 @@ a.btn-remove.disabled {
 
 
 
-/*** Compare
+/*** Sidemenu - Compare
 ************************************************/
 #compare h2
 {
     background: transparent url('../img/vertailu_ikoni.png') no-repeat 95% bottom;  
+}
+
+
+/*** Sidemenu - Kirjautuminen
+************************************************/
+#sidemenu #kirjautuminen {
+    padding-top: 10px;
 }
 
 
@@ -375,27 +388,37 @@ a.btn-remove.disabled {
 /*** searchfield
 **************************************************************/
 #searchfield-wrapper {
-    height: 40px;
+    
     width: 100%;
     margin-bottom: 15px;
-	
 	background: url("../img/texture-angled-lines.gif") repeat scroll left top transparent;
 	box-shadow:inset 0px 0px 2px 0px #c4c4c4;
 	background-color:#f9f9f9;
 }
 
 #searchfield {
-    width: 20%;
-    line-height: 40px;
-    vertical-align: middle;
+    display: block;
     margin: 0 auto;
+    position: relative;
+    line-height: 40px;
+    height: 40px;
+    width: 300px;
 }
 
-#searchfield .search {
-    width: 100%;
-    background-image: url('../img/icon-search.png');
-    background-repeat: no-repeat;
-    background-position: 95% center;
-    padding-right: 50px;    
+#searchfield input {
+}
 
+.btn-search {
+
+    position: absolute;
+    top: 13px;
+    right: 10px;
+    background: transparent url('../img/icon-search.png') no-repeat left top;
+    width: 16px;
+    height: 17px;
+}
+
+.btn-search span {
+    background: none;
+    display: block;
 }

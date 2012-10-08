@@ -1,3 +1,17 @@
+
+/* CONTENTS
+    
+    Breadcrumb
+    Siteheader
+    Navigation
+
+    @info: This file should only contain styles for components that are used on every page of the site
+
+*/
+
+
+
+
 /*** Breadcrumb
 **************************************************************/
 #breadcrumb {
@@ -137,6 +151,7 @@
 
 .menu-level-1 li a
 {
+	font-weight:bold;
     display:block;
     height:3.077em;
     line-height:3.077em;
