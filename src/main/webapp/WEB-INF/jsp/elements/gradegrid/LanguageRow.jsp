@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:out value="${language.title}"/>
+<c:out value="${language.title}"/>&nbsp;
 <select ${language.attributeString}>
     <option></option>
     <c:forEach var="option" items="${element.languageOptions}">
