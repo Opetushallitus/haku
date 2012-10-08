@@ -72,7 +72,7 @@ public class TomcatContainerTest {
 
     private void createTomcat() {
         mTomcat = new Tomcat();
-        mTomcat.setPort(8898);
+        mTomcat.setPort(12456);
 
         mTomcat.setBaseDir(mWorkingDir);
         mTomcat.getHost().setAppBase(mWorkingDir);
