@@ -155,12 +155,12 @@ var formReplacements = {
 			if (replacement.hasClass('selected'))
 			{
 				replacement.removeClass('selected');
-				input.removeAttr('checked');
+				input.trigger('click');
 			}
 			else
 			{
 				replacement.addClass('selected');
-				input.attr('checked', 'checked');
+				input.trigger('click');
 			}
 		}
 	},
@@ -245,11 +245,12 @@ var formReplacements = {
 		});
 		
 		
-		// Trigger on checkbox
+		// Trigger on checkbox - Commented as unnecessary in production (nobody clicks the actual checkbox)
 		// Click, Focus, Blur
+		/*
 		$('body').on({
 			click : function(event){
-				/* event.preventDefault(); */
+				event.preventDefault();
 				if (typeof $(this).attr('data-js-checkbox-id') != 'undefined' && !$(this).hasClass('disabled'))
 				{
 					id = parseInt($(this).attr('data-js-checkbox-id'));
@@ -271,7 +272,7 @@ var formReplacements = {
 				}
 			}
 		}, 'input[type="checkbox"][data-js-checkbox-id]');
-
+		*/
 		
 		// Trigger on radio
 		// Click, Focus, Blur
