@@ -19,6 +19,7 @@ public abstract class AbstractRemoteTest extends TomcatContainerTest {
         setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
         setBaseUrl(getBaseUrl());
         beginAt("/fi/admin/edit");
+        login();
         final String convert = new FormModelToJsonString().convert(formModel1);
         setTextField("model", convert);
         submit("tallenna");

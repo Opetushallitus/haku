@@ -2,9 +2,6 @@
 <%@ taglib prefix="haku" uri="/WEB-INF/tags/functions.tld"%>
 <div class="container_${element.id}">
 
-       <script language="javascript">
-
-       </script>
 
     <c:set var="savedValue" value="${element}"/>
     <c:set var="element" value="${element.childById[element.id]}" scope="request"/>

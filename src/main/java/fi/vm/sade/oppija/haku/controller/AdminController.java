@@ -6,6 +6,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Attachment;
 import fi.vm.sade.oppija.haku.service.AdminService;
 import fi.vm.sade.oppija.haku.service.FormModelHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping(value = "/admin")
+@Secured("ROLE_ADMIN")
 public class AdminController {
 
     @Autowired

@@ -23,6 +23,7 @@ public abstract class AbstractIT extends TomcatContainerTest {
         setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
         setBaseUrl(getBaseUrl());
         beginAt("/fi/admin");
+        login();
         ClassPathResource classPathResource = new ClassPathResource(jsonModelFileName);
         String absolutePath = classPathResource.getFile().getAbsolutePath();
         setTextField("file", absolutePath);

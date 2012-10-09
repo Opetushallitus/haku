@@ -16,6 +16,9 @@ import org.junit.BeforeClass;
 import java.io.File;
 import java.io.IOException;
 
+import static net.sourceforge.jwebunit.junit.JWebUnit.setTextField;
+import static net.sourceforge.jwebunit.junit.JWebUnit.submit;
+
 /**
  * @author jukka
  * @version 9/18/1210:44 AM}
@@ -29,6 +32,7 @@ public class TomcatContainerTest {
      * The temporary directory in which Tomcat and the app are deployed.
      */
     private static String mWorkingDir = "target/tomcat";
+    private static final int PORT = 12456;
     /**
      * The tomcat instance.
      */
@@ -149,10 +153,16 @@ public class TomcatContainerTest {
     }
 
     public int getPort() {
-        return 12456;
+        return PORT;
     }
 
     protected String getBaseUrl() {
         return "http://localhost:" + getPort() + getContextPath();
+    }
+
+    protected void login() {
+        setTextField("j_username", "admin");
+        setTextField("j_password", "admin");
+        submit();
     }
 }
