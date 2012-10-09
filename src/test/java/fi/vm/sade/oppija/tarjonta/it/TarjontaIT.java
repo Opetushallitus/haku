@@ -36,4 +36,11 @@ public class TarjontaIT extends TomcatContainerTest {
         submit();
         assertLinkPresentWithExactText("Liikunnanohjauksen perustutkinto");
     }
+     @Test
+    public void testTarjontaLink() throws Exception {
+        initModel();
+        setScriptingEnabled(false);
+        beginAt("/fi/tarjontatiedot/1");
+        assertLinkPresentWithExactText("Hae");
+    }
 }
