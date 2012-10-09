@@ -31,7 +31,8 @@ public class FormModelHolder {
         FormModelInitializer formModelInitializer = new FormModelInitializer(model);
         formModelInitializer.initModel();
         this.formModel = model;
-        this.validatorContainer = formModelInitializer.collectValidators();
+        this.validatorContainer = new ValidatorCollector(this.formModel.getApplicationPerioidMap()).collect();
+
     }
 
 

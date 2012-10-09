@@ -7,7 +7,7 @@ import java.util.*;
 
 public class ValidatorContainer {
 
-    final Map<String, List<Validator>> categoryValidators = new HashMap<String, List<Validator>>();
+    private final Map<String, List<Validator>> categoryValidators = new HashMap<String, List<Validator>>();
 
     public void addValidator(final String category, final Validator validator) {
         Validate.notNull(category, "category can't be null");
@@ -31,5 +31,12 @@ public class ValidatorContainer {
             return Collections.unmodifiableList(new ArrayList<Validator>());
         }
         return Collections.unmodifiableList(list);
+    }
+
+    @Override
+    public String toString() {
+        return "ValidatorContainer{" +
+                "categoryValidators=" + categoryValidators +
+                '}';
     }
 }
