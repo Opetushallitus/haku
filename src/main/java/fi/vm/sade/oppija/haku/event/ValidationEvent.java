@@ -32,7 +32,6 @@ public class ValidationEvent extends AbstractEvent {
     public void process(HakemusState hakemusState) {
         Hakemus hakemus = hakemusState.getHakemus();
         List<Validator> validators = getValidators(hakemus);
-        System.out.println(validators.size());
         ValidationResult validationResult = FormValidator.validate(validators, hakemus.getValues());
         hakemusState.addError(validationResult.getErrorMessages());
     }

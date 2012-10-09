@@ -18,7 +18,7 @@ import java.util.Map;
 @Controller
 public class SearchController {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
     public static final String VIEW_NAME_ITEMS = "tarjonta/tarjontatiedot";
     public static final String VIEW_NAME_ITEM = "tarjonta/tarjontatieto";

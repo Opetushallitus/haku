@@ -9,6 +9,9 @@ import java.util.Locale;
  * @author Mikko Majapuro
  */
 public class Opetuspiste implements Serializable {
+
+    private static final long serialVersionUID = 3780799141790242873L;
+
     private String id;
     private String name;
     private String key;

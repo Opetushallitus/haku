@@ -14,10 +14,11 @@ import java.io.IOException;
  * @version 9/14/121:44 PM}
  * @since 1.1
  */
-public class FormModelFactory {
+public final class FormModelFactory {
     public static final Logger LOG = LoggerFactory.getLogger(FormModelFactory.class);
 
-    private FormModelFactory() {}
+    private FormModelFactory() {
+    }
 
     public static FormModel fromJSONString(String json) {
         return new JsonStringToFormModelConverter().convert(json);

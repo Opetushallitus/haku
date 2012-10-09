@@ -16,11 +16,13 @@ import java.util.Locale;
 @Service("educationService")
 public class EducationServiceImpl implements EducationService {
 
+    public static final int AMOUNT_OF_TEST_OPETUSPISTE = 1000;
     private List<Opetuspiste> institutes = new ArrayList<Opetuspiste>();
+    public static final int MAX_RESULTS = 10;
 
     public EducationServiceImpl() {
         // populate test data
-        for (int i = 0; i < 1000; ++i) {
+        for (int i = 0; i < AMOUNT_OF_TEST_OPETUSPISTE; ++i) {
             Opetuspiste op = new Opetuspiste(String.valueOf(i), "Koulu" + i);
             institutes.add(op);
         }
@@ -34,7 +36,6 @@ public class EducationServiceImpl implements EducationService {
             for (Opetuspiste o : institutes) {
                 if (o.getKey().startsWith(term)) {
                     result.add(o);
-                    int MAX_RESULTS = 10;
                     if (result.size() >= MAX_RESULTS) {
                         break;
                     }

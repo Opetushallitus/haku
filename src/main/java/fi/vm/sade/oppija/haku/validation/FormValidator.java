@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 public final class FormValidator {
+    private FormValidator() {
+    }
 
     public static ValidationResult validate(final List<Validator> validators, final Map<String, String> values) {
         List<ValidationResult> validationResults = new ArrayList<ValidationResult>();

@@ -120,7 +120,6 @@ public class FormController {
             modelAndView = new ModelAndView("redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + category.getId());
         } else {
             for (Map.Entry<String, Object> stringObjectEntry : hakemusState.getModelObjects().entrySet()) {
-                System.out.println(stringObjectEntry.getKey());
                 modelAndView.addObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());
                 Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
                 modelAndView.addObject("category", activeForm.getCategory(categoryId));

@@ -29,8 +29,8 @@ public class HakemusServiceImpl implements HakemusService {
     private final EventHandler eventHandler;
 
     @Autowired
-    public HakemusServiceImpl(final @Qualifier("sessionDataHolder") SessionDataHolder sessionDataHolder,
-                              final @Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
+    public HakemusServiceImpl(@Qualifier("sessionDataHolder") final SessionDataHolder sessionDataHolder,
+                              @Qualifier("applicationDAOMongoImpl") final ApplicationDAO applicationDAO,
                               final EventHandler eventHandler) {
         this.sessionDataHolder = sessionDataHolder;
         this.applicationDAO = applicationDAO;
