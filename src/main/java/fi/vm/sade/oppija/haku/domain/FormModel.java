@@ -43,10 +43,6 @@ public class FormModel implements Serializable {
         this.applicationPerioidMap = new HashMap<String, ApplicationPeriod>();
     }
 
-    public FormModel(Map<String, ApplicationPeriod> applicationPeriods) {
-        this.applicationPerioidMap = applicationPeriods;
-    }
-
     public ApplicationPeriod getApplicationPeriodById(String id) {
         return applicationPerioidMap.get(id);
     }

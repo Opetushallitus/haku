@@ -28,13 +28,9 @@ public class Opetuspiste implements Serializable {
 
     private static final long serialVersionUID = 3780799141790242873L;
 
-    private String id;
-    private String name;
-    private String key;
-
-    public Opetuspiste() {
-
-    }
+    private final String id;
+    private final String name;
+    private final String key;
 
     public Opetuspiste(@JsonProperty(value = "id") final String id, @JsonProperty(value = "name") final String name) {
         this.id = id;
@@ -46,23 +42,11 @@ public class Opetuspiste implements Serializable {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getKey() {
         return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 }

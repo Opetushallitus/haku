@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.haku.domain.builders;
 
-import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
@@ -49,25 +48,11 @@ public class FormModelBuilder {
         return formModel;
     }
 
-    public FormModelBuilder withApplicationPeriods(ApplicationPeriod... periods) {
-        for (ApplicationPeriod applicationPeriod : periods) {
-            this.formModel.addApplicationPeriod(applicationPeriod);
-        }
-        return this;
-    }
-
     public FormModelBuilder withDefaults() {
         this.formModel.addApplicationPeriod(applicationPeriodBuilder.withForm(form).build());
         return this;
     }
 
-    public FormModelBuilder addChildToForm(Element... element) {
-        for (Element element1 : element) {
-            this.form.addChild(element1);
-        }
-        return this;
-
-    }
 
     public FormModelBuilder addChildToCategory(Element... element) {
         for (Element element1 : element) {

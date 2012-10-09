@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.haku.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import fi.vm.sade.oppija.haku.domain.elements.Category;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 
 import java.io.Serializable;
@@ -73,10 +72,6 @@ public class ApplicationPeriod implements Serializable {
 
     public Form getFormById(final String id) {
         return forms.get(id);
-    }
-
-    public Category getGategory(final String formId, final String categoryId) {
-        return getFormById(formId).getCategory(categoryId);
     }
 
     public String getId() {

@@ -48,11 +48,4 @@ public class ValidatorContainer {
         }
         return Collections.unmodifiableList(list);
     }
-
-    @Override
-    public String toString() {
-        return "ValidatorContainer{" +
-                "categoryValidators=" + categoryValidators +
-                '}';
-    }
 }
