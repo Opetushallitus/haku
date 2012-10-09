@@ -124,14 +124,16 @@ var formReplacements = {
 				// Check & set checked status
 				if($(this).prop('checked') == true || $(this).attr('checked') == true)
 				{
-					$(this).attr('checked', 'checked');
+					$(this).click();
+					//$(this).attr('checked', 'checked');
 					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('selected');
 				}
 				
 				// Check & set disabled status
 				if($(this).prop('disabled') == true || $(this).attr('disabled') == true)
 				{
-					$(this).attr('disabled', 'disabled');
+					$(this).click();
+					//$(this).attr('disabled', 'disabled');
 					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('disabled');
 				}
 
