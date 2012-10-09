@@ -1,403 +1,424 @@
 <!DOCTYPE html>
 <html>
-    <head>
+<head>
 
     <title>Opetushallitus </title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link href="layout/css/screen.css" type="text/css" rel="stylesheet" />
-    <link type="text/css" href="layout/jquery/jquery-ui-theme/jquery-ui-1.8.23.custom.css" rel="stylesheet" />
-    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="layout/css/screen.css" type="text/css" rel="stylesheet"/>
+    <link type="text/css" href="layout/jquery/jquery-ui-theme/jquery-ui-1.8.23.custom.css" rel="stylesheet"/>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
     <script type="text/javascript" src="layout/jquery/jquery-1.8.0.min.js"></script>
     <script type="text/javascript" src="layout/jquery/jquery-ui-1.8.23.custom.min.js"></script>
     <script type="text/javascript" src="layout/javascript/master.js"></script>
 
-    </head>
-    <body>
-        <div id="viewport">
-            <div id="overlay"></div>
-            <div id="site">
+</head>
+<body>
+<div id="viewport">
+<div id="overlay"></div>
+<div id="site">
 
-                <header id="siteheader">
+<header id="siteheader">
 
-                    <div class="sitelogo">
-                        <a href="index.html">Sivuston logo</a>
-                    </div>
+    <div class="sitelogo">
+        <a href="index.html">Sivuston logo</a>
+    </div>
 
-                    <div class="actions">
+    <div class="actions">
 
-                        <ul>
-                            <li><a href="#">Kirjaudu ulos</a></li>
-                            <li><a href="#">Mikko mallikas</a></li>
-                        </ul>
+        <ul>
+            <li><a href="#">Kirjaudu ulos</a></li>
+            <li><a href="#">Mikko mallikas</a></li>
+        </ul>
 
-                        <ul>
-                            <li><a href="#">Sanasto</a></li>
-                            <li><a href="#">Kysy neuvoa</a></li>
-                            <li><a href="#">Hakuajat</a></li>
-                        </ul>
+        <ul>
+            <li><a href="#">Sanasto</a></li>
+            <li><a href="#">Kysy neuvoa</a></li>
+            <li><a href="#">Hakuajat</a></li>
+        </ul>
 
-                        <ul>
-                            <li><a href="#">På svenska</a></li>
-                            <li><a href="#">in English</a></li>
-                            <li><a href="#">Mobiili</a></li>
-                            <li><a href="#">Tekstiversio</a></li>
-                        </ul>
+        <ul>
+            <li><a href="#">På svenska</a></li>
+            <li><a href="#">in English</a></li>
+            <li><a href="#">Mobiili</a></li>
+            <li><a href="#">Tekstiversio</a></li>
+        </ul>
 
-                        <div class="clear"></div>
-                    </div>
-                    
-                    <div class="line clear"></div>
-                </header>
-                <section id="page">
-                    <section id="pageheader" class="grid16-16">
+        <div class="clear"></div>
+    </div>
 
-                        <nav class="navigation">
-                            <ul class="menu-level-1">
-                                <li class="home"><a href="index.html">Etusivu</a></li>
-                                <li><a href="#">Dolor sit</a></li>
-                                <li><a href="#">Consectetuer</a></li>
-                                <li><a href="#">Adipiscing elit</a></li>
-                                <li><a href="#">Quis nostrud</a></li>
-                            </ul>
-                        </nav>
+    <div class="line clear"></div>
+</header>
+<section id="page">
+<section id="pageheader" class="grid16-16">
 
-                        <div id="breadcrumb">
-                            <ul>
-                                <li class="home"><a href="#"></a></li>
-                                <li class="breadcrumb-item"><a href="#">sivu 1</a></li>
-                                <li class="breadcrumb-item"><a href="#">sivu 2</a></li>
-                                <li class="breadcrumb-item"><a href="#">sivu 3</a></li>
-                                <li class="breadcrumb-item current"><a href="#">sivu 4</a></li>
-                                <li class="clear"></li>
-                            </ul>
-                        </div>
+    <nav class="navigation">
+        <ul class="menu-level-1">
+            <li class="home"><a href="index.html">Etusivu</a></li>
+            <li><a href="#">Dolor sit</a></li>
+            <li><a href="#">Consectetuer</a></li>
+            <li><a href="#">Adipiscing elit</a></li>
+            <li><a href="#">Quis nostrud</a></li>
+        </ul>
+    </nav>
 
-                        <div id="searchfield-wrapper">
-                            <div id="searchfield">
-                                <div class="field-container-text">
-                                    <input type="text" />
-                                </div>
-                                <button class="btn-search">
-                                    <span><span></span></span>
-                                </button>
-                            </div>
-                        </div>
+    <div id="breadcrumb">
+        <ul>
+            <li class="home"><a href="#"></a></li>
+            <li class="breadcrumb-item"><a href="#">sivu 1</a></li>
+            <li class="breadcrumb-item"><a href="#">sivu 2</a></li>
+            <li class="breadcrumb-item"><a href="#">sivu 3</a></li>
+            <li class="breadcrumb-item current"><a href="#">sivu 4</a></li>
+            <li class="clear"></li>
+        </ul>
+    </div>
 
-                    </section>
-
-                    <section id="vapaasanahaku" class="content-container">
-
-                        
-
-                        <div class="grid16-12">
-
-                            <div class="tabs">
-                                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="haut" class="tab current"><span>Koulutuksia (24 kpl)</span></a>
-                                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="koulutukset" class="tab"><span>Koulutustietoa (12 kpl)</span></a>
-                                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakukohteet" class="tab"><span>Tarinoita (3 kpl)</span></a>
-                            </div>
-
-                            <div class="tabsheets">
-                                <section id="koulutuksia" style="display: block" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="haut">
-                                    
-                                    <div class="grid16-6">  
-                                        <form id="suodatin" action="" method="post">
-
-                                            <fieldset class="form-item">
-                                                <div class="form-item-content">
-                                             
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="suodatin" value="dolor" id="Liikennevaline-dolor" />
-                                                        <label for="Liikennevaline-dolor">Näytä vain tutkintoon johtava koulutus</label>
-                                                    </div>
-                                             
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="suodatin" value="sit" id="Liikennevaline-sit" />
-                                                        <label for="Liikennevaline-sit">Haku meneillään juuri nyt</label>
-                                                    </div>
-                                                </div>
-                                                <div class="clear"></div>
-                                            </fieldset>
-
-                                            <fieldset class="form-item">
-                                                <legend class="h3 form-item-label">Koulutustyyppi</legend>
-                                                <div class="form-item-content">
-                                             
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="Koulutustyyppi" value="lorem" id="Koulutustyyppi-lorem" />
-                                                        <label for="Koulutustyyppi-lorem">lorem</label>
-                                                    </div>
-                                                         
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="Koulutustyyppi" value="ipsum" id="Koulutustyyppi-ipsum" />
-                                                        <label for="Koulutustyyppi-ipsum">ipsum</label>
-                                                    </div>
-                                             
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="Koulutustyyppi" value="dolor" id="Koulutustyyppi-dolor" />
-                                                        <label for="Koulutustyyppi-dolor">dolor</label>
-                                                    </div>
-                                             
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="Koulutustyyppi" value="sit" id="Koulutustyyppi-sit" />
-                                                        <label for="Koulutustyyppi-sit">sit</label>
-                                                    </div>
-                                                </div>
-                                                <div class="clear"></div>
-                                            </fieldset>
-
-                                            <fieldset class="form-item">
-                                                <legend class="h3 form-item-label">Pohjakoulutus</legend>
-                                                <div class="form-item-content">
-                                             
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="Pohjakoulutus" value="lorem" id="Pohjakoulutus-lorem" />
-                                                        <label for="Pohjakoulutus-lorem">lorem</label>
-                                                    </div>
-                                                         
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="Pohjakoulutus" value="ipsum" id="Pohjakoulutus-ipsum" />
-                                                        <label for="Pohjakoulutus-ipsum">ipsum</label>
-                                                    </div>
-                                             
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="Pohjakoulutus" value="dolor" id="Pohjakoulutus-dolor" />
-                                                        <label for="Pohjakoulutus-dolor">dolor</label>
-                                                    </div>
-                                             
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="Pohjakoulutus" value="sit" id="Pohjakoulutus-sit" />
-                                                        <label for="Pohjakoulutus-sit">sit</label>
-                                                    </div>
-                                                </div>
-                                                <div class="clear"></div>
-                                            </fieldset>
-
-                                            <fieldset class="form-item">
-                                                <legend class="h3 form-item-label">Koulutuksen kieli</legend>
-                                                <div class="form-item-content">
-                                             
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="Kieli" value="lorem" id="Kieli-lorem" />
-                                                        <label for="Kieli-lorem">lorem</label>
-                                                    </div>
-                                                         
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="Kieli" value="ipsum" id="Kieli-ipsum" />
-                                                        <label for="Kieli-ipsum">ipsum</label>
-                                                    </div>
-                                             
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="Kieli" value="dolor" id="Kieli-dolor" />
-                                                        <label for="Kieli-dolor">dolor</label>
-                                                    </div>
-                                             
-                                                    <div class="field-container-checkbox">
-                                                        <input type="checkbox" name="Kieli" value="sit" id="Kieli-sit" />
-                                                        <label for="Kieli-sit">sit</label>
-                                                    </div>
-                                                </div>
-                                                <div class="clear"></div>
-                                            </fieldset>
-
-                                            <fieldset class="form-item">
-                                                <legend class="h3">OPPILAITOSTYYPPI</legend>
-                                                <div class="field-container-select">
-                                                    <select name="Oppilaitostyyppi" placeholder="Valitse kansalaisuus" id="Oppilaitostyyppi" required="required">
-                                                        <option name="Oppilaitostyyppi.Oppilaitostyyppi.suomi" value="Kaikki" selected="selected" id="Oppilaitostyyppi-suomi">Kaikki</option>
-                                                        <option name="Oppilaitostyyppi.Oppilaitostyyppi.ruotsi" value="Ammattikoulu" id="Oppilaitostyyppi-ruotsi">Ammattikoulu</option>
-                                                    </select>
-                                                </div>
-                                            </fieldset>
-
-                                            <fieldset class="form-item">
-                                                <legend class="h3">OPINTOJEN ALKAMISAJANKOHTA</legend>
-                                                <div class="field-container-select">
-                                                    <select name="Alkamisajankohta" placeholder="Valitse kansalaisuus" id="Alkamisajankohta" required="required">
-                                                        <option name="Alkamisajankohta.Alkamisajankohta.suomi" value="Kevät 2013" selected="selected" id="Alkamisajankohta-suomi">Kevät 2013</option>
-                                                        <option name="Alkamisajankohta.Alkamisajankohta.ruotsi" value="Syksy 2014" id="Alkamisajankohta-ruotsi">Syksy 2014</option>
-                                                    </select>
-                                                </div>
-                                            </fieldset>
-
-                                            <div class="form-item">
-                                                <legend class="h3">SIJAINTI</legend>
-                                                <div class="form-item-content">
-                                                    <input type="text" name="Kentta" id="KenttaId" size="30" />
-                                                    <button class="plus">
-                                                    <span><span></span></span>
-                                                </button>
-                                                </div>
-                                                <div class="clear"></div>
-                                            </div>
-
-                                            <button>
-                                                <span><span>Lähetä</span></span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <div class="grid16-10">
-                                        <form id="hakutulokset" action="" method="post">
-
-                                            <div class="toprow">
-                                                <h1 class="set-left">Hakusana: liikunta</h1>
-
-                                                <div class="field-container-select set-right">
-                                                    <select name="Aakkosjarjestys" placeholder="Järjestä aakkosittain" id="Aakkosjarjestys">
-                                                        <option name="Aakkosjarjestys.Aakkosjarjestys.laskeva" value="Kevät 2013" selected="selected" id="Aakkosjarjestys-laskeva">laskeva</option>
-                                                        <option name="Aakkosjarjestys.Aakkosjarjestys.nouseva" value="Syksy 2014" id="Aakkosjarjestys-nouseva">nouseva</option>
-                                                    </select>
-                                                </div>  
-
-                                                <button class="set-right">
-                                                    <span><span>aakkosjärjestys</span></span>
-                                                </button>
-                                                
-                                            </div>
-                                            
-                                            <div class="clear"></div>
-
-                                            <div class="form-item search-result">
-                                                <ul class="result set-left" style="display: inline-block; margin-right: 20px">
-                                                    <li><a href="#" class="form-row-link bold">Liikunnanohjauksen perustutkinto PK; Liikunnanohjaaja; Kevät 2013; Kisakallion urheilupuisto; Lohja</a></li>
-                                                    <li><a href="#" class="form-row-link left-intend-2">- Liikunnanohjauksen koulutusohjelma</a></li>
-                                                    
-                                                </ul>
-                                                <div class="result-options">
-                                                    <div class="field-container-checkbox set-left left-intend-2" style="display: inline-block">
-                                                        <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId" />
-                                                        <label for="KenttaId">Lisää muistilistaan</label>
-                                                    </div>
-
-                                                    <div class="field-container-checkbox set-left left-intend-2">
-                                                        <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId" />
-                                                        <label for="KenttaId">Lisää vertailulistaan</label>
-                                                    </div>
-                                                </div>
-                                            </div>  
-
-                                            <div class="clear"></div>
-
-
-                                            <div class="form-item search-result">
-                                                <ul class="result set-left" style="display: inline-block; margin-right: 20px">
-                                                    <li><a href="#" class="form-row-link bold">Liikunnanohjauksen perustutkinto PK; Liikuntaneuvoja; Syksy 2013; Suomen Urheilupuisto; Vierumäki</a></li>
-                                                    <li><a href="#" class="form-row-link left-intend-2">- Liikunnanohjauksen koulutusohjelma</a></li>
-                                                    
-                                                </ul>
-                                                <div class="result-options">
-                                                    <div class="field-container-checkbox set-left left-intend-2" style="display: inline-block">
-                                                        <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId" />
-                                                        <label for="KenttaId">Lisää muistilistaan</label>
-                                                    </div>
-
-                                                    <div class="field-container-checkbox set-left left-intend-2">
-                                                        <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId" />
-                                                        <label for="KenttaId">Lisää vertailulistaan</label>
-                                                    </div>
-                                                </div>
-                                            </div>  
-
-                                            <div class="clear"></div>
-                                        </form>
-                                    </div>
-                                    <div class="clear"></div>
-                                    
-                                </section>
-                                <section id="koulutustietoa" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="koulutukset">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                </section>
-                                <section id="tarinoita" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakukohteet">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                </section>
-                            </div>
-                        </div>
-                        <div class="grid16-4">
-                            <aside id="sidemenu">
-                                <div id="notelist">
-                                    <div class="heading">
-                                        <h2>Muistilista</h2>
-                                    </div>
-                                    <div class="sidemenu-content">
-                                        <ul>
-                                            <li>Lorem ipsum dolor sit amet</li>
-                                            <li>Lorem ipsum dolor sit amet</li>
-                                        </ul>
-                                        <button>
-                                            <span><span>siirry muistilistaan</span></span>
-                                        </button>
-                                        <p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua.</i></p>
-                                    </div>
-                                </div>
-                                <div id="compare">
-                                    <div class="heading">
-                                        <h2>Vertailu</h2>
-                                    </div>
-                                    <div class="sidemenu-content">
-                                        <ul class="removable-items">
-                                            <li><a href="#" class="item">Lorem ipsum dolor sit amet</a><a class="btn-remove" href="#"></a></li>
-                                            <li><a href="#" class="item">Lorem ipsum dolor sit amet</a><a class="btn-remove" href="#"></a></li>
-                                            <li><a href="#" class="item">Lorem ipsum dolor sit amet</a><a class="btn-remove" href="#"></a></li>
-                                            <li><a href="#" class="item">Lorem ipsum dolor sit amet</a><a class="btn-remove" href="#"></a></li>
-                                        </ul>
-                                        <button>
-                                            <span><span>Vertaile</span></span>
-                                        </button>
-                                        <p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                        tempor incididunt ut labore et dolore magna aliqua.</i></p>
-                                        <p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                        consequat.</i></p>
-                                    </div>
-                                </div>
-                                <div id="authentication">
-                                    <div class="heading">
-                                        <h2>Kirjautuminen</h2>
-                                    </div>
-                                    <div class="sidemenu-content">
-                                
-                                        <form id="kirjautuminen" action="" method="post">
-                                            <legend class="h3">KÄYTTÄJÄTUNNUS</legend>
-                                            <div class="form-item-content">
-                                                <input type="text" name="kayttajatunnus" id="kayttajatunnusId" size="30" />
-                                            </div>
-                                            <legend class="h3">SALASANA</legend>
-                                            <div class="form-item-content">
-                                                <input type="text" name="salasana" id="salasanaId" size="30" />
-                                            </div>
-                                            
-                                            <input type="submit" />
-                                        </form> 
-                                        <div class="clear"></div>
-                                       
-
-                                        <a href="#" class="helplink">?</a>
-                                        <a href="#">Unohtuiko salasana?</a>
-                                        <a href="#">Rekisteröidy palveluun</a>
-
-                                    </div>
-                                </div>
-                            </aside>
-                        </div>
-                        <div class="clear"></div>
-                    </section>
-                </section>
-                <footer id="sitefooter"></footer>
+    <div id="searchfield-wrapper">
+        <div id="searchfield">
+            <div class="field-container-text">
+                <input type="text"/>
             </div>
-            
+            <button class="btn-search">
+                <span><span></span></span>
+            </button>
+
         </div>
-    </body>
+    </div>
+
+</section>
+<section id="vapaasanahaku" class="content-container">
+
+
+<div class="grid16-12">
+
+<div class="tabs">
+    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="haut"
+       class="tab current"><span>Koulutuksia (24 kpl)</span></a>
+    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="koulutukset"
+       class="tab"><span>Koulutustietoa (12 kpl)</span></a>
+    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakukohteet" class="tab"><span>Tarinoita (3 kpl)</span></a>
+</div>
+
+<div class="tabsheets">
+<section id="koulutuksia" style="display: block" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="haut">
+
+<div class="grid16-6">
+    <form id="suodatin" action="" method="post">
+
+        <fieldset class="form-item">
+            <div class="form-item-content">
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="suodatin" value="dolor" id="Liikennevaline-dolor"/>
+                    <label for="Liikennevaline-dolor">Näytä vain tutkintoon johtava koulutus</label>
+                </div>
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="suodatin" value="sit" id="Liikennevaline-sit"/>
+                    <label for="Liikennevaline-sit">Haku meneillään juuri nyt</label>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </fieldset>
+
+        <fieldset class="form-item">
+            <legend class="h3 form-item-label">Koulutustyyppi</legend>
+            <div class="form-item-content">
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="Koulutustyyppi" value="lorem" id="Koulutustyyppi-lorem"/>
+                    <label for="Koulutustyyppi-lorem">lorem</label>
+                </div>
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="Koulutustyyppi" value="ipsum" id="Koulutustyyppi-ipsum"/>
+                    <label for="Koulutustyyppi-ipsum">ipsum</label>
+                </div>
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="Koulutustyyppi" value="dolor" id="Koulutustyyppi-dolor"/>
+                    <label for="Koulutustyyppi-dolor">dolor</label>
+                </div>
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="Koulutustyyppi" value="sit" id="Koulutustyyppi-sit"/>
+                    <label for="Koulutustyyppi-sit">sit</label>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </fieldset>
+
+        <fieldset class="form-item">
+            <legend class="h3 form-item-label">Pohjakoulutus</legend>
+            <div class="form-item-content">
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="Pohjakoulutus" value="lorem" id="Pohjakoulutus-lorem"/>
+                    <label for="Pohjakoulutus-lorem">lorem</label>
+                </div>
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="Pohjakoulutus" value="ipsum" id="Pohjakoulutus-ipsum"/>
+                    <label for="Pohjakoulutus-ipsum">ipsum</label>
+                </div>
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="Pohjakoulutus" value="dolor" id="Pohjakoulutus-dolor"/>
+                    <label for="Pohjakoulutus-dolor">dolor</label>
+                </div>
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="Pohjakoulutus" value="sit" id="Pohjakoulutus-sit"/>
+                    <label for="Pohjakoulutus-sit">sit</label>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </fieldset>
+
+        <fieldset class="form-item">
+            <legend class="h3 form-item-label">Koulutuksen kieli</legend>
+            <div class="form-item-content">
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="Kieli" value="lorem" id="Kieli-lorem"/>
+                    <label for="Kieli-lorem">lorem</label>
+                </div>
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="Kieli" value="ipsum" id="Kieli-ipsum"/>
+                    <label for="Kieli-ipsum">ipsum</label>
+                </div>
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="Kieli" value="dolor" id="Kieli-dolor"/>
+                    <label for="Kieli-dolor">dolor</label>
+                </div>
+
+                <div class="field-container-checkbox">
+                    <input type="checkbox" name="Kieli" value="sit" id="Kieli-sit"/>
+                    <label for="Kieli-sit">sit</label>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </fieldset>
+
+        <fieldset class="form-item">
+            <legend class="h3">OPPILAITOSTYYPPI</legend>
+            <div class="field-container-select">
+                <select name="Oppilaitostyyppi" placeholder="Valitse kansalaisuus" id="Oppilaitostyyppi"
+                        required="required">
+                    <option name="Oppilaitostyyppi.Oppilaitostyyppi.suomi" value="Kaikki" selected="selected"
+                            id="Oppilaitostyyppi-suomi">Kaikki
+                    </option>
+                    <option name="Oppilaitostyyppi.Oppilaitostyyppi.ruotsi" value="Ammattikoulu"
+                            id="Oppilaitostyyppi-ruotsi">Ammattikoulu
+                    </option>
+                </select>
+            </div>
+        </fieldset>
+
+        <fieldset class="form-item">
+            <legend class="h3">OPINTOJEN ALKAMISAJANKOHTA</legend>
+            <div class="field-container-select">
+                <select name="Alkamisajankohta" placeholder="Valitse kansalaisuus" id="Alkamisajankohta"
+                        required="required">
+                    <option name="Alkamisajankohta.Alkamisajankohta.suomi" value="Kevät 2013" selected="selected"
+                            id="Alkamisajankohta-suomi">Kevät 2013
+                    </option>
+                    <option name="Alkamisajankohta.Alkamisajankohta.ruotsi" value="Syksy 2014"
+                            id="Alkamisajankohta-ruotsi">Syksy 2014
+                    </option>
+                </select>
+            </div>
+        </fieldset>
+
+        <div class="form-item">
+            <legend class="h3">SIJAINTI</legend>
+            <div class="form-item-content">
+                <input type="text" name="Kentta" id="KenttaId" size="30"/>
+                <button class="plus">
+                    <span><span></span></span>
+                </button>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <button>
+            <span><span>Lähetä</span></span>
+        </button>
+    </form>
+</div>
+<div class="grid16-10">
+    <form id="hakutulokset" action="" method="post">
+
+        <div class="toprow">
+            <h1 class="set-left">Hakusana: liikunta</h1>
+
+            <div class="field-container-select set-right">
+                <select name="Aakkosjarjestys" placeholder="Järjestä aakkosittain" id="Aakkosjarjestys">
+                    <option name="Aakkosjarjestys.Aakkosjarjestys.laskeva" value="Kevät 2013" selected="selected"
+                            id="Aakkosjarjestys-laskeva">laskeva
+                    </option>
+                    <option name="Aakkosjarjestys.Aakkosjarjestys.nouseva" value="Syksy 2014"
+                            id="Aakkosjarjestys-nouseva">nouseva
+                    </option>
+                </select>
+            </div>
+
+            <button class="set-right">
+                <span><span>aakkosjärjestys</span></span>
+            </button>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="form-item search-result">
+            <ul class="result set-left" style="display: inline-block; margin-right: 20px">
+                <li><a href="koulutuskuvaus.html" class="form-row-link bold">Liikunnanohjauksen perustutkinto PK;
+                    Liikunnanohjaaja; Kevät 2013; Kisakallion urheilupuisto; Lohja</a></li>
+                <li><a href="koulutuskuvaus.html" class="form-row-link left-intend-2">- Liikunnanohjauksen
+                    koulutusohjelma</a></li>
+
+            </ul>
+            <div class="result-options">
+                <div class="field-container-checkbox set-left left-intend-2" style="display: inline-block">
+                    <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
+                    <label for="KenttaId">Lisää muistilistaan</label>
+                </div>
+
+                <div class="field-container-checkbox set-left left-intend-2">
+                    <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
+                    <label for="KenttaId">Lisää vertailulistaan</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+
+
+        <div class="form-item search-result">
+            <ul class="result set-left" style="display: inline-block; margin-right: 20px">
+                <li><a href="koulutuskuvaus.html" class="form-row-link bold">Liikunnanohjauksen perustutkinto PK;
+                    Liikuntaneuvoja; Syksy 2013; Suomen Urheilupuisto; Vierumäki</a></li>
+                <li><a href="koulutuskuvaus.html" class="form-row-link left-intend-2">- Liikunnanohjauksen
+                    koulutusohjelma</a></li>
+
+            </ul>
+            <div class="result-options">
+                <div class="field-container-checkbox set-left left-intend-2" style="display: inline-block">
+                    <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
+                    <label for="KenttaId">Lisää muistilistaan</label>
+                </div>
+
+                <div class="field-container-checkbox set-left left-intend-2">
+                    <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
+                    <label for="KenttaId">Lisää vertailulistaan</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+    </form>
+</div>
+<div class="clear"></div>
+
+</section>
+<section id="koulutustietoa" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="koulutukset">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</section>
+<section id="tarinoita" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakukohteet">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</section>
+</div>
+</div>
+<div class="grid16-4">
+    <aside id="sidemenu">
+        <div id="notelist">
+            <div class="heading">
+                <h2>Muistilista</h2>
+            </div>
+            <div class="sidemenu-content">
+                <ul>
+                    <li>Lorem ipsum dolor sit amet</li>
+                    <li>Lorem ipsum dolor sit amet</li>
+                </ul>
+                <button>
+                    <span><span>siirry muistilistaan</span></span>
+                </button>
+                <p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua.</i></p>
+            </div>
+        </div>
+        <div id="compare">
+            <div class="heading">
+                <h2>Vertailu</h2>
+            </div>
+            <div class="sidemenu-content">
+                <ul class="removable-items">
+                    <li><a href="#" class="item">Lorem ipsum dolor sit amet</a><a class="btn-remove" href="#"></a></li>
+                    <li><a href="#" class="item">Lorem ipsum dolor sit amet</a><a class="btn-remove" href="#"></a></li>
+                    <li><a href="#" class="item">Lorem ipsum dolor sit amet</a><a class="btn-remove" href="#"></a></li>
+                    <li><a href="#" class="item">Lorem ipsum dolor sit amet</a><a class="btn-remove" href="#"></a></li>
+                </ul>
+                <button>
+                    <span><span>Vertaile</span></span>
+                </button>
+                <p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua.</i></p>
+
+                <p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat.</i></p>
+            </div>
+        </div>
+        <div id="authentication">
+            <div class="heading">
+                <h2>Kirjautuminen</h2>
+            </div>
+            <div class="sidemenu-content">
+
+                <form id="kirjautuminen" action="" method="post">
+                    <legend class="h3">KÄYTTÄJÄTUNNUS</legend>
+                    <div class="form-item-content">
+                        <input type="text" name="kayttajatunnus" id="kayttajatunnusId" size="30"/>
+                    </div>
+                    <legend class="h3">SALASANA</legend>
+                    <div class="form-item-content">
+                        <input type="text" name="salasana" id="salasanaId" size="30"/>
+                    </div>
+
+                    <input type="submit"/>
+                </form>
+                <div class="clear"></div>
+
+
+                <a href="#" class="helplink">?</a>
+                <a href="#">Unohtuiko salasana?</a>
+                <a href="#">Rekisteröidy palveluun</a>
+
+            </div>
+        </div>
+    </aside>
+</div>
+<div class="clear"></div>
+</section>
+</section>
+<footer id="sitefooter"></footer>
+</div>
+
+</div>
+</body>
 </html>
