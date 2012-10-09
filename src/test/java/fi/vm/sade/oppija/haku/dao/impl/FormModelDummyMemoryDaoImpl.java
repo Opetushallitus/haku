@@ -155,7 +155,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     }
 
-    private void createArvosanat(QuestionGroup arvosanatRyhmä) {
+    public GradeGrid createGradeGrid() {
 
         List<Integer> gradeRange = new ArrayList<Integer>();
         gradeRange.add(10);
@@ -203,7 +203,12 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                 "Kieli", "Lisää kieli", subjectRowsBefore, languageRows,
                 subjectRowsAfter, scopeOptions, languageOptions, gradeRange);
 
-        arvosanatRyhmä.addChild(gradeGrid);
+        return gradeGrid;
+    }
+
+    private void createArvosanat(QuestionGroup arvosanatRyhmä) {
+
+        arvosanatRyhmä.addChild(createGradeGrid());
 
     }
 
