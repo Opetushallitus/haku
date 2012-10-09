@@ -157,14 +157,15 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     public GradeGrid createGradeGrid() {
 
-        List<Integer> gradeRange = new ArrayList<Integer>();
-        gradeRange.add(10);
-        gradeRange.add(9);
-        gradeRange.add(8);
-        gradeRange.add(7);
-        gradeRange.add(6);
-        gradeRange.add(5);
-        gradeRange.add(4);
+        List<Option> gradeRange = new ArrayList<Option>();
+        gradeRange.add(new Option("grade_nograde", "-1", "Ei arvosanaa"));
+        gradeRange.add(new Option("grade_10", "10", "10"));
+        gradeRange.add(new Option("grade_9", "9", "9"));
+        gradeRange.add(new Option("grade_8", "8", "8"));
+        gradeRange.add(new Option("grade_7", "7", "7"));
+        gradeRange.add(new Option("grade_6", "6", "6"));
+        gradeRange.add(new Option("grade_5", "5", "5"));
+        gradeRange.add(new Option("grade_4", "4", "4"));
 
         SubjectRow finnish = new SubjectRow("subject_finnish", "Äidinkieli");
         List<SubjectRow> subjectRowsBefore = new ArrayList<SubjectRow>();

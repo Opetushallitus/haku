@@ -79,9 +79,8 @@
                                         <div class="field-container-select">
                                             <select id="${customCommonGradeKey}" name="${customCommonGradeKey}" placeholder="Valitse">
                                             <option></option>
-                        	                <option>Ei arvosanaa</option>
                                             <c:forEach var="grade" items="${element.gradeRange}">
-                            	                <option ${(categoryData[customCommonGradeKey] eq grade) ? "selected=\"selected\"" : ""}>${grade}</option>
+                            	                <option value="${grade.value}" ${(categoryData[customCommonGradeKey] eq grade.value) ? "selected=\"selected\"" : ""}>${grade.title}</option>
                                     	    </c:forEach>
                         	    </select>
                             </div>
@@ -90,9 +89,8 @@
                             <div class="field-container-select">
                                 <select id="${customOptionalGradeKey}" name="${customOptionalGradeKey}" placeholder="Valitse">
                                     <option></option>
-                        	        <option>Ei arvosanaa</option>
                                     <c:forEach var="grade" items="${element.gradeRange}">
-                            	                <option ${(categoryData[customOptionalGradeKey] eq grade) ? "selected=\"selected\"" : ""}>${grade}</option>
+                            	                <option value="${grade.value}" ${(categoryData[customOptionalGradeKey] eq grade.value) ? "selected=\"selected\"" : ""}>${grade.title}</option>
                                     </c:forEach>
                         	    </select>
                             </div>
@@ -149,9 +147,8 @@
                     <div class="field-container-select">
                         <select name="arvosana-1" placeholder="Valitse">
                         <option></option>
-    	                <option>Ei arvosanaa</option>
                         <c:forEach var="grade" items="${element.gradeRange}">
-        	                <option>${grade}</option>
+        	                <option value="${grade.value}">${grade.title}</option>
                 	    </c:forEach>
     	                </select>
                     </div>
@@ -162,7 +159,7 @@
                         <option></option>
     	                <option>Ei arvosanaa</option>
                         <c:forEach var="grade" items="${element.gradeRange}">
-        	                <option>${grade}</option>
+        	                <option value="${grade.value}">${grade.title}</option>
                 	    </c:forEach>
     	                </select>
                     </div>

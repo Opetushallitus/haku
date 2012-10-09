@@ -42,7 +42,7 @@ public class GradeGrid extends Titled {
     // different languages
     private List<Option> languageOptions;
     // list of possible grades
-    private List<Integer> gradeRange;
+    private List<Option> gradeRange;
 
     public GradeGrid(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
                      @JsonProperty(value = "registryGradesTitle") String registryGradesTitle,
@@ -58,7 +58,7 @@ public class GradeGrid extends Titled {
                      @JsonProperty(value = "subjectsAfterLanguages") List<SubjectRow> subjectsAfterLanguages,
                      @JsonProperty(value = "scopeOptions") List<Option> scopeOptions,
                      @JsonProperty(value = "languageOptions") List<Option> languageOptions,
-                     @JsonProperty(value = "gradeRange") List<Integer> gradeRange) {
+                     @JsonProperty(value = "gradeRange") List<Option> gradeRange) {
         super(id, title);
         this.registryGradesTitle = registryGradesTitle;
         this.alteringGradesTitle = alteringGradesTitle;
@@ -96,7 +96,7 @@ public class GradeGrid extends Titled {
         return optionalSubjectColumnTitle;
     }
 
-    public List<Integer> getGradeRange() {
+    public List<Option> getGradeRange() {
         return gradeRange;
     }
 
