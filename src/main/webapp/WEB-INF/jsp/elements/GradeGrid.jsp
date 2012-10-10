@@ -129,7 +129,7 @@
                 included into the table to add new languages 
                 this always has to be the last row-->
             <tr style="display: none">
-                <td><c:out value="${element.customLanguageTitle}"/>
+                <td><c:out value="${element.customLanguageTitle}"/>&nbsp;
                 <select>
                     <option></option>
                     <c:forEach var="scopeOption" items="${element.scopeOptions}">
