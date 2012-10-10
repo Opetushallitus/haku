@@ -12,7 +12,7 @@
     <http use-expressions="true">
         <intercept-url pattern="/**" access="permitAll"/>
         <form-login/>
-        <logout/>
+        <logout logout-url="/logout"/>
     </http>
 
     <authentication-manager>

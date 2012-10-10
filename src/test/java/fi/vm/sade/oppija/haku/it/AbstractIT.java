@@ -15,7 +15,6 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 public abstract class AbstractIT extends TomcatContainerTest {
 
-
     protected String jsonModelFileName;
 
     @Before

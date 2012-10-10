@@ -47,7 +47,7 @@ public class FormController {
     public static final String LINK_LIST_VIEW = "linkList";
     public static final String ERROR_NOTFOUND = "error/notfound";
     public static final String ERROR_SERVERERROR = "error/servererror";
-    public static final String USER_ID = "userid";
+    public static final String USER_ID = "j_username";
 
     final FormService formService;
     private final HakemusService hakemusService;
@@ -67,23 +67,6 @@ public class FormController {
         return modelAndView;
     }
 
-    /**
-     * Temporary method for saving user id into session.
-     * TODO: remove when authentication is implemented
-     *
-     * @param userid
-     * @return
-     */
-    @RequestMapping(value = "/", method = RequestMethod.GET, params = USER_ID)
-    public ModelAndView listApplicationPeriodsWithUser(@RequestParam(USER_ID) String userid, HttpSession session) {
-        LOGGER.debug("listApplicationPeriods with user: " + userid);
-        session.setAttribute(USER_ID, userid);
-
-        Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
-        final ModelAndView modelAndView = new ModelAndView(LINK_LIST_VIEW);
-        modelAndView.addObject(LINK_LIST_VIEW, applicationPerioidMap.keySet());
-        return modelAndView;
-    }
 
     @RequestMapping(value = "/{applicationPeriodId}", method = RequestMethod.GET)
     public ModelAndView listForms(@PathVariable final String applicationPeriodId) {
