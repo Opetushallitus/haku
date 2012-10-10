@@ -63,6 +63,7 @@ public class TarjontaIT extends TomcatContainerTest {
         initModel();
         setScriptingEnabled(false);
         beginAt("/fi/tarjontatiedot/1");
-        assertLinkPresentWithExactText("Hae");
+        dumpHtml();
+        assertElementPresent("site");
     }
 }
