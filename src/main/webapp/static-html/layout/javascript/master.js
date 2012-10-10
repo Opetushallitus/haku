@@ -124,16 +124,14 @@ var formReplacements = {
 				// Check & set checked status
 				if($(this).prop('checked') == true || $(this).attr('checked') == true)
 				{
-					$(this).click();
-					//$(this).attr('checked', 'checked');
+					$(this).attr('checked', 'checked');
 					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('selected');
 				}
 				
 				// Check & set disabled status
 				if($(this).prop('disabled') == true || $(this).attr('disabled') == true)
 				{
-					$(this).click();
-					//$(this).attr('disabled', 'disabled');
+					$(this).attr('disabled', 'disabled');
 					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('disabled');
 				}
 
@@ -218,9 +216,11 @@ var formReplacements = {
 				$(this).removeAttr('checked');
 			});
 			
+
 			// Set checked status and focus
 			replacement.addClass('selected');
-			input.attr('checked', 'checked').focus();
+			input.trigger('click');
+			//input.attr('checked', 'checked').focus();
 		}
 	},
 	setTriggers:function(){
@@ -276,9 +276,11 @@ var formReplacements = {
 		
 		// Trigger on radio
 		// Click, Focus, Blur
+		/*
 		$('body').on({
 			click : function(event){
 				/* event.preventDefault(); */
+				/*
 				if (typeof $(this).attr('data-js-radio-id') != 'undefined' && !$(this).hasClass('disabled'))
 				{
 					id = parseInt($(this).attr('data-js-radio-id'));
@@ -300,7 +302,7 @@ var formReplacements = {
 				}
 			}
 		}, 'input[type="radio"][data-js-radio-id]');
-
+		*/
 		
 		// Trigger on replacement checkbox label
 		// Click, hover
