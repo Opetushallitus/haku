@@ -32,6 +32,7 @@ import java.io.Serializable;
 public class HakemusId implements Serializable {
 
     private static final long serialVersionUID = 8484849312020479901L;
+    public static final int HASH_CODE_MAGIC = 31;
 
     private final String applicationPeriodId;
     private final String formId;
@@ -105,9 +106,9 @@ public class HakemusId implements Serializable {
     @Override
     public int hashCode() {
         int result = applicationPeriodId != null ? applicationPeriodId.hashCode() : 0;
-        result = 31 * result + (formId != null ? formId.hashCode() : 0);
-        result = 31 * result + (categoryId != null ? categoryId.hashCode() : 0);
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = HASH_CODE_MAGIC * result + (formId != null ? formId.hashCode() : 0);
+        result = HASH_CODE_MAGIC * result + (categoryId != null ? categoryId.hashCode() : 0);
+        result = HASH_CODE_MAGIC * result + (userId != null ? userId.hashCode() : 0);
         return result;
     }
 }
