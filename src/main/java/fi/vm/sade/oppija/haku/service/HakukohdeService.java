@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.haku.service;
 
-import fi.vm.sade.oppija.haku.domain.Opetuspiste;
+import fi.vm.sade.oppija.haku.domain.Organisaatio;
 
 import java.util.List;
 
@@ -24,12 +24,12 @@ import java.util.List;
  * Service for searching education institutes
  * @author Mikko Majapuro
  */
-public interface EducationService {
+public interface HakukohdeService {
 
     /**
      *
      * @param term search term
      * @return list of education institutes matching search term
      */
-    List<Opetuspiste> searchEducationInstitutes(final String term);
+    List<Organisaatio> searchOrganisaatio(final String term);
 }

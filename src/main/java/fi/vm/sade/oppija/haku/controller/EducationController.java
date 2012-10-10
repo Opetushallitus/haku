@@ -16,8 +16,8 @@
 
 package fi.vm.sade.oppija.haku.controller;
 
-import fi.vm.sade.oppija.haku.domain.Opetuspiste;
-import fi.vm.sade.oppija.haku.service.EducationService;
+import fi.vm.sade.oppija.haku.domain.Organisaatio;
+import fi.vm.sade.oppija.haku.service.HakukohdeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,11 +39,11 @@ public class EducationController {
     public static final String TERM = "term";
 
     @Autowired
-    EducationService educationService;
+    HakukohdeService educationService;
 
     @RequestMapping(value = "/institute/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = TERM)
     @ResponseBody
-    public List<Opetuspiste> search(@RequestParam(TERM) String term) {
-        return educationService.searchEducationInstitutes(term);
+    public List<Organisaatio> search(@RequestParam(TERM) String term) {
+        return educationService.searchOrganisaatio(term);
     }
 }

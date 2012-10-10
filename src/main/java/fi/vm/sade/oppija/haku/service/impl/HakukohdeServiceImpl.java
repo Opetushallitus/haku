@@ -16,8 +16,8 @@
 
 package fi.vm.sade.oppija.haku.service.impl;
 
-import fi.vm.sade.oppija.haku.domain.Opetuspiste;
-import fi.vm.sade.oppija.haku.service.EducationService;
+import fi.vm.sade.oppija.haku.domain.Organisaatio;
+import fi.vm.sade.oppija.haku.service.HakukohdeService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,26 +30,26 @@ import java.util.Locale;
  * @author Mikko Majapuro
  */
 @Service("educationService")
-public class EducationServiceImpl implements EducationService {
+public class HakukohdeServiceImpl implements HakukohdeService {
 
     public static final int AMOUNT_OF_TEST_OPETUSPISTE = 1000;
-    private List<Opetuspiste> institutes = new ArrayList<Opetuspiste>();
+    private List<Organisaatio> institutes = new ArrayList<Organisaatio>();
     public static final int MAX_RESULTS = 10;
 
-    public EducationServiceImpl() {
+    public HakukohdeServiceImpl() {
         // populate test data
         for (int i = 0; i < AMOUNT_OF_TEST_OPETUSPISTE; ++i) {
-            Opetuspiste op = new Opetuspiste(String.valueOf(i), "Koulu" + i);
+            Organisaatio op = new Organisaatio(String.valueOf(i), "Koulu" + i);
             institutes.add(op);
         }
     }
 
     @Override
-    public List<Opetuspiste> searchEducationInstitutes(String term) {
-        List<Opetuspiste> result = new ArrayList<Opetuspiste>();
+    public List<Organisaatio> searchOrganisaatio(String term) {
+        List<Organisaatio> result = new ArrayList<Organisaatio>();
         if (term != null && !term.trim().isEmpty()) {
             term = term.trim().toLowerCase(Locale.getDefault());
-            for (Opetuspiste o : institutes) {
+            for (Organisaatio o : institutes) {
                 if (o.getKey().startsWith(term)) {
                     result.add(o);
                     if (result.size() >= MAX_RESULTS) {
