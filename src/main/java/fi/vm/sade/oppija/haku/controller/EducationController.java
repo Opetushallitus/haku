@@ -44,7 +44,6 @@ public class EducationController {
     @RequestMapping(value = "/institute/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = TERM)
     @ResponseBody
     public List<Opetuspiste> search(@RequestParam(TERM) String term) {
-        List<Opetuspiste> result = educationService.searchEducationInstitutes(term);
-        return result;
+        return educationService.searchEducationInstitutes(term);
     }
 }
