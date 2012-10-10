@@ -39,9 +39,10 @@
                                         <input type="text" name="text" required="required" value="${parameters.text}"
                                                class="haku"/>
                                     </div>
-                                    <button class="btn-search" type="submit">
+                                    <button class="btn-search" type="submit" id="btn-search">
                                         <span><span></span></span>
                                     </button>
+                                    <input type="submit" class="btn-search"/>
                                 </form>
                             </div>
                         </div>
