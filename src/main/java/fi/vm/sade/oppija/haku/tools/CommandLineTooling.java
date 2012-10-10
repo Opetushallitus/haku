@@ -21,7 +21,7 @@ package fi.vm.sade.oppija.haku.tools;
  * @version 9/11/123:27 PM}
  * @since 1.1
  */
-public class CommandLineTooling {
+public final class CommandLineTooling {
 
 
     private CommandLineTooling() {}
