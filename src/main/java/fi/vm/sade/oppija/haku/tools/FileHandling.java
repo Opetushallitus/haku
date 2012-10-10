@@ -27,37 +27,22 @@ public class FileHandling {
     public static final Logger LOG = LoggerFactory.getLogger(FileHandling.class);
 
 
-    public String readStreamFromFile(String arg) {
-        final InputStream streamFromFile = getStreamFromFile(arg);
-        return readFile(streamFromFile);
-    }
-
-    public InputStream getStreamFromFile(String arg) {
-        return getStream(new File(arg));
-    }
-
-    public InputStream getStream(File file) {
-        try {
-            return new FileInputStream(file);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public String getStringFromFile(File file) {
-        InputStream stream = getStream(file);
-        String content = readFile(stream);
-        IOUtils.closeQuietly(stream);
-        return content;
-    }
-
     public String readFile(InputStream inputStream) {
         try {
             return IOUtils.toString(inputStream, "UTF-8");
         } catch (IOException e) {
-            LOG.error("Error reading stream", e);
+            throw new RuntimeException("Error reading file", e);
         }
-        return null;
+    }
+
+    public String readFile(File file) {
+        StringWriter stringWriter = new StringWriter();
+        try {
+            IOUtils.copy(new FileInputStream(file), stringWriter);
+        } catch (IOException e) {
+            LOG.info("Error reading file", e);
+        }
+        return stringWriter.toString();
     }
 
     public void writeFile(String filename, String contentAsString) {
@@ -67,7 +52,7 @@ public class FileHandling {
             fileWriter = new FileWriter(new File(filename));
             fileWriter.write(contentAsString);
         } catch (IOException e) {
-           LOG.error("Error writing file", e);
+            LOG.error("Error writing file", e);
         } finally {
             IOUtils.closeQuietly(fileWriter);
         }

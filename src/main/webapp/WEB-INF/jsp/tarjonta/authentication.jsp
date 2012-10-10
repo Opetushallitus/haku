@@ -21,14 +21,14 @@
     </div>
     <div class="sidemenu-content">
 
-        <form id="kirjautuminen" action="" method="post">
+        <form id="kirjautuminen" action="login" method="post">
             <legend class="h3">KÄYTTÄJÄTUNNUS</legend>
             <div class="form-item-content">
-                <input type="text" name="kayttajatunnus" id="kayttajatunnusId" size="30"/>
+                <input type="text" name="j_username" id="kayttajatunnusId" size="30"/>
             </div>
             <legend class="h3">SALASANA</legend>
             <div class="form-item-content">
-                <input type="text" name="salasana" id="salasanaId" size="30"/>
+                <input type="password" name="j_password" id="salasanaId" size="30"/>
             </div>
 
             <input type="submit"/>

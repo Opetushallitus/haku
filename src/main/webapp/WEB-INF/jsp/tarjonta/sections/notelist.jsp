@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -14,26 +15,22 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<div id="compare">
+
+<div id="notelist">
     <div class="heading">
-        <h2>Vertailu</h2>
+        <h2>Muistilista</h2>
     </div>
     <div class="sidemenu-content">
-        <ul class="removable-items">
-            <li><a href="#" class="item">Lorem ipsum dolor sit amet</a><a class="btn-remove" href="#"></a></li>
-            <li><a href="#" class="item">Lorem ipsum dolor sit amet</a><a class="btn-remove" href="#"></a></li>
-            <li><a href="#" class="item">Lorem ipsum dolor sit amet</a><a class="btn-remove" href="#"></a></li>
-            <li><a href="#" class="item">Lorem ipsum dolor sit amet</a><a class="btn-remove" href="#"></a></li>
-        </ul>
+        <div class="hierarchy-list">
+            <ul class="lvl-1">
+                <li class="closed" hierarchy-list-action="closed"><span>Lorem ipsum dolor sit amet</span></li>
+                <li class="closed" hierarchy-list-action="closed"><span>Lorem ipsum dolor sit amet</span></li>
+            </ul>
+        </div>
         <button>
-            <span><span>Vertaile</span></span>
+            <span><span>siirry muistilistaan</span></span>
         </button>
         <p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
             tempor incididunt ut labore et dolore magna aliqua.</i></p>
-
-        <p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat.</i></p>
     </div>
 </div>

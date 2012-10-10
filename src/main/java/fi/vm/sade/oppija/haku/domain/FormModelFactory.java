@@ -42,13 +42,8 @@ public final class FormModelFactory {
 
     public static FormModel fromFileName(String filename) {
         final FileHandling fileHandling = new FileHandling();
-        final String content = fileHandling.readStreamFromFile(filename);
+        final String content = fileHandling.readFile(new File(filename));
         return new JsonStringToFormModelConverter().convert(content);
-    }
-
-    public static FormModel fromFile(File file) {
-        final String json = new FileHandling().getStringFromFile(file);
-        return new JsonStringToFormModelConverter().convert(json);
     }
 
     public static FormModel fromClassPathResource(String fileName) {
@@ -58,7 +53,7 @@ public final class FormModelFactory {
     public static FormModel fromClassPathResource(ClassPathResource file) {
         String json = "";
         try {
-            json = new FileHandling().readFile(file.getInputStream());
+            json = new FileHandling().readFile(file.getFile());
         } catch (IOException e) {
             LOG.error("", e);
         }

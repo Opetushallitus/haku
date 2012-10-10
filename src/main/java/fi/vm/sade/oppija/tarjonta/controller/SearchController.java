@@ -120,9 +120,14 @@ public class SearchController {
         filters.put(TUNNISTE, arrayParametersToMap.convert(new String[]{tarjontatietoId}));
         SearchParameters searchParameters = new SearchParameters(filters);
         Map<String, Object> searchResult = service.searchById(searchParameters);
-        ModelAndView modelAndView = new ModelAndView(VIEW_NAME_ITEM);
-        LOGGER.debug("searchResult: ", searchResult);
+        ModelAndView modelAndView = new ModelAndView("tarjonta/koulutuskuvaus");
+        LOGGER.debug("searchResult: ", searchResult.size());
         modelAndView.addObject(MODEL_NAME, searchResult);
+        Infobox hakufaktoja = new Infobox("Hakufaktoja", "Hakuaika alkaa 26.9.2012");
+        hakufaktoja.addInfoboxItem(new InfoboxItem("Haun nimi", "dolor sit amet Lorem ipsum dolor sit amet"));
+        hakufaktoja.addInfoboxItem(new InfoboxItem("Hakukelpoisuus", "Peruskoulu"));
+        hakufaktoja.addInfoboxItem(new InfoboxItem("Valintakoe", "Lorem ipsum"));
+        modelAndView.addObject("test", hakufaktoja);
         return modelAndView;
     }
 
