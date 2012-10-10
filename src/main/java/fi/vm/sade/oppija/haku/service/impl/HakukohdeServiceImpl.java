@@ -16,13 +16,15 @@
 
 package fi.vm.sade.oppija.haku.service.impl;
 
+import fi.vm.sade.oppija.haku.domain.Hakukohde;
 import fi.vm.sade.oppija.haku.domain.Organisaatio;
+import fi.vm.sade.oppija.haku.domain.questions.Question;
+import fi.vm.sade.oppija.haku.domain.questions.Radio;
+import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.service.HakukohdeService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Implementation of education service.
@@ -33,7 +35,9 @@ import java.util.Locale;
 public class HakukohdeServiceImpl implements HakukohdeService {
 
     public static final int AMOUNT_OF_TEST_OPETUSPISTE = 1000;
+    public static final int AMOUNT_OF_TEST_HAKUKOHDE = 5;
     private List<Organisaatio> institutes = new ArrayList<Organisaatio>();
+    private Map<String, List<Hakukohde>> hakukohdeMap = new HashMap<String, List<Hakukohde>>();
     public static final int MAX_RESULTS = 10;
 
     public HakukohdeServiceImpl() {
@@ -41,6 +45,31 @@ public class HakukohdeServiceImpl implements HakukohdeService {
         for (int i = 0; i < AMOUNT_OF_TEST_OPETUSPISTE; ++i) {
             Organisaatio op = new Organisaatio(String.valueOf(i), "Koulu" + i);
             institutes.add(op);
+        }
+
+        TextQuestion textQuestion = new TextQuestion("additional_question_1", "Lorem ipsum");
+        Radio radio = new Radio("additional_question_2", "Lorem ipsum dolor sit ame");
+        radio.addOption("q2_option_1", "q2_option_1", "Option one");
+        radio.addOption("q2_option_2", "q2_option_2", "Option two");
+
+        List<Question> lisakysymysList = new ArrayList<Question>();
+        lisakysymysList.add(textQuestion);
+        lisakysymysList.add(radio);
+
+        for (Organisaatio institute : institutes) {
+            List<Hakukohde> hakukohdeList = new ArrayList<Hakukohde>();
+            for (int i = 0; i < AMOUNT_OF_TEST_HAKUKOHDE; i++) {
+                String id = String.valueOf(institute.getId()) + "_" + String.valueOf(i);
+                Hakukohde h;
+                if (i % 2 == 0) {
+                    h = new Hakukohde(id, "Hakukohde_" + id, lisakysymysList, null);
+                }
+                else {
+                    h = new Hakukohde(id, "Hakukohde_" + id);
+                }
+                hakukohdeList.add(h);
+            }
+            hakukohdeMap.put(institute.getId(), hakukohdeList);
         }
     }
 
@@ -59,5 +88,10 @@ public class HakukohdeServiceImpl implements HakukohdeService {
             }
         }
         return result;
+    }
+
+    @Override
+    public List<Hakukohde> searchHakukohde(String organisaatioId) {
+        return hakukohdeMap.get(organisaatioId);
     }
 }
