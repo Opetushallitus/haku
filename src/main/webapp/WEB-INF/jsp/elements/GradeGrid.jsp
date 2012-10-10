@@ -157,7 +157,6 @@
                     <div class="field-container-select">
                         <select name="arvosana-1" placeholder="Valitse">
                         <option></option>
-    	                <option>Ei arvosanaa</option>
                         <c:forEach var="grade" items="${element.gradeRange}">
         	                <option value="${grade.value}">${grade.title}</option>
                 	    </c:forEach>
