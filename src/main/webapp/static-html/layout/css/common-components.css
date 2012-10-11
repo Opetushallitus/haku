@@ -457,3 +457,22 @@ ul.unstyled li
 #login-popup #authentication {
     
 }
+
+
+/*** Application-options
+**************************************************************/
+.application-options {
+    padding-bottom: 20px;
+}
+
+.application-options .table-container {
+    background: #eee;
+    box-shadow: 0 0 8px 0 #888;
+    border: 3px solid white;
+    border-radius: 4px;
+
+}
+
+.application-option-info {
+    padding-bottom: 20px;s
+}
