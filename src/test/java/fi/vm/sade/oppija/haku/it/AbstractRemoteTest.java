@@ -18,7 +18,7 @@ public abstract class AbstractRemoteTest extends TomcatContainerTest {
     protected FormModelHelper initModel(FormModel formModel1) {
         setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
         setBaseUrl(getBaseUrl());
-        beginAt("/fi/admin/edit");
+        beginAt("/admin/edit");
         login();
         final String convert = new FormModelToJsonString().convert(formModel1);
         setTextField("model", convert);

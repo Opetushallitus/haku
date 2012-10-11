@@ -15,7 +15,7 @@
                  <a ${link.attributeString}>${link.value}</a>&nbsp;
             </c:forEach>
         </div>
-        <form method="post" accept-charset="utf-8" enctype="multipart/form-data">
+        <form method="post" action="upload"accept-charset="utf-8" enctype="multipart/form-data">
             <div>
 
                     <c:set var="element" value="${attachment}" scope="request"/>
@@ -28,7 +28,7 @@
 
             </div>
         </form>
-        <a href="/haku">Takaisin</a>
+        <a href="/haku/admin">Takaisin</a>
 
     </body>
 </html>

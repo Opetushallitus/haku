@@ -51,8 +51,13 @@ public class AdminController {
     FormModelHolder formModelHolder;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView getUploadForm() {
-        return toAdminForm();
+    public ModelAndView getIndex() {
+        return new ModelAndView("admin/index");
+    }
+
+    @RequestMapping(value = "/upload", method = RequestMethod.GET)
+    public ModelAndView upload() {
+        return toUpload();
     }
 
     @RequestMapping(value = "/model", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
@@ -73,21 +78,21 @@ public class AdminController {
     @RequestMapping(value = "/edit/post", method = RequestMethod.POST, consumes = "multipart/form-data; charset=UTF-8")
     public String doActualEdit(HttpServletRequest request, @RequestParam("model") String json) {
         adminService.replaceModel(json);
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
 
-    private ModelAndView toAdminForm() {
-        final ModelAndView modelAndView = new ModelAndView("admin/admin");
+    private ModelAndView toUpload() {
+        final ModelAndView modelAndView = new ModelAndView("admin/upload");
         modelAndView.addObject("attachment", new Attachment("file", "Lataa malli json-objektina"));
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ModelAndView receiveFile(@RequestParam("file") MultipartFile file) throws IOException {
 
         adminService.replaceModel(file.getInputStream());
-        return toAdminForm();
+        return toUpload();
     }
 
 }

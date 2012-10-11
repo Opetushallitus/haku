@@ -1,6 +1,5 @@
 package fi.vm.sade.oppija.haku.it;
 
-import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
 import org.junit.Before;
@@ -24,25 +23,25 @@ public class AutoCompleteIT extends AbstractRemoteTest {
 
     @Test
     public void testOneMatch() throws IOException {
-        beginAt("fi/education/institute/search?term=koulu100");
+        beginAt("education/institute/search?term=koulu100");
         assertTextPresent("[{\"id\":\"100\",\"name\":\"Koulu100\",\"key\":\"koulu100\"}]");
     }
 
     @Test
     public void testNoMatch() throws IOException {
-        beginAt("fi/education/institute/search?term=xyz");
+        beginAt("education/institute/search?term=xyz");
         assertTextPresent("[]");
     }
 
     @Test
     public void testEmptySearchTerm() throws IOException {
-        beginAt("fi/education/institute/search?term=");
+        beginAt("education/institute/search?term=");
         assertTextPresent("[]");
     }
 
     @Test
     public void testMultipleMatch() throws IOException {
-        beginAt("fi/education/institute/search?term=koulu1");
+        beginAt("education/institute/search?term=koulu1");
         assertTextPresent("koulu1");
         assertTextPresent("koulu10");
         assertTextPresent("koulu11");

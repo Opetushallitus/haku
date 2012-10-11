@@ -25,19 +25,19 @@ public class FormIT extends AbstractIT {
 
     @Test
     public void testApplicationPeriod() {
-        beginAt("/fi/");
+        beginAt("/lomake");
         assertLinkPresent("test");
     }
 
     @Test
     public void testForm() throws Exception {
-        beginAt("/fi/test");
+        beginAt("/lomake/test");
         assertLinkPresent("yhteishaku");
     }
 
     @Test
     public void testCategory() throws Exception {
-        beginAt("/fi/test/yhteishaku/henkilotiedot");
+        beginAt("/lomake/test/yhteishaku/henkilotiedot");
         assertLinkPresent("nav-henkilotiedot");
         assertLinkPresent("nav-koulutustausta");
         assertLinkPresent("nav-yhteenveto");

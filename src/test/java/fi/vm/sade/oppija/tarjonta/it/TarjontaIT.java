@@ -31,7 +31,7 @@ public class TarjontaIT extends TomcatContainerTest {
     protected void initModel() throws IOException {
         setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
         setBaseUrl(getBaseUrl());
-        beginAt("add.html");
+        beginAt("static-html/add.html");
         ClassPathResource classPathResource = new ClassPathResource("tarjontatieto-test-data.xml");
         String absolutePath = classPathResource.getFile().getAbsolutePath();
         setTextField("upfile", absolutePath);
@@ -43,7 +43,7 @@ public class TarjontaIT extends TomcatContainerTest {
     public void testTarjonta() throws Exception {
         initModel();
         setScriptingEnabled(false);
-        beginAt("/fi/tarjontatiedot");
+        beginAt("/tarjontatiedot");
         setTextField("text", "perustutkinto");
         dumpHtml();
         submit();
@@ -54,7 +54,7 @@ public class TarjontaIT extends TomcatContainerTest {
     public void testUpdate() throws Exception {
         initModel();
         setScriptingEnabled(false);
-        beginAt("/fi/tarjontatiedot?update=true");
+        beginAt("/tarjontatiedot?update=true");
         dumpHtml();
         assertCheckboxPresent("koulutustyyppi");
     }
@@ -63,7 +63,7 @@ public class TarjontaIT extends TomcatContainerTest {
     public void testTarjontaLink() throws Exception {
         initModel();
         setScriptingEnabled(false);
-        beginAt("/fi/tarjontatiedot/1");
+        beginAt("/tarjontatiedot/1");
         dumpHtml();
         assertElementPresent("site");
     }

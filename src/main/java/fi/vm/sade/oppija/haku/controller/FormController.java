@@ -40,6 +40,7 @@ import java.util.Map;
 
 
 @Controller
+@RequestMapping(value = "/lomake", method = RequestMethod.GET)
 public class FormController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
@@ -52,13 +53,14 @@ public class FormController {
     final FormService formService;
     private final HakemusService hakemusService;
 
+
     @Autowired
     public FormController(@Qualifier("formServiceImpl") final FormService formService, HakemusService hakemusService) {
         this.formService = formService;
         this.hakemusService = hakemusService;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ModelAndView listApplicationPeriods() {
         LOGGER.debug("listApplicationPeriods");
         Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
@@ -116,7 +118,7 @@ public class FormController {
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         if (hakemusState.isValid()) {
             final Category category = (Category) hakemusState.getModelObjects().get("category");
-            modelAndView = new ModelAndView("redirect:/fi/" + applicationPeriodId + "/" + formId + "/" + category.getId());
+            modelAndView = new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + category.getId());
         } else {
             for (Map.Entry<String, Object> stringObjectEntry : hakemusState.getModelObjects().entrySet()) {
                 modelAndView.addObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());

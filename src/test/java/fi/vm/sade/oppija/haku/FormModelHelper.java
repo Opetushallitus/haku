@@ -21,7 +21,7 @@ public class FormModelHelper {
     }
 
     public String getFormUrl(Category category) {
-        return "fi/" + getFirstApplicationPerioid().getId() + "/" + getFirstForm().getId() + "/" + category.getId();
+        return "lomake/" + getFirstApplicationPerioid().getId() + "/" + getFirstForm().getId() + "/" + category.getId();
     }
 
     public String getFormId(Category category) {
