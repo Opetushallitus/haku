@@ -30,7 +30,32 @@
         <div class="actions">
 
             <ul>
-                <li><a href="#">Kirjaudu ulos</a></li>
+                <li><a href="#" class="open-login-popup">Kirjaudu sisään</a></li>
+                <div id="login-popup" class="display-none">
+                    <div id="authentication">
+                        <div class="heading">
+                            <h2>Kirjautuminen</h2>
+                        </div>
+                        <div class="sidemenu-content">
+                            <form>
+                                <div>
+                                    <legend class="h3">KÄYTTÄJÄTUNNUS</legend>
+                                    <input type="text"/>
+                                </div>
+                                <div>
+                                    <legend class="h3">SALASANA</legend>
+                                    <input type="text"/>
+                                </div>
+                            </form>
+                            <a href="#" class="helplink">?</a>
+                            <a href="#">Unohtuiko salasana?</a>
+                            <div class="clear"></div>
+                            <a href="#">Rekisteröidy palveluun</a>
+                            <div class="clear"></div>
+                            <a href="#" class="close-login-popup">Sulje</a>
+                        </div>
+                    </div>
+                </div>
                 <li><a href="#">Mikko mallikas</a></li>
             </ul>
 

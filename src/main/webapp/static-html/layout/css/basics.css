@@ -123,7 +123,9 @@ hr
 	background-color:#feba00;
 }
 
-
+.display-none {
+    display: none;
+}
 
 
 .clear

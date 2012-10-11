@@ -378,14 +378,24 @@ var hierarchyList = {
 	} 
 }
 
+var loginPopup = {
+	build: function() {
+		$('.open-login-popup').on('click', function(event) {
+			$('#login-popup').removeClass('display-none');
+		});
 
+		$('.close-login-popup').on('click', function(event) {
+			$('#login-popup').addClass('display-none');
+		});
+	}
+}
 
 applicationBasket.build();
 formReplacements.build();
 popupWindow.build();
 tabsMenu.build();
 hierarchyList.build();
-
+loginPopup.build();
 
 var protoFunctions = {
 	build:function(){
