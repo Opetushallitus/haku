@@ -40,14 +40,14 @@
                                 <h2>Kirjautuminen</h2>
                             </div>
                             <div class="login-content">
-                                <form>
+                                <form action="/haku/j_spring_security_check" method="POST">
                                     <div>
                                         <legend class="h3">KÄYTTÄJÄTUNNUS</legend>
-                                        <input type="text"/>
+                                        <input name="j_username" type="text"/>
                                     </div>
                                     <div>
                                         <legend class="h3">SALASANA</legend>
-                                        <input type="text"/>
+                                        <input name="j_password" type="text"/><input value="Kirjaudu" type="submit"/>
                                     </div>
                                 </form>
                                 <a href="#" class="helplink">?</a>
