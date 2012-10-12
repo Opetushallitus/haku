@@ -18,13 +18,12 @@ package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.domain.Hakukohde;
 import fi.vm.sade.oppija.haku.domain.Organisaatio;
+import fi.vm.sade.oppija.haku.domain.questions.Question;
 import fi.vm.sade.oppija.haku.service.HakukohdeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -52,5 +51,13 @@ public class EducationController {
     @ResponseBody
     public List<Hakukohde> searchHakukohde(@RequestParam("organisaatioId") String organisaatioId) {
         return hakukohdeService.searchHakukohde(organisaatioId);
+    }
+
+    @RequestMapping(value = "/additionalquestion/{teemaId}/{hakukohdeId}", method = RequestMethod.GET)
+    public ModelAndView getCategory(@PathVariable final String teemaId, @PathVariable final String hakukohdeId) {
+        final ModelAndView modelAndView = new ModelAndView("additionalQuestions");
+        List<Question> additionalQuestions = hakukohdeService.getHakukohdeSpecificQuestions(hakukohdeId, teemaId);
+        modelAndView.addObject("additionalQuestions", additionalQuestions);
+        return modelAndView;
     }
 }

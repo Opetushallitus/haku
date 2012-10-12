@@ -10,7 +10,8 @@
     <c:set value="${sortableItem.id}-Opetuspiste" var="textInputId" scope="page"/>
     <c:set value="${sortableItem.id}-Opetuspiste-id" var="hiddenInputId" scope="page"/>
     <c:set value="${sortableItem.id}-Koulutus" var="selectInputId" scope="page"/>
-     <c:set value="${sortableItem.id}-Koulutus-id" var="hiddenKoulutusId" scope="page"/>
+    <c:set value="${sortableItem.id}-Lisakysymykset" var="additionalQuestionsId" scope="page"/>
+    <c:set value="${sortableItem.id}-Koulutus-id" var="hiddenKoulutusId" scope="page"/>
     <div class="form-row">
         <label class="form-row-label" for="${textInputId}"><c:out value="${sortableItem.learningInstitutionLabel}"/></label>
         <div class="form-row-content">
@@ -29,11 +30,13 @@
         <label class="form-row-label" for="${selectInputId}"><c:out value="${sortableItem.educationLabel}"/></label>
         <div class="form-row-content">
             <div class="field-container-select">
-                <select id="${selectInputId}" name="${selectInputId}" placeholder="${sortableItem.selectEducationPlaceholder}">
+                <select id="${selectInputId}" name="${selectInputId}" placeholder="${sortableItem.selectEducationPlaceholder}" data-additionalquestions="${additionalQuestionsId}">
                 </select>
                 <input id="${hiddenKoulutusId}" name="${hiddenKoulutusId}" value="${categoryData[hiddenKoulutusId]}" type="hidden"/>
             </div>
         </div>
         <div class="clear"></div>
+    </div>
+    <div id="${additionalQuestionsId}" class="form-row">
     </div>
 </div>

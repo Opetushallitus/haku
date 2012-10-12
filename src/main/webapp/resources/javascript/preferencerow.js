@@ -18,6 +18,13 @@
             $("#" + selectInputId + "-id").val("");
             $("#" + selectInputId).html("<option></option>");
 
+        },
+
+        searchAdditionalQuestions : function(hakukohdeId, additionalQuestionsId) {
+            var url = "/haku/education/additionalquestion/" + 1 + "/" + hakukohdeId;
+            $.get(url, function(data) {
+              $("#" + additionalQuestionsId).html(data);
+            });
         }
     };
 
@@ -67,5 +74,6 @@
         $hiddenInput.val(value);
         $(this).children().removeAttr("selected");
         $(this).children("option[value='" + value + "']").attr( "selected" , "selected");
+        preferenceRow.searchAdditionalQuestions(value, $(this).data("additionalquestions"));
     });
 })();
