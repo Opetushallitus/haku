@@ -14,7 +14,7 @@
 					<section id="pageheader" class="grid16-16">
 
                         <jsp:include page="navigation.jsp"/><body>
-
+                        <jsp:include page="breadcrumb.jsp"/><body>
 
                         <div id="searchfield-wrapper">
                             <div id="searchfield">
