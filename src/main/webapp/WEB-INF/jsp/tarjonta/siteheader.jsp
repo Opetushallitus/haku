@@ -19,7 +19,7 @@
 <header id="siteheader">
 
     <div class="sitelogo">
-        <a href="index.html">Sivuston logo</a>
+        <a href="/haku">Sivuston logo</a>
     </div>
 
     <div class="actions">

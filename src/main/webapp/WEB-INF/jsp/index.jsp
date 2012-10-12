@@ -7,57 +7,13 @@
 <div id="overlay"></div>
 <div id="site">
 
-<header id="siteheader">
-
-    <div class="header-container">
-
-        <div class="sitelogo">
-            <a href="index.html">Sivuston logo</a>
-        </div>
-
-        <div class="actions">
-
-            <ul>
-                <li><a href="#">Kirjaudu ulos</a></li>
-                <li><a href="#">Mikko mallikas</a></li>
-            </ul>
-
-            <ul>
-                <li><a href="#">Sanasto</a></li>
-                <li><a href="#">Kysy neuvoa</a></li>
-                <li><a href="#">Hakuajat</a></li>
-            </ul>
-
-            <ul>
-                <li><a href="#">På svenska</a></li>
-                <li><a href="#">in English</a></li>
-                <li><a href="#">Mobiili</a></li>
-                <li><a href="#">Tekstiversio</a></li>
-            </ul>
-
-            <div class="clear"></div>
-        </div>
-
-    </div>
-
-    <div class="line clear"></div>
-</header>
+<jsp:include page="tarjonta/siteheader.jsp"/><body>
 
 <section id="page">
 
     <section id="pageheader" class="grid16-16">
 
-        <nav class="navigation">
-            <ul class="menu-level-1">
-                <li class="home"><a href="etusivu.html">Etusivu</a></li>
-                <li><a href="lukio.html">Lukio</a></li>
-                <li><a href="#">Ammatillinen koulutus</a></li>
-                <li><a href="#">Ammattikorkeakoulu</a></li>
-                <li><a href="#">Yliopisto</a></li>
-                <li><a href="#">Täydennyskoulutus</a></li>
-                <li><a href="#">Opintojen valinta</a></li>
-            </ul>
-        </nav>
+        <jsp:include page="tarjonta/navigation.jsp"/><body>
 
         <form method="get" action="tarjontatiedot">
             <div id="searchfield-wrapper">
