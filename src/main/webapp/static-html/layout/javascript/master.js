@@ -381,11 +381,13 @@ var hierarchyList = {
 var loginPopup = {
 	build: function() {
 		$('.open-login-popup').on('click', function(event) {
+			$('#login-popup').fadeIn(400);
 			$('#login-popup').removeClass('display-none');
 		});
 
 		$('.close-login-popup').on('click', function(event) {
 			$('#login-popup').addClass('display-none');
+			$('#login-popup').fadeOut(400);
 		});
 	}
 }

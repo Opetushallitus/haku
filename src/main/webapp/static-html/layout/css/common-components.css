@@ -450,7 +450,14 @@ ul.unstyled li
      z-index: 10;
     width: 200px;
     height: 200px;
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top: 0;
+}
+
+.login-content {
+   
 }
 
 
