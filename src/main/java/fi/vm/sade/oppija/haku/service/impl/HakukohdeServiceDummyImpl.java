@@ -32,8 +32,8 @@ import java.util.*;
  *
  * @author Mikko Majapuro
  */
-@Service("educationService")
-public class HakukohdeServiceImpl implements HakukohdeService {
+@Service("hakukohdeServiceDummyImpl")
+public class HakukohdeServiceDummyImpl implements HakukohdeService {
 
     public static final int AMOUNT_OF_TEST_OPETUSPISTE = 1000;
     public static final int AMOUNT_OF_TEST_HAKUKOHDE = 5;
@@ -41,7 +41,7 @@ public class HakukohdeServiceImpl implements HakukohdeService {
     private Map<String, List<Hakukohde>> hakukohdeMap = new HashMap<String, List<Hakukohde>>();
     public static final int MAX_RESULTS = 10;
 
-    public HakukohdeServiceImpl() {
+    public HakukohdeServiceDummyImpl() {
         // populate test data
         for (int i = 0; i < AMOUNT_OF_TEST_OPETUSPISTE; ++i) {
             Organisaatio op = new Organisaatio(String.valueOf(i), "Koulu" + i);
