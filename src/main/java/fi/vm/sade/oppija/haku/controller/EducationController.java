@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.haku.controller;
 
+import fi.vm.sade.oppija.haku.domain.Hakukohde;
 import fi.vm.sade.oppija.haku.domain.Organisaatio;
 import fi.vm.sade.oppija.haku.service.HakukohdeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,17 @@ public class EducationController {
     public static final String TERM = "term";
 
     @Autowired
-    HakukohdeService educationService;
+    HakukohdeService hakukohdeService;
 
-    @RequestMapping(value = "/institute/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = TERM)
+    @RequestMapping(value = "/organisaatio/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = TERM)
     @ResponseBody
-    public List<Organisaatio> search(@RequestParam(TERM) String term) {
-        return educationService.searchOrganisaatio(term);
+    public List<Organisaatio> searchOrganisaatio(@RequestParam(TERM) String term) {
+        return hakukohdeService.searchOrganisaatio(term);
+    }
+
+    @RequestMapping(value = "/hakukohde/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = "organisaatioId")
+    @ResponseBody
+    public List<Hakukohde> searchHakukohde(@RequestParam("organisaatioId") String organisaatioId) {
+        return hakukohdeService.searchHakukohde(organisaatioId);
     }
 }

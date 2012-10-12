@@ -2,12 +2,16 @@
     var sortabletable = {
         moveRow : function(id, targetId) {
             var value,
+                html,
                 target;
             $('[id|="' + id + '"]').each(function(index) {
                value = $(this).val();
-               target =  $('[id|="' + targetId + '"]').eq(index);
-               $(this).val($(target).val());
-               $(target).val(value);
+               html = $(this).html();
+               $target =  $('[id|="' + targetId + '"]').eq(index);
+               $(this).val($target.val());
+               $(this).html($target.html());
+               $target.val(value);
+               $target.html(html);
             });
         }
     };

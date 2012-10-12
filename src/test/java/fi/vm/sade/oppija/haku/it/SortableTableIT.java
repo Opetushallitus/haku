@@ -28,10 +28,6 @@ public class SortableTableIT extends AbstractRemoteTest {
         final SortableTable table = new SortableTable("t1", "Hakutoiveet", "Ylös", "Alas");
         final PreferenceRow row = new PreferenceRow("r1", "Hakutoive 1", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
         final PreferenceRow row2 = new PreferenceRow("r2", "Hakutoive 2", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
-        row.addOption("1", "autoala", "Autoala");
-        row.addOption("2", "ruotsi", "Ruotsi");
-        row2.addOption("1", "englanti", "Englanti");
-        row2.addOption("2", "matematiikka", "Matematiikka");
         table.addChild(row);
         table.addChild(row2);
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(table);
@@ -44,17 +40,9 @@ public class SortableTableIT extends AbstractRemoteTest {
         beginAt(startUrl);
         assertElementPresent("r1-Koulutus");
         final IElement select = getElementById("r1-Koulutus");
-        assertEquals(3, select.getChildren().size());
-        assertEquals("select", select.getName());
-        final IElement elementById = getElementById("r1_1");
-        assertEquals("option", elementById.getName());
 
         assertElementPresent("r2-Koulutus");
         final IElement select2 = getElementById("r2-Koulutus");
-        assertEquals(3, select2.getChildren().size());
-        assertEquals("select", select.getName());
-        final IElement elementById2 = getElementById("r2_2");
-        assertEquals("option", elementById2.getName());
     }
 
     @Test

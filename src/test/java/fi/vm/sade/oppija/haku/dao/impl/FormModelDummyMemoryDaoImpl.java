@@ -222,15 +222,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         sortableTable.addChild(pr1);
         sortableTable.addChild(pr2);
         sortableTable.addChild(pr3);
-        addEducationsToPreferenceRow(pr1);
-        addEducationsToPreferenceRow(pr2);
-        addEducationsToPreferenceRow(pr3);
         hakutoiveetRyhmä.addChild(sortableTable);
-    }
-
-    private void addEducationsToPreferenceRow(PreferenceRow preferenceRow) {
-        preferenceRow.addOption("1", "autoala", "Autoala");
-        preferenceRow.addOption("2", "ruotsi", "Ruotsi");
     }
 
     private void createKoulutustausta(QuestionGroup koulutustaustaRyhmä) {

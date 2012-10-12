@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.haku.domain.elements.custom;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.vm.sade.oppija.haku.domain.questions.OptionQuestion;
+import fi.vm.sade.oppija.haku.domain.questions.Question;
 
 /**
  * Renders as a user's application preference row. Title is used to hold the name of the preference row (Hakutoive 1, Hakutoive 2 etc.)
@@ -25,7 +26,7 @@ import fi.vm.sade.oppija.haku.domain.questions.OptionQuestion;
  *
  * @author Mikko Majapuro
  */
-public class PreferenceRow extends OptionQuestion {
+public class PreferenceRow extends Question {
 
     // label text for reset button
     private String resetLabel;
