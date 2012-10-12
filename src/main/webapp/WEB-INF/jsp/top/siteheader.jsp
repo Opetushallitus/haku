@@ -23,13 +23,47 @@
     </div>
 
     <div class="actions">
-        <c:if test="${user}">
-            <ul>
-                <li><a href="/logout">Kirjaudu ulos</a></li>
-                <li><a href="/me"><c:out value="${user.firstname}"/> <c:out value="${user.lastname}"/></a></li>
-            </ul>
-        </c:if>
+        
+        <c:choose>
+            <c:when test="${user}">
+                <ul>
+                    <li><a href="/logout">Kirjaudu ulos</a></li>
+                    <li><a href="/me"><c:out value="${user.firstname}"/> <c:out value="${user.lastname}"/></a></li>
+                </ul>
+            </c:when>
+            <c:otherwise>
+                <ul>
+                    <li><a href="#" class="open-login-popup">Kirjaudu sisään</a></li>
+                    <div id="login-popup" class="display-none">
+                        <div id="authentication">
+                            <div class="heading">
+                                <h2>Kirjautuminen</h2>
+                            </div>
+                            <div class="login-content">
+                                <form>
+                                    <div>
+                                        <legend class="h3">KÄYTTÄJÄTUNNUS</legend>
+                                        <input type="text"/>
+                                    </div>
+                                    <div>
+                                        <legend class="h3">SALASANA</legend>
+                                        <input type="text"/>
+                                    </div>
+                                </form>
+                                <a href="#" class="helplink">?</a>
+                                <a href="#">Unohtuiko salasana?</a>
 
+                                <div class="clear"></div>
+                                <a href="#">Rekisteröidy palveluun</a>
+
+                                <div class="clear"></div>
+                                <a href="#" class="close-login-popup">Sulje</a>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </c:otherwise>
+        </c:choose>
         <ul>
             <li><a href="http://www.sanasto.fi/">Sanasto</a></li>
             <li><a href="http://google.fi">Kysy neuvoa</a></li>
@@ -48,3 +82,6 @@
 
     <div class="line clear"></div>
 </header>
+
+
+
