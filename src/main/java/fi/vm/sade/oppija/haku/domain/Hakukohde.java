@@ -5,6 +5,7 @@ import fi.vm.sade.oppija.haku.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.haku.domain.questions.Question;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +31,8 @@ public class Hakukohde implements Serializable {
     public Hakukohde(@JsonProperty(value = "id")String id, @JsonProperty(value = "name")String name) {
         this.id = id;
         this.name = name;
+        this.lisakysymysList = new ArrayList<Question>();
+        this.oppiaineList = new ArrayList<SubjectRow>();
     }
 
     public String getId() {

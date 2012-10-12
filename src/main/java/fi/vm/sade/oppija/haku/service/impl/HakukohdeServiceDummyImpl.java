@@ -39,6 +39,7 @@ public class HakukohdeServiceDummyImpl implements HakukohdeService {
     public static final int AMOUNT_OF_TEST_HAKUKOHDE = 5;
     private List<Organisaatio> institutes = new ArrayList<Organisaatio>();
     private Map<String, List<Hakukohde>> hakukohdeMap = new HashMap<String, List<Hakukohde>>();
+    private Map<String, List<SubjectRow>> oppiaineMap = new HashMap<String, List<SubjectRow>>();
     public static final int MAX_RESULTS = 10;
 
     public HakukohdeServiceDummyImpl() {
@@ -70,6 +71,7 @@ public class HakukohdeServiceDummyImpl implements HakukohdeService {
                 Hakukohde h;
                 if (i % 2 == 0) {
                     h = new Hakukohde(id, "Hakukohde_" + id, lisakysymysList, oppianieList);
+                    oppiaineMap.put(id, oppianieList);
                 }
                 else {
                     h = new Hakukohde(id, "Hakukohde_" + id);
@@ -109,6 +111,12 @@ public class HakukohdeServiceDummyImpl implements HakukohdeService {
 
     @Override
     public List<SubjectRow> getHakukohdeSpecificSubjects(String hakukohdeId, String teemaId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (oppiaineMap.containsKey(hakukohdeId)) {
+            return oppiaineMap.get(hakukohdeId);
+        }
+        else {
+            return new ArrayList<SubjectRow>();
+        }
+
     }
 }
