@@ -1,33 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html>
-    <jsp:include page="tarjonta/head.jsp"/><body>
-    <body>
-        <div id="viewport">
-            <div id="overlay"></div>
-            <div id="site">
-
-                <jsp:include page="tarjonta/siteheader.jsp"/><body>
-
-				<section id="page">
-
-					<section id="pageheader" class="grid16-16">
-
-                        <jsp:include page="tarjonta/navigation.jsp"/><body>
-
-						<div id="searchfield-wrapper">
-                            <div id="searchfield">
-                                <div class="field-container-text">
-                                    <input type="text" />
-                                </div>
-                                <button class="btn-search">
-                                    <span><span></span></span>
-                                </button>
-                            </div>
-						</div>
-
-					</section>
-					<div class="clear"></div>
+<jsp:include page="top/top.jsp"/><body>
 
 					<section class="content-container">
 

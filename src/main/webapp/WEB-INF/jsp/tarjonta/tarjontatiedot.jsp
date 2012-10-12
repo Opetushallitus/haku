@@ -16,38 +16,8 @@
   ~ European Union Public Licence for more details.
   --%>
 
-<!DOCTYPE html>
-<html>
-    <jsp:include page="head.jsp"/>
-    <body>
-        <div id="viewport">
-            <div id="overlay"></div>
-            <div id="site">
+    <jsp:include page="../top/top.jsp"/>
 
-                <jsp:include page="siteheader.jsp"/>
-
-                <section id="page">
-                    <section id="pageheader" class="grid16-16">
-
-                        <jsp:include page="navigation.jsp"/>
-                        <jsp:include page="breadcrumb.jsp"/>
-
-                        <div id="searchfield-wrapper">
-                            <div id="searchfield">
-                                <form>
-                                    <div class="field-container-text">
-                                        <input type="text" name="text" required="required" value="${parameters.text}"
-                                               class="haku"/>
-                                    </div>
-                                    <button class="btn-search" type="submit" id="btn-search">
-                                        <span><span></span></span>
-                                    </button>
-                                    <input type="submit" class="btn-search"/>
-                                </form>
-                            </div>
-                        </div>
-
-                    </section>
 
                     <section id="vapaasanahaku" class="content-container">
 
