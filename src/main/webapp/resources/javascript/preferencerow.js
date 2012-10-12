@@ -12,12 +12,18 @@
                     $("#" + selectInputId).append('<option value="' + item.id + '" ' + selected + '>' + item.name + '</option>');
                 });
             });
+        },
+
+        clearSelectInput : function(selectInputId) {
+            $("#" + selectInputId + "-id").val("");
+            $("#" + selectInputId).html("<option></option>");
+
         }
     };
 
 	$('button.reset').click(function(event){
 	    var id = $(this).data('id');
-        $('[id|="' + id + '"]').val('');
+        $('[id|="' + id + '"]').val('').html('');
 	});
 
 	$(".field-container-text input:text").each(function(index) {
@@ -46,6 +52,7 @@
                 if (!ui.item) {
                     $(this).val("");
                     $hiddenInput.val("");
+                    preferenceRow.clearSelectInput(selectInputId);
                 }
             }
         });
@@ -58,7 +65,6 @@
         var $hiddenInput = $("#" + this.id + "-id");
         var value = $(this).val();
         $hiddenInput.val(value);
-        console.log(value);
         $(this).children().removeAttr("selected");
         $(this).children("option[value='" + value + "']").attr( "selected" , "selected");
     });

@@ -8,10 +8,8 @@
                value = $(this).val();
                html = $(this).html();
                $target =  $('[id|="' + targetId + '"]').eq(index);
-               $(this).val($target.val());
-               $(this).html($target.html());
-               $target.val(value);
-               $target.html(html);
+               $(this).val($target.val()).html($target.html());
+               $target.val(value).html(html);
             });
         }
     };
