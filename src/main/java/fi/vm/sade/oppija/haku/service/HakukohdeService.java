@@ -18,6 +18,8 @@ package fi.vm.sade.oppija.haku.service;
 
 import fi.vm.sade.oppija.haku.domain.Hakukohde;
 import fi.vm.sade.oppija.haku.domain.Organisaatio;
+import fi.vm.sade.oppija.haku.domain.elements.custom.SubjectRow;
+import fi.vm.sade.oppija.haku.domain.questions.Question;
 
 import java.util.List;
 
@@ -40,4 +42,21 @@ public interface HakukohdeService {
      * @return
      */
     List<Hakukohde> searchHakukohde(final String organisaatioId);
+
+    /**
+     *
+     * @param hakukohdeId
+     * @param teemaId
+     * @return
+     */
+    List<Question> getHakukohdeSpecificQuestions(String hakukohdeId, String teemaId);
+
+    /**
+     *
+     * @param hakukohdeId
+     * @param teemaId
+     * @return
+     */
+    List<SubjectRow> getHakukohdeSpecificSubjects(String hakukohdeId, String teemaId);
+
 }

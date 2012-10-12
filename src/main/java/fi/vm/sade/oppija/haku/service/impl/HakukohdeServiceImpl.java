@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.haku.service.impl;
 
 import fi.vm.sade.oppija.haku.domain.Hakukohde;
 import fi.vm.sade.oppija.haku.domain.Organisaatio;
+import fi.vm.sade.oppija.haku.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.haku.domain.questions.Question;
 import fi.vm.sade.oppija.haku.domain.questions.Radio;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
@@ -56,13 +57,19 @@ public class HakukohdeServiceImpl implements HakukohdeService {
         lisakysymysList.add(textQuestion);
         lisakysymysList.add(radio);
 
+        List<SubjectRow> oppianieList = new ArrayList<SubjectRow>();
+        oppianieList.add(new SubjectRow("geo", "Maantieto"));
+        oppianieList.add(new SubjectRow("fys", "Fysiikka"));
+        oppianieList.add(new SubjectRow("fil", "Filosofia"));
+        oppianieList.add(new SubjectRow("kem", "Kemia"));
+
         for (Organisaatio institute : institutes) {
             List<Hakukohde> hakukohdeList = new ArrayList<Hakukohde>();
             for (int i = 0; i < AMOUNT_OF_TEST_HAKUKOHDE; i++) {
                 String id = String.valueOf(institute.getId()) + "_" + String.valueOf(i);
                 Hakukohde h;
                 if (i % 2 == 0) {
-                    h = new Hakukohde(id, "Hakukohde_" + id, lisakysymysList, null);
+                    h = new Hakukohde(id, "Hakukohde_" + id, lisakysymysList, oppianieList);
                 }
                 else {
                     h = new Hakukohde(id, "Hakukohde_" + id);
@@ -93,5 +100,15 @@ public class HakukohdeServiceImpl implements HakukohdeService {
     @Override
     public List<Hakukohde> searchHakukohde(String organisaatioId) {
         return hakukohdeMap.get(organisaatioId);
+    }
+
+    @Override
+    public List<Question> getHakukohdeSpecificQuestions(String hakukohdeId, String teemaId) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<SubjectRow> getHakukohdeSpecificSubjects(String hakukohdeId, String teemaId) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
