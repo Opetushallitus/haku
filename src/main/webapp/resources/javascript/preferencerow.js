@@ -56,6 +56,10 @@
 
     $(".field-container-select select").change(function(event){
         var $hiddenInput = $("#" + this.id + "-id");
-        $hiddenInput.val($(this).val());
+        var value = $(this).val();
+        $hiddenInput.val(value);
+        console.log(value);
+        $(this).children().removeAttr("selected");
+        $(this).children("option[value='" + value + "']").attr( "selected" , "selected");
     });
 })();

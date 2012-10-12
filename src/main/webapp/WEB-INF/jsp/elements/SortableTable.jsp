@@ -33,3 +33,4 @@
     </tbody>
 </table>
 <script type="text/javascript" src="/haku/resources/javascript/sortabletable.js"></script>
+<script type="text/javascript" src="/haku/resources/javascript/preferencerow.js"></script>

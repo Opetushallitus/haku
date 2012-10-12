@@ -37,4 +37,3 @@
         <div class="clear"></div>
     </div>
 </div>
-<script type="text/javascript" src="/haku/resources/javascript/preferencerow.js"></script>
