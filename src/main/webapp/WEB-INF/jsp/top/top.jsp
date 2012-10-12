@@ -18,7 +18,7 @@
 
                         <div id="searchfield-wrapper">
                             <div id="searchfield">
-                                <form action="tarjontatiedot">
+                                <form action="/haku/tarjontatiedot">
                                     <div class="field-container-text">
                                         <input type="text" name="text" required="required" value="${parameters.text}"
                                                class="haku"/>
