@@ -80,7 +80,7 @@
             <div class="module">
                 <h3>In eleifend metus ut arcu lobortis malesuada.</h3>
                 <figure class="video" style="">
-                    <img src="content/Tytöt2.jpg" alt=""/>
+                    <img src="content/tytot2.jpg" alt=""/>
                     <figcaption>Lorem ipsum dolor sit amet</figcaption>
                 </figure>
                 <h1>Lorem ipsum dolor sit amet consectuer adipiscing elit</h1>

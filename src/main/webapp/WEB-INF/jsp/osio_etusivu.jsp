@@ -153,10 +153,10 @@
 								</div>
 							</div>
 							<div class="grid16-8 footer-logo">
-								<img src="content/logo-opetus-ja-kulttuuriministerio.png">
+								<img src="../content/logo-opetus-ja-kulttuuriministerio.png">
 							</div>
 							<div class="grid16-8 footer-logo">
-								<img src="content/logo-oph_fin_vaaka.png">
+								<img src="../content/logo-oph_fin_vaaka.png">
 							</div>
 						</div>
 
