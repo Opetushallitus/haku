@@ -9,6 +9,7 @@ import fi.vm.sade.oppija.haku.domain.questions.Option;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -54,6 +55,7 @@ public class ShowChildsIT extends AbstractRemoteTest {
         this.formModelHelper = initModel(formModel);
     }
 
+    @Ignore
     @Test
     public void testInputExistsWithJavaScript() throws IOException, InterruptedException {
         final String startUrl = formModelHelper.getStartUrl();
