@@ -2,7 +2,6 @@ package fi.vm.sade.oppija.haku.selenium;
 
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.haku.FormModelHelper;
-import fi.vm.sade.oppija.haku.converter.FormModelToJsonString;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.it.TomcatContainerTest;
 import org.junit.After;
@@ -19,37 +18,31 @@ import java.util.concurrent.TimeUnit;
  */
 public class AbstractSeleniumTest extends TomcatContainerTest {
 
-    protected final Selenium selenium;
-    protected final WebDriver driver;
+    protected SeleniumHelper seleniumHelper;
 
     public AbstractSeleniumTest() {
         super();
         WebDriver driver = new FirefoxDriver();
-        this.driver = driver;
-        this.selenium = new WebDriverBackedSelenium(driver, getBaseUrl());
+        Selenium selenium = new WebDriverBackedSelenium(driver, getBaseUrl());
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        this.seleniumHelper = new SeleniumHelper(selenium, driver);
     }
 
-    @Override
-    protected void login() {
-        selenium.type("j_username", "admin");
-        selenium.type("j_password", "admin");
-        selenium.submit("login");
-    }
 
     protected FormModelHelper initModel(FormModel formModel1) {
-        driver.get(getBaseUrl() + "/admin/edit");
-        login();
-        final String convert = new FormModelToJsonString().convert(formModel1);
 
-        selenium.type("model", convert);
-        selenium.submit("tallenna");
+        final AdminEditPage adminEditPage = new AdminEditPage(getBaseUrl(), seleniumHelper.getSelenium());
+        adminEditPage.getUrl();
+        seleniumHelper.navigate(adminEditPage);
+        adminEditPage.login("admin");
+        adminEditPage.submitForm(formModel1);
         return new FormModelHelper(formModel1);
     }
 
     @After
     public void close() {
-        driver.close();
+        seleniumHelper.close();
     }
+
 
 }

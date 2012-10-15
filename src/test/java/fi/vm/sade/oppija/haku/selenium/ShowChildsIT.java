@@ -11,6 +11,7 @@ import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
@@ -60,10 +61,11 @@ public class ShowChildsIT extends AbstractSeleniumTest {
     @Test
     public void testInputExistsWithJavaScript() throws IOException, InterruptedException {
         final String startUrl = formModelHelper.getStartUrl();
+        final WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + "/" + startUrl);
         driver.findElement(By.id("checkbox_value"));
         driver.findElement(By.id("checkbox_value2"));
-        selenium.click("checkbox_value");
+        seleniumHelper.getSelenium().click("checkbox_value");
         final WebElement alikysymys1 = driver.findElement(By.id("alikysymys1"));
         assertNotNull(alikysymys1);
     }

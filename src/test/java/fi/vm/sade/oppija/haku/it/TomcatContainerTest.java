@@ -176,7 +176,7 @@ public class TomcatContainerTest {
         return "http://localhost:" + getPort() + getContextPath();
     }
 
-    protected void login() {
+    protected void login(String admin) {
         setTextField("j_username", "admin");
         setTextField("j_password", "admin");
         submit();

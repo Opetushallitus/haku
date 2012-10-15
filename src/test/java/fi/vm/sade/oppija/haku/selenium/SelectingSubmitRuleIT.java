@@ -45,9 +45,9 @@ public class SelectingSubmitRuleIT extends AbstractSeleniumTest {
     @Test
     public void testInputMale() throws IOException {
         final String startUrl = formModelHelper.getStartUrl();
-        driver.get(getBaseUrl() + "/" + startUrl);
-        selenium.type("hetu", "010101-111X");
-        final WebElement mies = driver.findElement(By.id("sukupuoli_mies"));
+        seleniumHelper.getDriver().get(getBaseUrl() + "/" + startUrl);
+        seleniumHelper.getSelenium().type("hetu", "010101-111X");
+        final WebElement mies = seleniumHelper.getDriver().findElement(By.id("sukupuoli_mies"));
         assertTrue(!mies.isEnabled());
         assertTrue(mies.isSelected());
     }
