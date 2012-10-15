@@ -46,7 +46,7 @@ public class NavigationEvent extends AbstractEvent {
     @Override
     public void process(HakemusState hakemusState) {
         Vaihe vaihe = getNextCategory(hakemusState);
-        hakemusState.addModelObject("category", vaihe);
+        hakemusState.addModelObject("vaihe", vaihe);
     }
 
     private Vaihe getNextCategory(HakemusState hakemusState) {
