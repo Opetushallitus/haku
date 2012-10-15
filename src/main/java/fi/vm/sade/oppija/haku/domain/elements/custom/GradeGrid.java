@@ -16,11 +16,13 @@
 
 package fi.vm.sade.oppija.haku.domain.elements.custom;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.vm.sade.oppija.haku.domain.elements.Titled;
 import fi.vm.sade.oppija.haku.domain.questions.Option;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Grid element that is used to gather grade information from user.
@@ -47,11 +49,14 @@ public class GradeGrid extends Titled {
     private String addLanguageLabel;
 
     // subjects that are listed before languages
-    private List<SubjectRow> subjectsBeforeLanguages;
+    private Set<SubjectRow> subjectsBeforeLanguages;
     // languages
-    private List<LanguageRow> languages;
+    private Set<LanguageRow> languages;
     // subjects that are listed under the 'Add language' row
-    private List<SubjectRow> subjectsAfterLanguages;
+    private Set<SubjectRow> subjectsAfterLanguages;
+    // subjects that are specific to the education that the user is applying to,
+    // not saved in the model but dynamically inserted when education is selected
+    private Set<SubjectRow> educationSpecificSubjects;
 
     // possible language scopes (A1, B1 etc)
     private List<Option> scopeOptions;
@@ -69,9 +74,9 @@ public class GradeGrid extends Titled {
                      @JsonProperty(value = "optionalSubjectColumnTitle") String optionalSubjectColumnTitle,
                      @JsonProperty(value = "customLanguageTitle") String customLanguageTitle,
                      @JsonProperty(value = "addLanguageLabel") String addLanguageLabel,
-                     @JsonProperty(value = "subjectsBeforeLanguages") List<SubjectRow> subjectsBeforeLanguages,
-                     @JsonProperty(value = "languages") List<LanguageRow> languages,
-                     @JsonProperty(value = "subjectsAfterLanguages") List<SubjectRow> subjectsAfterLanguages,
+                     @JsonProperty(value = "subjectsBeforeLanguages") Set<SubjectRow> subjectsBeforeLanguages,
+                     @JsonProperty(value = "languages") Set<LanguageRow> languages,
+                     @JsonProperty(value = "subjectsAfterLanguages") Set<SubjectRow> subjectsAfterLanguages,
                      @JsonProperty(value = "scopeOptions") List<Option> scopeOptions,
                      @JsonProperty(value = "languageOptions") List<Option> languageOptions,
                      @JsonProperty(value = "gradeRange") List<Option> gradeRange) {
@@ -116,15 +121,15 @@ public class GradeGrid extends Titled {
         return gradeRange;
     }
 
-    public List<SubjectRow> getSubjectsBeforeLanguages() {
+    public Set<SubjectRow> getSubjectsBeforeLanguages() {
         return subjectsBeforeLanguages;
     }
 
-    public List<LanguageRow> getLanguages() {
+    public Set<LanguageRow> getLanguages() {
         return languages;
     }
 
-    public List<SubjectRow> getSubjectsAfterLanguages() {
+    public Set<SubjectRow> getSubjectsAfterLanguages() {
         return subjectsAfterLanguages;
     }
 
@@ -146,5 +151,15 @@ public class GradeGrid extends Titled {
 
     public String getAddLanguageLabel() {
         return addLanguageLabel;
+    }
+
+    @JsonIgnore
+    public Set<SubjectRow> getEducationSpecificSubjects() {
+        return educationSpecificSubjects;
+    }
+
+    @JsonIgnore
+    public void setEducationSpecificSubjects(Set<SubjectRow> educationSpecificSubjects) {
+        this.educationSpecificSubjects = educationSpecificSubjects;
     }
 }

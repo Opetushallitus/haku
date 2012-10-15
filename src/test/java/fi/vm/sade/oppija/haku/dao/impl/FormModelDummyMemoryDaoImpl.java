@@ -16,9 +16,7 @@ import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.validation.Validator;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("FormModelDummyMemoryDao")
 public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
@@ -168,19 +166,19 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         gradeRange.add(new Option("grade_4", "4", "4"));
 
         SubjectRow finnish = new SubjectRow("subject_finnish", "Äidinkieli");
-        List<SubjectRow> subjectRowsBefore = new ArrayList<SubjectRow>();
+        Set<SubjectRow> subjectRowsBefore = new LinkedHashSet<SubjectRow>();
         subjectRowsBefore.add(finnish);
 
         LanguageRow a1 = new LanguageRow("lang_a1", "A1-kieli");
         LanguageRow b1 = new LanguageRow("lang_b1", "B1-kieli");
 
-        ArrayList<LanguageRow> languageRows = new ArrayList<LanguageRow>();
+        Set<LanguageRow> languageRows = new LinkedHashSet<LanguageRow>();
         languageRows.add(a1);
         languageRows.add(b1);
 
         SubjectRow math = new SubjectRow("subject_math", "Matematiikka");
         SubjectRow biology = new SubjectRow("subject_biology", "Biologia");
-        ArrayList<SubjectRow> subjectRowsAfter = new ArrayList<SubjectRow>();
+        Set<SubjectRow> subjectRowsAfter = new LinkedHashSet<SubjectRow>();
         subjectRowsAfter.add(math);
         subjectRowsAfter.add(biology);
 

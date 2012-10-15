@@ -29,7 +29,7 @@
 			    </tr>
             </c:forEach>
 
-            <!-- languages -->
+            <%-- languages --%>
             <c:forEach var="language" items="${element.languages}">
                 <c:set var="language" value="${language}" scope="request"/>
                 <tr class="gradegrid-language-row">
@@ -45,7 +45,7 @@
                 </tr>
             </c:forEach>
 
-            <!-- custom selected languages -->
+            <%-- custom selected languages --%>
             <c:forEach var="entry" items="${categoryData}">
 
                 <c:if test="${fn:startsWith(entry.key,'custom-scope')}">
@@ -107,7 +107,7 @@
                 </td>
             </tr>
 
-            <!-- subjects that are listed after languages -->
+            <%-- subjects that are listed after languages --%>
             <c:forEach var="subject" items="${element.subjectsAfterLanguages}">
                 <c:set var="subject" value="${subject}" scope="request"/>
             	<tr>
@@ -125,9 +125,27 @@
                 </tr>
             </c:forEach>
 
-            <!-- hidden custom languge row that can be cloned and 
+            <%-- subjects that are specific to the education selected by the user --%>
+            <c:forEach var="subject" items="${element.educationSpecificSubjects}">
+                <c:set var="subject" value="${subject}" scope="request"/>
+                <tr>
+                    <td>
+                        <jsp:include page="gradegrid/SubjectRow.jsp"/>
+                    </td>
+                    <td>
+                        <c:set var="gradeSelectId" value="common-${subject.id}" scope="request"/>
+                        <jsp:include page="gradegrid/gradeselect.jsp"/>
+                    </td>
+                    <td>
+                        <c:set var="gradeSelectId" value="optional-${subject.id}" scope="request"/>
+                        <jsp:include page="gradegrid/gradeselect.jsp"/>
+                    </td>
+                </tr>
+            </c:forEach>
+
+            <%-- hidden custom languge row that can be cloned and
                 included into the table to add new languages 
-                this always has to be the last row-->
+                this always has to be the last row--%>
             <tr style="display: none">
                 <td><c:out value="${element.customLanguageTitle}"/>&nbsp;
                 <select>

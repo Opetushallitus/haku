@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -49,7 +47,7 @@ public class HakukohdeSelectedEvent extends AbstractEvent {
             //preference1-Koulutus-id
 
             int prefNumber = 1;
-            List<SubjectRow> subjects = new ArrayList<SubjectRow>();
+            Set<SubjectRow> subjects = new HashSet<SubjectRow>();
             while (hakemusValues.containsKey("preference" + prefNumber + "-Koulutus-id")) {
                 String hakukohdeId = hakemusValues.get("preference" + prefNumber + "-Koulutus-id");
 
@@ -62,11 +60,10 @@ public class HakukohdeSelectedEvent extends AbstractEvent {
             for (Element child : form.getCategory("arvosanat").getChildren()) {
                 if (child.getType().equals("QuestionGroup")) {
                     for (Element innerChild : child.getChildren()) {
-                    if (innerChild.getType().equals("GradeGrid")) {
-                        GradeGrid gradeGrid = (GradeGrid)innerChild;
-                        gradeGrid.getSubjectsAfterLanguages().addAll(subjects);
-
-                    }
+                        if (innerChild.getType().equals("GradeGrid")) {
+                            GradeGrid gradeGrid = (GradeGrid)innerChild;
+                            gradeGrid.setEducationSpecificSubjects(subjects);
+                        }
                     }
                 }
             }
