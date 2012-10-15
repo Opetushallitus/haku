@@ -1,4 +1,4 @@
-package fi.vm.sade.oppija.haku.it;
+package fi.vm.sade.oppija.haku.selenium;
 
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.domain.FormModel;
@@ -8,17 +8,20 @@ import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.*;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * @author jukka
  * @version 10/3/123:25 PM}
  * @since 1.1
  */
-public class SelectingSubmitRuleIT extends AbstractRemoteTest {
+public class SelectingSubmitRuleIT extends AbstractSeleniumTest {
     private FormModelHelper formModelHelper;
 
     @Before
@@ -42,13 +45,10 @@ public class SelectingSubmitRuleIT extends AbstractRemoteTest {
     @Test
     public void testInputMale() throws IOException {
         final String startUrl = formModelHelper.getStartUrl();
-        beginAt(startUrl);
-        setScriptingEnabled(false);
-        assertElementPresent("hetu");
-        assertElementNotPresent("sukupuoli");
-        setTextField("hetu", "010101-111X");
-        dumpHtml();
-        assertElementPresent("sukupuoli_mies");
-        //assertRadioOptionSelected("sukupuoli", "mies");
+        driver.get(getBaseUrl() + "/" + startUrl);
+        selenium.type("hetu", "010101-111X");
+        final WebElement mies = driver.findElement(By.id("sukupuoli_mies"));
+        assertTrue(!mies.isEnabled());
+        assertTrue(mies.isSelected());
     }
 }
