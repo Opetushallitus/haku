@@ -35,23 +35,23 @@ public class HakukohdeSelectedEvent extends AbstractEvent {
         // check that the phase is changing from
         // hakutoiveet => arvosanat
 
-        Vaihe vaihe = (Vaihe)hakemusState.getModelObjects().get("category");
-        if ("hakutoiveet".equals(vaihe.getPrev().getId()) &&
-                "arvosanat".equals(vaihe.getId())) {
-
-            Hakemus hakemus = (Hakemus)hakemusState.getModelObjects().get("hakemus");
-            Map<String, String> hakemusValues = hakemus.getValues();
-            //preference1-Koulutus-id
-
-            int prefNumber = 1;
-            Set<SubjectRow> subjects = new HashSet<SubjectRow>();
-            while (hakemusValues.containsKey("preference" + prefNumber + "-Koulutus-id")) {
-                String hakukohdeId = hakemusValues.get("preference" + prefNumber + "-Koulutus-id");
-
-                subjects.addAll(this.hakukohdeService.getHakukohdeSpecificSubjects(hakukohdeId, null));
-
-                prefNumber++;
-            }
+//        Vaihe vaihe = (Vaihe)hakemusState.getModelObjects().get("category");
+//        if ("hakutoiveet".equals(vaihe.getPrev().getId()) &&
+//                "arvosanat".equals(vaihe.getId())) {
+//
+//            Hakemus hakemus = (Hakemus)hakemusState.getModelObjects().get("hakemus");
+//            Map<String, String> hakemusValues = hakemus.getValues();
+//            //preference1-Koulutus-id
+//
+//            int prefNumber = 1;
+//            Set<SubjectRow> subjects = new HashSet<SubjectRow>();
+//            while (hakemusValues.containsKey("preference" + prefNumber + "-Koulutus-id")) {
+//                String hakukohdeId = hakemusValues.get("preference" + prefNumber + "-Koulutus-id");
+//
+//                subjects.addAll(this.hakukohdeService.getHakukohdeSpecificSubjects(hakukohdeId, null));
+//
+//                prefNumber++;
+//            }
 
 
 //            Form form = formService.getActiveForm("test", "yhteishaku");
@@ -69,7 +69,7 @@ public class HakukohdeSelectedEvent extends AbstractEvent {
 
 
 
-        }
+
 
     }
 }
