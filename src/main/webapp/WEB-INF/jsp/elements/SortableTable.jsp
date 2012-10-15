@@ -32,5 +32,12 @@
         </c:forEach>
     </tbody>
 </table>
+<script type="text/javascript">
+    var sortabletable_settings = {
+        applicationPeriodId : "${hakemusId.applicationPeriodId}",
+        formId : "${hakemusId.formId}",
+        teemaId : "${hakemusId.categoryId}"
+    }
+</script>
 <script type="text/javascript" src="/haku/resources/javascript/sortabletable.js"></script>
 <script type="text/javascript" src="/haku/resources/javascript/preferencerow.js"></script>

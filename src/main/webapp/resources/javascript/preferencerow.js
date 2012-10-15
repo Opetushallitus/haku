@@ -4,12 +4,17 @@
             $.getJSON("/haku/education/hakukohde/search", {
                   organisaatioId : orgId
             }, function(data) {
-                var hakukohdeId = $("#" + selectInputId + "-id").val();
+                var hakukohdeId = $("#" + selectInputId + "-id").val(),
+                    $selectInput = $("#" + selectInputId);
 
-                $("#" + selectInputId).html("<option></option>");
+                $selectInput.html("<option></option>");
                 $(data).each(function(index, item) {
-                    var selected = hakukohdeId == item.id ?  'selected = "selected"' : '';
-                    $("#" + selectInputId).append('<option value="' + item.id + '" ' + selected + '>' + item.name + '</option>');
+                    var selected = "";
+                    if (hakukohdeId == item.id) {
+                         selected = 'selected = "selected"';
+                         preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"));
+                    }
+                    $selectInput.append('<option value="' + item.id + '" ' + selected + '>' + item.name + '</option>');
                 });
             });
         },
@@ -21,7 +26,8 @@
         },
 
         searchAdditionalQuestions : function(hakukohdeId, additionalQuestionsId) {
-            var url = "/haku/education/additionalquestion/" + 1 + "/" + hakukohdeId;
+            var url = "/haku/education/additionalquestion/" + sortabletable_settings.applicationPeriodId + "/" +
+                      sortabletable_settings.formId + "/" + sortabletable_settings.teemaId + "/" + hakukohdeId;
             $.get(url, function(data) {
               $("#" + additionalQuestionsId).html(data);
             });

@@ -99,6 +99,7 @@ public class FormController {
         modelAndView.addObject("form", activeForm);
         final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), categoryId, (String) session.getAttribute(USER_ID));
         modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getValues());
+        modelAndView.addObject("hakemusId", hakemusId);
         return modelAndView;
     }
 
@@ -127,6 +128,7 @@ public class FormController {
                 modelAndView.addObject("form", activeForm);
             }
         }
+        modelAndView.addObject("hakemusId", hakemusId);
         LOGGER.debug(modelAndView.getModel().toString());
         return modelAndView;
     }

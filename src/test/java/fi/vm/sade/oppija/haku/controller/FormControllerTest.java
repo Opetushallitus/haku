@@ -73,7 +73,7 @@ public class FormControllerTest {
     @Test
     public void testGetCategoryModelSize() throws Exception {
         ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId, new MockHttpSession());
-        assertEquals(3, actualModelAndView.getModel().size());
+        assertEquals(4, actualModelAndView.getModel().size());
     }
 
     @Test
