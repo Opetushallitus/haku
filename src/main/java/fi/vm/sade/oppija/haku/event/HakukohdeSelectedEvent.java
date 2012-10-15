@@ -56,17 +56,21 @@ public class HakukohdeSelectedEvent extends AbstractEvent {
                 prefNumber++;
             }
 
-            Form form = formService.getActiveForm("test", "yhteishaku");
-            for (Element child : form.getCategory("arvosanat").getChildren()) {
-                if (child.getType().equals("QuestionGroup")) {
-                    for (Element innerChild : child.getChildren()) {
-                        if (innerChild.getType().equals("GradeGrid")) {
-                            GradeGrid gradeGrid = (GradeGrid)innerChild;
-                            gradeGrid.setEducationSpecificSubjects(subjects);
-                        }
-                    }
-                }
-            }
+
+//            Form form = formService.getActiveForm("test", "yhteishaku");
+//            for (Element child : form.getCategory("arvosanat").getChildren()) {
+//                if (child.getType().equals("QuestionGroup")) {
+//                    for (Element innerChild : child.getChildren()) {
+//                        if (innerChild.getType().equals("GradeGrid")) {
+//                            GradeGrid gradeGrid = (GradeGrid)innerChild;
+//                            gradeGrid.setEducationSpecificSubjects(subjects);
+//                        }
+//                    }
+//                }
+//            }
+
+
+
 
         }
 
