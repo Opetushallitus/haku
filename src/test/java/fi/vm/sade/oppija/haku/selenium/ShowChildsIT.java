@@ -1,4 +1,4 @@
-package fi.vm.sade.oppija.haku.it;
+package fi.vm.sade.oppija.haku.selenium;
 
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.domain.FormModel;
@@ -9,19 +9,21 @@ import fi.vm.sade.oppija.haku.domain.questions.Option;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.*;
+import static org.junit.Assert.assertNotNull;
+
 
 /**
  * @author jukka
  * @version 9/20/123:26 PM}
  * @since 1.1
  */
-public class ShowChildsIT extends AbstractRemoteTest {
+public class ShowChildsIT extends AbstractSeleniumTest {
 
     private FormModelHelper formModelHelper;
 
@@ -55,20 +57,14 @@ public class ShowChildsIT extends AbstractRemoteTest {
         this.formModelHelper = initModel(formModel);
     }
 
-    @Ignore
     @Test
     public void testInputExistsWithJavaScript() throws IOException, InterruptedException {
         final String startUrl = formModelHelper.getStartUrl();
-        beginAt(startUrl);
-        dumpHtml();
-        assertElementPresent("checkbox_value");
-        assertElementPresent("checkbox_value2");
-        assertElementNotPresent("ekaryhma");
-        assertElementNotPresent("alikysymys1");
-        // assertButtonPresent("rule-enabled-checkbox.checkbox_value");
-        checkCheckbox("checkbox_value");
-        Thread.sleep(500L);
-        assertElementPresent("alikysymys1");
-
+        driver.get(getBaseUrl() + "/" + startUrl);
+        driver.findElement(By.id("checkbox_value"));
+        driver.findElement(By.id("checkbox_value2"));
+        selenium.click("checkbox_value");
+        final WebElement alikysymys1 = driver.findElement(By.id("alikysymys1"));
+        assertNotNull(alikysymys1);
     }
 }

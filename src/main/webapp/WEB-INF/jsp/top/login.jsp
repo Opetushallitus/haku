@@ -12,7 +12,7 @@
                                     </div>
                                     <div>
                                         <legend class="h3">SALASANA</legend>
-                                        <input name="j_password" type="text"/><input value="Kirjaudu" type="submit"/>
+                                        <input name="j_password" type="text"/><input name="login" value="Kirjaudu" type="submit"/>
                                     </div>
                                 </form>
                                 <a href="#" class="helplink">?</a>
