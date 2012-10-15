@@ -55,7 +55,7 @@ public class ShowChildsIT extends AbstractRemoteTest {
     }
 
     @Test
-    public void testInputExistsWithJavaScript() throws IOException {
+    public void testInputExistsWithJavaScript() throws IOException, InterruptedException {
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);
         dumpHtml();
@@ -65,6 +65,7 @@ public class ShowChildsIT extends AbstractRemoteTest {
         assertElementNotPresent("alikysymys1");
         // assertButtonPresent("rule-enabled-checkbox.checkbox_value");
         checkCheckbox("checkbox_value");
+        Thread.sleep(500L);
         assertElementPresent("alikysymys1");
 
     }
