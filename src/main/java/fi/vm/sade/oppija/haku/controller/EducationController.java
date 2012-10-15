@@ -30,7 +30,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -67,11 +66,11 @@ public class EducationController {
 
     @RequestMapping(value = "/additionalquestion//{applicationPeriodId}/{formId}/{teemaId}/{hakukohdeId}", method = RequestMethod.GET)
     public ModelAndView getCategory(@PathVariable final String applicationPeriodId, @PathVariable final String formId, @PathVariable final String teemaId,
-                                    @PathVariable final String hakukohdeId, HttpSession session) {
+                                    @PathVariable final String hakukohdeId) {
         final ModelAndView modelAndView = new ModelAndView("additionalQuestions");
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         List<Question> additionalQuestions = hakukohdeService.getHakukohdeSpecificQuestions(hakukohdeId, teemaId);
-        final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), teemaId, (String) session.getAttribute(USER_ID));
+        final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), teemaId);
         modelAndView.addObject("additionalQuestions", additionalQuestions);
         modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getValues());
         return modelAndView;
