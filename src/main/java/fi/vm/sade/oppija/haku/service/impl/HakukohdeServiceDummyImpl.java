@@ -50,15 +50,6 @@ public class HakukohdeServiceDummyImpl implements HakukohdeService {
             institutes.add(op);
         }
 
-        TextQuestion textQuestion = new TextQuestion("additional_question_1", "Lorem ipsum");
-        Radio radio = new Radio("additional_question_2", "Lorem ipsum dolor sit ame");
-        radio.addOption("q2_option_1", "q2_option_1", "Option one");
-        radio.addOption("q2_option_2", "q2_option_2", "Option two");
-
-        List<Question> lisakysymysList = new ArrayList<Question>();
-        lisakysymysList.add(textQuestion);
-        lisakysymysList.add(radio);
-
         List<SubjectRow> oppianieList = new ArrayList<SubjectRow>();
         oppianieList.add(new SubjectRow("geo", "Maantieto"));
         oppianieList.add(new SubjectRow("fys", "Fysiikka"));
@@ -71,6 +62,14 @@ public class HakukohdeServiceDummyImpl implements HakukohdeService {
                 String id = String.valueOf(institute.getId()) + "_" + String.valueOf(i);
                 Hakukohde h;
                 if (i % 2 == 0) {
+                    TextQuestion textQuestion = new TextQuestion(id + "_additional_question_1", "Lorem ipsum");
+                    Radio radio = new Radio(id + "_additional_question_2", "Lorem ipsum dolor sit ame");
+                    radio.addOption(id + "_q2_option_1", "q2_option_1", "Option one");
+                    radio.addOption(id + "_q2_option_2", "q2_option_2", "Option two");
+
+                    List<Question> lisakysymysList = new ArrayList<Question>();
+                    lisakysymysList.add(textQuestion);
+                    lisakysymysList.add(radio);
                     h = new Hakukohde(id, "Hakukohde_" + id, lisakysymysList, oppianieList);
                     lisakysymysMap.put(id, lisakysymysList);
                     oppiaineMap.put(id, oppianieList);
