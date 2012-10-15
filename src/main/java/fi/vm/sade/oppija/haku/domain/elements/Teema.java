@@ -17,6 +17,10 @@
 package fi.vm.sade.oppija.haku.domain.elements;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fi.vm.sade.oppija.haku.domain.questions.Question;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author jukka
@@ -25,7 +29,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Teema extends Titled {
 
-    public Teema(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+    Map<String, List<Question>> additionalQuestions;
+
+    public Teema(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
+                 @JsonProperty(value="additionalQuestions")Map<String, List<Question>> additionalQuestions) {
         super(id, title);
+        this.additionalQuestions = additionalQuestions;
+    }
+
+    public Map<String, List<Question>> getAdditionalQuestions() {
+        return additionalQuestions;
     }
 }

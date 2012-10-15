@@ -1,9 +1,7 @@
 package fi.vm.sade.oppija.haku.dao.impl;
 
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
-import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.*;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
@@ -52,13 +50,52 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         applicationPeriod.addForm(form);
 
-        Teema henkilötiedotRyhmä = new Teema("HenkilotiedotGrp", "Henkilötiedot");
-        Teema koulutustaustaRyhmä = new Teema("KoulutustaustaGrp", "Koulutustausta");
-        Teema hakutoiveetRyhmä = new Teema("hakutoiveetGrp", "Hakutoiveet");
-        Teema arvosanatRyhmä = new Teema("arvosanatGrp", "Arvosanat");
-        Teema lisätiedotRyhmä = new Teema("lisatiedotGrp", "Lisätiedot");
-        Teema esikatselutRyhmä = new Teema("esikatseluGrp", "Esikatselu");
-        Teema yhteenvetoRyhmä = new Teema("yhteenvetoGrp", "yhteenveto");
+        Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
+        Map<String, List<Question>> oppiaineMap = new HashMap<String, List<Question>>();
+
+        int AMOUNT_OF_TEST_OPETUSPISTE = 5;
+        int AMOUNT_OF_TEST_HAKUKOHDE = 5;
+        List<Organisaatio> institutes = new ArrayList<Organisaatio>();
+
+        for (int i = 0; i < AMOUNT_OF_TEST_OPETUSPISTE; ++i) {
+            Organisaatio op = new Organisaatio(String.valueOf(i), "Koulu" + i);
+            institutes.add(op);
+        }
+
+        List<Question> oppianieList = new ArrayList<Question>();
+        oppianieList.add(new SubjectRow("geo", "Maantieto"));
+        oppianieList.add(new SubjectRow("fys", "Fysiikka"));
+        oppianieList.add(new SubjectRow("fil", "Filosofia"));
+        oppianieList.add(new SubjectRow("kem", "Kemia"));
+
+        for (Organisaatio institute : institutes) {
+            List<Hakukohde> hakukohdeList = new ArrayList<Hakukohde>();
+            for (int i = 0; i < AMOUNT_OF_TEST_HAKUKOHDE; i++) {
+                String id = String.valueOf(institute.getId()) + "_" + String.valueOf(i);
+                Hakukohde h;
+                if (i % 2 == 0) {
+                    TextQuestion textQuestion = new TextQuestion(id + "_additional_question_1", "Lorem ipsum");
+                    Radio radio = new Radio(id + "_additional_question_2", "Lorem ipsum dolor sit ame");
+                    radio.addOption(id + "_q2_option_1", "q2_option_1", "Option one");
+                    radio.addOption(id + "_q2_option_2", "q2_option_2", "Option two");
+
+                    List<Question> lisakysymysList = new ArrayList<Question>();
+                    lisakysymysList.add(textQuestion);
+                    lisakysymysList.add(radio);
+                    lisakysymysMap.put(id, lisakysymysList);
+                    oppiaineMap.put(id, oppianieList);
+                }
+            }
+        }
+
+
+        Teema henkilötiedotRyhmä = new Teema("HenkilotiedotGrp", "Henkilötiedot", null);
+        Teema koulutustaustaRyhmä = new Teema("KoulutustaustaGrp", "Koulutustausta", null);
+        Teema hakutoiveetRyhmä = new Teema("hakutoiveetGrp", "Hakutoiveet", lisakysymysMap);
+        Teema arvosanatRyhmä = new Teema("arvosanatGrp", "Arvosanat", oppiaineMap);
+        Teema lisätiedotRyhmä = new Teema("lisatiedotGrp", "Lisätiedot", null);
+        Teema esikatselutRyhmä = new Teema("esikatseluGrp", "Esikatselu", null);
+        Teema yhteenvetoRyhmä = new Teema("yhteenvetoGrp", "yhteenveto", null);
 
         henkilötiedot.addChild(henkilötiedotRyhmä);
         koulutustausta.addChild(koulutustaustaRyhmä);

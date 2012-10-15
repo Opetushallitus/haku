@@ -13,6 +13,6 @@ public interface AdditionalQuestionService {
 
     public List<Question> findAdditionalQuestions(String teemaId, HakemusId hakemusId);
 
-    public List<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds);
+    public List<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakemusId hakemusId);
 
 }
