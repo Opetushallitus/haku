@@ -27,12 +27,12 @@ import static org.junit.Assert.assertEquals;
  */
 public class HakemusIdTest {
 
-    private static final String ID = "foo_foo_foo_foo";
+    private static final String ID = "foo_foo_foo";
 
     @Test
     public void testHakemusId() {
         final String foo = "foo";
-        final HakemusId hakemusId = new HakemusId(foo, foo, foo, foo);
+        final HakemusId hakemusId = new HakemusId(foo, foo, foo);
         assertEquals(hakemusId.asKey(), ID);
     }
 
@@ -45,7 +45,7 @@ public class HakemusIdTest {
     @Test
     public void testEquals() {
         final HakemusId hakemusId = HakemusId.fromKey(ID);
-        final HakemusId hakemusId2 = HakemusId.fromKey("foo_foo_foo_foo");
+        final HakemusId hakemusId2 = HakemusId.fromKey("foo_foo_foo");
         assertEquals(hakemusId, hakemusId2);
     }
 

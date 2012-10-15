@@ -28,5 +28,9 @@
                 <li class="set-right"><c:out value="${infobox.footer}"/></li>
             </c:if>
         </ul>
+        <form action="/haku/lomake/test/yhteishaku" method="post">
+        <input type="hidden" name="preference1-Opetuspiste" value="1"/>
+            <input type="submit" name="enabling-submit" value="Hae kohteeseen"/>
+        </form>
     </div>
 </c:if>

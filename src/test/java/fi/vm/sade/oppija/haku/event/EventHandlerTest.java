@@ -2,6 +2,7 @@ package fi.vm.sade.oppija.haku.event;
 
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.User;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.junit.Test;
 
@@ -25,7 +26,7 @@ public class EventHandlerTest {
 
     private HakemusState createEmptyState() {
         final String id = "id";
-        return new HakemusState(new Hakemus(new HakemusId(id, id, id, id), new HashMap<String, String>()));
+        return new HakemusState(new Hakemus(new HakemusId(id, id, id), new HashMap<String, String>(), new User("test")));
     }
 
     private EventHandler createErrorEvent(EventHandler eventHandler1) {

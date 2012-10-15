@@ -2,6 +2,7 @@ package fi.vm.sade.oppija.haku.dao;
 
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +29,13 @@ public class ApplicationDAOTest extends AbstractDAOTest {
     @Test
     public void testUpdateAndFindApplication() {
         String id = System.currentTimeMillis() + "";
-        final HakemusId id1 = new HakemusId(id, id, id, id);
+        final HakemusId id1 = new HakemusId(id, id, id);
         final HashMap<String, String> values = new HashMap<String, String>();
         values.put("avain", "arvo");
-        applicationDAO.update(new Hakemus(id1, values));
+        applicationDAO.update(new Hakemus(id1, values, new User("test")));
 
-        HakemusId id2 = new HakemusId(id, id, id, id);
-        final Hakemus hakemus = applicationDAO.find(id2);
+        HakemusId id2 = new HakemusId(id, id, id);
+        final Hakemus hakemus = applicationDAO.find(id2, new User("test"));
         assertEquals(hakemus.getValues().get("avain"), "arvo");
     }
 

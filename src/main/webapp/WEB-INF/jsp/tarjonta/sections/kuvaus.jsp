@@ -138,7 +138,7 @@
             </div>
         </div>
         <div class="clear"></div>
-        <img src="content/bulevardi31.png"/>
+        <img src="/haku/content/bulevardi31.png"/>
         <legend class="h3">Metropolia ammattikorkeakoulu</legend>
         <a href="http://www.metropolia.fi">http://www.metropolia.fi</a>
 

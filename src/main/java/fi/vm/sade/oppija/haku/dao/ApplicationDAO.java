@@ -18,6 +18,9 @@ package fi.vm.sade.oppija.haku.dao;
 
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.User;
+
+import java.util.List;
 
 /**
  * DAO interface for saving, updating and finding applications made by users.
@@ -28,5 +31,7 @@ public interface ApplicationDAO {
 
     void update(Hakemus hakemus);
 
-    Hakemus find(HakemusId hakemusId);
+    Hakemus find(HakemusId hakemusId, User user);
+
+    List<Hakemus> findAll(User user);
 }

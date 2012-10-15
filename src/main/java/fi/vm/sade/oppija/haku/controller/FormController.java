@@ -35,7 +35,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 
@@ -90,29 +89,33 @@ public class FormController {
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}", method = RequestMethod.GET)
     public ModelAndView getCategory(@PathVariable final String applicationPeriodId,
                                     @PathVariable final String formId,
-                                    @PathVariable final String categoryId,
-                                    HttpSession session) {
+                                    @PathVariable final String categoryId) {
         LOGGER.debug("getCategory {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         final ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         modelAndView.addObject("category", activeForm.getCategory(categoryId));
         modelAndView.addObject("form", activeForm);
-        final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), categoryId, (String) session.getAttribute(USER_ID));
+        final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), categoryId);
         modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getValues());
         modelAndView.addObject("hakemusId", hakemusId);
         return modelAndView;
     }
 
+    @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.POST)
+    public ModelAndView prefillForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId, @RequestBody final MultiValueMap<String, String> multiValues) {
+        return saveCategory(applicationPeriodId, formId, formService.getFirstCategory(applicationPeriodId, formId).getId(), multiValues);
+    }
+
+
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView saveCategory(@PathVariable final String applicationPeriodId,
                                      @PathVariable final String formId,
                                      @PathVariable final String categoryId,
-                                     @RequestBody final MultiValueMap<String, String> multiValues,
-                                     HttpSession session) {
+                                     @RequestBody final MultiValueMap<String, String> multiValues) {
         LOGGER.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         Map<String, String> values = multiValues.toSingleValueMap();
 
-        final HakemusId hakemusId = new HakemusId(applicationPeriodId, formId, categoryId, (String) session.getAttribute(USER_ID));
+        final HakemusId hakemusId = new HakemusId(applicationPeriodId, formId, categoryId);
 
         HakemusState hakemusState = hakemusService.save(hakemusId, values);
 

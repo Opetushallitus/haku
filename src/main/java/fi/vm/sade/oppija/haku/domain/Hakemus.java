@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.haku.domain;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -30,12 +29,14 @@ public class Hakemus implements Serializable {
     private static final long serialVersionUID = -7491168801255850954L;
 
     private final HakemusId hakemusId;
+    private final User user;
     private final Map<String, String> values;
 
 
-    public Hakemus(final HakemusId id, final Map<String, String> values) {
+    public Hakemus(final HakemusId id, final Map<String, String> values, User user) {
         this.hakemusId = id;
-        this.values = Collections.unmodifiableMap(values);
+        this.user = user;
+        this.values = values;
     }
 
     public Map<String, String> getValues() {
@@ -44,5 +45,10 @@ public class Hakemus implements Serializable {
 
     public HakemusId getHakemusId() {
         return hakemusId;
+    }
+
+
+    public User getUser() {
+        return user;
     }
 }

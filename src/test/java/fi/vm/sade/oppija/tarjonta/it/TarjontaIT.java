@@ -46,7 +46,7 @@ public class TarjontaIT extends TomcatContainerTest {
         beginAt("/tarjontatiedot");
         setTextField("text", "perustutkinto");
         dumpHtml();
-        submit();
+        clickButton("btn-search");
         assertLinkPresentWithExactText("sivu 1");
     }
 

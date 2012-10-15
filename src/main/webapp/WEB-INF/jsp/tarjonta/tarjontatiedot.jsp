@@ -61,8 +61,8 @@
 
                                             <div class="form-item search-result">
                                                 <ul class="result set-left" style="display: inline-block; margin-right: 20px">
-                                                    <li><a href="#" class="form-row-link bold">Liikunnanohjauksen perustutkinto PK; Liikunnanohjaaja; Kevät 2013; Kisakallion urheilupuisto; Lohja</a></li>
-                                                    <li><a href="#" class="form-row-link left-intend-2">- Liikunnanohjauksen koulutusohjelma</a></li>
+                                                    <li><a href="tarjontatiedot/1" class="form-row-link bold">Liikunnanohjauksen perustutkinto PK; Liikunnanohjaaja; Kevät 2013; Kisakallion urheilupuisto; Lohja</a></li>
+                                                    <li><a href="tarjontatiedot/1" class="form-row-link left-intend-2">- Liikunnanohjauksen koulutusohjelma</a></li>
                                                     
                                                 </ul>
                                                 <div class="result-options">
@@ -83,8 +83,8 @@
 
                                             <div class="form-item search-result">
                                                 <ul class="result set-left" style="display: inline-block; margin-right: 20px">
-                                                    <li><a href="#" class="form-row-link bold">Liikunnanohjauksen perustutkinto PK; Liikuntaneuvoja; Syksy 2013; Suomen Urheilupuisto; Vierumäki</a></li>
-                                                    <li><a href="#" class="form-row-link left-intend-2">- Liikunnanohjauksen koulutusohjelma</a></li>
+                                                    <li><a href="tarjontatiedot/1" class="form-row-link bold">Liikunnanohjauksen perustutkinto PK; Liikuntaneuvoja; Syksy 2013; Suomen Urheilupuisto; Vierumäki</a></li>
+                                                    <li><a href="tarjontatiedot/1" class="form-row-link left-intend-2">- Liikunnanohjauksen koulutusohjelma</a></li>
                                                     
                                                 </ul>
                                                 <div class="result-options">

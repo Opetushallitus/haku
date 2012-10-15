@@ -20,6 +20,7 @@ import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +29,9 @@ import java.util.Map;
  * @since 1.1
  */
 public interface HakemusService {
+
+    List<Hakemus> findAll();
+
     Hakemus getHakemus(HakemusId hakemusId);
 
     HakemusState save(HakemusId hakemusId, Map<String, String> values);

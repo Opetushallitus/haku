@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
-    <jsp:include page="head.jsp"/><body>
+    <jsp:include page="head.jsp"/>
     <body>
         <div id="viewport">
             <div id="overlay"></div>

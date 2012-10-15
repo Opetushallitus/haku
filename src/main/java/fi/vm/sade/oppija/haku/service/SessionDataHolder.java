@@ -19,12 +19,15 @@ package fi.vm.sade.oppija.haku.service;
 import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author jukka
@@ -38,16 +41,25 @@ public class SessionDataHolder implements Serializable, ApplicationDAO {
     private static final long serialVersionUID = -3751714345380438532L;
     private HashMap<HakemusId, Hakemus> map = new HashMap<HakemusId, Hakemus>();
 
-    public Hakemus find(HakemusId id) {
+    public Hakemus find(HakemusId id, User user) {
         Hakemus hakemus = map.get(id);
         if (hakemus == null) {
-            hakemus = new Hakemus(id, new HashMap<String, String>());
+            final HashMap<String, String> values = new HashMap<String, String>();
+            new TimeStampModifier(values).updateCreated();
+            hakemus = new Hakemus(id, values, user);
             map.put(id, hakemus);
         }
         return hakemus;
     }
 
+    @Override
+    public List<Hakemus> findAll(User user) {
+        return new ArrayList<Hakemus>(map.values());
+    }
+
     public void update(Hakemus hakemus) {
+        new TimeStampModifier(hakemus.getValues()).updateModified();
         this.map.put(hakemus.getHakemusId(), hakemus);
     }
+
 }

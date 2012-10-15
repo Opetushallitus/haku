@@ -23,43 +23,18 @@
     </div>
 
     <div class="actions">
-        
         <c:choose>
-            <c:when test="${user}">
+            <c:when test="${not empty sessionScope['username']}">
                 <ul>
-                    <li><a href="/logout">Kirjaudu ulos</a></li>
-                    <li><a href="/me"><c:out value="${user.firstname}"/> <c:out value="${user.lastname}"/></a></li>
+                    <li><a href="/haku/logout">Kirjaudu ulos</a></li>
+                    <li><a href="/haku/me"><c:out value="${sessionScope['username']}"/> <c:out value="${lastname}"/></a></li>
                 </ul>
             </c:when>
             <c:otherwise>
                 <ul>
                     <li><a href="#" class="open-login-popup">Kirjaudu sisään</a></li>
                     <div id="login-popup" class="display-none">
-                        <div id="authentication">
-                            <div class="heading">
-                                <h2>Kirjautuminen</h2>
-                            </div>
-                            <div class="login-content">
-                                <form action="/haku/j_spring_security_check" method="POST">
-                                    <div>
-                                        <legend class="h3">KÄYTTÄJÄTUNNUS</legend>
-                                        <input name="j_username" type="text"/>
-                                    </div>
-                                    <div>
-                                        <legend class="h3">SALASANA</legend>
-                                        <input name="j_password" type="text"/><input value="Kirjaudu" type="submit"/>
-                                    </div>
-                                </form>
-                                <a href="#" class="helplink">?</a>
-                                <a href="#">Unohtuiko salasana?</a>
-
-                                <div class="clear"></div>
-                                <a href="#">Rekisteröidy palveluun</a>
-
-                                <div class="clear"></div>
-                                <a href="#" class="close-login-popup">Sulje</a>
-                            </div>
-                        </div>
+                        <jsp:include page="login.jsp"/>
                     </div>
                 </ul>
             </c:otherwise>

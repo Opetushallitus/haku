@@ -15,20 +15,9 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<!DOCTYPE html>
-<html>
-    <jsp:include page="head.jsp"/>
-    <body>
-        <div id="viewport">
-            <div id="overlay"></div>
-            <div id="site">
 
-                <jsp:include page="siteheader.jsp"/>
+    <jsp:include page="../top/top.jsp"/>
 
-                <section id="page">
-                    <section id="pageheader">
-                        <jsp:include page="navigation.jsp"/>
-                    </section>
 
                     <section id="koulutuskuvaus">
                         <div class="grid16-4">
@@ -41,7 +30,7 @@
 
                             <jsp:include page="definitions.jsp"/>
 
-                            <div><a href="vapaasanahaku.html">Takaisin hakutuloksiin</a></div>
+                            <div><a href="vapaasana.html">Takaisin hakutuloksiin</a></div>
                             <div class="clear"></div>
 
                             <div class="pagetitle">

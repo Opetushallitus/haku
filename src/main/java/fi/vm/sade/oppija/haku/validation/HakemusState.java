@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.haku.validation;
 
 
 import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.elements.Form;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,15 +43,6 @@ public class HakemusState {
         return errors;
     }
 
-    public int errorCount() {
-        return errors.size();
-    }
-
-
-    public Form getActiveForm() {
-        return null;
-    }
-
     public void addError(Map<String, String> errorMessages) {
         this.errors.putAll(errorMessages);
     }
@@ -75,5 +65,9 @@ public class HakemusState {
 
     public boolean mustValidate() {
         return mustValidate;
+    }
+
+    public void skipValidation() {
+        mustValidate = false;
     }
 }
