@@ -4,10 +4,10 @@ import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
-import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.domain.elements.QuestionGroup;
+import fi.vm.sade.oppija.haku.domain.elements.Teema;
 import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.domain.questions.*;
@@ -32,13 +32,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         this.applicationPeriod = new ApplicationPeriod("test");
         formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
-        Category henkilötiedot = new Category(firstCategoryId, "Henkilötiedot");
-        Category koulutustausta = new Category("koulutustausta", "Koulutustausta");
-        Category hakutoiveet = new Category("hakutoiveet", "Hakutoiveet");
-        Category arvosanat = new Category("arvosanat", "Arvosanat");
-        Category lisätiedot = new Category("lisatiedot", "Lisätiedot");
-        Category esikatselu = new Category("esikatselu", "Esikatselu");
-        Category yhteenveto = new Category("yhteenveto", "yhteenveto");
+        Vaihe henkilötiedot = new Vaihe(firstCategoryId, "Henkilötiedot");
+        Vaihe koulutustausta = new Vaihe("koulutustausta", "Koulutustausta");
+        Vaihe hakutoiveet = new Vaihe("hakutoiveet", "Hakutoiveet");
+        Vaihe arvosanat = new Vaihe("arvosanat", "Arvosanat");
+        Vaihe lisätiedot = new Vaihe("lisatiedot", "Lisätiedot");
+        Vaihe esikatselu = new Vaihe("esikatselu", "Esikatselu");
+        Vaihe yhteenveto = new Vaihe("yhteenveto", "yhteenveto");
 
         Form form = new Form(formId, "yhteishaku");
         form.addChild(henkilötiedot);
@@ -52,13 +52,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         applicationPeriod.addForm(form);
 
-        QuestionGroup henkilötiedotRyhmä = new QuestionGroup("HenkilotiedotGrp", "Henkilötiedot");
-        QuestionGroup koulutustaustaRyhmä = new QuestionGroup("KoulutustaustaGrp", "Koulutustausta");
-        QuestionGroup hakutoiveetRyhmä = new QuestionGroup("hakutoiveetGrp", "Hakutoiveet");
-        QuestionGroup arvosanatRyhmä = new QuestionGroup("arvosanatGrp", "Arvosanat");
-        QuestionGroup lisätiedotRyhmä = new QuestionGroup("lisatiedotGrp", "Lisätiedot");
-        QuestionGroup esikatselutRyhmä = new QuestionGroup("esikatseluGrp", "Esikatselu");
-        QuestionGroup yhteenvetoRyhmä = new QuestionGroup("yhteenvetoGrp", "yhteenveto");
+        Teema henkilötiedotRyhmä = new Teema("HenkilotiedotGrp", "Henkilötiedot");
+        Teema koulutustaustaRyhmä = new Teema("KoulutustaustaGrp", "Koulutustausta");
+        Teema hakutoiveetRyhmä = new Teema("hakutoiveetGrp", "Hakutoiveet");
+        Teema arvosanatRyhmä = new Teema("arvosanatGrp", "Arvosanat");
+        Teema lisätiedotRyhmä = new Teema("lisatiedotGrp", "Lisätiedot");
+        Teema esikatselutRyhmä = new Teema("esikatseluGrp", "Esikatselu");
+        Teema yhteenvetoRyhmä = new Teema("yhteenvetoGrp", "yhteenveto");
 
         henkilötiedot.addChild(henkilötiedotRyhmä);
         koulutustausta.addChild(koulutustaustaRyhmä);
@@ -205,13 +205,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         return gradeGrid;
     }
 
-    private void createArvosanat(QuestionGroup arvosanatRyhmä) {
+    private void createArvosanat(Teema arvosanatRyhmä) {
 
         arvosanatRyhmä.addChild(createGradeGrid());
 
     }
 
-    private void createHakutoiveet(QuestionGroup hakutoiveetRyhmä) {
+    private void createHakutoiveet(Teema hakutoiveetRyhmä) {
         hakutoiveetRyhmä.setHelp("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.");
         SortableTable sortableTable = new SortableTable("preferencelist", "Hakutoiveet", "Ylös", "Alas");
         PreferenceRow pr1 = new PreferenceRow("preference1", "Hakutoive 1", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
@@ -223,7 +223,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         hakutoiveetRyhmä.addChild(sortableTable);
     }
 
-    private void createKoulutustausta(QuestionGroup koulutustaustaRyhmä) {
+    private void createKoulutustausta(Teema koulutustaustaRyhmä) {
         Radio millatutkinnolla = new Radio("millatutkinnolla", "Millä tutkinnolla haet opiskelupaikkaa?");
         for (int i = 0; i < 10; i++) {
             millatutkinnolla.addOption("tutkinto" + i, "tutkinto" + i, "Lorem ipsum sit dolor amet " + i);
@@ -298,7 +298,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     @Override
-    public Category getFirstCategory(String applicationPeriodId, String formId) {
+    public Vaihe getFirstCategory(String applicationPeriodId, String formId) {
         try {
             return this.getActiveForm(applicationPeriodId, formId).getFirstCategory();
         } catch (Exception e) {

@@ -25,24 +25,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @version 9/7/1210:28 AM}
  * @since 1.1
  */
-public class Category extends Titled {
+public class Vaihe extends Titled {
 
-    private transient Category next;
-    private transient Category prev;
+    private transient Vaihe next;
+    private transient Vaihe prev;
 
-    public Category(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+    public Vaihe(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
     }
 
-    public void setNext(Category element) {
+    public void setNext(Vaihe element) {
         this.next = element;
     }
 
-    public void setPrev(Category prev) {
+    public void setPrev(Vaihe prev) {
         this.prev = prev;
     }
 
-    public void initChain(Category prev) {
+    public void initChain(Vaihe prev) {
         if (prev != null) {
             setPrev(prev);
             prev.setNext(this);
@@ -60,12 +60,12 @@ public class Category extends Titled {
     }
 
     @JsonIgnore
-    public Category getNext() {
+    public Vaihe getNext() {
         return next;
     }
 
     @JsonIgnore
-    public Category getPrev() {
+    public Vaihe getPrev() {
         return prev;
     }
 

@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
-import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.FormService;
@@ -82,8 +82,8 @@ public class FormController {
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.GET)
     public String getFormAndRedirectToFirstCategory(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
         LOGGER.debug("getFormAndRedirectToFirstCategory {}, {}", new Object[]{applicationPeriodId, formId});
-        Category firstCategory = formService.getFirstCategory(applicationPeriodId, formId);
-        return "redirect:" + formId + "/" + firstCategory.getId();
+        Vaihe firstVaihe = formService.getFirstCategory(applicationPeriodId, formId);
+        return "redirect:" + formId + "/" + firstVaihe.getId();
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}", method = RequestMethod.GET)
@@ -121,8 +121,8 @@ public class FormController {
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         if (hakemusState.isValid()) {
-            final Category category = (Category) hakemusState.getModelObjects().get("category");
-            modelAndView = new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + category.getId());
+            final Vaihe vaihe = (Vaihe) hakemusState.getModelObjects().get("vaihe");
+            modelAndView = new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + vaihe.getId());
         } else {
             for (Map.Entry<String, Object> stringObjectEntry : hakemusState.getModelObjects().entrySet()) {
                 modelAndView.addObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());

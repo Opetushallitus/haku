@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.haku.event;
 
 import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
@@ -45,27 +45,27 @@ public class NavigationEvent extends AbstractEvent {
 
     @Override
     public void process(HakemusState hakemusState) {
-        Category category = getNextCategory(hakemusState);
-        hakemusState.addModelObject("category", category);
+        Vaihe vaihe = getNextCategory(hakemusState);
+        hakemusState.addModelObject("category", vaihe);
     }
 
-    private Category getNextCategory(HakemusState hakemusState) {
+    private Vaihe getNextCategory(HakemusState hakemusState) {
         Hakemus hakemus = hakemusState.getHakemus();
         Form activeForm = formService.getActiveForm(hakemus.getHakemusId().getApplicationPeriodId(), hakemus.getHakemusId().getFormId());
 
-        Category category = activeForm.getCategory(hakemus.getHakemusId().getCategoryId());
+        Vaihe vaihe = activeForm.getCategory(hakemus.getHakemusId().getCategoryId());
         if (hakemusState.isValid()) {
-            category = selectNextPrevOrCurrent(hakemus.getValues(), category);
+            vaihe = selectNextPrevOrCurrent(hakemus.getValues(), vaihe);
         }
-        return category;
+        return vaihe;
     }
 
-    private Category selectNextPrevOrCurrent(Map<String, String> values, Category category) {
-        if (values.get("nav-next") != null && category.isHasNext()) {
-            return category.getNext();
-        } else if (values.get("nav-prev") != null && category.isHasPrev()) {
-            return category.getPrev();
+    private Vaihe selectNextPrevOrCurrent(Map<String, String> values, Vaihe vaihe) {
+        if (values.get("nav-next") != null && vaihe.isHasNext()) {
+            return vaihe.getNext();
+        } else if (values.get("nav-prev") != null && vaihe.isHasPrev()) {
+            return vaihe.getPrev();
         }
-        return category;
+        return vaihe;
     }
 }

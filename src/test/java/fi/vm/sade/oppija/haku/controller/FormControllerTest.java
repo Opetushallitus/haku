@@ -2,7 +2,7 @@ package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.dao.impl.ApplicationDAOMongoImpl;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.event.EventHandler;
@@ -61,7 +61,7 @@ public class FormControllerTest {
     @Test
     public void testGetCategoryMVCategory() throws Exception {
         ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
-        assertEquals(firstCategoryId, ((Category) actualModelAndView.getModel().get("category")).getId());
+        assertEquals(firstCategoryId, ((Vaihe) actualModelAndView.getModel().get("category")).getId());
     }
 
     @Test

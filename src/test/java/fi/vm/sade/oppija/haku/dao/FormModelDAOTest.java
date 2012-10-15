@@ -7,7 +7,7 @@ import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.tools.FileHandling;
@@ -119,7 +119,7 @@ public class FormModelDAOTest extends AbstractDAOTest {
 
         final Form formById = activePeriodById.getForms().entrySet().iterator().next().getValue();
         formById.init();
-        final Category cat1 = formById.getFirstCategory();
+        final Vaihe cat1 = formById.getFirstCategory();
         return cat1.getChildren();
     }
 

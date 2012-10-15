@@ -47,7 +47,7 @@ public class ValidatorCollector {
 
     private void traverse(TraverseParameters traverseParameters) {
         for (Element child : traverseParameters.getChildren()) {
-            if (child.getType().equals("Category")) {
+            if (child.getType().equals("Vaihe")) {
                 traverse(new TraverseParameters(child.getChildren(), child.getId(), traverseParameters.getValidatorContainer()));
             } else {
                 Set<Attribute> attributes = child.getAttributes();

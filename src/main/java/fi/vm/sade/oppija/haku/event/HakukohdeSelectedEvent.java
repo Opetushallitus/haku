@@ -1,10 +1,7 @@
 package fi.vm.sade.oppija.haku.event;
 
 import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.elements.Category;
-import fi.vm.sade.oppija.haku.domain.elements.Element;
-import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.domain.elements.custom.GradeGrid;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakukohdeService;
@@ -38,9 +35,9 @@ public class HakukohdeSelectedEvent extends AbstractEvent {
         // check that the phase is changing from
         // hakutoiveet => arvosanat
 
-        Category category = (Category)hakemusState.getModelObjects().get("category");
-        if ("hakutoiveet".equals(category.getPrev().getId()) &&
-                "arvosanat".equals(category.getId())) {
+        Vaihe vaihe = (Vaihe)hakemusState.getModelObjects().get("category");
+        if ("hakutoiveet".equals(vaihe.getPrev().getId()) &&
+                "arvosanat".equals(vaihe.getId())) {
 
             Hakemus hakemus = (Hakemus)hakemusState.getModelObjects().get("hakemus");
             Map<String, String> hakemusValues = hakemus.getValues();

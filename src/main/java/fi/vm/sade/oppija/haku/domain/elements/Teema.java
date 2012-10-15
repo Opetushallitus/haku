@@ -23,9 +23,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @version 9/7/1210:36 AM}
  * @since 1.1
  */
-public class QuestionGroup extends Titled {
+public class Teema extends Titled {
 
-    public QuestionGroup(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+    public Teema(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
     }
 }

@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.haku.domain.builders;
 
 import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 
@@ -31,17 +31,17 @@ public class FormModelBuilder {
     FormModel formModel = new FormModel();
 
     ApplicationPeriodBuilder applicationPeriodBuilder = new ApplicationPeriodBuilder("yhteishaku");
-    private Category category = new Category("kategoria", "category1");
+    private Vaihe vaihe = new Vaihe("kategoria", "category1");
 
     private FormBuilder formBuilder = new FormBuilder("form", "test");
 
-    final Form form = formBuilder.withChild(category).build();
+    final Form form = formBuilder.withChild(vaihe).build();
 
     public FormModelBuilder() {
     }
 
-    public FormModelBuilder(Category category) {
-        this.category = category;
+    public FormModelBuilder(Vaihe vaihe) {
+        this.vaihe = vaihe;
     }
 
     public FormModel build() {
@@ -56,7 +56,7 @@ public class FormModelBuilder {
 
     public FormModelBuilder addChildToCategory(Element... element) {
         for (Element element1 : element) {
-            this.category.addChild(element1);
+            this.vaihe.addChild(element1);
         }
         return this;
     }

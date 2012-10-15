@@ -33,27 +33,27 @@ public class Form extends Titled {
 
     private transient String firstCategoryId;
 
-    final transient Map<String, Category> categories = new HashMap<String, Category>();
+    final transient Map<String, Vaihe> categories = new HashMap<String, Vaihe>();
 
     public Form(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
     }
 
-    public Category getCategory(String categoryId) {
+    public Vaihe getCategory(String categoryId) {
         return categories.get(categoryId);
     }
 
-    private void addCategory(Category category, Category prev) {
-        this.categories.put(category.getId(), category);
-        category.initChain(prev);
-        navigation.addChild(category.asLink());
+    private void addCategory(Vaihe vaihe, Vaihe prev) {
+        this.categories.put(vaihe.getId(), vaihe);
+        vaihe.initChain(prev);
+        navigation.addChild(vaihe.asLink());
     }
 
     public void init() {
-        Category prev = null;
+        Vaihe prev = null;
         for (Element child : children) {
-            if (child instanceof Category) {
-                final Category child1 = (Category) child;
+            if (child instanceof Vaihe) {
+                final Vaihe child1 = (Vaihe) child;
                 addCategory(child1, prev);
                 prev = child1;
                 if (firstCategoryId == null) {
@@ -69,7 +69,7 @@ public class Form extends Titled {
     }
 
     @JsonIgnore
-    public Category getFirstCategory() {
+    public Vaihe getFirstCategory() {
         return getCategory(firstCategoryId);
     }
 }

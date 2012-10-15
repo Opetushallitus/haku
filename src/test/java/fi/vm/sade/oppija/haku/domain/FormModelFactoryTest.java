@@ -2,7 +2,7 @@ package fi.vm.sade.oppija.haku.domain;
 
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
-import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
 import org.junit.Test;
 
@@ -29,8 +29,8 @@ public class FormModelFactoryTest {
 
     @Test
     public void testBuilderWithCategory() throws Exception {
-        final Category category = new Category("ekaKategoria", "ensimmäinen kategoria");
-        final FormModel formModel = new FormModelBuilder(category).withDefaults().addChildToCategory(new TextQuestion("doo", "foo")).build();
-        assertEquals("doo", category.getChildren().get(0).getId());
+        final Vaihe vaihe = new Vaihe("ekaKategoria", "ensimmäinen kategoria");
+        final FormModel formModel = new FormModelBuilder(vaihe).withDefaults().addChildToCategory(new TextQuestion("doo", "foo")).build();
+        assertEquals("doo", vaihe.getChildren().get(0).getId());
     }
 }

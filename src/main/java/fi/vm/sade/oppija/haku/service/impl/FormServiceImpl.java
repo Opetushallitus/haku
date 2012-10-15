@@ -20,7 +20,7 @@ package fi.vm.sade.oppija.haku.service.impl;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
-import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.FormModelHolder;
@@ -65,12 +65,12 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public Category getFirstCategory(String applicationPeriodId, String formId) {
-        Category firstCategory = getActiveForm(applicationPeriodId, formId).getFirstCategory();
-        if (firstCategory == null) {
+    public Vaihe getFirstCategory(String applicationPeriodId, String formId) {
+        Vaihe firstVaihe = getActiveForm(applicationPeriodId, formId).getFirstCategory();
+        if (firstVaihe == null) {
             throw new ResourceNotFoundException("First category not found");
         }
-        return firstCategory;
+        return firstVaihe;
     }
 
     @Override

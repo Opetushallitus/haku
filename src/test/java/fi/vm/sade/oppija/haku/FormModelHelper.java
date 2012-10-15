@@ -2,7 +2,7 @@ package fi.vm.sade.oppija.haku;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.elements.Category;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 
@@ -20,12 +20,12 @@ public class FormModelHelper {
 
     }
 
-    public String getFormUrl(Category category) {
-        return "lomake/" + getFirstApplicationPerioid().getId() + "/" + getFirstForm().getId() + "/" + category.getId();
+    public String getFormUrl(Vaihe vaihe) {
+        return "lomake/" + getFirstApplicationPerioid().getId() + "/" + getFirstForm().getId() + "/" + vaihe.getId();
     }
 
-    public String getFormId(Category category) {
-        return "form-" + category.getId();
+    public String getFormId(Vaihe vaihe) {
+        return "form-" + vaihe.getId();
     }
 
     public String getFirstCategoryFormId() {
@@ -40,7 +40,7 @@ public class FormModelHelper {
         return formModel.getApplicationPerioidMap().entrySet().iterator().next().getValue();
     }
 
-    public Category getFirstCategory() {
+    public Vaihe getFirstCategory() {
         return getFirstForm().getFirstCategory();
     }
 
