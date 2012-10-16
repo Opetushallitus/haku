@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.haku.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -47,5 +48,15 @@ public class Attribute implements Serializable {
 
     public String getValue() {
         return value;
+    }
+
+    @JsonIgnore
+    public String getAsString() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(getKey());
+        builder.append("=\"");
+        builder.append(getValue());
+        builder.append("\" ");
+        return builder.toString();
     }
 }

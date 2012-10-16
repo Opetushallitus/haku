@@ -2,10 +2,10 @@ package fi.vm.sade.oppija.haku.dao.impl;
 
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.*;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.Teema;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.domain.questions.*;
@@ -28,6 +28,9 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     public FormModelDummyMemoryDaoImpl(final String formId, final String firstCategoryId) {
         this.applicationPeriod = new ApplicationPeriod("test");
+        final Calendar instance = GregorianCalendar.getInstance();
+        instance.roll(Calendar.YEAR, 1);
+        applicationPeriod.setEnd(instance.getTime());
         formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
         Vaihe henkilötiedot = new Vaihe(firstCategoryId, "Henkilötiedot");
@@ -36,9 +39,9 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         Vaihe arvosanat = new Vaihe("arvosanat", "Arvosanat");
         Vaihe lisätiedot = new Vaihe("lisatiedot", "Lisätiedot");
         Vaihe esikatselu = new Vaihe("esikatselu", "Esikatselu");
-        Vaihe yhteenveto = new Vaihe("yhteenveto", "yhteenveto");
+        Vaihe yhteenveto = new Vaihe("yhteenveto", "Yhteenveto");
 
-        Form form = new Form(formId, "yhteishaku");
+        Form form = new Form(formId, "Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013");
         form.addChild(henkilötiedot);
         form.addChild(koulutustausta);
         form.addChild(hakutoiveet);

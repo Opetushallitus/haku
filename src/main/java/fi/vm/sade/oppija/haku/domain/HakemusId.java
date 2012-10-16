@@ -58,12 +58,17 @@ public class HakemusId implements Serializable {
 
 
     public String asKey() {
-        return applicationPeriodId + '_' + formId + "_" + categoryId;
+        return applicationPeriodId + '_' + formId;
     }
 
-    public static HakemusId fromKey(String key) {
+    @Override
+    public String toString() {
+        return asKey();
+    }
+
+    public static HakemusId fromKey(String key, String currentCategoryId) {
         final String[] split = key.split("_");
-        return new HakemusId(split[0], split[1], split[2]);
+        return new HakemusId(split[0], split[1], currentCategoryId);
     }
 
     @Override
@@ -75,7 +80,6 @@ public class HakemusId implements Serializable {
 
         if (applicationPeriodId != null ? !applicationPeriodId.equals(hakemusId.applicationPeriodId) : hakemusId.applicationPeriodId != null)
             return false;
-        if (categoryId != null ? !categoryId.equals(hakemusId.categoryId) : hakemusId.categoryId != null) return false;
         if (formId != null ? !formId.equals(hakemusId.formId) : hakemusId.formId != null) return false;
 
         return true;
@@ -85,7 +89,6 @@ public class HakemusId implements Serializable {
     public int hashCode() {
         int result = applicationPeriodId != null ? applicationPeriodId.hashCode() : 0;
         result = 31 * result + (formId != null ? formId.hashCode() : 0);
-        result = 31 * result + (categoryId != null ? categoryId.hashCode() : 0);
         return result;
     }
 }

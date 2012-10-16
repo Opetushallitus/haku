@@ -21,13 +21,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fi.vm.sade.oppija.haku.domain.Attribute;
 import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.questions.*;
 import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
 import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author jukka
@@ -66,8 +71,12 @@ public abstract class Element {
     final String id;
     transient String type = this.getClass().getSimpleName();
     String help;
+
     protected final List<Element> children = new ArrayList<Element>();
-    final Set<Attribute> attributes = new HashSet<Attribute>();
+
+    @JsonDeserialize(keyAs = String.class, contentAs = Attribute.class)
+    @JsonSerialize(keyAs = String.class, contentAs = Attribute.class)
+    final Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 
 
     protected Element(@JsonProperty String id) {
@@ -87,8 +96,10 @@ public abstract class Element {
         return children;
     }
 
-    public Set<Attribute> getAttributes() {
-        return Collections.unmodifiableSet(attributes);
+    @JsonDeserialize(keyAs = String.class, contentAs = Attribute.class)
+    @JsonSerialize(keyAs = String.class, contentAs = Attribute.class)
+    public Map<String, Attribute> getAttributes() {
+        return attributes;
     }
 
     public void setHelp(final String help) {
@@ -105,17 +116,15 @@ public abstract class Element {
     }
 
     public void addAttribute(final String key, final String value) {
-        this.attributes.add(new Attribute(key, value));
+        this.attributes.put(key, new Attribute(key, value));
     }
 
     @JsonIgnore
     public String getAttributeString() {
         StringBuilder attrStr = new StringBuilder();
-        for (Attribute attribute : attributes) {
-            attrStr.append(attribute.getKey());
-            attrStr.append("=\"");
-            attrStr.append(attribute.getValue());
-            attrStr.append("\" ");
+        for (Attribute attribute : attributes.values()) {
+            attrStr.append(attribute.getAsString());
+
         }
         return attrStr.toString();
     }

@@ -27,6 +27,8 @@ public class HakemusState {
     private final Map<String, String> errors;
     private final Map<String, Object> modelObjects = new HashMap<String, Object>();
     private boolean mustValidate = true;
+    private boolean navigateNext = false;
+    private boolean navigatePrev = false;
 
     public HakemusState(Hakemus hakemus) {
         this.errors = new HashMap<String, String>();
@@ -69,5 +71,21 @@ public class HakemusState {
 
     public void skipValidation() {
         mustValidate = false;
+    }
+
+    public void toggleNavigateNext() {
+        this.navigateNext = true;
+    }
+
+    public boolean isNavigateNext() {
+        return navigateNext;
+    }
+
+    public void toggleNavigatePrev() {
+        this.navigatePrev = true;
+    }
+
+    public boolean isNavigatePrev() {
+        return navigatePrev;
     }
 }

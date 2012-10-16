@@ -16,8 +16,6 @@
 
 package fi.vm.sade.oppija.haku.domain.elements;
 
-import fi.vm.sade.oppija.haku.domain.Attribute;
-
 /**
  * @author jukka
  * @version 9/7/1210:38 AM}
@@ -29,7 +27,7 @@ public class Link extends Element {
     public Link(String value, String href) {
         super(href);
         this.value = value;
-        attributes.add(new Attribute("href", href));
+        addAttribute("href", href);
     }
 
     public String getValue() {

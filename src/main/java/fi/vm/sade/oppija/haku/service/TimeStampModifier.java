@@ -1,9 +1,11 @@
 package fi.vm.sade.oppija.haku.service;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class TimeStampModifier {
+public class TimeStampModifier implements Serializable {
 
+    private static final long serialVersionUID = 3117991464053020471L;
     private final Map<String, String> values;
 
     public TimeStampModifier(Map<String, String> values) {

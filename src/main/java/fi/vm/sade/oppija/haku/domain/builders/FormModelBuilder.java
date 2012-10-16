@@ -17,9 +17,11 @@
 package fi.vm.sade.oppija.haku.domain.builders;
 
 import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
+
+import java.util.Date;
 
 /**
  * @author jukka
@@ -33,7 +35,7 @@ public class FormModelBuilder {
     ApplicationPeriodBuilder applicationPeriodBuilder = new ApplicationPeriodBuilder("yhteishaku");
     private Vaihe vaihe = new Vaihe("kategoria", "category1");
 
-    private FormBuilder formBuilder = new FormBuilder("form", "test");
+    private FormBuilder formBuilder = new FormBuilder("form", "Tässä olisi kuvaava otsikko. Tämä on kuitenkin testiformi joka on luotu " + new Date());
 
     final Form form = formBuilder.withChild(vaihe).build();
 

@@ -50,7 +50,7 @@ public class ValidatorCollector {
             if (child.getType().equals("Vaihe")) {
                 traverse(new TraverseParameters(child.getChildren(), child.getId(), traverseParameters.getValidatorContainer()));
             } else {
-                Set<Attribute> attributes = child.getAttributes();
+                Collection<Attribute> attributes = child.getAttributes().values();
                 List<Validator> validators = createValidators(child.getId(), attributes);
                 traverseParameters.getValidatorContainer().addValidator(traverseParameters.getCurrentCategory(), validators);
                 traverse(new TraverseParameters(child.getChildren(), traverseParameters.getCurrentCategory(), traverseParameters.getValidatorContainer()));
@@ -58,7 +58,7 @@ public class ValidatorCollector {
         }
     }
 
-    private List<Validator> createValidators(final String id, Set<Attribute> attributes) {
+    private List<Validator> createValidators(final String id, Collection<Attribute> attributes) {
         List<Validator> validators = new ArrayList<Validator>();
         for (Attribute attribute : attributes) {
             if (attribute.getKey().equals("required")) {

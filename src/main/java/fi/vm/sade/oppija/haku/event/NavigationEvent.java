@@ -17,15 +17,13 @@
 package fi.vm.sade.oppija.haku.event;
 
 import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 /**
  * @author jukka
@@ -55,15 +53,15 @@ public class NavigationEvent extends AbstractEvent {
 
         Vaihe vaihe = activeForm.getCategory(hakemus.getHakemusId().getCategoryId());
         if (hakemusState.isValid()) {
-            vaihe = selectNextPrevOrCurrent(hakemus.getValues(), vaihe);
+            vaihe = selectNextPrevOrCurrent(hakemusState, vaihe);
         }
         return vaihe;
     }
 
-    private Vaihe selectNextPrevOrCurrent(Map<String, String> values, Vaihe vaihe) {
-        if (values.get("nav-next") != null && vaihe.isHasNext()) {
+    private Vaihe selectNextPrevOrCurrent(HakemusState values, Vaihe vaihe) {
+        if (values.isNavigateNext() && vaihe.isHasNext()) {
             return vaihe.getNext();
-        } else if (values.get("nav-prev") != null && vaihe.isHasPrev()) {
+        } else if (values.isNavigatePrev() && vaihe.isHasPrev()) {
             return vaihe.getPrev();
         }
         return vaihe;

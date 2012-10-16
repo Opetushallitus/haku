@@ -17,7 +17,7 @@ public class FormModelFactoryTest {
     @Test
     public void testFromJSONString() throws Exception {
         final FormModel formModel = FormModelFactory.fromClassPathResource("test-data.json");
-        assertEquals("yhteishaku", formModel.getApplicationPeriodById("test").getFormById("yhteishaku").getTitle());
+        assertEquals("yhteishaku", formModel.getApplicationPeriodById("test").getFormById("yhteishaku").getId());
     }
 
     @Test

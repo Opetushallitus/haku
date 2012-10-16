@@ -46,7 +46,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         DBObject newApplication = new BasicDBObject();
         newApplication.put("userid", hakemus.getUser().getUserName());
         newApplication.put("hakemusId", hakemus.getHakemusId().asKey());
-        newApplication.put("hakemusData", hakemus.getValues());
+        newApplication.put("vaiheId", hakemus.getHakemusId().getCategoryId());
+
+        Hakemus existing = find(hakemus.getHakemusId(), hakemus.getUser());
+        existing.getValues().putAll(hakemus.getValues());
+        newApplication.put("hakemusData", existing.getValues());
 
         getCollection().update(query, newApplication, true, false);
 
@@ -61,6 +65,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     public Hakemus find(HakemusId hakemusId, User user) {
         DBObject dbObject = new BasicDBObject();
         dbObject.put("hakemusId", hakemusId.asKey());
+        dbObject.put("userid", user.getUserName());
         final DBObject one = getCollection().findOne(dbObject);
         Map<String, String> map = new HashMap<String, String>();
         new TimeStampModifier(map).updateCreated();
@@ -80,7 +85,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
             final Map map = object.toMap();
 
             final String hakemusIdString = map.get("hakemusId").toString();
-            final HakemusId hakemusId = HakemusId.fromKey(hakemusIdString);
+            final String vaihe = map.get("vaiheId").toString();
+            final HakemusId hakemusId = HakemusId.fromKey(hakemusIdString, vaihe);
             list.add(new Hakemus(hakemusId, (Map<String, String>) map.get("hakemusData"), user));
         }
         return list;

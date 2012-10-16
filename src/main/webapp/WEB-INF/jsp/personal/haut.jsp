@@ -21,7 +21,7 @@
 
             <c:forEach var="hakemus" items="${hakemusList}">
             <div class="application-options-info">
-                <a href="#">Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013</a>
+                <a href="/haku/lomake/${hakemus.hakemusId.applicationPeriodId}/${hakemus.hakemusId.formId}">Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013</a>
                 <small>Haku päättyy 5 päivän kuluttua (27.10.2012)</small>
                 <button class="edit set-right">
                     <span><span>Muokkaa</span></span>

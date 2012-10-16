@@ -33,19 +33,19 @@ public class HakemusIdTest {
     public void testHakemusId() {
         final String foo = "foo";
         final HakemusId hakemusId = new HakemusId(foo, foo, foo);
-        assertEquals(hakemusId.asKey(), ID);
+        assertEquals("foo_foo", hakemusId.asKey());
     }
 
     @Test
     public void testHakemusIdFromString() {
-        final HakemusId hakemusId = HakemusId.fromKey(ID);
-        assertEquals(hakemusId.asKey(), ID);
+        final HakemusId hakemusId = HakemusId.fromKey(ID, "foo");
+        assertEquals("foo_foo", hakemusId.asKey());
     }
 
     @Test
     public void testEquals() {
-        final HakemusId hakemusId = HakemusId.fromKey(ID);
-        final HakemusId hakemusId2 = HakemusId.fromKey("foo_foo_foo");
+        final HakemusId hakemusId = HakemusId.fromKey(ID, "bar");
+        final HakemusId hakemusId2 = HakemusId.fromKey("foo_foo", "bar");
         assertEquals(hakemusId, hakemusId2);
     }
 

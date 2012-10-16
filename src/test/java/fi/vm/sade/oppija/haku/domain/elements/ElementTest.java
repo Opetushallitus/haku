@@ -3,7 +3,7 @@ package fi.vm.sade.oppija.haku.domain.elements;
 import fi.vm.sade.oppija.haku.domain.Attribute;
 import org.junit.Test;
 
-import java.util.Set;
+import java.util.Collection;
 
 import static org.junit.Assert.*;
 
@@ -65,15 +65,10 @@ public class ElementTest {
         }
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testClearAttributeSet() throws Exception {
-        Set<Attribute> attributes = testElement.getAttributes();
-        attributes.clear();
-    }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testAddAttributes() throws Exception {
-        Set<Attribute> attributes = testElement.getAttributes();
+        Collection<Attribute> attributes = testElement.getAttributes().values();
         attributes.add(new Attribute("k", "v"));
     }
 }
