@@ -63,7 +63,10 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
         List<Question> additionalQuestions = new ArrayList<Question>();
 
         for (String hakukohdeId : hakukohdeIds) {
-            additionalQuestions.addAll(teema.getAdditionalQuestions().get(hakukohdeId));
+            List<Question> questions = teema.getAdditionalQuestions().get(hakukohdeId);
+            if (questions != null && !questions.isEmpty()) {
+                additionalQuestions.addAll(questions);
+            }
         }
 
         return additionalQuestions;
