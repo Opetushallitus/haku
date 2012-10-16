@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.haku.domain.Hakukohde;
 import fi.vm.sade.oppija.haku.domain.Organisaatio;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.questions.Question;
+import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import fi.vm.sade.oppija.haku.service.HakukohdeService;
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,6 +52,9 @@ public class EducationController {
     FormService formService;
     @Autowired
     HakemusService hakemusService;
+    @Autowired
+    AdditionalQuestionService additionalQuestionService;
+
     public static final String USER_ID = "j_username";
 
     @RequestMapping(value = "/organisaatio/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = TERM)
@@ -64,13 +69,15 @@ public class EducationController {
         return hakukohdeService.searchHakukohde(organisaatioId);
     }
 
-    @RequestMapping(value = "/additionalquestion//{applicationPeriodId}/{formId}/{teemaId}/{hakukohdeId}", method = RequestMethod.GET)
-    public ModelAndView getCategory(@PathVariable final String applicationPeriodId, @PathVariable final String formId, @PathVariable final String teemaId,
-                                    @PathVariable final String hakukohdeId) {
+    @RequestMapping(value = "/additionalquestion/{applicationPeriodId}/{formId}/{vaiheId}/{teemaId}/{hakukohdeId}", method = RequestMethod.GET)
+    public ModelAndView getAdditionalQuestions(@PathVariable final String applicationPeriodId, @PathVariable final String formId, @PathVariable final String teemaId,
+                                               @PathVariable final String vaiheId, @PathVariable final String hakukohdeId) {
         final ModelAndView modelAndView = new ModelAndView("additionalQuestions");
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        List<Question> additionalQuestions = hakukohdeService.getHakukohdeSpecificQuestions(hakukohdeId, teemaId);
-        final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), teemaId);
+        final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), vaiheId);
+        List<String> hakukohdeIds = new ArrayList<String>();
+        hakukohdeIds.add(hakukohdeId);
+        List<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakukohdeIds, hakemusId);
         modelAndView.addObject("additionalQuestions", additionalQuestions);
         modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getValues());
         return modelAndView;

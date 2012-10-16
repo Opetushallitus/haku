@@ -36,7 +36,8 @@
     var sortabletable_settings = {
         applicationPeriodId : "${hakemusId.applicationPeriodId}",
         formId : "${hakemusId.formId}",
-        teemaId : "${hakemusId.categoryId}"
+        vaiheId : "${hakemusId.categoryId}",
+        teemaId : "${parent.id}"
     }
 </script>
 <script type="text/javascript" src="/haku/resources/javascript/sortabletable.js"></script>

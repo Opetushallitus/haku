@@ -27,7 +27,8 @@
 
         searchAdditionalQuestions : function(hakukohdeId, additionalQuestionsId) {
             var url = "/haku/education/additionalquestion/" + sortabletable_settings.applicationPeriodId + "/" +
-                      sortabletable_settings.formId + "/" + sortabletable_settings.teemaId + "/" + hakukohdeId;
+                      sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
+                      sortabletable_settings.teemaId + "/" + hakukohdeId;
             $.get(url, function(data) {
               $("#" + additionalQuestionsId).html(data);
             });

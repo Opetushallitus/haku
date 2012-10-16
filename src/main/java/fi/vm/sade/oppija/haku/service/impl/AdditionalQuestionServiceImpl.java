@@ -12,12 +12,14 @@ import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
  */
+@Service("additionalQuestionService")
 public class AdditionalQuestionServiceImpl implements AdditionalQuestionService {
 
     @Autowired
