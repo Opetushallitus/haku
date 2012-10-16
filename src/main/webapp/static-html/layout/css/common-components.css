@@ -11,7 +11,9 @@
     Definition list
     Hierarchy list
     Search field
-
+    Unstyled list
+    login-popup
+    Application-options
 */
 
 /*** Image figure, Video Figure
@@ -449,22 +451,20 @@ ul.unstyled li
     border-radius: 4px;
      z-index: 10;
     width: 200px;
-    height: 200px;
+    height: 300px;
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 10px;
     padding-top: 0;
 }
 
-.login-content {
-   
+.login-content legend {
+    padding: 10px 0;
 }
 
-
-#login-popup #authentication {
-    
+.login-content form div {
+    padding: 10px 0;
 }
-
 
 /*** Application-options
 **************************************************************/
