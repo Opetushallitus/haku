@@ -59,7 +59,7 @@ public class SessionDataHolder implements Serializable, ApplicationDAO {
 
     public void update(Hakemus hakemus) {
         new TimeStampModifier(hakemus.getValues()).updateModified();
-        this.map.put(hakemus.getHakemusId(), hakemus);
+        this.map.get(hakemus.getHakemusId()).getValues().putAll(hakemus.getValues());
     }
 
 }
