@@ -6,6 +6,7 @@
     Tab sheet
     Sidemenu
     Notelist
+    Notelist-simple
     Compare
     Infobox
     Definition list
@@ -259,7 +260,7 @@ a.btn-remove.disabled {
     padding-bottom: 5px;
 }
 
-/*** Sidemenu - Notelist
+/*** Sidemenu - Notelist & Notelist-simple
 ************************************************/
 
 #notelist h2
@@ -267,11 +268,15 @@ a.btn-remove.disabled {
     background: transparent url('../img/muistilista_ikoni.png') no-repeat 95% bottom;
 }
 
+.notelist-simple-wrapper {
+    padding-bottom: 14px;
+    background:  transparent url('../img/notelist-simple-shadow.png') no-repeat bottom right;
+    margin-bottom: 20px;
+}
+
 .notelist-simple {
     padding: 10px;
-    border: 1px solid #bdbdbd;
     background: #fffaeb;
-    margin-bottom: 20px;
 }
 
 .notelist-simple li {

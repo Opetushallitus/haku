@@ -17,45 +17,46 @@
   --%>
 
 <header id="siteheader">
+    <div class="header-container">
+        <div class="sitelogo">
+            <a href="/haku">Sivuston logo</a>
+        </div>
 
-    <div class="sitelogo">
-        <a href="/haku">Sivuston logo</a>
+        <div class="actions">
+            <c:choose>
+                <c:when test="${not empty sessionScope['username']}">
+                    <ul>
+                        <li><a href="/haku/logout">Kirjaudu ulos</a></li>
+                        <li><a href="/haku/me"><c:out value="${sessionScope['username']}"/> <c:out value="${lastname}"/></a></li>
+                    </ul>
+                </c:when>
+                <c:otherwise>
+                    <ul>
+                        <li><a href="#" class="open-login-popup">Kirjaudu sisään</a></li>
+                        <div id="login-popup" class="display-none">
+                            <jsp:include page="login.jsp"/>
+                        </div>
+                    </ul>
+                </c:otherwise>
+            </c:choose>
+            <ul>
+                <li><a href="http://www.sanasto.fi/">Sanasto</a></li>
+                <li><a href="http://google.fi">Kysy neuvoa</a></li>
+                <li><a href="http://www.koulutusnetti.fi/?path=hakuajat">Hakuajat</a></li>
+            </ul>
+
+            <ul>
+                <li><a href="#">På svenska</a></li>
+                <li><a href="#">in English</a></li>
+                <li><a href="#">Mobiili</a></li>
+                <li><a href="#">Tekstiversio</a></li>
+            </ul>
+
+            <div class="clear"></div>
+        </div>
     </div>
-
-    <div class="actions">
-        <c:choose>
-            <c:when test="${not empty sessionScope['username']}">
-                <ul>
-                    <li><a href="/haku/logout">Kirjaudu ulos</a></li>
-                    <li><a href="/haku/me"><c:out value="${sessionScope['username']}"/> <c:out value="${lastname}"/></a></li>
-                </ul>
-            </c:when>
-            <c:otherwise>
-                <ul>
-                    <li><a href="#" class="open-login-popup">Kirjaudu sisään</a></li>
-                    <div id="login-popup" class="display-none">
-                        <jsp:include page="login.jsp"/>
-                    </div>
-                </ul>
-            </c:otherwise>
-        </c:choose>
-        <ul>
-            <li><a href="http://www.sanasto.fi/">Sanasto</a></li>
-            <li><a href="http://google.fi">Kysy neuvoa</a></li>
-            <li><a href="http://www.koulutusnetti.fi/?path=hakuajat">Hakuajat</a></li>
-        </ul>
-
-        <ul>
-            <li><a href="#">På svenska</a></li>
-            <li><a href="#">in English</a></li>
-            <li><a href="#">Mobiili</a></li>
-            <li><a href="#">Tekstiversio</a></li>
-        </ul>
-
-        <div class="clear"></div>
-    </div>
-
     <div class="line clear"></div>
+    
 </header>
 
 

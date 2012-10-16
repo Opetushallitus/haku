@@ -15,14 +15,15 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
-<div class="notelist-simple">
-    <h3>Katso myös...</h3>
-    <ul class="minimal">
-        <li><a href="#">Lorem ipsum</a></li>
-        <li><a href="#">Lorem ipsum</a></li>
-        <li><a href="#">Lorem ipsum</a></li>
-        <li><a href="#">Lorem ipsum</a></li>
-        <li><a href="#">Lorem ipsum</a></li>
-    </ul>
+<div class="notelist-simple-wrapper">
+  <div class="notelist-simple">
+      <h3>Katso myös...</h3>
+      <ul class="minimal">
+          <li><a href="#">Lorem ipsum</a></li>
+          <li><a href="#">Lorem ipsum</a></li>
+          <li><a href="#">Lorem ipsum</a></li>
+          <li><a href="#">Lorem ipsum</a></li>
+          <li><a href="#">Lorem ipsum</a></li>
+      </ul>
+  </div>
 </div>
