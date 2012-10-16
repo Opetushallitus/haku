@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+  ~
+  ~ This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+  ~ soon as they will be approved by the European Commission - subsequent versions
+  ~ of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ European Union Public Licence for more details.
+  -->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -40,6 +56,29 @@
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <!-- one of the properties available; the maximum file size in bytes -->
         <property name="maxUploadSize" value="1000000"/>
+    </bean>
+
+    <bean id="messageSource"
+          class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:messages"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+
+    <bean id="localeChangeInterceptor"
+          class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+        <property name="paramName" value="lang"/>
+    </bean>
+
+    <bean id="localeResolver"
+          class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="defaultLocale" value="fi"/>
+    </bean>
+
+    <bean id="handlerMapping"
+          class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="interceptors">
+            <ref bean="localeChangeInterceptor"/>
+        </property>
     </bean>
 
     <import resource="haku-context.xml"/>
