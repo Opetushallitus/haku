@@ -162,12 +162,20 @@
 
 .menu-level-1 li a:hover
 {
+    background-color: #0a91be;
+    box-shadow: inset 0 0 2px 0 #777;
+}
 
+.menu-level-1 li a:active
+{
+    background-color: #0a91be;
+    box-shadow: inset 0 0 2px 0 #777;
 }
 
 .menu-level-1 li.current a
 {
-
+    background-color: #0085b1;
+    box-shadow: inset 0 0 2px 0 #777;
 }
 
 .menu-level-1 li.home a
@@ -181,6 +189,13 @@
 	background-image: url("../img/menu-level-1-home.png");
 	background-repeat:no-repeat;
 	background-position:center center;
+}
+
+.menu-level-1 li.home a:hover,
+.menu-level-1 li.home a:active
+{
+    background-color: #149ecb;
+    box-shadow: none;
 }
 
 .menu-level-2-heading
@@ -245,4 +260,24 @@
 .menu-level-3 li a
 {
 	padding-left:2.5em;
+}
+
+
+/*** Dropdown
+**************************************************************/
+
+.dropdown {
+    position: absolute;
+    z-index: 5;
+    background: #fff;
+    box-shadow: 0 0 4px 0 #ccc;
+}
+
+.dropdown .menu-header {
+    font-style: italic;
+    padding: 0 1em;
+    display:block;
+    height:3.077em;
+    line-height:3.077em;
+    color: #888;
 }
