@@ -27,7 +27,6 @@ import java.util.*;
 
 import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * @author Hannu Lyytikainen
