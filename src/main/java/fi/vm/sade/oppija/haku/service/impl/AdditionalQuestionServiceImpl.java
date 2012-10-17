@@ -22,13 +22,15 @@ import java.util.*;
 @Service("additionalQuestionService")
 public class AdditionalQuestionServiceImpl implements AdditionalQuestionService {
 
-    @Autowired
-    @Qualifier("formServiceImpl")
     FormService formService;
+    HakemusService hakemusService;
 
     @Autowired
-    @Qualifier("hakemusServiceImpl")
-    HakemusService hakemusService;
+    public AdditionalQuestionServiceImpl(@Qualifier("formServiceImpl") FormService formService,
+                                         @Qualifier("hakemusServiceImpl") HakemusService hakemusService) {
+        this.formService = formService;
+        this.hakemusService = hakemusService;
+    }
 
     @Override
     public List<Question> findAdditionalQuestions(String teemaId, HakemusId hakemusId) {
@@ -56,11 +58,12 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
                 break;
             }
         }
-        if (teema == null) {
-            return null;
-        }
 
         List<Question> additionalQuestions = new ArrayList<Question>();
+
+        if (teema == null || teema.getAdditionalQuestions() == null) {
+            return additionalQuestions;
+        }
 
         for (String hakukohdeId : hakukohdeIds) {
             List<Question> questions = teema.getAdditionalQuestions().get(hakukohdeId);
@@ -70,5 +73,17 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
         }
 
         return additionalQuestions;
+    }
+
+    @Override
+    public Map<String, List<Question>> findAdditionalQuestionsInCategory(HakemusId hakemusId) {
+        Form form = formService.getActiveForm(hakemusId.getApplicationPeriodId(), hakemusId.getFormId());
+        Vaihe vaihe = form.getCategory(hakemusId.getCategoryId());
+        Map<String, List<Question>> questionMap = new HashMap<String, List<Question>>();
+
+        for (Element e : vaihe.getChildren()) {
+            questionMap.put(e.getId(), findAdditionalQuestions(e.getId(), hakemusId));
+        }
+        return questionMap;
     }
 }

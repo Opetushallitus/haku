@@ -126,7 +126,7 @@
             </c:forEach>
 
             <%-- subjects that are specific to the education selected by the user --%>
-            <c:forEach var="subject" items="${element.educationSpecificSubjects}">
+            <c:forEach var="subject" items="${additionalQuestionList}">
                 <c:set var="subject" value="${subject}" scope="request"/>
                 <tr>
                     <td>

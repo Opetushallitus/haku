@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
@@ -51,11 +52,14 @@ public class FormController {
 
     final FormService formService;
     private final HakemusService hakemusService;
-
+    private final AdditionalQuestionService additionalQuestionService;
 
     @Autowired
-    public FormController(@Qualifier("formServiceImpl") final FormService formService, HakemusService hakemusService) {
+    public FormController(@Qualifier("formServiceImpl") final FormService formService,
+                          @Qualifier("additionalQuestionService") final AdditionalQuestionService additionalQuestionService,
+                          HakemusService hakemusService) {
         this.formService = formService;
+        this.additionalQuestionService = additionalQuestionService;
         this.hakemusService = hakemusService;
     }
 
@@ -98,6 +102,7 @@ public class FormController {
         final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), categoryId);
         modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getValues());
         modelAndView.addObject("hakemusId", hakemusId);
+        modelAndView.addObject("additionalQuestions", additionalQuestionService.findAdditionalQuestionsInCategory(hakemusId));
         return modelAndView;
     }
 

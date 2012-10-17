@@ -1,8 +1,10 @@
 package fi.vm.sade.oppija.haku.event;
 
 import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.custom.SubjectRow;
+import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakukohdeService;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
@@ -18,24 +20,35 @@ import java.util.*;
 @Service
 public class HakukohdeSelectedEvent extends AbstractEvent {
 
-    HakukohdeService hakukohdeService;
-    private FormService formService;
+    private AdditionalQuestionService additionalQuestionService;
 
     @Autowired
     public HakukohdeSelectedEvent(EventHandler handler,
-                                  @Qualifier("hakukohdeServiceDummyImpl") HakukohdeService hakukohdeService,
-                                  @Qualifier("formServiceImpl") FormService formService) {
+                                  @Qualifier("additionalQuestionService") AdditionalQuestionService additionalQuestionService) {
         handler.addPostValidateEvent(this);
-        this.hakukohdeService = hakukohdeService;
-        this.formService = formService;
+        this.additionalQuestionService = additionalQuestionService;
     }
 
     @Override
     public void process(HakemusState hakemusState) {
+
         // check that the phase is changing from
         // hakutoiveet => arvosanat
 
-//        Vaihe vaihe = (Vaihe)hakemusState.getModelObjects().get("category");
+        Vaihe vaihe = (Vaihe)hakemusState.getModelObjects().get("category");
+
+
+
+        HakemusId hakemusId = ((Hakemus)hakemusState.getModelObjects().get("hakemus")).getHakemusId();
+
+
+
+
+
+
+//
+//
+//
 //        if ("hakutoiveet".equals(vaihe.getPrev().getId()) &&
 //                "arvosanat".equals(vaihe.getId())) {
 //
@@ -52,8 +65,6 @@ public class HakukohdeSelectedEvent extends AbstractEvent {
 //
 //                prefNumber++;
 //            }
-
-
 //            Form form = formService.getActiveForm("test", "yhteishaku");
 //            for (Element child : form.getCategory("arvosanat").getChildren()) {
 //                if (child.getType().equals("QuestionGroup")) {

@@ -6,8 +6,9 @@ import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.event.EventHandler;
-import fi.vm.sade.oppija.haku.service.SessionDataHolder;
-import fi.vm.sade.oppija.haku.service.UserHolder;
+import fi.vm.sade.oppija.haku.service.*;
+import fi.vm.sade.oppija.haku.service.impl.AdditionalQuestionServiceImpl;
+import fi.vm.sade.oppija.haku.service.impl.FormServiceImpl;
 import fi.vm.sade.oppija.haku.service.impl.HakemusServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +29,11 @@ public class FormControllerTest {
     @Before
     public void setUp() throws Exception {
         final EventHandler eventHandler = new EventHandler();
-        this.formController = new FormController(new FormModelDummyMemoryDaoImpl(formId, firstCategoryId), new HakemusServiceImpl(new SessionDataHolder(), new ApplicationDAOMongoImpl(), eventHandler, new UserHolder()));
+        HakemusService hakemusService = new HakemusServiceImpl(new SessionDataHolder(), new ApplicationDAOMongoImpl(), eventHandler, new UserHolder());
+        FormService formService = new FormModelDummyMemoryDaoImpl(formId, firstCategoryId);
+        this.formController = new FormController(formService,
+                new AdditionalQuestionServiceImpl(formService, hakemusService),
+                hakemusService);
     }
 
     @Test
@@ -73,7 +78,7 @@ public class FormControllerTest {
     @Test
     public void testGetCategoryModelSize() throws Exception {
         ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
-        assertEquals(4, actualModelAndView.getModel().size());
+        assertEquals(5, actualModelAndView.getModel().size());
     }
 
     @Test
