@@ -42,10 +42,11 @@
             <form id="form-${category.id}" class="form" method="post">
 
                 <jsp:include page="prev_next_buttons.jsp"/>
-
+                <c:set var="preview" value="${category.preview}" scope="request"/>
                 <c:forEach var="child" items="${category.children}">
                     <c:set var="element" value="${child}" scope="request"/>
                     <c:set var="parentId" value="${form.id}.${category.id}" scope="request"/>
+
                     <jsp:include page="elements/${child.type}.jsp"/>
                 </c:forEach>
 

@@ -40,7 +40,7 @@ public class HakutoiveetTest extends AbstractSeleniumTest {
         ApplicationPeriod applicationPeriod = new ApplicationPeriod("test");
         FormModel formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
-        Vaihe hakutoiveet = new Vaihe("hakutoiveet", "Hakutoiveet");
+        Vaihe hakutoiveet = new Vaihe("hakutoiveet", "Hakutoiveet", false);
         Form form = new Form("lomake", "yhteishaku");
         form.addChild(hakutoiveet);
         form.init();

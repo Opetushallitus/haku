@@ -22,6 +22,7 @@ public class AbstractSeleniumTest extends TomcatContainerTest {
 
     public AbstractSeleniumTest() {
         super();
+        System.setProperty("webdriver.firefox.bin", "/home/majapuro/Downloads/firefox/firefox");
         WebDriver driver = new FirefoxDriver();
         Selenium selenium = new WebDriverBackedSelenium(driver, getBaseUrl());
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);

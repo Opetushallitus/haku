@@ -17,7 +17,7 @@
         </div>
         <form method="post" enctype="multipart/form-data">
             <div>
-
+                <c:set var="preview" value="${category.preview}" scope="request"/>
                 <c:forEach var="child" items="${category.children}">
                     <c:set var="element" value="${child}" scope="request"/>
                     <jsp:include page="elements/${child.type}.jsp"/>

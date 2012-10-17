@@ -33,7 +33,7 @@ public class FormModelBuilder {
     FormModel formModel = new FormModel();
 
     ApplicationPeriodBuilder applicationPeriodBuilder = new ApplicationPeriodBuilder("yhteishaku");
-    private Vaihe vaihe = new Vaihe("kategoria", "category1");
+    private Vaihe vaihe = new Vaihe("kategoria", "category1", false);
 
     private FormBuilder formBuilder = new FormBuilder("form", "Tässä olisi kuvaava otsikko. Tämä on kuitenkin testiformi joka on luotu " + new Date());
 

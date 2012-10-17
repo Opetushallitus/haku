@@ -29,9 +29,12 @@ public class Vaihe extends Titled {
 
     private transient Vaihe next;
     private transient Vaihe prev;
+    private boolean preview;
 
-    public Vaihe(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+    public Vaihe(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
+                 @JsonProperty(value = "preview") final boolean preview) {
         super(id, title);
+        this.preview = preview;
     }
 
     public void setNext(Vaihe element) {
@@ -71,5 +74,9 @@ public class Vaihe extends Titled {
 
     public Link asLink() {
         return new Link(title, id);
+    }
+
+    public boolean isPreview() {
+        return preview;
     }
 }

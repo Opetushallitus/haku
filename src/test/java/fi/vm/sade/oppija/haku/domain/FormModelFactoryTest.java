@@ -29,7 +29,7 @@ public class FormModelFactoryTest {
 
     @Test
     public void testBuilderWithCategory() throws Exception {
-        final Vaihe vaihe = new Vaihe("ekaKategoria", "ensimmäinen kategoria");
+        final Vaihe vaihe = new Vaihe("ekaKategoria", "ensimmäinen kategoria", false);
         final FormModel formModel = new FormModelBuilder(vaihe).withDefaults().addChildToCategory(new TextQuestion("doo", "foo")).build();
         assertEquals("doo", vaihe.getChildren().get(0).getId());
     }

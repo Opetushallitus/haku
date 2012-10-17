@@ -33,13 +33,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         applicationPeriod.setEnd(instance.getTime());
         formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
-        Vaihe henkilötiedot = new Vaihe(firstCategoryId, "Henkilötiedot");
-        Vaihe koulutustausta = new Vaihe("koulutustausta", "Koulutustausta");
-        Vaihe hakutoiveet = new Vaihe("hakutoiveet", "Hakutoiveet");
-        Vaihe arvosanat = new Vaihe("arvosanat", "Arvosanat");
-        Vaihe lisätiedot = new Vaihe("lisatiedot", "Lisätiedot");
-        Vaihe esikatselu = new Vaihe("esikatselu", "Esikatselu");
-        Vaihe yhteenveto = new Vaihe("yhteenveto", "Yhteenveto");
+        Vaihe henkilötiedot = new Vaihe(firstCategoryId, "Henkilötiedot", false);
+        Vaihe koulutustausta = new Vaihe("koulutustausta", "Koulutustausta", false);
+        Vaihe hakutoiveet = new Vaihe("hakutoiveet", "Hakutoiveet", false);
+        Vaihe arvosanat = new Vaihe("arvosanat", "Arvosanat", false);
+        Vaihe lisätiedot = new Vaihe("lisatiedot", "Lisätiedot", false);
+        Vaihe esikatselu = new Vaihe("esikatselu", "Esikatselu", true);
+        Vaihe yhteenveto = new Vaihe("yhteenveto", "Yhteenveto", false);
 
         Form form = new Form(formId, "Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013");
         form.addChild(henkilötiedot);
