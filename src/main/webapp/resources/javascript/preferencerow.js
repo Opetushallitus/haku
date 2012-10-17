@@ -14,7 +14,7 @@
                          selected = 'selected = "selected"';
                          preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"));
                     }
-                    $selectInput.append('<option value="' + item.id + '" ' + selected + '>' + item.name + '</option>');
+                    $selectInput.append('<option value="' + item.name + '" ' + selected + ' data-id="' + item.id + '">' + item.name + '</option>');
                 });
             });
         },
@@ -76,11 +76,13 @@
     });
 
     $(".field-container-select select").change(function(event){
-        var $hiddenInput = $("#" + this.id + "-id");
-        var value = $(this).val();
-        $hiddenInput.val(value);
+        var $hiddenInput = $("#" + this.id + "-id"),
+            selectedId,
+            value = $(this).val();
         $(this).children().removeAttr("selected");
         $(this).children("option[value='" + value + "']").attr( "selected" , "selected");
-        preferenceRow.searchAdditionalQuestions(value, $(this).data("additionalquestions"));
+        selectedId = $("#" + this.id  + " option:selected").data("id");
+        $hiddenInput.val(selectedId);
+        preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"));
     });
 })();
