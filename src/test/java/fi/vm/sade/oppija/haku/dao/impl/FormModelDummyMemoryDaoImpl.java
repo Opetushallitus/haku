@@ -97,7 +97,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         Teema hakutoiveetRyhmä = new Teema("hakutoiveetGrp", "Hakutoiveet", lisakysymysMap);
         Teema arvosanatRyhmä = new Teema("arvosanatGrp", "Arvosanat", oppiaineMap);
         Teema lisätiedotRyhmä = new Teema("lisatiedotGrp", "Lisätiedot", null);
-        Teema esikatselutRyhmä = new Teema("esikatseluGrp", "Esikatselu", null);
         Teema yhteenvetoRyhmä = new Teema("yhteenvetoGrp", "yhteenveto", null);
 
         henkilötiedot.addChild(henkilötiedotRyhmä);
@@ -105,7 +104,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         hakutoiveet.addChild(hakutoiveetRyhmä);
         arvosanat.addChild(arvosanatRyhmä);
         lisätiedot.addChild(lisätiedotRyhmä);
-        esikatselu.addChild(esikatselutRyhmä);
         yhteenveto.addChild(yhteenvetoRyhmä);
 
         DropdownSelect äidinkieli = new DropdownSelect("äidinkieli", "Äidinkieli");
@@ -186,7 +184,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         lisätiedotRyhmä.addChild(lisätiedotText);
         lisätiedotText.addAttribute("required", "required");
 
-        esikatselutRyhmä.addChild(henkilötiedotRyhmä).
+        esikatselu.addChild(henkilötiedotRyhmä).
                 addChild(koulutustaustaRyhmä).addChild(hakutoiveetRyhmä).addChild(arvosanatRyhmä).addChild(lisätiedotRyhmä);
 
         yhteenvetoRyhmä.setHelp("Kiitos, hakemuksesi on vastaanotettu");

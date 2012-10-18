@@ -71,8 +71,10 @@ public class EducationController {
 
     @RequestMapping(value = "/additionalquestion/{applicationPeriodId}/{formId}/{vaiheId}/{teemaId}/{hakukohdeId}", method = RequestMethod.GET)
     public ModelAndView getAdditionalQuestions(@PathVariable final String applicationPeriodId, @PathVariable final String formId, @PathVariable final String teemaId,
-                                               @PathVariable final String vaiheId, @PathVariable final String hakukohdeId) {
-        final ModelAndView modelAndView = new ModelAndView("additionalQuestions");
+                                               @PathVariable final String vaiheId, @PathVariable final String hakukohdeId,
+                                               @RequestParam(value = "preview", required = false) Boolean preview) {
+        String viewName = preview != null && preview ? "additionalQuestionsPreview" : "additionalQuestions";
+        final ModelAndView modelAndView = new ModelAndView(viewName);
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), vaiheId);
         List<String> hakukohdeIds = new ArrayList<String>();
