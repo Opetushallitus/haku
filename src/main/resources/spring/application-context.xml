@@ -69,6 +69,10 @@
         <property name="paramName" value="lang"/>
     </bean>
 
+    <mvc:interceptors>
+        <ref bean="localeChangeInterceptor" />
+    </mvc:interceptors>
+
     <bean id="localeResolver"
           class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
         <property name="defaultLocale" value="fi"/>
