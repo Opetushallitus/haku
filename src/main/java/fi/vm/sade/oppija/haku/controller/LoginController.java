@@ -27,13 +27,12 @@ public class LoginController {
         this.userHolder = userHolder;
     }
 
-    @RequestMapping(value = "/postLogin", method = RequestMethod.GET)
+    @RequestMapping(value = "/postLogin")
     public String postLogin(HttpSession session, Principal principal) {
 
         userHolder.login(new User(principal.getName()));
         session.setAttribute("username", principal.getName());
-
-        return "redirect:oma";
+        return principal.getName().equals("admin") ? "redirect:admin" : "redirect:oma";
 
     }
 
