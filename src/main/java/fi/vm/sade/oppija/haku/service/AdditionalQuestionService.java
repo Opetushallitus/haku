@@ -8,14 +8,37 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Resolves education specific additional questions related to different themes.
+ *
  * @author Hannu Lyytikainen
  */
 public interface AdditionalQuestionService {
 
+    /**
+     * Lists questions in a given teema based on current answers.
+     *
+     * @param teemaId teema id
+     * @param hakemusId hakemus id
+     * @return list of questions
+     */
     public List<Question> findAdditionalQuestions(String teemaId, HakemusId hakemusId);
 
+    /**
+     * Lists additional questions in a theme based on a list of education targets.
+     *
+     * @param teemaId teema id
+     * @param hakukohdeIds education targets
+     * @param hakemusId hakemus id
+     * @return list of questions
+     */
     public List<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakemusId hakemusId);
 
+    /**
+     * Lists all additional questions in a phase. Questions are grouped by the theme they are related to.
+     *
+     * @param hakemusId hakemus id
+     * @return map with theme ids as keys and questions lists as values
+     */
     public Map<String, List<Question>> findAdditionalQuestionsInCategory(HakemusId hakemusId);
 
 }
