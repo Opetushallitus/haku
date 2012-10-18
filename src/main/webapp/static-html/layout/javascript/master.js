@@ -392,12 +392,62 @@ var loginPopup = {
 	}
 }
 
+var dropDownMenu = {
+	// initiate dropDownMenus
+	build: function() {
+		dropDownMenu.load();
+		dropDownMenu.setTriggers();
+	},
+	// hide (display: none) ul dropdown navigations
+	load: function() {
+		$('.navigation > li').each( function() {
+			if( $(this).children().filter('ul').length !== 0 ) {
+				$(this).children().filter('ul').addClass('display-none');
+			}
+		});
+		$('.sub-dropdown > ul').addClass('display-none');
+	},
+	// set listener for dropdown navigations
+	setTriggers: function() {
+
+		$('.navigation > li').hover(navigationMouseOver, navigationMouseOut);
+		$('.sub-dropdown').hover(dropdownMouseOver, dropdownMouseOut);
+
+		// bring dropdown navigation visible on mouseover
+		function navigationMouseOver() {
+			if( $(this).children().filter('ul').length !== 0 ) {
+				$(this).children().filter('ul').fadeIn(200);
+			}
+		}
+
+		// hide dropdown navigation on mouseout
+		function navigationMouseOut() {
+			if( $(this).children().filter('ul').length !== 0 ) {
+				$(this).children().filter('ul').fadeOut(200);
+			}
+		}
+
+		//bring sub-dropdown navigation visible on mouseover
+		function dropdownMouseOver() {
+			console.log($(this));
+			$(this).children().filter('ul').fadeIn(200);
+		}
+
+		//hide sub-dropdown navigation on mouseout
+		function dropdownMouseOut() {
+			$(this).children().filter('ul').fadeOut(200);
+		}
+	}
+	
+}
+
 applicationBasket.build();
 formReplacements.build();
 popupWindow.build();
 tabsMenu.build();
 hierarchyList.build();
 loginPopup.build();
+dropDownMenu.build();
 
 
 

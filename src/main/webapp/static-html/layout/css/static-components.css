@@ -201,40 +201,77 @@
 #dropdown {
     background: white;
     position: absolute;
-    box-shadow: 0 0 8px 0 #888;
+    box-shadow: 0 0 16px 0 #666;
     z-index: 5;
     padding-left: 0;
 }
 
-#dropdown li {
+#dropdown > li {
     display: block;
 }
 
 #dropdown li > * { /* no text-wrapping in li-elements children, ment to affect also the inner menus */
     white-space: nowrap;
-    
 }
 
 #dropdown li span {
+    height:3.077em;
+    line-height:3.077em;
     color: #888;
-    line-height: 
     font-style: italic;
     display: block;
+    padding: 0 1em;
 }
 
 #dropdown li a {
+    height:3.077em;
+    line-height:3.077em;
+    padding: 0 45px 0 1em;
     display: block;
     color: #333;
     font-weight: normal;
     border-bottom: 1px solid #3caed4;
+    box-shadow: none;
 }
 
 #dropdown li a:hover {
-    color: #3ebf3f;
+    background-color: #ebf3f7;
 }
 
+#dropdown li a:active {
+    background-color: #a1d8ea;
+    font-weight: bold;
+}
 
+.sub-dropdown > a {
+    background-image: url('../img/navigation-arrow.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    position: relative;
+}
 
+.sub-dropdown ul {
+    padding-left: 0;
+    background-color: white;
+    box-shadow: 0 0 16px 0 #666;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    z-index: 5;
+
+}
+
+.sub-dropdown ul li {
+    display: block;
+}
+
+#dropdown .sub-dropdown ul li a {
+    border-bottom: 1px dotted #a3a3a3;
+}
+
+#dropdown .sub-dropdown ul li.first-item a {
+    border-top: 1px dotted #a3a3a3 !important;
+}
 
 
 /*** Sidenavigation
