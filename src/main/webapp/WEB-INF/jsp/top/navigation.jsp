@@ -5,7 +5,10 @@
         <li><a href="osio/osio_etusivu">Lukio</a></li>
         <li><a href="#">Ammatillinen koulutus</a></li>
         <li><a href="#">Ammattikorkeakoulu</a></li>
-        <li><a href="#">Yliopisto</a></li>
+        <li>
+            <a href="#">Yliopisto</a>
+            <jsp:include page="dropdown.jsp"/>
+        </li>
         <li><a href="#">Täydennyskoulutus</a></li>
         <li><a href="#">Opintojen valinta</a></li>
     </ul>

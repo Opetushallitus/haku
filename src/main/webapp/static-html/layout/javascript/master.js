@@ -400,11 +400,14 @@ var dropDownMenu = {
 	},
 	// hide (display: none) ul dropdown navigations
 	load: function() {
+		$('.navigation > li > ul').addClass('display-none');
+		/*
 		$('.navigation > li').each( function() {
 			if( $(this).children().filter('ul').length !== 0 ) {
 				$(this).children().filter('ul').addClass('display-none');
 			}
 		});
+*/
 		$('.sub-dropdown > ul').addClass('display-none');
 	},
 	// set listener for dropdown navigations
@@ -438,7 +441,6 @@ var dropDownMenu = {
 			$(this).children().filter('ul').fadeOut(200);
 		}
 	}
-	
 }
 
 applicationBasket.build();
