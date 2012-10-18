@@ -1,6 +1,5 @@
 package fi.vm.sade.oppija.haku.controller;
 
-import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -27,7 +26,7 @@ public class PersonalServices {
     @RequestMapping
     public ModelAndView hautKoulutuksiin() {
         final ModelAndView modelAndView = new ModelAndView("personal/haut");
-        final List<Hakemus> all = hakemusService.findAll();
+        final List<HakemusInfo> all = hakemusService.findAll();
         modelAndView.addObject("hakemusList", all);
         modelAndView.addObject("hakemusListSize", all.size());
         return modelAndView;

@@ -16,13 +16,14 @@
 
 package fi.vm.sade.oppija.haku.service.impl;
 
-import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
+import fi.vm.sade.oppija.haku.controller.HakemusInfo;
+import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.event.EventHandler;
+import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
-import fi.vm.sade.oppija.haku.service.SessionDataHolder;
-import fi.vm.sade.oppija.haku.service.UserHolder;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,56 +44,45 @@ import java.util.Map;
 public class HakemusServiceImpl implements HakemusService {
     private static final Logger LOGGER = LoggerFactory.getLogger(HakemusServiceImpl.class);
 
-    private final ApplicationDAO sessionDataHolder;
-    private final ApplicationDAO applicationDAO;
     private final EventHandler eventHandler;
-    private final UserHolder userHolder;
+    private final FormService formService;
+    private final UserDataStorage userDataStorage;
 
     @Autowired
-    public HakemusServiceImpl(@Qualifier("sessionDataHolder") final SessionDataHolder sessionDataHolder,
-                              @Qualifier("applicationDAOMongoImpl") final ApplicationDAO applicationDAO,
-                              final EventHandler eventHandler, final UserHolder userHolder) {
-        this.sessionDataHolder = sessionDataHolder;
-        this.applicationDAO = applicationDAO;
+    public HakemusServiceImpl(final UserDataStorage userDataStorage, final EventHandler eventHandler, @Qualifier("formServiceImpl") final FormService formService) {
+        this.userDataStorage = userDataStorage;
         this.eventHandler = eventHandler;
-        this.userHolder = userHolder;
+        this.formService = formService;
     }
 
 
     @Override
     public HakemusState save(HakemusId hakemusId, Map<String, String> values) {
         LOGGER.info("save");
-        final Hakemus hakemus = new Hakemus(hakemusId, values, userHolder.getUser());
 
+        final Hakemus hakemus = userDataStorage.initHakemus(hakemusId, values);
         final HakemusState hakemusState = new HakemusState(hakemus);
         eventHandler.processEvents(hakemusState);
 
-        updateApplication(hakemus);
+        userDataStorage.updateApplication(hakemus);
         return hakemusState;
     }
 
     @Override
-    public List<Hakemus> findAll() {
-        return selectDao().findAll(userHolder.getUser());
+    public List<HakemusInfo> findAll() {
+        List<HakemusInfo> all = new ArrayList<HakemusInfo>();
+        final List<Hakemus> hakemusList = userDataStorage.findAll();
+        for (Hakemus hakemus : hakemusList) {
+            final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(hakemus.getHakemusId().getApplicationPeriodId());
+            final Form form = formService.getForm(applicationPeriod.getId(), hakemus.getHakemusId().getFormId());
+            all.add(new HakemusInfo(hakemus, form, applicationPeriod));
+        }
+        return all;
     }
 
     @Override
     public Hakemus getHakemus(HakemusId hakemusId) {
-        return selectDao().find(hakemusId, userHolder.getUser());
+        return userDataStorage.find(hakemusId);
     }
-
-    private ApplicationDAO selectDao() {
-        ApplicationDAO dao = sessionDataHolder;
-        if (userHolder.isUserKnown()) {
-            dao = applicationDAO;
-        }
-        return dao;
-    }
-
-
-    private void updateApplication(Hakemus hakemus) {
-        selectDao().update(hakemus);
-    }
-
 
 }

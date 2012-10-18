@@ -18,8 +18,8 @@ package fi.vm.sade.oppija.haku.service;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.validation.Validator;
 
 import java.util.List;
@@ -36,4 +36,6 @@ public interface FormService {
     ApplicationPeriod getApplicationPeriodById(final String applicationPeriodId);
 
     List<Validator> getCategoryValidators(HakemusId hakemusId);
+
+    Form getForm(String applicationPeriodId, String formId);
 }

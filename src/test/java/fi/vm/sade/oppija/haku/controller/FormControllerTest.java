@@ -2,14 +2,15 @@ package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.dao.impl.ApplicationDAOMongoImpl;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.event.EventHandler;
-import fi.vm.sade.oppija.haku.service.*;
+import fi.vm.sade.oppija.haku.service.SessionDataHolder;
+import fi.vm.sade.oppija.haku.service.UserHolder;
 import fi.vm.sade.oppija.haku.service.impl.AdditionalQuestionServiceImpl;
-import fi.vm.sade.oppija.haku.service.impl.FormServiceImpl;
 import fi.vm.sade.oppija.haku.service.impl.HakemusServiceImpl;
+import fi.vm.sade.oppija.haku.service.impl.UserDataStorage;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,11 +30,9 @@ public class FormControllerTest {
     @Before
     public void setUp() throws Exception {
         final EventHandler eventHandler = new EventHandler();
-        HakemusService hakemusService = new HakemusServiceImpl(new SessionDataHolder(), new ApplicationDAOMongoImpl(), eventHandler, new UserHolder());
-        FormService formService = new FormModelDummyMemoryDaoImpl(formId, firstCategoryId);
-        this.formController = new FormController(formService,
-                new AdditionalQuestionServiceImpl(formService, hakemusService),
-                hakemusService);
+        final FormModelDummyMemoryDaoImpl formService = new FormModelDummyMemoryDaoImpl(formId, firstCategoryId);
+        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(new UserDataStorage(new SessionDataHolder(), new ApplicationDAOMongoImpl(), new UserHolder()), eventHandler, formService);
+        this.formController = new FormController(formService, new AdditionalQuestionServiceImpl(formService, hakemusService), hakemusService);
     }
 
     @Test

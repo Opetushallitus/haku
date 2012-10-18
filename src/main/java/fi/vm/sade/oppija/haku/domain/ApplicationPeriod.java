@@ -36,6 +36,7 @@ public class ApplicationPeriod implements Serializable {
     private Date end;
 
     final Map<String, Form> forms = new HashMap<String, Form>();
+    private static final long MILLISECONDS_IN_DAY = 1000 * 3600 * 24;
 
     public ApplicationPeriod() {
     }
@@ -55,10 +56,9 @@ public class ApplicationPeriod implements Serializable {
 
     @JsonIgnore
     public boolean isActive() {
-        assert starts != null;
-        assert end != null;
         final Date now = new Date();
-        return !now.before(starts) && !now.after(end);
+        //intentionally failing fast here, if dates not valid
+        return starts.before(now) && end.after(now);
     }
 
     @JsonIgnore
@@ -88,6 +88,25 @@ public class ApplicationPeriod implements Serializable {
 
     public void setStarts(final Date starts) {
         this.starts = new Date(starts.getTime());
+    }
+
+
+    @JsonIgnore
+    public long getDaysUntilEnd() {
+        final Calendar start = initCalendar(this.starts);
+        final Calendar end = initCalendar(this.end);
+
+        return (end.getTimeInMillis() - start.getTimeInMillis()) / MILLISECONDS_IN_DAY;
+    }
+
+    private Calendar initCalendar(Date date) {
+        final Calendar starts = GregorianCalendar.getInstance();
+        starts.setTime(date);
+        starts.set(Calendar.HOUR_OF_DAY, 0);
+        starts.set(Calendar.MINUTE, 0);
+        starts.set(Calendar.SECOND, 0);
+        starts.set(Calendar.MILLISECOND, 0);
+        return starts;
     }
 
     public Date getEnd() {

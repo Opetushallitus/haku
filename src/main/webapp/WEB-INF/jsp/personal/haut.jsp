@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="../top/top.jsp"/>
     <section class="content-container">
@@ -19,13 +20,17 @@
         <div class="grid16-12">
             <h1>Ajankohtaiset hakemukset (${hakemusListSize} kpl)</h1>
 
-            <c:forEach var="hakemus" items="${hakemusList}">
+            <c:forEach var="hakemusInfo" items="${hakemusList}">
+            <c:if test="${hakemusInfo.applicationPeriod.active}">
             <div class="application-options-info">
-                <a href="/haku/lomake/${hakemus.hakemusId.applicationPeriodId}/${hakemus.hakemusId.formId}">Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013</a>
-                <small>Haku päättyy 5 päivän kuluttua (27.10.2012)</small>
-                <button class="edit set-right">
+                 <a href="/haku/lomake/${hakemusInfo.applicationPeriod.id}/${hakemusInfo.form.id}">${hakemusInfo.form.title}</a>
+                <small>Haku päättyy ${hakemusInfo.applicationPeriod.daysUntilEnd} päivän kuluttua (<fmt:formatDate pattern="dd.MM.yyyy" value="${hakemusInfo.applicationPeriod.end}" />)</small>
+                <form action="/haku/lomake/${hakemusInfo.applicationPeriod.id}/${hakemusInfo.form.id}/esikatselu">
+                <button type="submit" class="edit set-right">
                     <span><span>Muokkaa</span></span>
                 </button>
+
+                </form>
             </div>
             <div class="clear"></div>
             <div class="application-options">
@@ -43,15 +48,17 @@
                             </tr>
                         </thead>
                         <tbody>
+                        <c:forEach var="preference" items="${hakemusInfo.preferences}">
                             <tr>
-                                <td>1</td>
-                                <td>Anjalankosken lukio, Inkeroinen</td>
-                                <td>Lukio</td>
+                                <td>${preference.order}</td>
+                                <td>${preference.opetusPiste}</td>
+                                <td>${preference.koulutus}</td>
                                 <td>Suomi</td>
                                 <td>Syksy 2013</td>
                                 <td>Ejjole</td>
                                 <td>OK</td>
                             </tr>
+                        </c:forEach>
                         </tbody>
                         <tfoot>
                             <tr>
@@ -69,6 +76,7 @@
                     </table>
                 </div>
             </div>
+            </c:if>
             </c:forEach>
 
         </div>

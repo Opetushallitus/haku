@@ -20,8 +20,8 @@ package fi.vm.sade.oppija.haku.service.impl;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.FormModelHolder;
 import fi.vm.sade.oppija.haku.service.FormService;
@@ -53,8 +53,7 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public Form getActiveForm(String applicationPeriodId, String formId) {
-        FormModel model = getModel();
-        ApplicationPeriod applicationPeriod = model.getApplicationPeriodById(applicationPeriodId);
+        final ApplicationPeriod applicationPeriod = getApplicationPeriodById(applicationPeriodId);
         if (applicationPeriod == null) {
             throw new ResourceNotFoundException("not found");
         }
@@ -62,6 +61,11 @@ public class FormServiceImpl implements FormService {
             throw new ResourceNotFoundException("Not active");
         }
         return applicationPeriod.getFormById(formId);
+    }
+
+    @Override
+    public Form getForm(String applicationPeriodId, String formId) {
+        return getApplicationPeriodById(applicationPeriodId).getFormById(formId);
     }
 
     @Override
