@@ -93,9 +93,17 @@ public class FormController {
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}", method = RequestMethod.GET)
     public ModelAndView getCategory(@PathVariable final String applicationPeriodId,
                                     @PathVariable final String formId,
-                                    @PathVariable final String categoryId) {
-        LOGGER.debug("getCategory {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId});
+                                    @PathVariable final String categoryId,
+                                    @RequestParam(value = "nav-prev", required = false) Boolean navPrev,
+                                    @RequestParam(value = "nav-next", required = false) Boolean navNext) {
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        if (navPrev != null && navPrev) {
+            return new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + activeForm.getCategory(categoryId).getPrev().getId());
+        }
+        if (navNext != null && navNext) {
+            return new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + activeForm.getCategory(categoryId).getNext().getId());
+        }
+        LOGGER.debug("getCategory {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId});
         final ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         modelAndView.addObject("category", activeForm.getCategory(categoryId));
         modelAndView.addObject("form", activeForm);

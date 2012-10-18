@@ -2,7 +2,7 @@
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags"%>
 <fieldset>
     <legend class="h3"><c:out value="${element.title}"/></legend>
-    <button class="set-right legend-align" data-form-step-action="goto:1" type="button">
+    <button class="set-right legend-align" type="submit" name="navigate" value="${element.id}">
         <span>
             <span>Muokkaa</span>
         </span>
