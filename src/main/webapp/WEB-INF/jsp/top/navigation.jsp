@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<nav class="navigation">
-    <ul class="menu-level-1">
+<nav class="main-navigation">
+    <ul class="navigation">
         <li class="home"><a href="/haku">Etusivu</a></li>
         <li><a href="osio/osio_etusivu">Lukio</a></li>
         <li><a href="#">Ammatillinen koulutus</a></li>

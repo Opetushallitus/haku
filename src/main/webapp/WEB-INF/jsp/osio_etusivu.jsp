@@ -6,14 +6,14 @@
 
 						<div class="grid16-4">
 
-							<nav class="subnavigation">
-								<span class="menu-level-2-heading">Lukio</span>
-								<ul class="menu-level-2">
+							<nav class="sidenavigation">
+								<span class="sidemenu-level-1-heading">Lukio</span>
+								<ul class="sidemenu-level-1">
 									<li><a href="#">Lukiokoulutus</a></li>
 									<li><a href="#">Lukiokoulutus aikuisille</a></li>
 									<li><a href="#">Lisää lukiokoulutuksesta</a></li>
 									<li><a href="#" class="current">Vieläkin lisää lukiokoulutuksesta</a>
-										<ul class="menu-level-3">
+										<ul class="sidemenu-level-2">
 											<li><a href="#">Lorem ipsum</a></li>
 											<li><a href="#">Dolor sit amet</a></li>
 											<li><a href="#">Consectuer adipiscing</a></li>

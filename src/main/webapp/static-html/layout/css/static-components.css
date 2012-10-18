@@ -118,10 +118,10 @@
 }
 
 
-/*** Navigation
+/*** Main navigation
 **************************************************************/
 
-.navigation
+.main-navigation
 {
     display:inline-block;
     background-color:#149ecb;
@@ -132,26 +132,22 @@
     border-radius:6px;
 }
 
-.subnavigation
-{
-
-}
-
-.menu-level-1
+.navigation
 {
     margin:0px;
     padding:0px;
 }
 
-.menu-level-1 li
+.navigation li
 {
+    position: relative;
     list-style:none;
     display:inline-block;
 }
 
-.menu-level-1 li a
+.navigation li a
 {
-	font-weight:bold;
+    font-weight:bold;
     display:block;
     height:3.077em;
     line-height:3.077em;
@@ -160,25 +156,25 @@
     text-decoration:none;
 }
 
-.menu-level-1 li a:hover
+.navigation li a:hover
 {
     background-color: #0a91be;
     box-shadow: inset 0 0 2px 0 #777;
 }
 
-.menu-level-1 li a:active
+.navigation li a:active
 {
     background-color: #0a91be;
     box-shadow: inset 0 0 2px 0 #777;
 }
 
-.menu-level-1 li.current a
+.navigation li.current a
 {
     background-color: #0085b1;
     box-shadow: inset 0 0 2px 0 #777;
 }
 
-.menu-level-1 li.home a
+.navigation li.home a
 {
     display:block;
     height:3.077em;
@@ -186,19 +182,71 @@
     line-height:3.077em;
     padding:0px;
     color:transparent;
-	background-image: url("../img/menu-level-1-home.png");
-	background-repeat:no-repeat;
-	background-position:center center;
+    background-image: url("../img/menu-level-1-home.png");
+    background-repeat:no-repeat;
+    background-position:center center;
 }
 
-.menu-level-1 li.home a:hover,
-.menu-level-1 li.home a:active
+.navigation li.home a:hover,
+.navigation li.home a:active
 {
     background-color: #149ecb;
     box-shadow: none;
 }
 
-.menu-level-2-heading
+
+/*** Dropdown
+**************************************************************/
+
+#dropdown {
+    background: white;
+    position: absolute;
+    box-shadow: 0 0 8px 0 #888;
+    z-index: 5;
+    padding-left: 0;
+}
+
+#dropdown li {
+    display: block;
+}
+
+#dropdown li > * { /* no text-wrapping in li-elements children, ment to affect also the inner menus */
+    white-space: nowrap;
+    
+}
+
+#dropdown li span {
+    color: #888;
+    line-height: 
+    font-style: italic;
+    display: block;
+}
+
+#dropdown li a {
+    display: block;
+    color: #333;
+    font-weight: normal;
+    border-bottom: 1px solid #3caed4;
+}
+
+#dropdown li a:hover {
+    color: #3ebf3f;
+}
+
+
+
+
+
+/*** Sidenavigation
+**************************************************************/
+.sidenavigation
+{
+
+}
+
+
+
+.sidemenu-level-1-heading
 {
 	display:block;
     height: 2em;
@@ -212,19 +260,19 @@
 	background-color:#f9f9f9;
 }
 
-.menu-level-2
+.sidemenu-level-1
 {
     margin:0px;
     padding:0px;
 }
 
-.menu-level-2 li
+.sidemenu-level-1 li
 {
     list-style:none;
     display:block;
 }
 
-.menu-level-2 li a
+.sidemenu-level-1 li a
 {
     display:block;
     height:3.077em;
@@ -235,14 +283,14 @@
 	color:#3e3e3e;
 }
 
-.menu-level-2 li a:hover
+.sidemenu-level-1 li a:hover
 {
 	background-color:#bfe4f1;
 	color:#000000;
 
 }
 
-.menu-level-2 li a.current
+.sidemenu-level-1 li a.current
 {
 	font-weight:bold;
 	background-color:#ebf3f7;
@@ -252,32 +300,18 @@
 	border-bottom-color:#ebf3f7;
 }
 
-.menu-level-3 
+.sidemenu-level-2 
 {
 	padding:0px;
 }
 
-.menu-level-3 li a
+.sidemenu-level-2 li a
 {
 	padding-left:2.5em;
 }
 
 
-/*** Dropdown
-**************************************************************/
 
-.dropdown {
-    position: absolute;
-    z-index: 5;
-    background: #fff;
-    box-shadow: 0 0 4px 0 #ccc;
-}
 
-.dropdown .menu-header {
-    font-style: italic;
-    padding: 0 1em;
-    display:block;
-    height:3.077em;
-    line-height:3.077em;
-    color: #888;
-}
+
+

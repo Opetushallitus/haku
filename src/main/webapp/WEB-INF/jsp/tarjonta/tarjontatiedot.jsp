@@ -135,9 +135,11 @@
                                             <li>Lorem ipsum dolor sit amet</li>
                                             <li>Lorem ipsum dolor sit amet</li>
                                         </ul>
-                                        <button>
-                                            <span><span>siirry muistilistaan</span></span>
-                                        </button>
+                                        <form action="koulutuskuvaus.jsp" method="post">
+                                            <button type="submit">
+                                                <span><span>siirry muistilistaan</span></span>
+                                            </button>
+                                        </form>
                                         <p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                                             tempor incididunt ut labore et dolore magna aliqua.</i></p>
                                     </div>

@@ -54,6 +54,7 @@
                                 <jsp:param name="infobox" value="${test}"/>
                             </jsp:include>
                             <aside id="sidemenu">
+                              lsadöjklfsadöjklfsadöjklfsadöjklfsadöjkl
                                 <jsp:include page="sections/notelist.jsp"/>
                                 <jsp:include page="compare.jsp"/>
                                 <jsp:include page="authentication.jsp"/>
