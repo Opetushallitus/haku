@@ -95,8 +95,12 @@ public class FormController {
                                     @PathVariable final String formId,
                                     @PathVariable final String categoryId,
                                     @RequestParam(value = "nav-prev", required = false) Boolean navPrev,
-                                    @RequestParam(value = "nav-next", required = false) Boolean navNext) {
+                                    @RequestParam(value = "nav-next", required = false) Boolean navNext,
+                                    @RequestParam(value = "navigate", required = false) String navigate) {
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        if (navigate != null) {
+            return new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + activeForm.getVaiheByTeemaId(navigate).getId());
+        }
         if (navPrev != null && navPrev) {
             return new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + activeForm.getCategory(categoryId).getPrev().getId());
         }

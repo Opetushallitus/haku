@@ -72,4 +72,17 @@ public class Form extends Titled {
     public Vaihe getFirstCategory() {
         return getCategory(firstCategoryId);
     }
+
+    public Vaihe getVaiheByTeemaId(String teemaId) {
+        for (Vaihe vaihe : categories.values()) {
+            if (!vaihe.isPreview()) {
+                for (Element e : vaihe.getChildren()) {
+                    if (e.getId().equals(teemaId)) {
+                        return vaihe;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

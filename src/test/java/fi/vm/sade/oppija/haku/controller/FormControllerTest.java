@@ -64,31 +64,31 @@ public class FormControllerTest {
 
     @Test
     public void testGetCategoryMVCategory() throws Exception {
-        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId, null, null);
+        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId, null, null, null);
         assertEquals(firstCategoryId, ((Vaihe) actualModelAndView.getModel().get("category")).getId());
     }
 
     @Test
     public void testGetCategoryMVForm() throws Exception {
-        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId, null, null);
+        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId, null, null, null);
         assertEquals(formId, ((Form) actualModelAndView.getModel().get("form")).getId());
     }
 
     @Test
     public void testGetCategoryModelSize() throws Exception {
-        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId, null, null);
+        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId, null, null, null);
         assertEquals(5, actualModelAndView.getModel().size());
     }
 
     @Test
     public void testGetCategoryView() throws Exception {
-        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId, null, null);
+        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId, null, null, null);
         assertEquals(FormController.DEFAULT_VIEW, actualModelAndView.getViewName());
     }
 
     @Test
     public void testGetCategoryWrongView() throws Exception {
-        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId, null, null);
+        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId, null, null, null);
         assertNotSame(null, actualModelAndView.getViewName());
     }
 
