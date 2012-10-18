@@ -57,43 +57,31 @@
                 <c:set var="customOptionalGradeKey" value="custom-optionalgrade_${customIndex}" scope="page"/>
 
                     <tr class="gradegrid-language-row gradegrid-custom-language-row">
-                                    <td><c:out value="${element.customLanguageTitle}"/>
-                                    <select id="${customScopeKey}" name="${customScopeKey}">
-                                        <option></option>
-                                        <c:forEach var="scopeOption" items="${element.scopeOptions}">
-                                            <option value="${scopeOption.value}"
-                                            ${(categoryData[customScopeKey] eq scopeOption.value) ? "selected=\"selected\"" : ""}>
-                                            ${scopeOption.title}</option>
-                                        </c:forEach>
-                                    </select>
-                                    <select id="${customLanguageKey}" name="${customLanguageKey}">
-                                        <option></option>
-                                        <c:forEach var="languageOption" items="${element.languageOptions}">
-                                            <option value="${languageOption.value}"
-                                            ${(categoryData[customLanguageKey] eq languageOption.value) ? "selected=\"selected\"" : ""}>
-                                            ${languageOption.title}</option>
-                                        </c:forEach>
-                                    </select>
-                                    </td>
-                                    <td>
-                                        <div class="field-container-select">
-                                            <select id="${customCommonGradeKey}" name="${customCommonGradeKey}" placeholder="Valitse">
-                                            <option></option>
-                                            <c:forEach var="grade" items="${element.gradeRange}">
-                            	                <option value="${grade.value}" ${(categoryData[customCommonGradeKey] eq grade.value) ? "selected=\"selected\"" : ""}>${grade.title}</option>
-                                    	    </c:forEach>
-                        	    </select>
-                            </div>
+                        <td><c:out value="${element.customLanguageTitle}"/>&nbsp;
+                        <c:forEach var="scopeOption" items="${element.scopeOptions}">
+                            <c:if test="${(categoryData[customScopeKey] eq scopeOption.value)}">
+                                    <c:out value="${scopeOption.title}"/>&nbsp;
+                            </c:if>
+                        </c:forEach>
+                        <c:forEach var="languageOption" items="${element.languageOptions}">
+                            <c:if test="${(categoryData[customLanguageKey] eq languageOption.value)}">
+                                    <c:out value="${languageOption.title}"/>
+                            </c:if>
+                        </c:forEach>
                         </td>
                         <td>
-                            <div class="field-container-select">
-                                <select id="${customOptionalGradeKey}" name="${customOptionalGradeKey}" placeholder="Valitse">
-                                    <option></option>
-                                    <c:forEach var="grade" items="${element.gradeRange}">
-                            	                <option value="${grade.value}" ${(categoryData[customOptionalGradeKey] eq grade.value) ? "selected=\"selected\"" : ""}>${grade.title}</option>
-                                    </c:forEach>
-                        	    </select>
-                            </div>
+                            <c:forEach var="grade" items="${element.gradeRange}">
+                                <c:if test="${(categoryData[customCommonGradeKey] eq grade.value)}">
+                                        <c:out value="${grade.title}"/>
+                                </c:if>
+                            </c:forEach>
+                        </td>
+                        <td>
+                            <c:forEach var="grade" items="${element.gradeRange}">
+                                <c:if test="${(categoryData[customOptionalGradeKey] eq grade.value)}">
+                                        <c:out value="${grade.title}"/>
+                                </c:if>
+                            </c:forEach>
                         </td>
                     </tr>
                 </c:if>
