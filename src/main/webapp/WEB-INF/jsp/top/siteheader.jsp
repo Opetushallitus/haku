@@ -46,8 +46,9 @@
             </ul>
 
             <ul>
-                <li><a href="#">På svenska</a></li>
-                <li><a href="#">in English</a></li>
+                <li><a href="?lang=fi">Suomeksi</a></li>
+                <li><a href="?lang=sv">På svenska</a></li>
+                <li><a href="?lang=en">in English</a></li>
                 <li><a href="#">Mobiili</a></li>
                 <li><a href="#">Tekstiversio</a></li>
             </ul>
