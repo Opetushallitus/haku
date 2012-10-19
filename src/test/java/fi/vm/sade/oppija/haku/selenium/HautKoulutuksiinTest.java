@@ -20,6 +20,7 @@ public class HautKoulutuksiinTest extends AbstractSeleniumBase {
     @Test
     public void testSaveHakemusAndList() {
         buildFormWithOneQuestion();
+        loginAsNormalUser();
         fillForm();
         loginAsNormalUser();
         assertTrue(weAreAtAjankohtaisetHakemukset());
@@ -27,7 +28,8 @@ public class HautKoulutuksiinTest extends AbstractSeleniumBase {
     }
 
     private boolean hakemusListIncludesFilledForm() {
-        return seleniumHelper.getSelenium().isTextPresent(formModelHelper.getFirstForm().getTitle());
+        final String title = formModelHelper.getFirstForm().getTitle();
+        return seleniumHelper.getSelenium().isTextPresent(title);
     }
 
     private boolean weAreAtAjankohtaisetHakemukset() {
@@ -35,6 +37,7 @@ public class HautKoulutuksiinTest extends AbstractSeleniumBase {
     }
 
     private void loginAsNormalUser() {
+        seleniumHelper.logout();
         new HautKoulutuksiinPage(getBaseUrl(), seleniumHelper).login();
     }
 
