@@ -47,7 +47,9 @@ public class SelectingSubmitRuleIT extends AbstractSeleniumBase {
         final String startUrl = formModelHelper.getStartUrl();
         seleniumHelper.getDriver().get(getBaseUrl() + "/" + startUrl);
         seleniumHelper.getSelenium().type("hetu", "010101-111X");
-        final WebElement mies = seleniumHelper.getDriver().findElement(By.id("sukupuoli_mies"));
+
+        seleniumHelper.getSelenium().click("nav-save");
+        final WebElement mies = seleniumHelper.getDriver().findElement(By.name("sukupuoli"));
         assertTrue(!mies.isEnabled());
         assertTrue(mies.isSelected());
     }

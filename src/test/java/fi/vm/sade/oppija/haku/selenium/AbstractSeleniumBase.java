@@ -4,7 +4,6 @@ import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.SeleniumContainer;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.it.TomcatContainerBase;
-import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,6 +26,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     @Before
     public void before() {
         seleniumHelper = container.getSeleniumHelper();
+        seleniumHelper.logout();
     }
 
     protected FormModelHelper initModel(FormModel formModel1) {
@@ -36,13 +36,8 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         adminEditPage.login("admin");
         seleniumHelper.navigate(adminEditPage);
         adminEditPage.submitForm(formModel1);
-        logout();
-        return new FormModelHelper(formModel1);
-    }
-
-    @After
-    public void logout() {
         seleniumHelper.logout();
+        return new FormModelHelper(formModel1);
     }
 
 
