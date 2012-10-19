@@ -18,17 +18,16 @@ package fi.vm.sade.oppija.tarjonta.controller;
 
 import fi.vm.sade.oppija.tarjonta.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
 
 @Controller
 public class IndexController {
-
-    private static String xmlUrl = "file:/home/ville/src/oph/haku/trunk/src/main/resources/learningDownloadPOC.xml";
 
     final IndexService indexService;
 
@@ -40,8 +39,9 @@ public class IndexController {
     @RequestMapping(value = "/index/update")
     public
     @ResponseBody
-    String addNotes() throws MalformedURLException {
-        return Boolean.toString(indexService.update(new URL(xmlUrl)));
+    String updateIndex() throws IOException {
+        URL url = new ClassPathResource("learningDownloadPOC.xml").getURL();
+        return Boolean.toString(indexService.update(url));
     }
 
 }

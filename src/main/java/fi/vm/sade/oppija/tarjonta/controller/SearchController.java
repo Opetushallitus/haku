@@ -103,7 +103,6 @@ public class SearchController {
 
     @RequestMapping(value = "/tarjontatiedot", method = RequestMethod.GET, produces = "text/html; charset=UTF-8")
     public ModelAndView listTarjontatiedot(@ModelAttribute(MODEL_NAME_SEARCH_PARAMETERS) SearchParameters searchParameters, @RequestParam(value = "update", defaultValue = "false") boolean update) {
-        System.out.println(searchParameters);
         SearchResult searchResult = service.search(searchParameters);
         ModelAndView modelAndView = new ModelAndView(VIEW_NAME_ITEMS);
         modelAndView.addObject(MODEL_NAME, searchResult);
