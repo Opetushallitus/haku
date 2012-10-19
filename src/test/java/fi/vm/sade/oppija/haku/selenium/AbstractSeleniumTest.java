@@ -34,6 +34,7 @@ public class AbstractSeleniumTest extends TomcatContainerTest {
         final AdminEditPage adminEditPage = new AdminEditPage(getBaseUrl(), seleniumHelper.getSelenium());
         seleniumHelper.navigate(adminEditPage);
         adminEditPage.login("admin");
+        seleniumHelper.navigate(adminEditPage);
         adminEditPage.submitForm(formModel1);
         return new FormModelHelper(formModel1);
     }
