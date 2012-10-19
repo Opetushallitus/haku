@@ -20,6 +20,7 @@ public abstract class AbstractRemoteTest extends TomcatContainerTest {
         setBaseUrl(getBaseUrl());
         beginAt("/admin/edit");
         login("admin");
+        gotoPage("/admin/edit");
         final String convert = new FormModelToJsonString().convert(formModel1);
         setTextField("model", convert);
         submit("tallenna");
