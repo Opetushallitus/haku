@@ -100,9 +100,9 @@ public class HakutoiveetTest extends AbstractSeleniumTest {
         wait.until(new ExpectedCondition<WebElement>(){
             @Override
             public WebElement apply(WebDriver d) {
-                return d.findElement(By.xpath("//option[@value='0_0']"));
+                return d.findElement(By.xpath("//option[@value='Hakukohde_0_0']"));
             }});
-        driver.findElement(By.xpath("//option[@value='0_0']")).click();
+        driver.findElement(By.xpath("//option[@value='Hakukohde_0_0']")).click();
         wait.until(new ExpectedCondition<WebElement>(){
             @Override
             public WebElement apply(WebDriver d) {
