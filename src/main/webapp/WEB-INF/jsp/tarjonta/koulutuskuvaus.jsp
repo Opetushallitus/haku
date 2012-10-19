@@ -44,7 +44,7 @@
         </div>
 
 
-        <jsp:include page="sections/koulutustiedonvälilehdet.jsp"/>
+        <jsp:include page="sections/koulutustiedonvalilehdet.jsp"/>
 
     </div>
     <div class="grid16-4">
