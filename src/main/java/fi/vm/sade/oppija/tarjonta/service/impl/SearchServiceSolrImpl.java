@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.tarjonta.service.impl;
 
+import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.tarjonta.domain.SearchParameters;
 import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
 import fi.vm.sade.oppija.tarjonta.domain.exception.SearchException;
@@ -49,7 +50,11 @@ public class SearchServiceSolrImpl implements SearchService {
     @Override
     public Map<String, Object> searchById(final SearchParameters searchParameters) {
         SearchResult searchResult = query(searchParameters);
-        return getItemFromResult(searchResult);
+        Map<String, Object> itemFromResult = getItemFromResult(searchResult);
+        if (itemFromResult.size() == 0) {
+            throw new ResourceNotFoundException("Koulutuskuvausta ei löytynyt: " + searchParameters);
+        }
+        return itemFromResult;
     }
 
     @Override

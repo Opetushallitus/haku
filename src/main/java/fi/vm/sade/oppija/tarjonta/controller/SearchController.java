@@ -16,12 +16,15 @@
 
 package fi.vm.sade.oppija.tarjonta.controller;
 
+import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.tarjonta.converter.ArrayParametersToMap;
 import fi.vm.sade.oppija.tarjonta.domain.*;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
+import org.codehaus.plexus.util.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,6 +39,8 @@ public class SearchController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
+    public static final String ERROR_NOTFOUND = "error/notfound";
+    public static final String ERROR_SERVERERROR = "error/servererror";
     public static final String VIEW_NAME_ITEMS = "tarjonta/tarjontatiedot";
     public static final String VIEW_NAME_KOULUTUSKUVAUS = "tarjonta/koulutuskuvaus";
     public static final String MODEL_NAME = "searchResult";
@@ -114,12 +119,30 @@ public class SearchController {
 
     @RequestMapping(value = "/tarjontatiedot/{tarjontatietoId}", method = RequestMethod.GET, produces = "text/html; charset=UTF-8")
     public ModelAndView getTarjontatiedot(@PathVariable final String tarjontatietoId) {
+        LOGGER.info("tarjontatiedot/" + tarjontatietoId);
         Map<String, Map<String, String>> filters = new HashMap<String, Map<String, String>>();
         filters.put(TUNNISTE, arrayParametersToMap.convert(new String[]{tarjontatietoId}));
         SearchParameters searchParameters = new SearchParameters(filters);
         Map<String, Object> searchResult = service.searchById(searchParameters);
         ModelAndView modelAndView = new ModelAndView(VIEW_NAME_KOULUTUSKUVAUS);
         modelAndView.addObject(MODEL_NAME, searchResult);
+        return modelAndView;
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ModelAndView resourceNotFoundExceptions(ResourceNotFoundException e) {
+        ModelAndView modelAndView = new ModelAndView(ERROR_NOTFOUND);
+        modelAndView.addObject("stackTrace", ExceptionUtils.getFullStackTrace(e));
+        modelAndView.addObject("message", e.getMessage());
+        return modelAndView;
+    }
+
+    @ExceptionHandler(Throwable.class)
+    public ModelAndView exceptions(Throwable t) {
+        ModelAndView modelAndView = new ModelAndView(ERROR_SERVERERROR);
+        modelAndView.addObject("stackTrace", ExceptionUtils.getFullStackTrace(t));
+        modelAndView.addObject("message", t.getMessage());
         return modelAndView;
     }
 

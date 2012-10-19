@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.tarjonta.it;
 import fi.vm.sade.oppija.haku.it.TomcatContainerBase;
 import net.sourceforge.jwebunit.util.TestingEngineRegistry;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 
@@ -30,12 +29,7 @@ public class TarjontaIT extends TomcatContainerBase {
     protected void initModel() throws IOException {
         setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
         setBaseUrl(getBaseUrl());
-
-        beginAt("static-html/add.html");
-        ClassPathResource classPathResource = new ClassPathResource("tarjontatieto-test-data.xml");
-        String absolutePath = classPathResource.getFile().getAbsolutePath();
-        setTextField("upfile", absolutePath);
-        submit("Lataa");
+        beginAt("/index/update");
     }
 
 
@@ -48,15 +42,6 @@ public class TarjontaIT extends TomcatContainerBase {
         dumpHtml();
         clickButton("btn-search");
         assertLinkPresentWithExactText("sivu 1");
-    }
-
-    @Test
-    public void testUpdate() throws Exception {
-        initModel();
-        setScriptingEnabled(false);
-        beginAt("/tarjontatiedot?update=true");
-        dumpHtml();
-        assertCheckboxPresent("koulutustyyppi");
     }
 
     @Test
