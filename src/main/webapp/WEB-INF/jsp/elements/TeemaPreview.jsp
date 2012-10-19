@@ -6,11 +6,21 @@
 
 <fieldset>
     <legend class="h3"><c:out value="${element.title}"/></legend>
-    <button class="set-right legend-align" type="submit" name="navigate" value="${element.id}">
-        <span>
-            <span>Muokkaa</span>
-        </span>
-    </button>
+    <c:forEach var="vaihe" items="${form.categories}">
+        <c:if test="${(not vaihe.preview)}">
+            <c:forEach var="teema" items="${vaihe.children}">
+                <c:if test="${(teema.id eq element.id)}">
+                    <form method="get" action="/haku/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${vaihe.id}">
+                        <button class="set-right legend-align" type="submit">
+                            <span>
+                                <span>Muokkaa</span>
+                            </span>
+                        </button>
+                    </form>
+                </c:if>
+            </c:forEach>
+        </c:if>
+    </c:forEach>
     <hr>
     <table class="form-summary-table">
         <tbody>

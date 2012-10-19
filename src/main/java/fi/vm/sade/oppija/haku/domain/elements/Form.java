@@ -19,7 +19,9 @@ package fi.vm.sade.oppija.haku.domain.elements;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -71,6 +73,11 @@ public class Form extends Titled {
     @JsonIgnore
     public Vaihe getFirstCategory() {
         return getCategory(firstCategoryId);
+    }
+
+    @JsonIgnore
+    public Collection<Vaihe> getCategories() {
+        return categories.values();
     }
 
     public Vaihe getVaiheByTeemaId(String teemaId) {
