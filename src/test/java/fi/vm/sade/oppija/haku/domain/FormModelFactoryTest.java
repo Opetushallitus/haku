@@ -24,7 +24,7 @@ public class FormModelFactoryTest {
     public void testBuilderFrom() throws Exception {
         final FormModel formModel = new FormModelBuilder().withDefaults().addChildToTeema(new TextQuestion("doo", "foo")).build();
         final FormModelHelper formModelHelper = new FormModelHelper(formModel);
-        assertEquals("doo", formModelHelper.getFirstCategoryChild().getId());
+        assertEquals("doo", formModelHelper.getFirstCategoryTeemaChild().getId());
     }
 
     @Test

@@ -2,9 +2,9 @@ package fi.vm.sade.oppija.haku;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 
 
 /**
@@ -44,8 +44,8 @@ public class FormModelHelper {
         return getFirstForm().getFirstCategory();
     }
 
-    public Element getFirstCategoryChild() {
-        return getFirstCategory().getChildren().get(0);
+    public Element getFirstCategoryTeemaChild() {
+        return getFirstCategory().getChildren().get(0).getChildren().get(0);
     }
 
     public String getStartUrl() {
