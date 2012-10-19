@@ -1,16 +1,19 @@
 package fi.vm.sade.oppija.haku.it;
 
+import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
-public class NavigationIT extends AbstractIT {
+public class NavigationIT extends AbstractRemoteTest {
 
-    public NavigationIT() {
-        jsonModelFileName = "navigation-test.json";
-        //
+    @Before
+    public void setUp() throws Exception {
+        FormModelDummyMemoryDaoImpl dummyMem = new FormModelDummyMemoryDaoImpl();
+        initModel(dummyMem.getModel());
     }
 
     @Test
