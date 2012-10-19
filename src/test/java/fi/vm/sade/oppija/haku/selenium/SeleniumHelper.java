@@ -11,10 +11,12 @@ import org.openqa.selenium.WebDriver;
 public class SeleniumHelper {
     private final Selenium selenium;
     private final WebDriver driver;
+    private final String baseUrl;
 
-    public SeleniumHelper(Selenium selenium, WebDriver driver) {
+    public SeleniumHelper(Selenium selenium, WebDriver driver, String baseUrl) {
         this.selenium = selenium;
         this.driver = driver;
+        this.baseUrl = baseUrl;
     }
 
     protected void login(String user) {
@@ -38,4 +40,9 @@ public class SeleniumHelper {
     public WebDriver getDriver() {
         return driver;
     }
+
+    public void logout() {
+        getDriver().get(baseUrl + "/logout");
+    }
+
 }

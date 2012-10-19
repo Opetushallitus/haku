@@ -24,7 +24,7 @@ import static org.junit.Assert.assertNotNull;
  * @version 9/20/123:26 PM}
  * @since 1.1
  */
-public class ShowChildsIT extends AbstractSeleniumTest {
+public class ShowChildsIT extends AbstractSeleniumBase {
 
     private FormModelHelper formModelHelper;
 

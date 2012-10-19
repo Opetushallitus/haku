@@ -39,7 +39,7 @@ import java.util.List;
 public class SessionDataHolder implements Serializable, ApplicationDAO {
 
     private static final long serialVersionUID = -3751714345380438532L;
-    private HashMap<HakemusId, Hakemus> map = new HashMap<HakemusId, Hakemus>();
+    private final HashMap<HakemusId, Hakemus> map = new HashMap<HakemusId, Hakemus>();
 
     public Hakemus find(HakemusId id, User user) {
         Hakemus hakemus = map.get(id);
@@ -59,7 +59,8 @@ public class SessionDataHolder implements Serializable, ApplicationDAO {
 
     public void update(Hakemus hakemus) {
         new TimeStampModifier(hakemus.getValues()).updateModified();
-        this.map.get(hakemus.getHakemusId()).getValues().putAll(hakemus.getValues());
+        final Hakemus old = find(hakemus.getHakemusId(), hakemus.getUser());
+        old.getValues().putAll(hakemus.getValues());
     }
 
 }

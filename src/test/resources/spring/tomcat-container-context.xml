@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="tomcat" class="fi.vm.sade.oppija.haku.TomcatContainer">
+        <constructor-arg name="port" value="12456"/>
+    </bean>
+
+    <bean id="seleniumContainer" class="fi.vm.sade.oppija.haku.SeleniumContainer">
+        <constructor-arg name="tomcatContainer" ref="tomcat"/>
+    </bean>
+
+</beans>

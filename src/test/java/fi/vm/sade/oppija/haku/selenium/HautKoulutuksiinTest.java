@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
  * @version 10/15/123:25 PM}
  * @since 1.1
  */
-public class HautKoulutuksiinTest extends AbstractSeleniumTest {
+public class HautKoulutuksiinTest extends AbstractSeleniumBase {
 
     private FormModelHelper formModelHelper;
 

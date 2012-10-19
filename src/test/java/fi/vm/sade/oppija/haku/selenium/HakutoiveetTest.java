@@ -29,9 +29,10 @@ import java.util.Map;
 
 /**
  * Test for education institute preferences
+ *
  * @author Mikko Majapuro
  */
-public class HakutoiveetTest extends AbstractSeleniumTest {
+public class HakutoiveetTest extends AbstractSeleniumBase {
 
     private FormModelHelper formModelHelper;
 
@@ -91,22 +92,25 @@ public class HakutoiveetTest extends AbstractSeleniumTest {
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "koulu");
         WebDriverWait wait = new WebDriverWait(driver, 5, 1000);
-        wait.until(new ExpectedCondition<WebElement>(){
+        wait.until(new ExpectedCondition<WebElement>() {
             @Override
             public WebElement apply(WebDriver d) {
                 return d.findElement(By.linkText("Koulu0"));
-            }});
+            }
+        });
         driver.findElement(By.linkText("Koulu0")).click();
-        wait.until(new ExpectedCondition<WebElement>(){
+        wait.until(new ExpectedCondition<WebElement>() {
             @Override
             public WebElement apply(WebDriver d) {
                 return d.findElement(By.xpath("//option[@value='Hakukohde_0_0']"));
-            }});
+            }
+        });
         driver.findElement(By.xpath("//option[@value='Hakukohde_0_0']")).click();
-        wait.until(new ExpectedCondition<WebElement>(){
+        wait.until(new ExpectedCondition<WebElement>() {
             @Override
             public WebElement apply(WebDriver d) {
                 return d.findElement(By.id("0_0_additional_question_1"));
-            }});
+            }
+        });
     }
 }

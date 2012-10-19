@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.tarjonta.it;
 
-import fi.vm.sade.oppija.haku.it.TomcatContainerTest;
+import fi.vm.sade.oppija.haku.it.TomcatContainerBase;
 import net.sourceforge.jwebunit.util.TestingEngineRegistry;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -25,12 +25,12 @@ import java.io.IOException;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
-public class TarjontaIT extends TomcatContainerTest {
-
+public class TarjontaIT extends TomcatContainerBase {
 
     protected void initModel() throws IOException {
         setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
         setBaseUrl(getBaseUrl());
+
         beginAt("static-html/add.html");
         ClassPathResource classPathResource = new ClassPathResource("tarjontatieto-test-data.xml");
         String absolutePath = classPathResource.getFile().getAbsolutePath();

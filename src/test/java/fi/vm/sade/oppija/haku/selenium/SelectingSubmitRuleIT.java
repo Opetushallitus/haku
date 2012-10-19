@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
  * @version 10/3/123:25 PM}
  * @since 1.1
  */
-public class SelectingSubmitRuleIT extends AbstractSeleniumTest {
+public class SelectingSubmitRuleIT extends AbstractSeleniumBase {
     private FormModelHelper formModelHelper;
 
     @Before

@@ -12,7 +12,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  * @version 9/13/123:42 PM}
  * @since 1.1
  */
-public abstract class AbstractRemoteTest extends TomcatContainerTest {
+public abstract class AbstractRemoteTest extends TomcatContainerBase {
 
 
     protected FormModelHelper initModel(FormModel formModel1) {

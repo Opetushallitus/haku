@@ -32,7 +32,7 @@ public class Teema extends Titled {
     Map<String, List<Question>> additionalQuestions;
 
     public Teema(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
-                 @JsonProperty(value="additionalQuestions")Map<String, List<Question>> additionalQuestions) {
+                 @JsonProperty(value = "additionalQuestions") Map<String, List<Question>> additionalQuestions) {
         super(id, title);
         this.additionalQuestions = additionalQuestions;
     }

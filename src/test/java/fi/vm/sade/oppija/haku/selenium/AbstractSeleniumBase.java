@@ -1,33 +1,33 @@
 package fi.vm.sade.oppija.haku.selenium;
 
-import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.haku.FormModelHelper;
+import fi.vm.sade.oppija.haku.SeleniumContainer;
 import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.it.TomcatContainerTest;
+import fi.vm.sade.oppija.haku.it.TomcatContainerBase;
 import org.junit.After;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
-import org.openqa.selenium.firefox.FirefoxDriver;
-
-import java.util.concurrent.TimeUnit;
+import org.junit.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author jukka
  * @version 10/15/121:13 PM}
  * @since 1.1
  */
-public class AbstractSeleniumTest extends TomcatContainerTest {
+public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected SeleniumHelper seleniumHelper;
 
-    public AbstractSeleniumTest() {
+    @Autowired
+    SeleniumContainer container;
+
+    public AbstractSeleniumBase() {
         super();
-        WebDriver driver = new FirefoxDriver();
-        Selenium selenium = new WebDriverBackedSelenium(driver, getBaseUrl());
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        this.seleniumHelper = new SeleniumHelper(selenium, driver);
     }
 
+    @Before
+    public void before() {
+        seleniumHelper = container.getSeleniumHelper();
+    }
 
     protected FormModelHelper initModel(FormModel formModel1) {
 
@@ -36,12 +36,13 @@ public class AbstractSeleniumTest extends TomcatContainerTest {
         adminEditPage.login("admin");
         seleniumHelper.navigate(adminEditPage);
         adminEditPage.submitForm(formModel1);
+        logout();
         return new FormModelHelper(formModel1);
     }
 
     @After
-    public void close() {
-        seleniumHelper.close();
+    public void logout() {
+        seleniumHelper.logout();
     }
 
 

@@ -1,22 +1,6 @@
-/*
- * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
- *
- * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
- * soon as they will be approved by the European Commission - subsequent versions
- * of the EUPL (the "Licence");
- *
- * You may not use this work except in compliance with the Licence.
- * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * European Union Public Licence for more details.
- */
+package fi.vm.sade.oppija.haku;
 
-package fi.vm.sade.oppija.haku.it;
-
-import fi.vm.sade.oppija.haku.RootPackageMarker;
+import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -25,22 +9,18 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.impl.base.exporter.zip.ZipExporterImpl;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.springframework.beans.factory.DisposableBean;
 
 import java.io.File;
 import java.io.IOException;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.setTextField;
-import static net.sourceforge.jwebunit.junit.JWebUnit.submit;
-
 /**
  * @author jukka
- * @version 9/18/1210:44 AM}
+ * @version 10/19/122:03 PM}
  * @since 1.1
  */
-public class TomcatContainerTest {
+public class TomcatContainer implements DisposableBean {
+
     private static final String WEBAPP_SRC = "src/main/webapp";
     private static final String RESOURCES_SRC = "src/main/resources";
 
@@ -48,13 +28,12 @@ public class TomcatContainerTest {
      * The temporary directory in which Tomcat and the app are deployed.
      */
     private static String mWorkingDir = "target/tomcat";
-    private static final int PORT = 12456;
     /**
      * The tomcat instance.
      */
     private Tomcat mTomcat;
-    private static File webApp;
     private static File solr;
+    private final int port;
 
     private static WebArchive addWebResourcesTo(WebArchive archive) {
         final File webAppDirectory = new File(WEBAPP_SRC);
@@ -70,16 +49,16 @@ public class TomcatContainerTest {
         return !file.isDirectory() && !file.getName().equals(".svn");
     }
 
-    @Before
-    public void setup() throws Throwable {
+    public TomcatContainer(String port) throws IOException, LifecycleException {
+        this.port = Integer.parseInt(port);
         createTomcat();
-        createWebApp();
+        createWebApp(createPackage());
         mTomcat.start();
-
     }
 
-    @After
-    public void stop() throws Exception {
+
+    @Override
+    public void destroy() throws Exception {
         if (mTomcat.getServer() != null
                 && mTomcat.getServer().getState() != LifecycleState.DESTROYED) {
             if (mTomcat.getServer().getState() != LifecycleState.STOPPED) {
@@ -100,12 +79,8 @@ public class TomcatContainerTest {
         mTomcat.getHost().setDeployOnStartup(true);
     }
 
-    @BeforeClass
-    public static void doPackage() throws IOException {
-        webApp = createPackage();
-    }
 
-    private void createWebApp() throws IOException {
+    private void createWebApp(File webApp) throws IOException {
         mTomcat.addWebapp(mTomcat.getHost(), getContextPath(), webApp.getAbsolutePath());
 
 
@@ -140,7 +115,7 @@ public class TomcatContainerTest {
         return webApp;
     }
 
-    private String getContextPath() {
+    public String getContextPath() {
         return "/" + getApplicationId();
     }
 
@@ -164,21 +139,16 @@ public class TomcatContainerTest {
 
     }
 
+    public String getBaseUrl() {
+        return "http://localhost:" + getPort() + getContextPath();
+    }
+
     public static String getApplicationId() {
         return "haku";
     }
 
     public int getPort() {
-        return PORT;
+        return port;
     }
 
-    public String getBaseUrl() {
-        return "http://localhost:" + getPort() + getContextPath();
-    }
-
-    protected void login(String admin) {
-        setTextField("j_username", "admin");
-        setTextField("j_password", "admin");
-        submit();
-    }
 }

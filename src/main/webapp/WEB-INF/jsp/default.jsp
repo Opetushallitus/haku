@@ -42,7 +42,7 @@
             <c:set var="preview" value="${category.preview}" scope="request"/>
             <c:choose>
                   <c:when test="${preview}">
-                        <form id="form-${category.id}" class="form" method="get">
+                        <form id="form-${category.id}"  class="form" method="get">
                             <jsp:include page="prev_next_buttons.jsp"/>
                             <c:forEach var="child" items="${category.children}">
                                 <c:set var="element" value="${child}" scope="request"/>
