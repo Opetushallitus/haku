@@ -21,7 +21,7 @@ public class SeleniumContainer implements DisposableBean {
     public SeleniumContainer(TomcatContainer tomcatContainer) {
         WebDriver driver = new FirefoxDriver();
         Selenium selenium = new WebDriverBackedSelenium(driver, tomcatContainer.getBaseUrl());
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         this.seleniumHelper = new SeleniumHelper(selenium, driver, tomcatContainer.getBaseUrl());
     }
 
