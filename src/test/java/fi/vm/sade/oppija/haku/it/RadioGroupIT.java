@@ -36,7 +36,6 @@ public class RadioGroupIT extends AbstractRemoteTest {
     public void testInputExists() throws IOException {
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);
-        String foo = getPageSource();
         List<Option> options = radio.getOptions();
         for (Option option : options) {
             assertElementPresentByXPath("//input[@value='" + option.getValue() + "']");
