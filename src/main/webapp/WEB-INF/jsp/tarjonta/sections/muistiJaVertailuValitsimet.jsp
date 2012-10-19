@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -15,22 +16,14 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
-<div id="notelist">
-    <div class="heading">
-        <h2>Muistilista</h2>
+<div class="result-options set-right">
+    <div class="field-container-checkbox left-intend-2" style="display: inline-block">
+        <input type="checkbox" name="muistilistaan" value="${id}" id="muistilista_${id}"/>
+        <label for="muistilista_${id}"><spring:message code="tarjonta.lisaamuistilistaan"/></label>
     </div>
-    <div class="sidemenu-content">
-        <div class="hierarchy-list">
-            <ul class="lvl-1">
-                <li class="closed" hierarchy-list-action="closed"><span>Lorem ipsum dolor sit amet</span></li>
-                <li class="closed" hierarchy-list-action="closed"><span>Lorem ipsum dolor sit amet</span></li>
-            </ul>
-        </div>
-        <button>
-            <span><span>siirry muistilistaan</span></span>
-        </button>
-        <p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.</i></p>
+
+    <div class="field-container-checkbox left-intend-2">
+        <input type="checkbox" name="vertailulistaan" value="${id}" id="vertailulista_${id}"/>
+        <label for="vertailulista_${id}"><spring:message code="tarjonta.lisaavertailulistaan"/></label>
     </div>
 </div>

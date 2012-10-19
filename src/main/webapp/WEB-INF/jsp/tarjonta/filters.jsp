@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%--
@@ -18,44 +19,61 @@
   --%>
 
 <div class="grid16-6">
-    <form id="hakutulokset" action="/haku/fi/tarjontatiedot" method="GET">
-
+    <form id="hakusuodattimet" method="GET">
+        <input type="hidden" name="text" value="${parameters.text}"/>
         <fieldset class="form-item">
             <div class="form-item-content">
 
                 <div class="field-container-checkbox">
-                    <input type="checkbox" name="suodatin" value="dolor" id="Liikennevaline-dolor"/>
-                    <label for="Liikennevaline-dolor">Näytä vain tutkintoon johtava koulutus</label>
+                    <input type="checkbox" name="LOSType" class="suodatin" value="DegreeProgramme" id="LOSType"/>
+                    <label for="LOSType"><spring:message code="tarjonta.haku.näytävaintutkintoonjohtavakoulutus"
+                                                         text="?_?"/></label>
                 </div>
 
                 <div class="field-container-checkbox">
-                    <input type="checkbox" name="suodatin" value="sit" id="Liikennevaline-sit"/>
-                    <label for="Liikennevaline-sit">Haku meneillään juuri nyt</label>
+                    <input type="checkbox" class="suodatin" value="juurinyt" id="juurinyt"/>
+                    <label for="juurinyt"><spring:message code="tarjonta.haku.hakumeneilläänjuurinyt"
+                                                          text="?_?"/></label>
                 </div>
             </div>
             <div class="clear"></div>
         </fieldset>
+        <jsp:include page="sections/valintaruutuSuodatin.jsp">
+            <jsp:param name="name" value="koulutustyyppi"/>
+        </jsp:include>
 
-        <c:forEach var="filter" items="${filters}">
-            <fieldset class="form-item">
-                <legend class="h3 form-item-label"><c:out value="${filter.name}"/></legend>
-                <div class="form-item-content">
-                    <c:forEach var="filterValue" items="${filter.filterValues}" varStatus="index">
-                        <div class="field-container-checkbox">
-                            <input class="haku_suodatin" type="checkbox" name='<c:out value="${filter.name}"/>' id="id_${filter.name}"
-                                                               value='<c:out value="${filterValue.name}"/>' ${ (parameters.filters[filter.name][filterValue.name] eq filterValue.name) ? 'checked=checked' : ''} ></input>
-                            <label for="id_${filter.name}"><c:out value="${filterValue.label}"/></label>
-                        </div>
-                    </c:forEach>
-                </div>
-                <div class="clear"></div>
-            </fieldset>
-        </c:forEach>
+        <jsp:include page="sections/valintaruutuSuodatin.jsp">
+            <jsp:param name="name" value="pohjakoulutus"/>
+        </jsp:include>
+
+        <jsp:include page="sections/valintaruutuSuodatin.jsp">
+            <jsp:param name="name" value="koulutuksenkieli"/>
+        </jsp:include>
+
+        <jsp:include page="sections/valintaruutuSuodatin.jsp">
+            <jsp:param name="name" value="opetusmuoto"/>
+        </jsp:include>
+
+        <jsp:include page="sections/valintaruutuSuodatin.jsp">
+            <jsp:param name="name" value="oppilaitostyyppi"/>
+        </jsp:include>
+
+        <jsp:include page="sections/valintaruutuSuodatin.jsp">
+            <jsp:param name="name" value="opintojenalkamisajankohta"/>
+        </jsp:include>
+
+        <jsp:include page="sections/valintalistaSuodatin.jsp">
+            <jsp:param name="name" value="oppilaitostyyppi"/>
+        </jsp:include>
+
+        <jsp:include page="sections/valintalistaSuodatin.jsp">
+            <jsp:param name="name" value="opintojenalkamisajankohta"/>
+        </jsp:include>
 
         <div class="form-item">
-            <legend class="h3">SIJAINTI</legend>
+            <legend class="h3"><spring:message code="tarjonta.haku.sijainti" text="?_?"/></legend>
             <div class="form-item-content">
-                <input type="text" name="Kentta" id="KenttaId" size="30"/>
+                <input type="text" name="location" size="30"/>
                 <button class="plus">
                     <span><span></span></span>
                 </button>
@@ -63,8 +81,8 @@
             <div class="clear"></div>
         </div>
 
-        <button>
+        <!--<button>
             <span><span>Lähetä</span></span>
-        </button>
+        </button>-->
     </form>
 </div>

@@ -28,5 +28,6 @@ public interface SearchService {
     SearchResult search(final SearchParameters searchParameters) throws SearchException;
 
     Map<String, Object> searchById(final SearchParameters searchParameters);
+
     Collection<String> getUniqValuesByField(final String field);
 }

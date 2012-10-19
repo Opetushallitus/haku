@@ -14,27 +14,10 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.tarjonta.domain;
+package fi.vm.sade.oppija.tarjonta.service;
 
-public class FilterValue {
-    final String name;
-    final String label;
+import java.net.URL;
 
-    public FilterValue(final String name, final String label) {
-        this.name = name;
-        this.label = label;
-    }
-
-    public FilterValue(final String name) {
-        this.name = name;
-        this.label = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getLabel() {
-        return label;
-    }
+public interface IndexService {
+    boolean update(final URL url);
 }

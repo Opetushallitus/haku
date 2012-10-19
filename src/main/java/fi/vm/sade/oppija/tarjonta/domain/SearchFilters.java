@@ -20,60 +20,47 @@ import fi.vm.sade.oppija.tarjonta.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class SearchFilters {
 
-    public static final String KOULUTUSTYYPPI = "koulutustyyppi";
-    public static final String POHJAKOULUTUS = "pohjakoulutus";
-    public static final String KOULUTUSKIELI = "koulutuskieli";
-    public static final String OPETUSMUOTO = "opetusmuoto";
-    public static final String OPPILAITOSTYYPPI = "oppilaitostyyppi";
+    //private final String[] filterFields = new String[]{"koulutustyyppi", "pohjakoulutus", "koulutuksenkieli", "opetusmuoto", "oppilaitostyyppi"};
+    private final String[] filterFields = new String[]{"pohjakoulutus", "koulutuksenkieli", "opetusmuoto"};
 
-    private List<Filter> filters = new ArrayList<Filter>();
+    Map<String, List<String>> filters = new HashMap<String, List<String>>();
+
     private final SearchService service;
 
     @Autowired
     public SearchFilters(SearchService service) {
         this.service = service;
+        this.filters = Collections.unmodifiableMap(new HashMap<String, List<String>>());
     }
 
-    public List<Filter> getFilters() {
+    public Map<String, List<String>> getFilters() {
+        // TODO Päivitä suodattimet ainoastaan tarjonnan päivitylsen yhteydessä
+        filters = fetchFilters();
         return filters;
     }
 
-    public void update() {
-        this.filters = updateFilters();
-    }
-
-    private List<Filter> updateFilters() {
-        List<Filter> filters = new ArrayList<Filter>();
-
-        List<FilterValue> koulutustyyppi = populateFilter(KOULUTUSTYYPPI);
-        List<FilterValue> pohjakoulutus = populateFilter(POHJAKOULUTUS);
-        List<FilterValue> koulutuskieli = populateFilter(KOULUTUSKIELI);
-        List<FilterValue> opetusmuoto = populateFilter(OPETUSMUOTO);
-        List<FilterValue> oppilaitostyyppi = populateFilter(OPPILAITOSTYYPPI);
-
-        filters.add(new Filter(KOULUTUSTYYPPI, koulutustyyppi));
-        filters.add(new Filter(POHJAKOULUTUS, pohjakoulutus));
-        filters.add(new Filter(KOULUTUSKIELI, koulutuskieli));
-        filters.add(new Filter(OPETUSMUOTO, opetusmuoto));
-        filters.add(new Filter(OPPILAITOSTYYPPI, oppilaitostyyppi));
-
-        return Collections.unmodifiableList(filters);
-    }
-
-    private List<FilterValue> populateFilter(final String fieldName) {
-        List<FilterValue> filterValues = new ArrayList<FilterValue>();
-        Collection<String> values = service.getUniqValuesByField(fieldName);
-        for (String name : values) {
-            filterValues.add(new FilterValue(name));
+    private Map<String, List<String>> fetchFilters() {
+        Map<String, List<String>> filters = new HashMap<String, List<String>>();
+        for (String filterField : filterFields) {
+            List<String> value = populateFilter(filterField);
+            filters.put(filterField, value);
         }
-        return filterValues;
+        System.out.println("populate: " + filters);
+        return Collections.unmodifiableMap(filters);
+    }
+
+    private List<String> populateFilter(final String field) {
+        List<String> filterValues = new ArrayList<String>();
+        Collection<String> values = service.getUniqValuesByField(field);
+        for (String name : values) {
+            filterValues.add(name);
+        }
+        System.out.println("populate: " + filterValues);
+        return Collections.unmodifiableList(filterValues);
     }
 }

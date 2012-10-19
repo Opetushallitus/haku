@@ -37,7 +37,7 @@ public class SearchController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
     public static final String VIEW_NAME_ITEMS = "tarjonta/tarjontatiedot";
-    public static final String VIEW_NAME_ITEM = "tarjonta/tarjontatieto";
+    public static final String VIEW_NAME_KOULUTUSKUVAUS = "tarjonta/koulutuskuvaus";
     public static final String MODEL_NAME = "searchResult";
     public static final String MODEL_NAME_SEARCH_PARAMETERS = "searchParameters";
     public static final String PARAMETERS = "parameters";
@@ -45,9 +45,9 @@ public class SearchController {
     public static final String SORT_PARAMETERS = "sort_parameters";
     public static final String PAGING_PARAMETERS = "paging_parameters";
     public static final String FILTERS = "filters";
-    public static final String TUNNISTE = "tunniste";
+    public static final String TUNNISTE = "AOId";
     public static final String KOULUTUSTYYPPI = "koulutustyyppi";
-    public static final String KOULUTUSKIELI = "koulutuskieli";
+    public static final String KOULUTUSKIELI = "koulutuksenkieli";
     public static final String OPETUSMUOTO = "opetusmuoto";
     public static final String OPPILAITOSTYYPPI = "oppilaitostyyppi";
     public static final String SEARCH_PARAMETER = "text";
@@ -93,6 +93,7 @@ public class SearchController {
                                                 @ModelAttribute(SORT_PARAMETERS) SortParameters sortParameters,
                                                 @ModelAttribute(PAGING_PARAMETERS) PagingParameters pagingParameters,
                                                 @ModelAttribute(FILTERS) Map<String, Map<String, String>> filters) {
+
         HashSet<String> fields = new HashSet<String>();
         fields.add("id");
         fields.add("name");
@@ -102,9 +103,7 @@ public class SearchController {
 
     @RequestMapping(value = "/tarjontatiedot", method = RequestMethod.GET, produces = "text/html; charset=UTF-8")
     public ModelAndView listTarjontatiedot(@ModelAttribute(MODEL_NAME_SEARCH_PARAMETERS) SearchParameters searchParameters, @RequestParam(value = "update", defaultValue = "false") boolean update) {
-        if (update) {
-            searchFilters.update();
-        }
+        System.out.println(searchParameters);
         SearchResult searchResult = service.search(searchParameters);
         ModelAndView modelAndView = new ModelAndView(VIEW_NAME_ITEMS);
         modelAndView.addObject(MODEL_NAME, searchResult);
@@ -120,14 +119,8 @@ public class SearchController {
         filters.put(TUNNISTE, arrayParametersToMap.convert(new String[]{tarjontatietoId}));
         SearchParameters searchParameters = new SearchParameters(filters);
         Map<String, Object> searchResult = service.searchById(searchParameters);
-        ModelAndView modelAndView = new ModelAndView("tarjonta/koulutuskuvaus");
-        LOGGER.debug("searchResult: ", searchResult.size());
+        ModelAndView modelAndView = new ModelAndView(VIEW_NAME_KOULUTUSKUVAUS);
         modelAndView.addObject(MODEL_NAME, searchResult);
-        Infobox hakufaktoja = new Infobox("Hakufaktoja", "Hakuaika alkaa 26.9.2012");
-        hakufaktoja.addInfoboxItem(new InfoboxItem("Haun nimi", "dolor sit amet Lorem ipsum dolor sit amet"));
-        hakufaktoja.addInfoboxItem(new InfoboxItem("Hakukelpoisuus", "Peruskoulu"));
-        hakufaktoja.addInfoboxItem(new InfoboxItem("Valintakoe", "Lorem ipsum"));
-        modelAndView.addObject("test", hakufaktoja);
         return modelAndView;
     }
 

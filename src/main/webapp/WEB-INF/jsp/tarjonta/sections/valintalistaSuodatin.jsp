@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -15,23 +16,18 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<c:if test="${ not empty filters[param.name]}">
+    <div class="module">
+        <legend class="h3 form-item-label"><spring:message code="tarjonta.haku.${param.name}" text="?_?"/></legend>
+        <div class="field-container-select">
 
+            <select name="${param.name}" id="${param.name}">
+                <option></option>
+                <c:forEach var="filter" items="${filters[param.name]}">
+                    <option name='${param.name}'>filter</option>
+                </c:forEach>
+            </select>
 
-<div id="hakufaktoja">
-    <div class="heading">
-        <h2>Muistilista</h2>
-    </div>
-    <div class="sidemenu-content">
-        <div class="hierarchy-list">
-            <ul class="lvl-1">
-                <li class="closed" hierarchy-list-action="closed"><span>Lorem ipsum dolor sit amet</span></li>
-                <li class="closed" hierarchy-list-action="closed"><span>Lorem ipsum dolor sit amet</span></li>
-            </ul>
         </div>
-        <button>
-            <span><span>siirry muistilistaan</span></span>
-        </button>
-        <p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.</i></p>
     </div>
-</div>
+</c:if>

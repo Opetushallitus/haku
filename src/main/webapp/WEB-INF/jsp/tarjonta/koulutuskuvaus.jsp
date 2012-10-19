@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -16,55 +17,48 @@
   ~ European Union Public Licence for more details.
   --%>
 
-    <jsp:include page="../top/top.jsp"/>
+<jsp:include page="../top/top.jsp"/>
 
 
-                    <section id="koulutuskuvaus">
-                        <div class="grid16-4">
-                            <jsp:include page="sections/infobox.jsp"/>
-                            <jsp:include page="sections/notelist-simple.jsp"/>
-                        </div>
+<section id="koulutuskuvaus">
+    <div class="grid16-4">
+        <jsp:include page="sections/koulutuksenPerustiedot.jsp"/>
+        <jsp:include page="sections/notelist-simple.jsp"/>
+    </div>
 
-                        <div class="grid16-8">
+    <div class="grid16-8">
+        <jsp:include page="sections/definitions.jsp"/>
 
+        <div><a href="vapaasana.html">Takaisin hakutuloksiin</a></div>
+        <div class="clear"></div>
 
-                            <jsp:include page="definitions.jsp"/>
+        <div class="pagetitle">
+            <h1>${searchResult['LOSDegreeTitle']}&nbsp;${searchResult['LOSCredits']}&nbsp;<spring:message
+                    code="tarjonta.koulutuskuvaus.${searchResult['LOSCreditsUnit']}" text="?_?"/></h1>
+            <a href="#">${searchResult['LOSName']}</a>
 
-                            <div><a href="vapaasana.html">Takaisin hakutuloksiin</a></div>
-                            <div class="clear"></div>
-
-                            <div class="pagetitle">
-                                <h1>Liiketalouden koulutusohjelma 210op</h1>
-                                <a href="#">Liikunnanohjauksen koulutusohjelma</a>
-                            </div>
-
-                            <div class="tabs">
-                                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="kuvaus"
-                                   class="tab current"><span>Koulutuksen kuvaus</span></a>
-                                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakeutuminen" class="tab"><span>Koulutukseen hakeutuminen</span></a>
-                                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="opiskelupaikka" class="tab"><span>Kisakallion urheilupuisto</span></a>
-                            </div>
-
-                            <jsp:include page="sections/kuvaus.jsp"/>
-
-                        </div>
-                        <div class="grid16-4">
-                            <c:set var="infobox" value="${test}" scope="request"/>
-                            <jsp:include page="sections/infobox.jsp">
-                                <jsp:param name="infobox" value="${test}"/>
-                            </jsp:include>
-                            <aside id="sidemenu">
-                              lsadöjklfsadöjklfsadöjklfsadöjklfsadöjkl
-                                <jsp:include page="sections/notelist.jsp"/>
-                                <jsp:include page="compare.jsp"/>
-                                <jsp:include page="authentication.jsp"/>
-                            </aside>
-                        </div>
-                        <div class="clear"></div>
-                    </section>
-                </section>
-                <footer></footer>
+            <div class="set-right">
+                <jsp:include page="sections/muistiJaVertailuValitsimet.jsp"/>
             </div>
+
         </div>
-    </body>
+
+
+        <jsp:include page="sections/koulutustiedonvälilehdet.jsp"/>
+
+    </div>
+    <div class="grid16-4">
+        <jsp:include page="sections/hakufaktoja.jsp"/>
+        <aside id="sidemenu">
+            <jsp:include page="sections/infobox.jsp"/>
+            <jsp:include page="compare.jsp"/>
+            <jsp:include page="authentication.jsp"/>
+        </aside>
+    </div>
+    <div class="clear"></div>
+</section>
+<footer></footer>
+</div>
+</div>
+</body>
 </html>

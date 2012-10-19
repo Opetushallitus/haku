@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -17,27 +18,28 @@
   --%>
 
 <div class="definitions">
-    <div class="set-right width-50">
+    <div class="set-right">
         <table class="set-right">
             <tr>
-                <td class="term">Edellisenä vuonna hakeneet/hyväksytyt</td>
-                <td class="description">96/24</td>
+
+                <td class="term"><spring:message code="tarjonta.definitions.edellisenävuonnahakhyv"/></td>
+                <td class="description">${searchResult['AOLastYearTotalApplicants']}/???</td>
             </tr>
             <tr>
-                <td class="term">Maksimipistemäärä</td>
-                <td class="description">8</td>
+                <td class="term"><spring:message code="tarjonta.definitions.maksimipistemäärä"/></td>
+                <td class="description">${searchResult['AOLastYearMaxScore']}</td>
             </tr>
             <tr>
-                <td class="term">Alin hyväksytty pistemäärä 2012</td>
-                <td class="description">6,25</td>
+                <td class="term"><spring:message code="tarjonta.definitions.alinhyväksyttypistemäärä"/> ????</td>
+                <td class="description">${searchResult['AOLastYearMinScore']}</td>
             </tr>
             <tr>
-                <td class="term">Alin hyväksytty pistemäärä 2011</td>
-                <td class="description">6,5</td>
+                <td class="term"><spring:message code="tarjonta.definitions.alinhyväksyttypistemäärä"/> ????</td>
+                <td class="description">???</td>
             </tr>
             <tr>
-                <td class="term">Alin hyväksytty pistemäärä 2010</td>
-                <td class="description">6,25</td>
+                <td class="term"><spring:message code="tarjonta.definitions.alinhyväksyttypistemäärä"/> ????</td>
+                <td class="description">???</td>
             </tr>
         </table>
     </div>
