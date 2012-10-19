@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags"%>
+
 <tr>
     <td class="label"><c:out value="${element.title}"/></td>
     <td>
@@ -11,7 +12,3 @@
     </td>
 </tr>
 <haku:viewChilds element="${element}"/>
-
-
-
-
