@@ -44,7 +44,7 @@ public class FormModelHelper {
         return getFirstForm().getFirstCategory();
     }
 
-    public Element getFirstCategoryTeemaChild() {
+    public Element getFirstCategoryFirstTeemaChild() {
         return getFirstCategory().getChildren().get(0).getChildren().get(0);
     }
 

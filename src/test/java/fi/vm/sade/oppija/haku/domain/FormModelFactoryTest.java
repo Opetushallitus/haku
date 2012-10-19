@@ -24,13 +24,13 @@ public class FormModelFactoryTest {
     public void testBuilderFrom() throws Exception {
         final FormModel formModel = new FormModelBuilder().withDefaults().addChildToTeema(new TextQuestion("doo", "foo")).build();
         final FormModelHelper formModelHelper = new FormModelHelper(formModel);
-        assertEquals("doo", formModelHelper.getFirstCategoryTeemaChild().getId());
+        assertEquals("doo", formModelHelper.getFirstCategoryFirstTeemaChild().getId());
     }
 
     @Test
     public void testBuilderWithCategory() throws Exception {
         final Vaihe vaihe = new Vaihe("ekaKategoria", "ensimmäinen kategoria", false);
         final FormModel formModel = new FormModelBuilder(vaihe).withDefaults().addChildToTeema(new TextQuestion("doo", "foo")).build();
-        assertEquals("doo", vaihe.getChildren().get(0).getId());
+        assertEquals("doo", new FormModelHelper(formModel).getFirstCategoryFirstTeemaChild().getId());
     }
 }

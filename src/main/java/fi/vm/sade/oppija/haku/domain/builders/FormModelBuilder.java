@@ -39,13 +39,18 @@ public class FormModelBuilder {
 
     private FormBuilder formBuilder = new FormBuilder("form", "Tässä olisi kuvaava otsikko. Tämä on kuitenkin testiformi joka on luotu " + new Date());
 
-    final Form form = formBuilder.withChild(vaihe.addChild(teema)).build();
+    Form form = createForm(vaihe);
+
+    private Form createForm(Vaihe vaihe) {
+        return formBuilder.withChild(vaihe.addChild(teema)).build();
+    }
 
     public FormModelBuilder() {
     }
 
     public FormModelBuilder(Vaihe vaihe) {
         this.vaihe = vaihe;
+        form = createForm(vaihe);
     }
 
     public FormModel build() {
