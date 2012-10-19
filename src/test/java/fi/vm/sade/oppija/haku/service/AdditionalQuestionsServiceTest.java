@@ -57,7 +57,7 @@ public class AdditionalQuestionsServiceTest {
         String teemaId = "hakutoiveetGrp";
         HakemusId hakemusId = new HakemusId("test", "yhteishaku", "hakutoiveet");
 
-        List<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakemusId);
+        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakemusId);
 
         assertNotNull(additionalQuestions);
         assertEquals(2, additionalQuestions.size());
@@ -68,7 +68,7 @@ public class AdditionalQuestionsServiceTest {
         String teemaId = "arvosanatGrp";
         HakemusId hakemusId = new HakemusId("test", "yhteishaku", "arvosanat");
 
-        List<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakemusId);
+        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakemusId);
 
         assertNotNull(additionalQuestions);
         assertEquals(4, additionalQuestions.size());

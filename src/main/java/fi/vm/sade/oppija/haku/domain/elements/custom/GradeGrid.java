@@ -49,14 +49,11 @@ public class GradeGrid extends Titled {
     private String addLanguageLabel;
 
     // subjects that are listed before languages
-    private Set<SubjectRow> subjectsBeforeLanguages;
+    private List<SubjectRow> subjectsBeforeLanguages;
     // languages
-    private Set<LanguageRow> languages;
+    private List<LanguageRow> languages;
     // subjects that are listed under the 'Add language' row
-    private Set<SubjectRow> subjectsAfterLanguages;
-    // subjects that are specific to the education that the user is applying to,
-    // not saved in the model but dynamically inserted when education is selected
-    private Set<SubjectRow> educationSpecificSubjects;
+    private List<SubjectRow> subjectsAfterLanguages;
 
     // possible language scopes (A1, B1 etc)
     private List<Option> scopeOptions;
@@ -74,9 +71,9 @@ public class GradeGrid extends Titled {
                      @JsonProperty(value = "optionalSubjectColumnTitle") String optionalSubjectColumnTitle,
                      @JsonProperty(value = "customLanguageTitle") String customLanguageTitle,
                      @JsonProperty(value = "addLanguageLabel") String addLanguageLabel,
-                     @JsonProperty(value = "subjectsBeforeLanguages") Set<SubjectRow> subjectsBeforeLanguages,
-                     @JsonProperty(value = "languages") Set<LanguageRow> languages,
-                     @JsonProperty(value = "subjectsAfterLanguages") Set<SubjectRow> subjectsAfterLanguages,
+                     @JsonProperty(value = "subjectsBeforeLanguages") List<SubjectRow> subjectsBeforeLanguages,
+                     @JsonProperty(value = "languages") List<LanguageRow> languages,
+                     @JsonProperty(value = "subjectsAfterLanguages") List<SubjectRow> subjectsAfterLanguages,
                      @JsonProperty(value = "scopeOptions") List<Option> scopeOptions,
                      @JsonProperty(value = "languageOptions") List<Option> languageOptions,
                      @JsonProperty(value = "gradeRange") List<Option> gradeRange) {
@@ -121,15 +118,15 @@ public class GradeGrid extends Titled {
         return gradeRange;
     }
 
-    public Set<SubjectRow> getSubjectsBeforeLanguages() {
+    public List<SubjectRow> getSubjectsBeforeLanguages() {
         return subjectsBeforeLanguages;
     }
 
-    public Set<LanguageRow> getLanguages() {
+    public List<LanguageRow> getLanguages() {
         return languages;
     }
 
-    public Set<SubjectRow> getSubjectsAfterLanguages() {
+    public List<SubjectRow> getSubjectsAfterLanguages() {
         return subjectsAfterLanguages;
     }
 
@@ -153,13 +150,4 @@ public class GradeGrid extends Titled {
         return addLanguageLabel;
     }
 
-    @JsonIgnore
-    public Set<SubjectRow> getEducationSpecificSubjects() {
-        return educationSpecificSubjects;
-    }
-
-    @JsonIgnore
-    public void setEducationSpecificSubjects(Set<SubjectRow> educationSpecificSubjects) {
-        this.educationSpecificSubjects = educationSpecificSubjects;
-    }
 }

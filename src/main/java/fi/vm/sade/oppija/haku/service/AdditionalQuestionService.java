@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Resolves education specific additional questions related to different themes.
@@ -21,7 +22,7 @@ public interface AdditionalQuestionService {
      * @param hakemusId hakemus id
      * @return list of questions
      */
-    public List<Question> findAdditionalQuestions(String teemaId, HakemusId hakemusId);
+    public Set<Question> findAdditionalQuestions(String teemaId, HakemusId hakemusId);
 
     /**
      * Lists additional questions in a theme based on a list of education targets.
@@ -31,7 +32,7 @@ public interface AdditionalQuestionService {
      * @param hakemusId hakemus id
      * @return list of questions
      */
-    public List<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakemusId hakemusId);
+    public Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakemusId hakemusId);
 
     /**
      * Lists all additional questions in a phase. Questions are grouped by the theme they are related to.
@@ -39,6 +40,6 @@ public interface AdditionalQuestionService {
      * @param hakemusId hakemus id
      * @return map with theme ids as keys and questions lists as values
      */
-    public Map<String, List<Question>> findAdditionalQuestionsInCategory(HakemusId hakemusId);
+    public Map<String, Set<Question>> findAdditionalQuestionsInCategory(HakemusId hakemusId);
 
 }

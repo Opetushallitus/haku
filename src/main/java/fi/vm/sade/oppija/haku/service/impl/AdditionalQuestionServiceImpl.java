@@ -33,7 +33,7 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public List<Question> findAdditionalQuestions(String teemaId, HakemusId hakemusId) {
+    public Set<Question> findAdditionalQuestions(String teemaId, HakemusId hakemusId) {
         Map<String, String> hakemusValues = hakemusService.getHakemus(hakemusId).getValues();
         List<String> hakukohdeList = new ArrayList<String>();
 
@@ -48,7 +48,7 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public List<Question> findAdditionalQuestions(String teemaId , List<String> hakukohdeIds, HakemusId hakemusId) {
+    public Set<Question> findAdditionalQuestions(String teemaId , List<String> hakukohdeIds, HakemusId hakemusId) {
         Teema teema = null;
         Form form = formService.getActiveForm(hakemusId.getApplicationPeriodId(), hakemusId.getFormId());
         Vaihe vaihe = form.getCategory(hakemusId.getCategoryId());
@@ -59,7 +59,7 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
             }
         }
 
-        List<Question> additionalQuestions = new ArrayList<Question>();
+        Set<Question> additionalQuestions = new LinkedHashSet<Question>();
 
         if (teema == null || teema.getAdditionalQuestions() == null) {
             return additionalQuestions;
@@ -76,10 +76,10 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public Map<String, List<Question>> findAdditionalQuestionsInCategory(HakemusId hakemusId) {
+    public Map<String, Set<Question>> findAdditionalQuestionsInCategory(HakemusId hakemusId) {
         Form form = formService.getActiveForm(hakemusId.getApplicationPeriodId(), hakemusId.getFormId());
         Vaihe vaihe = form.getCategory(hakemusId.getCategoryId());
-        Map<String, List<Question>> questionMap = new HashMap<String, List<Question>>();
+        Map<String, Set<Question>> questionMap = new HashMap<String, Set<Question>>();
 
         for (Element e : vaihe.getChildren()) {
             questionMap.put(e.getId(), findAdditionalQuestions(e.getId(), hakemusId));

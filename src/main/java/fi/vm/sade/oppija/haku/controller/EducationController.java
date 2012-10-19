@@ -33,6 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Controller for education institute search
@@ -79,7 +80,7 @@ public class EducationController {
         final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), vaiheId);
         List<String> hakukohdeIds = new ArrayList<String>();
         hakukohdeIds.add(hakukohdeId);
-        List<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakukohdeIds, hakemusId);
+        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakukohdeIds, hakemusId);
         modelAndView.addObject("additionalQuestions", additionalQuestions);
         modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getValues());
         return modelAndView;

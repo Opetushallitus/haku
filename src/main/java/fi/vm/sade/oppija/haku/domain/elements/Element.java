@@ -137,15 +137,12 @@ public abstract class Element {
         Element element = (Element) o;
 
         if (id != null ? !id.equals(element.id) : element.id != null) return false;
-        if (type != null ? !type.equals(element.type) : element.type != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
 }
