@@ -33,24 +33,6 @@ fieldset hr
 /***  Buttons
 **********************************/
 
-button
-{
-	cursor:pointer;
-}
-
-button.link,
-input[type="button"].link
-{
-	display:inline;
-	background:none;
-	border:none;
-	margin:0px;
-	padding:0px;
-	line-height:inherit;
-	font-size:inherit;
-	font-family:inherit;
-	color:#149dca;
-}
 
 /***  Basic button
 ************************/
@@ -63,6 +45,7 @@ button
 	padding:0px;
 	display:inline-block;
 	vertical-align:middle;
+	cursor:pointer;
 }
 
 button span
@@ -293,6 +276,39 @@ button.remove span
 
 
 
+/***  Link like button
+************************/
+
+button.link,
+input[type="button"].link
+{
+	display:inline;
+	background:none;
+	border:none;
+	margin:0px;
+	padding:0px;
+	line-height:inherit;
+	font-size:inherit;
+	font-family:inherit;
+	color:#149dca;
+}
+
+button.link span
+{
+	padding:0px;
+	margin:0px;
+	background:none;
+}
+
+button.link span span
+{
+	line-height:inherit;
+	height:auto;
+	left:0px;
+	padding:0px;
+	margin:0px;
+	background:none;
+}
 
 
 /***  Help link

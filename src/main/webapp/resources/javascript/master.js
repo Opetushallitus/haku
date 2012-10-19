@@ -111,7 +111,7 @@ var formReplacements = {
 				
 				// Get id for checkbox
 				id = formReplacements.settings.checkboxAmount;
-				
+
 				// Add pairing id to input and label
 				$(this).attr('data-js-checkbox-id', id);
 				field_id = $(this).attr('id');
@@ -148,17 +148,14 @@ var formReplacements = {
 			
 			// Set focus
 			input.focus();
-			
+			input.trigger('click');
+
 			// Change checked status
-			if (replacement.hasClass('selected'))
-			{
-				replacement.removeClass('selected');
-				input.removeAttr('checked');
-			}
-			else
-			{
+			if (input.prop('checked') == true || input.attr('checked') == true) {
 				replacement.addClass('selected');
-				input.attr('checked', 'checked');
+			}
+			else {
+				replacement.removeClass('selected');
 			}
 		}
 	},
@@ -200,7 +197,6 @@ var formReplacements = {
 			});
 		},
 		change:function(){
-		
 			// Get paired elements
 			input = $('input[data-js-radio-id="'+id+'"]');
 			replacement = $('.js-radio[data-js-radio-id="'+id+'"]');
@@ -208,17 +204,17 @@ var formReplacements = {
 			// Determine other radio fields in same set
 			name = input.attr('name');
 			other_inputs = $('input[name="'+name+'"]:not([data-js-radio-id="'+id+'"])');
-			
+
 			// Set unchecked status on other radio fields in the same set
 			other_inputs.each(function(){
 				this_id = $(this).attr('data-js-radio-id');
 				$('.js-radio[data-js-radio-id="'+this_id+'"]').removeClass('selected');
 				$(this).removeAttr('checked');
 			});
-			
+
 			// Set checked status and focus
 			replacement.addClass('selected');
-			input.attr('checked', 'checked').focus();
+			input.trigger('click').focus();
 		}
 	},
 	setTriggers:function(){
@@ -241,63 +237,6 @@ var formReplacements = {
 				formReplacements.jsRadio.change(id);
 			}
 		});
-		
-		
-		// Trigger on checkbox
-		// Click, Focus, Blur
-		$('body').on({
-			click : function(event){
-				/* event.preventDefault(); */
-				if (typeof $(this).attr('data-js-checkbox-id') != 'undefined' && !$(this).hasClass('disabled'))
-				{
-					id = parseInt($(this).attr('data-js-checkbox-id'));
-					formReplacements.jsCheckbox.change(id);
-				}
-			},
-			focusin : function(){
-				if (typeof $(this).attr('data-js-checkbox-id') != 'undefined' && !$(this).hasClass('disabled'))
-				{
-					id = parseInt($(this).attr('data-js-checkbox-id'));
-					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('focus');
-				}
-			},
-			focusout : function(){
-				if (typeof $(this).attr('data-js-checkbox-id') != 'undefined' && !$(this).hasClass('disabled'))
-				{
-					id = parseInt($(this).attr('data-js-checkbox-id'));
-					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').removeClass('focus');
-				}
-			}
-		}, 'input[type="checkbox"][data-js-checkbox-id]');
-
-		
-		// Trigger on radio
-		// Click, Focus, Blur
-		$('body').on({
-			click : function(event){
-				/* event.preventDefault(); */
-				if (typeof $(this).attr('data-js-radio-id') != 'undefined' && !$(this).hasClass('disabled'))
-				{
-					id = parseInt($(this).attr('data-js-radio-id'));
-					formReplacements.jsRadio.change(id);
-				}
-			},
-			focusin : function(){
-				if (typeof $(this).attr('data-js-radio-id') != 'undefined' && !$(this).hasClass('disabled'))
-				{
-					id = parseInt($(this).attr('data-js-radio-id'));
-					$('.js-radio[data-js-radio-id="'+id+'"]').addClass('focus');
-				}
-			},
-			focusout : function(){
-				if (typeof $(this).attr('data-js-radio-id') != 'undefined' && !$(this).hasClass('disabled'))
-				{
-					id = parseInt($(this).attr('data-js-radio-id'));
-					$('.js-radio[data-js-radio-id="'+id+'"]').removeClass('focus');
-				}
-			}
-		}, 'input[type="radio"][data-js-radio-id]');
-
 		
 		// Trigger on replacement checkbox label
 		// Click, hover
@@ -439,13 +378,74 @@ var hierarchyList = {
 	} 
 }
 
+var loginPopup = {
+	build: function() {
+		$('.open-login-popup').on('click', function(event) {
+			$('#login-popup').fadeIn(400);
+			$('#login-popup').removeClass('display-none');
+		});
 
+		$('.close-login-popup').on('click', function(event) {
+			$('#login-popup').addClass('display-none');
+			$('#login-popup').fadeOut(400);
+		});
+	}
+}
+
+var dropDownMenu = {
+	// initiate dropDownMenus
+	build: function() {
+		dropDownMenu.load();
+		dropDownMenu.setTriggers();
+	},
+	// hide (display: none) ul dropdown navigations
+	load: function() {
+		$('.navigation > li > ul').hide();
+		$('.sub-dropdown > ul').hide();
+	},
+	// set listener for dropdown navigations
+	setTriggers: function() {
+
+		$('.navigation > li').hover(navigationMouseOver, navigationMouseOut);
+		$('.sub-dropdown').hover(dropdownMouseOver, dropdownMouseOut);
+
+		// bring dropdown navigation visible on mouseover
+		function navigationMouseOver() {
+			if( $(this).children().filter('ul').length !== 0 ) {
+				$(this).children().filter('ul').fadeIn(200);
+			}
+		}
+
+		// hide dropdown navigation on mouseout
+		function navigationMouseOut() {
+			if( $(this).children().filter('ul').length !== 0 ) {
+				$(this).children().filter('ul').fadeOut(200);
+			}
+		}
+
+		//bring sub-dropdown navigation visible on mouseover
+		function dropdownMouseOver() {
+			$(this).children().filter('ul').fadeIn(200);
+		}
+
+		//hide sub-dropdown navigation on mouseout
+		function dropdownMouseOut() {
+			$(this).children().filter('ul').fadeOut(200);
+		}
+	}
+}
 
 applicationBasket.build();
 formReplacements.build();
 popupWindow.build();
 tabsMenu.build();
 hierarchyList.build();
+loginPopup.build();
+dropDownMenu.build();
+
+
+
 
 /* Master.js ends */
+
 });

@@ -400,8 +400,8 @@ var dropDownMenu = {
 	},
 	// hide (display: none) ul dropdown navigations
 	load: function() {
-		$('.navigation > li > ul').addClass('display-none');
-		$('.sub-dropdown > ul').addClass('display-none');
+		$('.navigation > li > ul').hide();
+		$('.sub-dropdown > ul').hide();
 	},
 	// set listener for dropdown navigations
 	setTriggers: function() {

@@ -62,6 +62,11 @@ b, strong, .bold
 }
 
 
+.uppercase
+{
+	text-transform:uppercase;
+}
+
 /*** Links
 ************************************************/
 
@@ -118,7 +123,9 @@ hr
 	background-color:#feba00;
 }
 
-
+.display-none {
+    display: none;
+}
 
 
 .clear

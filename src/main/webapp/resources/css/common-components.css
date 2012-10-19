@@ -1,16 +1,20 @@
 
 /* CONTENTS
     
+	Image figure, Video Figure
     Removable items
     Tab sheet
     Sidemenu
     Notelist
+    Notelist-simple
     Compare
     Infobox
     Definition list
     Hierarchy list
     Search field
-
+    Unstyled list
+    login-popup
+    Application-options
 */
 
 /*** Image figure, Video Figure
@@ -256,7 +260,7 @@ a.btn-remove.disabled {
     padding-bottom: 5px;
 }
 
-/*** Sidemenu - Notelist
+/*** Sidemenu - Notelist & Notelist-simple
 ************************************************/
 
 #notelist h2
@@ -264,11 +268,15 @@ a.btn-remove.disabled {
     background: transparent url('../img/muistilista_ikoni.png') no-repeat 95% bottom;
 }
 
+.notelist-simple-wrapper {
+    padding-bottom: 14px;
+    background:  transparent url('../img/notelist-simple-shadow.png') no-repeat bottom right;
+    margin-bottom: 20px;
+}
+
 .notelist-simple {
     padding: 10px;
-    border: 1px solid #bdbdbd;
     background: #fffaeb;
-    margin-bottom: 20px;
 }
 
 .notelist-simple li {
@@ -421,4 +429,62 @@ a.btn-remove.disabled {
 .btn-search span {
     background: none;
     display: block;
+}
+
+/*** Unstyled list
+**************************************************************/
+
+ul.unstyled
+{
+	padding:0px;
+}
+
+ul.unstyled li
+{
+	list-style:none;
+	margin:1em 0px;
+}
+
+
+/*** Login popup
+**************************************************************/
+#login-popup {
+    position: absolute;
+    background: #eee;
+    border: 4px solid #fff;
+    box-shadow: 0 0 20px 0 #333;
+    border-radius: 4px;
+     z-index: 10;
+    width: 200px;
+    height: 300px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top: 0;
+}
+
+.login-content legend {
+    padding: 10px 0;
+}
+
+.login-content form div {
+    padding: 10px 0;
+}
+
+/*** Application-options
+**************************************************************/
+.application-options {
+    padding-bottom: 20px;
+}
+
+.application-options .table-container {
+    background: #eee;
+    box-shadow: 0 0 8px 0 #888;
+    border: 3px solid white;
+    border-radius: 4px;
+
+}
+
+.application-option-info {
+    padding-bottom: 20px;s
 }
