@@ -401,13 +401,6 @@ var dropDownMenu = {
 	// hide (display: none) ul dropdown navigations
 	load: function() {
 		$('.navigation > li > ul').addClass('display-none');
-		/*
-		$('.navigation > li').each( function() {
-			if( $(this).children().filter('ul').length !== 0 ) {
-				$(this).children().filter('ul').addClass('display-none');
-			}
-		});
-*/
 		$('.sub-dropdown > ul').addClass('display-none');
 	},
 	// set listener for dropdown navigations
@@ -432,7 +425,6 @@ var dropDownMenu = {
 
 		//bring sub-dropdown navigation visible on mouseover
 		function dropdownMouseOver() {
-			console.log($(this));
 			$(this).children().filter('ul').fadeIn(200);
 		}
 
