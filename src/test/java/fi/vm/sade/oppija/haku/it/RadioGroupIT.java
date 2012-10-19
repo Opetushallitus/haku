@@ -11,8 +11,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.assertElementPresent;
-import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
+import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 /**
  * @author jukka
@@ -37,9 +36,10 @@ public class RadioGroupIT extends AbstractRemoteTest {
     public void testInputExists() throws IOException {
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);
+        String foo = getPageSource();
         List<Option> options = radio.getOptions();
         for (Option option : options) {
-            assertElementPresent(option.getId());
+            assertElementPresentByXPath("//input[@value='" + option.getValue() + "']");
         }
     }
 }

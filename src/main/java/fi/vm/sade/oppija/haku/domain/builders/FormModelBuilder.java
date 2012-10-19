@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.haku.domain.builders;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Teema;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 
 import java.util.Date;
@@ -34,10 +35,11 @@ public class FormModelBuilder {
 
     ApplicationPeriodBuilder applicationPeriodBuilder = new ApplicationPeriodBuilder("yhteishaku");
     private Vaihe vaihe = new Vaihe("kategoria", "category1", false);
+    private Teema teema = new Teema("teema", "teema1", null);
 
     private FormBuilder formBuilder = new FormBuilder("form", "Tässä olisi kuvaava otsikko. Tämä on kuitenkin testiformi joka on luotu " + new Date());
 
-    final Form form = formBuilder.withChild(vaihe).build();
+    final Form form = formBuilder.withChild(vaihe.addChild(teema)).build();
 
     public FormModelBuilder() {
     }
@@ -56,14 +58,14 @@ public class FormModelBuilder {
     }
 
 
-    public FormModelBuilder addChildToCategory(Element... element) {
+    public FormModelBuilder addChildToTeema(Element... element) {
         for (Element element1 : element) {
-            this.vaihe.addChild(element1);
+            this.teema.addChild(element1);
         }
         return this;
     }
 
     public FormModel buildDefaultFormWithFields(Element... elements) {
-        return this.withDefaults().addChildToCategory(elements).build();
+        return this.withDefaults().addChildToTeema(elements).build();
     }
 }
