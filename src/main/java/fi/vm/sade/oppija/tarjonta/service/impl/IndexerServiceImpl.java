@@ -162,7 +162,7 @@ public class IndexerServiceImpl implements IndexService {
 //        solrDocument.addField("LOSIdentifier", LOS.getId());
         solrDocument.addField("LOSDegreeTitle", LOS.getDegreeTitle().getValue());
         solrDocument.addField("LOSQualification", getValueOfExtendedString(LOS.getQualification().getTitle()));
-//        solrDocument.addField("LOSDescriptionStructureDiagram", LOS.getDescription().getStructureDiagram());
+        solrDocument.addField("LOSDescriptionStructureDiagram", LOS.getDescription().getStructureDiagram());
         solrDocument.addField("LOSDescriptionAccessToFurtherStudies", LOS.getDescription().getAccessToFurtherStudies());
 //        solrDocument.addField("LOSDescriptionEducationAndProfessionalGoals", LOS.getDescription().getEducationAndProfessionalGoals());
 //        solrDocument.addField("LOSDescriptionGeneralDescription", LOS.getDescription().getGeneralDescription());

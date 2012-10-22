@@ -37,6 +37,8 @@
         <field name="LOSCreditsUnit" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSDescriptionAccessToFurtherStudies" type="text_general" indexed="true" stored="true"
                multiValued="true"/>
+        <field name="LOSDescriptionStructureDiagram" type="text_general" indexed="true" stored="true"
+               multiValued="true"/>
         <field name="LOSQualification" type="text_general" indexed="true" stored="true" multiValued="true"/>
 
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>

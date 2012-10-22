@@ -41,6 +41,10 @@
     <p><c:out value="${searchResult['LOSDescriptionAccessToFurtherStudies']}"/></p>
 
     <legend class="h3"><spring:message code="tarjonta.opintojenrakenne"/></legend>
+    <p><c:out value="${searchResult['LOSDescriptionStructureDiagram']}"/></p>
+
+    <%-- enable when los structure is provided in a structured form --%>
+    <%--
     <div class="hierarchy-list">
         <ul class="lvl-1">
             <li class="closed" hierarchy-list-action='closed'>
@@ -77,5 +81,6 @@
 
         </ul>
     </div>
+    --%>
 
 </section>
