@@ -82,7 +82,7 @@ public class IndexerServiceImpl implements IndexService {
 
     private void addLearningOpportunityProviderType(SolrInputDocument solrDocument, LearningOpportunityProviderRefType learningOpportunityProviderType) {
         if (learningOpportunityProviderType != null) {
-            LearningOpportunityProviderType learningOpportunityProvider = (LearningOpportunityProviderType) learningOpportunityProviderType.getRef();
+            //LearningOpportunityProviderType learningOpportunityProvider = (LearningOpportunityProviderType) learningOpportunityProviderType.getRef();
             //LearningOpportunityProviderType.GeneralInformation generalInformation = learningOpportunityProvider.getGeneralInformation();
         }
     }
