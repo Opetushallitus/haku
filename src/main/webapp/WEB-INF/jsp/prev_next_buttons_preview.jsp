@@ -22,7 +22,7 @@
         <c:otherwise>
             <form method="post" action="${baseUrl}/send">
                 <div class="set-left">
-                    <button class="right" name="nav-send" type="submit" value="true"><span><span><s:message code="lomake.button.save" /></span></span></button>
+                    <button class="right" name="nav-send" type="submit" value="true"><span><span><s:message code="lomake.button.send" /></span></span></button>
                 </div>
             </form>
         </c:otherwise>
