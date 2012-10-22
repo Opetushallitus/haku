@@ -21,7 +21,6 @@ public class NavigationIT extends AbstractRemoteTest {
         beginAt("/lomake/test/yhteishaku/henkilotiedot");
         assertLinkPresent("nav-henkilotiedot");
         assertLinkPresent("nav-koulutustausta");
-        assertLinkPresent("nav-yhteenveto");
     }
 
     @Test
@@ -43,6 +42,6 @@ public class NavigationIT extends AbstractRemoteTest {
         beginAt("/lomake/test/yhteishaku/yhteenveto");
         assertElementNotPresentByXPath("//button[@name='nav-next']");
         assertElementPresentByXPath("//button[@name='nav-prev']");
-        assertElementPresentByXPath("//button[@name='nav-save']");
+        assertElementPresentByXPath("//button[@name='nav-send']");
     }
 }

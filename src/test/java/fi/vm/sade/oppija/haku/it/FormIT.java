@@ -40,6 +40,5 @@ public class FormIT extends AbstractRemoteTest {
         beginAt("/lomake/test/yhteishaku/henkilotiedot");
         assertLinkPresent("nav-henkilotiedot");
         assertLinkPresent("nav-koulutustausta");
-        assertLinkPresent("nav-yhteenveto");
     }
 }
