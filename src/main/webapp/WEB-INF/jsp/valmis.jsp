@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"  %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -54,7 +55,7 @@
                                 <c:forEach var="link" items="${form.navigation.children}" varStatus="status">
                                     <li><span><span class="index">${status.count}</span>${link.value} &gt;</span></li>
                                 </c:forEach>
-                                <li><a class="current"><span class="index"><c:out value="${fn:length(form.navigation.children) + 1}"/></span>Valmis</a></li>
+                                <li><a class="current"><span class="index"><c:out value="${fn:length(form.navigation.children) + 1}"/></span><spring:message code="lomake.valmis" /></a></li>
                             </ul>
                             <div class="clear"></div>
 						</div>
@@ -63,10 +64,10 @@
 						<div class="form" data-form-step-id="7">
 							<img src="content/Valmis-Kuva1.jpg" title="" alt="" class="set-right" />
 
-							<h3 class="h2">Kiitos, hakemuksesi on vastaanotettu</h3>
+							<h3 class="h2"><spring:message code="lomake.valmis.hakemuksesionvastaanotettu" /></h3>
 
 							<p class="application-number">
-							Hakulomakenumerosi: <span class="number"><c:out value="${applicationNumber}"/></span>
+							<spring:message code="lomake.valmis.hakulomakenumerosi" />: <span class="number"><c:out value="${applicationNumber}"/></span>
 							</p>
 
 							<c:if test="${(not empty categoryData['Sähköposti'])}">
