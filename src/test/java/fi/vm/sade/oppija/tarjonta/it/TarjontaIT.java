@@ -18,12 +18,14 @@ package fi.vm.sade.oppija.tarjonta.it;
 
 import fi.vm.sade.oppija.haku.it.TomcatContainerBase;
 import net.sourceforge.jwebunit.util.TestingEngineRegistry;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
+@Ignore
 public class TarjontaIT extends TomcatContainerBase {
 
     protected void initModel() throws IOException {
@@ -34,6 +36,7 @@ public class TarjontaIT extends TomcatContainerBase {
 
 
     @Test
+    @Ignore
     public void testTarjonta() throws Exception {
         initModel();
         setScriptingEnabled(false);
@@ -45,6 +48,7 @@ public class TarjontaIT extends TomcatContainerBase {
     }
 
     @Test
+    @Ignore
     public void testTarjontaLink() throws Exception {
         initModel();
         setScriptingEnabled(false);
