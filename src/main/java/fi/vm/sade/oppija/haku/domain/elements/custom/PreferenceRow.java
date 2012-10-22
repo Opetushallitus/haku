@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.haku.domain.elements.custom;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.vm.sade.oppija.haku.domain.questions.OptionQuestion;
 import fi.vm.sade.oppija.haku.domain.questions.Question;
 
 /**

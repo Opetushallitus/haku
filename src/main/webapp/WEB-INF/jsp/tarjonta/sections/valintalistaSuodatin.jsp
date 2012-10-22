@@ -20,7 +20,6 @@
     <div class="module">
         <legend class="h3 form-item-label"><spring:message code="tarjonta.haku.${param.name}" text="?_?"/></legend>
         <div class="field-container-select">
-
             <select name="${param.name}" id="${param.name}">
                 <option></option>
                 <c:forEach var="filter" items="${filters[param.name]}">

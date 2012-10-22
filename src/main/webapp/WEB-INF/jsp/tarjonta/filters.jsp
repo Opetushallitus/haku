@@ -23,17 +23,18 @@
         <input type="hidden" name="text" value="${parameters.text}"/>
         <fieldset class="form-item">
             <div class="form-item-content">
-
                 <div class="field-container-checkbox">
-                    <input type="checkbox" name="LOSType" class="suodatin" value="DegreeProgramme" id="LOSType"/>
+                    <input type="checkbox" name="LOSType" class="suodatin" value="DegreeProgramme"
+                           id="LOSType" ${ (param['LOSType'] eq 'DegreeProgramme') ? "checked='checked'" : "" }/>
                     <label for="LOSType"><spring:message code="tarjonta.haku.näytävaintutkintoonjohtavakoulutus"
                                                          text="?_?"/></label>
                 </div>
 
                 <div class="field-container-checkbox">
-                    <input type="checkbox" class="suodatin" value="juurinyt" id="juurinyt"/>
-                    <label for="juurinyt"><spring:message code="tarjonta.haku.hakumeneilläänjuurinyt"
-                                                          text="?_?"/></label>
+                    <input type="checkbox" class="suodatin" value="true" name="hakumeneillaan"
+                           id="hakumeneillaan" ${ (param['hakumeneillaan'] eq 'true') ? "checked='checked'" : "" }/>
+                    <label for="hakumeneillaan"><spring:message code="tarjonta.haku.hakumeneilläänjuurinyt"
+                                                                text="?_?"/></label>
                 </div>
             </div>
             <div class="clear"></div>

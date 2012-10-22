@@ -20,6 +20,7 @@ import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.tarjonta.converter.ArrayParametersToMap;
 import fi.vm.sade.oppija.tarjonta.domain.*;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.plexus.util.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +53,7 @@ public class SearchController {
     public static final String FILTERS = "filters";
     public static final String TUNNISTE = "AOId";
     public static final String KOULUTUSTYYPPI = "koulutustyyppi";
-    public static final String KOULUTUSKIELI = "koulutuksenkieli";
+    public static final String KOULUTUKSENKIELI = "koulutuksenkieli";
     public static final String OPETUSMUOTO = "opetusmuoto";
     public static final String OPPILAITOSTYYPPI = "oppilaitostyyppi";
     public static final String SEARCH_PARAMETER = "text";
@@ -81,13 +82,13 @@ public class SearchController {
 
     @ModelAttribute(FILTERS)
     public Map<String, Map<String, String>> getFilters(@RequestParam(value = KOULUTUSTYYPPI, required = false) String[] koulutustyyppi,
-                                                       @RequestParam(value = KOULUTUSKIELI, required = false) String[] koulutuskieli,
+                                                       @RequestParam(value = KOULUTUKSENKIELI, required = false) String[] koulutuskieli,
                                                        @RequestParam(value = OPETUSMUOTO, required = false) String[] opetusmuoto,
                                                        @RequestParam(value = OPPILAITOSTYYPPI, required = false) String[] oppilaitostyyppi) {
         Map<String, Map<String, String>> filters = new HashMap<String, Map<String, String>>();
         arrayParametersToMap = new ArrayParametersToMap();
         filters.put(KOULUTUSTYYPPI, arrayParametersToMap.convert(koulutustyyppi));
-        filters.put(KOULUTUSKIELI, arrayParametersToMap.convert(koulutuskieli));
+        filters.put(KOULUTUKSENKIELI, arrayParametersToMap.convert(koulutuskieli));
         filters.put(OPETUSMUOTO, arrayParametersToMap.convert(opetusmuoto));
         filters.put(OPPILAITOSTYYPPI, arrayParametersToMap.convert(oppilaitostyyppi));
         return filters;
@@ -102,12 +103,12 @@ public class SearchController {
         HashSet<String> fields = new HashSet<String>();
         fields.add("id");
         fields.add("name");
-        filters.put(SEARCH_PARAMETER, arrayParametersToMap.convert(new String[]{text}));
+        filters.put(SEARCH_PARAMETER, arrayParametersToMap.convert(new String[]{StringUtils.trimToNull(text)}));
         return new SearchParameters(text, fields, sortParameters, pagingParameters, filters);
     }
 
     @RequestMapping(value = "/tarjontatiedot", method = RequestMethod.GET, produces = "text/html; charset=UTF-8")
-    public ModelAndView listTarjontatiedot(@ModelAttribute(MODEL_NAME_SEARCH_PARAMETERS) SearchParameters searchParameters, @RequestParam(value = "update", defaultValue = "false") boolean update) {
+    public ModelAndView listTarjontatiedot(@ModelAttribute(MODEL_NAME_SEARCH_PARAMETERS) SearchParameters searchParameters) {
         SearchResult searchResult = service.search(searchParameters);
         ModelAndView modelAndView = new ModelAndView(VIEW_NAME_ITEMS);
         modelAndView.addObject(MODEL_NAME, searchResult);
@@ -138,6 +139,7 @@ public class SearchController {
         return modelAndView;
     }
 
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable.class)
     public ModelAndView exceptions(Throwable t) {
         ModelAndView modelAndView = new ModelAndView(ERROR_SERVERERROR);

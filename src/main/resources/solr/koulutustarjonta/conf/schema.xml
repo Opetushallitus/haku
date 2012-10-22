@@ -28,7 +28,7 @@
         <field name="AOStartingQuota" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="AOEligibilityRequirements" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="LOIFormOfTeaching" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOIPrerequisite" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOIPrerequisite" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="LOILanguagesOfInstruction" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSName" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSDegreeTitle" type="text_general" indexed="true" stored="true" multiValued="true"/>
@@ -49,9 +49,9 @@
 
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
         <!--  hakusuodattimet kts. kopiointi alempana -->
-        <field name="pohjakoulutus" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="koulutuksenkieli" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="opetusmuoto" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="pohjakoulutus" type="string" indexed="true" stored="true" multiValued="true"/>
+        <field name="koulutuksenkieli" type="string" indexed="true" stored="true" multiValued="true"/>
+        <field name="opetusmuoto" type="string" indexed="true" stored="true" multiValued="true"/>
     </fields>
 
 
