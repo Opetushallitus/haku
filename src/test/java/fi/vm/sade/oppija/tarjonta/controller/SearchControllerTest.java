@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
+
 package fi.vm.sade.oppija.tarjonta.controller;
 
 import fi.vm.sade.oppija.tarjonta.domain.*;
@@ -5,6 +21,7 @@ import fi.vm.sade.oppija.tarjonta.domain.exception.SearchException;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,17 +49,20 @@ public class SearchControllerTest {
         SortParameters sortParameters = searchController.getSortParameters(SORT_ORDER, SORT_FIELD);
         assertEquals(SORT_ORDER, sortParameters.getSortOrder());
     }
+
     @Test
     public void testGetSortParametersField() throws Exception {
         SortParameters sortParameters = searchController.getSortParameters(SORT_ORDER, SORT_FIELD);
         assertEquals(SORT_FIELD, sortParameters.getSortField());
     }
+
     @Test
     public void testGetPagingParametersStart() throws Exception {
         PagingParameters pagingParameters = searchController.getPagingParameters(1, 10);
         assertEquals(new Integer(1), pagingParameters.getStart());
     }
-     @Test
+
+    @Test
     public void testGetPagingParametersCount() throws Exception {
         PagingParameters pagingParameters = searchController.getPagingParameters(1, 10);
         assertEquals(new Integer(10), pagingParameters.getRows());
@@ -60,6 +80,16 @@ public class SearchControllerTest {
         assertTrue(searchParameters.getFields().contains("id"));
         assertTrue(searchParameters.getFields().contains("name"));
     }
+
+    @Test
+    public void testExceptions() throws Exception {
+        String expected = "msg";
+        Throwable t = new Throwable(expected);
+        ModelAndView mav = searchController.exceptions(t);
+        Object actual = mav.getModel().get("message");
+        assertEquals(expected, actual);
+    }
+
 
     private SearchService createMockService() {
         return new SearchService() {
