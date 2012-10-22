@@ -35,11 +35,4 @@ public abstract class Validator {
 
     public abstract ValidationResult validate(final Map<String, String> values);
 
-    @Override
-    public String toString() {
-        return "Validator{" +
-                "fieldName='" + fieldName + '\'' +
-                ", errorMessage='" + errorMessage + '\'' +
-                '}';
-    }
 }
