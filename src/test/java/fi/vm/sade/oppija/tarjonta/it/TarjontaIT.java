@@ -16,44 +16,24 @@
 
 package fi.vm.sade.oppija.tarjonta.it;
 
-import fi.vm.sade.oppija.haku.it.TomcatContainerBase;
-import net.sourceforge.jwebunit.util.TestingEngineRegistry;
-import org.junit.Ignore;
+import fi.vm.sade.oppija.haku.selenium.AbstractSeleniumBase;
+import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
+public class TarjontaIT extends AbstractSeleniumBase {
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.*;
-
-@Ignore
-public class TarjontaIT extends TomcatContainerBase {
-
-    protected void initModel() throws IOException {
-        setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
-        setBaseUrl(getBaseUrl());
-        beginAt("/index/update");
+    @Before
+    public void setUp() throws Exception {
+        seleniumHelper.getDriver().get(getBaseUrl() + "index/update");
     }
 
 
     @Test
-    @Ignore
     public void testTarjonta() throws Exception {
-        initModel();
-        setScriptingEnabled(false);
-        beginAt("/tarjontatiedot");
-        setTextField("text", "perustutkinto");
-        dumpHtml();
-        clickButton("btn-search");
-        assertLinkPresentWithExactText("sivu 1");
+        seleniumHelper.getDriver().get(getBaseUrl() + "/tarjontatiedot");
+        seleniumHelper.getSelenium().type("text", "perustutkinto");
+        seleniumHelper.getSelenium().click("btn-search");
+        seleniumHelper.getSelenium().isElementPresent("sivu 1");
     }
 
-    @Test
-    @Ignore
-    public void testTarjontaLink() throws Exception {
-        initModel();
-        setScriptingEnabled(false);
-        beginAt("/tarjontatiedot/1");
-        dumpHtml();
-        assertElementPresent("site");
-    }
 }
