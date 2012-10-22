@@ -142,6 +142,18 @@ public class FormController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/{applicationPeriodId}/{formId}/send", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
+    public ModelAndView sendForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
+        LOGGER.debug("sendForm {}, {}", new Object[]{applicationPeriodId, formId});
+        ModelAndView modelAndView = new ModelAndView("valmis");
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        modelAndView.addObject("form", activeForm);
+        final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), null);
+        modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getValues());
+        modelAndView.addObject("hakemusId", hakemusId);
+        return modelAndView;
+    }
+
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)

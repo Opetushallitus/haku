@@ -19,6 +19,13 @@
                 </div>
             </form>
         </c:when>
+        <c:otherwise>
+            <form method="post" action="${baseUrl}/send">
+                <div class="set-left">
+                    <button class="right" name="nav-send" type="submit" value="true"><span><span><s:message code="lomake.button.save" /></span></span></button>
+                </div>
+            </form>
+        </c:otherwise>
     </c:choose>
 </div>
 <div class="clear"></div>

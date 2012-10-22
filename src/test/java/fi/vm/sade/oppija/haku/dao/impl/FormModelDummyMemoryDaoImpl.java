@@ -39,7 +39,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         Vaihe arvosanat = new Vaihe("arvosanat", "Arvosanat", false);
         Vaihe lisätiedot = new Vaihe("lisatiedot", "Lisätiedot", false);
         Vaihe esikatselu = new Vaihe("esikatselu", "Esikatselu", true);
-        Vaihe yhteenveto = new Vaihe("yhteenveto", "Yhteenveto", false);
 
         Form form = new Form(formId, "Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013");
         form.addChild(henkilötiedot);
@@ -48,7 +47,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         form.addChild(arvosanat);
         form.addChild(lisätiedot);
         form.addChild(esikatselu);
-        form.addChild(yhteenveto);
         form.init();
 
         applicationPeriod.addForm(form);
@@ -104,7 +102,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         hakutoiveet.addChild(hakutoiveetRyhmä);
         arvosanat.addChild(arvosanatRyhmä);
         lisätiedot.addChild(lisätiedotRyhmä);
-        yhteenveto.addChild(yhteenvetoRyhmä);
 
         DropdownSelect äidinkieli = new DropdownSelect("äidinkieli", "Äidinkieli");
         äidinkieli.addOption("suomi", "Suomi", "Suomi");

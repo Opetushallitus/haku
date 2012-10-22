@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,6 +36,7 @@
                             <span class="index">${status.count}</span>${link.value} <c:if
                                 test="${not status.last}">&gt;</c:if></a></li>
                     </c:forEach>
+                    <li><span><span class="index"><c:out value="${fn:length(form.navigation.children) + 1}"/></span>Valmis</span></li>
                 </ul>
                 <div class="clear"></div>
             </div>
