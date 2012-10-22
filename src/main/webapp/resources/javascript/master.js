@@ -1,7 +1,6 @@
 $(document).ready(function(){
 /* Master.js begins */
 
-
 var applicationBasket = {
 	build:function(){
 		applicationBasket.setTriggers();
@@ -100,7 +99,8 @@ var formReplacements = {
 		// Generate replacements, set triggers
 		formReplacements.jsCheckbox.generate();
 		formReplacements.jsRadio.generate();
-		formReplacements.setTriggers();
+		formReplacements.setDefaultTriggers();
+		formReplacements.setApplicationSpecificTriggers();
 	},
 	jsCheckbox : {
 		generate:function(){
@@ -135,7 +135,6 @@ var formReplacements = {
 					$('.js-checkbox[data-js-checkbox-id="'+id+'"]').addClass('disabled');
 				}
 
-				
 				// Set id for next checkbox
 				formReplacements.settings.checkboxAmount = id+1;
 			});
@@ -145,8 +144,8 @@ var formReplacements = {
 			// Get paired elements
 			input = $('input[data-js-checkbox-id="'+id+'"]');
 			replacement = $('.js-checkbox[data-js-checkbox-id="'+id+'"]');
-			
-			// Set focus
+            
+			// Set focus and dispatch click event
 			input.focus();
 			input.trigger('click');
 
@@ -157,6 +156,7 @@ var formReplacements = {
 			else {
 				replacement.removeClass('selected');
 			}
+
 		}
 	},
 	jsRadio : {
@@ -217,10 +217,11 @@ var formReplacements = {
 			input.trigger('click').focus();
 		}
 	},
-	setTriggers:function(){
+	setDefaultTriggers:function(){
 		// Trigger on replacement checkbox 
 		$('body').on('click', '.js-checkbox', function(event){
 			event.preventDefault();
+
 			if (typeof $(this).attr('data-js-checkbox-id') != 'undefined' && !$(this).hasClass('disabled'))
 			{
 				id = parseInt($(this).attr('data-js-checkbox-id'));
@@ -282,6 +283,14 @@ var formReplacements = {
 				}
 			}
 		}, 'label[data-js-radio-id]');
+	},
+	setApplicationSpecificTriggers: function() {
+
+		//submit searchresultfilter on checkbox click
+		$('body').on('click', '#hakusuodattimet .js-checkbox', function(event) {
+			event.preventDefault();
+			$('#hakusuodattimet').submit();
+		});
 	}
 }
 
