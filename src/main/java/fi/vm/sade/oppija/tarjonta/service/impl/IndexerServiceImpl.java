@@ -51,6 +51,7 @@ public class IndexerServiceImpl implements IndexService {
             httpSolrServer.add(documents);
             httpSolrServer.commit();
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -166,11 +167,21 @@ public class IndexerServiceImpl implements IndexService {
         solrDocument.addField("LOSDescriptionAccessToFurtherStudies", LOS.getDescription().getAccessToFurtherStudies());
 //        solrDocument.addField("LOSDescriptionEducationAndProfessionalGoals", LOS.getDescription().getEducationAndProfessionalGoals());
 //        solrDocument.addField("LOSDescriptionGeneralDescription", LOS.getDescription().getGeneralDescription());
-//        LearningOpportunitySpecificationType.Classification classification = LOS.getClassification();
-//        List<LearningClassificationCodeType> classificationCode = classification.getClassificationCode();
-//        for (LearningClassificationCodeType learningClassificationCodeType : classificationCode) {
-//            System.out.println(getValueOfExtendedString(learningClassificationCodeType.getLabel()));
-//        }
+
+        LearningOpportunitySpecificationType.Classification classification = LOS.getClassification();
+        List<LearningClassificationCodeType> classificationCode = classification.getClassificationCode();
+        for (LearningClassificationCodeType learningClassificationCodeType : classificationCode) {
+
+
+            if (learningClassificationCodeType.getCategory() != null &&
+                    learningClassificationCodeType.getLabel() != null &&
+                    learningClassificationCodeType.getLabel().size() > 0) {
+                System.out.println(getValueOfExtendedString(learningClassificationCodeType.getLabel()));
+                solrDocument.addField("LOS" + learningClassificationCodeType.getCategory().value(),
+                        getValueOfExtendedString(learningClassificationCodeType.getLabel()));
+            }
+        }
+
     }
 
 

@@ -41,6 +41,10 @@
                multiValued="true"/>
         <field name="LOSQualification" type="text_general" indexed="true" stored="true" multiValued="true"/>
 
+        <field name="LOSEducationDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOSEducationDegree" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOSStydyDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
+
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
         <!--  hakusuodattimet kts. kopiointi alempana -->
         <field name="pohjakoulutus" type="text_general" indexed="true" stored="true" multiValued="true"/>
