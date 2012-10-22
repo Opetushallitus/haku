@@ -45,5 +45,12 @@ public class TarjontaIT extends AbstractSeleniumBase {
         assertTrue(elementPresent);
     }
 
+    @Test
+    public void testPuuttuvaKuvaus() throws Exception {
+        seleniumHelper.getDriver().get(getBaseUrl() + "/tarjontatiedot/0");
+        boolean elementPresent = seleniumHelper.getSelenium().isTextPresent("Pyytämääsi resurssia ei löytynyt");
+        assertTrue(elementPresent);
+    }
+
 
 }
