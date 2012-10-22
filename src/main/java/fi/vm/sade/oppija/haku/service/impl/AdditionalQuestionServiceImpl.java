@@ -81,8 +81,10 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
         Vaihe vaihe = form.getCategory(hakemusId.getCategoryId());
         Map<String, Set<Question>> questionMap = new HashMap<String, Set<Question>>();
 
-        for (Element e : vaihe.getChildren()) {
-            questionMap.put(e.getId(), findAdditionalQuestions(e.getId(), hakemusId));
+        if (vaihe != null) {
+            for (Element e : vaihe.getChildren()) {
+                questionMap.put(e.getId(), findAdditionalQuestions(e.getId(), hakemusId));
+            }
         }
         return questionMap;
     }

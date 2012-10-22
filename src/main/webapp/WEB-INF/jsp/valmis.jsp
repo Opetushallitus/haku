@@ -8,7 +8,7 @@
         <meta charset="utf-8"/>
         <link rel="stylesheet" href="/haku/resources/css/screen.css" type="text/css">
         <link rel="stylesheet" href="/haku/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
-        <title>${form.title} - ${category.title}</title>
+        <title>${form.title}</title>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
         <script src="/haku/resources/javascript/rules.js"></script>
@@ -66,12 +66,14 @@
 							<h3 class="h2">Kiitos, hakemuksesi on vastaanotettu</h3>
 
 							<p class="application-number">
-							Hakulomakenumerosi: <span class="number">1234567</span>
+							Hakulomakenumerosi: <span class="number"><c:out value="${applicationNumber}"/></span>
 							</p>
 
-							<p>
-							Sinulle on lähetetty vahvistus sähköpostiisi: kartsa@palvelu.com
-							</p>
+							<c:if test="${(not empty categoryData['Sähköposti'])}">
+                                <p>
+                                Sinulle on lähetetty vahvistus sähköpostiisi: <c:out value="${categoryData['Sähköposti']}"/>
+                                </p>
+							</c:if>
 
 							<p>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nisi nisl, dignissim id molestie non, vehicula eu risus. Donec eu magna neque, eget sodales lacus. Vivamus eget enim justo, sed consectetur enim. Curabitur nisl erat, egestas ut facilisis vel, interdum ac risus.

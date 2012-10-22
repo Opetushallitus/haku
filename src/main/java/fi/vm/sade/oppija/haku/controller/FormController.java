@@ -36,6 +36,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.Map;
 
 
@@ -145,12 +146,24 @@ public class FormController {
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/send", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView sendForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
         LOGGER.debug("sendForm {}, {}", new Object[]{applicationPeriodId, formId});
+        //TODO: send application
+        ModelAndView modelAndView = new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/valmis");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/{applicationPeriodId}/{formId}/valmis", method = RequestMethod.GET)
+    public ModelAndView getComplete(@PathVariable final String applicationPeriodId,
+                                    @PathVariable final String formId) {
+
+        LOGGER.debug("sendForm {}, {}", new Object[]{applicationPeriodId, formId});
         ModelAndView modelAndView = new ModelAndView("valmis");
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         modelAndView.addObject("form", activeForm);
         final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), null);
         modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getValues());
         modelAndView.addObject("hakemusId", hakemusId);
+        //TODO: implement application number
+        modelAndView.addObject("applicationNumber", new Date().getTime());
         return modelAndView;
     }
 
