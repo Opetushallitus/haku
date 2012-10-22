@@ -39,6 +39,8 @@
                multiValued="true"/>
         <field name="LOSDescriptionStructureDiagram" type="text_general" indexed="true" stored="true"
                multiValued="true"/>
+        <field name="LOSDescriptionEducationAndProfessionalGoals" type="text_general" indexed="true" stored="true"
+               multiValued="true"/>
         <field name="LOSQualification" type="text_general" indexed="true" stored="true" multiValued="true"/>
 
         <field name="LOSEducationDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>

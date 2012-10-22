@@ -105,7 +105,7 @@ public class IndexerServiceImpl implements IndexService {
 //            solrDocument.addField("AOAttachmentReturnDueDate", attachment.getReturn().getDueDate());
 //            solrDocument.addField("AOAttachmentReturnTo", attachment.getReturn().getTo());
 //        }
-        //List<SelectionCriterionsType.EntranceExaminations.Examination> examinations = applicationOptionType.getSelectionCriterions().getEntranceExaminations().getExamination();
+//        List<SelectionCriterionsType.EntranceExaminations.Examination> examinations = applicationOptionType.getSelectionCriterions().getEntranceExaminations().getExamination();
 //        for (SelectionCriterionsType.EntranceExaminations.Examination examination : examinations) {
 //            solrDocument.addField("AOExaminationDescription", getValueOfExtendedString(examination.getDescription()));
 //            solrDocument.addField("AOExaminationTitle", getValueOfExtendedString(examination.getExaminationType().getTitle()));
@@ -165,7 +165,7 @@ public class IndexerServiceImpl implements IndexService {
         solrDocument.addField("LOSQualification", getValueOfExtendedString(LOS.getQualification().getTitle()));
         solrDocument.addField("LOSDescriptionStructureDiagram", LOS.getDescription().getStructureDiagram());
         solrDocument.addField("LOSDescriptionAccessToFurtherStudies", LOS.getDescription().getAccessToFurtherStudies());
-//        solrDocument.addField("LOSDescriptionEducationAndProfessionalGoals", LOS.getDescription().getEducationAndProfessionalGoals());
+        solrDocument.addField("LOSDescriptionEducationAndProfessionalGoals", LOS.getDescription().getEducationAndProfessionalGoals());
 //        solrDocument.addField("LOSDescriptionGeneralDescription", LOS.getDescription().getGeneralDescription());
 
         LearningOpportunitySpecificationType.Classification classification = LOS.getClassification();
