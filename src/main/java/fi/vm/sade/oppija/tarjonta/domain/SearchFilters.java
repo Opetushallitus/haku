@@ -50,7 +50,6 @@ public class SearchFilters {
             List<String> value = populateFilter(filterField);
             filters.put(filterField, value);
         }
-        System.out.println("populate: " + filters);
         return Collections.unmodifiableMap(filters);
     }
 
@@ -60,7 +59,6 @@ public class SearchFilters {
         for (String name : values) {
             filterValues.add(name);
         }
-        System.out.println("populate: " + filterValues);
         return Collections.unmodifiableList(filterValues);
     }
 }
