@@ -63,9 +63,9 @@ public class ShowChildsIT extends AbstractSeleniumBase {
         final String startUrl = formModelHelper.getStartUrl();
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + "/" + startUrl);
-        driver.findElement(By.id("checkbox_value"));
+        driver.findElement(By.name("checkbox_value"));
         driver.findElement(By.id("checkbox_value2"));
-        seleniumHelper.getSelenium().click("checkbox_value");
+        driver.findElement(By.name("checkbox_value")).click();
         seleniumHelper.getSelenium().click("nav-save");
         final WebElement alikysymys1 = driver.findElement(By.id("alikysymys1"));
         assertNotNull(alikysymys1);
