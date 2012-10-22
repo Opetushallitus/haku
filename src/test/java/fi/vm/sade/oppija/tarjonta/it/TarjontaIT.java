@@ -20,20 +20,30 @@ import fi.vm.sade.oppija.haku.selenium.AbstractSeleniumBase;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+
 public class TarjontaIT extends AbstractSeleniumBase {
 
     @Before
     public void setUp() throws Exception {
-        seleniumHelper.getDriver().get(getBaseUrl() + "index/update");
+        seleniumHelper.getDriver().get(getBaseUrl() + "/index/update");
     }
-
 
     @Test
     public void testTarjonta() throws Exception {
         seleniumHelper.getDriver().get(getBaseUrl() + "/tarjontatiedot");
         seleniumHelper.getSelenium().type("text", "perustutkinto");
         seleniumHelper.getSelenium().click("btn-search");
-        seleniumHelper.getSelenium().isElementPresent("sivu 1");
+        boolean elementPresent = seleniumHelper.getSelenium().isTextPresent("Koulutuksia (1 kpl)");
+        assertTrue(elementPresent);
     }
+
+    @Test
+    public void testTarjontaKuvaus() throws Exception {
+        seleniumHelper.getDriver().get(getBaseUrl() + "/tarjontatiedot/776");
+        boolean elementPresent = seleniumHelper.getSelenium().isTextPresent("Ensihoidon koulutusohjelma");
+        assertTrue(elementPresent);
+    }
+
 
 }
