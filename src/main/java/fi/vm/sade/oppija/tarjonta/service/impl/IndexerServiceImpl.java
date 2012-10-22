@@ -51,7 +51,6 @@ public class IndexerServiceImpl implements IndexService {
             httpSolrServer.add(documents);
             httpSolrServer.commit();
         } catch (Exception e) {
-            System.out.println(e);
             return false;
         }
         return true;
@@ -84,7 +83,7 @@ public class IndexerServiceImpl implements IndexService {
     private void addLearningOpportunityProviderType(SolrInputDocument solrDocument, LearningOpportunityProviderRefType learningOpportunityProviderType) {
         if (learningOpportunityProviderType != null) {
             LearningOpportunityProviderType learningOpportunityProvider = (LearningOpportunityProviderType) learningOpportunityProviderType.getRef();
-            LearningOpportunityProviderType.GeneralInformation generalInformation = learningOpportunityProvider.getGeneralInformation();
+            //LearningOpportunityProviderType.GeneralInformation generalInformation = learningOpportunityProvider.getGeneralInformation();
         }
     }
 
@@ -105,7 +104,7 @@ public class IndexerServiceImpl implements IndexService {
 //            solrDocument.addField("AOAttachmentReturnDueDate", attachment.getReturn().getDueDate());
 //            solrDocument.addField("AOAttachmentReturnTo", attachment.getReturn().getTo());
 //        }
-        List<SelectionCriterionsType.EntranceExaminations.Examination> examinations = applicationOptionType.getSelectionCriterions().getEntranceExaminations().getExamination();
+        //List<SelectionCriterionsType.EntranceExaminations.Examination> examinations = applicationOptionType.getSelectionCriterions().getEntranceExaminations().getExamination();
 //        for (SelectionCriterionsType.EntranceExaminations.Examination examination : examinations) {
 //            solrDocument.addField("AOExaminationDescription", getValueOfExtendedString(examination.getDescription()));
 //            solrDocument.addField("AOExaminationTitle", getValueOfExtendedString(examination.getExaminationType().getTitle()));
