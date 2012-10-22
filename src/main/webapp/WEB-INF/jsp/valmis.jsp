@@ -72,7 +72,7 @@
 
 							<c:if test="${(not empty categoryData['Sähköposti'])}">
                                 <p>
-                                Sinulle on lähetetty vahvistus sähköpostiisi: <c:out value="${categoryData['Sähköposti']}"/>
+                                <spring:message code="lomake.valmis.sinulleonlahetettyvahvistussahkopostiisi" />: <c:out value="${categoryData['Sähköposti']}"/>
                                 </p>
 							</c:if>
 
@@ -80,8 +80,8 @@
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nisi nisl, dignissim id molestie non, vehicula eu risus. Donec eu magna neque, eget sodales lacus. Vivamus eget enim justo, sed consectetur enim. Curabitur nisl erat, egestas ut facilisis vel, interdum ac risus.
 							</p>
 
-							<button class="print"><span><span>Tulosta</span></span></button>
-							<button class="pdf"><span><span>Tallenna PDF</span></span></button>
+							<button class="print"><span><span><spring:message code="lomake.valmis.button.tulosta" /></span></span></button>
+							<button class="pdf"><span><span><spring:message code="lomake.valmis.button.tallennapdf" /></span></span></button>
 
 
 							<div class="clear"></div>
