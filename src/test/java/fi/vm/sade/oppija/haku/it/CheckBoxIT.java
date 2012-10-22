@@ -38,7 +38,6 @@ public class CheckBoxIT extends AbstractRemoteTest {
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);
         List<Option> options = checkBox.getOptions();
-        dumpHtml();
         for (Option option : options) {
             assertElementPresent(option.getId());
         }
