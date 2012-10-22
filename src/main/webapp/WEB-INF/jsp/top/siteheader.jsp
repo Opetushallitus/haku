@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="s"  %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"  %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -50,8 +50,8 @@
                 <li><a href="?lang=fi">Suomeksi</a></li>
                 <li><a href="?lang=sv">På svenska</a></li>
                 <li><a href="?lang=en">in English</a></li>
-                <li><a href="#"><s:message code="oppija.header.label.mobile" /></a></li>
-                <li><a href="#"><s:message code="oppija.header.label.textversion" /></a></li>
+                <li><a href="#"><spring:message code="oppija.header.label.mobile" /></a></li>
+                <li><a href="#"><spring:message code="oppija.header.label.textversion" /></a></li>
             </ul>
 
             <div class="clear"></div>
