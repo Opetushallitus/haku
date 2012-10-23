@@ -62,7 +62,7 @@
 						<div class="clear"></div>
 
 						<div class="form" data-form-step-id="7">
-							<img src="content/Valmis-Kuva1.jpg" title="" alt="" class="set-right" />
+							<img src="/haku/static-html/content/Valmis-Kuva1.jpg" title="" alt="" class="set-right" />
 
 							<h3 class="h2"><spring:message code="lomake.valmis.hakemuksesionvastaanotettu" /></h3>
 
@@ -87,7 +87,7 @@
 							<div class="clear"></div>
 							<hr/>
 
-							<img src="content/Valmis-Kuva2.jpg" title="" alt="" class="set-left" />
+							<img src="/haku/static-html/content/Valmis-Kuva2.jpg" title="" alt="" class="set-left" />
 
 							<h3>Muutoksen tekeminen</h3>
 
@@ -101,7 +101,7 @@
 							<div class="clear"></div>
 							<hr/>
 
-							<img src="content/Valmis-Kuva3.jpg" title="" alt="" class="set-right" />
+							<img src="/haku/static-html/content/Valmis-Kuva3.jpg" title="" alt="" class="set-right" />
 
 							<h3>Palautekysely</h3>
 
