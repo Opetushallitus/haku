@@ -27,11 +27,11 @@
         <li class="emphasized"><c:out value="${searchResult['']}???"/></li>
         <li class="set-right"><spring:message code="tarjonta.hakufaktoja.hakuaikaalkaa"/> ????</li>
     </ul>
-    <form action="/haku/lomake/${searchResult['path']}" method="post">
+    <form action="/haku/lomake/${searchResult['formPath']}" method="post">
         <input type="hidden" name="preference1-Opetuspiste" value="Koulu7"/>
         <input type="hidden" name="preference1-Opetuspiste-id" value="7"/>
         <input type="hidden" name="preference1-Koulutus" value="Hakukohde_7_0"/>
-          <input type="hidden" name="preference1-Koulutus-id" value="7_0"/>
+        <input type="hidden" name="preference1-Koulutus-id" value="7_0"/>
         <input type="hidden" name="enabling-submit"/>
         <button type="submit">
             <span><span><spring:message code="tarjonta.haekoulutukseen"/></span></span>

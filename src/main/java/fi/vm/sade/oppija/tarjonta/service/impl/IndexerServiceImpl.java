@@ -79,7 +79,7 @@ public class IndexerServiceImpl implements IndexService {
                 addLearningOpportunitySpecification(solrDocument, ref1);
                 addLearningOpportunityInstance(solrDocument, ref);
             }
-            solrDocument.addField("path", "test/yhteishaku");
+            solrDocument.addField("formPath", "test/yhteishaku");
             solrDocuments.add(solrDocument);
         }
 

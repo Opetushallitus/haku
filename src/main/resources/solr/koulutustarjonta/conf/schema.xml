@@ -61,7 +61,7 @@
         <field name="AOExaminationLocation" type="text_general" indexed="true" stored="true" multiValued="true"/>
 
 
-        <field name="path" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="formPath" type="string" indexed="true" stored="true" multiValued="false"/>
 
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
         <!--  hakusuodattimet kts. kopiointi alempana -->
