@@ -79,7 +79,10 @@ public class IndexerServiceImpl implements IndexService {
                 addLearningOpportunitySpecification(solrDocument, ref1);
                 addLearningOpportunityInstance(solrDocument, ref);
             }
+            // tmp dev fields
             solrDocument.addField("formPath", "test/yhteishaku");
+            solrDocument.addField("tmpAOApplyAdditionalInfo", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tortor nisi, egestas id pellentesque ac, scelerisque in tortor. Morbi accumsan libero erat. Quisque nisl erat, fringilla quis ullamcorper vel, viverra eu leo. Nulla facilisi. Fusce a leo id tellus molestie imperdiet vel ut augue. Suspendisse interdum malesuada iaculis. Sed et urna ante, id varius ipsum. Fusce imperdiet sapien convallis purus mattis euismod. Quisque et metus sit amet nulla pharetra consequat at vel tellus. Proin vulputate eros at quam rutrum id dignissim magna dictum. ");
+            solrDocument.addField("tmpLOSEducationField", "Opintojesi aikana erikoistut joko markkinointiin, laskentaan ja rahoitukseen tai työyhteisön kehittämiseen.");
             solrDocuments.add(solrDocument);
         }
 

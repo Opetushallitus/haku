@@ -24,14 +24,14 @@
     <p><c:out value="${searchResult['LOSDescriptionEducationAndProfessionalGoals']}" /></p>
 
     <legend class="h3">Suuntautumisvaihtoehdon valinta</legend>
-    <p>Opintojesi aikana erikoistut joko markkinointiin, laskentaan ja rahoitukseen tai työyhteisön
-        kehittämiseen.</p>
+    <p><c:out value="${searchResult['tmpLOSEducationField']}" /></p>
+    <!--
     <ul>
         <li><a href="#">Markkinointi</a></li>
         <li><a href="#">Laskenta ja rahoitus</a></li>
         <li><a href="#">Työyhteisöjen kehittäminen</a></li>
     </ul>
-
+    -->
 
     <legend class="h3"><spring:message code="tarjonta.jatkoopintomahdollisuudet"/></legend>
     <p><c:out value="${searchResult['LOSDescriptionAccessToFurtherStudies']}"/></p>

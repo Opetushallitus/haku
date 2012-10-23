@@ -62,7 +62,10 @@
         <field name="AOExaminationEnd" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationLocation" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOSelectionCriteriaDescription" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <!-- tmp dev fields -->
         <field name="formPath" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="tmpAOApplyAdditionalInfo" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="tmpLOSEducationField" type="string" indexed="true" stored="true" multiValued="false"/>
 
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
         <!--  hakusuodattimet kts. kopiointi alempana -->
