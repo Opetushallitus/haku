@@ -13,11 +13,17 @@ import java.util.*;
  */
 public class DummyDataGenerator {
 
-    private static String[] losNames = {"Ensihoidon koulutusohjelma","Tietotekniikan koulutusohjelma", "Liikunnanohjauksen koulutusohjelma"};
-    private static String[] degreeTitles = {"sosiaali- ja terveysalan pt", "liikunnanohjauksen perustutkinto", "tietotekniikan maisteritutkinto", "kauppatieteiden maisteri"};
-    private static String[] qualificationTitles = {"lähihoitaja", "diplomi-insinööri", "liikunnanohjaaja", "maisteri"};
-    private static String[] educationDomains = {"sosiaali- terveys- ja liikunta-ala", "it-ala", "elintarvikeala"};
-    private static String[] institutionNames = {"Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö", "Tampereen teknillinen yliopisto", "Tampereen yliopisto", "Helsingin kauppakorkeakoulu, Kallion yksikkö"};
+    private static String[] losNames = {"Ensihoidon koulutusohjelma","Tietotekniikan koulutusohjelma",
+            "Liikunnanohjauksen koulutusohjelma", "Rakennustekniikan koulutusohjelma", "Kansantaloustieteiden koulutusohjelma",
+            "Fysikaalisten tieteiden koulutusohjelma", "Geologian koulutusohjelma", "Matematiikan koulutusohjelma"};
+    private static String[] degreeTitles = {"sosiaali- ja terveysalan pt", "liikunnanohjauksen perustutkinto",
+            "tietotekniikan maisteritutkinto", "kauppatieteiden maisteri", "arkkitehti", "metsätalousinsinööri", "rakennusmestari"};
+    private static String[] qualificationTitles = {"lähihoitaja", "diplomi-insinööri", "liikunnanohjaaja", "maisteri", "tradenomi", "datanomi"};
+    private static String[] educationDomains = {"sosiaali- terveys- ja liikunta-ala", "it-ala", "elintarvikeala",
+            "Rakennus- ja kiinteistöala", "kulttuuriala", "luonnonvara- ja ympäristöala"};
+    private static String[] institutionNames = {"Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö",
+            "Tampereen teknillinen yliopisto", "Tampereen yliopisto", "Helsingin kauppakorkeakoulu, Kallion yksikkö",
+            "Tampereen ammattikorkeakoulu"};
 
     public static Collection<SolrInputDocument> generate() {
         Collection<SolrInputDocument> solrDocuments = new ArrayList<SolrInputDocument>();
