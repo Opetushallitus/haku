@@ -27,7 +27,7 @@
         <li class="emphasized"><c:out value="${searchResult['']}???"/></li>
         <li class="set-right"><spring:message code="tarjonta.hakufaktoja.hakuaikaalkaa"/> ????</li>
     </ul>
-    <form action="/haku/lomake/test/yhteishaku" method="post">
+    <form action="/haku/lomake/${searchResult['path']}" method="post">
         <input type="hidden" name="preference1-Opetuspiste" value="1"/>
         <button type="submit">
             <span><span><spring:message code="tarjonta.haekoulutukseen"/></span></span>

@@ -47,7 +47,8 @@
         <field name="LOSStydyDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
 
         <field name="LOPInstitutionInfoName" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOPInstitutionInfoGeneralDescription" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOPInstitutionInfoGeneralDescription" type="text_general" indexed="true" stored="true"
+               multiValued="true"/>
 
         <field name="AOAttachmentDescription" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOAttachmentType" type="text_general" indexed="true" stored="true" multiValued="true"/>
@@ -58,6 +59,9 @@
         <field name="AOExaminationStart" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationEnd" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationLocation" type="text_general" indexed="true" stored="true" multiValued="true"/>
+
+
+        <field name="path" type="string" indexed="true" stored="true" multiValued="false"/>
 
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
         <!--  hakusuodattimet kts. kopiointi alempana -->
