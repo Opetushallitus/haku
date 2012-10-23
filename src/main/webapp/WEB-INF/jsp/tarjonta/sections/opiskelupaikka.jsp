@@ -21,7 +21,7 @@
     <div class="clear"></div>
     <img src="/haku/content/bulevardi31.png"/>
     <legend class="h3"><c:out value="${searchResult['LOPInstitutionInfoName']}" /></legend>
-    <a href="http://www.metropolia.fi">http://www.metropolia.fi</a>
+    <a href="<c:out value="${searchResult['LOIWebLinkHOMEUri']}" />"><c:out value="${searchResult['LOIWebLinkHOMELabel']}" /></a>
 
     <p><c:out value="${searchResult['LOPInstitutionInfoGeneralDescription']}" /></p>
 

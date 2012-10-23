@@ -30,6 +30,9 @@
         <field name="LOIFormOfTeaching" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOIPrerequisite" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="LOILanguagesOfInstruction" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOI" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOIWebLinkHOMELabel" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOIWebLinkHOMEUri" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSName" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSDegreeTitle" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSType" type="text_general" indexed="true" stored="true" multiValued="true"/>
@@ -45,11 +48,9 @@
         <field name="LOSEducationDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSEducationDegree" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSStydyDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
-
         <field name="LOPInstitutionInfoName" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOPInstitutionInfoGeneralDescription" type="text_general" indexed="true" stored="true"
                multiValued="true"/>
-
         <field name="AOAttachmentDescription" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOAttachmentType" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOAttachmentReturnDueDate" type="text_general" indexed="true" stored="true" multiValued="true"/>

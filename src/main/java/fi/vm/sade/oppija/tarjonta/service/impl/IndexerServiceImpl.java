@@ -96,7 +96,6 @@ public class IndexerServiceImpl implements IndexService {
             //opetuspiste
             solrDocument.addField("LOPInstitutionInfoName", getValueOfExtendedString(institutionInfo.getName()));
             solrDocument.addField("LOPInstitutionInfoGeneralDescription", getValueOfTextType(institutionInfo.getGeneralDescription()));
-
         }
     }
 
@@ -160,11 +159,12 @@ public class IndexerServiceImpl implements IndexService {
 //        solrDocument.addField("LOIProfession", ref.getProfession());
 //        solrDocument.addField("LOIScholarship", ref.getScholarship());
 //        solrDocument.addField("LOIStartDate", ref.getStartDate());
-//        List<WebLinkCollectionType.Link> links = ref.getWebLinks().getLink();
-//        for (WebLinkCollectionType.Link link : links) {
-//            solrDocument.addField("LOIWebLinks", link.getUri());
-//        }
 
+        List<WebLinkCollectionType.Link> links = ref.getWebLinks().getLink();
+        for (WebLinkCollectionType.Link link : links) {
+            solrDocument.addField("LOIWebLink" + link.getType() + "Uri", link.getUri());
+            solrDocument.addField("LOIWebLink" + link.getType() + "Label", getValueOfExtendedString(link.getLabel()));
+        }
     }
 
     private void addLearningOpportunitySpecification(SolrInputDocument solrDocument, LearningOpportunitySpecificationType LOS) {
