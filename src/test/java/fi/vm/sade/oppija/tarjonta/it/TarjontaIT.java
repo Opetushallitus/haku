@@ -27,6 +27,7 @@ public class TarjontaIT extends AbstractSeleniumBase {
     @Before
     public void setUp() throws Exception {
         seleniumHelper.getDriver().get(getBaseUrl() + "/index/update");
+        assertTrue(seleniumHelper.getSelenium().isTextPresent("true"));
     }
 
     @Test
