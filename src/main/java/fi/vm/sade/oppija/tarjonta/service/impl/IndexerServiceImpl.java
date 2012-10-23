@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.tarjonta.service.impl;
 
 
 import fi.vm.sade.oppija.tarjonta.service.IndexService;
+import fi.vm.sade.oppija.tarjonta.service.generator.DummyDataGenerator;
 import fi.vm.sade.tarjonta.service.types2.*;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
@@ -50,6 +51,19 @@ public class IndexerServiceImpl implements IndexService {
     public boolean update(final URL url) {
         try {
             Collection<SolrInputDocument> documents = parseDocuments(url);
+            httpSolrServer.add(documents);
+            httpSolrServer.commit();
+        } catch (Exception e) {
+            LOGGER.error("Indeksin päivitys epäonnistui");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean generate() {
+        try {
+            Collection<SolrInputDocument> documents = DummyDataGenerator.generate();
             httpSolrServer.add(documents);
             httpSolrServer.commit();
         } catch (Exception e) {

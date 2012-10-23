@@ -44,4 +44,11 @@ public class IndexController {
         return Boolean.toString(indexService.update(url));
     }
 
+    @RequestMapping(value = "/index/generate")
+    public
+    @ResponseBody
+    String generateIndex() throws IOException {
+        return Boolean.toString(indexService.generate());
+    }
+
 }
