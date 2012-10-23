@@ -20,7 +20,7 @@
 
     <div class="clear"></div>
     <legend class="h3"><spring:message code="tarjonta.koulutukseenhakeutuminen.valintaperusteet"/></legend>
-    <p><c:out value="${searchResult['']}"/>????</p>
+    <p><c:out value="${searchResult['AOSelectionCriteriaDescription']}"/></p>
 
     <div class="clear"></div>
     <legend class="h3"><spring:message code="tarjonta.koulutukseenhakeutuminen.pääsykoe"/></legend>

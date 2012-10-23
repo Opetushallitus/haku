@@ -109,6 +109,7 @@ public class IndexerServiceImpl implements IndexService {
         solrDocument.addField("AOLastYearMinScore", applicationOptionType.getSelectionCriterions().getLastYearMinScore());
         solrDocument.addField("AOLastYearTotalApplicants", applicationOptionType.getSelectionCriterions().getLastYearTotalApplicants());
         solrDocument.addField("AOStartingQuota", applicationOptionType.getSelectionCriterions().getStartingQuota());
+        solrDocument.addField("AOSelectionCriteriaDescription", getValueOfExtendedString(applicationOptionType.getSelectionCriterions().getDescription()));
         List<AttachmentCollectionType.Attachment> attachments = applicationOptionType.getSelectionCriterions().getAttachments().getAttachment();
         for (AttachmentCollectionType.Attachment attachment : attachments) {
             solrDocument.addField("AOAttachmentDescription", getValueOfExtendedString(attachment.getDescription().getText()));
