@@ -926,7 +926,7 @@
 
                     <!-- yhden valintakokeen kuvaus -->
                     <Description xml:lang="fi">
-                        Lorem Lipsum
+                        Valintakoe on yksipäiväinen, maksullinen. (Kuvaus siitä, mitä valintakokeissa tapahtuu.)
                     </Description>
 
                     <!-- valintakoe tapahtuma -->
@@ -1085,7 +1085,7 @@
 
                     <!-- yhden valintakokeen kuvaus -->
                     <Description xml:lang="fi">
-                        Lorem Lipsum
+                        Valintakoe on yksipäiväinen, maksullinen. (Kuvaus siitä, mitä valintakokeissa tapahtuu.)
                     </Description>
 
                     <!-- valintakoe tapahtuma -->

@@ -124,6 +124,7 @@ public class IndexerServiceImpl implements IndexService {
             List<ExaminationEventType> examinationEvents = examination.getExaminationEvent();
             for (ExaminationEventType examinationEvent : examinationEvents) {
                 solrDocument.addField("AOExaminationStart", examinationEvent.getStart());
+                solrDocument.addField("AOExaminationStartDate", examinationEvent.getStart().toGregorianCalendar().getTime());
                 solrDocument.addField("AOExaminationEnd", examinationEvent.getEnd());
                 List<ExaminationEventType.Locations.Location> locations = examinationEvent.getLocations().getLocation();
                 for (ExaminationEventType.Locations.Location location : locations) {

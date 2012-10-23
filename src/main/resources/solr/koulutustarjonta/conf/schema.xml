@@ -58,6 +58,7 @@
         <field name="AOExaminationDescription" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationTitle" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationStart" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="AOExaminationStartDate" type="date" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationEnd" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationLocation" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOSelectionCriteriaDescription" type="text_general" indexed="true" stored="true" multiValued="true"/>
