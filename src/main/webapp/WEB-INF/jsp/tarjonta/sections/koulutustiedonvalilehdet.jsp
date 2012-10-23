@@ -21,7 +21,8 @@
             code="tarjonta.koulutuksenkuvaus"/></span></a>
     <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakeutuminen" class="tab"><span><spring:message
             code="tarjonta.koulutukseenhakeutuminen"/></span></a>
-    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="opiskelupaikka" class="tab"><span>????</span></a>
+    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="opiskelupaikka" class="tab">
+    <span><spring:message code="tarjonta.oppilaitos"/></span></a>
 </div>
 
 <div class="tabsheets">

@@ -83,8 +83,14 @@ public class IndexerServiceImpl implements IndexService {
 
     private void addLearningOpportunityProviderType(SolrInputDocument solrDocument, LearningOpportunityProviderRefType learningOpportunityProviderType) {
         if (learningOpportunityProviderType != null) {
-            //LearningOpportunityProviderType learningOpportunityProvider = (LearningOpportunityProviderType) learningOpportunityProviderType.getRef();
-            //LearningOpportunityProviderType.GeneralInformation generalInformation = learningOpportunityProvider.getGeneralInformation();
+            LearningOpportunityProviderType learningOpportunityProvider = (LearningOpportunityProviderType) learningOpportunityProviderType.getRef();
+
+            LearningOpportunityProviderType.GeneralInformation generalInformation = learningOpportunityProvider.getGeneralInformation();
+            LearningOpportunityProviderType.InstitutionInfo institutionInfo = learningOpportunityProvider.getInstitutionInfo();
+
+            solrDocument.addField("LOPInstitutionInfoName", getValueOfExtendedString(institutionInfo.getName()));
+            solrDocument.addField("LOPInstitutionInfoGeneralDescription", getValueOfTextType(institutionInfo.getGeneralDescription()));
+
         }
     }
 
@@ -98,32 +104,32 @@ public class IndexerServiceImpl implements IndexService {
         solrDocument.addField("AOLastYearMinScore", applicationOptionType.getSelectionCriterions().getLastYearMinScore());
         solrDocument.addField("AOLastYearTotalApplicants", applicationOptionType.getSelectionCriterions().getLastYearTotalApplicants());
         solrDocument.addField("AOStartingQuota", applicationOptionType.getSelectionCriterions().getStartingQuota());
-//        List<AttachmentCollectionType.Attachment> attachments = applicationOptionType.getSelectionCriterions().getAttachments().getAttachment();
-//        for (AttachmentCollectionType.Attachment attachment : attachments) {
-//            solrDocument.addField("AOAttachmentDescription", getValueOfExtendedString(attachment.getDescription().getText()));
-//            solrDocument.addField("AOAttachmentType", attachment.getType().getValue());
-//            solrDocument.addField("AOAttachmentReturnDueDate", attachment.getReturn().getDueDate());
-//            solrDocument.addField("AOAttachmentReturnTo", attachment.getReturn().getTo());
-//        }
-//        List<SelectionCriterionsType.EntranceExaminations.Examination> examinations = applicationOptionType.getSelectionCriterions().getEntranceExaminations().getExamination();
-//        for (SelectionCriterionsType.EntranceExaminations.Examination examination : examinations) {
-//            solrDocument.addField("AOExaminationDescription", getValueOfExtendedString(examination.getDescription()));
-//            solrDocument.addField("AOExaminationTitle", getValueOfExtendedString(examination.getExaminationType().getTitle()));
-//            List<ExaminationEventType> examinationEvents = examination.getExaminationEvent();
-//            for (ExaminationEventType examinationEvent : examinationEvents) {
-//                solrDocument.addField("AOExaminationStart", examinationEvent.getStart());
-//                solrDocument.addField("AOExaminationEnd", examinationEvent.getEnd());
-//                List<ExaminationEventType.Locations.Location> locations = examinationEvent.getLocations().getLocation();
-//                for (ExaminationEventType.Locations.Location location : locations) {
-//                    List<JAXBElement<String>> content = location.getContent();
-//                    for (JAXBElement<String> stringJAXBElement : content) {
-//                        stringJAXBElement.getValue();
-//                        solrDocument.addField("AOExaminationLocation", stringJAXBElement.getValue());
-//                    }
-//                }
-//            }
-//            solrDocument.addField("AOExaminationDescription", examination.getExaminationEvent());
-//        }
+        List<AttachmentCollectionType.Attachment> attachments = applicationOptionType.getSelectionCriterions().getAttachments().getAttachment();
+        for (AttachmentCollectionType.Attachment attachment : attachments) {
+            solrDocument.addField("AOAttachmentDescription", getValueOfExtendedString(attachment.getDescription().getText()));
+            solrDocument.addField("AOAttachmentType", attachment.getType().getValue());
+            solrDocument.addField("AOAttachmentReturnDueDate", attachment.getReturn().getDueDate());
+            solrDocument.addField("AOAttachmentReturnTo", attachment.getReturn().getTo());
+        }
+        List<SelectionCriterionsType.EntranceExaminations.Examination> examinations = applicationOptionType.getSelectionCriterions().getEntranceExaminations().getExamination();
+        for (SelectionCriterionsType.EntranceExaminations.Examination examination : examinations) {
+            solrDocument.addField("AOExaminationDescription", getValueOfExtendedString(examination.getDescription()));
+            solrDocument.addField("AOExaminationTitle", getValueOfExtendedString(examination.getExaminationType().getTitle()));
+            List<ExaminationEventType> examinationEvents = examination.getExaminationEvent();
+            for (ExaminationEventType examinationEvent : examinationEvents) {
+                solrDocument.addField("AOExaminationStart", examinationEvent.getStart());
+                solrDocument.addField("AOExaminationEnd", examinationEvent.getEnd());
+                List<ExaminationEventType.Locations.Location> locations = examinationEvent.getLocations().getLocation();
+                for (ExaminationEventType.Locations.Location location : locations) {
+                    List<JAXBElement<String>> content = location.getContent();
+                    for (JAXBElement<String> stringJAXBElement : content) {
+                        stringJAXBElement.getValue();
+                        solrDocument.addField("AOExaminationLocation", stringJAXBElement.getValue());
+                    }
+                }
+            }
+            solrDocument.addField("AOExaminationDescription", examination.getExaminationEvent());
+        }
     }
 
     private void addLearningOpportunityInstance(SolrInputDocument solrDocument, LearningOpportunityInstanceType ref) {
@@ -187,6 +193,10 @@ public class IndexerServiceImpl implements IndexService {
 
     private static String getValueOfExtendedString(List<ExtendedStringType> ref1) {
         return ref1.get(0).getValue();
+    }
+
+    private static String getValueOfTextType(List<TextType> ref1) {
+        return ref1.get(0).getContent();
     }
 
     private static LearningOpportunityDownloadDataType getLearningOpportunityDownloadDataType(final URL url) throws JAXBException, MalformedURLException {
