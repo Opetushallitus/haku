@@ -23,16 +23,17 @@
             <tr>
 
                 <td class="term"><spring:message code="tarjonta.definitions.edellisenävuonnahakhyv"/></td>
-                <td class="description">${searchResult['AOLastYearTotalApplicants']}/???</td>
+                <td class="description">${searchResult['AOLastYearTotalApplicants']}/${searchResult['tmpAOLastYearQualified']}</td>
             </tr>
             <tr>
                 <td class="term"><spring:message code="tarjonta.definitions.maksimipistemäärä"/></td>
                 <td class="description">${searchResult['AOLastYearMaxScore']}</td>
             </tr>
             <tr>
-                <td class="term"><spring:message code="tarjonta.definitions.alinhyväksyttypistemäärä"/> ????</td>
+                <td class="term"><spring:message code="tarjonta.definitions.alinhyväksyttypistemäärä"/>&nbsp; 2011</td>
                 <td class="description">${searchResult['AOLastYearMinScore']}</td>
             </tr>
+            <%--
             <tr>
                 <td class="term"><spring:message code="tarjonta.definitions.alinhyväksyttypistemäärä"/> ????</td>
                 <td class="description">???</td>
@@ -41,6 +42,7 @@
                 <td class="term"><spring:message code="tarjonta.definitions.alinhyväksyttypistemäärä"/> ????</td>
                 <td class="description">???</td>
             </tr>
+            --%>
         </table>
     </div>
 </div>

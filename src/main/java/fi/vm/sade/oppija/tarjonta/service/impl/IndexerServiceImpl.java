@@ -85,6 +85,7 @@ public class IndexerServiceImpl implements IndexService {
             solrDocument.addField("tmpASStart", cal.getTime());
             cal.set(Calendar.MONTH, cal.get(Calendar.MONTH + 1));
             solrDocument.addField("tmpASEnd", cal.getTime());
+            solrDocument.addField("tmpAOLastYearQualified", 45);
 
             solrDocuments.add(solrDocument);
         }
