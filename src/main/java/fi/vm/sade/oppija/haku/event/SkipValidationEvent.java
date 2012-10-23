@@ -33,7 +33,7 @@ public class SkipValidationEvent extends AbstractEvent {
             Form activeForm = formService.getActiveForm(hakemus.getHakemusId().getApplicationPeriodId(), hakemus.getHakemusId().getFormId());
 
             Vaihe category = activeForm.getCategory(hakemus.getHakemusId().getCategoryId());
-            hakemusState.addModelObject("category", category);
+            hakemusState.addModelObject("vaihe", category);
         }
     }
 }

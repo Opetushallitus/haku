@@ -77,10 +77,10 @@ public class FormController {
     @RequestMapping(value = "/{applicationPeriodId}", method = RequestMethod.GET)
     public ModelAndView listForms(@PathVariable final String applicationPeriodId) {
         LOGGER.debug("listForms");
-        ApplicationPeriod applicaionPeriod = formService.getApplicationPeriodById(applicationPeriodId);
+        ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(applicationPeriodId);
         final ModelAndView modelAndView = new ModelAndView(LINK_LIST_VIEW);
-        modelAndView.addObject("path", applicaionPeriod.getId() + "/");
-        modelAndView.addObject(LINK_LIST_VIEW, applicaionPeriod.getFormIds());
+        modelAndView.addObject("path", applicationPeriod.getId() + "/");
+        modelAndView.addObject(LINK_LIST_VIEW, applicationPeriod.getFormIds());
         return modelAndView;
     }
 

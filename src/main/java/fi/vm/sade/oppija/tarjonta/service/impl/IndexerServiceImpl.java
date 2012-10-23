@@ -93,6 +93,7 @@ public class IndexerServiceImpl implements IndexService {
             //LearningOpportunityProviderType.GeneralInformation generalInformation = learningOpportunityProvider.getGeneralInformation();
             LearningOpportunityProviderType.InstitutionInfo institutionInfo = learningOpportunityProvider.getInstitutionInfo();
 
+            //opetuspiste
             solrDocument.addField("LOPInstitutionInfoName", getValueOfExtendedString(institutionInfo.getName()));
             solrDocument.addField("LOPInstitutionInfoGeneralDescription", getValueOfTextType(institutionInfo.getGeneralDescription()));
 
