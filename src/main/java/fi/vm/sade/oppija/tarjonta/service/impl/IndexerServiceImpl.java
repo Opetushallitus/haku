@@ -21,6 +21,8 @@ import fi.vm.sade.oppija.tarjonta.service.IndexService;
 import fi.vm.sade.tarjonta.service.types2.*;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,8 @@ import java.util.List;
 @Service
 public class IndexerServiceImpl implements IndexService {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(IndexerServiceImpl.class);
+
     private final HttpSolrServer httpSolrServer;
 
     @Autowired
@@ -51,7 +55,7 @@ public class IndexerServiceImpl implements IndexService {
             httpSolrServer.add(documents);
             httpSolrServer.commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Indeksin päivitys epäonnistui");
             return false;
         }
         return true;
@@ -85,7 +89,7 @@ public class IndexerServiceImpl implements IndexService {
         if (learningOpportunityProviderType != null) {
             LearningOpportunityProviderType learningOpportunityProvider = (LearningOpportunityProviderType) learningOpportunityProviderType.getRef();
 
-            LearningOpportunityProviderType.GeneralInformation generalInformation = learningOpportunityProvider.getGeneralInformation();
+            //LearningOpportunityProviderType.GeneralInformation generalInformation = learningOpportunityProvider.getGeneralInformation();
             LearningOpportunityProviderType.InstitutionInfo institutionInfo = learningOpportunityProvider.getInstitutionInfo();
 
             solrDocument.addField("LOPInstitutionInfoName", getValueOfExtendedString(institutionInfo.getName()));
@@ -182,7 +186,6 @@ public class IndexerServiceImpl implements IndexService {
             if (learningClassificationCodeType.getCategory() != null &&
                     learningClassificationCodeType.getLabel() != null &&
                     learningClassificationCodeType.getLabel().size() > 0) {
-                System.out.println(getValueOfExtendedString(learningClassificationCodeType.getLabel()));
                 solrDocument.addField("LOS" + learningClassificationCodeType.getCategory().value(),
                         getValueOfExtendedString(learningClassificationCodeType.getLabel()));
             }
