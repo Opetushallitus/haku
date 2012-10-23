@@ -281,7 +281,7 @@
         <slf4j.version>1.6.6</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
+		<clover.outputDirectory>/data00/atlassian/application-data/bamboo/www/clover_haku</clover.outputDirectory><!-- old value = ${clover.base}/output -->
     </properties>
     <repositories>
         <repository>
@@ -439,7 +439,6 @@
                 <clover.fullRunEvery>500</clover.fullRunEvery>
                 <clover.generateHistorical>true</clover.generateHistorical>
                 <clover.base>/data00/atlassian/application-data/bamboo/clover_haku</clover.base>
-				<clover.outputDirectory>/data00/atlassian/application-data/bamboo/www/clover_haku</clover.outputDirectory><!-- old value = ${clover.base}/output -->
 				<clover.historyDir>${clover.base}/history</clover.historyDir>
                 <clover.snapshot>${clover.base}/snapshot/clover.snapshot</clover.snapshot>
                 <clover.cloverDatabase>${clover.base}/db/clover.db</clover.cloverDatabase>
