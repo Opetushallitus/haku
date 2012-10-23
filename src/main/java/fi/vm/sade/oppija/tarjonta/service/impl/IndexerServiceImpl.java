@@ -32,9 +32,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class IndexerServiceImpl implements IndexService {
@@ -83,6 +81,11 @@ public class IndexerServiceImpl implements IndexService {
             solrDocument.addField("formPath", "test/yhteishaku");
             solrDocument.addField("tmpAOApplyAdditionalInfo", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tortor nisi, egestas id pellentesque ac, scelerisque in tortor. Morbi accumsan libero erat. Quisque nisl erat, fringilla quis ullamcorper vel, viverra eu leo. Nulla facilisi. Fusce a leo id tellus molestie imperdiet vel ut augue. Suspendisse interdum malesuada iaculis. Sed et urna ante, id varius ipsum. Fusce imperdiet sapien convallis purus mattis euismod. Quisque et metus sit amet nulla pharetra consequat at vel tellus. Proin vulputate eros at quam rutrum id dignissim magna dictum. ");
             solrDocument.addField("tmpLOSEducationField", "Opintojesi aikana erikoistut joko markkinointiin, laskentaan ja rahoitukseen tai työyhteisön kehittämiseen.");
+            Calendar cal = GregorianCalendar.getInstance();
+            solrDocument.addField("tmpASStart", cal.getTime());
+            cal.set(Calendar.MONTH, cal.get(Calendar.MONTH + 1));
+            solrDocument.addField("tmpASEnd", cal.getTime());
+
             solrDocuments.add(solrDocument);
         }
 

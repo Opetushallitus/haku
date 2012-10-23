@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%--
@@ -24,8 +25,9 @@
         <li class="heading"><spring:message code="tarjonta.hakufaktoja.hakukelpoisuus"/></li>
         <li class="emphasized"><c:out value="${searchResult['AOEligibilityRequirements']}"/></li>
         <li class="heading"><spring:message code="tarjonta.hakufaktoja.valintakoe"/></li>
-        <li class="emphasized"><c:out value="${searchResult['']}???"/></li>
-        <li class="set-right"><spring:message code="tarjonta.hakufaktoja.hakuaikaalkaa"/> ????</li>
+        <li class="emphasized"><fmt:formatDate type="date" value="${searchResult['AOExaminationStartDate']}" /></li>
+        <li class="set-right"><spring:message code="tarjonta.hakufaktoja.hakuaikaalkaa"/>&nbsp
+        <fmt:formatDate type="date" value="${searchResult['tmpASStart']}" /></li>
     </ul>
     <form action="/haku/lomake/${searchResult['formPath']}" method="post">
         <input type="hidden" name="preference1-Opetuspiste" value="Koulu7"/>

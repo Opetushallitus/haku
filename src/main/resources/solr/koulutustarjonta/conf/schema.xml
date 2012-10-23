@@ -66,6 +66,8 @@
         <field name="formPath" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="tmpAOApplyAdditionalInfo" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="tmpLOSEducationField" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="tmpASStart" type="date" indexed="true" stored="true" multiValued="false"/>
+        <field name="tmpASEnd" type="date" indexed="true" stored="true" multiValued="false"/>
 
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
         <!--  hakusuodattimet kts. kopiointi alempana -->
