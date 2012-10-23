@@ -821,7 +821,9 @@
             <AcademicCalendar>Lorem Lipsum</AcademicCalendar>
             <AcademicAuthorities>Lorem Lipsum</AcademicAuthorities>
             <AdmissionProcedures>Lorem Lipsum</AdmissionProcedures>
-            <GeneralDescription>Lorem Lipsum</GeneralDescription>
+            <GeneralDescription>Kisakallion Urheiluopisto on innovatiivinen koulutus-, valmennus- ja vapaa-ajankeskus.
+                                Opiskelu Kisakalliossa on sisäoppilaitosmuotoista ja siihen sisältyy opiskelun lisäksi
+                                majoitus opiskelupäivinä täysihoidolla. Opiskelu ja majoitus on maksutonta.</GeneralDescription>
             <MainUniversityRequlations>Lorem Lipsum</MainUniversityRequlations>
         </InstitutionInfo>
 
