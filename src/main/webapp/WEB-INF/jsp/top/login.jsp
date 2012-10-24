@@ -11,7 +11,7 @@
             <input name="j_username" type="text"/>
         
             <legend class="h3">SALASANA</legend>
-            <input name="j_password" type="text"/>
+            <input name="j_password" type="password"/>
             <div>
                 <input name="login" value="Kirjaudu" type="submit"/>
             </div>
