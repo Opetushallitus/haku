@@ -51,4 +51,11 @@ public class IndexController {
         return Boolean.toString(indexService.generate());
     }
 
+    @RequestMapping(value = "/index/drop")
+    public
+    @ResponseBody
+    String dropIndex() throws IOException {
+        return Boolean.toString(indexService.drop());
+    }
+
 }

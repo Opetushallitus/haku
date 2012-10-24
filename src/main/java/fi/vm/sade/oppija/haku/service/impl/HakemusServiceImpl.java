@@ -74,7 +74,9 @@ public class HakemusServiceImpl implements HakemusService {
         final List<Hakemus> hakemusList = userDataStorage.findAll();
         for (Hakemus hakemus : hakemusList) {
             final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(hakemus.getHakemusId().getApplicationPeriodId());
-            final Form form = formService.getForm(applicationPeriod.getId(), hakemus.getHakemusId().getFormId());
+            final String id = applicationPeriod.getId();
+            final String formId = hakemus.getHakemusId().getFormId();
+            final Form form = formService.getForm(id, formId);
             all.add(new HakemusInfo(hakemus, form, applicationPeriod));
         }
         return all;

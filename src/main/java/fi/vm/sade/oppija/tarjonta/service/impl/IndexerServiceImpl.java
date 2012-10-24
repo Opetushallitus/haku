@@ -73,6 +73,17 @@ public class IndexerServiceImpl implements IndexService {
         return true;
     }
 
+    public boolean drop() {
+        boolean dropped = false;
+        try {
+            httpSolrServer.deleteByQuery("*:*");
+            dropped = true;
+        } catch (Exception e) {
+            LOGGER.error("drop failed", e);
+        }
+        return dropped;
+    }
+
 
     public Collection<SolrInputDocument> parseDocuments(final URL url) throws JAXBException, MalformedURLException {
         LearningOpportunityDownloadDataType learningOpportunityDownloadDataType = getLearningOpportunityDownloadDataType(url);
