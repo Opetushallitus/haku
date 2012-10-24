@@ -389,21 +389,26 @@ var hierarchyList = {
 
 var loginPopup = {
 	build: function() {
-		//$('#overlay').
+		
+		//add overlay div for login-popup dynamically
+		var overlayDiv = '<div class="popup-overlay display-none"></div>';
+		$('#site').before(overlayDiv);
+
+		//trigger listeners to open and close login-popup
 		$('.open-login-popup').on('click', showPopup);
 		$('.close-login-popup').on('click', hidePopup);
-		//$('#overlay').on('click', hidePopup);
+		$('.popup-overlay').on('click', hidePopup);
 
-
-		
+		//show popup
 		function showPopup(event) {
 			$('#login-popup').fadeIn(400).removeClass('display-none');
-			//$('#overlay').fadeIn(400).removeClass('display-none');
+			$('.popup-overlay').fadeIn(400).removeClass('display-none');
 		}
 
+		//hide popup
 		function hidePopup(event) {
 			$('#login-popup').fadeOut(400).addClass('display-none');
-			//$('#overlay').fadeOut(400).addClass('display-none');
+			$('.popup-overlay').fadeOut(400).addClass('display-none');
 		}
 	}
 }

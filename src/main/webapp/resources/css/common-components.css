@@ -493,8 +493,8 @@ ul.unstyled li
 
 /*** Overlay
 **************************************************************/
-/*
-#overlay {
+
+.popup-overlay {
     background-color: #000;
     opacity:0.4;
     filter: alpha(opacity=40);
@@ -502,4 +502,4 @@ ul.unstyled li
     width: 100%;
     height: 100%;
     z-index: 10;
-}*/
+}

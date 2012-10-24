@@ -20,7 +20,7 @@
 <jsp:include page="head.jsp"/>
 <body>
 <div id="viewport">
-    <div id="overlay" class="display-none"></div>
+    <div id="overlay"></div>
     <div id="site">
 
         <jsp:include page="siteheader.jsp"/>
