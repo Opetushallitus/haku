@@ -446,6 +446,55 @@
 
             <build>
                 <plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>clean-clover</id>
+								<phase>clean</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<task>
+										<echo>Clean clover output directory from ${clover.base}.</echo>
+									</task>
+									<tasks>
+										<delete includeemptydirs="true" failonerror="false">
+											<fileset dir="${clover.base}" >
+												<include name="**/**"/>
+												<exclude name="history/**"/>
+											</fileset>
+										</delete>
+										<delete includeemptydirs="true" failonerror="false">
+											<fileset dir="${clover.outputDirectory}" >
+												<include name="**/**"/>
+											</fileset>
+										</delete>
+									</tasks>
+								</configuration>
+							</execution>
+							<execution>
+								<id>clean-clover-report</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<task>
+										<echo>Clean clover report directory from ${clover.outputDirectory}.</echo>
+									</task>
+									<tasks>
+										<delete includeemptydirs="true" failonerror="false">
+											<fileset dir="${clover.outputDirectory}" >
+												<include name="**/**"/>
+											</fileset>
+										</delete>
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>		
                     <plugin>
                         <groupId>com.atlassian.maven.plugins</groupId>
                         <artifactId>maven-clover2-plugin</artifactId>
@@ -509,6 +558,18 @@
                     <artifactId>clover</artifactId>
                     <version>${clover.version}</version>
                 </dependency>
+				<dependency>
+					<groupId>ant-contrib</groupId>
+					<artifactId>ant-contrib</artifactId>
+					<version>1.0b3</version>
+					<exclusions>
+						<exclusion>
+							<groupId>ant</groupId>
+							<artifactId>ant</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+
             </dependencies>
         </profile>
 
