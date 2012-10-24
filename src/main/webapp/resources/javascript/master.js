@@ -389,20 +389,21 @@ var hierarchyList = {
 
 var loginPopup = {
 	build: function() {
-
+		//$('#overlay').
 		$('.open-login-popup').on('click', showPopup);
 		$('.close-login-popup').on('click', hidePopup);
-		$('#overlay').on('click', hidePopup);
+		//$('#overlay').on('click', hidePopup);
+
 
 		
 		function showPopup(event) {
 			$('#login-popup').fadeIn(400).removeClass('display-none');
-			$('#overlay').fadeIn(400).removeClass('display-none');
+			//$('#overlay').fadeIn(400).removeClass('display-none');
 		}
 
 		function hidePopup(event) {
 			$('#login-popup').fadeOut(400).addClass('display-none');
-			$('#overlay').fadeOut(400).addClass('display-none');
+			//$('#overlay').fadeOut(400).addClass('display-none');
 		}
 	}
 }
