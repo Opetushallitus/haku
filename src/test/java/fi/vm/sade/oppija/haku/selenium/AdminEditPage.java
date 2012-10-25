@@ -3,6 +3,9 @@ package fi.vm.sade.oppija.haku.selenium;
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.haku.converter.FormModelToJsonString;
 import fi.vm.sade.oppija.haku.domain.FormModel;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author jukka
@@ -12,11 +15,13 @@ import fi.vm.sade.oppija.haku.domain.FormModel;
 public class AdminEditPage extends LoginPage implements PageObject {
     private final String baseUrl;
     private final Selenium selenium;
+    private WebDriver driver;
 
-    public AdminEditPage(String baseUrl, Selenium selenium) {
-        super(selenium);
+    public AdminEditPage(String baseUrl, SeleniumHelper selenium) {
+        super(selenium.getSelenium());
         this.baseUrl = baseUrl;
-        this.selenium = selenium;
+        this.selenium = selenium.getSelenium();
+        this.driver = selenium.getDriver();
     }
 
 
@@ -28,7 +33,11 @@ public class AdminEditPage extends LoginPage implements PageObject {
 
     public void submitForm(FormModel formModel1) {
         final String convert = new FormModelToJsonString().convert(formModel1);
-        selenium.type("model", convert);
-        selenium.submit("tallenna");
+        final WebElement model = driver.findElement(By.id("model"));
+        model.clear();
+        selenium.runScript("document.getElementById('model').value=" + convert);
+        // model.sendKeys(convert);
+        final WebElement tallenna = driver.findElement(By.id("tallenna"));
+        tallenna.click();
     }
 }

@@ -1,13 +1,24 @@
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * European Union Public Licence for more details.
+ */
+
 package fi.vm.sade.oppija.haku.selenium;
 
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
-import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -22,21 +33,20 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Hannu Lyytikainen
  */
-    public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
+public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
 
     private FormModelHelper formModelHelper;
 
     @Before
     public void init() {
 
-        seleniumHelper.getSelenium().setTimeout("60000");
         FormModelDummyMemoryDaoImpl dummyMem = new FormModelDummyMemoryDaoImpl();
 
         this.formModelHelper = initModel(dummyMem.getModel());
     }
 
     @Test
-    public void testAdditionalSubjects () {
+    public void testAdditionalSubjects() {
         final String url = getBaseUrl() + "/" + "lomake/test/yhteishaku/hakutoiveet";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);

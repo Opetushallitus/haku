@@ -18,11 +18,12 @@
         </div>
         
         <form method="post" accept-charset="utf-8"  action="edit/post" enctype="multipart/form-data">
+            <input id="tallenna" name="tallenna" type="submit" value="Tallenna" />
             <div>
-                <textarea name="model" id="model" rows="200" cols="200" ><c:out value="${model}"/></textarea>
+                <textarea name="model" id="model" rows="2000" cols="200" ><c:out value="${model}"/></textarea>
             </div>
             <div>
-                <input name="tallenna" type="submit" value="Tallenna" />
+
             </div>
         </form>
 

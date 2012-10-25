@@ -31,7 +31,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected FormModelHelper initModel(FormModel formModel1) {
 
-        final AdminEditPage adminEditPage = new AdminEditPage(getBaseUrl(), seleniumHelper.getSelenium());
+        final AdminEditPage adminEditPage = new AdminEditPage(getBaseUrl(), seleniumHelper);
         seleniumHelper.navigate(adminEditPage);
         adminEditPage.login("admin");
         seleniumHelper.navigate(adminEditPage);
