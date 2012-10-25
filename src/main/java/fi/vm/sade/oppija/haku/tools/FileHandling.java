@@ -17,15 +17,10 @@
 package fi.vm.sade.oppija.haku.tools;
 
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
 public class FileHandling {
-
-    public static final Logger LOG = LoggerFactory.getLogger(FileHandling.class);
-
 
     public String readFile(InputStream inputStream) {
         try {
@@ -40,7 +35,7 @@ public class FileHandling {
         try {
             IOUtils.copy(new FileInputStream(file), stringWriter);
         } catch (IOException e) {
-            LOG.info("Error reading file", e);
+            throw new RuntimeException("Error reading file", e);
         }
         return stringWriter.toString();
     }
@@ -52,7 +47,7 @@ public class FileHandling {
             fileWriter = new FileWriter(new File(filename));
             fileWriter.write(contentAsString);
         } catch (IOException e) {
-            LOG.error("Error writing file", e);
+            throw new RuntimeException("Error reading file", e);
         } finally {
             IOUtils.closeQuietly(fileWriter);
         }
