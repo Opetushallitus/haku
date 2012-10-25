@@ -104,7 +104,7 @@
             <!-- add new language row -->
             <tr>
                 <td colspan=3>
-                    <button id="add_language_button" class="link" type="button"><c:out value="${element.addLanguageLabel}"/></button>
+                    <button id="add_language_button" class="link" type="button"><spring:message code="lomake.component.gradegrid.addLanguageLabel"/></button>
                 </td>
             </tr>
 

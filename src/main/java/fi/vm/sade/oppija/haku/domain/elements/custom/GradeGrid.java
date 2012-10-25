@@ -29,14 +29,8 @@ import java.util.List;
  */
 public class GradeGrid extends Titled {
 
-    // title for column that holds grades retrieved from an external registry
-    private String registryGradesTitle;
-    // title for columns that are altered from the ones that are retrieved from a registry
-    private String alteringGradesTitle;
     // label shown in custom language row ('Kieli' etc)
     private String customLanguageTitle;
-    // label text for add language button
-    private String addLanguageLabel;
 
     // subjects that are listed before languages
     private List<SubjectRow> subjectsBeforeLanguages;
@@ -53,10 +47,7 @@ public class GradeGrid extends Titled {
     private List<Option> gradeRange;
 
     public GradeGrid(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
-                     @JsonProperty(value = "registryGradesTitle") String registryGradesTitle,
-                     @JsonProperty(value = "alteringGradesTitle") String alteringGradesTitle,
                      @JsonProperty(value = "customLanguageTitle") String customLanguageTitle,
-                     @JsonProperty(value = "addLanguageLabel") String addLanguageLabel,
                      @JsonProperty(value = "subjectsBeforeLanguages") List<SubjectRow> subjectsBeforeLanguages,
                      @JsonProperty(value = "languages") List<LanguageRow> languages,
                      @JsonProperty(value = "subjectsAfterLanguages") List<SubjectRow> subjectsAfterLanguages,
@@ -64,24 +55,13 @@ public class GradeGrid extends Titled {
                      @JsonProperty(value = "languageOptions") List<Option> languageOptions,
                      @JsonProperty(value = "gradeRange") List<Option> gradeRange) {
         super(id, title);
-        this.registryGradesTitle = registryGradesTitle;
-        this.alteringGradesTitle = alteringGradesTitle;
         this.customLanguageTitle = customLanguageTitle;
-        this.addLanguageLabel = addLanguageLabel;
         this.subjectsBeforeLanguages = subjectsBeforeLanguages;
         this.languages = languages;
         this.subjectsAfterLanguages = subjectsAfterLanguages;
         this.scopeOptions = scopeOptions;
         this.languageOptions = languageOptions;
         this.gradeRange = gradeRange;
-    }
-
-    public String getRegistryGradesTitle() {
-        return registryGradesTitle;
-    }
-
-    public String getAlteringGradesTitle() {
-        return alteringGradesTitle;
     }
 
     public List<Option> getGradeRange() {
@@ -110,10 +90,6 @@ public class GradeGrid extends Titled {
 
     public String getCustomLanguageTitle() {
         return customLanguageTitle;
-    }
-
-    public String getAddLanguageLabel() {
-        return addLanguageLabel;
     }
 
 }
