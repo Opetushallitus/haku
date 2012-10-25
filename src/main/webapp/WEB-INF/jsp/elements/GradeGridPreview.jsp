@@ -1,15 +1,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"  %>
 	<table id="gradegrid-table" class="applicant-grades">
 		<thead>
 			<tr>
 				<th></th>
-				<th colspan="2"><c:out value="${element.gradesTitle}"/></th>
+				<th colspan="2"><spring:message code="lomake.component.gradegrid.gradesTitle"/></th>
 			</tr>
 			<tr>
-				<td><c:out value="${element.subjectTitle}"/></td>
-				<td><c:out value="${element.commonSubjectColumnTitle}"/></td>
-				<td><c:out value="${element.optionalSubjectColumnTitle}"/></td>
+				<td><spring:message code="lomake.component.gradegrid.subjectTitle"/></td>
+				<td><spring:message code="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
+				<td><spring:message code="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
 			</tr>
 		</thead>
 		<tbody>
