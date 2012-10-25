@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.tarjonta.controller;
 import fi.vm.sade.oppija.tarjonta.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,16 +28,13 @@ import java.io.IOException;
 import java.net.URL;
 
 @Controller
+@Secured("ROLE_ADMIN")
 public class IndexController {
 
-    final IndexService indexService;
-
     @Autowired
-    public IndexController(final IndexService indexService) {
-        this.indexService = indexService;
-    }
+    IndexService indexService;
 
-    @RequestMapping(value = "/index/update")
+    @RequestMapping(value = "/admin/index/update")
     public
     @ResponseBody
     String updateIndex() throws IOException {
@@ -44,14 +42,14 @@ public class IndexController {
         return Boolean.toString(indexService.update(url));
     }
 
-    @RequestMapping(value = "/index/generate")
+    @RequestMapping(value = "/admin/index/generate")
     public
     @ResponseBody
     String generateIndex() throws IOException {
         return Boolean.toString(indexService.generate());
     }
 
-    @RequestMapping(value = "/index/drop")
+    @RequestMapping(value = "/admin/index/drop")
     public
     @ResponseBody
     String dropIndex() throws IOException {

@@ -19,6 +19,8 @@
         <li><a href="/haku/static-html/vapaasanahaku.html">Vapaasanahaku staattinen ui</a></li>
         <li><a href="/haku/tarjontatiedot">Oppijan verkkopalvelu - Vapaasanahaku</a></li>
         <li><a href="/haku/static-html/add.html">Oppijan verkkopalvelu - Lataa aineisto</a></li>
+        <li><a href="/haku/admin/index/update">Oppijan verkkopalvelu - Päivitä indeksi</a></li>
+        <li><a href="/haku/admin/index/drop">Oppijan verkkopalvelu - droppaa indexi</a></li>
     </ul>
     </body>
 </html>
