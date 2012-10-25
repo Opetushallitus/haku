@@ -182,7 +182,7 @@
         </dependency>
         <dependency>
             <groupId>fi.vm.sade.tarjonta</groupId>
-            <artifactId>tarjonta-api</artifactId>
+            <artifactId>tarjonta-publication-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!-- it -->
@@ -281,7 +281,8 @@
         <slf4j.version>1.6.6</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<clover.outputDirectory>/data00/atlassian/application-data/bamboo/www/clover_haku</clover.outputDirectory><!-- old value = ${clover.base}/output -->
+        <clover.outputDirectory>/data00/atlassian/application-data/bamboo/www/clover_haku</clover.outputDirectory>
+        <!-- old value = ${clover.base}/output -->
     </properties>
     <repositories>
         <repository>
@@ -439,62 +440,62 @@
                 <clover.fullRunEvery>500</clover.fullRunEvery>
                 <clover.generateHistorical>true</clover.generateHistorical>
                 <clover.base>/data00/atlassian/application-data/bamboo/clover_haku</clover.base>
-				<clover.historyDir>${clover.base}/history</clover.historyDir>
+                <clover.historyDir>${clover.base}/history</clover.historyDir>
                 <clover.snapshot>${clover.base}/snapshot/clover.snapshot</clover.snapshot>
                 <clover.cloverDatabase>${clover.base}/db/clover.db</clover.cloverDatabase>
             </properties>
 
             <build>
                 <plugins>
-					<plugin>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>clean-clover</id>
-								<phase>clean</phase>
-								<goals>
-									<goal>run</goal>
-								</goals>
-								<configuration>
-									<task>
-										<echo>Clean clover output directory from ${clover.base}.</echo>
-									</task>
-									<tasks>
-										<delete includeemptydirs="true" failonerror="false">
-											<fileset dir="${clover.base}" >
-												<include name="**/**"/>
-												<exclude name="history/**"/>
-											</fileset>
-										</delete>
-										<delete includeemptydirs="true" failonerror="false">
-											<fileset dir="${clover.outputDirectory}" >
-												<include name="**/**"/>
-											</fileset>
-										</delete>
-									</tasks>
-								</configuration>
-							</execution>
-							<execution>
-								<id>clean-clover-report</id>
-								<phase>post-integration-test</phase>
-								<goals>
-									<goal>run</goal>
-								</goals>
-								<configuration>
-									<task>
-										<echo>Clean clover report directory from ${clover.outputDirectory}.</echo>
-									</task>
-									<tasks>
-										<delete includeemptydirs="true" failonerror="false">
-											<fileset dir="${clover.outputDirectory}" >
-												<include name="**/**"/>
-											</fileset>
-										</delete>
-									</tasks>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>		
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>clean-clover</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <task>
+                                        <echo>Clean clover output directory from ${clover.base}.</echo>
+                                    </task>
+                                    <tasks>
+                                        <delete includeemptydirs="true" failonerror="false">
+                                            <fileset dir="${clover.base}">
+                                                <include name="**/**"/>
+                                                <exclude name="history/**"/>
+                                            </fileset>
+                                        </delete>
+                                        <delete includeemptydirs="true" failonerror="false">
+                                            <fileset dir="${clover.outputDirectory}">
+                                                <include name="**/**"/>
+                                            </fileset>
+                                        </delete>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>clean-clover-report</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <task>
+                                        <echo>Clean clover report directory from ${clover.outputDirectory}.</echo>
+                                    </task>
+                                    <tasks>
+                                        <delete includeemptydirs="true" failonerror="false">
+                                            <fileset dir="${clover.outputDirectory}">
+                                                <include name="**/**"/>
+                                            </fileset>
+                                        </delete>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <plugin>
                         <groupId>com.atlassian.maven.plugins</groupId>
                         <artifactId>maven-clover2-plugin</artifactId>
@@ -558,17 +559,17 @@
                     <artifactId>clover</artifactId>
                     <version>${clover.version}</version>
                 </dependency>
-				<dependency>
-					<groupId>ant-contrib</groupId>
-					<artifactId>ant-contrib</artifactId>
-					<version>1.0b3</version>
-					<exclusions>
-						<exclusion>
-							<groupId>ant</groupId>
-							<artifactId>ant</artifactId>
-						</exclusion>
-					</exclusions>
-				</dependency>
+                <dependency>
+                    <groupId>ant-contrib</groupId>
+                    <artifactId>ant-contrib</artifactId>
+                    <version>1.0b3</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>ant</groupId>
+                            <artifactId>ant</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
 
             </dependencies>
         </profile>
