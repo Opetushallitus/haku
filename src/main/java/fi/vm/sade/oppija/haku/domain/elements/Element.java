@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fi.vm.sade.oppija.haku.domain.Attribute;
 import fi.vm.sade.oppija.haku.domain.elements.custom.*;
-import fi.vm.sade.oppija.haku.domain.questions.*;
+import fi.vm.sade.oppija.haku.domain.elements.questions.*;
 import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
 import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
 

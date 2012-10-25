@@ -14,20 +14,20 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.domain.questions;
+package fi.vm.sade.oppija.haku.domain.elements.questions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author jukka
- * @version 9/7/122:04 PM}
+ * @version 9/7/122:16 PM}
  * @since 1.1
  */
-public class Radio extends OptionQuestion {
+public class DropdownSelect extends OptionQuestion {
 
-    private static final long serialVersionUID = 5782376533955721032L;
+    private static final long serialVersionUID = -6175691634412691296L;
 
-    public Radio(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+    public DropdownSelect(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
     }
 }

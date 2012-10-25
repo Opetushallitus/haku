@@ -16,13 +16,11 @@
 
 package fi.vm.sade.oppija.haku.domain.elements.custom;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.vm.sade.oppija.haku.domain.elements.Titled;
-import fi.vm.sade.oppija.haku.domain.questions.Option;
+import fi.vm.sade.oppija.haku.domain.elements.questions.Option;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Grid element that is used to gather grade information from user.

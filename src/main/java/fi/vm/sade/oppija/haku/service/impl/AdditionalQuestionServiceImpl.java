@@ -21,7 +21,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.Teema;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
-import fi.vm.sade.oppija.haku.domain.questions.Question;
+import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;

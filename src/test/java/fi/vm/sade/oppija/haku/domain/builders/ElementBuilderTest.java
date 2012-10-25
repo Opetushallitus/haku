@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.haku.domain.builders;
 
-import fi.vm.sade.oppija.haku.domain.questions.TextQuestion;
+import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -14,23 +14,20 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.domain.questions;
+package fi.vm.sade.oppija.haku.domain.elements.questions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 /**
  * @author jukka
- * @version 9/7/122:03 PM}
+ * @version 9/7/122:04 PM}
  * @since 1.1
  */
-public class TextArea extends Question {
+public class Radio extends OptionQuestion {
 
-    private static final long serialVersionUID = 3485187810260760341L;
+    private static final long serialVersionUID = 5782376533955721032L;
 
-    public TextArea(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+    public Radio(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
-        addAttribute("rows", "3");
-        addAttribute("cols", "20");
     }
 }

@@ -14,21 +14,23 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.domain.questions;
+package fi.vm.sade.oppija.haku.domain.elements.questions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 /**
  * @author jukka
- * @version 9/7/121:28 PM}
+ * @version 9/7/122:03 PM}
  * @since 1.1
  */
-public class TextQuestion extends Question {
+public class TextArea extends Question {
 
-    private static final long serialVersionUID = 6043667508026260795L;
+    private static final long serialVersionUID = 3485187810260760341L;
 
-    public TextQuestion(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+    public TextArea(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
-        addAttribute("type", "text");
+        addAttribute("rows", "3");
+        addAttribute("cols", "20");
     }
 }

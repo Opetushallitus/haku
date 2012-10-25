@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.domain.questions;
+package fi.vm.sade.oppija.haku.domain.elements.questions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.vm.sade.oppija.haku.domain.elements.Titled;

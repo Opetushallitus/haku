@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.haku.domain.elements.custom;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.vm.sade.oppija.haku.domain.questions.Question;
+import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 
 /**
  * Renders as a user's application preference row. Title is used to hold the name of the preference row (Hakutoive 1, Hakutoive 2 etc.)

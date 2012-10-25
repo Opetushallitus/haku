@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.haku.service;
 
 import fi.vm.sade.oppija.haku.domain.HakemusId;
-import fi.vm.sade.oppija.haku.domain.questions.Question;
+import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 
 import java.util.List;
 import java.util.Map;

@@ -14,20 +14,21 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.domain.questions;
+package fi.vm.sade.oppija.haku.domain.elements.questions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author jukka
- * @version 9/7/122:16 PM}
+ * @version 9/7/121:28 PM}
  * @since 1.1
  */
-public class MultiSelect extends OptionQuestion {
+public class TextQuestion extends Question {
 
-    private static final long serialVersionUID = 4643744222922168865L;
+    private static final long serialVersionUID = 6043667508026260795L;
 
-    public MultiSelect(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+    public TextQuestion(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
+        addAttribute("type", "text");
     }
 }

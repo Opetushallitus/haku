@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.domain.questions;
+package fi.vm.sade.oppija.haku.domain.elements.questions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,11 +23,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @version 9/7/122:16 PM}
  * @since 1.1
  */
-public class DropdownSelect extends OptionQuestion {
+public class MultiSelect extends OptionQuestion {
 
-    private static final long serialVersionUID = -6175691634412691296L;
+    private static final long serialVersionUID = 4643744222922168865L;
 
-    public DropdownSelect(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+    public MultiSelect(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
     }
 }
