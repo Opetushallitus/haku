@@ -249,7 +249,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         scopeOptions.add(new Option("scopeoption_" + "b3", "b3", "B3"));
 
         GradeGrid gradeGrid = new GradeGrid("gradegrid", "Arvosanat", "Arvosanat TOR-rekisterissä",
-                "Poikkeavat Arvosanat", "Arvosanat", "Oppiaine", "Yhteinen oppiaine", "Valinnaisaine",
+                "Poikkeavat Arvosanat",
                 "Kieli", "Lisää kieli", subjectRowsBefore, languageRows,
                 subjectRowsAfter, scopeOptions, languageOptions, gradeRange);
 

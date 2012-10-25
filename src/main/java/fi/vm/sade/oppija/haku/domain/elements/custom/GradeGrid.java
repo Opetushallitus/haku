@@ -33,14 +33,6 @@ public class GradeGrid extends Titled {
     private String registryGradesTitle;
     // title for columns that are altered from the ones that are retrieved from a registry
     private String alteringGradesTitle;
-    // title for grade columns if a grade registry is absent
-    private String gradesTitle;
-    // title for subject names column
-    private String subjectTitle;
-    // title for common subject grade column ('Yleinen oppiaine' etc)
-    private String commonSubjectColumnTitle;
-    // title for optional subject grade column ('Valinnaisaine' etc)
-    private String optionalSubjectColumnTitle;
     // label shown in custom language row ('Kieli' etc)
     private String customLanguageTitle;
     // label text for add language button
@@ -63,10 +55,6 @@ public class GradeGrid extends Titled {
     public GradeGrid(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
                      @JsonProperty(value = "registryGradesTitle") String registryGradesTitle,
                      @JsonProperty(value = "alteringGradesTitle") String alteringGradesTitle,
-                     @JsonProperty(value = "gradesTitle") String gradesTitle,
-                     @JsonProperty(value = "subjectTitle") String subjectTitle,
-                     @JsonProperty(value = "commonSubjectColumnTitle") String commonSubjectColumnTitle,
-                     @JsonProperty(value = "optionalSubjectColumnTitle") String optionalSubjectColumnTitle,
                      @JsonProperty(value = "customLanguageTitle") String customLanguageTitle,
                      @JsonProperty(value = "addLanguageLabel") String addLanguageLabel,
                      @JsonProperty(value = "subjectsBeforeLanguages") List<SubjectRow> subjectsBeforeLanguages,
@@ -78,10 +66,6 @@ public class GradeGrid extends Titled {
         super(id, title);
         this.registryGradesTitle = registryGradesTitle;
         this.alteringGradesTitle = alteringGradesTitle;
-        this.gradesTitle = gradesTitle;
-        this.subjectTitle = subjectTitle;
-        this.commonSubjectColumnTitle = commonSubjectColumnTitle;
-        this.optionalSubjectColumnTitle = optionalSubjectColumnTitle;
         this.customLanguageTitle = customLanguageTitle;
         this.addLanguageLabel = addLanguageLabel;
         this.subjectsBeforeLanguages = subjectsBeforeLanguages;
@@ -98,18 +82,6 @@ public class GradeGrid extends Titled {
 
     public String getAlteringGradesTitle() {
         return alteringGradesTitle;
-    }
-
-    public String getGradesTitle() {
-        return gradesTitle;
-    }
-
-    public String getCommonSubjectColumnTitle() {
-        return commonSubjectColumnTitle;
-    }
-
-    public String getOptionalSubjectColumnTitle() {
-        return optionalSubjectColumnTitle;
     }
 
     public List<Option> getGradeRange() {
@@ -134,10 +106,6 @@ public class GradeGrid extends Titled {
 
     public List<Option> getLanguageOptions() {
         return languageOptions;
-    }
-
-    public String getSubjectTitle() {
-        return subjectTitle;
     }
 
     public String getCustomLanguageTitle() {
