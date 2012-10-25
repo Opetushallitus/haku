@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.tarjonta.service.impl;
 
 import fi.vm.sade.oppija.tarjonta.service.IndexService;
 import fi.vm.sade.oppija.tarjonta.service.generator.DummyDataGenerator;
-import fi.vm.sade.tarjonta.service.types2.*;
+import fi.vm.sade.tarjonta.service.types.*;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
