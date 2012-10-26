@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.tarjonta.selenium;
 
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
+import fi.vm.sade.oppija.common.selenium.AdminEditPage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +27,10 @@ public class TarjontaIT extends AbstractSeleniumBase {
 
     @Before
     public void setUp() throws Exception {
-        seleniumHelper.getDriver().get(getBaseUrl() + "/index/update");
+        final AdminEditPage adminEditPage = new AdminEditPage(getBaseUrl(), seleniumHelper);
+        seleniumHelper.navigate(adminEditPage);
+        adminEditPage.login("admin");
+        seleniumHelper.getDriver().get(getBaseUrl() + "/admin/index/update");
         assertTrue(seleniumHelper.getSelenium().isTextPresent("true"));
     }
 
