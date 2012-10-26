@@ -1,8 +1,10 @@
-package fi.vm.sade.oppija.haku.selenium;
+package fi.vm.sade.oppija.util.selenium;
 
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.haku.converter.FormModelToJsonString;
 import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.haku.selenium.PageObject;
+import fi.vm.sade.oppija.haku.selenium.SeleniumHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

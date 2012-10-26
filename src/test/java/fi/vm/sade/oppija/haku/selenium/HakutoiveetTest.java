@@ -29,6 +29,7 @@ import fi.vm.sade.oppija.haku.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.haku.domain.elements.custom.SortableTable;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.util.selenium.AbstractSeleniumBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;

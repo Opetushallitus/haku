@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.tarjonta.selenium;
 
-import fi.vm.sade.oppija.haku.selenium.AbstractSeleniumBase;
+import fi.vm.sade.oppija.util.selenium.AbstractSeleniumBase;
 import org.junit.Before;
 import org.junit.Test;
 

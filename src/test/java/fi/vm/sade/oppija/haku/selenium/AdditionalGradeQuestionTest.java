@@ -19,13 +19,13 @@ package fi.vm.sade.oppija.haku.selenium;
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
+import fi.vm.sade.oppija.util.selenium.AbstractSeleniumBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -39,6 +39,8 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
 
     @Before
     public void init() {
+
+        seleniumHelper.getDriver().manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
         FormModelDummyMemoryDaoImpl dummyMem = new FormModelDummyMemoryDaoImpl();
 
@@ -55,31 +57,16 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
         driver.findElement(By.id("preference1-Opetuspiste"));
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "koulu");
-        WebDriverWait wait = new WebDriverWait(driver, 5, 1000);
-        wait.until(new ExpectedCondition<WebElement>() {
-            @Override
-            public WebElement apply(WebDriver d) {
-                return d.findElement(By.linkText("Koulu0"));
-            }
-        });
+
+        driver.findElement(By.linkText("Koulu0"));
         driver.findElement(By.linkText("Koulu0")).click();
-        wait.until(new ExpectedCondition<WebElement>() {
-            @Override
-            public WebElement apply(WebDriver d) {
-                return d.findElement(By.xpath("//option[@value='Hakukohde_0_0']"));
-            }
-        });
+        driver.findElement(By.xpath("//option[@value='Hakukohde_0_0']"));
         driver.findElement(By.xpath("//option[@value='Hakukohde_0_0']")).click();
 
         // navigate to grade phase
         s.click("nav-next");
 
-        wait.until(new ExpectedCondition<WebElement>() {
-            public WebElement apply(WebDriver d) {
-                return d.findElement(By.xpath("//table[@id='gradegrid-table']"));
-            }
-        });
-
+        driver.findElement(By.xpath("//table[@id='gradegrid-table']"));
 
         assertEquals(11, driver.findElements(By.xpath("//table[@id='gradegrid-table']/tbody/tr")).size());
 
