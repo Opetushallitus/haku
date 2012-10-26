@@ -19,9 +19,9 @@
     Tarjonnan tunti/vienti rajapinnan esimerkki sanoma (download).
 -->
 <LearningOpportunityDownloadData
-        xmlns="http://service.tarjonta.sade.vm.fi/types2"
+        xmlns="http://service.tarjonta.sade.vm.fi/types"
         xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-        xsi:schemaLocation='http://service.tarjonta.sade.vm.fi/types2  ../../main/resources/wsdl/learningServiceCommon.xsd'>
+        xsi:schemaLocation='http://service.tarjonta.sade.vm.fi/types  ../../main/resources/wsdl/learningServiceCommon.xsd'>
 
     <!-- ========================================================================================= -->
     <!-- Koulutusmoduuli, ensihoidon ko, 1508                                                      -->
@@ -112,7 +112,9 @@
             </AccessToFurtherStudies>
 
             <EducationAndProfessionalGoals>
-                Liikunnanohjauksen perustutkinnon suorittanut henkilö osaa suunnitella ja ohjata liikuntaa sekä antaa liikuntaneuvontaa eri-ikäisille ja eri tavoittein liikkuville ihmisille turvallisesti ja terveyttä edistävästi.
+                Liikunnanohjauksen perustutkinnon suorittanut henkilö osaa suunnitella ja ohjata liikuntaa sekä antaa
+                liikuntaneuvontaa eri-ikäisille ja eri tavoittein liikkuville ihmisille turvallisesti ja terveyttä
+                edistävästi.
             </EducationAndProfessionalGoals>
 
         </Description>
@@ -204,7 +206,9 @@
             </AccessToFurtherStudies>
 
             <EducationAndProfessionalGoals>
-                Liikunnanohjauksen perustutkinnon suorittanut henkilö osaa suunnitella ja ohjata liikuntaa sekä antaa liikuntaneuvontaa eri-ikäisille ja eri tavoittein liikkuville ihmisille turvallisesti ja terveyttä edistävästi.
+                Liikunnanohjauksen perustutkinnon suorittanut henkilö osaa suunnitella ja ohjata liikuntaa sekä antaa
+                liikuntaneuvontaa eri-ikäisille ja eri tavoittein liikkuville ihmisille turvallisesti ja terveyttä
+                edistävästi.
             </EducationAndProfessionalGoals>
         </Description>
 
@@ -295,7 +299,9 @@
             </AccessToFurtherStudies>
 
             <EducationAndProfessionalGoals>
-                Liikunnanohjauksen perustutkinnon suorittanut henkilö osaa suunnitella ja ohjata liikuntaa sekä antaa liikuntaneuvontaa eri-ikäisille ja eri tavoittein liikkuville ihmisille turvallisesti ja terveyttä edistävästi.
+                Liikunnanohjauksen perustutkinnon suorittanut henkilö osaa suunnitella ja ohjata liikuntaa sekä antaa
+                liikuntaneuvontaa eri-ikäisille ja eri tavoittein liikkuville ihmisille turvallisesti ja terveyttä
+                edistävästi.
             </EducationAndProfessionalGoals>
         </Description>
 
@@ -822,8 +828,9 @@
             <AcademicAuthorities>Lorem Lipsum</AcademicAuthorities>
             <AdmissionProcedures>Lorem Lipsum</AdmissionProcedures>
             <GeneralDescription>Kisakallion Urheiluopisto on innovatiivinen koulutus-, valmennus- ja vapaa-ajankeskus.
-                                Opiskelu Kisakalliossa on sisäoppilaitosmuotoista ja siihen sisältyy opiskelun lisäksi
-                                majoitus opiskelupäivinä täysihoidolla. Opiskelu ja majoitus on maksutonta.</GeneralDescription>
+                Opiskelu Kisakalliossa on sisäoppilaitosmuotoista ja siihen sisältyy opiskelun lisäksi
+                majoitus opiskelupäivinä täysihoidolla. Opiskelu ja majoitus on maksutonta.
+            </GeneralDescription>
             <MainUniversityRequlations>Lorem Lipsum</MainUniversityRequlations>
         </InstitutionInfo>
 
@@ -905,7 +912,8 @@
 
             <!-- vapaa kuvaus -->
             <Description xml:lang="fi">
-                Perusopetuksen oppimäärän suorittaneiden opiskelijaksi ottaminen.  Yhteishaun lisäksi hakija voi halutessaan täyttää liikunnan alakohtaisen lisätietolomakkeen,jolla voi saada 1–3 lisäpistettä.
+                Perusopetuksen oppimäärän suorittaneiden opiskelijaksi ottaminen. Yhteishaun lisäksi hakija voi
+                halutessaan täyttää liikunnan alakohtaisen lisätietolomakkeen,jolla voi saada 1–3 lisäpistettä.
             </Description>
 
             <!-- valintakokeet -->
@@ -1064,7 +1072,8 @@
 
             <!-- vapaa kuvaus -->
             <Description xml:lang="fi">
-                Perusopetuksen oppimäärän suorittaneiden opiskelijaksi ottaminen.  Yhteishaun lisäksi hakija voi halutessaan täyttää liikunnan alakohtaisen lisätietolomakkeen,jolla voi saada 1–3 lisäpistettä.
+                Perusopetuksen oppimäärän suorittaneiden opiskelijaksi ottaminen. Yhteishaun lisäksi hakija voi
+                halutessaan täyttää liikunnan alakohtaisen lisätietolomakkeen,jolla voi saada 1–3 lisäpistettä.
             </Description>
 
             <!-- valintakokeet -->
