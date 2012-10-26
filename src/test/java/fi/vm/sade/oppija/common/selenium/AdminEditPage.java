@@ -37,7 +37,7 @@ public class AdminEditPage extends LoginPage implements PageObject {
         final String convert = new FormModelToJsonString().convert(formModel1);
         final WebElement model = driver.findElement(By.id("model"));
         model.clear();
-        selenium.runScript("document.getElementById('model').value=" + convert);
+        selenium.runScript("document.getElementById('model').value='" + convert + "'");
         // model.sendKeys(convert);
         final WebElement tallenna = driver.findElement(By.id("tallenna"));
         tallenna.click();
