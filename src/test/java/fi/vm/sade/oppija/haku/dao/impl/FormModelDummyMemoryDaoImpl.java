@@ -110,14 +110,16 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         Teema koulutustaustaRyhmä = new Teema("KoulutustaustaGrp", "Koulutustausta", null);
         Teema hakutoiveetRyhmä = new Teema("hakutoiveetGrp", "Hakutoiveet", lisakysymysMap);
         Teema arvosanatRyhmä = new Teema("arvosanatGrp", "Arvosanat", oppiaineMap);
-        Teema lisätiedotRyhmä = new Teema("lisatiedotGrp", "Lisätiedot", null);
+        Teema tyokokemusRyhmä = new Teema("tyokokemusGrp", "Työkokemus", null);
+        Teema lupatiedotRyhmä = new Teema("lupatiedotGrp", "Lupatiedot", null);
         Teema yhteenvetoRyhmä = new Teema("yhteenvetoGrp", "yhteenveto", null);
 
         henkilötiedot.addChild(henkilötiedotRyhmä);
         koulutustausta.addChild(koulutustaustaRyhmä);
         hakutoiveet.addChild(hakutoiveetRyhmä);
         arvosanat.addChild(arvosanatRyhmä);
-        lisätiedot.addChild(lisätiedotRyhmä);
+        lisätiedot.addChild(tyokokemusRyhmä);
+        lisätiedot.addChild(lupatiedotRyhmä);
 
         DropdownSelect äidinkieli = new DropdownSelect("äidinkieli", "Äidinkieli");
         äidinkieli.addOption("suomi", "Suomi", "Suomi");
@@ -193,13 +195,11 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         createKoulutustausta(koulutustaustaRyhmä);
         createHakutoiveet(hakutoiveetRyhmä);
         createArvosanat(arvosanatRyhmä);
-
-        TextArea lisätiedotText = new TextArea("vapaa", "Lisätietoja, sana on vapaa");
-        lisätiedotRyhmä.addChild(lisätiedotText);
-        lisätiedotText.addAttribute("required", "required");
+        createTyokokemus(tyokokemusRyhmä);
+        createLupatiedot(lupatiedotRyhmä);
 
         esikatselu.addChild(henkilötiedotRyhmä).
-                addChild(koulutustaustaRyhmä).addChild(hakutoiveetRyhmä).addChild(arvosanatRyhmä).addChild(lisätiedotRyhmä);
+                addChild(koulutustaustaRyhmä).addChild(hakutoiveetRyhmä).addChild(arvosanatRyhmä).addChild(tyokokemusRyhmä).addChild(lupatiedotRyhmä);
 
         yhteenvetoRyhmä.setHelp("Kiitos, hakemuksesi on vastaanotettu");
 
@@ -217,7 +217,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         gradeRange.add(new Option("grade_5", "5", "5"));
         gradeRange.add(new Option("grade_4", "4", "4"));
 
-        SubjectRow finnish = new SubjectRow("subject_finnish", "Äidinkieli");
+        SubjectRow finnish = new SubjectRow("subject_finnish", "Äidinkieli ja kirjallisuus");
         List<SubjectRow> subjectRowsBefore = new ArrayList<SubjectRow>();
         subjectRowsBefore.add(finnish);
 
@@ -230,9 +230,15 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         SubjectRow math = new SubjectRow("subject_math", "Matematiikka");
         SubjectRow biology = new SubjectRow("subject_biology", "Biologia");
+        SubjectRow maantieto = new SubjectRow("subject_maantieto", "Maantieto");
+        SubjectRow fysiikka = new SubjectRow("subject_fysiikka", "Fysiikka");
+        SubjectRow kemia = new SubjectRow("subject_kemia", "Kemia");
         List<SubjectRow> subjectRowsAfter = new ArrayList<SubjectRow>();
         subjectRowsAfter.add(math);
         subjectRowsAfter.add(biology);
+        subjectRowsAfter.add(maantieto);
+        subjectRowsAfter.add(fysiikka);
+        subjectRowsAfter.add(kemia);
 
         List<Option> languageOptions = new ArrayList<Option>();
         languageOptions.add(new Option("langoption_" + "eng", "eng", "englanti"));
@@ -259,6 +265,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     private void createArvosanat(Teema arvosanatRyhmä) {
 
         arvosanatRyhmä.addChild(createGradeGrid());
+        arvosanatRyhmä.setHelp("Merkitse arvosanat siitä todistuksesta, jolla haet koulutukseen (perusopetus,tai sitä vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitä, mikäli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta. 1. Tarkista ja täydennä taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitäytetyistä. Huom! Valinnaisaineiden arvosanat merkitään vain mikäli niiden laajuus on vähintään kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilöllistettyjä arvosanoja, valitse listasta arvosana, jossa on tähti.");
 
     }
 
@@ -276,6 +283,33 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         sortableTable.addChild(pr4);
         sortableTable.addChild(pr5);
         hakutoiveetRyhmä.addChild(sortableTable);
+    }
+
+    private void createTyokokemus(Teema tyokokemus) {
+        tyokokemus.setHelp("Työkokemukseksi lasketaan työ, josta sinulla on työtodistus. Työhön rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vähintään kolmen kuukauden pituinen työpajatoimintaan osallistuminen tai työharjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa työtodistukset ennen lopullista valintaa.");
+        TextQuestion tyokokemuskuukaudet = new TextQuestion("tyokokemuskuukaudet", "Työkokemus");
+        tyokokemuskuukaudet.setHelp("Merkitse kenttään hakuajan päättymiseen mennessä kertynyt työkokemuksesi. Voit käyttää laskemiseen apuna laskuria.");
+        tyokokemuskuukaudet.addAttribute("placeholder", "kuukautta");
+        tyokokemuskuukaudet.addAttribute("title", "kuukautta");
+        tyokokemuskuukaudet.addAttribute("pattern", "[0-9]*");
+        tyokokemus.addChild(tyokokemuskuukaudet);
+    }
+
+    private void createLupatiedot(Teema lupatiedot) {
+        CheckBox lupa = new CheckBox("lupa", "Ohjeteksti lorem ipsum.");
+        lupa.addOption("lupa1", "lupa1", "Haluan, että huoltajalleni lähetetään tieto sähköpostilla hakulomakkeen täyttämisestä");
+        lupa.addOption("lupa2", "lupa2", "Minulle saa lähettää postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia");
+        lupa.addOption("lupa3", "lupa3", "Tietoni opiskeluvalinna tuloksista saa julkaista Internetissä");
+        lupa.addOption("lupa4", "lupa4", "Valintaani koskevat tiedot saa lähettää minulle sähköisesti");
+        lupa.addOption("lupa5", "lupa5", "Minulle saa lähettää tietoa opiskelijavalinnan etenemisestä ja tuloksista tekstiviestillä");
+
+        Radio asiointikieli = new Radio("asiointikieli", "Asiointikieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviä tietoja");
+        asiointikieli.addOption("suomi", "suomi", "suomi");
+        asiointikieli.addOption("ruotsi", "ruotsi", "ruotsi");
+        asiointikieli.addAttribute("required", "required");
+
+        lupatiedot.addChild(lupa);
+        lupatiedot.addChild(asiointikieli);
     }
 
     private void createKoulutustausta(Teema koulutustaustaRyhmä) {
