@@ -22,6 +22,10 @@
             <user-service>
                 <user name="joe" password="bloggs" authorities="ROLE_USER, ROLE_ADMIN"/>
                 <user name="test" password="test" authorities="ROLE_USER"/>
+                <user name="test2" password="test2" authorities="ROLE_USER"/>
+                <user name="test3" password="test3" authorities="ROLE_USER"/>
+                <user name="test4" password="test4" authorities="ROLE_USER"/>
+                <user name="test5" password="test5" authorities="ROLE_USER"/>
                 <user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN"/>
             </user-service>
         </authentication-provider>
