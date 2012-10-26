@@ -313,7 +313,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     private void createKoulutustausta(Teema koulutustaustaRyhmä) {
-        koulutustaustaRyhmä.setHelp("Merkitse tälle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitä vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi valita kohtaa 'Perusopetuksen oppimäärä'. Lukion oppimäärän tai ylioppilastutkinnon suorittaneet eivät voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta.");
+        koulutustaustaRyhmä.setHelp("Merkitse tälle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitä vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimäärä. Lukion oppimäärän tai ylioppilastutkinnon suorittaneet eivät voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta.");
         Radio millatutkinnolla = new Radio("millatutkinnolla", "valitse tutkinto, jolla haet koulutukseen.");
         millatutkinnolla.addOption("tutkinto1", "tutkinto1", "Perusopetuksen oppimäärä");
         millatutkinnolla.addOption("tutkinto2", "tutkinto2", "Perusopetuksen erityisopetuksen osittain yksilöllistetty oppimäärä");
@@ -341,7 +341,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         suorittanut.addOption("suorittanut4", "suorittanut4", "Muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus (talouskoulu)");
         suorittanut.addOption("suorittanut5", "suorittanut5", "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus (ammattistartti)");
 
-        Radio osallistunut = new Radio("osallistunut","Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen/alan pääsykokeisiin?");
+        Radio osallistunut = new Radio("osallistunut", "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen/alan pääsykokeisiin?");
         osallistunut.addOption("ei", "Ei", "En");
         osallistunut.addOption("kylla", "Kyllä", "Kyllä");
         osallistunut.addAttribute("required", "required");
