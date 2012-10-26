@@ -130,6 +130,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         kansalaisuus.addOption("ruotsi", "Ruotsi", "Ruotsi");
         kansalaisuus.addAttribute("placeholder", "Valitse kansalaisuus");
         kansalaisuus.addAttribute("required", "required");
+        kansalaisuus.setHelp("Jos sinulla on kaksoiskansalaisuus, valitse toinen niistä");
 
         DropdownSelect kotikunta = new DropdownSelect("kotikunta", "Kotikunta");
         kotikunta.addOption("jalasjarvi, ", "Jalasjärvi", "Jalasjärvi");
@@ -150,7 +151,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", "Kutsumanimi");
         kutsumanimi.setHelp("Valitse kutsumanimeksi jokin virallisista etunimistäsi");
         kutsumanimi.addAttribute("required", "required");
-        TextQuestion sähköposti = new TextQuestion("Sähköposti", "Sähköposti");
+        TextQuestion sähköposti = new TextQuestion("Sähköposti", "Sähköpostiosoite");
         sähköposti.setHelp("Kirjoita tähän sähköpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.");
 
         Radio sukupuoli = new Radio("Sukupuoli", "Sukupuoli");
@@ -171,7 +172,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
         postinumero.addAttribute("title", "#####");
-        postinumero.setHelp("Kirjoita tähän osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, kuten valintakirjeen tai kutsun pääsykokeeseen.");
+        postinumero.setHelp("Kirjoita tähän osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, kuten kutsun valintakokeeseen tai valintapäätöksen.");
         TextQuestion matkapuhelinnumero = new TextQuestion("matkapuhelinnumero", "Matkapuhelinnumero");
         matkapuhelinnumero.setHelp("Kirjoita tähän matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.");
         kotikunta.setHelp("Kotikunta on tyypillisesti se kunta, jossa asut.");
@@ -274,36 +275,44 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     private void createKoulutustausta(Teema koulutustaustaRyhmä) {
-        Radio millatutkinnolla = new Radio("millatutkinnolla", "Millä tutkinnolla haet opiskelupaikkaa?");
-        for (int i = 0; i < 10; i++) {
-            millatutkinnolla.addOption("tutkinto" + i, "tutkinto" + i, "Lorem ipsum sit dolor amet " + i);
-        }
+        koulutustaustaRyhmä.setHelp("Merkitse tälle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitä vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi valita kohtaa \"Perusopetuksen oppimäärä\". Lukion oppimäärän tai ylioppilastutkinnon suorittaneet eivät voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta.");
+        Radio millatutkinnolla = new Radio("millatutkinnolla", "valitse tutkinto, jolla haet koulutukseen.");
+        millatutkinnolla.addOption("tutkinto1", "tutkinto1", "Perusopetuksen oppimäärä");
+        millatutkinnolla.addOption("tutkinto2", "tutkinto2", "Perusopetuksen erityisopetuksen osittain yksilöllistetty oppimäärä");
+        millatutkinnolla.addOption("tutkinto3", "tutkinto3", "Perusopetuksen erityisopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain");
+        millatutkinnolla.addOption("tutkinto4", "tutkinto4", "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä");
+        millatutkinnolla.addOption("tutkinto5", "tutkinto5", "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)");
+        millatutkinnolla.addOption("tutkinto6", "tutkinto6", "Lukion päättötodistus, ylioppilastutkinto tai abiturientti");
+        millatutkinnolla.addOption("tutkinto7", "tutkinto7", "Ulkomailla suoritettu koulutus");
 
         Radio peruskoulu2012 = new Radio("peruskoulu2012", "Saatko peruskoulun päättötodistuksen hakukeväänä 2012?");
         peruskoulu2012.addOption("kylla", "Kyllä", "Kyllä");
-        peruskoulu2012.addOption("ei", "Ei", "en, lorem ipsum sed diam bla bla bla nonummy nihb euismod");
+        peruskoulu2012.addOption("ei", "Ei", "en, olen saanut päättötodistuksen jo aiemmin, vuonna");
         peruskoulu2012.addAttribute("required", "required");
 
         DropdownSelect tutkinnonOpetuskieli = new DropdownSelect("opetuskieli", "Mikä oli tukintosi opetuskieli");
         tutkinnonOpetuskieli.addOption("suomi", "Suomi", "Suomi");
         tutkinnonOpetuskieli.addOption("ruotsi", "Ruotsi", "Ruotsi");
         tutkinnonOpetuskieli.addAttribute("placeholder", "Tutkintosi opetuskieli");
-        tutkinnonOpetuskieli.setHelp("Merkitse tähän lorem ipsum sit ame bla bla lorem ipsum sit ame bla bla lorem ipsum sit ame bla bla lorem ipsum sit ame bla bla");
+        tutkinnonOpetuskieli.setHelp("Merkitse tähän se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellä tasapuolisesti, valitse toinen niistä");
 
         CheckBox suorittanut = new CheckBox("suorittanut", "Merkitse tähän, jos olet suorittanut jonkun seuraavista");
-        for (int i = 0; i < 5; i++) {
-            suorittanut.addOption("suorittanut" + i, "suorittanut " + i, "Olen suorittanut opetuksen " + i + ".");
-        }
+        suorittanut.addOption("suorittanut1", "suorittanut1", "Perusopetuksen lisäopetuksen oppimäärä (kymppiluokka)");
+        suorittanut.addOption("suorittanut2", "suorittanut2", "Vammaisten valmentava ja kuntouttava opetus ja ohjaus");
+        suorittanut.addOption("suorittanut3", "suorittanut3", "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus");
+        suorittanut.addOption("suorittanut4", "suorittanut4", "Muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus (talouskoulu)");
+        suorittanut.addOption("suorittanut5", "suorittanut5", "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus (ammattistartti)");
 
-        Radio jotain = new Radio("jotain", "Lorem ipsum sit dolor amet?");
-        jotain.addOption("ei", "Ei", "En");
-        jotain.addOption("kylla", "Kyllä", "Kyllä");
-        jotain.addAttribute("required", "required");
+        Radio osallistunut = new Radio("osallistunut","Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen/alan pääsykokeisiin?");
+        osallistunut.addOption("ei", "Ei", "En");
+        osallistunut.addOption("kylla", "Kyllä", "Kyllä");
+        osallistunut.addAttribute("required", "required");
 
         koulutustaustaRyhmä.addChild(millatutkinnolla);
         koulutustaustaRyhmä.addChild(peruskoulu2012);
+        koulutustaustaRyhmä.addChild(tutkinnonOpetuskieli);
         koulutustaustaRyhmä.addChild(suorittanut);
-        koulutustaustaRyhmä.addChild(jotain);
+        koulutustaustaRyhmä.addChild(osallistunut);
     }
 
 
