@@ -16,13 +16,13 @@
 
 package fi.vm.sade.oppija.haku.selenium;
 
+import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
-import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -50,8 +50,8 @@ public class SelectingSubmitRuleIT extends AbstractSeleniumBase {
         child.addOption("mies", "mies", "Mies");
         child.addOption("nainen", "nainen", "Nainen");
         SelectingSubmitRule selectingSubmitRule = new SelectingSubmitRule(textQuestion.getId(), child.getId());
-        selectingSubmitRule.addBinding(textQuestion, child, "\\d{6}\\S\\d{2}[13579]\\w", child.getOptions().get(0));
-        selectingSubmitRule.addBinding(textQuestion, child, "\\d{6}\\S\\d{2}[24680]\\w", child.getOptions().get(1));
+        selectingSubmitRule.addBinding(textQuestion, child, "\\\\d{6}\\\\S\\\\d{2}[13579]\\\\w", child.getOptions().get(0));
+        selectingSubmitRule.addBinding(textQuestion, child, "\\\\d{6}\\\\S\\\\d{2}[24680]\\\\w", child.getOptions().get(1));
 
 
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(selectingSubmitRule);
