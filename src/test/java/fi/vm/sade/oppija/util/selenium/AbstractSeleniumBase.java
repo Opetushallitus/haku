@@ -1,9 +1,10 @@
-package fi.vm.sade.oppija.haku.selenium;
+package fi.vm.sade.oppija.util.selenium;
 
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.SeleniumContainer;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.it.TomcatContainerBase;
+import fi.vm.sade.oppija.haku.selenium.SeleniumHelper;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
