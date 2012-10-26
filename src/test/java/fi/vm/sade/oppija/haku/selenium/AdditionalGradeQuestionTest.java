@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.haku.selenium;
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.util.selenium.AbstractSeleniumBase;
+import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;

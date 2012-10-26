@@ -1,6 +1,6 @@
 package fi.vm.sade.oppija.haku.selenium;
 
-import fi.vm.sade.oppija.util.selenium.LoginPage;
+import fi.vm.sade.oppija.common.selenium.LoginPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 

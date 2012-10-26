@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
-import fi.vm.sade.oppija.util.selenium.AbstractSeleniumBase;
+import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;

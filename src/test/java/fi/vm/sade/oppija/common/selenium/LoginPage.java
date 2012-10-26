@@ -1,4 +1,4 @@
-package fi.vm.sade.oppija.util.selenium;
+package fi.vm.sade.oppija.common.selenium;
 
 import com.thoughtworks.selenium.Selenium;
 
