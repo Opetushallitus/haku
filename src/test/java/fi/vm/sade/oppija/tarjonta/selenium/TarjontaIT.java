@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.tarjonta.it;
+package fi.vm.sade.oppija.tarjonta.selenium;
 
 import fi.vm.sade.oppija.haku.selenium.AbstractSeleniumBase;
 import org.junit.Before;
