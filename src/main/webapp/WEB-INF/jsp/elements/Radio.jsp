@@ -12,6 +12,7 @@
             <input type="radio" name="${element.id}"
                 value="${option.value}" ${(!empty disabled) ? "disabled=\"true\" " : " "} ${(value eq option.value) ? "checked=\"checked\" " : " "} ${element.attributes['required'].asString}/>
             <label for="${option.id}">${option.title}</label>
+            <div id="help-${element.id}-${option.id}"><small>${option.help}</small></div>
         </div>
     </c:forEach>
 

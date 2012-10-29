@@ -33,6 +33,12 @@ public abstract class OptionQuestion extends Question {
         this.options.add(new Option(this.getId() + ID_DELIMITER + id, value, title));
     }
 
+    public void addOption(final String id, final String value, final String title, final String help) {
+        Option opt = new Option(this.getId() + ID_DELIMITER + id, value, title);
+        opt.setHelp(help);
+        this.options.add(opt);
+    }
+
     public List<Option> getOptions() {
         return options;
     }

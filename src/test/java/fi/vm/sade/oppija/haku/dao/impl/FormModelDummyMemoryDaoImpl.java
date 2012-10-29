@@ -340,13 +340,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     private void createKoulutustausta(Teema koulutustaustaRyhmä) {
         koulutustaustaRyhmä.setHelp("Merkitse tälle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitä vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimäärä. Lukion oppimäärän tai ylioppilastutkinnon suorittaneet eivät voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta.");
         Radio millatutkinnolla = new Radio("millatutkinnolla", "valitse tutkinto, jolla haet koulutukseen.");
-        millatutkinnolla.addOption("tutkinto1", "tutkinto1", "Perusopetuksen oppimäärä");
-        millatutkinnolla.addOption("tutkinto2", "tutkinto2", "Perusopetuksen erityisopetuksen osittain yksilöllistetty oppimäärä");
-        millatutkinnolla.addOption("tutkinto3", "tutkinto3", "Perusopetuksen erityisopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain");
-        millatutkinnolla.addOption("tutkinto4", "tutkinto4", "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä");
-        millatutkinnolla.addOption("tutkinto5", "tutkinto5", "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)");
-        millatutkinnolla.addOption("tutkinto6", "tutkinto6", "Lukion päättötodistus, ylioppilastutkinto tai abiturientti");
-        millatutkinnolla.addOption("tutkinto7", "tutkinto7", "Ulkomailla suoritettu koulutus");
+        millatutkinnolla.addOption("tutkinto1", "tutkinto1", "Perusopetuksen oppimäärä", "Valitse tämä, jos olet käynyt peruskoulun.");
+        millatutkinnolla.addOption("tutkinto2", "tutkinto2", "Perusopetuksen erityisopetuksen osittain yksilöllistetty oppimäärä", "Valitse tämä, jos olet opiskellut yksilöllistetyn oppimäärän puolessa tai alle puolessa oppiaineista.");
+        millatutkinnolla.addOption("tutkinto3", "tutkinto3", "Perusopetuksen erityisopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain", "Valitse tämä, jos olet osallistunut harjaantumisopetukseen.");
+        millatutkinnolla.addOption("tutkinto4", "tutkinto4", "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä", "Valitse tämä, jos olet opiskellut peruskoulun kokonaan yksilöllistetyn oppimäärän mukaan tai olet opiskellut yli puolet opinnoistasi yksilöllistetyn opetuksen mukaan.");
+        millatutkinnolla.addOption("tutkinto5", "tutkinto5", "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)", "Valitse tämä vain, jos sinulla ei ole lainkaan päättötodistusta.");
+        millatutkinnolla.addOption("tutkinto6", "tutkinto6", "Lukion päättötodistus, ylioppilastutkinto tai abiturientti", "Valitse tämä, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvälinen ylioppilastutkinto, tai olet suorittanut yhdistelmätutkinnon, johon sisältyy lukion vahimmäisoppimäärää vastaavat opinnot.");
+        millatutkinnolla.addOption("tutkinto7", "tutkinto7", "Ulkomailla suoritettu koulutus", "Valitse tämä, jos olet suorittanut tutkintosi ulkomailla.");
 
         Radio peruskoulu2012 = new Radio("peruskoulu2012", "Saatko peruskoulun päättötodistuksen hakukeväänä 2012?");
         peruskoulu2012.addOption("kylla", "Kyllä", "Kyllä");
