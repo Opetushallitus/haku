@@ -1,0 +1,160 @@
+
+/*** common notelist-page styles
+************************************************/
+.notelist-header {
+    background-image: url('../img/muistilista_ikoni.png');
+    background-repeat: no-repeat;
+    background-position: left top;
+    min-height: 52px;
+}
+
+
+.notelist-header h1 {
+    display: inline-block;
+    vertical-align: bottom;    
+    padding-left: 55px;
+    letter-spacing: -0.5px;
+}
+
+
+
+
+/*** Notelist-table
+************************************************/
+
+.notelist-table
+{
+    background-color:#ececec;
+    position:relative;
+    overflow:hidden;
+    border-radius: 5px;
+    margin-bottom: 2em;
+}
+
+.notelist-table .table-container
+{
+    margin-right:-4px;
+    position:relative;
+}
+
+.notelist-table table
+{
+    width:100%;
+    border-spacing:2px 0px;
+    margin:0px -10px 0px 0px;
+    border:none;
+    position:relative;
+    left:-2px;
+}
+
+.notelist-table thead tr th,
+.notelist-table thead tr td,
+.notelist-table tbody tr td
+{
+    border:none;
+    vertical-align:top;
+    padding:0.5em 1.5em;
+    line-height:1.5em;
+    background-color: #fff;
+}
+
+.notelist-table thead tr td {
+    background-color: #ebebeb;
+    border-top: 1px solid #c8c8c8;
+    border-bottom: 1px solid #c8c8c8;
+}
+
+.notelist-table tbody tr.selected td {
+    background-color: #e5f3f8;
+}
+
+.notelist-table thead tr th
+{
+    background-color:#ececec;
+    background-image:url('../img/texture-angled-lines.gif');
+    background-repeat:repeat;
+    background-position:top left;
+    font-size:1.385em;
+    line-height:1.5em;
+    text-shadow:0px 1px 1px #ffffff;
+    
+    color: #149DCA;
+    text-align: left;
+}
+
+.notelist-table table:first-of-type thead tr th {
+    border-radius: 5px 5px 0px 0px;
+}
+
+.notelist-table thead tr th:first-child
+{
+    box-shadow:inset 8px 0px 4px -8px #a9a9a9, inset 0px 8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9;
+}
+
+.notelist-table thead tr td
+{
+    background-color:#dcdcdc;
+    text-transform:uppercase;
+
+}
+
+.notelist-table thead tr td
+.notelist-table tbody tr td
+{
+
+}
+
+.notelist-table thead tr td:first-child,
+.notelist-table tbody tr td:first-child
+{
+    box-shadow:inset 8px 0px 4px -8px #a9a9a9;
+}
+
+.notelist-table thead tr td:last-child,
+.notelist-table tbody tr td:last-child
+{
+    box-shadow:inset -8px 0px 4px -8px #a9a9a9;
+}
+
+.notelist-table tfoot tr td
+{
+    border:none;
+    vertical-align:top;
+    padding:0.5em 1.5em;
+    background-color:#ececec;
+}
+
+.notelist-table table:last-of-type tfoot tr td {
+    border-radius: 0 0 5px 5px;
+}
+
+.notelist-table tfoot small {
+    font-style: italic;
+    display: block;
+}
+
+.notelist-table tfoot .sidenotes {
+    margin-bottom: 10px;
+}
+
+.notelist-table tbody tr td.clear-column,
+.notelist-table thead tr td.clear-column {
+    background: #fff;
+    text-align: center;
+}
+
+.notelist-table tbody tr td .field-container-checkbox label {
+    line-height: 1.5em;
+}
+
+.notelist-tools {
+    margin-bottom: 2em;
+}
+
+.notelist-tools button{
+    padding-bottom: 1em;
+}
+
+.notelist-tools input[type=text] {
+    width: 300px;
+}
