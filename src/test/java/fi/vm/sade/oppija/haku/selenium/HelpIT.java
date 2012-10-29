@@ -23,14 +23,9 @@ import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.questions.CheckBox;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
-import java.io.File;
-import java.io.FileFilter;
 
 import static org.junit.Assert.assertEquals;
 
@@ -43,14 +38,6 @@ public class HelpIT extends AbstractSeleniumBase {
     public static final String HELP_TEXT = "Apuva";
 
     private FormModelHelper formModelHelper;
-
-    @Before
-    public void setUp() throws Exception {
-        File dir = new File("/home/ville/src/");
-        FileFilter fileFilter = new WildcardFileFilter("*.jsp");
-        File[] files = dir.listFiles(fileFilter);
-        System.out.println(files.length);
-    }
 
     @Test
     public void testCheckBox() {
