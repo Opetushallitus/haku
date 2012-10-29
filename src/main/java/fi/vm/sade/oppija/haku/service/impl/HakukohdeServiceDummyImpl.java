@@ -56,7 +56,7 @@ public class HakukohdeServiceDummyImpl implements HakukohdeService {
     }
 
     @Override
-    public List<Organisaatio> searchOrganisaatio(String term) {
+    public List<Organisaatio> searchOrganisaatio(final String hakuId, String term) {
         List<Organisaatio> result = new ArrayList<Organisaatio>();
         if (term != null && !term.trim().isEmpty()) {
             term = term.trim().toLowerCase(Locale.getDefault());
@@ -73,7 +73,7 @@ public class HakukohdeServiceDummyImpl implements HakukohdeService {
     }
 
     @Override
-    public List<Hakukohde> searchHakukohde(String organisaatioId) {
+    public List<Hakukohde> searchHakukohde(final String hakuId, String organisaatioId) {
         return hakukohdeMap.get(organisaatioId);
     }
 }

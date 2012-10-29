@@ -46,6 +46,7 @@ public class EducationController {
 
     public static final String TERM = "term";
 
+    @Qualifier("hakukohdeServiceDummyImpl")
     @Autowired
     HakukohdeService hakukohdeService;
     @Autowired
@@ -56,18 +57,16 @@ public class EducationController {
     @Autowired
     AdditionalQuestionService additionalQuestionService;
 
-    public static final String USER_ID = "j_username";
-
     @RequestMapping(value = "/organisaatio/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = TERM)
     @ResponseBody
     public List<Organisaatio> searchOrganisaatio(@RequestParam(TERM) String term) {
-        return hakukohdeService.searchOrganisaatio(term);
+        return hakukohdeService.searchOrganisaatio(null, term);
     }
 
     @RequestMapping(value = "/hakukohde/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = "organisaatioId")
     @ResponseBody
     public List<Hakukohde> searchHakukohde(@RequestParam("organisaatioId") String organisaatioId) {
-        return hakukohdeService.searchHakukohde(organisaatioId);
+        return hakukohdeService.searchHakukohde(null, organisaatioId);
     }
 
     @RequestMapping(value = "/additionalquestion/{applicationPeriodId}/{formId}/{vaiheId}/{teemaId}/{hakukohdeId}", method = RequestMethod.GET)

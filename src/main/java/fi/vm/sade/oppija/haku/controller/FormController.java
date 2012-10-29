@@ -110,7 +110,10 @@ public class FormController {
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView prefillForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId, @RequestBody final MultiValueMap<String, String> multiValues) {
-        return saveCategory(applicationPeriodId, formId, formService.getFirstCategory(applicationPeriodId, formId).getId(), multiValues);
+        final HakemusId hakemusId = new HakemusId(applicationPeriodId, formId, "henkilotiedot");
+        HakemusState hakemusState = hakemusService.save(hakemusId, multiValues.toSingleValueMap());
+        return new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId);
+        //return saveCategory(applicationPeriodId, formId, formService.getFirstCategory(applicationPeriodId, formId).getId(), multiValues);
     }
 
 

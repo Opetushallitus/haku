@@ -54,7 +54,7 @@ public class IndexerServiceImpl implements IndexService {
             httpSolrServer.add(documents);
             httpSolrServer.commit();
         } catch (Exception e) {
-            LOGGER.error("Indeksin päivitys epäonnistui");
+            LOGGER.error("Indeksin päivitys epäonnistui ", e);
             return false;
         }
         return true;
@@ -111,6 +111,7 @@ public class IndexerServiceImpl implements IndexService {
             cal.set(Calendar.MONTH, cal.get(Calendar.MONTH + 1));
             solrDocument.addField("tmpASEnd", cal.getTime());
             solrDocument.addField("tmpAOLastYearQualified", 45);
+            solrDocument.addField("tmpHakuId", "1");
 
             solrDocuments.add(solrDocument);
         }
@@ -133,7 +134,7 @@ public class IndexerServiceImpl implements IndexService {
 
     private void addApplicationOption(SolrInputDocument solrDocument, ApplicationOptionType applicationOptionType) {
         solrDocument.addField("AOId", applicationOptionType.getIdentifier().getValue());
-//        solrDocument.addField("AODescription", getValueOfExtendedString(applicationOptionType.getDescription()));
+//      solrDocument.addField("AODescription", getValueOfExtendedString(applicationOptionType.getDescription()));
         solrDocument.addField("AOTitle", getValueOfExtendedString(applicationOptionType.getTitle()));
         solrDocument.addField("AOEligibilityRequirements", getValueOfExtendedString(applicationOptionType.getEligibilityRequirements().getDescription()));
         solrDocument.addField("AODescription", getValueOfExtendedString(applicationOptionType.getSelectionCriterions().getDescription()));
@@ -226,9 +227,7 @@ public class IndexerServiceImpl implements IndexService {
                         getValueOfExtendedString(learningClassificationCodeType.getLabel()));
             }
         }
-
     }
-
 
     private static String getValueOfExtendedString(List<ExtendedStringType> ref1) {
         return ref1.get(0).getValue();

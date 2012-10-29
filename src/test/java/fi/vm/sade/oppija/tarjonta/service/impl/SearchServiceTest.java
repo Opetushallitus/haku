@@ -16,11 +16,12 @@
 
 package fi.vm.sade.oppija.tarjonta.service.impl;
 
-import fi.vm.sade.oppija.tarjonta.domain.SearchParameters;
 import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
 import fi.vm.sade.oppija.tarjonta.domain.exception.SearchException;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
 import org.junit.Test;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,13 +38,13 @@ import static org.junit.Assert.assertEquals;
 public class SearchServiceTest {
     @Test
     public void testSearch() throws Exception {
-        final SearchResult search = new MockSearchService().search(new SearchParameters(new HashMap<String, Map<String, String>>()));
+        final SearchResult search = new MockSearchService().search(new LinkedMultiValueMap<String, String>());
         assertEquals(0, search.getSize());
     }
 
     @Test
     public void testSearchById() throws Exception {
-        final Map<String, Object> stringObjectMap = new MockSearchService().searchById(new SearchParameters(new HashMap<String, Map<String, String>>()));
+        final Map<String, Object> stringObjectMap = new MockSearchService().searchById("1");
         assertEquals(0, stringObjectMap.size());
     }
 
@@ -56,12 +57,12 @@ public class SearchServiceTest {
     private class MockSearchService implements SearchService {
 
         @Override
-        public SearchResult search(SearchParameters searchParameters) throws SearchException {
+        public SearchResult search(MultiValueMap<String, String> parameters) throws SearchException {
             return new SearchResult(new ArrayList<Map<String, Object>>());
         }
 
         @Override
-        public Map<String, Object> searchById(SearchParameters searchParameters) {
+        public Map<String, Object> searchById(String field) {
             return new HashMap<String, Object>();
         }
 

@@ -14,21 +14,17 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.tarjonta.service;
+package fi.vm.sade.oppija.tarjonta.service.impl.query;
 
-import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
-import fi.vm.sade.oppija.tarjonta.domain.exception.SearchException;
-import org.springframework.util.MultiValueMap;
 
-import java.util.Collection;
+import org.apache.solr.client.solrj.SolrQuery;
+
+import java.util.List;
 import java.util.Map;
 
-public interface SearchService {
-
-
-    SearchResult search(MultiValueMap<String, String> parameters) throws SearchException;
-
-    Map<String, Object> searchById(final String field);
-
-    Collection<String> getUniqValuesByField(final String field);
+public class FieldsParameterAppender implements SolrQueryAppender {
+    @Override
+    public void append(SolrQuery solrQuery, Map.Entry<String, List<String>> entry) {
+        solrQuery.setFields(entry.getValue().toArray(new String[0]));
+    }
 }

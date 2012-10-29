@@ -17,21 +17,19 @@
 package fi.vm.sade.oppija.tarjonta.controller;
 
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.tarjonta.converter.ArrayParametersToMap;
-import fi.vm.sade.oppija.tarjonta.domain.*;
+import fi.vm.sade.oppija.tarjonta.domain.SearchFilters;
+import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
-import org.apache.commons.lang.StringUtils;
 import org.codehaus.plexus.util.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 
@@ -45,74 +43,28 @@ public class SearchController {
     public static final String VIEW_NAME_ITEMS = "tarjonta/tarjontatiedot";
     public static final String VIEW_NAME_KOULUTUSKUVAUS = "tarjonta/koulutuskuvaus";
     public static final String MODEL_NAME = "searchResult";
-    public static final String MODEL_NAME_SEARCH_PARAMETERS = "searchParameters";
-    public static final String PARAMETERS = "parameters";
+    public static final String PARAMETERS_SINGLE_VALUE = "parameters";
+    public static final String PARAMETERS_MULTI_VALUE = "parameters_multi";
     public static final String SEARCH_FILTERS = "filters";
-    public static final String SORT_PARAMETERS = "sort_parameters";
-    public static final String PAGING_PARAMETERS = "paging_parameters";
-    public static final String FILTERS = "filters";
-    public static final String TUNNISTE = "AOId";
-    public static final String KOULUTUSTYYPPI = "koulutustyyppi";
-    public static final String KOULUTUKSENKIELI = "koulutuksenkieli";
-    public static final String OPETUSMUOTO = "opetusmuoto";
-    public static final String OPPILAITOSTYYPPI = "oppilaitostyyppi";
-    public static final String SEARCH_PARAMETER = "text";
+
     private final SearchService service;
     private final SearchFilters searchFilters;
-    private ArrayParametersToMap arrayParametersToMap;
 
     @Autowired
     public SearchController(final SearchService searchService, final SearchFilters searchFilters) {
         this.service = searchService;
         this.searchFilters = searchFilters;
-        arrayParametersToMap = new ArrayParametersToMap();
     }
 
-    @ModelAttribute(SORT_PARAMETERS)
-    public SortParameters getSortParameters(@RequestParam(value = "sortOrder", required = false) String sortOrder,
-                                            @RequestParam(value = "sortField", required = false) String sortField) {
-        return new SortParameters(sortOrder, sortField);
-    }
-
-    @ModelAttribute(PAGING_PARAMETERS)
-    public PagingParameters getPagingParameters(@RequestParam(value = "start", required = false) Integer start,
-                                                @RequestParam(value = "rows", required = false) Integer rows) {
-        return new PagingParameters(start, rows);
-    }
-
-    @ModelAttribute(FILTERS)
-    public Map<String, Map<String, String>> getFilters(@RequestParam(value = KOULUTUSTYYPPI, required = false) String[] koulutustyyppi,
-                                                       @RequestParam(value = KOULUTUKSENKIELI, required = false) String[] koulutuskieli,
-                                                       @RequestParam(value = OPETUSMUOTO, required = false) String[] opetusmuoto,
-                                                       @RequestParam(value = OPPILAITOSTYYPPI, required = false) String[] oppilaitostyyppi) {
-        Map<String, Map<String, String>> filters = new HashMap<String, Map<String, String>>();
-        arrayParametersToMap = new ArrayParametersToMap();
-        filters.put(KOULUTUSTYYPPI, arrayParametersToMap.convert(koulutustyyppi));
-        filters.put(KOULUTUKSENKIELI, arrayParametersToMap.convert(koulutuskieli));
-        filters.put(OPETUSMUOTO, arrayParametersToMap.convert(opetusmuoto));
-        filters.put(OPPILAITOSTYYPPI, arrayParametersToMap.convert(oppilaitostyyppi));
-        return filters;
-    }
-
-    @ModelAttribute(MODEL_NAME_SEARCH_PARAMETERS)
-    public SearchParameters getSearchParameters(@RequestParam(value = SEARCH_PARAMETER, required = false) String text,
-                                                @ModelAttribute(SORT_PARAMETERS) SortParameters sortParameters,
-                                                @ModelAttribute(PAGING_PARAMETERS) PagingParameters pagingParameters,
-                                                @ModelAttribute(FILTERS) Map<String, Map<String, String>> filters) {
-
-        HashSet<String> fields = new HashSet<String>();
-        fields.add("id");
-        fields.add("name");
-        filters.put(SEARCH_PARAMETER, arrayParametersToMap.convert(new String[]{StringUtils.trimToNull(text)}));
-        return new SearchParameters(text, fields, sortParameters, pagingParameters, filters);
-    }
 
     @RequestMapping(value = "/tarjontatiedot", method = RequestMethod.GET, produces = "text/html; charset=UTF-8")
-    public ModelAndView listTarjontatiedot(@ModelAttribute(MODEL_NAME_SEARCH_PARAMETERS) SearchParameters searchParameters) {
-        SearchResult searchResult = service.search(searchParameters);
+    public ModelAndView listTarjontatiedot(@RequestParam MultiValueMap<String, String> parameters) {
+        LOGGER.debug("parameters: " + parameters);
+        SearchResult searchResult = service.search(parameters);
         ModelAndView modelAndView = new ModelAndView(VIEW_NAME_ITEMS);
         modelAndView.addObject(MODEL_NAME, searchResult);
-        modelAndView.addObject(PARAMETERS, searchParameters);
+        modelAndView.addObject(PARAMETERS_MULTI_VALUE, parameters);
+        modelAndView.addObject(PARAMETERS_SINGLE_VALUE, parameters.toSingleValueMap());
         modelAndView.addObject(SEARCH_FILTERS, searchFilters.getFilters());
         return modelAndView;
     }
@@ -121,10 +73,7 @@ public class SearchController {
     @RequestMapping(value = "/tarjontatiedot/{tarjontatietoId}", method = RequestMethod.GET, produces = "text/html; charset=UTF-8")
     public ModelAndView getTarjontatiedot(@PathVariable final String tarjontatietoId) {
         LOGGER.info("tarjontatiedot/" + tarjontatietoId);
-        Map<String, Map<String, String>> filters = new HashMap<String, Map<String, String>>();
-        filters.put(TUNNISTE, arrayParametersToMap.convert(new String[]{tarjontatietoId}));
-        SearchParameters searchParameters = new SearchParameters(filters);
-        Map<String, Object> searchResult = service.searchById(searchParameters);
+        Map<String, Object> searchResult = service.searchById(tarjontatietoId);
         ModelAndView modelAndView = new ModelAndView(VIEW_NAME_KOULUTUSKUVAUS);
         modelAndView.addObject(MODEL_NAME, searchResult);
         return modelAndView;

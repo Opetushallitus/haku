@@ -24,10 +24,11 @@
         <fieldset class="form-item">
             <div class="form-item-content">
                 <div class="field-container-checkbox">
-                    <input type="checkbox" name="LOSType" class="suodatin" value="DegreeProgramme"
-                           id="LOSType" ${ (param['LOSType'] eq 'DegreeProgramme') ? "checked='checked'" : "" }/>
-                    <label for="LOSType"><spring:message code="tarjonta.haku.näytävaintutkintoonjohtavakoulutus"
-                                                         text="?_?"/></label>
+                    <input type="checkbox" name="tutkintoonjohtava" class="suodatin" value="DegreeProgramme"
+                           id="tutkintoonjohtava" ${ (param['tutkintoonjohtava'] eq 'DegreeProgramme') ? "checked='checked'" : "" }/>
+                    <label for="tutkintoonjohtava"><spring:message
+                            code="tarjonta.haku.näytävaintutkintoonjohtavakoulutus"
+                            text="?_?"/></label>
                 </div>
 
                 <div class="field-container-checkbox">

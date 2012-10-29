@@ -35,7 +35,7 @@
         <field name="LOIWebLinkHOMEUri" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSName" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSDegreeTitle" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOSType" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOSType" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSCredits" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSCreditsUnit" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSDescriptionAccessToFurtherStudies" type="text_general" indexed="true" stored="true"
@@ -61,8 +61,10 @@
         <field name="AOExaminationStartDate" type="date" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationEnd" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationLocation" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOSelectionCriteriaDescription" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="AOSelectionCriteriaDescription" type="text_general" indexed="true" stored="true"
+               multiValued="true"/>
         <!-- tmp dev fields -->
+        <field name="tmpHakuId" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="formPath" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="tmpAOApplyAdditionalInfo" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="tmpLOSEducationField" type="string" indexed="true" stored="true" multiValued="false"/>
@@ -75,6 +77,7 @@
         <field name="pohjakoulutus" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="koulutuksenkieli" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="opetusmuoto" type="string" indexed="true" stored="true" multiValued="true"/>
+        <field name="tutkintoonjohtava" type="string" indexed="true" stored="true" multiValued="true"/>
     </fields>
 
 
@@ -89,6 +92,7 @@
     <copyField source="LOIPrerequisite" dest="pohjakoulutus"/>
     <copyField source="LOILanguagesOfInstruction" dest="koulutuksenkieli"/>
     <copyField source="LOIFormOfTeaching" dest="opetusmuoto"/>
+    <copyField source="LOSType" dest="tutkintoonjohtava"/>
 
     <types>
         <!-- The StrField type is not analyzed, but indexed/stored verbatim. -->

@@ -23,22 +23,16 @@ import java.util.List;
 
 /**
  * Service for searching education institutes
+ *
  * @author Mikko Majapuro
  */
 public interface HakukohdeService {
 
     /**
-     *
      * @param term search term
      * @return list of education institutes matching search term
      */
-    List<Organisaatio> searchOrganisaatio(final String term);
+    List<Organisaatio> searchOrganisaatio(final String hakuId, final String term);
 
-    /**
-     *
-     * @param organisaatioId
-     * @return
-     */
-    List<Hakukohde> searchHakukohde(final String organisaatioId);
-
+    List<Hakukohde> searchHakukohde(final String hakuId, final String organisaatioId);
 }

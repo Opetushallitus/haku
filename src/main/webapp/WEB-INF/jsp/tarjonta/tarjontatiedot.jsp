@@ -45,13 +45,9 @@
                             <h1 class="set-left">Hakusana: <c:out value="${parameters.text}"/></h1>
 
                             <div class="field-container-select set-right">
-                                <select name="Aakkosjarjestys" placeholder="Järjestä aakkosittain" id="Aakkosjarjestys">
-                                    <option name="Aakkosjarjestys.Aakkosjarjestys.laskeva" value="Kevät 2013"
-                                            selected="selected" id="Aakkosjarjestys-laskeva">laskeva
-                                    </option>
-                                    <option name="Aakkosjarjestys.Aakkosjarjestys.nouseva" value="Syksy 2014"
-                                            id="Aakkosjarjestys-nouseva">nouseva
-                                    </option>
+                                <select name="sort" placeholder="Järjestä aakkosittain">
+                                    <option value="AOTitle desc">laskeva</option>
+                                    <option value="AOTitle asc">nouseva</option>
                                 </select>
                             </div>
 

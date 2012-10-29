@@ -14,22 +14,22 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.tarjonta.converter;
+package fi.vm.sade.oppija.tarjonta.service.impl.query;
 
-import org.springframework.core.convert.converter.Converter;
 
-import java.util.HashMap;
+import org.apache.solr.client.solrj.SolrQuery;
+
+import java.util.List;
 import java.util.Map;
 
-public class ArrayParametersToMap implements Converter<String[], Map<String, String>> {
+public class SortParameterAppender implements SolrQueryAppender {
     @Override
-    public Map<String, String> convert(String[] source) {
-        HashMap<String, String> target = new HashMap<String, String>();
-        if (source != null) {
-            for (String value : source) {
-                target.put(value, value);
+    public void append(SolrQuery solrQuery, Map.Entry<String, List<String>> entry) {
+        for (String values : entry.getValue()) {
+            String[] fieldAndOrder = values.split("\\s+"); // http://wiki.apache.org/solr/CommonQueryParameters#sort
+            if (fieldAndOrder.length == 2) {
+                solrQuery.addSortField(fieldAndOrder[0], SolrQuery.ORDER.valueOf(fieldAndOrder[1]));
             }
         }
-        return target;
     }
 }

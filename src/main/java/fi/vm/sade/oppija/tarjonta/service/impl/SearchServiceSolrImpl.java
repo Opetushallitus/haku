@@ -17,10 +17,10 @@
 package fi.vm.sade.oppija.tarjonta.service.impl;
 
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.tarjonta.domain.SearchParameters;
 import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
 import fi.vm.sade.oppija.tarjonta.domain.exception.SearchException;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
+import fi.vm.sade.oppija.tarjonta.service.impl.query.MapToSolrQueryTransformer;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -29,13 +29,17 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 
 import java.util.*;
 
 @Component
 public class SearchServiceSolrImpl implements SearchService {
 
+    public static final String ID = "AOId";
+
     private final HttpSolrServer httpSolrServer;
+    private final MapToSolrQueryTransformer mapToSolrQueryTransformer = new MapToSolrQueryTransformer();
 
     @Autowired
     public SearchServiceSolrImpl(final HttpSolrServer httpSolrServer) {
@@ -43,28 +47,31 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public SearchResult search(final SearchParameters searchParameters) {
-        return query(searchParameters);
+    public SearchResult search(MultiValueMap<String, String> parameters) throws SearchException {
+        final SolrQuery solrQuery = mapToSolrQueryTransformer.transform(parameters);
+        return query(solrQuery);
     }
 
     @Override
-    public Map<String, Object> searchById(final SearchParameters searchParameters) {
-        SearchResult searchResult = query(searchParameters);
+    public Map<String, Object> searchById(final String Id) {
+        SolrQuery query = new SolrQuery();
+        query.setQuery(ID + ":" + Id);
+        SearchResult searchResult = query(query);
         Map<String, Object> itemFromResult = getItemFromResult(searchResult);
-        if (itemFromResult.size() == 0) {
-            throw new ResourceNotFoundException("Koulutuskuvausta ei löytynyt: " + searchParameters);
+        if (itemFromResult.isEmpty()) {
+            throw new ResourceNotFoundException("Koulutuskuvausta " + Id + " ei löytynyt: ");
         }
         return itemFromResult;
     }
 
     @Override
-    public Collection<String> getUniqValuesByField(String field) {
+    public Collection<String> getUniqValuesByField(final String field) {
         SolrQuery query = new SolrQuery();
         query.setFacet(true);
         query.addFacetField(field);
         Set<String> uniqNames = new HashSet<String>();
         try {
-            QueryResponse rsp = createQuery(query);
+            QueryResponse rsp = httpSolrServer.query(query);
             List<FacetField> facetFields = rsp.getFacetFields();
             for (FacetField facetField : facetFields) {
                 List<FacetField.Count> values = facetField.getValues();
@@ -79,15 +86,11 @@ public class SearchServiceSolrImpl implements SearchService {
 
     }
 
-    protected QueryResponse createQuery(SolrQuery query) throws SolrServerException {
-        return httpSolrServer.query(query);
-    }
 
-    private SearchResult query(final SearchParameters searchParameters) {
+    private SearchResult query(final SolrQuery query) {
         List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
         try {
-            SolrQuery query = createQuery(searchParameters);
-            QueryResponse rsp = createQuery(query);
+            QueryResponse rsp = httpSolrServer.query(query);
             for (SolrDocument doc : rsp.getResults()) {
                 results.add(doc.getFieldValueMap());
             }
@@ -97,22 +100,7 @@ public class SearchServiceSolrImpl implements SearchService {
         return new SearchResult(results);
     }
 
-    private SolrQuery createQuery(SearchParameters searchParameters) {
-        SolrQuery query = new SolrQuery();
-        StringBuilder queryStr = new StringBuilder();
-        for (Map.Entry<String, Map<String, String>> entry : searchParameters.getFilters().entrySet()) {
-            Map<String, String> values = entry.getValue();
-            for (String value : values.keySet()) {
-                queryStr.append("+");
-                queryStr.append(entry.getKey()).append(":").append(value);
-                queryStr.append(" ");
-            }
-        }
-        query.setQuery(queryStr.toString());
-        return query;
-    }
-
-    private Map<String, Object> getItemFromResult(SearchResult searchResult) {
+    private Map<String, Object> getItemFromResult(final SearchResult searchResult) {
         List<Map<String, Object>> items = searchResult.getItems();
         if (items.size() == 0) {
             return Collections.<String, Object>emptyMap();
