@@ -90,7 +90,7 @@ public class AdditionalQuestionsServiceTest {
         Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakemusId);
 
         assertNotNull(additionalQuestions);
-        assertEquals(4, additionalQuestions.size());
+        assertEquals(2, additionalQuestions.size());
 
     }
 

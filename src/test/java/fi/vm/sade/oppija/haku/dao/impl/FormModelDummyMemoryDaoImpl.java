@@ -80,10 +80,9 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         }
 
         List<Question> oppianieList = new ArrayList<Question>();
-        oppianieList.add(new SubjectRow("geo", "Maantieto"));
-        oppianieList.add(new SubjectRow("fys", "Fysiikka"));
-        oppianieList.add(new SubjectRow("fil", "Filosofia"));
-        oppianieList.add(new SubjectRow("kem", "Kemia"));
+        oppianieList.add(new SubjectRow("tietotekniikka", "Tietotekniikka"));
+        oppianieList.add(new SubjectRow("kansantaloustiede", "Kansantaloustiede"));
+        oppiaineMap.put("0_0", oppianieList);
 
         for (Organisaatio institute : institutes) {
             List<Hakukohde> hakukohdeList = new ArrayList<Hakukohde>();
@@ -109,7 +108,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                     lisakysymysList.add(radio2);
                     lisakysymysList.add(radio3);
                     lisakysymysMap.put(id, lisakysymysList);
-                    oppiaineMap.put(id, oppianieList);
                 }
             }
         }
@@ -237,17 +235,35 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         languageRows.add(a1);
         languageRows.add(b1);
 
-        SubjectRow math = new SubjectRow("subject_math", "Matematiikka");
-        SubjectRow biology = new SubjectRow("subject_biology", "Biologia");
+        SubjectRow matematiikka = new SubjectRow("subject_matematiikka", "Matematiikka");
+        SubjectRow biologia = new SubjectRow("subject_biologia", "Biologia");
         SubjectRow maantieto = new SubjectRow("subject_maantieto", "Maantieto");
         SubjectRow fysiikka = new SubjectRow("subject_fysiikka", "Fysiikka");
         SubjectRow kemia = new SubjectRow("subject_kemia", "Kemia");
+        SubjectRow terveystieto = new SubjectRow("subject_terveystieto", "Terveystieto");
+        SubjectRow uskonto = new SubjectRow("subject_uskonto", "Uskonto tai elämänkatsomustieto");
+        SubjectRow historia = new SubjectRow("subject_historia", "Historia");
+        SubjectRow yhteiskuntaoppi = new SubjectRow("subject_yhteiskuntaoppi", "Yhteiskuntaoppi");
+        SubjectRow musiikki = new SubjectRow("subject_musiikki", "Musiikki");
+        SubjectRow kuvataide = new SubjectRow("subject_kuvataide", "Kuvataide");
+        SubjectRow kasityo = new SubjectRow("subject_kasityo", "Käsityö");
+        SubjectRow liikunta = new SubjectRow("subject_liikunta", "Liikunta");
+        SubjectRow kotitalous = new SubjectRow("subject_kotitalous", "Kotitalous");
         List<SubjectRow> subjectRowsAfter = new ArrayList<SubjectRow>();
-        subjectRowsAfter.add(math);
-        subjectRowsAfter.add(biology);
+        subjectRowsAfter.add(matematiikka);
+        subjectRowsAfter.add(biologia);
         subjectRowsAfter.add(maantieto);
         subjectRowsAfter.add(fysiikka);
         subjectRowsAfter.add(kemia);
+        subjectRowsAfter.add(terveystieto);
+        subjectRowsAfter.add(uskonto);
+        subjectRowsAfter.add(historia);
+        subjectRowsAfter.add(yhteiskuntaoppi);
+        subjectRowsAfter.add(musiikki);
+        subjectRowsAfter.add(kuvataide);
+        subjectRowsAfter.add(kasityo);
+        subjectRowsAfter.add(liikunta);
+        subjectRowsAfter.add(kotitalous);
 
         List<Option> languageOptions = new ArrayList<Option>();
         languageOptions.add(new Option("langoption_" + "eng", "eng", "englanti"));
