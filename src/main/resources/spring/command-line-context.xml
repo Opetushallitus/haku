@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+  ~
+  ~ This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+  ~ soon as they will be approved by the European Commission - subsequent versions
+  ~ of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ European Union Public Licence for more details.
+  -->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -14,7 +30,15 @@
             location="classpath:haku.properties, file:///${user.home:''}/oph-configuration/haku.properties"
             ignore-resource-not-found="true"/>
 
+    <bean id="HttpSolrServer"
+          class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+        <constructor-arg>
+            <value>${tarjonta.index.url}</value>
+        </constructor-arg>
+    </bean>
+
     <context:annotation-config/>
+    <context:component-scan base-package="fi.vm.sade.oppija.tarjonta.service"/>
     <context:component-scan base-package="fi.vm.sade.oppija.haku.dao"/>
     <context:component-scan base-package="fi.vm.sade.oppija.haku.service"/>
     <context:component-scan base-package="fi.vm.sade.oppija.haku.event"/>
