@@ -17,15 +17,13 @@
 package fi.vm.sade.oppija.haku.selenium;
 
 import com.thoughtworks.selenium.Selenium;
+import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -40,7 +38,6 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
     @Before
     public void init() {
 
-        seleniumHelper.getDriver().manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
         FormModelDummyMemoryDaoImpl dummyMem = new FormModelDummyMemoryDaoImpl();
 
