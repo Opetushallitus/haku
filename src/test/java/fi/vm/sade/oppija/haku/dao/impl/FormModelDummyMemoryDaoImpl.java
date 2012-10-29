@@ -91,14 +91,23 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                 String id = String.valueOf(institute.getId()) + "_" + String.valueOf(i);
                 Hakukohde h;
                 if (i % 2 == 0) {
-                    TextQuestion textQuestion = new TextQuestion(id + "_additional_question_1", "Lorem ipsum");
-                    Radio radio = new Radio(id + "_additional_question_2", "Lorem ipsum dolor sit ame");
-                    radio.addOption(id + "_q2_option_1", "q2_option_1", "Option one");
-                    radio.addOption(id + "_q2_option_2", "q2_option_2", "Option two");
+                    Radio radio = new Radio(id + "_additional_question_1", "Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?");
+                    radio.addOption(id + "_q1_option_1", "q1_option_1", "Ei");
+                    radio.addOption(id + "_q1_option_2", "q1_option_2", "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi");
+
+                    Radio radio2 = new Radio(id + "_additional_question_2", "Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?");
+                    radio2.addOption(id + "_q2_option_1", "q2_option_1", "Ei");
+                    radio2.addOption(id + "_q2_option_2", "q2_option_2", "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi");
+
+                    Radio radio3 = new Radio(id + "_additional_question_3", "Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?");
+                    radio3.addOption(id + "_q3_option_1", "q3_option_1", "En, en ole osallistunut pääsykokeeseen");
+                    radio3.addOption(id + "_q3_option_2", "q3_option_2", "Ei, en halua käyttää tuloksia");
+                    radio3.addOption(id + "_q3_option_3", "q3_option_3", "Kyllä, haluan käyttää pääsykoetuloksia");
 
                     List<Question> lisakysymysList = new ArrayList<Question>();
-                    lisakysymysList.add(textQuestion);
                     lisakysymysList.add(radio);
+                    lisakysymysList.add(radio2);
+                    lisakysymysList.add(radio3);
                     lisakysymysMap.put(id, lisakysymysList);
                     oppiaineMap.put(id, oppianieList);
                 }
@@ -341,7 +350,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         suorittanut.addOption("suorittanut4", "suorittanut4", "Muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus (talouskoulu)");
         suorittanut.addOption("suorittanut5", "suorittanut5", "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus (ammattistartti)");
 
-        Radio osallistunut = new Radio("osallistunut", "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen/alan pääsykokeisiin?");
+        Radio osallistunut = new Radio("osallistunut", "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?");
         osallistunut.addOption("ei", "Ei", "En");
         osallistunut.addOption("kylla", "Kyllä", "Kyllä");
         osallistunut.addAttribute("required", "required");
