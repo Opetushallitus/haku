@@ -9,8 +9,8 @@
     <c:forEach var="option" items="${element.options}" varStatus="status">
         <div class="field-container-radio">
             <c:set var="id" value="${element.id}_${option.id}"/>
-            <input type="radio" name="${element.id}"
-                value="${option.value}" ${(!empty disabled) ? "disabled=\"true\" " : " "} ${(value eq option.value) ? "checked=\"checked\" " : " "} ${element.attributes['required'].asString}/>
+            <input id="${id}" type="radio" name="${element.id}"
+                value="${option.value}" ${(!empty disabled) ? "disabled=\"true\" " : " "} ${(value eq option.value) ? "checked=\"checked\" " : " "} ${option.attributeString}/>
             <label for="${option.id}">${option.title}</label>
             <div id="help-${element.id}-${option.id}"><small>${option.help}</small></div>
         </div>

@@ -2,6 +2,7 @@ package fi.vm.sade.oppija.haku.it;
 
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class NavigationIT extends AbstractRemoteTest {
     }
 
     @Test
+    @Ignore
     public void testLastGategoryNavButtons() throws IOException {
         beginAt("/lomake/test/yhteishaku/esikatselu");
         assertElementNotPresentByXPath("//button[@name='nav-next']");

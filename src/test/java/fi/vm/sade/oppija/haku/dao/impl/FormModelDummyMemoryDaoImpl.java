@@ -25,6 +25,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.*;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
 import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.validation.Validator;
@@ -347,6 +348,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         millatutkinnolla.addOption("tutkinto5", "tutkinto5", "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)", "Valitse tämä vain, jos sinulla ei ole lainkaan päättötodistusta.");
         millatutkinnolla.addOption("tutkinto6", "tutkinto6", "Lukion päättötodistus, ylioppilastutkinto tai abiturientti", "Valitse tämä, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvälinen ylioppilastutkinto, tai olet suorittanut yhdistelmätutkinnon, johon sisältyy lukion vahimmäisoppimäärää vastaavat opinnot.");
         millatutkinnolla.addOption("tutkinto7", "tutkinto7", "Ulkomailla suoritettu koulutus", "Valitse tämä, jos olet suorittanut tutkintosi ulkomailla.");
+        millatutkinnolla.getOptions().get(0).addAttribute("onChange", "submit()");
+        millatutkinnolla.getOptions().get(1).addAttribute("onChange", "submit()");
+        millatutkinnolla.getOptions().get(2).addAttribute("onChange", "submit()");
+        millatutkinnolla.getOptions().get(3).addAttribute("onChange", "submit()");
+        millatutkinnolla.getOptions().get(4).addAttribute("onChange", "submit()");
+        millatutkinnolla.getOptions().get(5).addAttribute("onChange", "submit()");
+        millatutkinnolla.getOptions().get(6).addAttribute("onChange", "submit()");
 
         Radio peruskoulu2012 = new Radio("peruskoulu2012", "Saatko peruskoulun päättötodistuksen hakukeväänä 2012?");
         peruskoulu2012.addOption("kylla", "Kyllä", "Kyllä");
@@ -371,10 +379,15 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         osallistunut.addOption("kylla", "Kyllä", "Kyllä");
         osallistunut.addAttribute("required", "required");
 
+        EnablingSubmitRule enablingSubmitRule = new EnablingSubmitRule(millatutkinnolla.getId(), "(" +
+                millatutkinnolla.getOptions().get(0).getValue() + "|" + millatutkinnolla.getOptions().get(1).getValue() +
+                "|" + millatutkinnolla.getOptions().get(2).getValue() + "|" + millatutkinnolla.getOptions().get(3).getValue() + ")");
+        enablingSubmitRule.addChild(peruskoulu2012);
+        enablingSubmitRule.addChild(tutkinnonOpetuskieli);
+        enablingSubmitRule.addChild(suorittanut);
+        millatutkinnolla.addChild(enablingSubmitRule);
+
         koulutustaustaRyhmä.addChild(millatutkinnolla);
-        koulutustaustaRyhmä.addChild(peruskoulu2012);
-        koulutustaustaRyhmä.addChild(tutkinnonOpetuskieli);
-        koulutustaustaRyhmä.addChild(suorittanut);
         koulutustaustaRyhmä.addChild(osallistunut);
     }
 
