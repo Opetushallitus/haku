@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.tarjonta.service.impl;
 
 
-import fi.vm.sade.oppija.tarjonta.client.TarjontaRESTClient;
 import fi.vm.sade.oppija.tarjonta.service.IndexService;
 import fi.vm.sade.oppija.tarjonta.service.generator.DummyDataGenerator;
 
