@@ -39,7 +39,6 @@ public class NavigationIT extends AbstractRemoteTest {
     }
 
     @Test
-    @Ignore
     public void testLastGategoryNavButtons() throws IOException {
         beginAt("/lomake/test/yhteishaku/esikatselu");
         assertElementNotPresentByXPath("//button[@name='nav-next']");

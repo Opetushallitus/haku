@@ -2,11 +2,6 @@
 <%@ taglib prefix="fn" uri="/WEB-INF/tags/functions.tld"%>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags"%>
 <div class="container_${element.id}">
-       <script language="javascript">
-            if( $('#${element.id}') != 'undefined'){
-                $(document).ready(haku.triggerRule(${element.id}));
-            }
-       </script>
     <c:set var="key" value="${element.id}"/>
     <c:choose>
         <c:when test="${not empty categoryData[key]}">
