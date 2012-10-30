@@ -60,7 +60,11 @@
         <field name="AOExaminationStart" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationStartDate" type="date" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationEnd" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOExaminationLocation" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="AOExaminationLocationName" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="AOExaminationLocationAddressLine" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="AOExaminationLocationPostalCode" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="AOExaminationLocationCity" type="text_general" indexed="true" stored="true" multiValued="true"/>
+
         <field name="AOSelectionCriteriaDescription" type="text_general" indexed="true" stored="true"
                multiValued="true"/>
         <!-- tmp dev fields -->

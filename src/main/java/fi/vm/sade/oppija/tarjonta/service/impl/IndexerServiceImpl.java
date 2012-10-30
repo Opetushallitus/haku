@@ -17,14 +17,17 @@
 package fi.vm.sade.oppija.tarjonta.service.impl;
 
 
+import fi.vm.sade.oppija.tarjonta.client.TarjontaRESTClient;
 import fi.vm.sade.oppija.tarjonta.service.IndexService;
 import fi.vm.sade.oppija.tarjonta.service.generator.DummyDataGenerator;
-import fi.vm.sade.tarjonta.service.types.*;
+
+import fi.vm.sade.tarjonta.publication.types.*;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBContext;
@@ -42,13 +45,19 @@ public class IndexerServiceImpl implements IndexService {
 
     private final HttpSolrServer httpSolrServer;
 
+
+
     @Autowired
     public IndexerServiceImpl(HttpSolrServer httpSolrServer) {
         this.httpSolrServer = httpSolrServer;
+
     }
 
     @Override
     public boolean update(final URL url) {
+
+
+
         try {
             Collection<SolrInputDocument> documents = parseDocuments(url);
             httpSolrServer.add(documents);
@@ -159,13 +168,12 @@ public class IndexerServiceImpl implements IndexService {
                 solrDocument.addField("AOExaminationStart", examinationEvent.getStart());
                 solrDocument.addField("AOExaminationStartDate", examinationEvent.getStart().toGregorianCalendar().getTime());
                 solrDocument.addField("AOExaminationEnd", examinationEvent.getEnd());
-                List<ExaminationEventType.Locations.Location> locations = examinationEvent.getLocations().getLocation();
-                for (ExaminationEventType.Locations.Location location : locations) {
-                    List<JAXBElement<String>> content = location.getContent();
-                    for (JAXBElement<String> stringJAXBElement : content) {
-                        stringJAXBElement.getValue();
-                        solrDocument.addField("AOExaminationLocation", stringJAXBElement.getValue());
-                    }
+                List<ExaminationLocationType> locations = examinationEvent.getLocations().getLocation();
+                for (ExaminationLocationType location : locations) {
+                    solrDocument.addField("AOExaminationLocationName", location.getName());
+                    solrDocument.addField("AOExaminationLocationAddressLine", location.getAddressLine());
+                    solrDocument.addField("AOExaminationLocationPostalCode", location.getPostalCode());
+                    solrDocument.addField("AOExaminationLocationCity", location.getCity());
                 }
             }
             solrDocument.addField("AOExaminationDescription", examination.getExaminationEvent());
@@ -238,7 +246,7 @@ public class IndexerServiceImpl implements IndexService {
     }
 
     private static LearningOpportunityDownloadDataType getLearningOpportunityDownloadDataType(final URL url) throws JAXBException, MalformedURLException {
-        JAXBContext jaxbContext = JAXBContext.newInstance(LearningOpportunityDownloadDataType.class);
+        JAXBContext jaxbContext = JAXBContext.newInstance(LearningOpportunityDownloadDataType.class.getPackage().getName());
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
         JAXBElement<LearningOpportunityDownloadDataType> learningOpportunityDataTypeJAXBElement =
