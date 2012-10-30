@@ -1,6 +1,7 @@
+
+
 $(document).ready(function(){
 /* Master.js begins */
-
 var applicationBasket = {
 	build:function(){
 		applicationBasket.setTriggers();
@@ -456,6 +457,45 @@ var dropDownMenu = {
 	}
 }
 
+var tableRowHighlight = {
+	build: function() {
+		tableRowHighlight.setTriggers();
+	},
+
+	//change highlight when user clicks checkbox or label attached to it
+	setTriggers: function() {
+		
+		$('.application-table tbody .js-checkbox').on('click', function() {
+			if($(this).parents('tr').hasClass('table-highlight')) {
+				$(this).parents('tr').removeClass('table-highlight');
+
+			} else {
+				$(this).parents('tr').addClass('table-highlight');
+			}
+		});
+
+		$('.application-table tbody .js-checkbox').siblings().filter('label').on('click', function() {
+			if($(this).parents('tr').hasClass('table-highlight')) {
+				$(this).parents('tr').removeClass('table-highlight');
+
+			} else {
+				$(this).parents('tr').addClass('table-highlight');
+			}
+		});
+	},
+
+	//set or remove highlight
+	changeHighlight: function() {
+		if($(this).parents('tr').hasClass('table-highlight')) {
+			$(this).parents('tr').removeClass('table-highlight');
+
+		} else {
+			$(this).parents('tr').addClass('table-highlight');
+		}
+	}
+}
+
+
 applicationBasket.build();
 formReplacements.build();
 popupWindow.build();
@@ -463,7 +503,7 @@ tabsMenu.build();
 hierarchyList.build();
 loginPopup.build();
 dropDownMenu.build();
-
+tableRowHighlight.build();
 
 
 

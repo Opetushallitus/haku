@@ -11,7 +11,6 @@
     <script type="text/javascript" src="../resources/jquery/jquery-1.8.0.min.js"></script>
     <script type="text/javascript" src="../resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
     <script type="text/javascript" src="../resources/javascript/master.js"></script>
-    <script type="text/javascript" src="layout/javascript/protofunctions.js"></script>
 
     </head>
     <body>
@@ -110,6 +109,9 @@
                         </div>
 
                         <div id="searchfield-wrapper">
+                            <div class="action-select set-left">
+                                <button class="arrow-down-blue"><span><span>Mitä haluaisit tehdä?</span></span></button>
+                            </div>
                             <div id="searchfield">
                                 <div class="field-container-text">
                                     <input type="text"/>
@@ -190,22 +192,35 @@
                                         <tfoot>
                                             <tr>
                                                 <td colspan="5">
-                                                    <div class="sidenotes">
-                                                        <small>Huom. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod
-                                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</small>
+                                                    <div class="grid16-8">
+                                                        <div class="sidenotes">
+                                                            <small>Huom. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod
+                                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</small>
+                                                        </div>
+                                                        <div class="sidenotes">  
+                                                            <small>Huom. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod
+                                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. </small>
+                                                        </div>
+                                                        <div class="sidenotes">    
+                                                            <small>Huom. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</small>
+                                                        </div>
                                                     </div>
-                                                    <div class="sidenotes">  
-                                                        <small>Huom. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod
-                                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. </small>
+                                                    <div class="grid16-8">
+                                                        <div class="set-right notelist-footer-tools" style="display: inline-block">
+                                                            <button><span><span>Vertaile</span></span></button>
+                                                            <small>Ei valittuja hakuun. Valitse valintalaatikolla vähintään 2 vertailukohdetta</small>
+                                                        </div>
+                                                        <div class="set-right notelist-footer-tools" style="display: inline-block">
+                                                            <button><span><span>Siirrä hakulomakkeelle</span></span></button>
+                                                            <small>Ei valittuja hakuun. Valitse valintalaatikolla vähintään 2 vertailukohdetta</small>
+                                                        </div>
                                                     </div>
-                                                    <div class="sidenotes">    
-                                                        <small>Huom. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</small>
-                                                    </div>
+
                                                 </td>
                                             <tr>
                                         </tfoot>
@@ -296,17 +311,17 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td>
+                                                <td colspan="5">
                                                     <a href="#">lorem ipsum dolor sit amet</a>
-                                                </td>
-                                                <td colspan="2"></td>
-                                                <td>
-                                                    <button><span><span>Vertaile</span></span></button>
-                                                    <small>Ei valittuja hakuun. Valitse valintalaatikolla vähintään 2 vertailukohdetta</small>
-                                                </td>
-                                                <td>
-                                                    <button><span><span>Siirrä hakulomakkeelle</span></span></button>
-                                                    <small>Ei valittuja hakuun. Valitse valintalaatikolla vähintään 2 vertailukohdetta</small>
+                                                    
+                                                    <div class="set-right notelist-footer-tools" style="display: inline-block">
+                                                        <button><span><span>Vertaile</span></span></button>
+                                                        <small>Ei valittuja hakuun. Valitse valintalaatikolla vähintään 2 vertailukohdetta</small>
+                                                    </div>
+                                                    <div class="set-right notelist-footer-tools" style="display: inline-block">
+                                                        <button><span><span>Siirrä hakulomakkeelle</span></span></button>
+                                                        <small>Ei valittuja hakuun. Valitse valintalaatikolla vähintään 2 vertailukohdetta</small>
+                                                    </div>
                                                 </td>
                                             <tr>
                                         </tfoot>
@@ -315,7 +330,7 @@
                                 </div>
                             </div>
                             
-                            <div class="notelist-tools">
+                            <div class="content-tools">
                                 <button class="print set-left"><span><span>Tulosta listan sisältö</span></span></button>
                                 <button class="set-right primary"><span><span>Luo käyttäjätili ja tallenna listan tiedot</span></span></button>
                                 <div class="clear"></div>
@@ -329,77 +344,8 @@
 
                         </div>
                         <div class="clear"></div>
-
-                            
-                           
-                        
-
                     </section>
                 </section>
-                <footer id="sitefooter">
-
-                    <div class="footer-container">
-
-                        <div class="grid16-4">
-                            <div class="grid-container">
-                                Leipäteksti #000 line-height: 1.8em font-size: 1.3em (body font-size: 62.5% = 10px) Lorem ipsum dolor
-                                sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                                aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
-                                euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet,
-                                consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam
-                                erat volutpat.
-                            </div>
-                        </div>
-
-                        <div class="grid16-12">
-                            <div class="grid16-4 ">
-                                <div class="grid-container">
-                                    <h3> 1st column - Lorem ipsum</h3>
-
-                                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                                        tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
-                                </div>
-                            </div>
-                            <div class="grid16-4">
-                                <div class="grid-container">
-                                    <h3>2nd column - Lorem ipsum </h3>
-
-                                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                                        tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet,
-                                        consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                                        aliquam erat volutpat. </p>
-                                </div>
-                            </div>
-                            <div class="grid16-4">
-                                <div class="grid-container">
-                                    <h3> 3st column - Lorem ipsum</h3>
-
-                                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                                        tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
-                                </div>
-                            </div>
-                            <div class="grid16-4">
-                                <div class="grid-container">
-                                    <h3>4nd column - Lorem ipsum </h3>
-
-                                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                                        tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet,
-                                        consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                                        aliquam erat volutpat. </p>
-                                </div>
-                            </div>
-                            <div class="grid16-8 footer-logo">
-                                <img src="content/logo-opetus-ja-kulttuuriministerio.png">
-                            </div>
-                            <div class="grid16-8 footer-logo">
-                                <img src="content/logo-oph_fin_vaaka.png">
-                            </div>
-                        </div>
-
-                        <div class="clear"></div>
-
-                    </div>
-                </footer>
             </div>
         </div>
     </body>

@@ -1,0 +1,125 @@
+.compare-header {
+    background-image: url('../img/vertailu_ikoni.png');
+    background-repeat: no-repeat;
+    background-position: left top;
+    min-height: 53px;
+}
+
+.compare-header h1 {
+    display: inline-block;
+    vertical-align: bottom;    
+    padding-left: 55px;
+    letter-spacing: -0.5px;
+}
+
+
+.compare-table-navigation {
+    text-align: center;
+}
+
+.compare-table-navigation button {
+    display: inline-block;
+    margin-bottom: 2em;
+}
+
+
+/*** compare-table
+************************************************/
+
+.compare-table
+{
+    background-color:#ececec;
+    position:relative;
+    overflow:hidden;
+    border-radius: 5px;
+    margin-bottom: 2em;
+}
+
+.compare-table .table-container
+{
+    margin-right:-5px;
+    position:relative;
+}
+
+.compare-table table
+{
+    width:100%;
+    border-spacing:2px 0px;
+    margin:0px -10px 0px 0px;
+    border:none;
+    position:relative;
+    left:-2px;
+}
+
+.compare-table thead tr th,
+.compare-table thead tr td,
+.compare-table tbody tr td
+{
+    border:none;
+    vertical-align:top;
+    padding:0.5em 1.5em;
+    line-height:1.5em;
+    background-color: #fff;
+}
+
+
+
+.compare-table thead tr th:first-of-type,
+.compare-table tbody tr td:first-of-type {
+    box-shadow: inset 8px 0 4px -8px #a9a9a9;
+}
+
+.compare-table thead tr th:last-of-type,
+.compare-table tbody tr td:last-of-type {
+    box-shadow: inset -8px 0 4px -8px #a9a9a9;
+}
+
+.compare-table thead tr.toprow th {
+    border-radius: 5px 5px 0 0;
+    box-shadow: inset 0 8px 4px -8px #a9a9a9, inset -8px 0 4px -8px #a9a9a9, inset 8px 0 4px -8px #a9a9a9;
+}
+
+.compare-table thead tr td {
+    vertical-align: middle;
+    background-color: #ebebeb;
+    border-top: 1px solid #c8c8c8;
+    border-bottom: 1px solid #c8c8c8;
+}
+
+.compare-table tbody tr.selected td {
+    background-color: #e5f3f8;
+}
+
+.compare-table thead tr th
+{
+    background-color:#ececec;
+    background-repeat:repeat;
+    background-position:top left;
+    line-height:1.5em;
+    text-align: left;
+}
+
+.compare-table thead tr td
+{
+    background-color:#dcdcdc;
+}
+
+.compare-table thead tr td:first-child,
+.compare-table tbody tr td:first-child
+{
+    box-shadow:inset 8px 0px 4px -8px #a9a9a9;
+}
+
+.compare-table tbody tr:last-of-type td:first-of-type {
+    box-shadow: inset 8px 0px 4px -8px #a9a9a9, inset 0 -8px 4px -8px #a9a9a9;
+    border-radius: 0 0 0 5px;
+}
+
+.compare-table tbody tr:last-of-type td:last-of-type {
+    box-shadow: inset -8px 0px 4px -8px #a9a9a9, inset 0 -8px 4px -8px #a9a9a9;
+    border-radius: 0 0 5px 0;
+}
+
+.compare-table tbody tr:last-of-type td {
+    box-shadow: inset 0 -8px 4px -8px #a9a9a9;
+}
