@@ -30,9 +30,11 @@ import fi.vm.sade.oppija.haku.domain.elements.custom.SortableTable;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
+import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -43,6 +45,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static net.sourceforge.jwebunit.junit.JWebUnit.assertElementPresentByXPath;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test for education institute preferences
@@ -59,8 +65,10 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         FormModel formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
         Vaihe hakutoiveet = new Vaihe("hakutoiveet", "Hakutoiveet", false);
+        Vaihe lisakysymykset = new Vaihe("lisakysymykset", "Lisäkysymykset", false);
         Form form = new Form("lomake", "yhteishaku");
         form.addChild(hakutoiveet);
+        form.addChild(lisakysymykset);
         form.init();
 
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
@@ -97,6 +105,14 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         sortableTable.addChild(pr2);
         sortableTable.addChild(pr3);
         hakutoiveetRyhmä.addChild(sortableTable);
+
+        TextQuestion lisakysymys = new TextQuestion("lisakysymys", "Lisäkysymys");
+        Teema lisakysymyksetRyhma = new Teema("lisakysymyksetGrp", "Lisäkysymykset", null);
+        lisakysymykset.addChild(lisakysymyksetRyhma);
+        EnablingSubmitRule enablingSubmitRule = new EnablingSubmitRule("preference1-Koulutus-id", "0_0");
+        enablingSubmitRule.addChild(lisakysymys);
+        lisakysymyksetRyhma.addChild(enablingSubmitRule);
+
         this.formModelHelper = initModel(formModel);
     }
 
@@ -129,5 +145,22 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
                 return d.findElement(By.id("0_0_additional_question_1"));
             }
         });
+    }
+
+    @Test
+    public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
+        testEducationPreference();
+        final WebDriver driver = seleniumHelper.getDriver();
+        driver.findElement(By.xpath("//button[@name='nav-next']")).click();
+        assertNotNull(driver.findElement(By.id("lisakysymys")));
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testEducationPreferenceNoAdditionalQuestion() throws InterruptedException {
+        final String url = "lomake/test/lomake/hakutoiveet";
+        final WebDriver driver = seleniumHelper.getDriver();
+        driver.get(getBaseUrl() + "/" + url);
+        driver.findElement(By.xpath("//button[@name='nav-next']")).click();
+        assertNull(driver.findElement(By.id("lisakysymys")));
     }
 }
