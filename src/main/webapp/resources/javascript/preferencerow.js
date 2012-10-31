@@ -1,18 +1,33 @@
-(function(){
-	var preferenceRow = {
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
+
+(function() {
+    var preferenceRow = {
         populateSelectInput : function(orgId, selectInputId) {
-            $.getJSON("/haku/education/hakukohde/search", {
-                  organisaatioId : orgId
+            $.getJSON("/haku/education/" + sortabletable_settings.applicationPeriodId + "/hakukohde/search", {
+                organisaatioId : orgId
             }, function(data) {
-                var hakukohdeId = $("#" + selectInputId + "-id").val(),
-                    $selectInput = $("#" + selectInputId);
+                var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
 
                 $selectInput.html("<option></option>");
                 $(data).each(function(index, item) {
                     var selected = "";
                     if (hakukohdeId == item.id) {
-                         selected = 'selected = "selected"';
-                         preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"));
+                        selected = 'selected = "selected"';
+                        preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"));
                     }
                     $selectInput.append('<option value="' + item.name + '" ' + selected + ' data-id="' + item.id + '">' + item.name + '</option>');
                 });
@@ -27,26 +42,26 @@
 
         searchAdditionalQuestions : function(hakukohdeId, additionalQuestionsId) {
             var url = "/haku/education/additionalquestion/" + sortabletable_settings.applicationPeriodId + "/" +
-                      sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
-                      sortabletable_settings.teemaId + "/" + hakukohdeId;
+                sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
+                sortabletable_settings.teemaId + "/" + hakukohdeId;
             $.get(url, function(data) {
-              $("#" + additionalQuestionsId).html(data);
+                $("#" + additionalQuestionsId).html(data);
             });
         }
     };
 
-	$('button.reset').click(function(event){
-	    var id = $(this).data('id');
+    $('button.reset').click(function(event) {
+        var id = $(this).data('id');
         $('[id|="' + id + '"]').val('').html('');
-	});
+    });
 
-	$(".field-container-text input:text").each(function(index) {
-	    var selectInputId = $(this).data('selectinputid');
-	    var $hiddenInput = $("#" + this.id + "-id");
+    $(".field-container-text input:text").each(function(index) {
+        var selectInputId = $(this).data('selectinputid');
+        var $hiddenInput = $("#" + this.id + "-id");
         $(this).autocomplete({
             minLength : 1,
             source : function(request, response) {
-                $.getJSON("/haku/education/organisaatio/search", {
+                $.getJSON("/haku/education/" + sortabletable_settings.applicationPeriodId + "/organisaatio/search", {
                     term : request.term
                 }, function(data) {
                     response($.map(data, function(result) {
@@ -70,18 +85,16 @@
                 }
             }
         });
-        if($hiddenInput.val() !== '') {
-             preferenceRow.populateSelectInput($hiddenInput.val(), selectInputId);
+        if ($hiddenInput.val() !== '') {
+            preferenceRow.populateSelectInput($hiddenInput.val(), selectInputId);
         }
     });
 
-    $(".field-container-select select").change(function(event){
-        var $hiddenInput = $("#" + this.id + "-id"),
-            selectedId,
-            value = $(this).val();
+    $(".field-container-select select").change(function(event) {
+        var $hiddenInput = $("#" + this.id + "-id"), selectedId, value = $(this).val();
         $(this).children().removeAttr("selected");
-        $(this).children("option[value='" + value + "']").attr( "selected" , "selected");
-        selectedId = $("#" + this.id  + " option:selected").data("id");
+        $(this).children("option[value='" + value + "']").attr("selected", "selected");
+        selectedId = $("#" + this.id + " option:selected").data("id");
         $hiddenInput.val(selectedId);
         preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"));
     });

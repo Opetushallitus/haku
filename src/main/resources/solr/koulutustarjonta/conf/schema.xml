@@ -33,6 +33,7 @@
         <field name="LOI" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOIWebLinkHOMELabel" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOIWebLinkHOMEUri" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOSId" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSName" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSDegreeTitle" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSType" type="string" indexed="true" stored="true" multiValued="true"/>
@@ -48,7 +49,7 @@
         <field name="LOSEducationDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSEducationDegree" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSStydyDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOSEducationClassification" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOPId" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="LOPInstitutionInfoName" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOPInstitutionInfoGeneralDescription" type="text_general" indexed="true" stored="true"
                multiValued="true"/>
@@ -62,15 +63,17 @@
         <field name="AOExaminationStartDate" type="date" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationEnd" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationLocationName" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOExaminationLocationAddressLine" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOExaminationLocationPostalCode" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="AOExaminationLocationAddressLine" type="text_general" indexed="true" stored="true"
+               multiValued="true"/>
+        <field name="AOExaminationLocationPostalCode" type="text_general" indexed="true" stored="true"
+               multiValued="true"/>
         <field name="AOExaminationLocationCity" type="text_general" indexed="true" stored="true" multiValued="true"/>
 
         <field name="AOSelectionCriteriaDescription" type="text_general" indexed="true" stored="true"
                multiValued="true"/>
         <!-- tmp dev fields -->
         <field name="tmpHakuId" type="string" indexed="true" stored="true" multiValued="false"/>
-        <field name="formPath" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="tmpLomakeId" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="tmpAOApplyAdditionalInfo" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="tmpLOSEducationField" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="tmpASStart" type="date" indexed="true" stored="true" multiValued="false"/>

@@ -1,7 +1,24 @@
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
+
 package fi.vm.sade.oppija.haku.it;
 
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
+import net.sourceforge.jwebunit.junit.JWebUnit;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,35 +40,20 @@ public class AutoCompleteIT extends AbstractRemoteTest {
 
     @Test
     public void testOneMatch() throws IOException {
-        beginAt("education/organisaatio/search?term=koulu100");
-        assertTextPresent("[{\"id\":\"100\",\"name\":\"Koulu100\",\"key\":\"koulu100\"}]");
+        String name = "Helsingin";
+        beginAt("education/test/organisaatio/search?term=" + name);
+        JWebUnit.assertTextNotPresent("[]");
     }
 
     @Test
     public void testNoMatch() throws IOException {
-        beginAt("education/organisaatio/search?term=xyz");
+        beginAt("education/test/organisaatio/search?term=xyz");
         assertTextPresent("[]");
     }
 
     @Test
     public void testEmptySearchTerm() throws IOException {
-        beginAt("education/organisaatio/search?term=");
+        beginAt("education/test/organisaatio/search?term=");
         assertTextPresent("[]");
     }
-
-    @Test
-    public void testMultipleMatch() throws IOException {
-        beginAt("education/organisaatio/search?term=koulu1");
-        assertTextPresent("koulu1");
-        assertTextPresent("koulu10");
-        assertTextPresent("koulu11");
-        assertTextPresent("koulu12");
-        assertTextPresent("koulu13");
-        assertTextPresent("koulu14");
-        assertTextPresent("koulu15");
-        assertTextPresent("koulu16");
-        assertTextPresent("koulu17");
-        assertTextPresent("koulu18");
-    }
-
 }

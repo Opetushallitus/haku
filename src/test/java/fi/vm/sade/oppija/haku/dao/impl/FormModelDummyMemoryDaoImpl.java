@@ -17,7 +17,10 @@
 package fi.vm.sade.oppija.haku.dao.impl;
 
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
-import fi.vm.sade.oppija.haku.domain.*;
+import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.Organisaatio;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.Teema;
@@ -80,38 +83,31 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
             institutes.add(op);
         }
 
-        List<Question> oppianieList = new ArrayList<Question>();
-        oppianieList.add(new SubjectRow("tietotekniikka", "Tietotekniikka"));
-        oppianieList.add(new SubjectRow("kansantaloustiede", "Kansantaloustiede"));
-        oppiaineMap.put("0_0", oppianieList);
+        List<Question> oppiaineList = new ArrayList<Question>();
+        oppiaineList.add(new SubjectRow("tietotekniikka", "Tietotekniikka"));
+        oppiaineList.add(new SubjectRow("kansantaloustiede", "Kansantaloustiede"));
+        oppiaineMap.put("S1508", oppiaineList);
 
-        for (Organisaatio institute : institutes) {
-            List<Hakukohde> hakukohdeList = new ArrayList<Hakukohde>();
-            for (int i = 0; i < AMOUNT_OF_TEST_HAKUKOHDE; i++) {
-                String id = String.valueOf(institute.getId()) + "_" + String.valueOf(i);
-                Hakukohde h;
-                if (i % 2 == 0) {
-                    Radio radio = new Radio(id + "_additional_question_1", "Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?");
-                    radio.addOption(id + "_q1_option_1", "q1_option_1", "Ei");
-                    radio.addOption(id + "_q1_option_2", "q1_option_2", "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi");
 
-                    Radio radio2 = new Radio(id + "_additional_question_2", "Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?");
-                    radio2.addOption(id + "_q2_option_1", "q2_option_1", "Ei");
-                    radio2.addOption(id + "_q2_option_2", "q2_option_2", "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi");
+        final String id = "S1508";
+        Radio radio = new Radio(id + "_additional_question_1", "Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?");
+        radio.addOption(id + "_q1_option_1", "q1_option_1", "Ei");
+        radio.addOption(id + "_q1_option_2", "q1_option_2", "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi");
 
-                    Radio radio3 = new Radio(id + "_additional_question_3", "Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?");
-                    radio3.addOption(id + "_q3_option_1", "q3_option_1", "En, en ole osallistunut pääsykokeeseen");
-                    radio3.addOption(id + "_q3_option_2", "q3_option_2", "Ei, en halua käyttää tuloksia");
-                    radio3.addOption(id + "_q3_option_3", "q3_option_3", "Kyllä, haluan käyttää pääsykoetuloksia");
+        Radio radio2 = new Radio(id + "_additional_question_2", "Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?");
+        radio2.addOption(id + "_q2_option_1", "q2_option_1", "Ei");
+        radio2.addOption(id + "_q2_option_2", "q2_option_2", "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi");
 
-                    List<Question> lisakysymysList = new ArrayList<Question>();
-                    lisakysymysList.add(radio);
-                    lisakysymysList.add(radio2);
-                    lisakysymysList.add(radio3);
-                    lisakysymysMap.put(id, lisakysymysList);
-                }
-            }
-        }
+        Radio radio3 = new Radio(id + "_additional_question_3", "Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?");
+        radio3.addOption(id + "_q3_option_1", "q3_option_1", "En, en ole osallistunut pääsykokeeseen");
+        radio3.addOption(id + "_q3_option_2", "q3_option_2", "Ei, en halua käyttää tuloksia");
+        radio3.addOption(id + "_q3_option_3", "q3_option_3", "Kyllä, haluan käyttää pääsykoetuloksia");
+
+        List<Question> lisakysymysList = new ArrayList<Question>();
+        lisakysymysList.add(radio);
+        lisakysymysList.add(radio2);
+        lisakysymysList.add(radio3);
+        lisakysymysMap.put(id, lisakysymysList);
 
 
         Teema henkilötiedotRyhmä = new Teema("HenkilotiedotGrp", "Henkilötiedot", null);

@@ -35,6 +35,7 @@ public class QueryParameterAppender implements SolrQueryAppender {
         if (!join.isEmpty()) {
             newQuery.append('+').append(entry.getKey()).append(":(").append(join).append(") ");
         }
+        System.out.println(newQuery.toString());
         solrQuery.setQuery(newQuery.toString());
 
     }

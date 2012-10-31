@@ -46,7 +46,7 @@ public class EducationController {
 
     public static final String TERM = "term";
 
-    @Qualifier("hakukohdeServiceDummyImpl")
+    @Qualifier("HakukohdeServiceSolrImpl")
     @Autowired
     HakukohdeService hakukohdeService;
     @Autowired
@@ -57,26 +57,26 @@ public class EducationController {
     @Autowired
     AdditionalQuestionService additionalQuestionService;
 
-    @RequestMapping(value = "/organisaatio/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = TERM)
+    @RequestMapping(value = "/{hakuId}/organisaatio/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = TERM)
     @ResponseBody
-    public List<Organisaatio> searchOrganisaatio(@RequestParam(TERM) String term) {
-        return hakukohdeService.searchOrganisaatio(null, term);
+    public List<Organisaatio> searchOrganisaatio(@PathVariable final String hakuId, @RequestParam(TERM) String term) {
+        return hakukohdeService.searchOrganisaatio(hakuId, term);
     }
 
-    @RequestMapping(value = "/hakukohde/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = "organisaatioId")
+    @RequestMapping(value = "/{hakuId}/hakukohde/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = "organisaatioId")
     @ResponseBody
-    public List<Hakukohde> searchHakukohde(@RequestParam("organisaatioId") String organisaatioId) {
-        return hakukohdeService.searchHakukohde(null, organisaatioId);
+    public List<Hakukohde> searchHakukohde(@PathVariable final String hakuId, @RequestParam("organisaatioId") String organisaatioId) {
+        return hakukohdeService.searchHakukohde(hakuId, organisaatioId);
     }
 
-    @RequestMapping(value = "/additionalquestion/{applicationPeriodId}/{formId}/{vaiheId}/{teemaId}/{hakukohdeId}", method = RequestMethod.GET)
-    public ModelAndView getAdditionalQuestions(@PathVariable final String applicationPeriodId, @PathVariable final String formId, @PathVariable final String teemaId,
+    @RequestMapping(value = "/additionalquestion/{hakuId}/{lomakeId}/{vaiheId}/{teemaId}/{hakukohdeId}", method = RequestMethod.GET)
+    public ModelAndView getAdditionalQuestions(@PathVariable final String hakuId, @PathVariable final String lomakeId, @PathVariable final String teemaId,
                                                @PathVariable final String vaiheId, @PathVariable final String hakukohdeId,
                                                @RequestParam(value = "preview", required = false) Boolean preview) {
         String viewName = preview != null && preview ? "additionalQuestionsPreview" : "additionalQuestions";
         final ModelAndView modelAndView = new ModelAndView(viewName);
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), vaiheId);
+        Form activeForm = formService.getActiveForm(hakuId, lomakeId);
+        final HakemusId hakemusId = new HakemusId(hakuId, activeForm.getId(), vaiheId);
         List<String> hakukohdeIds = new ArrayList<String>();
         hakukohdeIds.add(hakukohdeId);
         Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakukohdeIds, hakemusId);

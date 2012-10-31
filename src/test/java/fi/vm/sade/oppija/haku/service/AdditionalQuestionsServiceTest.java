@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +41,6 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
-
 public class AdditionalQuestionsServiceTest {
 
     private AdditionalQuestionService additionalQuestionService;
@@ -61,7 +59,7 @@ public class AdditionalQuestionsServiceTest {
         HakemusId hakemusId = new HakemusId("test", "yhteishaku", "arvosanat");
 
         Map<String, String> values = new HashMap<String, String>();
-        values.put("preference1-Koulutus-id", "0_0");
+        values.put("preference1-Koulutus-id", "S1508");
 
         Hakemus hakemus = new Hakemus(hakemusId, values, new User("testuser"));
 
@@ -78,7 +76,6 @@ public class AdditionalQuestionsServiceTest {
 
         Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakemusId);
 
-        assertNotNull(additionalQuestions);
         assertEquals(3, additionalQuestions.size());
     }
 
@@ -89,7 +86,6 @@ public class AdditionalQuestionsServiceTest {
 
         Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakemusId);
 
-        assertNotNull(additionalQuestions);
         assertEquals(2, additionalQuestions.size());
 
     }

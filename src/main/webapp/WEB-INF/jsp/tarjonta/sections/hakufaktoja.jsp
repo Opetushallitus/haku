@@ -25,15 +25,15 @@
         <li class="heading"><spring:message code="tarjonta.hakufaktoja.hakukelpoisuus"/></li>
         <li class="emphasized"><c:out value="${searchResult['AOEligibilityRequirements']}"/></li>
         <li class="heading"><spring:message code="tarjonta.hakufaktoja.valintakoe"/></li>
-        <li class="emphasized"><fmt:formatDate type="date" value="${searchResult['AOExaminationStartDate']}" /></li>
+        <li class="emphasized"><fmt:formatDate type="date" value="${searchResult['AOExaminationStartDate']}"/></li>
         <li class="set-right"><spring:message code="tarjonta.hakufaktoja.hakuaikaalkaa"/>&nbsp
-        <fmt:formatDate type="date" value="${searchResult['tmpASStart']}" /></li>
+            <fmt:formatDate type="date" value="${searchResult['tmpASStart']}"/></li>
     </ul>
-    <form action="/haku/lomake/${searchResult['formPath']}" method="post">
-        <input type="hidden" name="preference1-Opetuspiste" value="Koulu7"/>
-        <input type="hidden" name="preference1-Opetuspiste-id" value="7"/>
-        <input type="hidden" name="preference1-Koulutus" value="Hakukohde_7_0"/>
-        <input type="hidden" name="preference1-Koulutus-id" value="7_0"/>
+    <form action="/haku/lomake/${searchResult['tmpHakuId']}/${searchResult['tmpLomakeId']}" method="post">
+        <input type="hidden" name="preference1-Opetuspiste" value="${searchResult['LOPInstitutionInfoName']}"/>
+        <input type="hidden" name="preference1-Opetuspiste-id" value="${searchResult['LOPId']}"/>
+        <input type="hidden" name="preference1-Koulutus" value="${searchResult['LOSDegreeTitle']}"/>
+        <input type="hidden" name="preference1-Koulutus-id" value="${searchResult['LOSId']}"/>
         <input type="hidden" name="enabling-submit"/>
         <button type="submit">
             <span><span><spring:message code="tarjonta.haekoulutukseen"/></span></span>

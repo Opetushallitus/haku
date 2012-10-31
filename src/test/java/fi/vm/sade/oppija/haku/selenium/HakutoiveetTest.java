@@ -17,11 +17,9 @@
 package fi.vm.sade.oppija.haku.selenium;
 
 import com.thoughtworks.selenium.Selenium;
-import fi.vm.sade.oppija.haku.FormModelHelper;
+import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.Hakukohde;
-import fi.vm.sade.oppija.haku.domain.Organisaatio;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.Teema;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
@@ -29,17 +27,12 @@ import fi.vm.sade.oppija.haku.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.haku.domain.elements.custom.SortableTable;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
-import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,8 +50,6 @@ import static org.junit.Assert.assertNull;
  */
 public class HakutoiveetTest extends AbstractSeleniumBase {
 
-    private FormModelHelper formModelHelper;
-
     @Before
     public void init() throws IOException {
         ApplicationPeriod applicationPeriod = new ApplicationPeriod("test");
@@ -73,25 +64,10 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
 
-        int AMOUNT_OF_TEST_OPETUSPISTE = 1;
-        int AMOUNT_OF_TEST_HAKUKOHDE = 1;
-        List<Organisaatio> institutes = new ArrayList<Organisaatio>();
-
-        for (int i = 0; i < AMOUNT_OF_TEST_OPETUSPISTE; ++i) {
-            Organisaatio op = new Organisaatio(String.valueOf(i), "Koulu" + i);
-            institutes.add(op);
-        }
-
-        for (Organisaatio institute : institutes) {
-            List<Hakukohde> hakukohdeList = new ArrayList<Hakukohde>();
-            for (int i = 0; i < AMOUNT_OF_TEST_HAKUKOHDE; i++) {
-                String id = String.valueOf(institute.getId()) + "_" + String.valueOf(i);
-                TextQuestion textQuestion = new TextQuestion(id + "_additional_question_1", "Lorem ipsum");
-                List<Question> lisakysymysList = new ArrayList<Question>();
-                lisakysymysList.add(textQuestion);
-                lisakysymysMap.put(id, lisakysymysList);
-            }
-        }
+        TextQuestion textQuestion = new TextQuestion("S1508_additional_question_1", "Lorem ipsum");
+        List<Question> lisakysymysList = new ArrayList<Question>();
+        lisakysymysList.add(textQuestion);
+        lisakysymysMap.put("S1508", lisakysymysList);
         applicationPeriod.addForm(form);
 
         Teema hakutoiveetRyhmä = new Teema("hakutoiveetGrp", "Hakutoiveet", lisakysymysMap);
@@ -109,11 +85,11 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         TextQuestion lisakysymys = new TextQuestion("lisakysymys", "Lisäkysymys");
         Teema lisakysymyksetRyhma = new Teema("lisakysymyksetGrp", "Lisäkysymykset", null);
         lisakysymykset.addChild(lisakysymyksetRyhma);
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("preference1-Koulutus-id", "0_0");
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("preference1-Koulutus-id", "S1508");
         relatedQuestionRule.addChild(lisakysymys);
         lisakysymyksetRyhma.addChild(relatedQuestionRule);
 
-        this.formModelHelper = initModel(formModel);
+        initModel(formModel);
     }
 
     @Test
@@ -123,28 +99,10 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         driver.get(getBaseUrl() + "/" + url);
         driver.findElement(By.id("preference1-Opetuspiste"));
         Selenium s = seleniumHelper.getSelenium();
-        s.typeKeys("preference1-Opetuspiste", "koulu");
-        WebDriverWait wait = new WebDriverWait(driver, 5, 1000);
-        wait.until(new ExpectedCondition<WebElement>() {
-            @Override
-            public WebElement apply(WebDriver d) {
-                return d.findElement(By.linkText("Koulu0"));
-            }
-        });
-        driver.findElement(By.linkText("Koulu0")).click();
-        wait.until(new ExpectedCondition<WebElement>() {
-            @Override
-            public WebElement apply(WebDriver d) {
-                return d.findElement(By.xpath("//option[@value='Hakukohde_0_0']"));
-            }
-        });
-        driver.findElement(By.xpath("//option[@value='Hakukohde_0_0']")).click();
-        wait.until(new ExpectedCondition<WebElement>() {
-            @Override
-            public WebElement apply(WebDriver d) {
-                return d.findElement(By.id("0_0_additional_question_1"));
-            }
-        });
+        s.typeKeys("preference1-Opetuspiste", "Hel");
+        driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
+        driver.findElement(By.xpath("//option[@value='sosiaali- ja terveysalan pt']")).click();
+//        driver.findElement(By.id("P1_additional_question_1"));
     }
 
     @Test

@@ -20,7 +20,6 @@ package fi.vm.sade.oppija.tarjonta.service.impl;
 import fi.vm.sade.oppija.tarjonta.client.TarjontaClient;
 import fi.vm.sade.oppija.tarjonta.service.IndexService;
 import fi.vm.sade.oppija.tarjonta.service.generator.DummyDataGenerator;
-
 import fi.vm.sade.tarjonta.publication.types.*;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
@@ -34,7 +33,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -127,7 +126,6 @@ public class IndexerServiceImpl implements IndexService {
                 addLearningOpportunityInstance(solrDocument, ref);
             }
             // tmp dev fields
-            solrDocument.addField("formPath", "test/yhteishaku");
             solrDocument.addField("tmpAOApplyAdditionalInfo", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tortor nisi, egestas id pellentesque ac, scelerisque in tortor. Morbi accumsan libero erat. Quisque nisl erat, fringilla quis ullamcorper vel, viverra eu leo. Nulla facilisi. Fusce a leo id tellus molestie imperdiet vel ut augue. Suspendisse interdum malesuada iaculis. Sed et urna ante, id varius ipsum. Fusce imperdiet sapien convallis purus mattis euismod. Quisque et metus sit amet nulla pharetra consequat at vel tellus. Proin vulputate eros at quam rutrum id dignissim magna dictum. ");
             solrDocument.addField("tmpLOSEducationField", "Opintojesi aikana erikoistut joko markkinointiin, laskentaan ja rahoitukseen tai työyhteisön kehittämiseen.");
             Calendar cal = GregorianCalendar.getInstance();
@@ -135,7 +133,8 @@ public class IndexerServiceImpl implements IndexService {
             cal.set(Calendar.MONTH, cal.get(Calendar.MONTH + 1));
             solrDocument.addField("tmpASEnd", cal.getTime());
             solrDocument.addField("tmpAOLastYearQualified", 45);
-            solrDocument.addField("tmpHakuId", "1");
+            solrDocument.addField("tmpHakuId", "test");
+            solrDocument.addField("tmpLomakeId", "yhteishaku");
 
             solrDocuments.add(solrDocument);
         }
@@ -146,10 +145,10 @@ public class IndexerServiceImpl implements IndexService {
     private void addLearningOpportunityProviderType(SolrInputDocument solrDocument, LearningOpportunityProviderRefType learningOpportunityProviderType) {
         if (learningOpportunityProviderType != null) {
             LearningOpportunityProviderType learningOpportunityProvider = (LearningOpportunityProviderType) learningOpportunityProviderType.getRef();
+            solrDocument.addField("LOPId", learningOpportunityProvider.getId());
 
             //LearningOpportunityProviderType.GeneralInformation generalInformation = learningOpportunityProvider.getGeneralInformation();
             LearningOpportunityProviderType.InstitutionInfo institutionInfo = learningOpportunityProvider.getInstitutionInfo();
-
             //opetuspiste
             solrDocument.addField("LOPInstitutionInfoName", getValueOfExtendedString(institutionInfo.getName()));
             solrDocument.addField("LOPInstitutionInfoGeneralDescription", getValueOfTextType(institutionInfo.getGeneralDescription()));
@@ -226,6 +225,7 @@ public class IndexerServiceImpl implements IndexService {
     }
 
     private void addLearningOpportunitySpecification(SolrInputDocument solrDocument, LearningOpportunitySpecificationType LOS) {
+        solrDocument.addField("LOSId", LOS.getId());
         solrDocument.addField("LOSType", LOS.getType().value());
         solrDocument.addField("LOSName", getValueOfExtendedString(LOS.getName()));
         solrDocument.addField("LOSCredits", LOS.getCredits().getValue());
