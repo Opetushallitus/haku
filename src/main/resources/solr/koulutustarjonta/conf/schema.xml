@@ -48,6 +48,7 @@
         <field name="LOSEducationDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSEducationDegree" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSStydyDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOSEducationClassification" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOPInstitutionInfoName" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOPInstitutionInfoGeneralDescription" type="text_general" indexed="true" stored="true"
                multiValued="true"/>

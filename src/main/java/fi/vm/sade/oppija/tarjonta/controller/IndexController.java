@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.tarjonta.controller;
 
 import fi.vm.sade.oppija.tarjonta.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,8 @@ import java.net.URL;
 @Secured("ROLE_ADMIN")
 public class IndexController {
 
+    private @Value("${tarjonta.data.url}") String tarjontaUrl;
+
     @Autowired
     IndexService indexService;
 
@@ -38,7 +41,9 @@ public class IndexController {
     public
     @ResponseBody
     String updateIndex() throws IOException {
-        URL url = new ClassPathResource("learningDownloadPOC.xml").getURL();
+        URL url = new URL(tarjontaUrl);
+
+
         return Boolean.toString(indexService.update(url));
     }
 

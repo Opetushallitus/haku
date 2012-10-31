@@ -32,6 +32,7 @@ import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -55,6 +56,7 @@ import static org.junit.Assert.assertNull;
  *
  * @author Mikko Majapuro
  */
+@Ignore
 public class HakutoiveetTest extends AbstractSeleniumBase {
 
     private FormModelHelper formModelHelper;

@@ -25,14 +25,20 @@ import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -44,18 +50,13 @@ public class IndexerServiceImpl implements IndexService {
 
     private final HttpSolrServer httpSolrServer;
 
-
-
     @Autowired
     public IndexerServiceImpl(HttpSolrServer httpSolrServer) {
         this.httpSolrServer = httpSolrServer;
-
     }
 
     @Override
     public boolean update(final URL url) {
-
-
 
         try {
             Collection<SolrInputDocument> documents = parseDocuments(url);
@@ -92,6 +93,22 @@ public class IndexerServiceImpl implements IndexService {
         return dropped;
     }
 
+    private static LearningOpportunityDownloadDataType getLearningOpportunityDownloadDataType(final String data) throws JAXBException, MalformedURLException {
+        JAXBElement<LearningOpportunityDownloadDataType> learningOpportunityDataTypeJAXBElement =
+                (JAXBElement<LearningOpportunityDownloadDataType>) getUnmarshaller().unmarshal(new StreamSource(new StringReader(data)));
+        return learningOpportunityDataTypeJAXBElement.getValue();
+    }
+
+    private static LearningOpportunityDownloadDataType getLearningOpportunityDownloadDataType(final URL url) throws JAXBException, MalformedURLException {
+        JAXBElement<LearningOpportunityDownloadDataType> learningOpportunityDataTypeJAXBElement =
+                (JAXBElement<LearningOpportunityDownloadDataType>) getUnmarshaller().unmarshal(url);
+        return learningOpportunityDataTypeJAXBElement.getValue();
+    }
+
+    private static Unmarshaller getUnmarshaller() throws JAXBException {
+        JAXBContext jaxbContext = JAXBContext.newInstance(LearningOpportunityDownloadDataType.class.getPackage().getName());
+        return jaxbContext.createUnmarshaller();
+    }
 
     public Collection<SolrInputDocument> parseDocuments(final URL url) throws JAXBException, MalformedURLException {
         LearningOpportunityDownloadDataType learningOpportunityDownloadDataType = getLearningOpportunityDownloadDataType(url);
@@ -165,7 +182,7 @@ public class IndexerServiceImpl implements IndexService {
             List<ExaminationEventType> examinationEvents = examination.getExaminationEvent();
             for (ExaminationEventType examinationEvent : examinationEvents) {
                 solrDocument.addField("AOExaminationStart", examinationEvent.getStart());
-                solrDocument.addField("AOExaminationStartDate", examinationEvent.getStart().toGregorianCalendar().getTime());
+                solrDocument.addField("AOExaminationStartDate", examinationEvent.getStart());
                 solrDocument.addField("AOExaminationEnd", examinationEvent.getEnd());
                 List<ExaminationLocationType> locations = examinationEvent.getLocations().getLocation();
                 for (ExaminationLocationType location : locations) {
@@ -181,14 +198,14 @@ public class IndexerServiceImpl implements IndexService {
 
     private void addLearningOpportunityInstance(SolrInputDocument solrDocument, LearningOpportunityInstanceType ref) {
 //        solrDocument.addField("LOIId", ref.getId());
-        List<LanguageCodeCollectionType.Language> language = ref.getLanguagesOfInstruction().getLanguage();
-        for (LanguageCodeCollectionType.Language lang : language) {
-            solrDocument.addField("LOILanguagesOfInstruction", lang.getCode());
+        List<CodeValueCollectionType.Code> languages = ref.getLanguagesOfInstruction().getCode();
+        for (CodeValueCollectionType.Code lang : languages) {
+            solrDocument.addField("LOILanguagesOfInstruction", lang);
         }
 
-        List<FormOfTeachingCollectionType.FormOfTeaching> formOfTeaching = ref.getFormsOfTeaching().getFormOfTeaching();
-        for (FormOfTeachingCollectionType.FormOfTeaching ofTeaching : formOfTeaching) {
-            solrDocument.addField("LOIFormOfTeaching", ofTeaching.getType().value());
+        List<CodeValueCollectionType.Code> formsOfTeaching = ref.getFormsOfTeaching().getCode();
+        for (CodeValueCollectionType.Code formOfTeaching : formsOfTeaching) {
+            solrDocument.addField("LOIFormOfTeaching", formOfTeaching.getValue());
         }
 //        solrDocument.addField("LOIAcademicYear", ref.getAcademicYear());
 //        solrDocument.addField("LOIAssessments", getValueOfExtendedString(ref.getAssessments().getAssessment()).trim());
@@ -223,17 +240,10 @@ public class IndexerServiceImpl implements IndexService {
 //        solrDocument.addField("LOSDescriptionGeneralDescription", LOS.getDescription().getGeneralDescription());
 
         LearningOpportunitySpecificationType.Classification classification = LOS.getClassification();
-        List<LearningClassificationCodeType> classificationCode = classification.getClassificationCode();
-        for (LearningClassificationCodeType learningClassificationCodeType : classificationCode) {
-
-
-            if (learningClassificationCodeType.getCategory() != null &&
-                    learningClassificationCodeType.getLabel() != null &&
-                    learningClassificationCodeType.getLabel().size() > 0) {
-                solrDocument.addField("LOS" + learningClassificationCodeType.getCategory().value(),
-                        getValueOfExtendedString(learningClassificationCodeType.getLabel()));
-            }
-        }
+        solrDocument.addField("LOSEducationDomain", classification.getEducationDomain());
+        solrDocument.addField("LOSEducationDegree", classification.getEducationDegree());
+        solrDocument.addField("LOSStydyDomain", classification.getStudyDomain());
+        solrDocument.addField("LOSEducationClassification", classification.getEducationClassification());
     }
 
     private static String getValueOfExtendedString(List<ExtendedStringType> ref1) {
@@ -244,12 +254,4 @@ public class IndexerServiceImpl implements IndexService {
         return ref1.get(0).getContent();
     }
 
-    private static LearningOpportunityDownloadDataType getLearningOpportunityDownloadDataType(final URL url) throws JAXBException, MalformedURLException {
-        JAXBContext jaxbContext = JAXBContext.newInstance(LearningOpportunityDownloadDataType.class.getPackage().getName());
-        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-
-        JAXBElement<LearningOpportunityDownloadDataType> learningOpportunityDataTypeJAXBElement =
-                (JAXBElement<LearningOpportunityDownloadDataType>) unmarshaller.unmarshal(url);
-        return learningOpportunityDataTypeJAXBElement.getValue();
-    }
 }

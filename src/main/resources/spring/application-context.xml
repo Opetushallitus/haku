@@ -44,13 +44,14 @@
     <mvc:resources mapping="/static-html/**" location="/static-html/"/>
     <mvc:resources mapping="content/**" location="/static-html/content/"/>
 
+    <!-- Tarjonta data location for development purposes -->
+    <mvc:resources mapping="tarjontadev/**" location="/tarjontadev/"/>
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
     <aop:aspectj-autoproxy/>
-
 
     <!-- Configure the multipart resolver -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
