@@ -10,11 +10,24 @@
 <div class="set-right">
 <c:choose>
     <c:when test="${category.hasNext}">
-        <button class="right" name="nav-next" type="submit" value="true"><span><span><spring:message code="lomake.button.next" /></span></span></button>
+        <button class="right" name="nav-next" type="submit" value="true">
+            <span>
+                <span>
+                    <c:choose>
+                        <c:when test="${category.next.preview}">
+                            <spring:message code="lomake.button.preview" />
+                        </c:when>
+                        <c:otherwise>
+                            <spring:message code="lomake.button.next" />
+                        </c:otherwise>
+                    </c:choose>
+                </span>
+            </span>
+        </button>
     </c:when>
-    <c:when test="${!category.hasNext}">
+    <c:otherwise>
         <button class="right" name="nav-save" type="submit" value="true"><span><span><spring:message code="lomake.button.save" /></span></span></button>
-    </c:when>
+    </c:otherwise>
 </c:choose>
 </div>
 <div class="clear"></div>
