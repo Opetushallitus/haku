@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.tarjonta.service.impl;
 
 
+import fi.vm.sade.oppija.tarjonta.client.TarjontaClient;
 import fi.vm.sade.oppija.tarjonta.service.IndexService;
 import fi.vm.sade.oppija.tarjonta.service.generator.DummyDataGenerator;
 
@@ -25,12 +26,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBContext;
@@ -38,7 +34,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
-import java.io.StringReader;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -50,9 +46,12 @@ public class IndexerServiceImpl implements IndexService {
 
     private final HttpSolrServer httpSolrServer;
 
+    private final TarjontaClient tarjontaClient;
+
     @Autowired
-    public IndexerServiceImpl(HttpSolrServer httpSolrServer) {
+    public IndexerServiceImpl(HttpSolrServer httpSolrServer, TarjontaClient tarjontaClient) {
         this.httpSolrServer = httpSolrServer;
+        this.tarjontaClient = tarjontaClient;
     }
 
     @Override
