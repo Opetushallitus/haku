@@ -23,7 +23,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Teema;
 import fi.vm.sade.oppija.haku.domain.elements.questions.CheckBox;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Option;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
-import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
+import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,18 +58,18 @@ public class ShowChildsIT extends AbstractSeleniumBase {
         teema.addChild(new TextQuestion("alikysymys1", "alikysymys1"));
         teema.addChild(new TextQuestion("alikysymys2", "alikysymys2"));
 
-        final EnablingSubmitRule enablingSubmitRule = new EnablingSubmitRule(option.getId(), ".*");
-        enablingSubmitRule.setRelated(option, teema);
-        option.addChild(enablingSubmitRule);
+        final RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule(option.getId(), ".*");
+        relatedQuestionRule.setRelated(option, teema);
+        option.addChild(relatedQuestionRule);
 
-        final EnablingSubmitRule enablingSubmitRule2 = new EnablingSubmitRule(option2.getId(), ".*");
+        final RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule(option2.getId(), ".*");
         final TextQuestion textQuestion = new TextQuestion("laitakolmenollaa", "Laita kolme nollaa tähän");
-        enablingSubmitRule2.setRelated(option2, textQuestion);
-        option2.addChild(enablingSubmitRule2);
+        relatedQuestionRule2.setRelated(option2, textQuestion);
+        option2.addChild(relatedQuestionRule2);
 
-        final EnablingSubmitRule enablingSubmitRule3 = new EnablingSubmitRule(textQuestion.getId(), "[0]{3}");
-        enablingSubmitRule3.setRelated(textQuestion, new TextQuestion("tamanakyykolmellanollalla", "tamanakyykolmellanollalla"));
-        textQuestion.addChild(enablingSubmitRule3);
+        final RelatedQuestionRule relatedQuestionRule3 = new RelatedQuestionRule(textQuestion.getId(), "[0]{3}");
+        relatedQuestionRule3.setRelated(textQuestion, new TextQuestion("tamanakyykolmellanollalla", "tamanakyykolmellanollalla"));
+        textQuestion.addChild(relatedQuestionRule3);
 
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox);
         this.formModelHelper = initModel(formModel);

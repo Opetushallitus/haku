@@ -24,12 +24,12 @@ import fi.vm.sade.oppija.haku.domain.elements.Element;
  * @version 9/20/124:49 PM}
  * @since 1.1
  */
-public class EnablingSubmitRule extends Rule {
+public class RelatedQuestionRule extends Rule {
 
 
     private final String expression;
 
-    public EnablingSubmitRule(@JsonProperty(value = "id") String id, @JsonProperty(value = "expression") String expression) {
+    public RelatedQuestionRule(@JsonProperty(value = "id") String id, @JsonProperty(value = "expression") String expression) {
         super(id);
         this.expression = expression;
     }

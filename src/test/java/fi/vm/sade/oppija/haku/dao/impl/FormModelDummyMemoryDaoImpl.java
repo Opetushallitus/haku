@@ -25,7 +25,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.*;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
+import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.validation.Validator;
@@ -379,13 +379,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         osallistunut.addOption("kylla", "Kyllä", "Kyllä");
         osallistunut.addAttribute("required", "required");
 
-        EnablingSubmitRule enablingSubmitRule = new EnablingSubmitRule(millatutkinnolla.getId(), "(" +
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule(millatutkinnolla.getId(), "(" +
                 millatutkinnolla.getOptions().get(0).getValue() + "|" + millatutkinnolla.getOptions().get(1).getValue() +
                 "|" + millatutkinnolla.getOptions().get(2).getValue() + "|" + millatutkinnolla.getOptions().get(3).getValue() + ")");
-        enablingSubmitRule.addChild(peruskoulu2012);
-        enablingSubmitRule.addChild(tutkinnonOpetuskieli);
-        enablingSubmitRule.addChild(suorittanut);
-        millatutkinnolla.addChild(enablingSubmitRule);
+        relatedQuestionRule.addChild(peruskoulu2012);
+        relatedQuestionRule.addChild(tutkinnonOpetuskieli);
+        relatedQuestionRule.addChild(suorittanut);
+        millatutkinnolla.addChild(relatedQuestionRule);
 
         koulutustaustaRyhmä.addChild(millatutkinnolla);
         koulutustaustaRyhmä.addChild(osallistunut);

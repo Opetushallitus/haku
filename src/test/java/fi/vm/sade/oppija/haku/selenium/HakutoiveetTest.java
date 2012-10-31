@@ -30,7 +30,7 @@ import fi.vm.sade.oppija.haku.domain.elements.custom.SortableTable;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
+import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -47,7 +47,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.assertElementPresentByXPath;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -111,9 +110,9 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         TextQuestion lisakysymys = new TextQuestion("lisakysymys", "Lisäkysymys");
         Teema lisakysymyksetRyhma = new Teema("lisakysymyksetGrp", "Lisäkysymykset", null);
         lisakysymykset.addChild(lisakysymyksetRyhma);
-        EnablingSubmitRule enablingSubmitRule = new EnablingSubmitRule("preference1-Koulutus-id", "0_0");
-        enablingSubmitRule.addChild(lisakysymys);
-        lisakysymyksetRyhma.addChild(enablingSubmitRule);
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("preference1-Koulutus-id", "0_0");
+        relatedQuestionRule.addChild(lisakysymys);
+        lisakysymyksetRyhma.addChild(relatedQuestionRule);
 
         this.formModelHelper = initModel(formModel);
     }

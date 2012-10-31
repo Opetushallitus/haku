@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fi.vm.sade.oppija.haku.domain.Attribute;
 import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.*;
-import fi.vm.sade.oppija.haku.domain.rules.EnablingSubmitRule;
+import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ import java.util.Map;
                 @JsonSubTypes.Type(value = Teema.class),
                 @JsonSubTypes.Type(value = TextQuestion.class),
                 @JsonSubTypes.Type(value = Vaihe.class),
-                @JsonSubTypes.Type(value = EnablingSubmitRule.class),
+                @JsonSubTypes.Type(value = RelatedQuestionRule.class),
                 @JsonSubTypes.Type(value = SelectingSubmitRule.class),
                 @JsonSubTypes.Type(value = GradeGrid.class),
                 @JsonSubTypes.Type(value = SubjectRow.class),
