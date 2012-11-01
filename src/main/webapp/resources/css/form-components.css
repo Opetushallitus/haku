@@ -524,8 +524,7 @@ select option
 .field-container-select select,
 .field-container-text input[type="text"]
 {
-	width:100%;
-	max-width:440px;
+	
 }
 
 
