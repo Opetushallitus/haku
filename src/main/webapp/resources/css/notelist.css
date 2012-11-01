@@ -83,7 +83,7 @@ button.arrow-down-blue > span > span {
 .notelist-table tbody tr td
 {
     border:none;
-    vertical-align:top;
+    vertical-align: middle;
     padding:0.5em 1.5em;
     line-height:1.5em;
     background-color: #fff;
@@ -125,13 +125,24 @@ button.arrow-down-blue > span > span {
 {
     background-color:#dcdcdc;
     text-transform:uppercase;
-
 }
 
-.notelist-table thead tr td
-.notelist-table tbody tr td
-{
+.notelist-table thead tr td.sortable {
+    background-image: url('../img/arrow-sorting.png');
+    background-position: 97% center;
+    background-repeat: no-repeat;
+}
 
+.notelist-table thead tr td.sort-ascending {
+    background-image: url('../img/arrow-up.png');
+    background-position: 97% center;
+    background-repeat: no-repeat;    
+}
+
+.notelist-table thead tr td.sort-descending {
+    background-image: url('../img/arrow-down.png');
+    background-position: 97% center;
+    background-repeat: no-repeat;
 }
 
 .notelist-table thead tr td:first-child,

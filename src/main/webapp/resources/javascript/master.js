@@ -495,6 +495,64 @@ var tableRowHighlight = {
 	}
 }
 
+// sort rows of tables tbody alphabetically
+var tableSorter = {
+
+	build: function() {
+		tableSorter.tableSorter();
+	},
+
+	tableSorter: function() {
+		$('table td.sort-ascending').one('click', function() {
+			console.log("ascendnig");
+		});
+
+		$('table td.sort-descending').one('click', function() {
+			console.log("descending");
+		});
+
+		$('table td.sortable, table td.sortAscending, table td.sortDescending').click(function() {
+
+
+
+			var sortingOrder = $(this).attr('class');
+
+			if (sortingOrder === "sortable" || sortingOrder === "sort-ascending") {
+				$(this).removeClass("sortable").removeClass("sort-ascending").addClass("sort-descending");
+			} else {
+				$(this).removeClass("sort-descending").addClass("sort-ascending");
+			}
+
+			console.log($(this).attr('class'));
+
+			// variables
+			var currentTable, rowList, sorterColumnIndex, newList;
+
+			// get index for the column that is used for sorting
+			sorterColumnIndex = $(this).prevAll().length; 
+			
+			currentTable = $(this).parents('table');
+			rowList = $(currentTable).find('tbody tr');
+
+			
+			function sortDescending(a,b) {
+				return $(a).children().eq(sorterColumnIndex).text().toUpperCase() > $(b).children().eq(sorterColumnIndex).text().toUpperCase() ? 1 : -1;
+			}
+			
+			function sortAscending(a,b) {
+				return $(a).children().eq(sorterColumnIndex).text().toUpperCase() < $(b).children().eq(sorterColumnIndex).text().toUpperCase() ? 1 : -1;
+			}
+
+			//sort and rearrange tablerows accordingly
+			if(sortingOrder === "sort-ascending" || sortingOrder === "sortable") {
+				$(currentTable).find('tbody tr').sort(sortDescending).appendTo($(currentTable).find('tbody'));
+			} else {
+				$(currentTable).find('tbody tr').sort(sortAscending).appendTo($(currentTable).find('tbody'));
+			}
+		});
+
+	},
+}
 
 applicationBasket.build();
 formReplacements.build();
@@ -504,6 +562,7 @@ hierarchyList.build();
 loginPopup.build();
 dropDownMenu.build();
 tableRowHighlight.build();
+tableSorter.build();
 
 
 
