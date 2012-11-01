@@ -14,23 +14,22 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.it;
+package fi.vm.sade.oppija.haku.selenium;
 
+import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
-import net.sourceforge.jwebunit.junit.JWebUnit;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.assertTextPresent;
-import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
+import static org.junit.Assert.assertFalse;
 
 /**
  * @author Mikko Majapuro
  */
-public class AutoCompleteIT extends AbstractRemoteTest {
+public class AutoCompleteIT extends AbstractSeleniumBase {
 
     @Before
     public void init() throws IOException {
@@ -40,20 +39,19 @@ public class AutoCompleteIT extends AbstractRemoteTest {
 
     @Test
     public void testOneMatch() throws IOException {
-        String name = "Helsingin";
-        beginAt("education/test/organisaatio/search?term=" + name);
-        JWebUnit.assertTextNotPresent("[]");
+        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/test/organisaatio/search?term=Hels");
+        assertFalse(seleniumHelper.getSelenium().isTextPresent("[]"));
     }
 
     @Test
     public void testNoMatch() throws IOException {
-        beginAt("education/test/organisaatio/search?term=xyz");
-        assertTextPresent("[]");
+        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/test/organisaatio/search?term=xyz");
+        seleniumHelper.getSelenium().isTextPresent("[]");
     }
 
     @Test
     public void testEmptySearchTerm() throws IOException {
-        beginAt("education/test/organisaatio/search?term=");
-        assertTextPresent("[]");
+        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/test/organisaatio/search?term=");
+        seleniumHelper.getSelenium().isTextPresent("[]");
     }
 }
