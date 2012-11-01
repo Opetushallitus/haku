@@ -25,6 +25,7 @@ import java.util.Map;
 public class FieldsParameterAppender implements SolrQueryAppender {
     @Override
     public void append(SolrQuery solrQuery, Map.Entry<String, List<String>> entry) {
-        solrQuery.setFields(entry.getValue().toArray(new String[0]));
+        List<String> value = entry.getValue();
+        solrQuery.setFields(value.toArray(new String[value.size()]));
     }
 }
