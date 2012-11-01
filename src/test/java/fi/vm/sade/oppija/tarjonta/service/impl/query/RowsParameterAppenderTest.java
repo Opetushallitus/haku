@@ -16,26 +16,23 @@
 
 package fi.vm.sade.oppija.tarjonta.service.impl.query;
 
-
-import com.google.common.base.Joiner;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
 
-public class QueryParameterAppender implements SolrQueryAppender {
-    @Override
-    public void append(SolrQuery solrQuery, Map.Entry<String, List<String>> entry) {
-        StringBuilder newQuery = new StringBuilder();
-        String query = solrQuery.getQuery();
-        if (query != null) {
-            newQuery.append(query);
-        }
-        String join = Joiner.on(" +").skipNulls().join(entry.getValue());
-        if (!join.isEmpty()) {
-            newQuery.append('+').append(entry.getKey()).append(":(").append(join).append(") ");
-        }
-        solrQuery.setQuery(newQuery.toString());
+import static org.junit.Assert.assertEquals;
 
+public class RowsParameterAppenderTest {
+    private SolrQuery solrQuery = new SolrQuery();
+
+    @Test
+    public void testAppend() throws Exception {
+        Integer expected = 1;
+        RowsParameterAppender RowsParameterAppender = new RowsParameterAppender();
+        Map.Entry<String, List<String>> entryWithValue = MapEntryUtil.createEntryWithValue(expected.toString());
+        RowsParameterAppender.append(solrQuery, entryWithValue);
+        assertEquals(expected, solrQuery.getRows());
     }
 }

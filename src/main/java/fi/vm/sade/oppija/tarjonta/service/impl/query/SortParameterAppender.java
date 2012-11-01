@@ -25,6 +25,7 @@ import java.util.Map;
 public class SortParameterAppender implements SolrQueryAppender {
     @Override
     public void append(SolrQuery solrQuery, Map.Entry<String, List<String>> entry) {
+
         for (String values : entry.getValue()) {
             String[] fieldAndOrder = values.split("\\s+"); // http://wiki.apache.org/solr/CommonQueryParameters#sort
             if (fieldAndOrder.length == 2) {
