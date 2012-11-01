@@ -1,12 +1,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"  %>
-<c:choose>
-    <c:when test="${category.hasPrev}">
-        <div class="set-left">
+
+<div class="set-left">
+    <c:choose>
+        <c:when test="${category.hasPrev}">
             <button class="left" name="nav-prev" type="submit" value="true"><span><span><spring:message code="lomake.button.previous" /></span></span></button>
-        </div>
-    </c:when>
-</c:choose>
+        </c:when>
+    </c:choose>
+    <c:if test="${not empty sessionScope['username']}">
+        <button name="save-draft" type="submit" value="true"><span><span><spring:message code="lomake.button.saveasdraft" /></span></span></button>
+    </c:if>
+</div>
 <div class="set-right">
 <c:choose>
     <c:when test="${category.hasNext}">
