@@ -20,7 +20,8 @@
                        name="${textInputId}"
                        value="${categoryData[textInputId]}"
                        type="text"
-                       data-selectinputid="${selectInputId}"/>
+                       data-selectinputid="${selectInputId}"
+                       size="40"/>
                 <input id="${hiddenInputId}" name="${hiddenInputId}" value="${categoryData[hiddenInputId]}" type="hidden"/>
             </div>
         </div>

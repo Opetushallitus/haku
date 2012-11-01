@@ -153,11 +153,15 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         henkilötunnus.addAttribute("title", "ppkkvv*****");
         henkilötunnus.addAttribute("required", "required");
         henkilötunnus.addAttribute("pattern", "[0-9]{6}.[0-9]{4}");
+        henkilötunnus.addAttribute("size", "11");
+        henkilötunnus.addAttribute("maxlength", "11");
         henkilötunnus.setHelp("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi");
         TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", "Kutsumanimi");
         kutsumanimi.setHelp("Valitse kutsumanimeksi jokin virallisista etunimistäsi");
         kutsumanimi.addAttribute("required", "required");
+        kutsumanimi.addAttribute("size", "20");
         TextQuestion sähköposti = new TextQuestion("Sähköposti", "Sähköpostiosoite");
+        sähköposti.addAttribute("size", "40");
         sähköposti.setHelp("Kirjoita tähän sähköpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.");
 
         Radio sukupuoli = new Radio("Sukupuoli", "Sukupuoli");
@@ -174,23 +178,25 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         asuinmaa.addOption("ruotsi", "Ruotsi", "Ruotsi");
         asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
         asuinmaa.addAttribute("required", "required");
-        Element postinumero = createRequiredTextQuestion("Postinumero", "Postinumero");
+        Element postinumero = createRequiredTextQuestion("Postinumero", "Postinumero", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
         postinumero.addAttribute("title", "#####");
+        postinumero.addAttribute("maxlength", "5");
         postinumero.setHelp("Kirjoita tähän osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, kuten kutsun valintakokeeseen tai valintapäätöksen.");
         TextQuestion matkapuhelinnumero = new TextQuestion("matkapuhelinnumero", "Matkapuhelinnumero");
         matkapuhelinnumero.setHelp("Kirjoita tähän matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.");
+        matkapuhelinnumero.addAttribute("size", "20");
         kotikunta.setHelp("Kotikunta on tyypillisesti se kunta, jossa asut.");
         äidinkieli.setHelp("Jos omaa äidinkieltäsi ei löydy valintalistasta, valitse äidinkieleksesi..");
-        henkilötiedotRyhmä.addChild(createRequiredTextQuestion("Sukunimi", "Sukunimi"))
-                .addChild(createRequiredTextQuestion("Etunimet", "Etunimet"))
+        henkilötiedotRyhmä.addChild(createRequiredTextQuestion("Sukunimi", "Sukunimi", "30"))
+                .addChild(createRequiredTextQuestion("Etunimet", "Etunimet", "30"))
                 .addChild(kutsumanimi)
                 .addChild(autofillhetu)
                 .addChild(sähköposti)
                 .addChild(matkapuhelinnumero)
                 .addChild(asuinmaa)
-                .addChild(createRequiredTextQuestion("Lähiosoite", "Lähiosoite"))
+                .addChild(createRequiredTextQuestion("Lähiosoite", "Lähiosoite", "40"))
                 .addChild(postinumero)
                 .addChild(kotikunta)
                 .addChild(kansalaisuus)
@@ -314,6 +320,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         tyokokemuskuukaudet.addAttribute("placeholder", "kuukautta");
         tyokokemuskuukaudet.addAttribute("title", "kuukautta");
         tyokokemuskuukaudet.addAttribute("pattern", "[0-9]*");
+        tyokokemuskuukaudet.addAttribute("size", "8");
         tyokokemus.addChild(tyokokemuskuukaudet);
     }
 
@@ -403,9 +410,10 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    private Element createRequiredTextQuestion(final String id, final String name) {
+    private Element createRequiredTextQuestion(final String id, final String name, final String size) {
         TextQuestion textQuestion = new TextQuestion(id, name);
         textQuestion.addAttribute("required", "required");
+        textQuestion.addAttribute("size", size);
         return textQuestion;
     }
 
