@@ -173,17 +173,31 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[13579]\\w", sukupuoli.getOptions().get(0));
         autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[24680]\\w", sukupuoli.getOptions().get(1));
 
-        DropdownSelect asuinmaa = new DropdownSelect("Asuinmaa", "Asuinmaa");
-        asuinmaa.addOption("suomi", "Suomi", "Suomi");
-        asuinmaa.addOption("ruotsi", "Ruotsi", "Ruotsi");
-        asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
-        asuinmaa.addAttribute("required", "required");
         Element postinumero = createRequiredTextQuestion("Postinumero", "Postinumero", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
         postinumero.addAttribute("title", "#####");
         postinumero.addAttribute("maxlength", "5");
         postinumero.setHelp("Kirjoita tähän osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, kuten kutsun valintakokeeseen tai valintapäätöksen.");
+
+        DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", "Asuinmaa");
+        asuinmaa.addOption("valitse", null, "Valitse");
+        asuinmaa.addOption("fi", "fi", "Suomi");
+        asuinmaa.addOption("sv", "sv", "Ruotsi");
+        asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
+        asuinmaa.addAttribute("required", "required");
+        asuinmaa.addAttribute("onChange", "submit()");
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule(asuinmaa.getId(), "fi");
+        relatedQuestionRule.addChild(createRequiredTextQuestion("Lähiosoite", "Lähiosoite", "40"));
+        relatedQuestionRule.addChild(postinumero);
+        relatedQuestionRule.addChild(kotikunta);
+        asuinmaa.addChild(relatedQuestionRule);
+
+        TextArea osoite = new TextArea("osoite", "Osoite");
+        RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule(asuinmaa.getId(), "sv");
+        relatedQuestionRule2.addChild(osoite);
+        asuinmaa.addChild(relatedQuestionRule2);
+
         TextQuestion matkapuhelinnumero = new TextQuestion("matkapuhelinnumero", "Matkapuhelinnumero");
         matkapuhelinnumero.setHelp("Kirjoita tähän matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.");
         matkapuhelinnumero.addAttribute("size", "20");
@@ -196,9 +210,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                 .addChild(sähköposti)
                 .addChild(matkapuhelinnumero)
                 .addChild(asuinmaa)
-                .addChild(createRequiredTextQuestion("Lähiosoite", "Lähiosoite", "40"))
-                .addChild(postinumero)
-                .addChild(kotikunta)
                 .addChild(kansalaisuus)
                 .addChild(äidinkieli);
 

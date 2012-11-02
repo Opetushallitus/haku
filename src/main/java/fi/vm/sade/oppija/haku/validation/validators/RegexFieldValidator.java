@@ -40,10 +40,14 @@ public class RegexFieldValidator extends Validator {
 
     @Override
     public ValidationResult validate(Map<String, String> values) {
-        Matcher matcher = pattern.matcher(values.get(fieldName));
+        String value = values.get(fieldName);
         ValidationResult validationResult = new ValidationResult();
-        if (!matcher.matches()) {
-            validationResult = new ValidationResult(fieldName, errorMessage);
+        if (value != null) {
+            Matcher matcher = pattern.matcher(value);
+
+            if (!matcher.matches()) {
+                validationResult = new ValidationResult(fieldName, errorMessage);
+            }
         }
         return validationResult;
     }
