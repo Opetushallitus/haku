@@ -503,45 +503,24 @@ var tableSorter = {
 	},
 
 	tableSorter: function() {
-		$('table td.sort-ascending').one('click', function() {
-			console.log("ascendnig");
-		});
-
-		$('table td.sort-descending').one('click', function() {
-			console.log("descending");
-		});
-
 		$('table td.sortable, table td.sortAscending, table td.sortDescending').click(function() {
+			// variables
+			var currentTable, rowList, sorterColumnIndex, newList, sortingOrder;
 
-
-
-			var sortingOrder = $(this).attr('class');
-
+			// figure out wanted sorting order from class names
+			sortingOrder = $(this).attr('class');
 			if (sortingOrder === "sortable" || sortingOrder === "sort-ascending") {
 				$(this).removeClass("sortable").removeClass("sort-ascending").addClass("sort-descending");
 			} else {
 				$(this).removeClass("sort-descending").addClass("sort-ascending");
 			}
 
-			console.log($(this).attr('class'));
-
-			// variables
-			var currentTable, rowList, sorterColumnIndex, newList;
-
 			// get index for the column that is used for sorting
-			sorterColumnIndex = $(this).prevAll().length; 
-			
+			sorterColumnIndex = $(this).prevAll().length;
+
+			// get the table that was clicked and retrieve its rows
 			currentTable = $(this).parents('table');
 			rowList = $(currentTable).find('tbody tr');
-
-			
-			function sortDescending(a,b) {
-				return $(a).children().eq(sorterColumnIndex).text().toUpperCase() > $(b).children().eq(sorterColumnIndex).text().toUpperCase() ? 1 : -1;
-			}
-			
-			function sortAscending(a,b) {
-				return $(a).children().eq(sorterColumnIndex).text().toUpperCase() < $(b).children().eq(sorterColumnIndex).text().toUpperCase() ? 1 : -1;
-			}
 
 			//sort and rearrange tablerows accordingly
 			if(sortingOrder === "sort-ascending" || sortingOrder === "sortable") {
@@ -549,9 +528,57 @@ var tableSorter = {
 			} else {
 				$(currentTable).find('tbody tr').sort(sortAscending).appendTo($(currentTable).find('tbody'));
 			}
-		});
 
+			//function for descending sort
+			function sortDescending(a,b) {
+				return $(a).children().eq(sorterColumnIndex).text().toUpperCase() > $(b).children().eq(sorterColumnIndex).text().toUpperCase() ? 1 : -1;
+			}
+			
+			//function for ascending sort
+			function sortAscending(a,b) {
+				return $(a).children().eq(sorterColumnIndex).text().toUpperCase() < $(b).children().eq(sorterColumnIndex).text().toUpperCase() ? 1 : -1;
+			}
+		});
+	}
+}
+
+var comparisonTable = {
+	build: function() {
+		comparisonTable.load();
+		comparisonTable.setTriggers();
 	},
+
+	load: function() {
+		var educationCount, tbodyContent; 
+		educationCount = $('.compare-table thead tr.education td').length - 1;
+		tbodyContent = $('.compare-table tbody');
+
+		function getTbodyColumn(index) {
+			$(tbodyContent).children().eq(index);
+		}
+	
+	},	
+
+	setTriggers: function() {
+
+	}
+}
+
+var scrollHelpPage = {
+	build: function() {
+		scrollHelpPage.setTriggers();
+	},
+
+	setTriggers: function() {
+		
+		$(".scrollList [scrollFromIndex]").click(function() {
+			var scrollIndex = $(this).attr('scrollFromIndex');
+
+		     $('html, body').animate({
+		         scrollTop: $('[scrollToIndex="'+scrollIndex+'"]').offset().top
+		     }, 1000);
+		 });
+	}
 }
 
 applicationBasket.build();
@@ -563,7 +590,8 @@ loginPopup.build();
 dropDownMenu.build();
 tableRowHighlight.build();
 tableSorter.build();
-
+comparisonTable.build();
+scrollHelpPage.build();
 
 
 /* Master.js ends */
