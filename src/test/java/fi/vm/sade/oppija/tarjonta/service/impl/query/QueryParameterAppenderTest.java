@@ -34,7 +34,7 @@ public class QueryParameterAppenderTest {
         queryParameterAppender = new QueryParameterAppender();
         Map.Entry<String, List<String>> entryWithValue = MapEntryUtil.createEntryWithValue("test");
         queryParameterAppender.append(solrQuery, entryWithValue);
-        assertEquals("+test:(test)", solrQuery.getQuery());
+        assertEquals("+test:(test) ", solrQuery.getQuery());
     }
 
     @Test
