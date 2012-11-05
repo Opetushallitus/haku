@@ -53,7 +53,7 @@ public class ExceptionControllerTest {
 
     @Test
     public void testExceptions() throws Exception {
-        ModelAndView modelAndView = exceptionController.resourceNotFoundExceptions(new ResourceNotFoundException("viesti"));
+        ModelAndView modelAndView = exceptionController.exceptions(new ResourceNotFoundException("viesti"));
         assertEquals(modelAndView.getViewName(), ExceptionController.ERROR_SERVERERROR);
     }
 }
