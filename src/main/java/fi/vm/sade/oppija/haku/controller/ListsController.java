@@ -22,24 +22,40 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "/oma")
-public class NoteListController {
+public class ListsController {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(NoteListController.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(ListsController.class);
+    public static final String NOTELIST_VIEW = "tarjonta/notelist";
+    public static final String COMPARISON_VIEW = "tarjonta/comparison";
 
     @RequestMapping(value = "/muistilista", method = RequestMethod.GET)
     public ModelAndView getUserNoteList() {
         LOGGER.debug("getUserNoteList");
-        return new ModelAndView("tarjonta/notelist");
+        return new ModelAndView(NOTELIST_VIEW);
+    }
+
+    @RequestMapping(value = "/muistilista", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
+    @ResponseBody
+    public void addApplicationOptionToNoteList(@RequestParam(required = true) final String id) {
+        LOGGER.debug(id);
     }
 
     @RequestMapping(value = "/vertailu", method = RequestMethod.GET)
     public ModelAndView getUserComparison() {
         LOGGER.debug("getUserComparison");
-        return new ModelAndView("tarjonta/comparison");
+        return new ModelAndView(COMPARISON_VIEW);
+    }
+
+    @RequestMapping(value = "/vertailu", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
+    @ResponseBody
+    public void addApplicationOptionToComparison(@RequestParam(required = true) final String id) {
+        LOGGER.debug(id);
     }
 
 }
