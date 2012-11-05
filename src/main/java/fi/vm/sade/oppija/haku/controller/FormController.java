@@ -23,20 +23,20 @@ import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.Teema;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
-import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
-import org.codehaus.plexus.util.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -46,14 +46,13 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/lomake", method = RequestMethod.GET)
-public class FormController {
+public class FormController extends ExceptionController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
     public static final String DEFAULT_VIEW = "default";
     public static final String VERBOSE_HELP_VIEW = "help";
     public static final String LINK_LIST_VIEW = "linkList";
-    public static final String ERROR_NOTFOUND = "error/notfound";
-    public static final String ERROR_SERVERERROR = "error/servererror";
+
 
     final FormService formService;
     private final HakemusService hakemusService;
@@ -115,7 +114,7 @@ public class FormController {
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView prefillForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId, @RequestBody final MultiValueMap<String, String> multiValues) {
         final HakemusId hakemusId = new HakemusId(applicationPeriodId, formId, "henkilotiedot");
-        HakemusState hakemusState = hakemusService.save(hakemusId, multiValues.toSingleValueMap());
+        hakemusService.save(hakemusId, multiValues.toSingleValueMap());
         return new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId);
         //return saveCategory(applicationPeriodId, formId, formService.getFirstCategory(applicationPeriodId, formId).getId(), multiValues);
     }
@@ -198,24 +197,6 @@ public class FormController {
             }
         }
 
-        return modelAndView;
-    }
-
-
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ModelAndView resourceNotFoundExceptions(ResourceNotFoundException e) {
-        ModelAndView modelAndView = new ModelAndView(ERROR_NOTFOUND);
-        modelAndView.addObject("stackTrace", ExceptionUtils.getFullStackTrace(e));
-        modelAndView.addObject("message", e.getMessage());
-        return modelAndView;
-    }
-
-    @ExceptionHandler(Throwable.class)
-    public ModelAndView exceptions(Throwable t) {
-        ModelAndView modelAndView = new ModelAndView(ERROR_SERVERERROR);
-        modelAndView.addObject("stackTrace", ExceptionUtils.getFullStackTrace(t));
-        modelAndView.addObject("message", t.getMessage());
         return modelAndView;
     }
 
