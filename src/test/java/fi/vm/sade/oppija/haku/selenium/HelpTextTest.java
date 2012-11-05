@@ -13,12 +13,20 @@ import static junit.framework.Assert.assertNotNull;
 /**
  * @author hannu
  */
-public class VerboseHelpTest extends AbstractSeleniumBase {
+public class HelpTextTest extends AbstractSeleniumBase {
 
     @Before
     public void init() {
         FormModelDummyMemoryDaoImpl dummyMem = new FormModelDummyMemoryDaoImpl();
         initModel(dummyMem.getModel());
+    }
+
+    @Test
+    public void testQuestionHelp() {
+        final String url = getBaseUrl() + "/" + "lomake/test/yhteishaku/henkilotiedot";
+        final WebDriver driver = seleniumHelper.getDriver();
+        driver.get(url);
+        assertNotNull("Could not find question specific help", driver.findElement(By.id("help-Kutsumanimi")));
     }
 
     @Test
