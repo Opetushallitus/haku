@@ -7,7 +7,7 @@
 <fieldset>
     <legend class="h3"><c:out value="${element.title}"/></legend>
     <hr/>
-    <a href="#" class="helplink">?</a>
+    <a href="${category.id}/${element.id}/help" target="_blank" class="helplink">?</a>
     <div><c:out value="${element.help}"/></div>
     <haku:viewChilds element="${element}"/>
 </fieldset>

@@ -18,8 +18,11 @@ package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Teema;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
+import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.haku.service.FormService;
@@ -37,6 +40,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -46,6 +51,7 @@ public class FormController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
     public static final String DEFAULT_VIEW = "default";
+    public static final String VERBOSE_HELP_VIEW = "help";
     public static final String LINK_LIST_VIEW = "linkList";
     public static final String ERROR_NOTFOUND = "error/notfound";
     public static final String ERROR_SERVERERROR = "error/servererror";
@@ -167,6 +173,33 @@ public class FormController {
         modelAndView.addObject("hakemusId", hakemusId);
         //TODO: implement application number
         modelAndView.addObject("applicationNumber", new Date().getTime());
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{vaiheId}/{teemaId}/help", method = RequestMethod.GET)
+    public ModelAndView getFormHelp(@PathVariable final String applicationPeriodId,
+                                    @PathVariable final String formId, @PathVariable final String vaiheId,
+                                    @PathVariable final String teemaId) {
+
+        ModelAndView modelAndView = new ModelAndView(VERBOSE_HELP_VIEW);
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        Vaihe phase = activeForm.getCategory(vaiheId);
+
+        for (Element element : phase.getChildren()) {
+            if (element.getId().equals(teemaId)) {
+                Teema theme = (Teema) element;
+                modelAndView.getModel().put("themeTitle", theme.getTitle());
+                HashMap<String, String> helpMap = new HashMap<String, String>();
+                for (Element qElement : theme.getChildren()) {
+                    if (qElement instanceof Question) {
+                        helpMap.put(((Question) qElement).getTitle(), ((Question) qElement).getVerboseHelp());
+                    }
+                }
+                modelAndView.getModel().put("themeHelpMap", helpMap);
+                break;
+            }
+        }
+
         return modelAndView;
     }
 
