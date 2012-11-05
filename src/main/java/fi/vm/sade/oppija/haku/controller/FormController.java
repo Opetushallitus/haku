@@ -41,7 +41,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -55,7 +54,6 @@ public class FormController {
     public static final String LINK_LIST_VIEW = "linkList";
     public static final String ERROR_NOTFOUND = "error/notfound";
     public static final String ERROR_SERVERERROR = "error/servererror";
-    public static final String USER_ID = "j_username";
 
     final FormService formService;
     private final HakemusService hakemusService;
