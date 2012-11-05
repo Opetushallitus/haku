@@ -28,6 +28,7 @@ import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.*;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
+import fi.vm.sade.tarjonta.publication.types.PostalAddress;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +64,8 @@ import java.util.Map;
                 @JsonSubTypes.Type(value = CustomLanguageRow.class),
                 @JsonSubTypes.Type(value = AddLanguageRow.class),
                 @JsonSubTypes.Type(value = SortableTable.class),
-                @JsonSubTypes.Type(value = PreferenceRow.class)
+                @JsonSubTypes.Type(value = PreferenceRow.class),
+                @JsonSubTypes.Type(value = PostalCode.class)
         }
 )
 public abstract class Element {

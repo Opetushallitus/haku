@@ -179,8 +179,8 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[13579]\\w", sukupuoli.getOptions().get(0));
         autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[24680]\\w", sukupuoli.getOptions().get(1));
 
-
-        Element postinumero = createRequiredTextQuestion("Postinumero", "Postinumero", "5");
+        Element postinumero = new PostalCode("Postinumero", "Postinumero");
+        postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
         postinumero.addAttribute("title", "#####");
