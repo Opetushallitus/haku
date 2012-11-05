@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.haku.controller;
 
+import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.elements.Element;

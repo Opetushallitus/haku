@@ -14,11 +14,12 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.controller;
+package fi.vm.sade.oppija;
 
 
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
-import org.codehaus.plexus.util.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -26,23 +27,29 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class ExceptionController {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(ExceptionController.class);
+
     public static final String ERROR_NOTFOUND = "error/notfound";
     public static final String ERROR_SERVERERROR = "error/servererror";
+    public static final String MODEL_STACK_TRACE = "stackTrace";
+    public static final String MODEL_MESSAGE = "message";
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ModelAndView resourceNotFoundExceptions(ResourceNotFoundException e) {
-        ModelAndView modelAndView = new ModelAndView(ERROR_NOTFOUND);
-        modelAndView.addObject("stackTrace", ExceptionUtils.getFullStackTrace(e));
-        modelAndView.addObject("message", e.getMessage());
-        return modelAndView;
+        return createModelAndView(ERROR_NOTFOUND, e);
     }
 
     @ExceptionHandler(Throwable.class)
     public ModelAndView exceptions(Throwable t) {
-        ModelAndView modelAndView = new ModelAndView(ERROR_SERVERERROR);
-        modelAndView.addObject("stackTrace", ExceptionUtils.getFullStackTrace(t));
-        modelAndView.addObject("message", t.getMessage());
+        return createModelAndView(ERROR_SERVERERROR, t);
+    }
+
+    private ModelAndView createModelAndView(final String viewName, final Throwable t) {
+        LOGGER.error("Sovellusvirhe:", t);
+        ModelAndView modelAndView = new ModelAndView(viewName);
+        modelAndView.addObject(MODEL_STACK_TRACE, t.toString());
+        modelAndView.addObject(MODEL_MESSAGE, t.getMessage());
         return modelAndView;
     }
 

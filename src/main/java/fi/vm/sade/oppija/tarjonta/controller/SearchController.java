@@ -16,30 +16,29 @@
 
 package fi.vm.sade.oppija.tarjonta.controller;
 
-import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.tarjonta.domain.SearchFilters;
 import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
-import org.codehaus.plexus.util.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
 
 @Controller
-public class SearchController {
+public class SearchController extends ExceptionController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
-    public static final String ERROR_NOTFOUND = "error/notfound";
-    public static final String ERROR_SERVERERROR = "error/servererror";
     public static final String VIEW_NAME_ITEMS = "tarjonta/tarjontatiedot";
     public static final String VIEW_NAME_KOULUTUSKUVAUS = "tarjonta/koulutuskuvaus";
     public static final String MODEL_NAME = "searchResult";
@@ -76,24 +75,6 @@ public class SearchController {
         Map<String, Object> searchResult = service.searchById(tarjontatietoId);
         ModelAndView modelAndView = new ModelAndView(VIEW_NAME_KOULUTUSKUVAUS);
         modelAndView.addObject(MODEL_NAME, searchResult);
-        return modelAndView;
-    }
-
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ModelAndView resourceNotFoundExceptions(ResourceNotFoundException e) {
-        ModelAndView modelAndView = new ModelAndView(ERROR_NOTFOUND);
-        modelAndView.addObject("stackTrace", ExceptionUtils.getFullStackTrace(e));
-        modelAndView.addObject("message", e.getMessage());
-        return modelAndView;
-    }
-
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Throwable.class)
-    public ModelAndView exceptions(Throwable t) {
-        ModelAndView modelAndView = new ModelAndView(ERROR_SERVERERROR);
-        modelAndView.addObject("stackTrace", ExceptionUtils.getFullStackTrace(t));
-        modelAndView.addObject("message", t.getMessage());
         return modelAndView;
     }
 
