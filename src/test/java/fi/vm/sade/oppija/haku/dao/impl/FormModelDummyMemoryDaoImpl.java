@@ -161,13 +161,17 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         henkilötunnus.addAttribute("maxlength", "11");
         henkilötunnus.setHelp("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi");
         henkilötunnus.setVerboseHelp(getVerboseHelp());
+
         TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", "Kutsumanimi");
         kutsumanimi.setHelp("Valitse kutsumanimeksi jokin virallisista etunimistäsi");
         kutsumanimi.addAttribute("required", "required");
         kutsumanimi.addAttribute("size", "20");
-        TextQuestion sähköposti = new TextQuestion("Sähköposti", "Sähköpostiosoite");
-        sähköposti.addAttribute("size", "40");
-        sähköposti.setHelp("Kirjoita tähän sähköpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.");
+        kutsumanimi.setVerboseHelp(getVerboseHelp());
+
+        TextQuestion email = new TextQuestion("Sähköposti", "Sähköpostiosoite");
+        email.addAttribute("size", "40");
+        email.setHelp("Kirjoita tähän sähköpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.");
+        email.setVerboseHelp(getVerboseHelp());
 
         Radio sukupuoli = new Radio("Sukupuoli", "Sukupuoli");
         sukupuoli.addOption("mies", "Mies", "Mies");
@@ -195,6 +199,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         asuinmaa.addAttribute("required", "required");
         asuinmaa.addAttribute("onChange", "submit()");
         asuinmaa.setVerboseHelp(getVerboseHelp());
+
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule(asuinmaa.getId(), "fi");
         relatedQuestionRule.addChild(createRequiredTextQuestion("Lähiosoite", "Lähiosoite", "40"));
         relatedQuestionRule.addChild(postinumero);
@@ -204,6 +209,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         TextArea osoite = new TextArea("osoite", "Osoite");
         RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule(asuinmaa.getId(), "sv");
         relatedQuestionRule2.addChild(osoite);
+        osoite.setVerboseHelp(getVerboseHelp());
         asuinmaa.addChild(relatedQuestionRule2);
 
         TextQuestion matkapuhelinnumero = new TextQuestion("matkapuhelinnumero", "Matkapuhelinnumero");
@@ -217,7 +223,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                 .addChild(createRequiredTextQuestion("Etunimet", "Etunimet", "30"))
                 .addChild(kutsumanimi)
                 .addChild(autofillhetu)
-                .addChild(sähköposti)
+                .addChild(email)
                 .addChild(matkapuhelinnumero)
                 .addChild(asuinmaa)
                 .addChild(kansalaisuus)
@@ -307,6 +313,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         GradeGrid gradeGrid = new GradeGrid("gradegrid", "Arvosanat",
                 "Kieli", subjectRowsBefore, languageRows,
                 subjectRowsAfter, scopeOptions, languageOptions, gradeRange);
+        gradeGrid.setVerboseHelp(getVerboseHelp());
 
         return gradeGrid;
     }
@@ -331,6 +338,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         sortableTable.addChild(pr3);
         sortableTable.addChild(pr4);
         sortableTable.addChild(pr5);
+        sortableTable.setVerboseHelp(getVerboseHelp());
         hakutoiveetRyhmä.addChild(sortableTable);
     }
 
@@ -342,6 +350,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         tyokokemuskuukaudet.addAttribute("title", "kuukautta");
         tyokokemuskuukaudet.addAttribute("pattern", "[0-9]*");
         tyokokemuskuukaudet.addAttribute("size", "8");
+        tyokokemuskuukaudet.setVerboseHelp(getVerboseHelp());
         tyokokemus.addChild(tyokokemuskuukaudet);
     }
 
@@ -352,11 +361,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         lupa.addOption("lupa3", "lupa3", "Tietoni opiskeluvalinna tuloksista saa julkaista Internetissä");
         lupa.addOption("lupa4", "lupa4", "Valintaani koskevat tiedot saa lähettää minulle sähköisesti");
         lupa.addOption("lupa5", "lupa5", "Minulle saa lähettää tietoa opiskelijavalinnan etenemisestä ja tuloksista tekstiviestillä");
+        lupa.setVerboseHelp(getVerboseHelp());
 
         Radio asiointikieli = new Radio("asiointikieli", "Asiointikieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviä tietoja");
         asiointikieli.addOption("suomi", "suomi", "suomi");
         asiointikieli.addOption("ruotsi", "ruotsi", "ruotsi");
         asiointikieli.addAttribute("required", "required");
+        asiointikieli.setVerboseHelp(getVerboseHelp());
 
         lupatiedot.addChild(lupa);
         lupatiedot.addChild(asiointikieli);
@@ -379,17 +390,20 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         millatutkinnolla.getOptions().get(4).addAttribute("onChange", "submit()");
         millatutkinnolla.getOptions().get(5).addAttribute("onChange", "submit()");
         millatutkinnolla.getOptions().get(6).addAttribute("onChange", "submit()");
+        millatutkinnolla.setVerboseHelp(getVerboseHelp());
 
         Radio peruskoulu2012 = new Radio("peruskoulu2012", "Saatko peruskoulun päättötodistuksen hakukeväänä 2012?");
         peruskoulu2012.addOption("kylla", "Kyllä", "Kyllä");
         peruskoulu2012.addOption("ei", "Ei", "en, olen saanut päättötodistuksen jo aiemmin, vuonna");
         peruskoulu2012.addAttribute("required", "required");
+        peruskoulu2012.setVerboseHelp(getVerboseHelp());
 
         DropdownSelect tutkinnonOpetuskieli = new DropdownSelect("opetuskieli", "Mikä oli tukintosi opetuskieli");
         tutkinnonOpetuskieli.addOption("suomi", "Suomi", "Suomi");
         tutkinnonOpetuskieli.addOption("ruotsi", "Ruotsi", "Ruotsi");
         tutkinnonOpetuskieli.addAttribute("placeholder", "Tutkintosi opetuskieli");
         tutkinnonOpetuskieli.setHelp("Merkitse tähän se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellä tasapuolisesti, valitse toinen niistä");
+        tutkinnonOpetuskieli.setVerboseHelp(getVerboseHelp());
 
         CheckBox suorittanut = new CheckBox("suorittanut", "Merkitse tähän, jos olet suorittanut jonkun seuraavista");
         suorittanut.addOption("suorittanut1", "suorittanut1", "Perusopetuksen lisäopetuksen oppimäärä (kymppiluokka)");
@@ -397,11 +411,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         suorittanut.addOption("suorittanut3", "suorittanut3", "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus");
         suorittanut.addOption("suorittanut4", "suorittanut4", "Muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus (talouskoulu)");
         suorittanut.addOption("suorittanut5", "suorittanut5", "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus (ammattistartti)");
+        suorittanut.setVerboseHelp(getVerboseHelp());
 
         Radio osallistunut = new Radio("osallistunut", "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?");
         osallistunut.addOption("ei", "Ei", "En");
         osallistunut.addOption("kylla", "Kyllä", "Kyllä");
         osallistunut.addAttribute("required", "required");
+        osallistunut.setVerboseHelp(getVerboseHelp());
 
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule(millatutkinnolla.getId(), "(" +
                 millatutkinnolla.getOptions().get(0).getValue() + "|" + millatutkinnolla.getOptions().get(1).getValue() +

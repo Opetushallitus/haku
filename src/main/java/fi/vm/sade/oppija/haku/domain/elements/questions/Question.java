@@ -26,20 +26,9 @@ import fi.vm.sade.oppija.haku.domain.elements.Titled;
  */
 public abstract class Question extends Titled {
 
-    // verbose help text that is rendered in a separate help window
-    private String verboseHelp;
-
     protected Question(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title) {
         super(id, title);
         addAttribute("id", id);
         addAttribute("name", id);
-    }
-
-    public String getVerboseHelp() {
-        return verboseHelp;
-    }
-
-    public void setVerboseHelp(String verboseHelp) {
-        this.verboseHelp = verboseHelp;
     }
 }

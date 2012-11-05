@@ -19,10 +19,7 @@ package fi.vm.sade.oppija.haku.controller;
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
-import fi.vm.sade.oppija.haku.domain.elements.Element;
-import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.domain.elements.Teema;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
+import fi.vm.sade.oppija.haku.domain.elements.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.haku.service.FormService;
@@ -188,9 +185,9 @@ public class FormController extends ExceptionController {
                 Teema theme = (Teema) element;
                 modelAndView.getModel().put("themeTitle", theme.getTitle());
                 HashMap<String, String> helpMap = new HashMap<String, String>();
-                for (Element qElement : theme.getChildren()) {
-                    if (qElement instanceof Question) {
-                        helpMap.put(((Question) qElement).getTitle(), ((Question) qElement).getVerboseHelp());
+                for (Element tElement : theme.getChildren()) {
+                    if (tElement instanceof Titled) {
+                        helpMap.put(((Titled) tElement).getTitle(), ((Titled) tElement).getVerboseHelp());
                     }
                 }
                 modelAndView.getModel().put("themeHelpMap", helpMap);

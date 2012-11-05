@@ -28,13 +28,23 @@ public abstract class Titled extends Element {
 
     final String title;
 
+    // verbose help text that is rendered in a separate help window
+    private String verboseHelp;
+
     public Titled(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id);
         this.title = title;
     }
 
-
     public String getTitle() {
         return title;
+    }
+
+    public String getVerboseHelp() {
+        return verboseHelp;
+    }
+
+    public void setVerboseHelp(String verboseHelp) {
+        this.verboseHelp = verboseHelp;
     }
 }

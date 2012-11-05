@@ -14,11 +14,9 @@
             <div id="help-page">
                 <section id="page">
                     <h1><c:out value="${themeTitle}"/></h1>
-
                     <c:forEach var="entry" items="${themeHelpMap}">
                         <h3><c:out value="${entry.key}"/></h3>
                         <p><c:out value="${entry.value}"/></p>
-
                     </c:forEach>
                 </section>
             </div>
