@@ -32,8 +32,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.stream.StreamSource;
-import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -89,12 +87,6 @@ public class IndexerServiceImpl implements IndexService {
             LOGGER.error("drop failed", e);
         }
         return dropped;
-    }
-
-    private static LearningOpportunityDownloadDataType getLearningOpportunityDownloadDataType(final String data) throws JAXBException, MalformedURLException {
-        JAXBElement<LearningOpportunityDownloadDataType> learningOpportunityDataTypeJAXBElement =
-                (JAXBElement<LearningOpportunityDownloadDataType>) getUnmarshaller().unmarshal(new StreamSource(new StringReader(data)));
-        return learningOpportunityDataTypeJAXBElement.getValue();
     }
 
     private static LearningOpportunityDownloadDataType getLearningOpportunityDownloadDataType(final URL url) throws JAXBException, MalformedURLException {
