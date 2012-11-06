@@ -26,7 +26,7 @@ import java.util.Map;
  * @since 1.1
  */
 public class PreferenceHelper {
-    final static String PREFERENCE_PREFIX = "preference";
+    static final String PREFERENCE_PREFIX = "preference";
     private static final String OPETUSPISTE_SUFFIX = "-Opetuspiste";
     private static final String KOULUTUS_SUFFIX = "-Koulutus";
     private static final String OPETUSPISTE_KEY_REGEX = PREFERENCE_PREFIX + "\\d*" + OPETUSPISTE_SUFFIX;
