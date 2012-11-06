@@ -160,14 +160,14 @@ public class IndexerServiceImpl implements IndexService {
         List<AttachmentCollectionType.Attachment> attachments = applicationOptionType.getSelectionCriterions().getAttachments().getAttachment();
         for (AttachmentCollectionType.Attachment attachment : attachments) {
             solrDocument.addField("AOAttachmentDescription", getValueOfExtendedString(attachment.getDescription().getText()));
-            solrDocument.addField("AOAttachmentType", attachment.getType().getValue());
+            solrDocument.addField("AOAttachmentType", getValueOfExtendedString(attachment.getType().getLabel()));
             solrDocument.addField("AOAttachmentReturnDueDate", attachment.getReturn().getDueDate());
             solrDocument.addField("AOAttachmentReturnTo", attachment.getReturn().getTo());
         }
         List<SelectionCriterionsType.EntranceExaminations.Examination> examinations = applicationOptionType.getSelectionCriterions().getEntranceExaminations().getExamination();
         for (SelectionCriterionsType.EntranceExaminations.Examination examination : examinations) {
             solrDocument.addField("AOExaminationDescription", getValueOfExtendedString(examination.getDescription()));
-            solrDocument.addField("AOExaminationTitle", getValueOfExtendedString(examination.getExaminationType().getTitle()));
+            solrDocument.addField("AOExaminationTitle", getValueOfExtendedString(examination.getExaminationType().getLabel()));
             List<ExaminationEventType> examinationEvents = examination.getExaminationEvent();
             for (ExaminationEventType examinationEvent : examinationEvents) {
                 solrDocument.addField("AOExaminationStart", examinationEvent.getStart());
