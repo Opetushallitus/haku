@@ -37,20 +37,26 @@ import java.util.Map;
 @Service("applicationDAOMongoImpl")
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements ApplicationDAO {
 
+    public static final String HAKEMUS_ID = "hakemusId";
+    public static final String USER_ID = "userid";
+    public static final String VAIHE_ID = "vaiheId";
+    public static final String HAKEMUS_DATA = "hakemusData";
+    public static final String HAKEMUS = "hakemus";
+
     @Override
     public void update(Hakemus hakemus) {
         DBObject query = new BasicDBObject();
-        query.put("hakemusId", hakemus.getHakemusId().asKey());
+        query.put(HAKEMUS_ID, hakemus.getHakemusId().asKey());
 
         new TimeStampModifier(hakemus.getValues()).updateModified();
         DBObject newApplication = new BasicDBObject();
-        newApplication.put("userid", hakemus.getUser().getUserName());
-        newApplication.put("hakemusId", hakemus.getHakemusId().asKey());
-        newApplication.put("vaiheId", hakemus.getHakemusId().getCategoryId());
+        newApplication.put(USER_ID, hakemus.getUser().getUserName());
+        newApplication.put(HAKEMUS_ID, hakemus.getHakemusId().asKey());
+        newApplication.put(VAIHE_ID, hakemus.getHakemusId().getCategoryId());
 
         Hakemus existing = find(hakemus.getHakemusId(), hakemus.getUser());
         existing.getValues().putAll(hakemus.getValues());
-        newApplication.put("hakemusData", existing.getValues());
+        newApplication.put(HAKEMUS_DATA, existing.getValues());
 
         getCollection().update(query, newApplication, true, false);
 
@@ -58,19 +64,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
 
     @Override
     protected String getCollectionName() {
-        return "hakemus";
+        return HAKEMUS;
     }
 
     @Override
     public Hakemus find(HakemusId hakemusId, User user) {
         DBObject dbObject = new BasicDBObject();
-        dbObject.put("hakemusId", hakemusId.asKey());
-        dbObject.put("userid", user.getUserName());
+        dbObject.put(HAKEMUS_ID, hakemusId.asKey());
+        dbObject.put(USER_ID, user.getUserName());
         final DBObject one = getCollection().findOne(dbObject);
         Map<String, String> map = new HashMap<String, String>();
         new TimeStampModifier(map).updateCreated();
         if (one != null) {
-            map = (Map<String, String>) one.toMap().get("hakemusData");
+            map = (Map<String, String>) one.toMap().get(HAKEMUS_DATA);
         }
         return new Hakemus(hakemusId, map, user);
     }
@@ -79,15 +85,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     public List<Hakemus> findAll(User user) {
         List<Hakemus> list = new ArrayList<Hakemus>();
         DBObject dbObject = new BasicDBObject();
-        dbObject.put("userid", user.getUserName());
+        dbObject.put(USER_ID, user.getUserName());
         final DBCursor dbObjects = getCollection().find(dbObject);
         for (DBObject object : dbObjects) {
             final Map map = object.toMap();
 
-            final String hakemusIdString = map.get("hakemusId").toString();
-            final String vaihe = map.get("vaiheId").toString();
+            final String hakemusIdString = map.get(HAKEMUS_ID).toString();
+            final String vaihe = map.get(VAIHE_ID).toString();
             final HakemusId hakemusId = HakemusId.fromKey(hakemusIdString, vaihe);
-            list.add(new Hakemus(hakemusId, (Map<String, String>) map.get("hakemusData"), user));
+            list.add(new Hakemus(hakemusId, (Map<String, String>) map.get(HAKEMUS_DATA), user));
         }
         return list;
     }
