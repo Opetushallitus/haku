@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.tarjonta.service.impl;
 
 
-import fi.vm.sade.oppija.tarjonta.client.TarjontaClient;
 import fi.vm.sade.oppija.tarjonta.service.IndexService;
 import fi.vm.sade.oppija.tarjonta.service.generator.DummyDataGenerator;
 import fi.vm.sade.tarjonta.publication.types.*;
@@ -46,7 +45,7 @@ public class IndexerServiceImpl implements IndexService {
     //private final TarjontaClient tarjontaClient;
 
     @Autowired
-    public IndexerServiceImpl(HttpSolrServer httpSolrServer, TarjontaClient tarjontaClient) {
+    public IndexerServiceImpl(HttpSolrServer httpSolrServer) {
         this.httpSolrServer = httpSolrServer;
         //this.tarjontaClient = tarjontaClient;
     }
@@ -67,8 +66,8 @@ public class IndexerServiceImpl implements IndexService {
 
     @Override
     public boolean generate() {
+        Collection<SolrInputDocument> documents = DummyDataGenerator.generate();
         try {
-            Collection<SolrInputDocument> documents = DummyDataGenerator.generate();
             httpSolrServer.add(documents);
             httpSolrServer.commit();
         } catch (Exception e) {
