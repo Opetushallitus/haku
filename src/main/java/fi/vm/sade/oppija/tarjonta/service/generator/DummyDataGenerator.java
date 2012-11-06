@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
+
 package fi.vm.sade.oppija.tarjonta.service.generator;
 
 import org.apache.solr.common.SolrInputDocument;
@@ -13,7 +29,7 @@ import java.util.*;
  */
 public class DummyDataGenerator {
 
-    private static String[] losNames = {"Ensihoidon koulutusohjelma","Tietotekniikan koulutusohjelma",
+    private static String[] losNames = {"Ensihoidon koulutusohjelma", "Tietotekniikan koulutusohjelma",
             "Liikunnanohjauksen koulutusohjelma", "Rakennustekniikan koulutusohjelma", "Kansantaloustieteiden koulutusohjelma",
             "Fysikaalisten tieteiden koulutusohjelma", "Geologian koulutusohjelma", "Matematiikan koulutusohjelma"};
     private static String[] degreeTitles = {"sosiaali- ja terveysalan pt", "liikunnanohjauksen perustutkinto",
@@ -24,6 +40,9 @@ public class DummyDataGenerator {
     private static String[] institutionNames = {"Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö",
             "Tampereen teknillinen yliopisto", "Tampereen yliopisto", "Helsingin kauppakorkeakoulu, Kallion yksikkö",
             "Tampereen ammattikorkeakoulu"};
+
+    private DummyDataGenerator() {
+    }
 
     public static Collection<SolrInputDocument> generate() {
         Collection<SolrInputDocument> solrDocuments = new ArrayList<SolrInputDocument>();
@@ -37,7 +56,7 @@ public class DummyDataGenerator {
                     "Perusopetuksen oppimäärä. Ylioppilaat ja lukion suorittaneet eivät hakukelpoisia.");
             solrDocument.addField("LOILanguagesOfInstruction", random.nextBoolean() ? "fi" : "en");
             solrDocument.addField("LOIFormOfTeaching", "Classroom");
-            solrDocument.addField("AOEligibilityRequirements","peruskoulu/yo-pohjaisiin kohteisiin lukio");
+            solrDocument.addField("AOEligibilityRequirements", "peruskoulu/yo-pohjaisiin kohteisiin lukio");
             solrDocument.addField("AODescription", "Lorem Lipsum");
             int score = random.nextInt(50);
             solrDocument.addField("AOLastYearMaxScore", score + random.nextInt(20));
@@ -73,7 +92,7 @@ public class DummyDataGenerator {
         solrDocument.addField("LOSDescriptionAccessToFurtherStudies", "Ammatillinen perustutkinto antaa yleisen korkeakoulukelpoisuuden.");
         solrDocument.addField("LOSDescriptionEducationAndProfessionalGoals", "Lorem ipsum dolor sit amet, consectetur adipisicing elit.");
         solrDocument.addField("LOSEducationDomain", educationDomains[random.nextInt(educationDomains.length)]);
-        solrDocument.addField("LOSEducationDegree","Ammatillinen koulutus");
+        solrDocument.addField("LOSEducationDegree", "Ammatillinen koulutus");
         solrDocument.addField("LOSStydyDomain", educationDomains[random.nextInt(educationDomains.length)]);
     }
 
