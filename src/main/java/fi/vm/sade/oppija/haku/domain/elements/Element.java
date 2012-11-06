@@ -132,12 +132,18 @@ public abstract class Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Element element = (Element) o;
 
-        if (id != null ? !id.equals(element.id) : element.id != null) return false;
+        if (id != null ? !id.equals(element.id) : element.id != null) {
+            return false;
+        }
 
         return true;
     }
