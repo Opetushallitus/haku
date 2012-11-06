@@ -216,21 +216,21 @@ public class IndexerServiceImpl implements IndexService {
         }
     }
 
-    private void addLearningOpportunitySpecification(SolrInputDocument solrDocument, LearningOpportunitySpecificationType LOS) {
-        solrDocument.addField("LOSId", LOS.getId());
-        solrDocument.addField("LOSType", LOS.getType().value());
-        solrDocument.addField("LOSName", getValueOfExtendedString(LOS.getName()));
-        solrDocument.addField("LOSCredits", LOS.getCredits().getValue());
-        solrDocument.addField("LOSCreditsUnit", LOS.getCredits().getUnit());
-//        solrDocument.addField("LOSIdentifier", LOS.getId());
-        solrDocument.addField("LOSDegreeTitle", LOS.getDegreeTitle().getValue());
-        solrDocument.addField("LOSQualification", getValueOfExtendedString(LOS.getQualification().getTitle()));
-        solrDocument.addField("LOSDescriptionStructureDiagram", LOS.getDescription().getStructureDiagram());
-        solrDocument.addField("LOSDescriptionAccessToFurtherStudies", LOS.getDescription().getAccessToFurtherStudies());
-        solrDocument.addField("LOSDescriptionEducationAndProfessionalGoals", LOS.getDescription().getEducationAndProfessionalGoals());
-//        solrDocument.addField("LOSDescriptionGeneralDescription", LOS.getDescription().getGeneralDescription());
+    private void addLearningOpportunitySpecification(SolrInputDocument solrDocument, LearningOpportunitySpecificationType los) {
+        solrDocument.addField("LOSId", los.getId());
+        solrDocument.addField("LOSType", los.getType().value());
+        solrDocument.addField("LOSName", getValueOfExtendedString(los.getName()));
+        solrDocument.addField("LOSCredits", los.getCredits().getValue());
+        solrDocument.addField("LOSCreditsUnit", los.getCredits().getUnit());
+//        solrDocument.addField("LOSIdentifier", los.getId());
+        solrDocument.addField("LOSDegreeTitle", los.getDegreeTitle().getValue());
+        solrDocument.addField("LOSQualification", getValueOfExtendedString(los.getQualification().getTitle()));
+        solrDocument.addField("LOSDescriptionStructureDiagram", los.getDescription().getStructureDiagram());
+        solrDocument.addField("LOSDescriptionAccessToFurtherStudies", los.getDescription().getAccessToFurtherStudies());
+        solrDocument.addField("LOSDescriptionEducationAndProfessionalGoals", los.getDescription().getEducationAndProfessionalGoals());
+//        solrDocument.addField("LOSDescriptionGeneralDescription", los.getDescription().getGeneralDescription());
 
-        LearningOpportunitySpecificationType.Classification classification = LOS.getClassification();
+        LearningOpportunitySpecificationType.Classification classification = los.getClassification();
         solrDocument.addField("LOSEducationDomain", classification.getEducationDomain());
         solrDocument.addField("LOSEducationDegree", classification.getEducationDegree());
         solrDocument.addField("LOSStydyDomain", classification.getStudyDomain());
