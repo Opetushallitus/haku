@@ -167,7 +167,7 @@ public class IndexerServiceImpl implements IndexService {
         List<SelectionCriterionsType.EntranceExaminations.Examination> examinations = applicationOptionType.getSelectionCriterions().getEntranceExaminations().getExamination();
         for (SelectionCriterionsType.EntranceExaminations.Examination examination : examinations) {
             solrDocument.addField("AOExaminationDescription", getValueOfExtendedString(examination.getDescription()));
-            solrDocument.addField("AOExaminationTitle", getValueOfExtendedString(examination.getExaminationType().getLabel()));
+            solrDocument.addField("AOExaminationTitle", getValueOfExtendedString(examination.getExaminationType().getTitle()));
             List<ExaminationEventType> examinationEvents = examination.getExaminationEvent();
             for (ExaminationEventType examinationEvent : examinationEvents) {
                 solrDocument.addField("AOExaminationStart", examinationEvent.getStart());
