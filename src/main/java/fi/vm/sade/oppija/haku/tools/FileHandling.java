@@ -26,7 +26,7 @@ public class FileHandling {
         try {
             return IOUtils.toString(inputStream, "UTF-8");
         } catch (IOException e) {
-            throw new RuntimeException("Error reading file", e);
+            throw new FileException(e);
         }
     }
 
@@ -35,7 +35,7 @@ public class FileHandling {
         try {
             IOUtils.copy(new FileInputStream(file), stringWriter);
         } catch (IOException e) {
-            throw new RuntimeException("Error reading file", e);
+            throw new FileException(e);
         }
         return stringWriter.toString();
     }
@@ -47,7 +47,7 @@ public class FileHandling {
             fileWriter = new FileWriter(new File(filename));
             fileWriter.write(contentAsString);
         } catch (IOException e) {
-            throw new RuntimeException("Error reading file", e);
+            throw new FileException(e);
         } finally {
             IOUtils.closeQuietly(fileWriter);
         }
