@@ -404,7 +404,7 @@
 
     <profiles>
 
-
+<!--
         <profile>
             <id>integration-test</id>
             <activation>
@@ -441,7 +441,7 @@
                 </plugins>
             </build>
         </profile>
-
+-->
         <profile>
             <id>clover</id>
             <properties>
