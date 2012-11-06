@@ -21,7 +21,7 @@ import java.net.URL;
 public interface IndexService {
     boolean update(final URL url);
 
-    public boolean drop();
+    boolean drop();
 
     boolean generate();
 }
