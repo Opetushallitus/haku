@@ -37,7 +37,9 @@ public class HakemusId implements Serializable {
     private final String formId;
     private final String categoryId;
 
-    public HakemusId(@JsonProperty(value = "applicationPeriodId") String applicationPeriodId, @JsonProperty(value = "formId") String formId, @JsonProperty(value = "categoryId") String categoryId) {
+    public HakemusId(@JsonProperty(value = "applicationPeriodId") String applicationPeriodId,
+                     @JsonProperty(value = "formId") String formId,
+                     @JsonProperty(value = "categoryId") String categoryId) {
         this.applicationPeriodId = applicationPeriodId;
         this.formId = formId;
         this.categoryId = categoryId;
@@ -73,14 +75,21 @@ public class HakemusId implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         HakemusId hakemusId = (HakemusId) o;
 
-        if (applicationPeriodId != null ? !applicationPeriodId.equals(hakemusId.applicationPeriodId) : hakemusId.applicationPeriodId != null)
+        if (applicationPeriodId != null ? !applicationPeriodId.equals(hakemusId.applicationPeriodId) : hakemusId.applicationPeriodId != null) {
             return false;
-        if (formId != null ? !formId.equals(hakemusId.formId) : hakemusId.formId != null) return false;
+        }
+        if (formId != null ? !formId.equals(hakemusId.formId) : hakemusId.formId != null) {
+            return false;
+        }
 
         return true;
     }
@@ -88,7 +97,6 @@ public class HakemusId implements Serializable {
     @Override
     public int hashCode() {
         int result = applicationPeriodId != null ? applicationPeriodId.hashCode() : 0;
-        result = 31 * result + (formId != null ? formId.hashCode() : 0);
-        return result;
+        return HASH_CODE_MAGIC * result + (formId != null ? formId.hashCode() : 0);
     }
 }
