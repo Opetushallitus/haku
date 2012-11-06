@@ -64,7 +64,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
 
-        TextQuestion textQuestion = new TextQuestion("S1508_additional_question_1", "Lorem ipsum");
+        TextQuestion textQuestion = new TextQuestion("S1598_additional_question_1", "Lorem ipsum");
         List<Question> lisakysymysList = new ArrayList<Question>();
         lisakysymysList.add(textQuestion);
         lisakysymysMap.put("S1508", lisakysymysList);
@@ -85,7 +85,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         TextQuestion lisakysymys = new TextQuestion("lisakysymys", "Lisäkysymys");
         Teema lisakysymyksetRyhma = new Teema("lisakysymyksetGrp", "Lisäkysymykset", null);
         lisakysymykset.addChild(lisakysymyksetRyhma);
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("preference1-Koulutus-id", "S1508");
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("preference1-Koulutus-id", "S1598");
         relatedQuestionRule.addChild(lisakysymys);
         lisakysymyksetRyhma.addChild(relatedQuestionRule);
 

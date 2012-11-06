@@ -45,4 +45,7 @@ public class SeleniumHelper {
         getDriver().get(baseUrl + "/logout");
     }
 
+    public void dropAllHakemus() {
+        getDriver().get(baseUrl + "/hakemus/drop");
+    }
 }

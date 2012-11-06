@@ -18,14 +18,15 @@ package fi.vm.sade.oppija.tarjonta.client;
 
 
 import javax.xml.transform.Source;
+import java.net.URI;
 
 /**
  * @author hannu
  */
 public interface TarjontaClient {
 
-    String retrieveTarjontaAsString();
+    public String retrieveTarjontaAsString(URI tarjontaUrl);
 
-    Source retrieveTarjontaAsSource();
+    public Source retrieveTarjontaAsSource(URI tarjontaUrl);
 
 }

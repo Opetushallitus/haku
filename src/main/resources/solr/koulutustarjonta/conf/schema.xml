@@ -25,14 +25,18 @@
         <field name="AOLastYearMaxScore" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="AOLastYearMinScore" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="AOLastYearTotalApplicants" type="text_general" indexed="true" stored="true" multiValued="false"/>
+        <field name="AOSelectionCriterionDescription" type="text_general" indexed="true" stored="true"
+               multiValued="false"/>
         <field name="AOStartingQuota" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="AOEligibilityRequirements" type="text_general" indexed="true" stored="true" multiValued="false"/>
+        <field name="LOIId" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOIFormOfTeaching" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOIPrerequisite" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="LOILanguagesOfInstruction" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOI" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOIWebLinkHOMELabel" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOIWebLinkHOMEUri" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOIWebLinkLabel" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOIWebLinkUri" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOIWebLinkType" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSId" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSName" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSDegreeTitle" type="text_general" indexed="true" stored="true" multiValued="true"/>
@@ -55,20 +59,16 @@
                multiValued="true"/>
         <field name="AOAttachmentDescription" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOAttachmentType" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOAttachmentReturnDueDate" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOAttachmentReturnTo" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="AOAttachmentReturnDueDate" type="date" indexed="true" stored="true" multiValued="false"/>
+        <field name="AOAttachmentReturnToEmailAddress" type="text_general" indexed="true" stored="true"
+               multiValued="true"/>
+        <field name="AOAttachmentReturnToPostalAddress" type="text_general" indexed="true" stored="true"
+               multiValued="true"/>
         <field name="AOExaminationDescription" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="AOExaminationTitle" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOExaminationStart" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOExaminationStartDate" type="date" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOExaminationEnd" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOExaminationLocationName" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOExaminationLocationAddressLine" type="text_general" indexed="true" stored="true"
-               multiValued="true"/>
-        <field name="AOExaminationLocationPostalCode" type="text_general" indexed="true" stored="true"
-               multiValued="true"/>
-        <field name="AOExaminationLocationCity" type="text_general" indexed="true" stored="true" multiValued="true"/>
-
+        <field name="AOExaminationStart" type="date" indexed="true" stored="true" multiValued="false"/>
+        <field name="AOExaminationEnd" type="date" indexed="true" stored="true" multiValued="false"/>
+        <field name="AOExaminationLocation" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="AOSelectionCriteriaDescription" type="text_general" indexed="true" stored="true"
                multiValued="true"/>
         <!-- tmp dev fields -->

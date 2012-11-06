@@ -1,10 +1,10 @@
 package fi.vm.sade.oppija.tarjonta.client;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.xml.transform.Source;
+import java.net.URI;
 
 /**
  * @author hannu
@@ -12,7 +12,6 @@ import javax.xml.transform.Source;
 @Component
 public class TarjontaClientRESTImpl implements TarjontaClient {
 
-    private @Value("${tarjonta.data.url}") String tarjontaUrl;
 
     private RestTemplate restTemplate;
 
@@ -21,12 +20,12 @@ public class TarjontaClientRESTImpl implements TarjontaClient {
     }
 
     @Override
-    public String retrieveTarjontaAsString() {
+    public String retrieveTarjontaAsString(URI tarjontaUrl) {
         return restTemplate.getForObject(tarjontaUrl, String.class);
     }
 
     @Override
-    public Source retrieveTarjontaAsSource() {
+    public Source retrieveTarjontaAsSource(URI tarjontaUrl) {
         return restTemplate.getForObject(tarjontaUrl, Source.class);
     }
 }

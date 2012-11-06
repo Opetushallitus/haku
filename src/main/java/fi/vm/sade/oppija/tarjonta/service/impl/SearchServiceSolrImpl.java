@@ -88,11 +88,12 @@ public class SearchServiceSolrImpl implements SearchService {
 
 
     private SearchResult query(final SolrQuery query) {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
+        List<Map<String, Collection<Object>>> results = new ArrayList<Map<String, Collection<Object>>>();
         try {
             QueryResponse rsp = httpSolrServer.query(query);
             for (SolrDocument doc : rsp.getResults()) {
-                results.add(doc.getFieldValueMap());
+                final Map<String, Collection<Object>> fieldValuesMap = doc.getFieldValuesMap();
+                results.add(fieldValuesMap);
             }
         } catch (SolrServerException e) {
             throw new SearchException("Error running query", e);

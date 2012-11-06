@@ -58,7 +58,7 @@ public class SearchServiceTest {
 
         @Override
         public SearchResult search(MultiValueMap<String, String> parameters) throws SearchException {
-            return new SearchResult(new ArrayList<Map<String, Object>>());
+            return new SearchResult(new ArrayList<Map<String, Collection<Object>>>());
         }
 
         @Override

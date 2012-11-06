@@ -16,10 +16,10 @@
 
 package fi.vm.sade.oppija.haku.service.impl;
 
-import fi.vm.sade.oppija.haku.controller.HakemusInfo;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.HakemusInfo;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.event.EventHandler;
 import fi.vm.sade.oppija.haku.service.FormService;

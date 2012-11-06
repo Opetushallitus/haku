@@ -25,7 +25,7 @@
         <li class="heading"><spring:message code="tarjonta.hakufaktoja.hakukelpoisuus"/></li>
         <li class="emphasized"><c:out value="${searchResult['AOEligibilityRequirements']}"/></li>
         <li class="heading"><spring:message code="tarjonta.hakufaktoja.valintakoe"/></li>
-        <li class="emphasized"><fmt:formatDate type="date" value="${searchResult['AOExaminationStartDate']}"/></li>
+        <li class="emphasized"><fmt:formatDate type="date" value="${searchResult['AOExaminationStart']}"/></li>
         <li class="set-right"><spring:message code="tarjonta.hakufaktoja.hakuaikaalkaa"/>&nbsp
             <fmt:formatDate type="date" value="${searchResult['tmpASStart']}"/></li>
     </ul>

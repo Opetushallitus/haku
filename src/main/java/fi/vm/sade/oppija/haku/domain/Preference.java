@@ -51,7 +51,7 @@ public class Preference {
     }
 
     public String getOpetusPisteId() {
-        return opetusPisteId;
+        return opetusPiste;
     }
 
 

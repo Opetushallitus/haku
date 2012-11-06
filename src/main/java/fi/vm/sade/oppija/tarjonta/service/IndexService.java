@@ -16,10 +16,10 @@
 
 package fi.vm.sade.oppija.tarjonta.service;
 
-import java.net.URL;
+import java.net.URI;
 
 public interface IndexService {
-    boolean update(final URL url);
+    String update(final URI uri);
 
     boolean drop();
 

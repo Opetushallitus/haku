@@ -16,9 +16,9 @@
 
 package fi.vm.sade.oppija.haku.service;
 
-import fi.vm.sade.oppija.haku.controller.HakemusInfo;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.HakemusInfo;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 
 import java.util.List;

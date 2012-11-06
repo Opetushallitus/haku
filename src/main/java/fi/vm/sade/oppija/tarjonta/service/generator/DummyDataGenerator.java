@@ -107,7 +107,6 @@ public class DummyDataGenerator {
         Calendar cal = GregorianCalendar.getInstance();
         cal.set(Calendar.MONTH, cal.get(Calendar.MONTH + 1));
         solrDocument.addField("AOExaminationStart", cal);
-        solrDocument.addField("AOExaminationStartDate", cal.getTime());
         cal.set(Calendar.HOUR, cal.get(Calendar.HOUR + 3));
         solrDocument.addField("AOExaminationEnd", cal.getTime());
         solrDocument.addField("AOExaminationLocation", "Aalto Auditorio, Mannerheimintie 3 00100 Helsinki");

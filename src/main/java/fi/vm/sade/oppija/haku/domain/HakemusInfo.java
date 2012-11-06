@@ -1,9 +1,5 @@
-package fi.vm.sade.oppija.haku.controller;
+package fi.vm.sade.oppija.haku.domain;
 
-import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.Preference;
-import fi.vm.sade.oppija.haku.domain.PreferenceHelper;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 
 import java.util.List;

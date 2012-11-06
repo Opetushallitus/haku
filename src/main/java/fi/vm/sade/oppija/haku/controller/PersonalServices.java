@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.haku.controller;
 
+import fi.vm.sade.oppija.haku.domain.HakemusInfo;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;

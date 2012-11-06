@@ -25,7 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Controller
 @Secured("ROLE_ADMIN")
@@ -39,10 +40,11 @@ public class IndexController {
     IndexService indexService;
 
     @RequestMapping(value = "/admin/index/update")
+    public
     @ResponseBody
-    public String updateIndex() throws IOException {
-        URL url = new URL(tarjontaUrl);
-        return Boolean.toString(indexService.update(url));
+    String updateIndex() throws URISyntaxException {
+        URI uri = new URI(tarjontaUrl);
+        return indexService.update(uri);
     }
 
     @RequestMapping(value = "/admin/index/generate")

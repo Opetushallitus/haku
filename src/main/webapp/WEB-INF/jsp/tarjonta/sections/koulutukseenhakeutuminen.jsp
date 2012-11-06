@@ -25,7 +25,7 @@
 
     <div class="clear"></div>
         <legend class="h3"><spring:message code="tarjonta.koulutukseenhakeutuminen.pääsykoe"/>&nbsp;
-        <fmt:formatDate type="date" value="${searchResult['AOExaminationStartDate']}" /></legend>
+        <fmt:formatDate type="date" value="${searchResult['AOExaminationStart']}" /></legend>
     <p><c:out value="${searchResult['AOExaminationDescription']}"/></p>
 
     <div class="clear"></div>

@@ -55,7 +55,7 @@ public class SearchControllerTest {
 
     private SearchService createMockService() {
         return new SearchService() {
-            List<Map<String, Object>> items = new ArrayList<Map<String, Object>>(0);
+            List<Map<String, Collection<Object>>> items = new ArrayList<Map<String, Collection<Object>>>(0);
 
             @Override
             public SearchResult search(MultiValueMap<String, String> parameters) throws SearchException {
