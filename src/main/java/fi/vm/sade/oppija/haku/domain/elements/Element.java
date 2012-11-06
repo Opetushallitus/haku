@@ -28,7 +28,6 @@ import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.*;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
-import fi.vm.sade.tarjonta.publication.types.PostalAddress;
 
 import java.util.ArrayList;
 import java.util.HashMap;
