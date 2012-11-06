@@ -8,6 +8,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.impl.base.exporter.zip.ZipExporterImpl;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
+import org.jboss.shrinkwrap.resolver.api.maven.EffectivePomMavenDependencyResolver;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.springframework.beans.factory.DisposableBean;
 
@@ -126,16 +127,17 @@ public class TomcatContainer implements DisposableBean {
 
     private static WebArchive createWebArchive() {
         MavenDependencyResolver resolver = DependencyResolvers.use(MavenDependencyResolver.class);
-        final File[] files = resolver.loadEffectivePom("pom.xml").importAllDependencies().resolveAsFiles();
+        final EffectivePomMavenDependencyResolver effectivePomMavenDependencyResolver = resolver.loadEffectivePom("pom.xml").importAllDependencies();
+        final File[] files1 = effectivePomMavenDependencyResolver.resolveAsFiles();
 
-        for (File file : files) {
+        for (File file : files1) {
             final String name = file.getName();
             if (name.endsWith(".war") && name.contains("solr")) {
                 solr = file;
             }
         }
         return addWebResourcesTo(ShrinkWrap.create(WebArchive.class, packageName()).setWebXML(new File(WEBAPP_SRC, "WEB-INF/web.xml"))
-                .addPackages(true, RootPackageMarker.class.getPackage())).addAsLibraries(files);
+                .addPackages(true, RootPackageMarker.class.getPackage())).addAsLibraries(files1);
 
 
     }
