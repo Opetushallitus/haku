@@ -42,6 +42,7 @@
             </div>
 
             <c:set var="preview" value="${category.preview}" scope="request"/>
+            <c:set var="styleBaseClass" value="${category.hasPrev ? 'form-item' : 'form-row'}" scope="request"/>
             <c:choose>
                   <c:when test="${preview}">
                         <div class="form">

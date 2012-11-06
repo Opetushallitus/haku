@@ -16,10 +16,10 @@
   ~ European Union Public Licence for more details.
   --%>
 
-<div class="form-row">
-    <label id="label-${element.id}" for="${element.id}" class="form-row-label">${element.title}</label>
+<div class="${styleBaseClass}">
+    <label id="label-${element.id}" for="${element.id}" class="${styleBaseClass}-label">${element.title}</label>
 
-    <div class="form-row-content">
+    <div class="${styleBaseClass}-content">
         <div class="field-container-text">
             <textarea ${element.attributeString} value="${categoryData[element.id]}"/></textarea><span
                 class="required_field">${errorMessages[element.id]}</span>
