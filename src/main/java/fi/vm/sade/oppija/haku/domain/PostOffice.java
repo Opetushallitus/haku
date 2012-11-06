@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012. The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -24,6 +24,8 @@ import java.io.Serializable;
  * @author Mikko Majapuro
  */
 public class PostOffice implements Serializable {
+
+    private static final long serialVersionUID = -7984081943035919928L;
 
     private String name;
 
