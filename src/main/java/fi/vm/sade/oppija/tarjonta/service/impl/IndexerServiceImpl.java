@@ -43,12 +43,12 @@ public class IndexerServiceImpl implements IndexService {
 
     private final HttpSolrServer httpSolrServer;
 
-    private final TarjontaClient tarjontaClient;
+    //private final TarjontaClient tarjontaClient;
 
     @Autowired
     public IndexerServiceImpl(HttpSolrServer httpSolrServer, TarjontaClient tarjontaClient) {
         this.httpSolrServer = httpSolrServer;
-        this.tarjontaClient = tarjontaClient;
+        //this.tarjontaClient = tarjontaClient;
     }
 
     @Override
