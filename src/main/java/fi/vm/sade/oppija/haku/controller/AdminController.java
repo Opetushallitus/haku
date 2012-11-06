@@ -44,6 +44,8 @@ import java.io.IOException;
 @Secured("ROLE_ADMIN")
 public class AdminController {
 
+    public static final String ADMIN_UPLOAD_VIEW = "admin/upload";
+    public static final String ATTACHMENT_MODEL = "attachment";
     @Autowired
     AdminService adminService;
 
@@ -83,8 +85,8 @@ public class AdminController {
 
 
     private ModelAndView toUpload() {
-        final ModelAndView modelAndView = new ModelAndView("admin/upload");
-        modelAndView.addObject("attachment", new Attachment("file", "Lataa malli json-objektina"));
+        final ModelAndView modelAndView = new ModelAndView(ADMIN_UPLOAD_VIEW);
+        modelAndView.addObject(ATTACHMENT_MODEL, new Attachment("file", "Lataa malli json-objektina"));
         return modelAndView;
     }
 
