@@ -101,7 +101,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Hel");
         driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
-        driver.findElement(By.xpath("//option[@value='sosiaali- ja terveysalan pt']")).click();
+        driver.findElement(By.xpath("//option[@value='Sosiaali- ja terveysalan perustutkinto, pk']")).click();
 //        driver.findElement(By.id("P1_additional_question_1"));
     }
 

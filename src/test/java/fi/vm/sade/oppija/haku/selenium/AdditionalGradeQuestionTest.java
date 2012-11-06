@@ -55,7 +55,7 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
 
         WebElement element = driver.findElement(By.linkText(OPETUSPISTE));
         element.click();
-        WebElement option = driver.findElement(By.xpath("//option[@value='sosiaali- ja terveysalan pt']"));
+        WebElement option = driver.findElement(By.xpath("//option[@value='Sosiaali- ja terveysalan perustutkinto, pk']"));
         option.click();
         // navigate to grade phase
         s.click("nav-next");

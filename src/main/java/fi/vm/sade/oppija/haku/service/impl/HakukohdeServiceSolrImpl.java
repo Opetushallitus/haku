@@ -65,7 +65,7 @@ public class HakukohdeServiceSolrImpl implements HakukohdeService {
         List<Hakukohde> hakukohteet = new ArrayList<Hakukohde>(search.getSize());
         List<Map<String, Object>> items = search.getItems();
         for (Map<String, Object> item : items) {
-            hakukohteet.add(new Hakukohde((String) item.get("LOSId"), (String) item.get("LOSDegreeTitle")));
+            hakukohteet.add(new Hakukohde((String) item.get("LOSId"), (String) item.get("AOTitle")));
         }
         return hakukohteet;
     }
