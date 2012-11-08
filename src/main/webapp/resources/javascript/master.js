@@ -542,27 +542,159 @@ var tableSorter = {
 	}
 }
 
+/*
 var comparisonTable = {
+
+	educationColumns: {
+		
+		load: function() {
+			this.visibleCount = 3;
+			this.visibleStartIndex = 1; 
+			this.columnCount = $('.compare-table thead tr.education td').length - 1;
+			this.elementContent = $('.compare-table tbody');
+			this.elementHeaders = $('.compare-table thead tr:last');
+		},
+
+		//how many columns visible
+		getVisibleCount: function() {
+			return this.visibleCount;
+		},
+		setvisibleCount: function(count) {
+			this.visibleCount = count;
+		},
+
+		//which column is first to show
+		getVisibleStartIndex: function() {
+			return this.visibleStartIndex;
+		},
+		setvisibleStartIndex: function(index) {
+			this.visibleStartIndex = index;
+		},
+
+		//how many education columns in users list alltogether
+		getColumnCount: function() {
+			return this.columnCount;
+		},
+
+		//return indexes for the columns that are visible
+		getVisibleColumns: function() {
+			var columns = [0]; //first column is visible by default
+			for (var i = 0 ; i < this.getVisibleCount() ; ++i) {
+				if(this.getVisibleStartIndex() + i > this.getColumnCount()) {
+					break;
+				}
+				columns.push(this.getVisibleStartIndex() + i);
+			}
+			return columns;
+		},
+
+		//return indexes for the columns that are hidden
+		getHiddenColumns: function() {
+			var columns = [];
+			for (var i = 0 ; i < this.getColumnCount() ; ++i) {
+				columns.push(i);
+			}
+			columns.splice(this.getVisibleStartIndex(),this.getVisibleCount());
+			return columns;
+		},
+
+		//return headers for columns
+		getColumnHeader: function(index) {
+			if(typeof(index) !== 'number') {
+				return undefined;
+			}
+			return $(this.elementHeaders).children().eq(index + 1);
+		},
+
+		//return column elements by index 
+		getColumnContents: function(index) {
+			if(typeof(index) !== 'number') {
+				return undefined;
+			}
+			var elements = [];
+			$(this.elementContent).children().each( function() {	
+				elements.push($(this).children().eq(index + 1));
+			});
+			return elements;
+		},
+
+		//return columns elements including header
+		getColumnHeaderAndContents: function(index) {
+			var header = this.getColumnHeader(index);
+			var contents = this.getColumnContents(index);
+			contents.push(header);
+			return contents;
+		},
+
+		//hide column elements by index
+		hideColumn: function(index) {
+			var elements = $(this.getColumnHeaderAndContents(index));
+			$(elements).each( function() {
+				$(this).fadeOut(100);
+			});
+		},
+
+		showColumn: function(index) {
+			var elements = $(this.getColumnHeaderAndContents(index));
+			$(elements).each( function() {
+				$(this).fadeIn(100);
+			});
+		},
+
+		//hide columns outside of range
+		hideExtraColumns: function() {
+			var columns = this.getHiddenColumns();
+			for(var i = 0 ; i < columns.length ; ++i) {
+				this.hideColumn(columns[i]);
+			}
+		},
+
+		showColumns: function() {
+			var columns = this.getVisibleColumns();
+			for (var i = 0 ; i > columns.length ; ++i) {
+				this.showColumn(columns[i]);
+			}
+		},
+
+		nextPage: function() {
+			if( (this.getVisibleStartIndex() + this.getVisibleCount()) > this.getColumnCount() ) {
+				this.setVisibleStartIndex(this.getColumnCount());
+			} else {
+				this.setVisibleStartIndex(this.getVisibleStartIndex() + this.getVisibleCount());
+			}
+			this.updateView();
+		},
+
+		prevPage: function() {
+			if( (this.getVisibleStartIndex() - this.getVisibleCount()) < 0 {
+				this.setVisibleStartIndex(0);
+			} else {
+				this.setVisibleStartIndex(this.getVisibleStartIndex() - this.getVisibleCount());
+			}
+		},
+
+		updateView: function() {
+			this.hideColumns();
+			this.showColumns();
+		}
+
+	}, //educationColumns
+
 	build: function() {
-		comparisonTable.load();
-		comparisonTable.setTriggers();
+		this.educationColumns.load();
+		this.load();
+		this.setTriggers();
 	},
 
 	load: function() {
-		var educationCount, tbodyContent; 
-		educationCount = $('.compare-table thead tr.education td').length - 1;
-		tbodyContent = $('.compare-table tbody');
-
-		function getTbodyColumn(index) {
-			$(tbodyContent).children().eq(index);
-		}
-	
+		this.educationColumns.hideColumns();
 	},	
 
 	setTriggers: function() {
-
+		
 	}
 }
+*/
 
 var scrollHelpPage = {
 	build: function() {
@@ -597,3 +729,4 @@ scrollHelpPage.build();
 /* Master.js ends */
 
 });
+
