@@ -347,7 +347,7 @@ label, .label
 /***  Input(text), select
 **********************************/
 
-input[type="text"], select
+input[type="text"], select, textarea
 {
     background-color: #ebf3f7;
     background-image: none;
@@ -502,10 +502,6 @@ select option
 {
 	cursor:default;
 }
-
-/*** Field container styles
-************************************************/
-
 
 /*** Input(text), Select
 **********************************/
