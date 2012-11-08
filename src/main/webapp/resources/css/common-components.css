@@ -17,6 +17,7 @@
     Application-options
     Overlay
     Application-basket
+    column-oriented-table
 */
 
 /*** Image figure, Video Figure
@@ -401,7 +402,7 @@ a.btn-remove.disabled {
 
 
 
-/*** searchfield
+/*** Search field
 **************************************************************/
 #searchfield-wrapper {
     
@@ -422,6 +423,7 @@ a.btn-remove.disabled {
 }
 
 #searchfield input {
+    width: 100%;
 }
 
 .btn-search {
@@ -623,5 +625,55 @@ ul.unstyled li
 {
     box-shadow:inset 8px 0px 4px -8px #a9a9a9, inset 0px -8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9;
 }
+
+
+/*** column-oriented-table
+************************************************/
+
+.column-oriented-table {
+    width: 100%;
+}
+
+/* table header */
+.column-oriented-table .table-header {
+    background: #ededed;
+    border-radius: 5px 5px 0 0;
+}
+
+/* table body */
+.column-oriented-table .table-body {
+    background: #fff;
+}
+
+.column-oriented-table .table-body .column {
+    list-style-type: none;   
+    padding: 0;
+    margin: 0;
+    width: 25%;
+    float: left;
+}
+
+.column-oriented-table .table-body .column > li {
+    padding: 1.5em 1em;
+    display: block;
+    height: 2em;
+    border-left: 2px solid #f8f8f8;
+}
+
+.column-oriented-table .table-body .column:first-of-type > li {
+    border-left: none;
+}
+
+.column-oriented-table .table-body .column > li:first-of-type {
+    background: #dcdcdc;
+}
+
+
+/* table footer */
+.column-oriented-table .table-footer {
+    background: #ededed;
+    border-radius: 0 0 5px 5px;
+}
+
 
 

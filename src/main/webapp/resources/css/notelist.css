@@ -131,18 +131,21 @@ button.arrow-down-blue > span > span {
     background-image: url('../img/arrow-sorting.png');
     background-position: 97% center;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .notelist-table thead tr td.sort-ascending {
     background-image: url('../img/arrow-up.png');
     background-position: 97% center;
-    background-repeat: no-repeat;    
+    background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .notelist-table thead tr td.sort-descending {
     background-image: url('../img/arrow-down.png');
     background-position: 97% center;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .notelist-table thead tr td:first-child,
@@ -197,7 +200,7 @@ button.arrow-down-blue > span > span {
     line-height: 1.5em;
 }
 
-.notelist-footer-tools {
+.notelist-table .notelist-footer-tools {
     margin-left: 2em;
     max-width: 200px;
 }

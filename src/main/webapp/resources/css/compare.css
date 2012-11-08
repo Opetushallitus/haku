@@ -123,3 +123,11 @@
 .compare-table tbody tr:last-of-type td {
     box-shadow: inset 0 -8px 4px -8px #a9a9a9;
 }
+
+.compare-table .compare-footer-tools {
+    margin: 1em 0;
+}
+
+
+/*** vertical-oriented-table
+************************************************/
