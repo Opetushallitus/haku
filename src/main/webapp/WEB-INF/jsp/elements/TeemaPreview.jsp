@@ -6,6 +6,7 @@
 
 <fieldset>
     <legend class="h3"><c:out value="${element.title}"/></legend>
+    <hr>
     <c:forEach var="vaihe" items="${form.categories}">
         <c:if test="${(not vaihe.preview)}">
             <c:forEach var="teema" items="${vaihe.children}">
@@ -21,7 +22,6 @@
             </c:forEach>
         </c:if>
     </c:forEach>
-    <hr>
     <table class="form-summary-table">
         <tbody>
             <haku:viewChilds element="${element}"/>

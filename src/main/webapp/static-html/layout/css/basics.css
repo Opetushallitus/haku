@@ -186,8 +186,7 @@ hr
 #siteheader .header-container,
 #sitefooter,
 #sitecontent, /* Remove this when #sitecontent has been replaced with #page in every instance*/
-#page,
-#help-page
+#page
 {
 	width:auto;
 	max-width:1140px;
