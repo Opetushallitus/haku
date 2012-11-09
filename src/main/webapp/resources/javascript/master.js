@@ -722,7 +722,7 @@ loginPopup.build();
 dropDownMenu.build();
 tableRowHighlight.build();
 tableSorter.build();
-comparisonTable.build();
+//comparisonTable.build();
 scrollHelpPage.build();
 
 
