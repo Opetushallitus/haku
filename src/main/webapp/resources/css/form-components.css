@@ -626,3 +626,11 @@ select option
 	width: 30%;
 	float: left;
 }
+
+
+/*** Mandatory fields
+************************************************/
+
+.mandatory:after {
+	content: " *";
+}
