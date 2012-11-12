@@ -35,6 +35,7 @@ public class Form extends Titled {
     private transient String firstCategoryId;
 
     final transient Map<String, Vaihe> categories = new HashMap<String, Vaihe>();
+    final transient Map<String, Element> elements = new HashMap<String, Element>();
 
     public Form(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
@@ -53,6 +54,7 @@ public class Form extends Titled {
     public void init() {
         Vaihe prev = null;
         for (Element child : children) {
+            child.init(elements, this);
             if (child instanceof Vaihe) {
                 final Vaihe child1 = (Vaihe) child;
                 addCategory(child1, prev);
@@ -79,6 +81,12 @@ public class Form extends Titled {
         return categories.values();
     }
 
+    @JsonIgnore
+    public Element getElementById(final String elementId) {
+        return elements.get(elementId);
+    }
+    
+    @JsonIgnore
     public Vaihe getVaiheByTeemaId(String teemaId) {
         for (Vaihe vaihe : categories.values()) {
             if (!vaihe.isPreview()) {

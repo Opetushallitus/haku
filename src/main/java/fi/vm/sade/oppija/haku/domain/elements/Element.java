@@ -70,6 +70,7 @@ public abstract class Element {
     public static final String ID_DELIMITER = "_";
     final String id;
     transient String type = this.getClass().getSimpleName();
+    transient Element parent;
     String help;
 
     protected final List<Element> children = new ArrayList<Element>();
@@ -118,6 +119,14 @@ public abstract class Element {
     public void addAttribute(final String key, final String value) {
         this.attributes.put(key, new Attribute(key, value));
     }
+    
+    public void init(final Map<String, Element> elements, final Element parent) {
+        this.parent = parent;
+        elements.put(id, this);
+        for (Element child : children) {
+            child.init(elements, this);
+        }
+    }
 
     @JsonIgnore
     public String getAttributeString() {
@@ -127,6 +136,11 @@ public abstract class Element {
 
         }
         return attrStr.toString();
+    }
+    
+    @JsonIgnore
+    public Element getParent() {
+        return parent;
     }
 
     @Override
