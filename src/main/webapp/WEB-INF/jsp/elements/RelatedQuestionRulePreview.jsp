@@ -2,7 +2,7 @@
 <%@ taglib prefix="fn" uri="/WEB-INF/tags/functions.tld"%>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags"%>
 <div class="container_${element.id}">
-    <c:set var="key" value="${element.id}"/>
+    <c:set var="key" value="${element.relatedElementId}"/>
     <c:choose>
         <c:when test="${not empty categoryData[key]}">
             <c:if test="${fn:evaluate(categoryData[key], element.expression)}">

@@ -1,9 +1,70 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<fieldset>
-    <legend><c:out value="${element.title}"/></legend>
-    <c:forEach var="child" items="${element.children}">
-        <jsp:include page="./${child.type}.jsp">
-            <jsp:param name="model" value="${child}"/>
-        </jsp:include>
-    </c:forEach>
-</fieldset>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!DOCTYPE html>
+<c:set var="form" value="${element.parent}" scope="request"/>
+<c:set var="vaihe" value="${element}" scope="request"/>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="/haku/resources/css/screen.css" type="text/css">
+        <link rel="stylesheet" href="/haku/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
+        <title>${form.title} - ${vaihe.title}</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+        <script src="/haku/resources/javascript/rules.js"></script>
+        <script src="/haku/resources/javascript/master.js"></script>
+    </head>
+    <body>
+        <div id="viewport">
+            <div id="overlay">
+            </div>
+            <div id="site">
+                <div id="sitecontent">
+                    <div class="content">
+                        <h1>Hakulomake</h1>
+                        <h2>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2012</h2>
+                        <ul class="form-steps">
+                            <c:forEach var="link" items="${form.navigation.children}" varStatus="status">
+                                <li><a id="nav-${link.id}" ${link.attributeString}
+                                       <c:if test="${link.id eq vaihe.id}">class="current"</c:if>>
+                                        <span class="index">${status.count}</span>${link.value} <c:if
+                                            test="${not status.last}">&gt;</c:if></a></li>
+                                    </c:forEach>
+                            <li><span><span class="index"><c:out value="${fn:length(form.navigation.children) + 1}"/></span>Valmis</span></li>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+
+                    <c:set var="preview" value="${vaihe.preview}" scope="request"/>
+                    <c:choose>
+                        <c:when test="${preview}">
+                            <div class="form">
+                                <jsp:include page="../prev_next_buttons_preview.jsp"/>
+                                <c:forEach var="child" items="${vaihe.children}">
+                                    <c:set var="element" value="${child}" scope="request"/>
+                                    <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
+                                    <jsp:include page="./${child.type}Preview.jsp"/>
+                                </c:forEach>
+                                <jsp:include page="../prev_next_buttons_preview.jsp"/>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <form id="form-${vaihe.id}" class="form" method="post">
+                                <jsp:include page="../prev_next_buttons.jsp"/>
+                                <c:forEach var="child" items="${vaihe.children}">
+                                    <c:set var="element" value="${child}" scope="request"/>
+                                    <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
+                                    <jsp:include page="./${child.type}.jsp"/>
+                                </c:forEach>
+                                <jsp:include page="../prev_next_buttons.jsp"/>
+                            </form>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+

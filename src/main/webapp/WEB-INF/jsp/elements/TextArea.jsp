@@ -15,7 +15,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
+<c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <div class="${styleBaseClass}">
     <label id="label-${element.id}" for="${element.id}" class="${styleBaseClass}-label">${element.title}</label>
 

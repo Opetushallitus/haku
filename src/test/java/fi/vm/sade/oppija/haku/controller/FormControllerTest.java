@@ -64,31 +64,31 @@ public class FormControllerTest {
 
     @Test
     public void testGetCategoryMVCategory() throws Exception {
-        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
-        assertEquals(firstCategoryId, ((Vaihe) actualModelAndView.getModel().get("category")).getId());
+        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId, null);
+        assertEquals(firstCategoryId, ((Vaihe) actualModelAndView.getModel().get("element")).getId());
     }
 
     @Test
     public void testGetCategoryMVForm() throws Exception {
-        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
-        assertEquals(formId, ((Form) actualModelAndView.getModel().get("form")).getId());
+        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId, null);
+        assertEquals(formId, ((Vaihe) actualModelAndView.getModel().get("element")).getParent().getId());
     }
 
     @Test
     public void testGetCategoryModelSize() throws Exception {
-        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
-        assertEquals(5, actualModelAndView.getModel().size());
+        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId, null);
+        assertEquals(3, actualModelAndView.getModel().size());
     }
 
     @Test
     public void testGetCategoryView() throws Exception {
-        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
-        assertEquals(FormController.DEFAULT_VIEW, actualModelAndView.getViewName());
+        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId, null);
+        assertEquals("/elements/Vaihe", actualModelAndView.getViewName());
     }
 
     @Test
     public void testGetCategoryWrongView() throws Exception {
-        ModelAndView actualModelAndView = formController.getCategory(applicationPeriodId, formId, firstCategoryId);
+        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId, null);
         assertNotSame(null, actualModelAndView.getViewName());
     }
 

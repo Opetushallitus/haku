@@ -38,6 +38,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     public AbstractSeleniumBase() {
         super();
+        System.setProperty("webdriver.firefox.bin", "/home/majapuro/Downloads/firefox/firefox");
     }
 
     @Before

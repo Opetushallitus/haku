@@ -39,6 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -91,20 +92,27 @@ public class FormController extends ExceptionController {
         return "redirect:" + formId + "/" + firstVaihe.getId();
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}", method = RequestMethod.GET)
-    public ModelAndView getCategory(@PathVariable final String applicationPeriodId,
+    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{elementId}", method = RequestMethod.GET)
+    public ModelAndView getElement(@PathVariable final String applicationPeriodId,
                                     @PathVariable final String formId,
-                                    @PathVariable final String categoryId) {
+                                    @PathVariable final String elementId,
+                                    HttpServletRequest request) {
 
-        LOGGER.debug("getCategory {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId});
+        LOGGER.debug("getElement {}, {}, {}", new Object[]{applicationPeriodId, formId, elementId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        final ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
-        modelAndView.addObject("category", activeForm.getCategory(categoryId));
-        modelAndView.addObject("form", activeForm);
-        final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), categoryId);
-        modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getValues());
+        Element element = activeForm.getElementById(elementId);
+        final ModelAndView modelAndView = new ModelAndView("/elements/" + element.getType());
+        modelAndView.addObject("element", element);
+        final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), null);
+        Map<String, String> values = hakemusService.getHakemus(hakemusId).getValues();
+        if (request != null && request.getParameterMap() != null) {
+            Map<String, String[]> params = request.getParameterMap();
+            for (String key : params.keySet()) {
+                values.put(key, params.get(key)[0]);
+            }
+        }
+        modelAndView.addObject("categoryData", values);
         modelAndView.addObject("hakemusId", hakemusId);
-        modelAndView.addObject("additionalQuestions", additionalQuestionService.findAdditionalQuestionsInCategory(hakemusId));
         return modelAndView;
     }
 

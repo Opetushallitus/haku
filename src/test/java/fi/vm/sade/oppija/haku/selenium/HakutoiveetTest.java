@@ -85,7 +85,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         TextQuestion lisakysymys = new TextQuestion("lisakysymys", "Lisäkysymys");
         Teema lisakysymyksetRyhma = new Teema("lisakysymyksetGrp", "Lisäkysymykset", null);
         lisakysymykset.addChild(lisakysymyksetRyhma);
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("preference1-Koulutus-id", "S1598");
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", "preference1-Koulutus-id", "S1598");
         relatedQuestionRule.addChild(lisakysymys);
         lisakysymyksetRyhma.addChild(relatedQuestionRule);
 

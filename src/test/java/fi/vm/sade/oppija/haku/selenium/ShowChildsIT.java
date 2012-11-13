@@ -58,17 +58,17 @@ public class ShowChildsIT extends AbstractSeleniumBase {
         teema.addChild(new TextQuestion("alikysymys1", "alikysymys1"));
         teema.addChild(new TextQuestion("alikysymys2", "alikysymys2"));
 
-        final RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule(option.getId(), ".*");
-        relatedQuestionRule.setRelated(option, teema);
+        final RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", option.getId(), ".*");
+        relatedQuestionRule.addChild(teema);
         option.addChild(relatedQuestionRule);
 
-        final RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule(option2.getId(), ".*");
+        final RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule2", option2.getId(), ".*");
         final TextQuestion textQuestion = new TextQuestion("laitakolmenollaa", "Laita kolme nollaa tähän");
-        relatedQuestionRule2.setRelated(option2, textQuestion);
+        relatedQuestionRule2.addChild(textQuestion);
         option2.addChild(relatedQuestionRule2);
 
-        final RelatedQuestionRule relatedQuestionRule3 = new RelatedQuestionRule(textQuestion.getId(), "[0]{3}");
-        relatedQuestionRule3.setRelated(textQuestion, new TextQuestion("tamanakyykolmellanollalla", "tamanakyykolmellanollalla"));
+        final RelatedQuestionRule relatedQuestionRule3 = new RelatedQuestionRule("rule3", textQuestion.getId(), "[0]{3}");
+        relatedQuestionRule3.addChild(new TextQuestion("tamanakyykolmellanollalla", "tamanakyykolmellanollalla"));
         textQuestion.addChild(relatedQuestionRule3);
 
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox);

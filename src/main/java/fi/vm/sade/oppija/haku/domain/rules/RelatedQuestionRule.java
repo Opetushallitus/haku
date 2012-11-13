@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.haku.domain.rules;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.ValidatorFinder;
 import fi.vm.sade.oppija.haku.validation.ConditionalValidator;
@@ -34,19 +33,22 @@ public class RelatedQuestionRule extends Rule {
 
 
     private final String expression;
+    private final String relatedElementId;
 
-    public RelatedQuestionRule(@JsonProperty(value = "id") String id, @JsonProperty(value = "expression") String expression) {
+    public RelatedQuestionRule(@JsonProperty(value = "id") String id, 
+            @JsonProperty(value = "relatedElementId") String relatedElementId, 
+            @JsonProperty(value = "expression") String expression) {
         super(id);
+        this.relatedElementId = relatedElementId;
         this.expression = expression;
-    }
-
-    public void setRelated(Element parent, Element target) {
-        getChildById().put(parent.getId(), target);
-        children.add(target);
     }
 
     public String getExpression() {
         return expression;
+    }
+
+    public String getRelatedElementId() {
+        return relatedElementId;
     }
 
     @Override

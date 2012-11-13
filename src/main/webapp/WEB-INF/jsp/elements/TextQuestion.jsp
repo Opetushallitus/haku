@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags"%>
+<c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <div class="${styleBaseClass}">
     <label id="label-${element.id}" for="${element.id}" class="${styleBaseClass}-label">${element.title}</label>
     <div class="${styleBaseClass}-content">

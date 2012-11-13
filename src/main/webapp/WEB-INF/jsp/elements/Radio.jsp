@@ -1,10 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"
            prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags"%>
+<c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <fieldset class="${styleBaseClass}">
     <legend class="${styleBaseClass}-label"><c:out value="${element.title}"/><c:out value="${element.attributes['required'].value eq 'required' ? '*' : ''}"/></legend>
     <div class="${styleBaseClass}-content">
-
+    
     <c:set var="value" value="${(empty value) ? categoryData[element.id] : value}"/>
     <c:forEach var="option" items="${element.options}" varStatus="status">
         <div class="field-container-radio">

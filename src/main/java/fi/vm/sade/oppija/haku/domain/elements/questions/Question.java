@@ -26,9 +26,19 @@ import fi.vm.sade.oppija.haku.domain.elements.Titled;
  */
 public abstract class Question extends Titled {
 
+    private boolean inline = false;
+    
     protected Question(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title) {
         super(id, title);
         addAttribute("id", id);
         addAttribute("name", id);
+    }
+
+    public boolean isInline() {
+        return inline;
+    }
+
+    public void setInline(boolean inline) {
+        this.inline = inline;
     }
 }

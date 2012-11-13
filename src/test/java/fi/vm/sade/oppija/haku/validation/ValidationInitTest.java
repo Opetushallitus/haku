@@ -72,32 +72,31 @@ public class ValidationInitTest {
         final FormModel model = new FormModelDummyMemoryDaoImpl().getModel();
         new FormModelInitializer(model).initModel();
         final List<Validator> validators = getValidators(model, "koulutustausta");
-        assertEquals(2, validators.size());
+        assertEquals(3, validators.size());
         assertEquals(ConditionalValidator.class, validators.get(0).getClass());
         assertEquals(RequiredFieldValidator.class, validators.get(1).getClass());
     }
 
 
     private FormModel createModelWithTwoConditionalFields() {
-        final RelatedQuestionRule rule = createRule();
+        final RelatedQuestionRule rule = createRule("rule");
 
-        final RelatedQuestionRule rule2 = createRule();
+        final RelatedQuestionRule rule2 = createRule("rule2");
 
-        final RelatedQuestionRule rule3 = new RelatedQuestionRule("rule", ".*");
-        rule3.setRelated(rule2, createRequiredTextField());
+        final RelatedQuestionRule rule3 = new RelatedQuestionRule("rule3", "rule", ".*");
+        rule3.addChild(createRequiredTextField());
 
         return createModel(rule, rule2, rule3);
     }
 
     private FormModel createModelWithConditionalField() {
-        final RelatedQuestionRule rule = createRule();
+        final RelatedQuestionRule rule = createRule("rule");
         return createModel(rule);
     }
 
-    private RelatedQuestionRule createRule() {
-        final RelatedQuestionRule rule = new RelatedQuestionRule("rule", ".*");
-        final TextQuestion requiredTextField = createRequiredTextField();
-        rule.setRelated(requiredTextField, createRequiredTextField());
+    private RelatedQuestionRule createRule(String id) {
+        final RelatedQuestionRule rule = new RelatedQuestionRule(id, "rule", ".*");
+        rule.addChild(createRequiredTextField());
         return rule;
     }
 
