@@ -15,7 +15,6 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 public abstract class AbstractRemoteTest extends TomcatContainerBase {
 
     public AbstractRemoteTest() {
-        //System.setProperty("webdriver.firefox.bin", "/home/majapuro/Downloads/firefox/firefox");
     }
 
     protected FormModelHelper initModel(FormModel formModel1) {
