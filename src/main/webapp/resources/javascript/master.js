@@ -749,7 +749,7 @@ var formReplacementsApi = ( function() {
 		},
 		replaceElements: function() {
 			for(var i = 0; i < functions.length ; ++i) {
-				functions(i);
+				functions[i]();
 			}
 		}
 	}
