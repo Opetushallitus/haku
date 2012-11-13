@@ -102,6 +102,10 @@ var formReplacements = {
 		formReplacements.jsRadio.generate();
 		formReplacements.setDefaultTriggers();
 		formReplacements.setApplicationSpecificTriggers();
+
+		//add generate-functions to formreplacementapi
+		formReplacementsApi.setReplaceFunction(formReplacements.jsCheckbox.generate);
+		formReplacementsApi.setReplaceFunction(formReplacements.jsRadio.generate);
 	},
 	jsCheckbox : {
 		generate:function(){
@@ -730,3 +734,25 @@ scrollHelpPage.build();
 
 });
 
+
+
+
+//formReplacementsApi gives client a method to add a function and a method that runs all added functions
+//This object is initially created to make rerunning formreplacements methods possible
+var formReplacementsApi = ( function() {
+	
+	var functions = [];
+
+	var result = {
+		setReplaceFunction: function(argument) {
+			functions.push(argument);
+		},
+		replaceElements: function() {
+			for(var i = 0; i < functions.length ; ++i) {
+				functions(i);
+			}
+		}
+	}
+
+	return result;
+}());
