@@ -36,7 +36,7 @@
     var sortabletable_settings = {
         applicationPeriodId : "${hakemusId.applicationPeriodId}",
         formId : "${hakemusId.formId}",
-        vaiheId : "${hakemusId.categoryId}",
+        vaiheId : "${vaihe.id}",
         teemaId : "${parent.id}"
     }
 </script>
