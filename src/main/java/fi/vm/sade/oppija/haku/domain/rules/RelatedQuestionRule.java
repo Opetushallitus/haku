@@ -18,6 +18,12 @@ package fi.vm.sade.oppija.haku.domain.rules;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
+import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
+import fi.vm.sade.oppija.haku.domain.elements.ValidatorFinder;
+import fi.vm.sade.oppija.haku.validation.ConditionalValidator;
+import fi.vm.sade.oppija.haku.validation.Validator;
+
+import java.util.List;
 
 /**
  * @author jukka
@@ -43,5 +49,18 @@ public class RelatedQuestionRule extends Rule {
         return expression;
     }
 
+    @Override
+    protected boolean isValidating() {
+        return true;
+    }
 
+    @Override
+    protected void initValidators() {
+        final List<Validator> validatingParent = new ValidatorFinder(parent, Vaihe.class).findValidatingParentValidators();
+        final ConditionalValidator conditionalValidator = new ConditionalValidator(this);
+        for (Validator validator : validators) {
+            conditionalValidator.add(validator);
+        }
+        validatingParent.add(conditionalValidator);
+    }
 }

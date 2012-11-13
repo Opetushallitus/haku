@@ -2,7 +2,7 @@
            prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags"%>
 <fieldset class="${styleBaseClass}">
-    <legend class="${styleBaseClass}-label"><c:out value="${element.title}"/></legend>
+    <legend class="${styleBaseClass}-label"><c:out value="${element.title}"/><c:out value="${element.attributes['required'].value eq 'required' ? '*' : ''}"/></legend>
     <div class="${styleBaseClass}-content">
 
     <c:set var="value" value="${(empty value) ? categoryData[element.id] : value}"/>

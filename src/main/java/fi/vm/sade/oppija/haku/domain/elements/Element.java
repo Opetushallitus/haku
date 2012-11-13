@@ -28,11 +28,11 @@ import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.*;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
+import fi.vm.sade.oppija.haku.validation.Validator;
+import fi.vm.sade.oppija.haku.validation.validators.RegexFieldValidator;
+import fi.vm.sade.oppija.haku.validation.validators.RequiredFieldValidator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author jukka
@@ -68,10 +68,12 @@ import java.util.Map;
 )
 public abstract class Element {
     public static final String ID_DELIMITER = "_";
-    final String id;
-    transient String type = this.getClass().getSimpleName();
-    transient Element parent;
-    String help;
+    protected final String id;
+    protected transient String type = this.getClass().getSimpleName();
+    protected transient Element parent;
+    protected String help;
+
+    protected transient final List<Validator> validators = new ArrayList<Validator>();
 
     protected final List<Element> children = new ArrayList<Element>();
 
@@ -119,13 +121,14 @@ public abstract class Element {
     public void addAttribute(final String key, final String value) {
         this.attributes.put(key, new Attribute(key, value));
     }
-    
+
     public void init(final Map<String, Element> elements, final Element parent) {
         this.parent = parent;
         elements.put(id, this);
         for (Element child : children) {
             child.init(elements, this);
         }
+        initValidators();
     }
 
     @JsonIgnore
@@ -137,7 +140,7 @@ public abstract class Element {
         }
         return attrStr.toString();
     }
-    
+
     @JsonIgnore
     public Element getParent() {
         return parent;
@@ -159,6 +162,28 @@ public abstract class Element {
         }
 
         return true;
+    }
+
+    @JsonIgnore
+    public List<Validator> getValidators() {
+        return validators;
+    }
+
+    protected void initValidators() {
+        System.out.println("element " + id);
+        List<Validator> validators = new ValidatorFinder(this).findValidatingParentValidators();
+        Collection<Attribute> attributes = getAttributes().values();
+        for (Attribute attribute : attributes) {
+            if (attribute.getKey().equals("required")) {
+                validators.add(new RequiredFieldValidator(getId()));
+            } else if (attribute.getKey().equals("pattern")) {
+                validators.add(new RegexFieldValidator(getId(), attribute.getValue()));
+            }
+        }
+    }
+
+    protected boolean isValidating() {
+        return false;
     }
 
     @Override

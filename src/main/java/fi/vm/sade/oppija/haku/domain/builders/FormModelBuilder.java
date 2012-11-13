@@ -31,13 +31,19 @@ import java.util.Date;
  */
 public class FormModelBuilder {
 
+    public static final String VAIHE_ID = "kategoria";
+    public static final String VAIHE_TITLE = "category1";
+    public static final String TEEMA_ID = "teema";
+    public static final String TEEMA_TITLE = "teema1";
+    public static final String APPLICATION_PERIOD_ID = "yhteishaku";
+    public static final String FORM_ID = "form";
     FormModel formModel = new FormModel();
 
-    ApplicationPeriodBuilder applicationPeriodBuilder = new ApplicationPeriodBuilder("yhteishaku");
-    private Vaihe vaihe = new Vaihe("kategoria", "category1", false);
-    private Teema teema = new Teema("teema", "teema1", null);
+    ApplicationPeriodBuilder applicationPeriodBuilder = new ApplicationPeriodBuilder(APPLICATION_PERIOD_ID);
+    private Vaihe vaihe = new Vaihe(VAIHE_ID, VAIHE_TITLE, false);
+    private Teema teema = new Teema(TEEMA_ID, TEEMA_TITLE, null);
 
-    private FormBuilder formBuilder = new FormBuilder("form", "Tässä olisi kuvaava otsikko. Tämä on kuitenkin testiformi joka on luotu " + new Date());
+    private FormBuilder formBuilder = new FormBuilder(FORM_ID, "Tässä olisi kuvaava otsikko. Tämä on kuitenkin testiformi joka on luotu " + new Date());
 
     Form form = createForm(vaihe);
 

@@ -55,13 +55,11 @@ public class Form extends Titled {
         Vaihe prev = null;
         for (Element child : children) {
             child.init(elements, this);
-            if (child instanceof Vaihe) {
-                final Vaihe child1 = (Vaihe) child;
-                addCategory(child1, prev);
-                prev = child1;
-                if (firstCategoryId == null) {
-                    firstCategoryId = child.getId();
-                }
+            final Vaihe child1 = (Vaihe) child;
+            addCategory(child1, prev);
+            prev = child1;
+            if (firstCategoryId == null) {
+                firstCategoryId = child.getId();
             }
         }
     }
@@ -85,7 +83,7 @@ public class Form extends Titled {
     public Element getElementById(final String elementId) {
         return elements.get(elementId);
     }
-    
+
     @JsonIgnore
     public Vaihe getVaiheByTeemaId(String teemaId) {
         for (Vaihe vaihe : categories.values()) {

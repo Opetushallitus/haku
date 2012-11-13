@@ -28,14 +28,9 @@ import org.springframework.stereotype.Service;
 public class FormModelHolder {
 
     private FormModel formModel;
-    private ValidatorContainer validatorContainer;
 
     public FormModel getModel() {
         return formModel;
-    }
-
-    public ValidatorContainer getValidatorContainer() {
-        return this.validatorContainer;
     }
 
     /**
@@ -47,7 +42,6 @@ public class FormModelHolder {
         FormModelInitializer formModelInitializer = new FormModelInitializer(model);
         formModelInitializer.initModel();
         this.formModel = model;
-        this.validatorContainer = new ValidatorCollector(this.formModel.getApplicationPerioidMap()).collect();
 
     }
 

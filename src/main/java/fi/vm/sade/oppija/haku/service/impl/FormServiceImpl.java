@@ -85,7 +85,8 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public List<Validator> getCategoryValidators(HakemusId hakemusId) {
-        return holder.getValidatorContainer().getCategoryValidators(hakemusId.getCategoryId());
+        final Vaihe category = getActiveForm(hakemusId.getApplicationPeriodId(), hakemusId.getFormId()).getCategory(hakemusId.getCategoryId());
+        return category.getValidators();
     }
 
     @Override
