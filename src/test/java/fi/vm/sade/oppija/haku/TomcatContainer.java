@@ -34,7 +34,7 @@ public class TomcatContainer implements DisposableBean {
      */
     private Tomcat mTomcat;
     private static File solr;
-    private final int port;
+    private int port;
 
     private static WebArchive addWebResourcesTo(WebArchive archive) {
         final File webAppDirectory = new File(WEBAPP_SRC);
@@ -50,21 +50,24 @@ public class TomcatContainer implements DisposableBean {
         return !file.isDirectory() && !file.getName().equals(".svn");
     }
 
-    public TomcatContainer(String port) throws IOException, LifecycleException {
-        this.port = Integer.parseInt(port);
+    public TomcatContainer() throws IOException, LifecycleException {
         createTomcat();
         createWebApp(createPackage());
         mTomcat.start();
+        port = mTomcat.getConnector().getLocalPort();
     }
 
 
     @Override
     public void destroy() throws Exception {
-        if (mTomcat.getServer() != null
-                && mTomcat.getServer().getState() != LifecycleState.DESTROYED) {
-            if (mTomcat.getServer().getState() != LifecycleState.STOPPED) {
-                mTomcat.stop();
+        try {
+            if (mTomcat.getServer() != null
+                    && mTomcat.getServer().getState() != LifecycleState.DESTROYED) {
+                if (mTomcat.getServer().getState() != LifecycleState.STOPPED) {
+                    mTomcat.stop();
+                }
             }
+        } finally {
             mTomcat.destroy();
         }
     }
@@ -72,8 +75,7 @@ public class TomcatContainer implements DisposableBean {
 
     private void createTomcat() {
         mTomcat = new Tomcat();
-        mTomcat.setPort(getPort());
-
+        mTomcat.setPort(0);
         mTomcat.setBaseDir(mWorkingDir);
         mTomcat.getHost().setAppBase(mWorkingDir);
         mTomcat.getHost().setAutoDeploy(true);

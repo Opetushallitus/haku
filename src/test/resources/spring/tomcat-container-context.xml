@@ -5,7 +5,6 @@
 
 
     <bean id="tomcat" class="fi.vm.sade.oppija.haku.TomcatContainer">
-        <constructor-arg name="port" value="12456"/>
     </bean>
 
     <bean id="seleniumContainer" class="fi.vm.sade.oppija.haku.SeleniumContainer">
