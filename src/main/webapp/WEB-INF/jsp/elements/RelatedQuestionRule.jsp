@@ -3,33 +3,45 @@
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags"%>
 <div id="${element.id}">
     <c:set var="key" value="${element.relatedElementId}"/>
-    <c:if test="${parent ne null}">
-        <script type="text/javascript">
-            (function(){  
-                $("[name=\"${key}\"]").change(function(event){
-                    if ($(this).val().search("${element.expression}") !== -1) {
-                        $.get('/haku/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${element.id}', {"${key}" : $(this).val()},
-                            function(data) {
-                                $("#${element.id}").replaceWith(data);
-                                formReplacementsApi.replaceElements();
-                            });
-                    } else {
-                        $("#${element.id}").html("");
+    <script type="text/javascript">
+        (function(){  
+            $("[name=\"${key}\"]").change(function(event){
+                var childIds = [<c:forEach var="child" items="${element.children}" varStatus="status">"${child.id}"${not status.last ? ', ' : ''}</c:forEach>],
+                ruleChilds = $("#${element.id} .rule-childs");
+                if ($(this).val().search("${element.expression}") !== -1) {
+                    if (ruleChilds.html().trim() === "") {
+                        ruleData.getRuleChild(childIds, 0, ruleChilds);
                     }
-                });
-            })();
-        </script>
-    </c:if>
-    <c:choose>
-        <c:when test="${not empty categoryData[key]}">
-            <c:if test="${fn:evaluate(categoryData[key], element.expression)}">
-                <haku:viewChilds element="${element}"/>
-            </c:if>
-        </c:when>
-        <c:otherwise>
-            <noscript>
-                <input type="submit" id="enabling-submit" name="enabling-submit" value="Ok"/>
-            </noscript>
-        </c:otherwise>
-    </c:choose>
+                } else {
+                    ruleChilds.html("");
+                }
+            });
+            
+            var ruleData = {
+                getRuleChild : function(childIds, index, ruleChilds) {
+                    $.get('/haku/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}/' + childIds[index],
+                        function(data) {
+                            ruleChilds.append(data);
+                            if (childIds.length - 1 > index) {
+                                ruleData.getRuleChild(childIds, ++index, ruleChilds);
+                            } else {
+                                formReplacementsApi.replaceElements();
+                            }
+                        });
+                }
+            };
+        })();
+    </script>
+    <div class="rule-childs">
+        <c:choose>
+            <c:when test="${not empty categoryData[key]}">
+                <c:if test="${fn:evaluate(categoryData[key], element.expression)}">
+                    <haku:viewChilds element="${element}"/>
+                </c:if>
+            </c:when>
+        </c:choose>
+    </div>
+    <noscript>
+        <input type="submit" id="enabling-submit" name="enabling-submit" value="Ok"/>
+    </noscript>
 </div>

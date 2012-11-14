@@ -2,7 +2,6 @@ package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.dao.impl.ApplicationDAOMongoImpl;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.event.EventHandler;
@@ -64,31 +63,31 @@ public class FormControllerTest {
 
     @Test
     public void testGetCategoryMVCategory() throws Exception {
-        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId, null);
+        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
         assertEquals(firstCategoryId, ((Vaihe) actualModelAndView.getModel().get("element")).getId());
     }
 
     @Test
     public void testGetCategoryMVForm() throws Exception {
-        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId, null);
+        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
         assertEquals(formId, ((Vaihe) actualModelAndView.getModel().get("element")).getParent().getId());
     }
 
     @Test
     public void testGetCategoryModelSize() throws Exception {
-        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId, null);
+        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
         assertEquals(3, actualModelAndView.getModel().size());
     }
 
     @Test
     public void testGetCategoryView() throws Exception {
-        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId, null);
+        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
         assertEquals("/elements/Vaihe", actualModelAndView.getViewName());
     }
 
     @Test
     public void testGetCategoryWrongView() throws Exception {
-        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId, null);
+        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
         assertNotSame(null, actualModelAndView.getViewName());
     }
 

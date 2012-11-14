@@ -95,8 +95,7 @@ public class FormController extends ExceptionController {
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{elementId}", method = RequestMethod.GET)
     public ModelAndView getElement(@PathVariable final String applicationPeriodId,
                                     @PathVariable final String formId,
-                                    @PathVariable final String elementId,
-                                    HttpServletRequest request) {
+                                    @PathVariable final String elementId) {
 
         LOGGER.debug("getElement {}, {}, {}", new Object[]{applicationPeriodId, formId, elementId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
@@ -105,12 +104,6 @@ public class FormController extends ExceptionController {
         modelAndView.addObject("element", element);
         final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId(), null);
         Map<String, String> values = hakemusService.getHakemus(hakemusId).getValues();
-        if (request != null && request.getParameterMap() != null) {
-            Map<String, String[]> params = request.getParameterMap();
-            for (String key : params.keySet()) {
-                values.put(key, params.get(key)[0]);
-            }
-        }
         modelAndView.addObject("categoryData", values);
         modelAndView.addObject("hakemusId", hakemusId);
         return modelAndView;
