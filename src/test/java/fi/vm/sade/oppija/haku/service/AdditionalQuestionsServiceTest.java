@@ -56,7 +56,7 @@ public class AdditionalQuestionsServiceTest {
     private HakemusService createHakemusServiceMock() {
         HakemusService hakemusService = mock(HakemusServiceImpl.class);
 
-        HakemusId hakemusId = new HakemusId("test", "yhteishaku", "arvosanat");
+        HakemusId hakemusId = new HakemusId("Yhteishaku", "yhteishaku", "arvosanat");
 
         Map<String, String> values = new HashMap<String, String>();
         values.put("preference1-Koulutus-id", "S1508");
@@ -72,7 +72,7 @@ public class AdditionalQuestionsServiceTest {
     public void testEducationSpecificQuestions() {
 
         String teemaId = "hakutoiveetGrp";
-        HakemusId hakemusId = new HakemusId("test", "yhteishaku", "hakutoiveet");
+        HakemusId hakemusId = new HakemusId("Yhteishaku", "yhteishaku", "hakutoiveet");
 
         Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakemusId);
 
@@ -82,7 +82,7 @@ public class AdditionalQuestionsServiceTest {
     @Test
     public void testEducationSpecificSubjects() {
         String teemaId = "arvosanatGrp";
-        HakemusId hakemusId = new HakemusId("test", "yhteishaku", "arvosanat");
+        HakemusId hakemusId = new HakemusId("Yhteishaku", "yhteishaku", "arvosanat");
 
         Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakemusId);
 

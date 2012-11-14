@@ -20,6 +20,7 @@ import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ import static org.junit.Assert.assertFalse;
 /**
  * @author Mikko Majapuro
  */
+@Ignore
 public class AutoCompleteIT extends AbstractSeleniumBase {
 
     @Before

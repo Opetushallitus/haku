@@ -29,6 +29,7 @@ import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -52,7 +53,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
     @Before
     public void init() throws IOException {
-        ApplicationPeriod applicationPeriod = new ApplicationPeriod("test");
+        ApplicationPeriod applicationPeriod = new ApplicationPeriod("Yhteishaku");
         FormModel formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
         Vaihe hakutoiveet = new Vaihe("hakutoiveet", "Hakutoiveet", false);
@@ -94,7 +95,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
     @Test
     public void testEducationPreference() throws InterruptedException {
-        final String url = "lomake/test/lomake/hakutoiveet";
+        final String url = "lomake/Yhteishaku/lomake/hakutoiveet";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + "/" + url);
         driver.findElement(By.id("preference1-Opetuspiste"));
@@ -115,7 +116,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
     @Test(expected = NoSuchElementException.class)
     public void testEducationPreferenceNoAdditionalQuestion() throws InterruptedException {
-        final String url = "lomake/test/lomake/hakutoiveet";
+        final String url = "lomake/Yhteishaku/lomake/hakutoiveet";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + "/" + url);
         driver.findElement(By.xpath("//button[@name='nav-next']")).click();

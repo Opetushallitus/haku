@@ -36,14 +36,17 @@
     <xsl:template match="types:LearningOpportunityDownloadData/types:ApplicationOption">
         <doc>
             <field name="AOId">
-                <xsl:value-of select="types:Identifier"/>
+                <xsl:variable name="identifier" select="types:Identifier"/>
+                <xsl:value-of select="fn:tokenize($identifier, '/')[last()]"/>
             </field>
             <field name="AOTitle">
                 <xsl:value-of select="types:Title"/>
             </field>
+            <!-- DEPRECATED
             <field name="AODescription">
                 <xsl:value-of select="types:Description"/>
             </field>
+            -->
             <field name="AOSelectionCriterionDescription">
                 <xsl:value-of select="types:SelectionCriterions/types:Description"/>
             </field>
@@ -73,11 +76,11 @@
             <xsl:apply-templates
                     select="/types:LearningOpportunityDownloadData/types:LearningOpportunityInstance[@id=$ref]"/>
 
-            <field name="tmpHakuId">test</field>
             <field name="tmpLomakeId">yhteishaku</field>
+
+            <xsl:apply-templates select="/types:LearningOpportunityDownloadData/types:ApplicationSystem"/>
         </doc>
     </xsl:template>
-
 
     <xsl:template match="types:SelectionCriterions/types:Attachments/types:Attachment">
         <field name="AOAttachmentDescription">
@@ -109,7 +112,7 @@
 
     <xsl:template match="types:SelectionCriterions/types:EntranceExaminations/types:Examination">
         <field name="AOExaminationTitle">
-            <xsl:value-of select="./types:ExaminationType/types:Title"/>
+            <xsl:value-of select="./types:ExaminationType"/>
         </field>
         <field name="AOExaminationDescription">
             <xsl:value-of select="./types:Description"/>
@@ -158,8 +161,9 @@
                 <xsl:value-of select="@type"/>
             </field>
         </xsl:for-each>
+        <!-- TODO: replace code with proper value -->
         <field name="LOIPrerequisite">
-            <xsl:value-of select="types:Prerequisite"/>
+            <xsl:value-of select="types:Prerequisite/types:Code"/>
         </field>
 
         <xsl:apply-templates select="types:WebLinks/types:Link/types:Uri"/>
@@ -200,7 +204,7 @@
             <xsl:value-of select="./types:DegreeTitle"/>
         </field>
         <field name="LOSCredits">
-            <xsl:value-of select="./types:Credits"/>
+            <xsl:value-of select="./types:Credits/types:Value"/>
         </field>
         <field name="LOSCreditsUnit">
             <xsl:value-of select="./types:Credits/@unit"/>
@@ -211,21 +215,36 @@
         <field name="LOSDescriptionStructureDiagram">
             <xsl:value-of select="./types:Description/types:StructureDiagram"/>
         </field>
+        <!-- DEPRECATED
         <field name="LOSDescriptionEducationAndProfessionalGoals">
             <xsl:value-of select="./types:Description/types:EducationAndProfessionalGoals"/>
         </field>
+        -->
+        <!-- TODO: set proper qualification name once it is available-->
         <field name="LOSQualification">
-            <xsl:value-of select="./types:Qualification/types:Title"/>
+            <xsl:value-of select="./types:Qualification/types:Code"/>
         </field>
 
-        <!-- TODO: make these after update -->
-        <field name="LOSEducationDomain"></field>
-        <field name="LOSEducationDegree"></field>
-        <field name="LOSStydyDomain"></field>
+        <xsl:apply-templates select="//types:LearningOpportunitySpecification/types:Classification"/>
+
         <xsl:variable name="lop" select="types:OfferedBy/@ref"/>
         <xsl:apply-templates
                 select="/types:LearningOpportunityDownloadData/types:LearningOpportunityProvider[@id=$lop]"/>
 
+    </xsl:template>
+
+    <xsl:template match="//types:LearningOpportunitySpecification/types:Classification">
+        <!-- TODO: select the actual value instead of koodisto code once the value is available -->
+
+        <field name="LOSEducationDomain">
+            <xsl:value-of select="./types:EducationClassification/types:Code"/>
+        </field>
+        <field name="LOSEducationDegree">
+            <xsl:value-of select="./types:EducationDegree/types:Code"/>
+        </field>
+        <field name="LOSStydyDomain">
+            <xsl:value-of select="./types:StudyDomain/types:Code"/>
+        </field>
     </xsl:template>
 
     <!-- end of LOS -->
@@ -243,4 +262,16 @@
         </field>
     </xsl:template>
     <!-- end of LOP -->
+
+    <!-- start AS -->
+    <xsl:template match="/types:LearningOpportunityDownloadData/types:ApplicationSystem">
+        <field name="ASId">
+            <xsl:value-of select="fn:tokenize(@id, '/')[last()]"/>
+        </field>
+        <field name="ASName">
+            <xsl:value-of select="types:Name/types:Text"/>
+        </field>
+    </xsl:template>
+    <!-- end of AS -->
+
 </xsl:stylesheet>

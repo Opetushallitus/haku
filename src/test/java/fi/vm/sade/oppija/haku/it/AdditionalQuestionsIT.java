@@ -37,7 +37,7 @@ public class AdditionalQuestionsIT extends AbstractRemoteTest {
 
     @Test
     public void testAdditionalQuestion() {
-        beginAt("education/additionalquestion/test/yhteishaku/hakutoiveet/hakutoiveetGrp/S1508");
+        beginAt("education/additionalquestion/Yhteishaku/yhteishaku/hakutoiveet/hakutoiveetGrp/S1508");
         assertFormElementPresent("S1508_additional_question_1");
         assertElementPresentByXPath("//input[@value='q1_option_1']");
         assertElementPresentByXPath("//input[@value='q1_option_2']");
@@ -54,7 +54,7 @@ public class AdditionalQuestionsIT extends AbstractRemoteTest {
 
     @Test
     public void testNoAdditionalQuestion() {
-        beginAt("education/additionalquestion/test/yhteishaku/hakutoiveet/hakutoiveetGrp/6_1");
+        beginAt("education/additionalquestion/Yhteishaku/yhteishaku/hakutoiveet/hakutoiveetGrp/6_1");
         assertFormElementNotPresent("6_1_additional_question_1");
         assertElementNotPresentByXPath("//input[@value='q2_option_1']");
         assertElementNotPresentByXPath("//input[@value='q2_option_2']");

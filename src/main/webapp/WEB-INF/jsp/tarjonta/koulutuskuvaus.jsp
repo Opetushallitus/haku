@@ -35,7 +35,7 @@
         <div class="pagetitle">
             <h1>${searchResult['LOSDegreeTitle']}&nbsp;${searchResult['LOSCredits']}&nbsp;<spring:message
                     code="tarjonta.koulutuskuvaus.${searchResult['LOSCreditsUnit']}" text="?_?"/></h1>
-            <a href="#">${searchResult['LOSName']}</a>
+            <a href="#">${searchResult['LOSDegreeTitle']}</a>
 
             <div class="set-right">
                 <jsp:include page="sections/muistiJaVertailuValitsimet.jsp"/>

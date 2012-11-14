@@ -33,7 +33,7 @@ public class FormModelFactoryTest {
     @Test
     public void testFromJSONString() throws Exception {
         final FormModel formModel = FormModelFactory.fromClassPathResource("test-data.json");
-        assertEquals("yhteishaku", formModel.getApplicationPeriodById("test").getFormById("yhteishaku").getId());
+        assertEquals("yhteishaku", formModel.getApplicationPeriodById("Yhteishaku").getFormById("yhteishaku").getId());
     }
 
     @Test

@@ -72,13 +72,15 @@
         <field name="AOSelectionCriteriaDescription" type="text_general" indexed="true" stored="true"
                multiValued="true"/>
         <!-- tmp dev fields -->
-        <field name="tmpHakuId" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="tmpLomakeId" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="tmpAOApplyAdditionalInfo" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="tmpLOSEducationField" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="tmpASStart" type="date" indexed="true" stored="true" multiValued="false"/>
         <field name="tmpASEnd" type="date" indexed="true" stored="true" multiValued="false"/>
         <field name="tmpAOLastYearQualified" type="string" indexed="true" stored="true" multiValued="false"/>
+
+        <field name="ASId" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="ASName" type="string" indexed="true" stored="true" multiValued="false"/>
 
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
         <!--  hakusuodattimet kts. kopiointi alempana -->

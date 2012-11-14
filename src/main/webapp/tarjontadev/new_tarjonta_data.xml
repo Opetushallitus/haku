@@ -1,0 +1,369 @@
+<?xml version="1.0" standalone="yes"?>
+
+<LearningOpportunityDownloadData xmlns="http://publication.tarjonta.sade.vm.fi/types">
+    <LearningOpportunitySpecification id="http://oid.oph.fi/koulutusmoduuli/8194703719628216436" type="DegreeProgramme">
+        <Identifier>KM5024623.4</Identifier>
+        <OrganizationRef>
+            <OidRef>http://oid.oph.fi/organisaatio/3636247050749115560</OidRef>
+        </OrganizationRef>
+        <Credits>
+            <Code scheme="Koodisto">http://koodisto.oph.fi/opintojenlaajuus/8341759262511299508</Code>
+            <Value>20</Value>
+            <Label lang="fi" xmlns="">Nimi</Label>
+            <Label lang="sv" xmlns="">Namn</Label>
+            <Label lang="en" xmlns="">Name</Label>
+        </Credits>
+        <Qualification>
+            <Code scheme="Koodisto">http://koodisto.oph.fi/tutkintonimike/6296614135874316307</Code>
+            <Label lang="fi" xmlns="">Nimi</Label>
+            <Label lang="sv" xmlns="">Namn</Label>
+            <Label lang="en" xmlns="">Name</Label>
+        </Qualification>
+        <DegreeTitle lang="fi"></DegreeTitle>
+        <Classification>
+            <EducationClassification>
+                <Code scheme="Koodisto">uri: Muu koulutus 20898</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </EducationClassification>
+            <EducationDomain>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/koulutusala/7648213696807571075</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </EducationDomain>
+            <EducationDegree>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/koulutusaste/1997013102798356180</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </EducationDegree>
+            <StudyDomain>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/koulutusala/7648213696807571075</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </StudyDomain>
+            <EqfClassification>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/eqf/4996789151919624736</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </EqfClassification>
+            <NqfClassification>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/ngf/7076245118008981793</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </NqfClassification>
+        </Classification>
+        <Description>
+            <StructureDiagram lang="fi">Koulutuksen rakenne...</StructureDiagram>
+            <StructureDiagram lang="en">Structure of education...</StructureDiagram>
+            <AccessToFurtherStudies lang="fi">Jatko-opintomahdollisuudet</AccessToFurtherStudies>
+            <AccessToFurtherStudies lang="en">Access to further studies...</AccessToFurtherStudies>
+        </Description>
+    </LearningOpportunitySpecification>
+    <LearningOpportunityInstance id="http://oid.oph.fi/koulutusmoduulitoteutus/4892409434512476547">
+        <Identifier>KMT637832.3</Identifier>
+        <SpecificationRef ref="http://oid.oph.fi/koulutusmoduuli/8194703719628216436"></SpecificationRef>
+        <OrganizationRef>
+            <OidRef>1.2.246.562.5.73962414165</OidRef>
+        </OrganizationRef>
+        <Prerequisite>
+            <Code scheme="Koodisto">http://koodisto.oph.fi/pohjakoulutusvaatimus/3746357819742963531</Code>
+            <Label lang="fi" xmlns="">Nimi</Label>
+            <Label lang="sv" xmlns="">Namn</Label>
+            <Label lang="en" xmlns="">Name</Label>
+        </Prerequisite>
+        <ProfessionLabels>
+            <Profession>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/ammattinimike/8073909602465249090</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Profession>
+            <Profession>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/ammattinimike/1310473444390536404</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Profession>
+        </ProfessionLabels>
+        <Keywords>
+            <Keyword>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/avainsana/4172444519376661605</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Keyword>
+            <Keyword>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/avainsana/2292231545705584403</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Keyword>
+            <Keyword>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/avainsana/5849937505537357699</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Keyword>
+        </Keywords>
+        <LanguagesOfInstruction scheme="Koodisto">
+            <Code value="http://koodisto.oph.fi/kieli/8634724779049851441">
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Code>
+        </LanguagesOfInstruction>
+        <FormOfEducation scheme="Koodisto">
+            <Code value="http://koodisto.oph.fi/koulutuslaji/7809979509949978241">
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Code>
+        </FormOfEducation>
+        <FormsOfTeaching scheme="Koodisto">
+            <Code value="http://koodisto.oph.fi/opetusmuoto/3267177645507437424">
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Code>
+        </FormsOfTeaching>
+        <StartDate>2013-05-11+03:00</StartDate>
+        <AcademicYear>2013</AcademicYear>
+        <Duration>
+            <Units>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/koulutuskesto/4659949092659684596</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Units>
+            <Value>6+2</Value>
+        </Duration>
+        <FinalExamination>
+            <Description lang="fi">Loppukoevaatimukset</Description>
+            <Description lang="en">Final Examination...</Description>
+        </FinalExamination>
+        <WebLinks>
+            <Link type="kotisivut">
+                <Uri>http://www.oppilaitosX.fi</Uri>
+            </Link>
+            <Link type="multimedia">
+                <Uri>http://www.youtube.com?id=12345</Uri>
+            </Link>
+            <Link type="facebook">
+                <Uri>http://www.facebook.com</Uri>
+            </Link>
+        </WebLinks>
+    </LearningOpportunityInstance>
+    <LearningOpportunitySpecification id="http://oid.oph.fi/koulutusmoduuli/8510324661330328123" type="DegreeProgramme">
+        <Identifier>KM5024623.4</Identifier>
+        <OrganizationRef>
+            <OidRef>http://oid.oph.fi/organisaatio/273077819942552045</OidRef>
+        </OrganizationRef>
+        <Credits>
+            <Code scheme="Koodisto">http://koodisto.oph.fi/opintojenlaajuus/5306098700177030750</Code>
+            <Value>20</Value>
+            <Label lang="fi" xmlns="">Nimi</Label>
+            <Label lang="sv" xmlns="">Namn</Label>
+            <Label lang="en" xmlns="">Name</Label>
+        </Credits>
+        <Qualification>
+            <Code scheme="Koodisto">http://koodisto.oph.fi/tutkintonimike/4097166957366324955</Code>
+            <Label lang="fi" xmlns="">Nimi</Label>
+            <Label lang="sv" xmlns="">Namn</Label>
+            <Label lang="en" xmlns="">Name</Label>
+        </Qualification>
+        <DegreeTitle lang="fi"></DegreeTitle>
+        <Classification>
+            <EducationClassification>
+                <Code scheme="Koodisto">uri: Kulttuuriala 20902</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </EducationClassification>
+            <EducationDomain>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/koulutusala/5904232778730887</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </EducationDomain>
+            <EducationDegree>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/koulutusaste/3812222098587608826</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </EducationDegree>
+            <StudyDomain>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/koulutusala/5904232778730887</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </StudyDomain>
+            <EqfClassification>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/eqf/1931332946280425632</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </EqfClassification>
+            <NqfClassification>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/ngf/7297105103862829655</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </NqfClassification>
+        </Classification>
+        <Description>
+            <StructureDiagram lang="fi">Koulutuksen rakenne...</StructureDiagram>
+            <StructureDiagram lang="en">Structure of education...</StructureDiagram>
+            <AccessToFurtherStudies lang="fi">Jatko-opintomahdollisuudet</AccessToFurtherStudies>
+            <AccessToFurtherStudies lang="en">Access to further studies...</AccessToFurtherStudies>
+        </Description>
+    </LearningOpportunitySpecification>
+    <LearningOpportunityInstance id="http://oid.oph.fi/koulutusmoduulitoteutus/4215902512772309569">
+        <Identifier>KMT637832.3</Identifier>
+        <SpecificationRef ref="http://oid.oph.fi/koulutusmoduuli/8510324661330328123"></SpecificationRef>
+        <OrganizationRef>
+            <OidRef>1.2.246.562.5.58521633737</OidRef>
+        </OrganizationRef>
+        <Prerequisite>
+            <Code scheme="Koodisto">http://koodisto.oph.fi/pohjakoulutusvaatimus/470617152354124774</Code>
+            <Label lang="fi" xmlns="">Nimi</Label>
+            <Label lang="sv" xmlns="">Namn</Label>
+            <Label lang="en" xmlns="">Name</Label>
+        </Prerequisite>
+        <ProfessionLabels>
+            <Profession>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/ammattinimike/5988823719225771247</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Profession>
+            <Profession>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/ammattinimike/6462217284658170697</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Profession>
+        </ProfessionLabels>
+        <Keywords>
+            <Keyword>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/avainsana/6167400522028274977</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Keyword>
+            <Keyword>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/avainsana/6542797466105095771</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Keyword>
+            <Keyword>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/avainsana/3564334987923308209</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Keyword>
+        </Keywords>
+        <LanguagesOfInstruction scheme="Koodisto">
+            <Code value="http://koodisto.oph.fi/kieli/6007931731998489909">
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Code>
+        </LanguagesOfInstruction>
+        <FormOfEducation scheme="Koodisto">
+            <Code value="http://koodisto.oph.fi/koulutuslaji/5910295272017851225">
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Code>
+        </FormOfEducation>
+        <FormsOfTeaching scheme="Koodisto">
+            <Code value="http://koodisto.oph.fi/opetusmuoto/5999232166859139883">
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Code>
+        </FormsOfTeaching>
+        <StartDate>2013-05-11+03:00</StartDate>
+        <AcademicYear>2013</AcademicYear>
+        <Duration>
+            <Units>
+                <Code scheme="Koodisto">http://koodisto.oph.fi/koulutuskesto/4833453705116393517</Code>
+                <Label lang="fi" xmlns="">Nimi</Label>
+                <Label lang="sv" xmlns="">Namn</Label>
+                <Label lang="en" xmlns="">Name</Label>
+            </Units>
+            <Value>6+2</Value>
+        </Duration>
+        <FinalExamination>
+            <Description lang="fi">Loppukoevaatimukset</Description>
+            <Description lang="en">Final Examination...</Description>
+        </FinalExamination>
+        <WebLinks>
+            <Link type="kotisivut">
+                <Uri>http://www.oppilaitosX.fi</Uri>
+            </Link>
+            <Link type="multimedia">
+                <Uri>http://www.youtube.com?id=12345</Uri>
+            </Link>
+            <Link type="facebook">
+                <Uri>http://www.facebook.com</Uri>
+            </Link>
+        </WebLinks>
+    </LearningOpportunityInstance>
+    <ApplicationOption>
+        <Identifier>http://oid.oph.fi/hakukohde/3868572473925441156</Identifier>
+        <Title>
+            <Code scheme="Koodisto">Artesaani, k&#228;si- ja taideteollisuusalan perustutkinto</Code>
+        </Title>
+        <ApplicationSystemRef>
+            <OidRef>http://oid.oph.fi/haku/6617880091439732697</OidRef>
+        </ApplicationSystemRef>
+        <EligibilityRequirements>
+            <Description>http://koodisto.oph.fi/koulutustaso/4611127569452323130</Description>
+        </EligibilityRequirements>
+        <SelectionCriterions>
+            <StartingQuota>100</StartingQuota>
+            <LastYearMinScore>30</LastYearMinScore>
+            <LastYearMaxScore>90</LastYearMaxScore>
+            <LastYearTotalApplicants>1200</LastYearTotalApplicants>
+            <Description lang="fi">Valintaperustekuvaus...</Description>
+            <Description lang="en">Selection criterion...</Description>
+            <EntranceExaminations>
+                <Description lang="fi">Valintaperustekuvaus...</Description>
+                <Description lang="en">Selection criterion...</Description>
+                <Examination>
+                    <ExaminationType>
+                        <Code scheme="Koodisto">http://koodisto.oph.fi/valintakoe/4615757823890097012</Code>
+                    </ExaminationType>
+                    <Description lang="fi">Haastattelu</Description>
+                    <Description lang="en">Interview</Description>
+                    <ExaminationEvent>
+                        <Start>2012-12-12T15:35:11.790+02:00</Start>
+                        <End>2012-12-13T15:35:11.790+02:00</End>
+                        <Locations>
+                            <Location>
+                                <AddressLine>Mannerheimintie 33</AddressLine>
+                                <PostalCode>00100</PostalCode>
+                                <City>HELSINKI</City>
+                            </Location>
+                        </Locations>
+                    </ExaminationEvent>
+                </Examination>
+            </EntranceExaminations>
+        </SelectionCriterions>
+        <LearningOpportunities>
+            <InstanceRef ref="http://oid.oph.fi/koulutusmoduulitoteutus/4215902512772309569"></InstanceRef>
+        </LearningOpportunities>
+    </ApplicationOption>
+    <ApplicationSystem id="http://oid.oph.fi/haku/6617880091439732697">
+        <Name lang="fi">Yhteishaku</Name>
+    </ApplicationSystem>
+</LearningOpportunityDownloadData>
+

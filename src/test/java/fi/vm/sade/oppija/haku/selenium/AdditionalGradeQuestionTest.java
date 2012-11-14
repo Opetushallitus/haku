@@ -20,6 +20,7 @@ import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -43,7 +44,7 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
 
     @Test
     public void testAdditionalSubjects() {
-        final String url = getBaseUrl() + "/" + "lomake/test/yhteishaku/hakutoiveet";
+        final String url = getBaseUrl() + "/" + "lomake/Yhteishaku/yhteishaku/hakutoiveet";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
 

@@ -45,7 +45,7 @@ public class HakukohdeServiceSolrImpl implements HakukohdeService {
         String startswith = term.trim();
         if (!startswith.isEmpty()) {
             parameters.put("LOPInstitutionInfoName", createParameter(term + "*"));
-            parameters.put("tmpHakuId", createParameter(hakuId));
+            parameters.put("ASName", createParameter(hakuId));
             SearchResult search = service.search(parameters);
             List<Map<String, Object>> items = search.getItems();
             for (Map<String, Object> item : items) {
@@ -58,7 +58,7 @@ public class HakukohdeServiceSolrImpl implements HakukohdeService {
     @Override
     public List<Hakukohde> searchHakukohde(final String hakuId, final String organisaatioId) {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(2);
-        parameters.put("tmpHakuId", createParameter(hakuId));
+        parameters.put("ASName", createParameter(hakuId));
         parameters.put("LOPId", createParameter(organisaatioId));
         SearchResult search = service.search(parameters);
 

@@ -97,7 +97,7 @@ public class FormModelDAOTest extends AbstractDAOTest {
         FormModel formModel = formModelDAO.find();
         assertNotNull("Could not retrieve FormModel", formModel);
         assertNotNull("Found FormModel does not include an application period map", formModel.getApplicationPerioidMap());
-        assertEquals("Found incorrect amount of forms", 1, formModel.getApplicationPerioidMap().get("test").getForms().size());
+        assertEquals("Found incorrect amount of forms", 1, formModel.getApplicationPerioidMap().get("Yhteishaku").getForms().size());
 
     }
 

@@ -28,7 +28,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
 
     @Test
     public void testTableExists() {
-        final String url = getBaseUrl() + "/" + "lomake/test/yhteishaku/arvosanat";
+        final String url = getBaseUrl() + "/" + "lomake/Yhteishaku/yhteishaku/arvosanat";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
 
@@ -38,7 +38,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
 
     @Test
     public void testAddLanguage() {
-        final String url = getBaseUrl() + "/" + "lomake/test/yhteishaku/arvosanat";
+        final String url = getBaseUrl() + "/" + "lomake/Yhteishaku/yhteishaku/arvosanat";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
 

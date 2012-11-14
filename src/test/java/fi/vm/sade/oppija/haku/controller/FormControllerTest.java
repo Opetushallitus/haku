@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotSame;
 
 public class FormControllerTest {
 
-    private final String applicationPeriodId = "test";
+    private final String applicationPeriodId = "Yhteishaku";
     private final String formId = "yhteishaku";
     private final String firstCategoryId = "henkilotiedot";
     private FormController formController;
@@ -37,7 +37,7 @@ public class FormControllerTest {
 
     @Test
     public void testGetFormAndRedirectToFirstCategory() throws Exception {
-        String actual = formController.getFormAndRedirectToFirstCategory("test", formId);
+        String actual = formController.getFormAndRedirectToFirstCategory("Yhteishaku", formId);
         String expected = "redirect:" + formId + "/" + firstCategoryId;
         assertEquals(expected, actual);
     }

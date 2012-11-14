@@ -26,18 +26,18 @@ public class FormIT extends AbstractRemoteTest {
     @Test
     public void testApplicationPeriod() {
         beginAt("/lomake");
-        assertLinkPresent("test");
+        assertLinkPresent("Yhteishaku");
     }
 
     @Test
     public void testForm() throws Exception {
-        beginAt("/lomake/test");
+        beginAt("/lomake/Yhteishaku");
         assertLinkPresent("yhteishaku");
     }
 
     @Test
     public void testCategory() throws Exception {
-        beginAt("/lomake/test/yhteishaku/henkilotiedot");
+        beginAt("/lomake/Yhteishaku/yhteishaku/henkilotiedot");
         assertLinkPresent("nav-henkilotiedot");
         assertLinkPresent("nav-koulutustausta");
     }
