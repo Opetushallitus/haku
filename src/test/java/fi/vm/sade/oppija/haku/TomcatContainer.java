@@ -84,9 +84,11 @@ public class TomcatContainer implements DisposableBean {
 
 
     private void createWebApp(File webApp) throws IOException {
+        System.setProperty("solr.solr.home", new File("target/resources/solr").getAbsolutePath());
+        System.setProperty("tarjonta.index.url", "http://localhost:" + getPort() + "/solr/");
+        System.setProperty("tarjonta.data.url", "http://localhost:" + getPort() + "/haku/tarjontadev/learningDownloadPOC.xml");
+
         mTomcat.addWebapp(mTomcat.getHost(), getContextPath(), webApp.getAbsolutePath());
-
-
         prepareSolr();
         mTomcat.addWebapp(mTomcat.getHost(), "/solr", solr.getAbsolutePath());
 
@@ -94,11 +96,8 @@ public class TomcatContainer implements DisposableBean {
 
     private void prepareSolr() throws IOException {
         final File target = new File("target");
-        System.setProperty("solr.solr.home", new File("target/resources/solr").getAbsolutePath());
         org.apache.commons.io.FileUtils.copyDirectoryToDirectory(new File(RESOURCES_SRC), target);
 
-        System.setProperty("tarjonta.index.url", "http://localhost:" + getPort() + "/solr/");
-        System.setProperty("tarjonta.data.url", "http://localhost:" + getPort() + "/haku/tarjontadev/learningDownloadPOC.xml");
 
         for (File file : org.apache.commons.io.FileUtils.listFiles(target, null, true)) {
             if (file.getName().equals(".svn")) {
