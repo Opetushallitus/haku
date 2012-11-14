@@ -48,8 +48,8 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public Set<Question> findAdditionalQuestions(String teemaId, HakemusId hakemusId) {
-        Map<String, String> hakemusValues = hakemusService.getHakemus(hakemusId).getValues();
+    public Set<Question> findAdditionalQuestions(String teemaId, HakemusId hakemusId, String vaiheId) {
+        Map<String, String> hakemusValues = hakemusService.getHakemus(hakemusId).getVastaukset();
         List<String> hakukohdeList = new ArrayList<String>();
 
         int prefNumber = 1;
@@ -59,14 +59,14 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
             prefNumber++;
         }
 
-        return findAdditionalQuestions(teemaId, hakukohdeList, hakemusId);
+        return findAdditionalQuestions(teemaId, hakukohdeList, hakemusId, vaiheId);
     }
 
     @Override
-    public Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakemusId hakemusId) {
+    public Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakemusId hakemusId, final String vaiheId) {
         Teema teema = null;
         Form form = formService.getActiveForm(hakemusId.getApplicationPeriodId(), hakemusId.getFormId());
-        Vaihe vaihe = form.getCategory(hakemusId.getCategoryId());
+        Vaihe vaihe = form.getCategory(vaiheId);
         for (Element e : vaihe.getChildren()) {
             if (e.getId().equals(teemaId)) {
                 teema = (Teema) e;
@@ -91,14 +91,14 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public Map<String, Set<Question>> findAdditionalQuestionsInCategory(HakemusId hakemusId) {
+    public Map<String, Set<Question>> findAdditionalQuestionsInCategory(final HakemusId hakemusId, final String vaiheId) {
         Form form = formService.getActiveForm(hakemusId.getApplicationPeriodId(), hakemusId.getFormId());
-        Vaihe vaihe = form.getCategory(hakemusId.getCategoryId());
+        Vaihe vaihe = form.getCategory(vaiheId);
         Map<String, Set<Question>> questionMap = new HashMap<String, Set<Question>>();
 
         if (vaihe != null) {
             for (Element e : vaihe.getChildren()) {
-                questionMap.put(e.getId(), findAdditionalQuestions(e.getId(), hakemusId));
+                questionMap.put(e.getId(), findAdditionalQuestions(e.getId(), hakemusId, vaiheId));
             }
         }
         return questionMap;

@@ -20,6 +20,7 @@ import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.User;
+import fi.vm.sade.oppija.haku.domain.Vaihe;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -44,9 +45,7 @@ public class SessionDataHolder implements Serializable, ApplicationDAO {
     public Hakemus find(HakemusId id, User user) {
         Hakemus hakemus = map.get(id);
         if (hakemus == null) {
-            final HashMap<String, String> values = new HashMap<String, String>();
-            new TimeStampModifier(values).updateCreated();
-            hakemus = new Hakemus(id, values, user);
+            hakemus = new Hakemus(id, user);
             map.put(id, hakemus);
         }
         return hakemus;
@@ -57,10 +56,12 @@ public class SessionDataHolder implements Serializable, ApplicationDAO {
         return new ArrayList<Hakemus>(map.values());
     }
 
-    public void update(Hakemus hakemus) {
-        new TimeStampModifier(hakemus.getValues()).updateModified();
-        final Hakemus old = find(hakemus.getHakemusId(), hakemus.getUser());
-        old.getValues().putAll(hakemus.getValues());
+    @Override
+    public Hakemus tallennaVaihe(final User user, final Vaihe vaihe) {
+        Hakemus hakemus = find(vaihe.getHakemusId(), user);
+        hakemus.addVaiheenVastaukset(vaihe);
+        map.put(vaihe.getHakemusId(), hakemus);
+        return hakemus;
     }
 
 }

@@ -76,12 +76,12 @@ public class EducationController {
         String viewName = preview != null && preview ? "additionalQuestionsPreview" : "additionalQuestions";
         final ModelAndView modelAndView = new ModelAndView(viewName);
         Form activeForm = formService.getActiveForm(hakuId, lomakeId);
-        final HakemusId hakemusId = new HakemusId(hakuId, activeForm.getId(), vaiheId);
+        final HakemusId hakemusId = new HakemusId(hakuId, activeForm.getId());
         List<String> hakukohdeIds = new ArrayList<String>();
         hakukohdeIds.add(hakukohdeId);
-        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakukohdeIds, hakemusId);
+        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakukohdeIds, hakemusId, vaiheId);
         modelAndView.addObject("additionalQuestions", additionalQuestions);
-        modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getValues());
+        modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getVastaukset());
         return modelAndView;
     }
 }

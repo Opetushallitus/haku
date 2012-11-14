@@ -19,10 +19,10 @@ package fi.vm.sade.oppija.haku.service;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.HakemusInfo;
+import fi.vm.sade.oppija.haku.domain.Vaihe;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author jukka
@@ -35,5 +35,5 @@ public interface HakemusService {
 
     Hakemus getHakemus(HakemusId hakemusId);
 
-    HakemusState save(HakemusId hakemusId, Map<String, String> values);
+    HakemusState tallennaVaihe(final Vaihe vaihe);
 }

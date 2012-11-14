@@ -16,10 +16,7 @@
 
 package fi.vm.sade.oppija.haku.service.impl;
 
-import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.HakemusId;
-import fi.vm.sade.oppija.haku.domain.HakemusInfo;
+import fi.vm.sade.oppija.haku.domain.*;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.event.EventHandler;
 import fi.vm.sade.oppija.haku.service.FormService;
@@ -33,7 +30,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author jukka
@@ -55,16 +51,17 @@ public class HakemusServiceImpl implements HakemusService {
         this.formService = formService;
     }
 
-
     @Override
-    public HakemusState save(HakemusId hakemusId, Map<String, String> values) {
+    public HakemusState tallennaVaihe(Vaihe vaihe) {
         LOGGER.info("save");
 
-        final Hakemus hakemus = userDataStorage.initHakemus(hakemusId, values);
+        final Hakemus hakemus = userDataStorage.initHakemus(vaihe);
+        hakemus.setVaiheId(vaihe.getVaiheId());
         final HakemusState hakemusState = new HakemusState(hakemus);
         eventHandler.processEvents(hakemusState);
 
-        userDataStorage.updateApplication(hakemus);
+        //userDataStorage.updateApplication(hakemus);
+        userDataStorage.tallennaVaihe(vaihe);
         return hakemusState;
     }
 

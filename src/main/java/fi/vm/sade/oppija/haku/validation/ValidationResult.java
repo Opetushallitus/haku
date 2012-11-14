@@ -26,27 +26,26 @@ public class ValidationResult {
     private final Map<String, String> errors;
 
     public ValidationResult(final Map<String, String> errors) {
-        this.errors = Collections.unmodifiableMap(errors);
+        this.errors = new HashMap<String, String>();
+        this.errors.putAll(errors);
     }
 
     public ValidationResult() {
-        this.errors = Collections.unmodifiableMap(Collections.<String, String>emptyMap());
+        this.errors = Collections.<String, String>emptyMap();
     }
 
     public ValidationResult(final String key, final String error) {
-        HashMap<String, String> errorMessages = new HashMap<String, String>();
-        errorMessages.put(key, error);
-        this.errors = Collections.unmodifiableMap(errorMessages);
+        this.errors = new HashMap<String, String>();
+        this.errors.put(key, error);
     }
 
     public ValidationResult(final List<ValidationResult> validationResults) {
-        HashMap<String, String> errorMessages = new HashMap<String, String>();
+        this.errors = new HashMap<String, String>();
         for (ValidationResult validationResult : validationResults) {
             if (validationResult.hasErrors()) {
-                errorMessages.putAll(validationResult.getErrorMessages());
+                errors.putAll(validationResult.getErrorMessages());
             }
         }
-        this.errors = Collections.unmodifiableMap(errorMessages);
     }
 
     public boolean hasErrors() {
@@ -54,7 +53,7 @@ public class ValidationResult {
     }
 
     public Map<String, String> getErrorMessages() {
-        return errors;
+        return Collections.unmodifiableMap(this.errors);
     }
 
 }

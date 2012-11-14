@@ -35,7 +35,7 @@ public interface FormService {
 
     ApplicationPeriod getApplicationPeriodById(final String applicationPeriodId);
 
-    List<Validator> getCategoryValidators(HakemusId hakemusId);
+    List<Validator> getCategoryValidators(final HakemusId hakemusId, final String vaiheId);
 
     Form getForm(String applicationPeriodId, String formId);
 }

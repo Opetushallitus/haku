@@ -14,8 +14,10 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.dao;
+package fi.vm.sade.oppija.haku.dao.impl;
 
+import fi.vm.sade.oppija.haku.dao.AbstractDAOTest;
+import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.User;
@@ -31,21 +33,18 @@ import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * @author Hannu Lyytikainen
- */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
-public class ApplicationDAOTest extends AbstractDAOTest {
+public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
     public static final User TEST_USER = new User("test");
     @Autowired
     @Qualifier("applicationDAOMongoImpl")
     private ApplicationDAO applicationDAO;
+
     private HakemusId hakemusId;
 
-    public ApplicationDAOTest() {
+    public ApplicationDAOMongoImplTest() {
         String id = String.valueOf(System.currentTimeMillis());
         hakemusId = new HakemusId(id, id);
     }
@@ -62,5 +61,4 @@ public class ApplicationDAOTest extends AbstractDAOTest {
     protected String getCollectionName() {
         return "hakemus";
     }
-
 }

@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.haku.selenium;
 
 import com.thoughtworks.selenium.Selenium;
-import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
@@ -29,7 +28,6 @@ import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -41,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
@@ -91,6 +88,11 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         lisakysymyksetRyhma.addChild(relatedQuestionRule);
 
         initModel(formModel);
+        final fi.vm.sade.oppija.common.selenium.AdminEditPage adminEditPage = new fi.vm.sade.oppija.common.selenium.AdminEditPage(getBaseUrl(), seleniumHelper);
+        seleniumHelper.navigate(adminEditPage);
+        adminEditPage.login("admin");
+        seleniumHelper.getDriver().get(getBaseUrl() + "/admin/index/update");
+        seleniumHelper.dropAllHakemus();
     }
 
     @Test
@@ -103,7 +105,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         s.typeKeys("preference1-Opetuspiste", "Hel");
         driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
         driver.findElement(By.xpath("//option[@value='Sosiaali- ja terveysalan perustutkinto, pk']")).click();
-//        driver.findElement(By.id("P1_additional_question_1"));
+        //driver.findElement(By.id("P1_additional_question_1"));
     }
 
     @Test
@@ -111,7 +113,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         testEducationPreference();
         final WebDriver driver = seleniumHelper.getDriver();
         driver.findElement(By.xpath("//button[@name='nav-next']")).click();
-        assertNotNull(driver.findElement(By.id("lisakysymys")));
+        driver.findElement(By.id("lisakysymys"));
     }
 
     @Test(expected = NoSuchElementException.class)
@@ -119,6 +121,10 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         final String url = "lomake/Yhteishaku/lomake/hakutoiveet";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + "/" + url);
+        Selenium s = seleniumHelper.getSelenium();
+        s.typeKeys("preference1-Opetuspiste", "Hel");
+        driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
+        driver.findElement(By.xpath("//option[@value='Ensihoidon koulutusohjelma, yo']")).click();
         driver.findElement(By.xpath("//button[@name='nav-next']")).click();
         assertNull(driver.findElement(By.id("lisakysymys")));
     }

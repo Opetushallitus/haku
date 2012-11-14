@@ -209,7 +209,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         Question lahiosoite = createRequiredTextQuestion("Lähiosoite", "Lähiosoite", "40");
         lahiosoite.setInline(true);
-        
+
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", asuinmaa.getId(), "fi");
         relatedQuestionRule.addChild(lahiosoite);
         relatedQuestionRule.addChild(postinumero);
@@ -231,12 +231,12 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         kotikunta.setHelp("Kotikunta on tyypillisesti se kunta, jossa asut.");
         aidinkieli.setHelp("Jos omaa äidinkieltäsi ei löydy valintalistasta, valitse äidinkieleksesi..");
-        
+
         Question sukunimi = createRequiredTextQuestion("Sukunimi", "Sukunimi", "30");
         sukunimi.setInline(true);
         Question etunimet = createRequiredTextQuestion("Etunimet", "Etunimet", "30");
         etunimet.setInline(true);
-        
+
         henkilötiedotRyhmä.addChild(sukunimi)
                 .addChild(etunimet)
                 .addChild(kutsumanimi)
@@ -513,7 +513,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     @Override
-    public List<Validator> getCategoryValidators(HakemusId hakemusId) {
+    public List<Validator> getCategoryValidators(HakemusId hakemusId, final String vaiheId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

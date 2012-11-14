@@ -37,7 +37,7 @@ public interface AdditionalQuestionService {
      * @param hakemusId hakemus id
      * @return list of questions
      */
-    Set<Question> findAdditionalQuestions(String teemaId, HakemusId hakemusId);
+    Set<Question> findAdditionalQuestions(String teemaId, HakemusId hakemusId, String vaiheId);
 
     /**
      * Lists additional questions in a theme based on a list of education targets.
@@ -47,7 +47,7 @@ public interface AdditionalQuestionService {
      * @param hakemusId    hakemus id
      * @return list of questions
      */
-    Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakemusId hakemusId);
+    Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakemusId hakemusId, String vaiheId);
 
     /**
      * Lists all additional questions in a phase. Questions are grouped by the theme they are related to.
@@ -55,6 +55,6 @@ public interface AdditionalQuestionService {
      * @param hakemusId hakemus id
      * @return map with theme ids as keys and questions lists as values
      */
-    Map<String, Set<Question>> findAdditionalQuestionsInCategory(HakemusId hakemusId);
+    Map<String, Set<Question>> findAdditionalQuestionsInCategory(HakemusId hakemusId, String vaiheId);
 
 }

@@ -47,12 +47,12 @@ public class ValidationEvent extends AbstractEvent {
     @Override
     public void process(HakemusState hakemusState) {
         Hakemus hakemus = hakemusState.getHakemus();
-        List<Validator> validators = getValidators(hakemus);
-        ValidationResult validationResult = FormValidator.validate(validators, hakemus.getValues());
+        List<Validator> validators = getValidators(hakemusState);
+        ValidationResult validationResult = FormValidator.validate(validators, hakemus.getVastaukset());
         hakemusState.addError(validationResult.getErrorMessages());
     }
 
-    protected List<Validator> getValidators(Hakemus hakemus) {
-        return formService.getCategoryValidators(hakemus.getHakemusId());
+    protected List<Validator> getValidators(HakemusState hakemusState) {
+        return formService.getCategoryValidators(hakemusState.getHakemus().getHakemusId(), hakemusState.getVaiheId());
     }
 }

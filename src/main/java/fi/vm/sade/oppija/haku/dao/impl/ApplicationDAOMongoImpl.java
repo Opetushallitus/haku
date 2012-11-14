@@ -23,7 +23,7 @@ import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.User;
-import fi.vm.sade.oppija.haku.service.TimeStampModifier;
+import fi.vm.sade.oppija.haku.domain.Vaihe;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,22 +44,26 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     public static final String HAKEMUS = "hakemus";
 
     @Override
-    public void update(Hakemus hakemus) {
+    public Hakemus tallennaVaihe(User user, Vaihe vaihe) {
         DBObject query = new BasicDBObject();
-        query.put(HAKEMUS_ID, hakemus.getHakemusId().asKey());
-
-        new TimeStampModifier(hakemus.getValues()).updateModified();
-        DBObject newApplication = new BasicDBObject();
-        newApplication.put(USER_ID, hakemus.getUser().getUserName());
-        newApplication.put(HAKEMUS_ID, hakemus.getHakemusId().asKey());
-        newApplication.put(VAIHE_ID, hakemus.getHakemusId().getCategoryId());
-
-        Hakemus existing = find(hakemus.getHakemusId(), hakemus.getUser());
-        existing.getValues().putAll(hakemus.getValues());
-        newApplication.put(HAKEMUS_DATA, existing.getValues());
-
-        getCollection().update(query, newApplication, true, false);
-
+        query.put(HAKEMUS_ID, vaihe.getHakemusId().asKey());
+        query.put(USER_ID, user.getUserName());
+        DBObject one = getCollection().findOne(query);
+        Hakemus hakemus = new Hakemus(vaihe.getHakemusId(), user);
+        Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
+        if (one != null) {
+            vastaukset.putAll((Map<String, Map<String, String>>) one.toMap().get(HAKEMUS_DATA));
+        } else {
+            one = new BasicDBObject();
+            one.put(HAKEMUS_ID, vaihe.getHakemusId().asKey());
+            one.put(USER_ID, user.getUserName());
+        }
+        vastaukset.put(vaihe.getVaiheId(), vaihe.getVastaukset());
+        one.put(HAKEMUS_DATA, vastaukset);
+        one.put(VAIHE_ID, vaihe.getVaiheId());
+        getCollection().update(query, one, true, false);
+        hakemus.addVastaukset(vastaukset);
+        return hakemus;
     }
 
     @Override
@@ -73,12 +77,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         dbObject.put(HAKEMUS_ID, hakemusId.asKey());
         dbObject.put(USER_ID, user.getUserName());
         final DBObject one = getCollection().findOne(dbObject);
-        Map<String, String> map = new HashMap<String, String>();
-        new TimeStampModifier(map).updateCreated();
+        Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
+        //new TimeStampModifier(map).updateCreated();
         if (one != null) {
-            map = (Map<String, String>) one.toMap().get(HAKEMUS_DATA);
+            map = (Map<String, Map<String, String>>) one.toMap().get(HAKEMUS_DATA);
         }
-        return new Hakemus(hakemusId, map, user);
+        Hakemus hakemus = new Hakemus(hakemusId, user);
+        hakemus.addVastaukset(map);
+
+        return hakemus;
     }
 
     @Override
@@ -88,13 +95,16 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         dbObject.put(USER_ID, user.getUserName());
         final DBCursor dbObjects = getCollection().find(dbObject);
         for (DBObject object : dbObjects) {
-            final Map map = object.toMap();
-
-            final String hakemusIdString = map.get(HAKEMUS_ID).toString();
-            final String vaihe = map.get(VAIHE_ID).toString();
-            final HakemusId hakemusId = HakemusId.fromKey(hakemusIdString, vaihe);
-            list.add(new Hakemus(hakemusId, (Map<String, String>) map.get(HAKEMUS_DATA), user));
+            list.add(dbObjectToHakemus(object));
         }
         return list;
+    }
+
+    public Hakemus dbObjectToHakemus(final DBObject dbObject) {
+        HakemusId hakemusId = HakemusId.fromKey((String) dbObject.get(HAKEMUS_ID));
+        User user = new User((String) dbObject.get(USER_ID));
+        Hakemus hakemus = new Hakemus(hakemusId, user);
+        hakemus.addVastaukset((Map<String, Map<String, String>>) dbObject.toMap().get(HAKEMUS_DATA));
+        return hakemus;
     }
 }

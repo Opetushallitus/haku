@@ -17,6 +17,8 @@
 package fi.vm.sade.oppija.haku.domain;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,25 +32,64 @@ public class Hakemus implements Serializable {
 
     private final HakemusId hakemusId;
     private final User user;
-    private final Map<String, String> values;
+    private String vaiheId;
+    private final Map<String, String> meta = new HashMap<String, String>();
+    private final Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
 
-
-    public Hakemus(final HakemusId id, final Map<String, String> values, User user) {
-        this.hakemusId = id;
+    public Hakemus(final HakemusId hakemusId, final User user) {
+        this.hakemusId = hakemusId;
         this.user = user;
-        this.values = values;
     }
 
-    public Map<String, String> getValues() {
-        return values;
+    public Hakemus addMeta(final Map<String, String> meta) {
+        this.meta.putAll(meta);
+        return this;
+    }
+
+    public Hakemus addMeta(final String name, final String value) {
+        this.meta.put(name, value);
+        return this;
+    }
+
+    public Hakemus addVaiheenVastaukset(final String vaiheId, Map<String, String> vastaukset) {
+        this.vastaukset.put(vaiheId, vastaukset);
+        return this;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public HakemusId getHakemusId() {
         return hakemusId;
     }
 
+    public Map<String, String> getMeta() {
+        return Collections.unmodifiableMap(meta);
+    }
 
-    public User getUser() {
-        return user;
+    public Map<String, String> getVastaukset() {
+        final Map<String, String> vastaukset = new HashMap<String, String>();
+        for (Map<String, String> vaiheenVastaukset : this.vastaukset.values()) {
+            vastaukset.putAll(vaiheenVastaukset);
+        }
+        return vastaukset;
+    }
+
+
+    public String getVaiheId() {
+        return vaiheId;
+    }
+
+    public void setVaiheId(String vaiheId) {
+        this.vaiheId = vaiheId;
+    }
+
+    public void addVastaukset(Map<String, Map<String, String>> vastaukset) {
+        this.vastaukset.putAll(vastaukset);
+    }
+
+    public void addVaiheenVastaukset(Vaihe vaihe) {
+        addVaiheenVastaukset(vaihe.getVaiheId(), vaihe.getVastaukset());
     }
 }

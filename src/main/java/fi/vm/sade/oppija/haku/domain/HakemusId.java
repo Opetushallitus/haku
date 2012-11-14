@@ -35,20 +35,12 @@ public class HakemusId implements Serializable {
 
     private final String applicationPeriodId;
     private final String formId;
-    private final String categoryId;
 
     public HakemusId(@JsonProperty(value = "applicationPeriodId") String applicationPeriodId,
-                     @JsonProperty(value = "formId") String formId,
-                     @JsonProperty(value = "categoryId") String categoryId) {
+                     @JsonProperty(value = "formId") String formId) {
         this.applicationPeriodId = applicationPeriodId;
         this.formId = formId;
-        this.categoryId = categoryId;
     }
-
-    public String getCategoryId() {
-        return categoryId;
-    }
-
 
     public String getFormId() {
         return formId;
@@ -68,9 +60,9 @@ public class HakemusId implements Serializable {
         return asKey();
     }
 
-    public static HakemusId fromKey(String key, String currentCategoryId) {
+    public static HakemusId fromKey(String key) {
         final String[] split = key.split("_");
-        return new HakemusId(split[0], split[1], currentCategoryId);
+        return new HakemusId(split[0], split[1]);
     }
 
     @Override

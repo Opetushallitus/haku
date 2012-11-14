@@ -43,6 +43,8 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
 public class AdditionalQuestionsServiceTest {
 
+    public static final HakemusId HAKEMUS_ID = new HakemusId("Yhteishaku", "yhteishaku");
+    public static final User TESTUSER = new User("testuser");
     private AdditionalQuestionService additionalQuestionService;
 
     public AdditionalQuestionsServiceTest() {
@@ -55,37 +57,27 @@ public class AdditionalQuestionsServiceTest {
 
     private HakemusService createHakemusServiceMock() {
         HakemusService hakemusService = mock(HakemusServiceImpl.class);
-
-        HakemusId hakemusId = new HakemusId("Yhteishaku", "yhteishaku", "arvosanat");
-
         Map<String, String> values = new HashMap<String, String>();
         values.put("preference1-Koulutus-id", "S1508");
+        Hakemus hakemus = new Hakemus(HAKEMUS_ID, TESTUSER);
+        hakemus.addVaiheenVastaukset("hakutoiveet", values);
 
-        Hakemus hakemus = new Hakemus(hakemusId, values, new User("testuser"));
-
-        when(hakemusService.getHakemus(hakemusId)).thenReturn(hakemus);
+        when(hakemusService.getHakemus(HAKEMUS_ID)).thenReturn(hakemus);
 
         return hakemusService;
     }
 
     @Test
     public void testEducationSpecificQuestions() {
-
         String teemaId = "hakutoiveetGrp";
-        HakemusId hakemusId = new HakemusId("Yhteishaku", "yhteishaku", "hakutoiveet");
-
-        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakemusId);
-
+        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, HAKEMUS_ID, "hakutoiveet");
         assertEquals(3, additionalQuestions.size());
     }
 
     @Test
     public void testEducationSpecificSubjects() {
         String teemaId = "arvosanatGrp";
-        HakemusId hakemusId = new HakemusId("Yhteishaku", "yhteishaku", "arvosanat");
-
-        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakemusId);
-
+        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, HAKEMUS_ID, "arvosanat");
         assertEquals(2, additionalQuestions.size());
 
     }

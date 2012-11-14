@@ -29,12 +29,14 @@ public class HakemusState {
     private boolean mustValidate = true;
     private boolean navigateNext = false;
     private boolean navigatePrev = false;
+    private String vaiheId;
 
     public HakemusState(Hakemus hakemus) {
         this.errors = new HashMap<String, String>();
         modelObjects.put(HAKEMUS_KEY, hakemus);
-        modelObjects.put("categoryData", hakemus.getValues());
+        modelObjects.put("categoryData", hakemus.getVastaukset());
         modelObjects.put("errorMessages", errors);
+        this.vaiheId = hakemus.getVaiheId();
     }
 
     public boolean isValid() {
@@ -88,4 +90,9 @@ public class HakemusState {
     public boolean isNavigatePrev() {
         return navigatePrev;
     }
+
+    public String getVaiheId() {
+        return vaiheId;
+    }
+
 }

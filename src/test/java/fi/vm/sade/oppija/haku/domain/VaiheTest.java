@@ -18,35 +18,29 @@ package fi.vm.sade.oppija.haku.domain;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+
 import static org.junit.Assert.assertEquals;
 
-/**
- * @author jukka
- * @version 10/8/129:52 AM}
- * @since 1.1
- */
-public class HakemusIdTest {
-
-    private static final String ID = "foo_foo_foo";
+public class VaiheTest {
+    private final HakemusId hakemusId = new HakemusId("appid", "formid");
+    private final HashMap<String, String> vastaukset = new HashMap<String, String>();
+    private final String vaiheid = "vaiheid";
+    private final Vaihe vaihe = new Vaihe(hakemusId, vaiheid, vastaukset);
 
     @Test
-    public void testHakemusId() {
-        final String foo = "foo";
-        final HakemusId hakemusId = new HakemusId(foo, foo);
-        assertEquals("foo_foo", hakemusId.asKey());
+    public void testGetHakemusId() throws Exception {
+        assertEquals(hakemusId, vaihe.getHakemusId());
     }
 
     @Test
-    public void testHakemusIdFromString() {
-        final HakemusId hakemusId = HakemusId.fromKey(ID);
-        assertEquals("foo_foo", hakemusId.asKey());
+    public void testGetVaiheId() throws Exception {
+        assertEquals(vaiheid, vaihe.getVaiheId());
+
     }
 
     @Test
-    public void testEquals() {
-        final HakemusId hakemusId = HakemusId.fromKey(ID);
-        final HakemusId hakemusId2 = HakemusId.fromKey("foo_foo");
-        assertEquals(hakemusId, hakemusId2);
+    public void testGetVastaukset() throws Exception {
+        assertEquals(vastaukset, vaihe.getVastaukset());
     }
-
 }
