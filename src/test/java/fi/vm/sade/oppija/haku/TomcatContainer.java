@@ -52,9 +52,9 @@ public class TomcatContainer implements DisposableBean {
 
     public TomcatContainer() throws IOException, LifecycleException {
         createTomcat();
-        createWebApp(createPackage());
         mTomcat.start();
         port = mTomcat.getConnector().getLocalPort();
+        createWebApp(createPackage());
     }
 
 
