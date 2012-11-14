@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
-@Ignore
+
 public class NavigationIT extends AbstractRemoteTest {
 
     @Before
