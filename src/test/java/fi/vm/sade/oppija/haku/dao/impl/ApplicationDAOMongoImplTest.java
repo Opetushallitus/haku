@@ -32,12 +32,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
 public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
     public static final User TEST_USER = new User("test");
+    public static final User TEST_USER2 = new User("test2");
+    public static final String ARVO = "arvo";
+    public static final String AVAIN = "avain";
     @Autowired
     @Qualifier("applicationDAOMongoImpl")
     private ApplicationDAO applicationDAO;
@@ -55,6 +59,19 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         vaiheenVastaukset.put("avain", "arvo");
         final Hakemus hakemus = applicationDAO.tallennaVaihe(TEST_USER, new Vaihe(hakemusId, "vaihe1", vaiheenVastaukset));
         assertEquals("arvo", hakemus.getVastaukset().get("avain"));
+    }
+
+    @Test
+    public void testFindAll() throws Exception {
+        testTallennaVaihe();
+        Hakemus hakemus = applicationDAO.find(hakemusId, TEST_USER);
+        assertEquals(ARVO, hakemus.getVastaukset().get(AVAIN));
+    }
+
+    @Test
+    public void testFindAllNotFound() throws Exception {
+        Hakemus hakemus = applicationDAO.find(hakemusId, TEST_USER2);
+        assertNotSame(ARVO, hakemus.getVastaukset().get(AVAIN));
     }
 
     @Override

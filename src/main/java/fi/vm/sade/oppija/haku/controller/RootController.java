@@ -41,7 +41,6 @@ public class RootController {
         return new ModelAndView(INDEX_VIEW);
     }
 
-
     @RequestMapping(value = "/fi", method = RequestMethod.GET)
     public ModelAndView selectLocale() {
         final ModelAndView modelAndView = new ModelAndView(LOCALE_VIEW);

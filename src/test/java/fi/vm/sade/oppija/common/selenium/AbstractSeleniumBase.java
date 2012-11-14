@@ -18,23 +18,33 @@ package fi.vm.sade.oppija.common.selenium;
 
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.SeleniumContainer;
+import fi.vm.sade.oppija.haku.dao.TestDBFactoryBean;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.it.TomcatContainerBase;
 import fi.vm.sade.oppija.haku.selenium.SeleniumHelper;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.Set;
 
 /**
  * @author jukka
  * @version 10/15/121:13 PM}
  * @since 1.1
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:spring/test-context.xml")
 public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected SeleniumHelper seleniumHelper;
 
     @Autowired
     SeleniumContainer container;
+    @Autowired
+    TestDBFactoryBean dbFactory;
 
     public AbstractSeleniumBase() {
         super();
@@ -42,6 +52,12 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     @Before
     public void before() {
+        Set<String> collectionNames = dbFactory.getObject().getCollectionNames();
+        for (String collectionName : collectionNames) {
+            if (collectionName.contains("test")) {
+                dbFactory.getObject().getCollection(collectionName).drop();
+            }
+        }
         seleniumHelper = container.getSeleniumHelper();
         seleniumHelper.logout();
     }

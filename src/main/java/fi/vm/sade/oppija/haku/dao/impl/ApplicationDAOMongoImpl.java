@@ -100,7 +100,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         return list;
     }
 
-    public Hakemus dbObjectToHakemus(final DBObject dbObject) {
+    private Hakemus dbObjectToHakemus(final DBObject dbObject) {
         HakemusId hakemusId = HakemusId.fromKey((String) dbObject.get(HAKEMUS_ID));
         User user = new User((String) dbObject.get(USER_ID));
         Hakemus hakemus = new Hakemus(hakemusId, user);

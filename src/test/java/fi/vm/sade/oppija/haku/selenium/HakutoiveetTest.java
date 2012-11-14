@@ -29,9 +29,12 @@ import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,6 +49,8 @@ import static org.junit.Assert.assertNull;
  *
  * @author Mikko Majapuro
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:spring/test-context.xml")
 public class HakutoiveetTest extends AbstractSeleniumBase {
 
     @Before
