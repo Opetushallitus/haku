@@ -3,7 +3,7 @@
 
 <div class="set-left">
     <c:choose>
-        <c:when test="${category.hasPrev}">
+        <c:when test="${vaihe.hasPrev}">
             <button class="left" name="nav-prev" type="submit" value="true"><span><span><spring:message code="lomake.button.previous" /></span></span></button>
         </c:when>
     </c:choose>
@@ -13,12 +13,12 @@
 </div>
 <div class="set-right">
 <c:choose>
-    <c:when test="${category.hasNext}">
+    <c:when test="${vaihe.hasNext}">
         <button class="right" name="nav-next" type="submit" value="true">
             <span>
                 <span>
                     <c:choose>
-                        <c:when test="${category.next.preview}">
+                        <c:when test="${vaihe.next.preview}">
                             <spring:message code="lomake.button.preview" />
                         </c:when>
                         <c:otherwise>
