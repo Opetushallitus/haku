@@ -596,6 +596,17 @@ select option
 	padding:0px 0px 0px 1em;
 }
 
+/*** Form item row
+************************************************/
+.form-item-row {
+
+}
+
+.form-item-row .form-item {
+	display: inline-block;
+	padding-right: 1em;
+}
+
 /*** Search result
 ************************************************/
 

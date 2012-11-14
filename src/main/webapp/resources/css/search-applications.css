@@ -1,0 +1,11 @@
+
+#search-applications .form-row.narrow .form-row-label {
+    width: 100px;
+    max-width: 30%;
+    text-align: left;
+}
+
+
+#search-applications .form-row.narrow .form-row-content {
+    max-width: 70%;
+}
