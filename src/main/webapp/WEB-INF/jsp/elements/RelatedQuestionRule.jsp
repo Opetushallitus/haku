@@ -25,7 +25,8 @@
                             if (childIds.length - 1 > index) {
                                 ruleData.getRuleChild(childIds, ++index, ruleChilds);
                             } else {
-                                formReplacementsApi.replaceElements();
+                                replaceCheckboxes();
+                                replaceRadios();
                             }
                         });
                 }
