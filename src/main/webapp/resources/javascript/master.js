@@ -718,7 +718,7 @@ var scrollHelpPage = {
 }
 
 applicationBasket.build();
-formReplacements.build();
+//formReplacements.build();
 popupWindow.build();
 tabsMenu.build();
 hierarchyList.build();
