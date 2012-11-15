@@ -154,18 +154,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         kotikunta.setVerboseHelp(getVerboseHelp());
         kotikunta.setInline(true);
 
-        TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", "Henkilötunnus");
-        henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
-        henkilötunnus.addAttribute("onChange", "submit()");
-        henkilötunnus.addAttribute("title", "ppkkvv*****");
-        henkilötunnus.addAttribute("required", "required");
-        henkilötunnus.addAttribute("pattern", "[0-9]{6}.[0-9]{4}");
-        henkilötunnus.addAttribute("size", "11");
-        henkilötunnus.addAttribute("maxlength", "11");
-        henkilötunnus.setHelp("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi");
-        henkilötunnus.setVerboseHelp(getVerboseHelp());
-        henkilötunnus.setInline(true);
-
         TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", "Kutsumanimi");
         kutsumanimi.setHelp("Valitse kutsumanimeksi jokin virallisista etunimistäsi");
         kutsumanimi.addAttribute("required", "required");
@@ -179,6 +167,17 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         email.setVerboseHelp(getVerboseHelp());
         email.setInline(true);
 
+        TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", "Henkilötunnus");
+        henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
+        henkilötunnus.addAttribute("title", "ppkkvv*****");
+        henkilötunnus.addAttribute("required", "required");
+        henkilötunnus.addAttribute("pattern", "[0-9]{6}.[0-9]{4}");
+        henkilötunnus.addAttribute("size", "11");
+        henkilötunnus.addAttribute("maxlength", "11");
+        henkilötunnus.setHelp("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi");
+        henkilötunnus.setVerboseHelp(getVerboseHelp());
+        henkilötunnus.setInline(true);
+
         Radio sukupuoli = new Radio("Sukupuoli", "Sukupuoli");
         sukupuoli.addOption("mies", "Mies", "Mies");
         sukupuoli.addOption("nainen", "Nainen", "Nainen");
@@ -186,9 +185,15 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         sukupuoli.setVerboseHelp(getVerboseHelp());
         sukupuoli.setInline(true);
 
-        SelectingSubmitRule autofillhetu = new SelectingSubmitRule(henkilötunnus.getId(), sukupuoli.getId());
-        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[13579]\\w", sukupuoli.getOptions().get(0));
-        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[24680]\\w", sukupuoli.getOptions().get(1));
+        SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", "Henkilötunnus");
+        socialSecurityNumber.setSsn(henkilötunnus);
+        socialSecurityNumber.setSex(sukupuoli);
+        socialSecurityNumber.setMaleId(sukupuoli.getOptions().get(0).getId());
+        socialSecurityNumber.setFemaleId(sukupuoli.getOptions().get(1).getId());
+
+//        SelectingSubmitRule autofillhetu = new SelectingSubmitRule(henkilötunnus.getId(), sukupuoli.getId());
+//        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[13579]\\w", sukupuoli.getOptions().get(0));
+//        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[24680]\\w", sukupuoli.getOptions().get(1));
 
         Element postinumero = new PostalCode("Postinumero", "Postinumero");
         postinumero.addAttribute("size", "5");
@@ -240,7 +245,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         henkilötiedotRyhmä.addChild(sukunimi)
                 .addChild(etunimet)
                 .addChild(kutsumanimi)
-                .addChild(autofillhetu)
+                .addChild(socialSecurityNumber)
                 .addChild(email)
                 .addChild(matkapuhelinnumero)
                 .addChild(asuinmaa)

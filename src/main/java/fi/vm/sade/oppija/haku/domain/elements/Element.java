@@ -63,7 +63,8 @@ import java.util.*;
                 @JsonSubTypes.Type(value = CustomLanguageRow.class),
                 @JsonSubTypes.Type(value = SortableTable.class),
                 @JsonSubTypes.Type(value = PreferenceRow.class),
-                @JsonSubTypes.Type(value = PostalCode.class)
+                @JsonSubTypes.Type(value = PostalCode.class),
+                @JsonSubTypes.Type(value = SocialSecurityNumber.class)
         }
 )
 public abstract class Element {
