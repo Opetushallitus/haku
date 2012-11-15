@@ -9,7 +9,7 @@
     <c:set var="value" value="${(empty value) ? categoryData[element.id] : value}"/>
     <c:forEach var="option" items="${element.options}" varStatus="status">
         <div class="field-container-radio">
-            <c:set var="id" value="${element.id}_${option.id}"/>
+            <c:set var="id" value="${option.id}"/>
             <input id="${id}" type="radio" name="${element.id}"
                 value="${option.value}" ${(!empty disabled) ? "disabled=\"true\" " : " "} ${(value eq option.value) ? "checked=\"checked\" " : " "} ${option.attributeString}/>
             <label for="${option.id}">${option.title}</label>
