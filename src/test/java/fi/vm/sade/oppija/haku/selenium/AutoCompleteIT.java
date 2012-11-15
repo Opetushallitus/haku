@@ -39,19 +39,19 @@ public class AutoCompleteIT extends AbstractSeleniumBase {
 
     @Test
     public void testOneMatch() throws IOException {
-        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/test/organisaatio/search?term=Hels");
+        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/Yhteishaku/organisaatio/search?term=Hels");
         assertFalse(seleniumHelper.getSelenium().isTextPresent("[]"));
     }
 
     @Test
     public void testNoMatch() throws IOException {
-        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/test/organisaatio/search?term=xyz");
+        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/Yhteishaku/organisaatio/search?term=xyz");
         seleniumHelper.getSelenium().isTextPresent("[]");
     }
 
     @Test
     public void testEmptySearchTerm() throws IOException {
-        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/test/organisaatio/search?term=");
+        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/Yhteishaku/organisaatio/search?term=");
         seleniumHelper.getSelenium().isTextPresent("[]");
     }
 }
