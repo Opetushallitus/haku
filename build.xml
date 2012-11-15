@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="haku-deploy" basedir="." >
 
-    <target name="stop-tomcat">
+    <target name="deploy-to-remote-tomcat">
         <echo>Backup old haku.war</echo>
         <sshexec host="luokka" username="tomcat"
                  command="export DATE=`date +%F_%H-%M-%S`; mkdir $DATE ; cp -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku.war $DATE"
