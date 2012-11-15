@@ -172,10 +172,10 @@
                     <div class="clear"></div>
                 </div>
                 <div class="form-row narrow">
-                    <div class="form-row-content">
-                        <input type="checkbox" />
+                    <div class="field-container-checkbox">
+                        <input name="choosepassive" value="choosepassive" id="choosepassive" type="checkbox" />
+                        <label for="Suoritukset-Perusopetus">Hae myös passiiviset</label>
                     </div>
-                    <label class="form-row-label"></label>
                     <div class="clear"></div>
                 </div>
                 <div class="form-row narrow">
@@ -252,7 +252,10 @@
                             </select> 
                         </div>
 
-                        <input type="checkbox" id="chooseall" /><label for="chooseall">Valitse kaikki</label>
+                         <div class="field-container-checkbox">
+                            <input name="chooseall" value="chooseall" id="chooseall" type="checkbox" />
+                            <label for="Suoritukset-Perusopetus">Valitse kaikki</label>
+                        </div>
 
                         <span class="search-result">Hakutulos: 267 osumaa</span>
 
@@ -285,7 +288,12 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><input type="checkbox" id="choose" /> Aaltonen</td>
+                                        <td>
+                                            <div class="field-container-checkbox">
+                                                <input id="select1" type="checkbox" />
+                                                <label for="select1">Aaltonen</label>
+                                            </div>
+                                        </td>
                                         <td>Aino</td>
                                         <td>010197-123A</td>
                                         <td>1235423</td>
@@ -293,7 +301,12 @@
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" id="choose" />Kaasinen</td>
+                                        <td>
+                                            <div class="field-container-checkbox">
+                                                <input id="select2" type="checkbox" />
+                                                <label for="select2">Kaasinen</label>
+                                            </div>
+                                        </td>
                                         <td>Vesa</td>
                                         <td>010197-123A</td>
                                         <td>1235423</td>
@@ -301,7 +314,12 @@
                                         <td>Liite puuttuu</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" id="choose" /> Asikainen</td>
+                                        <td>
+                                            <div class="field-container-checkbox">
+                                                <input id="select3" type="checkbox" />
+                                                <label for="select3">Asikainen</label>
+                                            </div>
+                                        </td>
                                         <td>Esa</td>
                                         <td>010197-123A</td>
                                         <td>1235423</td>
