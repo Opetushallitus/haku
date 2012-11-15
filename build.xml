@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="haku-deploy" basedir="." >
+
+    <target name="stop-tomcat">
+        <echo>Backup old haku.war</echo>
+        <sshexec host="luokka" username="tomcat"
+                 command="export DATE=`date +%F_%H-%M-%S`; mkdir $DATE ; cp -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku.war $DATE"
+                 keyfile="${user.home}/.ssh/id_rsa" passphrase="" trust="true" />
+
+        <echo>Stop Tomcat</echo>
+        <sshexec host="luokka" username="tomcat"
+                 command="/etc/init.d/tomcat stop" keyfile="${user.home}/.ssh/id_rsa" passphrase="" trust="true" />
+
+        <echo>Clean Tomcat</echo>
+        <sshexec host="luokka" username="tomcat"
+                 command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku* /data00/tomcat/apache-tomcat-7.0.29/work/* /data00/tomcat/apache-tomcat-7.0.29/temp/*"
+                 keyfile="${user.home}/.ssh/id_rsa" passphrase="" trust="true" />
+
+        <echo>Copy new haku.war</echo>
+        <scp file="target/haku.war"
+             todir="tomcat@luokka:/data00/tomcat/apache-tomcat-7.0.29/webapps/"
+             keyfile="${user.home}/.ssh/id_dsa"
+             />
+
+        <echo>Start Tomcat</echo>
+        <sshexec host="luokka" username="tomcat"
+                 command="/etc/init.d/tomcat start" keyfile="${user.home}/.ssh/id_rsa" passphrase="" trust="true" />
+
+        <sshexec host="luokka" username="tomcat"
+                 command="/etc/init.d/tomcat start" keyfile="${user.home}/.ssh/id_rsa" passphrase="" trust="true" />
+    </target>
+</project>
