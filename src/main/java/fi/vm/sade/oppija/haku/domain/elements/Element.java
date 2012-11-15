@@ -170,7 +170,6 @@ public abstract class Element {
     }
 
     protected void initValidators() {
-        System.out.println("element " + id);
         List<Validator> validators = new ValidatorFinder(this).findValidatingParentValidators();
         Collection<Attribute> attributes = getAttributes().values();
         for (Attribute attribute : attributes) {

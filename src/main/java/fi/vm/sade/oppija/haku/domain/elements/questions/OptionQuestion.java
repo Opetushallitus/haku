@@ -17,9 +17,11 @@
 package fi.vm.sade.oppija.haku.domain.elements.questions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fi.vm.sade.oppija.haku.domain.elements.Element;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class OptionQuestion extends Question {
 
@@ -31,6 +33,14 @@ public abstract class OptionQuestion extends Question {
 
     public void addOption(final String id, final String value, final String title) {
         this.options.add(new Option(this.getId() + ID_DELIMITER + id, value, title));
+    }
+
+    @Override
+    public void init(Map<String, Element> elements, Element parent) {
+        super.init(elements, parent);
+        for (Option option : options) {
+            option.init(elements, this);
+        }
     }
 
     public void addOption(final String id, final String value, final String title, final String help) {

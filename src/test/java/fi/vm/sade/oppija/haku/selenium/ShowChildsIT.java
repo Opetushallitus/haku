@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.haku.selenium;
 
+import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
@@ -24,7 +25,6 @@ import fi.vm.sade.oppija.haku.domain.elements.questions.CheckBox;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Option;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -83,7 +83,6 @@ public class ShowChildsIT extends AbstractSeleniumBase {
         driver.findElement(By.name("checkbox_value"));
         driver.findElement(By.id("checkbox_value2"));
         driver.findElement(By.name("checkbox_value")).click();
-        seleniumHelper.getSelenium().click("nav-save");
         final WebElement alikysymys1 = driver.findElement(By.id("alikysymys1"));
         assertNotNull(alikysymys1);
     }
