@@ -339,6 +339,7 @@
                         <exclude>**/it/*.java</exclude>
                         <exclude>**/selenium/*.java</exclude>
                     </excludes>
+                    <argLine>-Xms1024M -Xmx1024M -XX:MaxPermSize=512M</argLine>
                 </configuration>
             </plugin>
 
@@ -389,6 +390,7 @@
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <version>2.12</version>
                         <configuration>
+                            <argLine>-Xms1024M -Xmx1024M -XX:MaxPermSize=512M</argLine>
                             <includes>
                                 <include>**/it/*</include>
                                 <include>**/selenium/*</include>
