@@ -28,7 +28,10 @@ public class TomcatContainer implements DisposableBean {
     /**
      * The temporary directory in which Tomcat and the app are deployed.
      */
-    private static String mWorkingDir = "target/tomcat";
+    private static String mWorkingDir = "target/it";
+    private static final String SOLR_SOLR_HOME = "solr.solr.home";
+    private static final String TARJONTA_INDEX_URL = "tarjonta.index.url";
+    private static final String TARJONTA_DATA_URL = "tarjonta.data.url";
     /**
      * The tomcat instance.
      */
@@ -60,6 +63,9 @@ public class TomcatContainer implements DisposableBean {
 
     @Override
     public void destroy() throws Exception {
+        System.clearProperty(SOLR_SOLR_HOME);
+        System.clearProperty(TARJONTA_INDEX_URL);
+        System.clearProperty(TARJONTA_DATA_URL);
         try {
             if (mTomcat.getServer() != null
                     && mTomcat.getServer().getState() != LifecycleState.DESTROYED) {
@@ -84,9 +90,9 @@ public class TomcatContainer implements DisposableBean {
 
 
     private void createWebApp(File webApp) throws IOException {
-        System.setProperty("solr.solr.home", new File("target/resources/solr").getAbsolutePath());
-        System.setProperty("tarjonta.index.url", "http://localhost:" + getPort() + "/solr/");
-        System.setProperty("tarjonta.data.url", "http://localhost:" + getPort() + "/haku/tarjontadev/learningDownloadPOC.xml");
+        System.setProperty(SOLR_SOLR_HOME, new File("target/resources/solr").getAbsolutePath());
+        System.setProperty(TARJONTA_INDEX_URL, "http://localhost:" + getPort() + "/solr/");
+        System.setProperty(TARJONTA_DATA_URL, "http://localhost:" + getPort() + "/haku/tarjontadev/learningDownloadPOC.xml");
 
         mTomcat.addWebapp(mTomcat.getHost(), getContextPath(), webApp.getAbsolutePath());
         prepareSolr();
