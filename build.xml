@@ -29,6 +29,7 @@
                  host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
                  passphrase="" trust="true" failonerror="false" />
 
+        <echo>Successfully deployed haku.war to ${tomcat-host}</echo>
     </target>
 
 </project>
