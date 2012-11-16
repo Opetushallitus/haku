@@ -10,6 +10,7 @@ import fi.vm.sade.oppija.haku.service.UserHolder;
 import fi.vm.sade.oppija.haku.service.impl.AdditionalQuestionServiceImpl;
 import fi.vm.sade.oppija.haku.service.impl.HakemusServiceImpl;
 import fi.vm.sade.oppija.haku.service.impl.UserDataStorage;
+import fi.vm.sade.oppija.haku.service.impl.UserPrefillDataServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,8 +31,10 @@ public class FormControllerTest {
     public void setUp() throws Exception {
         final EventHandler eventHandler = new EventHandler();
         final FormModelDummyMemoryDaoImpl formService = new FormModelDummyMemoryDaoImpl(formId, firstCategoryId);
-        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(new UserDataStorage(new SessionDataHolder(), new ApplicationDAOMongoImpl(), new UserHolder()), eventHandler, formService);
-        this.formController = new FormController(formService, new AdditionalQuestionServiceImpl(formService, hakemusService), hakemusService);
+        UserHolder userHolder = new UserHolder();
+        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(new UserDataStorage(new SessionDataHolder(), new ApplicationDAOMongoImpl(), userHolder), eventHandler, formService);
+        final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(userHolder);
+        this.formController = new FormController(formService, new AdditionalQuestionServiceImpl(formService, hakemusService), hakemusService, userPrefillDataService);
     }
 
     @Test

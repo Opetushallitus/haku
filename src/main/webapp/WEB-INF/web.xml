@@ -71,6 +71,10 @@
             <url-pattern>*.jsp</url-pattern>
             <trim-directive-whitespaces>true</trim-directive-whitespaces>
         </jsp-property-group>
+        <taglib>
+            <taglib-uri>/functions</taglib-uri>
+            <taglib-location>/WEB-INF/tld/functions.tld</taglib-location>
+        </taglib>
     </jsp-config>
-
+    
 </web-app>

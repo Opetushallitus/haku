@@ -23,6 +23,7 @@ import fi.vm.sade.oppija.haku.domain.elements.*;
 import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
+import fi.vm.sade.oppija.haku.service.UserPrefillDataService;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,13 +54,15 @@ public class FormController extends ExceptionController {
 
     final FormService formService;
     private final HakemusService hakemusService;
+    private final UserPrefillDataService userPrefillDataService;
 
     @Autowired
     public FormController(@Qualifier("formServiceImpl") final FormService formService,
                           @Qualifier("additionalQuestionService") final AdditionalQuestionService additionalQuestionService,
-                          HakemusService hakemusService) {
+                          HakemusService hakemusService, final UserPrefillDataService userPrefillDataService) {
         this.formService = formService;
         this.hakemusService = hakemusService;
+        this.userPrefillDataService = userPrefillDataService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -101,6 +104,7 @@ public class FormController extends ExceptionController {
         modelAndView.addObject("element", element);
         final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId());
         Map<String, String> values = hakemusService.getHakemus(hakemusId).getVastaukset();
+        values = userPrefillDataService.populateWithPrefillData(values);
         modelAndView.addObject("categoryData", values);
         modelAndView.addObject("hakemusId", hakemusId);
         return modelAndView;
@@ -108,9 +112,7 @@ public class FormController extends ExceptionController {
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView prefillForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId, @RequestBody final MultiValueMap<String, String> multiValues) {
-        final HakemusId hakemusId = new HakemusId(applicationPeriodId, formId);
-        // TODO lisää vaihe urliin
-        hakemusService.tallennaVaihe(new fi.vm.sade.oppija.haku.domain.Vaihe(hakemusId, "henkilotiedot", multiValues.toSingleValueMap()));
+        userPrefillDataService.addUserPrefillData(multiValues.toSingleValueMap());
         return new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId);
     }
 

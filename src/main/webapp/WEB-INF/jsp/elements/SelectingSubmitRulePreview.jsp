@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="haku" uri="/WEB-INF/tags/functions.tld"%>
+<%@ taglib prefix="haku" uri="/WEB-INF/tld/functions.tld"%>
 
 <c:set var="savedValue" value="${element}"/>
 <c:set var="element" value="${element.childById[element.id]}" scope="request"/>

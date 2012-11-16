@@ -1,6 +1,7 @@
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="/WEB-INF/tld/functions.tld" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fn" uri="/WEB-INF/tags/functions.tld"%>
-<%@ taglib prefix="haku" tagdir="/WEB-INF/tags"%>
+
 <div id="${element.id}">
     <c:set var="key" value="${element.relatedElementId}"/>
     <script type="text/javascript">
@@ -25,8 +26,8 @@
                             if (childIds.length - 1 > index) {
                                 ruleData.getRuleChild(childIds, ++index, ruleChilds);
                             } else {
-                                replaceCheckboxes();
-                                replaceRadios();
+                                //replaceCheckboxes();
+                                //replaceRadios();
                             }
                         });
                 }

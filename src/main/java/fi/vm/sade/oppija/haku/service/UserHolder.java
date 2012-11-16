@@ -7,6 +7,8 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author jukka
@@ -21,6 +23,7 @@ public class UserHolder implements Serializable {
 
     private User user = new AnonymousUser();
     private boolean userKnown = false;
+    private Map<String, String> userPrefillData = new HashMap<String, String>();
 
     public User getUser() {
         return user;
@@ -33,5 +36,9 @@ public class UserHolder implements Serializable {
     public void login(User user) {
         this.user = user;
         userKnown = true;
+    }
+
+    public Map<String, String> getUserPrefillData() {
+        return userPrefillData;
     }
 }
