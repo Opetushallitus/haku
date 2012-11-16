@@ -20,7 +20,6 @@ import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.elements.*;
-import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import fi.vm.sade.oppija.haku.service.UserPrefillDataService;
@@ -57,7 +56,6 @@ public class FormController extends ExceptionController {
 
     @Autowired
     public FormController(@Qualifier("formServiceImpl") final FormService formService,
-                          @Qualifier("additionalQuestionService") final AdditionalQuestionService additionalQuestionService,
                           HakemusService hakemusService, final UserPrefillDataService userPrefillDataService) {
         this.formService = formService;
         this.hakemusService = hakemusService;
