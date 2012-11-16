@@ -51,7 +51,6 @@ public class FormController extends ExceptionController {
     public static final String VERBOSE_HELP_VIEW = "help";
     public static final String LINK_LIST_VIEW = "linkList";
 
-
     final FormService formService;
     private final HakemusService hakemusService;
     private final UserPrefillDataService userPrefillDataService;
@@ -70,8 +69,7 @@ public class FormController extends ExceptionController {
         LOGGER.debug("listApplicationPeriods");
         Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
         final ModelAndView modelAndView = new ModelAndView(LINK_LIST_VIEW);
-        modelAndView.addObject(LINK_LIST_VIEW, applicationPerioidMap.keySet());
-        return modelAndView;
+        return modelAndView.addObject(LINK_LIST_VIEW, applicationPerioidMap.keySet());
     }
 
 
@@ -81,8 +79,7 @@ public class FormController extends ExceptionController {
         ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(applicationPeriodId);
         final ModelAndView modelAndView = new ModelAndView(LINK_LIST_VIEW);
         modelAndView.addObject("path", applicationPeriod.getId() + "/");
-        modelAndView.addObject(LINK_LIST_VIEW, applicationPeriod.getFormIds());
-        return modelAndView;
+        return modelAndView.addObject(LINK_LIST_VIEW, applicationPeriod.getFormIds());
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.GET)
@@ -106,8 +103,7 @@ public class FormController extends ExceptionController {
         Map<String, String> values = hakemusService.getHakemus(hakemusId).getVastaukset();
         values = userPrefillDataService.populateWithPrefillData(values);
         modelAndView.addObject("categoryData", values);
-        modelAndView.addObject("hakemusId", hakemusId);
-        return modelAndView;
+        return modelAndView.addObject("hakemusId", hakemusId);
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
@@ -137,17 +133,14 @@ public class FormController extends ExceptionController {
             modelAndView.addObject("category", activeForm.getCategory(categoryId));
             modelAndView.addObject("form", activeForm);
         }
-        modelAndView.addObject("hakemusId", hakemusId);
-        LOGGER.debug(modelAndView.getModel().toString());
-        return modelAndView;
+        return modelAndView.addObject("hakemusId", hakemusId);
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/send", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView sendForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
         LOGGER.debug("sendForm {}, {}", new Object[]{applicationPeriodId, formId});
         //TODO: send application
-        ModelAndView modelAndView = new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/valmis");
-        return modelAndView;
+        return new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/valmis");
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/valmis", method = RequestMethod.GET)
@@ -162,8 +155,7 @@ public class FormController extends ExceptionController {
         modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getVastaukset());
         modelAndView.addObject("hakemusId", hakemusId);
         //TODO: implement application number
-        modelAndView.addObject("applicationNumber", new Date().getTime());
-        return modelAndView;
+        return modelAndView.addObject("applicationNumber", new Date().getTime());
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{vaiheId}/{teemaId}/help", method = RequestMethod.GET)
