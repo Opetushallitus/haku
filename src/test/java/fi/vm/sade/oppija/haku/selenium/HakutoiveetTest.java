@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertNull;
 
@@ -55,6 +56,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
     @Before
     public void init() throws IOException {
+        super.before();
         ApplicationPeriod applicationPeriod = new ApplicationPeriod("Yhteishaku");
         FormModel formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
@@ -97,27 +99,40 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         seleniumHelper.navigate(adminEditPage);
         adminEditPage.login("admin");
         seleniumHelper.getDriver().get(getBaseUrl() + "/admin/index/update");
-        seleniumHelper.dropAllHakemus();
+        seleniumHelper.getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @Test
     public void testEducationPreference() throws InterruptedException {
         final String url = "lomake/Yhteishaku/lomake/hakutoiveet";
         final WebDriver driver = seleniumHelper.getDriver();
+
+        driver.get(getBaseUrl() + "/" + url);
+        driver.findElement(By.id("preference1-Opetuspiste"));
+        Selenium s = seleniumHelper.getSelenium();
+        s.typeKeys("preference1-Opetuspiste", "Hel");
+        Thread.sleep(50);
+        driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
+        Thread.sleep(50);
+        driver.findElement(By.xpath("//option[@value='Sosiaali- ja terveysalan perustutkinto, pk']")).click();
+        Thread.sleep(50);
+        //driver.findElement(By.id("P1_additional_question_1"));
+    }
+
+    @Test
+    public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
+        final String url = "lomake/Yhteishaku/lomake/hakutoiveet";
+        final WebDriver driver = seleniumHelper.getDriver();
+
         driver.get(getBaseUrl() + "/" + url);
         driver.findElement(By.id("preference1-Opetuspiste"));
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Hel");
         driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
         driver.findElement(By.xpath("//option[@value='Sosiaali- ja terveysalan perustutkinto, pk']")).click();
-        //driver.findElement(By.id("P1_additional_question_1"));
-    }
-
-    @Test
-    public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
-        testEducationPreference();
-        final WebDriver driver = seleniumHelper.getDriver();
         driver.findElement(By.xpath("//button[@name='nav-next']")).click();
+        seleniumHelper.getSelenium().waitForPageToLoad("60000");
+        seleniumHelper.getSelenium().waitForPageToLoad("60000");
         driver.findElement(By.id("lisakysymys"));
     }
 

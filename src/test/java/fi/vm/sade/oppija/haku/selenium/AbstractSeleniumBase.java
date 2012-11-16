@@ -56,7 +56,6 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         }
         seleniumHelper = container.getSeleniumHelper();
         seleniumHelper.logout();
-        seleniumHelper.dropAllHakemus();
     }
 
     protected FormModelHelper initModel(FormModel formModel1) {
