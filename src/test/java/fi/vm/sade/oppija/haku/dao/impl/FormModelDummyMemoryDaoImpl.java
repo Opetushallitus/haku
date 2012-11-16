@@ -169,9 +169,9 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", "Henkilötunnus");
         henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
-        henkilötunnus.addAttribute("title", "ppkkvv*****");
+        henkilötunnus.addAttribute("title", "ppkkvv***** or dd.mm.yyyy");
         henkilötunnus.addAttribute("required", "required");
-        henkilötunnus.addAttribute("pattern", "[0-9]{6}.[0-9]{4}");
+        henkilötunnus.addAttribute("pattern", "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))|[0-9]{2}[.][0-9]{2}[.][0-9]{4}");
         henkilötunnus.addAttribute("size", "11");
         henkilötunnus.addAttribute("maxlength", "11");
         henkilötunnus.setHelp("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi");
