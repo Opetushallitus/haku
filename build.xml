@@ -4,18 +4,19 @@
     <target name="deploy-to-remote-tomcat">
 
         <echo>Backup old haku.war</echo>
-        <sshexec host="luokka" username="tomcat"
-                 command="export DATE=`date +%F_%H-%M-%S`; mkdir $DATE ; cp -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku.war $DATE"
-                 keyfile="${user.home}/.ssh/id_rsa" passphrase="" trust="true" />
+        <sshexec command="export DATE=`date +%F_%H-%M-%S`; mkdir $DATE ; cp -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku.war $DATE"
+                host="luokka" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
+                passphrase="" trust="true" failonerror="false" />
 
         <echo>Stop Tomcat</echo>
-        <sshexec host="luokka" username="tomcat"
-                 command="/etc/init.d/tomcat stop" keyfile="${user.home}/.ssh/id_rsa" passphrase="" trust="true" />
+        <sshexec command="/etc/init.d/tomcat stop"
+                 host="luokka" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
+                 passphrase="" trust="true" failonerror="false" />
 
         <echo>Clean Tomcat</echo>
-        <sshexec host="luokka" username="tomcat"
-                 command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku* /data00/tomcat/apache-tomcat-7.0.29/work/* /data00/tomcat/apache-tomcat-7.0.29/temp/*"
-                 keyfile="${user.home}/.ssh/id_rsa" passphrase="" trust="true" />
+        <sshexec command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku* /data00/tomcat/apache-tomcat-7.0.29/work/* /data00/tomcat/apache-tomcat-7.0.29/temp/*"
+                 host="luokka" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
+                 passphrase="" trust="true" failonerror="false" />
 
         <echo>Copy new haku.war</echo>
         <scp file="target/haku.war"
@@ -24,10 +25,9 @@
              />
 
         <echo>Start Tomcat</echo>
-        <sshexec host="luokka" username="tomcat"
-                 command="/etc/init.d/tomcat start" keyfile="${user.home}/.ssh/id_rsa" passphrase="" trust="true" />
+        <sshexec command="/etc/init.d/tomcat start"
+                 host="luokka" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
+                 passphrase="" trust="true" failonerror="false" />
 
-        <sshexec host="luokka" username="tomcat"
-                 command="/etc/init.d/tomcat start" keyfile="${user.home}/.ssh/id_rsa" passphrase="" trust="true" />
     </target>
 </project>
