@@ -26,7 +26,6 @@ public class SearchResult {
     public SearchResult(List<Map<String, Collection<Object>>> results) {
         items = new ArrayList<Map<String, Object>>();
 
-        int i = 0;
         for (Map<String, Collection<Object>> result : results) {
             Map<String, Object> map = new HashMap<String, Object>();
             final ArrayList<String> loids = new ArrayList<String>();
@@ -60,7 +59,6 @@ public class SearchResult {
                 map.put(split[1], los.get(loskey));
 
             }
-            i++;
             items.add(map);
         }
         if (items.isEmpty()) {
