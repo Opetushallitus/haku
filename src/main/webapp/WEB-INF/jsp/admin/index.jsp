@@ -39,5 +39,11 @@
     <li><a href="/haku/admin/index/update">Oppijan verkkopalvelu - Päivitä hakuindeksi</a></li>
     <li><a href="/haku/admin/index/drop">Oppijan verkkopalvelu - Tyhjennä hakuindeksi</a></li>
 </ul>
+
+<h3>Properties:</h3>
+<c:forEach var="property" items="${properties}">
+<p><b>${property.key}:</b> ${property.value}</p>
+</c:forEach>
+
 </body>
 </html>
