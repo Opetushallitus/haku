@@ -128,11 +128,13 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         driver.findElement(By.id("preference1-Opetuspiste"));
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Hel");
+        Thread.sleep(50);
         driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
+        Thread.sleep(50);
         driver.findElement(By.xpath("//option[@value='Sosiaali- ja terveysalan perustutkinto, pk']")).click();
+        Thread.sleep(50);
         driver.findElement(By.xpath("//button[@name='nav-next']")).click();
-        seleniumHelper.getSelenium().waitForPageToLoad("60000");
-        seleniumHelper.getSelenium().waitForPageToLoad("60000");
+        Thread.sleep(50);
         driver.findElement(By.id("lisakysymys"));
     }
 
