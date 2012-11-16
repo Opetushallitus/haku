@@ -70,16 +70,8 @@ public class SearchResult {
         }
     }
 
-    private String createKey(int i, int k) {
-        return i + "-" + k;
-    }
-
     public List<Map<String, Object>> getItems() {
         return items;
-    }
-
-    public Set<String> getSortFields() {
-        return sortFields;
     }
 
     public int getSize() {
