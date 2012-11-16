@@ -2,6 +2,7 @@
 <project name="haku-deploy" basedir="." >
 
     <target name="deploy-to-remote-tomcat">
+
         <echo>Backup old haku.war</echo>
         <sshexec host="luokka" username="tomcat"
                  command="export DATE=`date +%F_%H-%M-%S`; mkdir $DATE ; cp -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku.war $DATE"
@@ -19,7 +20,7 @@
         <echo>Copy new haku.war</echo>
         <scp file="target/haku.war"
              todir="tomcat@luokka:/data00/tomcat/apache-tomcat-7.0.29/webapps/"
-             keyfile="${user.home}/.ssh/id_dsa"
+             keyfile="${user.home}/.ssh/id_rsa"
              />
 
         <echo>Start Tomcat</echo>
