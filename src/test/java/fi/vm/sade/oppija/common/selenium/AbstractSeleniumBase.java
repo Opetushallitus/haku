@@ -25,8 +25,6 @@ import fi.vm.sade.oppija.haku.selenium.SeleniumHelper;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Set;
-
 /**
  * @author jukka
  * @version 10/15/121:13 PM}
@@ -50,12 +48,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     @Before
     public void before() {
-        Set<String> collectionNames = dbFactory.getObject().getCollectionNames();
-        for (String collectionName : collectionNames) {
-            if (collectionName.contains("test")) {
-                dbFactory.getObject().getCollection(collectionName).drop();
-            }
-        }
+        dbFactory.shutDown();
         seleniumHelper = container.getSeleniumHelper();
         seleniumHelper.logout();
     }
