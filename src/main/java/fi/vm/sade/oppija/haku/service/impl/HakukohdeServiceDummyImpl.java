@@ -47,9 +47,8 @@ public class HakukohdeServiceDummyImpl implements HakukohdeService {
         for (Organisaatio institute : institutes) {
             List<Hakukohde> hakukohdeList = new ArrayList<Hakukohde>();
             for (int i = 0; i < AMOUNT_OF_TEST_HAKUKOHDE; i++) {
-                String id = String.valueOf(institute.getId()) + "_" + String.valueOf(i);
-                Hakukohde h = new Hakukohde(id, "Hakukohde_" + id);
-                hakukohdeList.add(h);
+                String id = institute.getId() + "_" + String.valueOf(i);
+                hakukohdeList.add(new Hakukohde(id, "Hakukohde_" + id));
             }
             hakukohdeMap.put(institute.getId(), hakukohdeList);
         }
