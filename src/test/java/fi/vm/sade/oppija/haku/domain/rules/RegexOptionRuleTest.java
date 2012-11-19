@@ -14,24 +14,27 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.dao;
+package fi.vm.sade.oppija.haku.domain.rules;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import fi.vm.sade.oppija.haku.domain.elements.questions.Option;
+import org.junit.Test;
 
-import javax.annotation.PreDestroy;
+import static org.junit.Assert.assertEquals;
 
-public class TestDBFactoryBean extends DBFactoryBean {
+public class RegexOptionRuleTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TestDBFactoryBean.class);
+    public static final String REGEXA = "a";
+    public static final Option OPTION = new Option("id", "value", "title");
 
-    @PreDestroy
-    public void drop() {
-        try {
-            LOG.debug("Drop database " + getObject().getName());
-            getObject().dropDatabase();
-        } catch (Exception e) {
-            LOG.error("Could not drop test database.", e);
-        }
+    private RegexOptionRule regexOptionRule = new RegexOptionRule(REGEXA, OPTION);
+
+    @Test
+    public void testEqGetRegex() throws Exception {
+        assertEquals(REGEXA, regexOptionRule.getRegex());
+    }
+
+    @Test
+    public void testGetOption() throws Exception {
+        assertEquals(OPTION, regexOptionRule.getOption());
     }
 }
