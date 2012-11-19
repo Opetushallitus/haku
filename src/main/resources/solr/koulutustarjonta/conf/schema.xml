@@ -50,6 +50,7 @@
         <field name="LOSDescriptionEducationAndProfessionalGoals" type="text_general" indexed="true" stored="true"
                multiValued="true"/>
         <field name="LOSQualification" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOSEducationClassification" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSEducationDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSEducationDegree" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSStydyDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
