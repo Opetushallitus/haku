@@ -31,7 +31,8 @@ public class SearchResult {
             final ArrayList<String> loids = new ArrayList<String>();
             map.put("LOIIndexes", loids);
             final HashMap<String, String> los = new HashMap<String, String>();
-            for (String key : result.keySet()) {
+            for (Map.Entry<String, Collection<Object>> entry : result.entrySet()) {
+                String key = entry.getKey();
                 if (key.startsWith("LOS") || key.startsWith("LOP") || key.startsWith("LOI")) {
                     final Collection<Object> objects = result.get(key);
                     int k = 0;
@@ -44,8 +45,9 @@ public class SearchResult {
             }
 
 
-            for (String loskey : los.keySet()) {
-                final String[] split = loskey.split("-");
+            for (Map.Entry<String, String> losEntry : los.entrySet()) {
+                String losKey = losEntry.getKey();
+                final String[] split = losKey.split("-");
                 int k = Integer.parseInt(split[0]);
                 HashMap<String, String> o = (HashMap<String, String>) map.get("LOIIndex" + k);
                 if (o == null) {
@@ -54,9 +56,9 @@ public class SearchResult {
                     loids.add("LOIIndex" + k);
                 }
 
-                o.put(split[1], los.get(loskey));
+                o.put(split[1], los.get(losKey));
                 //TODO: tässä viimeisin jää voimaan, korjattava!!!
-                map.put(split[1], los.get(loskey));
+                map.put(split[1], los.get(losKey));
 
             }
             items.add(map);
