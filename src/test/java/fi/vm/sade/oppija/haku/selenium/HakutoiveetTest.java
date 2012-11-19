@@ -94,7 +94,6 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         seleniumHelper.navigate(adminEditPage);
         adminEditPage.login("admin");
         seleniumHelper.getDriver().get(getBaseUrl() + "/admin/index/update");
-        seleniumHelper.dropAllHakemus();
     }
 
     @Test

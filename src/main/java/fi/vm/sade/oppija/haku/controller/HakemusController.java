@@ -10,7 +10,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
 
@@ -53,7 +53,6 @@ public class HakemusController extends ExceptionController {
     public
     @ResponseBody
     Hakemus getHakemus(@PathVariable String oid) {
-        System.out.println(oid);
         return hakemusService.getHakemus(oid);
     }
 }

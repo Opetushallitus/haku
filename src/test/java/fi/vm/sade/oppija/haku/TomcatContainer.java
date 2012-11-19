@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
+
 package fi.vm.sade.oppija.haku;
 
 import org.apache.catalina.LifecycleException;
@@ -32,12 +48,23 @@ public class TomcatContainer implements DisposableBean {
     private static final String SOLR_SOLR_HOME = "solr.solr.home";
     private static final String TARJONTA_INDEX_URL = "tarjonta.index.url";
     private static final String TARJONTA_DATA_URL = "tarjonta.data.url";
+    public static final String MONGO_DB_NAME = "mongo.db.name";
     /**
      * The tomcat instance.
      */
     private Tomcat mTomcat;
     private static File solr;
     private int port;
+
+    private final String name;
+
+    public TomcatContainer(final String name) throws LifecycleException, IOException {
+        this.name = name;
+        createTomcat();
+        mTomcat.start();
+        port = mTomcat.getConnector().getLocalPort();
+        createWebApp(createPackage());
+    }
 
     private static WebArchive addWebResourcesTo(WebArchive archive) {
         final File webAppDirectory = new File(WEBAPP_SRC);
@@ -52,14 +79,6 @@ public class TomcatContainer implements DisposableBean {
     private static boolean isValidFilename(File file) {
         return !file.isDirectory() && !file.getName().equals(".svn");
     }
-
-    public TomcatContainer() throws IOException, LifecycleException {
-        createTomcat();
-        mTomcat.start();
-        port = mTomcat.getConnector().getLocalPort();
-        createWebApp(createPackage());
-    }
-
 
     @Override
     public void destroy() throws Exception {
@@ -93,12 +112,14 @@ public class TomcatContainer implements DisposableBean {
         System.setProperty(SOLR_SOLR_HOME, new File("target/resources/solr").getAbsolutePath());
         System.setProperty(TARJONTA_INDEX_URL, "http://localhost:" + getPort() + "/solr/");
         System.setProperty(TARJONTA_DATA_URL, "http://localhost:" + getPort() + "/haku/tarjontadev/learningDownloadPOC.xml");
+        System.setProperty(MONGO_DB_NAME, name);
 
         prepareSolr();
         mTomcat.addWebapp(mTomcat.getHost(), "/solr", solr.getAbsolutePath());
         mTomcat.addWebapp(mTomcat.getHost(), getContextPath(), webApp.getAbsolutePath());
 
     }
+
 
     private void prepareSolr() throws IOException {
         final File target = new File("target");
@@ -160,5 +181,4 @@ public class TomcatContainer implements DisposableBean {
     public int getPort() {
         return port;
     }
-
 }

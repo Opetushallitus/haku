@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.haku.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.commons.lang3.Validate;
 
 import java.io.Serializable;
 
@@ -31,13 +32,15 @@ import java.io.Serializable;
 public class HakemusId implements Serializable {
 
     private static final long serialVersionUID = 8484849312020479901L;
-    public static final int HASH_CODE_MAGIC = 31;
+    private static final int HASH_CODE_MAGIC = 31;
 
     private final String applicationPeriodId;
     private final String formId;
 
     public HakemusId(@JsonProperty(value = "applicationPeriodId") String applicationPeriodId,
                      @JsonProperty(value = "formId") String formId) {
+        Validate.notNull(applicationPeriodId, "ApplicationPeriodId can't be null");
+        Validate.notNull(formId, "FormId can't be null");
         this.applicationPeriodId = applicationPeriodId;
         this.formId = formId;
     }
@@ -48,21 +51,6 @@ public class HakemusId implements Serializable {
 
     public String getApplicationPeriodId() {
         return applicationPeriodId;
-    }
-
-
-    public String asKey() {
-        return applicationPeriodId + '_' + formId;
-    }
-
-    @Override
-    public String toString() {
-        return asKey();
-    }
-
-    public static HakemusId fromKey(String key) {
-        final String[] split = key.split("_");
-        return new HakemusId(split[0], split[1]);
     }
 
     @Override

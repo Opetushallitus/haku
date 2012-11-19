@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.haku.domain;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * @author jukka
@@ -27,26 +28,33 @@ import static org.junit.Assert.assertEquals;
  */
 public class HakemusIdTest {
 
-    private static final String ID = "foo_foo_foo";
+    private static final String HAKU_ID = "hid";
+    private static final String LOMAKE_ID = "lid";
+    public static final HakemusId HAKEMUS_ID1 = new HakemusId(HAKU_ID, LOMAKE_ID);
+    public static final HakemusId HAKEMUS_ID2 = new HakemusId(HAKU_ID, LOMAKE_ID);
 
     @Test
-    public void testHakemusId() {
-        final String foo = "foo";
-        final HakemusId hakemusId = new HakemusId(foo, foo);
-        assertEquals("foo_foo", hakemusId.asKey());
+    public void testHakemusIdEquals() {
+        assertEquals(HAKEMUS_ID1, HAKEMUS_ID2);
     }
 
     @Test
-    public void testHakemusIdFromString() {
-        final HakemusId hakemusId = HakemusId.fromKey(ID);
-        assertEquals("foo_foo", hakemusId.asKey());
+    public void testNotEquals() {
+        assertFalse(HAKEMUS_ID1.equals(new HakemusId(HAKU_ID, LOMAKE_ID + "skldjfs")));
     }
 
-    @Test
-    public void testEquals() {
-        final HakemusId hakemusId = HakemusId.fromKey(ID);
-        final HakemusId hakemusId2 = HakemusId.fromKey("foo_foo");
-        assertEquals(hakemusId, hakemusId2);
+    @Test(expected = NullPointerException.class)
+    public void testNullHakuId() {
+        new HakemusId(null, LOMAKE_ID);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testNullLomakeId() {
+        new HakemusId(HAKU_ID, null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testNullHakuIdAndLomakeId() {
+        new HakemusId(null, null);
+    }
 }

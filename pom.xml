@@ -357,9 +357,7 @@
                         <exclude>**/it/*.java</exclude>
                         <exclude>**/selenium/*.java</exclude>
                     </excludes>
-                    <argLine>-Xms512M -Xmx1G -XX:MaxPermSize=512M
-                        -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
-                    </argLine>
+                    <argLine>-Xms512M -Xmx1G -XX:MaxPermSize=512M</argLine>
                 </configuration>
             </plugin>
 

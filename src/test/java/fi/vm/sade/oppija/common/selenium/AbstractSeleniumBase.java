@@ -48,7 +48,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     @Before
     public void before() {
-        dbFactory.shutDown();
+        dbFactory.drop();
         seleniumHelper = container.getSeleniumHelper();
         seleniumHelper.logout();
     }

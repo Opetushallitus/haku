@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012. The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.haku.selenium;
 
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
@@ -40,7 +39,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class PostalCodeIT extends AbstractSeleniumBase {
 
-    private FormModelHelper formModelHelper;
 
     @Before
     public void init() throws IOException {
@@ -66,7 +64,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
 
         TextQuestion tq = new TextQuestion("foo", "bar");
         testiRyhma.addChild(tq);
-        formModelHelper = initModel(formModel);
+        initModel(formModel);
     }
 
     @Test

@@ -19,6 +19,8 @@ package fi.vm.sade.oppija.haku.dao;
 import com.mongodb.DB;
 import com.mongodb.Mongo;
 import com.mongodb.WriteConcern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -31,11 +33,13 @@ import javax.annotation.PreDestroy;
  * @since 1.1
  */
 public class DBFactoryBean implements FactoryBean<DB> {
+    private static final Logger LOG = LoggerFactory.getLogger(DBFactoryBean.class);
     protected Mongo mongo;
     private String name;
 
     @PostConstruct
     public void init() {
+        LOG.debug("Using db " + mongo.debugString());
         mongo.setWriteConcern(WriteConcern.SAFE);
     }
 

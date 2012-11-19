@@ -39,7 +39,8 @@ import java.util.Map;
 @Service("applicationDAOMongoImpl")
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements ApplicationDAO {
 
-    public static final String HAKEMUS_ID = "hakemusId";
+    public static final String HAKU_ID = "hakuId";
+    public static final String LOMAKE_ID = "lomakeId";
     public static final String USER_ID = "userid";
     public static final String VAIHE_ID = "vaiheId";
     public static final String HAKEMUS_DATA = "hakemusData";
@@ -51,7 +52,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     @Override
     public Hakemus tallennaVaihe(User user, Vaihe vaihe) {
         DBObject query = new BasicDBObject();
-        query.put(HAKEMUS_ID, vaihe.getHakemusId().asKey());
+        query.put(HAKU_ID, vaihe.getHakemusId().getApplicationPeriodId());
+        query.put(LOMAKE_ID, vaihe.getHakemusId().getFormId());
         query.put(USER_ID, user.getUserName());
         DBObject one = getCollection().findOne(query);
         Hakemus hakemus = new Hakemus(vaihe.getHakemusId(), user);
@@ -60,8 +62,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
             vastaukset.putAll((Map<String, Map<String, String>>) one.toMap().get(HAKEMUS_DATA));
         } else {
             one = new BasicDBObject();
+            one.put(HAKU_ID, vaihe.getHakemusId().getApplicationPeriodId());
+            one.put(LOMAKE_ID, vaihe.getHakemusId().getFormId());
             one.put(HAKEMUS_OID, OID_PREFIX + getNextId());
-            one.put(HAKEMUS_ID, vaihe.getHakemusId().asKey());
             one.put(USER_ID, user.getUserName());
         }
         vastaukset.put(vaihe.getVaiheId(), vaihe.getVastaukset());
@@ -79,7 +82,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         DBObject update = new BasicDBObject("$inc", change); // the $inc here is a mongodb command for increment
 
         // Atomically updates the sequence field and returns the value for you
-        final BasicDBObject query = new BasicDBObject("$eq", new BasicDBObject("Anything", "1"));
+        final BasicDBObject query = new BasicDBObject("$eq", change);
         //final BasicDBObject query = new BasicDBObject();
         DBObject res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
         return res.get(SEQUENCE_FIELD).toString();
@@ -93,7 +96,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     @Override
     public Hakemus find(HakemusId hakemusId, User user) {
         DBObject dbObject = new BasicDBObject();
-        dbObject.put(HAKEMUS_ID, hakemusId.asKey());
+        dbObject.put(HAKU_ID, hakemusId.getApplicationPeriodId());
+        dbObject.put(LOMAKE_ID, hakemusId.getFormId());
         dbObject.put(USER_ID, user.getUserName());
         final DBObject one = getCollection().findOne(dbObject);
         Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
@@ -130,7 +134,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     }
 
     private Hakemus dbObjectToHakemus(final DBObject dbObject) {
-        HakemusId hakemusId = HakemusId.fromKey((String) dbObject.get(HAKEMUS_ID));
+        HakemusId hakemusId = new HakemusId((String) dbObject.get(HAKU_ID), (String) dbObject.get(LOMAKE_ID));
         User user = new User((String) dbObject.get(USER_ID));
         Hakemus hakemus = new Hakemus(hakemusId, user);
         hakemus.addMeta(HAKEMUS_OID, dbObject.get(HAKEMUS_OID).toString());
