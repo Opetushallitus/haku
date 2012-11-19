@@ -262,6 +262,20 @@
             <version>1.9.5</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>fi.vm.sade.log</groupId>
+            <artifactId>log-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+
+            </exclusions>
+
+        </dependency>
     </dependencies>
     <properties>
         <project.svn.base>https://penaali.hard.ware.fi/svn/generic/${project.artifactId}</project.svn.base>
