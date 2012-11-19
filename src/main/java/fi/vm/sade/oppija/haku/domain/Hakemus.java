@@ -27,6 +27,7 @@ import java.util.Map;
  * @since 1.1
  */
 public class Hakemus implements Serializable {
+    public static final String HAKEMUS_OID = "HakemusOid";
 
     private static final long serialVersionUID = -7491168801255850954L;
 
@@ -41,6 +42,16 @@ public class Hakemus implements Serializable {
         this.user = user;
     }
 
+    public Hakemus(HakemusId hakemusId, User user, Map<String, Map<String, String>> vastaukset) {
+        this(hakemusId, user);
+        this.vastaukset.putAll(vastaukset);
+    }
+
+    public Hakemus(HakemusId hakemusId, User user, String vaiheId, Map<String, String> vastaukset) {
+        this(hakemusId, user);
+        addVaiheenVastaukset(vaiheId, vastaukset);
+    }
+
     public Hakemus addMeta(final Map<String, String> meta) {
         this.meta.putAll(meta);
         return this;
@@ -51,8 +62,10 @@ public class Hakemus implements Serializable {
         return this;
     }
 
+
     public Hakemus addVaiheenVastaukset(final String vaiheId, Map<String, String> vastaukset) {
         this.vastaukset.put(vaiheId, vastaukset);
+        this.vaiheId = vaiheId;
         return this;
     }
 
@@ -81,15 +94,4 @@ public class Hakemus implements Serializable {
         return vaiheId;
     }
 
-    public void setVaiheId(String vaiheId) {
-        this.vaiheId = vaiheId;
-    }
-
-    public void addVastaukset(Map<String, Map<String, String>> vastaukset) {
-        this.vastaukset.putAll(vastaukset);
-    }
-
-    public void addVaiheenVastaukset(Vaihe vaihe) {
-        addVaiheenVastaukset(vaihe.getVaiheId(), vaihe.getVastaukset());
-    }
 }

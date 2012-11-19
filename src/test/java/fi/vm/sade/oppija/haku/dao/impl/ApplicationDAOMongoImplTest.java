@@ -21,7 +21,7 @@ import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.User;
-import fi.vm.sade.oppija.haku.domain.Vaihe;
+import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +57,10 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     public void testTallennaVaihe() {
         final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>();
         vaiheenVastaukset.put("avain", "arvo");
-        final Hakemus hakemus = applicationDAO.tallennaVaihe(TEST_USER, new Vaihe(hakemusId, "vaihe1", vaiheenVastaukset));
-        assertEquals("arvo", hakemus.getVastaukset().get("avain"));
+
+        final Hakemus hakemus1 = new Hakemus(hakemusId, TEST_USER, "vaihe1", vaiheenVastaukset);
+        final HakemusState hakemus = applicationDAO.tallennaVaihe(new HakemusState(hakemus1));
+        assertEquals("arvo", hakemus.getHakemus().getVastaukset().get("avain"));
     }
 
     @Test

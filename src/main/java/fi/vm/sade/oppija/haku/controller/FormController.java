@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.elements.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.DataRelatedQuestion;
@@ -25,23 +26,18 @@ import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import fi.vm.sade.oppija.haku.service.UserPrefillDataService;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
-import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -106,20 +102,20 @@ public class FormController extends ExceptionController {
         modelAndView.addObject("categoryData", values);
         return modelAndView.addObject("hakemusId", hakemusId);
     }
-    
+
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{elementId}/relatedData/{key}", method = RequestMethod.GET,
             produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Serializable getElementRelatedData(@PathVariable final String applicationPeriodId,
-                                   @PathVariable final String formId,
-                                   @PathVariable final String elementId,
-                                   @PathVariable final String key) {
+                                              @PathVariable final String formId,
+                                              @PathVariable final String elementId,
+                                              @PathVariable final String key) {
         LOGGER.debug("getElementRelatedData {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, elementId, key});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         try {
             DataRelatedQuestion<Serializable> element = (DataRelatedQuestion<Serializable>) activeForm.getElementById(elementId);
             return element.getData(key);
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOGGER.error(e.toString());
             return null;
         }
@@ -142,8 +138,7 @@ public class FormController extends ExceptionController {
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         if (hakemusState.isValid()) {
-            final Vaihe vaihe = (Vaihe) hakemusState.getModelObjects().get("vaihe");
-            modelAndView = new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + vaihe.getId());
+            modelAndView = new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + hakemusState.getVaiheId());
         } else {
             for (Map.Entry<String, Object> stringObjectEntry : hakemusState.getModelObjects().entrySet()) {
                 modelAndView.addObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());
@@ -171,10 +166,11 @@ public class FormController extends ExceptionController {
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         modelAndView.addObject("form", activeForm);
         final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId());
-        modelAndView.addObject("categoryData", hakemusService.getHakemus(hakemusId).getVastaukset());
+        final Hakemus hakemus = hakemusService.getHakemus(hakemusId);
+        modelAndView.addObject("categoryData", hakemus.getVastaukset());
         modelAndView.addObject("hakemusId", hakemusId);
         //TODO: implement application number
-        return modelAndView.addObject("applicationNumber", new Date().getTime());
+        return modelAndView.addObject("applicationNumber", hakemus.getMeta().get(Hakemus.HAKEMUS_OID));
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{vaiheId}/{teemaId}/help", method = RequestMethod.GET)

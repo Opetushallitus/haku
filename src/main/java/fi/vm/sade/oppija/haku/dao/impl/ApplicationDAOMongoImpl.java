@@ -24,8 +24,8 @@ import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.User;
-import fi.vm.sade.oppija.haku.domain.Vaihe;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -46,33 +46,35 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     public static final String HAKEMUS_DATA = "hakemusData";
     public static final String HAKEMUS = "hakemus";
     private static final String SEQUENCE_FIELD = "seq";
-    private static final String HAKEMUS_OID = "HakemusOid";
     private static final String OID_PREFIX = "1.2.3.4.5.";
 
     @Override
-    public Hakemus tallennaVaihe(User user, Vaihe vaihe) {
+    public HakemusState tallennaVaihe(HakemusState state) {
         DBObject query = new BasicDBObject();
-        query.put(HAKU_ID, vaihe.getHakemusId().getApplicationPeriodId());
-        query.put(LOMAKE_ID, vaihe.getHakemusId().getFormId());
-        query.put(USER_ID, user.getUserName());
+        final HakemusId hakemusId = state.getHakemus().getHakemusId();
+        query.put(HAKU_ID, hakemusId.getApplicationPeriodId());
+        query.put(LOMAKE_ID, hakemusId.getFormId());
+        final String userName = state.getHakemus().getUser().getUserName();
+        query.put(USER_ID, userName);
         DBObject one = getCollection().findOne(query);
-        Hakemus hakemus = new Hakemus(vaihe.getHakemusId(), user);
         Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
         if (one != null) {
             vastaukset.putAll((Map<String, Map<String, String>>) one.toMap().get(HAKEMUS_DATA));
         } else {
             one = new BasicDBObject();
-            one.put(HAKU_ID, vaihe.getHakemusId().getApplicationPeriodId());
-            one.put(LOMAKE_ID, vaihe.getHakemusId().getFormId());
-            one.put(HAKEMUS_OID, OID_PREFIX + getNextId());
-            one.put(USER_ID, user.getUserName());
+            one.put(HAKU_ID, hakemusId.getApplicationPeriodId());
+            one.put(LOMAKE_ID, hakemusId.getFormId());
+            one.put(Hakemus.HAKEMUS_OID, OID_PREFIX + getNextId());
+            one.put(USER_ID, userName);
         }
-        vastaukset.put(vaihe.getVaiheId(), vaihe.getVastaukset());
+        vastaukset.put(state.getVaiheId(), state.getHakemus().getVastaukset());
         one.put(HAKEMUS_DATA, vastaukset);
-        one.put(VAIHE_ID, vaihe.getVaiheId());
+        one.put(VAIHE_ID, state.getVaiheId());
         getCollection().update(query, one, true, false);
-        hakemus.addVastaukset(vastaukset);
-        return hakemus;
+        final HakemusState hakemusState = new HakemusState(new Hakemus(hakemusId, state.getHakemus().getUser(), vastaukset));
+        //this does not belong here
+        hakemusState.setVaiheId(state.getVaiheId());
+        return hakemusState;
     }
 
     public String getNextId() {
@@ -101,14 +103,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         dbObject.put(USER_ID, user.getUserName());
         final DBObject one = getCollection().findOne(dbObject);
         Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
-        //new TimeStampModifier(map).updateCreated();
         if (one != null) {
             map = (Map<String, Map<String, String>>) one.toMap().get(HAKEMUS_DATA);
         }
-        Hakemus hakemus = new Hakemus(hakemusId, user);
-        hakemus.addVastaukset(map);
 
-        return hakemus;
+        return new Hakemus(hakemusId, user, map);
     }
 
     @Override
@@ -129,7 +128,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         if (!oid.startsWith(OID_PREFIX)) {
             throw new RuntimeException("invalid oid");
         }
-        basicDBObject.put(HAKEMUS_OID, oid);
+        basicDBObject.put(Hakemus.HAKEMUS_OID, oid);
         final DBObject one = getCollection().findOne(basicDBObject);
         if (one == null) {
             throw new ResourceNotFoundException("no hakemus found with oid " + oid);
@@ -140,9 +139,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     private Hakemus dbObjectToHakemus(final DBObject dbObject) {
         HakemusId hakemusId = new HakemusId((String) dbObject.get(HAKU_ID), (String) dbObject.get(LOMAKE_ID));
         User user = new User((String) dbObject.get(USER_ID));
-        Hakemus hakemus = new Hakemus(hakemusId, user);
-        hakemus.addMeta(HAKEMUS_OID, dbObject.get(HAKEMUS_OID).toString());
-        hakemus.addVastaukset((Map<String, Map<String, String>>) dbObject.toMap().get(HAKEMUS_DATA));
+        Hakemus hakemus = new Hakemus(hakemusId, user, (Map<String, Map<String, String>>) dbObject.toMap().get(HAKEMUS_DATA));
+        hakemus.addMeta(Hakemus.HAKEMUS_OID, dbObject.get(Hakemus.HAKEMUS_OID).toString());
         return hakemus;
     }
 }

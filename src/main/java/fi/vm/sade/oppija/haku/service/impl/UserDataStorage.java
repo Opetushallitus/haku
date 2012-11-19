@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.Vaihe;
 import fi.vm.sade.oppija.haku.service.UserHolder;
+import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -40,8 +41,8 @@ public class UserDataStorage {
         this.userHolder = userHolder;
     }
 
-    public Hakemus tallennaVaihe(Vaihe vaihe) {
-        return selectDao().tallennaVaihe(userHolder.getUser(), vaihe);
+    public HakemusState tallenna(HakemusState state) {
+        return selectDao().tallennaVaihe(state);
     }
 
     private ApplicationDAO selectDao() {
@@ -56,10 +57,8 @@ public class UserDataStorage {
         return selectDao().find(hakemusId, userHolder.getUser());
     }
 
-    public Hakemus initHakemus(Vaihe vaihe) {
-        Hakemus hakemus = new Hakemus(vaihe.getHakemusId(), userHolder.getUser());
-        hakemus.addVaiheenVastaukset(vaihe.getVaiheId(), vaihe.getVastaukset());
-        return hakemus;
+    public HakemusState initHakemusState(Vaihe vaihe) {
+        return new HakemusState(new Hakemus(vaihe.getHakemusId(), userHolder.getUser(), vaihe.getVaiheId(), vaihe.getVastaukset()));
 
     }
 

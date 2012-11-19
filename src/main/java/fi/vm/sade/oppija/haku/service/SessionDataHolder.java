@@ -20,7 +20,7 @@ import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.User;
-import fi.vm.sade.oppija.haku.domain.Vaihe;
+import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -62,11 +62,13 @@ public class SessionDataHolder implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public Hakemus tallennaVaihe(final User user, final Vaihe vaihe) {
-        Hakemus hakemus = find(vaihe.getHakemusId(), user);
-        hakemus.addVaiheenVastaukset(vaihe);
-        map.put(vaihe.getHakemusId(), hakemus);
-        return hakemus;
+    public HakemusState tallennaVaihe(final HakemusState state) {
+        Hakemus hakemus = find(state.getHakemus().getHakemusId(), state.getHakemus().getUser());
+        hakemus.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastaukset());
+        map.put(hakemus.getHakemusId(), hakemus);
+        final HakemusState hakemusState = new HakemusState(hakemus);
+        hakemusState.setVaiheId(hakemus.getVaiheId());
+        return hakemusState;
     }
 
 }

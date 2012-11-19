@@ -37,7 +37,7 @@ public class EventHandler {
     public EventHandler() {
     }
 
-    public void processEvents(HakemusState hakemusState) {
+    public HakemusState processEvents(HakemusState hakemusState) {
         for (Event event : beforeValidate) {
             event.process(hakemusState);
         }
@@ -51,6 +51,7 @@ public class EventHandler {
                 event.process(hakemusState);
             }
         }
+        return hakemusState;
     }
 
 

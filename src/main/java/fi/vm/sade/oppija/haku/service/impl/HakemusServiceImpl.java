@@ -55,14 +55,9 @@ public class HakemusServiceImpl implements HakemusService {
     public HakemusState tallennaVaihe(Vaihe vaihe) {
         LOGGER.info("save");
 
-        final Hakemus hakemus = userDataStorage.initHakemus(vaihe);
-        hakemus.setVaiheId(vaihe.getVaiheId());
-        final HakemusState hakemusState = new HakemusState(hakemus);
-        eventHandler.processEvents(hakemusState);
-
-        //userDataStorage.updateApplication(hakemus);
-        userDataStorage.tallennaVaihe(vaihe);
-        return hakemusState;
+        final HakemusState hakemus = userDataStorage.initHakemusState(vaihe);
+        final HakemusState result = eventHandler.processEvents(hakemus);
+        return userDataStorage.tallenna(result);
     }
 
     @Override

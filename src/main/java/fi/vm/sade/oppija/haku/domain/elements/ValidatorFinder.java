@@ -50,7 +50,6 @@ public class ValidatorFinder {
             element = element.parent;
             validators = element.getValidators();
         }
-        log.debug("validators from " + element.getClass() + " " + element.getId());
         return validators;
     }
 }

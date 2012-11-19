@@ -95,4 +95,7 @@ public class HakemusState {
         return vaiheId;
     }
 
+    public void setVaiheId(String vaiheId) {
+        this.vaiheId = vaiheId;
+    }
 }

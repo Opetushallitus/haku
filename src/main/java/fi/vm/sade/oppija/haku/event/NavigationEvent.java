@@ -43,25 +43,24 @@ public class NavigationEvent extends AbstractEvent {
 
     @Override
     public void process(HakemusState hakemusState) {
-        Vaihe vaihe = getNextCategory(hakemusState);
-        hakemusState.addModelObject("vaihe", vaihe);
+        setNextCategoryIfValid(hakemusState);
     }
 
-    private Vaihe getNextCategory(HakemusState hakemusState) {
+    private void setNextCategoryIfValid(HakemusState hakemusState) {
         Hakemus hakemus = hakemusState.getHakemus();
         Form activeForm = formService.getActiveForm(hakemus.getHakemusId().getApplicationPeriodId(), hakemus.getHakemusId().getFormId());
 
         Vaihe vaihe = activeForm.getCategory(hakemus.getVaiheId());
         if (hakemusState.isValid()) {
             vaihe = selectNextPrevOrCurrent(hakemusState, vaihe);
+            hakemusState.setVaiheId(vaihe.getId());
         }
-        return vaihe;
     }
 
-    private Vaihe selectNextPrevOrCurrent(HakemusState values, Vaihe vaihe) {
-        if (values.isNavigateNext() && vaihe.isHasNext()) {
+    private Vaihe selectNextPrevOrCurrent(HakemusState hakemusState, Vaihe vaihe) {
+        if (hakemusState.isNavigateNext() && vaihe.isHasNext()) {
             return vaihe.getNext();
-        } else if (values.isNavigatePrev() && vaihe.isHasPrev()) {
+        } else if (hakemusState.isNavigatePrev() && vaihe.isHasPrev()) {
             return vaihe.getPrev();
         }
         return vaihe;
