@@ -23,6 +23,9 @@
              todir="tomcat@${tomcat-host}:/data00/tomcat/apache-tomcat-7.0.29/webapps/"
              keyfile="${user.home}/.ssh/id_rsa"
              />
+        <sshexec command="chmod 755 /data00/tomcat/apache-tomcat-7.0.29/webapps/haku.war"
+                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
+                 passphrase="" trust="true" failonerror="false" />
 
         <echo>Start Tomcat</echo>
         <sshexec command="/etc/init.d/tomcat start"
