@@ -79,7 +79,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         DBObject update = new BasicDBObject("$inc", change); // the $inc here is a mongodb command for increment
 
         // Atomically updates the sequence field and returns the value for you
-        DBObject res = seq.findAndModify(new BasicDBObject(), new BasicDBObject(), new BasicDBObject(), false, update, true, true);
+        final BasicDBObject query = new BasicDBObject("$eq", new BasicDBObject("Anything", "1"));
+        //final BasicDBObject query = new BasicDBObject();
+        DBObject res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
         return res.get(SEQUENCE_FIELD).toString();
     }
 
