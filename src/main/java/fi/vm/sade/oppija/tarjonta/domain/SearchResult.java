@@ -41,7 +41,9 @@ public class SearchResult {
                         //los.put("key", "" + k);
                         k++;
                     }
-                } else map.put(key, result.get(key).iterator().next());
+                } else {
+                    map.put(key, result.get(key).iterator().next());
+                }
             }
 
 
