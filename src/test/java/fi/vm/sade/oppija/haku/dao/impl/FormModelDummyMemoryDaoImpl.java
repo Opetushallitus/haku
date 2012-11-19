@@ -20,7 +20,7 @@ import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
-import fi.vm.sade.oppija.haku.domain.Organisaatio;
+import fi.vm.sade.oppija.haku.domain.PostOffice;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.Teema;
@@ -72,15 +72,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
         Map<String, List<Question>> oppiaineMap = new HashMap<String, List<Question>>();
-
-        int AMOUNT_OF_TEST_OPETUSPISTE = 5;
-        int AMOUNT_OF_TEST_HAKUKOHDE = 5;
-        List<Organisaatio> institutes = new ArrayList<Organisaatio>();
-
-        for (int i = 0; i < AMOUNT_OF_TEST_OPETUSPISTE; ++i) {
-            Organisaatio op = new Organisaatio(String.valueOf(i), "Koulu" + i);
-            institutes.add(op);
-        }
 
         List<Question> oppiaineList = new ArrayList<Question>();
         oppiaineList.add(new SubjectRow("tietotekniikka", "Tietotekniikka"));
@@ -194,7 +185,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 //        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[13579]\\w", sukupuoli.getOptions().get(0));
 //        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[24680]\\w", sukupuoli.getOptions().get(1));
 
-        Element postinumero = new PostalCode("Postinumero", "Postinumero");
+        Element postinumero = new PostalCode("Postinumero", "Postinumero", getPostOffices());
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
@@ -526,5 +517,36 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-
+    private Map<String, PostOffice> getPostOffices() {
+        Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
+        PostOffice helsinki = new PostOffice("Helsinki");
+        PostOffice espoo = new PostOffice("Espoo");
+        PostOffice tampere = new PostOffice("Tampere");
+        postOffices.put("00180", helsinki);
+        postOffices.put("00002", helsinki);
+        postOffices.put("00100", helsinki);
+        postOffices.put("00102", helsinki);
+        postOffices.put("00120", helsinki);
+        postOffices.put("00130", helsinki);
+        postOffices.put("00140", helsinki);
+        postOffices.put("00150", helsinki);
+        postOffices.put("00160", helsinki);
+        postOffices.put("00170", helsinki);
+        postOffices.put("00190", helsinki);
+        postOffices.put("00200", helsinki);
+        postOffices.put("02100", espoo);
+        postOffices.put("02110", espoo);
+        postOffices.put("02120", espoo);
+        postOffices.put("02130", espoo);
+        postOffices.put("02140", espoo);
+        postOffices.put("02150", espoo);
+        postOffices.put("02160", espoo);
+        postOffices.put("02170", espoo);
+        postOffices.put("02230", espoo);
+        postOffices.put("33100", tampere);
+        postOffices.put("33310", tampere);
+        postOffices.put("33540", tampere);
+        postOffices.put("33200", tampere);
+        return postOffices;
+    }
 }

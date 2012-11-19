@@ -13,4 +13,12 @@
     <div class="clear"></div>
     <haku:viewChilds element="${element}"/>
 </div>
+<script type="text/javascript">
+    var postalcode_settings = {
+        applicationPeriodId : "${hakemusId.applicationPeriodId}",
+        formId : "${hakemusId.formId}",
+        vaiheId : "${vaihe.id}",
+        teemaId : "${parent.id}"
+    }
+</script>
 <script type="text/javascript" src="/haku/resources/javascript/postalcode.js"></script>

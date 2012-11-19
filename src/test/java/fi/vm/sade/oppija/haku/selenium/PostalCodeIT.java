@@ -20,6 +20,7 @@ import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.haku.domain.PostOffice;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.Teema;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
@@ -31,6 +32,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
 
@@ -54,7 +57,9 @@ public class PostalCodeIT extends AbstractSeleniumBase {
 
         Teema testiRyhma = new Teema("testiGrp", "TestiGrp", null);
         testivaihe.addChild(testiRyhma);
-        PostalCode postinumero = new PostalCode("postinumero", "postinumero");
+        Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
+        postOffices.put("00100", new PostOffice("Helsinki"));
+        PostalCode postinumero = new PostalCode("postinumero", "postinumero", postOffices);
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");

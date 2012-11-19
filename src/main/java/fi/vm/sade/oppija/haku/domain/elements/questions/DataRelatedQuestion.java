@@ -13,21 +13,31 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-
-package fi.vm.sade.oppija.haku.domain.elements.custom;
+package fi.vm.sade.oppija.haku.domain.elements.questions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.vm.sade.oppija.haku.domain.PostOffice;
-import fi.vm.sade.oppija.haku.domain.elements.questions.DataRelatedQuestion;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
+ * Base class of data related question.
+ * Contains key value pairs of data.
  * @author Mikko Majapuro
  */
-public class PostalCode extends DataRelatedQuestion<PostOffice> {
+public abstract class DataRelatedQuestion<E extends Serializable> extends Question {
+    protected Map<String, E> data;
+    
+    protected DataRelatedQuestion(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
+            @JsonProperty(value = "data") Map<String, E> data) {
+        super(id, title);
+        this.data = data;
+    }
 
-    public PostalCode(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
-            @JsonProperty(value = "data") Map<String, PostOffice> data) {
-        super(id, title, data);
+    public Map<String, E> getData() {
+        return data;
+    }
+    
+    public E getData(String key) {
+        return data.get(key);
     }
 }

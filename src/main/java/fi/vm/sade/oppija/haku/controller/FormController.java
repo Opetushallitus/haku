@@ -20,10 +20,12 @@ import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.HakemusId;
 import fi.vm.sade.oppija.haku.domain.elements.*;
+import fi.vm.sade.oppija.haku.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import fi.vm.sade.oppija.haku.service.UserPrefillDataService;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
+import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -102,6 +105,24 @@ public class FormController extends ExceptionController {
         values = userPrefillDataService.populateWithPrefillData(values);
         modelAndView.addObject("categoryData", values);
         return modelAndView.addObject("hakemusId", hakemusId);
+    }
+    
+    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{elementId}/relatedData/{key}", method = RequestMethod.GET,
+            produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public Serializable getElementRelatedData(@PathVariable final String applicationPeriodId,
+                                   @PathVariable final String formId,
+                                   @PathVariable final String elementId,
+                                   @PathVariable final String key) {
+        LOGGER.debug("getElementRelatedData {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, elementId, key});
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        try {
+            DataRelatedQuestion<Serializable> element = (DataRelatedQuestion<Serializable>) activeForm.getElementById(elementId);
+            return element.getData(key);
+        } catch(Exception e) {
+            LOGGER.error(e.toString());
+            return null;
+        }
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
