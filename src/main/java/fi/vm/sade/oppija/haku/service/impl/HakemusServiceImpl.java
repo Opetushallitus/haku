@@ -66,6 +66,11 @@ public class HakemusServiceImpl implements HakemusService {
     }
 
     @Override
+    public Hakemus getHakemus(String oid) {
+        return userDataStorage.applicationDAO.find(oid);
+    }
+
+    @Override
     public List<HakemusInfo> findAll() {
         List<HakemusInfo> all = new ArrayList<HakemusInfo>();
         final List<Hakemus> hakemusList = userDataStorage.findAll();

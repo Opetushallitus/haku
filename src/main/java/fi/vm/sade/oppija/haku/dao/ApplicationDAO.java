@@ -35,4 +35,6 @@ public interface ApplicationDAO {
     Hakemus find(HakemusId hakemusId, User user);
 
     List<Hakemus> findAll(User user);
+
+    Hakemus find(String oid);
 }

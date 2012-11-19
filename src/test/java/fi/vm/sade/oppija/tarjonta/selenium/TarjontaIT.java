@@ -19,10 +19,10 @@ package fi.vm.sade.oppija.tarjonta.selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.common.selenium.AdminEditPage;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
+
 public class TarjontaIT extends AbstractSeleniumBase {
 
     @Before

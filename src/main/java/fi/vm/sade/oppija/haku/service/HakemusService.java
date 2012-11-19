@@ -36,4 +36,6 @@ public interface HakemusService {
     Hakemus getHakemus(HakemusId hakemusId);
 
     HakemusState tallennaVaihe(final Vaihe vaihe);
+
+    Hakemus getHakemus(String oid);
 }

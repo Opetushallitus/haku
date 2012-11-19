@@ -30,9 +30,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mikko Majapuro

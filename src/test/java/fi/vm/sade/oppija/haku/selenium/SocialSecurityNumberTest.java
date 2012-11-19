@@ -10,7 +10,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * European Union Public Licence for more details.
  */
 
@@ -23,17 +23,14 @@ import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.haku.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
-import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 
 /**

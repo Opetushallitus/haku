@@ -2,7 +2,6 @@ package fi.vm.sade.oppija.haku.it;
 
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;

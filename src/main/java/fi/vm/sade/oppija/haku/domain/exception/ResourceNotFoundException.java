@@ -22,6 +22,8 @@ package fi.vm.sade.oppija.haku.domain.exception;
  * @since 1.1
  */
 public class ResourceNotFoundException extends RuntimeException {
+    private static final long serialVersionUID = -8188728650814173417L;
+
     public ResourceNotFoundException(final String message) {
         super(message);
     }

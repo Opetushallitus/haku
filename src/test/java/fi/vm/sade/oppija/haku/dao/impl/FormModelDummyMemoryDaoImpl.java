@@ -29,7 +29,6 @@ import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.*;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.validation.Validator;
 import org.springframework.stereotype.Service;

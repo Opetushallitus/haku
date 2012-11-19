@@ -85,7 +85,7 @@ public class TomcatContainer implements DisposableBean {
         mTomcat.setBaseDir(mWorkingDir);
         mTomcat.getHost().setAppBase(mWorkingDir);
         mTomcat.getHost().setAutoDeploy(true);
-        mTomcat.getHost().setDeployOnStartup(true);
+        mTomcat.getHost().setDeployOnStartup(false);
     }
 
 
@@ -94,9 +94,9 @@ public class TomcatContainer implements DisposableBean {
         System.setProperty(TARJONTA_INDEX_URL, "http://localhost:" + getPort() + "/solr/");
         System.setProperty(TARJONTA_DATA_URL, "http://localhost:" + getPort() + "/haku/tarjontadev/learningDownloadPOC.xml");
 
-        mTomcat.addWebapp(mTomcat.getHost(), getContextPath(), webApp.getAbsolutePath());
         prepareSolr();
         mTomcat.addWebapp(mTomcat.getHost(), "/solr", solr.getAbsolutePath());
+        mTomcat.addWebapp(mTomcat.getHost(), getContextPath(), webApp.getAbsolutePath());
 
     }
 

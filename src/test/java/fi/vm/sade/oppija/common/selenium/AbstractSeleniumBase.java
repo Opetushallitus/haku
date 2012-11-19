@@ -23,10 +23,7 @@ import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.it.TomcatContainerBase;
 import fi.vm.sade.oppija.haku.selenium.SeleniumHelper;
 import org.junit.Before;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Set;
 
@@ -34,15 +31,16 @@ import java.util.Set;
  * @author jukka
  * @version 10/15/121:13 PM}
  * @since 1.1
+ *        <p/>
+ *        NOTE: NO OTHER CONTEXT DEFINITIONS here, do not mix test context with it-context
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/test-context.xml")
 public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected SeleniumHelper seleniumHelper;
 
     @Autowired
     SeleniumContainer container;
+
     @Autowired
     TestDBFactoryBean dbFactory;
 

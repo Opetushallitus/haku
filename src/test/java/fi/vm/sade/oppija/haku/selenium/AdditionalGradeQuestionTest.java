@@ -20,7 +20,6 @@ import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -32,6 +31,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Hannu Lyytikainen
  */
+
 public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
 
     public static final String OPETUSPISTE = "Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö";

@@ -16,22 +16,18 @@
 
 package fi.vm.sade.oppija.haku.selenium;
 
+import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Hannu Lyytikainen
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/test-context.xml")
 public class GradeGridIT extends AbstractSeleniumBase {
 
     @Before

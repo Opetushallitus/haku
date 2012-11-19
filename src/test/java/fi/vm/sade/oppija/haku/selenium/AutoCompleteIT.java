@@ -29,6 +29,7 @@ import static org.junit.Assert.assertFalse;
 /**
  * @author Mikko Majapuro
  */
+
 public class AutoCompleteIT extends AbstractSeleniumBase {
 
     @Before

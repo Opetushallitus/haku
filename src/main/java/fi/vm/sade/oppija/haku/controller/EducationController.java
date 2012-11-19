@@ -41,10 +41,11 @@ import java.util.Set;
  * @author Mikko Majapuro
  */
 @Controller
-@RequestMapping(value = "/education")
+@RequestMapping(value = EducationController.EDUCATION_CONTROLLER_PATH)
 public class EducationController {
 
     public static final String TERM = "term";
+    public static final String EDUCATION_CONTROLLER_PATH = "/education";
 
     @Qualifier("HakukohdeServiceSolrImpl")
     @Autowired

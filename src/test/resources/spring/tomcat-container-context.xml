@@ -4,11 +4,19 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
+    <import resource="haku-context.xml"/>
+
     <bean id="tomcat" class="fi.vm.sade.oppija.haku.TomcatContainer">
     </bean>
 
     <bean id="seleniumContainer" class="fi.vm.sade.oppija.haku.SeleniumContainer">
         <constructor-arg name="tomcatContainer" ref="tomcat"/>
+    </bean>
+
+
+    <bean id="testDBFactoryBean" class="fi.vm.sade.oppija.haku.dao.TestDBFactoryBean">
+        <property name="mongo" ref="mongo"/>
+        <property name="name" value="${mongo.test-db.name}"/>
     </bean>
 
 </beans>

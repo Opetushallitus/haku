@@ -40,4 +40,12 @@ public abstract class AbstractDAOMongoImpl {
 
     protected abstract String getCollectionName();
 
+    protected DBCollection getSequence() {
+        return db.getCollection(getSequenceName());
+    }
+
+
+    public String getSequenceName() {
+        return getCollectionName() + "-sequence";
+    }
 }
