@@ -126,10 +126,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     @Override
     public Hakemus find(String oid) {
         final BasicDBObject basicDBObject = new BasicDBObject();
-        if (!oid.startsWith(OID_PREFIX)) throw new RuntimeException("invalid oid");
+        if (!oid.startsWith(OID_PREFIX)) {
+            throw new RuntimeException("invalid oid");
+        }
         basicDBObject.put(HAKEMUS_OID, oid);
         final DBObject one = getCollection().findOne(basicDBObject);
-        if (one == null) throw new ResourceNotFoundException("no hakemus found with oid " + oid);
+        if (one == null) {
+            throw new ResourceNotFoundException("no hakemus found with oid " + oid);
+        }
         return dbObjectToHakemus(one);
     }
 
