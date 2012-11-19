@@ -236,8 +236,11 @@
     <xsl:template match="//types:LearningOpportunitySpecification/types:Classification">
         <!-- TODO: select the actual value instead of koodisto code once the value is available -->
 
-        <field name="LOSEducationDomain">
+        <field name="LOSEducationClassification">
             <xsl:value-of select="./types:EducationClassification/types:Code"/>
+        </field>
+        <field name="LOSEducationDomain">
+            <xsl:value-of select="./types:EducationDomain/types:Code"/>
         </field>
         <field name="LOSEducationDegree">
             <xsl:value-of select="./types:EducationDegree/types:Code"/>
