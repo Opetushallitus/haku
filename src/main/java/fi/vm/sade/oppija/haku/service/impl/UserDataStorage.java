@@ -58,7 +58,7 @@ public class UserDataStorage {
     }
 
     public HakemusState initHakemusState(Vaihe vaihe) {
-        return new HakemusState(new Hakemus(vaihe.getHakuLomakeId(), userHolder.getUser(), vaihe.getVaiheId(), vaihe.getVastaukset()), vaihe.getVaiheId());
+        return new HakemusState(new Hakemus(userHolder.getUser(), vaihe), vaihe.getVaiheId());
 
     }
 
