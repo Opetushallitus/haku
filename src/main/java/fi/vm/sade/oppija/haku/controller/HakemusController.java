@@ -18,12 +18,10 @@ package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,20 +37,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/hakemus", method = RequestMethod.GET)
 public class HakemusController extends ExceptionController {
 
-    @Autowired
-    HakemusService hakemusService;
-
-    @Autowired
-    @Qualifier("formServiceImpl")
-    FormService formService;
-
     private final static Logger LOGGER = LoggerFactory.getLogger(HakemusController.class);
 
-    //magic regexp here
+
+    private final HakemusService hakemusService;
+
+    @Autowired
+    public HakemusController(final HakemusService hakemusService) {
+        this.hakemusService = hakemusService;
+    }
+
     @RequestMapping(value = "/{oid:.+}", method = {RequestMethod.GET})
-    public
     @ResponseBody
-    Hakemus getHakemus(@PathVariable String oid) {
+    public Hakemus getHakemus(@PathVariable String oid) {
+        LOGGER.debug("oid {}", oid);
         return hakemusService.getHakemus(oid);
     }
 }
