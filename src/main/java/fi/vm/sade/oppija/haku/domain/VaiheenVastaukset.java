@@ -20,13 +20,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Vaihe {
+public class VaiheenVastaukset {
 
     private final HakuLomakeId hakuLomakeId;
     private final String vaiheId;
     private final Map<String, String> vastaukset = new HashMap<String, String>();
 
-    public Vaihe(final HakuLomakeId hakuLomakeId, final String vaiheId, final Map<String, String> vastaukset) {
+    public VaiheenVastaukset(final HakuLomakeId hakuLomakeId, final String vaiheId, final Map<String, String> vastaukset) {
         this.hakuLomakeId = hakuLomakeId;
         this.vaiheId = vaiheId;
         this.vastaukset.putAll(vastaukset);

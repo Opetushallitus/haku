@@ -20,6 +20,7 @@ import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
+import fi.vm.sade.oppija.haku.domain.VaiheenVastaukset;
 import fi.vm.sade.oppija.haku.domain.elements.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.haku.service.FormService;
@@ -134,7 +135,7 @@ public class FormController extends ExceptionController {
                                      @RequestBody final MultiValueMap<String, String> multiValues) {
         LOGGER.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         final HakuLomakeId hakuLomakeId = new HakuLomakeId(applicationPeriodId, formId);
-        HakemusState hakemusState = hakemusService.tallennaVaihe(new fi.vm.sade.oppija.haku.domain.Vaihe(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
+        HakemusState hakemusState = hakemusService.tallennaVaihe(new VaiheenVastaukset(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         if (hakemusState.isValid()) {

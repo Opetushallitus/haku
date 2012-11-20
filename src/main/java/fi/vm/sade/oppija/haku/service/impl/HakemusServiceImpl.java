@@ -52,7 +52,7 @@ public class HakemusServiceImpl implements HakemusService {
     }
 
     @Override
-    public HakemusState tallennaVaihe(Vaihe vaihe) {
+    public HakemusState tallennaVaihe(VaiheenVastaukset vaihe) {
         LOGGER.info("save");
 
         final HakemusState hakemus = userDataStorage.initHakemusState(vaihe);

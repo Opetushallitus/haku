@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.haku.service.impl;
 import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
-import fi.vm.sade.oppija.haku.domain.Vaihe;
+import fi.vm.sade.oppija.haku.domain.VaiheenVastaukset;
 import fi.vm.sade.oppija.haku.service.UserHolder;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ public class UserDataStorage {
         return selectDao().find(hakuLomakeId, userHolder.getUser());
     }
 
-    public HakemusState initHakemusState(Vaihe vaihe) {
+    public HakemusState initHakemusState(VaiheenVastaukset vaihe) {
         return new HakemusState(new Hakemus(userHolder.getUser(), vaihe), vaihe.getVaiheId());
 
     }

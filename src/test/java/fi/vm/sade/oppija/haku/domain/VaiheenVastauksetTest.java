@@ -22,11 +22,11 @@ import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
-public class VaiheTest {
+public class VaiheenVastauksetTest {
     private final HakuLomakeId hakuLomakeId = new HakuLomakeId("appid", "formid");
     private final HashMap<String, String> vastaukset = new HashMap<String, String>();
     private final String vaiheid = "vaiheid";
-    private final Vaihe vaihe = new Vaihe(hakuLomakeId, vaiheid, vastaukset);
+    private final VaiheenVastaukset vaihe = new VaiheenVastaukset(hakuLomakeId, vaiheid, vastaukset);
 
     @Test
     public void testGetHakemusId() throws Exception {

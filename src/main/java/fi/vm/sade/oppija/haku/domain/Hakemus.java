@@ -47,7 +47,7 @@ public class Hakemus implements Serializable {
         this.vastaukset.putAll(vastaukset);
     }
 
-    public Hakemus(User user, Vaihe vaihe) {
+    public Hakemus(User user, VaiheenVastaukset vaihe) {
         this(vaihe.getHakuLomakeId(), user);
         addVaiheenVastaukset(vaihe.getVaiheId(), vaihe.getVastaukset());
     }

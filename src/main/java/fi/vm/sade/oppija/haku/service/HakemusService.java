@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.haku.service;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakemusInfo;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
-import fi.vm.sade.oppija.haku.domain.Vaihe;
+import fi.vm.sade.oppija.haku.domain.VaiheenVastaukset;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public interface HakemusService {
 
     Hakemus getHakemus(HakuLomakeId hakuLomakeId);
 
-    HakemusState tallennaVaihe(final Vaihe vaihe);
+    HakemusState tallennaVaihe(final VaiheenVastaukset vaihe);
 
     Hakemus getHakemus(String oid);
 }
