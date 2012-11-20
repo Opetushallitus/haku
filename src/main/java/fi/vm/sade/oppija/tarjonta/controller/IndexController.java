@@ -35,12 +35,8 @@ public class IndexController {
     @Value("${tarjonta.data.url}")
     String tarjontaUrl;
 
-    private final IndexService indexService;
-
     @Autowired
-    public IndexController(final IndexService indexService) {
-        this.indexService = indexService;
-    }
+    IndexService indexService;
 
     @RequestMapping(value = "/admin/index/update")
     public

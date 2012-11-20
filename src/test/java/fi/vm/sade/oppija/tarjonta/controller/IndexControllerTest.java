@@ -28,10 +28,11 @@ public class IndexControllerTest {
 
     public static final String EXPECTED_STRING = "done";
     private IndexController indexController;
+    private IndexService indexService;
 
     @Before
     public void setUp() throws Exception {
-        indexController = new IndexController(new IndexService() {
+        indexService = new IndexService() {
 
             @Override
             public String update(URI uri) {
@@ -47,8 +48,10 @@ public class IndexControllerTest {
             public boolean generate() {
                 return true;
             }
-        });
+        };
+        indexController = new IndexController();
         indexController.tarjontaUrl = "";
+        indexController.indexService = indexService;
     }
 
     @Test
