@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.haku.service.impl;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
@@ -84,8 +84,8 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public List<Validator> getCategoryValidators(final HakemusId hakemusId, final String vaiheId) {
-        final Vaihe vaihe = getActiveForm(hakemusId.getApplicationPeriodId(), hakemusId.getFormId()).getCategory(vaiheId);
+    public List<Validator> getCategoryValidators(final HakuLomakeId hakuLomakeId, final String vaiheId) {
+        final Vaihe vaihe = getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId()).getCategory(vaiheId);
         return vaihe.getValidators();
     }
 

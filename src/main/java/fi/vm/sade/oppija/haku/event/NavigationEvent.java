@@ -48,9 +48,9 @@ public class NavigationEvent extends AbstractEvent {
 
     private void setNextCategoryIfValid(HakemusState hakemusState) {
         Hakemus hakemus = hakemusState.getHakemus();
-        Form activeForm = formService.getActiveForm(hakemus.getHakemusId().getApplicationPeriodId(), hakemus.getHakemusId().getFormId());
+        Form activeForm = formService.getActiveForm(hakemus.getHakuLomakeId().getApplicationPeriodId(), hakemus.getHakuLomakeId().getFormId());
 
-        Vaihe vaihe = activeForm.getCategory(hakemus.getVaiheId());
+        Vaihe vaihe = activeForm.getCategory(hakemusState.getVaiheId());
         if (hakemusState.isValid()) {
             vaihe = selectNextPrevOrCurrent(hakemusState, vaihe);
             hakemusState.setVaiheId(vaihe.getId());

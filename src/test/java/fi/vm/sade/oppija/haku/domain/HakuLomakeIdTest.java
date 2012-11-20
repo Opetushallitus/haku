@@ -26,35 +26,35 @@ import static org.junit.Assert.assertFalse;
  * @version 10/8/129:52 AM}
  * @since 1.1
  */
-public class HakemusIdTest {
+public class HakuLomakeIdTest {
 
     private static final String HAKU_ID = "hid";
     private static final String LOMAKE_ID = "lid";
-    public static final HakemusId HAKEMUS_ID1 = new HakemusId(HAKU_ID, LOMAKE_ID);
-    public static final HakemusId HAKEMUS_ID2 = new HakemusId(HAKU_ID, LOMAKE_ID);
+    public static final HakuLomakeId HAKU_LOMAKE_ID_1 = new HakuLomakeId(HAKU_ID, LOMAKE_ID);
+    public static final HakuLomakeId HAKU_LOMAKE_ID_2 = new HakuLomakeId(HAKU_ID, LOMAKE_ID);
 
     @Test
     public void testHakemusIdEquals() {
-        assertEquals(HAKEMUS_ID1, HAKEMUS_ID2);
+        assertEquals(HAKU_LOMAKE_ID_1, HAKU_LOMAKE_ID_2);
     }
 
     @Test
     public void testNotEquals() {
-        assertFalse(HAKEMUS_ID1.equals(new HakemusId(HAKU_ID, LOMAKE_ID + "skldjfs")));
+        assertFalse(HAKU_LOMAKE_ID_1.equals(new HakuLomakeId(HAKU_ID, LOMAKE_ID + "skldjfs")));
     }
 
     @Test(expected = NullPointerException.class)
     public void testNullHakuId() {
-        new HakemusId(null, LOMAKE_ID);
+        new HakuLomakeId(null, LOMAKE_ID);
     }
 
     @Test(expected = NullPointerException.class)
     public void testNullLomakeId() {
-        new HakemusId(HAKU_ID, null);
+        new HakuLomakeId(HAKU_ID, null);
     }
 
     @Test(expected = NullPointerException.class)
     public void testNullHakuIdAndLomakeId() {
-        new HakemusId(null, null);
+        new HakuLomakeId(null, null);
     }
 }

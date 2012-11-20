@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.haku.dao.impl;
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.PostOffice;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
@@ -508,7 +508,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     @Override
-    public List<Validator> getCategoryValidators(HakemusId hakemusId, final String vaiheId) {
+    public List<Validator> getCategoryValidators(HakuLomakeId hakuLomakeId, final String vaiheId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

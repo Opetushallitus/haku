@@ -31,12 +31,12 @@ public class HakemusState {
     private boolean navigatePrev = false;
     private String vaiheId;
 
-    public HakemusState(Hakemus hakemus) {
+    public HakemusState(Hakemus hakemus, String vaiheId) {
         this.errors = new HashMap<String, String>();
         modelObjects.put(HAKEMUS_KEY, hakemus);
         modelObjects.put("categoryData", hakemus.getVastaukset());
         modelObjects.put("errorMessages", errors);
-        this.vaiheId = hakemus.getVaiheId();
+        this.vaiheId = vaiheId;
     }
 
     public boolean isValid() {

@@ -10,7 +10,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * European Union Public Licence for more details.
  */
 
@@ -32,7 +32,7 @@ public class HakemusControllerTest {
     public static final String APPLICATION_PERIOD_ID = "aid";
     public static final String FORM_ID = "fid";
     public static final String USERNAME = "username";
-    public static final Hakemus HAKEMUS = new Hakemus(new HakemusId(APPLICATION_PERIOD_ID, FORM_ID), new User(USERNAME));
+    public static final Hakemus HAKEMUS = new Hakemus(new HakuLomakeId(APPLICATION_PERIOD_ID, FORM_ID), new User(USERNAME));
     private HakemusController hakemusController;
 
     @Before
@@ -44,9 +44,10 @@ public class HakemusControllerTest {
             }
 
             @Override
-            public Hakemus getHakemus(HakemusId hakemusId) {
-                return null;
+            public Hakemus getHakemus(HakuLomakeId hakuLomakeId) {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
             }
+
 
             @Override
             public HakemusState tallennaVaihe(Vaihe vaihe) {
@@ -63,6 +64,6 @@ public class HakemusControllerTest {
     @Test
     public void testGetHakemus() throws Exception {
         Hakemus hakemus = hakemusController.getHakemus(OID);
-        assertEquals(HAKEMUS.getHakemusId(), hakemus.getHakemusId());
+        assertEquals(HAKEMUS.getHakuLomakeId(), hakemus.getHakuLomakeId());
     }
 }

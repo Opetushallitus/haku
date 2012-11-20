@@ -70,9 +70,9 @@ public class HakemusServiceImpl implements HakemusService {
         List<HakemusInfo> all = new ArrayList<HakemusInfo>();
         final List<Hakemus> hakemusList = userDataStorage.findAll();
         for (Hakemus hakemus : hakemusList) {
-            final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(hakemus.getHakemusId().getApplicationPeriodId());
+            final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(hakemus.getHakuLomakeId().getApplicationPeriodId());
             final String id = applicationPeriod.getId();
-            final String formId = hakemus.getHakemusId().getFormId();
+            final String formId = hakemus.getHakuLomakeId().getFormId();
             final Form form = formService.getForm(id, formId);
             all.add(new HakemusInfo(hakemus, form, applicationPeriod));
         }
@@ -80,8 +80,8 @@ public class HakemusServiceImpl implements HakemusService {
     }
 
     @Override
-    public Hakemus getHakemus(HakemusId hakemusId) {
-        return userDataStorage.find(hakemusId);
+    public Hakemus getHakemus(HakuLomakeId hakuLomakeId) {
+        return userDataStorage.find(hakuLomakeId);
     }
 
 }

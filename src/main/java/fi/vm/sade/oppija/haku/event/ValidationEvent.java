@@ -53,6 +53,6 @@ public class ValidationEvent extends AbstractEvent {
     }
 
     protected List<Validator> getValidators(HakemusState hakemusState) {
-        return formService.getCategoryValidators(hakemusState.getHakemus().getHakemusId(), hakemusState.getVaiheId());
+        return formService.getCategoryValidators(hakemusState.getHakemus().getHakuLomakeId(), hakemusState.getVaiheId());
     }
 }

@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.haku.dao.impl;
 import fi.vm.sade.oppija.haku.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.User;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.junit.Test;
@@ -46,11 +46,11 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     @Qualifier("applicationDAOMongoImpl")
     private ApplicationDAO applicationDAO;
 
-    private HakemusId hakemusId;
+    private HakuLomakeId hakuLomakeId;
 
     public ApplicationDAOMongoImplTest() {
         String id = String.valueOf(System.currentTimeMillis());
-        hakemusId = new HakemusId(id, id);
+        hakuLomakeId = new HakuLomakeId(id, id);
     }
 
     @Test
@@ -58,21 +58,21 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>();
         vaiheenVastaukset.put("avain", "arvo");
 
-        final Hakemus hakemus1 = new Hakemus(hakemusId, TEST_USER, "vaihe1", vaiheenVastaukset);
-        final HakemusState hakemus = applicationDAO.tallennaVaihe(new HakemusState(hakemus1));
+        final Hakemus hakemus1 = new Hakemus(hakuLomakeId, TEST_USER, "vaihe1", vaiheenVastaukset);
+        final HakemusState hakemus = applicationDAO.tallennaVaihe(new HakemusState(hakemus1, "vaihe1"));
         assertEquals("arvo", hakemus.getHakemus().getVastaukset().get("avain"));
     }
 
     @Test
     public void testFindAll() throws Exception {
         testTallennaVaihe();
-        Hakemus hakemus = applicationDAO.find(hakemusId, TEST_USER);
+        Hakemus hakemus = applicationDAO.find(hakuLomakeId, TEST_USER);
         assertEquals(ARVO, hakemus.getVastaukset().get(AVAIN));
     }
 
     @Test
     public void testFindAllNotFound() throws Exception {
-        Hakemus hakemus = applicationDAO.find(hakemusId, TEST_USER2);
+        Hakemus hakemus = applicationDAO.find(hakuLomakeId, TEST_USER2);
         assertNotSame(ARVO, hakemus.getVastaukset().get(AVAIN));
     }
 

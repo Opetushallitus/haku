@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.haku.event;
 
 import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.User;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class EventHandlerTest {
 
     private HakemusState createEmptyState() {
         final String id = "id";
-        return new HakemusState(new Hakemus(new HakemusId(id, id), new User("test")));
+        return new HakemusState(new Hakemus(new HakuLomakeId(id, id), new User("test")), id);
     }
 
     private EventHandler createErrorEvent(EventHandler eventHandler1) {

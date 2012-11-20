@@ -46,8 +46,8 @@ public class SkipValidationEvent extends AbstractEvent {
         Hakemus hakemus = hakemusState.getHakemus();
         if (hakemusState.getHakemus().getVastaukset().containsKey("enabling-submit")) {
             hakemusState.skipValidation();
-            Form activeForm = formService.getActiveForm(hakemus.getHakemusId().getApplicationPeriodId(), hakemus.getHakemusId().getFormId());
-            Vaihe vaihe = activeForm.getCategory(hakemus.getVaiheId());
+            Form activeForm = formService.getActiveForm(hakemus.getHakuLomakeId().getApplicationPeriodId(), hakemus.getHakuLomakeId().getFormId());
+            Vaihe vaihe = activeForm.getCategory(hakemusState.getVaiheId());
             hakemusState.addModelObject("vaihe", vaihe);
         }
     }

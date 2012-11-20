@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.haku.service.impl;
 
 import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.Vaihe;
 import fi.vm.sade.oppija.haku.service.UserHolder;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
@@ -53,12 +53,12 @@ public class UserDataStorage {
         return dao;
     }
 
-    public Hakemus find(HakemusId hakemusId) {
-        return selectDao().find(hakemusId, userHolder.getUser());
+    public Hakemus find(HakuLomakeId hakuLomakeId) {
+        return selectDao().find(hakuLomakeId, userHolder.getUser());
     }
 
     public HakemusState initHakemusState(Vaihe vaihe) {
-        return new HakemusState(new Hakemus(vaihe.getHakemusId(), userHolder.getUser(), vaihe.getVaiheId(), vaihe.getVastaukset()));
+        return new HakemusState(new Hakemus(vaihe.getHakuLomakeId(), userHolder.getUser(), vaihe.getVaiheId(), vaihe.getVastaukset()), vaihe.getVaiheId());
 
     }
 

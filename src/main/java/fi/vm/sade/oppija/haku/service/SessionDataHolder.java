@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.haku.service;
 
 import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.User;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.springframework.context.annotation.Scope;
@@ -40,9 +40,9 @@ import java.util.List;
 public class SessionDataHolder implements Serializable, ApplicationDAO {
 
     private static final long serialVersionUID = -3751714345380438532L;
-    private final HashMap<HakemusId, Hakemus> map = new HashMap<HakemusId, Hakemus>();
+    private final HashMap<HakuLomakeId, Hakemus> map = new HashMap<HakuLomakeId, Hakemus>();
 
-    public Hakemus find(HakemusId id, User user) {
+    public Hakemus find(HakuLomakeId id, User user) {
         Hakemus hakemus = map.get(id);
         if (hakemus == null) {
             hakemus = new Hakemus(id, user);
@@ -63,11 +63,11 @@ public class SessionDataHolder implements Serializable, ApplicationDAO {
 
     @Override
     public HakemusState tallennaVaihe(final HakemusState state) {
-        Hakemus hakemus = find(state.getHakemus().getHakemusId(), state.getHakemus().getUser());
+        Hakemus hakemus = find(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
         hakemus.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastaukset());
-        map.put(hakemus.getHakemusId(), hakemus);
-        final HakemusState hakemusState = new HakemusState(hakemus);
-        hakemusState.setVaiheId(hakemus.getVaiheId());
+        map.put(hakemus.getHakuLomakeId(), hakemus);
+        final HakemusState hakemusState = new HakemusState(hakemus, state.getVaiheId());
+        hakemusState.setVaiheId(state.getVaiheId());
         return hakemusState;
     }
 

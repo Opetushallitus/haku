@@ -22,18 +22,18 @@ import java.util.Map;
 
 public class Vaihe {
 
-    private final HakemusId hakemusId;
+    private final HakuLomakeId hakuLomakeId;
     private final String vaiheId;
     private final Map<String, String> vastaukset = new HashMap<String, String>();
 
-    public Vaihe(final HakemusId hakemusId, final String vaiheId, final Map<String, String> vastaukset) {
-        this.hakemusId = hakemusId;
+    public Vaihe(final HakuLomakeId hakuLomakeId, final String vaiheId, final Map<String, String> vastaukset) {
+        this.hakuLomakeId = hakuLomakeId;
         this.vaiheId = vaiheId;
         this.vastaukset.putAll(vastaukset);
     }
 
-    public HakemusId getHakemusId() {
-        return hakemusId;
+    public HakuLomakeId getHakuLomakeId() {
+        return hakuLomakeId;
     }
 
     public String getVaiheId() {

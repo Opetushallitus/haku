@@ -31,24 +31,24 @@ public class Hakemus implements Serializable {
 
     private static final long serialVersionUID = -7491168801255850954L;
 
-    private final HakemusId hakemusId;
+    private final HakuLomakeId hakuLomakeId;
     private final User user;
-    private String vaiheId;
+
     private final Map<String, String> meta = new HashMap<String, String>();
     private final Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
 
-    public Hakemus(final HakemusId hakemusId, final User user) {
-        this.hakemusId = hakemusId;
+    public Hakemus(final HakuLomakeId hakuLomakeId, final User user) {
+        this.hakuLomakeId = hakuLomakeId;
         this.user = user;
     }
 
-    public Hakemus(HakemusId hakemusId, User user, Map<String, Map<String, String>> vastaukset) {
-        this(hakemusId, user);
+    public Hakemus(HakuLomakeId hakuLomakeId, User user, Map<String, Map<String, String>> vastaukset) {
+        this(hakuLomakeId, user);
         this.vastaukset.putAll(vastaukset);
     }
 
-    public Hakemus(HakemusId hakemusId, User user, String vaiheId, Map<String, String> vastaukset) {
-        this(hakemusId, user);
+    public Hakemus(HakuLomakeId hakuLomakeId, User user, String vaiheId, Map<String, String> vastaukset) {
+        this(hakuLomakeId, user);
         addVaiheenVastaukset(vaiheId, vastaukset);
     }
 
@@ -65,7 +65,6 @@ public class Hakemus implements Serializable {
 
     public Hakemus addVaiheenVastaukset(final String vaiheId, Map<String, String> vastaukset) {
         this.vastaukset.put(vaiheId, vastaukset);
-        this.vaiheId = vaiheId;
         return this;
     }
 
@@ -73,8 +72,8 @@ public class Hakemus implements Serializable {
         return user;
     }
 
-    public HakemusId getHakemusId() {
-        return hakemusId;
+    public HakuLomakeId getHakuLomakeId() {
+        return hakuLomakeId;
     }
 
     public Map<String, String> getMeta() {
@@ -87,11 +86,6 @@ public class Hakemus implements Serializable {
             vastaukset.putAll(vaiheenVastaukset);
         }
         return vastaukset;
-    }
-
-
-    public String getVaiheId() {
-        return vaiheId;
     }
 
 }

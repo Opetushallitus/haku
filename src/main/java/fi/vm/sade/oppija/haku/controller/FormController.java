@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.haku.controller;
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.elements.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.haku.service.FormService;
@@ -96,11 +96,11 @@ public class FormController extends ExceptionController {
         Element element = activeForm.getElementById(elementId);
         final ModelAndView modelAndView = new ModelAndView("/elements/" + element.getType());
         modelAndView.addObject("element", element);
-        final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId());
-        Map<String, String> values = hakemusService.getHakemus(hakemusId).getVastaukset();
+        final HakuLomakeId hakuLomakeId = new HakuLomakeId(applicationPeriodId, activeForm.getId());
+        Map<String, String> values = hakemusService.getHakemus(hakuLomakeId).getVastaukset();
         values = userPrefillDataService.populateWithPrefillData(values);
         modelAndView.addObject("categoryData", values);
-        return modelAndView.addObject("hakemusId", hakemusId);
+        return modelAndView.addObject("hakemusId", hakuLomakeId);
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{elementId}/relatedData/{key}", method = RequestMethod.GET,
@@ -133,8 +133,8 @@ public class FormController extends ExceptionController {
                                      @PathVariable final String categoryId,
                                      @RequestBody final MultiValueMap<String, String> multiValues) {
         LOGGER.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
-        final HakemusId hakemusId = new HakemusId(applicationPeriodId, formId);
-        HakemusState hakemusState = hakemusService.tallennaVaihe(new fi.vm.sade.oppija.haku.domain.Vaihe(hakemusId, categoryId, multiValues.toSingleValueMap()));
+        final HakuLomakeId hakuLomakeId = new HakuLomakeId(applicationPeriodId, formId);
+        HakemusState hakemusState = hakemusService.tallennaVaihe(new fi.vm.sade.oppija.haku.domain.Vaihe(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         if (hakemusState.isValid()) {
@@ -147,7 +147,7 @@ public class FormController extends ExceptionController {
             modelAndView.addObject("category", activeForm.getCategory(categoryId));
             modelAndView.addObject("form", activeForm);
         }
-        return modelAndView.addObject("hakemusId", hakemusId);
+        return modelAndView.addObject("hakemusId", hakuLomakeId);
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/send", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
@@ -165,10 +165,10 @@ public class FormController extends ExceptionController {
         ModelAndView modelAndView = new ModelAndView("valmis");
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         modelAndView.addObject("form", activeForm);
-        final HakemusId hakemusId = new HakemusId(applicationPeriodId, activeForm.getId());
-        final Hakemus hakemus = hakemusService.getHakemus(hakemusId);
+        final HakuLomakeId hakuLomakeId = new HakuLomakeId(applicationPeriodId, activeForm.getId());
+        final Hakemus hakemus = hakemusService.getHakemus(hakuLomakeId);
         modelAndView.addObject("categoryData", hakemus.getVastaukset());
-        modelAndView.addObject("hakemusId", hakemusId);
+        modelAndView.addObject("hakemusId", hakuLomakeId);
         //TODO: implement application number
         return modelAndView.addObject("applicationNumber", hakemus.getMeta().get(Hakemus.HAKEMUS_OID));
     }

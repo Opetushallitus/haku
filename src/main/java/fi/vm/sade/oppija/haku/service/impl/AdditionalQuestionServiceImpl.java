@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.haku.service.impl;
 
-import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.Teema;
@@ -48,8 +48,8 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public Set<Question> findAdditionalQuestions(String teemaId, HakemusId hakemusId, String vaiheId) {
-        Map<String, String> hakemusValues = hakemusService.getHakemus(hakemusId).getVastaukset();
+    public Set<Question> findAdditionalQuestions(String teemaId, HakuLomakeId hakuLomakeId, String vaiheId) {
+        Map<String, String> hakemusValues = hakemusService.getHakemus(hakuLomakeId).getVastaukset();
         List<String> hakukohdeList = new ArrayList<String>();
 
         int prefNumber = 1;
@@ -59,13 +59,13 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
             prefNumber++;
         }
 
-        return findAdditionalQuestions(teemaId, hakukohdeList, hakemusId, vaiheId);
+        return findAdditionalQuestions(teemaId, hakukohdeList, hakuLomakeId, vaiheId);
     }
 
     @Override
-    public Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakemusId hakemusId, final String vaiheId) {
+    public Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakuLomakeId hakuLomakeId, final String vaiheId) {
         Teema teema = null;
-        Form form = formService.getActiveForm(hakemusId.getApplicationPeriodId(), hakemusId.getFormId());
+        Form form = formService.getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId());
         Vaihe vaihe = form.getCategory(vaiheId);
         for (Element e : vaihe.getChildren()) {
             if (e.getId().equals(teemaId)) {
@@ -91,14 +91,14 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public Map<String, Set<Question>> findAdditionalQuestionsInCategory(final HakemusId hakemusId, final String vaiheId) {
-        Form form = formService.getActiveForm(hakemusId.getApplicationPeriodId(), hakemusId.getFormId());
+    public Map<String, Set<Question>> findAdditionalQuestionsInCategory(final HakuLomakeId hakuLomakeId, final String vaiheId) {
+        Form form = formService.getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId());
         Vaihe vaihe = form.getCategory(vaiheId);
         Map<String, Set<Question>> questionMap = new HashMap<String, Set<Question>>();
 
         if (vaihe != null) {
             for (Element e : vaihe.getChildren()) {
-                questionMap.put(e.getId(), findAdditionalQuestions(e.getId(), hakemusId, vaiheId));
+                questionMap.put(e.getId(), findAdditionalQuestions(e.getId(), hakuLomakeId, vaiheId));
             }
         }
         return questionMap;

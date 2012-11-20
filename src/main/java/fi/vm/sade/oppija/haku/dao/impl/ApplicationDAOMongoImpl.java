@@ -22,7 +22,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.User;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
@@ -51,9 +51,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     @Override
     public HakemusState tallennaVaihe(HakemusState state) {
         DBObject query = new BasicDBObject();
-        final HakemusId hakemusId = state.getHakemus().getHakemusId();
-        query.put(HAKU_ID, hakemusId.getApplicationPeriodId());
-        query.put(LOMAKE_ID, hakemusId.getFormId());
+        final HakuLomakeId hakuLomakeId = state.getHakemus().getHakuLomakeId();
+        query.put(HAKU_ID, hakuLomakeId.getApplicationPeriodId());
+        query.put(LOMAKE_ID, hakuLomakeId.getFormId());
         final String userName = state.getHakemus().getUser().getUserName();
         query.put(USER_ID, userName);
         DBObject one = getCollection().findOne(query);
@@ -62,8 +62,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
             vastaukset.putAll((Map<String, Map<String, String>>) one.toMap().get(HAKEMUS_DATA));
         } else {
             one = new BasicDBObject();
-            one.put(HAKU_ID, hakemusId.getApplicationPeriodId());
-            one.put(LOMAKE_ID, hakemusId.getFormId());
+            one.put(HAKU_ID, hakuLomakeId.getApplicationPeriodId());
+            one.put(LOMAKE_ID, hakuLomakeId.getFormId());
             one.put(Hakemus.HAKEMUS_OID, OID_PREFIX + getNextId());
             one.put(USER_ID, userName);
         }
@@ -71,10 +71,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         one.put(HAKEMUS_DATA, vastaukset);
         one.put(VAIHE_ID, state.getVaiheId());
         getCollection().update(query, one, true, false);
-        final HakemusState hakemusState = new HakemusState(new Hakemus(hakemusId, state.getHakemus().getUser(), vastaukset));
-        //this does not belong here
-        hakemusState.setVaiheId(state.getVaiheId());
-        return hakemusState;
+        return new HakemusState(new Hakemus(hakuLomakeId, state.getHakemus().getUser(), vastaukset), state.getVaiheId());
     }
 
     public String getNextId() {
@@ -96,10 +93,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     }
 
     @Override
-    public Hakemus find(HakemusId hakemusId, User user) {
+    public Hakemus find(HakuLomakeId hakuLomakeId, User user) {
         DBObject dbObject = new BasicDBObject();
-        dbObject.put(HAKU_ID, hakemusId.getApplicationPeriodId());
-        dbObject.put(LOMAKE_ID, hakemusId.getFormId());
+        dbObject.put(HAKU_ID, hakuLomakeId.getApplicationPeriodId());
+        dbObject.put(LOMAKE_ID, hakuLomakeId.getFormId());
         dbObject.put(USER_ID, user.getUserName());
         final DBObject one = getCollection().findOne(dbObject);
         Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
@@ -107,7 +104,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
             map = (Map<String, Map<String, String>>) one.toMap().get(HAKEMUS_DATA);
         }
 
-        return new Hakemus(hakemusId, user, map);
+        return new Hakemus(hakuLomakeId, user, map);
     }
 
     @Override
@@ -137,9 +134,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     }
 
     private Hakemus dbObjectToHakemus(final DBObject dbObject) {
-        HakemusId hakemusId = new HakemusId((String) dbObject.get(HAKU_ID), (String) dbObject.get(LOMAKE_ID));
+        HakuLomakeId hakuLomakeId = new HakuLomakeId((String) dbObject.get(HAKU_ID), (String) dbObject.get(LOMAKE_ID));
         User user = new User((String) dbObject.get(USER_ID));
-        Hakemus hakemus = new Hakemus(hakemusId, user, (Map<String, Map<String, String>>) dbObject.toMap().get(HAKEMUS_DATA));
+        Hakemus hakemus = new Hakemus(hakuLomakeId, user, (Map<String, Map<String, String>>) dbObject.toMap().get(HAKEMUS_DATA));
         hakemus.addMeta(Hakemus.HAKEMUS_OID, dbObject.get(Hakemus.HAKEMUS_OID).toString());
         return hakemus;
     }

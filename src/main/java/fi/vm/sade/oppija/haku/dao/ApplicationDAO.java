@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.haku.dao;
 
 import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.domain.HakemusId;
+import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.User;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 
@@ -32,7 +32,7 @@ public interface ApplicationDAO {
 
     HakemusState tallennaVaihe(HakemusState state);
 
-    Hakemus find(HakemusId hakemusId, User user);
+    Hakemus find(HakuLomakeId hakuLomakeId, User user);
 
     List<Hakemus> findAll(User user);
 

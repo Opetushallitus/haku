@@ -29,7 +29,7 @@ import java.io.Serializable;
  * @since 1.1
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-public class HakemusId implements Serializable {
+public class HakuLomakeId implements Serializable {
 
     private static final long serialVersionUID = 8484849312020479901L;
     private static final int HASH_CODE_MAGIC = 31;
@@ -37,8 +37,8 @@ public class HakemusId implements Serializable {
     private final String applicationPeriodId;
     private final String formId;
 
-    public HakemusId(@JsonProperty(value = "applicationPeriodId") String applicationPeriodId,
-                     @JsonProperty(value = "formId") String formId) {
+    public HakuLomakeId(@JsonProperty(value = "applicationPeriodId") String applicationPeriodId,
+                        @JsonProperty(value = "formId") String formId) {
         Validate.notNull(applicationPeriodId, "ApplicationPeriodId can't be null");
         Validate.notNull(formId, "FormId can't be null");
         this.applicationPeriodId = applicationPeriodId;
@@ -62,12 +62,12 @@ public class HakemusId implements Serializable {
             return false;
         }
 
-        HakemusId hakemusId = (HakemusId) o;
+        HakuLomakeId hakuLomakeId = (HakuLomakeId) o;
 
-        if (applicationPeriodId != null ? !applicationPeriodId.equals(hakemusId.applicationPeriodId) : hakemusId.applicationPeriodId != null) {
+        if (applicationPeriodId != null ? !applicationPeriodId.equals(hakuLomakeId.applicationPeriodId) : hakuLomakeId.applicationPeriodId != null) {
             return false;
         }
-        if (formId != null ? !formId.equals(hakemusId.formId) : hakemusId.formId != null) {
+        if (formId != null ? !formId.equals(hakuLomakeId.formId) : hakuLomakeId.formId != null) {
             return false;
         }
 
