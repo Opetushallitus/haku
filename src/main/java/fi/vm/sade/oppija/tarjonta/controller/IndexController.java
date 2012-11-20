@@ -32,12 +32,15 @@ import java.net.URISyntaxException;
 @Secured("ROLE_ADMIN")
 public class IndexController {
 
-    private
     @Value("${tarjonta.data.url}")
     String tarjontaUrl;
 
+    private final IndexService indexService;
+
     @Autowired
-    IndexService indexService;
+    public IndexController(final IndexService indexService) {
+        this.indexService = indexService;
+    }
 
     @RequestMapping(value = "/admin/index/update")
     public

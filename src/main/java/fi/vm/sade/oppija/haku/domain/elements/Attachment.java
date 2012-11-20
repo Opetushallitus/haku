@@ -26,13 +26,13 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
  */
 public class Attachment extends Titled {
 
+    CommonsMultipartFile fileData;
+
     public Attachment(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
         addAttribute("name", id);
 
     }
-
-    CommonsMultipartFile fileData;
 
     public CommonsMultipartFile getFileData() {
         return fileData;
