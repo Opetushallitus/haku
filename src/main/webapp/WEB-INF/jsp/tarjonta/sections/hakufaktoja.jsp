@@ -29,7 +29,8 @@
         <li class="set-right"><spring:message code="tarjonta.hakufaktoja.hakuaikaalkaa"/>&nbsp
             <fmt:formatDate type="date" value="${searchResult['tmpASStart']}"/></li>
     </ul>
-    <form action="/haku/lomake/${searchResult['ASName']}/${searchResult['tmpLomakeId']}" method="post">
+    <form action="${pageContext.request.contextPath}/lomake/${searchResult['ASName']}/${searchResult['tmpLomakeId']}"
+          method="post">
         <input type="hidden" name="preference1-Opetuspiste" value="${searchResult['LOPInstitutionInfoName']}"/>
         <input type="hidden" name="preference1-Opetuspiste-id" value="${searchResult['LOPId']}"/>
         <input type="hidden" name="preference1-Koulutus" value="${searchResult['LOSDegreeTitle']}"/>

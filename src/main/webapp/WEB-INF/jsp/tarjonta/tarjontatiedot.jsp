@@ -137,7 +137,8 @@
                 </div>
                 <div class="sidemenu-content">
 
-                    <form id="kirjautuminen" action="/haku/j_spring_security_check" method="post">
+                    <form id="kirjautuminen" action="${pageContext.request.contextPath}/j_spring_security_check"
+                          method="post">
                         <legend class="h3">KÄYTTÄJÄTUNNUS</legend>
                         <div class="form-item-content">
                             <input type="text" name="j_username" id="kayttajatunnusId" size="30"/>

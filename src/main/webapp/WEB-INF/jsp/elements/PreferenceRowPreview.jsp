@@ -33,7 +33,7 @@
 </tr>
 <script type="text/javascript">
     if ("${hakukohdeId}") {
-        var url = "/haku/education/additionalquestion/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${vaihe.id}/${parent.id}/${hakukohdeId}?preview=true";
+        var url = "${pageContext.request.contextPath}/education/additionalquestion/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${vaihe.id}/${parent.id}/${hakukohdeId}?preview=true";
         $.get(url, function(data) {
             $("#${element.id}-Koulutus").after(data);
         });

@@ -1,42 +1,60 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%--
+  ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+  ~
+  ~ This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+  ~ soon as they will be approved by the European Commission - subsequent versions
+  ~ of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ European Union Public Licence for more details.
+  --%>
+
 <jsp:include page="../top/top.jsp"/>
-    <section class="content-container">
-        <div class="grid16-4">
-            <nav class="subnavigation">
-                <span class="menu-level-2-heading">Henkilökohtainen palvelu</span>
-                <ul class="menu-level-2">
-                    <li><a href="#">OmaOpas</a></li>
-                    <li><a href="#">Omat viestit</a></li>
-                    <li><a href="#" class="current">Haut koulutuksiin</a></li>
-                    <li><a href="#">Omat tiedot</a></li>
-                    <li><a href="#">Omat suoritukset</a></li>
-                    <li><a href="#">Omat muistiinpanot</a></li>
-                </ul>
-            </nav>
-        </div>
+<section class="content-container">
+    <div class="grid16-4">
+        <nav class="subnavigation">
+            <span class="menu-level-2-heading">Henkilökohtainen palvelu</span>
+            <ul class="menu-level-2">
+                <li><a href="#">OmaOpas</a></li>
+                <li><a href="#">Omat viestit</a></li>
+                <li><a href="#" class="current">Haut koulutuksiin</a></li>
+                <li><a href="#">Omat tiedot</a></li>
+                <li><a href="#">Omat suoritukset</a></li>
+                <li><a href="#">Omat muistiinpanot</a></li>
+            </ul>
+        </nav>
+    </div>
 
-        <div class="grid16-12">
-            <h1>Ajankohtaiset hakemukset (${hakemusListSize} kpl)</h1>
+    <div class="grid16-12">
+        <h1>Ajankohtaiset hakemukset (${hakemusListSize} kpl)</h1>
 
-            <c:forEach var="hakemusInfo" items="${hakemusList}">
+        <c:forEach var="hakemusInfo" items="${hakemusList}">
             <c:if test="${hakemusInfo.applicationPeriod.active}">
-            <div class="application-options-info">
-                 <a href="/haku/lomake/${hakemusInfo.applicationPeriod.id}/${hakemusInfo.form.id}">${hakemusInfo.form.title}</a>
-                <small>Haku päättyy ${hakemusInfo.applicationPeriod.daysUntilEnd} päivän kuluttua (<fmt:formatDate pattern="dd.MM.yyyy" value="${hakemusInfo.applicationPeriod.end}" />)</small>
-                <form action="/haku/lomake/${hakemusInfo.applicationPeriod.id}/${hakemusInfo.form.id}/esikatselu">
-                <button type="submit" class="edit set-right">
-                    <span><span>Muokkaa</span></span>
-                </button>
+                <div class="application-options-info">
+                    <a href="${pageContext.request.contextPath}/lomake/${hakemusInfo.applicationPeriod.id}/${hakemusInfo.form.id}">${hakemusInfo.form.title}</a>
+                    <small>Haku päättyy ${hakemusInfo.applicationPeriod.daysUntilEnd} päivän kuluttua (<fmt:formatDate
+                            pattern="dd.MM.yyyy" value="${hakemusInfo.applicationPeriod.end}"/>)
+                    </small>
+                    <form action="${pageContext.request.contextPath}/lomake/${hakemusInfo.applicationPeriod.id}/${hakemusInfo.form.id}/esikatselu">
+                        <button type="submit" class="edit set-right">
+                            <span><span>Muokkaa</span></span>
+                        </button>
 
-                </form>
-            </div>
-            <div class="clear"></div>
-            <div class="application-options">
-                <div class="table-container">
-                    <table>
-                        <thead>
+                    </form>
+                </div>
+                <div class="clear"></div>
+                <div class="application-options">
+                    <div class="table-container">
+                        <table>
+                            <thead>
                             <tr>
                                 <td>Hakutoive</td>
                                 <td>Opetuspiste</td>
@@ -46,25 +64,26 @@
                                 <td>Valintakoe</td>
                                 <td>Terveydentilavaatimukset</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="preference" items="${hakemusInfo.preferences}">
-                            <tr>
-                                <td>${preference.order}</td>
-                                <td>${preference.opetusPiste}</td>
-                                <td>${preference.koulutus}</td>
-                                <td>Suomi</td>
-                                <td>Syksy 2013</td>
-                                <td>Ejjole</td>
-                                <td>OK</td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                        <tfoot>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="preference" items="${hakemusInfo.preferences}">
+                                <tr>
+                                    <td>${preference.order}</td>
+                                    <td>${preference.opetusPiste}</td>
+                                    <td>${preference.koulutus}</td>
+                                    <td>Suomi</td>
+                                    <td>Syksy 2013</td>
+                                    <td>Ejjole</td>
+                                    <td>OK</td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                            <tfoot>
                             <tr>
                                 <td colspan="5">
                                     <button><span><span>Siirrä valitut hakulomakkeelle</span></span></button>
-                                    <button class="link">Etsi lisää koulutuksia</button><br/>
+                                    <button class="link">Etsi lisää koulutuksia</button>
+                                    <br/>
                                     <small>
                                         Huomio. Voit hakea kerralla vain 6 yliopistokoulutukseen.<br/>
                                         Huomio. Kahdessa koulutuksessa on valintakokeet samaan aikaan.
@@ -72,16 +91,16 @@
 
                                 </td>
                             <tr>
-                        </tfoot>
-                    </table>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
-            </div>
             </c:if>
-            </c:forEach>
+        </c:forEach>
 
-        </div>
-        <div class="clear"></div>
-    </section>
+    </div>
+    <div class="clear"></div>
+</section>
 
 </section>
 

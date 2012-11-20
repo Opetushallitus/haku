@@ -17,7 +17,7 @@
 (function() {
     var preferenceRow = {
         populateSelectInput : function(orgId, selectInputId) {
-            $.getJSON("/haku/education/" + sortabletable_settings.applicationPeriodId + "/hakukohde/search", {
+            $.getJSON(sortabletable_settings.contextPath + "/education/" + sortabletable_settings.applicationPeriodId + "/hakukohde/search", {
                 organisaatioId : orgId
             }, function(data) {
                 var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
@@ -41,7 +41,7 @@
         },
 
         searchAdditionalQuestions : function(hakukohdeId, additionalQuestionsId) {
-            var url = "/haku/education/additionalquestion/" + sortabletable_settings.applicationPeriodId + "/" +
+            var url = sortabletable_settings.contextPath + "/education/additionalquestion/" + sortabletable_settings.applicationPeriodId + "/" +
                 sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
                 sortabletable_settings.teemaId + "/" + hakukohdeId;
             $.get(url, function(data) {
@@ -61,7 +61,7 @@
         $(this).autocomplete({
             minLength : 1,
             source : function(request, response) {
-                $.getJSON("/haku/education/" + sortabletable_settings.applicationPeriodId + "/organisaatio/search", {
+                $.getJSON(sortabletable_settings.contextPath + "/education/" + sortabletable_settings.applicationPeriodId + "/organisaatio/search", {
                     term : request.term
                 }, function(data) {
                     response($.map(data, function(result) {

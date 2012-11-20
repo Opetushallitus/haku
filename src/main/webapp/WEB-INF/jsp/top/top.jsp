@@ -34,7 +34,7 @@
 
                 <div id="searchfield-wrapper">
                     <div id="searchfield">
-                        <form action="/haku/tarjontatiedot">
+                        <form action="${pageContext.request.contextPath}/tarjontatiedot">
                             <div class="field-container-text">
                                 <input type="text" name="text" required="required" value="${parameters.text}"
                                        class="haku"/>

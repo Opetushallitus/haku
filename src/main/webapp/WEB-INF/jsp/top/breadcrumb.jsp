@@ -18,7 +18,7 @@
 
 <div id="breadcrumb">
     <ul>
-        <li class="home"><a href="/haku"></a></li>
+        <li class="home"><a href="${pageContext.request.contextPath}"></a></li>
         <li class="breadcrumb-item"><a href="#">sivu 1</a></li>
         <li class="breadcrumb-item"><a href="#">sivu 2</a></li>
         <li class="breadcrumb-item"><a href="#">sivu 3</a></li>
