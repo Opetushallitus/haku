@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.haku.event;
 
 import fi.vm.sade.oppija.haku.validation.HakemusState;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -28,15 +27,10 @@ import java.util.Map;
  * @since 1.1
  */
 @Service
-public class PreNavigationEvent extends AbstractEvent {
+public class PreValidationEvent implements Event {
 
     private static final String NAV_NEXT = "nav-next";
     private static final String NAV_PREV = "nav-prev";
-
-    @Autowired
-    public PreNavigationEvent(EventHandler eventHandler) {
-        eventHandler.addBeforeValidationEvent(this);
-    }
 
     @Override
     public void process(HakemusState hakemusState) {

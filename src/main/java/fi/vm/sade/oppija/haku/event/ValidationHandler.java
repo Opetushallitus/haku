@@ -17,10 +17,8 @@
 package fi.vm.sade.oppija.haku.event;
 
 import fi.vm.sade.oppija.haku.validation.HakemusState;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author jukka
@@ -28,42 +26,24 @@ import java.util.List;
  * @since 1.1
  */
 @Service
-public class EventHandler {
+public class ValidationHandler {
 
-    List<Event> beforeValidate = new ArrayList<Event>();
-    List<Event> validationEvent = new ArrayList<Event>();
-    List<Event> postValidate = new ArrayList<Event>();
+    private final PreValidationEvent preValidationEvent;
+    private final ValidationEvent validationEvent;
+    private final NavigationEvent navigationEvent;
 
-    public EventHandler() {
+    @Autowired
+    public ValidationHandler(PreValidationEvent preValidationEvent, ValidationEvent validationEvent, NavigationEvent navigationEvent) {
+        this.preValidationEvent = preValidationEvent;
+        this.validationEvent = validationEvent;
+        this.navigationEvent = navigationEvent;
     }
 
     public HakemusState processEvents(HakemusState hakemusState) {
-        for (Event event : beforeValidate) {
-            event.process(hakemusState);
-        }
-        if (hakemusState.mustValidate()) {
-            for (Event event : validationEvent) {
-                event.process(hakemusState);
-            }
-        }
-        if (hakemusState.isValid()) {
-            for (Event event : postValidate) {
-                event.process(hakemusState);
-            }
-        }
+        preValidationEvent.process(hakemusState);
+        validationEvent.process(hakemusState);
+        navigationEvent.process(hakemusState);
         return hakemusState;
     }
 
-
-    public void addBeforeValidationEvent(Event event) {
-        this.beforeValidate.add(event);
-    }
-
-    public void addValidationEvent(Event event) {
-        this.validationEvent.add(event);
-    }
-
-    public void addPostValidateEvent(Event event) {
-        this.validationEvent.add(event);
-    }
 }

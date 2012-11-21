@@ -34,22 +34,23 @@ import java.util.List;
  * @since 1.1
  */
 @Service
-public class ValidationEvent extends AbstractEvent {
+public class ValidationEvent implements Event {
 
     private final FormService formService;
 
     @Autowired
-    public ValidationEvent(EventHandler eventHandler, @Qualifier("formServiceImpl") FormService formService) {
+    public ValidationEvent(@Qualifier("formServiceImpl") FormService formService) {
         this.formService = formService;
-        eventHandler.addValidationEvent(this);
     }
 
     @Override
     public void process(HakemusState hakemusState) {
-        Hakemus hakemus = hakemusState.getHakemus();
-        List<Validator> validators = getValidators(hakemusState);
-        ValidationResult validationResult = FormValidator.validate(validators, hakemus.getVastaukset());
-        hakemusState.addError(validationResult.getErrorMessages());
+        if (hakemusState.mustValidate()) {
+            Hakemus hakemus = hakemusState.getHakemus();
+            List<Validator> validators = getValidators(hakemusState);
+            ValidationResult validationResult = FormValidator.validate(validators, hakemus.getVastaukset());
+            hakemusState.addError(validationResult.getErrorMessages());
+        }
     }
 
     protected List<Validator> getValidators(HakemusState hakemusState) {

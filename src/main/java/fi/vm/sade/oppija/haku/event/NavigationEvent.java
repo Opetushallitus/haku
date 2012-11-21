@@ -31,14 +31,13 @@ import org.springframework.stereotype.Service;
  * @since 1.1
  */
 @Service
-public class NavigationEvent extends AbstractEvent {
+public class NavigationEvent implements Event {
 
     private FormService formService;
 
     @Autowired
-    public NavigationEvent(EventHandler eventHandler, @Qualifier("formServiceImpl") FormService formService) {
+    public NavigationEvent(@Qualifier("formServiceImpl") FormService formService) {
         this.formService = formService;
-        eventHandler.addPostValidateEvent(this);
     }
 
     @Override
@@ -47,13 +46,15 @@ public class NavigationEvent extends AbstractEvent {
     }
 
     private void setNextCategoryIfValid(HakemusState hakemusState) {
-        Hakemus hakemus = hakemusState.getHakemus();
-        Form activeForm = formService.getActiveForm(hakemus.getHakuLomakeId().getApplicationPeriodId(), hakemus.getHakuLomakeId().getFormId());
-
-        Vaihe vaihe = activeForm.getCategory(hakemusState.getVaiheId());
         if (hakemusState.isValid()) {
-            vaihe = selectNextPrevOrCurrent(hakemusState, vaihe);
-            hakemusState.setVaiheId(vaihe.getId());
+            Hakemus hakemus = hakemusState.getHakemus();
+            Form activeForm = formService.getActiveForm(hakemus.getHakuLomakeId().getApplicationPeriodId(), hakemus.getHakuLomakeId().getFormId());
+
+            Vaihe vaihe = activeForm.getCategory(hakemusState.getVaiheId());
+            if (hakemusState.isValid()) {
+                vaihe = selectNextPrevOrCurrent(hakemusState, vaihe);
+                hakemusState.setVaiheId(vaihe.getId());
+            }
         }
     }
 
