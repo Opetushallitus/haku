@@ -17,7 +17,8 @@
   --%>
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <div class="${styleBaseClass}">
-    <label id="label-${element.id}" for="${element.id}" class="${styleBaseClass}-label">${element.title}</label>
+    <label id="label-${element.id}" for="${element.id}"
+           class="${styleBaseClass}-label ${element.attributes['required'].value}">${element.title}</label>
 
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">

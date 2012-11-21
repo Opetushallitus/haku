@@ -17,7 +17,8 @@
   --%>
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <fieldset class="${styleBaseClass}">
-    <legend class="${styleBaseClass}-label"><c:out value="${element.title}"/></legend>
+    <legend class="${styleBaseClass}-label ${element.attributes['required'].value}"><c:out
+            value="${element.title}"/></legend>
     <div class="${styleBaseClass}-content">
         <c:forEach var="option" items="${element.options}">
             <div>${errors[option.id]}</div>

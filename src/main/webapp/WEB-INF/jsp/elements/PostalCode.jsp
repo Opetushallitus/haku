@@ -17,7 +17,8 @@
   --%>
 
 <div class="form-row">
-    <label id="label-${element.id}" for="${element.id}" class="form-row-label"><c:out value="${element.title}"/></label>
+    <label id="label-${element.id}" for="${element.id}"
+           class="form-row-label ${element.attributes['required'].value}"><c:out value="${element.title}"/></label>
 
     <div class="form-row-content">
         <div class="field-container-text">

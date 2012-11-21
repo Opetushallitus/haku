@@ -123,6 +123,7 @@ public abstract class Element {
         this.attributes.put(key, new Attribute(key, value));
     }
 
+
     public void init(final Map<String, Element> elements, final Element parent) {
         this.parent = parent;
         elements.put(id, this);
