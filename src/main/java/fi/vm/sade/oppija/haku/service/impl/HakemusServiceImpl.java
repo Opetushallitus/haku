@@ -16,16 +16,22 @@
 
 package fi.vm.sade.oppija.haku.service.impl;
 
+import fi.vm.sade.log.client.Logger;
+import fi.vm.sade.log.client.LoggerMock;
+import fi.vm.sade.log.model.Tapahtuma;
 import fi.vm.sade.oppija.haku.domain.*;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.event.EventHandler;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,22 +44,31 @@ import java.util.List;
  */
 @Service
 public class HakemusServiceImpl implements HakemusService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HakemusServiceImpl.class);
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HakemusServiceImpl.class);
 
     private final EventHandler eventHandler;
     private final FormService formService;
     private final UserDataStorage userDataStorage;
+    private final Logger log;
 
     @Autowired
-    public HakemusServiceImpl(final UserDataStorage userDataStorage, final EventHandler eventHandler, @Qualifier("formServiceImpl") final FormService formService) {
+    public HakemusServiceImpl(final UserDataStorage userDataStorage, final EventHandler eventHandler,
+                    @Qualifier("formServiceImpl") final FormService formService, final Logger logger) {
+
         this.userDataStorage = userDataStorage;
         this.eventHandler = eventHandler;
         this.formService = formService;
+        this.log = logger;
     }
 
     @Override
     public HakemusState tallennaVaihe(VaiheenVastaukset vaihe) {
         LOGGER.info("save");
+        try {
+            log.log(new Tapahtuma());
+        } catch (Exception e) {
+            LOGGER.warn("Could not log tallennaVaihe event");
+        }
 
         final HakemusState hakemus = userDataStorage.initHakemusState(vaihe);
         final HakemusState result = eventHandler.processEvents(hakemus);

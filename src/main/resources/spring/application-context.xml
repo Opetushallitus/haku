@@ -36,7 +36,6 @@
     <context:annotation-config/>
     <context:component-scan base-package="fi.vm.sade.oppija"/>
 
-
     <mvc:annotation-driven/>
 
     <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources/ directory -->
@@ -86,6 +85,9 @@
         </property>
     </bean>
 
+    <bean id="logger" class="fi.vm.sade.log.client.LoggerMock" />
+
     <import resource="haku-context.xml"/>
     <import resource="tarjonta-context.xml"/>
+
 </beans>

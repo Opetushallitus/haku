@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.haku.controller;
 
+import fi.vm.sade.log.client.LoggerMock;
 import fi.vm.sade.oppija.haku.dao.impl.ApplicationDAOMongoImpl;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
@@ -48,7 +49,8 @@ public class FormControllerTest {
         final EventHandler eventHandler = new EventHandler();
         final FormModelDummyMemoryDaoImpl formService = new FormModelDummyMemoryDaoImpl(formId, firstCategoryId);
         UserHolder userHolder = new UserHolder();
-        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(new UserDataStorage(new SessionDataHolder(), new ApplicationDAOMongoImpl(), userHolder), eventHandler, formService);
+        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(new UserDataStorage(new SessionDataHolder(), new ApplicationDAOMongoImpl(), userHolder), eventHandler,
+                formService, new LoggerMock());
         final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(userHolder);
         this.formController = new FormController(formService, hakemusService, userPrefillDataService);
     }
