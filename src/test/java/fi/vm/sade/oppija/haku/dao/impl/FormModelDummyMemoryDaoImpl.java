@@ -125,8 +125,8 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
 
         DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", "Kansalaisuus");
-        kansalaisuus.addOption("suomi", "Suomi", "Suomi");
-        kansalaisuus.addOption("ruotsi", "Ruotsi", "Ruotsi");
+        kansalaisuus.addOption("fi", "fi", "Suomi");
+        kansalaisuus.addOption("sv", "sv", "Ruotsi");
         kansalaisuus.addAttribute("placeholder", "Valitse kansalaisuus");
         kansalaisuus.addAttribute("required", "required");
         kansalaisuus.setHelp("Jos sinulla on kaksoiskansalaisuus, valitse toinen niistä");
