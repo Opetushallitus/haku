@@ -49,12 +49,9 @@ public class NavigationEvent implements Event {
         if (hakemusState.isValid()) {
             Hakemus hakemus = hakemusState.getHakemus();
             Form activeForm = formService.getActiveForm(hakemus.getHakuLomakeId().getApplicationPeriodId(), hakemus.getHakuLomakeId().getFormId());
-
             Vaihe vaihe = activeForm.getCategory(hakemusState.getVaiheId());
-            if (hakemusState.isValid()) {
-                vaihe = selectNextPrevOrCurrent(hakemusState, vaihe);
-                hakemusState.setVaiheId(vaihe.getId());
-            }
+            vaihe = selectNextPrevOrCurrent(hakemusState, vaihe);
+            hakemusState.setVaiheId(vaihe.getId());
         }
     }
 
