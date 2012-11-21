@@ -99,12 +99,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         dbObject.put(LOMAKE_ID, hakuLomakeId.getFormId());
         dbObject.put(USER_ID, user.getUserName());
         final DBObject one = getCollection().findOne(dbObject);
-        Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
+        Hakemus hakemus = new Hakemus(hakuLomakeId, user, new HashMap<String, Map<String, String>>());
         if (one != null) {
-            map = (Map<String, Map<String, String>>) one.toMap().get(HAKEMUS_DATA);
+            hakemus = dbObjectToHakemus(one);
         }
-
-        return new Hakemus(hakuLomakeId, user, map);
+        return hakemus;
     }
 
     @Override

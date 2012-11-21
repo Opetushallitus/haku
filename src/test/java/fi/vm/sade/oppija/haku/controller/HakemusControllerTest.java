@@ -58,6 +58,11 @@ public class HakemusControllerTest {
             public Hakemus getHakemus(String oid) {
                 return HAKEMUS;
             }
+
+            @Override
+            public void tallennaHakemus(HakuLomakeId hakuLomakeId) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
         });
     }
 

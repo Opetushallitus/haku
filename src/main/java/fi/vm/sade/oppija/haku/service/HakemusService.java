@@ -38,4 +38,6 @@ public interface HakemusService {
     HakemusState tallennaVaihe(final VaiheenVastaukset vaihe);
 
     Hakemus getHakemus(String oid);
+
+    void tallennaHakemus(HakuLomakeId hakuLomakeId);
 }

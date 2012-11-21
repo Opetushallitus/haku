@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.haku.service.UserHolder;
 import fi.vm.sade.oppija.haku.service.impl.HakemusServiceImpl;
 import fi.vm.sade.oppija.haku.service.impl.UserDataStorage;
 import fi.vm.sade.oppija.haku.service.impl.UserPrefillDataServiceImpl;
+import fi.vm.sade.oppija.haku.ui.controller.FormController;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;

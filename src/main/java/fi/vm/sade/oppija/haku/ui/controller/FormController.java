@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.controller;
+package fi.vm.sade.oppija.haku.ui.controller;
 
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
@@ -154,7 +154,7 @@ public class FormController extends ExceptionController {
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/send", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView sendForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
         LOGGER.debug("sendForm {}, {}", new Object[]{applicationPeriodId, formId});
-        //TODO: send application
+        hakemusService.tallennaHakemus(new HakuLomakeId(applicationPeriodId, formId));
         return new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/valmis");
     }
 
@@ -170,7 +170,6 @@ public class FormController extends ExceptionController {
         final Hakemus hakemus = hakemusService.getHakemus(hakuLomakeId);
         modelAndView.addObject("categoryData", hakemus.getVastaukset());
         modelAndView.addObject("hakemusId", hakuLomakeId);
-        //TODO: implement application number
         return modelAndView.addObject("applicationNumber", hakemus.getMeta().get(Hakemus.HAKEMUS_OID));
     }
 

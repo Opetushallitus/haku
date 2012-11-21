@@ -61,6 +61,11 @@ public class HakemusServiceImpl implements HakemusService {
     }
 
     @Override
+    public void tallennaHakemus(HakuLomakeId hakuLomakeId) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public Hakemus getHakemus(String oid) {
         return userDataStorage.applicationDAO.find(oid);
     }
