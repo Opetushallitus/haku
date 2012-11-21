@@ -17,9 +17,13 @@
 package fi.vm.sade.oppija.haku.domain.elements.custom;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fi.vm.sade.oppija.haku.domain.elements.ValidatorFinder;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.haku.validation.Validator;
+import fi.vm.sade.oppija.haku.validation.validators.SocialSecurityNumberValidator;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -32,6 +36,7 @@ public class SocialSecurityNumber extends Question {
 
     private String maleId;
     private String femaleId;
+    private String nationalityId;
 
     public SocialSecurityNumber(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
@@ -67,5 +72,19 @@ public class SocialSecurityNumber extends Question {
 
     public void setFemaleId(String femaleId) {
         this.femaleId = femaleId;
+    }
+
+    public String getNationalityId() {
+        return nationalityId;
+    }
+
+    public void setNationalityId(String nationalityId) {
+        this.nationalityId = nationalityId;
+    }
+    
+    @Override
+    protected void initValidators() {
+        List<Validator> parentValidators = new ValidatorFinder(this).findValidatingParentValidators();
+        parentValidators.add(new SocialSecurityNumberValidator(ssn.getId(), nationalityId));
     }
 }

@@ -180,6 +180,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         socialSecurityNumber.setSex(sukupuoli);
         socialSecurityNumber.setMaleId(sukupuoli.getOptions().get(0).getId());
         socialSecurityNumber.setFemaleId(sukupuoli.getOptions().get(1).getId());
+        socialSecurityNumber.setNationalityId(kansalaisuus.getId());
 
 //        SelectingSubmitRule autofillhetu = new SelectingSubmitRule(henkilötunnus.getId(), sukupuoli.getId());
 //        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[13579]\\w", sukupuoli.getOptions().get(0));
