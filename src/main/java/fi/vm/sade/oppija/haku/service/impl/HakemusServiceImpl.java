@@ -20,7 +20,9 @@ import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
 import fi.vm.sade.oppija.haku.domain.*;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.event.ValidationHandler;
+import fi.vm.sade.oppija.haku.event.NavigationEvent;
+import fi.vm.sade.oppija.haku.event.PreValidationEvent;
+import fi.vm.sade.oppija.haku.event.ValidationEvent;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
@@ -41,19 +43,23 @@ import java.util.List;
 public class HakemusServiceImpl implements HakemusService {
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HakemusServiceImpl.class);
 
-    private final ValidationHandler validationHandler;
     private final FormService formService;
     private final UserDataStorage userDataStorage;
     private final Logger log;
+    private final PreValidationEvent preValidationEvent;
+    private final ValidationEvent validationEvent;
+    private final NavigationEvent navigationEvent;
 
     @Autowired
-    public HakemusServiceImpl(final UserDataStorage userDataStorage, final ValidationHandler validationHandler,
+    public HakemusServiceImpl(final UserDataStorage userDataStorage,
                               @Qualifier("formServiceImpl") final FormService formService, final Logger logger) {
 
         this.userDataStorage = userDataStorage;
-        this.validationHandler = validationHandler;
         this.formService = formService;
         this.log = logger;
+        this.preValidationEvent = new PreValidationEvent();
+        validationEvent = new ValidationEvent(formService);
+        navigationEvent = new NavigationEvent(formService);
     }
 
     @Override
@@ -66,8 +72,11 @@ public class HakemusServiceImpl implements HakemusService {
         }
 
         final HakemusState hakemus = userDataStorage.initHakemusState(vaihe);
-        final HakemusState result = validationHandler.processEvents(hakemus);
-        return userDataStorage.tallenna(result);
+        preValidationEvent.process(hakemus);
+        validationEvent.process(hakemus);
+        final HakemusState tallenna = userDataStorage.tallenna(hakemus);
+        navigationEvent.process(tallenna);
+        return tallenna;
     }
 
     @Override

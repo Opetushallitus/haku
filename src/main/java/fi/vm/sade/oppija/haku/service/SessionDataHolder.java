@@ -66,9 +66,7 @@ public class SessionDataHolder implements Serializable, ApplicationDAO {
         Hakemus hakemus = find(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
         hakemus.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastaukset());
         map.put(hakemus.getHakuLomakeId(), hakemus);
-        final HakemusState hakemusState = new HakemusState(hakemus, state.getVaiheId());
-        hakemusState.setVaiheId(state.getVaiheId());
-        return hakemusState;
+        return state;
     }
 
 }

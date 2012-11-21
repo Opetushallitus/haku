@@ -71,7 +71,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         one.put(HAKEMUS_DATA, vastaukset);
         one.put(VAIHE_ID, state.getVaiheId());
         getCollection().update(query, one, true, false);
-        return new HakemusState(new Hakemus(hakuLomakeId, state.getHakemus().getUser(), vastaukset), state.getVaiheId());
+        return state;
     }
 
     public String getNextId() {

@@ -21,10 +21,6 @@ import fi.vm.sade.oppija.haku.dao.impl.ApplicationDAOMongoImpl;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.haku.event.NavigationEvent;
-import fi.vm.sade.oppija.haku.event.PreValidationEvent;
-import fi.vm.sade.oppija.haku.event.ValidationEvent;
-import fi.vm.sade.oppija.haku.event.ValidationHandler;
 import fi.vm.sade.oppija.haku.service.SessionDataHolder;
 import fi.vm.sade.oppija.haku.service.UserHolder;
 import fi.vm.sade.oppija.haku.service.impl.HakemusServiceImpl;
@@ -50,9 +46,8 @@ public class FormControllerTest {
     @Before
     public void setUp() throws Exception {
         final FormModelDummyMemoryDaoImpl formService = new FormModelDummyMemoryDaoImpl(formId, firstCategoryId);
-        final ValidationHandler validationHandler = new ValidationHandler(new PreValidationEvent(), new ValidationEvent(formService), new NavigationEvent(formService));
         UserHolder userHolder = new UserHolder();
-        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(new UserDataStorage(new SessionDataHolder(), new ApplicationDAOMongoImpl(), userHolder), validationHandler,
+        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(new UserDataStorage(new SessionDataHolder(), new ApplicationDAOMongoImpl(), userHolder),
                 formService, new LoggerMock());
         final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(userHolder);
         this.formController = new FormController(formService, hakemusService, userPrefillDataService);
