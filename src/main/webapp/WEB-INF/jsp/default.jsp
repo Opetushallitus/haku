@@ -22,17 +22,18 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
-    <link rel="stylesheet" href="${request.contextPath}/resources/css/screen.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/screen.css" type="text/css">
     <link rel="stylesheet"
-          href="${requestScope.pageContext.request.contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
+          href="${pageContext.request.contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
           type="text/css">
     <title>${form.title} - ${category.title}</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
-    <script src="${requestScope.pageContext.request.contextPath}/resources/javascript/rules.js"></script>
-    <script src="${requestScope.pageContext.request.contextPath}/resources/javascript/master.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/javascript/rules.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/javascript/master.js"></script>
 </head>
 <body>
+
 <div id="viewport">
 
 
