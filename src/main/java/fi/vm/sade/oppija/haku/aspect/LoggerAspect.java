@@ -4,9 +4,11 @@ package fi.vm.sade.oppija.haku.aspect;
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.client.LoggerMock;
 import fi.vm.sade.log.model.Tapahtuma;
+import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -26,28 +28,26 @@ public class LoggerAspect {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(LoggerAspect.class);
 
-    private final Logger logger;
-
-    public LoggerAspect() {
-        this.logger = new LoggerMock();
-    }
+    @Autowired
+    private Logger logger;
 
     /**
      * Logs event when a form phase is successfully saved
      * as application data in data store.
      */
-    @AfterReturning("execution(* fi.vm.sade.oppija.haku.dao.ApplicationDAO.tallennaVaihe(..))")
-    public void logSavePhase() {
+    @AfterReturning("execution(* fi.vm.sade.oppija.haku.dao.ApplicationDAO.tallennaVaihe(..)) && args(hakemusState,..)")
+    public void logSavePhase(HakemusState hakemusState) {
         try {
             Tapahtuma t = new Tapahtuma();
-            t.setMuutoksenKohde("muutoksenkohde");
+            t.setMuutoksenKohde("Application, form id: " + hakemusState.getHakemus().getHakuLomakeId()
+                    + ", user: " + hakemusState.getHakemus().getUser().getUserName());
             t.setAikaleima(new Date());
-            t.setKenenPuolesta("kenenpuolseta");
-            t.setKenenTietoja("kenentietoja");
-            t.setTapahtumatyyppi("tapahtumattyyppi");
-            t.setTekija("tekija");
-            t.setUusiArvo("uusi arvo");
-            t.setVanhaArvo("vaha arvo");
+            t.setKenenPuolesta("" + hakemusState.getHakemus().getUser().getUserName());
+            t.setKenenTietoja("" + hakemusState.getHakemus().getUser().getUserName());
+            t.setTapahtumatyyppi("save application phase");
+            t.setTekija("" + hakemusState.getHakemus().getUser().getUserName());
+            t.setUusiArvo("new");
+            t.setVanhaArvo("old");
             logger.log(t);
         } catch (Exception e) {
             LOGGER.warn("Could not log tallennaVaihe event");

@@ -88,4 +88,6 @@
     <import resource="haku-context.xml"/>
     <import resource="tarjonta-context.xml"/>
 
+    <import resource="classpath:/META-INF/spring/logger-mock-context.xml"/>
+
 </beans>
