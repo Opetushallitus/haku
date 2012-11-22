@@ -85,8 +85,6 @@
         </property>
     </bean>
 
-    <bean id="logger" class="fi.vm.sade.log.client.LoggerMock" />
-
     <import resource="haku-context.xml"/>
     <import resource="tarjonta-context.xml"/>
 

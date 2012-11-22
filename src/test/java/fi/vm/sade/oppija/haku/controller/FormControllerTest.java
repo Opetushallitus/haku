@@ -48,7 +48,7 @@ public class FormControllerTest {
         final FormModelDummyMemoryDaoImpl formService = new FormModelDummyMemoryDaoImpl(formId, firstCategoryId);
         UserHolder userHolder = new UserHolder();
         final HakemusServiceImpl hakemusService = new HakemusServiceImpl(new UserDataStorage(new SessionDataHolder(), new ApplicationDAOMongoImpl(), userHolder),
-                formService, new LoggerMock());
+                formService);
         final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(userHolder);
         this.formController = new FormController(formService, hakemusService, userPrefillDataService);
     }
