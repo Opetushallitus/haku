@@ -93,7 +93,7 @@ public class FormServiceImpl implements FormService {
     @Override
     public List<Validator> getVaiheValidators(HakemusState hakemusState) {
         final HakuLomakeId hakuLomakeId = hakemusState.getHakemus().getHakuLomakeId();
-        if (hakemusState.isFinalStage()) {
+        if (!hakemusState.isFinalStage()) {
             return getVaiheValidators(hakuLomakeId, hakemusState.getVaiheId());
         } else return getAllValidators(hakuLomakeId);
     }
