@@ -16,9 +16,6 @@
 
 package fi.vm.sade.oppija.haku.service.impl;
 
-import fi.vm.sade.log.client.Logger;
-import fi.vm.sade.log.client.LoggerMock;
-import fi.vm.sade.log.model.Tapahtuma;
 import fi.vm.sade.oppija.haku.domain.*;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.event.NavigationEvent;
@@ -33,7 +30,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,7 +44,6 @@ public class HakemusServiceImpl implements HakemusService {
 
     private final FormService formService;
     private final UserDataStorage userDataStorage;
-    private final Logger log;
     private final PreValidationEvent preValidationEvent;
     private final ValidationEvent validationEvent;
     private final NavigationEvent navigationEvent;
@@ -59,7 +54,6 @@ public class HakemusServiceImpl implements HakemusService {
 
         this.userDataStorage = userDataStorage;
         this.formService = formService;
-        this.log = new LoggerMock();
         this.preValidationEvent = new PreValidationEvent();
         validationEvent = new ValidationEvent(formService);
         navigationEvent = new NavigationEvent(formService);
@@ -68,20 +62,6 @@ public class HakemusServiceImpl implements HakemusService {
     @Override
     public HakemusState tallennaVaihe(VaiheenVastaukset vaihe) {
         LOGGER.info("save");
-        try {
-            Tapahtuma t = new Tapahtuma();
-            t.setMuutoksenKohde("muutoksenkohde");
-            t.setAikaleima(new Date());
-            t.setKenenPuolesta("kenenpuolseta");
-            t.setKenenTietoja("kenentietoja");
-            t.setTapahtumatyyppi("tapahtumattyyppi");
-            t.setTekija("tekija");
-            t.setUusiArvo("uusi arvo");
-            t.setVanhaArvo("vaha arvo");
-            log.log(t);
-        } catch (Exception e) {
-            LOGGER.warn("Could not log tallennaVaihe event");
-        }
 
         final HakemusState hakemus = userDataStorage.initHakemusState(vaihe);
         return doValidationChain(hakemus);
