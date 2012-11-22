@@ -24,7 +24,6 @@ import fi.vm.sade.oppija.haku.validation.ValidationResult;
 import fi.vm.sade.oppija.haku.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -33,10 +32,9 @@ import java.util.List;
  * @version 9/28/122:42 PM}
  * @since 1.1
  */
-@Service
 public class ValidationEvent implements Event {
 
-    private final FormService formService;
+    protected final FormService formService;
 
     @Autowired
     public ValidationEvent(@Qualifier("formServiceImpl") FormService formService) {
@@ -53,7 +51,8 @@ public class ValidationEvent implements Event {
         }
     }
 
+
     protected List<Validator> getValidators(HakemusState hakemusState) {
-        return formService.getCategoryValidators(hakemusState.getHakemus().getHakuLomakeId(), hakemusState.getVaiheId());
+        return formService.getVaiheValidators(hakemusState);
     }
 }

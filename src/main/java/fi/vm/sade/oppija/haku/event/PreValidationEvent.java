@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.haku.event;
 
 import fi.vm.sade.oppija.haku.validation.HakemusState;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
@@ -26,7 +25,6 @@ import java.util.Map;
  * @version 10/16/121:22 PM}
  * @since 1.1
  */
-@Service
 public class PreValidationEvent implements Event {
 
     private static final String NAV_NEXT = "nav-next";

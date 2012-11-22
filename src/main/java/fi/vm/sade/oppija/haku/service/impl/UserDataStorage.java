@@ -42,6 +42,9 @@ public class UserDataStorage {
     }
 
     public HakemusState tallenna(HakemusState state) {
+        if (state.getVaiheId().equals(VireillepanoState.VAIHEID)) {
+            return applicationDAO.tallennaHakemus(state);
+        }
         return selectDao().tallennaVaihe(state);
     }
 

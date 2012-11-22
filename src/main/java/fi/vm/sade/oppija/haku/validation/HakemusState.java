@@ -23,13 +23,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HakemusState {
-    private static final String HAKEMUS_KEY = "hakemus";
-    private final Map<String, String> errors;
-    private final Map<String, Object> modelObjects = new HashMap<String, Object>();
-    private boolean mustValidate = true;
-    private boolean navigateNext = false;
-    private boolean navigatePrev = false;
-    private String vaiheId;
+
+
+    protected static final String HAKEMUS_KEY = "hakemus";
+
+    protected final Map<String, String> errors;
+    protected final Map<String, Object> modelObjects = new HashMap<String, Object>();
+    protected boolean mustValidate = true;
+    protected boolean navigateNext = false;
+    protected boolean navigatePrev = false;
+    protected String vaiheId;
 
     public HakemusState(Hakemus hakemus, String vaiheId) {
         this.errors = new HashMap<String, String>();
@@ -97,5 +100,9 @@ public class HakemusState {
 
     public void setVaiheId(String vaiheId) {
         this.vaiheId = vaiheId;
+    }
+
+    public boolean isFinalStage() {
+        return false;
     }
 }

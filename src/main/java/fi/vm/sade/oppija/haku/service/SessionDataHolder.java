@@ -62,6 +62,11 @@ public class SessionDataHolder implements Serializable, ApplicationDAO {
     }
 
     @Override
+    public HakemusState tallennaHakemus(HakemusState state) {
+        throw new UnsupportedOperationException("not supported");
+    }
+
+    @Override
     public HakemusState tallennaVaihe(final HakemusState state) {
         Hakemus hakemus = find(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
         hakemus.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastaukset());

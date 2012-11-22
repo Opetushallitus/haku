@@ -25,10 +25,12 @@ import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.FormModelHolder;
 import fi.vm.sade.oppija.haku.service.FormService;
+import fi.vm.sade.oppija.haku.validation.HakemusState;
 import fi.vm.sade.oppija.haku.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -83,10 +85,26 @@ public class FormServiceImpl implements FormService {
         return model.getApplicationPerioidMap();
     }
 
-    @Override
-    public List<Validator> getCategoryValidators(final HakuLomakeId hakuLomakeId, final String vaiheId) {
+    public List<Validator> getVaiheValidators(final HakuLomakeId hakuLomakeId, final String vaiheId) {
         final Vaihe vaihe = getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId()).getCategory(vaiheId);
         return vaihe.getValidators();
+    }
+
+    @Override
+    public List<Validator> getVaiheValidators(HakemusState hakemusState) {
+        final HakuLomakeId hakuLomakeId = hakemusState.getHakemus().getHakuLomakeId();
+        if (hakemusState.isFinalStage()) {
+            return getVaiheValidators(hakuLomakeId, hakemusState.getVaiheId());
+        } else return getAllValidators(hakuLomakeId);
+    }
+
+    public List<Validator> getAllValidators(final HakuLomakeId hakuLomakeId) {
+        final ArrayList<Validator> validators = new ArrayList<Validator>();
+        final Form activeForm = getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId());
+        for (Vaihe vaihe : activeForm.getCategories()) {
+            validators.addAll(vaihe.getValidators());
+        }
+        return validators;
     }
 
     @Override

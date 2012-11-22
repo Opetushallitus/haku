@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.haku.dao.impl;
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.PostOffice;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
@@ -30,6 +29,7 @@ import fi.vm.sade.oppija.haku.domain.elements.questions.*;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.haku.service.FormService;
+import fi.vm.sade.oppija.haku.validation.HakemusState;
 import fi.vm.sade.oppija.haku.validation.Validator;
 import org.springframework.stereotype.Service;
 
@@ -510,14 +510,15 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     @Override
-    public List<Validator> getCategoryValidators(HakuLomakeId hakuLomakeId, final String vaiheId) {
+    public Form getForm(String applicationPeriodId, String formId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public Form getForm(String applicationPeriodId, String formId) {
+    public List<Validator> getVaiheValidators(HakemusState hakemusState) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
 
     private Map<String, PostOffice> getPostOffices() {
         Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();

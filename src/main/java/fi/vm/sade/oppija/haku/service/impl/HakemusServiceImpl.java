@@ -44,6 +44,7 @@ import java.util.List;
 @Service
 public class HakemusServiceImpl implements HakemusService {
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HakemusServiceImpl.class);
+    private static final String SEND = "send";
 
     private final FormService formService;
     private final UserDataStorage userDataStorage;
@@ -83,6 +84,10 @@ public class HakemusServiceImpl implements HakemusService {
         }
 
         final HakemusState hakemus = userDataStorage.initHakemusState(vaihe);
+        return doValidationChain(hakemus);
+    }
+
+    private HakemusState doValidationChain(HakemusState hakemus) {
         preValidationEvent.process(hakemus);
         validationEvent.process(hakemus);
         final HakemusState tallenna = userDataStorage.tallenna(hakemus);
@@ -92,7 +97,8 @@ public class HakemusServiceImpl implements HakemusService {
 
     @Override
     public void tallennaHakemus(HakuLomakeId hakuLomakeId) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        final Hakemus hakemus = userDataStorage.find(hakuLomakeId);
+        doValidationChain(new VireillepanoState(hakemus));
     }
 
     @Override

@@ -27,6 +27,12 @@ import java.util.Map;
  * @since 1.1
  */
 public class Hakemus implements Serializable {
+    public static final String STATEKEY = "state";
+
+    public enum State {
+        LUONNOS, VIREILLÄ
+    }
+
     public static final String HAKEMUS_OID = "HakemusOid";
 
     private static final long serialVersionUID = -7491168801255850954L;

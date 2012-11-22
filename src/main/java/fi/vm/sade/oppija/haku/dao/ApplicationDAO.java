@@ -37,4 +37,6 @@ public interface ApplicationDAO {
     List<Hakemus> findAll(User user);
 
     Hakemus find(String oid);
+
+    HakemusState tallennaHakemus(HakemusState state);
 }
