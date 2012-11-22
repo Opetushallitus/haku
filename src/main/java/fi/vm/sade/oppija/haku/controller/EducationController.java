@@ -82,7 +82,7 @@ public class EducationController {
         hakukohdeIds.add(hakukohdeId);
         Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakukohdeIds, hakuLomakeId, vaiheId);
         modelAndView.addObject("additionalQuestions", additionalQuestions);
-        modelAndView.addObject("categoryData", hakemusService.getHakemus(hakuLomakeId).getVastaukset());
+        modelAndView.addObject("categoryData", hakemusService.getHakemus(hakuLomakeId).getVastauksetMerged());
         return modelAndView;
     }
 }

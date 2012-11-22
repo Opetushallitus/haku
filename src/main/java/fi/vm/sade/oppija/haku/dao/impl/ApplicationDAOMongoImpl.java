@@ -16,10 +16,13 @@
 
 package fi.vm.sade.oppija.haku.dao.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import fi.vm.sade.oppija.haku.converter.DBObjectToHakemusConverter;
+import fi.vm.sade.oppija.haku.converter.HakemusToBasicDBObjectConverter;
 import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
@@ -29,7 +32,6 @@ import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,37 +41,21 @@ import java.util.Map;
 @Service("applicationDAOMongoImpl")
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements ApplicationDAO {
 
-    public static final String HAKU_ID = "hakuId";
-    public static final String LOMAKE_ID = "lomakeId";
-    public static final String USER_ID = "userid";
-    public static final String VAIHE_ID = "vaiheId";
-    public static final String HAKEMUS_DATA = "hakemusData";
     public static final String HAKEMUS = "hakemus";
     private static final String SEQUENCE_FIELD = "seq";
     private static final String OID_PREFIX = "1.2.3.4.5.";
 
     @Override
     public HakemusState tallennaVaihe(HakemusState state) {
-        DBObject query = new BasicDBObject();
-        final HakuLomakeId hakuLomakeId = state.getHakemus().getHakuLomakeId();
-        query.put(HAKU_ID, hakuLomakeId.getApplicationPeriodId());
-        query.put(LOMAKE_ID, hakuLomakeId.getFormId());
-        final String userName = state.getHakemus().getUser().getUserName();
-        query.put(USER_ID, userName);
+        final Hakemus hakemus = state.getHakemus();
+        final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(state.getHakemus());
+
         DBObject one = getCollection().findOne(query);
-        Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
-        if (one != null) {
-            vastaukset.putAll((Map<String, Map<String, String>>) one.toMap().get(HAKEMUS_DATA));
-        } else {
-            one = new BasicDBObject();
-            one.put(HAKU_ID, hakuLomakeId.getApplicationPeriodId());
-            one.put(LOMAKE_ID, hakuLomakeId.getFormId());
-            one.put(Hakemus.HAKEMUS_OID, OID_PREFIX + getNextId());
-            one.put(USER_ID, userName);
+        if (one == null) {
+            hakemus.addMeta(Hakemus.HAKEMUS_OID, OID_PREFIX + getNextId());
+            one = new HakemusToBasicDBObjectConverter().convert(hakemus);
         }
-        vastaukset.put(state.getVaiheId(), state.getHakemus().getVastaukset());
-        one.put(HAKEMUS_DATA, vastaukset);
-        one.put(VAIHE_ID, state.getVaiheId());
+
         getCollection().update(query, one, true, false);
         return state;
     }
@@ -94,12 +80,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
 
     @Override
     public Hakemus find(HakuLomakeId hakuLomakeId, User user) {
-        DBObject dbObject = new BasicDBObject();
-        dbObject.put(HAKU_ID, hakuLomakeId.getApplicationPeriodId());
-        dbObject.put(LOMAKE_ID, hakuLomakeId.getFormId());
-        dbObject.put(USER_ID, user.getUserName());
-        final DBObject one = getCollection().findOne(dbObject);
-        Hakemus hakemus = new Hakemus(hakuLomakeId, user, new HashMap<String, Map<String, String>>());
+
+        Hakemus hakemus = new Hakemus(hakuLomakeId, user);
+        final BasicDBObject convert = new HakemusToBasicDBObjectConverter().convert(hakemus);
+        final DBObject one = getCollection().findOne(convert);
         if (one != null) {
             hakemus = dbObjectToHakemus(one);
         }
@@ -109,8 +93,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     @Override
     public List<Hakemus> findAll(User user) {
         List<Hakemus> list = new ArrayList<Hakemus>();
-        DBObject dbObject = new BasicDBObject();
-        dbObject.put(USER_ID, user.getUserName());
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final Map map = objectMapper.convertValue(user, Map.class);
+
+        DBObject dbObject = new BasicDBObject("user", map);
         final DBCursor dbObjects = getCollection().find(dbObject);
         for (DBObject object : dbObjects) {
             list.add(dbObjectToHakemus(object));
@@ -119,25 +106,30 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     }
 
     @Override
-    public HakemusState tallennaHakemus(HakemusState state) {
+    public HakemusState laitaVireille(HakemusState state) {
         final String oid = state.getHakemus().getMeta().get(Hakemus.HAKEMUS_OID);
-        final BasicDBObject update = new BasicDBObject();
-        update.put(Hakemus.STATEKEY, Hakemus.State.VIREILLÄ);
-        getCollection().findAndModify(fetchByOid(oid), update);
+
+        final DBObject update = findByOid(oid);
+        update.put(Hakemus.STATEKEY, Hakemus.State.VIREILLÄ.toString());
+        getCollection().findAndModify(searchByOid(oid), update);
         return state;
     }
 
     @Override
     public Hakemus find(String oid) {
-        final BasicDBObject basicDBObject = fetchByOid(oid);
-        final DBObject one = getCollection().findOne(basicDBObject);
+        final DBObject one = findByOid(oid);
         if (one == null) {
             throw new ResourceNotFoundException("no hakemus found with oid " + oid);
         }
         return dbObjectToHakemus(one);
     }
 
-    private BasicDBObject fetchByOid(String oid) {
+    private DBObject findByOid(String oid) {
+        final BasicDBObject basicDBObject = searchByOid(oid);
+        return getCollection().findOne(basicDBObject);
+    }
+
+    private BasicDBObject searchByOid(String oid) {
         if (!oid.startsWith(OID_PREFIX)) {
             throw new RuntimeException("invalid oid");
         }
@@ -147,10 +139,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     }
 
     private Hakemus dbObjectToHakemus(final DBObject dbObject) {
-        HakuLomakeId hakuLomakeId = new HakuLomakeId((String) dbObject.get(HAKU_ID), (String) dbObject.get(LOMAKE_ID));
-        User user = new User((String) dbObject.get(USER_ID));
-        Hakemus hakemus = new Hakemus(hakuLomakeId, user, (Map<String, Map<String, String>>) dbObject.toMap().get(HAKEMUS_DATA));
-        hakemus.addMeta(Hakemus.HAKEMUS_OID, dbObject.get(Hakemus.HAKEMUS_OID).toString());
-        return hakemus;
+        return new DBObjectToHakemusConverter().convert(dbObject);
     }
 }

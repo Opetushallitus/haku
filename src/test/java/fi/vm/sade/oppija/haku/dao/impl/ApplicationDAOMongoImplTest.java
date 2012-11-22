@@ -57,24 +57,24 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     @Test
     public void testTallennaVaihe() {
         final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>();
-        vaiheenVastaukset.put("avain", "arvo");
+        vaiheenVastaukset.put("avain", ARVO);
 
         final Hakemus hakemus1 = new Hakemus(TEST_USER, new VaiheenVastaukset(hakuLomakeId, "vaihe1", vaiheenVastaukset));
         final HakemusState hakemus = applicationDAO.tallennaVaihe(new HakemusState(hakemus1, "vaihe1"));
-        assertEquals("arvo", hakemus.getHakemus().getVastaukset().get("avain"));
+        assertEquals(ARVO, hakemus.getHakemus().getVastauksetMerged().get("avain"));
     }
 
     @Test
     public void testFindAll() throws Exception {
         testTallennaVaihe();
         Hakemus hakemus = applicationDAO.find(hakuLomakeId, TEST_USER);
-        assertEquals(ARVO, hakemus.getVastaukset().get(AVAIN));
+        assertEquals(ARVO, hakemus.getVastauksetMerged().get(AVAIN));
     }
 
     @Test
     public void testFindAllNotFound() throws Exception {
         Hakemus hakemus = applicationDAO.find(hakuLomakeId, TEST_USER2);
-        assertNotSame(ARVO, hakemus.getVastaukset().get(AVAIN));
+        assertNotSame(ARVO, hakemus.getVastauksetMerged().get(AVAIN));
     }
 
     @Override

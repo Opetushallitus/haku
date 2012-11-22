@@ -49,7 +49,7 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
 
     @Override
     public Set<Question> findAdditionalQuestions(String teemaId, HakuLomakeId hakuLomakeId, String vaiheId) {
-        Map<String, String> hakemusValues = hakemusService.getHakemus(hakuLomakeId).getVastaukset();
+        Map<String, String> hakemusValues = hakemusService.getHakemus(hakuLomakeId).getVastauksetMerged();
         List<String> hakukohdeList = new ArrayList<String>();
 
         int prefNumber = 1;

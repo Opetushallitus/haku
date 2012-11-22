@@ -46,7 +46,7 @@ public class ValidationEvent implements Event {
         if (hakemusState.mustValidate()) {
             Hakemus hakemus = hakemusState.getHakemus();
             List<Validator> validators = getValidators(hakemusState);
-            ValidationResult validationResult = FormValidator.validate(validators, hakemus.getVastaukset());
+            ValidationResult validationResult = FormValidator.validate(validators, hakemus.getVastauksetMerged());
             hakemusState.addError(validationResult.getErrorMessages());
         }
     }

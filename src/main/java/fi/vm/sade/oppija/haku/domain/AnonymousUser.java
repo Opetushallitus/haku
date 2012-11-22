@@ -16,16 +16,26 @@
 
 package fi.vm.sade.oppija.haku.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import java.util.UUID;
+
 /**
  * @author jukka
  * @version 10/12/123:58 PM}
  * @since 1.1
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class AnonymousUser extends User {
 
     private static final long serialVersionUID = -1001066637131188797L;
 
     public AnonymousUser() {
-        super("anonymous");
+        super(UUID.randomUUID().toString());
+    }
+
+    public AnonymousUser(@JsonProperty String userName) {
+        super(userName);
     }
 }

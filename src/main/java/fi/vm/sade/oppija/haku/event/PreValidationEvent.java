@@ -37,7 +37,7 @@ public class PreValidationEvent implements Event {
     }
 
     private void removePrev(HakemusState hakemusState) {
-        final Map<String, String> values = hakemusState.getHakemus().getVastaukset();
+        final Map<String, String> values = hakemusState.getHakemus().getVastauksetMerged();
         if (values.containsKey(NAV_PREV)) {
             hakemusState.toggleNavigatePrev();
             values.remove(NAV_PREV);
@@ -45,7 +45,7 @@ public class PreValidationEvent implements Event {
     }
 
     private void removeNext(HakemusState hakemusState) {
-        final Map<String, String> values = hakemusState.getHakemus().getVastaukset();
+        final Map<String, String> values = hakemusState.getHakemus().getVastauksetMerged();
         if (values.containsKey(NAV_NEXT)) {
             hakemusState.toggleNavigateNext();
             values.remove(NAV_NEXT);

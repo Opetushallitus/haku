@@ -36,7 +36,7 @@ public class HakemusInfo {
         this.hakemus = hakemus;
         this.form = form;
         this.applicationPeriod = applicationPeriod;
-        this.preferences = new PreferenceHelper(hakemus.getVastaukset()).getOpetuspisteet();
+        this.preferences = new PreferenceHelper(hakemus.getVastauksetMerged()).getOpetuspisteet();
     }
 
     public Hakemus getHakemus() {

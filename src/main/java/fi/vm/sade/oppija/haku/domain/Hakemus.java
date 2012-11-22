@@ -16,6 +16,12 @@
 
 package fi.vm.sade.oppija.haku.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,7 +32,13 @@ import java.util.Map;
  * @version 9/26/122:48 PM}
  * @since 1.1
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Hakemus implements Serializable {
+
+    @JsonDeserialize(using = ObjectIdDeserializer.class)
+    @JsonSerialize(using = ObjectIdSerializer.class)
+    private org.bson.types.ObjectId _id;
+
     public static final String STATEKEY = "state";
 
     public enum State {
@@ -37,20 +49,21 @@ public class Hakemus implements Serializable {
 
     private static final long serialVersionUID = -7491168801255850954L;
 
-    private final HakuLomakeId hakuLomakeId;
+    private HakuLomakeId hakuLomakeId;
     private final User user;
 
     private final Map<String, String> meta = new HashMap<String, String>();
     private final Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
 
-    public Hakemus(final HakuLomakeId hakuLomakeId, final User user) {
-        this.hakuLomakeId = hakuLomakeId;
-        this.user = user;
-    }
-
-    public Hakemus(HakuLomakeId hakuLomakeId, User user, Map<String, Map<String, String>> vastaukset) {
+    public Hakemus(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId, @JsonProperty(value = "user") final User user, @JsonProperty(value = "vastaukset") Map<String, Map<String, String>> vastaukset) {
         this(hakuLomakeId, user);
         this.vastaukset.putAll(vastaukset);
+    }
+
+    @JsonIgnore
+    public Hakemus(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId, @JsonProperty(value = "user") final User user) {
+        this.hakuLomakeId = hakuLomakeId;
+        this.user = user;
     }
 
     public Hakemus(User user, VaiheenVastaukset vaihe) {
@@ -86,7 +99,8 @@ public class Hakemus implements Serializable {
         return Collections.unmodifiableMap(meta);
     }
 
-    public Map<String, String> getVastaukset() {
+    @JsonIgnore
+    public Map<String, String> getVastauksetMerged() {
         final Map<String, String> vastaukset = new HashMap<String, String>();
         for (Map<String, String> vaiheenVastaukset : this.vastaukset.values()) {
             vastaukset.putAll(vaiheenVastaukset);
@@ -94,4 +108,7 @@ public class Hakemus implements Serializable {
         return vastaukset;
     }
 
+    public Map<String, Map<String, String>> getVastaukset() {
+        return vastaukset;
+    }
 }

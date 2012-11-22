@@ -42,10 +42,10 @@ public class UserDataStorage {
     }
 
     public HakemusState tallenna(HakemusState state) {
-        if (state.getVaiheId().equals(VireillepanoState.VAIHEID)) {
-            return applicationDAO.tallennaHakemus(state);
+        if (state.isFinalStage()) {
+            return applicationDAO.laitaVireille(state);
         }
-        return selectDao().tallennaVaihe(state);
+        return applicationDAO.tallennaVaihe(state);
     }
 
     private ApplicationDAO selectDao() {
@@ -57,7 +57,7 @@ public class UserDataStorage {
     }
 
     public Hakemus find(HakuLomakeId hakuLomakeId) {
-        return selectDao().find(hakuLomakeId, userHolder.getUser());
+        return applicationDAO.find(hakuLomakeId, userHolder.getUser());
     }
 
     public HakemusState initHakemusState(VaiheenVastaukset vaihe) {
@@ -66,7 +66,7 @@ public class UserDataStorage {
     }
 
     public List<Hakemus> findAll() {
-        return selectDao().findAll(userHolder.getUser());
+        return applicationDAO.findAll(userHolder.getUser());
     }
 
 }

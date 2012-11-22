@@ -38,5 +38,5 @@ public interface ApplicationDAO {
 
     Hakemus find(String oid);
 
-    HakemusState tallennaHakemus(HakemusState state);
+    HakemusState laitaVireille(HakemusState state);
 }

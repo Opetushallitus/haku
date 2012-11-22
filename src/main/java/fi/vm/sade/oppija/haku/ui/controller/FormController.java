@@ -98,7 +98,7 @@ public class FormController extends ExceptionController {
         final ModelAndView modelAndView = new ModelAndView("/elements/" + element.getType());
         modelAndView.addObject("element", element);
         final HakuLomakeId hakuLomakeId = new HakuLomakeId(applicationPeriodId, activeForm.getId());
-        Map<String, String> values = hakemusService.getHakemus(hakuLomakeId).getVastaukset();
+        Map<String, String> values = hakemusService.getHakemus(hakuLomakeId).getVastauksetMerged();
         values = userPrefillDataService.populateWithPrefillData(values);
         modelAndView.addObject("categoryData", values);
         return modelAndView.addObject("hakemusId", hakuLomakeId);
@@ -145,7 +145,7 @@ public class FormController extends ExceptionController {
                 modelAndView.addObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());
             }
             Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-            modelAndView.addObject("category", activeForm.getCategory(categoryId));
+            modelAndView.addObject("category", activeForm.getCategory(hakemusState.getVaiheId()));
             modelAndView.addObject("form", activeForm);
         }
         return modelAndView.addObject("hakemusId", hakuLomakeId);
@@ -168,7 +168,7 @@ public class FormController extends ExceptionController {
         modelAndView.addObject("form", activeForm);
         final HakuLomakeId hakuLomakeId = new HakuLomakeId(applicationPeriodId, activeForm.getId());
         final Hakemus hakemus = hakemusService.getHakemus(hakuLomakeId);
-        modelAndView.addObject("categoryData", hakemus.getVastaukset());
+        modelAndView.addObject("categoryData", hakemus.getVastauksetMerged());
         modelAndView.addObject("hakemusId", hakuLomakeId);
         return modelAndView.addObject("applicationNumber", hakemus.getMeta().get(Hakemus.HAKEMUS_OID));
     }

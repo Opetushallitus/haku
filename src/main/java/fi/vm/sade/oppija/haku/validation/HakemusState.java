@@ -37,7 +37,7 @@ public class HakemusState {
     public HakemusState(Hakemus hakemus, String vaiheId) {
         this.errors = new HashMap<String, String>();
         modelObjects.put(HAKEMUS_KEY, hakemus);
-        modelObjects.put("categoryData", hakemus.getVastaukset());
+        modelObjects.put("categoryData", hakemus.getVastauksetMerged());
         modelObjects.put("errorMessages", errors);
         this.vaiheId = vaiheId;
     }

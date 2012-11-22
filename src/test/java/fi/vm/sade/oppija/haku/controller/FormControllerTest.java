@@ -16,8 +16,6 @@
 
 package fi.vm.sade.oppija.haku.controller;
 
-import fi.vm.sade.log.client.LoggerMock;
-import fi.vm.sade.oppija.haku.dao.impl.ApplicationDAOMongoImpl;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
@@ -47,7 +45,7 @@ public class FormControllerTest {
     public void setUp() throws Exception {
         final FormModelDummyMemoryDaoImpl formService = new FormModelDummyMemoryDaoImpl(formId, firstCategoryId);
         UserHolder userHolder = new UserHolder();
-        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(new UserDataStorage(new SessionDataHolder(), new ApplicationDAOMongoImpl(), userHolder),
+        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(new UserDataStorage(new SessionDataHolder(), new SessionDataHolder(), userHolder),
                 formService);
         final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(userHolder);
         this.formController = new FormController(formService, hakemusService, userPrefillDataService);
