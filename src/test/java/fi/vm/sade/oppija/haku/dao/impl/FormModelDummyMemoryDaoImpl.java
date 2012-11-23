@@ -158,8 +158,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         email.setInline(true);
 
         TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", "Henkilötunnus");
-        henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
-        henkilötunnus.addAttribute("title", "ppkkvv***** or dd.mm.yyyy");
+        henkilötunnus.addAttribute("placeholder", "ppkkvv***** or dd.mm.yyyy");
         henkilötunnus.addAttribute("required", "required");
         henkilötunnus.addAttribute("pattern", "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))|[0-9]{2}[.][0-9]{2}[.][0-9]{4}");
         henkilötunnus.addAttribute("size", "11");
@@ -190,7 +189,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
-        postinumero.addAttribute("title", "#####");
         postinumero.addAttribute("maxlength", "5");
         postinumero.setHelp("Kirjoita tähän osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, kuten kutsun valintakokeeseen tai valintapäätöksen.");
 
@@ -362,7 +360,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         TextQuestion tyokokemuskuukaudet = new TextQuestion("tyokokemuskuukaudet", "Työkokemus");
         tyokokemuskuukaudet.setHelp("Merkitse kenttään hakuajan päättymiseen mennessä kertynyt työkokemuksesi. Voit käyttää laskemiseen apuna laskuria.");
         tyokokemuskuukaudet.addAttribute("placeholder", "kuukautta");
-        tyokokemuskuukaudet.addAttribute("title", "kuukautta");
         tyokokemuskuukaudet.addAttribute("pattern", "[0-9]*");
         tyokokemuskuukaudet.addAttribute("size", "8");
         tyokokemuskuukaudet.setVerboseHelp(getVerboseHelp());
