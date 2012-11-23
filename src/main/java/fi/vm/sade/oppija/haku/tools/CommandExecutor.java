@@ -92,7 +92,7 @@ public class CommandExecutor {
     }
 
     protected String createFilename(File folder, FormModel dbObject) {
-        final ObjectId objectId = dbObject.get_id();
+        final ObjectId objectId = dbObject.getId();
         return folder.getPath() + "/" + objectId.toStringMongod() + ".json";
     }
 

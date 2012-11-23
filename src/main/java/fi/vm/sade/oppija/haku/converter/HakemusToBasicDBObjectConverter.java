@@ -40,8 +40,10 @@ public class HakemusToBasicDBObjectConverter implements Converter<Hakemus, Basic
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         mapper.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
+        mapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
 
-        final BasicDBObject basicDBObject = new BasicDBObject(mapper.convertValue(hakemus, Map.class));
+        final Map m = mapper.convertValue(hakemus, Map.class);
+        final BasicDBObject basicDBObject = new BasicDBObject(m);
         log.debug(JSON.serialize(basicDBObject));
         return basicDBObject;
     }

@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.haku.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -33,9 +35,11 @@ public class FormModel implements Serializable {
 
     private static final long serialVersionUID = -530066716898062722L;
 
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    @JsonProperty(value = "_id")
     @JsonDeserialize(using = ObjectIdDeserializer.class)
     @JsonSerialize(using = ObjectIdSerializer.class)
-    private org.bson.types.ObjectId _id;
+    private org.bson.types.ObjectId id;
 
     final Map<String, ApplicationPeriod> applicationPerioidMap;
 
@@ -55,11 +59,8 @@ public class FormModel implements Serializable {
         return applicationPerioidMap;
     }
 
-    public org.bson.types.ObjectId get_id() {
-        return _id;
+    public org.bson.types.ObjectId getId() {
+        return id;
     }
 
-    public void set_id(org.bson.types.ObjectId _id) {
-        this._id = _id;
-    }
 }

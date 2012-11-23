@@ -55,7 +55,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
             hakemus.addMeta(Hakemus.HAKEMUS_OID, OID_PREFIX + getNextId());
             one = new HakemusToBasicDBObjectConverter().convert(hakemus);
         }
-
         getCollection().update(query, one, true, false);
         return state;
     }
@@ -109,7 +108,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     public HakemusState laitaVireille(HakemusState state) {
         final String oid = state.getHakemus().getMeta().get(Hakemus.HAKEMUS_OID);
 
-        final DBObject update = findByOid(oid);
+        final DBObject update = findByOid(searchByOid(oid));
         update.put(Hakemus.STATEKEY, Hakemus.State.VIREILLÄ.toString());
         getCollection().findAndModify(searchByOid(oid), update);
         return state;
@@ -117,16 +116,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
 
     @Override
     public Hakemus find(String oid) {
-        final DBObject one = findByOid(oid);
+        final DBObject one = findByOid(searchByOid(oid));
         if (one == null) {
             throw new ResourceNotFoundException("no hakemus found with oid " + oid);
         }
         return dbObjectToHakemus(one);
     }
 
-    private DBObject findByOid(String oid) {
-        final BasicDBObject basicDBObject = searchByOid(oid);
-        return getCollection().findOne(basicDBObject);
+    private DBObject findByOid(BasicDBObject basicDBObject1) {
+        return getCollection().findOne(basicDBObject1);
     }
 
     private BasicDBObject searchByOid(String oid) {

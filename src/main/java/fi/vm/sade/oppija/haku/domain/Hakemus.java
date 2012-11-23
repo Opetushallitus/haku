@@ -16,9 +16,7 @@
 
 package fi.vm.sade.oppija.haku.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -32,12 +30,15 @@ import java.util.Map;
  * @version 9/26/122:48 PM}
  * @since 1.1
  */
+
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Hakemus implements Serializable {
 
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    @JsonProperty(value = "_id")
     @JsonDeserialize(using = ObjectIdDeserializer.class)
     @JsonSerialize(using = ObjectIdSerializer.class)
-    private org.bson.types.ObjectId _id;
+    private org.bson.types.ObjectId id;
 
     public static final String STATEKEY = "state";
 
@@ -55,6 +56,7 @@ public class Hakemus implements Serializable {
     private final Map<String, String> meta = new HashMap<String, String>();
     private final Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
 
+    @JsonCreator
     public Hakemus(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId, @JsonProperty(value = "user") final User user, @JsonProperty(value = "vastaukset") Map<String, Map<String, String>> vastaukset) {
         this(hakuLomakeId, user);
         this.vastaukset.putAll(vastaukset);
@@ -112,11 +114,4 @@ public class Hakemus implements Serializable {
         return vastaukset;
     }
 
-    public org.bson.types.ObjectId get_id() {
-        return _id;
-    }
-
-    public void set_id(org.bson.types.ObjectId _id) {
-        this._id = _id;
-    }
 }
