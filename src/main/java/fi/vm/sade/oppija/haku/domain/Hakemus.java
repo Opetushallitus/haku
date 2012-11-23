@@ -111,4 +111,12 @@ public class Hakemus implements Serializable {
     public Map<String, Map<String, String>> getVastaukset() {
         return vastaukset;
     }
+
+    public org.bson.types.ObjectId get_id() {
+        return _id;
+    }
+
+    public void set_id(org.bson.types.ObjectId _id) {
+        this._id = _id;
+    }
 }
