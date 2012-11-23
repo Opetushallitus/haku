@@ -39,7 +39,7 @@ public class LoggerAspect {
     public void logSavePhase(HakemusState hakemusState) {
         try {
             Tapahtuma t = new Tapahtuma();
-            t.setMuutoksenKohde("Application, form id: " + hakemusState.getHakemus().getHakuLomakeId()
+            t.setMuutoksenKohde("Application, form id: " + hakemusState.getHakemus().getHakuLomakeId().getApplicationPeriodId()
                     + ", user: " + hakemusState.getHakemus().getUser().getUserName());
             t.setAikaleima(new Date());
             t.setKenenPuolesta("" + hakemusState.getHakemus().getUser().getUserName());
