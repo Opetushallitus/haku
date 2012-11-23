@@ -37,7 +37,8 @@ public class HakemusControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        hakemusController = new HakemusController(new HakemusService() {
+        hakemusController = new HakemusController();
+        hakemusController.hakemusService = new HakemusService() {
             @Override
             public List<HakemusInfo> findAll() {
                 return null;
@@ -63,7 +64,7 @@ public class HakemusControllerTest {
             public void tallennaHakemus(HakuLomakeId hakuLomakeId) {
                 //To change body of implemented methods use File | Settings | File Templates.
             }
-        });
+        };
     }
 
     @Test

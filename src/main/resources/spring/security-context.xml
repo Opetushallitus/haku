@@ -27,6 +27,7 @@
                 <user name="test4" password="test4" authorities="ROLE_USER"/>
                 <user name="test5" password="test5" authorities="ROLE_USER"/>
                 <user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN"/>
+                <user name="officer" password="officer" authorities="ROLE_USER, ROLE_OFFICER"/>
             </user-service>
         </authentication-provider>
     </authentication-manager>
