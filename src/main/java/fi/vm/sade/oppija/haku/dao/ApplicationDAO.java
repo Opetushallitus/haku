@@ -29,7 +29,6 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 public interface ApplicationDAO {
-
     HakemusState tallennaVaihe(HakemusState state);
 
     Hakemus find(HakuLomakeId hakuLomakeId, User user);

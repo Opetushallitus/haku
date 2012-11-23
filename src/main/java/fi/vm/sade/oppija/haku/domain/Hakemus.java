@@ -34,7 +34,6 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Hakemus implements Serializable {
 
-    public static final String STATEKEY = "state";
     public static final String OID = "oid";
 
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
@@ -43,9 +42,6 @@ public class Hakemus implements Serializable {
     @JsonSerialize(using = ObjectIdSerializer.class)
     private org.bson.types.ObjectId id;
 
-    public enum State {
-        LUONNOS, VIREILLÄ
-    }
 
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     @JsonProperty(value = OID)
@@ -56,16 +52,16 @@ public class Hakemus implements Serializable {
     private HakuLomakeId hakuLomakeId;
     private final User user;
 
-    @JsonProperty(value = STATEKEY)
-    private State state = State.LUONNOS;
-
     private final Map<String, String> meta = new HashMap<String, String>();
-    private final Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
+
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    private Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
 
     @JsonCreator
     public Hakemus(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId, @JsonProperty(value = "user") final User user, @JsonProperty(value = "vastaukset") Map<String, Map<String, String>> vastaukset) {
         this(hakuLomakeId, user);
-        this.vastaukset.putAll(vastaukset);
+        if (vastaukset != null)
+            this.vastaukset = vastaukset;
     }
 
     @JsonIgnore
@@ -128,11 +124,4 @@ public class Hakemus implements Serializable {
         this.oid = oid;
     }
 
-    public void setStateVireilla() {
-        this.state = State.VIREILLÄ;
-    }
-
-    public State getState() {
-        return state;
-    }
 }

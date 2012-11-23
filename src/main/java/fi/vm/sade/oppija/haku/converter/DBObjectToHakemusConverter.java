@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.haku.converter;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.mongodb.DBObject;
@@ -33,7 +34,9 @@ public class DBObjectToHakemusConverter implements Converter<DBObject, Hakemus> 
     public Hakemus convert(DBObject dbObject) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        mapper.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
+        mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+        mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+
         return mapper.convertValue(dbObject.toMap(), Hakemus.class);
     }
 }

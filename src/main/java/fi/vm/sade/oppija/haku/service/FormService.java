@@ -27,16 +27,15 @@ import java.util.Map;
 
 public interface FormService {
 
-    Form getActiveForm(final String applicationPeriodId, final String formId);
-
     Vaihe getFirstCategory(final String applicationPeriodId, final String formId);
 
     Map<String, ApplicationPeriod> getApplicationPerioidMap();
 
     ApplicationPeriod getApplicationPeriodById(final String applicationPeriodId);
 
-
     Form getForm(String applicationPeriodId, String formId);
+
+    Form getActiveForm(final String applicationPeriodId, final String formId);
 
     List<Validator> getVaiheValidators(HakemusState hakemusState);
 }

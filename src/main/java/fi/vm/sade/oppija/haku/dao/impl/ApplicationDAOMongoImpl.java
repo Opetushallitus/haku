@@ -47,20 +47,21 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
 
     @Override
     public HakemusState tallennaVaihe(HakemusState state) {
-        Hakemus hakemus = state.getHakemus();
-        final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(state.getHakemus());
-        query.remove("vastaukset");
+        Hakemus hakemus = searchByLomakeIdAndUser(state);
+        final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(hakemus);
 
         DBObject one = getCollection().findOne(query);
-        if (one == null) {
-            hakemus.setOid(OID_PREFIX + getNextId());
-        } else {
+        if (one != null) {
             hakemus = new DBObjectToHakemusConverter().convert(one);
-            hakemus.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());
         }
+        hakemus.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());
         one = new HakemusToBasicDBObjectConverter().convert(hakemus);
         getCollection().update(query, one, true, false);
         return state;
+    }
+
+    private Hakemus searchByLomakeIdAndUser(HakemusState state) {
+        return new Hakemus(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
     }
 
     public String getNextId() {
@@ -70,8 +71,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         DBObject update = new BasicDBObject("$inc", change); // the $inc here is a mongodb command for increment
 
         // Atomically updates the sequence field and returns the value for you
-        final BasicDBObject query = new BasicDBObject("$eq", change);
-        //final BasicDBObject query = new BasicDBObject();
+        //final BasicDBObject query = new BasicDBObject("$eq", change);
+        final BasicDBObject query = new BasicDBObject();
         DBObject res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
         return res.get(SEQUENCE_FIELD).toString();
     }
@@ -110,11 +111,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
 
     @Override
     public HakemusState laitaVireille(HakemusState state) {
-        final String oid = state.getHakemus().getOid();
 
-        final DBObject update = findByOid(searchByOid(oid));
-        update.put(Hakemus.STATEKEY, Hakemus.State.VIREILLÄ.toString());
-        getCollection().findAndModify(searchByOid(oid), update);
+
+        final Hakemus hakemus = find(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
+        final BasicDBObject convert = new HakemusToBasicDBObjectConverter().convert(hakemus);
+        final DBObject existing = findByOid(convert);
+        existing.put(Hakemus.OID, OID_PREFIX + getNextId());
+
+        getCollection().findAndModify(convert, existing);
         return state;
     }
 

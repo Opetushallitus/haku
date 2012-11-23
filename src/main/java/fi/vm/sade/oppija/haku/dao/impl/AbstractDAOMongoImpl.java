@@ -46,6 +46,6 @@ public abstract class AbstractDAOMongoImpl {
 
 
     public String getSequenceName() {
-        return getCollectionName() + "-sequence";
+        return getCollectionName() + "sequence";
     }
 }
