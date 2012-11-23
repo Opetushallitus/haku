@@ -34,24 +34,30 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Hakemus implements Serializable {
 
+    public static final String STATEKEY = "state";
+    public static final String OID = "oid";
+
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     @JsonProperty(value = "_id")
     @JsonDeserialize(using = ObjectIdDeserializer.class)
     @JsonSerialize(using = ObjectIdSerializer.class)
     private org.bson.types.ObjectId id;
 
-    public static final String STATEKEY = "state";
-
     public enum State {
         LUONNOS, VIREILLÄ
     }
 
-    public static final String HAKEMUS_OID = "HakemusOid";
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    @JsonProperty(value = OID)
+    private String oid;
 
     private static final long serialVersionUID = -7491168801255850954L;
 
     private HakuLomakeId hakuLomakeId;
     private final User user;
+
+    @JsonProperty(value = STATEKEY)
+    private State state = State.LUONNOS;
 
     private final Map<String, String> meta = new HashMap<String, String>();
     private final Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
@@ -114,4 +120,19 @@ public class Hakemus implements Serializable {
         return vastaukset;
     }
 
+    public String getOid() {
+        return oid;
+    }
+
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
+
+    public void setStateVireilla() {
+        this.state = State.VIREILLÄ;
+    }
+
+    public State getState() {
+        return state;
+    }
 }

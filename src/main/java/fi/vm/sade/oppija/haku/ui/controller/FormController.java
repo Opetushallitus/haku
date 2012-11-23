@@ -170,7 +170,7 @@ public class FormController extends ExceptionController {
         final Hakemus hakemus = hakemusService.getHakemus(hakuLomakeId);
         modelAndView.addObject("categoryData", hakemus.getVastauksetMerged());
         modelAndView.addObject("hakemusId", hakuLomakeId);
-        return modelAndView.addObject("applicationNumber", hakemus.getMeta().get(Hakemus.HAKEMUS_OID));
+        return modelAndView.addObject("applicationNumber", hakemus.getOid());
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{vaiheId}/{teemaId}/help", method = RequestMethod.GET)

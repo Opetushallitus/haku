@@ -47,14 +47,18 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
 
     @Override
     public HakemusState tallennaVaihe(HakemusState state) {
-        final Hakemus hakemus = state.getHakemus();
+        Hakemus hakemus = state.getHakemus();
         final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(state.getHakemus());
+        query.remove("vastaukset");
 
         DBObject one = getCollection().findOne(query);
         if (one == null) {
-            hakemus.addMeta(Hakemus.HAKEMUS_OID, OID_PREFIX + getNextId());
-            one = new HakemusToBasicDBObjectConverter().convert(hakemus);
+            hakemus.setOid(OID_PREFIX + getNextId());
+        } else {
+            hakemus = new DBObjectToHakemusConverter().convert(one);
+            hakemus.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());
         }
+        one = new HakemusToBasicDBObjectConverter().convert(hakemus);
         getCollection().update(query, one, true, false);
         return state;
     }
@@ -106,7 +110,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
 
     @Override
     public HakemusState laitaVireille(HakemusState state) {
-        final String oid = state.getHakemus().getMeta().get(Hakemus.HAKEMUS_OID);
+        final String oid = state.getHakemus().getOid();
 
         final DBObject update = findByOid(searchByOid(oid));
         update.put(Hakemus.STATEKEY, Hakemus.State.VIREILLÄ.toString());
@@ -131,9 +135,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         if (!oid.startsWith(OID_PREFIX)) {
             throw new RuntimeException("invalid oid");
         }
-        final BasicDBObject basicDBObject = new BasicDBObject();
-        basicDBObject.put(Hakemus.HAKEMUS_OID, oid);
-        return basicDBObject;
+        return new BasicDBObject("oid", oid);
     }
 
     private Hakemus dbObjectToHakemus(final DBObject dbObject) {
