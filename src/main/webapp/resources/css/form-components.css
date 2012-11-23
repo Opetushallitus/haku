@@ -535,7 +535,7 @@ select option {
 
 /*** Input(radio), Input(checkbox)
 **********************************/
-
+/*
 .field-container-radio,
 .field-container-checkbox {
     padding: 0px 0px 0px 2em;
@@ -556,6 +556,7 @@ select option {
     top: 0.1em;
     left: 0px;
 }
+*/
 
 /*** Form row structure
 ************************************************/

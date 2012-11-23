@@ -133,7 +133,17 @@ hr
 	clear:both;
 }
 
+.align-center {
+    text-align: center;
+}
 
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
 
 .set-left{float:left;}
 .set-right{float:right;}
@@ -209,6 +219,13 @@ hr
 /*** Grid
 ************************************************/
 
+.grid16-2 {
+    float: left;
+    margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 11.25%;
+}
+
 .grid16-4
 {
     float: left;
@@ -246,6 +263,13 @@ hr
     margin-left: 0.625%;
     margin-right: 0.625%;
     width: 73.75%;
+}
+
+.grid16-14 {
+    float: left;
+    margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 86.25%;
 }
 
 .grid16-16 {

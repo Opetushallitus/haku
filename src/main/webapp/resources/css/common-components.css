@@ -677,3 +677,16 @@ ul.unstyled li
 
 
 
+/*** Hidable
+************************************************/
+
+.hider-button {
+    padding-left: 15px;
+    background: transparent url('../img/arrow-right.png') no-repeat left top;
+    /*background: transparent url('../img/arrow-right.png') no-repeat left top;*/
+}
+
+.hidden {
+    display: none;
+}
+

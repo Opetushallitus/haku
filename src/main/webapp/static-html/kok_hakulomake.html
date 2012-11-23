@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Opetushallitus </title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="../resources/css/screen.css" type="text/css" rel="stylesheet" />
+<link type="text/css" href="../resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" rel="stylesheet" />
+<script type="text/javascript" src="../resources/jquery/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="../resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
+<script type="text/javascript" src="../resources/javascript/master.js"></script>
+
+<!--[if gte IE 9]>
+  <style type="text/css">
+    .tabs .tab span {
+       filter: none;
+    }
+    
+    
+  </style>
+<![endif]-->
+
+
+</head>
+<body>
+<div id="viewport">
+<div id="overlay"></div>
+<div id="wrapper" class="virkailija">
+    <header id="siteheader">
+
+        <div class="primarylinks">
+            <a href="#">Oppijan verkkopalvelu</a> &nbsp;
+            <a href="#">Virkailijan työpöytä</a>
+        </div>
+
+        <div class="secondarylinks">
+            <a href="#">Omat tiedot</a> &nbsp;
+            <a href="#">Viestintä</a> &nbsp;
+            <a href="#">Asiakaspalvelu</a> &nbsp;
+            <a href="#">Tukipalvelut</a>
+        </div>
+
+    </header>
+    <div id="page">
+        <header id="header">
+        
+            <nav id="navigation">
+            
+                <ul class="level1">
+                    <li><a href="#" class=""><span>Organisaation tiedot</span></a></li>
+                    <li>
+                        <a href="index.html" class="current"><span>Koulutustarjonta</span></a>
+                        <ul class="level2">
+                            <li><a href="#" class="">Koulutuksen tiedot</a></li>
+                            <li><a href="#" class="">Koulutuksen toteutus ja hakukohde</a></li>
+                            <li><a href="#" class="">Organisaation kuvailevat tiedot</a></li>
+                            <li><a href="#" class="">Järjestämissopimukset</a></li>
+                            <li><a href="#" class="">Järjestämisluvat</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" class=""><span>Valintaperusteet</span></a></li>
+                    <li><a href="#" class=""><span>Koulutussuunnittelu</span></a></li>
+                    <li><a href="#" class=""><span>Sisällönhallinta</span></a></li>
+                </ul>
+
+            </nav>
+        </header>
+    </div>
+
+    <div class="clear"></div>
+
+    <section id="content" class="grid16-16">
+        
+        <div class="tabs">
+            <a href="#" data-tabs-group="applicationtabs" data-tabs-id="Hakukohteen_perustiedot" class="tab">
+                <span>Hakukohteen perustiedot</span>
+            </a>
+            <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valintakokeiden_tiedot" class="tab">
+                <span>Valintakokeiden tiedot</span>
+            </a>
+            <a href="#" data-tabs-group="applicationtabs" data-tabs-id="liitteiden_tiedot" class="tab">
+                <span>Liitteiden tiedot</span>
+            </a>
+            <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakulomakkeen_lisakysymykset" class="tab current">
+                <span>Hakulomakkeen lisäkysymykset</span>
+            </a>
+        </div>
+        <div class="tabsheets">
+            
+            <!-- Haut -->
+            
+            <section id="hakukohteen_perustiedot"  class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="Hakukohteen_perustiedot">
+                
+            </section>
+
+            <section id="valintakokeiden_tiedot" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="valintakokeiden_tiedot">
+                
+            </section>
+
+            <section id="liitteiden_tiedot" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="liitteiden_tiedot">
+                
+            </section>
+
+            <section style="display: block" id="hakulomakkeen_lisakysymykset" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakulomakkeen_lisakysymykset">
+                <h3>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, kevät 2013</h3>
+                <a href="#" class="button small">Lisää sääntö</a>
+                <a href="#" class="button small">Liitä toisiin hakukohteisiin</a>
+                <a href="#" class="button small primary">Tallenna luonnoksena</a>
+                <div class="clear"></div>
+                <small>Sivun ohje. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</small>
+
+                <fieldset class="form-item">
+                    <div class="form-item-content">
+                 
+                        <div class="field-container-checkbox">
+                             <input type="checkbox" id="yhteiset_hakemukset" /><label for="yhteiset_hakemukset">Näytä kaikille kohteille yhteiset hakemukset</label>
+                        </div>
+                             
+                        <div class="field-container-checkbox">
+                            <input type="checkbox" id="organisaation_lisakysymykset" /><label for="organisaation_lisakysymykset">Näytä kaikki oman organisaation lisäkysymykset</label>
+                        </div>
+                 
+                        <div class="field-container-checkbox">
+                            <input type="checkbox" id="muiden_hakukohteiden" /><label for="muiden_hakukohteiden">Näytä myös muiden hakukohteiden käyttämät</label>
+                        </div>
+                 
+                    </div>
+                    <div class="clear"></div>
+                </fieldset>
+                
+                <div class="theme">
+                    <h3 class="hider-button">Henkilötiedot</h3>
+                    <div class="hidden">
+                        <table class="virkailija-table-1">
+                            <thead>
+                                <tr>
+                                    <td>Pakollinen</td>
+                                    <td>Kysymys</td>
+                                    <td>Ohje</td>
+                                    <td>Sääntö</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="align-center"><input type="checkbox" /></td>
+                                    <td><a href="#">Sukunimi</a></td>
+                                    <td>Ohje kysymykselle sukunimi</td>
+                                    <td><a href="#">Lisää sääntö</a></td>
+                                    <td class="align-center"><a href="#">Poista</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="align-center"><input type="checkbox" /></td>
+                                    <td><a href="#">Etunimi</a></td>
+                                    <td>Ohje kysymykselle etunimi</td>
+                                    <td><a href="#">Lisää sääntö</a></td>
+                                    <td class="align-center"><a href="#">Poista</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="align-center"><input type="checkbox" /></td>
+                                    <td><a href="#">Kutsumanimi</a></td>
+                                    <td>Ohje kysymykselle kutsumanimi</td>
+                                    <td><a href="#">Muokkaa sääntöä</a></td>
+                                    <td class="align-center"><a href="#">Poista</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="align-center"><input type="checkbox" /></td>
+                                    <td><a href="#">Henkilötunnus</a></td>
+                                    <td>Ohje kysymykselle henkilötunnus</td>
+                                    <td><a href="#">Muokkaa sääntöä</a></td>
+                                    <td class="align-center"><a href="#">Poista</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="align-center"><input type="checkbox" /></td>
+                                    <td><a href="#">Sukupuoli</a></td>
+                                    <td>Ohje kysymykselle sukupuoli</td>
+                                    <td><a href="#">Lisää sääntö</a></td>
+                                    <td class="align-center"><a href="#">Poista</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="theme">
+                    <h3 class="hider-button">Koulutustausta</h3>
+                    <div class="hidden">
+                        <table class="virkailija-table-1">
+                            <thead>
+                                <tr>
+                                    <td>Pakollinen</td>
+                                    <td>Kysymys</td>
+                                    <td>Ohje</td>
+                                    <td>Sääntö</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="align-center"><input type="checkbox" /></td>
+                                    <td><a href="#">Sukunimi</a></td>
+                                    <td>Ohje kysymykselle sukunimi</td>
+                                    <td><a href="#">Lisää sääntö</a></td>
+                                    <td class="align-center"><a href="#">Poista</a></td>
+                                    <td class="rule"><a href="#">Muokkaa</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="align-center"><input type="checkbox" disabled="disabled" checked="true" /></td>
+                                    <td><a href="#">Etunimi</a></td>
+                                    <td>Ohje kysymykselle etunimi</td>
+                                    <td class="rule"><a href="#">Lisää sääntö</a></td>
+                                    <td class="align-center"><a href="#">Poista</a></td>
+                                    <td class="rule"><a href="#">Muokkaa</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="align-center"><input type="checkbox" /></td>
+                                    <td><a href="#">Kutsumanimi</a></td>
+                                    <td>Ohje kysymykselle kutsumanimi</td>
+                                    <td class="condition"><a href="#">Muokkaa sääntöä</a></td>
+                                    <td class="align-center"><a href="#">Poista</a></td>
+                                    <td class="rule"><a href="#">Muokkaa</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="align-center"><input type="checkbox" /></td>
+                                    <td><a href="#">Henkilötunnus</a></td>
+                                    <td>Ohje kysymykselle henkilötunnus</td>
+                                    <td class="follow-up-question"><a href="#">Muokkaa sääntöä</a></td>
+                                    <td class="align-center"><a href="#">Poista</a></td>
+                                    <td class="rule"><a href="#">Muokkaa</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="align-center"><input type="checkbox" /></td>
+                                    <td><a href="#">Sukupuoli</a></td>
+                                    <td>Ohje kysymykselle sukupuoli</td>
+                                    <td><a href="#">Lisää sääntö</a></td>
+                                    <td class="align-center"><a href="#">Poista</a></td>
+                                    <td class="rule"><a href="#">Muokkaa</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>                  
+            
+        </div>
+    
+</section>
+    
+    <footer id="footer">
+        <div class="footer-container">
+        
+            <div class="grid16-4">
+                <div class="grid-container">
+Leipäteksti #000 line-height: 1.8em font-size: 1.3em (body font-size: 62.5% = 10px) Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. 
+                </div>
+            </div>
+
+
+            <div class="grid16-12">
+                <div class="grid16-4 ">
+                    <div class="grid-container">
+                        <h3> 1st column - Lorem ipsum</h3>
+                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                    </div>
+                </div>
+                <div class="grid16-4">
+                    <div class="grid-container">
+                        <h3>2nd column - Lorem ipsum </h3>
+                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                    </div>
+                </div>
+                <div class="grid16-4">
+                    <div class="grid-container">
+                        <h3> 3st column - Lorem ipsum</h3>
+                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                    </div>
+                </div>
+                <div class="grid16-4">
+                    <div class="grid-container">
+                        <h3>4nd column - Lorem ipsum </h3>
+                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                    </div>
+                </div>
+                <div class="grid16-8 footer-logo">
+                    <img src="content/logo-opetus-ja-kulttuuriministerio.png">
+                </div>
+                <div class="grid16-8 footer-logo">
+                    <img src="content/logo-oph.png">
+                </div>
+            </div>
+            
+            
+            
+<div class="clear"></div>
+        </div>
+    </footer>
+</div>
+
+
+</div>
+</div>
+</body>
+</html>
