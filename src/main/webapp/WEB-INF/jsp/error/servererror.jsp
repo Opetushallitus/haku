@@ -20,7 +20,6 @@
 <html lang="fi">
 <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/styles.css" type="text/css">
     <title>Virhe</title>
 </head>
 <body>
