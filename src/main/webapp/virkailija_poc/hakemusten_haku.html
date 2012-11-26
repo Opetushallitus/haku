@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html ng-app="virkailija">
+<head>
+
+    <title>Opetushallitus </title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="../resources/css/screen.css" type="text/css" rel="stylesheet"/>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
+    <script src="http://code.angularjs.org/1.1.0/angular.min.js"></script>
+    <script src="http://code.angularjs.org/1.1.0/angular-resource.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/directives.js"></script>
+</head>
+<body ng-controller="HakemusCtrl">
+<div id="viewport">
+<div id="overlay"></div>
+<div id="site">
+
+<header id="siteheader">
+
+    <div class="header-container">
+
+        <div class="sitelogo">
+            <a href="index.html">Sivuston logo</a>
+        </div>
+
+        <div class="actions">
+
+            <ul>
+                <li><a href="#">Kirjaudu ulos</a></li>
+                <li><a href="#">Mikko mallikas</a></li>
+            </ul>
+
+            <ul>
+                <li><a href="#">Sanasto</a></li>
+                <li><a href="#">Kysy neuvoa</a></li>
+                <li><a href="#">Hakuajat</a></li>
+            </ul>
+
+            <ul>
+                <li><a href="#">På svenska</a></li>
+                <li><a href="#">in English</a></li>
+                <li><a href="#">Mobiili</a></li>
+                <li><a href="#">Tekstiversio</a></li>
+            </ul>
+
+            <div class="clear"></div>
+        </div>
+
+    </div>
+
+    <div class="line clear"></div>
+</header>
+
+<section id="page">
+
+    <section id="pageheader" class="grid16-16">
+
+        <nav class="main-navigation">
+            <ul class="navigation">
+                <li class="home"><a href="index.html">Etusivu</a></li>
+                <li><a href="lukio.html">Lukio</a></li>
+                <li><a href="#">Ammatillinen koulutus</a></li>
+                <li><a href="#">Ammattikorkeakoulu</a></li>
+                <li><a href="#">Yliopisto</a></li>
+                <li><a href="#">Täydennyskoulutus</a></li>
+                <li><a href="#">Opintojen valinta</a></li>
+            </ul>
+        </nav>
+
+    </section>
+    <div class="clear"></div>
+
+    <section id="search-applications" class="content-container">
+
+        <div class="grid16-4">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+        <div class="grid16-12">
+
+            <fieldset class="form-item-row">
+                <legend>Kisakalliosäätiö, Kisakallion urheilupuisto</legend>
+                <div class="form-item">
+                    <label class="form-item-label" for="vuosi">Vuosi</label>
+                    <div class="form-item-content">
+                        <input type="text" name="vuosi" id="vuosi" size="4" />
+                    </div>
+                </div>
+                <div class="form-item">
+                    <label class="form-item-label" for="hakukausi">Hakukausi</label>
+                    <div class="form-item-content">
+                        <select id="hakukausi">
+                            <option value="syksy">Syksy</option>
+                            <option value="kevat">Kevät</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-item">
+                    <label class="form-item-label" for="hakutyyppi">Hakutyyppi</label>
+                    <div class="form-item-content">
+                        <select id="hakutyyppi">
+                            <option value="hakutyyppi1">Hakutyyppi 1</option>
+                            <option value="hakutyyppi2">Hakutyyppi 2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-item">
+                    <label class="form-item-label" for="kohdejoukko">Haun kohdejoukko</label>
+                    <div class="form-item-content">
+                        <select id="kohdejoukko">
+                            <option value="kohdejoukko1">Kohdejoukko 1</option>
+                            <option value="kohdejoukko2">Kohdejoukko 2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-item">
+                    <div class="form-item-content">
+                        <button><span><span>Tyhjennä</span></span></button>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="grid16-8">
+
+                <div class="form-row narrow">
+                    <label class="form-row-label" for="sukunimi">Sukunimi</label>
+                    <div class="form-row-content">
+                        <input type="text" name="sukunimi" id="sukunimi" size="30" />
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row narrow">
+                    <label class="form-row-label" for="etunimi">Etunimi</label>
+                    <div class="form-row-content">
+                        <input type="text" name="etunimi" id="etunimi" size="30" />
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row narrow">
+                    <label class="form-row-label" for="henkilotunnus">Henkilötunnus</label>
+                    <div class="form-row-content">
+                        <input type="text" name="henkilotunnus" id="henkilotunnus" size="30" />
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row narrow">
+                    <label class="form-row-label" for="oppijanumero">Oppijanumero</label>
+                    <div class="form-row-content">
+                        <input type="text" name="oppijanumero" id="oppijanumero" size="30" />
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row narrow">
+                    <label class="form-row-label" for="tila">Hakemuksen tila</label>
+                    <div class="form-row-content">
+                        <select name="tila" id="tila">
+                            <option value="tila1">Tila 1</option>
+                            <option value="tila2">Tila 2</option>
+                            <option value="tila3">Tila 3</option>
+                        </select>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row narrow">
+                    <div class="field-container-checkbox">
+                        <input name="choosepassive" value="choosepassive" id="choosepassive" type="checkbox" />
+                        <label for="Suoritukset-Perusopetus">Hae myös passiiviset</label>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row narrow">
+                    <div class="form-row-content">
+                        <button ng-click="search()"><span><span>Hae</span></span></button>
+                        <button><span><span>Tyhjennä</span></span></button>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="grid16-8">
+                <div class="form-row narrow">
+                    <label class="form-row-label" for="koulutus">Koulutus</label>
+                    <div class="form-row-content">
+                        <input type="text" name="koulutus1" id="koulutus1" size="5" />
+                        <input type="text" name="koulutus2" id="koulutus2" size="20" />
+                        <a href="#">Valitse listalta</a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row narrow">
+                    <label class="form-row-label" for="lahtokoulu">Lähtokoulu</label>
+                    <div class="form-row-content">
+                        <input type="text" name="koulu1" id="koulu1" size="5" />
+                        <input type="text" name="koulu2" id="koulu2" size="20" />
+                        <a href="#">Valitse listalta</a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row narrow">
+                    <label class="form-row-label" for="lahtoluokka">Lähtöluokka</label>
+                    <div class="form-row-content">
+                        <input type="text" name="lahtoluokka" id="lahtoluokka" size="5" />
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row narrow">
+                    <label class="form-row-label" for="toimiala">Toimiala</label>
+                    <div class="form-row-content">
+                        <select name="toimiala" id="toimiala">
+                            <option value="toimiala1">Toimiala 1</option>
+                            <option value="toimiala2">Toimiala 2</option>
+                            <option value="toimiala3">Toimiala 3</option>
+                        </select>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row narrow">
+                    <label class="form-row-label" for="oid">Hakemusnumero</label>
+                    <div class="form-row-content">
+                        <input type="text" ng-model="oid" id="oid"/>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+            <div class="grid16-16">
+                
+                <div class="tabs">
+                    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemuksia"
+                       class="tab current"><span>Hakemuksia</span></a>
+                    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="koetulokset"
+                       class="tab"><span>Koetulokset</span></a>
+                    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valintatulokset" class="tab"><span>Valintatulokset</span></a>
+                </div>
+
+                <div class="tabsheets">
+
+                    <section id="hakemuksia" style="display: block" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemuksia">
+                        
+                        <div class="tab-tools">
+                            <button><span><span>Avaa</span></span></button>
+                            <button><span><span>Tallenna hakemus</span></span></button>
+                            <button><span><span>Tulosta</span></span></button>
+                            <button><span><span>Luo pdf</span></span></button>
+                            <select name="sorting" id="sorting">
+                                <option value="hakemustenmukainen">Hakemusten mukainen järjestys</option>
+                                <option value="jarjestys2">Järjestys 2</option>
+                                <option value="jarjestys3">Järjestys 3</option>
+                            </select> 
+                        </div>
+
+                         <div class="field-container-checkbox">
+                            <input name="chooseall" value="chooseall" id="chooseall" type="checkbox" />
+                            <label for="Suoritukset-Perusopetus">Valitse kaikki</label>
+                        </div>
+
+                        <span class="search-result">Hakutulos: 267 osumaa</span>
+
+                        <div class="search-result-pages set-right">
+                            <select name="show" id="result-count">
+                                <option value="show50">Näytä 50</option>
+                                <option value="show100">Näytä 100</option>
+                                <option value="showall">Näytä kaikki</option>
+                            </select>
+                            <span><a href="#"><-</a></span>
+                            <span><a href="#">1</a></span>
+                            <span><a href="#">2</a></span>
+                            <span><a href="#">3</a></span>
+                            <span><a href="#">4</a></span>
+                            <span><a href="#">5</a></span>
+                            <span><a href="#">6</a></span>
+                            <span><a href="#">-></a></span>                            
+                        </div>
+
+                        <table class="applicant-grades">
+                                <thead>
+                                    <tr>
+                                        <td>Sukunimi</td>
+                                        <td>Etunimi</td>
+                                        <td>Henkilötunnus</td>
+                                        <td>Hakemusnro</td>
+                                        <td>Hakemuksen tila</td>
+                                        <td>Puutteellinen, syy</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="field-container-checkbox">
+                                                <input id="select1" type="checkbox" />
+                                                <label for="select1">{{hakemus.vastaukset.henkilotiedot.Sukunimi}}</label>
+                                            </div>
+                                        </td>
+                                        <td>{{hakemus.vastaukset.henkilotiedot.Etunimet}}</td>
+                                        <td>{{hakemus.vastaukset.henkilotiedot.Henkilotunnus}}</td>
+                                        <td>{{hakemus.oid}}</td>
+                                        <td>{{hakemus.state}}</td>
+                                        <td></td>
+                                    </tr>
+                                   
+                                </tbody>
+                            </table>
+
+                        <div class="search-result-pages set-right">
+                            <select name="show" id="result-count">
+                                <option value="show50">Näytä 50</option>
+                                <option value="show100">Näytä 100</option>
+                                <option value="showall">Näytä kaikki</option>
+                            </select>
+                            <span><a href="#"><-</a></span>
+                            <span><a href="#">1</a></span>
+                            <span><a href="#">2</a></span>
+                            <span><a href="#">3</a></span>
+                            <span><a href="#">4</a></span>
+                            <span><a href="#">5</a></span>
+                            <span><a href="#">6</a></span>
+                            <span><a href="#">-></a></span>                            
+                        </div>
+                        <div class="clear"></div>     
+                    </section>
+
+                    <section id="koetulokset" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="koetulokset">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    </section>
+
+                    <section id="valintatulokset" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="valintatulokset">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. </p>
+                    </section>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+
+
+
+        
+
+
+    </section>
+</section>
+</div>
+</div>
+</body>
+</html>
