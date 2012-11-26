@@ -14,7 +14,7 @@
                  passphrase="" trust="true" failonerror="false" />
 
         <echo>Clean Tomcat</echo>
-        <sshexec command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT /data00/tomcat/apache-tomcat-7.0.29/work/* /data00/tomcat/apache-tomcat-7.0.29/temp/*"
+        <sshexec command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku* /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT /data00/tomcat/apache-tomcat-7.0.29/work/* /data00/tomcat/apache-tomcat-7.0.29/temp/*"
                  host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
                  passphrase="" trust="true" failonerror="false" />
 
@@ -25,7 +25,10 @@
              />
 
         <echo>rename haku.war as ROOT</echo>
-        <sshexec command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT; mkdir /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT; unzip -qo -d/data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT /data00/tomcat/apache-tomcat-7.0.29/webapps/haku.war; rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku.war"
+        <sshexec command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT;
+        mkdir /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT;
+        unzip -qo -d/data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT /data00/tomcat/apache-tomcat-7.0.29/webapps/haku.war;
+        rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku.war"
                  host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
                  passphrase="" trust="true" failonerror="false" />
 
