@@ -202,7 +202,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         asuinmaa.setVerboseHelp(getVerboseHelp());
         asuinmaa.setInline(true);
 
-        Question lahiosoite = createRequiredTextQuestion("Lähiosoite", "Lähiosoite", "40");
+        Question lahiosoite = createRequiredTextQuestion("lahiosoite", "Lähiosoite", "40");
         lahiosoite.setInline(true);
 
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", asuinmaa.getId(), "fi");
