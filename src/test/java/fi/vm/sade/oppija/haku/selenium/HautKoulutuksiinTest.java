@@ -61,13 +61,11 @@ public class HautKoulutuksiinTest extends AbstractSeleniumBase {
     private void fillForm() {
         seleniumHelper.getDriver().get(getBaseUrl() + "/" + formModelHelper.getStartUrl());
         seleniumHelper.getSelenium().type("eka", "arvo");
-        seleniumHelper.getSelenium().click("nav-save");
+        seleniumHelper.getSelenium().click("class=right");
     }
 
     private void buildFormWithOneQuestion() {
         final FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextQuestion("eka", "kysymys"));
         formModelHelper = initModel(formModel);
     }
-
-
 }

@@ -29,8 +29,8 @@ import fi.vm.sade.oppija.haku.domain.elements.questions.*;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
 import fi.vm.sade.oppija.haku.validation.Validator;
-import fi.vm.sade.oppija.haku.validation.validators.RegexFieldValidator;
-import fi.vm.sade.oppija.haku.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.oppija.haku.validation.validators.RegexFieldFieldValidator;
+import fi.vm.sade.oppija.haku.validation.validators.RequiredFieldFieldValidator;
 
 import java.util.*;
 
@@ -176,9 +176,9 @@ public abstract class Element {
         Collection<Attribute> attributes = getAttributes().values();
         for (Attribute attribute : attributes) {
             if (attribute.getKey().equals("required")) {
-                validators.add(new RequiredFieldValidator(getId()));
+                validators.add(new RequiredFieldFieldValidator(getId()));
             } else if (attribute.getKey().equals("pattern")) {
-                validators.add(new RegexFieldValidator(getId(), attribute.getValue()));
+                validators.add(new RegexFieldFieldValidator(getId(), attribute.getValue()));
             }
         }
     }

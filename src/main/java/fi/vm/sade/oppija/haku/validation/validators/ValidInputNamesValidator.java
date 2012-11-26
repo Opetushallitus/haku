@@ -14,32 +14,29 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.domain.elements;
+package fi.vm.sade.oppija.haku.validation.validators;
 
+import fi.vm.sade.oppija.haku.validation.ValidationResult;
 import fi.vm.sade.oppija.haku.validation.Validator;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-public class ValidatorFinder {
-    private final Element element;
+public class ValidInputNamesValidator implements Validator {
+    final Set<String> validValues = new HashSet<String>();
 
-
-    public ValidatorFinder(Element element) {
-        this.element = element;
+    public ValidInputNamesValidator(final Set<String> validNames) {
+        validValues.addAll(validNames);
     }
 
-    /**
-     * this method walks up in model hierarchy and finds nearest validating parent and returns its validators
-     *
-     * @return
-     */
-    public List<Validator> findValidatingParentValidators() {
-        List<Validator> validators = element.getValidators();
-        Element element = this.element;
-        while (!element.isValidating() && !element.getClass().equals(Vaihe.class)) {
-            element = element.parent;
-            validators = element.getValidators();
+    @Override
+    public ValidationResult validate(final Map<String, String> values) {
+        for (String key : values.keySet()) {
+            if (!validValues.contains(key)) {
+                throw new RuntimeException("Unknown parameter");
+            }
         }
-        return validators;
+        return new ValidationResult();
     }
 }

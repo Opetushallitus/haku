@@ -113,7 +113,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
     public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
         testEducationPreference();
         final WebDriver driver = seleniumHelper.getDriver();
-        driver.findElement(By.xpath("//button[@name='nav-next']")).click();
+        driver.findElement(By.xpath("//button[@class='right']")).click();
         driver.findElement(By.id("lisakysymys"));
     }
 

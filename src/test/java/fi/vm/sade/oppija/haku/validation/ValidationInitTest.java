@@ -10,7 +10,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
 
@@ -24,7 +24,8 @@ import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.haku.service.FormModelInitializer;
-import fi.vm.sade.oppija.haku.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.oppija.haku.validation.validators.ConditionalFieldValidator;
+import fi.vm.sade.oppija.haku.validation.validators.RequiredFieldFieldValidator;
 import org.junit.Test;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public class ValidationInitTest {
         final FormModel formModel = createModelWithConditionalField();
         final List<Validator> validators = getValidators(formModel, FormModelBuilder.VAIHE_ID);
         assertEquals(1, validators.size());
-        assertEquals(ConditionalValidator.class, validators.get(0).getClass());
+        assertEquals(ConditionalFieldValidator.class, validators.get(0).getClass());
     }
 
     @Test
@@ -64,7 +65,7 @@ public class ValidationInitTest {
         final FormModel formModel = createModelWithTwoConditionalFields();
         final List<Validator> validators = getValidators(formModel, FormModelBuilder.VAIHE_ID);
         assertEquals(3, validators.size());
-        assertEquals(ConditionalValidator.class, validators.get(0).getClass());
+        assertEquals(ConditionalFieldValidator.class, validators.get(0).getClass());
     }
 
     @Test
@@ -73,8 +74,8 @@ public class ValidationInitTest {
         new FormModelInitializer(model).initModel();
         final List<Validator> validators = getValidators(model, "koulutustausta");
         assertEquals(3, validators.size());
-        assertEquals(ConditionalValidator.class, validators.get(0).getClass());
-        assertEquals(RequiredFieldValidator.class, validators.get(1).getClass());
+        assertEquals(ConditionalFieldValidator.class, validators.get(0).getClass());
+        assertEquals(RequiredFieldFieldValidator.class, validators.get(1).getClass());
     }
 
 

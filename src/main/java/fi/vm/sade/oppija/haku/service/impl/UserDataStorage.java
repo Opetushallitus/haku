@@ -30,31 +30,20 @@ import java.util.List;
 
 @Service
 public class UserDataStorage {
-    final ApplicationDAO sessionDataHolder;
+
     final ApplicationDAO applicationDAO;
     final UserHolder userHolder;
 
     @Autowired
-    public UserDataStorage(@Qualifier("sessionDataHolder") ApplicationDAO sessionDataHolder, @Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO, UserHolder userHolder) {
-        this.sessionDataHolder = sessionDataHolder;
+    public UserDataStorage(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO, UserHolder userHolder) {
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
     }
 
     public HakemusState tallenna(HakemusState state) {
-        if (state.isFinalStage()) {
-            return applicationDAO.laitaVireille(state);
-        }
         return applicationDAO.tallennaVaihe(state);
     }
 
-    private ApplicationDAO selectDao() {
-        ApplicationDAO dao = sessionDataHolder;
-        if (userHolder.isUserKnown()) {
-            dao = applicationDAO;
-        }
-        return dao;
-    }
 
     public Hakemus find(HakuLomakeId hakuLomakeId) {
         return applicationDAO.find(hakuLomakeId, userHolder.getUser());
@@ -62,7 +51,6 @@ public class UserDataStorage {
 
     public HakemusState initHakemusState(VaiheenVastaukset vaihe) {
         return new HakemusState(new Hakemus(userHolder.getUser(), vaihe), vaihe.getVaiheId());
-
     }
 
     public List<Hakemus> findAll() {

@@ -22,9 +22,13 @@ import fi.vm.sade.oppija.haku.validation.FormValidator;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 import fi.vm.sade.oppija.haku.validation.ValidationResult;
 import fi.vm.sade.oppija.haku.validation.Validator;
+import fi.vm.sade.oppija.haku.validation.validators.ValidInputNamesValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -43,16 +47,24 @@ public class ValidationEvent implements Event {
 
     @Override
     public void process(HakemusState hakemusState) {
-        if (hakemusState.mustValidate()) {
-            Hakemus hakemus = hakemusState.getHakemus();
-            List<Validator> validators = getValidators(hakemusState);
-            ValidationResult validationResult = FormValidator.validate(validators, hakemus.getVastauksetMerged());
-            hakemusState.addError(validationResult.getErrorMessages());
-        }
+        Hakemus hakemus = hakemusState.getHakemus();
+        List<Validator> validators = getValidators(hakemusState);
+        //validators.addAll(getTestValidators());
+        ValidationResult validationResult = FormValidator.validate(validators, hakemus.getVastauksetMerged());
+        hakemusState.addError(validationResult.getErrorMessages());
     }
 
 
     protected List<Validator> getValidators(HakemusState hakemusState) {
         return formService.getVaiheValidators(hakemusState);
+    }
+
+    public Collection<? extends Validator> getTestValidators() {
+        List<Validator> listOfValidators = new ArrayList<Validator>(1);
+        HashSet<String> keys = new HashSet<String>();
+        keys.add("etunimi");
+        ValidInputNamesValidator validator = new ValidInputNamesValidator(keys);
+        listOfValidators.add(validator);
+        return listOfValidators;
     }
 }

@@ -15,38 +15,38 @@
  */
 package fi.vm.sade.oppija.haku.validation.validators;
 
+import fi.vm.sade.oppija.haku.validation.FieldValidator;
 import fi.vm.sade.oppija.haku.validation.ValidationResult;
-import fi.vm.sade.oppija.haku.validation.Validator;
+
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
  * @author Mikko Majapuro
  */
-public class SocialSecurityNumberValidator extends Validator {
+public class SocialSecurityNumberFieldValidator extends FieldValidator {
 
     private String nationalityId;
     private final Pattern socialSecurityNumberPattern;
     private static final String FI = "fi";
     private static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))";
     private static final String ERROR_MESSAGE = "Suomen kansalaisen on syötettävä henkilötunnus";
-    
-    public SocialSecurityNumberValidator(final String socialSecurityNumberId, 
-            final String nationalityId) {
-        this(socialSecurityNumberId, nationalityId, ERROR_MESSAGE, 
+
+    public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId,
+                                              final String nationalityId) {
+        this(socialSecurityNumberId, nationalityId, ERROR_MESSAGE,
                 SOCIAL_SECURITY_NUMBER_PATTERN);
     }
-    
-    public SocialSecurityNumberValidator(final String socialSecurityNumberId, 
-            final String nationalityId, final String errorMessage, 
-            final String socialSecurityNumberPattern) {
+
+    public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId,
+                                              final String nationalityId, final String errorMessage,
+                                              final String socialSecurityNumberPattern) {
         super(socialSecurityNumberId, errorMessage);
         this.nationalityId = nationalityId;
         this.socialSecurityNumberPattern = Pattern.compile(socialSecurityNumberPattern);
     }
-    
+
     @Override
     public ValidationResult validate(Map<String, String> values) {
         String socialSecurityNumber = values.get(fieldName);
@@ -60,5 +60,5 @@ public class SocialSecurityNumberValidator extends Validator {
         }
         return validationResult;
     }
-    
+
 }

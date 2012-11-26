@@ -189,6 +189,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
+        postinumero.addAttribute("placeholder", "#####");
         postinumero.addAttribute("maxlength", "5");
         postinumero.setHelp("Kirjoita tähän osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, kuten kutsun valintakokeeseen tai valintapäätöksen.");
 
@@ -360,6 +361,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         TextQuestion tyokokemuskuukaudet = new TextQuestion("tyokokemuskuukaudet", "Työkokemus");
         tyokokemuskuukaudet.setHelp("Merkitse kenttään hakuajan päättymiseen mennessä kertynyt työkokemuksesi. Voit käyttää laskemiseen apuna laskuria.");
         tyokokemuskuukaudet.addAttribute("placeholder", "kuukautta");
+        tyokokemuskuukaudet.addAttribute("title", "kuukautta");
         tyokokemuskuukaudet.addAttribute("pattern", "[0-9]*");
         tyokokemuskuukaudet.addAttribute("size", "8");
         tyokokemuskuukaudet.setVerboseHelp(getVerboseHelp());

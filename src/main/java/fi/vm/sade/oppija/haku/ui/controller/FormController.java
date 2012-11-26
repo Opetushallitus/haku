@@ -46,7 +46,7 @@ import java.util.Map;
 public class FormController extends ExceptionController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
-    public static final String DEFAULT_VIEW = "default";
+    public static final String DEFAULT_VIEW = "elements/Vaihe";
     public static final String VERBOSE_HELP_VIEW = "help";
     public static final String LINK_LIST_VIEW = "linkList";
 
@@ -135,17 +135,22 @@ public class FormController extends ExceptionController {
                                      @RequestBody final MultiValueMap<String, String> multiValues) {
         LOGGER.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         final HakuLomakeId hakuLomakeId = new HakuLomakeId(applicationPeriodId, formId);
+        System.out.println("input: " + multiValues.toSingleValueMap());
         HakemusState hakemusState = hakemusService.tallennaVaihe(new VaiheenVastaukset(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
+        Map<String, String> errors = hakemusState.getErrors();
+        for (Map.Entry<String, String> error : errors.entrySet()) {
+            System.out.println("Errors: " + error.getKey() + ": " + error.getValue());
+        }
         if (hakemusState.isValid()) {
-            modelAndView = new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + hakemusState.getVaiheId());
+            modelAndView = new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + hakemusState.getHakemus().getVaiheId());
         } else {
             for (Map.Entry<String, Object> stringObjectEntry : hakemusState.getModelObjects().entrySet()) {
                 modelAndView.addObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());
             }
             Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-            modelAndView.addObject("category", activeForm.getCategory(hakemusState.getVaiheId()));
+            modelAndView.addObject("element", activeForm.getCategory(categoryId));
             modelAndView.addObject("form", activeForm);
         }
         return modelAndView.addObject("hakemusId", hakuLomakeId);
@@ -168,7 +173,7 @@ public class FormController extends ExceptionController {
         modelAndView.addObject("form", activeForm);
         final HakuLomakeId hakuLomakeId = new HakuLomakeId(applicationPeriodId, activeForm.getId());
         final Hakemus hakemus = hakemusService.getHakemus(hakuLomakeId);
-        modelAndView.addObject("categoryData", hakemus.getVastauksetMerged());
+        modelAndView.addObject("categoryData", hakemus.getVastaukset());
         modelAndView.addObject("hakemusId", hakuLomakeId);
         return modelAndView.addObject("applicationNumber", hakemus.getOid());
     }

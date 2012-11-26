@@ -10,14 +10,17 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.validation;
+package fi.vm.sade.oppija.haku.validation.validators;
 
 import fi.vm.sade.oppija.haku.domain.rules.RegexRule;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.haku.validation.FieldValidator;
+import fi.vm.sade.oppija.haku.validation.ValidationResult;
+import fi.vm.sade.oppija.haku.validation.Validator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,12 +32,12 @@ import java.util.Map;
  * @version 11/9/125:38 PM}
  * @since 1.1
  */
-public class ConditionalValidator extends Validator {
+public class ConditionalFieldValidator extends FieldValidator {
 
     List<Validator> validators = new ArrayList<Validator>();
     private RelatedQuestionRule rule;
 
-    public ConditionalValidator(RelatedQuestionRule rule) {
+    public ConditionalFieldValidator(RelatedQuestionRule rule) {
         super(rule.getId(), " error");
         this.rule = rule;
     }

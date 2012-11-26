@@ -16,10 +16,11 @@
 
 package fi.vm.sade.oppija.haku.service.impl;
 
+import fi.vm.sade.log.client.Logger;
+import fi.vm.sade.log.client.LoggerMock;
+import fi.vm.sade.log.model.Tapahtuma;
 import fi.vm.sade.oppija.haku.domain.*;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.event.NavigationEvent;
-import fi.vm.sade.oppija.haku.event.PreValidationEvent;
 import fi.vm.sade.oppija.haku.event.ValidationEvent;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,13 +42,11 @@ import java.util.List;
 @Service
 public class HakemusServiceImpl implements HakemusService {
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HakemusServiceImpl.class);
-    private static final String SEND = "send";
 
     private final FormService formService;
     private final UserDataStorage userDataStorage;
-    private final PreValidationEvent preValidationEvent;
+    private final Logger log;
     private final ValidationEvent validationEvent;
-    private final NavigationEvent navigationEvent;
 
     @Autowired
     public HakemusServiceImpl(final UserDataStorage userDataStorage,
@@ -54,25 +54,15 @@ public class HakemusServiceImpl implements HakemusService {
 
         this.userDataStorage = userDataStorage;
         this.formService = formService;
-        this.preValidationEvent = new PreValidationEvent();
+        this.log = new LoggerMock();
         validationEvent = new ValidationEvent(formService);
-        navigationEvent = new NavigationEvent(formService);
     }
 
     @Override
     public HakemusState tallennaVaihe(VaiheenVastaukset vaihe) {
-        LOGGER.info("save");
-
-        final HakemusState hakemus = userDataStorage.initHakemusState(vaihe);
-        return doValidationChain(hakemus);
-    }
-
-    private HakemusState doValidationChain(HakemusState hakemus) {
-        preValidationEvent.process(hakemus);
-        validationEvent.process(hakemus);
-        final HakemusState tallenna = userDataStorage.tallenna(hakemus);
-        navigationEvent.process(tallenna);
-        return tallenna;
+        castLog();
+        final HakemusState hakemusState = userDataStorage.initHakemusState(vaihe);
+        return doValidationChain(hakemusState);
     }
 
     @Override
@@ -103,6 +93,30 @@ public class HakemusServiceImpl implements HakemusService {
     @Override
     public Hakemus getHakemus(HakuLomakeId hakuLomakeId) {
         return userDataStorage.find(hakuLomakeId);
+    }
+
+    private void castLog() {
+        LOGGER.info("save");
+        try {
+            Tapahtuma t = new Tapahtuma();
+            t.setMuutoksenKohde("muutoksenkohde");
+            t.setAikaleima(new Date());
+            t.setKenenPuolesta("kenenpuolseta");
+            t.setKenenTietoja("kenentietoja");
+            t.setTapahtumatyyppi("tapahtumattyyppi");
+            t.setTekija("tekija");
+            t.setUusiArvo("uusi arvo");
+            t.setVanhaArvo("vaha arvo");
+            log.log(t);
+        } catch (Exception e) {
+            LOGGER.warn("Could not log tallennaVaihe event");
+        }
+    }
+
+    private HakemusState doValidationChain(HakemusState hakemus) {
+        //preValidationEvent.process(hakemus);
+        validationEvent.process(hakemus);
+        return userDataStorage.tallenna(hakemus);
     }
 
 }

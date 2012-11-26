@@ -16,20 +16,20 @@
 
 package fi.vm.sade.oppija.haku.validation.validators;
 
+import fi.vm.sade.oppija.haku.validation.FieldValidator;
 import fi.vm.sade.oppija.haku.validation.ValidationResult;
-import fi.vm.sade.oppija.haku.validation.Validator;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
-public class RequiredFieldValidator extends Validator {
+public class RequiredFieldFieldValidator extends FieldValidator {
 
 
-    public RequiredFieldValidator(String fieldName) {
+    public RequiredFieldFieldValidator(String fieldName) {
         super(fieldName, fieldName + " on pakollinen kenttä");
     }
 
-    public RequiredFieldValidator(final String fieldName, final String errorMessage) {
+    public RequiredFieldFieldValidator(final String fieldName, final String errorMessage) {
         super(fieldName, errorMessage);
     }
 

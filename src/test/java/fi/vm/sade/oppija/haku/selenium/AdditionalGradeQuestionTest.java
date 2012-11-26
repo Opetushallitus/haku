@@ -44,7 +44,7 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
 
     @Test
     public void testAdditionalSubjects() {
-        final String url = getBaseUrl() + "/" + "lomake/Yhteishaku/yhteishaku/hakutoiveet";
+        final String url = getBaseUrl() + "/lomake/Yhteishaku/yhteishaku/hakutoiveet";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
 
@@ -59,7 +59,7 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
         WebElement option = driver.findElement(By.xpath("//option[@value='Sosiaali- ja terveysalan perustutkinto, pk']"));
         option.click();
         // navigate to grade phase
-        s.click("nav-next");
+        s.click("class=right");
         driver.findElement(By.xpath("//table[@id='gradegrid-table']"));
         assertEquals(19, driver.findElements(By.xpath("//table[@id='gradegrid-table']/tbody/tr")).size());
 

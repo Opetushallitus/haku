@@ -10,7 +10,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
 
@@ -22,7 +22,8 @@ import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.haku.validation.Validator;
-import fi.vm.sade.oppija.haku.validation.validators.SocialSecurityNumberValidator;
+import fi.vm.sade.oppija.haku.validation.validators.SocialSecurityNumberFieldValidator;
+
 import java.util.List;
 
 /**
@@ -81,10 +82,10 @@ public class SocialSecurityNumber extends Question {
     public void setNationalityId(String nationalityId) {
         this.nationalityId = nationalityId;
     }
-    
+
     @Override
     protected void initValidators() {
         List<Validator> parentValidators = new ValidatorFinder(this).findValidatingParentValidators();
-        parentValidators.add(new SocialSecurityNumberValidator(ssn.getId(), nationalityId));
+        parentValidators.add(new SocialSecurityNumberFieldValidator(ssn.getId(), nationalityId));
     }
 }

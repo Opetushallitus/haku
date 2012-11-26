@@ -17,10 +17,9 @@
 package fi.vm.sade.oppija.haku.domain.rules;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.ValidatorFinder;
-import fi.vm.sade.oppija.haku.validation.ConditionalValidator;
 import fi.vm.sade.oppija.haku.validation.Validator;
+import fi.vm.sade.oppija.haku.validation.validators.ConditionalFieldValidator;
 
 import java.util.List;
 
@@ -35,9 +34,9 @@ public class RelatedQuestionRule extends Rule {
     private final String expression;
     private final String relatedElementId;
 
-    public RelatedQuestionRule(@JsonProperty(value = "id") String id, 
-            @JsonProperty(value = "relatedElementId") String relatedElementId, 
-            @JsonProperty(value = "expression") String expression) {
+    public RelatedQuestionRule(@JsonProperty(value = "id") String id,
+                               @JsonProperty(value = "relatedElementId") String relatedElementId,
+                               @JsonProperty(value = "expression") String expression) {
         super(id);
         this.relatedElementId = relatedElementId;
         this.expression = expression;
@@ -58,8 +57,8 @@ public class RelatedQuestionRule extends Rule {
 
     @Override
     protected void initValidators() {
-        final List<Validator> validatingParent = new ValidatorFinder(parent, Vaihe.class).findValidatingParentValidators();
-        final ConditionalValidator conditionalValidator = new ConditionalValidator(this);
+        final List<Validator> validatingParent = new ValidatorFinder(parent).findValidatingParentValidators();
+        final ConditionalFieldValidator conditionalValidator = new ConditionalFieldValidator(this);
         for (Validator validator : validators) {
             conditionalValidator.add(validator);
         }

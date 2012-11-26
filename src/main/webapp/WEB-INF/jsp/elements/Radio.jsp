@@ -22,7 +22,7 @@
     <legend class="${styleBaseClass}-label ${element.attributes['required'].value}"><c:out
             value="${element.title}"/></legend>
     <div class="${styleBaseClass}-content">
-
+        <span class="required_field">${errorMessages[element.id]}</span>
         <c:set var="value" value="${(empty value) ? categoryData[element.id] : value}"/>
         <c:forEach var="option" items="${element.options}" varStatus="status">
             <div class="field-container-radio">

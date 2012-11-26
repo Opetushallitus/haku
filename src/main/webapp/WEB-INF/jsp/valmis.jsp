@@ -28,8 +28,8 @@
           href="${pageContext.request.contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
           type="text/css">
     <title>${form.title}</title>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/jquery/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/javascript/rules.js"></script>
     <script src="${pageContext.request.contextPath}/resources/javascript/master.js"></script>
 </head>

@@ -22,7 +22,8 @@
 
     <div class="form-row-content">
         <div class="field-container-text">
-            <input type="text" ${element.attributeString} value="${categoryData[element.id]}" class="postal-code"/><span
+            <input type="text" ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"
+                   class="postal-code"/><span
                 class="required_field">${errorMessages[element.id]}</span>
             <input type="hidden" value="${categoryData['postitoimipaikka']}" name="postitoimipaikka"
                    class="post-office"/>

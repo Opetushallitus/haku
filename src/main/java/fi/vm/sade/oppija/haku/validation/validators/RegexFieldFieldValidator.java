@@ -16,23 +16,23 @@
 
 package fi.vm.sade.oppija.haku.validation.validators;
 
+import fi.vm.sade.oppija.haku.validation.FieldValidator;
 import fi.vm.sade.oppija.haku.validation.ValidationResult;
-import fi.vm.sade.oppija.haku.validation.Validator;
 import org.apache.commons.lang3.Validate;
 
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegexFieldValidator extends Validator {
+public class RegexFieldFieldValidator extends FieldValidator {
 
     final Pattern pattern;
 
-    public RegexFieldValidator(final String fieldName, final String pattern) {
+    public RegexFieldFieldValidator(final String fieldName, final String pattern) {
         this(fieldName, "Virheellinen syöte " + pattern, pattern);
     }
 
-    public RegexFieldValidator(final String fieldName, final String errorMessage, final String pattern) {
+    public RegexFieldFieldValidator(final String fieldName, final String errorMessage, final String pattern) {
         super(fieldName, errorMessage);
         Validate.notNull(pattern, "Pattern can't be null");
         this.pattern = Pattern.compile(pattern);

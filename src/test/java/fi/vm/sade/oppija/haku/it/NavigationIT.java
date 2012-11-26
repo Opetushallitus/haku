@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
+
 package fi.vm.sade.oppija.haku.it;
 
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
@@ -26,22 +42,22 @@ public class NavigationIT extends AbstractRemoteTest {
     @Test
     public void testFirstGategoryNavButtons() throws IOException {
         beginAt("/lomake/Yhteishaku/yhteishaku/henkilotiedot");
-        assertElementPresentByXPath("//button[@name='nav-next']");
-        assertElementNotPresentByXPath("//button[@name='nav-prev']");
+        assertElementPresentByXPath("//button[@class='right']");
+        assertElementNotPresentByXPath("//button[@class='left']");
     }
 
     @Test
     public void testMiddleGategoryNavButtons() throws IOException {
         beginAt("/lomake/Yhteishaku/yhteishaku/koulutustausta");
-        assertElementPresentByXPath("//button[@name='nav-next']");
-        assertElementPresentByXPath("//button[@name='nav-prev']");
+        assertElementPresentByXPath("//button[@class='right']");
+        assertElementPresentByXPath("//button[@class='left']");
     }
 
     @Test
     public void testLastGategoryNavButtons() throws IOException {
         beginAt("/lomake/Yhteishaku/yhteishaku/esikatselu");
         assertElementNotPresentByXPath("//button[@name='nav-next']");
-        assertElementPresentByXPath("//button[@name='nav-prev']");
-        assertElementPresentByXPath("//button[@name='nav-send']");
+        assertElementPresentByXPath("//button[@class='left']");
+        assertElementPresentByXPath("//button[@class='right']");
     }
 }

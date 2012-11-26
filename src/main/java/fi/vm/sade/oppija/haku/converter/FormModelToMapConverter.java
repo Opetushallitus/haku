@@ -33,7 +33,6 @@ public class FormModelToMapConverter implements Converter<FormModel, Map> {
     public Map convert(FormModel formModel) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        final Map map = mapper.convertValue(formModel, Map.class);
-        return map;
+        return mapper.convertValue(formModel, Map.class);
     }
 }

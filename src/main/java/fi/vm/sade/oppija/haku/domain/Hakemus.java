@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +34,7 @@ import java.util.Map;
 public class Hakemus implements Serializable {
 
     public static final String OID = "oid";
+    public static final String VAIHE_ID = "vaiheId";
 
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     @JsonProperty(value = "_id")
@@ -51,8 +51,8 @@ public class Hakemus implements Serializable {
 
     private HakuLomakeId hakuLomakeId;
     private final User user;
-
-    private final Map<String, String> meta = new HashMap<String, String>();
+    @JsonProperty(value = "vaiheId")
+    private String vaiheId;
 
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
@@ -75,18 +75,8 @@ public class Hakemus implements Serializable {
         addVaiheenVastaukset(vaihe.getVaiheId(), vaihe.getVastaukset());
     }
 
-    public Hakemus addMeta(final Map<String, String> meta) {
-        this.meta.putAll(meta);
-        return this;
-    }
-
-    public Hakemus addMeta(final String name, final String value) {
-        this.meta.put(name, value);
-        return this;
-    }
-
-
     public Hakemus addVaiheenVastaukset(final String vaiheId, Map<String, String> vastaukset) {
+        this.vaiheId = vastaukset.remove(VAIHE_ID);
         this.vastaukset.put(vaiheId, vastaukset);
         return this;
     }
@@ -97,10 +87,6 @@ public class Hakemus implements Serializable {
 
     public HakuLomakeId getHakuLomakeId() {
         return hakuLomakeId;
-    }
-
-    public Map<String, String> getMeta() {
-        return Collections.unmodifiableMap(meta);
     }
 
     @JsonIgnore
@@ -124,4 +110,11 @@ public class Hakemus implements Serializable {
         this.oid = oid;
     }
 
+    public String getVaiheId() {
+        return vaiheId;
+    }
+
+    public void setVaiheId(String vaiheId) {
+        this.vaiheId = vaiheId;
+    }
 }

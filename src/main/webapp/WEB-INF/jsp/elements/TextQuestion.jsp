@@ -23,7 +23,7 @@
 
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
-            <input ${element.attributeString} value="${categoryData[element.id]}"/><span
+            <input ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"/><span
                 class="required_field">${errorMessages[element.id]}</span>
         </div>
         <div id="help-${element.id}">

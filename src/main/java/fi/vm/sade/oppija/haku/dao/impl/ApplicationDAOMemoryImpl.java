@@ -14,20 +14,20 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.service;
+package fi.vm.sade.oppija.haku.dao.impl;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.Hakemus;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.User;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -36,24 +36,39 @@ import java.util.List;
  * @since 1.1
  */
 @Component("sessionDataHolder")
-@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class SessionDataHolder implements Serializable, ApplicationDAO {
+public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
 
     private static final long serialVersionUID = -3751714345380438532L;
-    private final HashMap<HakuLomakeId, Hakemus> map = new HashMap<HakuLomakeId, Hakemus>();
+    private final List<Hakemus> hakemukset = new ArrayList<Hakemus>();
 
-    public Hakemus find(HakuLomakeId id, User user) {
-        Hakemus hakemus = map.get(id);
-        if (hakemus == null) {
-            hakemus = new Hakemus(id, user);
-            map.put(id, hakemus);
+    public Hakemus find(final HakuLomakeId hakuLomakeId, final User user) {
+        Collection<Hakemus> kayttajanHakemukset = Collections2.filter(hakemukset, new Predicate<Hakemus>() {
+            @Override
+            public boolean apply(final Hakemus hakemus) {
+                return hakemus.getUser().equals(user) && hakemus.getHakuLomakeId().equals(hakuLomakeId);
+            }
+        });
+        Hakemus hakemus;
+        if (kayttajanHakemukset.isEmpty()) {
+            hakemus = new Hakemus(hakuLomakeId, user);
+            hakemukset.add(hakemus);
+        } else {
+            hakemus = kayttajanHakemukset.iterator().next();
         }
         return hakemus;
     }
 
     @Override
-    public List<Hakemus> findAll(User user) {
-        return new ArrayList<Hakemus>(map.values());
+    public List<Hakemus> findAll(final User user) {
+        Collection<Hakemus> kayttajanHakemukset = Collections2.filter(hakemukset, new Predicate<Hakemus>() {
+            @Override
+            public boolean apply(final Hakemus hakemus) {
+                return hakemus.getUser().equals(user);
+            }
+        });
+        ArrayList<Hakemus> hakemukset = new ArrayList<Hakemus>();
+        hakemukset.addAll(kayttajanHakemukset);
+        return hakemukset;
     }
 
     @Override
@@ -70,7 +85,7 @@ public class SessionDataHolder implements Serializable, ApplicationDAO {
     public HakemusState tallennaVaihe(final HakemusState state) {
         Hakemus hakemus = find(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
         hakemus.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());
-        map.put(hakemus.getHakuLomakeId(), hakemus);
+        hakemukset.add(hakemus);
         return state;
     }
 

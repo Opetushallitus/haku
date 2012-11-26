@@ -10,13 +10,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
 
 package fi.vm.sade.oppija.haku.domain;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +39,11 @@ public class VaiheenVastaukset {
         return vaiheId;
     }
 
+    public String removeVastaus(final String key) {
+        return this.vastaukset.remove(key);
+    }
+
     public Map<String, String> getVastaukset() {
-        return Collections.unmodifiableMap(this.vastaukset);
+        return this.vastaukset;
     }
 }

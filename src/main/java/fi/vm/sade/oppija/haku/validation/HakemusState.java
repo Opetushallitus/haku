@@ -24,18 +24,12 @@ import java.util.Map;
 
 public class HakemusState {
 
+    private static final String HAKEMUS_KEY = "hakemus";
+    private final Map<String, String> errors = new HashMap<String, String>();
+    private final Map<String, Object> modelObjects = new HashMap<String, Object>();
+    private final String vaiheId;
 
-    protected static final String HAKEMUS_KEY = "hakemus";
-
-    protected final Map<String, String> errors;
-    protected final Map<String, Object> modelObjects = new HashMap<String, Object>();
-    protected boolean mustValidate = true;
-    protected boolean navigateNext = false;
-    protected boolean navigatePrev = false;
-    protected String vaiheId;
-
-    public HakemusState(Hakemus hakemus, String vaiheId) {
-        this.errors = new HashMap<String, String>();
+    public HakemusState(final Hakemus hakemus, final String vaiheId) {
         modelObjects.put(HAKEMUS_KEY, hakemus);
         modelObjects.put("categoryData", hakemus.getVastauksetMerged());
         modelObjects.put("errorMessages", errors);
@@ -46,20 +40,12 @@ public class HakemusState {
         return errors.isEmpty();
     }
 
-    public Map<String, String> getErrorMessages() {
-        return errors;
-    }
-
     public void addError(Map<String, String> errorMessages) {
         this.errors.putAll(errorMessages);
     }
 
-    public void addError(final String key, final String message) {
-        this.errors.put(key, message);
-    }
-
-    public void addModelObject(String key, Object data) {
-        this.modelObjects.put(key, data);
+    public Map<String, String> getErrors() {
+        return this.errors;
     }
 
     public Map<String, Object> getModelObjects() {
@@ -70,39 +56,16 @@ public class HakemusState {
         return (Hakemus) modelObjects.get(HAKEMUS_KEY);
     }
 
-    public boolean mustValidate() {
-        return mustValidate;
-    }
-
-    public void skipValidation() {
-        mustValidate = false;
-    }
-
-    public void toggleNavigateNext() {
-        this.navigateNext = true;
-    }
-
-    public boolean isNavigateNext() {
-        return navigateNext;
-    }
-
-    public void toggleNavigatePrev() {
-        this.navigatePrev = true;
-    }
-
-    public boolean isNavigatePrev() {
-        return navigatePrev;
+    public void setHakemus(final Hakemus hakemus) {
+        modelObjects.put(HAKEMUS_KEY, hakemus);
     }
 
     public String getVaiheId() {
         return vaiheId;
     }
 
-    public void setVaiheId(String vaiheId) {
-        this.vaiheId = vaiheId;
-    }
-
     public boolean isFinalStage() {
         return false;
     }
+
 }

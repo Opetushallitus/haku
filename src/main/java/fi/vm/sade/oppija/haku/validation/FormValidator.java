@@ -24,9 +24,9 @@ public final class FormValidator {
     private FormValidator() {
     }
 
-    public static ValidationResult validate(final List<Validator> validators, final Map<String, String> values) {
+    public static ValidationResult validate(final List<Validator> listOfValidators, final Map<String, String> values) {
         List<ValidationResult> validationResults = new ArrayList<ValidationResult>();
-        for (Validator validator : validators) {
+        for (Validator validator : listOfValidators) {
             validationResults.add(validator.validate(values));
         }
         return new ValidationResult(validationResults);

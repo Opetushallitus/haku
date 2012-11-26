@@ -27,28 +27,17 @@ import java.util.Map;
  */
 public class PreValidationEvent implements Event {
 
-    private static final String NAV_NEXT = "nav-next";
-    private static final String NAV_PREV = "nav-prev";
+    private static final String VAIHE_ID = "vaiheId";
 
     @Override
     public void process(HakemusState hakemusState) {
-        removeNext(hakemusState);
-        removePrev(hakemusState);
+        removeVaiheId(hakemusState);
     }
 
-    private void removePrev(HakemusState hakemusState) {
+    private void removeVaiheId(HakemusState hakemusState) {
         final Map<String, String> values = hakemusState.getHakemus().getVastauksetMerged();
-        if (values.containsKey(NAV_PREV)) {
-            hakemusState.toggleNavigatePrev();
-            values.remove(NAV_PREV);
-        }
-    }
-
-    private void removeNext(HakemusState hakemusState) {
-        final Map<String, String> values = hakemusState.getHakemus().getVastauksetMerged();
-        if (values.containsKey(NAV_NEXT)) {
-            hakemusState.toggleNavigateNext();
-            values.remove(NAV_NEXT);
+        if (values.containsKey(VAIHE_ID)) {
+            values.remove(VAIHE_ID);
         }
     }
 }

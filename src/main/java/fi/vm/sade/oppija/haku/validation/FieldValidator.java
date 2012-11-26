@@ -14,26 +14,22 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku.service.impl;
+package fi.vm.sade.oppija.haku.validation;
 
-import fi.vm.sade.oppija.haku.domain.Hakemus;
-import fi.vm.sade.oppija.haku.validation.HakemusState;
+import org.apache.commons.lang3.Validate;
 
-/**
- * @author jukka
- * @version 11/21/124:44 PM}
- * @since 1.1
- */
-public class VireillepanoState extends HakemusState {
+public abstract class FieldValidator implements Validator {
 
-    public static final String VAIHEID = "send";
+    public final String fieldName;
+    public final String errorMessage;
 
-    public VireillepanoState(Hakemus hakemus) {
-        super(hakemus, VAIHEID);
+    protected FieldValidator(final String fieldName, final String errorMessage) {
+        Validate.notNull(fieldName, "FieldName can't be null");
+        Validate.notNull(errorMessage, "ErrorMessage can't be null");
+
+        this.fieldName = fieldName;
+        this.errorMessage = errorMessage;
     }
 
-    @Override
-    public boolean isFinalStage() {
-        return true;
-    }
+
 }
