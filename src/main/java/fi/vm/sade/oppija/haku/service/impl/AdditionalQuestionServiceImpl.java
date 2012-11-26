@@ -89,18 +89,4 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
 
         return additionalQuestions;
     }
-
-    @Override
-    public Map<String, Set<Question>> findAdditionalQuestionsInCategory(final HakuLomakeId hakuLomakeId, final String vaiheId) {
-        Form form = formService.getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId());
-        Vaihe vaihe = form.getCategory(vaiheId);
-        Map<String, Set<Question>> questionMap = new HashMap<String, Set<Question>>();
-
-        if (vaihe != null) {
-            for (Element e : vaihe.getChildren()) {
-                questionMap.put(e.getId(), findAdditionalQuestions(e.getId(), hakuLomakeId, vaiheId));
-            }
-        }
-        return questionMap;
-    }
 }

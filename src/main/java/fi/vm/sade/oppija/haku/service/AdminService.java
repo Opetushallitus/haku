@@ -16,8 +16,6 @@
 
 package fi.vm.sade.oppija.haku.service;
 
-import fi.vm.sade.oppija.haku.domain.FormModel;
-
 import java.io.InputStream;
 
 /**
@@ -31,5 +29,4 @@ public interface AdminService {
 
     void replaceModel(InputStream inputStream);
 
-    void replaceModel(FormModel model);
 }

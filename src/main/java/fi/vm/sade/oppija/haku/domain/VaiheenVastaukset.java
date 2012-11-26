@@ -39,10 +39,6 @@ public class VaiheenVastaukset {
         return vaiheId;
     }
 
-    public String removeVastaus(final String key) {
-        return this.vastaukset.remove(key);
-    }
-
     public Map<String, String> getVastaukset() {
         return this.vastaukset;
     }

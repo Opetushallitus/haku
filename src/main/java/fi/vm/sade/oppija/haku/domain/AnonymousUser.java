@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.haku.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.UUID;
@@ -35,7 +34,4 @@ public class AnonymousUser extends User {
         super(UUID.randomUUID().toString());
     }
 
-    public AnonymousUser(@JsonProperty String userName) {
-        super(userName);
-    }
 }

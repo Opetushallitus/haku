@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.haku.service.impl;
 
 import fi.vm.sade.oppija.haku.dao.FormModelDAO;
-import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.service.AdminService;
 import fi.vm.sade.oppija.haku.tools.FileHandling;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +46,5 @@ public class AdminServiceImpl implements AdminService {
     public void replaceModel(InputStream inputStream) {
         final String json = new FileHandling().readFile(inputStream);
         formModelDAO.insertModelAsJsonString(json);
-    }
-
-
-    @Override
-    public void replaceModel(FormModel model) {
-        formModelDAO.insert(model);
     }
 }

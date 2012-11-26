@@ -20,7 +20,6 @@ import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -48,13 +47,4 @@ public interface AdditionalQuestionService {
      * @return list of questions
      */
     Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakuLomakeId hakuLomakeId, String vaiheId);
-
-    /**
-     * Lists all additional questions in a phase. Questions are grouped by the theme they are related to.
-     *
-     * @param hakuLomakeId hakemus id
-     * @return map with theme ids as keys and questions lists as values
-     */
-    Map<String, Set<Question>> findAdditionalQuestionsInCategory(HakuLomakeId hakuLomakeId, String vaiheId);
-
 }
