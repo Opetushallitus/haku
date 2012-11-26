@@ -34,10 +34,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * @author jukka
@@ -57,11 +55,21 @@ public class AdminController {
     @Autowired
     FormModelHolder formModelHolder;
 
-    private @Value("${mongodb.url}") String mongoUrl;
-    private @Value("${mongo.db.name}") String mongoDbName;
-    private @Value("${mongo.test-db.name}") String mongoTestDbName;
-    private @Value("${tarjonta.index.url}") String tarjontaIndexUrl;
-    private @Value("${tarjonta.data.url}") String tarjontaDataUrl;
+    private
+    @Value("${mongodb.url}")
+    String mongoUrl;
+    private
+    @Value("${mongo.db.name}")
+    String mongoDbName;
+    private
+    @Value("${mongo.test-db.name}")
+    String mongoTestDbName;
+    private
+    @Value("${tarjonta.index.url}")
+    String tarjontaIndexUrl;
+    private
+    @Value("${tarjonta.data.url}")
+    String tarjontaDataUrl;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getIndex() {
