@@ -2,12 +2,12 @@
 <project name="haku-deploy" basedir="." >
 
     <target name="deploy-to-remote-tomcat">
-
+        <!--
         <echo>Backup old haku.war</echo>
         <sshexec command="export DATE=`date +%F_%H-%M-%S`; mkdir $DATE ; cp -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT $DATE"
                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
                 passphrase="" trust="true" failonerror="false" />
-
+        -->
         <echo>Stop Tomcat</echo>
         <sshexec command="/etc/init.d/tomcat stop"
                  host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
