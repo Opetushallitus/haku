@@ -21,7 +21,6 @@
 <head>
     <META http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/styles.css" type="text/css">
     <title></title>
 </head>
 <body>
