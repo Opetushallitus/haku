@@ -57,4 +57,8 @@ public class UserDataStorage {
         return applicationDAO.findAll(userHolder.getUser());
     }
 
+    public HakemusState doSubmit(HakemusState hakemusState) {
+        return applicationDAO.laitaVireille(hakemusState);
+    }
+
 }

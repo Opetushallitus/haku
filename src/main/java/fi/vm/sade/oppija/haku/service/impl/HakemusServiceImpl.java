@@ -61,7 +61,10 @@ public class HakemusServiceImpl implements HakemusService {
     @Override
     public void tallennaHakemus(HakuLomakeId hakuLomakeId) {
         final Hakemus hakemus = userDataStorage.find(hakuLomakeId);
-        doValidationChain(new VireillepanoState(hakemus));
+        HakemusState state = doValidationChain(new VireillepanoState(hakemus));
+
+        // do submit i.e. generate oid
+        userDataStorage.doSubmit(state);
     }
 
     @Override
