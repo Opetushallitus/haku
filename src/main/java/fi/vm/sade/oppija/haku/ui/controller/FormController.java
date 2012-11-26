@@ -135,14 +135,9 @@ public class FormController extends ExceptionController {
                                      @RequestBody final MultiValueMap<String, String> multiValues) {
         LOGGER.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         final HakuLomakeId hakuLomakeId = new HakuLomakeId(applicationPeriodId, formId);
-        System.out.println("input: " + multiValues.toSingleValueMap());
         HakemusState hakemusState = hakemusService.tallennaVaihe(new VaiheenVastaukset(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
-        Map<String, String> errors = hakemusState.getErrors();
-        for (Map.Entry<String, String> error : errors.entrySet()) {
-            System.out.println("Errors: " + error.getKey() + ": " + error.getValue());
-        }
         if (hakemusState.isValid()) {
             modelAndView = new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + hakemusState.getHakemus().getVaiheId());
         } else {
