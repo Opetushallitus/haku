@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -69,7 +70,14 @@ public class HakemusServiceImpl implements HakemusService {
 
     @Override
     public void laitaVireille(HakuLomakeId hakulomakeId) {
-        this.applicationDAO.laitaVireille(hakulomakeId, userHolder.getUser());
+        VaiheenVastaukset vaiheenVastaukset = new VaiheenVastaukset(hakulomakeId, "valmis", new HashMap<String, String>(0));
+        HakemusState hakemusState = new HakemusState(new Hakemus(this.userHolder.getUser(), vaiheenVastaukset), vaiheenVastaukset.getVaiheId());
+        validationEvent.process(hakemusState);
+        if (hakemusState.isValid()) {
+            this.applicationDAO.laitaVireille(hakulomakeId, userHolder.getUser());
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     @Override

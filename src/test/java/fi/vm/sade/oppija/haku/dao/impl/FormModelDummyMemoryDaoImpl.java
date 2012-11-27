@@ -514,7 +514,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     @Override
     public List<Validator> getVaiheValidators(HakemusState hakemusState) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return Collections.EMPTY_LIST;
     }
 
 

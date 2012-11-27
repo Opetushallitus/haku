@@ -25,6 +25,7 @@ import java.util.Map;
 public class HakemusState {
 
     private static final String HAKEMUS_KEY = "hakemus";
+    public static final String VALMIS = "valmis";
     private final Map<String, String> errors = new HashMap<String, String>();
     private final Map<String, Object> modelObjects = new HashMap<String, Object>();
     private final String vaiheId;
@@ -65,7 +66,7 @@ public class HakemusState {
     }
 
     public boolean isFinalStage() {
-        return false;
+        return VALMIS.equals(vaiheId);
     }
 
 }
