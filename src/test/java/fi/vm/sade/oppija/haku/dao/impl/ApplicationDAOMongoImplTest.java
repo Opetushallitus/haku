@@ -77,6 +77,11 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         assertNotSame(ARVO, hakemus.getVastauksetMerged().get(AVAIN));
     }
 
+    @Test
+    public void testSequence() throws Exception {
+        applicationDAO.laitaVireille(hakuLomakeId, TEST_USER);
+    }
+
     @Override
     protected String getCollectionName() {
         return "hakemus";
