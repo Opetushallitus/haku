@@ -25,6 +25,7 @@ import fi.vm.sade.oppija.haku.validation.Validator;
 import fi.vm.sade.oppija.haku.validation.validators.ValidInputNamesValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,6 +37,7 @@ import java.util.List;
  * @version 9/28/122:42 PM}
  * @since 1.1
  */
+@Service
 public class ValidationEvent implements Event {
 
     protected final FormService formService;
@@ -53,7 +55,6 @@ public class ValidationEvent implements Event {
         ValidationResult validationResult = FormValidator.validate(validators, hakemus.getVastauksetMerged());
         hakemusState.addError(validationResult.getErrorMessages());
     }
-
 
     protected List<Validator> getValidators(HakemusState hakemusState) {
         return formService.getVaiheValidators(hakemusState);

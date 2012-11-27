@@ -60,9 +60,11 @@ public class HakemusControllerTest {
                 return HAKEMUS;
             }
 
-            public void tallennaHakemus(HakuLomakeId hakuLomakeId) {
+            @Override
+            public void laitaVireille(HakuLomakeId vaihe) {
                 //To change body of implemented methods use File | Settings | File Templates.
             }
+
         };
     }
 

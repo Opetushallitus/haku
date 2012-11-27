@@ -16,13 +16,14 @@
 
 package fi.vm.sade.oppija.haku.service.impl;
 
+import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
 import fi.vm.sade.oppija.haku.domain.*;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.event.ValidationEvent;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.service.HakemusService;
+import fi.vm.sade.oppija.haku.service.UserHolder;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -37,45 +38,44 @@ import java.util.List;
  */
 @Service
 public class HakemusServiceImpl implements HakemusService {
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HakemusServiceImpl.class);
 
+    private final ApplicationDAO applicationDAO;
+    private final UserHolder userHolder;
     private final FormService formService;
-    private final UserDataStorage userDataStorage;
     private final ValidationEvent validationEvent;
 
     @Autowired
-    public HakemusServiceImpl(final UserDataStorage userDataStorage,
-                              @Qualifier("formServiceImpl") final FormService formService) {
-
-        this.userDataStorage = userDataStorage;
+    public HakemusServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
+                              final UserHolder userHolder,
+                              @Qualifier("formServiceImpl") final FormService formService,
+                              final ValidationEvent validationEvent) {
+        this.applicationDAO = applicationDAO;
+        this.userHolder = userHolder;
         this.formService = formService;
-        validationEvent = new ValidationEvent(formService);
+        this.validationEvent = validationEvent;
     }
 
     @Override
     public HakemusState tallennaVaihe(VaiheenVastaukset vaihe) {
-        final HakemusState hakemusState = userDataStorage.initHakemusState(vaihe);
-        return doValidationChain(hakemusState);
-    }
-
-    @Override
-    public void tallennaHakemus(HakuLomakeId hakuLomakeId) {
-        final Hakemus hakemus = userDataStorage.find(hakuLomakeId);
-        HakemusState state = doValidationChain(new VireillepanoState(hakemus));
-
-        // do submit i.e. generate oid
-        userDataStorage.doSubmit(state);
+        HakemusState hakemusState = new HakemusState(new Hakemus(this.userHolder.getUser(), vaihe), vaihe.getVaiheId());
+        validationEvent.process(hakemusState);
+        return this.applicationDAO.tallennaVaihe(hakemusState);
     }
 
     @Override
     public Hakemus getHakemus(String oid) {
-        return userDataStorage.applicationDAO.find(oid);
+        return this.applicationDAO.find(oid);
+    }
+
+    @Override
+    public void laitaVireille(HakuLomakeId hakulomakeId) {
+        this.applicationDAO.laitaVireille(hakulomakeId, userHolder.getUser());
     }
 
     @Override
     public List<HakemusInfo> findAll() {
         List<HakemusInfo> all = new ArrayList<HakemusInfo>();
-        final List<Hakemus> hakemusList = userDataStorage.findAll();
+        final List<Hakemus> hakemusList = applicationDAO.findAll(userHolder.getUser());
         for (Hakemus hakemus : hakemusList) {
             final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(hakemus.getHakuLomakeId().getApplicationPeriodId());
             final String id = applicationPeriod.getId();
@@ -88,13 +88,6 @@ public class HakemusServiceImpl implements HakemusService {
 
     @Override
     public Hakemus getHakemus(HakuLomakeId hakuLomakeId) {
-        return userDataStorage.find(hakuLomakeId);
+        return applicationDAO.find(hakuLomakeId, userHolder.getUser());
     }
-
-    private HakemusState doValidationChain(HakemusState hakemus) {
-        //preValidationEvent.process(hakemus);
-        validationEvent.process(hakemus);
-        return userDataStorage.tallenna(hakemus);
-    }
-
 }

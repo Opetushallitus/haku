@@ -39,5 +39,5 @@ public interface HakemusService {
 
     Hakemus getHakemus(String oid);
 
-    void tallennaHakemus(HakuLomakeId hakuLomakeId);
+    void laitaVireille(final HakuLomakeId vaihe);
 }

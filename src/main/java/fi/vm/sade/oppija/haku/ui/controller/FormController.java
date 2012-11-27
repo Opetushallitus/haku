@@ -81,10 +81,15 @@ public class FormController extends ExceptionController {
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.GET)
-    public String getFormAndRedirectToFirstCategory(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
-        LOGGER.debug("getFormAndRedirectToFirstCategory {}, {}", new Object[]{applicationPeriodId, formId});
-        Vaihe firstVaihe = formService.getFirstCategory(applicationPeriodId, formId);
-        return "redirect:" + formId + "/" + firstVaihe.getId();
+    public String getHakemus(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
+        LOGGER.debug("getHakemus {}, {}", new Object[]{applicationPeriodId, formId});
+        Hakemus hakemus = hakemusService.getHakemus(new HakuLomakeId(applicationPeriodId, formId));
+        if (hakemus.isNew()) {
+            Vaihe firstVaihe = formService.getFirstCategory(applicationPeriodId, formId);
+            return "redirect:" + formId + "/" + firstVaihe.getId();
+        } else {
+            return "redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + hakemus.getVaiheId();
+        }
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{elementId}", method = RequestMethod.GET)
@@ -154,7 +159,7 @@ public class FormController extends ExceptionController {
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/send", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView sendForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
         LOGGER.debug("sendForm {}, {}", new Object[]{applicationPeriodId, formId});
-        hakemusService.tallennaHakemus(new HakuLomakeId(applicationPeriodId, formId));
+        hakemusService.laitaVireille(new HakuLomakeId(applicationPeriodId, formId));
         return new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/valmis");
     }
 

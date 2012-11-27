@@ -77,7 +77,7 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public HakemusState laitaVireille(HakemusState state) {
+    public void laitaVireille(HakuLomakeId hakulomakeId, User user) {
         throw new UnsupportedOperationException("not supported");
     }
 

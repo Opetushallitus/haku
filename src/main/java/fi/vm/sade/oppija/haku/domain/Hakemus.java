@@ -51,6 +51,7 @@ public class Hakemus implements Serializable {
 
     private HakuLomakeId hakuLomakeId;
     private final User user;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     @JsonProperty(value = "vaiheId")
     private String vaiheId;
 
@@ -114,7 +115,12 @@ public class Hakemus implements Serializable {
         return vaiheId;
     }
 
-    public void setVaiheId(String vaiheId) {
+    public void setVaiheId(final String vaiheId) {
         this.vaiheId = vaiheId;
+    }
+
+    @JsonIgnore
+    public boolean isNew() {
+        return this.vaiheId == null;
     }
 }

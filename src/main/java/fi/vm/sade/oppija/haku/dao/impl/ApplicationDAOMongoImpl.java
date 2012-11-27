@@ -47,15 +47,18 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
 
     @Override
     public HakemusState tallennaVaihe(HakemusState state) {
-        Hakemus hakemus = searchByLomakeIdAndUser(state);
-        final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(hakemus);
+        Hakemus queryHakemus = searchByLomakeIdAndUser(state);
+        final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(queryHakemus);
 
         DBObject one = getCollection().findOne(query);
         if (one != null) {
-            hakemus = new DBObjectToHakemusConverter().convert(one);
+            queryHakemus = new DBObjectToHakemusConverter().convert(one);
         }
-        hakemus.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());
-        one = new HakemusToBasicDBObjectConverter().convert(hakemus);
+        Hakemus uusiHakemus = state.getHakemus();
+        Map<String, String> vastauksetMerged = uusiHakemus.getVastauksetMerged();
+        queryHakemus.addVaiheenVastaukset(state.getVaiheId(), vastauksetMerged);
+        queryHakemus.setVaiheId(uusiHakemus.getVaiheId());
+        one = new HakemusToBasicDBObjectConverter().convert(queryHakemus);
         getCollection().update(query, one, true, false);
         return state;
     }
@@ -110,16 +113,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     }
 
     @Override
-    public HakemusState laitaVireille(HakemusState state) {
-
-
-        final Hakemus hakemus = find(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
-        final BasicDBObject convert = new HakemusToBasicDBObjectConverter().convert(hakemus);
-        final DBObject existing = findByOid(convert);
-        existing.put(Hakemus.OID, OID_PREFIX + getNextId());
-
-        getCollection().findAndModify(convert, existing);
-        return state;
+    public void laitaVireille(final HakuLomakeId hakulomakeId, final User user) {
+        Hakemus hakemus = new Hakemus(hakulomakeId, user);
+        final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(hakemus);
+        DBObject update = new BasicDBObject("$set", new BasicDBObject(Hakemus.OID, OID_PREFIX + getNextId()));
+        update.put(Hakemus.VAIHE_ID, "valmis");
+        getCollection().update(query, update);
     }
 
     @Override

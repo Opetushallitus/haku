@@ -20,9 +20,9 @@ import fi.vm.sade.oppija.haku.dao.impl.ApplicationDAOMemoryImpl;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.haku.event.ValidationEvent;
 import fi.vm.sade.oppija.haku.service.UserHolder;
 import fi.vm.sade.oppija.haku.service.impl.HakemusServiceImpl;
-import fi.vm.sade.oppija.haku.service.impl.UserDataStorage;
 import fi.vm.sade.oppija.haku.service.impl.UserPrefillDataServiceImpl;
 import fi.vm.sade.oppija.haku.ui.controller.FormController;
 import org.junit.Before;
@@ -40,42 +40,41 @@ public class FormControllerTest {
     private final String firstCategoryId = "henkilotiedot";
     private FormController formController;
 
-
     @Before
     public void setUp() throws Exception {
         final FormModelDummyMemoryDaoImpl formService = new FormModelDummyMemoryDaoImpl(formId, firstCategoryId);
         UserHolder userHolder = new UserHolder();
-        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(new UserDataStorage(new ApplicationDAOMemoryImpl(), userHolder),
-                formService);
+        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(new ApplicationDAOMemoryImpl(), userHolder,
+                formService, new ValidationEvent(formService));
         final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(userHolder);
         this.formController = new FormController(formService, hakemusService, userPrefillDataService);
     }
 
     @Test
     public void testGetFormAndRedirectToFirstCategory() throws Exception {
-        String actual = formController.getFormAndRedirectToFirstCategory("Yhteishaku", formId);
+        String actual = formController.getHakemus("Yhteishaku", formId);
         String expected = "redirect:" + formId + "/" + firstCategoryId;
         assertEquals(expected, actual);
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void testGetFormAndRedirectToFirstCategoryNotFound() throws Exception {
-        formController.getFormAndRedirectToFirstCategory(applicationPeriodId, "väärä");
+        formController.getHakemus(applicationPeriodId, "väärä");
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = NullPointerException.class)
     public void testGetFormAndRedirectToFirstCategoryNullFromId() throws Exception {
-        formController.getFormAndRedirectToFirstCategory(applicationPeriodId, null);
+        formController.getHakemus(applicationPeriodId, null);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = NullPointerException.class)
     public void testGetFormAndRedirectToFirstCategoryNullApplicationId() throws Exception {
-        formController.getFormAndRedirectToFirstCategory(null, formId);
+        formController.getHakemus(null, formId);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = NullPointerException.class)
     public void testGetFormAndRedirectToFirstCategoryNullApplicationIdAndFormId() throws Exception {
-        formController.getFormAndRedirectToFirstCategory(null, null);
+        formController.getHakemus(null, null);
     }
 
     @Test
