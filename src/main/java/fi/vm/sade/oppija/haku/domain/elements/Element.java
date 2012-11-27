@@ -72,7 +72,7 @@ public abstract class Element {
     protected transient Element parent;
     protected String help;
 
-    protected transient final List<Validator> validators = new ArrayList<Validator>();
+    protected final transient List<Validator> validators = new ArrayList<Validator>();
 
     protected final List<Element> children = new ArrayList<Element>();
 

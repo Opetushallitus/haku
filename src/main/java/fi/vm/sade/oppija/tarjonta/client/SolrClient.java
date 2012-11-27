@@ -10,7 +10,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
 
@@ -33,9 +33,9 @@ import java.util.HashMap;
  */
 @Component
 public class SolrClient {
-    private
+
     @Value("${tarjonta.index.url}")
-    String solrUrl;
+    private String solrUrl;
     private final RestTemplate restTemplate = new RestTemplate();
 
 

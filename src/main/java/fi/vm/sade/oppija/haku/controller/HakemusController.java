@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Secured("ROLE_OFFICER")
 public class HakemusController extends ExceptionController {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(HakemusController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HakemusController.class);
 
     @Autowired
     HakemusService hakemusService;

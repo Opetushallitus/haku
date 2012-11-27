@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class MapToSolrQueryTransformer {
 
-    private final static Map<String, SolrQueryAppender> CREATOR_MAP = new HashMap<String, SolrQueryAppender>();
+    private static final Map<String, SolrQueryAppender> CREATOR_MAP = new HashMap<String, SolrQueryAppender>();
 
     private static final SolrQueryAppender DEFAULT_SOLR_QUERY_APPENDER = new QueryParameterAppender();
 

@@ -10,7 +10,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
 
@@ -33,7 +33,7 @@ import java.util.Map;
  * @since 1.1
  */
 public class HakemusToBasicDBObjectConverter implements Converter<Hakemus, BasicDBObject> {
-    private final static Logger log = LoggerFactory.getLogger(HakemusToBasicDBObjectConverter.class);
+    private static final Logger log = LoggerFactory.getLogger(HakemusToBasicDBObjectConverter.class);
 
     @Override
     public BasicDBObject convert(Hakemus hakemus) {
