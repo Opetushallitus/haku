@@ -27,7 +27,6 @@ import fi.vm.sade.oppija.haku.domain.Attribute;
 import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.*;
 import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.oppija.haku.domain.rules.SelectingSubmitRule;
 import fi.vm.sade.oppija.haku.validation.Validator;
 import fi.vm.sade.oppija.haku.validation.validators.RegexFieldFieldValidator;
 import fi.vm.sade.oppija.haku.validation.validators.RequiredFieldFieldValidator;
@@ -56,7 +55,6 @@ import java.util.*;
                 @JsonSubTypes.Type(value = TextQuestion.class),
                 @JsonSubTypes.Type(value = Vaihe.class),
                 @JsonSubTypes.Type(value = RelatedQuestionRule.class),
-                @JsonSubTypes.Type(value = SelectingSubmitRule.class),
                 @JsonSubTypes.Type(value = GradeGrid.class),
                 @JsonSubTypes.Type(value = SubjectRow.class),
                 @JsonSubTypes.Type(value = LanguageRow.class),
