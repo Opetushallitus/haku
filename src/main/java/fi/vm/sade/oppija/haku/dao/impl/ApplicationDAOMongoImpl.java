@@ -72,7 +72,22 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         // Atomically updates the sequence field and returns the value for you
         //final BasicDBObject query = new BasicDBObject("$eq", change);
         final BasicDBObject query = new BasicDBObject();
-        DBObject res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
+
+        DBObject res = null;
+
+        if (seq.getCount(query) == 0) {
+            // running findAndModify with the upsert flag on results in a following error:
+            // com.mongodb.CommandResult$CommandFailure: command failed [findandmodify]:
+            // { "serverUsed" : "localhost/127.0.0.1:27017" , "errmsg" : "exception: upsert mode requires query field" , "code" : 13330 , "ok" : 0.0}
+            DBObject initialObject = new BasicDBObject();
+            initialObject.put("seq", Integer.valueOf(0));
+            seq.insert(initialObject);
+            res = seq.findOne(query);
+        }
+        else {
+            res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
+        }
+
         return res.get(SEQUENCE_FIELD).toString();
     }
 
