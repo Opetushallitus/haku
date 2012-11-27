@@ -95,7 +95,9 @@ public class FormServiceImpl implements FormService {
         final HakuLomakeId hakuLomakeId = hakemusState.getHakemus().getHakuLomakeId();
         if (!hakemusState.isFinalStage()) {
             return getVaiheValidators(hakuLomakeId, hakemusState.getVaiheId());
-        } else return getAllValidators(hakuLomakeId);
+        } else {
+            return getAllValidators(hakuLomakeId);
+        }
     }
 
     public List<Validator> getAllValidators(final HakuLomakeId hakuLomakeId) {
