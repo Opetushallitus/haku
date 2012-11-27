@@ -44,9 +44,12 @@ public class PreferenceHelper {
         for (Map.Entry<String, String> entry : values.entrySet()) {
             String key = entry.getKey();
             if (key.matches(OPETUSPISTE_KEY_REGEX)) {
-                final String integerPartBetweenPrefixAndSuffix = key.substring(PREFERENCE_PREFIX.length(), (key.length() - OPETUSPISTE_SUFFIX.length()));
+                final String integerPartBetweenPrefixAndSuffix =
+                        key.substring(PREFERENCE_PREFIX.length(), (key.length() - OPETUSPISTE_SUFFIX.length()));
                 Integer value = Integer.parseInt(integerPartBetweenPrefixAndSuffix);
-                opetuspisteet[value - 1] = new Preference(value, entry.getValue(), values.get(key + IDSUFFIX), values.get(createKoulutusSuffix(value)), values.get(createKoulutusIdSuffix(value)));
+                opetuspisteet[value - 1] =
+                        new Preference(value, entry.getValue(), values.get(key + IDSUFFIX),
+                                values.get(createKoulutusSuffix(value)), values.get(createKoulutusIdSuffix(value)));
                 count++;
             }
         }

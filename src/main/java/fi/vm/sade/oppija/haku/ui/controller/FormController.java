@@ -128,7 +128,8 @@ public class FormController extends ExceptionController {
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-    public ModelAndView prefillForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId, @RequestBody final MultiValueMap<String, String> multiValues) {
+    public ModelAndView prefillForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId,
+                                    @RequestBody final MultiValueMap<String, String> multiValues) {
         userPrefillDataService.addUserPrefillData(multiValues.toSingleValueMap());
         return new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId);
     }

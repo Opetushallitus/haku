@@ -59,14 +59,17 @@ public class Hakemus implements Serializable {
     private Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
 
     @JsonCreator
-    public Hakemus(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId, @JsonProperty(value = "user") final User user, @JsonProperty(value = "vastaukset") Map<String, Map<String, String>> vastaukset) {
+    public Hakemus(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId,
+                   @JsonProperty(value = "user") final User user,
+                   @JsonProperty(value = "vastaukset") Map<String, Map<String, String>> vastaukset) {
         this(hakuLomakeId, user);
         if (vastaukset != null)
             this.vastaukset = vastaukset;
     }
 
     @JsonIgnore
-    public Hakemus(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId, @JsonProperty(value = "user") final User user) {
+    public Hakemus(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId,
+                   @JsonProperty(value = "user") final User user) {
         this.hakuLomakeId = hakuLomakeId;
         this.user = user;
     }
