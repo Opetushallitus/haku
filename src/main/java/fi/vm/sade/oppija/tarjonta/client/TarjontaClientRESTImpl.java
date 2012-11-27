@@ -36,11 +36,6 @@ public class TarjontaClientRESTImpl implements TarjontaClient {
     }
 
     @Override
-    public String retrieveTarjontaAsString(URI tarjontaUrl) {
-        return restTemplate.getForObject(tarjontaUrl, String.class);
-    }
-
-    @Override
     public Source retrieveTarjontaAsSource(URI tarjontaUrl) {
         return restTemplate.getForObject(tarjontaUrl, Source.class);
     }

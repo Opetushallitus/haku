@@ -25,8 +25,6 @@ import java.net.URI;
  */
 public interface TarjontaClient {
 
-    public String retrieveTarjontaAsString(URI tarjontaUrl);
-
     public Source retrieveTarjontaAsSource(URI tarjontaUrl);
 
 }
