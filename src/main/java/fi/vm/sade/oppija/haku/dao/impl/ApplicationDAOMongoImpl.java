@@ -63,10 +63,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         return state;
     }
 
-    private Hakemus searchByLomakeIdAndUser(HakemusState state) {
-        return new Hakemus(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
-    }
-
     public String getNextId() {
 
         DBCollection seq = getSequence();
@@ -117,7 +113,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         Hakemus hakemus = new Hakemus(hakulomakeId, user);
         final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(hakemus);
         DBObject update = new BasicDBObject("$set", new BasicDBObject(Hakemus.OID, OID_PREFIX + getNextId()));
-        update.put(Hakemus.VAIHE_ID, "valmis");
+        //update.put(Hakemus.VAIHE_ID, "valmis");
         getCollection().update(query, update);
     }
 
@@ -143,5 +139,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
 
     private Hakemus dbObjectToHakemus(final DBObject dbObject) {
         return new DBObjectToHakemusConverter().convert(dbObject);
+    }
+
+    private Hakemus searchByLomakeIdAndUser(HakemusState state) {
+        return new Hakemus(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
     }
 }
