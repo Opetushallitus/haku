@@ -53,13 +53,13 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public Map<String, Object> searchById(final String Id) {
+    public Map<String, Object> searchById(final String id) {
         SolrQuery query = new SolrQuery();
-        query.setQuery(ID + ":" + Id);
+        query.setQuery(ID + ":" + id);
         SearchResult searchResult = query(query);
         Map<String, Object> itemFromResult = getItemFromResult(searchResult);
         if (itemFromResult.isEmpty()) {
-            throw new ResourceNotFoundException("Koulutuskuvausta " + Id + " ei löytynyt: ");
+            throw new ResourceNotFoundException("Koulutuskuvausta " + id + " ei löytynyt: ");
         }
         return itemFromResult;
     }
