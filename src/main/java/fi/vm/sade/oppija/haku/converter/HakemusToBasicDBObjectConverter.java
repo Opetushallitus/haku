@@ -33,7 +33,7 @@ import java.util.Map;
  * @since 1.1
  */
 public class HakemusToBasicDBObjectConverter implements Converter<Hakemus, BasicDBObject> {
-    private static final Logger log = LoggerFactory.getLogger(HakemusToBasicDBObjectConverter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HakemusToBasicDBObjectConverter.class);
 
     @Override
     public BasicDBObject convert(Hakemus hakemus) {
@@ -44,7 +44,7 @@ public class HakemusToBasicDBObjectConverter implements Converter<Hakemus, Basic
 
         final Map m = mapper.convertValue(hakemus, Map.class);
         final BasicDBObject basicDBObject = new BasicDBObject(m);
-        log.debug(JSON.serialize(basicDBObject));
+        LOGGER.debug(JSON.serialize(basicDBObject));
         return basicDBObject;
     }
 }

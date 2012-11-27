@@ -83,8 +83,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
             initialObject.put("seq", Integer.valueOf(0));
             seq.insert(initialObject);
             res = seq.findOne(query);
-        }
-        else {
+        } else {
             res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
         }
 

@@ -39,9 +39,8 @@ public class IndexController {
     IndexService indexService;
 
     @RequestMapping(value = "/admin/index/update")
-    public
     @ResponseBody
-    String updateIndex() throws URISyntaxException {
+    public String updateIndex() throws URISyntaxException {
         URI uri = new URI(tarjontaUrl);
         return indexService.update(uri);
     }
