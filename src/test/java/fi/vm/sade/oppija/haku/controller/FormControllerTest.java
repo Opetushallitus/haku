@@ -137,4 +137,11 @@ public class FormControllerTest {
         ModelAndView complete = formController.getComplete(applicationPeriodId, formId);
         assertEquals(FormController.VALMIS_VIEW, complete.getViewName());
     }
+
+    @Test
+    public void testSendForm() throws Exception {
+        ModelAndView modelAndView = formController.sendForm(applicationPeriodId, formId);
+        assertEquals(FormController.REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + FormController.VALMIS_VIEW, modelAndView.getViewName());
+
+    }
 }

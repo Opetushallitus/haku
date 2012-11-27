@@ -163,7 +163,7 @@ public class FormController extends ExceptionController {
     public ModelAndView sendForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
         LOGGER.debug("sendForm {}, {}", new Object[]{applicationPeriodId, formId});
         hakemusService.laitaVireille(new HakuLomakeId(applicationPeriodId, formId));
-        return new ModelAndView(REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/valmis");
+        return new ModelAndView(REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + VALMIS_VIEW);
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/valmis", method = RequestMethod.GET)
