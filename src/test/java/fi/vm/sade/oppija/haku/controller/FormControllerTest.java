@@ -39,14 +39,15 @@ public class FormControllerTest {
     private final String formId = "yhteishaku";
     private final String firstCategoryId = "henkilotiedot";
     private FormController formController;
+    private ApplicationDAOMemoryImpl applicationDAO = new ApplicationDAOMemoryImpl();
+    public static final UserHolder USER_HOLDER = new UserHolder();
 
     @Before
     public void setUp() throws Exception {
         final FormModelDummyMemoryDaoImpl formService = new FormModelDummyMemoryDaoImpl(formId, firstCategoryId);
-        UserHolder userHolder = new UserHolder();
-        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(new ApplicationDAOMemoryImpl(), userHolder,
+        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(applicationDAO, USER_HOLDER,
                 formService, new ValidationEvent(formService));
-        final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(userHolder);
+        final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(USER_HOLDER);
         this.formController = new FormController(formService, hakemusService, userPrefillDataService);
     }
 
@@ -129,5 +130,11 @@ public class FormControllerTest {
         NullPointerException nullPointerException = new NullPointerException(message);
         ModelAndView modelAndView = formController.exceptions(nullPointerException);
         assertEquals(FormController.ERROR_SERVERERROR, modelAndView.getViewName());
+    }
+
+    @Test
+    public void testGetComplete() throws Exception {
+        ModelAndView complete = formController.getComplete(applicationPeriodId, formId);
+        assertEquals(FormController.VALMIS_VIEW, complete.getViewName());
     }
 }

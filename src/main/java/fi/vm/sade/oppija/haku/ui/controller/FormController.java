@@ -49,6 +49,8 @@ public class FormController extends ExceptionController {
     public static final String DEFAULT_VIEW = "elements/Vaihe";
     public static final String VERBOSE_HELP_VIEW = "help";
     public static final String LINK_LIST_VIEW = "linkList";
+    public static final String REDIRECT_LOMAKE = "redirect:/lomake/";
+    public static final String VALMIS_VIEW = "valmis";
 
     final FormService formService;
     private final HakemusService hakemusService;
@@ -88,7 +90,7 @@ public class FormController extends ExceptionController {
             Vaihe firstVaihe = formService.getFirstCategory(applicationPeriodId, formId);
             return "redirect:" + formId + "/" + firstVaihe.getId();
         } else {
-            return "redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + hakemus.getVaiheId();
+            return REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + hakemus.getVaiheId();
         }
     }
 
@@ -131,7 +133,7 @@ public class FormController extends ExceptionController {
     public ModelAndView prefillForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId,
                                     @RequestBody final MultiValueMap<String, String> multiValues) {
         userPrefillDataService.addUserPrefillData(multiValues.toSingleValueMap());
-        return new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId);
+        return new ModelAndView(REDIRECT_LOMAKE + applicationPeriodId + "/" + formId);
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
@@ -145,7 +147,7 @@ public class FormController extends ExceptionController {
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         if (hakemusState.isValid()) {
-            modelAndView = new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/" + hakemusState.getHakemus().getVaiheId());
+            modelAndView = new ModelAndView(REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + hakemusState.getHakemus().getVaiheId());
         } else {
             for (Map.Entry<String, Object> stringObjectEntry : hakemusState.getModelObjects().entrySet()) {
                 modelAndView.addObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());
@@ -161,7 +163,7 @@ public class FormController extends ExceptionController {
     public ModelAndView sendForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
         LOGGER.debug("sendForm {}, {}", new Object[]{applicationPeriodId, formId});
         hakemusService.laitaVireille(new HakuLomakeId(applicationPeriodId, formId));
-        return new ModelAndView("redirect:/lomake/" + applicationPeriodId + "/" + formId + "/valmis");
+        return new ModelAndView(REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/valmis");
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/valmis", method = RequestMethod.GET)
@@ -169,7 +171,7 @@ public class FormController extends ExceptionController {
                                     @PathVariable final String formId) {
 
         LOGGER.debug("sendForm {}, {}", new Object[]{applicationPeriodId, formId});
-        ModelAndView modelAndView = new ModelAndView("valmis");
+        ModelAndView modelAndView = new ModelAndView(VALMIS_VIEW);
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         modelAndView.addObject("form", activeForm);
         final HakuLomakeId hakuLomakeId = new HakuLomakeId(applicationPeriodId, activeForm.getId());
