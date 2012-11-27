@@ -63,8 +63,9 @@ public class Hakemus implements Serializable {
                    @JsonProperty(value = "user") final User user,
                    @JsonProperty(value = "vastaukset") Map<String, Map<String, String>> vastaukset) {
         this(hakuLomakeId, user);
-        if (vastaukset != null)
+        if (vastaukset != null) {
             this.vastaukset = vastaukset;
+        }
     }
 
     @JsonIgnore
