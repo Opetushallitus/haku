@@ -19,6 +19,8 @@ package fi.vm.sade.oppija.haku.aspect;
 
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
+import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
+import fi.vm.sade.oppija.haku.domain.User;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -50,22 +52,22 @@ public class LoggerAspect {
      * Logs event when a form phase is successfully saved
      * as application data in data store.
      */
-    @AfterReturning("execution(* fi.vm.sade.oppija.haku.dao.ApplicationDAO.tallennaVaihe(..)) && args(hakemusState,..)")
-    public void logSavePhase(HakemusState hakemusState) {
+    @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.haku.dao.ApplicationDAO.laitaVireille(..)) && args(lomakeId,user,..)",
+            returning = "oid")
+    public void logSavePhase(HakuLomakeId lomakeId, User user, String oid) {
         try {
             Tapahtuma t = new Tapahtuma();
-            t.setMuutoksenKohde("Application, form id: " + hakemusState.getHakemus().getHakuLomakeId().getApplicationPeriodId()
-                    + ", user: " + hakemusState.getHakemus().getUser().getUserName());
+            t.setMuutoksenKohde("Haku: " + lomakeId.getApplicationPeriodId()
+                    + ", käyttäjä: " + user.getUserName() + ", hakemus oid: " + oid);
             t.setAikaleima(new Date());
-            t.setKenenPuolesta("" + hakemusState.getHakemus().getUser().getUserName());
-            t.setKenenTietoja("" + hakemusState.getHakemus().getUser().getUserName());
-            t.setTapahtumatyyppi("save application phase");
-            t.setTekija("" + hakemusState.getHakemus().getUser().getUserName());
-            t.setUusiArvo("new");
-            t.setVanhaArvo("old");
+            t.setKenenTietoja("" + user.getUserName());
+            t.setTapahtumatyyppi("Hakemus lähetetty");
+            t.setTekija("Hakemus Service");
+            t.setUusiArvo("SUBMITTED");
+            t.setVanhaArvo("DRAFT");
             logger.log(t);
         } catch (Exception e) {
-            LOGGER.warn("Could not log tallennaVaihe event");
+            LOGGER.warn("Could not log laitaVireille event");
         }
     }
 

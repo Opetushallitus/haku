@@ -37,5 +37,5 @@ public interface ApplicationDAO {
 
     Hakemus find(String oid);
 
-    void laitaVireille(HakuLomakeId hakulomakeId, User user);
+    String laitaVireille(HakuLomakeId hakulomakeId, User user);
 }

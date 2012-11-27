@@ -123,12 +123,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     }
 
     @Override
-    public void laitaVireille(final HakuLomakeId hakulomakeId, final User user) {
+    public String laitaVireille(final HakuLomakeId hakulomakeId, final User user) {
         Hakemus hakemus = new Hakemus(hakulomakeId, user);
         final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(hakemus);
-        DBObject update = new BasicDBObject("$set", new BasicDBObject(Hakemus.OID, OID_PREFIX + getNextId()));
+        String oid = OID_PREFIX + getNextId();
+        DBObject update = new BasicDBObject("$set", new BasicDBObject(Hakemus.OID, oid));
         //update.put(Hakemus.VAIHE_ID, "valmis");
         getCollection().update(query, update);
+        return oid;
     }
 
     @Override
