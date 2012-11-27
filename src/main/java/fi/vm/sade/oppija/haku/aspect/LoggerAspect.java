@@ -21,7 +21,6 @@ import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.User;
-import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.LoggerFactory;
