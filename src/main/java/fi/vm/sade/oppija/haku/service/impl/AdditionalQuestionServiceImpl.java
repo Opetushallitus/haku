@@ -19,8 +19,8 @@ package fi.vm.sade.oppija.haku.service.impl;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Phase;
 import fi.vm.sade.oppija.haku.domain.elements.Theme;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.haku.service.FormService;
@@ -66,8 +66,8 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     public Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakuLomakeId hakuLomakeId, final String vaiheId) {
         Theme theme = null;
         Form form = formService.getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId());
-        Vaihe vaihe = form.getCategory(vaiheId);
-        for (Element e : vaihe.getChildren()) {
+        Phase phase = form.getCategory(vaiheId);
+        for (Element e : phase.getChildren()) {
             if (e.getId().equals(teemaId)) {
                 theme = (Theme) e;
                 break;

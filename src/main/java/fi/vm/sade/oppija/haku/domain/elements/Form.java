@@ -34,28 +34,28 @@ public class Form extends Titled {
 
     private transient String firstCategoryId;
 
-    final transient Map<String, Vaihe> categories = new HashMap<String, Vaihe>();
+    final transient Map<String, Phase> categories = new HashMap<String, Phase>();
     final transient Map<String, Element> elements = new HashMap<String, Element>();
 
     public Form(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
     }
 
-    public Vaihe getCategory(String categoryId) {
+    public Phase getCategory(String categoryId) {
         return categories.get(categoryId);
     }
 
-    private void addCategory(Vaihe vaihe, Vaihe prev) {
-        this.categories.put(vaihe.getId(), vaihe);
-        vaihe.initChain(prev);
-        navigation.addChild(vaihe.asLink());
+    private void addCategory(Phase phase, Phase prev) {
+        this.categories.put(phase.getId(), phase);
+        phase.initChain(prev);
+        navigation.addChild(phase.asLink());
     }
 
     public void init() {
-        Vaihe prev = null;
+        Phase prev = null;
         for (Element child : children) {
             child.init(elements, this);
-            final Vaihe child1 = (Vaihe) child;
+            final Phase child1 = (Phase) child;
             addCategory(child1, prev);
             prev = child1;
             if (firstCategoryId == null) {
@@ -70,12 +70,12 @@ public class Form extends Titled {
     }
 
     @JsonIgnore
-    public Vaihe getFirstCategory() {
+    public Phase getFirstCategory() {
         return getCategory(firstCategoryId);
     }
 
     @JsonIgnore
-    public Collection<Vaihe> getCategories() {
+    public Collection<Phase> getCategories() {
         return categories.values();
     }
 
@@ -85,12 +85,12 @@ public class Form extends Titled {
     }
 
     @JsonIgnore
-    public Vaihe getVaiheByTeemaId(String teemaId) {
-        for (Vaihe vaihe : categories.values()) {
-            if (!vaihe.isPreview()) {
-                for (Element e : vaihe.getChildren()) {
+    public Phase getVaiheByTeemaId(String teemaId) {
+        for (Phase phase : categories.values()) {
+            if (!phase.isPreview()) {
+                for (Element e : phase.getChildren()) {
                     if (e.getId().equals(teemaId)) {
-                        return vaihe;
+                        return phase;
                     }
                 }
             }

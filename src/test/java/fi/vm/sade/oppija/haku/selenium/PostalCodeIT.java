@@ -22,8 +22,8 @@ import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.PostOffice;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Phase;
 import fi.vm.sade.oppija.haku.domain.elements.Theme;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.custom.PostalCode;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import org.junit.Before;
@@ -48,7 +48,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         ApplicationPeriod applicationPeriod = new ApplicationPeriod("test");
         FormModel formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
-        Vaihe testivaihe = new Vaihe("testivaihe", "Testivaihe", false);
+        Phase testivaihe = new Phase("testivaihe", "Testivaihe", false);
         Form form = new Form("lomake", "yhteishaku");
         form.addChild(testivaihe);
         form.init();

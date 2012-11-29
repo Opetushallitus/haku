@@ -36,7 +36,7 @@ public class ValidatorFinder {
     public List<Validator> findValidatingParentValidators() {
         List<Validator> validators = element.getValidators();
         Element element = this.element;
-        while (!element.isValidating() && !element.getClass().equals(Vaihe.class)) {
+        while (!element.isValidating() && !element.getClass().equals(Phase.class)) {
             element = element.parent;
             validators = element.getValidators();
         }

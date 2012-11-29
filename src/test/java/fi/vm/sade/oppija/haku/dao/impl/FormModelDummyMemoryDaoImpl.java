@@ -22,8 +22,8 @@ import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.PostOffice;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Phase;
 import fi.vm.sade.oppija.haku.domain.elements.Theme;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.*;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
@@ -52,12 +52,12 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         applicationPeriod.setEnd(instance.getTime());
         formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
-        Vaihe henkilötiedot = new Vaihe(firstCategoryId, "Henkilötiedot", false);
-        Vaihe koulutustausta = new Vaihe("koulutustausta", "Koulutustausta", false);
-        Vaihe hakutoiveet = new Vaihe("hakutoiveet", "Hakutoiveet", false);
-        Vaihe arvosanat = new Vaihe("arvosanat", "Arvosanat", false);
-        Vaihe lisätiedot = new Vaihe("lisatiedot", "Lisätiedot", false);
-        Vaihe esikatselu = new Vaihe("esikatselu", "Esikatselu", true);
+        Phase henkilötiedot = new Phase(firstCategoryId, "Henkilötiedot", false);
+        Phase koulutustausta = new Phase("koulutustausta", "Koulutustausta", false);
+        Phase hakutoiveet = new Phase("hakutoiveet", "Hakutoiveet", false);
+        Phase arvosanat = new Phase("arvosanat", "Arvosanat", false);
+        Phase lisätiedot = new Phase("lisatiedot", "Lisätiedot", false);
+        Phase esikatselu = new Phase("esikatselu", "Esikatselu", true);
 
         Form form = new Form(formId, "Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013");
         form.addChild(henkilötiedot);
@@ -489,7 +489,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     @Override
-    public Vaihe getFirstCategory(String applicationPeriodId, String formId) {
+    public Phase getFirstCategory(String applicationPeriodId, String formId) {
         try {
             return this.getActiveForm(applicationPeriodId, formId).getFirstCategory();
         } catch (Exception e) {

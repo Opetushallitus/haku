@@ -25,27 +25,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @version 9/7/1210:28 AM}
  * @since 1.1
  */
-public class Vaihe extends Titled {
+public class Phase extends Titled {
 
-    private transient Vaihe next;
-    private transient Vaihe prev;
+    private transient Phase next;
+    private transient Phase prev;
     private boolean preview;
 
-    public Vaihe(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
+    public Phase(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
                  @JsonProperty(value = "preview") final boolean preview) {
         super(id, title);
         this.preview = preview;
     }
 
-    public void setNext(Vaihe element) {
+    public void setNext(Phase element) {
         this.next = element;
     }
 
-    public void setPrev(Vaihe prev) {
+    public void setPrev(Phase prev) {
         this.prev = prev;
     }
 
-    public void initChain(Vaihe prev) {
+    public void initChain(Phase prev) {
         if (prev != null) {
             setPrev(prev);
             prev.setNext(this);
@@ -68,12 +68,12 @@ public class Vaihe extends Titled {
     }
 
     @JsonIgnore
-    public Vaihe getNext() {
+    public Phase getNext() {
         return next;
     }
 
     @JsonIgnore
-    public Vaihe getPrev() {
+    public Phase getPrev() {
         return prev;
     }
 

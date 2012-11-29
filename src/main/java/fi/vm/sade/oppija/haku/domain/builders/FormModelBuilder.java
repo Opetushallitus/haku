@@ -19,8 +19,8 @@ package fi.vm.sade.oppija.haku.domain.builders;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
+import fi.vm.sade.oppija.haku.domain.elements.Phase;
 import fi.vm.sade.oppija.haku.domain.elements.Theme;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 
 import java.util.Date;
 
@@ -40,23 +40,23 @@ public class FormModelBuilder {
     FormModel formModel = new FormModel();
 
     ApplicationPeriodBuilder applicationPeriodBuilder = new ApplicationPeriodBuilder(APPLICATION_PERIOD_ID);
-    private Vaihe vaihe = new Vaihe(VAIHE_ID, VAIHE_TITLE, false);
+    private Phase phase = new Phase(VAIHE_ID, VAIHE_TITLE, false);
     private Theme theme = new Theme(TEEMA_ID, TEEMA_TITLE, null);
 
     private FormBuilder formBuilder = new FormBuilder(FORM_ID, "Tässä olisi kuvaava otsikko. Tämä on kuitenkin testiformi joka on luotu " + new Date());
 
-    Form form = createForm(vaihe);
+    Form form = createForm(phase);
 
-    private Form createForm(Vaihe vaihe) {
-        return formBuilder.withChild(vaihe.addChild(theme)).build();
+    private Form createForm(Phase phase) {
+        return formBuilder.withChild(phase.addChild(theme)).build();
     }
 
     public FormModelBuilder() {
     }
 
-    public FormModelBuilder(Vaihe vaihe) {
-        this.vaihe = vaihe;
-        form = createForm(vaihe);
+    public FormModelBuilder(Phase phase) {
+        this.phase = phase;
+        form = createForm(phase);
     }
 
     public FormModel build() {

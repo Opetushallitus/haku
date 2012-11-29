@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.haku.domain;
 
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
+import fi.vm.sade.oppija.haku.domain.elements.Phase;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
 import org.junit.Test;
 
@@ -45,8 +45,8 @@ public class FormModelFactoryTest {
 
     @Test
     public void testBuilderWithCategory() throws Exception {
-        final Vaihe vaihe = new Vaihe("ekaKategoria", "ensimmäinen kategoria", false);
-        final FormModel formModel = new FormModelBuilder(vaihe).withDefaults().addChildToTeema(new TextQuestion("doo", "foo")).build();
+        final Phase phase = new Phase("ekaKategoria", "ensimmäinen kategoria", false);
+        final FormModel formModel = new FormModelBuilder(phase).withDefaults().addChildToTeema(new TextQuestion("doo", "foo")).build();
         assertEquals("doo", new FormModelHelper(formModel).getFirstCategoryFirstTeemaChild().getId());
     }
 }

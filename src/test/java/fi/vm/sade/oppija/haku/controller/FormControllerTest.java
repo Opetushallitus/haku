@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.dao.impl.ApplicationDAOMemoryImpl;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
+import fi.vm.sade.oppija.haku.domain.elements.Phase;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.event.ValidationEvent;
 import fi.vm.sade.oppija.haku.service.UserHolder;
@@ -81,13 +81,13 @@ public class FormControllerTest {
     @Test
     public void testGetCategoryMVCategory() throws Exception {
         ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
-        assertEquals(firstCategoryId, ((Vaihe) actualModelAndView.getModel().get("element")).getId());
+        assertEquals(firstCategoryId, ((Phase) actualModelAndView.getModel().get("element")).getId());
     }
 
     @Test
     public void testGetCategoryMVForm() throws Exception {
         ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
-        assertEquals(formId, ((Vaihe) actualModelAndView.getModel().get("element")).getParent().getId());
+        assertEquals(formId, ((Phase) actualModelAndView.getModel().get("element")).getParent().getId());
     }
 
     @Test
@@ -99,7 +99,7 @@ public class FormControllerTest {
     @Test
     public void testGetCategoryView() throws Exception {
         ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
-        assertEquals("/elements/Vaihe", actualModelAndView.getViewName());
+        assertEquals("/elements/Phase", actualModelAndView.getViewName());
     }
 
     @Test

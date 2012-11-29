@@ -21,7 +21,7 @@ import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
+import fi.vm.sade.oppija.haku.domain.elements.Phase;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.service.FormModelHolder;
 import fi.vm.sade.oppija.haku.service.FormService;
@@ -71,12 +71,12 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public Vaihe getFirstCategory(String applicationPeriodId, String formId) {
-        Vaihe firstVaihe = getActiveForm(applicationPeriodId, formId).getFirstCategory();
-        if (firstVaihe == null) {
+    public Phase getFirstCategory(String applicationPeriodId, String formId) {
+        Phase firstPhase = getActiveForm(applicationPeriodId, formId).getFirstCategory();
+        if (firstPhase == null) {
             throw new ResourceNotFoundException("First category not found");
         }
-        return firstVaihe;
+        return firstPhase;
     }
 
     @Override
@@ -86,8 +86,8 @@ public class FormServiceImpl implements FormService {
     }
 
     public List<Validator> getVaiheValidators(final HakuLomakeId hakuLomakeId, final String vaiheId) {
-        final Vaihe vaihe = getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId()).getCategory(vaiheId);
-        return vaihe.getValidators();
+        final Phase phase = getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId()).getCategory(vaiheId);
+        return phase.getValidators();
     }
 
     @Override
@@ -103,8 +103,8 @@ public class FormServiceImpl implements FormService {
     public List<Validator> getAllValidators(final HakuLomakeId hakuLomakeId) {
         final ArrayList<Validator> validators = new ArrayList<Validator>();
         final Form activeForm = getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId());
-        for (Vaihe vaihe : activeForm.getCategories()) {
-            validators.addAll(vaihe.getValidators());
+        for (Phase phase : activeForm.getCategories()) {
+            validators.addAll(phase.getValidators());
         }
         return validators;
     }

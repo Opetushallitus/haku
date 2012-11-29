@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.haku.service;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
+import fi.vm.sade.oppija.haku.domain.elements.Phase;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 import fi.vm.sade.oppija.haku.validation.Validator;
 
@@ -27,7 +27,7 @@ import java.util.Map;
 
 public interface FormService {
 
-    Vaihe getFirstCategory(final String applicationPeriodId, final String formId);
+    Phase getFirstCategory(final String applicationPeriodId, final String formId);
 
     Map<String, ApplicationPeriod> getApplicationPerioidMap();
 

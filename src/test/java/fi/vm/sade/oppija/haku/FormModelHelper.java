@@ -4,7 +4,7 @@ import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
+import fi.vm.sade.oppija.haku.domain.elements.Phase;
 
 
 /**
@@ -20,12 +20,12 @@ public class FormModelHelper {
 
     }
 
-    public String getFormUrl(Vaihe vaihe) {
-        return "lomake/" + getFirstApplicationPerioid().getId() + "/" + getFirstForm().getId() + "/" + vaihe.getId();
+    public String getFormUrl(Phase phase) {
+        return "lomake/" + getFirstApplicationPerioid().getId() + "/" + getFirstForm().getId() + "/" + phase.getId();
     }
 
-    public String getFormId(Vaihe vaihe) {
-        return "form-" + vaihe.getId();
+    public String getFormId(Phase phase) {
+        return "form-" + phase.getId();
     }
 
     public String getFirstCategoryFormId() {
@@ -40,7 +40,7 @@ public class FormModelHelper {
         return formModel.getApplicationPerioidMap().entrySet().iterator().next().getValue();
     }
 
-    public Vaihe getFirstCategory() {
+    public Phase getFirstCategory() {
         return getFirstForm().getFirstCategory();
     }
 

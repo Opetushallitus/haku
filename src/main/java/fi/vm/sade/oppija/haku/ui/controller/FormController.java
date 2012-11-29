@@ -87,8 +87,8 @@ public class FormController extends ExceptionController {
         LOGGER.debug("getHakemus {}, {}", new Object[]{applicationPeriodId, formId});
         Application application = applicationService.getHakemus(new HakuLomakeId(applicationPeriodId, formId));
         if (application.isNew()) {
-            Vaihe firstVaihe = formService.getFirstCategory(applicationPeriodId, formId);
-            return "redirect:" + formId + "/" + firstVaihe.getId();
+            Phase firstPhase = formService.getFirstCategory(applicationPeriodId, formId);
+            return "redirect:" + formId + "/" + firstPhase.getId();
         } else {
             return REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + application.getVaiheId();
         }
@@ -188,7 +188,7 @@ public class FormController extends ExceptionController {
 
         ModelAndView modelAndView = new ModelAndView(VERBOSE_HELP_VIEW);
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        Vaihe phase = activeForm.getCategory(vaiheId);
+        Phase phase = activeForm.getCategory(vaiheId);
 
         for (Element element : phase.getChildren()) {
             if (element.getId().equals(teemaId)) {

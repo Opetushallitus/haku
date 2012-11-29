@@ -53,7 +53,7 @@ import java.util.*;
                 @JsonSubTypes.Type(value = Link.class),
                 @JsonSubTypes.Type(value = Theme.class),
                 @JsonSubTypes.Type(value = TextQuestion.class),
-                @JsonSubTypes.Type(value = Vaihe.class),
+                @JsonSubTypes.Type(value = Phase.class),
                 @JsonSubTypes.Type(value = RelatedQuestionRule.class),
                 @JsonSubTypes.Type(value = GradeGrid.class),
                 @JsonSubTypes.Type(value = SubjectRow.class),
