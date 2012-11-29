@@ -23,7 +23,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.haku.service.FormService;
-import fi.vm.sade.oppija.haku.service.HakemusService;
+import fi.vm.sade.oppija.haku.service.ApplicationService;
 import fi.vm.sade.oppija.haku.service.HakukohdeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -54,7 +54,7 @@ public class EducationController {
     @Qualifier("formServiceImpl")
     FormService formService;
     @Autowired
-    HakemusService hakemusService;
+    ApplicationService applicationService;
     @Autowired
     AdditionalQuestionService additionalQuestionService;
 
@@ -82,7 +82,7 @@ public class EducationController {
         hakukohdeIds.add(hakukohdeId);
         Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakukohdeIds, hakuLomakeId, vaiheId);
         modelAndView.addObject("additionalQuestions", additionalQuestions);
-        modelAndView.addObject("categoryData", hakemusService.getHakemus(hakuLomakeId).getVastauksetMerged());
+        modelAndView.addObject("categoryData", applicationService.getHakemus(hakuLomakeId).getVastauksetMerged());
         return modelAndView;
     }
 }

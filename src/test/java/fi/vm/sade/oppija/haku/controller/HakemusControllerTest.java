@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.domain.*;
-import fi.vm.sade.oppija.haku.service.HakemusService;
+import fi.vm.sade.oppija.haku.service.ApplicationService;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,12 +33,12 @@ public class HakemusControllerTest {
     public static final String FORM_ID = "fid";
     public static final String USERNAME = "username";
     public static final Application APPLICATION = new Application(new HakuLomakeId(APPLICATION_PERIOD_ID, FORM_ID), new User(USERNAME));
-    private HakemusController hakemusController;
+    private ApplicationController hakemusController;
 
     @Before
     public void setUp() throws Exception {
-        hakemusController = new HakemusController();
-        hakemusController.hakemusService = new HakemusService() {
+        hakemusController = new ApplicationController();
+        hakemusController.applicationService = new ApplicationService() {
             @Override
             public List<HakemusInfo> findAll() {
                 return null;

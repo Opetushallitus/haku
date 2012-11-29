@@ -21,7 +21,7 @@ import fi.vm.sade.oppija.haku.domain.*;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.event.ValidationEvent;
 import fi.vm.sade.oppija.haku.service.FormService;
-import fi.vm.sade.oppija.haku.service.HakemusService;
+import fi.vm.sade.oppija.haku.service.ApplicationService;
 import fi.vm.sade.oppija.haku.service.UserHolder;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ import java.util.List;
  * @since 1.1
  */
 @Service
-public class HakemusServiceImpl implements HakemusService {
+public class ApplicationServiceImpl implements ApplicationService {
 
     private final ApplicationDAO applicationDAO;
     private final UserHolder userHolder;
@@ -45,10 +45,10 @@ public class HakemusServiceImpl implements HakemusService {
     private final ValidationEvent validationEvent;
 
     @Autowired
-    public HakemusServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
-                              final UserHolder userHolder,
-                              @Qualifier("formServiceImpl") final FormService formService,
-                              final ValidationEvent validationEvent) {
+    public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
+                                  final UserHolder userHolder,
+                                  @Qualifier("formServiceImpl") final FormService formService,
+                                  final ValidationEvent validationEvent) {
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
         this.formService = formService;

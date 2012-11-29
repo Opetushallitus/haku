@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.haku.domain.Application;
-import fi.vm.sade.oppija.haku.service.HakemusService;
+import fi.vm.sade.oppija.haku.service.ApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,17 +37,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/hakemus", method = RequestMethod.GET)
 @Secured("ROLE_OFFICER")
-public class HakemusController extends ExceptionController {
+public class ApplicationController extends ExceptionController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HakemusController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class);
 
     @Autowired
-    HakemusService hakemusService;
+    ApplicationService applicationService;
 
     @RequestMapping(value = "/{oid:.+}", method = {RequestMethod.GET})
     @ResponseBody
     public Application getHakemus(@PathVariable String oid) {
         LOGGER.debug("oid {}", oid);
-        return hakemusService.getHakemus(oid);
+        return applicationService.getHakemus(oid);
     }
 }

@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.haku.event.ValidationEvent;
 import fi.vm.sade.oppija.haku.service.UserHolder;
-import fi.vm.sade.oppija.haku.service.impl.HakemusServiceImpl;
+import fi.vm.sade.oppija.haku.service.impl.ApplicationServiceImpl;
 import fi.vm.sade.oppija.haku.service.impl.UserPrefillDataServiceImpl;
 import fi.vm.sade.oppija.haku.ui.controller.FormController;
 import org.junit.Before;
@@ -45,10 +45,10 @@ public class FormControllerTest {
     @Before
     public void setUp() throws Exception {
         final FormModelDummyMemoryDaoImpl formService = new FormModelDummyMemoryDaoImpl(formId, firstCategoryId);
-        final HakemusServiceImpl hakemusService = new HakemusServiceImpl(applicationDAO, USER_HOLDER,
+        final ApplicationServiceImpl applicationService = new ApplicationServiceImpl(applicationDAO, USER_HOLDER,
                 formService, new ValidationEvent(formService));
         final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(USER_HOLDER);
-        this.formController = new FormController(formService, hakemusService, userPrefillDataService);
+        this.formController = new FormController(formService, applicationService, userPrefillDataService);
     }
 
     @Test

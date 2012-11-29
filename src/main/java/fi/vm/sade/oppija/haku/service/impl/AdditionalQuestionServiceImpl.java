@@ -24,7 +24,7 @@ import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.haku.service.FormService;
-import fi.vm.sade.oppija.haku.service.HakemusService;
+import fi.vm.sade.oppija.haku.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -38,18 +38,18 @@ import java.util.*;
 public class AdditionalQuestionServiceImpl implements AdditionalQuestionService {
 
     FormService formService;
-    HakemusService hakemusService;
+    ApplicationService applicationService;
 
     @Autowired
     public AdditionalQuestionServiceImpl(@Qualifier("formServiceImpl") FormService formService,
-                                         @Qualifier("hakemusServiceImpl") HakemusService hakemusService) {
+                                         @Qualifier("applicationServiceImpl") ApplicationService applicationService) {
         this.formService = formService;
-        this.hakemusService = hakemusService;
+        this.applicationService = applicationService;
     }
 
     @Override
     public Set<Question> findAdditionalQuestions(String teemaId, HakuLomakeId hakuLomakeId, String vaiheId) {
-        Map<String, String> hakemusValues = hakemusService.getHakemus(hakuLomakeId).getVastauksetMerged();
+        Map<String, String> hakemusValues = applicationService.getHakemus(hakuLomakeId).getVastauksetMerged();
         List<String> hakukohdeList = new ArrayList<String>();
 
         int prefNumber = 1;

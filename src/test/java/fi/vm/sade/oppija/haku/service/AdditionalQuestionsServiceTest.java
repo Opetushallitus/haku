@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.User;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.service.impl.AdditionalQuestionServiceImpl;
-import fi.vm.sade.oppija.haku.service.impl.HakemusServiceImpl;
+import fi.vm.sade.oppija.haku.service.impl.ApplicationServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -49,22 +49,22 @@ public class AdditionalQuestionsServiceTest {
 
     public AdditionalQuestionsServiceTest() {
         FormService formService = new FormModelDummyMemoryDaoImpl();
-        HakemusService hakemusService = createHakemusServiceMock();
+        ApplicationService applicationService = createHakemusServiceMock();
 
-        additionalQuestionService = new AdditionalQuestionServiceImpl(formService, hakemusService);
+        additionalQuestionService = new AdditionalQuestionServiceImpl(formService, applicationService);
 
     }
 
-    private HakemusService createHakemusServiceMock() {
-        HakemusService hakemusService = mock(HakemusServiceImpl.class);
+    private ApplicationService createHakemusServiceMock() {
+        ApplicationService applicationService = mock(ApplicationServiceImpl.class);
         Map<String, String> values = new HashMap<String, String>();
         values.put("preference1-Koulutus-id", "S1508");
         Application application = new Application(HAKU_LOMAKE_ID, TESTUSER);
         application.addVaiheenVastaukset("hakutoiveet", values);
 
-        when(hakemusService.getHakemus(HAKU_LOMAKE_ID)).thenReturn(application);
+        when(applicationService.getHakemus(HAKU_LOMAKE_ID)).thenReturn(application);
 
-        return hakemusService;
+        return applicationService;
     }
 
     @Test

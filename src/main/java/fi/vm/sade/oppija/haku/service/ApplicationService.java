@@ -29,7 +29,7 @@ import java.util.List;
  * @version 9/26/122:43 PM}
  * @since 1.1
  */
-public interface HakemusService {
+public interface ApplicationService {
 
     List<HakemusInfo> findAll();
 
