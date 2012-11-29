@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.haku.dao;
 
-import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.Application;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.User;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
@@ -31,11 +31,11 @@ import java.util.List;
 public interface ApplicationDAO {
     HakemusState tallennaVaihe(HakemusState state);
 
-    Hakemus find(HakuLomakeId hakuLomakeId, User user);
+    Application find(HakuLomakeId hakuLomakeId, User user);
 
-    List<Hakemus> findAll(User user);
+    List<Application> findAll(User user);
 
-    Hakemus find(String oid);
+    Application find(String oid);
 
     String laitaVireille(HakuLomakeId hakulomakeId, User user);
 }

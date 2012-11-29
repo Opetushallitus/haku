@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.haku.service;
 
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.Application;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.User;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
@@ -59,10 +59,10 @@ public class AdditionalQuestionsServiceTest {
         HakemusService hakemusService = mock(HakemusServiceImpl.class);
         Map<String, String> values = new HashMap<String, String>();
         values.put("preference1-Koulutus-id", "S1508");
-        Hakemus hakemus = new Hakemus(HAKU_LOMAKE_ID, TESTUSER);
-        hakemus.addVaiheenVastaukset("hakutoiveet", values);
+        Application application = new Application(HAKU_LOMAKE_ID, TESTUSER);
+        application.addVaiheenVastaukset("hakutoiveet", values);
 
-        when(hakemusService.getHakemus(HAKU_LOMAKE_ID)).thenReturn(hakemus);
+        when(hakemusService.getHakemus(HAKU_LOMAKE_ID)).thenReturn(application);
 
         return hakemusService;
     }

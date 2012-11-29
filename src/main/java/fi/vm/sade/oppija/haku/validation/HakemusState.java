@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.haku.validation;
 
 
-import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.Application;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,9 +30,9 @@ public class HakemusState {
     private final Map<String, Object> modelObjects = new HashMap<String, Object>();
     private final String vaiheId;
 
-    public HakemusState(final Hakemus hakemus, final String vaiheId) {
-        modelObjects.put(HAKEMUS_KEY, hakemus);
-        modelObjects.put("categoryData", hakemus.getVastauksetMerged());
+    public HakemusState(final Application application, final String vaiheId) {
+        modelObjects.put(HAKEMUS_KEY, application);
+        modelObjects.put("categoryData", application.getVastauksetMerged());
         modelObjects.put("errorMessages", errors);
         this.vaiheId = vaiheId;
     }
@@ -53,12 +53,12 @@ public class HakemusState {
         return modelObjects;
     }
 
-    public Hakemus getHakemus() {
-        return (Hakemus) modelObjects.get(HAKEMUS_KEY);
+    public Application getHakemus() {
+        return (Application) modelObjects.get(HAKEMUS_KEY);
     }
 
-    public void setHakemus(final Hakemus hakemus) {
-        modelObjects.put(HAKEMUS_KEY, hakemus);
+    public void setHakemus(final Application application) {
+        modelObjects.put(HAKEMUS_KEY, application);
     }
 
     public String getVaiheId() {

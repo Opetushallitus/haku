@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.haku.ui.controller;
 
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.Application;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.VaiheenVastaukset;
 import fi.vm.sade.oppija.haku.domain.elements.*;
@@ -85,12 +85,12 @@ public class FormController extends ExceptionController {
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.GET)
     public String getHakemus(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
         LOGGER.debug("getHakemus {}, {}", new Object[]{applicationPeriodId, formId});
-        Hakemus hakemus = hakemusService.getHakemus(new HakuLomakeId(applicationPeriodId, formId));
-        if (hakemus.isNew()) {
+        Application application = hakemusService.getHakemus(new HakuLomakeId(applicationPeriodId, formId));
+        if (application.isNew()) {
             Vaihe firstVaihe = formService.getFirstCategory(applicationPeriodId, formId);
             return "redirect:" + formId + "/" + firstVaihe.getId();
         } else {
-            return REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + hakemus.getVaiheId();
+            return REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + application.getVaiheId();
         }
     }
 
@@ -175,10 +175,10 @@ public class FormController extends ExceptionController {
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         modelAndView.addObject("form", activeForm);
         final HakuLomakeId hakuLomakeId = new HakuLomakeId(applicationPeriodId, activeForm.getId());
-        final Hakemus hakemus = hakemusService.getHakemus(hakuLomakeId);
-        modelAndView.addObject("categoryData", hakemus.getVastaukset());
+        final Application application = hakemusService.getHakemus(hakuLomakeId);
+        modelAndView.addObject("categoryData", application.getVastaukset());
         modelAndView.addObject("hakemusId", hakuLomakeId);
-        return modelAndView.addObject("applicationNumber", hakemus.getOid());
+        return modelAndView.addObject("applicationNumber", application.getOid());
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{vaiheId}/{teemaId}/help", method = RequestMethod.GET)

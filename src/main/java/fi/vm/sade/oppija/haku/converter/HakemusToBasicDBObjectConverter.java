@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
-import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
@@ -32,17 +32,17 @@ import java.util.Map;
  * @version 11/22/124:39 PM}
  * @since 1.1
  */
-public class HakemusToBasicDBObjectConverter implements Converter<Hakemus, BasicDBObject> {
+public class HakemusToBasicDBObjectConverter implements Converter<Application, BasicDBObject> {
     private static final Logger LOGGER = LoggerFactory.getLogger(HakemusToBasicDBObjectConverter.class);
 
     @Override
-    public BasicDBObject convert(Hakemus hakemus) {
+    public BasicDBObject convert(Application application) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         mapper.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
         mapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
 
-        final Map m = mapper.convertValue(hakemus, Map.class);
+        final Map m = mapper.convertValue(application, Map.class);
         final BasicDBObject basicDBObject = new BasicDBObject(m);
         LOGGER.debug(JSON.serialize(basicDBObject));
         return basicDBObject;

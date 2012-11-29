@@ -57,21 +57,21 @@ public class HakemusServiceImpl implements HakemusService {
 
     @Override
     public HakemusState tallennaVaihe(VaiheenVastaukset vaihe) {
-        HakemusState hakemusState = new HakemusState(new Hakemus(this.userHolder.getUser(), vaihe), vaihe.getVaiheId());
+        HakemusState hakemusState = new HakemusState(new Application(this.userHolder.getUser(), vaihe), vaihe.getVaiheId());
         validationEvent.process(hakemusState);
         return this.applicationDAO.tallennaVaihe(hakemusState);
     }
 
     @Override
-    public Hakemus getHakemus(String oid) {
+    public Application getHakemus(String oid) {
         return this.applicationDAO.find(oid);
     }
 
     @Override
     public void laitaVireille(HakuLomakeId hakulomakeId) {
-        Hakemus hakemus = applicationDAO.find(hakulomakeId, userHolder.getUser());
-        VaiheenVastaukset vaiheenVastaukset = new VaiheenVastaukset(hakulomakeId, "valmis", hakemus.getVastauksetMerged());
-        HakemusState hakemusState = new HakemusState(new Hakemus(this.userHolder.getUser(), vaiheenVastaukset), vaiheenVastaukset.getVaiheId());
+        Application application = applicationDAO.find(hakulomakeId, userHolder.getUser());
+        VaiheenVastaukset vaiheenVastaukset = new VaiheenVastaukset(hakulomakeId, "valmis", application.getVastauksetMerged());
+        HakemusState hakemusState = new HakemusState(new Application(this.userHolder.getUser(), vaiheenVastaukset), vaiheenVastaukset.getVaiheId());
         validationEvent.process(hakemusState);
         if (hakemusState.isValid()) {
             this.applicationDAO.laitaVireille(hakulomakeId, userHolder.getUser());
@@ -83,19 +83,19 @@ public class HakemusServiceImpl implements HakemusService {
     @Override
     public List<HakemusInfo> findAll() {
         List<HakemusInfo> all = new ArrayList<HakemusInfo>();
-        final List<Hakemus> hakemusList = applicationDAO.findAll(userHolder.getUser());
-        for (Hakemus hakemus : hakemusList) {
-            final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(hakemus.getHakuLomakeId().getApplicationPeriodId());
+        final List<Application> applicationList = applicationDAO.findAll(userHolder.getUser());
+        for (Application application : applicationList) {
+            final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(application.getHakuLomakeId().getApplicationPeriodId());
             final String id = applicationPeriod.getId();
-            final String formId = hakemus.getHakuLomakeId().getFormId();
+            final String formId = application.getHakuLomakeId().getFormId();
             final Form form = formService.getForm(id, formId);
-            all.add(new HakemusInfo(hakemus, form, applicationPeriod));
+            all.add(new HakemusInfo(application, form, applicationPeriod));
         }
         return all;
     }
 
     @Override
-    public Hakemus getHakemus(HakuLomakeId hakuLomakeId) {
+    public Application getHakemus(HakuLomakeId hakuLomakeId) {
         return applicationDAO.find(hakuLomakeId, userHolder.getUser());
     }
 }

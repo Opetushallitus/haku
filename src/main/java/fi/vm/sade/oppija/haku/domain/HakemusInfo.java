@@ -26,21 +26,21 @@ import java.util.List;
  * @since 1.1
  */
 public class HakemusInfo {
-    final Hakemus hakemus;
+    final Application application;
     final Form form;
     final ApplicationPeriod applicationPeriod;
     private List<Preference> preferences;
 
 
-    public HakemusInfo(Hakemus hakemus, Form form, ApplicationPeriod applicationPeriod) {
-        this.hakemus = hakemus;
+    public HakemusInfo(Application application, Form form, ApplicationPeriod applicationPeriod) {
+        this.application = application;
         this.form = form;
         this.applicationPeriod = applicationPeriod;
-        this.preferences = new PreferenceHelper(hakemus.getVastauksetMerged()).getOpetuspisteet();
+        this.preferences = new PreferenceHelper(application.getVastauksetMerged()).getOpetuspisteet();
     }
 
-    public Hakemus getHakemus() {
-        return hakemus;
+    public Application getApplication() {
+        return application;
     }
 
     public Form getForm() {

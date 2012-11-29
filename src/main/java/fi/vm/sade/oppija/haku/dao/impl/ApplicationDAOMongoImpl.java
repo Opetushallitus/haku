@@ -24,7 +24,7 @@ import com.mongodb.DBObject;
 import fi.vm.sade.oppija.haku.converter.DBObjectToHakemusConverter;
 import fi.vm.sade.oppija.haku.converter.HakemusToBasicDBObjectConverter;
 import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
-import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.Application;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.User;
 import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
@@ -47,18 +47,18 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
 
     @Override
     public HakemusState tallennaVaihe(HakemusState state) {
-        Hakemus queryHakemus = searchByLomakeIdAndUser(state);
-        final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(queryHakemus);
+        Application queryApplication = searchByLomakeIdAndUser(state);
+        final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(queryApplication);
 
         DBObject one = getCollection().findOne(query);
         if (one != null) {
-            queryHakemus = new DBObjectToHakemusConverter().convert(one);
+            queryApplication = new DBObjectToHakemusConverter().convert(one);
         }
-        Hakemus uusiHakemus = state.getHakemus();
-        Map<String, String> vastauksetMerged = uusiHakemus.getVastauksetMerged();
-        queryHakemus.addVaiheenVastaukset(state.getVaiheId(), vastauksetMerged);
-        queryHakemus.setVaiheId(uusiHakemus.getVaiheId());
-        one = new HakemusToBasicDBObjectConverter().convert(queryHakemus);
+        Application uusiApplication = state.getHakemus();
+        Map<String, String> vastauksetMerged = uusiApplication.getVastauksetMerged();
+        queryApplication.addVaiheenVastaukset(state.getVaiheId(), vastauksetMerged);
+        queryApplication.setVaiheId(uusiApplication.getVaiheId());
+        one = new HakemusToBasicDBObjectConverter().convert(queryApplication);
         getCollection().update(query, one, true, false);
         return state;
     }
@@ -96,20 +96,20 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     }
 
     @Override
-    public Hakemus find(HakuLomakeId hakuLomakeId, User user) {
+    public Application find(HakuLomakeId hakuLomakeId, User user) {
 
-        Hakemus hakemus = new Hakemus(hakuLomakeId, user);
-        final BasicDBObject convert = new HakemusToBasicDBObjectConverter().convert(hakemus);
+        Application application = new Application(hakuLomakeId, user);
+        final BasicDBObject convert = new HakemusToBasicDBObjectConverter().convert(application);
         final DBObject one = getCollection().findOne(convert);
         if (one != null) {
-            hakemus = dbObjectToHakemus(one);
+            application = dbObjectToHakemus(one);
         }
-        return hakemus;
+        return application;
     }
 
     @Override
-    public List<Hakemus> findAll(User user) {
-        List<Hakemus> list = new ArrayList<Hakemus>();
+    public List<Application> findAll(User user) {
+        List<Application> list = new ArrayList<Application>();
 
         final ObjectMapper objectMapper = new ObjectMapper();
         final Map map = objectMapper.convertValue(user, Map.class);
@@ -124,17 +124,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
 
     @Override
     public String laitaVireille(final HakuLomakeId hakulomakeId, final User user) {
-        Hakemus hakemus = new Hakemus(hakulomakeId, user);
-        final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(hakemus);
+        Application application = new Application(hakulomakeId, user);
+        final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(application);
         String oid = OID_PREFIX + getNextId();
-        DBObject update = new BasicDBObject("$set", new BasicDBObject(Hakemus.OID, oid));
+        DBObject update = new BasicDBObject("$set", new BasicDBObject(Application.OID, oid));
         //update.put(Hakemus.VAIHE_ID, "valmis");
         getCollection().update(query, update);
         return oid;
     }
 
     @Override
-    public Hakemus find(String oid) {
+    public Application find(String oid) {
         final DBObject one = findByOid(searchByOid(oid));
         if (one == null) {
             throw new ResourceNotFoundException("no hakemus found with oid " + oid);
@@ -153,11 +153,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         return new BasicDBObject("oid", oid);
     }
 
-    private Hakemus dbObjectToHakemus(final DBObject dbObject) {
+    private Application dbObjectToHakemus(final DBObject dbObject) {
         return new DBObjectToHakemusConverter().convert(dbObject);
     }
 
-    private Hakemus searchByLomakeIdAndUser(HakemusState state) {
-        return new Hakemus(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
+    private Application searchByLomakeIdAndUser(HakemusState state) {
+        return new Application(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
     }
 }

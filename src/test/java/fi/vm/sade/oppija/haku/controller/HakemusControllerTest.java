@@ -32,7 +32,7 @@ public class HakemusControllerTest {
     public static final String APPLICATION_PERIOD_ID = "aid";
     public static final String FORM_ID = "fid";
     public static final String USERNAME = "username";
-    public static final Hakemus HAKEMUS = new Hakemus(new HakuLomakeId(APPLICATION_PERIOD_ID, FORM_ID), new User(USERNAME));
+    public static final Application APPLICATION = new Application(new HakuLomakeId(APPLICATION_PERIOD_ID, FORM_ID), new User(USERNAME));
     private HakemusController hakemusController;
 
     @Before
@@ -45,7 +45,7 @@ public class HakemusControllerTest {
             }
 
             @Override
-            public Hakemus getHakemus(HakuLomakeId hakuLomakeId) {
+            public Application getHakemus(HakuLomakeId hakuLomakeId) {
                 return null;  //To change body of implemented methods use File | Settings | File Templates.
             }
 
@@ -56,8 +56,8 @@ public class HakemusControllerTest {
             }
 
             @Override
-            public Hakemus getHakemus(String oid) {
-                return HAKEMUS;
+            public Application getHakemus(String oid) {
+                return APPLICATION;
             }
 
             @Override
@@ -70,7 +70,7 @@ public class HakemusControllerTest {
 
     @Test
     public void testGetHakemus() throws Exception {
-        Hakemus hakemus = hakemusController.getHakemus(OID);
-        assertEquals(HAKEMUS.getHakuLomakeId(), hakemus.getHakuLomakeId());
+        Application application = hakemusController.getHakemus(OID);
+        assertEquals(APPLICATION.getHakuLomakeId(), application.getHakuLomakeId());
     }
 }

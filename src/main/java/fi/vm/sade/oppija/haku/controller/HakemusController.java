@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.ExceptionController;
-import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.Application;
 import fi.vm.sade.oppija.haku.service.HakemusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class HakemusController extends ExceptionController {
 
     @RequestMapping(value = "/{oid:.+}", method = {RequestMethod.GET})
     @ResponseBody
-    public Hakemus getHakemus(@PathVariable String oid) {
+    public Application getHakemus(@PathVariable String oid) {
         LOGGER.debug("oid {}", oid);
         return hakemusService.getHakemus(oid);
     }

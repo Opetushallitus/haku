@@ -31,7 +31,7 @@ import java.util.Map;
  */
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-public class Hakemus implements Serializable {
+public class Application implements Serializable {
 
     public static final String OID = "oid";
     public static final String VAIHE_ID = "vaiheId";
@@ -59,9 +59,9 @@ public class Hakemus implements Serializable {
     private Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
 
     @JsonCreator
-    public Hakemus(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId,
-                   @JsonProperty(value = "user") final User user,
-                   @JsonProperty(value = "vastaukset") Map<String, Map<String, String>> vastaukset) {
+    public Application(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId,
+                       @JsonProperty(value = "user") final User user,
+                       @JsonProperty(value = "vastaukset") Map<String, Map<String, String>> vastaukset) {
         this(hakuLomakeId, user);
         if (vastaukset != null) {
             this.vastaukset = vastaukset;
@@ -69,18 +69,18 @@ public class Hakemus implements Serializable {
     }
 
     @JsonIgnore
-    public Hakemus(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId,
-                   @JsonProperty(value = "user") final User user) {
+    public Application(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId,
+                       @JsonProperty(value = "user") final User user) {
         this.hakuLomakeId = hakuLomakeId;
         this.user = user;
     }
 
-    public Hakemus(User user, VaiheenVastaukset vaihe) {
+    public Application(User user, VaiheenVastaukset vaihe) {
         this(vaihe.getHakuLomakeId(), user);
         addVaiheenVastaukset(vaihe.getVaiheId(), vaihe.getVastaukset());
     }
 
-    public Hakemus addVaiheenVastaukset(final String vaiheId, Map<String, String> vastaukset) {
+    public Application addVaiheenVastaukset(final String vaiheId, Map<String, String> vastaukset) {
         this.vaiheId = vastaukset.remove(VAIHE_ID);
         this.vastaukset.put(vaiheId, vastaukset);
         return this;

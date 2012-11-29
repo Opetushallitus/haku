@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.haku.service;
 
-import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.Application;
 import fi.vm.sade.oppija.haku.domain.HakemusInfo;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.VaiheenVastaukset;
@@ -33,11 +33,11 @@ public interface HakemusService {
 
     List<HakemusInfo> findAll();
 
-    Hakemus getHakemus(HakuLomakeId hakuLomakeId);
+    Application getHakemus(HakuLomakeId hakuLomakeId);
 
     HakemusState tallennaVaihe(final VaiheenVastaukset vaihe);
 
-    Hakemus getHakemus(String oid);
+    Application getHakemus(String oid);
 
     void laitaVireille(final HakuLomakeId vaihe);
 }

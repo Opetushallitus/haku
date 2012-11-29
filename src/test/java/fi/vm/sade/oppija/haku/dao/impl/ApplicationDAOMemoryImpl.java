@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.haku.dao.impl;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
-import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.Application;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.User;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
@@ -39,40 +39,40 @@ import java.util.List;
 public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
 
     private static final long serialVersionUID = -3751714345380438532L;
-    private final List<Hakemus> hakemukset = new ArrayList<Hakemus>();
+    private final List<Application> hakemukset = new ArrayList<Application>();
 
-    public Hakemus find(final HakuLomakeId hakuLomakeId, final User user) {
-        Collection<Hakemus> kayttajanHakemukset = Collections2.filter(hakemukset, new Predicate<Hakemus>() {
+    public Application find(final HakuLomakeId hakuLomakeId, final User user) {
+        Collection<Application> kayttajanHakemukset = Collections2.filter(hakemukset, new Predicate<Application>() {
             @Override
-            public boolean apply(final Hakemus hakemus) {
+            public boolean apply(final Application hakemus) {
                 return hakemus.getUser().equals(user) && hakemus.getHakuLomakeId().equals(hakuLomakeId);
             }
         });
-        Hakemus hakemus;
+        Application application;
         if (kayttajanHakemukset.isEmpty()) {
-            hakemus = new Hakemus(hakuLomakeId, user);
-            hakemukset.add(hakemus);
+            application = new Application(hakuLomakeId, user);
+            hakemukset.add(application);
         } else {
-            hakemus = kayttajanHakemukset.iterator().next();
+            application = kayttajanHakemukset.iterator().next();
         }
-        return hakemus;
+        return application;
     }
 
     @Override
-    public List<Hakemus> findAll(final User user) {
-        Collection<Hakemus> kayttajanHakemukset = Collections2.filter(hakemukset, new Predicate<Hakemus>() {
+    public List<Application> findAll(final User user) {
+        Collection<Application> kayttajanHakemukset = Collections2.filter(hakemukset, new Predicate<Application>() {
             @Override
-            public boolean apply(final Hakemus hakemus) {
+            public boolean apply(final Application hakemus) {
                 return hakemus.getUser().equals(user);
             }
         });
-        ArrayList<Hakemus> hakemukset = new ArrayList<Hakemus>();
+        ArrayList<Application> hakemukset = new ArrayList<Application>();
         hakemukset.addAll(kayttajanHakemukset);
         return hakemukset;
     }
 
     @Override
-    public Hakemus find(String oid) {
+    public Application find(String oid) {
         throw new UnsupportedOperationException("not supported");
     }
 
@@ -83,9 +83,9 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
 
     @Override
     public HakemusState tallennaVaihe(final HakemusState state) {
-        Hakemus hakemus = find(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
-        hakemus.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());
-        hakemukset.add(hakemus);
+        Application application = find(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
+        application.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());
+        hakemukset.add(application);
         return state;
     }
 

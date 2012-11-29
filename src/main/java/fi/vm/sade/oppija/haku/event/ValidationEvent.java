@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.haku.event;
 
-import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.Application;
 import fi.vm.sade.oppija.haku.service.FormService;
 import fi.vm.sade.oppija.haku.validation.FormValidator;
 import fi.vm.sade.oppija.haku.validation.HakemusState;
@@ -45,9 +45,9 @@ public class ValidationEvent implements Event {
 
     @Override
     public void process(HakemusState hakemusState) {
-        Hakemus hakemus = hakemusState.getHakemus();
+        Application application = hakemusState.getHakemus();
         List<Validator> validators = getValidators(hakemusState);
-        ValidationResult validationResult = FormValidator.validate(validators, hakemus.getVastauksetMerged());
+        ValidationResult validationResult = FormValidator.validate(validators, application.getVastauksetMerged());
         hakemusState.addError(validationResult.getErrorMessages());
     }
 

@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.mongodb.DBObject;
-import fi.vm.sade.oppija.haku.domain.Hakemus;
+import fi.vm.sade.oppija.haku.domain.Application;
 import org.springframework.core.convert.converter.Converter;
 
 /**
@@ -28,15 +28,15 @@ import org.springframework.core.convert.converter.Converter;
  * @version 11/22/125:11 PM}
  * @since 1.1
  */
-public class DBObjectToHakemusConverter implements Converter<DBObject, Hakemus> {
+public class DBObjectToHakemusConverter implements Converter<DBObject, Application> {
 
     @Override
-    public Hakemus convert(DBObject dbObject) {
+    public Application convert(DBObject dbObject) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
         mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
 
-        return mapper.convertValue(dbObject.toMap(), Hakemus.class);
+        return mapper.convertValue(dbObject.toMap(), Application.class);
     }
 }
