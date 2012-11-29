@@ -64,6 +64,9 @@ footer
 
 
 
+
+
+
 /*** Links
 ************************************************/
 
@@ -213,41 +216,6 @@ input, textarea
 #popup .popup-content
 {
     display:inline-block;
-}
-
-/*** Grid
-************************************************/
-
-
-.grid16-4
-{
-    float: left;
-    margin-left: 0.625%;
-    margin-right: 0.625%;
-    width: 23.75%;
-}
-
-.grid16-12
-{
-    float: left;
-    margin-left: 0.625%;
-    margin-right: 0.625%;
-    width: 73.75%;
-}
-
-footer .footer-logo {
-    margin: 0 auto;
-}
-.grid16-8 {
-    float: left;
-    margin-left: 0.625%;
-    margin-right: 0.625%;
-    width: 48.75%;
-}
-
-.grid-container
-{
-    padding:0px 10%;
 }
 
 
@@ -800,7 +768,80 @@ hr
 }
 
 
+/*** Grid
+************************************************/
 
+.grid16-2 {
+    float: left;
+    margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 11.25%;
+}
+
+.grid16-4
+{
+    float: left;
+    margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 23.75%;
+}
+
+.grid16-6 
+{
+    float: left;
+    margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 36.25%;
+}
+
+.grid16-8 {
+    float: left;
+    margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 48.75%;
+}
+
+.grid16-10
+{
+    float: left;
+    margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 61.25%;
+}
+
+.grid16-12
+{
+    float: left;
+    margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 73.75%;
+}
+
+.grid16-14 {
+    float: left;
+    margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 86.25%;
+}
+
+.grid16-16 {
+    float: left;
+    margin-left: 0.625%;
+    margin-right: 0.625%;
+    width: 98.75%;
+}
+
+.width-25 {
+    width: 25%;
+}
+
+.width-50 {
+    width: 50%;
+}
+
+.width-75 {
+    width: 75%;
+}
 
 /*** Sidebar
 **************************************************************/
@@ -930,12 +971,7 @@ hr
 /*** Header
 **************************************************************/
 
- #header
-{
-    margin: 0 0.625%;
-    padding:15px 0px 10px 0px;
-    overflow: hidden;
-}
+
 
 
 

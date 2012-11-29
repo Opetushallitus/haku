@@ -1,8 +1,9 @@
 
 /* CONTENTS
     
-	Image figure, Video Figure
+	
     Removable items
+    Grid
     Tabsheet
     Sidemenu
     Notelist
@@ -20,99 +21,10 @@
     column-oriented-table
 */
 
-/*** Image figure, Video Figure
-************************************************/
 
 
-figure.image,
-figure.video
-{
-	display:inline-block;
-	position:relative;
-	max-width:100%;
-	margin:0px;
-}
 
-figure.image img,
-figure.video img,
-figure.video video,
-figure.video embed
-{
-	display:block;
-}
 
-figure.image figcaption,
-figure.video figcaption
-{
-	position:absolute;
-	bottom:0px;
-	left:0px;
-	width:90%;
-	max-height:70%;
-	overflow:hidden;
-	padding:0.7em 5%;
-	background-color:rgba(0,0,0,0.5);
-	color:#ffffff;
-	text-shadow:0px 0px 2px #000000;
-}
-
-figure.set-right
-{
-	margin-left:2em;
-	margin-right:0px;
-}
-
-figure.set-left
-{
-	margin-left:0px;
-	margin-right:2em;
-}
-
-figure.set-center
-{
-	margin-left:auto;
-	margin-right:auto;
-}
-
-/*** Removable items
-************************************************/
-.removable-items {
-    list-style-type: none;
-    margin-left: 0 !important;
-}
-
-.removable-items li {
-    line-height: 24px;
-}
-
-.removable-items a.item {
-    display: inline-block !important;
-}
-
-.removable-items a.btn-remove {
-    float: right;
-    display: inline-block;
-}
-
-a.btn-remove {
-    background-image: url('../img/remove-sprite_idle-hover-selected-disabled.png');
-    background-position: left top;
-    background-repeat: no-repeat;
-    width: 24px;
-    height: 24px;
-}
-
-a.btn-remove:hover {
-    background-position: -24px top;
-}
-
-a.btn-remove:active {
-    background-position: -48px top;
-}
-
-a.btn-remove.disabled {
-    background-position: -72px top;
-}
 
 /*** Tabsheet
 ************************************************/
@@ -269,67 +181,6 @@ a.btn-remove.disabled {
     padding-bottom: 5px;
 }
 
-/*** Sidemenu - Notelist & Notelist-simple
-************************************************/
-
-#notelist h2
-{
-    background: transparent url('../img/muistilista_ikoni.png') no-repeat 95% 0.5em;
-}
-
-.notelist-simple-wrapper {
-    padding-bottom: 14px;
-    background:  transparent url('../img/notelist-simple-shadow.png') no-repeat bottom right;
-    margin-bottom: 20px;
-}
-
-.notelist-simple {
-    padding: 10px;
-    background: #fffaeb;
-}
-
-.notelist-simple li {
-    padding-bottom: 10px;
-}
-
-
-
-
-
-
-/*** Sidemenu - Compare
-************************************************/
-#compare h2
-{
-    background: transparent url('../img/vertailu_ikoni.png') no-repeat 95% 0.5em;  
-}
-
-
-/*** Sidemenu - Kirjautuminen
-************************************************/
-#sidemenu #kirjautuminen {
-    padding-top: 10px;
-}
-
-
-/*** Infobox
-************************************************/
-
-.infobox {
-    background: #f8f8f8;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #bdbdbd;
-}
-
-.infobox .emphasized {
-    font-weight: bold;
-}
-
-.infobox .heading {
-    padding-top: 10px;
-}
-
 
 
 /*** Definition list
@@ -458,14 +309,12 @@ ul.unstyled li
 
 /*** Popup
 **************************************************************/
-
 #overlay
 {
     display:none;
     position:absolute;
     top:0px;
     left:0px;
-    bottom: -1000px;
     width:100%;
     height:100%;
     background-color:rgba(0,0,0,0.5);
@@ -480,6 +329,41 @@ ul.unstyled li
     left:0px;
     width:100%;
     height:100%;
+}
+
+#popup
+{
+    margin:0px auto;
+    background:#ffffff;
+    width:50%;
+    height:350px;
+    position:relative;
+    padding:10px;
+    
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 2px 2px 2px 0 #5f5f5f;
+    background-color:#f9f9f9;
+}
+
+#popup .close
+{
+    display:block;
+    position:absolute;
+    top:5px;
+    right:5px;
+    width:16px;
+    height:17px;
+
+    
+    background-image:url(popup-close-icon.png);
+    background-repeat:no-repeat;
+    background-position:center center;
+    cursor:pointer;
+}
+
+#popup .popup-content
+{
+    display:inline-block;
 }
 
 .popup {
@@ -522,31 +406,7 @@ ul.unstyled li
 }
 
 
-/*** Login
-**************************************************************/
 
-#login-popup {
-    position: absolute;
-    background: #eee;
-    border: 4px solid #fff;
-    box-shadow: 0 0 20px 0 #333;
-    border-radius: 4px;
-     z-index: 1000;
-    width: 200px;
-    height: 300px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-top: 0;
-}
-
-.login-content legend {
-    padding: 10px 0;
-}
-
-.login-content form div {
-    padding: 10px 0;
-}
 
 
 
