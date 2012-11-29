@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.haku.service.impl;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationOption;
-import fi.vm.sade.oppija.haku.domain.Organisaatio;
+import fi.vm.sade.oppija.haku.domain.Organization;
 import fi.vm.sade.oppija.haku.service.HakukohdeService;
 import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
@@ -39,9 +39,9 @@ public class HakukohdeServiceSolrImpl implements HakukohdeService {
     }
 
     @Override
-    public List<Organisaatio> searchOrganisaatio(final String hakuId, final String term) {
+    public List<Organization> searchOrganisaatio(final String hakuId, final String term) {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
-        Set<Organisaatio> organisaatios = new HashSet<Organisaatio>();
+        Set<Organization> organizations = new HashSet<Organization>();
         String startswith = term.trim();
         if (!startswith.isEmpty()) {
             parameters.put("LOPInstitutionInfoName", createParameter(term + "*"));
@@ -49,10 +49,10 @@ public class HakukohdeServiceSolrImpl implements HakukohdeService {
             SearchResult search = service.search(parameters);
             List<Map<String, Object>> items = search.getItems();
             for (Map<String, Object> item : items) {
-                organisaatios.add(new Organisaatio((String) item.get("LOPId"), (String) item.get("LOPInstitutionInfoName")));
+                organizations.add(new Organization((String) item.get("LOPId"), (String) item.get("LOPInstitutionInfoName")));
             }
         }
-        return new ArrayList<Organisaatio>(organisaatios);
+        return new ArrayList<Organization>(organizations);
     }
 
     @Override

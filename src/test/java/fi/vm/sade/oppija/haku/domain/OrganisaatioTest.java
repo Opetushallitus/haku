@@ -25,36 +25,36 @@ public class OrganisaatioTest {
 
     public static final String NAME = "name";
     public static final String ID = "id";
-    public static final Organisaatio ORGANISAATIO1 = new Organisaatio(ID, NAME);
-    public static final Organisaatio ORGANISAATIO_NULL_ID = new Organisaatio(null, NAME);
+    public static final Organization ORGANIZATION_1 = new Organization(ID, NAME);
+    public static final Organization ORGANIZATION_NULL_ID = new Organization(null, NAME);
 
     @Test
     public void testEqualsSameObject() throws Exception {
-        assertTrue(ORGANISAATIO1.equals(ORGANISAATIO1));
+        assertTrue(ORGANIZATION_1.equals(ORGANIZATION_1));
     }
 
     @Test
     public void testEqualsSameId() throws Exception {
-        assertTrue(ORGANISAATIO1.equals(new Organisaatio(ORGANISAATIO1.getId(), "N")));
+        assertTrue(ORGANIZATION_1.equals(new Organization(ORGANIZATION_1.getId(), "N")));
     }
 
     @Test
     public void testEqualsFalse() throws Exception {
-        assertFalse(ORGANISAATIO1.equals(new Organisaatio(ID + NAME, NAME + ID)));
+        assertFalse(ORGANIZATION_1.equals(new Organization(ID + NAME, NAME + ID)));
     }
 
     @Test
     public void testEqualsNull() throws Exception {
-        assertFalse(ORGANISAATIO1.equals(null));
+        assertFalse(ORGANIZATION_1.equals(null));
     }
 
     @Test
     public void testEqualsFalseIdNull() throws Exception {
-        assertFalse(ORGANISAATIO_NULL_ID.equals(null));
+        assertFalse(ORGANIZATION_NULL_ID.equals(null));
     }
 
     @Test
     public void testEqualsFalseIdsNull() throws Exception {
-        assertTrue(ORGANISAATIO_NULL_ID.equals(new Organisaatio(null, NAME)));
+        assertTrue(ORGANIZATION_NULL_ID.equals(new Organization(null, NAME)));
     }
 }

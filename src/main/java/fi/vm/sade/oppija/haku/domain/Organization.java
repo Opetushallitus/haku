@@ -24,7 +24,7 @@ import java.util.Locale;
 /**
  * @author Mikko Majapuro
  */
-public class Organisaatio implements Serializable {
+public class Organization implements Serializable {
 
     private static final long serialVersionUID = 3780799141790242873L;
 
@@ -32,7 +32,7 @@ public class Organisaatio implements Serializable {
     private final String name;
     private final String key;
 
-    public Organisaatio(@JsonProperty(value = "id") final String id, @JsonProperty(value = "name") final String name) {
+    public Organization(@JsonProperty(value = "id") final String id, @JsonProperty(value = "name") final String name) {
         this.id = id;
         this.name = name;
         this.key = name.toLowerCase(Locale.getDefault());
@@ -59,7 +59,7 @@ public class Organisaatio implements Serializable {
             return false;
         }
 
-        Organisaatio that = (Organisaatio) o;
+        Organization that = (Organization) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) {
             return false;

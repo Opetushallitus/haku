@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.haku.controller;
 
 import fi.vm.sade.oppija.haku.domain.ApplicationOption;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
-import fi.vm.sade.oppija.haku.domain.Organisaatio;
+import fi.vm.sade.oppija.haku.domain.Organization;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
@@ -60,7 +60,7 @@ public class EducationController {
 
     @RequestMapping(value = "/{hakuId}/organisaatio/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = TERM)
     @ResponseBody
-    public List<Organisaatio> searchOrganisaatio(@PathVariable final String hakuId, @RequestParam(TERM) String term) {
+    public List<Organization> searchOrganisaatio(@PathVariable final String hakuId, @RequestParam(TERM) String term) {
         return hakukohdeService.searchOrganisaatio(hakuId, term);
     }
 
