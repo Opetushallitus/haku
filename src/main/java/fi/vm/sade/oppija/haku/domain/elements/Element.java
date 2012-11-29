@@ -51,7 +51,7 @@ import java.util.*;
                 @JsonSubTypes.Type(value = Attachment.class),
                 @JsonSubTypes.Type(value = Navigation.class),
                 @JsonSubTypes.Type(value = Link.class),
-                @JsonSubTypes.Type(value = Teema.class),
+                @JsonSubTypes.Type(value = Theme.class),
                 @JsonSubTypes.Type(value = TextQuestion.class),
                 @JsonSubTypes.Type(value = Vaihe.class),
                 @JsonSubTypes.Type(value = RelatedQuestionRule.class),

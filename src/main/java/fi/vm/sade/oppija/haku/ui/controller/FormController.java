@@ -192,7 +192,7 @@ public class FormController extends ExceptionController {
 
         for (Element element : phase.getChildren()) {
             if (element.getId().equals(teemaId)) {
-                Teema theme = (Teema) element;
+                Theme theme = (Theme) element;
                 modelAndView.getModel().put("themeTitle", theme.getTitle());
                 HashMap<String, String> helpMap = new HashMap<String, String>();
                 for (Element tElement : theme.getChildren()) {

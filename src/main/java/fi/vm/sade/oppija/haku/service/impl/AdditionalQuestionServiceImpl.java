@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.haku.service.impl;
 import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.domain.elements.Teema;
+import fi.vm.sade.oppija.haku.domain.elements.Theme;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Question;
 import fi.vm.sade.oppija.haku.service.AdditionalQuestionService;
@@ -64,24 +64,24 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
 
     @Override
     public Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakuLomakeId hakuLomakeId, final String vaiheId) {
-        Teema teema = null;
+        Theme theme = null;
         Form form = formService.getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId());
         Vaihe vaihe = form.getCategory(vaiheId);
         for (Element e : vaihe.getChildren()) {
             if (e.getId().equals(teemaId)) {
-                teema = (Teema) e;
+                theme = (Theme) e;
                 break;
             }
         }
 
         Set<Question> additionalQuestions = new LinkedHashSet<Question>();
 
-        if (teema == null || teema.getAdditionalQuestions() == null) {
+        if (theme == null || theme.getAdditionalQuestions() == null) {
             return additionalQuestions;
         }
 
         for (String hakukohdeId : hakukohdeIds) {
-            List<Question> questions = teema.getAdditionalQuestions().get(hakukohdeId);
+            List<Question> questions = theme.getAdditionalQuestions().get(hakukohdeId);
             if (questions != null && !questions.isEmpty()) {
                 additionalQuestions.addAll(questions);
             }

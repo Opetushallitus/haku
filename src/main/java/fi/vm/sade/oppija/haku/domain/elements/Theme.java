@@ -27,11 +27,11 @@ import java.util.Map;
  * @version 9/7/1210:36 AM}
  * @since 1.1
  */
-public class Teema extends Titled {
+public class Theme extends Titled {
 
     Map<String, List<Question>> additionalQuestions;
 
-    public Teema(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
+    public Theme(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
                  @JsonProperty(value = "additionalQuestions") Map<String, List<Question>> additionalQuestions) {
         super(id, title);
         this.additionalQuestions = additionalQuestions;

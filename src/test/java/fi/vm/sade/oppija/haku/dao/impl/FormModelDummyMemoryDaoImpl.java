@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.PostOffice;
 import fi.vm.sade.oppija.haku.domain.elements.Element;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.domain.elements.Teema;
+import fi.vm.sade.oppija.haku.domain.elements.Theme;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.custom.*;
 import fi.vm.sade.oppija.haku.domain.elements.questions.*;
@@ -100,13 +100,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         lisakysymysMap.put(id, lisakysymysList);
 
 
-        Teema henkilötiedotRyhmä = new Teema("HenkilotiedotGrp", "Henkilötiedot", null);
-        Teema koulutustaustaRyhmä = new Teema("KoulutustaustaGrp", "Koulutustausta", null);
-        Teema hakutoiveetRyhmä = new Teema("hakutoiveetGrp", "Hakutoiveet", lisakysymysMap);
-        Teema arvosanatRyhmä = new Teema("arvosanatGrp", "Arvosanat", oppiaineMap);
-        Teema tyokokemusRyhmä = new Teema("tyokokemusGrp", "Työkokemus", null);
-        Teema lupatiedotRyhmä = new Teema("lupatiedotGrp", "Lupatiedot", null);
-        Teema yhteenvetoRyhmä = new Teema("yhteenvetoGrp", "yhteenveto", null);
+        Theme henkilötiedotRyhmä = new Theme("HenkilotiedotGrp", "Henkilötiedot", null);
+        Theme koulutustaustaRyhmä = new Theme("KoulutustaustaGrp", "Koulutustausta", null);
+        Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", "Hakutoiveet", lisakysymysMap);
+        Theme arvosanatRyhmä = new Theme("arvosanatGrp", "Arvosanat", oppiaineMap);
+        Theme tyokokemusRyhmä = new Theme("tyokokemusGrp", "Työkokemus", null);
+        Theme lupatiedotRyhmä = new Theme("lupatiedotGrp", "Lupatiedot", null);
+        Theme yhteenvetoRyhmä = new Theme("yhteenvetoGrp", "yhteenveto", null);
 
         henkilötiedot.addChild(henkilötiedotRyhmä);
         koulutustausta.addChild(koulutustaustaRyhmä);
@@ -332,14 +332,14 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         return gradeGrid;
     }
 
-    private void createArvosanat(Teema arvosanatRyhmä) {
+    private void createArvosanat(Theme arvosanatRyhmä) {
 
         arvosanatRyhmä.addChild(createGradeGrid());
         arvosanatRyhmä.setHelp("Merkitse arvosanat siitä todistuksesta, jolla haet koulutukseen (perusopetus,tai sitä vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitä, mikäli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta. 1. Tarkista ja täydennä taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitäytetyistä. Huom! Valinnaisaineiden arvosanat merkitään vain mikäli niiden laajuus on vähintään kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilöllistettyjä arvosanoja, valitse listasta arvosana, jossa on tähti.");
 
     }
 
-    private void createHakutoiveet(Teema hakutoiveetRyhmä) {
+    private void createHakutoiveet(Theme hakutoiveetRyhmä) {
         hakutoiveetRyhmä.setHelp("Merkitse tälle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinä järjestyksessä, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttää ne hakutoivelistalle. Voit halutessasi etsiä koulutuksia koulutuskorin kautta. harkitse hakutoivejärjestystä tarkoin, sillä se on sitova, etkä voi muuttaa sitä enää hakuajan jälkeen. Jos et pääse koulutukseen, jonka olet merkinnyt ensimmäiselle sijalle, tarkistetaan riittävätkö pisteesi toiselle sijalle merkitsemääsi hakutoiveeseen jne. Jos pääset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkä voi enää tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielä päästä. HUOM! Lukion oppimäärän tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).");
         SortableTable sortableTable = new SortableTable("preferencelist", "Hakutoiveet", "Ylös", "Alas");
         PreferenceRow pr1 = new PreferenceRow("preference1", "Hakutoive 1", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
@@ -356,7 +356,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         hakutoiveetRyhmä.addChild(sortableTable);
     }
 
-    private void createTyokokemus(Teema tyokokemus) {
+    private void createTyokokemus(Theme tyokokemus) {
         tyokokemus.setHelp("Työkokemukseksi lasketaan työ, josta sinulla on työtodistus. Työhön rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vähintään kolmen kuukauden pituinen työpajatoimintaan osallistuminen tai työharjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa työtodistukset ennen lopullista valintaa.");
         TextQuestion tyokokemuskuukaudet = new TextQuestion("tyokokemuskuukaudet", "Työkokemus");
         tyokokemuskuukaudet.setHelp("Merkitse kenttään hakuajan päättymiseen mennessä kertynyt työkokemuksesi. Voit käyttää laskemiseen apuna laskuria.");
@@ -367,7 +367,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         tyokokemus.addChild(tyokokemuskuukaudet);
     }
 
-    private void createLupatiedot(Teema lupatiedot) {
+    private void createLupatiedot(Theme lupatiedot) {
         CheckBox lupa = new CheckBox("lupa", "Ohjeteksti lorem ipsum.");
         lupa.addOption("lupa1", "lupa1", "Haluan, että huoltajalleni lähetetään tieto sähköpostilla hakulomakkeen täyttämisestä");
         lupa.addOption("lupa2", "lupa2", "Minulle saa lähettää postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia");
@@ -386,7 +386,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         lupatiedot.addChild(asiointikieli);
     }
 
-    private void createKoulutustausta(Teema koulutustaustaRyhmä) {
+    private void createKoulutustausta(Theme koulutustaustaRyhmä) {
         koulutustaustaRyhmä.setHelp("Merkitse tälle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitä vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimäärä. Lukion oppimäärän tai ylioppilastutkinnon suorittaneet eivät voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta.");
         Radio millatutkinnolla = new Radio("millatutkinnolla", "Valitse tutkinto, jolla haet koulutukseen.");
         millatutkinnolla.addOption("tutkinto1", "tutkinto1", "Perusopetuksen oppimäärä", "Valitse tämä, jos olet käynyt peruskoulun.");

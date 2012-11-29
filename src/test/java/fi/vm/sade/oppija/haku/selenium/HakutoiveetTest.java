@@ -21,7 +21,7 @@ import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.domain.elements.Teema;
+import fi.vm.sade.oppija.haku.domain.elements.Theme;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.haku.domain.elements.custom.SortableTable;
@@ -70,7 +70,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         lisakysymysMap.put("S1508", lisakysymysList);
         applicationPeriod.addForm(form);
 
-        Teema hakutoiveetRyhmä = new Teema("hakutoiveetGrp", "Hakutoiveet", lisakysymysMap);
+        Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", "Hakutoiveet", lisakysymysMap);
         hakutoiveet.addChild(hakutoiveetRyhmä);
         hakutoiveetRyhmä.setHelp("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.");
         SortableTable sortableTable = new SortableTable("preferencelist", "Hakutoiveet", "Ylös", "Alas");
@@ -83,7 +83,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         hakutoiveetRyhmä.addChild(sortableTable);
 
         TextQuestion lisakysymys = new TextQuestion("lisakysymys", "Lisäkysymys");
-        Teema lisakysymyksetRyhma = new Teema("lisakysymyksetGrp", "Lisäkysymykset", null);
+        Theme lisakysymyksetRyhma = new Theme("lisakysymyksetGrp", "Lisäkysymykset", null);
         lisakysymykset.addChild(lisakysymyksetRyhma);
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", "preference1-Koulutus-id", "S1598");
         relatedQuestionRule.addChild(lisakysymys);

@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.PostOffice;
 import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.domain.elements.Teema;
+import fi.vm.sade.oppija.haku.domain.elements.Theme;
 import fi.vm.sade.oppija.haku.domain.elements.Vaihe;
 import fi.vm.sade.oppija.haku.domain.elements.custom.PostalCode;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
@@ -55,7 +55,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
 
         applicationPeriod.addForm(form);
 
-        Teema testiRyhma = new Teema("testiGrp", "TestiGrp", null);
+        Theme testiRyhma = new Theme("testiGrp", "TestiGrp", null);
         testivaihe.addChild(testiRyhma);
         Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
         postOffices.put("00100", new PostOffice("Helsinki"));

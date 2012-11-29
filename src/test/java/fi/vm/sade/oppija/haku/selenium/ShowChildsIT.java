@@ -20,7 +20,7 @@ import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.domain.FormModel;
 import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
-import fi.vm.sade.oppija.haku.domain.elements.Teema;
+import fi.vm.sade.oppija.haku.domain.elements.Theme;
 import fi.vm.sade.oppija.haku.domain.elements.questions.CheckBox;
 import fi.vm.sade.oppija.haku.domain.elements.questions.Option;
 import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
@@ -54,12 +54,12 @@ public class ShowChildsIT extends AbstractSeleniumBase {
         final Option option = checkBox.getOptions().get(0);
         final Option option2 = checkBox.getOptions().get(1);
 
-        final Teema teema = new Teema("ekaryhma", "ekaryhma", null);
-        teema.addChild(new TextQuestion("alikysymys1", "alikysymys1"));
-        teema.addChild(new TextQuestion("alikysymys2", "alikysymys2"));
+        final Theme theme = new Theme("ekaryhma", "ekaryhma", null);
+        theme.addChild(new TextQuestion("alikysymys1", "alikysymys1"));
+        theme.addChild(new TextQuestion("alikysymys2", "alikysymys2"));
 
         final RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", option.getId(), ".*");
-        relatedQuestionRule.addChild(teema);
+        relatedQuestionRule.addChild(theme);
         option.addChild(relatedQuestionRule);
 
         final RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule2", option2.getId(), ".*");
