@@ -1,4 +1,10 @@
+jQuery.fn.center = function () {
+    this.css("position","absolute");
+    this.css("top", Math.max(0, (($(window).height() - this.outerHeight()) / 2) + $(window).scrollTop()) + "px");
 
+    this.css("left", Math.max(0, (($(window).width() - this.outerWidth()) / 2) + $(window).scrollLeft()) + "px");
+    return this;
+}
 
 $(document).ready(function(){
 	/* Master.js begins */
@@ -98,6 +104,7 @@ $(document).ready(function(){
 		}
 	}
 
+	
 	var popupWindow = {
 		defaults :{
 			height : 600,
@@ -161,6 +168,7 @@ $(document).ready(function(){
 		}
 
 	}
+	
 
 	
 	var tabsMenu = {
@@ -256,6 +264,53 @@ $(document).ready(function(){
 		} 
 	}
 
+	var popup = {
+		build: function(){
+			/* All popups should be declared here */
+			popup.setTrigger("#login-popup","#open-login-popup",".close-login-popup");
+			popup.setTrigger("#add-rule-popup", "#add-rule",".close-login-popup");
+		},
+		/* 	
+			element = container for popup 
+			showPopupDispatcher = clickeventlistener for open popup
+			hidePopupDispatcher = clickeventlistener for hide popup
+		*/
+		setTrigger: function(element, showPopupDispatcher, hidePopupDispatcher) {
+			//clicking overlay-div hides all popups by default
+			var overlay = $('#overlay');
+			var jElement = $(element);
+
+
+			
+			jElement.center();
+
+			$(showPopupDispatcher).on('click', showPopup);
+			overlay.on('click', hidePopup);
+			$(element + " .close").on('click', hidePopup);
+			
+
+			if( hidePopupDispatcher != null && hidePopupDispatcher !== "") {
+				$(hidePopupDispatcher).on('click', hidePopup);
+			} 
+
+			//show popup
+			function showPopup(event) {
+				jElement.center();
+				overlay.fadeIn(400);
+				jElement.fadeIn(400);
+			}
+
+			//hide popup
+			function hidePopup(event) {
+				jElement.center();
+				jElement.fadeOut(400);
+				overlay.fadeOut(400);
+			}
+		}
+
+	}
+
+	/*
 	var loginPopup = {
 		build: function() {
 			
@@ -281,6 +336,7 @@ $(document).ready(function(){
 			}
 		}
 	}
+	*/
 
 	var dropDownMenu = {
 		// initiate dropDownMenus
@@ -1071,7 +1127,7 @@ $(document).ready(function(){
 	popupWindow.build();
 	tabsMenu.build();
 	hierarchyList.build();
-	loginPopup.build();
+	//loginPopup.build();
 	dropDownMenu.build();
 	tableRowHighlight.build();
 	tableSorter.build();
@@ -1087,6 +1143,7 @@ $(document).ready(function(){
     itemTree.build();
     tabsMenu.build();
     hidable.build();
+    popup.build();
 
 /* Master.js ends */
 

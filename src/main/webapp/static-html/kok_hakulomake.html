@@ -24,15 +24,31 @@
 
 
 </head>
-<body>
+<body class="virkailija">
 <div id="viewport">
-<div id="overlay"></div>
-<div id="wrapper" class="virkailija">
+
+<div id="overlay">
+    <div class="popup" id="add-rule-popup">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <div class="grid16-8">
+            <p>This is left column and some test content
+        </div>
+        <div class="grid16-8">
+            <p>This is left column and some test content
+        </div>
+    </div>
+</div>
+<div id="wrapper">
     <header id="siteheader">
 
         <div class="primarylinks">
             <a href="#">Oppijan verkkopalvelu</a> &nbsp;
-            <a href="#">Virkailijan työpöytä</a>
+            <a href="#">Virkailijan työpöytä</a> &nbsp;
         </div>
 
         <div class="secondarylinks">
@@ -51,7 +67,7 @@
                 <ul class="level1">
                     <li><a href="#" class=""><span>Organisaation tiedot</span></a></li>
                     <li>
-                        <a href="index.html" class="current"><span>Koulutustarjonta</span></a>
+                        <a href="index.html"><span>Koulutustarjonta</span></a>
                         <ul class="level2">
                             <li><a href="#" class="">Koulutuksen tiedot</a></li>
                             <li><a href="#" class="">Koulutuksen toteutus ja hakukohde</a></li>
@@ -60,9 +76,10 @@
                             <li><a href="#" class="">Järjestämisluvat</a></li>
                         </ul>
                     </li>
+                    <li><a href="#" class="current"><span>Haut ja valinnat</span></a></li>
                     <li><a href="#" class=""><span>Valintaperusteet</span></a></li>
                     <li><a href="#" class=""><span>Koulutussuunnittelu</span></a></li>
-                    <li><a href="#" class=""><span>Sisällönhallinta</span></a></li>
+                    
                 </ul>
 
             </nav>
@@ -105,7 +122,7 @@
 
             <section style="display: block" id="hakulomakkeen_lisakysymykset" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakulomakkeen_lisakysymykset">
                 <h3>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, kevät 2013</h3>
-                <a href="#" class="button small">Lisää sääntö</a>
+                <a href="#" id="add-rule" class="button small">Lisää sääntö</a>
                 <a href="#" class="button small">Liitä toisiin hakukohteisiin</a>
                 <a href="#" class="button small primary">Tallenna luonnoksena</a>
                 <div class="clear"></div>
