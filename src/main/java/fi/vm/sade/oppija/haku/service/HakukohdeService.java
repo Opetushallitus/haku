@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.haku.service;
 
-import fi.vm.sade.oppija.haku.domain.Hakukohde;
+import fi.vm.sade.oppija.haku.domain.ApplicationOption;
 import fi.vm.sade.oppija.haku.domain.Organisaatio;
 
 import java.util.List;
@@ -34,5 +34,5 @@ public interface HakukohdeService {
      */
     List<Organisaatio> searchOrganisaatio(final String hakuId, final String term);
 
-    List<Hakukohde> searchHakukohde(final String hakuId, final String organisaatioId);
+    List<ApplicationOption> searchHakukohde(final String hakuId, final String organisaatioId);
 }

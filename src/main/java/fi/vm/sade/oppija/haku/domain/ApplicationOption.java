@@ -23,14 +23,14 @@ import java.io.Serializable;
 /**
  * @author Hannu Lyytikainen
  */
-public class Hakukohde implements Serializable {
+public class ApplicationOption implements Serializable {
 
     private static final long serialVersionUID = 8709483730387515771L;
 
     private String id;
     private String name;
 
-    public Hakukohde(@JsonProperty(value = "id") String id, @JsonProperty(value = "name") String name) {
+    public ApplicationOption(@JsonProperty(value = "id") String id, @JsonProperty(value = "name") String name) {
         this.id = id;
         this.name = name;
     }

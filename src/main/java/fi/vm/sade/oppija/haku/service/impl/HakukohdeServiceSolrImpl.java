@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.haku.service.impl;
 
-import fi.vm.sade.oppija.haku.domain.Hakukohde;
+import fi.vm.sade.oppija.haku.domain.ApplicationOption;
 import fi.vm.sade.oppija.haku.domain.Organisaatio;
 import fi.vm.sade.oppija.haku.service.HakukohdeService;
 import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
@@ -56,16 +56,16 @@ public class HakukohdeServiceSolrImpl implements HakukohdeService {
     }
 
     @Override
-    public List<Hakukohde> searchHakukohde(final String hakuId, final String organisaatioId) {
+    public List<ApplicationOption> searchHakukohde(final String hakuId, final String organisaatioId) {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(2);
         parameters.put("ASName", createParameter(hakuId));
         parameters.put("LOPId", createParameter(organisaatioId));
         SearchResult search = service.search(parameters);
 
-        List<Hakukohde> hakukohteet = new ArrayList<Hakukohde>(search.getSize());
+        List<ApplicationOption> hakukohteet = new ArrayList<ApplicationOption>(search.getSize());
         List<Map<String, Object>> items = search.getItems();
         for (Map<String, Object> item : items) {
-            hakukohteet.add(new Hakukohde((String) item.get("LOSId"), (String) item.get("AOTitle")));
+            hakukohteet.add(new ApplicationOption((String) item.get("LOSId"), (String) item.get("AOTitle")));
         }
         return hakukohteet;
     }
