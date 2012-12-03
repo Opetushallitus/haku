@@ -22,16 +22,16 @@
 
     <import resource="haku-context.xml"/>
 
-    <bean id="tomcat" class="fi.vm.sade.oppija.haku.TomcatContainer">
+    <bean id="tomcat" class="fi.vm.sade.oppija.lomake.TomcatContainer">
         <constructor-arg value="${mongo.test-db.name}"/>
     </bean>
 
-    <bean id="seleniumContainer" class="fi.vm.sade.oppija.haku.SeleniumContainer">
+    <bean id="seleniumContainer" class="fi.vm.sade.oppija.lomake.SeleniumContainer">
         <constructor-arg name="tomcatContainer" ref="tomcat"/>
     </bean>
 
 
-    <bean id="testDBFactoryBean" class="fi.vm.sade.oppija.haku.dao.TestDBFactoryBean">
+    <bean id="testDBFactoryBean" class="fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean">
         <property name="mongo" ref="mongo"/>
         <property name="name" value="${mongo.test-db.name}"/>
     </bean>

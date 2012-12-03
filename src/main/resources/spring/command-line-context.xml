@@ -40,9 +40,9 @@
     <context:annotation-config/>
     <context:component-scan base-package="fi.vm.sade.oppija.tarjonta.service"/>
     <context:component-scan base-package="fi.vm.sade.oppija.tarjonta.client"/>
-    <context:component-scan base-package="fi.vm.sade.oppija.haku.dao"/>
-    <context:component-scan base-package="fi.vm.sade.oppija.haku.service"/>
-    <context:component-scan base-package="fi.vm.sade.oppija.haku.event"/>
+    <context:component-scan base-package="fi.vm.sade.oppija.lomake.dao"/>
+    <context:component-scan base-package="fi.vm.sade.oppija.lomake.service"/>
+    <context:component-scan base-package="fi.vm.sade.oppija.lomake.event"/>
 
     <import resource="haku-context.xml"/>
 

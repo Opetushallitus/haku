@@ -16,12 +16,12 @@
 
 package fi.vm.sade.oppija.common.selenium;
 
-import fi.vm.sade.oppija.haku.FormModelHelper;
-import fi.vm.sade.oppija.haku.SeleniumContainer;
-import fi.vm.sade.oppija.haku.dao.TestDBFactoryBean;
+import fi.vm.sade.oppija.lomake.FormModelHelper;
+import fi.vm.sade.oppija.lomake.SeleniumContainer;
+import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.haku.it.TomcatContainerBase;
-import fi.vm.sade.oppija.haku.selenium.SeleniumHelper;
+import fi.vm.sade.oppija.lomake.it.TomcatContainerBase;
+import fi.vm.sade.oppija.lomake.selenium.SeleniumHelper;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 

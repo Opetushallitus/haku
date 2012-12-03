@@ -11,11 +11,11 @@
     <import resource="classpath:spring/application-context.xml"/>
 
     <!-- Override session scoped UserHolder with a mock implementation -->
-    <bean id="userHolder" class="fi.vm.sade.oppija.haku.service.mock.UserHolderMock">
+    <bean id="userHolder" class="fi.vm.sade.oppija.lomake.service.mock.UserHolderMock">
         <constructor-arg type="java.lang.String" value="test"/>
     </bean>
 
-    <bean id="db" class="fi.vm.sade.oppija.haku.dao.TestDBFactoryBean">
+    <bean id="db" class="fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean">
         <property name="mongo" ref="mongo"/>
         <property name="name" value="${mongo.test-db.name}"/>
     </bean>

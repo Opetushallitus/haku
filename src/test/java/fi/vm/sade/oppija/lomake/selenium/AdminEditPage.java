@@ -1,10 +1,9 @@
-package fi.vm.sade.oppija.common.selenium;
+package fi.vm.sade.oppija.lomake.selenium;
 
 import com.thoughtworks.selenium.Selenium;
+import fi.vm.sade.oppija.common.selenium.LoginPage;
 import fi.vm.sade.oppija.lomake.converter.FormModelToJsonString;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.lomake.selenium.PageObject;
-import fi.vm.sade.oppija.lomake.selenium.SeleniumHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
