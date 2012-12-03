@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.controller;
 
-import fi.vm.sade.oppija.lomake.dao.impl.ApplicationDAOMemoryImpl;
+import fi.vm.sade.oppija.hakemus.dao.ApplicationDAOMemoryImpl;
 import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;

@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.dao.impl;
+package fi.vm.sade.oppija.hakemus.dao;
 
 import fi.vm.sade.oppija.lomake.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
