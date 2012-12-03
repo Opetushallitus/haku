@@ -16,11 +16,11 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
-import fi.vm.sade.oppija.lomake.dao.ApplicationDAO;
+import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.lomake.domain.*;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.event.ValidationEvent;
-import fi.vm.sade.oppija.lomake.service.ApplicationService;
+import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
