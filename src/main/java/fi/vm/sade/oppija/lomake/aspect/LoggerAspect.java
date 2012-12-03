@@ -51,7 +51,7 @@ public class LoggerAspect {
      * Logs event when a form phase is successfully saved
      * as application data in data store.
      */
-    @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.haku.dao.ApplicationDAO.laitaVireille(..)) && args(lomakeId,user,..)",
+    @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.lomake.dao.ApplicationDAO.laitaVireille(..)) && args(lomakeId,user,..)",
             returning = "oid")
     public void logSavePhase(HakuLomakeId lomakeId, User user, String oid) {
         try {
