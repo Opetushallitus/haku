@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.lomake.controller;
 
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.lomake.domain.Application;
-import fi.vm.sade.oppija.lomake.service.ApplicationService;
+import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

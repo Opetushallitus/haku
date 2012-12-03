@@ -23,7 +23,7 @@ import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
 import fi.vm.sade.oppija.lomake.domain.VaiheenVastaukset;
 import fi.vm.sade.oppija.lomake.domain.elements.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
-import fi.vm.sade.oppija.lomake.service.ApplicationService;
+import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserPrefillDataService;
 import fi.vm.sade.oppija.lomake.validation.HakemusState;

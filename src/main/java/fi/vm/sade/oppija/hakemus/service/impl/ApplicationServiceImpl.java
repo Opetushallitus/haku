@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.service.impl;
+package fi.vm.sade.oppija.hakemus.service.impl;
 
 import fi.vm.sade.oppija.lomake.dao.ApplicationDAO;
 import fi.vm.sade.oppija.lomake.domain.*;

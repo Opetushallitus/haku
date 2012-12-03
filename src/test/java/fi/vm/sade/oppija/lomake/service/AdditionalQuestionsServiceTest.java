@@ -16,13 +16,14 @@
 
 package fi.vm.sade.oppija.lomake.service;
 
+import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.lomake.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.service.impl.AdditionalQuestionServiceImpl;
-import fi.vm.sade.oppija.lomake.service.impl.ApplicationServiceImpl;
+import fi.vm.sade.oppija.hakemus.service.impl.ApplicationServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;

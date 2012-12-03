@@ -1,7 +1,7 @@
 package fi.vm.sade.oppija.lomake.controller;
 
 import fi.vm.sade.oppija.lomake.domain.HakemusInfo;
-import fi.vm.sade.oppija.lomake.service.ApplicationService;
+import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;

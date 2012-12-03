@@ -14,30 +14,28 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.service;
+package fi.vm.sade.oppija.hakemus.dao;
 
 import fi.vm.sade.oppija.lomake.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.HakemusInfo;
 import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
-import fi.vm.sade.oppija.lomake.domain.VaiheenVastaukset;
+import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.validation.HakemusState;
 
 import java.util.List;
 
 /**
- * @author jukka
- * @version 9/26/122:43 PM}
- * @since 1.1
+ * DAO interface for saving, updating and finding applications made by users.
+ *
+ * @author Hannu Lyytikainen
  */
-public interface ApplicationService {
+public interface ApplicationDAO {
+    HakemusState tallennaVaihe(HakemusState state);
 
-    List<HakemusInfo> findAll();
+    Application find(HakuLomakeId hakuLomakeId, User user);
 
-    Application getHakemus(HakuLomakeId hakuLomakeId);
+    List<Application> findAll(User user);
 
-    HakemusState tallennaVaihe(final VaiheenVastaukset vaihe);
+    Application find(String oid);
 
-    Application getHakemus(String oid);
-
-    void laitaVireille(final HakuLomakeId vaihe);
+    String laitaVireille(HakuLomakeId hakulomakeId, User user);
 }

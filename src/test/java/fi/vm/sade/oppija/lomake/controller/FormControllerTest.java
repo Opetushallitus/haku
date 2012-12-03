@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.event.ValidationEvent;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
-import fi.vm.sade.oppija.lomake.service.impl.ApplicationServiceImpl;
+import fi.vm.sade.oppija.hakemus.service.impl.ApplicationServiceImpl;
 import fi.vm.sade.oppija.lomake.service.impl.UserPrefillDataServiceImpl;
 import fi.vm.sade.oppija.lomake.ui.controller.FormController;
 import org.junit.Before;

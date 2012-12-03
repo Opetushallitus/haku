@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.lomake.dao.impl;
 
 import fi.vm.sade.oppija.lomake.dao.AbstractDAOTest;
-import fi.vm.sade.oppija.lomake.dao.ApplicationDAO;
+import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.lomake.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
 import fi.vm.sade.oppija.lomake.domain.User;

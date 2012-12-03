@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.lomake.dao.impl;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import fi.vm.sade.oppija.lomake.dao.ApplicationDAO;
+import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.lomake.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
 import fi.vm.sade.oppija.lomake.domain.User;

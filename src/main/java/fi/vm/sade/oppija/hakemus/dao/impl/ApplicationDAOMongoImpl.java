@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.dao.impl;
+package fi.vm.sade.oppija.hakemus.dao.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
@@ -23,7 +23,8 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.lomake.converter.DBObjectToHakemusConverter;
 import fi.vm.sade.oppija.lomake.converter.HakemusToBasicDBObjectConverter;
-import fi.vm.sade.oppija.lomake.dao.ApplicationDAO;
+import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
+import fi.vm.sade.oppija.lomake.dao.impl.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.lomake.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
 import fi.vm.sade.oppija.lomake.domain.User;
