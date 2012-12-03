@@ -31,7 +31,10 @@ import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldFieldValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author jukka
@@ -135,7 +138,9 @@ public abstract class Element {
     public String getAttributeString() {
         StringBuilder attrStr = new StringBuilder();
         for (Attribute attribute : attributes.values()) {
-            attrStr.append(attribute.getAsString());
+            if (!"required".equals(attribute.getKey())) {
+                attrStr.append(attribute.getAsString());
+            }
 
         }
         return attrStr.toString();
@@ -164,29 +169,27 @@ public abstract class Element {
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
     @JsonIgnore
     public List<Validator> getValidators() {
         return validators;
     }
 
-    protected void initValidators() {
-        List<Validator> validators = new ValidatorFinder(this).findValidatingParentValidators();
-        Collection<Attribute> attributes = getAttributes().values();
-        for (Attribute attribute : attributes) {
+    public final void initValidators() {
+        for (Map.Entry<String, Attribute> attribute : attributes.entrySet()) {
             if (attribute.getKey().equals("required")) {
-                validators.add(new RequiredFieldFieldValidator(getId()));
+                this.validators.add(new RequiredFieldFieldValidator(this.id));
             } else if (attribute.getKey().equals("pattern")) {
-                validators.add(new RegexFieldFieldValidator(getId(), attribute.getValue()));
+                this.validators.add(new RegexFieldFieldValidator(this.id, attribute.getValue().getValue()));
             }
         }
     }
 
-    protected boolean isValidating() {
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+    public List<Element> getChildren(Map<String, String> values) {
+        return getChildren();
     }
 }

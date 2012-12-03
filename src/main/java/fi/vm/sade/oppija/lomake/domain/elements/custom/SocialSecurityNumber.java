@@ -16,15 +16,17 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.vm.sade.oppija.lomake.domain.elements.ValidatorFinder;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.validation.Validator;
-import fi.vm.sade.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -43,16 +45,23 @@ public class SocialSecurityNumber extends Question {
         super(id, title);
     }
 
+    @Override
+    public void init(Map<String, Element> elements, Element parent) {
+        super.init(elements, parent);
+    }
+
     public TextQuestion getSsn() {
         return ssn;
     }
 
     public void setSex(Radio sex) {
         this.sex = sex;
+        this.sex.initValidators();
     }
 
     public void setSsn(TextQuestion ssn) {
         this.ssn = ssn;
+        this.ssn.initValidators();
     }
 
     public Radio getSex() {
@@ -84,8 +93,12 @@ public class SocialSecurityNumber extends Question {
     }
 
     @Override
-    protected void initValidators() {
-        List<Validator> parentValidators = new ValidatorFinder(this).findValidatingParentValidators();
-        parentValidators.add(new SocialSecurityNumberFieldValidator(ssn.getId(), nationalityId));
+    @JsonIgnore
+    public List<Validator> getValidators() {
+        List<Validator> listOfValidators = new ArrayList<Validator>();
+        listOfValidators.addAll(this.sex.getValidators());
+        listOfValidators.addAll(this.ssn.getValidators());
+        listOfValidators.addAll(this.validators);
+        return listOfValidators;
     }
 }

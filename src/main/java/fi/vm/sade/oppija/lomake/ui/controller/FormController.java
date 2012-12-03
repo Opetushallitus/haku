@@ -17,14 +17,14 @@
 package fi.vm.sade.oppija.lomake.ui.controller;
 
 import fi.vm.sade.oppija.ExceptionController;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.Application;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
 import fi.vm.sade.oppija.lomake.domain.VaiheenVastaukset;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
-import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.domain.elements.*;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.lomake.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserPrefillDataService;
 import fi.vm.sade.oppija.lomake.validation.HakemusState;
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ import java.util.Map;
 public class FormController extends ExceptionController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
-    public static final String DEFAULT_VIEW = "elements/Vaihe";
+    public static final String DEFAULT_VIEW = "elements/Phase";
     public static final String VERBOSE_HELP_VIEW = "help";
     public static final String LINK_LIST_VIEW = "linkList";
     public static final String REDIRECT_LOMAKE = "redirect:/lomake/";
@@ -141,7 +141,7 @@ public class FormController extends ExceptionController {
                                      @PathVariable final String formId,
                                      @PathVariable final String categoryId,
                                      @RequestBody final MultiValueMap<String, String> multiValues) {
-        LOGGER.debug("getCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
+        LOGGER.debug("saveCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         final HakuLomakeId hakuLomakeId = new HakuLomakeId(applicationPeriodId, formId);
         HakemusState hakemusState = applicationService.tallennaVaihe(new VaiheenVastaukset(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
 
@@ -149,9 +149,7 @@ public class FormController extends ExceptionController {
         if (hakemusState.isValid()) {
             modelAndView = new ModelAndView(REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + hakemusState.getHakemus().getVaiheId());
         } else {
-            for (Map.Entry<String, Object> stringObjectEntry : hakemusState.getModelObjects().entrySet()) {
-                modelAndView.addObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());
-            }
+            modelAndView.addAllObjects(hakemusState.getModelObjects());
             Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
             modelAndView.addObject("element", activeForm.getCategory(categoryId));
             modelAndView.addObject("form", activeForm);

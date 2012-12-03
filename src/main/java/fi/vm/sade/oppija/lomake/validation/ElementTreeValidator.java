@@ -14,32 +14,26 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain.elements;
+package fi.vm.sade.oppija.lomake.validation;
 
-import fi.vm.sade.oppija.lomake.validation.Validator;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class ValidatorFinder {
-    private final Element element;
+public final class ElementTreeValidator {
 
-
-    public ValidatorFinder(Element element) {
-        this.element = element;
-    }
-
-    /**
-     * this method walks up in model hierarchy and finds nearest validating parent and returns its validators
-     *
-     * @return
-     */
-    public List<Validator> findValidatingParentValidators() {
+    public static ValidationResult validate(final Element element, final Map<String, String> values) {
         List<Validator> validators = element.getValidators();
-        Element element = this.element;
-        while (!element.isValidating() && !element.getClass().equals(Phase.class)) {
-            element = element.parent;
-            validators = element.getValidators();
+        List<ValidationResult> listOfValidationResult = new ArrayList<ValidationResult>();
+        for (Validator validator : validators) {
+            listOfValidationResult.add(validator.validate(values));
         }
-        return validators;
+        List<Element> children = element.getChildren(values);
+        for (Element child : children) {
+            listOfValidationResult.add(validate(child, values));
+        }
+        return new ValidationResult(listOfValidationResult);
     }
 }

@@ -17,11 +17,11 @@
 package fi.vm.sade.oppija.lomake.domain.rules;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.vm.sade.oppija.lomake.domain.elements.ValidatorFinder;
-import fi.vm.sade.oppija.lomake.validation.Validator;
-import fi.vm.sade.oppija.lomake.validation.validators.ConditionalFieldValidator;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jukka
@@ -51,17 +51,11 @@ public class RelatedQuestionRule extends Rule {
     }
 
     @Override
-    protected boolean isValidating() {
-        return true;
-    }
-
-    @Override
-    protected void initValidators() {
-        final List<Validator> validatingParent = new ValidatorFinder(parent).findValidatingParentValidators();
-        final ConditionalFieldValidator conditionalValidator = new ConditionalFieldValidator(this);
-        for (Validator validator : validators) {
-            conditionalValidator.add(validator);
+    public List<Element> getChildren(final Map<String, String> values) {
+        final String value = values.get(relatedElementId);
+        if (RegexRule.evaluate(value, expression)) {
+            return this.getChildren();
         }
-        validatingParent.add(conditionalValidator);
+        return Collections.EMPTY_LIST;
     }
 }

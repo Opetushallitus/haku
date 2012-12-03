@@ -33,9 +33,12 @@ public class RegexRule {
     private static final Logger LOGGER = LoggerFactory.getLogger(RegexRule.class);
 
     public static boolean evaluate(String value, String expression) {
-        final Pattern compile = Pattern.compile(expression);
-        Matcher matcher = compile.matcher(value);
-        LOGGER.debug("Using regexp: {} for value: {}, matches: {}", new Object[]{expression, value, matcher.matches()});
-        return matcher.matches();
+        if (value != null) {
+            final Pattern compile = Pattern.compile(expression);
+            Matcher matcher = compile.matcher(value);
+            LOGGER.debug("Using regexp: {} for value: {}, matches: {}", new Object[]{expression, value, matcher.matches()});
+            return matcher.matches();
+        }
+        return false;
     }
 }

@@ -20,10 +20,12 @@ import fi.vm.sade.oppija.lomake.dao.ApplicationDAO;
 import fi.vm.sade.oppija.lomake.domain.*;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.event.ValidationEvent;
-import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
+import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -58,8 +60,14 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public HakemusState tallennaVaihe(VaiheenVastaukset vaihe) {
         HakemusState hakemusState = new HakemusState(new Application(this.userHolder.getUser(), vaihe), vaihe.getVaiheId());
-        validationEvent.process(hakemusState);
-        return this.applicationDAO.tallennaVaihe(hakemusState);
+        //validationEvent.process(hakemusState);
+        Form activeForm = formService.getActiveForm(hakemusState.getHakemus().getHakuLomakeId().getApplicationPeriodId(), hakemusState.getHakemus().getHakuLomakeId().getFormId());
+        ValidationResult validationResult = ElementTreeValidator.validate(activeForm.getCategory(vaihe.getVaiheId()), vaihe.getVastaukset());
+        hakemusState.addError(validationResult.getErrorMessages());
+        if (hakemusState.isValid()) {
+            this.applicationDAO.tallennaVaihe(hakemusState);
+        }
+        return hakemusState;
     }
 
     @Override
@@ -83,13 +91,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public List<HakemusInfo> findAll() {
         List<HakemusInfo> all = new ArrayList<HakemusInfo>();
-        final List<Application> applicationList = applicationDAO.findAll(userHolder.getUser());
-        for (Application application : applicationList) {
-            final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(application.getHakuLomakeId().getApplicationPeriodId());
+        final List<Application> hakemusList = applicationDAO.findAll(userHolder.getUser());
+        for (Application hakemus : hakemusList) {
+            final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(hakemus.getHakuLomakeId().getApplicationPeriodId());
             final String id = applicationPeriod.getId();
-            final String formId = application.getHakuLomakeId().getFormId();
+            final String formId = hakemus.getHakuLomakeId().getFormId();
             final Form form = formService.getForm(id, formId);
-            all.add(new HakemusInfo(application, form, applicationPeriod));
+            all.add(new HakemusInfo(hakemus, form, applicationPeriod));
         }
         return all;
     }

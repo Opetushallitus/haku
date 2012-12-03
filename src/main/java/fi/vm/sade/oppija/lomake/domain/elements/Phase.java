@@ -52,11 +52,6 @@ public class Phase extends Titled {
         }
     }
 
-    @Override
-    protected boolean isValidating() {
-        return true;
-    }
-
     @JsonIgnore
     public boolean isHasNext() {
         return next != null;

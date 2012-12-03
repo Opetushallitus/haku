@@ -25,8 +25,8 @@ import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.HakemusState;
@@ -509,7 +509,8 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     @Override
     public Form getForm(String applicationPeriodId, String formId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        ApplicationPeriod applicationPeriod = getApplicationPeriodById(applicationPeriodId);
+        return applicationPeriod.getFormById(formId);
     }
 
     @Override
