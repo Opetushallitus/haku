@@ -30,6 +30,7 @@
             </c:forEach>
         </select>
         <small>${element.help}</small>
+        <span class="required-field"><c:out value="${errorMessages[element.id]}"/></span>
     </div>
     <div class="clear"></div>
 

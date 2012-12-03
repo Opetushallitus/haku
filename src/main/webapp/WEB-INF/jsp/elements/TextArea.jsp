@@ -22,9 +22,10 @@
 
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
-            <textarea ${element.attributeString}><c:out value="${categoryData[element.id]}"/></textarea><span
-                class="required_field">${errorMessages[element.id]}</span>
+            <textarea ${element.attributeString}><c:out value="${categoryData[element.id]}"/></textarea>
         </div>
+        <span class="required-field"><c:out value="${errorMessages[element.id]}"/></span>
+
         <div id="help-${element.id}">
             <small>${element.help}</small>
         </div>

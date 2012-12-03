@@ -643,3 +643,8 @@ select option {
 .required:after {
     content: " *";
 }
+
+.required-field {
+    font-size: 0.813em;
+    color: red;
+}

@@ -23,12 +23,13 @@
     <div class="form-row-content">
         <div class="field-container-text">
             <input type="text" ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"
-                   class="postal-code"/><span
-                class="required_field">${errorMessages[element.id]}</span>
+                   class="postal-code"/>
             <input type="hidden" value="${categoryData['postitoimipaikka']}" name="postitoimipaikka"
                    class="post-office"/>
             <span class="post-office"><c:out value="${categoryData['postitoimipaikka']}"/></span>
         </div>
+        <span class="required-field"><c:out value="${errorMessages[element.id]}"/></span>
+
         <div id="help-${element.id}">
             <small><c:out value="${element.help}"/></small>
         </div>
