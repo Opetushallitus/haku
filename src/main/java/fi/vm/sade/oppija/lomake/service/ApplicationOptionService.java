@@ -26,7 +26,7 @@ import java.util.List;
  *
  * @author Mikko Majapuro
  */
-public interface HakukohdeService {
+public interface ApplicationOptionService {
 
     /**
      * @param term search term

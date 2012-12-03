@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.lomake.service.impl;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationOption;
 import fi.vm.sade.oppija.lomake.domain.Organization;
-import fi.vm.sade.oppija.lomake.service.HakukohdeService;
+import fi.vm.sade.oppija.lomake.service.ApplicationOptionService;
 import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +28,13 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.*;
 
-@Service("HakukohdeServiceSolrImpl")
-public class HakukohdeServiceSolrImpl implements HakukohdeService {
+@Service("applicationOptionServiceSolrImpl")
+public class ApplicationOptionServiceSolrImpl implements ApplicationOptionService {
 
     private final SearchService service;
 
     @Autowired
-    public HakukohdeServiceSolrImpl(SearchService service) {
+    public ApplicationOptionServiceSolrImpl(SearchService service) {
         this.service = service;
     }
 

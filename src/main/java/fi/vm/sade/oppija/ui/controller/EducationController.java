@@ -22,9 +22,9 @@ import fi.vm.sade.oppija.lomake.domain.Organization;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
+import fi.vm.sade.oppija.lomake.service.ApplicationOptionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.service.HakukohdeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -47,9 +47,9 @@ public class EducationController {
     public static final String TERM = "term";
     public static final String EDUCATION_CONTROLLER_PATH = "/education";
 
-    @Qualifier("HakukohdeServiceSolrImpl")
+    @Qualifier("applicationOptionServiceSolrImpl")
     @Autowired
-    HakukohdeService hakukohdeService;
+    ApplicationOptionService applicationOptionService;
     @Autowired
     @Qualifier("formServiceImpl")
     FormService formService;
@@ -61,13 +61,13 @@ public class EducationController {
     @RequestMapping(value = "/{hakuId}/organisaatio/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = TERM)
     @ResponseBody
     public List<Organization> searchOrganisaatio(@PathVariable final String hakuId, @RequestParam(TERM) String term) {
-        return hakukohdeService.searchOrganisaatio(hakuId, term);
+        return applicationOptionService.searchOrganisaatio(hakuId, term);
     }
 
     @RequestMapping(value = "/{hakuId}/hakukohde/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = "organisaatioId")
     @ResponseBody
     public List<ApplicationOption> searchHakukohde(@PathVariable final String hakuId, @RequestParam("organisaatioId") String organisaatioId) {
-        return hakukohdeService.searchHakukohde(hakuId, organisaatioId);
+        return applicationOptionService.searchHakukohde(hakuId, organisaatioId);
     }
 
     @RequestMapping(value = "/additionalquestion/{hakuId}/{lomakeId}/{vaiheId}/{teemaId}/{hakukohdeId}", method = RequestMethod.GET)
