@@ -14,8 +14,9 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.controller;
+package fi.vm.sade.oppija.hakemus.controller;
 
+import fi.vm.sade.oppija.hakemus.controller.ApplicationController;
 import fi.vm.sade.oppija.lomake.domain.*;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.validation.HakemusState;

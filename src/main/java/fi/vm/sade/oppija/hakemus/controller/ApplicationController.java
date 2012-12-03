@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.controller;
+package fi.vm.sade.oppija.hakemus.controller;
 
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.lomake.domain.Application;
