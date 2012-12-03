@@ -1,7 +1,7 @@
 package fi.vm.sade.oppija.lomake;
 
 import com.thoughtworks.selenium.Selenium;
-import fi.vm.sade.oppija.lomake.selenium.SeleniumHelper;
+import fi.vm.sade.oppija.ui.selenium.SeleniumHelper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.firefox.FirefoxDriver;
