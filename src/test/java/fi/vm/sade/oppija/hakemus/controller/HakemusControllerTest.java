@@ -40,7 +40,7 @@ public class HakemusControllerTest {
         hakemusController = new ApplicationController();
         hakemusController.applicationService = new ApplicationService() {
             @Override
-            public List<HakemusInfo> findAll() {
+            public List<ApplicationInfo> findAll() {
                 return null;
             }
 

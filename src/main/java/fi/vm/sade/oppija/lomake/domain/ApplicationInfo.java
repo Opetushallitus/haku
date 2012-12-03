@@ -25,14 +25,14 @@ import java.util.List;
  * @version 10/17/1212:50 PM}
  * @since 1.1
  */
-public class HakemusInfo {
+public class ApplicationInfo {
     final Application application;
     final Form form;
     final ApplicationPeriod applicationPeriod;
     private List<Preference> preferences;
 
 
-    public HakemusInfo(Application application, Form form, ApplicationPeriod applicationPeriod) {
+    public ApplicationInfo(Application application, Form form, ApplicationPeriod applicationPeriod) {
         this.application = application;
         this.form = form;
         this.applicationPeriod = applicationPeriod;

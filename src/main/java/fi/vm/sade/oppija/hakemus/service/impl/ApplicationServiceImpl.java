@@ -89,15 +89,15 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<HakemusInfo> findAll() {
-        List<HakemusInfo> all = new ArrayList<HakemusInfo>();
+    public List<ApplicationInfo> findAll() {
+        List<ApplicationInfo> all = new ArrayList<ApplicationInfo>();
         final List<Application> hakemusList = applicationDAO.findAll(userHolder.getUser());
         for (Application hakemus : hakemusList) {
             final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(hakemus.getFormId().getApplicationPeriodId());
             final String id = applicationPeriod.getId();
             final String formId = hakemus.getFormId().getFormId();
             final Form form = formService.getForm(id, formId);
-            all.add(new HakemusInfo(hakemus, form, applicationPeriod));
+            all.add(new ApplicationInfo(hakemus, form, applicationPeriod));
         }
         return all;
     }
