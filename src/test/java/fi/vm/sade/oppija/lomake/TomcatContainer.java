@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.haku;
+package fi.vm.sade.oppija.lomake;
 
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
