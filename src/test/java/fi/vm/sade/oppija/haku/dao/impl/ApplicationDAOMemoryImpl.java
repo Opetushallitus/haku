@@ -18,11 +18,11 @@ package fi.vm.sade.oppija.haku.dao.impl;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
-import fi.vm.sade.oppija.haku.domain.Application;
-import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
-import fi.vm.sade.oppija.haku.domain.User;
-import fi.vm.sade.oppija.haku.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.dao.ApplicationDAO;
+import fi.vm.sade.oppija.lomake.domain.Application;
+import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
+import fi.vm.sade.oppija.lomake.domain.User;
+import fi.vm.sade.oppija.lomake.validation.HakemusState;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;

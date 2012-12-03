@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.haku.dao;
 
+import fi.vm.sade.oppija.lomake.dao.DBFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

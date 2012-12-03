@@ -1,6 +1,7 @@
 package fi.vm.sade.oppija.haku.domain.elements;
 
-import fi.vm.sade.oppija.haku.domain.Attribute;
+import fi.vm.sade.oppija.lomake.domain.Attribute;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import org.junit.Test;
 
 import java.util.Collection;

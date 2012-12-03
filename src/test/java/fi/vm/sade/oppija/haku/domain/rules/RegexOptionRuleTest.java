@@ -16,7 +16,8 @@
 
 package fi.vm.sade.oppija.haku.domain.rules;
 
-import fi.vm.sade.oppija.haku.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomake.domain.rules.RegexOptionRule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

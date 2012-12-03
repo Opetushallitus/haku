@@ -17,10 +17,10 @@
 package fi.vm.sade.oppija.haku.it;
 
 import fi.vm.sade.oppija.haku.FormModelHelper;
-import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
-import fi.vm.sade.oppija.haku.domain.elements.questions.CheckBox;
-import fi.vm.sade.oppija.haku.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import net.sourceforge.jwebunit.api.IElement;
 import org.junit.Before;
 import org.junit.Test;

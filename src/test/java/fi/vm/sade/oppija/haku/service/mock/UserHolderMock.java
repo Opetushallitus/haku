@@ -1,7 +1,7 @@
 package fi.vm.sade.oppija.haku.service.mock;
 
-import fi.vm.sade.oppija.haku.domain.User;
-import fi.vm.sade.oppija.haku.service.UserHolder;
+import fi.vm.sade.oppija.lomake.domain.User;
+import fi.vm.sade.oppija.lomake.service.UserHolder;
 
 /**
  * @author Hannu Lyytikainen

@@ -1,8 +1,8 @@
 package fi.vm.sade.oppija.haku.it;
 
 import fi.vm.sade.oppija.haku.FormModelHelper;
-import fi.vm.sade.oppija.haku.converter.FormModelToJsonString;
-import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.lomake.converter.FormModelToJsonString;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
 import net.sourceforge.jwebunit.util.TestingEngineRegistry;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;

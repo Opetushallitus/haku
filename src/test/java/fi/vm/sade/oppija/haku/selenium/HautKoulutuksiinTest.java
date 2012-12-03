@@ -18,9 +18,9 @@ package fi.vm.sade.oppija.haku.selenium;
 
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.haku.FormModelHelper;
-import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
-import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

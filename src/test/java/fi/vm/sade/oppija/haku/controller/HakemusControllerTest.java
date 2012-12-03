@@ -16,9 +16,10 @@
 
 package fi.vm.sade.oppija.haku.controller;
 
-import fi.vm.sade.oppija.haku.domain.*;
-import fi.vm.sade.oppija.haku.service.ApplicationService;
-import fi.vm.sade.oppija.haku.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.controller.ApplicationController;
+import fi.vm.sade.oppija.lomake.domain.*;
+import fi.vm.sade.oppija.lomake.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.validation.HakemusState;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -16,7 +16,8 @@
 
 package fi.vm.sade.oppija.haku.controller;
 
-import fi.vm.sade.oppija.haku.service.UserHolder;
+import fi.vm.sade.oppija.lomake.service.UserHolder;
+import fi.vm.sade.oppija.lomake.controller.LoginController;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 

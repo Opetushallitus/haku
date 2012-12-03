@@ -16,9 +16,10 @@
 
 package fi.vm.sade.oppija.haku.validation.validators;
 
-import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.oppija.haku.validation.ValidationResult;
-import fi.vm.sade.oppija.haku.validation.Validator;
+import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.oppija.lomake.validation.Validator;
+import fi.vm.sade.oppija.lomake.validation.validators.ConditionalFieldValidator;
 import org.junit.Test;
 
 import java.util.HashMap;

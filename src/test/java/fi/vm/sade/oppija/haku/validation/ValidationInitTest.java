@@ -18,14 +18,15 @@ package fi.vm.sade.oppija.haku.validation;
 
 import fi.vm.sade.oppija.haku.FormModelHelper;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
-import fi.vm.sade.oppija.haku.domain.elements.Element;
-import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
-import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.oppija.haku.service.FormModelInitializer;
-import fi.vm.sade.oppija.haku.validation.validators.ConditionalFieldValidator;
-import fi.vm.sade.oppija.haku.validation.validators.RequiredFieldFieldValidator;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomake.service.FormModelInitializer;
+import fi.vm.sade.oppija.lomake.validation.validators.ConditionalFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.Validator;
 import org.junit.Test;
 
 import java.util.List;

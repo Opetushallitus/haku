@@ -1,5 +1,7 @@
 package fi.vm.sade.oppija.haku.domain;
 
+import fi.vm.sade.oppija.lomake.domain.Preference;
+import fi.vm.sade.oppija.lomake.domain.PreferenceHelper;
 import org.junit.Test;
 
 import java.util.HashMap;

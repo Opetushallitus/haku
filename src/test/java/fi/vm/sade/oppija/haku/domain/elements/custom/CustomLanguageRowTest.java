@@ -16,7 +16,8 @@
 
 package fi.vm.sade.oppija.haku.domain.elements.custom;
 
-import fi.vm.sade.oppija.haku.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.CustomLanguageRow;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,7 +1,8 @@
 package fi.vm.sade.oppija.haku.service.impl;
 
-import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.haku.service.FormModelHolder;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.service.FormModelHolder;
+import fi.vm.sade.oppija.lomake.service.impl.FormServiceImpl;
 import org.junit.Test;
 
 public class FormServiceImplTest {

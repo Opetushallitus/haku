@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.haku.tools;
 
+import fi.vm.sade.oppija.lomake.tools.CommandLineTooling;
 import org.junit.Test;
 
 /**

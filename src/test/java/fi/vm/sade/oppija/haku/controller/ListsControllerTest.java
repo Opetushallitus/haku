@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.haku.controller;
 
+import fi.vm.sade.oppija.lomake.controller.ListsController;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 

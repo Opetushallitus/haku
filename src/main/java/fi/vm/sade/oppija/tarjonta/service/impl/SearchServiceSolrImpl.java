@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.tarjonta.service.impl;
 
-import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
 import fi.vm.sade.oppija.tarjonta.domain.exception.SearchException;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.haku.tools;
 
+import fi.vm.sade.oppija.lomake.tools.FileException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

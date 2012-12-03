@@ -16,7 +16,8 @@
 
 package fi.vm.sade.oppija.haku.validation.validators;
 
-import fi.vm.sade.oppija.haku.validation.ValidationResult;
+import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.oppija.lomake.validation.validators.ValidInputNamesValidator;
 import org.junit.Test;
 
 import java.util.HashMap;

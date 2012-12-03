@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija;
 
 
-import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

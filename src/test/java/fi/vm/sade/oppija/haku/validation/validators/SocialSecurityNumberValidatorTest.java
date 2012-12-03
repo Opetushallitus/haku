@@ -15,7 +15,8 @@
  */
 package fi.vm.sade.oppija.haku.validation.validators;
 
-import fi.vm.sade.oppija.haku.validation.ValidationResult;
+import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
 import org.junit.Before;
 import org.junit.Test;
 

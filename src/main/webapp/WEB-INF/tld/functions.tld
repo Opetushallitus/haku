@@ -8,7 +8,7 @@
     <info>Tag library for functions</info>
     <function>
         <name>evaluate</name>
-        <function-class>fi.vm.sade.oppija.haku.domain.rules.RegexRule</function-class>
+        <function-class>fi.vm.sade.oppija.lomake.domain.rules.RegexRule</function-class>
         <function-signature>boolean evaluate( java.lang.String, java.lang.String )</function-signature>
     </function>
 </taglib>

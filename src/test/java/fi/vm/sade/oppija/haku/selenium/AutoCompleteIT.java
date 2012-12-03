@@ -17,8 +17,8 @@
 package fi.vm.sade.oppija.haku.selenium;
 
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -16,8 +16,9 @@
 
 package fi.vm.sade.oppija.haku.service.impl;
 
-import fi.vm.sade.oppija.haku.service.UserHolder;
-import fi.vm.sade.oppija.haku.service.UserPrefillDataService;
+import fi.vm.sade.oppija.lomake.service.UserHolder;
+import fi.vm.sade.oppija.lomake.service.UserPrefillDataService;
+import fi.vm.sade.oppija.lomake.service.impl.UserPrefillDataServiceImpl;
 import org.junit.Test;
 
 import java.util.HashMap;

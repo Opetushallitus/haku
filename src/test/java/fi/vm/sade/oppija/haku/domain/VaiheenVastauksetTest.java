@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.haku.domain;
 
+import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
+import fi.vm.sade.oppija.lomake.domain.VaiheenVastaukset;
 import org.junit.Test;
 
 import java.util.HashMap;

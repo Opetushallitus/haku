@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.haku.validation;
 
+import fi.vm.sade.oppija.lomake.validation.FieldValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang.NotImplementedException;
 import org.junit.Test;
 

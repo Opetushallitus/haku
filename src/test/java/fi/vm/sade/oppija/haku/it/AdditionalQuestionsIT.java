@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.haku.it;
 
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
 import org.junit.Before;
 import org.junit.Test;
 

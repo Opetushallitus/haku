@@ -16,7 +16,10 @@
 
 package fi.vm.sade.oppija.haku.validation;
 
-import fi.vm.sade.oppija.haku.validation.validators.RequiredFieldFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.FormValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.oppija.lomake.validation.Validator;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -17,12 +17,12 @@
 package fi.vm.sade.oppija.haku.dao.impl;
 
 import fi.vm.sade.oppija.haku.dao.AbstractDAOTest;
-import fi.vm.sade.oppija.haku.dao.ApplicationDAO;
-import fi.vm.sade.oppija.haku.domain.Application;
-import fi.vm.sade.oppija.haku.domain.HakuLomakeId;
-import fi.vm.sade.oppija.haku.domain.User;
-import fi.vm.sade.oppija.haku.domain.VaiheenVastaukset;
-import fi.vm.sade.oppija.haku.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.dao.ApplicationDAO;
+import fi.vm.sade.oppija.lomake.domain.Application;
+import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
+import fi.vm.sade.oppija.lomake.domain.User;
+import fi.vm.sade.oppija.lomake.domain.VaiheenVastaukset;
+import fi.vm.sade.oppija.lomake.validation.HakemusState;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

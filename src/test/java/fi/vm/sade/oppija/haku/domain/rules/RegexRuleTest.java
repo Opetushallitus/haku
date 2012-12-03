@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.haku.domain.rules;
 
+import fi.vm.sade.oppija.lomake.domain.rules.RegexRule;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertTrue;

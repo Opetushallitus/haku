@@ -1,6 +1,7 @@
 package fi.vm.sade.oppija.haku.tools;
 
-import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.tools.CommandExecutor;
 import org.junit.Test;
 
 /**

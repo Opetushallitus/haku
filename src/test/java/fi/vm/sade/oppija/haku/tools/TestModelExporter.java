@@ -1,8 +1,9 @@
 package fi.vm.sade.oppija.haku.tools;
 
-import fi.vm.sade.oppija.haku.dao.FormModelDAO;
+import fi.vm.sade.oppija.lomake.dao.FormModelDAO;
 import fi.vm.sade.oppija.haku.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.haku.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.tools.CommandExecutor;
 
 import java.io.File;
 

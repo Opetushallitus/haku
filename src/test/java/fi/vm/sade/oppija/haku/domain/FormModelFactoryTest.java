@@ -17,9 +17,11 @@
 package fi.vm.sade.oppija.haku.domain;
 
 import fi.vm.sade.oppija.haku.FormModelHelper;
-import fi.vm.sade.oppija.haku.domain.builders.FormModelBuilder;
-import fi.vm.sade.oppija.haku.domain.elements.Phase;
-import fi.vm.sade.oppija.haku.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
+import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.domain.FormModelFactory;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.haku.domain;
 
+import fi.vm.sade.oppija.lomake.domain.Organization;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

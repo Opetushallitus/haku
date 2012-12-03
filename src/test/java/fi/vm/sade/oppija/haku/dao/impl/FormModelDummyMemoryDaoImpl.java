@@ -16,21 +16,21 @@
 
 package fi.vm.sade.oppija.haku.dao.impl;
 
-import fi.vm.sade.oppija.haku.dao.FormModelDAO;
-import fi.vm.sade.oppija.haku.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.haku.domain.FormModel;
-import fi.vm.sade.oppija.haku.domain.PostOffice;
-import fi.vm.sade.oppija.haku.domain.elements.Element;
-import fi.vm.sade.oppija.haku.domain.elements.Form;
-import fi.vm.sade.oppija.haku.domain.elements.Phase;
-import fi.vm.sade.oppija.haku.domain.elements.Theme;
-import fi.vm.sade.oppija.haku.domain.elements.custom.*;
-import fi.vm.sade.oppija.haku.domain.elements.questions.*;
-import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.haku.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.oppija.haku.service.FormService;
-import fi.vm.sade.oppija.haku.validation.HakemusState;
-import fi.vm.sade.oppija.haku.validation.Validator;
+import fi.vm.sade.oppija.lomake.dao.FormModelDAO;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.PostOffice;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
+import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomake.service.FormService;
+import fi.vm.sade.oppija.lomake.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.validation.Validator;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

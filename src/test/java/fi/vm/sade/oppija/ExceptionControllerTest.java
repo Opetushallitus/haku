@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija;
 
-import fi.vm.sade.oppija.haku.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 
