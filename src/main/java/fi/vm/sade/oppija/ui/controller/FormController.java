@@ -26,7 +26,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserPrefillDataService;
-import fi.vm.sade.oppija.lomake.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,13 +143,13 @@ public class FormController extends ExceptionController {
                                      @RequestBody final MultiValueMap<String, String> multiValues) {
         LOGGER.debug("saveCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
-        HakemusState hakemusState = applicationService.tallennaVaihe(new ApplicationPhase(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
+        ApplicationState applicationState = applicationService.tallennaVaihe(new ApplicationPhase(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
-        if (hakemusState.isValid()) {
-            modelAndView = new ModelAndView(REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + hakemusState.getHakemus().getVaiheId());
+        if (applicationState.isValid()) {
+            modelAndView = new ModelAndView(REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + applicationState.getHakemus().getVaiheId());
         } else {
-            modelAndView.addAllObjects(hakemusState.getModelObjects());
+            modelAndView.addAllObjects(applicationState.getModelObjects());
             Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
             modelAndView.addObject("element", activeForm.getCategory(categoryId));
             modelAndView.addObject("form", activeForm);

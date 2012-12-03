@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.lomake.domain.Application;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HakemusState {
+public class ApplicationState {
 
     private static final String HAKEMUS_KEY = "hakemus";
     public static final String VALMIS = "valmis";
@@ -30,7 +30,7 @@ public class HakemusState {
     private final Map<String, Object> modelObjects = new HashMap<String, Object>();
     private final String vaiheId;
 
-    public HakemusState(final Application application, final String vaiheId) {
+    public ApplicationState(final Application application, final String vaiheId) {
         modelObjects.put(HAKEMUS_KEY, application);
         modelObjects.put("categoryData", application.getVastauksetMerged());
         modelObjects.put("errorMessages", errors);

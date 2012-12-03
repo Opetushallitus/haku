@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.event;
 
-import fi.vm.sade.oppija.lomake.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 
 /**
  * @author jukka
@@ -24,5 +24,5 @@ import fi.vm.sade.oppija.lomake.validation.HakemusState;
  * @since 1.1
  */
 public interface Event {
-    void process(HakemusState hakemusState);
+    void process(ApplicationState applicationState);
 }

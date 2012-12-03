@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.hakemus.dao;
 import fi.vm.sade.oppija.lomake.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
-import fi.vm.sade.oppija.lomake.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 public interface ApplicationDAO {
-    HakemusState tallennaVaihe(HakemusState state);
+    ApplicationState tallennaVaihe(ApplicationState state);
 
     Application find(FormId formId, User user);
 

@@ -25,7 +25,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.lomake.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,10 +91,10 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public List<Validator> getVaiheValidators(HakemusState hakemusState) {
-        final FormId formId = hakemusState.getHakemus().getFormId();
-        if (!hakemusState.isFinalStage()) {
-            return getVaiheValidators(formId, hakemusState.getVaiheId());
+    public List<Validator> getVaiheValidators(ApplicationState applicationState) {
+        final FormId formId = applicationState.getHakemus().getFormId();
+        if (!applicationState.isFinalStage()) {
+            return getVaiheValidators(formId, applicationState.getVaiheId());
         } else {
             return getAllValidators(formId);
         }

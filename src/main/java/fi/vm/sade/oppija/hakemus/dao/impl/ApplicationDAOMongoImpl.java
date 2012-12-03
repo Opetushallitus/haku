@@ -29,7 +29,7 @@ import fi.vm.sade.oppija.lomake.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.lomake.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     private static final String OID_PREFIX = "1.2.3.4.5.";
 
     @Override
-    public HakemusState tallennaVaihe(HakemusState state) {
+    public ApplicationState tallennaVaihe(ApplicationState state) {
         Application queryApplication = searchByLomakeIdAndUser(state);
         final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(queryApplication);
 
@@ -158,7 +158,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
         return new DBObjectToHakemusConverter().convert(dbObject);
     }
 
-    private Application searchByLomakeIdAndUser(HakemusState state) {
+    private Application searchByLomakeIdAndUser(ApplicationState state) {
         return new Application(state.getHakemus().getFormId(), state.getHakemus().getUser());
     }
 }

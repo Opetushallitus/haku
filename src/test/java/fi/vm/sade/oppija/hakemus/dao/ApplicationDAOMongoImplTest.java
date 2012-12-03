@@ -21,7 +21,7 @@ import fi.vm.sade.oppija.lomake.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
-import fi.vm.sade.oppija.lomake.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +59,8 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         vaiheenVastaukset.put("avain", ARVO);
 
         final Application application1 = new Application(TEST_USER, new ApplicationPhase(formId, "vaihe1", vaiheenVastaukset));
-        final HakemusState hakemus = applicationDAO.tallennaVaihe(new HakemusState(application1, "vaihe1"));
-        assertEquals(ARVO, hakemus.getHakemus().getVastauksetMerged().get("avain"));
+        final ApplicationState application = applicationDAO.tallennaVaihe(new ApplicationState(application1, "vaihe1"));
+        assertEquals(ARVO, application.getHakemus().getVastauksetMerged().get("avain"));
     }
 
     @Test

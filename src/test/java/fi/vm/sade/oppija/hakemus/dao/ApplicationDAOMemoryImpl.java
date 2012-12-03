@@ -21,7 +21,7 @@ import com.google.common.collect.Collections2;
 import fi.vm.sade.oppija.lomake.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
-import fi.vm.sade.oppija.lomake.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -81,7 +81,7 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public HakemusState tallennaVaihe(final HakemusState state) {
+    public ApplicationState tallennaVaihe(final ApplicationState state) {
         Application application = find(state.getHakemus().getFormId(), state.getHakemus().getUser());
         application.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());
         hakemukset.add(application);

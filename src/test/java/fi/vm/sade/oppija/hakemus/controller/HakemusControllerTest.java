@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.hakemus.controller;
 
 import fi.vm.sade.oppija.lomake.domain.*;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,7 +51,7 @@ public class HakemusControllerTest {
 
 
             @Override
-            public HakemusState tallennaVaihe(ApplicationPhase vaihe) {
+            public ApplicationState tallennaVaihe(ApplicationPhase vaihe) {
                 return null;
             }
 

@@ -29,7 +29,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.lomake.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import org.springframework.stereotype.Service;
 
@@ -514,7 +514,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     @Override
-    public List<Validator> getVaiheValidators(HakemusState hakemusState) {
+    public List<Validator> getVaiheValidators(ApplicationState applicationState) {
         return Collections.EMPTY_LIST;
     }
 

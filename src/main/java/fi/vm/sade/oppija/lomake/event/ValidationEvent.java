@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.lomake.event;
 import fi.vm.sade.oppija.lomake.domain.Application;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.FormValidator;
-import fi.vm.sade.oppija.lomake.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,15 +44,15 @@ public class ValidationEvent implements Event {
     }
 
     @Override
-    public void process(HakemusState hakemusState) {
-        Application application = hakemusState.getHakemus();
-        List<Validator> validators = getValidators(hakemusState);
+    public void process(ApplicationState applicationState) {
+        Application application = applicationState.getHakemus();
+        List<Validator> validators = getValidators(applicationState);
         ValidationResult validationResult = FormValidator.validate(validators, application.getVastauksetMerged());
-        hakemusState.addError(validationResult.getErrorMessages());
+        applicationState.addError(validationResult.getErrorMessages());
     }
 
-    protected List<Validator> getValidators(HakemusState hakemusState) {
-        return formService.getVaiheValidators(hakemusState);
+    protected List<Validator> getValidators(ApplicationState applicationState) {
+        return formService.getVaiheValidators(applicationState);
     }
 
 }

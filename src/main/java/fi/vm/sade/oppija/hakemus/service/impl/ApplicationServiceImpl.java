@@ -24,7 +24,7 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
-import fi.vm.sade.oppija.lomake.validation.HakemusState;
+import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -58,16 +58,16 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public HakemusState tallennaVaihe(ApplicationPhase vaihe) {
-        HakemusState hakemusState = new HakemusState(new Application(this.userHolder.getUser(), vaihe), vaihe.getVaiheId());
+    public ApplicationState tallennaVaihe(ApplicationPhase vaihe) {
+        ApplicationState applicationState = new ApplicationState(new Application(this.userHolder.getUser(), vaihe), vaihe.getVaiheId());
         //validationEvent.process(hakemusState);
-        Form activeForm = formService.getActiveForm(hakemusState.getHakemus().getFormId().getApplicationPeriodId(), hakemusState.getHakemus().getFormId().getFormId());
+        Form activeForm = formService.getActiveForm(applicationState.getHakemus().getFormId().getApplicationPeriodId(), applicationState.getHakemus().getFormId().getFormId());
         ValidationResult validationResult = ElementTreeValidator.validate(activeForm.getCategory(vaihe.getVaiheId()), vaihe.getVastaukset());
-        hakemusState.addError(validationResult.getErrorMessages());
-        if (hakemusState.isValid()) {
-            this.applicationDAO.tallennaVaihe(hakemusState);
+        applicationState.addError(validationResult.getErrorMessages());
+        if (applicationState.isValid()) {
+            this.applicationDAO.tallennaVaihe(applicationState);
         }
-        return hakemusState;
+        return applicationState;
     }
 
     @Override
@@ -79,9 +79,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     public void laitaVireille(FormId hakulomakeId) {
         Application application = applicationDAO.find(hakulomakeId, userHolder.getUser());
         ApplicationPhase applicationPhase = new ApplicationPhase(hakulomakeId, "valmis", application.getVastauksetMerged());
-        HakemusState hakemusState = new HakemusState(new Application(this.userHolder.getUser(), applicationPhase), applicationPhase.getVaiheId());
-        validationEvent.process(hakemusState);
-        if (hakemusState.isValid()) {
+        ApplicationState applicationState = new ApplicationState(new Application(this.userHolder.getUser(), applicationPhase), applicationPhase.getVaiheId());
+        validationEvent.process(applicationState);
+        if (applicationState.isValid()) {
             this.applicationDAO.laitaVireille(hakulomakeId, userHolder.getUser());
         } else {
             throw new IllegalStateException();
