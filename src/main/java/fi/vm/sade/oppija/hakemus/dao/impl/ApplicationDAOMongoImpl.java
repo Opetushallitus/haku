@@ -26,7 +26,7 @@ import fi.vm.sade.oppija.lomake.converter.HakemusToBasicDBObjectConverter;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.lomake.dao.impl.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.lomake.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
+import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.HakemusState;
@@ -97,9 +97,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     }
 
     @Override
-    public Application find(HakuLomakeId hakuLomakeId, User user) {
+    public Application find(FormId formId, User user) {
 
-        Application application = new Application(hakuLomakeId, user);
+        Application application = new Application(formId, user);
         final BasicDBObject convert = new HakemusToBasicDBObjectConverter().convert(application);
         final DBObject one = getCollection().findOne(convert);
         if (one != null) {
@@ -124,7 +124,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     }
 
     @Override
-    public String laitaVireille(final HakuLomakeId hakulomakeId, final User user) {
+    public String laitaVireille(final FormId hakulomakeId, final User user) {
         Application application = new Application(hakulomakeId, user);
         final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(application);
         String oid = OID_PREFIX + getNextId();
@@ -159,6 +159,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     }
 
     private Application searchByLomakeIdAndUser(HakemusState state) {
-        return new Application(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
+        return new Application(state.getHakemus().getFormId(), state.getHakemus().getUser());
     }
 }

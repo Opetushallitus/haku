@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.service.impl;
 
-import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
+import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
@@ -48,8 +48,8 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public Set<Question> findAdditionalQuestions(String teemaId, HakuLomakeId hakuLomakeId, String vaiheId) {
-        Map<String, String> hakemusValues = applicationService.getHakemus(hakuLomakeId).getVastauksetMerged();
+    public Set<Question> findAdditionalQuestions(String teemaId, FormId formId, String vaiheId) {
+        Map<String, String> hakemusValues = applicationService.getHakemus(formId).getVastauksetMerged();
         List<String> hakukohdeList = new ArrayList<String>();
 
         int prefNumber = 1;
@@ -59,13 +59,13 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
             prefNumber++;
         }
 
-        return findAdditionalQuestions(teemaId, hakukohdeList, hakuLomakeId, vaiheId);
+        return findAdditionalQuestions(teemaId, hakukohdeList, formId, vaiheId);
     }
 
     @Override
-    public Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, HakuLomakeId hakuLomakeId, final String vaiheId) {
+    public Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, FormId formId, final String vaiheId) {
         Theme theme = null;
-        Form form = formService.getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId());
+        Form form = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
         Phase phase = form.getCategory(vaiheId);
         for (Element e : phase.getChildren()) {
             if (e.getId().equals(teemaId)) {

@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.hakemus.controller;
 
-import fi.vm.sade.oppija.hakemus.controller.ApplicationController;
 import fi.vm.sade.oppija.lomake.domain.*;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.validation.HakemusState;
@@ -33,7 +32,7 @@ public class HakemusControllerTest {
     public static final String APPLICATION_PERIOD_ID = "aid";
     public static final String FORM_ID = "fid";
     public static final String USERNAME = "username";
-    public static final Application APPLICATION = new Application(new HakuLomakeId(APPLICATION_PERIOD_ID, FORM_ID), new User(USERNAME));
+    public static final Application APPLICATION = new Application(new FormId(APPLICATION_PERIOD_ID, FORM_ID), new User(USERNAME));
     private ApplicationController hakemusController;
 
     @Before
@@ -46,7 +45,7 @@ public class HakemusControllerTest {
             }
 
             @Override
-            public Application getHakemus(HakuLomakeId hakuLomakeId) {
+            public Application getHakemus(FormId formId) {
                 return null;  //To change body of implemented methods use File | Settings | File Templates.
             }
 
@@ -62,7 +61,7 @@ public class HakemusControllerTest {
             }
 
             @Override
-            public void laitaVireille(HakuLomakeId vaihe) {
+            public void laitaVireille(FormId vaihe) {
                 //To change body of implemented methods use File | Settings | File Templates.
             }
 
@@ -72,6 +71,6 @@ public class HakemusControllerTest {
     @Test
     public void testGetHakemus() throws Exception {
         Application application = hakemusController.getHakemus(OID);
-        assertEquals(APPLICATION.getHakuLomakeId(), application.getHakuLomakeId());
+        assertEquals(APPLICATION.getFormId(), application.getFormId());
     }
 }

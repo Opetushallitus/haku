@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.lomake.service.impl;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
+import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
@@ -85,24 +85,24 @@ public class FormServiceImpl implements FormService {
         return model.getApplicationPerioidMap();
     }
 
-    public List<Validator> getVaiheValidators(final HakuLomakeId hakuLomakeId, final String vaiheId) {
-        final Phase phase = getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId()).getCategory(vaiheId);
+    public List<Validator> getVaiheValidators(final FormId formId, final String vaiheId) {
+        final Phase phase = getActiveForm(formId.getApplicationPeriodId(), formId.getFormId()).getCategory(vaiheId);
         return phase.getValidators();
     }
 
     @Override
     public List<Validator> getVaiheValidators(HakemusState hakemusState) {
-        final HakuLomakeId hakuLomakeId = hakemusState.getHakemus().getHakuLomakeId();
+        final FormId formId = hakemusState.getHakemus().getFormId();
         if (!hakemusState.isFinalStage()) {
-            return getVaiheValidators(hakuLomakeId, hakemusState.getVaiheId());
+            return getVaiheValidators(formId, hakemusState.getVaiheId());
         } else {
-            return getAllValidators(hakuLomakeId);
+            return getAllValidators(formId);
         }
     }
 
-    public List<Validator> getAllValidators(final HakuLomakeId hakuLomakeId) {
+    public List<Validator> getAllValidators(final FormId formId) {
         final ArrayList<Validator> validators = new ArrayList<Validator>();
-        final Form activeForm = getActiveForm(hakuLomakeId.getApplicationPeriodId(), hakuLomakeId.getFormId());
+        final Form activeForm = getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
         for (Phase phase : activeForm.getCategories()) {
             validators.addAll(phase.getValidators());
         }

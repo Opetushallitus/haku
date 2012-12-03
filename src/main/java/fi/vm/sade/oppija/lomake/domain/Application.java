@@ -49,7 +49,7 @@ public class Application implements Serializable {
 
     private static final long serialVersionUID = -7491168801255850954L;
 
-    private HakuLomakeId hakuLomakeId;
+    private FormId formId;
     private final User user;
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     @JsonProperty(value = "vaiheId")
@@ -59,24 +59,24 @@ public class Application implements Serializable {
     private Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
 
     @JsonCreator
-    public Application(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId,
+    public Application(@JsonProperty(value = "hakuLomakeId") final FormId formId,
                        @JsonProperty(value = "user") final User user,
                        @JsonProperty(value = "vastaukset") Map<String, Map<String, String>> vastaukset) {
-        this(hakuLomakeId, user);
+        this(formId, user);
         if (vastaukset != null) {
             this.vastaukset = vastaukset;
         }
     }
 
     @JsonIgnore
-    public Application(@JsonProperty(value = "hakuLomakeId") final HakuLomakeId hakuLomakeId,
+    public Application(@JsonProperty(value = "hakuLomakeId") final FormId formId,
                        @JsonProperty(value = "user") final User user) {
-        this.hakuLomakeId = hakuLomakeId;
+        this.formId = formId;
         this.user = user;
     }
 
     public Application(User user, VaiheenVastaukset vaihe) {
-        this(vaihe.getHakuLomakeId(), user);
+        this(vaihe.getFormId(), user);
         addVaiheenVastaukset(vaihe.getVaiheId(), vaihe.getVastaukset());
     }
 
@@ -90,8 +90,8 @@ public class Application implements Serializable {
         return user;
     }
 
-    public HakuLomakeId getHakuLomakeId() {
-        return hakuLomakeId;
+    public FormId getFormId() {
+        return formId;
     }
 
     @JsonIgnore

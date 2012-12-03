@@ -26,35 +26,35 @@ import static org.junit.Assert.assertFalse;
  * @version 10/8/129:52 AM}
  * @since 1.1
  */
-public class HakuLomakeIdTest {
+public class FormIdTest {
 
     private static final String HAKU_ID = "hid";
     private static final String LOMAKE_ID = "lid";
-    public static final HakuLomakeId HAKU_LOMAKE_ID_1 = new HakuLomakeId(HAKU_ID, LOMAKE_ID);
-    public static final HakuLomakeId HAKU_LOMAKE_ID_2 = new HakuLomakeId(HAKU_ID, LOMAKE_ID);
+    public static final FormId FORM_ID_1 = new FormId(HAKU_ID, LOMAKE_ID);
+    public static final FormId FORM_ID_2 = new FormId(HAKU_ID, LOMAKE_ID);
 
     @Test
     public void testHakemusIdEquals() {
-        assertEquals(HAKU_LOMAKE_ID_1, HAKU_LOMAKE_ID_2);
+        assertEquals(FORM_ID_1, FORM_ID_2);
     }
 
     @Test
     public void testNotEquals() {
-        assertFalse(HAKU_LOMAKE_ID_1.equals(new HakuLomakeId(HAKU_ID, LOMAKE_ID + "skldjfs")));
+        assertFalse(FORM_ID_1.equals(new FormId(HAKU_ID, LOMAKE_ID + "skldjfs")));
     }
 
     @Test(expected = NullPointerException.class)
     public void testNullHakuId() {
-        new HakuLomakeId(null, LOMAKE_ID);
+        new FormId(null, LOMAKE_ID);
     }
 
     @Test(expected = NullPointerException.class)
     public void testNullLomakeId() {
-        new HakuLomakeId(HAKU_ID, null);
+        new FormId(HAKU_ID, null);
     }
 
     @Test(expected = NullPointerException.class)
     public void testNullHakuIdAndLomakeId() {
-        new HakuLomakeId(null, null);
+        new FormId(null, null);
     }
 }

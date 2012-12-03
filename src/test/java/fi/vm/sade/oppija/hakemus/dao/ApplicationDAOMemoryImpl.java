@@ -18,9 +18,8 @@ package fi.vm.sade.oppija.hakemus.dao;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.lomake.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
+import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.validation.HakemusState;
 import org.springframework.stereotype.Component;
@@ -41,16 +40,16 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     private static final long serialVersionUID = -3751714345380438532L;
     private final List<Application> hakemukset = new ArrayList<Application>();
 
-    public Application find(final HakuLomakeId hakuLomakeId, final User user) {
+    public Application find(final FormId formId, final User user) {
         Collection<Application> kayttajanHakemukset = Collections2.filter(hakemukset, new Predicate<Application>() {
             @Override
             public boolean apply(final Application hakemus) {
-                return hakemus.getUser().equals(user) && hakemus.getHakuLomakeId().equals(hakuLomakeId);
+                return hakemus.getUser().equals(user) && hakemus.getFormId().equals(formId);
             }
         });
         Application application;
         if (kayttajanHakemukset.isEmpty()) {
-            application = new Application(hakuLomakeId, user);
+            application = new Application(formId, user);
             hakemukset.add(application);
         } else {
             application = kayttajanHakemukset.iterator().next();
@@ -77,13 +76,13 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public String laitaVireille(HakuLomakeId hakulomakeId, User user) {
+    public String laitaVireille(FormId hakulomakeId, User user) {
         return "1";
     }
 
     @Override
     public HakemusState tallennaVaihe(final HakemusState state) {
-        Application application = find(state.getHakemus().getHakuLomakeId(), state.getHakemus().getUser());
+        Application application = find(state.getHakemus().getFormId(), state.getHakemus().getUser());
         application.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());
         hakemukset.add(application);
         return state;

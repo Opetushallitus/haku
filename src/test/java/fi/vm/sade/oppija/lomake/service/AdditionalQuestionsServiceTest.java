@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.lomake.service;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.lomake.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
+import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.service.impl.AdditionalQuestionServiceImpl;
@@ -44,7 +44,7 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
 public class AdditionalQuestionsServiceTest {
 
-    public static final HakuLomakeId HAKU_LOMAKE_ID = new HakuLomakeId("Yhteishaku", "yhteishaku");
+    public static final FormId FORM_ID = new FormId("Yhteishaku", "yhteishaku");
     public static final User TESTUSER = new User("testuser");
     private AdditionalQuestionService additionalQuestionService;
 
@@ -60,10 +60,10 @@ public class AdditionalQuestionsServiceTest {
         ApplicationService applicationService = mock(ApplicationServiceImpl.class);
         Map<String, String> values = new HashMap<String, String>();
         values.put("preference1-Koulutus-id", "S1508");
-        Application application = new Application(HAKU_LOMAKE_ID, TESTUSER);
+        Application application = new Application(FORM_ID, TESTUSER);
         application.addVaiheenVastaukset("hakutoiveet", values);
 
-        when(applicationService.getHakemus(HAKU_LOMAKE_ID)).thenReturn(application);
+        when(applicationService.getHakemus(FORM_ID)).thenReturn(application);
 
         return applicationService;
     }
@@ -71,14 +71,14 @@ public class AdditionalQuestionsServiceTest {
     @Test
     public void testEducationSpecificQuestions() {
         String teemaId = "hakutoiveetGrp";
-        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, HAKU_LOMAKE_ID, "hakutoiveet");
+        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, FORM_ID, "hakutoiveet");
         assertEquals(3, additionalQuestions.size());
     }
 
     @Test
     public void testEducationSpecificSubjects() {
         String teemaId = "arvosanatGrp";
-        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, HAKU_LOMAKE_ID, "arvosanat");
+        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, FORM_ID, "arvosanat");
         assertEquals(2, additionalQuestions.size());
 
     }

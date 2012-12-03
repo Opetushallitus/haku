@@ -21,18 +21,18 @@ import java.util.Map;
 
 public class VaiheenVastaukset {
 
-    private final HakuLomakeId hakuLomakeId;
+    private final FormId formId;
     private final String vaiheId;
     private final Map<String, String> vastaukset = new HashMap<String, String>();
 
-    public VaiheenVastaukset(final HakuLomakeId hakuLomakeId, final String vaiheId, final Map<String, String> vastaukset) {
-        this.hakuLomakeId = hakuLomakeId;
+    public VaiheenVastaukset(final FormId formId, final String vaiheId, final Map<String, String> vastaukset) {
+        this.formId = formId;
         this.vaiheId = vaiheId;
         this.vastaukset.putAll(vastaukset);
     }
 
-    public HakuLomakeId getHakuLomakeId() {
-        return hakuLomakeId;
+    public FormId getFormId() {
+        return formId;
     }
 
     public String getVaiheId() {

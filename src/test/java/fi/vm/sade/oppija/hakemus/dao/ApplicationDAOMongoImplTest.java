@@ -17,9 +17,8 @@
 package fi.vm.sade.oppija.hakemus.dao;
 
 import fi.vm.sade.oppija.lomake.dao.AbstractDAOTest;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.lomake.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
+import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.VaiheenVastaukset;
 import fi.vm.sade.oppija.lomake.validation.HakemusState;
@@ -47,11 +46,11 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     @Qualifier("applicationDAOMongoImpl")
     private ApplicationDAO applicationDAO;
 
-    private HakuLomakeId hakuLomakeId;
+    private FormId formId;
 
     public ApplicationDAOMongoImplTest() {
         String id = String.valueOf(System.currentTimeMillis());
-        hakuLomakeId = new HakuLomakeId(id, id);
+        formId = new FormId(id, id);
     }
 
     @Test
@@ -59,7 +58,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>();
         vaiheenVastaukset.put("avain", ARVO);
 
-        final Application application1 = new Application(TEST_USER, new VaiheenVastaukset(hakuLomakeId, "vaihe1", vaiheenVastaukset));
+        final Application application1 = new Application(TEST_USER, new VaiheenVastaukset(formId, "vaihe1", vaiheenVastaukset));
         final HakemusState hakemus = applicationDAO.tallennaVaihe(new HakemusState(application1, "vaihe1"));
         assertEquals(ARVO, hakemus.getHakemus().getVastauksetMerged().get("avain"));
     }
@@ -67,19 +66,19 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     @Test
     public void testFindAll() throws Exception {
         testTallennaVaihe();
-        Application application = applicationDAO.find(hakuLomakeId, TEST_USER);
+        Application application = applicationDAO.find(formId, TEST_USER);
         assertEquals(ARVO, application.getVastauksetMerged().get(AVAIN));
     }
 
     @Test
     public void testFindAllNotFound() throws Exception {
-        Application application = applicationDAO.find(hakuLomakeId, TEST_USER2);
+        Application application = applicationDAO.find(formId, TEST_USER2);
         assertNotSame(ARVO, application.getVastauksetMerged().get(AVAIN));
     }
 
     @Test
     public void testSequence() throws Exception {
-        applicationDAO.laitaVireille(hakuLomakeId, TEST_USER);
+        applicationDAO.laitaVireille(formId, TEST_USER);
     }
 
     @Override

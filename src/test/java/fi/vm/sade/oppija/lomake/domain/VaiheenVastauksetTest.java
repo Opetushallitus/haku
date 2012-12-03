@@ -23,14 +23,14 @@ import java.util.HashMap;
 import static org.junit.Assert.assertEquals;
 
 public class VaiheenVastauksetTest {
-    private final HakuLomakeId hakuLomakeId = new HakuLomakeId("appid", "formid");
+    private final FormId formId = new FormId("appid", "formid");
     private final HashMap<String, String> vastaukset = new HashMap<String, String>();
     private final String vaiheid = "vaiheid";
-    private final VaiheenVastaukset vaihe = new VaiheenVastaukset(hakuLomakeId, vaiheid, vastaukset);
+    private final VaiheenVastaukset vaihe = new VaiheenVastaukset(formId, vaiheid, vastaukset);
 
     @Test
     public void testGetHakemusId() throws Exception {
-        assertEquals(hakuLomakeId, vaihe.getHakuLomakeId());
+        assertEquals(formId, vaihe.getFormId());
     }
 
     @Test

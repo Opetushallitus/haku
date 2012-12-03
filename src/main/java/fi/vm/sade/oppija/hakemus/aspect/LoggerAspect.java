@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.hakemus.aspect;
 
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
-import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
+import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -53,7 +53,7 @@ public class LoggerAspect {
      */
     @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.hakemus.dao.ApplicationDAO.laitaVireille(..)) && args(lomakeId,user,..)",
             returning = "oid")
-    public void logSavePhase(HakuLomakeId lomakeId, User user, String oid) {
+    public void logSavePhase(FormId lomakeId, User user, String oid) {
         try {
             Tapahtuma t = new Tapahtuma();
             t.setMuutoksenKohde("Haku: " + lomakeId.getApplicationPeriodId()

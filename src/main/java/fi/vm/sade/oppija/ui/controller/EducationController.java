@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.ui.controller;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationOption;
-import fi.vm.sade.oppija.lomake.domain.HakuLomakeId;
+import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.Organization;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
@@ -77,12 +77,12 @@ public class EducationController {
         String viewName = preview != null && preview ? "additionalQuestionsPreview" : "additionalQuestions";
         final ModelAndView modelAndView = new ModelAndView(viewName);
         Form activeForm = formService.getActiveForm(hakuId, lomakeId);
-        final HakuLomakeId hakuLomakeId = new HakuLomakeId(hakuId, activeForm.getId());
+        final FormId formId = new FormId(hakuId, activeForm.getId());
         List<String> hakukohdeIds = new ArrayList<String>();
         hakukohdeIds.add(hakukohdeId);
-        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakukohdeIds, hakuLomakeId, vaiheId);
+        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakukohdeIds, formId, vaiheId);
         modelAndView.addObject("additionalQuestions", additionalQuestions);
-        modelAndView.addObject("categoryData", applicationService.getHakemus(hakuLomakeId).getVastauksetMerged());
+        modelAndView.addObject("categoryData", applicationService.getHakemus(formId).getVastauksetMerged());
         return modelAndView;
     }
 }
