@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.aspect;
+package fi.vm.sade.oppija.hakemus.aspect;
 
 
 import fi.vm.sade.log.client.Logger;
