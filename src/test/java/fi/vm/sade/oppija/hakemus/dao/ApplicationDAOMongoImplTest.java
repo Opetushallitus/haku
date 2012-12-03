@@ -18,9 +18,9 @@ package fi.vm.sade.oppija.hakemus.dao;
 
 import fi.vm.sade.oppija.lomake.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.lomake.domain.Application;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
-import fi.vm.sade.oppija.lomake.domain.VaiheenVastaukset;
 import fi.vm.sade.oppija.lomake.validation.HakemusState;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,7 +58,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>();
         vaiheenVastaukset.put("avain", ARVO);
 
-        final Application application1 = new Application(TEST_USER, new VaiheenVastaukset(formId, "vaihe1", vaiheenVastaukset));
+        final Application application1 = new Application(TEST_USER, new ApplicationPhase(formId, "vaihe1", vaiheenVastaukset));
         final HakemusState hakemus = applicationDAO.tallennaVaihe(new HakemusState(application1, "vaihe1"));
         assertEquals(ARVO, hakemus.getHakemus().getVastauksetMerged().get("avain"));
     }

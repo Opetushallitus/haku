@@ -16,31 +16,30 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
-import org.junit.Test;
-
 import java.util.HashMap;
+import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+public class ApplicationPhase {
 
-public class VaiheenVastauksetTest {
-    private final FormId formId = new FormId("appid", "formid");
-    private final HashMap<String, String> vastaukset = new HashMap<String, String>();
-    private final String vaiheid = "vaiheid";
-    private final VaiheenVastaukset vaihe = new VaiheenVastaukset(formId, vaiheid, vastaukset);
+    private final FormId formId;
+    private final String vaiheId;
+    private final Map<String, String> vastaukset = new HashMap<String, String>();
 
-    @Test
-    public void testGetHakemusId() throws Exception {
-        assertEquals(formId, vaihe.getFormId());
+    public ApplicationPhase(final FormId formId, final String vaiheId, final Map<String, String> vastaukset) {
+        this.formId = formId;
+        this.vaiheId = vaiheId;
+        this.vastaukset.putAll(vastaukset);
     }
 
-    @Test
-    public void testGetVaiheId() throws Exception {
-        assertEquals(vaiheid, vaihe.getVaiheId());
-
+    public FormId getFormId() {
+        return formId;
     }
 
-    @Test
-    public void testGetVastaukset() throws Exception {
-        assertEquals(vastaukset, vaihe.getVastaukset());
+    public String getVaiheId() {
+        return vaiheId;
+    }
+
+    public Map<String, String> getVastaukset() {
+        return this.vastaukset;
     }
 }

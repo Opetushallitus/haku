@@ -19,8 +19,8 @@ package fi.vm.sade.oppija.ui.controller;
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.lomake.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
-import fi.vm.sade.oppija.lomake.domain.VaiheenVastaukset;
 import fi.vm.sade.oppija.lomake.domain.elements.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
@@ -143,7 +143,7 @@ public class FormController extends ExceptionController {
                                      @RequestBody final MultiValueMap<String, String> multiValues) {
         LOGGER.debug("saveCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
-        HakemusState hakemusState = applicationService.tallennaVaihe(new VaiheenVastaukset(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
+        HakemusState hakemusState = applicationService.tallennaVaihe(new ApplicationPhase(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         if (hakemusState.isValid()) {

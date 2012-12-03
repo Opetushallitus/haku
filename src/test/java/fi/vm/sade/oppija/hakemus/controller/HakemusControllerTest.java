@@ -51,7 +51,7 @@ public class HakemusControllerTest {
 
 
             @Override
-            public HakemusState tallennaVaihe(VaiheenVastaukset vaihe) {
+            public HakemusState tallennaVaihe(ApplicationPhase vaihe) {
                 return null;
             }
 

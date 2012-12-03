@@ -18,8 +18,8 @@ package fi.vm.sade.oppija.hakemus.service;
 
 import fi.vm.sade.oppija.lomake.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.ApplicationInfo;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
-import fi.vm.sade.oppija.lomake.domain.VaiheenVastaukset;
 import fi.vm.sade.oppija.lomake.validation.HakemusState;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public interface ApplicationService {
 
     Application getHakemus(FormId formId);
 
-    HakemusState tallennaVaihe(final VaiheenVastaukset vaihe);
+    HakemusState tallennaVaihe(final ApplicationPhase vaihe);
 
     Application getHakemus(String oid);
 

@@ -75,7 +75,7 @@ public class Application implements Serializable {
         this.user = user;
     }
 
-    public Application(User user, VaiheenVastaukset vaihe) {
+    public Application(User user, ApplicationPhase vaihe) {
         this(vaihe.getFormId(), user);
         addVaiheenVastaukset(vaihe.getVaiheId(), vaihe.getVastaukset());
     }

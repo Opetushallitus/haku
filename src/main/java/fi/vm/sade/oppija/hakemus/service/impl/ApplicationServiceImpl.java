@@ -58,7 +58,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public HakemusState tallennaVaihe(VaiheenVastaukset vaihe) {
+    public HakemusState tallennaVaihe(ApplicationPhase vaihe) {
         HakemusState hakemusState = new HakemusState(new Application(this.userHolder.getUser(), vaihe), vaihe.getVaiheId());
         //validationEvent.process(hakemusState);
         Form activeForm = formService.getActiveForm(hakemusState.getHakemus().getFormId().getApplicationPeriodId(), hakemusState.getHakemus().getFormId().getFormId());
@@ -78,8 +78,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public void laitaVireille(FormId hakulomakeId) {
         Application application = applicationDAO.find(hakulomakeId, userHolder.getUser());
-        VaiheenVastaukset vaiheenVastaukset = new VaiheenVastaukset(hakulomakeId, "valmis", application.getVastauksetMerged());
-        HakemusState hakemusState = new HakemusState(new Application(this.userHolder.getUser(), vaiheenVastaukset), vaiheenVastaukset.getVaiheId());
+        ApplicationPhase applicationPhase = new ApplicationPhase(hakulomakeId, "valmis", application.getVastauksetMerged());
+        HakemusState hakemusState = new HakemusState(new Application(this.userHolder.getUser(), applicationPhase), applicationPhase.getVaiheId());
         validationEvent.process(hakemusState);
         if (hakemusState.isValid()) {
             this.applicationDAO.laitaVireille(hakulomakeId, userHolder.getUser());
