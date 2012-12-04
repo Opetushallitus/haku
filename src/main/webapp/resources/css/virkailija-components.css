@@ -576,3 +576,11 @@ ul.unstyled li
 .virkailija-table-1 tbody tr:last-of-type td:last-of-type {
     border-bottom-right-radius: 5px;
 }
+
+
+/*** Pagination
+************************************************/
+
+.pagination a{
+    text-decoration: none;
+}

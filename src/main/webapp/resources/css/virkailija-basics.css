@@ -688,7 +688,8 @@ hr
 
 #wrapper
 {
-    width:960px;
+    min-width: 960px;
+    max-width: 1280px;
     background: none repeat scroll 0 0 #F8F8F8;
     border: 1px solid #DCDCDC;
     border-top-width: 0;
