@@ -14,6 +14,9 @@
     display: inline;
 }
 
+.display-none {
+    display: none;
+}
 
 /*** Position
 ************************************************/
@@ -131,11 +134,15 @@ $grid-column-width: 100 / $grid-count;
     margin-bottom: $height;
 }
 
-/* margin-classes for all */
+/* margin AND padding classes for all directions */
 @for $i from 1 to 6 {
     @each $direction in top, right, bottom, left {
         .margin-#{$direction}-#{$i} {
             margin-#{$direction}: $i * 0.5em;
+        }
+
+        .padding-#{$direction}-#{$i} {
+            padding-#{$direction}: $i * 0.5em;
         }
     }
 }
