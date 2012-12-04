@@ -14,15 +14,20 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.event;
+package fi.vm.sade.oppija.lomake.domain.exception;
 
-import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import org.junit.Test;
 
-/**
- * @author jukka
- * @version 9/28/121:43 PM}
- * @since 1.1
- */
-public interface Event {
-    void process(ApplicationState applicationState);
+import static org.junit.Assert.assertEquals;
+
+public class ResourceNotFoundExceptionTest {
+
+    public static final String MESSAGE = "virhe";
+
+    @Test
+    public void testMessage() throws Exception {
+        ResourceNotFoundException resourceNotFoundException = new ResourceNotFoundException(MESSAGE);
+        assertEquals(MESSAGE, resourceNotFoundException.getMessage());
+
+    }
 }

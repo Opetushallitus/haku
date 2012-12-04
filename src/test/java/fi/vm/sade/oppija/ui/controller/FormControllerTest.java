@@ -17,14 +17,13 @@
 package fi.vm.sade.oppija.ui.controller;
 
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAOMemoryImpl;
+import fi.vm.sade.oppija.hakemus.service.impl.ApplicationServiceImpl;
 import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.domain.exception.IllegalStateException;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.lomake.event.ValidationEvent;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
-import fi.vm.sade.oppija.hakemus.service.impl.ApplicationServiceImpl;
 import fi.vm.sade.oppija.lomake.service.impl.UserPrefillDataServiceImpl;
-import fi.vm.sade.oppija.ui.controller.FormController;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,7 +45,7 @@ public class FormControllerTest {
     public void setUp() throws Exception {
         final FormModelDummyMemoryDaoImpl formService = new FormModelDummyMemoryDaoImpl(formId, firstCategoryId);
         final ApplicationServiceImpl applicationService = new ApplicationServiceImpl(applicationDAO, USER_HOLDER,
-                formService, new ValidationEvent(formService));
+                formService);
         final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(USER_HOLDER);
         this.formController = new FormController(formService, applicationService, userPrefillDataService);
     }
@@ -85,15 +84,9 @@ public class FormControllerTest {
     }
 
     @Test
-    public void testGetCategoryMVForm() throws Exception {
-        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
-        assertEquals(formId, ((Phase) actualModelAndView.getModel().get("element")).getParent().getId());
-    }
-
-    @Test
     public void testGetCategoryModelSize() throws Exception {
         ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
-        assertEquals(3, actualModelAndView.getModel().size());
+        assertEquals(4, actualModelAndView.getModel().size());
     }
 
     @Test
@@ -138,7 +131,7 @@ public class FormControllerTest {
         assertEquals(FormController.VALMIS_VIEW, complete.getViewName());
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void testSendForm() throws Exception {
         ModelAndView modelAndView = formController.sendForm(applicationPeriodId, formId);
         assertEquals(FormController.REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + FormController.VALMIS_VIEW, modelAndView.getViewName());

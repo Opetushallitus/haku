@@ -20,14 +20,15 @@ import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.oppija.lomake.domain.*;
-import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.event.ValidationEvent;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.domain.exception.IllegalStateException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
-import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -47,30 +48,26 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationDAO applicationDAO;
     private final UserHolder userHolder;
     private final FormService formService;
-    private final ValidationEvent validationEvent;
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
                                   final UserHolder userHolder,
-                                  @Qualifier("formServiceImpl") final FormService formService,
-                                  final ValidationEvent validationEvent) {
+                                  @Qualifier("formServiceImpl") final FormService formService) {
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
         this.formService = formService;
-        this.validationEvent = validationEvent;
     }
 
     @Override
-    public ApplicationState tallennaVaihe(ApplicationPhase vaihe) {
-        ApplicationState applicationState = new ApplicationState(new Application(this.userHolder.getUser(), vaihe), vaihe.getVaiheId());
-        //validationEvent.process(hakemusState);
-        Form activeForm = formService.getActiveForm(applicationState.getHakemus().getFormId().getApplicationPeriodId(), applicationState.getHakemus().getFormId().getFormId());
-        ValidationResult validationResult = ElementTreeValidator.validate(activeForm.getCategory(vaihe.getVaiheId()), vaihe.getVastaukset());
-        applicationState.addError(validationResult.getErrorMessages());
-        if (applicationState.isValid()) {
-            this.applicationDAO.tallennaVaihe(applicationState);
+    public ApplicationState tallennaVaihe(ApplicationPhase applicationPhase) {
+        ApplicationState ApplicationState = new ApplicationState(new Application(this.userHolder.getUser(), applicationPhase), applicationPhase.getVaiheId());
+        Form activeForm = formService.getActiveForm(ApplicationState.getHakemus().getFormId().getApplicationPeriodId(), ApplicationState.getHakemus().getFormId().getFormId());
+        ValidationResult validationResult = ElementTreeValidator.validate(activeForm.getCategory(applicationPhase.getVaiheId()), applicationPhase.getVastaukset());
+        ApplicationState.addError(validationResult.getErrorMessages());
+        if (ApplicationState.isValid()) {
+            this.applicationDAO.tallennaVaihe(ApplicationState);
         }
-        return applicationState;
+        return ApplicationState;
     }
 
     @Override
@@ -79,34 +76,33 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void laitaVireille(FormId hakulomakeId) {
-        Application application = applicationDAO.find(hakulomakeId, userHolder.getUser());
-        ApplicationPhase applicationPhase = new ApplicationPhase(hakulomakeId, "valmis", application.getVastauksetMerged());
-        ApplicationState applicationState = new ApplicationState(new Application(this.userHolder.getUser(), applicationPhase), applicationPhase.getVaiheId());
-        validationEvent.process(applicationState);
-        if (applicationState.isValid()) {
-            this.applicationDAO.laitaVireille(hakulomakeId, userHolder.getUser());
+    public void laitaVireille(final FormId formId) {
+        Application application = applicationDAO.find(formId, userHolder.getUser());
+        Form form = formService.getForm(formId.getApplicationPeriodId(), formId.getFormId());
+        ValidationResult validationResult = ElementTreeValidator.validate(form, application.getVastauksetMerged());
+        if (!validationResult.hasErrors()) {
+            this.applicationDAO.laitaVireille(formId, userHolder.getUser());
         } else {
-            throw new IllegalStateException();
+            throw new IllegalStateException("Could not send the application");
         }
     }
 
     @Override
     public List<ApplicationInfo> findAll() {
         List<ApplicationInfo> all = new ArrayList<ApplicationInfo>();
-        final List<Application> hakemusList = applicationDAO.findAll(userHolder.getUser());
-        for (Application hakemus : hakemusList) {
-            final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(hakemus.getFormId().getApplicationPeriodId());
+        final List<Application> listOfApplications = applicationDAO.findAll(userHolder.getUser());
+        for (Application application : listOfApplications) {
+            final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(application.getFormId().getApplicationPeriodId());
             final String id = applicationPeriod.getId();
-            final String formId = hakemus.getFormId().getFormId();
+            final String formId = application.getFormId().getFormId();
             final Form form = formService.getForm(id, formId);
-            all.add(new ApplicationInfo(hakemus, form, applicationPeriod));
+            all.add(new ApplicationInfo(application, form, applicationPeriod));
         }
         return all;
     }
 
     @Override
-    public Application getHakemus(FormId formId) {
+    public Application getHakemus(final FormId formId) {
         return applicationDAO.find(formId, userHolder.getUser());
     }
 }

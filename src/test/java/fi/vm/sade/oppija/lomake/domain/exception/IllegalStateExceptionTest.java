@@ -14,20 +14,19 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain.elements.questions;
+package fi.vm.sade.oppija.lomake.domain.exception;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.junit.Test;
 
-/**
- * @author jukka
- * @version 9/7/122:15 PM}
- * @since 1.1
- */
-public class CheckBox extends OptionQuestion {
+import static org.junit.Assert.assertEquals;
 
-    public CheckBox(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") String title) {
-        super(id, title);
+public class IllegalStateExceptionTest {
+
+    public static final String MESSAGE = "Väärä vaihe";
+
+    @Test
+    public void testMessage() throws Exception {
+        IllegalStateException illegalStateException = new IllegalStateException(MESSAGE);
+        assertEquals(MESSAGE, illegalStateException.getMessage());
     }
-
-
 }

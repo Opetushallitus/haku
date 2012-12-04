@@ -21,7 +21,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.Element;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public abstract class OptionQuestion extends Question {
 
@@ -36,10 +35,10 @@ public abstract class OptionQuestion extends Question {
     }
 
     @Override
-    public void init(Map<String, Element> elements, Element parent) {
-        super.init(elements, parent);
+    public void init() {
+        super.init();
         for (Option option : options) {
-            option.init(elements, this);
+            option.init();
         }
     }
 
@@ -51,6 +50,16 @@ public abstract class OptionQuestion extends Question {
 
     public List<Option> getOptions() {
         return options;
+    }
+
+    @Override
+    public List<Element> getChildren() {
+        List<Element> listOfElements = new ArrayList<Element>();
+        listOfElements.addAll(super.getChildren());
+        for (Option option : options) {
+            listOfElements.addAll(option.getChildren());
+        }
+        return listOfElements;
     }
 }
 

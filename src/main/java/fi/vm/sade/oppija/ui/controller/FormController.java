@@ -18,12 +18,12 @@ package fi.vm.sade.oppija.ui.controller;
 
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
-import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserPrefillDataService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -94,21 +94,22 @@ public class FormController extends ExceptionController {
         }
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{elementId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{applicationPeriodId}/{formIdStr}/{elementId}", method = RequestMethod.GET)
     public ModelAndView getElement(@PathVariable final String applicationPeriodId,
-                                   @PathVariable final String formId,
+                                   @PathVariable final String formIdStr,
                                    @PathVariable final String elementId) {
 
-        LOGGER.debug("getElement {}, {}, {}", new Object[]{applicationPeriodId, formId, elementId});
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        LOGGER.debug("getElement {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, elementId});
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
         Element element = activeForm.getElementById(elementId);
         final ModelAndView modelAndView = new ModelAndView("/elements/" + element.getType());
-        modelAndView.addObject("element", element);
-        final FormId hakuLomakeId = new FormId(applicationPeriodId, activeForm.getId());
-        Map<String, String> values = applicationService.getHakemus(hakuLomakeId).getVastauksetMerged();
+        final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
+        Map<String, String> values = applicationService.getHakemus(formId).getVastauksetMerged();
         values = userPrefillDataService.populateWithPrefillData(values);
         modelAndView.addObject("categoryData", values);
-        return modelAndView.addObject("hakemusId", hakuLomakeId);
+        modelAndView.addObject("element", element);
+        modelAndView.addObject("form", activeForm);
+        return modelAndView.addObject("hakemusId", formId);
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{elementId}/relatedData/{key}", method = RequestMethod.GET,

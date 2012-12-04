@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.lomake.domain.elements;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,7 +36,6 @@ public class Form extends Titled {
     private transient String firstCategoryId;
 
     final transient Map<String, Phase> categories = new HashMap<String, Phase>();
-    final transient Map<String, Element> elements = new HashMap<String, Element>();
 
     public Form(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
@@ -54,13 +54,13 @@ public class Form extends Titled {
     public void init() {
         Phase prev = null;
         for (Element child : children) {
-            child.init(elements, this);
             final Phase child1 = (Phase) child;
             addCategory(child1, prev);
             prev = child1;
             if (firstCategoryId == null) {
                 firstCategoryId = child.getId();
             }
+            child.init();
         }
     }
 
@@ -81,20 +81,24 @@ public class Form extends Titled {
 
     @JsonIgnore
     public Element getElementById(final String elementId) {
-        return elements.get(elementId);
+        Element element = getChildById(this, elementId);
+        if (element == null) {
+            throw new ResourceNotFoundException("Could not find element " + elementId);
+        }
+        return element;
     }
 
-    @JsonIgnore
-    public Phase getVaiheByTeemaId(String teemaId) {
-        for (Phase phase : categories.values()) {
-            if (!phase.isPreview()) {
-                for (Element e : phase.getChildren()) {
-                    if (e.getId().equals(teemaId)) {
-                        return phase;
-                    }
-                }
+    private Element getChildById(final Element element, final String id) {
+        if (element.getId().equals(id)) {
+            return element;
+        }
+        Element tmp = null;
+        for (Element child : element.getChildren()) {
+            tmp = getChildById(child, id);
+            if (tmp != null) {
+                return tmp;
             }
         }
-        return null;
+        return tmp;
     }
 }

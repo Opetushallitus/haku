@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
@@ -26,7 +25,6 @@ import fi.vm.sade.oppija.lomake.validation.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -43,11 +41,6 @@ public class SocialSecurityNumber extends Question {
 
     public SocialSecurityNumber(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
-    }
-
-    @Override
-    public void init(Map<String, Element> elements, Element parent) {
-        super.init(elements, parent);
     }
 
     public TextQuestion getSsn() {

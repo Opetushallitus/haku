@@ -18,7 +18,6 @@
   --%>
 
 <!DOCTYPE html>
-<c:set var="form" value="${element.parent}" scope="request"/>
 <c:set var="vaihe" value="${element}" scope="request"/>
 <html>
 <head>

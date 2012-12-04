@@ -72,7 +72,6 @@ public abstract class Element {
     public static final String ID_DELIMITER = "_";
     protected final String id;
     protected transient String type = this.getClass().getSimpleName();
-    protected transient Element parent;
     protected String help;
 
     protected final transient List<Validator> validators = new ArrayList<Validator>();
@@ -125,13 +124,11 @@ public abstract class Element {
     }
 
 
-    public void init(final Map<String, Element> elements, final Element parent) {
-        this.parent = parent;
-        elements.put(id, this);
-        for (Element child : children) {
-            child.init(elements, this);
-        }
+    public void init() {
         initValidators();
+        for (Element child : children) {
+            child.init();
+        }
     }
 
     @JsonIgnore
@@ -144,11 +141,6 @@ public abstract class Element {
 
         }
         return attrStr.toString();
-    }
-
-    @JsonIgnore
-    public Element getParent() {
-        return parent;
     }
 
     @Override
