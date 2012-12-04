@@ -21,6 +21,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 /**
+ * An option that a user can apply for (hakukohde).
+ *
  * @author Hannu Lyytikainen
  */
 public class ApplicationOption implements Serializable {
