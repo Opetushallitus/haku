@@ -1,0 +1,60 @@
+
+/***  Mixins
+************************************************/
+
+@mixin rounded-corners($radius) {
+    -moz-border-radius: $radius;
+    -webkit-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin box-shadow($horizontal, $vertical, $blur, $spread, $color) {
+    -moz-box-shadow: $horizontal $vertical $blur $spread $color;
+    -webkit-box-shadow: $horizontal $vertical $blur $spread $color;
+    -o-box-shadow: $horizontal $vertical $blur $spread $color;
+    box-shadow: $horizontal $vertical $blur $spread $color;
+}
+
+@mixin no-box-shadow {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    -o-box-shadow: none;
+    box-shadow: none;
+}
+
+@mixin box-shadows-inset($horizontal, $vertical, $blur, $spread, $r, $g, $b, $a) {
+    -moz-box-shadow: $horizontal $vertical $blur $spread rgba($r, $g, $b, $a) inset;
+    -webkit-box-shadow: $horizontal $vertical $blur $spread rgba($r, $g, $b, $a) inset;
+    -o-box-shadow: $horizontal $vertical $blur $spread rgba($r, $g, $b, $a) inset;
+    box-shadow: $horizontal $vertical $blur $spread rgba($r, $g, $b, $a) inset;
+}
+
+@mixin text-shadow($horizontal, $vertical, $blur-radius, $color) {
+    text-shadow: $horizontal $vertical $blur-radius $color;
+}
+
+@mixin no-text-shadow {
+    text-shadow: none;
+}
+
+@mixin transitions($property, $duration) {
+    transition: $property $duration;
+    -moz-transition: $property $duration;
+    -webkit-transition: $property $duration; 
+    -o-transition: $property $duration; 
+}
+
+@mixin font-basics($font-size, $font-weight, $font-color) {
+    font-size: $default-font-size;
+    font-weight: $font-weight;
+    color: $font-color;
+}
+
+@mixin background-gradient-from-top-to-bottom($gradient-style, $from-color, $to-color) { 
+    background: -webkit-gradient($gradient-style, left top, left bottom, from($from-color), to($to-color));
+    background: -webkit-linear-gradient(top, $from-color, $to-color);
+    background: -moz-linear-gradient(top, $from-color, $to-color) ;
+    background: -ms-linear-gradient(top, $from-color, $to-color) ;
+    background: -o-linear-gradient(top, $from-color, $to-color);
+}
