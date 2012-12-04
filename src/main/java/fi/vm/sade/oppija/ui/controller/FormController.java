@@ -17,9 +17,9 @@
 package fi.vm.sade.oppija.ui.controller;
 
 import fi.vm.sade.oppija.ExceptionController;
-import fi.vm.sade.oppija.lomake.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPhase;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;

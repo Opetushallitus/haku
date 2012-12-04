@@ -16,9 +16,9 @@
 
 package fi.vm.sade.oppija.hakemus.service;
 
-import fi.vm.sade.oppija.lomake.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.ApplicationInfo;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPhase;
+import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 

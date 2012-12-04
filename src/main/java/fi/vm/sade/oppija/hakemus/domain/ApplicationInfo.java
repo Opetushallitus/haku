@@ -14,8 +14,11 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain;
+package fi.vm.sade.oppija.hakemus.domain;
 
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.Preference;
+import fi.vm.sade.oppija.lomake.domain.PreferenceHelper;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 
 import java.util.List;

@@ -14,11 +14,12 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain;
+package fi.vm.sade.oppija.hakemus.domain;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fi.vm.sade.oppija.lomake.domain.*;
 
 import java.io.Serializable;
 import java.util.HashMap;

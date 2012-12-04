@@ -25,7 +25,7 @@ import fi.vm.sade.oppija.hakemus.converter.DBObjectToHakemusConverter;
 import fi.vm.sade.oppija.hakemus.converter.HakemusToBasicDBObjectConverter;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.lomake.dao.impl.AbstractDAOMongoImpl;
-import fi.vm.sade.oppija.lomake.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;

@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.event;
 
-import fi.vm.sade.oppija.lomake.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.FormValidator;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;

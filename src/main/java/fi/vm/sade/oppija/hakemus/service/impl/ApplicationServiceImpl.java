@@ -17,6 +17,9 @@
 package fi.vm.sade.oppija.hakemus.service.impl;
 
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
+import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.*;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.event.ValidationEvent;

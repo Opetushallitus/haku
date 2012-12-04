@@ -16,6 +16,9 @@
 
 package fi.vm.sade.oppija.hakemus.controller;
 
+import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.*;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;

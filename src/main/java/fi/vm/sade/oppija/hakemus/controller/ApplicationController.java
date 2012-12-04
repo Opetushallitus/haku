@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.hakemus.controller;
 
 import fi.vm.sade.oppija.ExceptionController;
-import fi.vm.sade.oppija.lomake.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

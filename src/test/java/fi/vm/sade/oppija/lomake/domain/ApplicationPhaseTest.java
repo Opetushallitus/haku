@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
+import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import org.junit.Test;
 
 import java.util.HashMap;

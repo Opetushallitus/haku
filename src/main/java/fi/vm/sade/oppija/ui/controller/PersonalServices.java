@@ -1,6 +1,6 @@
 package fi.vm.sade.oppija.ui.controller;
 
-import fi.vm.sade.oppija.lomake.domain.ApplicationInfo;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;

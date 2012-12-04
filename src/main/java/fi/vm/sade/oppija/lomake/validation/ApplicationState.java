@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.lomake.validation;
 
 
-import fi.vm.sade.oppija.lomake.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.Application;
 
 import java.util.HashMap;
 import java.util.Map;

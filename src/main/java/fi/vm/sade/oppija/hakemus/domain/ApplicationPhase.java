@@ -14,7 +14,9 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain;
+package fi.vm.sade.oppija.hakemus.domain;
+
+import fi.vm.sade.oppija.lomake.domain.FormId;
 
 import java.util.HashMap;
 import java.util.Map;
