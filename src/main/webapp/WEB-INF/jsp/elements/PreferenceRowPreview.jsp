@@ -31,11 +31,3 @@
     <td class="sublabel"><c:out value="${element.educationLabel}"/></td>
     <td><c:out value="${categoryData[selectInputId]}"/></td>
 </tr>
-<script type="text/javascript">
-    if ("${hakukohdeId}") {
-        var url = "${pageContext.request.contextPath}/education/additionalquestion/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${vaihe.id}/${parent.id}/${hakukohdeId}?preview=true";
-        $.get(url, function(data) {
-            $("#${element.id}-Koulutus").after(data);
-        });
-    }
-</script>

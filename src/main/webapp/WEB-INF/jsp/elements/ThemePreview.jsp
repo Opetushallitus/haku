@@ -41,7 +41,7 @@
     </c:forEach>
     <table class="form-summary-table">
         <tbody>
-        <haku:viewChilds element="${element}"/>
+            <haku:viewChilds element="${element}"/>
         </tbody>
     </table>
 </fieldset>
