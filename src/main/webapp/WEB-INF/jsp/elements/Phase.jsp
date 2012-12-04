@@ -47,8 +47,7 @@
                     <c:forEach var="link" items="${form.navigation.children}" varStatus="status">
                         <li><a id="nav-${link.id}" ${link.attributeString}
                                <c:if test="${link.id eq vaihe.id}">class="current"</c:if>>
-                            <span class="index">${status.count}</span>${link.value} <c:if
-                                test="${not status.last}">&gt;</c:if></a></li>
+                            <span class="index">${status.count}</span>${link.value}&nbsp;&gt;</a></li>
                     </c:forEach>
                     <li><span><span class="index"><c:out value="${fn:length(form.navigation.children) + 1}"/></span>Valmis</span>
                     </li>

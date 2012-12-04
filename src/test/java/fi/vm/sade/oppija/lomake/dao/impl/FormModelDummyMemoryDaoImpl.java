@@ -358,7 +358,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     private void createTyokokemus(Theme tyokokemus) {
         tyokokemus.setHelp("Työkokemukseksi lasketaan työ, josta sinulla on työtodistus. Työhön rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vähintään kolmen kuukauden pituinen työpajatoimintaan osallistuminen tai työharjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa työtodistukset ennen lopullista valintaa.");
-        TextQuestion tyokokemuskuukaudet = new TextQuestion("tyokokemuskuukaudet", "Työkokemus");
+        TextQuestion tyokokemuskuukaudet = new TextQuestion("tyokokemuskuukaudet", "Työkokemus kuukausina");
         tyokokemuskuukaudet.setHelp("Merkitse kenttään hakuajan päättymiseen mennessä kertynyt työkokemuksesi. Voit käyttää laskemiseen apuna laskuria.");
         tyokokemuskuukaudet.addAttribute("placeholder", "kuukautta");
         tyokokemuskuukaudet.addAttribute("pattern", "[0-9]*");
@@ -376,9 +376,9 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         lupa.addOption("lupa5", "lupa5", "Minulle saa lähettää tietoa opiskelijavalinnan etenemisestä ja tuloksista tekstiviestillä");
         lupa.setVerboseHelp(getVerboseHelp());
 
-        Radio asiointikieli = new Radio("asiointikieli", "Asiointikieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviä tietoja");
+        Radio asiointikieli = new Radio("asiointikieli", "Asiointikieli");
         asiointikieli.addOption("suomi", "suomi", "suomi");
-        asiointikieli.addOption("ruotsi", "ruotsi", "ruotsi");
+        asiointikieli.addOption("ruotsi", "ruotsi", "ruotsi", "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviä tietoja");
         asiointikieli.addAttribute("required", "required");
         asiointikieli.setVerboseHelp(getVerboseHelp());
 
