@@ -265,7 +265,7 @@ $(document).ready(function(){
 	var popup = {
 		build: function(){
 			/* All popups should be declared here */
-			popup.setTrigger("#login-popup","#open-login-popup",".close-login-popup");
+			popup.setTrigger("#login-popup",".open-login-popup",".close-login-popup");
 			popup.setTrigger("#add-rule-popup", "#add-rule",".close-login-popup");
 		},
 		/* 	
@@ -277,7 +277,6 @@ $(document).ready(function(){
 			//clicking overlay-div hides all popups by default
 			var overlay = $('#overlay');
 			var jElement = $(element);
-
 
 			
 			jElement.center();
