@@ -18,8 +18,7 @@ package fi.vm.sade.oppija.lomake.domain;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 /**
  * @author jukka
@@ -36,6 +35,11 @@ public class FormIdTest {
     @Test
     public void testHakemusIdEquals() {
         assertEquals(FORM_ID_1, FORM_ID_2);
+    }
+
+    @Test
+    public void testEqualsHashCode() {
+        assertTrue(FORM_ID_1.hashCode() == FORM_ID_2.hashCode());
     }
 
     @Test
@@ -57,4 +61,10 @@ public class FormIdTest {
     public void testNullHakuIdAndLomakeId() {
         new FormId(null, null);
     }
+
+    @Test
+    public void testEqualsClass() {
+        assertFalse(FORM_ID_1.equals(new Object()));
+    }
+
 }

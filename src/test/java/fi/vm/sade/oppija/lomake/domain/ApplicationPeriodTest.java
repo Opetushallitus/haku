@@ -14,18 +14,13 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.service.impl;
+package fi.vm.sade.oppija.lomake.domain;
 
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import org.junit.Test;
 
-public class FormServiceImplTest {
-
-    @Test(expected = ResourceNotFoundException.class)
-    public void testGetFirstCategoryNotFound() throws Exception {
-        FormModelHolder holder = new FormModelHolder();
-        FormServiceImpl formService = new FormServiceImpl(holder);
-        formService.getFirstCategory(null, null);
+public class ApplicationPeriodTest {
+    @Test
+    public void testIsActive() throws Exception {
+        //To change body of created methods use File | Settings | File Templates.
     }
 }

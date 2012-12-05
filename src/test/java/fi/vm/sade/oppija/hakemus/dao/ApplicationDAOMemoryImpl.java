@@ -80,6 +80,10 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
         return "1";
     }
 
+    public String getNewOid() {
+        return "" + System.currentTimeMillis();
+    }
+
     @Override
     public ApplicationState tallennaVaihe(final ApplicationState state) {
         Application application = find(state.getHakemus().getFormId(), state.getHakemus().getUser());
