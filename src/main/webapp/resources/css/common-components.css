@@ -405,8 +405,6 @@ a.btn-remove.disabled {
 /*** Search field
 **************************************************************/
 #searchfield-wrapper {
-    
-    width: 100%;
     margin-bottom: 15px;
 	background: url("../img/texture-angled-lines.gif") repeat scroll left top transparent;
 	box-shadow:inset 0px 0px 2px 0px #c4c4c4;
@@ -758,3 +756,35 @@ ul.unstyled li
     display: none;
 }
 
+/***  Help link
+************************/
+
+.helplink {
+    display: block;
+    width: 20px;
+    height: 21px;
+    color: transparent;
+    background-image: url('../img/help-icon-sprite_idle-hover-selected-disabled.png');
+    background-position: 0px center;
+    background-repeat: no-repeat;
+}
+
+.helplink:hover {
+    background-position: -20px center;
+}
+
+.helplink:active, .helplink:focus {
+    background-position: -40px center;
+}
+
+.helplink:disabled, .helplink.disabled {
+    background-position: -60px center;
+}
+
+
+/***  Linklist
+************************/
+
+.linklist > span {
+    color: #149DCA;
+}

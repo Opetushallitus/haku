@@ -56,6 +56,14 @@ h4, .h4
 	color:#149ecb;
 }
 
+h5, .h5 {
+	font-size: 1em;
+	font-weight: normal;
+	line-height: 1.3em;
+	text-transform: uppercase;
+	color: #000;
+}
+
 b, strong, .bold 
 { 
 	font-weight: bold; 

@@ -352,32 +352,7 @@ button.link span span {
     background: none;
 }
 
-/***  Help link
-************************/
 
-.helplink {
-    float: right;
-    display: block;
-    width: 20px;
-    height: 21px;
-
-    color: transparent;
-    background-image: url('../img/help-icon-sprite_idle-hover-selected-disabled.png');
-    background-position: 0px center;
-    background-repeat: no-repeat;
-}
-
-.helplink:hover {
-    background-position: -20px center;
-}
-
-.helplink:active, .helplink:focus {
-    background-position: -40px center;
-}
-
-.helplink:disabled, .helplink.disabled {
-    background-position: -60px center;
-}
 
 /***  Label
 **********************************/
@@ -532,31 +507,6 @@ select option {
 .field-container-text input[type="text"] {
 
 }
-
-/*** Input(radio), Input(checkbox)
-**********************************/
-/*
-.field-container-radio,
-.field-container-checkbox {
-    padding: 0px 0px 0px 2em;
-    position: relative;
-    overflow: hidden;
-}
-
-.field-container-radio input[type="radio"],
-.field-container-checkbox input[type="checkbox"] {
-    position: absolute;
-    top: 0.2em;
-    left: 0px;
-}
-
-.field-container-radio .js-radio,
-.field-container-checkbox .js-checkbox {
-    position: absolute;
-    top: 0.1em;
-    left: 0px;
-}
-*/
 
 /*** Form row structure
 ************************************************/
