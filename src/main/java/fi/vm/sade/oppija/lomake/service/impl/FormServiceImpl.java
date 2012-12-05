@@ -18,8 +18,8 @@ package fi.vm.sade.oppija.lomake.service.impl;
 
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
@@ -85,33 +85,45 @@ public class FormServiceImpl implements FormService {
         return model.getApplicationPerioidMap();
     }
 
-    public List<Validator> getVaiheValidators(final FormId formId, final String vaiheId) {
-        final Phase phase = getActiveForm(formId.getApplicationPeriodId(), formId.getFormId()).getCategory(vaiheId);
-        return phase.getValidators();
-    }
-
     @Override
     public List<Validator> getVaiheValidators(ApplicationState applicationState) {
         final FormId formId = applicationState.getHakemus().getFormId();
         if (!applicationState.isFinalStage()) {
-            return getVaiheValidators(formId, applicationState.getVaiheId());
+            return getPhaseValidators(formId, applicationState.getVaiheId());
         } else {
             return getAllValidators(formId);
         }
     }
 
-    public List<Validator> getAllValidators(final FormId formId) {
+    @Override
+    public ApplicationPeriod getApplicationPeriodById(String applicationPeriodId) {
+        ApplicationPeriod applicationPeriodById = getModel().getApplicationPeriodById(applicationPeriodId);
+        if (applicationPeriodById == null) {
+            throw new ResourceNotFoundException("Application period " + applicationPeriodId + " not found");
+        }
+        return applicationPeriodById;
+    }
+
+    private List<Validator> getPhaseValidators(final FormId formId, final String phaseId) {
+        final Phase phase = getPhaseById(formId, phaseId);
+        return phase.getValidators();
+    }
+
+    private Phase getPhaseById(FormId formId, String phaseId) {
+        Phase phase = getActiveForm(formId.getApplicationPeriodId(), formId.getFormId()).getCategory(phaseId);
+        if (phase == null) {
+            throw new ResourceNotFoundException("Phase '" + phaseId + "' Not found");
+        }
+        return phase;
+    }
+
+    private List<Validator> getAllValidators(final FormId formId) {
         final ArrayList<Validator> validators = new ArrayList<Validator>();
         final Form activeForm = getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
         for (Phase phase : activeForm.getCategories()) {
             validators.addAll(phase.getValidators());
         }
         return validators;
-    }
-
-    @Override
-    public ApplicationPeriod getApplicationPeriodById(String applicationPeriodId) {
-        return getModel().getApplicationPeriodById(applicationPeriodId);
     }
 
 }
