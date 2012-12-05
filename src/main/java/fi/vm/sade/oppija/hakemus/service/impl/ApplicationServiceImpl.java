@@ -60,14 +60,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationState tallennaVaihe(ApplicationPhase applicationPhase) {
-        ApplicationState ApplicationState = new ApplicationState(new Application(this.userHolder.getUser(), applicationPhase), applicationPhase.getVaiheId());
-        Form activeForm = formService.getActiveForm(ApplicationState.getHakemus().getFormId().getApplicationPeriodId(), ApplicationState.getHakemus().getFormId().getFormId());
+        ApplicationState applicationState = new ApplicationState(new Application(this.userHolder.getUser(), applicationPhase), applicationPhase.getVaiheId());
+        Form activeForm = formService.getActiveForm(applicationState.getHakemus().getFormId().getApplicationPeriodId(), applicationState.getHakemus().getFormId().getFormId());
         ValidationResult validationResult = ElementTreeValidator.validate(activeForm.getCategory(applicationPhase.getVaiheId()), applicationPhase.getVastaukset());
-        ApplicationState.addError(validationResult.getErrorMessages());
-        if (ApplicationState.isValid()) {
-            this.applicationDAO.tallennaVaihe(ApplicationState);
+        applicationState.addError(validationResult.getErrorMessages());
+        if (applicationState.isValid()) {
+            this.applicationDAO.tallennaVaihe(applicationState);
         }
-        return ApplicationState;
+        return applicationState;
     }
 
     @Override

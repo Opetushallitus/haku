@@ -34,4 +34,8 @@ public class AnonymousUser extends User {
         super(UUID.randomUUID().toString());
     }
 
+    @Override
+    public boolean isKnown() {
+        return false;
+    }
 }

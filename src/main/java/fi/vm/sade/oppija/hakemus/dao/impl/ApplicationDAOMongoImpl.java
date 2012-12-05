@@ -24,8 +24,8 @@ import com.mongodb.DBObject;
 import fi.vm.sade.oppija.hakemus.converter.DBObjectToHakemusConverter;
 import fi.vm.sade.oppija.hakemus.converter.HakemusToBasicDBObjectConverter;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
-import fi.vm.sade.oppija.lomake.dao.impl.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.lomake.dao.impl.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
@@ -127,11 +127,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements App
     public String laitaVireille(final FormId hakulomakeId, final User user) {
         Application application = new Application(hakulomakeId, user);
         final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(application);
-        String oid = OID_PREFIX + getNextId();
+        String oid = getNewOid();
         DBObject update = new BasicDBObject("$set", new BasicDBObject(Application.OID, oid));
-        //update.put(Hakemus.VAIHE_ID, "valmis");
+        if (!user.isKnown()) {
+            update.put("$unset", new BasicDBObject("user", 1));
+        }
         getCollection().update(query, update);
         return oid;
+    }
+
+    public String getNewOid() {
+        return OID_PREFIX + getNextId();
     }
 
     @Override

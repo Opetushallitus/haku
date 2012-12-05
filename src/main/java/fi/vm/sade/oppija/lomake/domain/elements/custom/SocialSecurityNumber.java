@@ -41,6 +41,8 @@ public class SocialSecurityNumber extends Question {
 
     public SocialSecurityNumber(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
+        this.ssn = null;
+        this.sex = null;
     }
 
     public TextQuestion getSsn() {

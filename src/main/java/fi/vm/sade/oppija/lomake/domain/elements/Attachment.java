@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 /**
  * @author jukka
@@ -26,20 +25,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
  */
 public class Attachment extends Titled {
 
-    CommonsMultipartFile fileData;
-
     public Attachment(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
         addAttribute("name", id);
 
     }
-
-    public CommonsMultipartFile getFileData() {
-        return fileData;
-    }
-
-    public void setFileData(CommonsMultipartFile fileData) {
-        this.fileData = fileData;
-    }
-
 }
