@@ -80,8 +80,8 @@ public class IndexerServiceImpl implements IndexService {
 
     @Override
     public boolean generate() {
+        Collection<SolrInputDocument> documents = DummyDataGenerator.generate();
         try {
-            Collection<SolrInputDocument> documents = DummyDataGenerator.generate();
             httpSolrServer.add(documents);
             httpSolrServer.commit();
         } catch (Exception e) {
