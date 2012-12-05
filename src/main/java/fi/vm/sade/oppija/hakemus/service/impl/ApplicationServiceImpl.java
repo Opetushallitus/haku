@@ -24,6 +24,7 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.IllegalStateException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
@@ -36,6 +37,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jukka
@@ -60,9 +62,15 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationState tallennaVaihe(ApplicationPhase applicationPhase) {
-        ApplicationState applicationState = new ApplicationState(new Application(this.userHolder.getUser(), applicationPhase), applicationPhase.getVaiheId());
-        Form activeForm = formService.getActiveForm(applicationState.getHakemus().getFormId().getApplicationPeriodId(), applicationState.getHakemus().getFormId().getFormId());
-        ValidationResult validationResult = ElementTreeValidator.validate(activeForm.getCategory(applicationPhase.getVaiheId()), applicationPhase.getVastaukset());
+        final Application application = new Application(this.userHolder.getUser(), applicationPhase);
+        final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getVaiheId());
+        final String applicationPeriodId = applicationState.getHakemus().getFormId().getApplicationPeriodId();
+        final String formId = applicationState.getHakemus().getFormId().getFormId();
+        final Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        final Phase phase = activeForm.getCategory(applicationPhase.getVaiheId());
+        final Map<String, String> vastaukset = applicationPhase.getVastaukset();
+
+        ValidationResult validationResult = ElementTreeValidator.validate(phase, vastaukset);
         applicationState.addError(validationResult.getErrorMessages());
         if (applicationState.isValid()) {
             this.applicationDAO.tallennaVaihe(applicationState);
