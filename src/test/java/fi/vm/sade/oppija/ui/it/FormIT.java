@@ -21,7 +21,8 @@ import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.*;
+import static net.sourceforge.jwebunit.junit.JWebUnit.assertLinkPresent;
+import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 
 /**
  * @author Hannu Lyytikainen
@@ -49,7 +50,6 @@ public class FormIT extends AbstractRemoteTest {
     @Test
     public void testCategory() throws Exception {
         beginAt("/lomake/Yhteishaku/yhteishaku/henkilotiedot");
-        dumpHtml();
         assertLinkPresent("nav-henkilotiedot");
         assertLinkPresent("nav-koulutustausta");
     }

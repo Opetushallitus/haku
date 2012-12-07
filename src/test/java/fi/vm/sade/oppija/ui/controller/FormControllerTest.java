@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.service.impl.UserPrefillDataServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.junit.Assert.assertEquals;
@@ -136,5 +137,11 @@ public class FormControllerTest {
         ModelAndView modelAndView = formController.sendForm(applicationPeriodId, formId);
         assertEquals(FormController.REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + FormController.VALMIS_VIEW, modelAndView.getViewName());
 
+    }
+
+    @Test
+    public void testsaveCategory() throws Exception {
+        ModelAndView modelAndView = formController.saveCategory(applicationPeriodId, formId, firstCategoryId, new LinkedMultiValueMap<String, String>());
+        assertEquals(FormController.DEFAULT_VIEW, modelAndView.getViewName());
     }
 }
