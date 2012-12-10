@@ -19,7 +19,7 @@
     <c:forEach var="item" items="${searchResult.items}">
         <ul class="result set-left" style="display: inline-block; margin-right: 20px">
             <li><a href="tarjontatiedot/${item['AOId']}"
-                   class="form-row-link bold">${item['AOTitle']}; ${item['LOSDegreeTitle']}</a></li>
+                   class="form-row-link bold">${item['AOTitle']}</a></li>
             <c:forEach var="key" items="${item['LOIIndexes']}">
                 <c:set var="loi" value="${item[key]}"/>
 
