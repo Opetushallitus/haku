@@ -78,7 +78,8 @@
 
             <field name="tmpLomakeId">yhteishaku</field>
 
-            <xsl:apply-templates select="/types:LearningOpportunityDownloadData/types:ApplicationSystem"/>
+            <xsl:variable name="asRef" select="types:ApplicationSystemRef/types:OidRef"/>
+            <xsl:apply-templates select="/types:LearningOpportunityDownloadData/types:ApplicationSystem[@id=$asRef]"/>
         </doc>
     </xsl:template>
 
@@ -269,7 +270,7 @@
     <!-- start AS -->
     <xsl:template match="/types:LearningOpportunityDownloadData/types:ApplicationSystem">
         <field name="ASId">
-            <xsl:value-of select="fn:tokenize(@id, '/')[last()]"/>
+            <xsl:value-of select="@id"/>
         </field>
         <field name="ASName">
             <xsl:value-of select="types:Name/types:Text"/>
