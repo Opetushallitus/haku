@@ -221,9 +221,8 @@
             <xsl:value-of select="./types:Description/types:EducationAndProfessionalGoals"/>
         </field>
         -->
-        <!-- TODO: set proper qualification name once it is available-->
         <field name="LOSQualification">
-            <xsl:value-of select="./types:Qualification/types:Code"/>
+            <xsl:value-of select="./types:Qualification/types:Title"/>
         </field>
 
         <xsl:apply-templates select="//types:LearningOpportunitySpecification/types:Classification"/>
