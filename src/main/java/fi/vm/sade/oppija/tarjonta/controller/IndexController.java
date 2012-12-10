@@ -32,8 +32,8 @@ import java.net.URISyntaxException;
 @Secured("ROLE_ADMIN")
 public class IndexController {
 
-    @Value("${tarjonta.data.url}")
-    String tarjontaUrl;
+    //@Value("${tarjonta.data.url}")
+    String tarjontaUrl = "http://test-oppija.oph.ware.fi/tarjontadev/learningDownloadPOC.xml";
 
     @Autowired
     IndexService indexService;
