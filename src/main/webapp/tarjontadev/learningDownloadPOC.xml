@@ -858,10 +858,9 @@
     <!-- Haku:                                                                                     -->
     <!-- ========================================================================================= -->
 
-    <ApplicationSystem>
-        <Name>
-            <Text xml:lang="fi">Yhteishaku</Text>
-        </Name>
+    <ApplicationSystem id="1.2.3.4.5">
+        <Identifier>1.2.3.4.5</Identifier>
+        <Name lang="fi">Yhteishaku</Name>
     </ApplicationSystem>
 
 
