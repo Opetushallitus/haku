@@ -273,7 +273,7 @@
             <xsl:value-of select="@id"/>
         </field>
         <field name="ASName">
-            <xsl:value-of select="types:Name/types:Text"/>
+            <xsl:value-of select="types:Name"/>
         </field>
     </xsl:template>
     <!-- end of AS -->
