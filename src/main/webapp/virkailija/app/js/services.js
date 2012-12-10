@@ -3,7 +3,9 @@
 /* Services */
 
 
-// Demonstrate how to register services
-// In this case it is a simple value service.
-angular.module('virkailija.services', []).
-  value('version', '0.1');
+angular.module('virkailija.services', ['ngResource']).
+    factory('Application', function($resource){
+        return $resource('hakemukset/hakemukset.json', {}, {
+            query: {method:'GET', params:{}, isArray:true}
+        });
+    });

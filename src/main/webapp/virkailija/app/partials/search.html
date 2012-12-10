@@ -35,7 +35,7 @@
 
         </nav>
         <section id="searchSection">
-            <form id="searchform" method="get">
+            <form id="searchform" ng-submit="search()">
                 <div class="grid16-6">
                     <div class="form-item margin-top-2">
                         <div class="form-item-content">
@@ -79,8 +79,8 @@
                                 <label for="discretionary">Hae vain harkinnanvaraisesti hakeneet</label>
                             </div>
                         </div>
-                        <a href="#" class="button secondary">Tyhjennä</a>
-                        <a href="#" class="button primary">Hae</a>
+                        <input class="button secondary" type="button" value="Tyhjennä" ng-click="reset()">
+                        <input class="button primary" type="submit" value="Hae">
                     </div>
                 </div>
                 <div class="grid16-5">
@@ -117,7 +117,7 @@
         <section class="grid16-16 margin-top-2">
             <div class="tabs">
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemukset"
-                   class="tab current"><span>Hakemukset (113)</span></a>
+                   class="tab current"><span>Hakemukset ({{applications.length}})</span></a>
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakutoiveet" class="tab"><span>Hakutoiveet</span></a>
             </div>
 
@@ -134,11 +134,11 @@
 
 
                 <div class="grid16-8">
-                    <span>Hakutulos: 113 osumaa</span>
+                    <span>Hakutulos: {{applications.length}} osumaa</span>
 
                     <div class="field-container-checkbox margin-top-1">
                         <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
-                        <label for="KenttaId">Kentän otsikko</label>
+                        <label for="KenttaId">valitse kaikki</label>
                     </div>
                 </div>
 
@@ -173,126 +173,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Aaltonen</td>
-                        <td>Aino</td>
-                        <td>010197-123A</td>
-                        <td>12345</td>
-                        <td>Valmis</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Angeria</td>
-                        <td>Hanna-Maria</td>
-                        <td>010197-123A</td>
-                        <td>72642</td>
-                        <td>Valmis</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Asikainen</td>
-                        <td>Esa</td>
-                        <td>010197-123A</td>
-                        <td>72253</td>
-                        <td>Passivoitu</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Eerikäinen</td>
-                        <td>Matti</td>
-                        <td>010197-123A</td>
-                        <td>71342</td>
-                        <td>Ei hakemusta (perustiedot siirretty)</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Eskelinen</td>
-                        <td>Leena</td>
-                        <td>010197-123A</td>
-                        <td>72652</td>
-                        <td>Ehdollisesti valmis</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Aaltonen</td>
-                        <td>Aino</td>
-                        <td>010197-123A</td>
-                        <td>12345</td>
-                        <td>Valmis</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Angeria</td>
-                        <td>Hanna-Maria</td>
-                        <td>010197-123A</td>
-                        <td>72642</td>
-                        <td>Valmis</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Asikainen</td>
-                        <td>Esa</td>
-                        <td>010197-123A</td>
-                        <td>72253</td>
-                        <td>Passivoitu</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Eerikäinen</td>
-                        <td>Matti</td>
-                        <td>010197-123A</td>
-                        <td>71342</td>
-                        <td>Ei hakemusta (perustiedot siirretty)</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Eskelinen</td>
-                        <td>Leena</td>
-                        <td>010197-123A</td>
-                        <td>72652</td>
-                        <td>Ehdollisesti valmis</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Aaltonen</td>
-                        <td>Aino</td>
-                        <td>010197-123A</td>
-                        <td>12345</td>
-                        <td>Valmis</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Angeria</td>
-                        <td>Hanna-Maria</td>
-                        <td>010197-123A</td>
-                        <td>72642</td>
-                        <td>Valmis</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Asikainen</td>
-                        <td>Esa</td>
-                        <td>010197-123A</td>
-                        <td>72253</td>
-                        <td>Passivoitu</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Eerikäinen</td>
-                        <td>Matti</td>
-                        <td>010197-123A</td>
-                        <td>71342</td>
-                        <td>Ei hakemusta (perustiedot siirretty)</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>Eskelinen</td>
-                        <td>Leena</td>
-                        <td>010197-123A</td>
-                        <td>72652</td>
-                        <td>Ehdollisesti valmis</td>
-                    </tr>
+                        <tr ng-repeat="application in applications">
+                            <td><input type="checkbox" /></td>
+                            <td>{{application.vastaukset.henkilotiedot.Sukunimi}}</td>
+                            <td>{{application.vastaukset.henkilotiedot.Etunimet}}</td>
+                            <td>{{application.vastaukset.henkilotiedot.Henkilotunnus}}</td>
+                            <td>{{application.oid}}</td>
+                            <td>{{application.state}}</td>
+                        </tr>
                     </tbody>
                 </table>
 
