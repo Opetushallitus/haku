@@ -24,10 +24,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author jukka
@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @since 1.1
  */
 @Controller
-@RequestMapping(value = "/hakemus", method = RequestMethod.GET)
+@RequestMapping(value = "/hakemukset", method = RequestMethod.GET)
 @Secured("ROLE_OFFICER")
 public class ApplicationController extends ExceptionController {
 
@@ -44,9 +44,22 @@ public class ApplicationController extends ExceptionController {
     @Autowired
     ApplicationService applicationService;
 
-    @RequestMapping(value = "/{oid:.+}", method = {RequestMethod.GET})
+    @RequestMapping(method = {RequestMethod.GET})
     @ResponseBody
-    public Application getHakemus(@PathVariable String oid) {
+    public List<Application> searchApplications(@RequestParam("term") String term) {
+        List<Application> result = new ArrayList<Application>();
+        if (term != null && !term.isEmpty()) {
+            Application app = applicationService.getHakemus(term);
+            if (app != null) {
+                result.add(app);
+            }
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "hakemus/{oid:.+}", method = {RequestMethod.GET})
+    @ResponseBody
+    public Application getApplication(@PathVariable String oid) {
         LOGGER.debug("oid {}", oid);
         return applicationService.getHakemus(oid);
     }

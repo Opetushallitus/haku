@@ -73,7 +73,7 @@ public class HakemusControllerTest {
 
     @Test
     public void testGetHakemus() throws Exception {
-        Application application = hakemusController.getHakemus(OID);
+        Application application = hakemusController.getApplication(OID);
         assertEquals(APPLICATION.getFormId(), application.getFormId());
     }
 }
