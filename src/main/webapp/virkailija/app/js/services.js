@@ -5,7 +5,7 @@
 
 angular.module('virkailija.services', ['ngResource']).
     factory('Application', function($resource){
-        return $resource('hakemukset/hakemukset.json', {}, {
-            query: {method:'GET', params:{}, isArray:true}
+        return $resource('/haku/hakemukset', {}, {
+            query: {method:'GET', isArray:true}
         });
     });

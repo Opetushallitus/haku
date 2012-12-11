@@ -39,7 +39,7 @@
                 <div class="grid16-6">
                     <div class="form-item margin-top-2">
                         <div class="form-item-content">
-                            <input type="text" id="entry" class="search" placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero"/>
+                            <input type="text" id="entry" class="search" placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero" ng-model="term"/>
                         </div>
 
                         <label for="search-selection">Haku:</label>
@@ -95,12 +95,11 @@
                                 </div>
                             </div>
                             <div class="form-item">
-                                <label class="form-item-label" for="hakukausi">Hakukausi</label>
+                                <label class="form-item-label" for="paattoluokka">Päättöluokka</label>
 
                                 <div class="form-item-content">
-                                    <select id="hakukausi">
-                                        <option value="syksy">Syksy</option>
-                                        <option value="kevat">Kevät</option>
+                                    <select id="paattoluokka">
+                                        <option value="all">kaikki</option>
                                     </select>
                                 </div>
                             </div>
