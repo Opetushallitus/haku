@@ -498,6 +498,18 @@ ul.unstyled li
 }
 
 
+/*** Table 
+************************************************/
+table {
+    border-collapse: normal;
+}
+
+table tr td {
+    line-height: 1.5em;
+    vertical-align: middle;
+    border-right: 10px solid transparent;
+}
+
 /*** Virkailija-table-1 
 ************************************************/
 
@@ -546,9 +558,6 @@ ul.unstyled li
 }
 
 .virkailija-table-1 thead td {
-    border-top: 1px solid #ececec;
-    border-left: 1px solid #ececec;
-    border-right: 1px solid #ececec;
     border-bottom: 1px solid #c2c2c2;
 }
 

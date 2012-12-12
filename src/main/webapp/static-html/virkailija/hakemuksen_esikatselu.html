@@ -84,20 +84,20 @@
 
                     <div class="tabs">
                         <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemus"
-                           class="tab current"><span>Hakemus</span></a>
-                        <a href="#" data-tabs-group="applicationtabs" data-tabs-id="lisatiedot" class="tab"><span>Kelpoisuus ja liitteet</span></a>
+                           class="tab"><span>Hakemus</span></a>
+                        <a href="#" data-tabs-group="applicationtabs" data-tabs-id="lisatiedot" class="tab current"><span>Kelpoisuus ja liitteet</span></a>
                     </div>
 
                     <div class="tabsheets">
 
-                        <section id="hakemus" style="display: block" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus"> 
+                        <section id="hakemus" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus"> 
                            
                             <h3>Valtteri Vilenius</h3>  
                             
                             <table class="width-50 margin-top-2">
                                 <tr>
                                     <td><span class="bold">Hakemusnumero: </span>124376</td>
-                                    <td><span class="bold">Hakemuksen tila: </span>Aktiivinen</p></td>
+                                    <td><span class="bold">Hakemuksen tila: </span>Aktiivinen</td>
                                 </tr>
                                 <tr>
                                     <td><span class="bold">Henkilötunnus: </span>364728-387X</td>
@@ -280,7 +280,7 @@
 
                             </div>
                             <hr />
-                            <div id="application-change-history">
+                            <div id="change-history">
                                 <table class="width-75">
                                     <tr>
                                         <td>12.7.2009</td>
@@ -319,7 +319,61 @@
                             <div class="clear"></div>
                         </section>
 
-                        <section id="lisatiedot" style="display: block" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="lisatiedot"></section>
+                        <section id="lisatiedot" style="display:block" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="lisatiedot">
+                            <h3>Valtteri Vilenius</h3>  
+                            
+                            <table class="width-50 margin-top-2">
+                                <tr>
+                                    <td><span class="bold">Hakemusnumero: </span>124376</td>
+                                    <td><span class="bold">Hakemuksen tila: </span>Aktiivinen</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="bold">Henkilötunnus: </span>364728-387X</td>
+                                    <td><span class="bold">Oppijanumero: </span>8236528</td>
+                                </tr>
+                            
+                            </table>
+                            <hr />
+
+                            <div class="margin-horizontal-1">
+                                <a href="#" class="button small float-right">Tallenna</a>
+                                <h3>1. hakutoive: Ehdollisesti valmis (odottaa liitettä) </h3>
+                            </div>
+
+                            <div class="grid16-8 offset-left-16-4 offset-right-16-4">
+                                <h4>Sosiaali- ja terveysalan perustutkinto, yo</h4>
+                                <a href="#">Valintaperustekuvaus</a>
+                                <table class="width-100">
+                                    <tr>
+                                        <td><input id="validity1" type="checkbox" checked="true"><label class="padding-left-2" for="validity1">Korkeakoulukelpoisuus</label></td>
+                                        <td><select disabled="true" name="ennakkotehtava1" id=""><option value="accepted">Hyväksytty (TOR)</option>
+                                        <option value="rejected">Hylätty</option></select></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input id="validity2" type="checkbox"><label class="padding-left-2" for="validity2">Korkeakoulukelpoisuus</label></td>
+                                        <td><select name="ennakkotehtava2" id=""><option value="accepted">Hyväksytty</option>
+                                        <option value="rejected">Hylätty</option></select></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input id="validity3" type="checkbox"><label  class="padding-left-2" for="validity3">Korkeakoulukelpoisuus</label></td>
+                                        <td><select name="ennakkotehtava3" id=""><option value="accepted">Hyväksytty</option>
+                                        <option value="rejected">Hylätty</option></select></td>
+                                    </tr>
+                                </table>
+
+                                <div>
+                                    <label for="ready">Hakutoiveen tila: </label><select name="ready" id="ready"><option value="ready">Valmis</option>
+                                    <option value="notready">Kesken</option></select>
+                                    <select disabled="true" name="rejected" id="rejected">
+                                        <option value="kesken">Keskeneräinen</option>
+                                        <option value="huono">Huono hakemus</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <hr />
+                            <div class="clear"></div>
+                        </section>
                     </div>
                 </section>
 
