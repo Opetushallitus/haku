@@ -6,5 +6,11 @@ angular.module('virkailija', ['virkailija.filters', 'virkailija.services', 'virk
     $routeProvider.when('/search', {templateUrl: 'partials/search.html', controller: SearchCtrl});
     $routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: MyCtrl2});
     $routeProvider.otherwise({redirectTo: '/search'});
-  }]);
+  }]).factory('Config', function(){
+        var c = location.pathname.split('/')[1];
+        c = c === 'virkailija' ? '' : '/' + c;
 
+        return {
+            context : c
+        };
+  });
