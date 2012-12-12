@@ -69,7 +69,7 @@ public class IndexerServiceImpl implements IndexService {
     }
 
     private ByteArrayOutputStream transform(Source source) throws Exception {
-        final ClassPathResource classPathResource = new ClassPathResource("xml/tarjonta.xsl");
+        final ClassPathResource classPathResource = new ClassPathResource("xml/xslt/tarjonta.xsl");
         StreamSource streamSource = new StreamSource(classPathResource.getInputStream());
         Transformer transformer = TransformerFactory.newInstance().newTransformer(streamSource);
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

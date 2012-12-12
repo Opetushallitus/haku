@@ -22,23 +22,21 @@
                 xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
                 xsi:schemaLocation="/../main/resources/wsdl/learningServiceCommon.xsd"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:import href="sections/searchResult.xsl"/>
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
-
 
     <xsl:template match="/">
         <add>
-
             <xsl:apply-templates select="/types:LearningOpportunityDownloadData/types:ApplicationOption"/>
         </add>
     </xsl:template>
 
-
     <xsl:template match="types:LearningOpportunityDownloadData/types:ApplicationOption">
         <doc>
-            <field name="AOId">
-                <xsl:variable name="identifier" select="types:Identifier"/>
-                <xsl:value-of select="fn:tokenize($identifier, '/')[last()]"/>
+            <field name="html_searchResult_fi">
+                <xsl:call-template name="searchResult"/>
             </field>
+
             <field name="AOTitle">
                 <xsl:value-of select="types:Title"/>
             </field>
