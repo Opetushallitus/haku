@@ -18,6 +18,10 @@
     Application-basket
     column-oriented-table
     virkailija-table-1
+    Pagination
+    Breadcrumbs
+    Mandatory
+    Theme
 */
 
 
@@ -577,6 +581,21 @@ ul.unstyled li
     border-bottom-right-radius: 5px;
 }
 
+/*** Virkailija-table-2
+************************************************/
+
+.virkailija-table-2 {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.virkailija-table-2 td {
+    border-right: 30px solid transparent;
+}
+
+.virkailija-table-2 tr.row-top-spacing td {
+    border-top: 15px solid transparent;
+}
 
 /*** Pagination
 ************************************************/
@@ -584,3 +603,62 @@ ul.unstyled li
 .pagination a{
     text-decoration: none;
 }
+
+
+
+/*** Breadcrumbs
+************************************************/
+
+#breadcrumbs ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#breadcrumbs li {
+    display: inline-block;
+}
+
+#breadcrumbs a {
+    text-decoration: none;
+    color: #149ECB;
+}
+
+#breadcrumbs a:hover,
+#breadcrumbs a:active {
+    text-shadow: 0 0 3px #ccc;
+}
+
+#breadcrumbs li:last-of-type a {
+    color: #3E3E3E;
+}
+
+#breadcrumbs span {
+    padding-left: 8px;
+    padding-right: 16px;
+    background-image: url(../img/breadcrumb-arrow.png);
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+#breadcrumbs li:last-of-type span {
+    background-image: none;
+}
+
+/*** Mandatory
+************************************************/
+.mandatory:after {
+    content: " *";
+    color: red;
+}
+
+
+/*** Theme
+************************************************/
+.theme .theme-header {
+    background: #eee;
+    padding: 0.5em;
+}
+
+/*** Application change history
+************************************************/
+

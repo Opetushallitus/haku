@@ -32,9 +32,6 @@
     position: fixed;
 }
 
-
-
-
 /*** Aligning
 ************************************************/
 .align-center {
@@ -62,20 +59,19 @@
 /*** Width
 ************************************************/
 
+
 .width-25 {
     width: 25%;
-}
-
-.width-50 {
-    width: 50%;
 }
 
 .width-75 {
     width: 75%;
 }
 
-.width-100 {
-    width: 100%;
+@for $i from 1 through 10 {
+    .width-#{$i}0 {
+        width: #{$i}0%;
+    }
 }
 
 /*** Text
@@ -85,55 +81,68 @@
     font-weight: bold;
 }
 
+.italic {
+    font-style: italic;
+}
 
+/*** Background-color
+************************************************/
+$grey: #eee;
+$light-grey: #f8f8f8;
 
+.grey {
+    background-color: $grey;
+}
 
+.light-grey {
+    background-color: $light-grey;
+}
 
 /*** Grids
 ************************************************/
-$gutter: 0.625;
+$gutter: 0.00625;
 $grid-count: 16;
 $grid-column-width: 100 / $grid-count;
 
-
 @mixin grid($grid-span) {
     float: left;
-    margin-right: percentage(($gutter) / 100);
-    margin-left: percentage(($gutter) / 100);
-    width: percentage((($grid-column-width * $grid-span) - ($gutter * 2)) / 100);
+    margin-right: percentage($gutter);
+    margin-left: percentage($gutter);
+    width: percentage(($grid-column-width * $grid-span) / 100) - percentage($gutter * 2);
 }
 
 @mixin offset-right($span) {
-    margin-right: percentage(($grid-column-width * $span) / 100);
+    margin-right: percentage(($grid-column-width * $span) / 100) + percentage($gutter);
 }
 
 @mixin offset-left($span) {
-    margin-left: percentage(($grid-column-width * $span) / 100);
+    margin-left: percentage(($grid-column-width * $span) / 100) + percentage($gutter);
 }
 
-/* grid16 classses */
+/* grid16 classes */
 @for $i from 1 through 16 {
-    .grid16-#{$i} { 
-        @include grid($i); 
+    .grid16-#{$i} {
+        @include grid($i);
     }
 }
 
 /* offsets to left and right */
 @for $i from 1 to 16 {
-
-    .offset-left-#{$i} {
+    .offset-left-16-#{$i} {
         @include offset-left($i); 
     }
-
-    .offset-right-#{$i} {
+    .offset-right-16-#{$i} {
         @include offset-right($i); 
     }
-
 }
 
 
 /*** Spacing
 ************************************************/
+@mixin margin($width) {
+    margin: $width;
+}
+
 @mixin margin-horizontal($width) {
     margin-left: $width;
     margin-right: $width;
@@ -143,6 +152,28 @@ $grid-column-width: 100 / $grid-count;
     margin-top: $height;
     margin-bottom: $height;
 }
+
+@mixin padding($width) {
+    padding: $width;
+}
+
+@mixin padding-horizontal($width) {
+    padding-left: $width;
+    padding-right: $width;
+}
+
+@mixin padding-vertical($height) {
+    padding-top: $height;
+    padding-bottom: $height;
+}
+
+@for $i from 1 to 6 {
+    .margin-horizontal-#{$i} {
+        margin-left: $i *  0.5em;
+        margin-right: $i * 0.5em;
+    }
+}
+
 
 /* margin AND padding classes for all directions */
 @for $i from 1 to 6 {
@@ -157,6 +188,9 @@ $grid-column-width: 100 / $grid-count;
     }
 }
 
+.padding-5 {
+    padding: 0.5em;
+}
 
 /*** Float
 ************************************************/
@@ -170,4 +204,27 @@ $grid-column-width: 100 / $grid-count;
 
  .clear {
     clear: both;
+}
+
+
+
+
+/*** Table
+************************************************/
+
+.white-space-nowrap {
+    white-space: nowrap;
+}
+
+.white-space-normal {
+    white-space: normal;
+}
+
+
+/*** List
+************************************************/
+
+.list-style-none {
+    list-style-type: none;
+    padding-left: 0;
 }
