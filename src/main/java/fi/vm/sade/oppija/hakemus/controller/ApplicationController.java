@@ -47,6 +47,7 @@ public class ApplicationController extends ExceptionController {
     @RequestMapping(method = {RequestMethod.GET})
     @ResponseBody
     public List<Application> searchApplications(@RequestParam("term") String term) {
+        //TODO implement this
         List<Application> result = new ArrayList<Application>();
         if (term != null && !term.isEmpty()) {
             Application app = applicationService.getHakemus(term);

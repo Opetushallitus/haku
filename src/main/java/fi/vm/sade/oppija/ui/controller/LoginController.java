@@ -53,8 +53,14 @@ public class LoginController {
 
         userHolder.login(new User(principal.getName()));
         session.setAttribute("username", principal.getName());
-        return principal.getName().equals("admin") ? "redirect:admin" : "redirect:oma";
 
+        if (principal.getName().equals("admin")) {
+            return "redirect:admin";
+        } else if (principal.getName().equals("officer")) {
+            return "redirect:virkailija/index.html";
+        } else {
+            return "redirect:oma";
+        }
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
