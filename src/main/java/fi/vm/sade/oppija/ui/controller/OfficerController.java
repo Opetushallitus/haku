@@ -5,6 +5,7 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +56,7 @@ public class OfficerController {
         return REDIRECT_VIRKAILIJA_HAKEMUS + formId.getApplicationPeriodId() + "/" + formId.getFormId() + "/" + app.getVaiheId() + "/" + oid + "/";
     }
 
-    @RequestMapping(value = "/hakemus/{applicationPeriodId}/{formIdStr}/{elementId}/{oid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/hakemus/{applicationPeriodId}/{formIdStr}/{phaseId}/{oid}", method = RequestMethod.GET)
     public ModelAndView getPhase(@PathVariable final String applicationPeriodId,
                                    @PathVariable final String formIdStr,
                                    @PathVariable final String phaseId,
@@ -63,12 +64,12 @@ public class OfficerController {
 
         LOGGER.debug("getPhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, phaseId, oid});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
-        Element element = activeForm.getPhase(phaseId);
-        final ModelAndView modelAndView = new ModelAndView("/virkailija/" + element.getType());
+        Phase phase = activeForm.getPhase(phaseId);
+        final ModelAndView modelAndView = new ModelAndView("/virkailija/" + phase.getType());
         final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
         Map<String, String> values = applicationService.getHakemus(oid).getVastauksetMerged();
         modelAndView.addObject("categoryData", values);
-        modelAndView.addObject("element", element);
+        modelAndView.addObject("element", phase);
         modelAndView.addObject("form", activeForm);
         return modelAndView.addObject("hakemusId", formId);
     }
