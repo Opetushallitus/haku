@@ -19,6 +19,11 @@
 <schema name="tarjontatiedot" version="0.1">
 
     <fields>
+        <!-- new html fields -->
+        <field name="html_searchResult_fi" type="string" indexed="false" stored="true" multiValued="false" tokenized="false"/>
+
+        <!-- //new html fields -->
+
         <field name="AOId" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="AOTitle" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="AODescription" type="text_general" indexed="true" stored="true" multiValued="false"/>
@@ -106,6 +111,9 @@
     <copyField source="LOSType" dest="tutkintoonjohtava"/>
 
     <types>
+        <!-- Byte -->
+        <fieldtype name="byte" class="solr.ByteField"/>
+
         <!-- The StrField type is not analyzed, but indexed/stored verbatim. -->
         <fieldType name="string" class="solr.StrField" sortMissingLast="true"/>
         <!-- boolean type: "true" or "false" -->

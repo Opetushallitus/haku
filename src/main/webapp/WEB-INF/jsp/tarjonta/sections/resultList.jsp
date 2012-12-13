@@ -27,7 +27,6 @@
                        class="form-row-link left-intend-2">- ${loi['LOSName']}, ${loi['LOSQualification']}</a>     </li>
             </c:forEach>
 
-
         </ul>
         <jsp:include page="muistiJaVertailuValitsimet.jsp">
             <jsp:param name="item" value="${item}"/>
