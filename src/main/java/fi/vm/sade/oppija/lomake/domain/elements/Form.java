@@ -33,20 +33,20 @@ public class Form extends Titled {
 
     private transient Navigation navigation = new Navigation("top");
 
-    private transient String firstCategoryId;
+    private transient String firstPhaseId;
 
-    final transient Map<String, Phase> categories = new HashMap<String, Phase>();
+    final transient Map<String, Phase> phases = new HashMap<String, Phase>();
 
     public Form(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);
     }
 
-    public Phase getCategory(String categoryId) {
-        return categories.get(categoryId);
+    public Phase getPhase(String phaseId) {
+        return phases.get(phaseId);
     }
 
-    private void addCategory(Phase phase, Phase prev) {
-        this.categories.put(phase.getId(), phase);
+    private void addPhase(Phase phase, Phase prev) {
+        this.phases.put(phase.getId(), phase);
         phase.initChain(prev);
         navigation.addChild(phase.asLink());
     }
@@ -55,10 +55,10 @@ public class Form extends Titled {
         Phase prev = null;
         for (Element child : children) {
             final Phase child1 = (Phase) child;
-            addCategory(child1, prev);
+            addPhase(child1, prev);
             prev = child1;
-            if (firstCategoryId == null) {
-                firstCategoryId = child.getId();
+            if (firstPhaseId == null) {
+                firstPhaseId = child.getId();
             }
             child.init();
         }
@@ -70,13 +70,13 @@ public class Form extends Titled {
     }
 
     @JsonIgnore
-    public Phase getFirstCategory() {
-        return getCategory(firstCategoryId);
+    public Phase getFirstPhase() {
+        return getPhase(firstPhaseId);
     }
 
     @JsonIgnore
-    public Collection<Phase> getCategories() {
-        return categories.values();
+    public Collection<Phase> getPhases() {
+        return phases.values();
     }
 
     @JsonIgnore

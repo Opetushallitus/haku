@@ -72,7 +72,7 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public Phase getFirstCategory(String applicationPeriodId, String formId) {
-        Phase firstPhase = getActiveForm(applicationPeriodId, formId).getFirstCategory();
+        Phase firstPhase = getActiveForm(applicationPeriodId, formId).getFirstPhase();
         if (firstPhase == null) {
             throw new ResourceNotFoundException("First category not found");
         }
@@ -110,7 +110,7 @@ public class FormServiceImpl implements FormService {
     }
 
     private Phase getPhaseById(FormId formId, String phaseId) {
-        Phase phase = getActiveForm(formId.getApplicationPeriodId(), formId.getFormId()).getCategory(phaseId);
+        Phase phase = getActiveForm(formId.getApplicationPeriodId(), formId.getFormId()).getPhase(phaseId);
         if (phase == null) {
             throw new ResourceNotFoundException("Phase '" + phaseId + "' Not found");
         }
@@ -120,7 +120,7 @@ public class FormServiceImpl implements FormService {
     private List<Validator> getAllValidators(final FormId formId) {
         final ArrayList<Validator> validators = new ArrayList<Validator>();
         final Form activeForm = getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
-        for (Phase phase : activeForm.getCategories()) {
+        for (Phase phase : activeForm.getPhases()) {
             validators.addAll(phase.getValidators());
         }
         return validators;

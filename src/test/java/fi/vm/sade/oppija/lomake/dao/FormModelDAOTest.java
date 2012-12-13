@@ -119,7 +119,7 @@ public class FormModelDAOTest extends AbstractDAOTest {
 
         final Form formById = activePeriodById.getForms().entrySet().iterator().next().getValue();
         formById.init();
-        final Phase cat1 = formById.getFirstCategory();
+        final Phase cat1 = formById.getFirstPhase();
         return cat1.getChildren();
     }
 

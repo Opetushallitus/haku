@@ -23,7 +23,7 @@
 <fieldset>
     <legend class="h3"><c:out value="${element.title}"/></legend>
     <hr>
-    <c:forEach var="vaihe" items="${form.categories}">
+    <c:forEach var="vaihe" items="${form.phases}">
         <c:if test="${(not vaihe.preview)}">
             <c:forEach var="teema" items="${vaihe.children}">
                 <c:if test="${(teema.id eq element.id)}">

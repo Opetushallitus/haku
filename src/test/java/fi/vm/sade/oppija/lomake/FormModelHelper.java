@@ -41,7 +41,7 @@ public class FormModelHelper {
     }
 
     public Phase getFirstCategory() {
-        return getFirstForm().getFirstCategory();
+        return getFirstForm().getFirstPhase();
     }
 
     public Element getFirstCategoryFirstTeemaChild() {

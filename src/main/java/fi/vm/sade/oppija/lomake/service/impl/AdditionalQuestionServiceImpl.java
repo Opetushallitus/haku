@@ -66,7 +66,7 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     public Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, FormId formId, final String vaiheId) {
         Theme theme = null;
         Form form = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
-        Phase phase = form.getCategory(vaiheId);
+        Phase phase = form.getPhase(vaiheId);
         for (Element e : phase.getChildren()) {
             if (e.getId().equals(teemaId)) {
                 theme = (Theme) e;

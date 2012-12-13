@@ -56,15 +56,15 @@ public class OfficerController {
     }
 
     @RequestMapping(value = "/hakemus/{applicationPeriodId}/{formIdStr}/{elementId}/{oid}", method = RequestMethod.GET)
-    public ModelAndView getElement(@PathVariable final String applicationPeriodId,
+    public ModelAndView getPhase(@PathVariable final String applicationPeriodId,
                                    @PathVariable final String formIdStr,
-                                   @PathVariable final String elementId,
+                                   @PathVariable final String phaseId,
                                    @PathVariable final String oid) {
 
-        LOGGER.debug("getElement {}, {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, elementId, oid});
+        LOGGER.debug("getPhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, phaseId, oid});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
-        Element element = activeForm.getElementById(elementId);
-        final ModelAndView modelAndView = new ModelAndView("/elements/" + element.getType());
+        Element element = activeForm.getPhase(phaseId);
+        final ModelAndView modelAndView = new ModelAndView("/virkailija/" + element.getType());
         final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
         Map<String, String> values = applicationService.getHakemus(oid).getVastauksetMerged();
         modelAndView.addObject("categoryData", values);

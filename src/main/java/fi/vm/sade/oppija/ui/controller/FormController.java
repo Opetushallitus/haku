@@ -152,7 +152,7 @@ public class FormController extends ExceptionController {
         } else {
             modelAndView.addAllObjects(applicationState.getModelObjects());
             Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-            modelAndView.addObject("element", activeForm.getCategory(categoryId));
+            modelAndView.addObject("element", activeForm.getPhase(categoryId));
             modelAndView.addObject("form", activeForm);
         }
         return modelAndView.addObject("hakemusId", hakuLomakeId);
@@ -187,7 +187,7 @@ public class FormController extends ExceptionController {
 
         ModelAndView modelAndView = new ModelAndView(VERBOSE_HELP_VIEW);
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        Phase phase = activeForm.getCategory(vaiheId);
+        Phase phase = activeForm.getPhase(vaiheId);
 
         for (Element element : phase.getChildren()) {
             if (element.getId().equals(teemaId)) {

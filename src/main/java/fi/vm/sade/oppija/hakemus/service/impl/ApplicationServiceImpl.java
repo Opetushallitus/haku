@@ -67,7 +67,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         final String applicationPeriodId = applicationState.getHakemus().getFormId().getApplicationPeriodId();
         final String formId = applicationState.getHakemus().getFormId().getFormId();
         final Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        final Phase phase = activeForm.getCategory(applicationPhase.getVaiheId());
+        final Phase phase = activeForm.getPhase(applicationPhase.getVaiheId());
         final Map<String, String> vastaukset = applicationPhase.getVastaukset();
 
         ValidationResult validationResult = ElementTreeValidator.validate(phase, vastaukset);
