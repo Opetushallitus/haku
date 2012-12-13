@@ -111,7 +111,7 @@
 
                         <section id="hakemus" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus" style="display: block;">
 
-                            <h3>Valtteri Vilenius</h3>
+                            <h3>${categoryData['Etunimet']}&nbsp;${categoryData['Sukunimi']}</h3>
 
                             <table class="width-50 margin-top-2">
                                 <tr>
@@ -138,7 +138,6 @@
                                 </c:when>
                                 <c:otherwise>
                                     <form id="form-${vaihe.id}" class="form" method="post">
-                                        <jsp:include page="../prev_next_buttons.jsp"/>
                                         <c:forEach var="child" items="${vaihe.children}">
                                             <c:set var="element" value="${child}" scope="request"/>
                                             <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
