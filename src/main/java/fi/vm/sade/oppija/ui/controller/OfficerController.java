@@ -71,6 +71,7 @@ public class OfficerController {
         modelAndView.addObject("categoryData", values);
         modelAndView.addObject("element", phase);
         modelAndView.addObject("form", activeForm);
+        modelAndView.addObject("oid", oid);
         return modelAndView.addObject("hakemusId", formId);
     }
 }

@@ -20,69 +20,158 @@
 <!DOCTYPE html>
 <c:set var="vaihe" value="${element}" scope="request"/>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/screen.css" type="text/css">
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
-          type="text/css">
-    <title>${form.title} - ${vaihe.title}</title>
-    <script src="${pageContext.request.contextPath}/resources/jquery/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/javascript/rules.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/javascript/master.js"></script>
-</head>
-<body>
-<div id="viewport">
-    <div id="overlay">
-    </div>
-    <div id="site">
-        <div id="sitecontent">
-            <div class="content">
-                <h1>Hakulomake</h1>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/screen.css" type="text/css">
+        <link rel="stylesheet"
+              href="${pageContext.request.contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
+              type="text/css">
+        <link href="${pageContext.request.contextPath}/resources/css/virkailija-screen.css" type="text/css" rel="stylesheet" />
+        <title>Opetushallitus</title>
+        <script src="${pageContext.request.contextPath}/resources/jquery/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/javascript/rules.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/javascript/master.js"></script>
 
-                <h2>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2012</h2>
-                <ul class="form-steps">
-                    <c:forEach var="link" items="${form.navigation.children}" varStatus="status">
-                        <li><a id="nav-${link.id}" ${link.attributeString}
-                               <c:if test="${link.id eq vaihe.id}">class="current"</c:if>>
-                            <span class="index">${status.count}</span>${link.value}&nbsp;&gt;</a></li>
-                    </c:forEach>
-                    <li><span><span class="index"><c:out value="${fn:length(form.navigation.children) + 1}"/></span>Valmis</span>
-                    </li>
-                </ul>
+        <!--[if gte IE 9]>
+          <style type="text/css">
+            .tabs .tab span {
+               filter: none;
+            }
+          </style>
+        <![endif]-->
+    </head>
+    <body>
+        <div id="viewport">
+            <div id="overlay" style="display: none;">
+            </div>
+            <div id="wrapper">
+                <header id="siteheader">
+
+                    <div class="primarylinks">
+                        <a href="#">Oppijan verkkopalvelu</a> &nbsp;
+                        <a href="#">Virkailijan työpöytä</a>
+                    </div>
+
+                    <div class="secondarylinks">
+                        <a href="#">Omat tiedot</a> &nbsp;
+                        <a href="#">Viestintä</a> &nbsp;
+                        <a href="#">Asiakaspalvelu</a> &nbsp;
+                        <a href="#">Tukipalvelut</a>
+                    </div>
+
+                </header>
+
+                <nav id="navigation" class="grid16-16">
+
+                    <ul class="level1">
+                        <li><a href="#" class=""><span>Organisaation tiedot</span></a></li>
+                        <li>
+                            <a href="index.html" class="current"><span>Koulutustarjonta</span></a>
+                            <ul class="level2">
+                                <li><a href="#" class="">Koulutuksen tiedot</a></li>
+                                <li><a href="#" class="">Koulutuksen toteutus ja hakukohde</a></li>
+                                <li><a href="#" class="">Organisaation kuvailevat tiedot</a></li>
+                                <li><a href="#" class="">Järjestämissopimukset</a></li>
+                                <li><a href="#" class="">Järjestämisluvat</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class=""><span>Valintaperusteet</span></a></li>
+                        <li><a href="#" class=""><span>Koulutussuunnittelu</span></a></li>
+                        <li><a href="#" class=""><span>Sisällönhallinta</span></a></li>
+                    </ul>
+
+                    <div class="clear"></div>
+                </nav>
+
+                <div id="breadcrumbs">
+                    <ul>
+                        <li><span><a href="#">Koulutustarjonta</a></li>
+                        <li><span><a href="#">Hakemuksen esikatselu</a></li>
+                    </ul>
+                </div>
+
+                <div class="grid16-16">
+                    <a href="#" class="button small back"></a>
+                    <a href="#" class="button small">Tee VRK haku</a>
+                    <a href="#" class="button small disabled">Tee TOR haku</a>
+                    <a href="#" class="button small">Passivoi hakemus</a>
+                </div>
+
+                <section class="grid16-16 margin-top-2">
+
+                    <div class="tabs">
+                        <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemus"
+                           class="tab current"><span>Hakemus</span></a>
+                        <a href="#" data-tabs-group="applicationtabs" data-tabs-id="lisatiedot" class="tab"><span>Kelpoisuus ja liitteet</span></a>
+                    </div>
+
+                    <div class="tabsheets">
+
+                        <section id="hakemus" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus" style="display: block;">
+
+                            <h3>Valtteri Vilenius</h3>
+
+                            <table class="width-50 margin-top-2">
+                                <tr>
+                                    <td><span class="bold">Hakemusnumero: </span><c:out value="${oid}"/></td>
+                                    <td><span class="bold">Hakemuksen tila: </span>Aktiivinen</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="bold">Henkilötunnus: </span><c:out value="${categoryData['Henkilotunnus']}"/></td>
+                                    <td><span class="bold">Oppijanumero: </span>xxxx</td>
+                                </tr>
+
+                            </table>
+                            <hr/>
+                            <c:set var="preview" value="${vaihe.preview}" scope="request"/>
+                            <c:choose>
+                                <c:when test="${preview}">
+                                    <div class="form">
+                                        <c:forEach var="child" items="${vaihe.children}">
+                                            <c:set var="element" value="${child}" scope="request"/>
+                                            <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
+                                            <jsp:include page="../elements/${child.type}Preview.jsp"/>
+                                        </c:forEach>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <form id="form-${vaihe.id}" class="form" method="post">
+                                        <jsp:include page="../prev_next_buttons.jsp"/>
+                                        <c:forEach var="child" items="${vaihe.children}">
+                                            <c:set var="element" value="${child}" scope="request"/>
+                                            <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
+                                            <jsp:include page="../elements/${child.type}.jsp"/>
+                                        </c:forEach>
+                                    </form>
+                                </c:otherwise>
+                            </c:choose>
+                            <hr />
+                            <div class="grid16-16">
+                                <a href="#" class="button small back"></a>
+                                <a href="#" class="button small">Tee VRK haku</a>
+                                <a href="#" class="button small disabled">Tee TOR haku</a>
+                                <a href="#" class="button small">Passivoi hakemus</a>
+                            </div>
+
+                            <div class="clear"></div>
+                        </section>
+                    </div>
+                </section>
+                <footer id="footer" class="grid36-16">
+                    <div class="footer-container">
+                        <div class="grid16-8 footer-logo">
+                            <img src="${pageContext.request.contextPath}/content/logo-opetus-ja-kulttuuriministerio.png">
+                        </div>
+                        <div class="grid16-8 footer-logo">
+                            <img src="${pageContext.request.contextPath}/content/logo-oph.png">
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </footer>
                 <div class="clear"></div>
             </div>
-
-            <c:set var="preview" value="${vaihe.preview}" scope="request"/>
-            <c:choose>
-                <c:when test="${preview}">
-                    <div class="form">
-                        <jsp:include page="../prev_next_buttons_preview.jsp"/>
-                        <c:forEach var="child" items="${vaihe.children}">
-                            <c:set var="element" value="${child}" scope="request"/>
-                            <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
-                            <jsp:include page="../elements/${child.type}Preview.jsp"/>
-                        </c:forEach>
-                        <jsp:include page="../prev_next_buttons_preview.jsp"/>
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <form id="form-${vaihe.id}" class="form" method="post">
-                        <jsp:include page="../prev_next_buttons.jsp"/>
-                        <c:forEach var="child" items="${vaihe.children}">
-                            <c:set var="element" value="${child}" scope="request"/>
-                            <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
-                            <jsp:include page="../elements/${child.type}.jsp"/>
-                        </c:forEach>
-                        <jsp:include page="../prev_next_buttons.jsp"/>
-                    </form>
-                </c:otherwise>
-            </c:choose>
         </div>
-    </div>
-</div>
-</body>
+    </body>
 </html>
-
