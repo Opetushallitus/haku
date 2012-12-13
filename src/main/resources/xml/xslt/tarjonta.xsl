@@ -20,10 +20,9 @@
                 exclude-result-prefixes="types xsi xs fn"
                 xmlns:fn="http://www.w3.org/2005/xpath-functions"
                 xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-                xsi:schemaLocation="/../main/resources/wsdl/learningServiceCommon.xsd"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <!--<xsl:import href="src/main/resources/xml/xslt/sections/searchResult.xsl"/>-->
+    <xsl:import href="sections/searchResult.xsl"/>
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 
     <xsl:template match="/">
@@ -35,29 +34,9 @@
     <xsl:template match="types:LearningOpportunityDownloadData/types:ApplicationOption">
         <doc>
             <field name="html_searchResult_fi">
-
                 <xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
-                <ul class="result set-left" style="display: inline-block; margin-right: 20px">
-                    <li><a class="form-row-link bold">
-                        <xsl:attribute name="href">tarjontatiedot/<xsl:value-of select="types:Identifier"/></xsl:attribute>
-                        <xsl:value-of select="types:Title"/>
-                    </a></li>
-
-
-                    <!--<c:forEach var="key" items="${item['LOIIndexes']}">
-                        <c:set var="loi" value="${item[key]}"/>
-
-                        <li><a href="tarjontatiedot/mihinkähäntämänpitäisiosoittaa"
-                               class="form-row-link left-intend-2">- ${loi['LOSName']}, ${loi['LOSQualification']}</a>     </li>
-                    </c:forEach>
-        -->
-
-                </ul>
-                <xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
-
-                <!--
                 <xsl:call-template name="searchResult"/>
-                -->
+                <xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
             </field>
 
             <field name="AOId">
