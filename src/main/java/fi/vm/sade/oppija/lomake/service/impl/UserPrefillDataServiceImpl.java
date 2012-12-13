@@ -17,24 +17,23 @@ package fi.vm.sade.oppija.lomake.service.impl;
 
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.service.UserPrefillDataService;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- *
  * @author Mikko Majapuro
  */
 @Service
 public class UserPrefillDataServiceImpl implements UserPrefillDataService {
-    
+
     UserHolder userHolder;
-     public static final Logger LOGGER = LoggerFactory.getLogger(UserPrefillDataServiceImpl.class);
-    
+    public static final Logger LOGGER = LoggerFactory.getLogger(UserPrefillDataServiceImpl.class);
+
     @Autowired
     public UserPrefillDataServiceImpl(UserHolder userHolder) {
         this.userHolder = userHolder;
@@ -55,15 +54,15 @@ public class UserPrefillDataServiceImpl implements UserPrefillDataService {
         LOGGER.debug("prefill data populated {}", new Object[]{populated});
         return populated;
     }
-    
+
     @Override
     public void addUserPrefillData(Map<String, String> data) {
         LOGGER.debug("addUserPrefillData {}", new Object[]{data});
         userHolder.getUserPrefillData().putAll(data);
     }
-    
+
     private void fetchUserPrefillData() {
-        if (userHolder.isUserKnown()) {
+        if (userHolder.getUser().isKnown()) {
             //TODO: implement this and remove mock implementations
             userHolder.getUserPrefillData().put("Sähköposti", "esitaytetty_email@autofill.com");
         }

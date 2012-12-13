@@ -19,8 +19,4 @@ public class UserHolderMock extends UserHolder {
         return this.user;
     }
 
-    @Override
-    public boolean isUserKnown() {
-        return true;
-    }
 }

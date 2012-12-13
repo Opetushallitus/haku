@@ -22,20 +22,14 @@ public class UserHolder implements Serializable {
     private static final long serialVersionUID = 8093993846121110534L;
 
     private User user = new AnonymousUser();
-    private boolean userKnown = false;
     private Map<String, String> userPrefillData = new HashMap<String, String>();
 
     public User getUser() {
         return user;
     }
 
-    public boolean isUserKnown() {
-        return userKnown;
-    }
-
     public void login(User user) {
         this.user = user;
-        userKnown = true;
     }
 
     public Map<String, String> getUserPrefillData() {
