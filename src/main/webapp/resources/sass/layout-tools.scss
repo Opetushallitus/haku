@@ -59,7 +59,6 @@
 /*** Width
 ************************************************/
 
-
 .width-25 {
     width: 25%;
 }
@@ -97,6 +96,41 @@ $light-grey: #f8f8f8;
 .light-grey {
     background-color: $light-grey;
 }
+
+/*** Float
+************************************************/
+ .float-left {
+    float: left;
+}
+
+ .float-right {
+    float: right;
+}
+
+ .clear {
+    clear: both;
+}
+
+
+/*** Table
+************************************************/
+
+.white-space-nowrap {
+    white-space: nowrap;
+}
+
+.white-space-normal {
+    white-space: normal;
+}
+
+
+/*** List
+************************************************/
+.list-style-none {
+    list-style-type: none;
+    padding-left: 0;
+}
+
 
 /*** Grids
 ************************************************/
@@ -137,7 +171,7 @@ $grid-column-width: 100 / $grid-count;
 }
 
 
-/*** Spacing
+/*** Margin and padding
 ************************************************/
 @mixin margin($width) {
     margin: $width;
@@ -167,64 +201,43 @@ $grid-column-width: 100 / $grid-count;
     padding-bottom: $height;
 }
 
-@for $i from 1 to 6 {
-    .margin-horizontal-#{$i} {
-        margin-left: $i *  0.5em;
-        margin-right: $i * 0.5em;
+@for $i from 1 through 10 {
+
+    /* Vertical margins */
+    .margin-vertical-#{$i} {
+        @include margin-vertical($i);
     }
-}
 
+    /* Horizontal margins */
+    .margin-horizontal-#{$i} {
+        @include margin-horizontal($i);
+    }
 
-/* margin AND padding classes for all directions */
-@for $i from 1 to 6 {
+    /* Vertical paddings */
+    .padding-vertical-#{$i} {
+        @include padding-vertical($i);
+    }
+
+    /* Horizontal paddings */
+    .padding-horizontal-#{$i} {
+        @include padding-horizontal($i);
+    }
+
+    /* Margins for all directions separately  */
     @each $direction in top, right, bottom, left {
         .margin-#{$direction}-#{$i} {
             margin-#{$direction}: $i * 0.5em;
         }
+    }
 
+    /* Padding for all directions separately */
+    @each $direction in top, right, bottom, left {
         .padding-#{$direction}-#{$i} {
             padding-#{$direction}: $i * 0.5em;
         }
     }
 }
 
-.padding-5 {
-    padding: 0.5em;
-}
-
-/*** Float
-************************************************/
- .float-left {
-    float: left;
-}
-
- .float-right {
-    float: right;
-}
-
- .clear {
-    clear: both;
-}
 
 
 
-
-/*** Table
-************************************************/
-
-.white-space-nowrap {
-    white-space: nowrap;
-}
-
-.white-space-normal {
-    white-space: normal;
-}
-
-
-/*** List
-************************************************/
-
-.list-style-none {
-    list-style-type: none;
-    padding-left: 0;
-}

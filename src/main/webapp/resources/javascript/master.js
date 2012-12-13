@@ -1096,7 +1096,6 @@ $(document).ready(function(){
 	popupWindow.build();
 	tabsMenu.build();
 	hierarchyList.build();
-	//loginPopup.build();
 	dropDownMenu.build();
 	tableRowHighlight.build();
 	tableSorter.build();
