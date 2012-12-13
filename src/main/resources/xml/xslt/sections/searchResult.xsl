@@ -7,7 +7,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 
-    <xsl:template name="searchResult">
+    <xsl:template name="searchResult_fi">
         <xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
         <ul class="result set-left" style="display: inline-block; margin-right: 20px">
             <li><a class="form-row-link bold">

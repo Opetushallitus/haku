@@ -35,7 +35,7 @@
     <xsl:template match="types:LearningOpportunityDownloadData/types:ApplicationOption">
         <doc>
             <field name="html_searchResult_fi">
-                <xsl:call-template name="searchResult"/>
+                <xsl:call-template name="searchResult_fi"/>
             </field>
 
             <field name="AOId">
