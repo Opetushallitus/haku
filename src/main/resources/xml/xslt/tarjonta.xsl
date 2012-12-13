@@ -22,6 +22,7 @@
                 xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+
     <xsl:import href="sections/searchResult.xsl"/>
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 
@@ -34,9 +35,7 @@
     <xsl:template match="types:LearningOpportunityDownloadData/types:ApplicationOption">
         <doc>
             <field name="html_searchResult_fi">
-                <xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
                 <xsl:call-template name="searchResult"/>
-                <xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
             </field>
 
             <field name="AOId">
