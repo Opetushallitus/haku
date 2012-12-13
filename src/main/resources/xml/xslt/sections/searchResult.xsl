@@ -16,41 +16,16 @@
                 <xsl:attribute name="href">tarjontatiedot/<xsl:value-of select="types:Identifier"/></xsl:attribute>
                 <xsl:value-of select="types:Title"/>
             </a></li>
-            <!--
-            <xsl:variable name="loiRef" select="types:LearningOpportunities/types:InstanceRef/@loiRef"/>
-
-
-            <xsl:template match="//types:LearningOpportunityInstance">
-                <field name="LOIId">
-                    <xsl:value-of select="@id"/>
-                </field>
-
-                <xsl:variable name="id" select="types:SpecificationRef/@ref"/>
-                <xsl:apply-templates
-                        select="/types:LearningOpportunityDownloadData/types:LearningOpportunitySpecification[@id=$id]"/>
-
-                <xsl:for-each select="types:LanguagesOfInstruction/types:Language">
-                    <field name="LOILanguagesOfInstruction">
-                        <xsl:value-of select="@code"/>
-                    </field>
+            <xsl:for-each select="types:LearningOpportunities/types:InstanceRef">
+                <xsl:variable name="loiRef" select="@ref"/>
+                <xsl:for-each select="//types:LearningOpportunityDownloadData/types:LearningOpportunityInstance[@id=$loiRef]/types:SpecificationRef">
+                    <xsl:variable name="losRef" select="@ref"/>
+                    <xsl:variable name="los" select="/types:LearningOpportunityDownloadData/types:LearningOpportunitySpecification[@id=$losRef]"/>
+                    <li><a href="#" class="form-row-link left-intend-2">
+                        <xsl:value-of select="$los/types:Name"/>,&#160;<xsl:value-of select="$los/types:Qualification/types:Title"/>
+                    </a></li>
                 </xsl:for-each>
-                <xsl:for-each select="types:FormsOfTeaching/types:FormOfTeaching">
-                    <field name="LOIFormOfTeaching">
-                        <xsl:value-of select="@type"/>
-                    </field>
-                </xsl:for-each>
-                <field name="LOIPrerequisite">
-                    <xsl:value-of select="types:Prerequisite/types:Code"/>
-                </field>
-
-                <xsl:apply-templates select="types:WebLinks/types:Link/types:Uri"/>
-
-
-            </xsl:template>
-
--->
-
-
+            </xsl:for-each>
 
             <!--<c:forEach var="key" items="${item['LOIIndexes']}">
                 <c:set var="loi" value="${item[key]}"/>
@@ -59,9 +34,7 @@
                        class="form-row-link left-intend-2">- ${loi['LOSName']}, ${loi['LOSQualification']}</a>     </li>
             </c:forEach>
 -->
-
         </ul>
-
         <xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
     </xsl:template>
 

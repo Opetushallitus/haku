@@ -18,7 +18,6 @@
 <div class="form-item search-result">
     <c:forEach var="item" items="${searchResult.items}">
         ${item['html_searchResult_fi']}
-
         <jsp:include page="muistiJaVertailuValitsimet.jsp">
             <jsp:param name="item" value="${item}"/>
         </jsp:include>
