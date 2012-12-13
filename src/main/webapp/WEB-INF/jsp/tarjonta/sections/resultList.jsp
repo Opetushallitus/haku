@@ -17,17 +17,8 @@
   --%>
 <div class="form-item search-result">
     <c:forEach var="item" items="${searchResult.items}">
-        <ul class="result set-left" style="display: inline-block; margin-right: 20px">
-            <li><a href="tarjontatiedot/${item['AOId']}"
-                   class="form-row-link bold">${item['AOTitle']}</a></li>
-            <c:forEach var="key" items="${item['LOIIndexes']}">
-                <c:set var="loi" value="${item[key]}"/>
+        ${item['html_searchResult_fi']}
 
-                <li><a href="tarjontatiedot/mihinkähäntämänpitäisiosoittaa"
-                       class="form-row-link left-intend-2">- ${loi['LOSName']}, ${loi['LOSQualification']}</a>     </li>
-            </c:forEach>
-
-        </ul>
         <jsp:include page="muistiJaVertailuValitsimet.jsp">
             <jsp:param name="item" value="${item}"/>
         </jsp:include>
