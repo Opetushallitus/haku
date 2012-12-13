@@ -27,7 +27,7 @@
             <c:forEach var="teema" items="${vaihe.children}">
                 <c:if test="${(teema.id eq element.id)}">
                     <c:choose>
-                        <c:when test="${oid}">
+                        <c:when test="${oid eq null}">
                             <c:set var="editUrl" value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${vaihe.id}"/>
                         </c:when>
                         <c:otherwise>
