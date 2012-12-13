@@ -7,10 +7,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 
-
     <xsl:template name="searchResult">
         <xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
-
         <ul class="result set-left" style="display: inline-block; margin-right: 20px">
             <li><a class="form-row-link bold">
                 <xsl:attribute name="href">tarjontatiedot/<xsl:value-of select="types:Identifier"/></xsl:attribute>
@@ -18,22 +16,14 @@
             </a></li>
             <xsl:for-each select="types:LearningOpportunities/types:InstanceRef">
                 <xsl:variable name="loiRef" select="@ref"/>
-                <xsl:for-each select="//types:LearningOpportunityDownloadData/types:LearningOpportunityInstance[@id=$loiRef]/types:SpecificationRef">
+                <xsl:for-each select="//types:LearningOpportunityInstance[@id=$loiRef]/types:SpecificationRef">
                     <xsl:variable name="losRef" select="@ref"/>
-                    <xsl:variable name="los" select="/types:LearningOpportunityDownloadData/types:LearningOpportunitySpecification[@id=$losRef]"/>
+                    <xsl:variable name="los" select="//types:LearningOpportunitySpecification[@id=$losRef]"/>
                     <li><a href="#" class="form-row-link left-intend-2">
                         <xsl:value-of select="$los/types:Name"/>,&#160;<xsl:value-of select="$los/types:Qualification/types:Title"/>
                     </a></li>
                 </xsl:for-each>
             </xsl:for-each>
-
-            <!--<c:forEach var="key" items="${item['LOIIndexes']}">
-                <c:set var="loi" value="${item[key]}"/>
-
-                <li><a href="tarjontatiedot/mihinkähäntämänpitäisiosoittaa"
-                       class="form-row-link left-intend-2">- ${loi['LOSName']}, ${loi['LOSQualification']}</a>     </li>
-            </c:forEach>
--->
         </ul>
         <xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
     </xsl:template>
