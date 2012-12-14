@@ -12,6 +12,15 @@
         <sshexec command="/etc/init.d/tomcat stop"
                  host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
                  passphrase="" trust="true" failonerror="false" />
+        <echo>Wait Tomcat to stop...</echo>
+
+        <waitfor maxwait="3000" checkevery="500">
+            <not>
+                <socket server="${tomcat-host}" port="8282"/>
+            </not>
+        </waitfor>
+
+        <echo>Tomcat stopped.</echo>
 
         <echo>Clean Tomcat</echo>
         <sshexec command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku* /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT /data00/tomcat/apache-tomcat-7.0.29/work/* /data00/tomcat/apache-tomcat-7.0.29/temp/*"
