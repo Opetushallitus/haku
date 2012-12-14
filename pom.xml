@@ -416,7 +416,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/resources/haku</outputDirectory>
+                            <outputDirectory>${basedir}/target/haku/resources/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/resources</directory>
