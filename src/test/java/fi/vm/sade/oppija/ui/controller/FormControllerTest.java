@@ -147,7 +147,7 @@ public class FormControllerTest {
 
     @Test
     public void testsaveCategory() throws Exception {
-        ModelAndView modelAndView = formController.saveCategory(applicationPeriodId, formId, firstCategoryId, new LinkedMultiValueMap<String, String>());
+        ModelAndView modelAndView = formController.savePhase(applicationPeriodId, formId, firstCategoryId, new LinkedMultiValueMap<String, String>());
         assertEquals(FormController.DEFAULT_VIEW, modelAndView.getViewName());
     }
 }

@@ -142,17 +142,17 @@ public class FormController extends ExceptionController {
         return new ModelAndView(path);
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}",
+    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{phaseId}",
             method = RequestMethod.POST,
             consumes = "application/x-www-form-urlencoded")
-    public ModelAndView saveCategory(@PathVariable final String applicationPeriodId,
-                                     @PathVariable final String formId,
-                                     @PathVariable final String categoryId,
-                                     @RequestBody final MultiValueMap<String, String> multiValues) {
-        LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
+    public ModelAndView savePhase(@PathVariable final String applicationPeriodId,
+                                  @PathVariable final String formId,
+                                  @PathVariable final String phaseId,
+                                  @RequestBody final MultiValueMap<String, String> multiValues) {
+        LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId,
-                categoryId, multiValues.toSingleValueMap()));
+                phaseId, multiValues.toSingleValueMap()));
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         if (applicationState.isValid()) {
@@ -162,7 +162,7 @@ public class FormController extends ExceptionController {
         } else {
             modelAndView.addAllObjects(applicationState.getModelObjects());
             Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-            modelAndView.addObject("element", activeForm.getPhase(categoryId));
+            modelAndView.addObject("element", activeForm.getPhase(phaseId));
             modelAndView.addObject("form", activeForm);
         }
         return modelAndView.addObject("hakemusId", hakuLomakeId);
