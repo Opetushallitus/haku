@@ -54,6 +54,7 @@ public class Application implements Serializable {
     private static final long serialVersionUID = -7491168801255850954L;
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private FormId formId;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private User user;
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     @JsonProperty(value = "vaiheId")

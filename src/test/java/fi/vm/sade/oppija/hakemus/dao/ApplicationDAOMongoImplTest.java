@@ -22,6 +22,7 @@ import fi.vm.sade.oppija.lomake.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +41,19 @@ import static org.junit.Assert.assertTrue;
 public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
     public static final User TEST_USER = new User("test");
-    public static final User TEST_USER2 = new User("test2");
     public static final String ARVO = "arvo";
-    public static final String AVAIN = "avain";
     @Autowired
     @Qualifier("applicationDAOMongoImpl")
     private ApplicationDAO applicationDAO;
 
     private FormId formId;
+    private Application application;
 
-    public ApplicationDAOMongoImplTest() {
-        String id = String.valueOf(System.currentTimeMillis());
-        formId = new FormId(id, id);
+    @Before
+    public void setUp() throws Exception {
+        final String id = String.valueOf(System.currentTimeMillis());
+        this.formId = new FormId(id, id);
+        this.application = (new Application(formId, TEST_USER));
     }
 
     @Test
@@ -79,7 +81,8 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
     @Test
     public void testSequence() throws Exception {
-        applicationDAO.laitaVireille(formId, TEST_USER);
+        application = new Application(formId, TEST_USER);
+        applicationDAO.submit(application);
     }
 
     @Override

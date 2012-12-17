@@ -18,8 +18,6 @@ package fi.vm.sade.oppija.hakemus.dao;
 
 import fi.vm.sade.oppija.common.dao.BaseDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.FormId;
-import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 
 /**
@@ -30,7 +28,7 @@ import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 public interface ApplicationDAO extends BaseDAO<Application> {
     ApplicationState tallennaVaihe(ApplicationState state);
 
-    String laitaVireille(FormId formId, User user);
+    String submit(Application application);
 
     Application findPendingApplication(Application application);
 }

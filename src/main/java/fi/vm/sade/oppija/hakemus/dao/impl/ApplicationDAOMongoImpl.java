@@ -26,7 +26,6 @@ import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.oppija.hakemus.converter.DBObjectToApplicationFunction;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -71,8 +70,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public String laitaVireille(final FormId formId, final User user) {
-        Application application = new Application(formId, user);
+    public String submit(final Application application) {
         final DBObject query = toDBObject.apply(application);
         String oid = getNewOid();
         DBObject update = new BasicDBObject("$set", new BasicDBObject(Application.OID, oid));
@@ -84,7 +82,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public Application findPendingApplication(final Application application) {
         final DBObject query = toDBObject.apply(application);
         User user = application.getUser();
-        if (!user.isKnown()) {
+        if (user.isKnown()) {
             query.put("oid", new BasicDBObject("$exists", false));
         }
         return findOneApplication(query);

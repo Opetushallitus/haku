@@ -90,7 +90,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Form form = formService.getForm(formId.getApplicationPeriodId(), formId.getFormId());
         ValidationResult validationResult = ElementTreeValidator.validate(form, application.getVastauksetMerged());
         if (!validationResult.hasErrors()) {
-            return this.applicationDAO.laitaVireille(formId, userHolder.getUser());
+            return this.applicationDAO.submit(application);
         } else {
             throw new IllegalStateException("Could not send the application");
         }

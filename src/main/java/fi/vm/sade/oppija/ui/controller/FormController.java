@@ -171,11 +171,11 @@ public class FormController extends ExceptionController {
         LOGGER.debug("submitApplication {}, {}", new Object[]{applicationPeriodId, formId});
         String oid = applicationService.submitApplication(new FormId(applicationPeriodId, formId));
         Joiner joiner = Joiner.on("/").skipNulls();
-        String path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId, VALMIS_VIEW, oid.replaceAll("\\.", "_"));
+        String path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId, VALMIS_VIEW, oid, "");
         return new ModelAndView(path);
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}/valmis/{oid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{applicationPeriodId}/{formId}/valmis/{oid}/", method = RequestMethod.GET)
     public ModelAndView getComplete(@PathVariable final String applicationPeriodId,
                                     @PathVariable final String formId,
                                     @PathVariable final String oid) {
