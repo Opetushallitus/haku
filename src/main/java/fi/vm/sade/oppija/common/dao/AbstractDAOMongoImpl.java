@@ -63,7 +63,6 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
 
     @Override
     public List<T> find(T t) {
-        System.out.println(toDBObject.apply(t));
         final DBCursor dbCursor = getCollection().find(toDBObject.apply(t));
         return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
     }
