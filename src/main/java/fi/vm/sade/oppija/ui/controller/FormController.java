@@ -142,14 +142,17 @@ public class FormController extends ExceptionController {
         return new ModelAndView(path);
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
+    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}",
+            method = RequestMethod.POST,
+            consumes = "application/x-www-form-urlencoded")
     public ModelAndView saveCategory(@PathVariable final String applicationPeriodId,
                                      @PathVariable final String formId,
                                      @PathVariable final String categoryId,
                                      @RequestBody final MultiValueMap<String, String> multiValues) {
         LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
-        ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
+        ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId,
+                categoryId, multiValues.toSingleValueMap()));
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         if (applicationState.isValid()) {

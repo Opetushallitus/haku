@@ -30,8 +30,8 @@ public class DBObjectToFormModel implements Function<DBObject, FormModel> {
     private final MapToFormModel mapToFormModel = new MapToFormModel();
 
     @Override
-    public FormModel apply(final DBObject DBObject) {
-        return mapToFormModel.apply(DBObject.toMap());
+    public FormModel apply(final DBObject dbObject) {
+        return mapToFormModel.apply(dbObject.toMap());
     }
 
 
