@@ -147,7 +147,7 @@ public class FormController extends ExceptionController {
                                      @PathVariable final String formId,
                                      @PathVariable final String categoryId,
                                      @RequestBody final MultiValueMap<String, String> multiValues) {
-        LOGGER.debug("saveCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
+        LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
 

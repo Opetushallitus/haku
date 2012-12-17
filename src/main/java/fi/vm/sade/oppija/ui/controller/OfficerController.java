@@ -84,11 +84,11 @@ public class OfficerController {
     }
 
     @RequestMapping(value = "/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-    public ModelAndView saveCategory(@PathVariable final String applicationPeriodId,
-                                     @PathVariable final String formId,
-                                     @PathVariable final String phaseId,
-                                     @PathVariable final String oid,
-                                     @RequestBody final MultiValueMap<String, String> multiValues) {
+    public ModelAndView savePhase(@PathVariable final String applicationPeriodId,
+                                  @PathVariable final String formId,
+                                  @PathVariable final String phaseId,
+                                  @PathVariable final String oid,
+                                  @RequestBody final MultiValueMap<String, String> multiValues) {
         LOGGER.debug("savePhase {}, {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId, phaseId, multiValues.toSingleValueMap()), oid);
