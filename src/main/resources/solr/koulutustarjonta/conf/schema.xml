@@ -20,7 +20,10 @@
 
     <fields>
         <!-- new html fields -->
-        <field name="html_searchResult_fi" type="string" indexed="false" stored="true" multiValued="false" tokenized="false"/>
+        <field name="html_searchResult_fi" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="html_AOView_fi" type="string" indexed="false" stored="true" multiValued="false"/>
+
+        <!--<dynamicField name="*_i"  type="integer"  indexed="true"  stored="true"/>-->
 
         <!-- //new html fields -->
 

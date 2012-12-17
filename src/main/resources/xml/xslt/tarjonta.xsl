@@ -24,6 +24,7 @@
 
 
     <xsl:import href="sections/searchResult.xsl"/>
+    <xsl:import href="sections/AOView.xsl"/>
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 
     <xsl:template match="/">
@@ -37,6 +38,12 @@
             <field name="html_searchResult_fi">
                 <xsl:call-template name="searchResult_fi"/>
             </field>
+            <field name="html_AOView_fi">
+                <xsl:call-template name="AOView_fi"/>
+
+            </field>
+
+
 
             <field name="AOId">
                 <xsl:variable name="identifier" select="types:Identifier"/>

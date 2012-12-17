@@ -19,44 +19,8 @@
 
 <jsp:include page="../top/top.jsp"/>
 
+${searchResult['html_AOView_fi']}
 
-<section id="koulutuskuvaus">
-    <div class="grid16-4">
-        <jsp:include page="sections/koulutuksenPerustiedot.jsp"/>
-        <jsp:include page="sections/notelist-simple.jsp"/>
-    </div>
-
-    <div class="grid16-8">
-        <jsp:include page="sections/definitions.jsp"/>
-
-        <div><a href="vapaasana.html">Takaisin hakutuloksiin</a></div>
-        <div class="clear"></div>
-
-        <div class="pagetitle">
-            <h1>${searchResult['LOSDegreeTitle']}&nbsp;${searchResult['LOSCredits']}&nbsp;<spring:message
-                    code="tarjonta.koulutuskuvaus.${searchResult['LOSCreditsUnit']}" text="?_?"/></h1>
-            <a href="#">${searchResult['LOSDegreeTitle']}</a>
-
-            <div class="set-right">
-                <jsp:include page="sections/muistiJaVertailuValitsimet.jsp"/>
-            </div>
-
-        </div>
-
-
-        <jsp:include page="sections/koulutustiedonvalilehdet.jsp"/>
-
-    </div>
-    <div class="grid16-4">
-        <jsp:include page="sections/hakufaktoja.jsp"/>
-        <aside id="sidemenu">
-            <jsp:include page="sections/infobox.jsp"/>
-            <jsp:include page="compare.jsp"/>
-            <jsp:include page="authentication.jsp"/>
-        </aside>
-    </div>
-    <div class="clear"></div>
-</section>
 <footer></footer>
 </div>
 </div>
