@@ -19,9 +19,9 @@ package fi.vm.sade.oppija.common.dao;
 import java.util.List;
 
 public interface BaseDAO<T> {
-    public List<T> find(T t);
+    List<T> find(T t);
 
-    public void update(T o, T n);
+    void update(T o, T n);
 
-    public void delete(T t);
+    void delete(T t);
 }
