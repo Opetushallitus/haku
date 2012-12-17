@@ -31,6 +31,8 @@ import java.util.List;
  */
 public class SocialSecurityNumber extends Question {
 
+    public static final String HENKILOTUNNUS = "Henkilotunnus";
+
     private TextQuestion ssn;
 
     private Radio sex;
@@ -38,6 +40,7 @@ public class SocialSecurityNumber extends Question {
     private String maleId;
     private String femaleId;
     private String nationalityId;
+    public static final String HENKILOTUNNUS_HASH = "Henkilotunnus_digest";
 
     public SocialSecurityNumber(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
         super(id, title);

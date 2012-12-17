@@ -10,7 +10,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * European Union Public Licence for more details.
  */
 
@@ -23,8 +23,13 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
+import fi.vm.sade.oppija.lomake.service.EncrypterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
@@ -33,9 +38,18 @@ import java.util.Map;
  * @version 11/22/124:39 PM}
  * @since 1.1
  */
+@Service
 public class ApplicationToDBObjectFunction implements Function<Application, DBObject> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationToDBObjectFunction.class);
+    private final EncrypterService aesEncypter;
+    private final EncrypterService shaEncrypter;
+
+    @Autowired
+    public ApplicationToDBObjectFunction(@Qualifier("aesEncrypter") EncrypterService aesEncypter, @Qualifier("shaEncrypter") EncrypterService shaEncrypter) {
+        this.aesEncypter = aesEncypter;
+        this.shaEncrypter = shaEncrypter;
+    }
 
     @Override
     public DBObject apply(Application application) {
@@ -45,6 +59,17 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
         mapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
 
         final Map m = mapper.convertValue(application, Map.class);
+        final Map<String, Map<String, String>> vastaukset = (Map<String, Map<String, String>>) m.get("vastaukset");
+
+        if (vastaukset != null) {
+            final Map<String, String> henkilotiedot = vastaukset.get("henkilotiedot");
+            if (henkilotiedot != null && henkilotiedot.containsKey(SocialSecurityNumber.HENKILOTUNNUS)) {
+                final String hetu = henkilotiedot.get(SocialSecurityNumber.HENKILOTUNNUS);
+                henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS, aesEncypter.encrypt(hetu));
+                henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS_HASH, shaEncrypter.encrypt(hetu));
+
+            }
+        }
         final BasicDBObject basicDBObject = new BasicDBObject(m);
         LOGGER.debug(JSON.serialize(basicDBObject));
         return basicDBObject;

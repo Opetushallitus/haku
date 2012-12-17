@@ -29,6 +29,7 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,9 +43,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private static final String OID_PREFIX = "1.2.3.4.5.";
 
-    public ApplicationDAOMongoImpl() {
-        super(new DBObjectToApplicationFunction(), new ApplicationToDBObjectFunction());
+
+    @Autowired
+    public ApplicationDAOMongoImpl(DBObjectToApplicationFunction dbObjectToHakemusConverter, ApplicationToDBObjectFunction hakemusToBasicDBObjectConverter) {
+        super(dbObjectToHakemusConverter, hakemusToBasicDBObjectConverter);
     }
+
 
     @Override
     public ApplicationState tallennaVaihe(ApplicationState state) {
@@ -55,14 +59,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         DBObject one = getCollection().findOne(query);
         if (one != null) {
+
             queryApplication = fromDBObject.apply(one);
         }
         Application uusiApplication = state.getHakemus();
         Map<String, String> vastauksetMerged = uusiApplication.getVastauksetMerged();
         queryApplication.addVaiheenVastaukset(state.getVaiheId(), vastauksetMerged);
         queryApplication.setVaiheId(uusiApplication.getVaiheId());
+
         one = toDBObject.apply(queryApplication);
+
+
         getCollection().update(query, one, true, false);
+
         return state;
     }
 
@@ -72,6 +81,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
+
     public String submit(final Application application) {
         final DBObject query = toDBObject.apply(application);
         String oid = getNewOid();
