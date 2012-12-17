@@ -26,7 +26,6 @@ import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.oppija.hakemus.converter.DBObjectToApplicationFunction;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,10 +92,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application findPendingApplication(final Application application) {
         final DBObject query = toDBObject.apply(application);
-        User user = application.getUser();
-        if (user.isKnown()) {
-            query.put("oid", new BasicDBObject("$exists", false));
-        }
+        query.put("oid", new BasicDBObject("$exists", true));
         return findOneApplication(query);
     }
 

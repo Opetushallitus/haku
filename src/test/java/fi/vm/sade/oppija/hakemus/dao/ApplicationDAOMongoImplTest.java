@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +43,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
     public static final User TEST_USER = new User("test");
     public static final String ARVO = "arvo";
+    public static final String TEST_PHASE = "vaihe1";
     @Autowired
     @Qualifier("applicationDAOMongoImpl")
     private ApplicationDAO applicationDAO;
@@ -60,9 +62,8 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     public void testTallennaVaihe() {
         final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>();
         vaiheenVastaukset.put("avain", ARVO);
-
-        final Application application1 = new Application(TEST_USER, new ApplicationPhase(formId, "vaihe1", vaiheenVastaukset));
-        final ApplicationState application = applicationDAO.tallennaVaihe(new ApplicationState(application1, "vaihe1"));
+        final Application application1 = new Application(TEST_USER, new ApplicationPhase(formId, TEST_PHASE, vaiheenVastaukset));
+        final ApplicationState application = applicationDAO.tallennaVaihe(new ApplicationState(application1, TEST_PHASE));
         assertEquals(ARVO, application.getHakemus().getVastauksetMerged().get("avain"));
     }
 
@@ -77,6 +78,19 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     public void testFindAllNotFound() throws Exception {
         List<Application> applications = applicationDAO.find(new Application(formId, TEST_USER));
         assertTrue(applications.isEmpty());
+    }
+
+    @Test()
+    public void testFindPendingApplication() throws Exception {
+        testTallennaVaihe();
+        Application application = new Application(formId, TEST_USER);
+        applicationDAO.submit(applicationDAO.find(application).get(0));
+        applicationDAO.findPendingApplication(applicationDAO.find(application).get(0));
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testFindPendingApplicationNotFound() throws Exception {
+        applicationDAO.findPendingApplication(new Application(formId, TEST_USER));
     }
 
     @Test
