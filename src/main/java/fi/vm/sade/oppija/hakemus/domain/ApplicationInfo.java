@@ -25,6 +25,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Form;
  * @since 1.1
  */
 public class ApplicationInfo {
+    public static final String STATE_PENDING = "valmis";
     final Application application;
     final Form form;
     final ApplicationPeriod applicationPeriod;
@@ -49,7 +50,7 @@ public class ApplicationInfo {
     }
 
     public boolean isPending() {
-        return "valmis".equals(this.application.getVaiheId());
+        return STATE_PENDING.equals(this.application.getVaiheId());
     }
 
 }
