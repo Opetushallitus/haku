@@ -20,8 +20,6 @@ import fi.vm.sade.oppija.lomake.service.EncrypterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -29,6 +27,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
@@ -70,7 +69,7 @@ public class AESEncrypter implements EncrypterService {
     public String encryptInternal(String encrypt) throws Exception {
         byte[] bytes = encrypt.getBytes("UTF8");
         byte[] encrypted = encrypt(bytes);
-        return new BASE64Encoder().encode(encrypted);
+        return DatatypeConverter.printBase64Binary(encrypted);
     }
 
     public byte[] encrypt(byte[] plain) throws Exception {
@@ -92,7 +91,7 @@ public class AESEncrypter implements EncrypterService {
     }
 
     private String decryptInternal(String encrypt) throws Exception {
-        byte[] bytes = new BASE64Decoder().decodeBuffer(encrypt);
+        byte[] bytes = DatatypeConverter.parseBase64Binary(encrypt);
         byte[] decrypted = decrypt(bytes);
         return new String(decrypted, "UTF8");
     }
