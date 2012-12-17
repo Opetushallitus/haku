@@ -17,18 +17,22 @@
 package fi.vm.sade.oppija.ui.controller;
 
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.service.FormService;
+import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -42,6 +46,7 @@ public class OfficerController {
 
     public static final String REDIRECT_VIRKAILIJA_HAKEMUS = "redirect:/virkailija/hakemus/";
     public static final Logger LOGGER = LoggerFactory.getLogger(OfficerController.class);
+    public static final String DEFAULT_VIEW = "virkailija/Phase";
     @Autowired
     ApplicationService applicationService;
     @Autowired
@@ -53,7 +58,8 @@ public class OfficerController {
         LOGGER.debug("officer getApplication by oid {}", new Object[]{oid});
         Application app = applicationService.getApplication(oid);
         FormId formId = app.getFormId();
-        return REDIRECT_VIRKAILIJA_HAKEMUS + formId.getApplicationPeriodId() + "/" + formId.getFormId() + "/" + app.getVaiheId() + "/" + oid + "/";
+        Phase phase = formService.getLastPhase(formId.getApplicationPeriodId(), formId.getFormId());
+        return REDIRECT_VIRKAILIJA_HAKEMUS + formId.getApplicationPeriodId() + "/" + formId.getFormId() + "/" + phase.getId() + "/" + oid + "/";
     }
 
     @RequestMapping(value = "/hakemus/{applicationPeriodId}/{formIdStr}/{phaseId}/{oid}", method = RequestMethod.GET)
@@ -67,11 +73,36 @@ public class OfficerController {
         Phase phase = activeForm.getPhase(phaseId);
         final ModelAndView modelAndView = new ModelAndView("/virkailija/" + phase.getType());
         final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
-        Map<String, String> values = applicationService.getApplication(oid).getVastauksetMerged();
+        Application app = applicationService.getApplication(oid);
+        Map<String, String> values = app.getVastauksetMerged();
         modelAndView.addObject("categoryData", values);
         modelAndView.addObject("element", phase);
         modelAndView.addObject("form", activeForm);
         modelAndView.addObject("oid", oid);
+        modelAndView.addObject("applicationPhaseId", app.getVaiheId());
         return modelAndView.addObject("hakemusId", formId);
+    }
+
+    @RequestMapping(value = "/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
+    public ModelAndView saveCategory(@PathVariable final String applicationPeriodId,
+                                     @PathVariable final String formId,
+                                     @PathVariable final String phaseId,
+                                     @PathVariable final String oid,
+                                     @RequestBody final MultiValueMap<String, String> multiValues) {
+        LOGGER.debug("savePhase {}, {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid, multiValues});
+        final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
+        ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId, phaseId, multiValues.toSingleValueMap()), oid);
+
+        ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        if (applicationState.isValid()) {
+            modelAndView = new ModelAndView(REDIRECT_VIRKAILIJA_HAKEMUS + applicationPeriodId + "/" + formId + "/" + activeForm.getLastPhase().getId() + "/" + oid + "/");
+        } else {
+            modelAndView.addAllObjects(applicationState.getModelObjects());
+            modelAndView.addObject("element", activeForm.getPhase(phaseId));
+            modelAndView.addObject("form", activeForm);
+            modelAndView.addObject("oid", oid);
+        }
+        return modelAndView.addObject("hakemusId", hakuLomakeId);
     }
 }

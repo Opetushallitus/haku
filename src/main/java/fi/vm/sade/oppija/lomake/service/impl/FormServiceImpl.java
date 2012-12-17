@@ -71,12 +71,21 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public Phase getFirstCategory(String applicationPeriodId, String formId) {
+    public Phase getFirstPhase(String applicationPeriodId, String formId) {
         Phase firstPhase = getActiveForm(applicationPeriodId, formId).getFirstPhase();
         if (firstPhase == null) {
-            throw new ResourceNotFoundException("First category not found");
+            throw new ResourceNotFoundException("First phase not found");
         }
         return firstPhase;
+    }
+
+    @Override
+    public Phase getLastPhase(String applicationPeriodId, String formId) {
+        Phase lastPhase = getActiveForm(applicationPeriodId, formId).getLastPhase();
+        if (lastPhase == null) {
+            throw new ResourceNotFoundException("Last phase not found");
+        }
+        return lastPhase;
     }
 
     @Override

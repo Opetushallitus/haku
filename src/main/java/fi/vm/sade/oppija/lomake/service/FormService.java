@@ -27,7 +27,9 @@ import java.util.Map;
 
 public interface FormService {
 
-    Phase getFirstCategory(final String applicationPeriodId, final String formId);
+    Phase getFirstPhase(final String applicationPeriodId, final String formId);
+
+    Phase getLastPhase(final String applicationPeriodId, final String formId);
 
     Map<String, ApplicationPeriod> getApplicationPerioidMap();
 

@@ -95,8 +95,22 @@ public class Application implements Serializable {
         this.user = user;
     }
 
+    @JsonIgnore
+    public Application(@JsonProperty(value = "hakuLomakeId") final FormId formId,
+                       @JsonProperty(value = "user") final User user,
+                       final String oid) {
+        this.formId = formId;
+        this.user = user;
+        this.oid = oid;
+    }
+
     public Application(User user, ApplicationPhase vaihe) {
         this(vaihe.getFormId(), user);
+        addVaiheenVastaukset(vaihe.getVaiheId(), vaihe.getVastaukset());
+    }
+
+    public Application(String oid, ApplicationPhase vaihe) {
+        this(vaihe.getFormId(), oid);
         addVaiheenVastaukset(vaihe.getVaiheId(), vaihe.getVastaukset());
     }
 

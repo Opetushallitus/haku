@@ -34,6 +34,7 @@ public class Form extends Titled {
     private transient Navigation navigation = new Navigation("top");
 
     private transient String firstPhaseId;
+    private transient String lastPhaseId;
 
     final transient Map<String, Phase> phases = new HashMap<String, Phase>();
 
@@ -61,6 +62,7 @@ public class Form extends Titled {
                 firstPhaseId = child.getId();
             }
             child.init();
+            lastPhaseId = child.getId();
         }
     }
 
@@ -72,6 +74,11 @@ public class Form extends Titled {
     @JsonIgnore
     public Phase getFirstPhase() {
         return getPhase(firstPhaseId);
+    }
+
+    @JsonIgnore
+    public Phase getLastPhase() {
+        return getPhase(lastPhaseId);
     }
 
     @JsonIgnore

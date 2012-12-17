@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -143,17 +144,20 @@
                                             <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
                                             <jsp:include page="../elements/${child.type}.jsp"/>
                                         </c:forEach>
+                                        <button class="save" name="vaiheId" type="submit" value="${applicationPhaseId}"><span><span><spring:message
+                                                code="lomake.button.save"/></span></span></button>
                                     </form>
                                 </c:otherwise>
                             </c:choose>
                             <hr />
-                            <div class="grid16-16">
-                                <a href="#" class="button small back"></a>
-                                <a href="#" class="button small">Tee VRK haku</a>
-                                <a href="#" class="button small disabled">Tee TOR haku</a>
-                                <a href="#" class="button small">Passivoi hakemus</a>
-                            </div>
-
+                            <c:if test="${(preview)}">
+                                <div class="grid16-16">
+                                    <a href="#" class="button small back"></a>
+                                    <a href="#" class="button small">Tee VRK haku</a>
+                                    <a href="#" class="button small disabled">Tee TOR haku</a>
+                                    <a href="#" class="button small">Passivoi hakemus</a>
+                                </div>
+                            </c:if>
                             <div class="clear"></div>
                         </section>
                     </div>

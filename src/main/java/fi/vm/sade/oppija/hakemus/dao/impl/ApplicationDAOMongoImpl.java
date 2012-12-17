@@ -48,7 +48,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public ApplicationState tallennaVaihe(ApplicationState state) {
-        Application queryApplication = new Application(state.getHakemus().getFormId(), state.getHakemus().getUser());
+
+        Application queryApplication = new Application(state.getHakemus().getFormId(), state.getHakemus().getUser(),
+                state.getHakemus().getOid());
         final DBObject query = toDBObject.apply(queryApplication);
 
         DBObject one = getCollection().findOne(query);

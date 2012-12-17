@@ -495,9 +495,18 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     @Override
-    public Phase getFirstCategory(String applicationPeriodId, String formId) {
+    public Phase getFirstPhase(String applicationPeriodId, String formId) {
         try {
             return this.getActiveForm(applicationPeriodId, formId).getFirstPhase();
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Not found");
+        }
+    }
+
+    @Override
+    public Phase getLastPhase(String applicationPeriodId, String formId) {
+        try {
+            return this.getActiveForm(applicationPeriodId, formId).getLastPhase();
         } catch (Exception e) {
             throw new ResourceNotFoundException("Not found");
         }

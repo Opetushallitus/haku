@@ -64,6 +64,17 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase) {
         final Application application = new Application(this.userHolder.getUser(), applicationPhase);
+        return saveApplicationPhase(applicationPhase, application);
+    }
+
+    @Override
+    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, String oid) {
+        final Application application = new Application(oid, applicationPhase);
+        return saveApplicationPhase(applicationPhase, application);
+    }
+
+    @Override
+    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, Application application) {
         final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getVaiheId());
         final String applicationPeriodId = applicationState.getHakemus().getFormId().getApplicationPeriodId();
         final String formId = applicationState.getHakemus().getFormId().getFormId();

@@ -56,7 +56,7 @@ public class FormServiceImplTest {
 
     @Test(expected = ResourceNotFoundException.class)
     public void testGetFirstCategoryNotFound() throws Exception {
-        formService.getFirstCategory(null, null);
+        formService.getFirstPhase(null, null);
     }
 
     @Test

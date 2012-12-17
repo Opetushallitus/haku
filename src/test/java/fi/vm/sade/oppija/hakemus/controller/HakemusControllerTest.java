@@ -60,6 +60,16 @@ public class HakemusControllerTest {
             }
 
             @Override
+            public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, String oid) {
+                return null;
+            }
+
+            @Override
+            public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, Application application) {
+                return null;
+            }
+
+            @Override
             public Application getApplication(String oid) {
                 return APPLICATION;
             }

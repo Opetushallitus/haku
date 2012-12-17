@@ -88,7 +88,7 @@ public class FormController extends ExceptionController {
         LOGGER.debug("getApplication {}, {}", new Object[]{applicationPeriodId, formId});
         Application application = applicationService.getApplication(new FormId(applicationPeriodId, formId));
         if (application.isNew()) {
-            Phase firstPhase = formService.getFirstCategory(applicationPeriodId, formId);
+            Phase firstPhase = formService.getFirstPhase(applicationPeriodId, formId);
             return "redirect:" + formId + "/" + firstPhase.getId();
         } else {
             Joiner joiner = Joiner.on("/").skipNulls();

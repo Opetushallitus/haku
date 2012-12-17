@@ -37,6 +37,10 @@ public interface ApplicationService {
 
     ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase);
 
+    ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final String oid);
+
+    ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final Application application);
+
     Application getApplication(String oid);
 
     String submitApplication(final FormId formId);

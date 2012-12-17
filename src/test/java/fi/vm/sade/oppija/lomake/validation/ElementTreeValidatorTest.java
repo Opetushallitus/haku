@@ -68,7 +68,7 @@ public class ElementTreeValidatorTest {
 
     @Test()
     public void testValidateAsuinMaaSV() throws Exception {
-        Phase phase = formModelDummyMemoryDao.getFirstCategory("Yhteishaku", "yhteishaku");
+        Phase phase = formModelDummyMemoryDao.getFirstPhase("Yhteishaku", "yhteishaku");
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", "sv");
         ValidationResult validationResult = ElementTreeValidator.validate(phase, values);
@@ -77,7 +77,7 @@ public class ElementTreeValidatorTest {
 
     @Test()
     public void testValidateAsuinMaaFI() throws Exception {
-        Phase phase = formModelDummyMemoryDao.getFirstCategory("Yhteishaku", "yhteishaku");
+        Phase phase = formModelDummyMemoryDao.getFirstPhase("Yhteishaku", "yhteishaku");
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", "fi");
         ValidationResult validationResult = ElementTreeValidator.validate(phase, values);
