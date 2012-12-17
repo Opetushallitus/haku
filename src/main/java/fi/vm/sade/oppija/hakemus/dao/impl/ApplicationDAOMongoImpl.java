@@ -16,23 +16,22 @@
 
 package fi.vm.sade.oppija.hakemus.dao.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import fi.vm.sade.oppija.hakemus.converter.DBObjectToHakemusConverter;
-import fi.vm.sade.oppija.hakemus.converter.HakemusToBasicDBObjectConverter;
+import fi.vm.sade.oppija.common.dao.AbstractDAOMongoImpl;
+import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
+import fi.vm.sade.oppija.hakemus.converter.DBObjectToApplicationFunction;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.lomake.dao.impl.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,131 +39,73 @@ import java.util.Map;
  * @author Hannu Lyytikainen
  */
 @Service("applicationDAOMongoImpl")
-public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl implements ApplicationDAO {
+public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> implements ApplicationDAO {
 
-    public static final String HAKEMUS = "hakemus";
-    private static final String SEQUENCE_FIELD = "seq";
     private static final String OID_PREFIX = "1.2.3.4.5.";
+
+    public ApplicationDAOMongoImpl() {
+        super(new DBObjectToApplicationFunction(), new ApplicationToDBObjectFunction());
+    }
 
     @Override
     public ApplicationState tallennaVaihe(ApplicationState state) {
-        Application queryApplication = searchByLomakeIdAndUser(state);
-        final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(queryApplication);
+        Application queryApplication = new Application(state.getHakemus().getFormId(), state.getHakemus().getUser());
+        final DBObject query = toDBObject.apply(queryApplication);
 
         DBObject one = getCollection().findOne(query);
         if (one != null) {
-            queryApplication = new DBObjectToHakemusConverter().convert(one);
+            queryApplication = fromDBObject.apply(one);
         }
         Application uusiApplication = state.getHakemus();
         Map<String, String> vastauksetMerged = uusiApplication.getVastauksetMerged();
         queryApplication.addVaiheenVastaukset(state.getVaiheId(), vastauksetMerged);
         queryApplication.setVaiheId(uusiApplication.getVaiheId());
-        one = new HakemusToBasicDBObjectConverter().convert(queryApplication);
+        one = toDBObject.apply(queryApplication);
         getCollection().update(query, one, true, false);
         return state;
     }
 
-    public String getNextId() {
-
-        DBCollection seq = getSequence();
-        DBObject change = new BasicDBObject(SEQUENCE_FIELD, 1);
-        DBObject update = new BasicDBObject("$inc", change); // the $inc here is a mongodb command for increment
-
-        // Atomically updates the sequence field and returns the value for you
-        //final BasicDBObject query = new BasicDBObject("$eq", change);
-        final BasicDBObject query = new BasicDBObject();
-
-        DBObject res = null;
-
-        if (seq.getCount(query) == 0) {
-            // running findAndModify with the upsert flag on results in a following error:
-            // com.mongodb.CommandResult$CommandFailure: command failed [findandmodify]:
-            // { "serverUsed" : "localhost/127.0.0.1:27017" , "errmsg" : "exception: upsert mode requires query field" , "code" : 13330 , "ok" : 0.0}
-            DBObject initialObject = new BasicDBObject();
-            initialObject.put("seq", Integer.valueOf(0));
-            seq.insert(initialObject);
-            res = seq.findOne(query);
-        } else {
-            res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
-        }
-
-        return res.get(SEQUENCE_FIELD).toString();
-    }
-
     @Override
     protected String getCollectionName() {
-        return HAKEMUS;
+        return "application";
     }
 
     @Override
-    public Application find(FormId formId, User user) {
-
+    public String laitaVireille(final FormId formId, final User user) {
         Application application = new Application(formId, user);
-        final BasicDBObject convert = new HakemusToBasicDBObjectConverter().convert(application);
-        final DBObject one = getCollection().findOne(convert);
-        if (one != null) {
-            application = dbObjectToHakemus(one);
-        }
-        return application;
-    }
-
-    @Override
-    public List<Application> findAll(User user) {
-        List<Application> list = new ArrayList<Application>();
-
-        final ObjectMapper objectMapper = new ObjectMapper();
-        final Map map = objectMapper.convertValue(user, Map.class);
-
-        DBObject dbObject = new BasicDBObject("user", map);
-        final DBCursor dbObjects = getCollection().find(dbObject);
-        for (DBObject object : dbObjects) {
-            list.add(dbObjectToHakemus(object));
-        }
-        return list;
-    }
-
-    @Override
-    public String laitaVireille(final FormId hakulomakeId, final User user) {
-        Application application = new Application(hakulomakeId, user);
-        final BasicDBObject query = new HakemusToBasicDBObjectConverter().convert(application);
+        final DBObject query = toDBObject.apply(application);
         String oid = getNewOid();
         DBObject update = new BasicDBObject("$set", new BasicDBObject(Application.OID, oid));
-        if (!user.isKnown()) {
-            update.put("$unset", new BasicDBObject("user", 1));
-        }
         getCollection().update(query, update);
         return oid;
+    }
+
+    @Override
+    public Application findPendingApplication(final Application application) {
+        final DBObject query = toDBObject.apply(application);
+        User user = application.getUser();
+        if (!user.isKnown()) {
+            query.put("oid", new BasicDBObject("$exists", false));
+        }
+        return findOneApplication(query);
     }
 
     public String getNewOid() {
         return OID_PREFIX + getNextId();
     }
 
-    @Override
-    public Application find(String oid) {
-        final DBObject one = findByOid(searchByOid(oid));
-        if (one == null) {
-            throw new ResourceNotFoundException("no hakemus found with oid " + oid);
+
+    private Application findOneApplication(DBObject query) {
+        List<Application> listOfApplications = findApplications(query);
+        if (listOfApplications.size() == 1) {
+            return listOfApplications.get(0);
         }
-        return dbObjectToHakemus(one);
+        throw new ResourceNotFoundException("Application not found " + query);
     }
 
-    private DBObject findByOid(BasicDBObject basicDBObject1) {
-        return getCollection().findOne(basicDBObject1);
+    private List<Application> findApplications(DBObject dbObject) {
+        final DBCursor dbCursor = getCollection().find(dbObject);
+        return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
     }
 
-    private BasicDBObject searchByOid(String oid) {
-        if (!oid.startsWith(OID_PREFIX)) {
-            throw new RuntimeException("invalid oid");
-        }
-        return new BasicDBObject("oid", oid);
-    }
-
-    private Application dbObjectToHakemus(final DBObject dbObject) {
-        return new DBObjectToHakemusConverter().convert(dbObject);
-    }
-
-    private Application searchByLomakeIdAndUser(ApplicationState state) {
-        return new Application(state.getHakemus().getFormId(), state.getHakemus().getUser());
-    }
 }

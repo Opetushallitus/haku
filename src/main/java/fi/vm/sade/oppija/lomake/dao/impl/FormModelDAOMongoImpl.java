@@ -16,13 +16,14 @@
 
 package fi.vm.sade.oppija.lomake.dao.impl;
 
-import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import fi.vm.sade.oppija.lomake.converter.FormModelToBasicDBObject;
-import fi.vm.sade.oppija.lomake.converter.MapToFormModelConverter;
+import fi.vm.sade.oppija.common.dao.AbstractDAOMongoImpl;
+import fi.vm.sade.oppija.lomake.converter.DBObjectToFormModel;
+import fi.vm.sade.oppija.lomake.converter.FormModelToDBObject;
+import fi.vm.sade.oppija.lomake.converter.JsonStringToFormModel;
 import fi.vm.sade.oppija.lomake.dao.FormModelDAO;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.lomake.domain.FormModelFactory;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +31,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 /**
  * @author hannu
  */
 @Service("formModelDAOMongoImpl")
-public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormModelDAO {
+public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl<FormModel> implements FormModelDAO {
 
     private static final Logger LOG = LoggerFactory.getLogger(FormModelDAOMongoImpl.class);
     private static final String COLLECTION_FORM_MODEL = "haku";
@@ -43,14 +45,16 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
     @Autowired
     FormModelHolder holder;
 
-    private final FormModelToBasicDBObject toDbObject = new FormModelToBasicDBObject();
-    private final MapToFormModelConverter mapToFormModelConverter = new MapToFormModelConverter();
+    public FormModelDAOMongoImpl() {
+        super(new DBObjectToFormModel(), new FormModelToDBObject());
+    }
 
     @PostConstruct
     public void init() {
         super.init();
         try {
-            holder.updateModel(find());
+            List<FormModel> formModels = find(new FormModel());
+            holder.updateModel(formModels.get(0));
         } catch (Exception ignored) {
             LOG.warn("No model found ! ");
         }
@@ -62,42 +66,23 @@ public class FormModelDAOMongoImpl extends AbstractDAOMongoImpl implements FormM
     }
 
     @Override
-    public FormModel find() {
-        final DBObject one = getCollection().findOne();
-        return mapToFormModelConverter.convert(one.toMap());
-    }
-
-    @Override
     public void insert(FormModel formModel) {
-        final BasicDBObject basicDBObject = toDbObject.convert(formModel);
-        dropAndInsert(basicDBObject);
+        dropAndInsert(toDBObject.apply(formModel));
     }
-
 
     @Override
     public void insertModelAsJsonString(final String json) {
         LOG.debug("with content " + json);
 
-        //we do this via model, as this quarantees validness of data
-        final BasicDBObject convert1 = validateJson(json);
-        dropAndInsert(convert1);
-        holder.updateModel(find());
+        FormModel formModel = new JsonStringToFormModel().apply(json);
+        dropAndInsert(toDBObject.apply(formModel));
+        holder.updateModel(formModel);
     }
 
-    private synchronized void dropAndInsert(BasicDBObject convert1) {
-        getCollection().drop();
-        getCollection().insert(convert1);
+    private synchronized void dropAndInsert(final DBObject dbObject) {
+        final DBCollection collection = getCollection();
+        collection.drop();
+        collection.insert(dbObject);
     }
 
-    private BasicDBObject validateJson(String json) {
-        final FormModel converted = FormModelFactory.fromJSONString(json);
-        return toDbObject.convert(converted);
-    }
-
-
-    @Override
-    public void delete(FormModel formModel) {
-        final BasicDBObject basicDBObject = toDbObject.convert(formModel);
-        getCollection().remove(basicDBObject);
-    }
 }

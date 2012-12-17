@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import com.google.common.base.Joiner;
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
@@ -49,7 +50,7 @@ public class FormController extends ExceptionController {
     public static final String DEFAULT_VIEW = "elements/Phase";
     public static final String VERBOSE_HELP_VIEW = "help";
     public static final String LINK_LIST_VIEW = "linkList";
-    public static final String REDIRECT_LOMAKE = "redirect:/lomake/";
+    public static final String REDIRECT_LOMAKE = "redirect:/lomake";
     public static final String VALMIS_VIEW = "valmis";
 
     final FormService formService;
@@ -58,7 +59,7 @@ public class FormController extends ExceptionController {
 
     @Autowired
     public FormController(@Qualifier("formServiceImpl") final FormService formService,
-                          ApplicationService applicationService, final UserPrefillDataService userPrefillDataService) {
+                          final ApplicationService applicationService, final UserPrefillDataService userPrefillDataService) {
         this.formService = formService;
         this.applicationService = applicationService;
         this.userPrefillDataService = userPrefillDataService;
@@ -83,14 +84,15 @@ public class FormController extends ExceptionController {
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.GET)
-    public String getHakemus(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
-        LOGGER.debug("getHakemus {}, {}", new Object[]{applicationPeriodId, formId});
-        Application application = applicationService.getHakemus(new FormId(applicationPeriodId, formId));
+    public String getApplication(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
+        LOGGER.debug("getApplication {}, {}", new Object[]{applicationPeriodId, formId});
+        Application application = applicationService.getApplication(new FormId(applicationPeriodId, formId));
         if (application.isNew()) {
             Phase firstPhase = formService.getFirstCategory(applicationPeriodId, formId);
             return "redirect:" + formId + "/" + firstPhase.getId();
         } else {
-            return REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + application.getVaiheId();
+            Joiner joiner = Joiner.on("/").skipNulls();
+            return joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId, application.getVaiheId());
         }
     }
 
@@ -104,7 +106,7 @@ public class FormController extends ExceptionController {
         Element element = activeForm.getElementById(elementId);
         final ModelAndView modelAndView = new ModelAndView("/elements/" + element.getType());
         final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
-        Map<String, String> values = applicationService.getHakemus(formId).getVastauksetMerged();
+        Map<String, String> values = applicationService.getApplication(formId).getVastauksetMerged();
         values = userPrefillDataService.populateWithPrefillData(values);
         modelAndView.addObject("categoryData", values);
         modelAndView.addObject("element", element);
@@ -112,7 +114,8 @@ public class FormController extends ExceptionController {
         return modelAndView.addObject("hakemusId", formId);
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{elementId}/relatedData/{key}", method = RequestMethod.GET,
+    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{elementId}/relatedData/{key}",
+            method = RequestMethod.GET,
             produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Serializable getElementRelatedData(@PathVariable final String applicationPeriodId,
@@ -134,7 +137,9 @@ public class FormController extends ExceptionController {
     public ModelAndView prefillForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId,
                                     @RequestBody final MultiValueMap<String, String> multiValues) {
         userPrefillDataService.addUserPrefillData(multiValues.toSingleValueMap());
-        return new ModelAndView(REDIRECT_LOMAKE + applicationPeriodId + "/" + formId);
+        Joiner joiner = Joiner.on("/").skipNulls();
+        String path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId);
+        return new ModelAndView(path);
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{categoryId}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
@@ -144,11 +149,13 @@ public class FormController extends ExceptionController {
                                      @RequestBody final MultiValueMap<String, String> multiValues) {
         LOGGER.debug("saveCategory {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, categoryId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
-        ApplicationState applicationState = applicationService.tallennaVaihe(new ApplicationPhase(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
+        ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId, categoryId, multiValues.toSingleValueMap()));
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         if (applicationState.isValid()) {
-            modelAndView = new ModelAndView(REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + applicationState.getHakemus().getVaiheId());
+            Joiner joiner = Joiner.on("/").skipNulls();
+            String path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId, applicationState.getHakemus().getVaiheId());
+            modelAndView = new ModelAndView(path);
         } else {
             modelAndView.addAllObjects(applicationState.getModelObjects());
             Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
@@ -159,22 +166,26 @@ public class FormController extends ExceptionController {
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/send", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-    public ModelAndView sendForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
-        LOGGER.debug("sendForm {}, {}", new Object[]{applicationPeriodId, formId});
-        applicationService.laitaVireille(new FormId(applicationPeriodId, formId));
-        return new ModelAndView(REDIRECT_LOMAKE + applicationPeriodId + "/" + formId + "/" + VALMIS_VIEW);
+    public ModelAndView submitApplication(@PathVariable final String applicationPeriodId,
+                                          @PathVariable final String formId) {
+        LOGGER.debug("submitApplication {}, {}", new Object[]{applicationPeriodId, formId});
+        String oid = applicationService.submitApplication(new FormId(applicationPeriodId, formId));
+        Joiner joiner = Joiner.on("/").skipNulls();
+        String path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId, VALMIS_VIEW, oid.replaceAll("\\.", "_"));
+        return new ModelAndView(path);
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}/valmis", method = RequestMethod.GET)
+    @RequestMapping(value = "/{applicationPeriodId}/{formId}/valmis/{oid}", method = RequestMethod.GET)
     public ModelAndView getComplete(@PathVariable final String applicationPeriodId,
-                                    @PathVariable final String formId) {
+                                    @PathVariable final String formId,
+                                    @PathVariable final String oid) {
 
-        LOGGER.debug("sendForm {}, {}", new Object[]{applicationPeriodId, formId});
+        LOGGER.debug("getComplete {}, {}", new Object[]{applicationPeriodId, formId});
         ModelAndView modelAndView = new ModelAndView(VALMIS_VIEW);
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         modelAndView.addObject("form", activeForm);
         final FormId hakuLomakeId = new FormId(applicationPeriodId, activeForm.getId());
-        final Application application = applicationService.getHakemus(hakuLomakeId);
+        final Application application = applicationService.getApplication(hakuLomakeId, oid);
         modelAndView.addObject("categoryData", application.getVastaukset());
         modelAndView.addObject("hakemusId", hakuLomakeId);
         return modelAndView.addObject("applicationNumber", application.getOid());

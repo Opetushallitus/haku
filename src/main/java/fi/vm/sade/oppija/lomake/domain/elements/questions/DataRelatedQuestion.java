@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012. The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -16,19 +16,21 @@
 package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Base class of data related question.
  * Contains key value pairs of data.
+ *
  * @author Mikko Majapuro
  */
 public abstract class DataRelatedQuestion<E extends Serializable> extends Question {
     protected Map<String, E> data;
-    
+
     protected DataRelatedQuestion(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
-            @JsonProperty(value = "data") Map<String, E> data) {
+                                  @JsonProperty(value = "data") Map<String, E> data) {
         super(id, title);
         this.data = data;
     }
@@ -36,7 +38,7 @@ public abstract class DataRelatedQuestion<E extends Serializable> extends Questi
     public Map<String, E> getData() {
         return data;
     }
-    
+
     public E getData(String key) {
         return data.get(key);
     }

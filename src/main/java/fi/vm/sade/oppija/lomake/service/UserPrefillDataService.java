@@ -18,28 +18,32 @@ package fi.vm.sade.oppija.lomake.service;
 import java.util.Map;
 
 /**
- *  Service to get user prefill data.
+ * Service to get user prefill data.
+ *
  * @author Mikko Majapuro
  */
 public interface UserPrefillDataService {
-    
+
     /**
      * Get all the user prefill data
+     *
      * @return map of prefill data
      */
     Map<String, String> getUserPrefillData();
-    
+
     /**
      * Populates data with user prefill data.
      * If key value pair is already found, method does not overwrite it.
+     *
      * @param data data to be populated with prefill data
      * @return populated data
      */
     Map<String, String> populateWithPrefillData(Map<String, String> data);
-    
+
     /**
      * Adds user prefill data
      * Overwrites values of the existing keys
+     *
      * @param data data to be added to the user prefill data
      */
     void addUserPrefillData(Map<String, String> data);

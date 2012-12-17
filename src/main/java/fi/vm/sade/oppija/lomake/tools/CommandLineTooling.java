@@ -24,7 +24,8 @@ package fi.vm.sade.oppija.lomake.tools;
 public final class CommandLineTooling {
 
 
-    private CommandLineTooling() {}
+    private CommandLineTooling() {
+    }
 
     public static void main(final String[] args) {
         final CommandExecutor commandExecutor = new CommandExecutor(args);

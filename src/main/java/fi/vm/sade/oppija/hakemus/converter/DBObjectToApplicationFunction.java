@@ -10,7 +10,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
 
@@ -19,19 +19,19 @@ package fi.vm.sade.oppija.hakemus.converter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.base.Function;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import org.springframework.core.convert.converter.Converter;
 
 /**
  * @author jukka
  * @version 11/22/125:11 PM}
  * @since 1.1
  */
-public class DBObjectToHakemusConverter implements Converter<DBObject, Application> {
+public class DBObjectToApplicationFunction implements Function<DBObject, Application> {
 
     @Override
-    public Application convert(DBObject dbObject) {
+    public Application apply(DBObject dbObject) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);

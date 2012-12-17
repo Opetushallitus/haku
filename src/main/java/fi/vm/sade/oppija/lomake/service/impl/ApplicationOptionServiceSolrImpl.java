@@ -40,7 +40,7 @@ public class ApplicationOptionServiceSolrImpl implements ApplicationOptionServic
 
     @Override
     public List<Organization> searchOrganisaatio(final String hakuId, final String term) {
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(2);
         Set<Organization> organizations = new HashSet<Organization>();
         String startswith = term.trim();
         if (!startswith.isEmpty()) {

@@ -16,9 +16,9 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
-import fi.vm.sade.oppija.lomake.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.oppija.lomake.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -30,9 +30,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
@@ -66,14 +67,14 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     @Test
     public void testFindAll() throws Exception {
         testTallennaVaihe();
-        Application application = applicationDAO.find(formId, TEST_USER);
-        assertEquals(ARVO, application.getVastauksetMerged().get(AVAIN));
+        List<Application> listOfApplications = applicationDAO.find(new Application(formId, TEST_USER));
+        assertEquals(1, listOfApplications.size());
     }
 
     @Test
     public void testFindAllNotFound() throws Exception {
-        Application application = applicationDAO.find(formId, TEST_USER2);
-        assertNotSame(ARVO, application.getVastauksetMerged().get(AVAIN));
+        List<Application> applications = applicationDAO.find(new Application(formId, TEST_USER));
+        assertTrue(applications.isEmpty());
     }
 
     @Test

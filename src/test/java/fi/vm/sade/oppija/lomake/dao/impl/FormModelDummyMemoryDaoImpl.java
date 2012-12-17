@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.dao.impl;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.dao.FormModelDAO;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
@@ -448,11 +449,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
 
     @Override
-    public FormModel find() {
-        return formModel;
-    }
-
-    @Override
     public void insert(FormModel formModel) {
         throw new RuntimeException("Insert not implemented");
     }
@@ -472,6 +468,16 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     public FormModel getModel() {
         return formModel;
+    }
+
+    @Override
+    public List<FormModel> find(FormModel formModel) {
+        return Lists.newArrayList(formModel);
+    }
+
+    @Override
+    public void update(FormModel o, FormModel n) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

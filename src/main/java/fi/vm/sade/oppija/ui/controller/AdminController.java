@@ -97,7 +97,7 @@ public class AdminController {
     public ModelAndView editModel() {
         final FormModel model = formModelHolder.getModel();
         final ModelAndView modelAndView = new ModelAndView("admin/editModel");
-        final String convert = new FormModelToJsonString().convert(model);
+        final String convert = new FormModelToJsonString().apply(model);
         modelAndView.addObject("model", convert);
         return modelAndView;
     }

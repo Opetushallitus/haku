@@ -19,7 +19,10 @@ package fi.vm.sade.oppija.hakemus.domain;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import fi.vm.sade.oppija.lomake.domain.*;
+import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.ObjectIdDeserializer;
+import fi.vm.sade.oppija.lomake.domain.ObjectIdSerializer;
+import fi.vm.sade.oppija.lomake.domain.User;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -49,9 +52,9 @@ public class Application implements Serializable {
     private String oid;
 
     private static final long serialVersionUID = -7491168801255850954L;
-
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private FormId formId;
-    private final User user;
+    private User user;
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     @JsonProperty(value = "vaiheId")
     private String vaiheId;
@@ -70,6 +73,21 @@ public class Application implements Serializable {
     }
 
     @JsonIgnore
+    public Application(User user) {
+        this.user = user;
+    }
+
+    @JsonIgnore
+    public Application() {
+    }
+
+    @JsonIgnore
+    public Application(final String oid) {
+        this.oid = oid;
+    }
+
+
+    @JsonIgnore
     public Application(@JsonProperty(value = "hakuLomakeId") final FormId formId,
                        @JsonProperty(value = "user") final User user) {
         this.formId = formId;
@@ -80,6 +98,12 @@ public class Application implements Serializable {
         this(vaihe.getFormId(), user);
         addVaiheenVastaukset(vaihe.getVaiheId(), vaihe.getVastaukset());
     }
+
+    public Application(final FormId formId, final String oid) {
+        this.formId = formId;
+        this.oid = oid;
+    }
+
 
     public Application addVaiheenVastaukset(final String vaiheId, Map<String, String> vastaukset) {
         this.vaiheId = vastaukset.remove(VAIHE_ID);

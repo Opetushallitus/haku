@@ -23,7 +23,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.Titled;
  * Table element with data sorting functionality
  *
  * @author Mikko Majapuro
- *
  */
 public class SortableTable extends Titled {
 

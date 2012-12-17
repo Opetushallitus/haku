@@ -16,26 +16,21 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
+import fi.vm.sade.oppija.common.dao.BaseDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
-
-import java.util.List;
 
 /**
  * DAO interface for saving, updating and finding applications made by users.
  *
  * @author Hannu Lyytikainen
  */
-public interface ApplicationDAO {
+public interface ApplicationDAO extends BaseDAO<Application> {
     ApplicationState tallennaVaihe(ApplicationState state);
 
-    Application find(FormId formId, User user);
+    String laitaVireille(FormId formId, User user);
 
-    List<Application> findAll(User user);
-
-    Application find(String oid);
-
-    String laitaVireille(FormId hakulomakeId, User user);
+    Application findPendingApplication(Application application);
 }

@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.lomake.tools;
 
 import fi.vm.sade.oppija.lomake.converter.FormModelToJsonString;
+import fi.vm.sade.oppija.lomake.converter.FormModelToMap;
 import fi.vm.sade.oppija.lomake.dao.FormModelDAO;
 import fi.vm.sade.oppija.lomake.dao.impl.FormModelDAOMongoImpl;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
@@ -80,8 +81,9 @@ public class CommandExecutor {
     }
 
     protected void export(File file) {
-        final FormModel model = getService().find();
-        final String contentAsString = new FormModelToJsonString().convert(model);
+        System.out.println(new FormModelToMap().apply(new FormModel()));
+        final FormModel model = getService().find(new FormModel()).get(0);
+        final String contentAsString = new FormModelToJsonString().apply(model);
         final String filename = createFilename(file, model);
         LOG.info("writing file: " + filename);
         write(contentAsString, filename);

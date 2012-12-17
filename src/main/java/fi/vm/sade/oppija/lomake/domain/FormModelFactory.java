@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
-import fi.vm.sade.oppija.lomake.converter.JsonStringToFormModelConverter;
+import fi.vm.sade.oppija.lomake.converter.JsonStringToFormModel;
 import fi.vm.sade.oppija.lomake.tools.FileHandling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,13 +37,13 @@ public final class FormModelFactory {
     }
 
     public static FormModel fromJSONString(String json) {
-        return new JsonStringToFormModelConverter().convert(json);
+        return new JsonStringToFormModel().apply(json);
     }
 
     public static FormModel fromFileName(String filename) {
         final FileHandling fileHandling = new FileHandling();
         final String content = fileHandling.readFile(new File(filename));
-        return new JsonStringToFormModelConverter().convert(content);
+        return new JsonStringToFormModel().apply(content);
     }
 
     public static FormModel fromClassPathResource(String fileName) {
@@ -57,6 +57,6 @@ public final class FormModelFactory {
         } catch (IOException e) {
             LOG.error("", e);
         }
-        return new JsonStringToFormModelConverter().convert(json);
+        return new JsonStringToFormModel().apply(json);
     }
 }

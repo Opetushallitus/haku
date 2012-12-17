@@ -17,11 +17,7 @@
 package fi.vm.sade.oppija.hakemus.domain;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.lomake.domain.Preference;
-import fi.vm.sade.oppija.lomake.domain.PreferenceHelper;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-
-import java.util.List;
 
 /**
  * @author jukka
@@ -32,14 +28,12 @@ public class ApplicationInfo {
     final Application application;
     final Form form;
     final ApplicationPeriod applicationPeriod;
-    private List<Preference> preferences;
 
 
-    public ApplicationInfo(Application application, Form form, ApplicationPeriod applicationPeriod) {
+    public ApplicationInfo(final Application application, final Form form, final ApplicationPeriod applicationPeriod) {
         this.application = application;
         this.form = form;
         this.applicationPeriod = applicationPeriod;
-        this.preferences = new PreferenceHelper(application.getVastauksetMerged()).getOpetuspisteet();
     }
 
     public Application getApplication() {
@@ -54,7 +48,8 @@ public class ApplicationInfo {
         return applicationPeriod;
     }
 
-    public List<Preference> getPreferences() {
-        return preferences;
+    public boolean isPending() {
+        return "valmis".equals(this.application.getVaiheId());
     }
+
 }

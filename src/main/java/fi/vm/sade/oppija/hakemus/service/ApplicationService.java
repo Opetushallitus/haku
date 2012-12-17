@@ -31,13 +31,15 @@ import java.util.List;
  */
 public interface ApplicationService {
 
-    List<ApplicationInfo> findAll();
+    List<ApplicationInfo> getUserApplicationInfo();
 
-    Application getHakemus(FormId formId);
+    Application getApplication(FormId formId);
 
-    ApplicationState tallennaVaihe(final ApplicationPhase vaihe);
+    ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase);
 
-    Application getHakemus(String oid);
+    Application getApplication(String oid);
 
-    void laitaVireille(final FormId vaihe);
+    String submitApplication(final FormId formId);
+
+    Application getApplication(FormId formId, String oid);
 }

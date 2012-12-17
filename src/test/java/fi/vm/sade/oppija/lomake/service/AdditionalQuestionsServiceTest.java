@@ -16,14 +16,14 @@
 
 package fi.vm.sade.oppija.lomake.service;
 
-import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.hakemus.service.impl.ApplicationServiceImpl;
+import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.service.impl.AdditionalQuestionServiceImpl;
-import fi.vm.sade.oppija.hakemus.service.impl.ApplicationServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -63,7 +63,7 @@ public class AdditionalQuestionsServiceTest {
         Application application = new Application(FORM_ID, TESTUSER);
         application.addVaiheenVastaukset("hakutoiveet", values);
 
-        when(applicationService.getHakemus(FORM_ID)).thenReturn(application);
+        when(applicationService.getApplication(FORM_ID)).thenReturn(application);
 
         return applicationService;
     }

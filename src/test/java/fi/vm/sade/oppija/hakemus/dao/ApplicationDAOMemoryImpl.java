@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.hakemus.dao;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
@@ -38,55 +39,41 @@ import java.util.List;
 public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
 
     private static final long serialVersionUID = -3751714345380438532L;
-    private final List<Application> hakemukset = new ArrayList<Application>();
+    public final List<Application> hakemukset = new ArrayList<Application>();
 
-    public Application find(final FormId formId, final User user) {
-        Collection<Application> kayttajanHakemukset = Collections2.filter(hakemukset, new Predicate<Application>() {
+    public List<Application> find(final Application application) {
+        Collection<Application> applications = Collections2.filter(hakemukset, new Predicate<Application>() {
             @Override
             public boolean apply(final Application hakemus) {
-                return hakemus.getUser().equals(user) && hakemus.getFormId().equals(formId);
+                return hakemus.getUser().equals(application.getUser()) && hakemus.getFormId().equals(application.getFormId());
             }
         });
-        Application application;
-        if (kayttajanHakemukset.isEmpty()) {
-            application = new Application(formId, user);
-            hakemukset.add(application);
-        } else {
-            application = kayttajanHakemukset.iterator().next();
-        }
+        return Lists.newArrayList(applications);
+    }
+
+    @Override
+    public void update(Application o, Application n) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void delete(Application application) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String laitaVireille(FormId formId, User user) {
+        return "1";
+    }
+
+    @Override
+    public Application findPendingApplication(Application application) {
         return application;
     }
 
     @Override
-    public List<Application> findAll(final User user) {
-        Collection<Application> kayttajanHakemukset = Collections2.filter(hakemukset, new Predicate<Application>() {
-            @Override
-            public boolean apply(final Application hakemus) {
-                return hakemus.getUser().equals(user);
-            }
-        });
-        ArrayList<Application> hakemukset = new ArrayList<Application>();
-        hakemukset.addAll(kayttajanHakemukset);
-        return hakemukset;
-    }
-
-    @Override
-    public Application find(String oid) {
-        throw new UnsupportedOperationException("not supported");
-    }
-
-    @Override
-    public String laitaVireille(FormId hakulomakeId, User user) {
-        return "1";
-    }
-
-    public String getNewOid() {
-        return "" + System.currentTimeMillis();
-    }
-
-    @Override
     public ApplicationState tallennaVaihe(final ApplicationState state) {
-        Application application = find(state.getHakemus().getFormId(), state.getHakemus().getUser());
+        Application application = find(new Application(state.getHakemus().getFormId(), state.getHakemus().getUser())).get(0);
         application.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());
         hakemukset.add(application);
         return state;

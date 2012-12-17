@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.service.impl;
 
+import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -24,7 +25,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -49,7 +49,7 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
 
     @Override
     public Set<Question> findAdditionalQuestions(String teemaId, FormId formId, String vaiheId) {
-        Map<String, String> hakemusValues = applicationService.getHakemus(formId).getVastauksetMerged();
+        Map<String, String> hakemusValues = applicationService.getApplication(formId).getVastauksetMerged();
         List<String> hakukohdeList = new ArrayList<String>();
 
         int prefNumber = 1;

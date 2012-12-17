@@ -19,8 +19,9 @@ package fi.vm.sade.oppija.hakemus.controller;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.oppija.lomake.domain.*;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,29 +44,34 @@ public class HakemusControllerTest {
         hakemusController = new ApplicationController();
         hakemusController.applicationService = new ApplicationService() {
             @Override
-            public List<ApplicationInfo> findAll() {
+            public List<ApplicationInfo> getUserApplicationInfo() {
                 return null;
             }
 
             @Override
-            public Application getHakemus(FormId formId) {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            public Application getApplication(FormId formId) {
+                return APPLICATION;  //To change body of implemented methods use File | Settings | File Templates.
             }
 
 
             @Override
-            public ApplicationState tallennaVaihe(ApplicationPhase vaihe) {
+            public ApplicationState saveApplicationPhase(ApplicationPhase vaihe) {
                 return null;
             }
 
             @Override
-            public Application getHakemus(String oid) {
+            public Application getApplication(String oid) {
                 return APPLICATION;
             }
 
             @Override
-            public void laitaVireille(FormId vaihe) {
-                //To change body of implemented methods use File | Settings | File Templates.
+            public String submitApplication(FormId vaihe) {
+                return "1.1.1.1.";
+            }
+
+            @Override
+            public Application getApplication(FormId formId, String oid) {
+                return APPLICATION;
             }
 
         };

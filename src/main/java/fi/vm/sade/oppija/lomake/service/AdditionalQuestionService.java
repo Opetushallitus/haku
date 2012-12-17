@@ -32,8 +32,8 @@ public interface AdditionalQuestionService {
     /**
      * Lists questions in a given teema based on current answers.
      *
-     * @param teemaId      teema id
-     * @param formId hakemus id
+     * @param teemaId teema id
+     * @param formId  hakemus id
      * @return list of questions
      */
     Set<Question> findAdditionalQuestions(String teemaId, FormId formId, String vaiheId);
@@ -43,7 +43,7 @@ public interface AdditionalQuestionService {
      *
      * @param teemaId      teema id
      * @param hakukohdeIds education targets
-     * @param formId hakemus id
+     * @param formId       hakemus id
      * @return list of questions
      */
     Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, FormId formId, String vaiheId);

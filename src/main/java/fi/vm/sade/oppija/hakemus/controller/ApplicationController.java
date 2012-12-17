@@ -50,7 +50,7 @@ public class ApplicationController extends ExceptionController {
         //TODO implement this
         List<Application> result = new ArrayList<Application>();
         if (term != null && !term.isEmpty()) {
-            Application app = applicationService.getHakemus(term);
+            Application app = applicationService.getApplication(term);
             if (app != null) {
                 result.add(app);
             }
@@ -62,6 +62,6 @@ public class ApplicationController extends ExceptionController {
     @ResponseBody
     public Application getApplication(@PathVariable String oid) {
         LOGGER.debug("oid {}", oid);
-        return applicationService.getHakemus(oid);
+        return applicationService.getApplication(oid);
     }
 }

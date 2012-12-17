@@ -16,18 +16,20 @@
 
 package fi.vm.sade.oppija.lomake.converter;
 
+import com.google.common.base.Function;
 import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
 /**
  * @author jukka
  * @version 9/14/123:44 PM}
  * @since 1.1
  */
-public class FormModelToJsonString implements Converter<FormModel, String> {
+@Component
+public class FormModelToJsonString implements Function<FormModel, String> {
     @Override
-    public String convert(FormModel formModel) {
-        return JSON.serialize(new FormModelToMapConverter().convert(formModel));
+    public String apply(FormModel formModel) {
+        return JSON.serialize(new FormModelToMap().apply(formModel));
     }
 }

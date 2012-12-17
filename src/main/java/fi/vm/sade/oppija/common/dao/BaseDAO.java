@@ -14,21 +14,14 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain.elements.custom;
+package fi.vm.sade.oppija.common.dao;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.vm.sade.oppija.lomake.domain.PostOffice;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
+import java.util.List;
 
-import java.util.Map;
+public interface BaseDAO<T> {
+    public List<T> find(T t);
 
-/**
- * @author Mikko Majapuro
- */
-public class PostalCode extends DataRelatedQuestion<PostOffice> {
+    public void update(T o, T n);
 
-    public PostalCode(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
-                      @JsonProperty(value = "data") Map<String, PostOffice> data) {
-        super(id, title, data);
-    }
+    public void delete(T t);
 }

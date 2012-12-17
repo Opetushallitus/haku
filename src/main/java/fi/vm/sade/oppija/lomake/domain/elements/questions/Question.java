@@ -27,7 +27,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 public abstract class Question extends Titled {
 
     private boolean inline = false;
-    
+
     protected Question(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title) {
         super(id, title);
         addAttribute("id", id);

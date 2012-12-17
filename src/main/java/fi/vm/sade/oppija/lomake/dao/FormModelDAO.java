@@ -16,20 +16,17 @@
 
 package fi.vm.sade.oppija.lomake.dao;
 
+import fi.vm.sade.oppija.common.dao.BaseDAO;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 
 /**
  * @author hannu
  */
-public interface FormModelDAO {
-
-    FormModel find();
+public interface FormModelDAO extends BaseDAO<FormModel> {
 
     void insert(FormModel formModel);
 
     void insertModelAsJsonString(String jsonString);
-
-    void delete(FormModel formModel);
 
 
 }

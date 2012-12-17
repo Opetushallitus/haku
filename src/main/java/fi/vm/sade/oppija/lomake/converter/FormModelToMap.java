@@ -16,27 +16,23 @@
 
 package fi.vm.sade.oppija.lomake.converter;
 
-import com.mongodb.BasicDBObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.base.Function;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import org.springframework.core.convert.converter.Converter;
 
 import java.util.Map;
 
 /**
  * @author jukka
- * @version 9/12/124:29 PM}
+ * @version 9/12/125:19 PM}
  * @since 1.1
  */
-
-public class FormModelToBasicDBObject implements Converter<FormModel, BasicDBObject> {
-
-    private final FormModelToMapConverter formModelToMapConverter = new FormModelToMapConverter();
-
+public class FormModelToMap implements Function<FormModel, Map> {
     @Override
-    public BasicDBObject convert(FormModel formModel) {
-        Map formModelMap = formModelToMapConverter.convert(formModel);
-        return new BasicDBObject(formModelMap);
+    public Map apply(FormModel formModel) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        return mapper.convertValue(formModel, Map.class);
     }
-
-
 }

@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.IllegalStateException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -61,7 +62,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public ApplicationState tallennaVaihe(ApplicationPhase applicationPhase) {
+    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase) {
         final Application application = new Application(this.userHolder.getUser(), applicationPhase);
         final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getVaiheId());
         final String applicationPeriodId = applicationState.getHakemus().getFormId().getApplicationPeriodId();
@@ -79,38 +80,59 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getHakemus(String oid) {
-        return this.applicationDAO.find(oid);
+    public Application getApplication(String oid) {
+        return getApplication(new Application(oid));
     }
 
     @Override
-    public void laitaVireille(final FormId formId) {
-        Application application = applicationDAO.find(formId, userHolder.getUser());
+    public String submitApplication(final FormId formId) {
+        Application application = applicationDAO.findPendingApplication(new Application(formId, userHolder.getUser()));
         Form form = formService.getForm(formId.getApplicationPeriodId(), formId.getFormId());
         ValidationResult validationResult = ElementTreeValidator.validate(form, application.getVastauksetMerged());
         if (!validationResult.hasErrors()) {
-            this.applicationDAO.laitaVireille(formId, userHolder.getUser());
+            return this.applicationDAO.laitaVireille(formId, userHolder.getUser());
         } else {
             throw new IllegalStateException("Could not send the application");
         }
     }
 
     @Override
-    public List<ApplicationInfo> findAll() {
-        List<ApplicationInfo> all = new ArrayList<ApplicationInfo>();
-        final List<Application> listOfApplications = applicationDAO.findAll(userHolder.getUser());
-        for (Application application : listOfApplications) {
+    public Application getApplication(FormId formId, String oid) {
+        Application application = new Application(formId, userHolder.getUser());
+        application.setOid(oid);
+        return getApplication(application);
+    }
+
+    @Override
+    public List<ApplicationInfo> getUserApplicationInfo() {
+        List<ApplicationInfo> listOfApplicationInfos = new ArrayList<ApplicationInfo>();
+        List<Application> listOfUserApplications = applicationDAO.find(new Application(userHolder.getUser()));
+        for (Application application : listOfUserApplications) {
             final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(application.getFormId().getApplicationPeriodId());
             final String id = applicationPeriod.getId();
             final String formId = application.getFormId().getFormId();
             final Form form = formService.getForm(id, formId);
-            all.add(new ApplicationInfo(application, form, applicationPeriod));
+            listOfApplicationInfos.add(new ApplicationInfo(application, form, applicationPeriod));
         }
-        return all;
+        return listOfApplicationInfos;
     }
 
     @Override
-    public Application getHakemus(final FormId formId) {
-        return applicationDAO.find(formId, userHolder.getUser());
+    public Application getApplication(final FormId formId) {
+        Application application = new Application(formId, userHolder.getUser());
+        List<Application> listOfApplications = applicationDAO.find(application);
+        if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
+            return application;
+        }
+        return listOfApplications.get(0);
+    }
+
+    private Application getApplication(final Application application) {
+        List<Application> listOfApplications = applicationDAO.find(application);
+        if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
+            throw new ResourceNotFoundException("Could not find application " + listOfApplications.size());
+        }
+        return listOfApplications.get(0);
+
     }
 }

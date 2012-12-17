@@ -18,12 +18,13 @@ package fi.vm.sade.oppija.hakemus.converter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.base.Function;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.convert.converter.Converter;
 
 import java.util.Map;
 
@@ -32,11 +33,12 @@ import java.util.Map;
  * @version 11/22/124:39 PM}
  * @since 1.1
  */
-public class HakemusToBasicDBObjectConverter implements Converter<Application, BasicDBObject> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HakemusToBasicDBObjectConverter.class);
+public class ApplicationToDBObjectFunction implements Function<Application, DBObject> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationToDBObjectFunction.class);
 
     @Override
-    public BasicDBObject convert(Application application) {
+    public DBObject apply(Application application) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         mapper.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);

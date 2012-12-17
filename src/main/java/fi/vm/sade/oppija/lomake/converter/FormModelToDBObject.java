@@ -14,21 +14,29 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain.elements.custom;
+package fi.vm.sade.oppija.lomake.converter;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.vm.sade.oppija.lomake.domain.PostOffice;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
+import com.google.common.base.Function;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
 
 import java.util.Map;
 
 /**
- * @author Mikko Majapuro
+ * @author jukka
+ * @version 9/12/124:29 PM}
+ * @since 1.1
  */
-public class PostalCode extends DataRelatedQuestion<PostOffice> {
+public class FormModelToDBObject implements Function<FormModel, DBObject> {
 
-    public PostalCode(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
-                      @JsonProperty(value = "data") Map<String, PostOffice> data) {
-        super(id, title, data);
+    private final FormModelToMap formModelToMapConverter = new FormModelToMap();
+
+    @Override
+    public DBObject apply(final FormModel formModel) {
+        Map formModelMap = formModelToMapConverter.apply(formModel);
+        return new BasicDBObject(formModelMap);
     }
+
+
 }

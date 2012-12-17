@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationOption;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.Organization;
@@ -24,7 +25,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.ApplicationOptionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -82,7 +82,7 @@ public class EducationController {
         hakukohdeIds.add(hakukohdeId);
         Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakukohdeIds, formId, vaiheId);
         modelAndView.addObject("additionalQuestions", additionalQuestions);
-        modelAndView.addObject("categoryData", applicationService.getHakemus(formId).getVastauksetMerged());
+        modelAndView.addObject("categoryData", applicationService.getApplication(formId).getVastauksetMerged());
         return modelAndView;
     }
 }

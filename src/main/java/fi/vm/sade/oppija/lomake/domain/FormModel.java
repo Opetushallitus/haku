@@ -35,13 +35,14 @@ public class FormModel implements Serializable {
 
     private static final long serialVersionUID = -530066716898062722L;
 
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
+    final Map<String, ApplicationPeriod> applicationPerioidMap;
+
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     @JsonProperty(value = "_id")
     @JsonDeserialize(using = ObjectIdDeserializer.class)
     @JsonSerialize(using = ObjectIdSerializer.class)
     private org.bson.types.ObjectId id;
-
-    final Map<String, ApplicationPeriod> applicationPerioidMap;
 
     public FormModel() {
         this.applicationPerioidMap = new HashMap<String, ApplicationPeriod>();

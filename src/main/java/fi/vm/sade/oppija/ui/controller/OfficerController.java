@@ -1,9 +1,24 @@
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
+
 package fi.vm.sade.oppija.ui.controller;
 
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
-import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.service.FormService;
@@ -20,21 +35,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
-/*
- * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
- *
- * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
- * soon as they will be approved by the European Commission - subsequent versions
- * of the EUPL (the "Licence");
- *
- * You may not use this work except in compliance with the Licence.
- * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * European Union Public Licence for more details.
- */
 @Controller
 @RequestMapping(value = "/virkailija", method = RequestMethod.GET)
 @Secured("ROLE_OFFICER")
@@ -50,24 +50,24 @@ public class OfficerController {
 
     @RequestMapping(value = "/hakemus/{oid}", method = RequestMethod.GET)
     public String getApplication(@PathVariable final String oid) {
-        LOGGER.debug("officer getApplication by oid {}", new Object[]{ oid });
-        Application app = applicationService.getHakemus(oid);
+        LOGGER.debug("officer getApplication by oid {}", new Object[]{oid});
+        Application app = applicationService.getApplication(oid);
         FormId formId = app.getFormId();
         return REDIRECT_VIRKAILIJA_HAKEMUS + formId.getApplicationPeriodId() + "/" + formId.getFormId() + "/" + app.getVaiheId() + "/" + oid + "/";
     }
 
     @RequestMapping(value = "/hakemus/{applicationPeriodId}/{formIdStr}/{phaseId}/{oid}", method = RequestMethod.GET)
     public ModelAndView getPhase(@PathVariable final String applicationPeriodId,
-                                   @PathVariable final String formIdStr,
-                                   @PathVariable final String phaseId,
-                                   @PathVariable final String oid) {
+                                 @PathVariable final String formIdStr,
+                                 @PathVariable final String phaseId,
+                                 @PathVariable final String oid) {
 
         LOGGER.debug("getPhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, phaseId, oid});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
         Phase phase = activeForm.getPhase(phaseId);
         final ModelAndView modelAndView = new ModelAndView("/virkailija/" + phase.getType());
         final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
-        Map<String, String> values = applicationService.getHakemus(oid).getVastauksetMerged();
+        Map<String, String> values = applicationService.getApplication(oid).getVastauksetMerged();
         modelAndView.addObject("categoryData", values);
         modelAndView.addObject("element", phase);
         modelAndView.addObject("form", activeForm);
