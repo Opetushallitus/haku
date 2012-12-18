@@ -12,7 +12,6 @@
 
         <xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
 
-        <div class="clear"></div>
         <div class="pagetitle">
             <h1><xsl:value-of select="types:Title"/></h1>
             <!-- koulutusohjelma listing here -->
