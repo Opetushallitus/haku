@@ -47,6 +47,7 @@
     -moz-transition: $property $duration;
     -webkit-transition: $property $duration; 
     -o-transition: $property $duration; 
+    -ms-transition: $property $duration; 
 }
 
 @mixin font-basics($font-size, $font-weight, $font-color) {

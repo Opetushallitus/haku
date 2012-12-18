@@ -1,0 +1,277 @@
+
+/*** Form elements
+************************************************/
+
+/*** Fieldset
+**********************************/
+
+fieldset {
+    border: none;
+    padding: 0px;
+    /*margin: 1em 0px;*/
+}
+
+fieldset legend {
+    padding: 0px;
+}
+
+fieldset small {
+    display: block;
+}
+
+fieldset hr {
+    margin: 0.5em 0px;
+}
+
+/***  Buttons
+**********************************/
+
+
+
+/***  Help link
+************************/
+
+.helplink {
+    float: right;
+    display: block;
+    width: 20px;
+    height: 21px;
+
+    color: transparent;
+    background-image: url('../../img/help-icon-sprite_idle-hover-selected-disabled.png');
+    background-position: 0px center;
+    background-repeat: no-repeat;
+}
+
+.helplink:hover {
+    background-position: -20px center;
+}
+
+.helplink:active, .helplink:focus {
+    background-position: -40px center;
+}
+
+.helplink:disabled, .helplink.disabled {
+    background-position: -60px center;
+}
+
+/***  Label
+**********************************/
+
+label, .label {
+    line-height: 2em;
+}
+
+/***  Input(checkbox), Input(radio)
+**********************************/
+
+.js-checkbox {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    overflow: hidden;
+    background-image: url(../../img/checkbox-sprite.png);
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+    cursor: pointer;
+}
+
+.js-checkbox:hover,
+.js-checkbox.hover {
+    background-position: -24px 0px;
+}
+
+.js-checkbox.selected {
+    background-position: -48px 0px;
+}
+
+.js-checkbox.focus {
+    background-position: 0px -24px;
+}
+
+.js-checkbox.focus:hover,
+.js-checkbox.focus.hover {
+    background-position: -24px -24px;
+}
+
+.js-checkbox.focus.selected {
+    background-position: -48px -24px;
+}
+
+.js-checkbox.disabled {
+    background-position: -0px -48px;
+}
+
+.js-checkbox.selected.disabled {
+    background-position: -48px -48px;
+}
+
+.js-radio {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    overflow: hidden;
+    background-image: url(../../img/radio-sprite.png);
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+    cursor: pointer;
+}
+
+.js-radio:hover,
+.js-radio.hover {
+    background-position: -24px 0px;
+}
+
+.js-radio.selected {
+    background-position: -48px 0px;
+}
+
+.js-radio.focus {
+    background-position: 0px -24px;
+}
+
+.js-radio.focus:hover,
+.js-radio.focus.hover {
+    background-position: -24px -24px;
+}
+
+.js-radio.focus.selected {
+    background-position: -48px -24px;
+}
+
+.js-radio.disabled {
+    background-position: -0px -48px;
+}
+
+.js-radio.selected.disabled {
+    background-position: -48px -48px;
+}
+
+.js-checkbox.disabled,
+.js-radio.disabled {
+    cursor: default;
+}
+
+/*** Input(text), Select
+**********************************/
+
+.field-container-select {
+    padding: 0px 2px 0px 0px;
+}
+
+.field-container-text {
+    padding: 0px 0.923em 0px 0px;
+}
+
+.field-container-select select,
+.field-container-text input[type="text"] {
+
+}
+
+/*** Input(radio), Input(checkbox)
+**********************************/
+/*
+.field-container-radio,
+.field-container-checkbox {
+    padding: 0px 0px 0px 2em;
+    position: relative;
+    overflow: hidden;
+}
+
+.field-container-radio input[type="radio"],
+.field-container-checkbox input[type="checkbox"] {
+    position: absolute;
+    top: 0.2em;
+    left: 0px;
+}
+
+.field-container-radio .js-radio,
+.field-container-checkbox .js-checkbox {
+    position: absolute;
+    top: 0.1em;
+    left: 0px;
+}
+*/
+
+/*** Form row structure
+************************************************/
+
+.form-row {
+    /*margin: 1.5em 0px;*/
+    clear: both;
+}
+
+.form-row-label {
+    float: left;
+    width: 173px;
+    /*padding: 0px 17px 0px 0px;*/
+    text-align: right;
+}
+
+.form-row-content {
+    float: left;
+    /*width: 300px;
+    max-width: 390px;
+    */
+}
+
+/*** Form item structure
+************************************************/
+
+.form-item {
+    /*margin: 1.5em 0px;*/
+    clear: both;
+}
+
+.form-item-label {
+    color: #000000;
+}
+
+.form .form-item-content {
+    /*padding: 0px 0px 0px 1em;*/
+}
+
+/*** Form item row
+************************************************/
+.form-item-row {
+
+}
+
+.form-item-row .form-item {
+    display: inline-block;
+    padding-right: 1em;
+}
+
+/*** Search result
+************************************************/
+
+.search-result {
+
+}
+
+.search-result .field-container-checkbox {
+
+}
+
+.search-result .result {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0 !important;
+    float: left;
+    width: 70%;
+}
+
+.search-result .result li {
+    padding-right: 2em;
+}
+
+.search-result .result-options {
+    padding: 0;
+    margin: 0;
+    width: 30%;
+    float: left;
+}
+

@@ -1,0 +1,107 @@
+
+/*** Virkailija-table-1 
+************************************************/
+
+.table-1 {
+    width: 100%;
+    border-spacing: 1px 0;
+
+    tr {
+
+        td,th {
+            line-height: 2.3em;
+            padding: 0 1.5em;
+            vertical-align: middle;
+        }
+
+    }
+
+    thead {
+        background-color: #eee;
+        background-image: url("../../img/table-header-bg.png");
+        background-repeat: repeat;
+        background-position: left top;
+
+        th {
+            border-bottom: 1px solid #c2c2c2;
+        }
+
+        tr:first-of-type {
+
+            th:first-of-type {
+                border-top-left-radius: 5px;
+            }
+
+            th:last-of-type {
+                border-top-right-radius: 5px;
+            }
+
+        }
+    }
+
+    tbody {
+
+        td {
+            border-spacing: 0;
+            border: 1px solid #ececec;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #eee;
+        }
+
+        tr:last-of-type {
+            
+            td:first-of-type {
+                border-bottom-left-radius: 5px;
+            }
+
+            td:last-of-type {
+                border-bottom-right-radius: 5px;
+            }
+        }
+    }
+
+    tr {
+        td.rule {
+            padding-left: 3em;
+            background-image: url("../img/ketju-saanto.png"); 
+            background-repeat: no-repeat;
+            background-position: 0.8em center;
+            background-size: 1.5em;
+        }
+
+        td.follow-up-question {
+            padding-left: 3em;
+            background-image: url("../img/nuoli-jatkokysymys.png"); 
+            background-repeat: no-repeat;
+            background-position: 0.8em center;
+            background-size: 1em;
+        }
+
+        td.condition {
+            padding-left: 3em;
+            background-image: url("../img/pykala-ehto.png"); 
+            background-repeat: no-repeat;
+            background-position: 0.8em center;
+            background-size: 1em;
+        }
+    }
+}
+
+
+/*** Virkailija-table-2
+************************************************/
+
+.table-2 {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+
+    tr.row-top-spacing td {
+        border-top: 15px solid transparent;
+    }
+
+    td {
+        border-right: 30px solid transparent;
+    }
+}

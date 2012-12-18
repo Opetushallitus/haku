@@ -1,0 +1,569 @@
+
+
+@mixin button-yellow-idle {
+    border-color:#dea300;
+    background-color:#feba00;
+    box-shadow: 0 1px 1px #fde091 inset, 0 -1px 4px rgba(255, 255, 255, 0.05) inset;
+}
+
+@mixin button-yellow-hover {
+    border-color:#c69100;
+    background-color:#e99f00;
+    box-shadow: 0 1px 1px #f8d991 inset, 0 -1px 4px rgba(255, 255, 255, 0.05) inset;
+}
+
+@mixin button-yellow-active {
+    border-color:#dd8b17;
+    background-color:#e39000;
+    box-shadow: 0 3px 6px #aa6a01 inset, 0 -1px 4px rgba(0, 0, 0, 0.05) inset;
+}
+
+@mixin button-disabled {
+    color:rgba(0, 0, 0, 0.5);
+    border-color:#d5d5d5;
+    background-color:#e3e3e3;
+    box-shadow: 0 1px 1px #f8f6ee inset, 0 -1px 4px rgba(255, 255, 255, 0.05) inset;
+    cursor:default;
+}
+
+@mixin button-custom-1 {
+    background-position:center center;
+    background-repeat:no-repeat;
+    width:30px;
+    height:28px;
+    padding:0px;
+    vertical-align:middle;
+}
+
+@mixin button-custom-2 {
+    display:block;
+    position:absolute;
+    width:100%;
+    height:100%;
+    font-size:36px;
+    line-height:28px;
+    text-align:center;
+}
+
+a.button {
+    text-decoration:none;
+    color:#000000;
+    text-shadow: 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.button {
+
+    /* Default button */
+    height:36px;
+    line-height:36px;
+    padding:0px 13px;
+    display:inline-block;
+    border-radius:3px;
+    border:solid 1px #ababab;
+    background-color:#c8c8c8;
+    box-shadow: 0 1px 1px #f1ecdd inset, 0 -1px 4px rgba(255, 255, 255, 0.05) inset;
+    cursor:pointer;
+    vertical-align:middle;
+    margin-bottom:5px;
+
+    @include transitions(background-color, 0.3s);
+
+    &:hover {
+        border-color:#9d9d9d;
+        background-color:#9d9d9d;
+        box-shadow: 0 1px 1px #e6e1d2 inset, 0 -1px 4px rgba(255, 255, 255, 0.05) inset;
+    }
+
+    &:focus,
+    &:active {
+        border-color:#7c7c7c;
+        background-color:#949494;
+        box-shadow: 0 3px 6px #5f5f5f inset, 0 -1px 4px rgba(0, 0, 0, 0.05) inset;
+    }
+
+
+    /*  Primary button */ 
+    &.primary {
+
+        @include button-yellow-idle;
+
+        &:hover {
+            @include button-yellow-hover;
+        }
+
+        &:active,
+        &:focus {
+            @include button-yellow-active;
+        }
+
+        &.disabled {
+            @include button-disabled;
+        }
+    }
+
+
+    /* Expand button */ 
+    &.expand {
+
+        background-image:url(../../img/button-icon-expand.png);
+        @include button-yellow-idle;
+
+        &:hover {
+            @include button-yellow-hover;
+        }
+
+        &:active,
+        &:focus {
+            @include button-yellow-active;
+        }
+
+        @include button-custom-1;
+        position: relative;
+
+        span {
+            @include button-custom-2;
+        }
+
+        &.small {
+            width: 22px;
+            height:22px
+        }
+    }
+
+
+    /* Collapse button*/ 
+    &.collapse{
+
+        background-image:url(../../img/button-icon-collapse.png);
+        @include button-yellow-idle;
+
+        &:hover {
+            @include button-yellow-hover;
+        }
+
+        &:active,
+        &:focus {
+            @include button-yellow-active;
+        }
+
+        @include button-custom-1;
+        position: relative;
+
+        span {
+            @include button-custom-2;
+        }
+
+        &.small {
+            width: 22px;
+            height: 22px;
+
+            span {
+                font-size: 25px;
+                line-height: 22px;
+            }
+        }
+    }
+
+    /* Up button */
+    &.up {
+        background-image:url(../../img/button-icon-up.png);
+        @include button-yellow-idle;
+
+        &:hover {
+            @include button-yellow-hover;
+        }
+
+        &:active,
+        &:focus {
+            @include button-yellow-active;
+        }
+
+        @include button-custom-1;
+
+        span {
+            display:none;
+            background-position:center center;
+            background-repeat:no-repeat;
+        }
+    }
+
+    /* Back button */
+    &.back {
+        background-image:url(../../img/button-icon-back.png);
+        @include button-yellow-idle;
+
+        &:hover {
+            @include button-yellow-hover;
+        }
+
+        &:active,
+        &:focus {
+            @include button-yellow-active;
+        }
+
+        @include button-custom-1;
+
+        span {
+            display:none;
+            background-position:center center;
+            background-repeat:no-repeat;
+        }
+    }
+
+
+    /* Blue plus button */
+    &.blueplus {
+        line-height:24px;
+        width:24px;
+        height:24px;
+        border:none;
+        padding:0px;
+        margin:0px 0px 5px 0px;
+        display:inline-block;
+        background:none;
+        background-image:url(../../img/button-blueplus-sprite.png);
+        background-repeat:no-repeat;
+        background-position:left center;
+        vertical-align:middle;
+        box-shadow:none;
+
+        &:hover {
+            background-position:right center;
+        }
+
+        &:focus,
+        &:active {
+            background-position:center center;
+        }
+
+        span {
+            display:none;   
+        }
+    } 
+
+    &.small {
+        height:22px;
+        line-height:22px;
+        padding:0px 9px;
+    }
+
+    &.small.print {
+        padding-left: 30px;
+        background-image: url('../../img/print-icon.png');
+        background-repeat: no-repeat;
+        background-position: 5px center;
+    }
+
+    &.small.excel {
+        padding-left: 30px;
+        background-image: url('../../img/excel-icon.png');
+        background-repeat: no-repeat;
+        background-position: 5px center;
+    }
+
+    &.disabled {
+        @include button-disabled;
+    }
+
+
+
+}
+
+
+button.button,
+input.button {
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+}
+
+
+
+
+
+
+
+
+
+
+
+button {
+    background: none;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+
+    span {
+        display: inline-block;
+        border: transparent 0px solid;
+        padding: 0px;
+        height: 28px;
+        line-height: 28px;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        margin: 0px 5px 0px 0px;
+        background-image: url('../../img/button-sprite_idle-hover-selected-disabled.png');
+        background-position: left 0px;
+
+        span {
+            white-space: nowrap;
+            display: block;
+            height: 28px;
+            line-height: 28px;
+            position: relative;
+            left: 5px;
+            background-repeat: no-repeat;
+            margin: 0px;
+            border: none;
+            padding: 0px 11px 0px 6px;
+            background-image: url('../../img/button-sprite_idle-hover-selected-disabled.png');
+            background-position: right -112px;
+        }
+    }
+
+    &:hover span {
+        background-position: left -28px;
+        span {
+            background-position: right -140px;
+        }
+    }
+
+    &:focus span,
+    &:active span {
+        background-position: left -56px;
+
+        span {
+            background-position: right -168px;
+        }
+    }
+
+    &:disabled span {
+        background-position: left -84px;
+        span {
+            background-position: right -196px;
+        }
+    }
+
+    &.primary span {
+        background-image: url('../../img/button-primary-sprite_idle-hover-selected-disabled.png');
+        span {
+            background-image: url('../../img/button-primary-sprite_idle-hover-selected-disabled.png');
+        }
+    }
+
+    &.print span {
+        background-image: url('../../img/button-print-sprite_idle-hover-selected-disabled.png');
+        span {
+            padding-left: 30px;
+            background-image: url('../../img/button-print-sprite_idle-hover-selected-disabled.png');
+        }
+    }
+
+    &.pdf span {
+        background-image: url('../../img/button-pdf-sprite_idle-hover-selected-disabled.png');
+        span {
+            padding-left: 25px;
+            background-image: url('../../img/button-pdf-sprite_idle-hover-selected-disabled.png');
+        }
+    }
+
+    &.arrow-down span {
+        margin-right: 33px;
+        background-image: url('../../img/button-arrow-down-sprite_idle-hover-selected-disabled.png');
+
+        span {
+            padding-right: 33px;
+            margin-right: 0px;
+            margin-left: -27px;
+            left: 33px;
+            background-image: url('../../img/button-arrow-down-sprite_idle-hover-selected-disabled.png');
+        }
+    }
+
+    &.arrow-up span {
+
+        background-image: url('../../img/button-arrow-up-sprite_idle-hover-selected-disabled.png');
+        margin-right: 33px;
+
+        span {
+            background-image: url('../../img/button-arrow-up-sprite_idle-hover-selected-disabled.png');
+            padding-right: 33px;
+            margin-right: 0px;
+            margin-left: -27px;
+            left: 33px;
+        }
+    }
+
+    &.left {
+        span {
+            margin: 0px 0px 0px 30px;
+            background-image: url('../../img/button-left-sprite_idle-hover-selected-disabled.png');
+            background-position: right -112px;
+            span {
+                margin: 0px -18px 0px 0px;
+                border: none;
+                padding: 0px 0px 0px 30px;
+                left: -30px;
+                background-image: url('../../img/button-left-sprite_idle-hover-selected-disabled.png');
+                background-position: left 0px;
+            }
+        }
+
+        &:hover span {
+            background-position: right -140px;
+
+            span {
+                background-position: left -28px;
+            }
+        }
+
+        &:focus span,
+        &:active span {
+            background-position: right -168px;
+
+            span {
+                background-position: left -56px;
+            }
+        }
+
+        &:disabled span {
+            background-position: right -196px;
+
+            span {
+                background-position: left -84px;
+            }
+        }
+    }
+
+    &.right {
+        span {
+            margin: 0 30px 0 0;
+            background-image: url('../../img/button-right-sprite_idle-hover-selected-disabled.png');
+            background-position: left -112px;
+            span {
+                margin: 0 0 0 -18px;
+                border: none;
+                padding: 0 30px 0 0;
+                left: 30px;
+                background-image: url('../../img/button-right-sprite_idle-hover-selected-disabled.png');
+                background-position: right 0px;
+            }
+        }
+
+        &:hover span {
+            background-position: left -140px;
+
+            span {
+                background-position: right -28px;
+            }
+        }
+
+        &:focus span,
+        &:active span {
+            background-position: left -168px;
+
+            span {
+                background-position: right -56px;
+            }
+        }
+
+        &:disabled span {
+            background-position: left -196px;
+
+            span {
+                background-position: right -84px;
+            }
+        }
+    }
+
+    &.plus {
+        span {
+            width: 22px;
+            height: 22px;
+            margin: 0px;
+            padding: 0px;
+            border: none;
+            background-image: url('../../img/button-plus-sprite_idle-hover-selected-disabled.png');
+            background-position: 0px center;
+        }
+
+        &:hover span {
+            background-position: -22px center;
+        }
+
+        &:focus span,
+        &:active span {
+            background-position: -44px center;
+        }
+
+        &:disabled span {
+            background-position: -66px center;
+        }
+
+        span {
+            display: none;
+        }
+    }
+
+    &.link {
+        display: inline;
+        background: none;
+        border: none;
+        margin: 0px;
+        padding: 0px;
+        line-height: inherit;
+        font-size: inherit;
+        font-family: inherit;
+        color: #149dca;
+
+        span {
+            padding: 0px;
+            margin: 0px;
+            background: none;
+
+            span {
+                line-height: inherit;
+                height: auto;
+                left: 0px;
+                padding: 0px;
+                margin: 0px;
+                background: none;
+            }
+        }
+    }
+
+}
+
+.remove {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    background-image: url('../../img/remove-sprite_idle-hover-selected-disabled.png');
+    background-position: 0px center;
+    overflow: hidden;
+    color: transparent;
+
+    &:hover {
+        background-position: -24px center;
+    }
+
+    &:focus,
+    &:active {
+        background-position: -48px center;
+    }
+
+    &:disabled {
+        background-position: -72px center;
+    }
+
+    span {
+        display: none;
+    }
+}
