@@ -28,9 +28,7 @@
 
     <div class="grid16-8">
         <jsp:include page="sections/definitions.jsp"/>
-
         <div><a href="vapaasana.html">Takaisin hakutuloksiin</a></div>
-        <div class="clear"></div>
 
         ${searchResult['html_AOView_fi']}
 
