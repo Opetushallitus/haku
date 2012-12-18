@@ -364,7 +364,10 @@ label, .label {
 /***  Input(text), select
 **********************************/
 
-input[type="text"], select, textarea {
+input[type="text"],
+input[type="password"], 
+select, 
+textarea {
     background-color: #ebf3f7;
     background-image: none;
     border: none;
@@ -378,16 +381,23 @@ input[type="text"], select, textarea {
     vertical-align: middle;
 }
 
-input[type="text"]:focus, select:focus {
+input[type="text"]:focus, 
+input[type="password"]:focus,
+select:focus {
     background-color: #fff5da;
 }
 
-input[type="text"]:disabled, select:disabled {
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+select:disabled {
     background-color: #eaeaea;
     background-image: url('../img/texture-45dg-lines-gray.gif');
     background-repeat: repeat;
     background-position: top left;
 }
+
+
+
 
 select {
     line-height: 1.231em;
