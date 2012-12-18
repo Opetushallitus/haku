@@ -19,8 +19,35 @@
 
 <jsp:include page="../top/top.jsp"/>
 
-${searchResult['html_AOView_fi']}
 
+<section id="koulutuskuvaus">
+    <div class="grid16-4">
+        <jsp:include page="sections/koulutuksenPerustiedot.jsp"/>
+        <jsp:include page="sections/notelist-simple.jsp"/>
+    </div>
+
+    <div class="grid16-8">
+        <jsp:include page="sections/definitions.jsp"/>
+
+        <div><a href="vapaasana.html">Takaisin hakutuloksiin</a></div>
+        <div class="clear"></div>
+
+        ${searchResult['html_AOView_fi']}
+
+        <jsp:include page="sections/koulutustiedonvalilehdet.jsp"/>
+
+    </div>
+    <div class="grid16-4">
+        <jsp:include page="sections/hakufaktoja.jsp"/>
+        <aside id="sidemenu">
+            <jsp:include page="sections/infobox.jsp"/>
+            <jsp:include page="compare.jsp"/>
+            <jsp:include page="authentication.jsp"/>
+        </aside>
+    </div>
+    <div class="clear"></div>
+</section>
+</section>
 <footer></footer>
 </div>
 </div>
