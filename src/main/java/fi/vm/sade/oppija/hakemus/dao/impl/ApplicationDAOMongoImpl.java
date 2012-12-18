@@ -80,22 +80,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-
-    public String submit(final Application application) {
+    public Application findDraftApplication(final Application application) {
         final DBObject query = toDBObject.apply(application);
-        String oid = getNewOid();
-        DBObject update = new BasicDBObject("$set", new BasicDBObject(Application.OID, oid));
-        getCollection().update(query, update);
-        return oid;
-    }
-
-    @Override
-    public Application findPendingApplication(final Application application) {
-        final DBObject query = toDBObject.apply(application);
-        query.put("oid", new BasicDBObject("$exists", true));
+        query.put("oid", new BasicDBObject("$exists", false));
         return findOneApplication(query);
     }
 
+    @Override
     public String getNewOid() {
         return OID_PREFIX + getNextId();
     }

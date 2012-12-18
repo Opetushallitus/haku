@@ -60,13 +60,13 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public String submit(final Application application) {
-        return "1";
+    public Application findDraftApplication(Application application) {
+        return application;
     }
 
     @Override
-    public Application findPendingApplication(Application application) {
-        return application;
+    public String getNewOid() {
+        return "" + System.currentTimeMillis();
     }
 
     @Override

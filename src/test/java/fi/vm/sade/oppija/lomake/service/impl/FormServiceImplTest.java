@@ -72,7 +72,6 @@ public class FormServiceImplTest {
 
     @Test
     public void testGetVaiheValidators() throws Exception {
-
         FormId formId = new FormId(APPLICATION_PERIOD.getId(), FORM.getId());
         Application application = new Application(formId, new AnonymousUser());
         List<Validator> listOfValidators = formService.getVaiheValidators(new ApplicationState(application, PHASE.getId()));

@@ -34,8 +34,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
@@ -49,13 +48,11 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     private ApplicationDAO applicationDAO;
 
     private FormId formId;
-    private Application application;
 
     @Before
     public void setUp() throws Exception {
         final String id = String.valueOf(System.currentTimeMillis());
         this.formId = new FormId(id, id);
-        this.application = (new Application(formId, TEST_USER));
     }
 
     @Test
@@ -80,23 +77,16 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         assertTrue(applications.isEmpty());
     }
 
-    @Test()
-    public void testFindPendingApplication() throws Exception {
-        testTallennaVaihe();
-        Application application = new Application(formId, TEST_USER);
-        applicationDAO.submit(applicationDAO.find(application).get(0));
-        applicationDAO.findPendingApplication(applicationDAO.find(application).get(0));
-    }
-
     @Test(expected = ResourceNotFoundException.class)
     public void testFindPendingApplicationNotFound() throws Exception {
-        applicationDAO.findPendingApplication(new Application(formId, TEST_USER));
+        applicationDAO.findDraftApplication(new Application(formId, TEST_USER));
     }
 
     @Test
     public void testSequence() throws Exception {
-        application = new Application(formId, TEST_USER);
-        applicationDAO.submit(application);
+        String oid1 = applicationDAO.getNewOid();
+        String oid2 = applicationDAO.getNewOid();
+        assertNotSame(oid1, oid2);
     }
 
     @Override

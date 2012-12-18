@@ -24,11 +24,6 @@ import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 
 import java.util.List;
 
-/**
- * @author jukka
- * @version 9/26/122:43 PM}
- * @since 1.1
- */
 public interface ApplicationService {
 
     List<ApplicationInfo> getUserApplicationInfo();

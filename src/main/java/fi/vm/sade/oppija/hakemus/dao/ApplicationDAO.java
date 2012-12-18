@@ -28,7 +28,7 @@ import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 public interface ApplicationDAO extends BaseDAO<Application> {
     ApplicationState tallennaVaihe(ApplicationState state);
 
-    String submit(Application application);
+    Application findDraftApplication(Application application);
 
-    Application findPendingApplication(Application application);
+    String getNewOid();
 }

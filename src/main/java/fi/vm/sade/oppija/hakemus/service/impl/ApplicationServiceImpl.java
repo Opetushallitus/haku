@@ -97,11 +97,15 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public String submitApplication(final FormId formId) {
-        Application application = applicationDAO.findPendingApplication(new Application(formId, userHolder.getUser()));
+        Application application1 = new Application(formId, userHolder.getUser());
+        Application application = applicationDAO.findDraftApplication(application1);
         Form form = formService.getForm(formId.getApplicationPeriodId(), formId.getFormId());
         ValidationResult validationResult = ElementTreeValidator.validate(form, application.getVastauksetMerged());
         if (!validationResult.hasErrors()) {
-            return this.applicationDAO.submit(application);
+            String newOid = applicationDAO.getNewOid();
+            application.setOid(newOid);
+            this.applicationDAO.update(application1, application);
+            return newOid;
         } else {
             throw new IllegalStateException("Could not send the application");
         }
