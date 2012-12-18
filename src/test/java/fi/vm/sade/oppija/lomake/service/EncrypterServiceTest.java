@@ -49,9 +49,8 @@ public class EncrypterServiceTest {
     @Test
     public void testMerge() throws Exception {
         final MockEncrypter mockEncrypter = new MockEncrypter("foo", "bar");
-        final byte[] bytes = mockEncrypter.leakGenerate();
-        final byte[] bytes2 = mockEncrypter.leakGenerate();
-
+        final byte[] bytes = "foo".getBytes();
+        final byte[] bytes2 = "bar".getBytes();
 
         final byte[] result = mockEncrypter.leakMerge(bytes, bytes2);
 

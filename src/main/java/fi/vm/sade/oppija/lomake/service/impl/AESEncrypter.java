@@ -84,9 +84,9 @@ public class AESEncrypter implements EncrypterService {
     }
 
     protected byte[] merge(byte[] iv, byte[] bytes) {
-        final byte[] result = new byte[IV_SIZE + bytes.length];
-        System.arraycopy(iv, 0, result, 0, IV_SIZE);
-        System.arraycopy(bytes, 0, result, IV_SIZE, bytes.length);
+        final byte[] result = new byte[iv.length + bytes.length];
+        System.arraycopy(iv, 0, result, 0, iv.length);
+        System.arraycopy(bytes, 0, result, iv.length, bytes.length);
         return result;
     }
 
