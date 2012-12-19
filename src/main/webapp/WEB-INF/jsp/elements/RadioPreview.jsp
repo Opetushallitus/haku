@@ -16,7 +16,7 @@
             </td>
         </c:when>
         <c:otherwise>
-            <td><c:out value="${element.title}"/>:&nbsp;<c:out value="${title}"/></td>
+            <td><span class="label"><c:out value="${element.title}"/>:</span><c:out value="${title}"/></td>
         </c:otherwise>
     </c:choose>
 </tr>
