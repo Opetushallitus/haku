@@ -48,9 +48,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     public FormModelDummyMemoryDaoImpl(final String formId, final String firstCategoryId) {
         this.applicationPeriod = new ApplicationPeriod("Yhteishaku");
-        final Calendar instance = GregorianCalendar.getInstance();
-        instance.roll(Calendar.YEAR, 1);
-        applicationPeriod.setEnd(instance.getTime());
         formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
         Phase henkilötiedot = new Phase(firstCategoryId, "Henkilötiedot", false);

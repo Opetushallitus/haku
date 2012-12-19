@@ -32,20 +32,21 @@ public class ApplicationPeriod implements Serializable {
     private static final long serialVersionUID = 709005625385191180L;
 
     private String id;
-    private Date starts = new Date();
+    private Date starts;
     private Date end;
 
     final Map<String, Form> forms = new HashMap<String, Form>();
-    private static final long MILLISECONDS_IN_DAY = 1000 * 3600 * 24;
 
     public ApplicationPeriod() {
-    }
-
-    public ApplicationPeriod(String id) {
-        this.id = id;
+        this.starts = new Date();
         final Calendar instance = Calendar.getInstance();
         instance.roll(Calendar.YEAR, 1);
         end = new Date(instance.getTimeInMillis());
+    }
+
+    public ApplicationPeriod(String id) {
+        this();
+        this.id = id;
     }
 
     public ApplicationPeriod(final String id, final Date starts, final Date end) {
@@ -56,9 +57,8 @@ public class ApplicationPeriod implements Serializable {
 
     @JsonIgnore
     public boolean isActive() {
-        final Date now = new Date();
-        //intentionally failing fast here, if dates not valid
-        return starts.before(now) && end.after(now);
+        final long now = new Date().getTime();
+        return starts.getTime() <= now && end.getTime() > now;
     }
 
     @JsonIgnore
@@ -88,25 +88,6 @@ public class ApplicationPeriod implements Serializable {
 
     public void setStarts(final Date starts) {
         this.starts = new Date(starts.getTime());
-    }
-
-
-    @JsonIgnore
-    public long getDaysUntilEnd() {
-        final Calendar start = initCalendar(this.starts);
-        final Calendar end = initCalendar(this.end);
-
-        return (end.getTimeInMillis() - start.getTimeInMillis()) / MILLISECONDS_IN_DAY;
-    }
-
-    private Calendar initCalendar(Date date) {
-        final Calendar starts = GregorianCalendar.getInstance();
-        starts.setTime(date);
-        starts.set(Calendar.HOUR_OF_DAY, 0);
-        starts.set(Calendar.MINUTE, 0);
-        starts.set(Calendar.SECOND, 0);
-        starts.set(Calendar.MILLISECOND, 0);
-        return starts;
     }
 
     public Date getEnd() {

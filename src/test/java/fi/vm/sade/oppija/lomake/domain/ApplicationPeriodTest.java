@@ -18,9 +18,23 @@ package fi.vm.sade.oppija.lomake.domain;
 
 import org.junit.Test;
 
+import java.util.Date;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class ApplicationPeriodTest {
+
     @Test
-    public void testIsActive() throws Exception {
-        //To change body of created methods use File | Settings | File Templates.
+    public void testIsActiveSame() throws Exception {
+        Date now = new Date();
+        ApplicationPeriod applicationPeriod = new ApplicationPeriod("1", now, now);
+        assertFalse(applicationPeriod.isActive());
+    }
+
+    @Test
+    public void testIsActiveEnd() throws Exception {
+        ApplicationPeriod applicationPeriod = new ApplicationPeriod("1");
+        assertTrue(applicationPeriod.isActive());
     }
 }
