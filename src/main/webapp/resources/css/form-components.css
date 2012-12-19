@@ -566,6 +566,29 @@ select option {
     padding-right: 1em;
 }
 
+
+/*** Field container radio
+************************************************/
+
+.field-container-radio {
+
+}
+
+.field-container-radio input[type="radio"] {
+    margin-right: 5px;
+}
+
+.field-container-radio > div {
+    position: relative;
+    top: -3px;
+}
+
+.field-container-radio > div small {
+    margin-left: 24px;
+    padding-bottom: 5px;
+
+}
+
 /*** Search result
 ************************************************/
 
