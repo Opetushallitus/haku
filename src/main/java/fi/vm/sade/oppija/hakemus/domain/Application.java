@@ -33,35 +33,27 @@ import java.util.Map;
  * @version 9/26/122:48 PM}
  * @since 1.1
  */
-
+@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Application implements Serializable {
 
-    public static final String OID = "oid";
+    private static final long serialVersionUID = -7491168801255850954L;
     public static final String VAIHE_ID = "vaiheId";
 
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+
     @JsonProperty(value = "_id")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     @JsonDeserialize(using = ObjectIdDeserializer.class)
     @JsonSerialize(using = ObjectIdSerializer.class)
     private org.bson.types.ObjectId id;
 
-
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
-    @JsonProperty(value = OID)
     private String oid;
-
-    private static final long serialVersionUID = -7491168801255850954L;
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private FormId formId;
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private User user;
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
-    @JsonProperty(value = "vaiheId")
     private String vaiheId;
 
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
+    private Map<String, String> meta = new HashMap<String, String>();
 
     @JsonCreator
     public Application(@JsonProperty(value = "hakuLomakeId") final FormId formId,
@@ -143,6 +135,21 @@ public class Application implements Serializable {
         return vastaukset;
     }
 
+    @JsonIgnore
+    public void removeUser() {
+        if (user != null) {
+            HashMap<String, String> meta = new HashMap<String, String>();
+            meta.put("sessionId", user.getUserName());
+            this.setMeta(meta);
+            this.user = null;
+        }
+    }
+
+    @JsonIgnore
+    public boolean isNew() {
+        return this.vaiheId == null;
+    }
+
     public Map<String, Map<String, String>> getVastaukset() {
         return vastaukset;
     }
@@ -163,8 +170,11 @@ public class Application implements Serializable {
         this.vaiheId = vaiheId;
     }
 
-    @JsonIgnore
-    public boolean isNew() {
-        return this.vaiheId == null;
+    public Map<String, String> getMeta() {
+        return meta;
+    }
+
+    public void setMeta(Map<String, String> meta) {
+        this.meta = meta;
     }
 }

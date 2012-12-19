@@ -14,22 +14,29 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.service;
+package fi.vm.sade.oppija.ui.common;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * @author jukka
- * @version 12/17/121:01 PM}
- * @since 1.1
- */
-public class SHA2EncrypterTest {
+public class RedirectToFormViewPathTest extends ViewPathTest {
 
     @Test
-    public void testEncrypt() throws Exception {
-        final String diiba = new SHA2Encrypter("foo").encrypt("diiba");
-        assertEquals("43ef09c8a51475c444030878c3912bf8a0c177f449fecc44b7f4fe0685338afa", diiba);
+    public void testGetPath() throws Exception {
+        RedirectToFormViewPath redirectToFormViewPath =
+                new RedirectToFormViewPath(APPLICATION_PERIOD_ID, FORM_ID);
+        assertEquals(REDIRECT_TO_FORM_PREFIX, redirectToFormViewPath.getPath());
     }
+
+    @Test(expected = NullPointerException.class)
+    public void testGetPathNullApid() throws Exception {
+        new RedirectToFormViewPath(null, FORM_ID);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testGetPathNullFid() throws Exception {
+        new RedirectToFormViewPath(APPLICATION_PERIOD_ID, null);
+    }
+
 }

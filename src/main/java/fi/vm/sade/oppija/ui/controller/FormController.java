@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-import com.google.common.base.Joiner;
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
@@ -28,6 +27,10 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserPrefillDataService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.ui.common.RedirectToFormViewPath;
+import fi.vm.sade.oppija.ui.common.RedirectToPendingViewPath;
+import fi.vm.sade.oppija.ui.common.RedirectToPhaseViewPath;
+import fi.vm.sade.oppija.ui.common.ViewPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +53,7 @@ public class FormController extends ExceptionController {
     public static final String DEFAULT_VIEW = "elements/Phase";
     public static final String VERBOSE_HELP_VIEW = "help";
     public static final String LINK_LIST_VIEW = "linkList";
-    public static final String REDIRECT_LOMAKE = "redirect:/lomake";
+    public static final String REDIRECT_LOxMAKE = "redirect:/lomake";
     public static final String VALMIS_VIEW = "valmis";
 
     final FormService formService;
@@ -91,8 +94,7 @@ public class FormController extends ExceptionController {
             Phase firstPhase = formService.getFirstPhase(applicationPeriodId, formId);
             return "redirect:" + formId + "/" + firstPhase.getId();
         } else {
-            Joiner joiner = Joiner.on("/").skipNulls();
-            return joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId, application.getVaiheId());
+            return new RedirectToPhaseViewPath(applicationPeriodId, formId, application.getVaiheId()).getPath();
         }
     }
 
@@ -137,9 +139,7 @@ public class FormController extends ExceptionController {
     public ModelAndView prefillForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId,
                                     @RequestBody final MultiValueMap<String, String> multiValues) {
         userPrefillDataService.addUserPrefillData(multiValues.toSingleValueMap());
-        Joiner joiner = Joiner.on("/").skipNulls();
-        String path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId);
-        return new ModelAndView(path);
+        return new ModelAndView(new RedirectToFormViewPath(applicationPeriodId, formId).getPath());
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/{phaseId}",
@@ -156,9 +156,8 @@ public class FormController extends ExceptionController {
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         if (applicationState.isValid()) {
-            Joiner joiner = Joiner.on("/").skipNulls();
-            String path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId, applicationState.getHakemus().getVaiheId());
-            modelAndView = new ModelAndView(path);
+            RedirectToPhaseViewPath redirectToPhaseViewPath = new RedirectToPhaseViewPath(applicationPeriodId, formId, applicationState.getHakemus().getVaiheId());
+            modelAndView = createModelAndView(redirectToPhaseViewPath);
         } else {
             modelAndView.addAllObjects(applicationState.getModelObjects());
             Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
@@ -168,14 +167,17 @@ public class FormController extends ExceptionController {
         return modelAndView.addObject("hakemusId", hakuLomakeId);
     }
 
+    private ModelAndView createModelAndView(ViewPath viewPath) {
+        return new ModelAndView(viewPath.getPath());
+    }
+
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/send", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView submitApplication(@PathVariable final String applicationPeriodId,
                                           @PathVariable final String formId) {
         LOGGER.debug("submitApplication {}, {}", new Object[]{applicationPeriodId, formId});
         String oid = applicationService.submitApplication(new FormId(applicationPeriodId, formId));
-        Joiner joiner = Joiner.on("/").skipNulls();
-        String path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId, VALMIS_VIEW, oid, "");
-        return new ModelAndView(path);
+        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationPeriodId, formId, oid);
+        return createModelAndView(redirectToPendingViewPath);
     }
 
     @RequestMapping(value = "/{applicationPeriodId}/{formId}/valmis/{oid}/", method = RequestMethod.GET)
@@ -188,7 +190,7 @@ public class FormController extends ExceptionController {
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         modelAndView.addObject("form", activeForm);
         final FormId hakuLomakeId = new FormId(applicationPeriodId, activeForm.getId());
-        final Application application = applicationService.getApplication(hakuLomakeId, oid);
+        final Application application = applicationService.getPendingApplication(hakuLomakeId, oid);
         modelAndView.addObject("categoryData", application.getVastaukset());
         modelAndView.addObject("hakemusId", hakuLomakeId);
         return modelAndView.addObject("applicationNumber", application.getOid());

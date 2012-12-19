@@ -23,6 +23,7 @@ import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.IllegalStateException;
@@ -97,18 +98,33 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public String submitApplication(final FormId formId) {
-        Application application1 = new Application(formId, userHolder.getUser());
+        final User user = userHolder.getUser();
+        Application application1 = new Application(formId, user);
         Application application = applicationDAO.findDraftApplication(application1);
         Form form = formService.getForm(formId.getApplicationPeriodId(), formId.getFormId());
         ValidationResult validationResult = ElementTreeValidator.validate(form, application.getVastauksetMerged());
         if (!validationResult.hasErrors()) {
             String newOid = applicationDAO.getNewOid();
             application.setOid(newOid);
+            if (!user.isKnown()) {
+                application.removeUser();
+            }
             this.applicationDAO.update(application1, application);
             return newOid;
         } else {
             throw new IllegalStateException("Could not send the application");
         }
+    }
+
+    @Override
+    public Application getPendingApplication(FormId formId, String oid) {
+        final User user = userHolder.getUser();
+        Application application = new Application(formId, user);
+        application.setOid(oid);
+        if (!user.isKnown()) {
+            application.removeUser();
+        }
+        return getApplication(application);
     }
 
     @Override

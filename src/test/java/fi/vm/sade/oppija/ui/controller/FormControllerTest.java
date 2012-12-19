@@ -16,65 +16,97 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-import fi.vm.sade.oppija.hakemus.dao.ApplicationDAOMemoryImpl;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.hakemus.service.impl.ApplicationServiceImpl;
-import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.domain.exception.IllegalStateException;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.service.impl.UserPrefillDataServiceImpl;
+import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.ui.common.RedirectToPendingViewPath;
+import fi.vm.sade.oppija.ui.common.RedirectToPhaseViewPath;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class FormControllerTest {
 
-    public static final String OID = "1.1.1.1";
-    private final String applicationPeriodId = "Yhteishaku";
-    private final String formId = "yhteishaku";
-    private final String firstCategoryId = "henkilotiedot";
+    public static final String OID = "1.1.1";
+    private static final String FIRST_CATEGORY_ID = "henkilotiedot";
+    private static final String APPLICATION_PERIOD_ID = "Yhteishaku";
+    private static final String FORM_ID = "yhteishaku";
+    public static final String TEST_PHASE = "test_phase";
+    public static final String PHASE_TITLE = "title";
+    public static final Phase PHASE = new Phase(FIRST_CATEGORY_ID, PHASE_TITLE, false);
+    public static final Form FORM = new Form("id", "title");
     private FormController formController;
-    private ApplicationDAOMemoryImpl applicationDAO;
     public static final UserHolder USER_HOLDER = new UserHolder();
+    private ApplicationService applicationService;
+    private FormService formService;
+    private Application application;
+    private ApplicationState applicationState;
 
     @Before
     public void setUp() throws Exception {
-        this.applicationDAO = new ApplicationDAOMemoryImpl();
-        final FormModelDummyMemoryDaoImpl formService = new FormModelDummyMemoryDaoImpl(formId, firstCategoryId);
-        final ApplicationServiceImpl applicationService = new ApplicationServiceImpl(applicationDAO, USER_HOLDER,
-                formService);
+        this.applicationService = mock(ApplicationService.class);
+        this.formService = mock(FormService.class);
         final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(USER_HOLDER);
         this.formController = new FormController(formService, applicationService, userPrefillDataService);
+        this.application = new Application();
+        FORM.addChild(PHASE);
+        when(applicationService.getApplication(Matchers.<FormId>any())).thenReturn(this.application);
+        when(formService.getFirstPhase(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(PHASE);
+        when(formService.getActiveForm(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(FORM);
+        applicationState = new ApplicationState(application, FIRST_CATEGORY_ID);
+        application.setVaiheId(FIRST_CATEGORY_ID);
+        when(applicationService.saveApplicationPhase(Matchers.<ApplicationPhase>any())).thenReturn(applicationState);
     }
 
     @Test
     public void testGetFormAndRedirectToFirstCategory() throws Exception {
-        String actual = formController.getApplication("Yhteishaku", formId);
-        String expected = "redirect:" + formId + "/" + firstCategoryId;
+        this.application.setVaiheId(TEST_PHASE);
+        String expected = new RedirectToPhaseViewPath(APPLICATION_PERIOD_ID, FORM_ID, TEST_PHASE).getPath();
+        String actual = formController.getApplication(APPLICATION_PERIOD_ID, FORM_ID);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetFormAndRedirectToFirstCategoryNew() throws Exception {
+        application.setVaiheId(null);
+        when(formService.getFirstPhase(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(new Phase(FIRST_CATEGORY_ID, "title", false));
+        String expected = "redirect:" + FORM_ID + "/" + FIRST_CATEGORY_ID;
+        String actual = formController.getApplication(APPLICATION_PERIOD_ID, FORM_ID);
         assertEquals(expected, actual);
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void testGetFormAndRedirectToFirstCategoryNotFound() throws Exception {
-        formController.getApplication(applicationPeriodId, "väärä");
+        when(applicationService.getApplication(Matchers.<FormId>any())).thenThrow(new ResourceNotFoundException(""));
+        formController.getApplication(APPLICATION_PERIOD_ID, "väärä");
     }
 
     @Test(expected = NullPointerException.class)
     public void testGetFormAndRedirectToFirstCategoryNullFromId() throws Exception {
-        formController.getApplication(applicationPeriodId, null);
+        formController.getApplication(APPLICATION_PERIOD_ID, null);
     }
 
     @Test(expected = NullPointerException.class)
     public void testGetFormAndRedirectToFirstCategoryNullApplicationId() throws Exception {
-        formController.getApplication(null, formId);
+        formController.getApplication(null, FORM_ID);
     }
 
     @Test(expected = NullPointerException.class)
@@ -84,25 +116,25 @@ public class FormControllerTest {
 
     @Test
     public void testGetCategoryMVCategory() throws Exception {
-        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
-        assertEquals(firstCategoryId, ((Phase) actualModelAndView.getModel().get("element")).getId());
+        ModelAndView actualModelAndView = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
+        assertEquals(FIRST_CATEGORY_ID, ((Phase) actualModelAndView.getModel().get("element")).getId());
     }
 
     @Test
     public void testGetCategoryModelSize() throws Exception {
-        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
+        ModelAndView actualModelAndView = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
         assertEquals(4, actualModelAndView.getModel().size());
     }
 
     @Test
     public void testGetCategoryView() throws Exception {
-        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
+        ModelAndView actualModelAndView = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
         assertEquals("/elements/Phase", actualModelAndView.getViewName());
     }
 
     @Test
     public void testGetCategoryWrongView() throws Exception {
-        ModelAndView actualModelAndView = formController.getElement(applicationPeriodId, formId, firstCategoryId);
+        ModelAndView actualModelAndView = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
         assertNotSame(null, actualModelAndView.getViewName());
     }
 
@@ -130,24 +162,26 @@ public class FormControllerTest {
         assertEquals(FormController.ERROR_SERVERERROR, modelAndView.getViewName());
     }
 
-    @Test
-    public void testGetComplete() throws Exception {
-        Application application = new Application(new FormId(applicationPeriodId, formId), USER_HOLDER.getUser());
-        application.setOid(OID);
-        applicationDAO.hakemukset.add(application);
-        ModelAndView complete = formController.getComplete(applicationPeriodId, formId, OID);
-        assertEquals(FormController.VALMIS_VIEW, complete.getViewName());
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testSendForm() throws Exception {
-        formController.submitApplication(applicationPeriodId, formId);
-
+    @Test()
+    public void sendInvalid() throws Exception {
+        when(applicationService.submitApplication(Matchers.<FormId>any())).thenReturn(OID);
+        ModelAndView modelAndView = formController.submitApplication(APPLICATION_PERIOD_ID, FORM_ID);
+        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(APPLICATION_PERIOD_ID, FORM_ID, OID);
+        assertEquals(redirectToPendingViewPath.getPath(), modelAndView.getViewName());
     }
 
     @Test
-    public void testsaveCategory() throws Exception {
-        ModelAndView modelAndView = formController.savePhase(applicationPeriodId, formId, firstCategoryId, new LinkedMultiValueMap<String, String>());
+    public void testSaveCategoryInvalid() throws Exception {
+        HashMap<String, String> errorMessages = new HashMap<String, String>();
+        errorMessages.put("", "");
+        applicationState.addError(errorMessages);
+        ModelAndView modelAndView = formController.savePhase(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID, new LinkedMultiValueMap<String, String>());
         assertEquals(FormController.DEFAULT_VIEW, modelAndView.getViewName());
+    }
+
+    @Test
+    public void testSaveCategoryValid() throws Exception {
+        ModelAndView modelAndView = formController.savePhase(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID, new LinkedMultiValueMap<String, String>());
+        assertEquals(new RedirectToPhaseViewPath(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID).getPath(), modelAndView.getViewName());
     }
 }

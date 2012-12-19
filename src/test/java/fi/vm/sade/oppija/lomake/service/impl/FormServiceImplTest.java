@@ -37,18 +37,19 @@ import static org.junit.Assert.assertTrue;
 
 public class FormServiceImplTest {
 
-    public static final ApplicationPeriod APPLICATION_PERIOD = new ApplicationPeriod("ApplicationPeriodId");
     public static final Form FORM = new Form("FormId", "Form title");
     public static final Phase PHASE = new Phase("phaseId", "", false);
+    public ApplicationPeriod applicationPeriod;
     private FormServiceImpl formService;
 
     @Before
     public void setUp() throws Exception {
+        this.applicationPeriod = new ApplicationPeriod("ApplicationPeriodId");
         FormModelHolder holder = new FormModelHolder();
         FormModel model = new FormModel();
-        APPLICATION_PERIOD.addForm(FORM);
+        applicationPeriod.addForm(FORM);
         FORM.addChild(PHASE);
-        model.addApplicationPeriod(APPLICATION_PERIOD);
+        model.addApplicationPeriod(applicationPeriod);
         holder.updateModel(model);
         formService = new FormServiceImpl(holder);
         FORM.init();
@@ -61,8 +62,8 @@ public class FormServiceImplTest {
 
     @Test
     public void testGetApplicationPeriodById() throws Exception {
-        ApplicationPeriod applicationPeriodById = formService.getApplicationPeriodById(APPLICATION_PERIOD.getId());
-        assertEquals(APPLICATION_PERIOD, applicationPeriodById);
+        ApplicationPeriod applicationPeriodById = formService.getApplicationPeriodById(applicationPeriod.getId());
+        assertEquals(applicationPeriod, applicationPeriodById);
     }
 
     @Test(expected = ResourceNotFoundException.class)
@@ -72,7 +73,7 @@ public class FormServiceImplTest {
 
     @Test
     public void testGetVaiheValidators() throws Exception {
-        FormId formId = new FormId(APPLICATION_PERIOD.getId(), FORM.getId());
+        FormId formId = new FormId(applicationPeriod.getId(), FORM.getId());
         Application application = new Application(formId, new AnonymousUser());
         List<Validator> listOfValidators = formService.getVaiheValidators(new ApplicationState(application, PHASE.getId()));
         assertTrue(listOfValidators.isEmpty());
@@ -80,7 +81,7 @@ public class FormServiceImplTest {
 
     @Test(expected = ResourceNotFoundException.class)
     public void testGetVaiheValidatorsPhaseNotFound() throws Exception {
-        FormId formId = new FormId(APPLICATION_PERIOD.getId(), FORM.getId());
+        FormId formId = new FormId(applicationPeriod.getId(), FORM.getId());
         Application application = new Application(formId, new AnonymousUser());
         List<Validator> listOfValidators = formService.getVaiheValidators(new ApplicationState(application, "randomid"));
         assertTrue(listOfValidators.isEmpty());

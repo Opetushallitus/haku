@@ -41,4 +41,6 @@ public interface ApplicationService {
     String submitApplication(final FormId formId);
 
     Application getApplication(FormId formId, String oid);
+
+    Application getPendingApplication(final FormId hakuLomakeId, final String oid);
 }

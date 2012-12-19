@@ -14,22 +14,13 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.service;
+package fi.vm.sade.oppija.ui.common;
 
-import org.junit.Test;
+public class ViewPathTest {
 
-import static org.junit.Assert.assertEquals;
+    public static final String APPLICATION_PERIOD_ID = "apid";
+    public static final String FORM_ID = "fid";
+    public static final String REDIRECT_FORM = "redirect:/lomake";
+    public static final String REDIRECT_TO_FORM_PREFIX = REDIRECT_FORM + "/" + APPLICATION_PERIOD_ID + "/" + FORM_ID;
 
-/**
- * @author jukka
- * @version 12/17/121:01 PM}
- * @since 1.1
- */
-public class SHA2EncrypterTest {
-
-    @Test
-    public void testEncrypt() throws Exception {
-        final String diiba = new SHA2Encrypter("foo").encrypt("diiba");
-        assertEquals("43ef09c8a51475c444030878c3912bf8a0c177f449fecc44b7f4fe0685338afa", diiba);
-    }
 }

@@ -84,6 +84,10 @@ public class HakemusControllerTest {
                 return APPLICATION;
             }
 
+            @Override
+            public Application getPendingApplication(FormId hakuLomakeId, String oid) {
+                return APPLICATION;
+            }
         };
     }
 

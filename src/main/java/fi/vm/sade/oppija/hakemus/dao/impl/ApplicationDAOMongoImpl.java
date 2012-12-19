@@ -48,7 +48,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         super(dbObjectToHakemusConverter, hakemusToBasicDBObjectConverter);
     }
 
-
     @Override
     public ApplicationState tallennaVaihe(ApplicationState state) {
 
@@ -58,7 +57,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         DBObject one = getCollection().findOne(query);
         if (one != null) {
-
             queryApplication = fromDBObject.apply(one);
         }
         Application uusiApplication = state.getHakemus();
@@ -91,11 +89,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return OID_PREFIX + getNextId();
     }
 
-
     private Application findOneApplication(DBObject query) {
         List<Application> listOfApplications = findApplications(query);
         if (listOfApplications.size() == 1) {
             return listOfApplications.get(0);
+        } else if (listOfApplications.size() > 1) {
+            throw new ResourceNotFoundException("Found two or more applications found " + query);
         }
         throw new ResourceNotFoundException("Application not found " + query);
     }
