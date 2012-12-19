@@ -17,17 +17,22 @@
 <xsl:stylesheet version="2.0"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:types="http://publication.tarjonta.sade.vm.fi/types"
-                exclude-result-prefixes="types xsi xs fn"
+                exclude-result-prefixes="types xsi xs fn f"
+                xmlns:f="Functions"
+
                 xmlns:fn="http://www.w3.org/2005/xpath-functions"
                 xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 
+    <xsl:import href="functions/getProperty.xsl"/>
     <xsl:import href="sections/searchResult.xsl"/>
     <xsl:import href="sections/AOView.xsl"/>
+    <xsl:import href="sections/educationBasicData.xsl"/>
+
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 
-    <xsl:template match="/">
+    <xsl:template match="/" name="main">
         <add>
             <xsl:apply-templates select="/types:LearningOpportunityDownloadData/types:ApplicationOption"/>
         </add>
@@ -42,7 +47,6 @@
                 <xsl:call-template name="AOView_fi"/>
 
             </field>
-
 
 
             <field name="AOId">
@@ -204,6 +208,9 @@
     <!-- start of LOS -->
 
     <xsl:template match="/types:LearningOpportunityDownloadData/types:LearningOpportunitySpecification">
+        <field name="html_EducationBasicData_fi">
+            <xsl:call-template name="educationBasicData_fi"/>
+        </field>
 
         <field name="LOSId">
             <xsl:value-of select="@id"/>
@@ -243,22 +250,6 @@
 
     </xsl:template>
 
-    <xsl:template match="//types:LearningOpportunitySpecification/types:Classification">
-        <!-- TODO: select the actual value instead of koodisto code once the value is available -->
-
-        <field name="LOSEducationClassification">
-            <xsl:value-of select="./types:EducationClassification/types:Code"/>
-        </field>
-        <field name="LOSEducationDomain">
-            <xsl:value-of select="./types:EducationDomain/types:Code"/>
-        </field>
-        <field name="LOSEducationDegree">
-            <xsl:value-of select="./types:EducationDegree/types:Code"/>
-        </field>
-        <field name="LOSStydyDomain">
-            <xsl:value-of select="./types:StudyDomain/types:Code"/>
-        </field>
-    </xsl:template>
 
     <!-- end of LOS -->
     <!-- start of LOP -->
