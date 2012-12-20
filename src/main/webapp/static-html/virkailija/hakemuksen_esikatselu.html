@@ -6,7 +6,8 @@
         <title>Opetushallitus </title>
 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <link href="../../resources/css/virkailija-screen.css" type="text/css" rel="stylesheet" />
+        <link href="../../resources/css/normalize.css" type="text/css" rel="stylesheet" />
+        <link href="../../resources/css/virkailija.css" type="text/css" rel="stylesheet" />
         <!--
         <link type="text/css" href="../../resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="../../resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
@@ -70,8 +71,8 @@
 
                 <div id="breadcrumbs">
                     <ul>
-                        <li><span><a href="#">Koulutustarjonta</a></li>
-                        <li><span><a href="#">Hakemuksen esikatselu</a></li>
+                        <li><span><a href="#">Koulutustarjonta</a></span></li>
+                        <li><span><a href="#">Hakemuksen esikatselu</a></span></li>
                     </ul>
                 </div>
                 
@@ -338,18 +339,18 @@
                                 <a href="#">Valintaperustekuvaus</a>
                                 <table class="width-100">
                                     <tr>
-                                        <td><input id="validity1" type="checkbox" checked="true"><label class="padding-left-2" for="validity1">Korkeakoulukelpoisuus</label></td>
-                                        <td><select disabled="true" name="ennakkotehtava1" id=""><option value="accepted">Hyväksytty (TOR)</option>
+                                        <td><input id="validity1" type="checkbox" checked="checked"><label class="padding-left-2" for="validity1">Korkeakoulukelpoisuus</label></td>
+                                        <td><select disabled="disabled" name="ennakkotehtava1"><option value="accepted">Hyväksytty (TOR)</option>
                                         <option value="rejected">Hylätty</option></select></td>
                                     </tr>
                                     <tr>
                                         <td><input id="validity2" type="checkbox"><label class="padding-left-2" for="validity2">Korkeakoulukelpoisuus</label></td>
-                                        <td><select name="ennakkotehtava2" id=""><option value="accepted">Hyväksytty</option>
+                                        <td><select name="ennakkotehtava2"><option value="accepted">Hyväksytty</option>
                                         <option value="rejected">Hylätty</option></select></td>
                                     </tr>
                                     <tr>
                                         <td><input id="validity3" type="checkbox"><label  class="padding-left-2" for="validity3">Korkeakoulukelpoisuus</label></td>
-                                        <td><select name="ennakkotehtava3" id=""><option value="accepted">Hyväksytty</option>
+                                        <td><select name="ennakkotehtava3"><option value="accepted">Hyväksytty</option>
                                         <option value="rejected">Hylätty</option></select></td>
                                     </tr>
                                 </table>
@@ -357,7 +358,7 @@
                                 <div>
                                     <label for="ready">Hakutoiveen tila: </label><select name="ready" id="ready"><option value="ready">Valmis</option>
                                     <option value="notready">Kesken</option></select>
-                                    <select disabled="true" name="rejected" id="rejected">
+                                    <select disabled="disabled" name="rejected" id="rejected">
                                         <option value="kesken">Keskeneräinen</option>
                                         <option value="huono">Huono hakemus</option>
                                     </select>

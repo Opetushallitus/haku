@@ -6,12 +6,8 @@
         <title>Opetushallitus </title>
 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <link href="../../resources/css/virkailija-screen.css" type="text/css" rel="stylesheet" />
-        <!--
-        <link type="text/css" href="../../resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" rel="stylesheet" />
-        
-        <script type="text/javascript" src="../../resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
-    -->
+        <link href="../../resources/css/normalize.css" type="text/css" rel="stylesheet" />
+        <link href="../../resources/css/virkailija.css" type="text/css" rel="stylesheet" />
         <script type="text/javascript" src="../../resources/jquery/jquery-1.8.0.min.js"></script>
         <script type="text/javascript" src="../../resources/javascript/master.js"></script>
 
@@ -47,28 +43,29 @@
 
                 </header>
                 
-                <nav id="navigation" class="grid16-16">
+                <section id="page">
+                    <nav id="navigation" class="grid16-16">
+                    
+                        <ul class="level1">
+                            <li><a href="#" class=""><span>Organisaation tiedot</span></a></li>
+                            <li>
+                                <a href="index.html" class="current"><span>Koulutustarjonta</span></a>
+                                <ul class="level2">
+                                    <li><a href="#" class="">Koulutuksen tiedot</a></li>
+                                    <li><a href="#" class="">Koulutuksen toteutus ja hakukohde</a></li>
+                                    <li><a href="#" class="">Organisaation kuvailevat tiedot</a></li>
+                                    <li><a href="#" class="">Järjestämissopimukset</a></li>
+                                    <li><a href="#" class="">Järjestämisluvat</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#" class=""><span>Valintaperusteet</span></a></li>
+                            <li><a href="#" class=""><span>Koulutussuunnittelu</span></a></li>
+                            <li><a href="#" class=""><span>Sisällönhallinta</span></a></li>
+                        </ul>
+
+                    </nav>
+
                 
-                    <ul class="level1">
-                        <li><a href="#" class=""><span>Organisaation tiedot</span></a></li>
-                        <li>
-                            <a href="index.html" class="current"><span>Koulutustarjonta</span></a>
-                            <ul class="level2">
-                                <li><a href="#" class="">Koulutuksen tiedot</a></li>
-                                <li><a href="#" class="">Koulutuksen toteutus ja hakukohde</a></li>
-                                <li><a href="#" class="">Organisaation kuvailevat tiedot</a></li>
-                                <li><a href="#" class="">Järjestämissopimukset</a></li>
-                                <li><a href="#" class="">Järjestämisluvat</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#" class=""><span>Valintaperusteet</span></a></li>
-                        <li><a href="#" class=""><span>Koulutussuunnittelu</span></a></li>
-                        <li><a href="#" class=""><span>Sisällönhallinta</span></a></li>
-                    </ul>
-
-                </nav>
-
-                <section id="searchform">
                     <form id="searchform" method="get">
                         <div class="grid16-6">
                             <div class="form-item margin-top-2">
@@ -93,7 +90,7 @@
                         </div>
                         <div class="grid16-5">
                             <div class="form-item ">
-                                <label for="application-phase">Hakemuksen tila:
+                                <label for="application-phase">Hakemuksen tila: </label>
                                 <div class="form-item-content">
                                     <select class="width-100" name="application-phase" id="application-phase">
                                         <option value="all">Kaikki</option>
@@ -175,23 +172,23 @@
                             <div class="grid16-4 float-right">
                                 <div class="float-right">
                                     <div class="pagination inline-block margin-right-2">
-                                        <a href="#">&laquo</a>
+                                        <a href="#">&laquo;</a>
                                         <a href="#">1</a>
                                         <span>|</span>
                                         <a href="#">2</a>
                                         <span>|</span>
                                         <a href="#">3</a>
-                                        <a href="#">&raquo</a>
+                                        <a href="#">&raquo;</a>
                                     </div>
 
-                                    <select name="showresults" class="inline-block" id="showresults">
+                                    <select name="showresults" class="inline-block" id="showresults-top">
                                         <option value="50">Näytä 50/sivu</option>
                                         <option value="100">Näytä 100/sivu</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <table class="virkailija-table-1">
+                            <table class="table-1">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -204,7 +201,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Aaltonen</td>
                                         <td>Aino</td>
                                         <td>010197-123A</td>
@@ -212,7 +209,7 @@
                                         <td>Valmis</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Angeria</td>
                                         <td>Hanna-Maria</td>
                                         <td>010197-123A</td>
@@ -220,7 +217,7 @@
                                         <td>Valmis</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Asikainen</td>
                                         <td>Esa</td>
                                         <td>010197-123A</td>
@@ -228,7 +225,7 @@
                                         <td>Passivoitu</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Eerikäinen</td>
                                         <td>Matti</td>
                                         <td>010197-123A</td>
@@ -236,7 +233,7 @@
                                         <td>Ei hakemusta (perustiedot siirretty)</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Eskelinen</td>
                                         <td>Leena</td>
                                         <td>010197-123A</td>
@@ -244,7 +241,7 @@
                                         <td>Ehdollisesti valmis</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Aaltonen</td>
                                         <td>Aino</td>
                                         <td>010197-123A</td>
@@ -252,7 +249,7 @@
                                         <td>Valmis</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Angeria</td>
                                         <td>Hanna-Maria</td>
                                         <td>010197-123A</td>
@@ -260,7 +257,7 @@
                                         <td>Valmis</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Asikainen</td>
                                         <td>Esa</td>
                                         <td>010197-123A</td>
@@ -268,7 +265,7 @@
                                         <td>Passivoitu</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Eerikäinen</td>
                                         <td>Matti</td>
                                         <td>010197-123A</td>
@@ -276,7 +273,7 @@
                                         <td>Ei hakemusta (perustiedot siirretty)</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Eskelinen</td>
                                         <td>Leena</td>
                                         <td>010197-123A</td>
@@ -284,7 +281,7 @@
                                         <td>Ehdollisesti valmis</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Aaltonen</td>
                                         <td>Aino</td>
                                         <td>010197-123A</td>
@@ -292,7 +289,7 @@
                                         <td>Valmis</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Angeria</td>
                                         <td>Hanna-Maria</td>
                                         <td>010197-123A</td>
@@ -300,7 +297,7 @@
                                         <td>Valmis</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Asikainen</td>
                                         <td>Esa</td>
                                         <td>010197-123A</td>
@@ -308,7 +305,7 @@
                                         <td>Passivoitu</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Eerikäinen</td>
                                         <td>Matti</td>
                                         <td>010197-123A</td>
@@ -316,7 +313,7 @@
                                         <td>Ei hakemusta (perustiedot siirretty)</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="align-center"><input type="checkbox" /></td>
                                         <td>Eskelinen</td>
                                         <td>Leena</td>
                                         <td>010197-123A</td>
@@ -326,19 +323,19 @@
                                 </tbody>
                             </table>
 
-                            <div class="grid16-4 float-right mar">
+                            <div class="grid16-4 float-right">
                                 <div class="float-right">
                                     <div class="pagination inline-block margin-right-2">
-                                        <a href="#">&laquo</a>
+                                        <a href="#">&laquo;</a>
                                         <a href="#">1</a>
                                         <span>|</span>
                                         <a href="#">2</a>
                                         <span>|</span>
                                         <a href="#">3</a>
-                                        <a href="#">&raquo</a>
+                                        <a href="#">&raquo;</a>
                                     </div>
 
-                                    <select name="showresults" class="inline-block" id="showresults">
+                                    <select name="showresults" class="inline-block" id="showresults-bottom">
                                         <option value="50">Näytä 50/sivu</option>
                                         <option value="100">Näytä 100/sivu</option>
                                     </select>
