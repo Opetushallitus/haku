@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 public class RedirectToFormViewPath implements ViewPath {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(RedirectToFormViewPath.class);
-    final private String path;
+    private final String path;
 
     public RedirectToFormViewPath(final String applicationPeriodId, final String formId) {
         Preconditions.checkNotNull(applicationPeriodId);

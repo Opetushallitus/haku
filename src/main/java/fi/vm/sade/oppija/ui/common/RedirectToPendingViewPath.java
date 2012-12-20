@@ -25,7 +25,7 @@ public class RedirectToPendingViewPath implements ViewPath {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(RedirectToPendingViewPath.class);
     public static final String VALMIS_VIEW = "valmis";
-    final private String path;
+    private final String path;
 
     public RedirectToPendingViewPath(final String applicationPeriodId, final String formId, final String oid) {
         Preconditions.checkNotNull(applicationPeriodId, formId, oid);

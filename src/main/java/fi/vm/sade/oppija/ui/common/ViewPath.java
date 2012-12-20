@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.ui.common;
 
 public interface ViewPath {
-    public static final String REDIRECT_LOMAKE = "redirect:/lomake";
+    static final String REDIRECT_LOMAKE = "redirect:/lomake";
 
     String getPath();
 }

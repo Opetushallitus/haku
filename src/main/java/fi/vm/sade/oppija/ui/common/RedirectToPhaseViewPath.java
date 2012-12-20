@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 public class RedirectToPhaseViewPath implements ViewPath {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(RedirectToPhaseViewPath.class);
-    final private String path;
+    private final String path;
 
     public RedirectToPhaseViewPath(final String applicationPeriodId, final String formId, final String phaseId) {
         Preconditions.checkNotNull(applicationPeriodId, formId, phaseId);
