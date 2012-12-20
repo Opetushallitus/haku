@@ -53,7 +53,6 @@ public class FormController extends ExceptionController {
     public static final String DEFAULT_VIEW = "elements/Phase";
     public static final String VERBOSE_HELP_VIEW = "help";
     public static final String LINK_LIST_VIEW = "linkList";
-    public static final String REDIRECT_LOxMAKE = "redirect:/lomake";
     public static final String VALMIS_VIEW = "valmis";
 
     final FormService formService;
