@@ -31,7 +31,15 @@
         <div><a href="vapaasana.html">Takaisin hakutuloksiin</a></div>
 
         <div class="clear"></div>
-        ${searchResult['html_AOView_fi']}
+        <div class="pagetitle">
+                    <h1>${searchResult['AOTitle']}</h1>
+                    <a href="#">${searchResult['LOSDegreeTitle']}</a>
+
+                    <div class="set-right">
+                        <jsp:include page="sections/muistiJaVertailuValitsimet.jsp"/>
+                    </div>
+
+                </div>
 
         <jsp:include page="sections/koulutustiedonvalilehdet.jsp"/>
 
