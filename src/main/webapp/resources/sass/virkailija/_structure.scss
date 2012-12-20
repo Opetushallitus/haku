@@ -1,0 +1,105 @@
+
+/*** Wrapper
+**************************************************************/
+
+#viewport {
+    position:relative;
+}
+
+#wrapper {
+    min-width: 960px;
+    max-width: 1280px;
+    background: none repeat scroll 0 0 #F8F8F8;
+    border: 1px solid #DCDCDC;
+    border-top-width: 0;
+    margin: 0 auto;
+    padding: 0 0 10px;
+}
+
+
+/*** Overlay
+************************************************/
+
+#overlay {
+    display:none;
+    position:absolute;
+    top:0px;
+    left:0px;
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,0.5);
+    z-index:100;
+
+    > a.close {
+        display:block;
+        position:absolute;
+        top:0px;
+        left:0px;
+        width:100%;
+        height:100%;
+    }
+}
+
+
+
+/*** Siteheader
+************************************************/
+#siteheader {
+    
+    background: url("../img/navigation-divider.jpg") repeat-x scroll left bottom #F8F8F8;
+    padding: 10px 0;
+    height:38px;
+    position:relative;
+
+     .primarylinks {
+        @include font-size-px-to-em(15);
+        position:absolute;
+        bottom:18px;
+        left:18px;
+
+        a {
+            color:#000000;
+            text-decoration:none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .secondarylinks {
+
+        @include font-size-px-to-em(13);
+        position:absolute;
+        bottom:18px;
+        right:18px;
+
+        a {
+            color:#000000;
+            text-decoration:none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+/*** Footer
+************************************************/
+
+#footer {
+
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #DCDCDC;
+    border-radius: 3px 3px 3px 3px;
+    clear: both;
+
+    .footer-container {
+        background: none repeat scroll 0 0 #DCDCDC;
+        border: 1px solid #DCDCDC;
+        border-radius: 3px 3px 3px 3px;
+        margin: 0.625%;
+        padding: 10px 0;
+    }
+}

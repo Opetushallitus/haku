@@ -1,0 +1,293 @@
+
+.remove {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    background-image: url('../img/remove-sprite_idle-hover-selected-disabled.png');
+    background-position: 0px center;
+    overflow: hidden;
+    color: transparent;
+
+    &:hover {
+        background-position: -24px center;
+    }
+
+    &:focus,
+    &:active {
+        background-position: -48px center;
+    }
+
+    &:disabled {
+        background-position: -72px center;
+    }
+
+    span {
+        display: none;
+    }
+}
+
+
+
+button.button,
+input.button {
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+}
+
+
+
+button {
+    background: none;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+
+    span {
+        display: inline-block;
+        border: transparent 0px solid;
+        padding: 0px;
+        height: 28px;
+        line-height: 28px;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        margin: 0px 5px 0px 0px;
+        background-image: url('../img/button-sprite_idle-hover-selected-disabled.png');
+        background-position: left 0px;s
+
+        span {
+            white-space: nowrap;
+            display: block;
+            height: 28px;
+            line-height: 28px;
+            position: relative;
+            left: 5px;
+            background-repeat: no-repeat;
+            margin: 0px;
+            border: none;
+            padding: 0px 11px 0px 6px;
+            background-image: url('../img/button-sprite_idle-hover-selected-disabled.png');
+            background-position: right -112px;
+        }
+    }
+
+    &:hover span {
+        background-position: left -28px;
+        span {
+            background-position: right -140px;
+        }
+    }
+
+    &:focus span,
+    &:active span {
+        background-position: left -56px;
+
+        span {
+            background-position: right -168px;
+        }
+    }
+
+    &:disabled span {
+        background-position: left -84px;
+        span {
+            background-position: right -196px;
+        }
+    }
+
+    &.primary span {
+        background-image: url('../img/button-primary-sprite_idle-hover-selected-disabled.png');
+        span {
+            background-image: url('../img/button-primary-sprite_idle-hover-selected-disabled.png');
+        }
+    }
+
+    &.print span {
+        background-image: url('../img/button-print-sprite_idle-hover-selected-disabled.png');
+        span {
+            padding-left: 30px;
+            background-image: url('../img/button-print-sprite_idle-hover-selected-disabled.png');
+        }
+    }
+
+    &.pdf span {
+        background-image: url('../img/button-pdf-sprite_idle-hover-selected-disabled.png');
+        span {
+            padding-left: 25px;
+            background-image: url('../img/button-pdf-sprite_idle-hover-selected-disabled.png');
+        }
+    }
+
+    &.arrow-down span {
+        margin-right: 33px;
+        background-image: url('../img/button-arrow-down-sprite_idle-hover-selected-disabled.png');
+
+        span {
+            padding-right: 33px;
+            margin-right: 0px;
+            margin-left: -27px;
+            left: 33px;
+            background-image: url('../img/button-arrow-down-sprite_idle-hover-selected-disabled.png');
+        }
+    }
+
+    &.arrow-up span {
+
+        background-image: url('../img/button-arrow-up-sprite_idle-hover-selected-disabled.png');
+        margin-right: 33px;
+
+        span {
+            background-image: url('../img/button-arrow-up-sprite_idle-hover-selected-disabled.png');
+            padding-right: 33px;
+            margin-right: 0px;
+            margin-left: -27px;
+            left: 33px;
+        }
+    }
+
+    &.left {
+        span {
+            margin: 0px 0px 0px 30px;
+            background-image: url('../img/button-left-sprite_idle-hover-selected-disabled.png');
+            background-position: right -112px;
+            span {
+                margin: 0px -18px 0px 0px;
+                border: none;
+                padding: 0px 0px 0px 30px;
+                left: -30px;
+                background-image: url('../img/button-left-sprite_idle-hover-selected-disabled.png');
+                background-position: left 0px;
+            }
+        }
+
+        &:hover span {
+            background-position: right -140px;
+
+            span {
+                background-position: left -28px;
+            }
+        }
+
+        &:focus span,
+        &:active span {
+            background-position: right -168px;
+
+            span {
+                background-position: left -56px;
+            }
+        }
+
+        &:disabled span {
+            background-position: right -196px;
+
+            span {
+                background-position: left -84px;
+            }
+        }
+    }
+
+    &.right {
+        span {
+            margin: 0 30px 0 0;
+            background-image: url('../img/button-right-sprite_idle-hover-selected-disabled.png');
+            background-position: left -112px;
+            span {
+                margin: 0 0 0 -18px;
+                border: none;
+                padding: 0 30px 0 0;
+                left: 30px;
+                background-image: url('../img/button-right-sprite_idle-hover-selected-disabled.png');
+                background-position: right 0px;
+            }
+        }
+
+        &:hover span {
+            background-position: left -140px;
+
+            span {
+                background-position: right -28px;
+            }
+        }
+
+        &:focus span,
+        &:active span {
+            background-position: left -168px;
+
+            span {
+                background-position: right -56px;
+            }
+        }
+
+        &:disabled span {
+            background-position: left -196px;
+
+            span {
+                background-position: right -84px;
+            }
+        }
+    }
+
+    &.plus {
+        span {
+            width: 22px;
+            height: 22px;
+            margin: 0px;
+            padding: 0px;
+            border: none;
+            background-image: url('../img/button-plus-sprite_idle-hover-selected-disabled.png');
+            background-position: 0px center;
+        }
+
+        &:hover span {
+            background-position: -22px center;
+        }
+
+        &:focus span,
+        &:active span {
+            background-position: -44px center;
+        }
+
+        &:disabled span {
+            background-position: -66px center;
+        }
+
+        span {
+            display: none;
+        }
+    }
+
+    &.link {
+        display: inline;
+        background: none;
+        border: none;
+        margin: 0px;
+        padding: 0px;
+        line-height: inherit;
+        font-size: inherit;
+        font-family: inherit;
+        color: #149dca;
+
+        span {
+            padding: 0px;
+            margin: 0px;
+            background: none;
+
+            span {
+                line-height: inherit;
+                height: auto;
+                left: 0px;
+                padding: 0px;
+                margin: 0px;
+                background: none;
+            }
+        }
+    }
+
+}
+

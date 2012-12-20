@@ -1,27 +1,6 @@
 
 
-/*** Overlay
-************************************************/
 
-#overlay {
-    display:none;
-    position:absolute;
-    top:0px;
-    left:0px;
-    width:100%;
-    height:100%;
-    background-color:rgba(0,0,0,0.5);
-    z-index:100;
-
-    > a.close {
-        display:block;
-        position:absolute;
-        top:0px;
-        left:0px;
-        width:100%;
-        height:100%;
-    }
-}
 
 
 /*** Popups
@@ -57,7 +36,7 @@
         height:17px;
 
         
-        background-image:url(../../img/popup-close-icon.png);
+        background-image:url(../img/popup-close-icon.png);
         background-repeat:no-repeat;
         background-position:center center;
         cursor:pointer;
@@ -215,7 +194,7 @@
             span {
                 padding-left: 8px;
                 padding-right: 16px;
-                background-image: url(../../img/breadcrumb-arrow.png);
+                background-image: url(../img/breadcrumb-arrow.png);
                 background-repeat: no-repeat;
                 background-position: right center;
             }
@@ -285,7 +264,7 @@
             display:inline-block;
             width:17px;
             height:14px;
-            background-image:url(../../img/foldertree-icon-sprite.png);
+            background-image:url(../img/foldertree-icon-sprite.png);
             background-repeat:no-repeat;
             background-position:center left;
             cursor:pointer;
@@ -298,7 +277,7 @@
             display:inline-block;
             width:12px;
             height:14px;
-            background-image:url(../../img/foldertree-icon-sprite.png);
+            background-image:url(../img/foldertree-icon-sprite.png);
             background-repeat:no-repeat;
             background-position:center center;
         }
@@ -347,6 +326,27 @@ ul.itemtree {
             display:inline-block;
             vertical-align:middle;
         }
+
+        &.collapser {
+            position:absolute;
+            left:-26px;
+            top:0px;
+            width:20px;
+            height:20px;
+            background-image:url(../img/itemtree-collapse-sprite.png);
+            background-repeat:no-repeat;
+            background-position:center left;
+            cursor:pointer;
+        }
+
+        &.collapsed {
+
+            .collapser {
+                background-position:center right;
+            }
+        }
+
+
     }
 
     ul {
@@ -354,11 +354,114 @@ ul.itemtree {
         padding:0px 0px 0px 24px;   
     }
 
-    li.collapsed ul {
-        display: none;
+    li.collapsed {
+        ul {
+            display: none;
+        }
+
+        .collapser {
+            background-position:center right;
+        }
+    }
+
+    ul.actionmenu {
+        display:block;
+        margin:0px;
+        background:#DFF5FC;
+        background: -moz-linear-gradient(center top , #DFF5FC, #EBFAFF) repeat scroll 0 0 transparent;
+        border-radius: 3px 3px 3px 3px;
+        box-shadow: 1px 1px 2px 1px #A2A2A2;
+        overflow: hidden;
+        padding: 5px 0;
+        width:180px;
+        z-index: 10;
+
+        li {
+            float:none;
+            padding: 0px 0px 5px 0px;
+
+            a {
+                display:block;
+                line-height:16px;
+                border:none;
+                padding:0px 20px;
+                margin:0px;
+                color: #0C566E;
+                text-decoration: none;
+                box-shadow:none;
+
+                &:hover,
+                &.current {
+                    background-color:#feedbd;
+                }
+
+
+            }
+        }
     }
 
 }
+
+/*** Actionmenu
+************************************************/
+ ul.actionmenu {
+    display:block;
+    margin:0px;
+    background:#DFF5FC;
+    background: -moz-linear-gradient(center top , #DFF5FC, #EBFAFF) repeat scroll 0 0 transparent;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 1px 1px 2px 1px #A2A2A2;
+    overflow: hidden;
+    padding: 5px 0;
+    width:180px;
+    z-index: 10;
+
+    li {
+        float:none;
+        padding: 0px 0px 5px 0px;
+
+        a {
+            display:block;
+            line-height:16px;
+            border:none;
+            padding:0px 20px;
+            margin:0px;
+            color: #0C566E;
+            text-decoration: none;
+            box-shadow:none;
+
+            &:hover,
+            &.current {
+                background-color:#feedbd;
+            }
+
+
+        }
+    }
+ }
+
+ .actionmenu-icon {
+    position:relative;
+    display:inline-block;
+    vertical-align:bottom;
+    width:25px;
+    height:25px;
+    background-image:url(../img/actionmenu-icon-sprite.png);
+    background-repeat:no-repeat;
+    background-position:center left;
+    cursor:pointer;
+
+    &.hover,
+    &.open {
+        background-position:center right;
+    }
+
+    .actionmenu {
+        position:absolute;
+        left:0px;
+        top:25px;
+    }
+ }
 
 /*** Datepicker
 ************************************************/
@@ -369,7 +472,7 @@ ul.itemtree {
     width:34px;
     height:37px;
     line-height:37px;
-    background-image:url(../../img/datepicker-icon-sprite.png);
+    background-image:url(../img/datepicker-icon-sprite.png);
     background-position:left center;
     background-repeat:no-repeat;
     position:relative;
@@ -389,7 +492,7 @@ ul.itemtree {
     width:22px;
     height:24px;
     line-height:24px;
-    background-image:url(../../img/datepicker-icon-sprite-small.png);
+    background-image:url(../img/datepicker-icon-sprite-small.png);
     margin-bottom:5px;
 }
 
@@ -531,7 +634,7 @@ ul.orgmenu {
                 display:inline-block;
                 width:12px;
                 height:14px;
-                background-image:url(../../img/foldertree-icon-sprite.png);
+                background-image:url(../img/foldertree-icon-sprite.png);
                 background-repeat:no-repeat;
                 background-position:center center;
             }
@@ -544,7 +647,7 @@ ul.orgmenu {
             display:inline-block;
             width:17px;
             height:14px;
-            background-image:url(../../img/foldertree-icon-sprite.png);
+            background-image:url(../img/foldertree-icon-sprite.png);
             background-repeat:no-repeat;
             background-position:center left;
             cursor:pointer;
@@ -564,5 +667,127 @@ ul.orgmenu {
             border-bottom-color:#8fb5c2;
             background: -moz-linear-gradient(center top , #c5e5ef, #9bd4e6) repeat scroll 0 0 transparent;
         }
+    }
+}
+
+/*** Collapser
+************************************************/
+.collapsible {
+
+    position:relative;
+    margin-left:32px;
+    min-height:2em;
+
+    .collapser {
+        position:absolute;
+        left:-26px;
+        top:0px;
+        width:20px;
+        height:20px;
+        background-image:url(../img/itemtree-collapse-sprite.png);
+        background-repeat:no-repeat;
+        background-position:center left;
+        cursor:pointer;
+    }
+
+    &.collapsed {
+        .collapser {
+            background-position:center right;
+        }
+
+        .collapsing-content {
+            display: none;
+        }
+    }
+}
+
+
+/*** Itemlist
+************************************************/
+
+.itemlist {
+    padding: 0;
+
+    li {
+        margin: 4px 0;
+        list-style: none;
+    }
+
+    .label {
+        display:inline-block;
+        height:25px;
+        line-height:25px;
+    }
+}
+
+
+
+/*** Misc
+************************************************/
+
+ .infonotice
+{
+    background-color:#fef3d3;
+    border:none;
+    border-radius: 3px 3px 3px 3px;
+    padding:0.7em 1em;
+    margin:0.5em;
+    box-shadow: 1px 1px 2px 0 #5f5f5f;
+}
+
+
+ .containerbox
+{
+    margin:18px;
+    border: 1px solid #E8E8E8;
+    border-radius: 3px 3px 3px 3px;
+    background-color:#ffffff;
+}
+
+ .containerbox.lightblue
+{
+    background-color:#F1F6F7;
+}
+
+ .containerbox.lightgrey
+{
+    background-color:#eeeeee;
+}
+
+ .fillbox
+{
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:100%;
+    height:100%;
+}
+
+/***  Help link
+************************/
+
+.helplink {
+    float: right;
+    display: block;
+    width: 20px;
+    height: 21px;
+
+    color: transparent;
+    background-image: url('../img/help-icon-sprite_idle-hover-selected-disabled.png');
+    background-position: 0px center;
+    background-repeat: no-repeat;
+
+    &:hover {
+        background-position: -20px center;
+    }
+
+    &:active,
+    &:focus {
+        background-position: -40px center;
+    }
+
+    &:disabled,
+    &.disabled {
+        background-position: -60px center;
     }
 }

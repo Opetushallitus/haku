@@ -8,10 +8,11 @@
 fieldset {
 
     border: none;
-    padding: 0px;
+    padding: 0;
+    margin: 1em 0;
 
     legend {
-        padding: 0px;
+        padding: 0;
     }
 
     small {
@@ -19,7 +20,7 @@ fieldset {
     }
 
     hr {
-        margin: 0.5em 0px;
+        margin: 0.5em 0;
     }
 }
 
@@ -192,6 +193,10 @@ label, .label {
     color: #000000;
 }
 
+.form .form-item-content {
+    padding: 0 0 0 1em;
+}
+
 
 
 /*** Form item row
@@ -201,6 +206,38 @@ label, .label {
         display: inline-block;
         padding-right: 1em;
     }
+}
+
+
+/*** Field container radio
+************************************************/
+
+.field-container-radio {
+    input[type="radio"] {
+        margin-right: 5px;
+    }
+
+    > div {
+        position: relative;
+        top: -3px;
+        
+        small {
+            margin-left: 24px;
+            padding-bottom: 5px;
+        }
+
+    }
+
+}
+
+.field-container-radio 
+
+.field-container-radio 
+
+.field-container-radio > div small {
+    margin-left: 24px;
+    padding-bottom: 5px;
+
 }
 
 /*** Search result
@@ -231,7 +268,7 @@ label, .label {
 
 /*** Custom form styles
 ************************************************/
-
+/*
  .table-field-label {
     display:block;
     padding-top:8px;
@@ -305,3 +342,5 @@ label, .label {
         }
     }
 }
+
+*/

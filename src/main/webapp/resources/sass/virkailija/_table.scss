@@ -2,13 +2,15 @@
 /*** Virkailija-table-1 
 ************************************************/
 
-.table-1 {
+.virkailija-table-1 {
     width: 100%;
     border-spacing: 1px 0;
+    border-collapse: separate;
 
     tr {
 
-        td,th {
+        td,
+        th {
             line-height: 2.3em;
             padding: 0 1.5em;
             vertical-align: middle;
@@ -18,22 +20,25 @@
 
     thead {
         background-color: #eee;
-        background-image: url("../../img/table-header-bg.png");
+        background-image: url("../img/table-header-bg.png");
         background-repeat: repeat;
         background-position: left top;
 
         th {
             border-bottom: 1px solid #c2c2c2;
+            border-top: 1px solid #ececec;
         }
 
         tr:first-of-type {
 
             th:first-of-type {
-                border-top-left-radius: 5px;
+                @include rounded-corner(top, left, 5px);
+                border-left: 1px solid #ececec;
             }
 
             th:last-of-type {
-                border-top-right-radius: 5px;
+                @include rounded-corner(top, right, 5px);
+                border-right: 1px solid #ececec;
             }
 
         }
@@ -53,11 +58,11 @@
         tr:last-of-type {
             
             td:first-of-type {
-                border-bottom-left-radius: 5px;
+                @include rounded-corner(bottom, left, 5px);
             }
 
             td:last-of-type {
-                border-bottom-right-radius: 5px;
+                @include rounded-corner(bottom, right, 5px);
             }
         }
     }

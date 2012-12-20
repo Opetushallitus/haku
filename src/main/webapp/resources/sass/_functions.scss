@@ -10,6 +10,14 @@
     border-radius: $radius;
 }
 
+@mixin rounded-corner($horizontal, $vertical, $radius) {
+    -moz-border-#{$horizontal}-#{$vertical}-radius: $radius;
+    -webkit-border-#{$horizontal}-#{$vertical}-radius: $radius;
+    -o-border-#{$horizontal}-#{$vertical}-radius: $radius;
+    -ms-border-#{$horizontal}-#{$vertical}-radius: $radius;
+    border-#{$horizontal}-#{$vertical}-radius: $radius;
+}
+
 @mixin box-shadow($horizontal, $vertical, $blur, $spread, $color) {
     -moz-box-shadow: $horizontal $vertical $blur $spread $color;
     -webkit-box-shadow: $horizontal $vertical $blur $spread $color;
@@ -61,4 +69,10 @@
     background: -moz-linear-gradient(top, $from-color, $to-color) ;
     background: -ms-linear-gradient(top, $from-color, $to-color) ;
     background: -o-linear-gradient(top, $from-color, $to-color);
+}
+
+
+//assumes default font is 13px!!!
+@mixin font-size-px-to-em($pixels) {
+    font-size: #{$pixels / $base-font-size}em;
 }
