@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
+import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
@@ -52,6 +54,8 @@ public class OfficerController {
     @Autowired
     @Qualifier("formServiceImpl")
     FormService formService;
+    @Autowired
+    ApplicationProcessStateService applicationProcessStateService;
 
     @RequestMapping(value = "/hakemus/{oid}", method = RequestMethod.GET)
     public String getApplication(@PathVariable final String oid) {
@@ -104,5 +108,12 @@ public class OfficerController {
             modelAndView.addObject("oid", oid);
         }
         return modelAndView.addObject("hakemusId", hakuLomakeId);
+    }
+
+    @RequestMapping(value = "/hakemus/{oid}/applicationProcessState/{status}/", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
+    public String changeApplicationProcessState(@PathVariable final String oid, @PathVariable final String status) {
+        LOGGER.debug("changeApplicationProcessState {}, {}", new Object[]{oid, status});
+        applicationProcessStateService.setApplicationProcessStateStatus(oid, ApplicationProcessStateStatus.valueOf(status));
+        return getApplication(oid);
     }
 }

@@ -16,16 +16,27 @@
  *
  */
 
-package fi.vm.sade.oppija.application.process.service;
-
-import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
-import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
+package fi.vm.sade.oppija.application.process.domain;
 
 /**
  * @author Mikko Majapuro
  */
-public interface ApplicationProcessStateService {
+public enum ApplicationProcessStateStatus {
 
-    void setApplicationProcessStateStatus(final String oid, final ApplicationProcessStateStatus status);
-    ApplicationProcessState get(final String oid);
+    ACTIVE("Aktiivinen"), CANCELLED("Peruttu");
+
+    private final String name;
+
+    ApplicationProcessStateStatus(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

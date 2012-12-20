@@ -16,16 +16,27 @@
  *
  */
 
-package fi.vm.sade.oppija.application.process.service;
+package fi.vm.sade.oppija.application.process.converter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.base.Function;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
-import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
+
+import java.util.Map;
 
 /**
  * @author Mikko Majapuro
  */
-public interface ApplicationProcessStateService {
+public class ApplicationProcessStateToDBObject implements Function<ApplicationProcessState, DBObject> {
 
-    void setApplicationProcessStateStatus(final String oid, final ApplicationProcessStateStatus status);
-    ApplicationProcessState get(final String oid);
+    @Override
+    public DBObject apply(final ApplicationProcessState applicationProcessState) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        Map map = mapper.convertValue(applicationProcessState, Map.class);
+        return new BasicDBObject(map);
+    }
 }

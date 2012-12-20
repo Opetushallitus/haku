@@ -18,8 +18,50 @@
 
 package fi.vm.sade.oppija.application.process.controller;
 
+import fi.vm.sade.oppija.ExceptionController;
+import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
+import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
+import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 /**
  * @author Mikko Majapuro
  */
-public class ApplicationProcessStateController {
+@Controller
+@RequestMapping(value = "/applicationProcessStates", method = RequestMethod.GET)
+@Secured("ROLE_OFFICER")
+public class ApplicationProcessStateController extends ExceptionController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationProcessStateController.class);
+
+    @Autowired
+    ApplicationProcessStateService applicationProcessStateService;
+
+    @RequestMapping(value = "{oid:.+}", method = {RequestMethod.GET})
+    @ResponseBody
+    public ApplicationProcessState getApplicationProcessState(@PathVariable String oid) {
+        LOGGER.debug("getApplicationProcessState oid {}", oid);
+        return applicationProcessStateService.get(oid);
+    }
+
+    @RequestMapping(value = "/active/{oid:.+}", method = {RequestMethod.PUT})
+    @ResponseBody
+    public void putToActiveProcessStates(@PathVariable String oid) {
+        LOGGER.debug("put to active process state oid {}", oid);
+        applicationProcessStateService.setApplicationProcessStateStatus(oid, ApplicationProcessStateStatus.ACTIVE);
+    }
+
+    @RequestMapping(value = "/cancelled/{oid:.+}", method = {RequestMethod.PUT})
+    @ResponseBody
+    public void putToCancelledProcessStates(@PathVariable String oid) {
+        LOGGER.debug("put to cancelled process state oid {}", oid);
+        applicationProcessStateService.setApplicationProcessStateStatus(oid, ApplicationProcessStateStatus.CANCELLED);
+    }
 }

@@ -18,8 +18,14 @@
 
 package fi.vm.sade.oppija.application.process.dao;
 
+import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
+import fi.vm.sade.oppija.common.dao.BaseDAO;
+
 /**
  * @author Mikko Majapuro
  */
-public interface ApplicationProcessStateDAO {
+public interface ApplicationProcessStateDAO extends BaseDAO<ApplicationProcessState> {
+
+    void create(ApplicationProcessState applicationProcessState);
+    ApplicationProcessState findOne(ApplicationProcessState query);
 }

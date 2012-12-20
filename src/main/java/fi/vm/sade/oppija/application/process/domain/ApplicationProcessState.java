@@ -35,12 +35,21 @@ public class ApplicationProcessState implements Serializable {
     @JsonProperty(value = "oid")
     private String oid;
 
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    @JsonProperty(value = "status")
+    private String status;
+
     @JsonCreator
-    public ApplicationProcessState(final String oid) {
+    public ApplicationProcessState(final String oid, final String status) {
         this.oid = oid;
+        this.status = status;
     }
 
     public String getOid() {
         return oid;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }
