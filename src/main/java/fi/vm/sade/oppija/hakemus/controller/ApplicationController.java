@@ -42,19 +42,15 @@ public class ApplicationController extends ExceptionController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class);
 
     @Autowired
-    ApplicationService applicationService;
+    protected ApplicationService applicationService;
 
     @RequestMapping(method = {RequestMethod.GET})
     @ResponseBody
-    public List<Application> searchApplications(@RequestParam("term") String term) {
+    public List<Application> searchApplications(@RequestParam(value = "term", required = true) String term) {
         //TODO implement this
         List<Application> result = new ArrayList<Application>();
-        if (term != null && !term.isEmpty()) {
-            Application app = applicationService.getApplication(term);
-            if (app != null) {
-                result.add(app);
-            }
-        }
+        Application app = applicationService.getApplication(term);
+        result.add(app);
         return result;
     }
 

@@ -39,6 +39,11 @@ public class PersonalServices {
     @Autowired
     private ApplicationService applicationService;
 
+    @RequestMapping
+    public ModelAndView hautKoulutuksiin() {
+        return getApplications();
+    }
+
     @RequestMapping(value = "applications", method = RequestMethod.GET)
     public ModelAndView getApplications() {
         LOGGER.debug("getApplications");
