@@ -30,10 +30,30 @@ public interface ApplicationService {
 
     Application getApplication(FormId formId);
 
+    /**
+     * Save answers of a single form phase. Phase is saved to the currently modified application of the user session.
+     *
+     * @param applicationPhase
+     * @return appplication state
+     */
     ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase);
 
+    /**
+     * Save answers of a single form phase. Phase is saved to the application with the parameter oid.
+     *
+     * @param applicationPhase
+     * @param oid
+     * @return application state
+     */
     ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final String oid);
 
+    /**
+     * Save answers of a single form phase. Phase is saved to the parameter application.
+     *
+     * @param applicationPhase
+     * @param application
+     * @return application state
+     */
     ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final Application application);
 
     Application getApplication(String oid);
