@@ -128,13 +128,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getApplication(FormId formId, String oid) {
-        Application application = new Application(formId, userHolder.getUser());
-        application.setOid(oid);
-        return getApplication(application);
-    }
-
-    @Override
     public List<ApplicationInfo> getUserApplicationInfo() {
         List<ApplicationInfo> listOfApplicationInfos = new ArrayList<ApplicationInfo>();
         List<Application> listOfUserApplications = applicationDAO.find(new Application(userHolder.getUser()));

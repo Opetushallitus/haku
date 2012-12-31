@@ -56,11 +56,15 @@ public interface ApplicationService {
      */
     ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final Application application);
 
+    /**
+     * Retrieve application by oid.
+     *
+     * @param oid
+     * @return
+     */
     Application getApplication(String oid);
 
     String submitApplication(final FormId formId);
-
-    Application getApplication(FormId formId, String oid);
 
     Application getPendingApplication(final FormId hakuLomakeId, final String oid);
 }
