@@ -73,4 +73,12 @@ public interface ApplicationService {
     String submitApplication(final FormId formId);
 
     Application getPendingApplication(final FormId hakuLomakeId, final String oid);
+
+    /**
+     * Retrieves all submitted applications related to a single application system
+     *
+     * @param applicationSystemId
+     * @return
+     */
+    List<Application> getApplicationsByApplicationSystem(String applicationSystemId);
 }

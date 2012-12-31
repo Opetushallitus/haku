@@ -128,6 +128,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public List<Application> getApplicationsByApplicationSystem(String applicationSystemId) {
+
+        return applicationDAO.findByApplicationSystem(applicationSystemId);
+    }
+
+    @Override
     public List<ApplicationInfo> getUserApplicationInfo() {
         List<ApplicationInfo> listOfApplicationInfos = new ArrayList<ApplicationInfo>();
         List<Application> listOfUserApplications = applicationDAO.find(new Application(userHolder.getUser()));

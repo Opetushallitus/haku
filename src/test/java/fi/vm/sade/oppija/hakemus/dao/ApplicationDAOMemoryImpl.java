@@ -70,6 +70,11 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
+    public List<Application> findByApplicationSystem(String asId) {
+        return null;
+    }
+
+    @Override
     public ApplicationState tallennaVaihe(final ApplicationState state) {
         Application application = find(new Application(state.getHakemus().getFormId(), state.getHakemus().getUser())).get(0);
         application.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());

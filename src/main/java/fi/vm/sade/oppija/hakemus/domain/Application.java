@@ -177,4 +177,8 @@ public class Application implements Serializable {
     public void setMeta(Map<String, String> meta) {
         this.meta = meta;
     }
+
+    public void setFormId(FormId formId) {
+        this.formId = formId;
+    }
 }

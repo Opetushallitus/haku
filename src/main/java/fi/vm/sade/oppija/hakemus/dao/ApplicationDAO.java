@@ -20,6 +20,8 @@ import fi.vm.sade.oppija.common.dao.BaseDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 
+import java.util.List;
+
 /**
  * DAO interface for saving, updating and finding applications made by users.
  *
@@ -31,4 +33,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     Application findDraftApplication(Application application);
 
     String getNewOid();
+
+    List<Application> findByApplicationSystem(String asId);
 }

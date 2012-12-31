@@ -89,6 +89,16 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return OID_PREFIX + getNextId();
     }
 
+    @Override
+    public List<Application> findByApplicationSystem(String asId) {
+        BasicDBObject dbObject = new BasicDBObject();
+        dbObject.put("formId.applicationPeriodId", asId);
+        List<Application> applications = findApplications(dbObject);
+
+
+        return applications;
+    }
+
     private Application findOneApplication(DBObject query) {
         List<Application> listOfApplications = findApplications(query);
         if (listOfApplications.size() == 1) {

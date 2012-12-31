@@ -5,10 +5,7 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -27,13 +24,18 @@ public class ApplicationResource {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Application> getAllApplications() {
-        // TODO: actually retrieve applications
+    public List<Application> getAllApplications(@QueryParam("asid") String asId) {
 
-        List<Application> apps = new ArrayList<Application>();
-        return apps;
+        List<Application> applications;
+        if (asId != null) {
+            // retrieve applications related to a single application system
+            applications = applicationService.getApplicationsByApplicationSystem(asId);
+        }
+        else {
+            applications = new ArrayList<Application>();
+        }
 
-
+        return applications;
     }
 
     @GET
