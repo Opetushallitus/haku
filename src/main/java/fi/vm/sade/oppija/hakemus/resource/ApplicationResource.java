@@ -1,6 +1,8 @@
 package fi.vm.sade.oppija.hakemus.resource;
 
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
@@ -19,6 +21,9 @@ import java.util.List;
 @Path("/applications")
 public class ApplicationResource {
 
+    @Autowired
+    private ApplicationService applicationService;
+
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
@@ -32,16 +37,10 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("/{applicationId}")
+    @Path("/{oid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Application getApplication(@PathParam("applicationId") String applicationId) {
-
-        Application application = new Application();
-        application.setOid("1.2.3.4.5");
-
-
-        return application;
-
+    public Application getApplication(@PathParam("oid") String oid) {
+        return applicationService.getApplication(oid);
     }
 
 }
