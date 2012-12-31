@@ -64,6 +64,12 @@ public interface ApplicationService {
      */
     Application getApplication(String oid);
 
+    /**
+     * Submits an application based on current user and form.
+     *
+     * @param formId
+     * @return
+     */
     String submitApplication(final FormId formId);
 
     Application getPendingApplication(final FormId hakuLomakeId, final String oid);
