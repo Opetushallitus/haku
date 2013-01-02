@@ -18,8 +18,12 @@ import java.util.List;
 @Path("/applications")
 public class ApplicationResource {
 
-    @Autowired
     private ApplicationService applicationService;
+
+    @Autowired
+    public ApplicationResource(ApplicationService applicationService) {
+        this.applicationService = applicationService;
+    }
 
     @GET
     @Path("/")
