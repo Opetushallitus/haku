@@ -28,7 +28,7 @@ public class ApplicationResource {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Application> getAllApplications(@QueryParam("asid") String asId) {
+    public List<Application> getApplications(@QueryParam("asid") String asId) {
 
         List<Application> applications;
         if (asId != null) {
