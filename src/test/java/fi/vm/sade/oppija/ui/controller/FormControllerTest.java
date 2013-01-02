@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.service.impl.UserPrefillDataServiceImpl;
@@ -93,9 +93,9 @@ public class FormControllerTest {
         assertEquals(expected, actual);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testGetFormAndRedirectToFirstCategoryNotFound() throws Exception {
-        when(applicationService.getApplication(Matchers.<FormId>any())).thenThrow(new ResourceNotFoundException(""));
+        when(applicationService.getApplication(Matchers.<FormId>any())).thenThrow(new ResourceNotFoundExceptionRuntime(""));
         formController.getApplication(APPLICATION_PERIOD_ID, "väärä");
     }
 
@@ -141,7 +141,7 @@ public class FormControllerTest {
     @Test
     public void testResourceNotFoundExceptionMessage() throws Exception {
         String message = "text";
-        ResourceNotFoundException rnfv = new ResourceNotFoundException(message);
+        ResourceNotFoundExceptionRuntime rnfv = new ResourceNotFoundExceptionRuntime(message);
         ModelAndView modelAndView = formController.resourceNotFoundExceptions(rnfv);
         assertEquals(message, modelAndView.getModel().get("message"));
     }
@@ -149,7 +149,7 @@ public class FormControllerTest {
     @Test
     public void testResourceNotFoundExceptionView() throws Exception {
         String message = "text";
-        ResourceNotFoundException rnfv = new ResourceNotFoundException(message);
+        ResourceNotFoundExceptionRuntime rnfv = new ResourceNotFoundExceptionRuntime(message);
         ModelAndView modelAndView = formController.resourceNotFoundExceptions(rnfv);
         assertEquals(FormController.ERROR_NOTFOUND, modelAndView.getViewName());
     }

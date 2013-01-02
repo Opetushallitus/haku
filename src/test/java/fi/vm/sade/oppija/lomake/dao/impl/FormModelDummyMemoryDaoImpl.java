@@ -27,7 +27,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -487,7 +487,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         try {
             return formModel.getApplicationPeriodById(applicationPeriodId).getFormById(formId);
         } catch (Exception e) {
-            throw new ResourceNotFoundException("Not found");
+            throw new ResourceNotFoundExceptionRuntime("Not found");
         }
     }
 
@@ -496,7 +496,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         try {
             return this.getActiveForm(applicationPeriodId, formId).getFirstPhase();
         } catch (Exception e) {
-            throw new ResourceNotFoundException("Not found");
+            throw new ResourceNotFoundExceptionRuntime("Not found");
         }
     }
 
@@ -505,7 +505,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         try {
             return this.getActiveForm(applicationPeriodId, formId).getLastPhase();
         } catch (Exception e) {
-            throw new ResourceNotFoundException("Not found");
+            throw new ResourceNotFoundExceptionRuntime("Not found");
         }
     }
 

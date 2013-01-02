@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.tarjonta.service.impl;
 
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
 import fi.vm.sade.oppija.tarjonta.domain.exception.SearchException;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
@@ -59,7 +59,7 @@ public class SearchServiceSolrImpl implements SearchService {
         SearchResult searchResult = query(query);
         Map<String, Object> itemFromResult = getItemFromResult(searchResult);
         if (itemFromResult.isEmpty()) {
-            throw new ResourceNotFoundException("Koulutuskuvausta " + id + " ei löytynyt: ");
+            throw new ResourceNotFoundExceptionRuntime("Koulutuskuvausta " + id + " ei löytynyt: ");
         }
         return itemFromResult;
     }

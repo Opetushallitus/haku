@@ -20,14 +20,14 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class ResourceNotFoundExceptionTest {
+public class ResourceNotFoundExceptionRuntimeTest {
 
     public static final String MESSAGE = "virhe";
 
     @Test
     public void testMessage() throws Exception {
-        ResourceNotFoundException resourceNotFoundException = new ResourceNotFoundException(MESSAGE);
-        assertEquals(MESSAGE, resourceNotFoundException.getMessage());
+        ResourceNotFoundExceptionRuntime resourceNotFoundExceptionRuntime = new ResourceNotFoundExceptionRuntime(MESSAGE);
+        assertEquals(MESSAGE, resourceNotFoundExceptionRuntime.getMessage());
 
     }
 }

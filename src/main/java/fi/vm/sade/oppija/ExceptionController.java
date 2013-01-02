@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija;
 
 
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -35,8 +35,8 @@ public class ExceptionController {
     public static final String MODEL_MESSAGE = "message";
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ModelAndView resourceNotFoundExceptions(ResourceNotFoundException e) {
+    @ExceptionHandler(ResourceNotFoundExceptionRuntime.class)
+    public ModelAndView resourceNotFoundExceptions(ResourceNotFoundExceptionRuntime e) {
         return createModelAndView(ERROR_NOTFOUND, e);
     }
 

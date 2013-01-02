@@ -20,11 +20,13 @@ package fi.vm.sade.oppija.lomake.domain.exception;
  * @author jukka
  * @version 9/10/1210:29 AM}
  * @since 1.1
+ *
+ * @deprecated
  */
-public class ResourceNotFoundException extends RuntimeException {
+public class ResourceNotFoundExceptionRuntime extends RuntimeException {
     private static final long serialVersionUID = -8188728650814173417L;
 
-    public ResourceNotFoundException(final String message) {
+    public ResourceNotFoundExceptionRuntime(final String message) {
         super(message);
     }
 }

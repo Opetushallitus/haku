@@ -26,7 +26,7 @@ import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.oppija.hakemus.converter.DBObjectToApplicationFunction;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,9 +104,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (listOfApplications.size() == 1) {
             return listOfApplications.get(0);
         } else if (listOfApplications.size() > 1) {
-            throw new ResourceNotFoundException("Found two or more applications found " + query);
+            throw new ResourceNotFoundExceptionRuntime("Found two or more applications found " + query);
         }
-        throw new ResourceNotFoundException("Application not found " + query);
+        throw new ResourceNotFoundExceptionRuntime("Application not found " + query);
     }
 
     private List<Application> findApplications(DBObject dbObject) {

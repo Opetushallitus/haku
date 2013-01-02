@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.lomake.domain.elements;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -90,7 +90,7 @@ public class Form extends Titled {
     public Element getElementById(final String elementId) {
         Element element = getChildById(this, elementId);
         if (element == null) {
-            throw new ResourceNotFoundException("Could not find element " + elementId);
+            throw new ResourceNotFoundExceptionRuntime("Could not find element " + elementId);
         }
         return element;
     }

@@ -21,7 +21,7 @@ import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.junit.Before;
 import org.junit.Test;
@@ -77,7 +77,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         assertTrue(applications.isEmpty());
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testFindPendingApplicationNotFound() throws Exception {
         applicationDAO.findDraftApplication(new Application(formId, TEST_USER));
     }

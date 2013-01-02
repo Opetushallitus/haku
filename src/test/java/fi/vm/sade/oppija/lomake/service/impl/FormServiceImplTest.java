@@ -23,7 +23,7 @@ import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.Validator;
@@ -55,7 +55,7 @@ public class FormServiceImplTest {
         FORM.init();
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testGetFirstCategoryNotFound() throws Exception {
         formService.getFirstPhase(null, null);
     }
@@ -66,7 +66,7 @@ public class FormServiceImplTest {
         assertEquals(applicationPeriod, applicationPeriodById);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testGetApplicationPeriodByIdNotFound() throws Exception {
         formService.getApplicationPeriodById("lskdjflsdk");
     }
@@ -79,7 +79,7 @@ public class FormServiceImplTest {
         assertTrue(listOfValidators.isEmpty());
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testGetVaiheValidatorsPhaseNotFound() throws Exception {
         FormId formId = new FormId(applicationPeriod.getId(), FORM.getId());
         Application application = new Application(formId, new AnonymousUser());

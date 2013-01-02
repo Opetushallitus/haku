@@ -27,7 +27,7 @@ import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.IllegalStateException;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -160,7 +160,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private Application getApplication(final Application application) {
         List<Application> listOfApplications = applicationDAO.find(application);
         if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
-            throw new ResourceNotFoundException("Could not find application " + listOfApplications.size());
+            throw new ResourceNotFoundExceptionRuntime("Could not find application " + listOfApplications.size());
         }
         return listOfApplications.get(0);
 

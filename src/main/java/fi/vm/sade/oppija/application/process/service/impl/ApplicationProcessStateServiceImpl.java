@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.application.process.dao.ApplicationProcessStateDAO;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
 import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -58,7 +58,7 @@ public class ApplicationProcessStateServiceImpl implements ApplicationProcessSta
         ApplicationProcessState query = new ApplicationProcessState(oid, null);
         ApplicationProcessState applicationProcessState = this.applicationProcessStateDAO.findOne(query);
         if (applicationProcessState == null) {
-            throw new ResourceNotFoundException("Could not find application process state by oid" + oid);
+            throw new ResourceNotFoundExceptionRuntime("Could not find application process state by oid" + oid);
         } else {
             return applicationProcessState;
         }

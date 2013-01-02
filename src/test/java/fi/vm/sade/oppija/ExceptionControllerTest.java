@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija;
 
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,28 +32,28 @@ public class ExceptionControllerTest {
 
     @Test
     public void testResourceNotFoundExceptionsView() throws Exception {
-        ModelAndView modelAndView = exceptionController.resourceNotFoundExceptions(new ResourceNotFoundException("viesti"));
+        ModelAndView modelAndView = exceptionController.resourceNotFoundExceptions(new ResourceNotFoundExceptionRuntime("viesti"));
         assertEquals(modelAndView.getViewName(), ExceptionController.ERROR_NOTFOUND);
     }
 
     @Test
     public void testResourceNotFoundExceptionsMessage() throws Exception {
         String actualErrorMessage = "viesti";
-        ModelAndView modelAndView = exceptionController.resourceNotFoundExceptions(new ResourceNotFoundException(actualErrorMessage));
+        ModelAndView modelAndView = exceptionController.resourceNotFoundExceptions(new ResourceNotFoundExceptionRuntime(actualErrorMessage));
         Object expectedErrorMessage = modelAndView.getModel().get(ExceptionController.MODEL_MESSAGE);
         assertEquals(expectedErrorMessage, actualErrorMessage);
     }
 
     @Test
     public void testResourceNotFoundExceptionsStackTrace() throws Exception {
-        ModelAndView modelAndView = exceptionController.resourceNotFoundExceptions(new ResourceNotFoundException(""));
+        ModelAndView modelAndView = exceptionController.resourceNotFoundExceptions(new ResourceNotFoundExceptionRuntime(""));
         Map<String, Object> model = modelAndView.getModel();
         assertTrue(model.containsKey(ExceptionController.MODEL_STACK_TRACE));
     }
 
     @Test
     public void testExceptions() throws Exception {
-        ModelAndView modelAndView = exceptionController.exceptions(new ResourceNotFoundException("viesti"));
+        ModelAndView modelAndView = exceptionController.exceptions(new ResourceNotFoundExceptionRuntime("viesti"));
         assertEquals(modelAndView.getViewName(), ExceptionController.ERROR_SERVERERROR);
     }
 }

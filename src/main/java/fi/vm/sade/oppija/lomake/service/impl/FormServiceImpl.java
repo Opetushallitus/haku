@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -48,7 +48,7 @@ public class FormServiceImpl implements FormService {
     private FormModel getModel() {
         FormModel model = holder.getModel();
         if (model == null) {
-            throw new ResourceNotFoundException("Model not found");
+            throw new ResourceNotFoundExceptionRuntime("Model not found");
         }
         return model;
     }
@@ -57,10 +57,10 @@ public class FormServiceImpl implements FormService {
     public Form getActiveForm(String applicationPeriodId, String formId) {
         final ApplicationPeriod applicationPeriod = getApplicationPeriodById(applicationPeriodId);
         if (applicationPeriod == null) {
-            throw new ResourceNotFoundException("not found");
+            throw new ResourceNotFoundExceptionRuntime("not found");
         }
         if (!applicationPeriod.isActive()) {
-            throw new ResourceNotFoundException("Not active");
+            throw new ResourceNotFoundExceptionRuntime("Not active");
         }
         return applicationPeriod.getFormById(formId);
     }
@@ -74,7 +74,7 @@ public class FormServiceImpl implements FormService {
     public Phase getFirstPhase(String applicationPeriodId, String formId) {
         Phase firstPhase = getActiveForm(applicationPeriodId, formId).getFirstPhase();
         if (firstPhase == null) {
-            throw new ResourceNotFoundException("First phase not found");
+            throw new ResourceNotFoundExceptionRuntime("First phase not found");
         }
         return firstPhase;
     }
@@ -83,7 +83,7 @@ public class FormServiceImpl implements FormService {
     public Phase getLastPhase(String applicationPeriodId, String formId) {
         Phase lastPhase = getActiveForm(applicationPeriodId, formId).getLastPhase();
         if (lastPhase == null) {
-            throw new ResourceNotFoundException("Last phase not found");
+            throw new ResourceNotFoundExceptionRuntime("Last phase not found");
         }
         return lastPhase;
     }
@@ -108,7 +108,7 @@ public class FormServiceImpl implements FormService {
     public ApplicationPeriod getApplicationPeriodById(String applicationPeriodId) {
         ApplicationPeriod applicationPeriodById = getModel().getApplicationPeriodById(applicationPeriodId);
         if (applicationPeriodById == null) {
-            throw new ResourceNotFoundException("Application period " + applicationPeriodId + " not found");
+            throw new ResourceNotFoundExceptionRuntime("Application period " + applicationPeriodId + " not found");
         }
         return applicationPeriodById;
     }
@@ -121,7 +121,7 @@ public class FormServiceImpl implements FormService {
     private Phase getPhaseById(FormId formId, String phaseId) {
         Phase phase = getActiveForm(formId.getApplicationPeriodId(), formId.getFormId()).getPhase(phaseId);
         if (phase == null) {
-            throw new ResourceNotFoundException("Phase '" + phaseId + "' Not found");
+            throw new ResourceNotFoundExceptionRuntime("Phase '" + phaseId + "' Not found");
         }
         return phase;
     }
