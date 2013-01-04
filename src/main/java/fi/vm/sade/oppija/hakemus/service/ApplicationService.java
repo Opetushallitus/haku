@@ -20,6 +20,7 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 
 import java.util.List;
@@ -60,9 +61,11 @@ public interface ApplicationService {
      * Retrieve application by oid.
      *
      * @param oid
-     * @return
+     * @return application
+     * @throws ResourceNotFoundException thrown when an application is not found
+     * with the given oid
      */
-    Application getApplication(String oid);
+    Application getApplication(String oid) throws ResourceNotFoundException;
 
     /**
      * Submits an application based on current user and form.
@@ -72,7 +75,15 @@ public interface ApplicationService {
      */
     String submitApplication(final FormId formId);
 
-    Application getPendingApplication(final FormId hakuLomakeId, final String oid);
+    /**
+     *
+     *
+     * @param hakuLomakeId
+     * @param oid
+     * @return
+     * @throws ResourceNotFoundException if an application is not found with the oid
+     */
+    Application getPendingApplication(final FormId hakuLomakeId, final String oid) throws ResourceNotFoundException;
 
     /**
      * Retrieves all submitted applications related to a single application system

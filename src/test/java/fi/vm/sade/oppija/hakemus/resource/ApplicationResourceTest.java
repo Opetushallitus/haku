@@ -4,15 +4,20 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
 import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -26,6 +31,7 @@ public class ApplicationResourceTest {
     private Application application;
 
     private final String OID = "1.2.3.4.5.100";
+    private final String INVALID_OID = "1.2.3.4.5.999";
     private final String ASID = "yhteishaku";
 
     @Before
@@ -41,7 +47,13 @@ public class ApplicationResourceTest {
         this.application = new Application(formId, new AnonymousUser(), phases);
         this.application.setOid(OID);
 
-        when(applicationService.getApplication(OID)).thenReturn(this.application);
+        try {
+            when(applicationService.getApplication(OID)).thenReturn(this.application);
+            when(applicationService.getApplication(INVALID_OID)).thenThrow(new ResourceNotFoundException("Application Not Found"));
+        }
+        catch(ResourceNotFoundException e) {
+            // do nothing
+        }
 
         ArrayList<Application> applications = new ArrayList<Application>();
         applications.add(this.application);
@@ -54,6 +66,19 @@ public class ApplicationResourceTest {
     public void testGetApplication() {
         Application a = this.applicationResource.getApplication(OID);
         assertEquals(this.application, a);
+    }
+
+    @Test
+    public void testGetApplicationWithInvalidOid() {
+
+        try {
+            this.applicationResource.getApplication(INVALID_OID);
+            fail("ApplicationResource failed to throw exception");
+        }
+        catch (JSONException e) {
+            assertEquals(Response.Status.NOT_FOUND.getStatusCode(), e.getResponse().getStatus());
+        }
+
     }
 
     @Test

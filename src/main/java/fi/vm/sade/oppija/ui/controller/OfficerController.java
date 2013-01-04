@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
 import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
@@ -24,6 +25,8 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.slf4j.Logger;
@@ -44,7 +47,7 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/virkailija", method = RequestMethod.GET)
 @Secured("ROLE_OFFICER")
-public class OfficerController {
+public class OfficerController extends ExceptionController {
 
     public static final String REDIRECT_VIRKAILIJA_HAKEMUS = "redirect:/virkailija/hakemus/";
     public static final Logger LOGGER = LoggerFactory.getLogger(OfficerController.class);
@@ -58,7 +61,7 @@ public class OfficerController {
     ApplicationProcessStateService applicationProcessStateService;
 
     @RequestMapping(value = "/hakemus/{oid}", method = RequestMethod.GET)
-    public String getApplication(@PathVariable final String oid) {
+    public String getApplication(@PathVariable final String oid) throws ResourceNotFoundException {
         LOGGER.debug("officer getApplication by oid {}", new Object[]{oid});
         Application app = applicationService.getApplication(oid);
         FormId formId = app.getFormId();
@@ -70,7 +73,7 @@ public class OfficerController {
     public ModelAndView getPhase(@PathVariable final String applicationPeriodId,
                                  @PathVariable final String formIdStr,
                                  @PathVariable final String phaseId,
-                                 @PathVariable final String oid) {
+                                 @PathVariable final String oid) throws ResourceNotFoundException {
 
         LOGGER.debug("getPhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, phaseId, oid});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
@@ -113,7 +116,13 @@ public class OfficerController {
     @RequestMapping(value = "/hakemus/{oid}/applicationProcessState/{status}/", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public String changeApplicationProcessState(@PathVariable final String oid, @PathVariable final String status) {
         LOGGER.debug("changeApplicationProcessState {}, {}", new Object[]{oid, status});
+
+        // TODO: change when setApplicationProcessStateStatus returns correct exception and the updated application
         applicationProcessStateService.setApplicationProcessStateStatus(oid, ApplicationProcessStateStatus.valueOf(status));
-        return getApplication(oid);
+        try {
+            return getApplication(oid);
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundExceptionRuntime("Updated application not found.");
+        }
     }
 }

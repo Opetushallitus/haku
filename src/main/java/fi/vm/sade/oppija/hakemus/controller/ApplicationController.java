@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.hakemus.controller;
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class ApplicationController extends ExceptionController {
 
     @RequestMapping(method = {RequestMethod.GET})
     @ResponseBody
-    public List<Application> searchApplications(@RequestParam(value = "term", required = true) String term) {
+    public List<Application> searchApplications(@RequestParam(value = "term", required = true) String term) throws ResourceNotFoundException {
         //TODO implement this
         List<Application> result = new ArrayList<Application>();
         Application app = applicationService.getApplication(term);
@@ -56,7 +57,7 @@ public class ApplicationController extends ExceptionController {
 
     @RequestMapping(value = "hakemus/{oid:.+}", method = {RequestMethod.GET})
     @ResponseBody
-    public Application getApplication(@PathVariable String oid) {
+    public Application getApplication(@PathVariable String oid) throws ResourceNotFoundException {
         LOGGER.debug("oid {}", oid);
         return applicationService.getApplication(oid);
     }

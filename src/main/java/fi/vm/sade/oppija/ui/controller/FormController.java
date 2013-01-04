@@ -24,6 +24,8 @@ import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserPrefillDataService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -189,7 +191,14 @@ public class FormController extends ExceptionController {
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         modelAndView.addObject("form", activeForm);
         final FormId hakuLomakeId = new FormId(applicationPeriodId, activeForm.getId());
-        final Application application = applicationService.getPendingApplication(hakuLomakeId, oid);
+
+        final Application application;
+        try {
+            application = applicationService.getPendingApplication(hakuLomakeId, oid);
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundExceptionRuntime("Could not find pending application");
+        }
+
         modelAndView.addObject("categoryData", application.getVastaukset());
         modelAndView.addObject("hakemusId", hakuLomakeId);
         return modelAndView.addObject("applicationNumber", application.getOid());

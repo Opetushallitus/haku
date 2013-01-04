@@ -1,7 +1,9 @@
 package fi.vm.sade.oppija.hakemus.resource;
 
+import com.sun.jersey.api.NotFoundException;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +48,14 @@ public class ApplicationResource {
     @Path("/{oid}")
     @Produces(MediaType.APPLICATION_JSON)
     public Application getApplication(@PathParam("oid") String oid) {
-        return applicationService.getApplication(oid);
+
+        try {
+            return applicationService.getApplication(oid);
+        } catch (ResourceNotFoundException e) {
+            throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application");
+
+        }
+
     }
 
 }

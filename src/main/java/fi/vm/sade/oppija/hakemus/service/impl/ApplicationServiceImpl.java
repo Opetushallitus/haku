@@ -27,6 +27,7 @@ import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.IllegalStateException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
@@ -92,7 +93,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getApplication(String oid) {
+    public Application getApplication(String oid) throws ResourceNotFoundException {
         return getApplication(new Application(oid));
     }
 
@@ -117,7 +118,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getPendingApplication(FormId formId, String oid) {
+    public Application getPendingApplication(FormId formId, String oid) throws ResourceNotFoundException {
         final User user = userHolder.getUser();
         Application application = new Application(formId, user);
         application.setOid(oid);
@@ -157,10 +158,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         return listOfApplications.get(0);
     }
 
-    private Application getApplication(final Application application) {
+    private Application getApplication(final Application application) throws ResourceNotFoundException {
         List<Application> listOfApplications = applicationDAO.find(application);
         if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
-            throw new ResourceNotFoundExceptionRuntime("Could not find application " + listOfApplications.size());
+            throw new ResourceNotFoundException("Could not find application " + listOfApplications.size());
         }
         return listOfApplications.get(0);
 

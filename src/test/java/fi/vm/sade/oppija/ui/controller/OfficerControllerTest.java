@@ -73,13 +73,13 @@ public class OfficerControllerTest {
     }
 
     @Test
-    public void testGetApplication() {
+    public void testGetApplication() throws Exception {
         String redirect = officerController.getApplication("1.2.3.4.5.0");
         assertEquals("redirect:/virkailija/hakemus/Yhteishaku/yhteishaku/esikatselu/1.2.3.4.5.0/", redirect);
     }
 
     @Test
-    public void testGetPhase() {
+    public void testGetPhase() throws Exception {
         ModelAndView mv = officerController.getPhase("Yhteishaku", "yhteishaku", "esikatselu", "1.2.3.4.5.0");
         assertEquals("esikatselu", ((Element) mv.getModel().get("element")).getId());
         assertEquals("1.2.3.4.5.0", mv.getModel().get("oid"));
