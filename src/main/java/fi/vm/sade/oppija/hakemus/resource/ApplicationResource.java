@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * API for accessing applications.
+ *
  * @author Hannu Lyytikainen
  */
 @Component
