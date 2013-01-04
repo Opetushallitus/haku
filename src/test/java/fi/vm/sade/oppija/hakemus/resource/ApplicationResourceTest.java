@@ -70,7 +70,6 @@ public class ApplicationResourceTest {
 
     @Test
     public void testGetApplicationWithInvalidOid() {
-
         try {
             this.applicationResource.getApplication(INVALID_OID);
             fail("ApplicationResource failed to throw exception");
@@ -78,7 +77,6 @@ public class ApplicationResourceTest {
         catch (JSONException e) {
             assertEquals(Response.Status.NOT_FOUND.getStatusCode(), e.getResponse().getStatus());
         }
-
     }
 
     @Test
@@ -86,5 +84,15 @@ public class ApplicationResourceTest {
         List<Application> applications = this.applicationResource.getApplications(ASID);
         assertEquals(1, applications.size());
     }
+
+    @Test
+    public void getApplicationsWithInvalidASID() {try {
+        this.applicationResource.getApplications(null);
+        fail("ApplicationResource failed to throw exception");
+    }
+    catch (JSONException e) {
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), e.getResponse().getStatus());
+    }}
+
 
 }

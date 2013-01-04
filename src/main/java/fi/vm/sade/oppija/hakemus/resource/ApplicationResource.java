@@ -35,13 +35,11 @@ public class ApplicationResource {
         List<Application> applications;
         if (asId != null) {
             // retrieve applications related to a single application system
-            applications = applicationService.getApplicationsByApplicationSystem(asId);
+            return applications = applicationService.getApplicationsByApplicationSystem(asId);
         }
         else {
-            applications = new ArrayList<Application>();
+            throw new JSONException(Response.Status.BAD_REQUEST, "Invalid application system id argument");
         }
-
-        return applications;
     }
 
     @GET
