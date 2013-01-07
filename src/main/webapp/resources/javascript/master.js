@@ -1154,7 +1154,7 @@ $(document).ready(function(){
     tabsMenu.build();
     hidable.build();
     //popup.build();
-    popups.build();
+   //popups.build();
 
 /* Master.js ends */
 
