@@ -23,6 +23,7 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.*;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.GradeGrid;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
@@ -231,5 +232,26 @@ public class FormController extends ExceptionController {
         return modelAndView;
     }
 
+    /**
+     *
+     *
+     * @param applicationPeriodId
+     * @param formIdStr
+     * @param gradeGridId
+     * @return
+     */
+    @RequestMapping(value = "/{applicationPeriodId}/{formIdStr}/{gradeGridId}/additionalLanguageRow", method = RequestMethod.GET)
+    public ModelAndView getAdditionalLanguageRow(@PathVariable final String applicationPeriodId,
+                                   @PathVariable final String formIdStr,
+                                   @PathVariable final String gradeGridId) {
+
+        LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, gradeGridId});
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
+        Element element = activeForm.getElementById(gradeGridId);
+        GradeGrid gradeGrid = (GradeGrid)element;
+        final ModelAndView modelAndView = new ModelAndView("/elements/gradegrid/additionalLanguageRow");
+
+        return modelAndView.addObject("element", gradeGrid);
+    }
 
 }

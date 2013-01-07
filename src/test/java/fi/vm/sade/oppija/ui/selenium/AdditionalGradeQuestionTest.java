@@ -61,7 +61,7 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
         // navigate to grade phase
         s.click("class=right");
         driver.findElement(By.xpath("//table[@id='gradegrid-table']"));
-        assertEquals(19, driver.findElements(By.xpath("//table[@id='gradegrid-table']/tbody/tr")).size());
+        assertEquals(18, driver.findElements(By.xpath("//table[@id='gradegrid-table']/tbody/tr")).size());
 
 
     }
