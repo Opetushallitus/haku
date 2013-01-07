@@ -33,7 +33,6 @@ import static org.mockito.Mockito.*;
 public class ApplicationProcessStateControllerTest {
 
     private ApplicationProcessStateController applicationProcessStateController;
-    private ApplicationProcessState state;
     private ApplicationProcessStateService applicationProcessStateService;
     private static final String oid = "1.2.3.4.5.0";
 
@@ -42,7 +41,7 @@ public class ApplicationProcessStateControllerTest {
         applicationProcessStateService = mock(ApplicationProcessStateService.class);
         applicationProcessStateController = new ApplicationProcessStateController();
         applicationProcessStateController.applicationProcessStateService = applicationProcessStateService;
-        state = new ApplicationProcessState(oid, ApplicationProcessStateStatus.ACTIVE.toString());
+        ApplicationProcessState state = new ApplicationProcessState(oid, ApplicationProcessStateStatus.ACTIVE.toString());
         when(applicationProcessStateService.get(oid)).thenReturn(state);
     }
 
