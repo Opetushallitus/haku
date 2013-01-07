@@ -46,6 +46,8 @@
     <context:component-scan base-package="fi.vm.sade.oppija.lomake.event"/>
     <context:component-scan base-package="fi.vm.sade.oppija.hakemus.service"/>
     <context:component-scan base-package="fi.vm.sade.oppija.hakemus.dao"/>
+    <context:component-scan base-package="fi.vm.sade.oppija.application.process.service"/>
+    <context:component-scan base-package="fi.vm.sade.oppija.application.process.dao"/>
 
     <import resource="haku-context.xml"/>
 

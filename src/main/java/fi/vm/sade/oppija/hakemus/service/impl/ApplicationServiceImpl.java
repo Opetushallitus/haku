@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
+import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
+import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
@@ -53,14 +55,17 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationDAO applicationDAO;
     private final UserHolder userHolder;
     private final FormService formService;
+    private final ApplicationProcessStateService applicationProcessStateService;
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
                                   final UserHolder userHolder,
-                                  @Qualifier("formServiceImpl") final FormService formService) {
+                                  @Qualifier("formServiceImpl") final FormService formService,
+                                  @Qualifier("applicationProcessStateServiceImpl") final ApplicationProcessStateService applicationProcessStateService) {
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
         this.formService = formService;
+        this.applicationProcessStateService = applicationProcessStateService;
     }
 
     @Override
@@ -111,6 +116,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 application.removeUser();
             }
             this.applicationDAO.update(application1, application);
+            this.applicationProcessStateService.setApplicationProcessStateStatus(newOid, ApplicationProcessStateStatus.ACTIVE);
             return newOid;
         } else {
             throw new IllegalStateException("Could not send the application");

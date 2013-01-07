@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author Mikko Majapuro
  */
-@Service
+@Service("applicationProcessStateServiceImpl")
 public class ApplicationProcessStateServiceImpl implements ApplicationProcessStateService {
 
     private final ApplicationProcessStateDAO applicationProcessStateDAO;
