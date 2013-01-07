@@ -198,8 +198,7 @@ figure {
 }
 
 a.btn-remove {
-    
-    background-image: url('../img/remove-sprite_idle-hover-selected-disabled.png');
+    @include background-image("remove-sprite_idle-hover-selected-disabled.png");
     background-position: left top;
     background-repeat: no-repeat;
     width: 24px;
@@ -231,57 +230,59 @@ a.btn-remove {
     background: #F8F8F8;
     border-left: 1px solid #bdbdbd;
     border-right: 1px solid #bdbdbd;
+
+	.heading 
+	{
+		@include background-image("table-header-bg.png");
+		background-repeat: repeat;
+		background-color: transparent;
+		background-position: top left;
+		border-top: 1px solid #bdbdbd;
+		border-bottom: 1px solid #bdbdbd;
+
+		h2 
+		{
+			margin-top: 0;
+			margin-bottom: 0;
+			padding-top: 0.8em;
+			padding-bottom: 0.8em;
+			color: #149dca;
+			padding-left: 15px;
+		}
+	}
+
+	.sidemenu-content {
+		padding-bottom: 10px;
+		padding-left: 10px;
+		padding-right: 10px;
+
+		a {
+			display: block;
+		}
+		
+		div {
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+	}	
+
+	ul {
+		margin: 0 0 0 15px;
+		padding-left: 0;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+
+	p {
+		margin: 0;
+		padding-top: 10px;
+	}
+
+	legend {
+		padding-bottom: 5px;
+	}
+
 }
-
-#sidemenu .heading 
-{
-    background: transparent url('../img/table-header-bg.png') repeat top left;
-    border-top: 1px solid #bdbdbd;
-    border-bottom: 1px solid #bdbdbd;
-}
-
-#sidemenu .heading h2 
-{
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: 0.8em;
-    padding-bottom: 0.8em;
-    color: #149dca;
-    padding-left: 15px;
-}
-
-#sidemenu .sidemenu-content {
-    padding-bottom: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-#sidemenu .sidemenu-content a {
-    display: block;
-}
-
-#sidemenu ul {
-    margin: 0 0 0 15px;
-    padding-left: 0;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-#sidemenu p {
-    margin: 0;
-    padding-top: 10px;
-}
-
-#sidemenu .sidemenu-content div {
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-#sidemenu legend {
-    padding-bottom: 5px;
-}
-
-
 
 
 
@@ -292,23 +293,31 @@ a.btn-remove {
 
 #notelist h2
 {
-    background: transparent url('../img/muistilista_ikoni.png') no-repeat 95% 0.5em;
+	@include background-image("muistilista_ikoni.png");
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-position: 95% 0.5em;
 }
 
 .notelist-simple-wrapper {
     padding-bottom: 14px;
-    background:  transparent url('../img/notelist-simple-shadow.png') no-repeat bottom right;
+	@include background-image("notelist-simple-shadow.png");
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-position: bottom right;
     margin-bottom: 20px;
 }
 
 .notelist-simple {
     padding: 10px;
     background: #fffaeb;
+	
+	li {
+		padding-bottom: 10px;
+	}
 }
 
-.notelist-simple li {
-    padding-bottom: 10px;
-}
+
 
 
 
@@ -550,109 +559,100 @@ ul.unstyled
     margin:0.5em;
     position:relative;
     overflow:hidden;
-    border-radius: 5px;
+	@include rounded-corners(5px);
     display:none;
+
+	.table-container
+	{
+		margin-right:-4px;
+		position:relative;
+	}
+
+	.close
+	{
+		position:absolute;
+		right:4px;
+		bottom:0px;
+	}
+
+	table
+	{
+		width:100%;
+		border-spacing:2px 0px;
+		margin:0px -10px 0px 0px;
+		border:none;
+		position:relative;
+		left:-2px;
+	}
+
+	thead tr th,
+	thead tr td,
+	tbody tr td
+	{
+		border:none;
+		vertical-align:top;
+		padding:0.5em 1.5em;
+		line-height:2em;
+		background-color:#f5f5f5;
+	}
+
+	thead tr th
+	{
+		background-color:#ececec;
+		background-image:url('../img/texture-angled-lines.gif');
+		background-repeat:repeat;
+		background-position:top left;
+		font-size:1.385em;
+		line-height:1.5em;
+		text-shadow:0px 1px 1px #ffffff;
+		@include rounded-corners(5px 5px 0px 0px);
+		
+		&:first-child
+		{
+			box-shadow:inset 8px 0px 4px -8px #a9a9a9, inset 0px 8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9;
+		}
+	}
+
+
+	thead tr td
+	{
+		background-color:#dcdcdc;
+		text-transform:uppercase;
+	}
+
+	tbody tr:nth-child(even) td
+	{
+		background-color:#ececec;
+	}
+
+	thead tr td,
+	tbody tr td	
+	{
+		&:first-child
+		{
+			box-shadow:inset 8px 0px 4px -8px #a9a9a9;
+		}
+		
+		&:last-child
+		{
+			box-shadow:inset -8px 0px 4px -8px #a9a9a9;
+		}
+	}
+
+	tfoot tr td
+	{
+		border:none;
+		vertical-align:top;
+		padding:0.5em 1.5em;
+		background-color:#ececec;
+		@include rounded-corners(0px 0px 5px 5px);
+		
+		&:first-child
+		{
+			box-shadow:inset 8px 0px 4px -8px #a9a9a9, inset 0px -8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9;
+		}
+	}
 }
-
-
-
-.application-basket .table-container
-{
-    margin-right:-4px;
-    position:relative;
-}
-
-.application-basket .close
-{
-    position:absolute;
-    right:4px;
-    bottom:0px;
-}
-
-.application-basket table
-{
-    width:100%;
-    border-spacing:2px 0px;
-    margin:0px -10px 0px 0px;
-    border:none;
-    position:relative;
-    left:-2px;
-}
-
-.application-basket thead tr th,
-.application-basket thead tr td,
-.application-basket tbody tr td
-{
-    border:none;
-
-    vertical-align:top;
-    padding:0.5em 1.5em;
-    line-height:2em;
-    background-color:#f5f5f5;
-}
-
-.application-basket thead tr th
-{
-    background-color:#ececec;
-    background-image:url('../img/texture-angled-lines.gif');
-    background-repeat:repeat;
-    background-position:top left;
-    font-size:1.385em;
-    line-height:1.5em;
-    text-shadow:0px 1px 1px #ffffff;
-    border-radius: 5px 5px 0px 0px;
-}
-
-.application-basket thead tr th:first-child
-{
-    box-shadow:inset 8px 0px 4px -8px #a9a9a9, inset 0px 8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9;
-}
-
-.application-basket thead tr td
-{
-    background-color:#dcdcdc;
-    text-transform:uppercase;
-
-}
-
-.application-basket thead tr td
-.application-basket tbody tr td
-{
-
-}
-
-.application-basket tbody tr:nth-child(even) td
-{
-    background-color:#ececec;
-}
-
-.application-basket thead tr td:first-child,
-.application-basket tbody tr td:first-child
-{
-    box-shadow:inset 8px 0px 4px -8px #a9a9a9;
-}
-
-.application-basket thead tr td:last-child,
-.application-basket tbody tr td:last-child
-{
-    box-shadow:inset -8px 0px 4px -8px #a9a9a9;
-}
-
-.application-basket tfoot tr td
-{
-    border:none;
-    vertical-align:top;
-    padding:0.5em 1.5em;
-    background-color:#ececec;
-    border-radius: 0px 0px 5px 5px;
-}
-
-.application-basket tfoot tr td:first-child
-{
-    box-shadow:inset 8px 0px 4px -8px #a9a9a9, inset 0px -8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9;
-}
-
-
 
 
 
@@ -660,18 +660,17 @@ ul.unstyled
 **************************************************************/
 .application-options {
     padding-bottom: 20px;
-}
+	.table-container {
+		background: #eee;
+		box-shadow: 0 0 8px 0 #888;
+		border: 3px solid white;
+		@include rounded-corners(4px);
 
-.application-options .table-container {
-    background: #eee;
-    box-shadow: 0 0 8px 0 #888;
-    border: 3px solid white;
-    border-radius: 4px;
-
+	}
 }
 
 .application-option-info {
-    padding-bottom: 20px;
+	padding-bottom: 20px;
 }
 
 
@@ -708,50 +707,50 @@ ul.unstyled
 {
     margin:0px;
     padding:0px;
-}
 
-.sidemenu-level-1 li
-{
-    list-style:none;
-    display:block;
-}
+	li
+	{
+		list-style:none;
+		display:block;
 
-.sidemenu-level-1 li a
-{
-    display:block;
-    height:3.077em;
-    line-height:3.077em;
-    padding:0px 1em;
-    text-decoration:none;
-	border-bottom:solid 1px #bfe4f1;
-	color:#3e3e3e;
-}
+		a
+		{
+			display:block;
+			height:3.077em;
+			line-height:3.077em;
+			padding:0px 1em;
+			text-decoration:none;
+			border-bottom:solid 1px #bfe4f1;
+			color:#3e3e3e;
+			
+			&:hover
+			{
+				background-color:#bfe4f1;
+				color:#000000;
 
-.sidemenu-level-1 li a:hover
-{
-	background-color:#bfe4f1;
-	color:#000000;
+			}
 
-}
-
-.sidemenu-level-1 li a.current
-{
-	font-weight:bold;
-	background-color:#ebf3f7;
-	color:#000000;
-	margin-top:-1px;
-	border-top:solid 1px #ebf3f7;
-	border-bottom-color:#ebf3f7;
+			&.current
+			{
+				font-weight:bold;
+				background-color:#ebf3f7;
+				color:#000000;
+				margin-top:-1px;
+				border-top:solid 1px #ebf3f7;
+				border-bottom-color:#ebf3f7;
+			}
+		}
+	}
 }
 
 .sidemenu-level-2 
 {
 	padding:0px;
-}
-
-.sidemenu-level-2 li a
-{
-	padding-left:2.5em;
+	
+	li a
+	{
+		padding-left:2.5em;
+	}
 }
 
 

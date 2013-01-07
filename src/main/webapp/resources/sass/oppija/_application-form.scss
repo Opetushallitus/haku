@@ -135,7 +135,7 @@
 		padding:0px;
 		font-size:24px;
 		font-weight:bold;
-		background-image:url('../img/form-steps-index-sprite_idle-hover-selected-active-disabled.png');
+		@include background-image("form-steps-index-sprite_idle-hover-selected-active-disabled.png");
 		background-repeat:no-repeat;
 		background-position:right center;
 	}
@@ -209,7 +209,7 @@
 	margin:0.5em;
 	padding:1.538em;
 	box-shadow:0px 0px 1px 0px #c4c4c4, inset 0px 0px 1px 0px #c4c4c4;
-	border-radius:6px;
+	@include rounded-corners(6px);
 }
 
 small
