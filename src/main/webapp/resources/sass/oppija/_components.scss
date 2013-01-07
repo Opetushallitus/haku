@@ -3,15 +3,20 @@
 
 /*** Help page
 ************************************************/
-#help-page,
-#help-page #siteheader {
+#help-page{
+
     width:auto;
     max-width:1140px;
     margin:0px auto;
+
+    #siteheader {
+        width:auto;
+        max-width:1140px;
+        margin:0px auto;
+    }
 }
 
-/*** Breadcrumbs
-************************************************/
+
 
 /*** Vapaasanahaku/koulutuskuvaus -sivu
 **************************************************************/
@@ -36,95 +41,6 @@
     	padding-left: 20px;
     }
 }
-
-
-/*** Popups
-************************************************/
-.popup-overlay {
-    background-color: #000;
-    opacity:0.4;
-    filter: alpha(opacity=40);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-}
-
-#popup {
-    margin:0px auto;
-    background:#ffffff;
-    width:50%;
-    height:350px;
-    position:relative;
-    padding:10px;
-    
-    border-radius: 3px 3px 3px 3px;
-    box-shadow: 2px 2px 2px 0 #5f5f5f;
-    background-color:#f9f9f9;
-
-    .close {
-        display:block;
-        position:absolute;
-        top:5px;
-        right:5px;
-        width:16px;
-        height:17px;
-
-        
-        background-image:url(../img/popup-close-icon.png);
-        background-repeat:no-repeat;
-        background-position:center center;
-        cursor:pointer;
-    }
-
-    .popup-content {
-        display: inline-block;
-    }
-
-    .tagset .tag {
-        margin-bottom: 7px;
-    }
-}
-
-.popup {
-    display: none;
-    background: white;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    z-index: 1000;
-    max-width: 900px;
-
-    header {
-        background-color: #eee;    
-        border-bottom: 1px dotted #ccc;
-        padding: 0.8em;
-
-        > * {
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        > div {
-            padding: 0 0.8em;
-        }
-
-        h3 {
-            margin: 0;
-        }
-
-        a.close {
-            background-image: url('../../img/close-icon.png');
-            background-repeat: no-repeat;
-            background-position: left top;
-            width: 16px;
-            height: 17px;
-            float: right;
-        }
-
-
-    }
-}
-
 
 
 /*** Tabsheet
@@ -191,55 +107,72 @@
 /*** Image figure, Video Figure
 ************************************************/
 
+figure {
 
-figure.image,
-figure.video
-{
-	display:inline-block;
-	position:relative;
-	max-width:100%;
-	margin:0px;
-}
+    &.image {
+        display:inline-block;
+        position:relative;
+        max-width:100%;
+        margin:0px;
 
-figure.image img,
-figure.video img,
-figure.video video,
-figure.video embed
-{
-	display:block;
-}
+        img {
+            display: block;
+        }
 
-figure.image figcaption,
-figure.video figcaption
-{
-	position:absolute;
-	bottom:0px;
-	left:0px;
-	width:90%;
-	max-height:70%;
-	overflow:hidden;
-	padding:0.7em 5%;
-	background-color:rgba(0,0,0,0.5);
-	color:#ffffff;
-	text-shadow:0px 0px 2px #000000;
-}
+        figcaption {
+            position:absolute;
+            bottom:0px;
+            left:0px;
+            width:90%;
+            max-height:70%;
+            overflow:hidden;
+            padding:0.7em 5%;
+            background-color:rgba(0,0,0,0.5);
+            color:#ffffff;
+            text-shadow:0px 0px 2px #000000;
+        }
+    }
 
-figure.set-right
-{
-	margin-left:2em;
-	margin-right:0px;
-}
+    &.video {
+        display:inline-block;
+        position:relative;
+        max-width:100%;
+        margin:0px;
 
-figure.set-left
-{
-	margin-left:0px;
-	margin-right:2em;
-}
+        img,
+        video,
+        embed {
+            display: block;
+        }
 
-figure.set-center
-{
-	margin-left:auto;
-	margin-right:auto;
+        figcaption {
+            position:absolute;
+            bottom:0px;
+            left:0px;
+            width:90%;
+            max-height:70%;
+            overflow:hidden;
+            padding:0.7em 5%;
+            background-color:rgba(0,0,0,0.5);
+            color:#ffffff;
+            text-shadow:0px 0px 2px #000000;
+        }
+    }
+
+    &.set-right {
+        margin-left:2em;
+        margin-right:0px;
+    }
+
+    &.set-left {
+        margin-left: 0;
+        margin-right: 2em;
+    }
+
+    &.set-center {
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 /*** Removable items
@@ -247,110 +180,48 @@ figure.set-center
 .removable-items {
     list-style-type: none;
     margin-left: 0 !important;
-}
 
-.removable-items li {
-    line-height: 24px;
-}
+    li {
+        line-height: 24px;
+    }
 
-.removable-items a.item {
-    display: inline-block !important;
-}
+    a {
+        .item {
+            display: inline-block !important;
+        }
 
-.removable-items a.btn-remove {
-    float: right;
-    display: inline-block;
+        .btn-remove {
+            float: right;
+            display: inline-block;
+        }
+    }
 }
 
 a.btn-remove {
+    
     background-image: url('../img/remove-sprite_idle-hover-selected-disabled.png');
     background-position: left top;
     background-repeat: no-repeat;
     width: 24px;
     height: 24px;
-}
 
-a.btn-remove:hover {
-    background-position: -24px top;
-}
+    &:hover {
+        background-position: -24px top;    
+    }
 
-a.btn-remove:active {
-    background-position: -48px top;
-}
+    &:active {
+        background-position: -48px top;
+    }
 
-a.btn-remove.disabled {
-    background-position: -72px top;
-}
-
-
-/*** Popup
-**************************************************************/
-
-.popup {
-    display: none;
-    background: white;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    z-index: 1000;
-    max-width: 900px;
-}
-
-.popup header {
-    background-color: #eee;
-    
-
-    border-bottom: 1px dotted #ccc;
-    padding: 0.8em;
-}
-
-.popup header > * {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.popup header h3 {
-    margin: 0;
-}
-
-.popup header a.close {
-    background-image: url('../img/close-icon.png');
-    background-repeat: no-repeat;
-    background-position: left top;
-    width: 16px;
-    height: 17px;
-    float: right;
-}
-
-.popup > div {
-    padding: 0 0.8em;
+    &.disabled {
+        background-position: -72px top;
+    }
 }
 
 
-/*** Login
-**************************************************************/
 
-#login-popup {
-    position: absolute;
-    background: #eee;
-    border: 4px solid #fff;
-    box-shadow: 0 0 20px 0 #333;
-    border-radius: 4px;
-     z-index: 1000;
-    width: 200px;
-    height: 300px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-top: 0;
-}
 
-.login-content legend {
-    padding: 10px 0;
-}
 
-.login-content form div {
-    padding: 10px 0;
-}
 
 /*** Sidemenu
 ************************************************/
@@ -467,29 +338,33 @@ a.btn-remove.disabled {
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #bdbdbd;
-}
 
-.infobox .emphasized {
-    font-weight: bold;
-}
+    .emphasized {
+        font-weight: bold;
+    }
 
-.infobox .heading {
-    padding-top: 10px;
+    .heading { 
+        padding-top: 10px;
+    }
 }
-
 
 
 /*** Definition list
 ************************************************/
 
-.definitions td.description {
-    padding-left: 20px;
-    font-weight: bold;
+.definitions {
+
+    td.description {
+        padding-left: 20px;
+        font-weight: bold;
+    }
+
+    td.term {
+        text-align: right;
+    }
 }
 
-.definitions td.term {
-    text-align: right;
-}
+
 
 /*** Hierarchy list
 ************************************************/
@@ -497,55 +372,53 @@ a.btn-remove.disabled {
 .hierarchy-list {
     list-style-type: none;
     padding-left: 0;
-}
 
-.hierarchy-list ul {
-    list-style-type: none;
-    padding-left: 0;
-}
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
 
-.hierarchy-list li {
-    padding-left: 20px;
-}
+    li {
+        padding-left: 20px;
+    }
 
-.hierarchy-list .lvl-1 > li {
-    font-weight: bold;
-    padding-bottom: 10px;
-}
+    .lvl-1 {
+        > li {
+            font-weight: bold;
+            padding-bottom: 10px;
 
-.hierarchy-list .lvl-1 > li > ul {
-    padding-top: 10px;
-}
+            > ul {
+                padding-top: 10px;
+            }
 
-.hierarchy-list .lvl-1 > li.closed {
-    background: transparent url("../img/arrow-right.png") no-repeat left top;
-}
+            &.closed {
+                background: transparent url("../img/arrow-right.png") no-repeat left top;
+                > ul {
+                    display: none; 
+                }
+            }
 
-.hierarchy-list .lvl-1 > li.open {
-    background: transparent url("../img/arrow-down.png") no-repeat left top;
-}
+            &.open {
+                background: transparent url("../img/arrow-down.png") no-repeat left top;
+                > ul {
+                    display: block;
+                }
+            }
+        }
 
-.hierarchy-list .lvl-1 > li.closed > ul {
-    display: none;  
-}
+        &.open {
+            background: transparent url("../img/arrow-down.png") no-repeat left center;
+        }
+    }
 
-.hierarchy-list .lvl-1 > li.open > ul {
-    display: block;
-}
-
-.hierarchy-list .lvl-2 {
-    font-weight: normal;
-}
-
-.hierarchy-list li.lvl-1.open {
-    background: transparent url("../img/arrow-down.png") no-repeat left center;
+    .lvl-2 {
+        font-weight: normal;
+    }
 }
 
 #sidemenu .hierarchy-list ul {
     margin-left: 0;
 }
-
-
 
 
 
@@ -598,12 +471,11 @@ a.btn-remove.disabled {
 ul.unstyled
 {
 	padding:0px;
-}
 
-ul.unstyled li
-{
-	list-style:none;
-	margin:1em 0px;
+    li {
+        list-style:none;
+        margin:1em 0px;
+    }
 }
 
 
@@ -636,19 +508,22 @@ ul.unstyled li
     background-image: url('../img/help-icon-sprite_idle-hover-selected-disabled.png');
     background-position: 0px center;
     background-repeat: no-repeat;
+
+    &:hover {
+        background-position: -20px center;
+    }
+
+    &:active,
+    &:focus {
+        background-position: -40px center;
+    }
+
+    &:disabled,
+    &.disabled {
+        background-position: -60px center;
+    }
 }
 
-.helplink:hover {
-    background-position: -20px center;
-}
-
-.helplink:active, .helplink:focus {
-    background-position: -40px center;
-}
-
-.helplink:disabled, .helplink.disabled {
-    background-position: -60px center;
-}
 
 
 /***  Linklist
@@ -657,29 +532,6 @@ ul.unstyled li
 .linklist > span {
     color: #149DCA;
 }
-
-/*** key-value-list-1
-************************/
-
-.key-value-list-1 {
-    display: block;
-}
-
-.key-value-list-1 .key{
-    font-family: Arial, Helvetica, sans-serif;
-    display: inline;
-    vertical-align: middle;
-    text-align: right;
-}
-
-.key-value-list-1 .value {
-    text-align: left;
-    display: inline;
-    vertical-align: middle;
-}
-
-
-
 
 
 
@@ -827,287 +679,6 @@ ul.unstyled li
 
 
 
-/* CONTENTS
-    
-    Breadcrumb
-    Siteheader
-    Navigation
-    Overlay & Popup
-
-    @info: This file should only contain styles for components that are used on every page of the site
-
-*/
-
-
-
-
-/*** Breadcrumb
-**************************************************************/
-#breadcrumb {
-    margin-top: 15px;
-    margin-bottom: 15px;
-}
-
-#breadcrumb ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-#breadcrumb .home {
-    padding-left: 0;
-}
-
-#breadcrumb a {
-    display: block;
-    text-decoration: none;
-}
-
-#breadcrumb .current a {
-    color: #3e3e3e;
-}
-
-#breadcrumb .home a {
-    background: transparent url('../img/breadcrumb-home.png') no-repeat left center;
-    width: 19px;
-    height: 17px;
-    display: block;
-}
-
-#breadcrumb .breadcrumb-item {
-    padding-left: 25px; 
-    background: transparent url('../img/breadcrumb-arrow.png') no-repeat left center;
-}
-
-#breadcrumb .breadcrumb-item a:hover,
-#breadcrumb .breadcrumb-item a:active {
-    text-shadow: 0 0 3px #ccc;
-}
-
-#breadcrumb li {
-    display: inline-block;
-    vertical-align: middle;
-    padding-right: 10px;
-}
-
-
-
-/*** Siteheader
-**************************************************************/
-
-#siteheader
-{
-
-}
-
-#siteheader .line
-{
-    width:100%;
-    height:5px;
-    background-color:#3cafd4;
-    
-    box-shadow: inset 0px 2px 2px -2px #006285;
-    
-}
-
-#siteheader .sitelogo
-{
-    float:left;
-}
-
-#siteheader .actions
-{
-    float:right;
-    padding:0px 2em 0px;
-}
-
-#siteheader .actions ul
-{
-    display:inline-block;
-    vertical-align:bottom;
-    margin:0px;
-
-}
-
-#siteheader .actions ul li
-{
-    
-    list-style:none;
-}
-
-#siteheader .actions ul li a
-{
-    color:#010101;
-    text-decoration:none;
-}
-
-#siteheader .actions ul li a:hover
-{
-
-}
-
-
-/*** Main navigation
-**************************************************************/
-
-.main-navigation
-{
-    display:inline-block;
-    background-color:#149ecb;
-    border:solid 4px #ffffff;
-    margin:0.5em 0px;
-    height:3.077em;
-    box-shadow:0px 0px 1px 0px #c4c4c4;
-    border-radius:6px;
-}
-
-.navigation
-{
-    margin:0px;
-    padding:0px;
-}
-
-.navigation li
-{
-    position: relative;
-    list-style:none;
-    display:inline-block;
-}
-
-.navigation li a
-{
-    font-weight:bold;
-    display:block;
-    height:3.077em;
-    line-height:3.077em;
-    padding:0px 1em;
-    color:#ffffff;
-    text-decoration:none;
-}
-
-.navigation li a:hover
-{
-    background-color: #0a91be;
-    box-shadow: inset 0 0 2px 0 #777;
-}
-
-.navigation li a:active
-{
-    background-color: #0a91be;
-    box-shadow: inset 0 0 2px 0 #777;
-}
-
-.navigation li.current a
-{
-    background-color: #0085b1;
-    box-shadow: inset 0 0 2px 0 #777;
-}
-
-.navigation li.home a
-{
-    display:block;
-    height:3.077em;
-    width:3.077em;
-    line-height:3.077em;
-    padding:0px;
-    color:transparent;
-    background-image: url("../img/menu-level-1-home.png");
-    background-repeat:no-repeat;
-    background-position:center center;
-}
-
-.navigation li.home a:hover,
-.navigation li.home a:active
-{
-    background-color: #149ecb;
-    box-shadow: none;
-}
-
-
-/*** Dropdown
-**************************************************************/
-
-.dropdown {
-    background: white;
-    position: absolute;
-    box-shadow: 0 0 16px 0 #666;
-    z-index: 5;
-    padding-left: 0;
-}
-
-.dropdown > li {
-    display: block;
-}
-
-.dropdown li > * { /* no text-wrapping in li-elements children, ment to affect also the inner menus */
-    white-space: nowrap;
-}
-
-.dropdown li.first-item a {
-    border-top: 1px solid #3caed4;
-}
-
-.dropdown li span {
-    height:3.077em;
-    line-height:3.077em;
-    color: #888;
-    font-style: italic;
-    display: block;
-    padding: 0 1em;
-}
-
-.dropdown li a {
-    height:3.077em;
-    line-height:3.077em;
-    padding: 0 45px 0 1em;
-    display: block;
-    color: #333;
-    font-weight: normal;
-    border-bottom: 1px solid #3caed4;
-    box-shadow: none;
-}
-
-.dropdown li a:hover {
-    background-color: #ebf3f7;
-}
-
-.dropdown li a:active {
-    background-color: #a1d8ea;
-    font-weight: bold;
-}
-
-.sub-dropdown > a {
-    background-image: url('../img/navigation-arrow.png');
-    background-repeat: no-repeat;
-    background-position: right center;
-    position: relative;
-}
-
-.sub-dropdown ul {
-    padding-left: 0;
-    background-color: white;
-    box-shadow: 0 0 16px 0 #666;
-    position: absolute;
-    left: 100%;
-    top: 0;
-    z-index: 5;
-
-}
-
-.sub-dropdown ul li {
-    display: block;
-}
-
-.dropdown .sub-dropdown ul li a {
-    border-bottom: 1px dotted #a3a3a3;
-}
-
-.dropdown .sub-dropdown ul li.first-item a {
-    border-top: 1px dotted #a3a3a3 !important;
-}
-
-
-
 
 
 /*** Sidenavigation
@@ -1187,15 +758,17 @@ ul.unstyled li
 /*** search-applications
 ************************************************/
 
-#search-applications .form-row.narrow .form-row-label {
-    width: 100px;
-    max-width: 30%;
-    text-align: left;
-}
+#search-applications .form-row.narrow {
 
+    .form-row-label {
+        width: 100px;
+        max-width: 30%;
+        text-align: left;
+    }
 
-#search-applications .form-row.narrow .form-row-content {
-    max-width: 70%;
+    .form-row-content {
+        max-width: 70%;
+    }
 }
 
 

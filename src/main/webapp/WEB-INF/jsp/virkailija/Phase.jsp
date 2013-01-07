@@ -24,11 +24,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
         <meta charset="utf-8"/>
+        
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/screen.css" type="text/css">
+
         <link rel="stylesheet"
               href="${pageContext.request.contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
               type="text/css">
-        <link href="${pageContext.request.contextPath}/resources/css/virkailija-screen.css" type="text/css" rel="stylesheet" />
+        <link href="${pageContext.request.contextPath}/resources/css/virkailija.css" type="text/css" rel="stylesheet" />
         <title>Opetushallitus</title>
         <script src="${pageContext.request.contextPath}/resources/jquery/jquery.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
@@ -88,8 +90,8 @@
 
                 <div id="breadcrumbs">
                     <ul>
-                        <li><span><a href="#">Koulutustarjonta</a></li>
-                        <li><span><a href="#">Hakemuksen esikatselu</a></li>
+                        <li><span><a href="#">Koulutustarjonta</a></span></li>
+                        <li><span><a href="#">Hakemuksen esikatselu</a></span></li>
                     </ul>
                 </div>
 

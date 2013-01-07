@@ -1,10 +1,4 @@
-jQuery.fn.center = function () {
-    this.css("position","absolute");
-    this.css("top", Math.max(0, (($(window).height() - this.outerHeight()) / 2) + $(window).scrollTop()) + "px");
 
-    this.css("left", Math.max(0, (($(window).width() - this.outerWidth()) / 2) + $(window).scrollLeft()) + "px");
-    return this;
-}
 
 $(document).ready(function(){
 	/* Master.js begins */
@@ -107,8 +101,6 @@ $(document).ready(function(){
 	
 	var popupWindow = {
 		defaults :{
-			height : 600,
-			width : 400,
 			resizable : 'yes',
 			scrollbars : 'yes',
 			toolbar : 'no',
@@ -170,63 +162,63 @@ $(document).ready(function(){
 	}
 	
 	var tabsMenu = {
-			build:function(){
-				tabsMenu.load();
-				tabsMenu.setTriggers();
-			},
-			load:function()
-			{
-				
-				if(window.location.hash)
-				{
-					hash = window.location.hash.substr(1);
-					key = "tabsheet";
-					hashparams = hash.split(':');
-					id = hashparams[1];
-
-					if(hash.indexOf(key) != -1)
-					{
-
-						$('.tabs .tab[data-tabs-id="'+hashparams[1]+'"]').each(function(){
-						
-							group = $(this).attr('data-tabs-group');
-							
-							$('.tabsheet[data-tabs-group="'+group+'"]').hide();
-							$('.tabs .tab[data-tabs-group="'+group+'"]').removeClass('current');
-							$('.tabsheet[data-tabs-group="'+group+'"][data-tabs-id="'+id+'"]').show();
-							$('.tabs .tab[data-tabs-group="'+group+'"][data-tabs-id="'+id+'"]').addClass('current');
-						});
-					}
-				}
+		build:function(){
+			tabsMenu.load();
+			tabsMenu.setTriggers();
+		},
+		load:function()
+		{
 			
-				$('.tabs .tab').click(function(event){
-					event.preventDefault();
-					group = $(this).attr('data-tabs-group');
-					id = $(this).attr('data-tabs-id');
+			if(window.location.hash)
+			{
+				hash = window.location.hash.substr(1);
+				key = "tabsheet";
+				hashparams = hash.split(':');
+				id = hashparams[1];
+
+				if(hash.indexOf(key) != -1)
+				{
+
+					$('.tabs .tab[data-tabs-id="'+hashparams[1]+'"]').each(function(){
 					
-					$('.tabs .tab[data-tabs-group="'+group+'"]').removeClass('current');
-					$(this).addClass('current');
-					
-					$('.tabsheet[data-tabs-group="'+group+'"]').hide();
-					
-					$('.tabsheet[data-tabs-group="'+group+'"][data-tabs-id="'+id+'"]').show();
-				});
-			},
-			setTriggers:function(){
-				$('.tabs .tab').click(function(event){
-					event.preventDefault();
-					group = $(this).attr('data-tabs-group');
-					id = $(this).attr('data-tabs-id');
-					
-					$('.tabs .tab[data-tabs-group="'+group+'"]').removeClass('current');
-					$(this).addClass('current');
-					
-					$('.tabsheet[data-tabs-group="'+group+'"]').hide();
-					
-					$('.tabsheet[data-tabs-group="'+group+'"][data-tabs-id="'+id+'"]').show();
-				});
+						group = $(this).attr('data-tabs-group');
+						
+						$('.tabsheet[data-tabs-group="'+group+'"]').hide();
+						$('.tabs .tab[data-tabs-group="'+group+'"]').removeClass('current');
+						$('.tabsheet[data-tabs-group="'+group+'"][data-tabs-id="'+id+'"]').show();
+						$('.tabs .tab[data-tabs-group="'+group+'"][data-tabs-id="'+id+'"]').addClass('current');
+					});
+				}
 			}
+		
+			$('.tabs .tab').click(function(event){
+				event.preventDefault();
+				group = $(this).attr('data-tabs-group');
+				id = $(this).attr('data-tabs-id');
+				
+				$('.tabs .tab[data-tabs-group="'+group+'"]').removeClass('current');
+				$(this).addClass('current');
+				
+				$('.tabsheet[data-tabs-group="'+group+'"]').hide();
+				
+				$('.tabsheet[data-tabs-group="'+group+'"][data-tabs-id="'+id+'"]').show();
+			});
+		},
+		setTriggers:function(){
+			$('.tabs .tab').click(function(event){
+				event.preventDefault();
+				group = $(this).attr('data-tabs-group');
+				id = $(this).attr('data-tabs-id');
+				
+				$('.tabs .tab[data-tabs-group="'+group+'"]').removeClass('current');
+				$(this).addClass('current');
+				
+				$('.tabsheet[data-tabs-group="'+group+'"]').hide();
+				
+				$('.tabsheet[data-tabs-group="'+group+'"][data-tabs-id="'+id+'"]').show();
+			});
 		}
+	}
 
 	var hierarchyList = {
 		build: function() {
@@ -261,18 +253,67 @@ $(document).ready(function(){
 			});
 		} 
 	}
+	/*
+	var popups = {
+		build: function () {
+			popups.setTriggers();
+		},
+		setTriggers: function() {
+			var fadeTime = 400;
+			var overlay = $('#overlay');
 
+			var popupActionOpen = 'data-open-popup';
+			var popupActionClose = 'data-close-popup';
+			
+			popupActions(popupActionOpen, true);
+			popupActions(popupActionClose, false);
+
+			// 
+			function popupActions(popupActionAttr, isOpen) {
+				var dispatchers;
+
+				dispatchers = $('body').attr('['+ popupActionAttr + ']');
+				console.log(dispatchers);
+
+				dispatchers.each(function() {
+					var popupElementId = $(this).attr(popupActionAttr, isOpen);
+					
+					console.log(popupElementId);
+
+					// different browsers return 'undefined' or 'false' for empty set
+					if (typeof popupElementId !== 'undefined' && popupElementId !== false) {
+						
+						var popupElement = $('#' + popupElementId);
+						popupElement.center();
+
+						//fadein popupelement and overlay if isOpen is true, else fadeOut
+						$(this).on('click', function() {
+							if (isOpen) { popupElement.fadeIn(fadeTime); } 
+							else { popupElement.fadeOut(fadeTime); }
+						});
+					}
+				});
+
+				
+				overlay.on('click', function() {
+					if(!isOpen) { overlay.fadeOut(fadeTime); }
+					$('.popup').fadeOut(fadeTime);
+				});
+			}
+
+		}
+	}
+/*
 	var popup = {
 		build: function(){
-			/* All popups should be declared here */
+			// All popups should be declared here
 			popup.setTrigger("#login-popup",".open-login-popup",".close-login-popup");
 			popup.setTrigger("#add-rule-popup", "#add-rule",".close-login-popup");
 		},
-		/* 	
-			element = container for popup 
-			showPopupDispatcher = clickeventlistener for open popup
-			hidePopupDispatcher = clickeventlistener for hide popup
-		*/
+		 	
+			// element = container for popup 
+			// showPopupDispatcher = clickeventlistener for open popup
+			// hidePopupDispatcher = clickeventlistener for hide popup
 		setTrigger: function(element, showPopupDispatcher, hidePopupDispatcher) {
 			//clicking overlay-div hides all popups by default
 			var overlay = $('#overlay');
@@ -306,6 +347,7 @@ $(document).ready(function(){
 		}
 
 	}
+*/
 
 	var dropDownMenu = {
 		// initiate dropDownMenus
@@ -1081,11 +1123,11 @@ $(document).ready(function(){
     			if( hidableElement.hasClass('hidden') === true ) {
     				hidableElement.slideDown(200);
     				hidableElement.removeClass('hidden').addClass('visible');
-    				$(this).css('background-image', 'url(../resources/img/arrow-down.png)');
+    				$(this).css('background-image', 'url(../../resources/img/arrow-down.png)');
     			} else if ( hidableElement.hasClass('visible') === true ) {
     				hidableElement.slideUp(200);
     				hidableElement.removeClass('visible').addClass('hidden');
-    				$(this).css('background-image', 'url(../resources/img/arrow-right.png)');
+    				$(this).css('background-image', 'url(../../resources/img/arrow-right.png)');
     			}
     		});
     	}
@@ -1111,7 +1153,8 @@ $(document).ready(function(){
     itemTree.build();
     tabsMenu.build();
     hidable.build();
-    popup.build();
+    //popup.build();
+    popups.build();
 
 /* Master.js ends */
 

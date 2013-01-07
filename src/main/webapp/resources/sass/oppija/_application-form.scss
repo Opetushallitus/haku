@@ -455,7 +455,7 @@ select, select:focus, select:active
 		th
 		{
 			background-color:#dde9f0;
-			background-image:url('../img/texture-angled-lines.gif');
+			@include background-image("texture-angled-lines.gif");
 			background-repeat:repeat;
 			background-position:top left;
 			font-size:1.385em;

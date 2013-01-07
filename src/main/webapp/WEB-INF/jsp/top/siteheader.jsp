@@ -34,10 +34,7 @@
                 </c:when>
                 <c:otherwise>
                     <ul>
-                        <li><a href="#" class="open-login-popup">Kirjaudu sisään</a></li>
-                        <div id="login-popup" class="display-none">
-                            <jsp:include page="login.jsp"/>
-                        </div>
+                        <li><a href="#" data-popup-action="open">Kirjaudu sisään</a></li>
                     </ul>
                 </c:otherwise>
             </c:choose>

@@ -20,7 +20,12 @@
 <jsp:include page="head.jsp"/>
 <body>
 <div id="viewport">
-    <div id="overlay"></div>
+    <div id="overlay">
+        <a href="#" class="close"></a>
+        <div id="popup">
+            <jsp:include page="login.jsp" />
+        </div>
+    </div>
     <div id="site">
 
         <jsp:include page="siteheader.jsp"/>

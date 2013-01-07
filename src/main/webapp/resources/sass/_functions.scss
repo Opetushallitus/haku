@@ -71,8 +71,11 @@
     background: -o-linear-gradient(top, $from-color, $to-color);
 }
 
-
 //assumes default font is 13px!!!
 @mixin font-size-px-to-em($pixels) {
     font-size: #{$pixels / $base-font-size}em;
+}
+
+@mixin background-image($img-name) {
+    background-image: url(#{$img-folder-path}#{$img-name});
 }

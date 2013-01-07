@@ -20,7 +20,8 @@
     <title>Opetushallitus</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link href="${pageContext.request.contextPath}/resources/css/screen.css" type="text/css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/resources/css/normalize.css" type="text/css" rel="stylesheet" />
+    <link href="${pageContext.request.contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/resources/jquery/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
           type="text/css" rel="stylesheet"/>
     <script src="${pageContext.request.contextPath}/resources/jquery/jquery-1.8.0.min.js"

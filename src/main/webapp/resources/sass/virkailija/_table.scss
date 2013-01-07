@@ -20,7 +20,7 @@
 
     thead {
         background-color: #eee;
-        background-image: url("../img/table-header-bg.png");
+        @include background-image("table-header-bg.png");
         background-repeat: repeat;
         background-position: left top;
 
@@ -70,6 +70,7 @@
     tr {
         td.rule {
             padding-left: 3em;
+            @include background-image("ketju-saanto.png");
             background-image: url("../img/ketju-saanto.png"); 
             background-repeat: no-repeat;
             background-position: 0.8em center;

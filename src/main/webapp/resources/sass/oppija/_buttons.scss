@@ -1,4 +1,7 @@
 
+
+
+
 .remove {
     display: inline-block;
     vertical-align: middle;
@@ -30,8 +33,6 @@
     }
 }
 
-
-
 button.button,
 input.button {
     box-sizing: content-box;
@@ -60,7 +61,7 @@ button {
         background-repeat: no-repeat;
         margin: 0px 5px 0px 0px;
         background-image: url('../img/button-sprite_idle-hover-selected-disabled.png');
-        background-position: left 0px;s
+        background-position: left 0px;
 
         span {
             white-space: nowrap;

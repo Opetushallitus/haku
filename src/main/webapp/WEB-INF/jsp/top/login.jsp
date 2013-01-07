@@ -16,7 +16,7 @@
   ~ European Union Public Licence for more details.
   --%>
 
-<div id="authentication">
+<div class="popup" id="authentication">
     <div class="heading">
         <h2>Kirjautuminen</h2>
     </div>
@@ -40,7 +40,7 @@
         <a href="#">Rekisteröidy palveluun</a>
 
         <div class="clear"></div>
-        <a href="#" class="close-login-popup">Sulje</a>
+        <a href="#" class="close-login-popup" data-popup-action="close">Sulje</a>
         <a href="#" class="helplink">?</a>
     </div>
 </div>
