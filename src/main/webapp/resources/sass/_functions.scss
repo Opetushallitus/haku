@@ -1,12 +1,25 @@
 
+
+$vendor-prefixes: -webkit -moz -o -ms;
+
+
+@function add-prefix($property, $prefix, $separator: '-') {
+        @return $prefix + $separator + $property;
+}
+
+// Vendor prefixes to a CSS declaration.
+@mixin with-vendor-prefixes($property, $value, $prefixes: $vendor-prefixes) {
+    @each $prefix in $prefixes {
+        #{add-prefix($property, $prefix)}: $value;
+    }
+    #{$property}: $value;
+}
+
 /***  Functions
 ************************************************/
 
 @mixin rounded-corners($radius) {
-    -moz-border-radius: $radius;
-    -webkit-border-radius: $radius;
-    -o-border-radius: $radius;
-    -ms-border-radius: $radius;
+    @include with-vendor-prefixes(border-radius, $radius);
     border-radius: $radius;
 }
 
@@ -27,11 +40,7 @@
 }
 
 @mixin no-box-shadow {
-    box-shadow: none;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-    -o-box-shadow: none;
-    -ms-box-shadow: none;
+    @include with-vendor-prefixes(box-shadow, none);
 }
 
 @mixin box-shadows-inset($horizontal, $vertical, $blur, $spread, $r, $g, $b, $a) {
@@ -71,9 +80,9 @@
     background: -o-linear-gradient(top, $from-color, $to-color);
 }
 
-//assumes default font is 13px!!!
-@mixin font-size-px-to-em($pixels) {
-    font-size: #{$pixels / $base-font-size}em;
+//default font size is 13px
+@mixin font-size-px-to-em($pixels, $context-font-size: $base-font-size) {
+    font-size: #{$pixels / $context-font-size}em;
 }
 
 @mixin background-image($img-name) {
