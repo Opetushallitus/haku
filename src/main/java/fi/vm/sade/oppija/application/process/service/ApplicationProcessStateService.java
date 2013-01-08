@@ -26,6 +26,17 @@ import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatu
  */
 public interface ApplicationProcessStateService {
 
+    /**
+     * Sets process status to application, if status does not exists, it creates a new
+     * @param oid Application oid
+     * @param status process status
+     */
     void setApplicationProcessStateStatus(final String oid, final ApplicationProcessStateStatus status);
+
+    /**
+     * Gets application process state by application oid
+     * @param oid oid of application
+     * @return application process state
+     */
     ApplicationProcessState get(final String oid);
 }

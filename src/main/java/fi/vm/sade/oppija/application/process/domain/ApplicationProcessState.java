@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fi.vm.sade.oppija.lomake.domain.ObjectIdDeserializer;
+import fi.vm.sade.oppija.lomake.domain.ObjectIdSerializer;
 
 import java.io.Serializable;
 
@@ -31,16 +35,20 @@ import java.io.Serializable;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class ApplicationProcessState implements Serializable {
 
+    @JsonProperty(value = "_id")
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
-    @JsonProperty(value = "oid")
+    @JsonDeserialize(using = ObjectIdDeserializer.class)
+    @JsonSerialize(using = ObjectIdSerializer.class)
+    private org.bson.types.ObjectId id;
+
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private String oid;
 
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
-    @JsonProperty(value = "status")
     private String status;
 
     @JsonCreator
-    public ApplicationProcessState(final String oid, final String status) {
+    public ApplicationProcessState(@JsonProperty("oid") final String oid, @JsonProperty("status") final String status) {
         this.oid = oid;
         this.status = status;
     }

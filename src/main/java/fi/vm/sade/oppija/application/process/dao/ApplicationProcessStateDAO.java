@@ -26,6 +26,16 @@ import fi.vm.sade.oppija.common.dao.BaseDAO;
  */
 public interface ApplicationProcessStateDAO extends BaseDAO<ApplicationProcessState> {
 
+    /**
+     * Creates a new application process state
+     * @param applicationProcessState state
+     */
     void create(ApplicationProcessState applicationProcessState);
+
+    /**
+     * Finds existing application process state
+     * @param query state object to make a query (for example find by oid)
+     * @return Application process state object, null if not found
+     */
     ApplicationProcessState findOne(ApplicationProcessState query);
 }
