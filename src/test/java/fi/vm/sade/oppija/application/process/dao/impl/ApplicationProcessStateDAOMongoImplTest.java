@@ -65,6 +65,25 @@ public class ApplicationProcessStateDAOMongoImplTest extends AbstractDAOTest {
         Assert.assertNull(state);
     }
 
+    @Test
+    public void testUpdate() {
+        ApplicationProcessState state = new ApplicationProcessState(oid, ApplicationProcessStateStatus.ACTIVE.toString());
+        ApplicationProcessState query = new ApplicationProcessState(oid, null);
+        applicationProcessStateDAO.update(query, state);
+        state = applicationProcessStateDAO.findOne(query);
+        Assert.assertNotNull(state);
+        Assert.assertEquals(oid, state.getOid());
+        Assert.assertEquals(ApplicationProcessStateStatus.ACTIVE.toString(), state.getStatus());
+    }
+
+    @Test
+    public void testDelete() {
+        ApplicationProcessState query = new ApplicationProcessState(oid, null);
+        applicationProcessStateDAO.delete(query);
+        ApplicationProcessState state = applicationProcessStateDAO.findOne(query);
+        Assert.assertNull(state);
+    }
+
     @Override
     protected String getCollectionName() {
         return "applicationProcessState";
