@@ -17,30 +17,29 @@
   --%>
 
 <div class="popup" id="authentication">
-    <div class="heading">
-        <h2>Kirjautuminen</h2>
-    </div>
-    <div class="login-content">
-        <form action="${pageContext.request.contextPath}/j_spring_security_check" method="POST">
+    
+      <h2>Kirjautuminen</h2>
+  
+      <form action="${pageContext.request.contextPath}/j_spring_security_check" method="POST">
 
-            <legend class="h3">KÄYTTÄJÄTUNNUS</legend>
-            <input name="j_username" type="text"/>
+          <legend class="h3">KÄYTTÄJÄTUNNUS</legend>
+          <input name="j_username" type="text"/>
 
-            <legend class="h3">SALASANA</legend>
-            <input name="j_password" type="password"/>
+          <legend class="h3">SALASANA</legend>
+          <input name="j_password" type="password"/>
 
-            <div>
-                <input name="login" value="Kirjaudu" type="submit"/>
-            </div>
-        </form>
+          <div>
+              <input name="login" value="Kirjaudu" type="submit"/>
+          </div>
+      </form>
 
-        <a href="#">Unohtuiko salasana?</a>
+      <a href="#">Unohtuiko salasana?</a>
 
-        <div class="clear"></div>
-        <a href="#">Rekisteröidy palveluun</a>
+      <div class="clear"></div>
+      <a href="#">Rekisteröidy palveluun</a>
 
-        <div class="clear"></div>
-        <a href="#" class="close-login-popup" data-popup-action="close">Sulje</a>
-        <a href="#" class="helplink">?</a>
-    </div>
+      <div class="clear"></div>
+      <a href="#" data-popup-action="close">Sulje</a>
+      <a href="#" class="helplink">?</a>
+   
 </div>

@@ -131,33 +131,34 @@
                 <a href="#" class="button">Syötä paperihakemuksia</a>
                 <a href="#" class="button">Vie lista exceliin</a>
                 <a href="#" class="button">Tulosta lista</a>
+                <div class="clear"></div>
+                
+                <span>Hakutulos: {{applications.length}} osumaa</span>
 
-
-                <div class="grid16-8">
-                    <span>Hakutulos: {{applications.length}} osumaa</span>
-
-                    <div class="field-container-checkbox margin-top-1">
+                <div class="margin-top-2 margin-bottom-1">    
+                    <div class="field-container-checkbox inline-block">
                         <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
                         <label for="KenttaId">valitse kaikki</label>
                     </div>
-                </div>
+                    
 
-                <div class="grid16-4 float-right">
-                    <div class="float-right">
-                        <div class="pagination inline-block margin-right-2">
-                            <a href="#">&laquo</a>
-                            <a href="#">1</a>
-                            <span>|</span>
-                            <a href="#">2</a>
-                            <span>|</span>
-                            <a href="#">3</a>
-                            <a href="#">&raquo</a>
+                    <div class="offset-left-16-12 float-right">
+                        <div class="float-right">
+                            <div class="pagination inline-block margin-right-2">
+                                <a href="#">&laquo</a>
+                                <a href="#">1</a>
+                                <span>|</span>
+                                <a href="#">2</a>
+                                <span>|</span>
+                                <a href="#">3</a>
+                                <a href="#">&raquo</a>
+                            </div>
+
+                            <select name="showresults" id="showResultsTop">
+                                <option value="50">Näytä 50/sivu</option>
+                                <option value="100">Näytä 100/sivu</option>
+                            </select>
                         </div>
-
-                        <select name="showresults" class="inline-block" id="showResultsTop">
-                            <option value="50">Näytä 50/sivu</option>
-                            <option value="100">Näytä 100/sivu</option>
-                        </select>
                     </div>
                 </div>
 
@@ -184,24 +185,24 @@
                     </tbody>
                 </table>
 
-                <div class="grid16-4 float-right mar">
-                    <div class="float-right">
-                        <div class="pagination inline-block margin-right-2">
-                            <a href="#">&laquo</a>
-                            <a href="#">1</a>
-                            <span>|</span>
-                            <a href="#">2</a>
-                            <span>|</span>
-                            <a href="#">3</a>
-                            <a href="#">&raquo</a>
-                        </div>
-
-                        <select name="showresults" class="inline-block" id="showResultsBottom">
-                            <option value="50">Näytä 50/sivu</option>
-                            <option value="100">Näytä 100/sivu</option>
-                        </select>
+                
+                <div class="offset-left-16-12 float-right margin-top-1">
+                    <div class="pagination margin-top-1 inline-block margin-right-2">
+                        <a href="#">&laquo</a>
+                        <a href="#">1</a>
+                        <span>|</span>
+                        <a href="#">2</a>
+                        <span>|</span>
+                        <a href="#">3</a>
+                        <a href="#">&raquo</a>
                     </div>
+
+                    <select name="showresults" id="showResultsBottom">
+                        <option value="50">Näytä 50/sivu</option>
+                        <option value="100">Näytä 100/sivu</option>
+                    </select>
                 </div>
+                
 
                 <div class="clear"></div>
             </section>
