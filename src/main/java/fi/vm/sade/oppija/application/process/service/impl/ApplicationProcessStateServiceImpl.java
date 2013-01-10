@@ -45,6 +45,7 @@ public class ApplicationProcessStateServiceImpl implements ApplicationProcessSta
         ApplicationProcessState query = new ApplicationProcessState(oid, null);
         ApplicationProcessState applicationProcessState = this.applicationProcessStateDAO.findOne(query);
         if (applicationProcessState != null) {
+            applicationProcessState.setStatus(status.getName());
             this.applicationProcessStateDAO.update(query, applicationProcessState);
         } else {
             //TODO check oid

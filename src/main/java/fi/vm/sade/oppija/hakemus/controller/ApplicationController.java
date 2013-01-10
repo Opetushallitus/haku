@@ -47,17 +47,23 @@ public class ApplicationController extends ExceptionController {
 
     @RequestMapping(method = {RequestMethod.GET})
     @ResponseBody
-    public List<Application> searchApplications(@RequestParam(value = "term", required = true) String term) throws ResourceNotFoundException {
-        //TODO implement this
+    public List<Application> searchApplications(@RequestParam(value = "term", required = true) String term) {
+        //TODO design search interface and remove this test impl
         List<Application> result = new ArrayList<Application>();
-        Application app = applicationService.getApplication(term);
-        result.add(app);
-        return result;
+        try {
+            Application app = applicationService.getApplication(term);
+            result.add(app);
+            return result;
+        } catch (ResourceNotFoundException e) {
+            //return empty list if not found
+            return result;
+        }
     }
 
     @RequestMapping(value = "hakemus/{oid:.+}", method = {RequestMethod.GET})
     @ResponseBody
     public Application getApplication(@PathVariable String oid) throws ResourceNotFoundException {
+
         LOGGER.debug("oid {}", oid);
         return applicationService.getApplication(oid);
     }

@@ -16,6 +16,9 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
+import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
+import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
@@ -34,8 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Mikko Majapuro
@@ -49,6 +51,7 @@ public class OfficerControllerTest {
         officerController = new OfficerController();
         ApplicationService applicationService = mock(ApplicationService.class);
         FormService formService = mock(FormService.class);
+        ApplicationProcessStateService applicationProcessStateService = mock(ApplicationProcessStateService.class);
 
         FormId formId = new FormId("Yhteishaku", "yhteishaku");
         String oid = "1.2.3.4.5.0";
@@ -68,8 +71,12 @@ public class OfficerControllerTest {
         ApplicationState applicationState = new ApplicationState(app, "henkilotiedot");
         when(applicationService.saveApplicationPhase(any(ApplicationPhase.class), eq("1.2.3.4.5.0"))).thenReturn(applicationState);
 
+        ApplicationProcessState processState = new ApplicationProcessState(oid, ApplicationProcessStateStatus.ACTIVE.toString());
+        when(applicationProcessStateService.get(oid)).thenReturn(processState);
+
         officerController.applicationService = applicationService;
         officerController.formService = formService;
+        officerController.applicationProcessStateService = applicationProcessStateService;
     }
 
     @Test
@@ -93,5 +100,12 @@ public class OfficerControllerTest {
         MultiValueMap<String, String> multiValues = new LinkedMultiValueMap<String, String>();
         ModelAndView mv = officerController.savePhase("Yhteishaku", "yhteishaku", "henkilotiedot", "1.2.3.4.5.0", multiValues);
         assertEquals("redirect:/virkailija/hakemus/Yhteishaku/yhteishaku/esikatselu/1.2.3.4.5.0/", mv.getViewName());
+    }
+
+    @Test
+    public void testChangeApplicationProcessState() {
+        String redirect = officerController.changeApplicationProcessState("1.2.3.4.5.0", "CANCELLED");
+        assertEquals("redirect:/virkailija/hakemus/Yhteishaku/yhteishaku/esikatselu/1.2.3.4.5.0/", redirect);
+        verify(officerController.applicationProcessStateService, times(1)).setApplicationProcessStateStatus("1.2.3.4.5.0", ApplicationProcessStateStatus.CANCELLED);
     }
 }

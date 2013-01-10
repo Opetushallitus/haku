@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.ui.controller;
 
 import fi.vm.sade.oppija.ExceptionController;
+import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
 import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
@@ -82,11 +83,13 @@ public class OfficerController extends ExceptionController {
         final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
         Application app = applicationService.getApplication(oid);
         Map<String, String> values = app.getVastauksetMerged();
+        ApplicationProcessState processState = applicationProcessStateService.get(oid);
         modelAndView.addObject("categoryData", values);
         modelAndView.addObject("element", phase);
         modelAndView.addObject("form", activeForm);
         modelAndView.addObject("oid", oid);
         modelAndView.addObject("applicationPhaseId", app.getVaiheId());
+        modelAndView.addObject("applicationProcessState", processState);
         return modelAndView.addObject("hakemusId", formId);
     }
 

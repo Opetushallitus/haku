@@ -99,7 +99,11 @@
                     <a href="#" class="button small back"></a>
                     <a href="#" class="button small">Tee VRK haku</a>
                     <a href="#" class="button small disabled">Tee TOR haku</a>
-                    <a href="#" class="button small">Passivoi hakemus</a>
+                    <c:if test="${applicationProcessState.status ne 'Peruttu'}">
+                        <form class="inline-block" method="post" action="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/applicationProcessState/CANCELLED/">
+                            <button type="submit"><span><span>Passivoi hakemus</span></span></button>
+                        </form>
+                    </c:if>
                 </div>
 
                 <section class="grid16-16 margin-top-2">
@@ -114,12 +118,12 @@
 
                         <section id="hakemus" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus" style="display: block;">
 
-                            <h3>${categoryData['Etunimet']}&nbsp;${categoryData['Sukunimi']}</h3>
+                            <h3><c:out value="${categoryData['Etunimet']}"/>&nbsp;<c:out value="${categoryData['Sukunimi']}"/></h3>
 
                             <table class="width-50 margin-top-2">
                                 <tr>
                                     <td><span class="bold">Hakemusnumero: </span><c:out value="${oid}"/></td>
-                                    <td><span class="bold">Hakemuksen tila: </span>Aktiivinen</td>
+                                    <td><span class="bold">Hakemuksen tila: </span><c:out value="${applicationProcessState.status}"/></td>
                                 </tr>
                                 <tr>
                                     <td><span class="bold">Henkilötunnus: </span><c:out value="${categoryData['Henkilotunnus']}"/></td>
@@ -157,7 +161,11 @@
                                     <a href="#" class="button small back"></a>
                                     <a href="#" class="button small">Tee VRK haku</a>
                                     <a href="#" class="button small disabled">Tee TOR haku</a>
-                                    <a href="#" class="button small">Passivoi hakemus</a>
+                                    <c:if test="${applicationProcessState.status ne 'Peruttu'}">
+                                        <form class="inline-block" method="post" action="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/applicationProcessState/CANCELLED/">
+                                            <button type="submit"><span><span>Passivoi hakemus</span></span></button>
+                                        </form>
+                                    </c:if>
                                 </div>
                             </c:if>
                             <div class="clear"></div>
