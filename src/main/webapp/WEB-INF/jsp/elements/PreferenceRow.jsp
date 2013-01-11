@@ -13,7 +13,7 @@
     <c:set value="${sortableItem.id}-Lisakysymykset" var="additionalQuestionsId" scope="page"/>
     <c:set value="${sortableItem.id}-Koulutus-id" var="hiddenKoulutusId" scope="page"/>
     <div class="form-row">
-        <label class="form-row-label" for="${textInputId}"><c:out value="${sortableItem.learningInstitutionLabel}"/></label>
+        <label class="form-row-label ${sortableItem.attributes['required'].value}" for="${textInputId}"><c:out value="${sortableItem.learningInstitutionLabel}"/></label>
         <div class="form-row-content">
             <div class="field-container-text">
                 <input id="${textInputId}"
@@ -21,17 +21,20 @@
                        value="${categoryData[textInputId]}"
                        type="text"
                        data-selectinputid="${selectInputId}"
-                       size="40"/>
+                       size="40"
+                       ${sortableItem.attributes['required'].value}/>
+                <span class="required-field"><c:out value="${errorMessages[textInputId]}"/></span>
                 <input id="${hiddenInputId}" name="${hiddenInputId}" value="${categoryData[hiddenInputId]}" type="hidden"/>
             </div>
         </div>
         <div class="clear"></div>
     </div>
     <div class="form-row">
-        <label class="form-row-label" for="${selectInputId}"><c:out value="${sortableItem.educationLabel}"/></label>
+        <label class="form-row-label ${sortableItem.attributes['required'].value}" for="${selectInputId}"><c:out value="${sortableItem.educationLabel}"/></label>
         <div class="form-row-content">
             <div class="field-container-select">
-                <select id="${selectInputId}" name="${selectInputId}" placeholder="${sortableItem.selectEducationPlaceholder}" data-additionalquestions="${additionalQuestionsId}">
+                <select id="${selectInputId}" name="${selectInputId}" placeholder="${sortableItem.selectEducationPlaceholder}"
+                        data-additionalquestions="${additionalQuestionsId}" ${sortableItem.attributes['required'].value}>
                 </select>
                 <input id="${hiddenKoulutusId}" name="${hiddenKoulutusId}" value="${categoryData[hiddenKoulutusId]}" type="hidden"/>
             </div>

@@ -80,7 +80,7 @@ public abstract class Element {
 
     @JsonDeserialize(keyAs = String.class, contentAs = Attribute.class)
     @JsonSerialize(keyAs = String.class, contentAs = Attribute.class)
-    final Map<String, Attribute> attributes = new HashMap<String, Attribute>();
+    protected final Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 
 
     protected Element(@JsonProperty String id) {
@@ -171,7 +171,7 @@ public abstract class Element {
         return validators;
     }
 
-    public final void initValidators() {
+    public void initValidators() {
         for (Map.Entry<String, Attribute> attribute : attributes.entrySet()) {
             if (attribute.getKey().equals("required")) {
                 this.validators.add(new RequiredFieldFieldValidator(this.id));

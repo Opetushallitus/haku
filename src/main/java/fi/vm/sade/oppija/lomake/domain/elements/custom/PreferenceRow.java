@@ -17,7 +17,11 @@
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fi.vm.sade.oppija.lomake.domain.Attribute;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
+
+import java.util.Map;
 
 /**
  * Renders as a user's application preference row. Title is used to hold the name of the preference row (Hakutoive 1, Hakutoive 2 etc.)
@@ -62,5 +66,15 @@ public class PreferenceRow extends Question {
 
     public String getSelectEducationPlaceholder() {
         return selectEducationPlaceholder;
+    }
+
+    @Override
+    public void initValidators() {
+        for (Map.Entry<String, Attribute> attribute : attributes.entrySet()) {
+            if (attribute.getKey().equals("required")) {
+                this.validators.add(new RequiredFieldFieldValidator(this.id + "-Opetuspiste"));
+                this.validators.add(new RequiredFieldFieldValidator(this.id + "-Koulutus"));
+            }
+        }
     }
 }
