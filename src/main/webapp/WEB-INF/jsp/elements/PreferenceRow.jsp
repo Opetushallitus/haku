@@ -7,11 +7,11 @@
     </span>
 </button>
 <div class="preference-fields">
-    <c:set value="${sortableItem.id}-Opetuspiste" var="textInputId" scope="page"/>
-    <c:set value="${sortableItem.id}-Opetuspiste-id" var="hiddenInputId" scope="page"/>
-    <c:set value="${sortableItem.id}-Koulutus" var="selectInputId" scope="page"/>
+    <c:set value="${sortableItem.learningInstitutionInputId}" var="textInputId" scope="page"/>
+    <c:set value="${sortableItem.learningInstitutionInputId}-id" var="hiddenInputId" scope="page"/>
+    <c:set value="${sortableItem.educationInputId}" var="selectInputId" scope="page"/>
     <c:set value="${sortableItem.id}-Lisakysymykset" var="additionalQuestionsId" scope="page"/>
-    <c:set value="${sortableItem.id}-Koulutus-id" var="hiddenKoulutusId" scope="page"/>
+    <c:set value="${sortableItem.educationInputId}-id" var="hiddenKoulutusId" scope="page"/>
     <div class="form-row">
         <label class="form-row-label ${sortableItem.attributes['required'].value}" for="${textInputId}"><c:out value="${sortableItem.learningInstitutionLabel}"/></label>
         <div class="form-row-content">

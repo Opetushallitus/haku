@@ -40,6 +40,9 @@ public class PreferenceRow extends Question {
     // place holder text for education select
     private String selectEducationPlaceholder;
 
+    private String learningInstitutionInputId;
+    private String educationInputId;
+
     public PreferenceRow(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
                          @JsonProperty(value = "resetLabel") String resetLabel,
                          @JsonProperty(value = "educationLabel") String educationLabel,
@@ -50,6 +53,8 @@ public class PreferenceRow extends Question {
         this.educationLabel = educationLabel;
         this.learningInstitutionLabel = learningInstitutionLabel;
         this.selectEducationPlaceholder = selectEducationPlaceholder;
+        this.learningInstitutionInputId = this.id + "-Opetuspiste";
+        this.educationInputId = this.id + "-Koulutus";
     }
 
     public String getResetLabel() {
@@ -68,12 +73,20 @@ public class PreferenceRow extends Question {
         return selectEducationPlaceholder;
     }
 
+    public String getLearningInstitutionInputId() {
+        return learningInstitutionInputId;
+    }
+
+    public String getEducationInputId() {
+        return educationInputId;
+    }
+
     @Override
     public void initValidators() {
         for (Map.Entry<String, Attribute> attribute : attributes.entrySet()) {
             if (attribute.getKey().equals("required")) {
-                this.validators.add(new RequiredFieldFieldValidator(this.id + "-Opetuspiste"));
-                this.validators.add(new RequiredFieldFieldValidator(this.id + "-Koulutus"));
+                this.validators.add(new RequiredFieldFieldValidator(learningInstitutionInputId));
+                this.validators.add(new RequiredFieldFieldValidator(educationInputId));
             }
         }
     }
