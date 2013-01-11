@@ -21,7 +21,7 @@
 <head>
     <META http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
-    <link href="${pageContext.request.contextPath}/resources/css/screen.css" type="text/css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet"/>
     <title>admin</title>
 </head>
 <body>

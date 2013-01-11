@@ -4,7 +4,7 @@
 included into the table to add new languages
 this always has to be the last row--%>
     <tr>
-        <td><c:out value="${element.customLanguageTitle}"/>&nbsp;
+        <td class="relative"><c:out value="${element.customLanguageTitle}"/>&nbsp;
             <select>
                 <option></option>
                 <c:forEach var="scopeOption" items="${element.scopeOptions}">
@@ -17,6 +17,7 @@ this always has to be the last row--%>
                     <option value="${languageOption.value}">${languageOption.title}</option>
                 </c:forEach>
             </select>
+            <a href="#" class="btn-remove"></a>
         </td>
         <td>
             <div class="field-container-select">

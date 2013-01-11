@@ -3281,3 +3281,128 @@ ul.orgmenu {
     background-position: -40px center; }
   .helplink:disabled, .helplink.disabled {
     background-position: -60px center; }
+
+.portlet {
+  background: none repeat scroll 0 0 #FFFFFF;
+  border: 1px solid #DCDCDC; }
+
+.portlet-topper {
+  background: -moz-linear-gradient(center top, whitesmoke, #e5e5e5) repeat scroll 0 0 transparent;
+  border-bottom: 1px solid #DCDCDC;
+  height: 40px;
+  width: 100%;
+  padding-top: 1px;
+  padding-bottom: 1px; }
+  .portlet-topper h1 {
+    color: #555555;
+    font-size: 18px;
+    text-align: center;
+    text-shadow: 1px 1px 1px #FFFFFF;
+    text-transform: uppercase; }
+  .portlet-topper h2 {
+    color: #555555;
+    font-size: 18px;
+    text-align: center;
+    text-shadow: 1px 1px 1px #FFFFFF;
+    text-transform: uppercase; }
+  .portlet-topper h3 {
+    color: #555555;
+    font-size: 18px;
+    text-align: center;
+    text-shadow: 1px 1px 1px #FFFFFF;
+    text-transform: uppercase; }
+  .portlet-topper h4 {
+    color: #555555;
+    font-size: 18px;
+    text-align: center;
+    text-shadow: 1px 1px 1px #FFFFFF;
+    text-transform: uppercase; }
+  .portlet-topper h5 {
+    color: #555555;
+    font-size: 18px;
+    text-align: center;
+    text-shadow: 1px 1px 1px #FFFFFF;
+    text-transform: uppercase; }
+
+.portlet-content-container {
+  padding: 1em; }
+
+/*** Itemtree
+************************************************/
+.itemtree {
+  list-style-type: none;
+  padding: 0 0 0 24px; }
+  .itemtree.collapsible {
+    margin-left: 0px;
+    padding: 0 0 0 32px; }
+  .itemtree li {
+    margin: 0.3em 0;
+    position: relative; }
+    .itemtree li > input[type="checkbox"] {
+      vertical-align: middle; }
+  .itemtree .branch {
+    list-style-type: none;
+    padding: 0 0 0 24px; }
+  .itemtree .collapse {
+    background-image: url("../img/itemtree-collapse-sprite.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    height: 20px;
+    left: -26px;
+    position: absolute;
+    top: 2px;
+    width: 20px; }
+  .itemtree .collapsed > .collapse {
+    background-position: right center; }
+  .itemtree .collapsed > .branch {
+    display: none; }
+
+/*** Itemtree
+************************************************/
+ul.dropmenu-list {
+  display: block;
+  margin: 0px;
+  background: #DFF5FC;
+  background: -moz-linear-gradient(center top, #dff5fc, #ebfaff) repeat scroll 0 0 transparent;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 1px 1px 2px 1px #A2A2A2;
+  overflow: hidden;
+  padding: 5px 0 !important;
+  width: auto;
+  z-index: 10; }
+  ul.dropmenu-list li {
+    float: none;
+    padding: 0px 0px 5px 0px; }
+    ul.dropmenu-list li a {
+      display: block;
+      line-height: 16px;
+      border: none;
+      padding: 0px 20px;
+      margin: 0px;
+      color: #0C566E;
+      text-decoration: none;
+      box-shadow: none;
+      white-space: pre; }
+      ul.dropmenu-list li a:hover, ul.dropmenu-list li a.current {
+        background-color: #feedbd; }
+
+.dropmenu {
+  position: relative;
+  display: inline-block;
+  vertical-align: bottom;
+  width: 25px;
+  height: 25px;
+  background-image: url(../img/actionmenu-icon-sprite.png);
+  background-repeat: no-repeat;
+  background-position: center left;
+  cursor: pointer; }
+  .dropmenu.hover, .dropmenu.open {
+    background-position: center right; }
+    .dropmenu.hover .dropmenu-list, .dropmenu.open .dropmenu-list {
+      display: block; }
+  .dropmenu .dropmenu-list {
+    position: absolute;
+    left: 0px;
+    top: 25px;
+    display: none; }
