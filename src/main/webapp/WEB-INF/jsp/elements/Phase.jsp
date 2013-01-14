@@ -18,7 +18,7 @@
   --%>
 
 <!DOCTYPE html>
-<c:set var="vaihe" value="${element}" scope="request"/>
+<c:set var="vaihe" value="${it.element}" scope="request"/>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -44,7 +44,7 @@
 
                 <h2>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2012</h2>
                 <ul class="form-steps">
-                    <c:forEach var="link" items="${form.navigation.children}" varStatus="status">
+                    <c:forEach var="link" items="${it.form.navigation.children}" varStatus="status">
                         <li><a id="nav-${link.id}" ${link.attributeString}
                                <c:if test="${link.id eq vaihe.id}">class="current"</c:if>>
                             <span class="index">${status.count}</span>${link.value}&nbsp;&gt;</a></li>

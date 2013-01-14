@@ -20,7 +20,7 @@ public class ViewPathTest {
 
     public static final String APPLICATION_PERIOD_ID = "apid";
     public static final String FORM_ID = "fid";
-    public static final String REDIRECT_FORM = "redirect:/lomake";
+    public static final String REDIRECT_FORM = "/lomake";
     public static final String REDIRECT_TO_FORM_PREFIX = REDIRECT_FORM + "/" + APPLICATION_PERIOD_ID + "/" + FORM_ID;
 
 }

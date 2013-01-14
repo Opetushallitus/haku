@@ -25,8 +25,8 @@
 </head>
 <body>
 <ul>
-    <c:forEach var="item" items="${linkList}">
-        <li><a id="${item}" href="${path}${item}">${item}</a></li>
+    <c:forEach var="item" items="${it.linkList}">
+        <li><a id="${item}" href="${it.path}${item}">${item}</a></li>
     </c:forEach>
 </ul>
 </body>

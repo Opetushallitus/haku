@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
@@ -33,29 +34,31 @@ import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.ui.common.RedirectToFormViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPhaseViewPath;
-import fi.vm.sade.oppija.ui.common.ViewPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.stereotype.Component;
 
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-
-@Controller
-@RequestMapping(value = "/lomake", method = RequestMethod.GET)
+@Component
+@Path("/lomake")
 public class FormController extends ExceptionController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
-    public static final String DEFAULT_VIEW = "elements/Phase";
+    public static final String DEFAULT_VIEW = "/elements/Phase";
     public static final String VERBOSE_HELP_VIEW = "help";
-    public static final String LINK_LIST_VIEW = "linkList";
+    public static final String LINK_LIST_VIEW = "/linkList";
     public static final String VALMIS_VIEW = "valmis";
 
     final FormService formService;
@@ -70,62 +73,73 @@ public class FormController extends ExceptionController {
         this.userPrefillDataService = userPrefillDataService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView listApplicationPeriods() {
+    @GET
+    public Viewable listApplicationPeriods() {
         LOGGER.debug("listApplicationPeriods");
         Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
-        final ModelAndView modelAndView = new ModelAndView(LINK_LIST_VIEW);
-        return modelAndView.addObject(LINK_LIST_VIEW, applicationPerioidMap.keySet());
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("path", "lomake/");
+        model.put("linkList", applicationPerioidMap.keySet());
+        return new Viewable(LINK_LIST_VIEW, model);
     }
 
-
-    @RequestMapping(value = "/{applicationPeriodId}", method = RequestMethod.GET)
-    public ModelAndView listForms(@PathVariable final String applicationPeriodId) {
+    @GET
+    @Path("/{applicationPeriodId}")
+    public Viewable listForms(@PathParam("applicationPeriodId") final String applicationPeriodId) {
         LOGGER.debug("listForms");
         ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(applicationPeriodId);
-        final ModelAndView modelAndView = new ModelAndView(LINK_LIST_VIEW);
-        modelAndView.addObject("path", applicationPeriod.getId() + "/");
-        return modelAndView.addObject(LINK_LIST_VIEW, applicationPeriod.getFormIds());
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("path", applicationPeriod.getId() + "/");
+        model.put("linkList", applicationPeriod.getFormIds());
+        return new Viewable(LINK_LIST_VIEW, model);
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.GET)
-    public String getApplication(@PathVariable final String applicationPeriodId, @PathVariable final String formId) {
+    @GET
+    @Path("/{applicationPeriodId}/{formId}")
+    public Response getApplication(@PathParam("applicationPeriodId") final String applicationPeriodId,
+                                 @PathParam("formId") final String formId) throws URISyntaxException {
         LOGGER.debug("getApplication {}, {}", new Object[]{applicationPeriodId, formId});
         Application application = applicationService.getApplication(new FormId(applicationPeriodId, formId));
         if (application.isNew()) {
+
             Phase firstPhase = formService.getFirstPhase(applicationPeriodId, formId);
-            return "redirect:" + formId + "/" + firstPhase.getId();
+            return Response.seeOther(new URI(
+                    new RedirectToPhaseViewPath(applicationPeriodId, formId, firstPhase.getId()).getPath())).build();
+
         } else {
-            return new RedirectToPhaseViewPath(applicationPeriodId, formId, application.getVaiheId()).getPath();
+            return Response.seeOther(new URI(
+                    new RedirectToPhaseViewPath(applicationPeriodId, formId,
+                            application.getVaiheId()).getPath())).build();
         }
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formIdStr}/{elementId}", method = RequestMethod.GET)
-    public ModelAndView getElement(@PathVariable final String applicationPeriodId,
-                                   @PathVariable final String formIdStr,
-                                   @PathVariable final String elementId) {
+    @GET
+    @Path("/{applicationPeriodId}/{formIdStr}/{elementId}")
+    public Viewable getElement(@PathParam("applicationPeriodId") final String applicationPeriodId,
+                               @PathParam("formIdStr") final String formIdStr,
+                               @PathParam("elementId") final String elementId) {
 
         LOGGER.debug("getElement {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, elementId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
         Element element = activeForm.getElementById(elementId);
-        final ModelAndView modelAndView = new ModelAndView("/elements/" + element.getType());
+        Map<String, Object> model = new HashMap<String, Object>();
         final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
         Map<String, String> values = applicationService.getApplication(formId).getVastauksetMerged();
         values = userPrefillDataService.populateWithPrefillData(values);
-        modelAndView.addObject("categoryData", values);
-        modelAndView.addObject("element", element);
-        modelAndView.addObject("form", activeForm);
-        return modelAndView.addObject("hakemusId", formId);
+        model.put("categoryData", values);
+        model.put("element", element);
+        model.put("form", activeForm);
+        model.put("hakemusId", formId);
+        return new Viewable("/elements/" + element.getType(), model);
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{elementId}/relatedData/{key}",
-            method = RequestMethod.GET,
-            produces = "application/json; charset=UTF-8")
-    @ResponseBody
-    public Serializable getElementRelatedData(@PathVariable final String applicationPeriodId,
-                                              @PathVariable final String formId,
-                                              @PathVariable final String elementId,
-                                              @PathVariable final String key) {
+    @GET
+    @Path("/{ applicationPeriodId}/{formId}/{elementId}/relatedData/{key}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Serializable getElementRelatedData(@PathParam("applicationPeriodId") final String applicationPeriodId,
+                                              @PathParam("formId") final String formId,
+                                              @PathParam("elementId") final String elementId,
+                                              @PathParam("key") final String key) {
         LOGGER.debug("getElementRelatedData {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, elementId, key});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         try {
@@ -137,60 +151,72 @@ public class FormController extends ExceptionController {
         }
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-    public ModelAndView prefillForm(@PathVariable final String applicationPeriodId, @PathVariable final String formId,
-                                    @RequestBody final MultiValueMap<String, String> multiValues) {
-        userPrefillDataService.addUserPrefillData(multiValues.toSingleValueMap());
-        return new ModelAndView(new RedirectToFormViewPath(applicationPeriodId, formId).getPath());
+    @POST
+    @Path("/{applicationPeriodId}/{formId}")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response prefillForm(@PathParam("applicationPeriodId") final String applicationPeriodId,
+                                @PathParam("formId") final String formId,
+                                final MultivaluedMap<String, String> multiValues)
+            throws URISyntaxException {
+        userPrefillDataService.addUserPrefillData(toSingleValueMap(multiValues));
+
+        return Response.seeOther(new URI(
+                new RedirectToFormViewPath(applicationPeriodId, formId).getPath())).build();
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{phaseId}",
-            method = RequestMethod.POST,
-            consumes = "application/x-www-form-urlencoded")
-    public ModelAndView savePhase(@PathVariable final String applicationPeriodId,
-                                  @PathVariable final String formId,
-                                  @PathVariable final String phaseId,
-                                  @RequestBody final MultiValueMap<String, String> multiValues) {
+    @POST
+    @Path("/{applicationPeriodId}/{formId}/{phaseId}")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response savePhase(@PathParam("applicationPeriodId") final String applicationPeriodId,
+                                  @PathParam("formId") final String formId,
+                                  @PathParam("phaseId") final String phaseId,
+                                  MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId,
-                phaseId, multiValues.toSingleValueMap()));
+                phaseId, toSingleValueMap(multiValues)));
 
-        ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
+        Map<String, Object> model = new HashMap<String, Object>();
+        String path = DEFAULT_VIEW;
+
+        model.put("hakemusId", hakuLomakeId);
         if (applicationState.isValid()) {
-            RedirectToPhaseViewPath redirectToPhaseViewPath = new RedirectToPhaseViewPath(applicationPeriodId, formId, applicationState.getHakemus().getVaiheId());
-            modelAndView = createModelAndView(redirectToPhaseViewPath);
+
+            return Response.seeOther(new URI(
+                    new RedirectToPhaseViewPath(applicationPeriodId, formId,
+                            applicationState.getHakemus().getVaiheId()).getPath())).build();
+
         } else {
-            modelAndView.addAllObjects(applicationState.getModelObjects());
+            model.putAll(applicationState.getModelObjects());
             Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-            modelAndView.addObject("element", activeForm.getPhase(phaseId));
-            modelAndView.addObject("form", activeForm);
+            model.put("element", activeForm.getPhase(phaseId));
+            model.put("form", activeForm);
+            return Response.status(Response.Status.OK).entity(new Viewable(path, model)).build();
         }
-        return modelAndView.addObject("hakemusId", hakuLomakeId);
+
     }
 
-    private ModelAndView createModelAndView(ViewPath viewPath) {
-        return new ModelAndView(viewPath.getPath());
-    }
-
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}/send", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-    public ModelAndView submitApplication(@PathVariable final String applicationPeriodId,
-                                          @PathVariable final String formId) {
+    @POST
+    @Path("/{applicationPeriodId}/{formId}/send")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Viewable submitApplication( @PathParam("applicationPeriodId") final String applicationPeriodId,
+                                          @PathParam("formId") final String formId) {
         LOGGER.debug("submitApplication {}, {}", new Object[]{applicationPeriodId, formId});
         String oid = applicationService.submitApplication(new FormId(applicationPeriodId, formId));
         RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationPeriodId, formId, oid);
-        return createModelAndView(redirectToPendingViewPath);
+        return new Viewable(redirectToPendingViewPath.getPath());
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}/valmis/{oid}/", method = RequestMethod.GET)
-    public ModelAndView getComplete(@PathVariable final String applicationPeriodId,
-                                    @PathVariable final String formId,
-                                    @PathVariable final String oid) {
+    @GET
+    @Path("/{applicationPeriodId}/{formId}/valmis/{oid}/")
+    public Viewable getComplete(@PathParam("applicationPeriodId") final String applicationPeriodId,
+                                    @PathParam("formId") final String formId,
+                                    @PathParam("oid") final String oid) {
 
         LOGGER.debug("getComplete {}, {}", new Object[]{applicationPeriodId, formId});
-        ModelAndView modelAndView = new ModelAndView(VALMIS_VIEW);
+        Map<String, Object> model = new HashMap<String, Object>();
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        modelAndView.addObject("form", activeForm);
+        model.put("form", activeForm);
         final FormId hakuLomakeId = new FormId(applicationPeriodId, activeForm.getId());
 
         final Application application;
@@ -200,36 +226,39 @@ public class FormController extends ExceptionController {
             throw new ResourceNotFoundExceptionRuntime("Could not find pending application");
         }
 
-        modelAndView.addObject("categoryData", application.getVastaukset());
-        modelAndView.addObject("hakemusId", hakuLomakeId);
-        return modelAndView.addObject("applicationNumber", application.getOid());
+        model.put("categoryData", application.getVastaukset());
+        model.put("hakemusId", hakuLomakeId);
+        model.put("applicationNumber", application.getOid());
+        return new Viewable(VALMIS_VIEW, model);
     }
 
-    @RequestMapping(value = "/{applicationPeriodId}/{formId}/{vaiheId}/{teemaId}/help", method = RequestMethod.GET)
-    public ModelAndView getFormHelp(@PathVariable final String applicationPeriodId,
-                                    @PathVariable final String formId, @PathVariable final String vaiheId,
-                                    @PathVariable final String teemaId) {
+    @GET
+    @Path("/{applicationPeriodId}/{formId}/{vaiheId}/{teemaId}/help")
+    public Viewable getFormHelp(@PathParam("applicationPeriodId") final String applicationPeriodId,
+                                    @PathParam("formId") final String formId, @PathParam("vaiheId") final String vaiheId,
+                                    @PathParam("teemaId") final String teemaId) {
 
-        ModelAndView modelAndView = new ModelAndView(VERBOSE_HELP_VIEW);
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         Phase phase = activeForm.getPhase(vaiheId);
+
+        Map<String, Object> model = new HashMap<String, Object>();
 
         for (Element element : phase.getChildren()) {
             if (element.getId().equals(teemaId)) {
                 Theme theme = (Theme) element;
-                modelAndView.getModel().put("themeTitle", theme.getTitle());
+                model.put("themeTitle", theme.getTitle());
                 HashMap<String, String> helpMap = new HashMap<String, String>();
                 for (Element tElement : theme.getChildren()) {
                     if (tElement instanceof Titled) {
                         helpMap.put(((Titled) tElement).getTitle(), ((Titled) tElement).getVerboseHelp());
                     }
                 }
-                modelAndView.getModel().put("themeHelpMap", helpMap);
+                model.put("themeHelpMap", helpMap);
                 break;
             }
         }
 
-        return modelAndView;
+        return new Viewable(VERBOSE_HELP_VIEW, model);
     }
 
     /**
@@ -240,18 +269,29 @@ public class FormController extends ExceptionController {
      * @param gradeGridId
      * @return
      */
-    @RequestMapping(value = "/{applicationPeriodId}/{formIdStr}/{gradeGridId}/additionalLanguageRow", method = RequestMethod.GET)
-    public ModelAndView getAdditionalLanguageRow(@PathVariable final String applicationPeriodId,
-                                   @PathVariable final String formIdStr,
-                                   @PathVariable final String gradeGridId) {
+    @GET
+    @Path("/{applicationPeriodId}/{formIdStr}/{gradeGridId}/additionalLanguageRow")
+    public Viewable getAdditionalLanguageRow(@PathParam("applicationPeriodId") final String applicationPeriodId,
+                                   @PathParam("formIdStr") final String formIdStr,
+                                   @PathParam("gradeGridId") final String gradeGridId) {
 
         LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, gradeGridId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
         Element element = activeForm.getElementById(gradeGridId);
         GradeGrid gradeGrid = (GradeGrid)element;
-        final ModelAndView modelAndView = new ModelAndView("/elements/gradegrid/additionalLanguageRow");
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("element", gradeGrid);
 
-        return modelAndView.addObject("element", gradeGrid);
+        return new Viewable("/elements/gradegrid/additionalLanguageRow", model);
+    }
+
+    // TODO: implement param reader for Map
+    private Map<String, String> toSingleValueMap(MultivaluedMap<String, String> multi) {
+        HashMap<String, String> singleValueMap = new HashMap<String, String>(multi.size());
+        for (Map.Entry<String, List<String>> entry : multi.entrySet()) {
+            singleValueMap.put(entry.getKey(), entry.getValue().get(0));
+        }
+        return singleValueMap;
     }
 
 }
