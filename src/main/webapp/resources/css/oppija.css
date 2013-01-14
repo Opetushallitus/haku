@@ -1625,8 +1625,32 @@ hr {
             .main-navigation .navigation li ul.dropdown li.sub-dropdown ul li.first-item a {
               border-top: 1px dotted #a3a3a3 !important; }
 
-/*** Form elements
+/*** Form generic
 ************************************************/
+.form {
+  display: block;
+  background-color: #ffffff;
+  border: solid 4px #ffffff;
+  margin: 0.5em;
+  padding: 1.538em;
+  -webkit-box-shadow: 0px 0px 1px 0px #c4c4c4, inset 0px 0px 1px 0px #c4c4c4;
+  -moz-box-shadow: 0px 0px 1px 0px #c4c4c4, inset 0px 0px 1px 0px #c4c4c4;
+  -o-box-shadow: 0px 0px 1px 0px #c4c4c4, inset 0px 0px 1px 0px #c4c4c4;
+  -ms-box-shadow: 0px 0px 1px 0px #c4c4c4, inset 0px 0px 1px 0px #c4c4c4;
+  box-shadow: 0px 0px 1px 0px #c4c4c4, inset 0px 0px 1px 0px #c4c4c4;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  border-radius: 6px; }
+
+small {
+  color: #8d8d8d; }
+
+input, input:focus,
+select, select:focus, select:active {
+  outline: none; }
+
 /*** Fieldset
 **********************************/
 fieldset {
@@ -1874,6 +1898,62 @@ label, .label {
 }
 
 */
+/*** Input(text), Select
+**********************************/
+.field-container-select {
+  padding: 0px 2px 0px 0px; }
+
+.field-container-text {
+  padding: 0px 0.923em 0px 0px; }
+
+/*** Form row structure
+************************************************/
+.form-row {
+  margin: 1.5em 0px;
+  clear: both; }
+
+.form-row-label {
+  float: left;
+  width: 173px;
+  padding: 0px 17px 0px 0px;
+  text-align: right; }
+
+.form-row-content {
+  float: left;
+  width: 300px;
+  max-width: 390px; }
+
+/*** Form item structure
+************************************************/
+.form-item {
+  margin: 1.5em 0px;
+  clear: both; }
+
+.form-item-label {
+  color: #000000; }
+
+.form .form-item-content {
+  padding: 0px 0px 0px 1em; }
+
+/*** Form item row
+************************************************/
+.form-item-row .form-item {
+  display: inline-block;
+  padding-right: 1em; }
+
+/*** Field container radio
+************************************************/
+.field-container-radio input[type="radio"] {
+  margin-right: 5px; }
+
+.field-container-radio > div {
+  position: relative;
+  top: -3px; }
+
+.field-container-radio > div small {
+  margin-left: 24px;
+  padding-bottom: 5px; }
+
 /*** Help page
 ************************************************/
 #help-page {
@@ -2702,6 +2782,40 @@ button {
 #sitecontent .content {
   margin: 0.5em; }
 
+.application-number {
+  font-size: 1.154em;
+  color: #000000; }
+  .application-number .content {
+    margin: 0.5em; }
+  .application-number .number {
+    color: #149dca; }
+
+/*** Theme help
+************************************************/
+.theme-help {
+  clear: both; }
+  .theme-help .help-text {
+    width: 90%;
+    float: left;
+    margin-bottom: 2em; }
+  .theme-help .helplink {
+    display: block;
+    width: 20px;
+    height: 21px;
+    color: transparent;
+    background-image: url(../img/help-icon-sprite_idle-hover-selected-disabled.png);
+    background-position: 0px center;
+    background-repeat: no-repeat;
+    float: right; }
+    .theme-help .helplink:hover {
+      background-position: -20px center; }
+    .theme-help .helplink:active, .theme-help .helplink:focus {
+      background-position: -40px center; }
+    .theme-help .helplink:disabled, .theme-help .helplink.disabled {
+      background-position: -60px center; }
+
+/***  Help link
+************************/
 /*** Form step navigation
 ************************************************/
 .form-steps {
@@ -2753,136 +2867,6 @@ button {
         color: #149dca;
         background-position: -108px center; }
 
-/*** Form generic
-************************************************/
-.form {
-  display: block;
-  background-color: #ffffff;
-  border: solid 4px #ffffff;
-  margin: 0.5em;
-  padding: 1.538em;
-  -webkit-box-shadow: 0px 0px 1px 0px #c4c4c4, inset 0px 0px 1px 0px #c4c4c4;
-  -moz-box-shadow: 0px 0px 1px 0px #c4c4c4, inset 0px 0px 1px 0px #c4c4c4;
-  -o-box-shadow: 0px 0px 1px 0px #c4c4c4, inset 0px 0px 1px 0px #c4c4c4;
-  -ms-box-shadow: 0px 0px 1px 0px #c4c4c4, inset 0px 0px 1px 0px #c4c4c4;
-  box-shadow: 0px 0px 1px 0px #c4c4c4, inset 0px 0px 1px 0px #c4c4c4;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  -o-border-radius: 6px;
-  -ms-border-radius: 6px;
-  border-radius: 6px; }
-
-small {
-  color: #8d8d8d; }
-
-input, input:focus,
-select, select:focus, select:active {
-  outline: none; }
-
-.form-summary-table td {
-  vertical-align: top; }
-.form-summary-table .label {
-  color: #000000;
-  font-weight: bold;
-  text-align: right;
-  padding-right: 1em;
-  line-height: inherit; }
-.form-summary-table .sublabel {
-  color: #000000;
-  text-align: right;
-  padding-right: 1em; }
-.form-summary-table .extra {
-  padding-left: 1em; }
-
-.application-number {
-  font-size: 1.154em;
-  color: #000000; }
-  .application-number .number {
-    color: #149dca; }
-
-/*** Acceptance preference table
-************************************************/
-.preference-sort tbody tr td {
-  border: solid 1px #e1e1e1;
-  border-top-color: #ececec;
-  border-bottom-color: #c2c2c2;
-  vertical-align: top;
-  padding: 2em 1.5em;
-  background-color: #ffffff; }
-.preference-sort tbody tr:nth-child(odd) td {
-  background-color: #f9fbfc; }
-.preference-sort button.reset {
-  float: right; }
-.preference-sort .index {
-  text-align: center; }
-  .preference-sort .index .up span,
-  .preference-sort .index .down span {
-    border: solid 16px #000000;
-    width: 0px;
-    height: 0px;
-    border-left-color: transparent;
-    border-right-color: transparent;
-    background-color: transparent;
-    padding: 0px;
-    margin: 2px;
-    position: relative;
-    background-image: none; }
-    .preference-sort .index .up span span,
-    .preference-sort .index .down span span {
-      border: solid 15px #feba00;
-      width: 0px;
-      height: 0px;
-      overflow: hidden;
-      border-left-color: transparent;
-      border-right-color: transparent;
-      background-color: transparent;
-      padding: 0px;
-      margin: 0px;
-      position: absolute;
-      left: -15px; }
-  .preference-sort .index .up span {
-    border-top-width: 0px; }
-    .preference-sort .index .up span span {
-      border-top-width: 0px;
-      bottom: -16px; }
-  .preference-sort .index .up:hover span span {
-    border-top-width: 0px;
-    bottom: -15px; }
-  .preference-sort .index .up:active span span, .preference-sort .index .up:focus span span {
-    left: -14px;
-    bottom: -16px;
-    border-width: 14px;
-    border-top-width: 0px; }
-  .preference-sort .index .down span {
-    border-bottom-width: 0px; }
-    .preference-sort .index .down span span {
-      border-bottom-width: 0px;
-      top: -15px; }
-  .preference-sort .index .down:hover span span {
-    border-bottom-width: 0px;
-    top: -16px; }
-  .preference-sort .index .down:active span span, .preference-sort .index .down:focus span span {
-    left: -14px;
-    bottom: -14px;
-    border-width: 14px;
-    border-top-width: 0px; }
-  .preference-sort .index .label {
-    text-transform: uppercase; }
-  .preference-sort .index .preference-fields {
-    margin-right: 1.5em;
-    float: left; }
-    .preference-sort .index .preference-fields .form-row {
-      margin: 1em 100px 0px 0px; }
-      .preference-sort .index .preference-fields .form-row:first-child {
-        margin-top: 0px; }
-    .preference-sort .index .preference-fields .form-row-label {
-      width: 83px;
-      float: left; }
-    .preference-sort .index .preference-fields .form-row-content {
-      margin-left: 100px;
-      float: none;
-      width: 100%; }
-
 /*** Grades table
 ************************************************/
 .applicant-grades thead tr th,
@@ -2913,3 +2897,138 @@ select, select:focus, select:active {
   position: absolute;
   top: 8px;
   right: 3px; }
+
+/*** Acceptance preference table
+************************************************/
+.preference-sort tbody tr td {
+  border: solid 1px #e1e1e1;
+  border-top-color: #ececec;
+  border-bottom-color: #c2c2c2;
+  vertical-align: top;
+  padding: 2em 1.5em;
+  background-color: #ffffff; }
+
+.preference-sort tbody tr:nth-child(odd) td {
+  background-color: #f9fbfc; }
+
+.preference-sort button.reset {
+  float: right; }
+
+.preference-sort .index {
+  text-align: center; }
+
+.preference-sort .index .up span,
+.preference-sort .index .down span {
+  border: solid 16px #000000;
+  width: 0px;
+  height: 0px;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  background-color: transparent;
+  padding: 0px;
+  margin: 2px;
+  position: relative;
+  background-image: none; }
+
+.preference-sort .index .up span {
+  border-top-width: 0px; }
+
+.preference-sort .index .down span {
+  border-bottom-width: 0px; }
+
+.preference-sort .index .up span span,
+.preference-sort .index .down span span {
+  border: solid 15px #feba00;
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  background-color: transparent;
+  padding: 0px;
+  margin: 0px;
+  position: absolute;
+  left: -15px; }
+
+.preference-sort .index .up span span {
+  border-top-width: 0px;
+  bottom: -16px; }
+
+.preference-sort .index .down span span {
+  border-bottom-width: 0px;
+  top: -15px; }
+
+.preference-sort .index .up:hover span span {
+  border-top-width: 0px;
+  bottom: -15px; }
+
+.preference-sort .index .down:hover span span {
+  border-bottom-width: 0px;
+  top: -16px; }
+
+.preference-sort .index .up:active span span,
+.preference-sort .index .up:focus span span {
+  left: -14px;
+  bottom: -16px;
+  border-width: 14px;
+  border-top-width: 0px; }
+
+.preference-sort .index .down:active span span,
+.preference-sort .index .down:focus span span {
+  left: -14px;
+  top: -14px;
+  border-width: 14px;
+  border-bottom-width: 0px; }
+
+.preference-sort .index .label {
+  text-transform: uppercase; }
+
+.preference-sort .preference-fields {
+  margin-right: 1.5em;
+  float: left; }
+
+.preference-sort .preference-fields .form-row {
+  margin: 1em 100px 0px 0px; }
+
+.preference-sort .preference-fields .form-row:first-child {
+  margin-top: 0px; }
+
+.preference-sort .preference-fields .form-row-label {
+  width: 83px;
+  float: left; }
+
+.preference-sort .preference-fields .form-row-content {
+  margin-left: 100px;
+  float: none;
+  width: 100%; }
+
+#search-applications .form-row.narrow .form-row-label {
+  width: 100px;
+  max-width: 30%;
+  text-align: left; }
+
+#search-applications .form-row.narrow .form-row-content {
+  max-width: 70%; }
+
+#gradegrid-table .btn-remove {
+  display: block;
+  position: absolute;
+  top: 8px;
+  right: 3px; }
+
+/*** Form summary table
+************************************************/
+.form-summary-table td {
+  vertical-align: top; }
+.form-summary-table .label {
+  color: #000000;
+  font-weight: bold;
+  text-align: right;
+  padding-right: 1em;
+  line-height: inherit; }
+.form-summary-table .sublabel {
+  color: #000000;
+  text-align: right;
+  padding-right: 1em; }
+.form-summary-table .extra {
+  padding-left: 1em; }
