@@ -65,7 +65,8 @@ import java.util.Map;
                 @JsonSubTypes.Type(value = SortableTable.class),
                 @JsonSubTypes.Type(value = PreferenceRow.class),
                 @JsonSubTypes.Type(value = PostalCode.class),
-                @JsonSubTypes.Type(value = SocialSecurityNumber.class)
+                @JsonSubTypes.Type(value = SocialSecurityNumber.class),
+                @JsonSubTypes.Type(value = Text.class)
         }
 )
 public abstract class Element {

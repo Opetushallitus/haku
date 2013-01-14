@@ -49,7 +49,7 @@
             };
         })();
     </script>
-    <div class="rule-childs">
+    <div class="rule-childs clear">
         <c:choose>
             <c:when test="${not empty categoryData[key]}">
                 <c:if test="${fn:evaluate(categoryData[key], element.expression)}">

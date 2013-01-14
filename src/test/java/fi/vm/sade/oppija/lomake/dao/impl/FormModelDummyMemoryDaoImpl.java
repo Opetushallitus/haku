@@ -21,10 +21,7 @@ import fi.vm.sade.oppija.lomake.dao.FormModelDAO;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
-import fi.vm.sade.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.oppija.lomake.domain.elements.*;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
@@ -334,6 +331,9 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule4", "millatutkinnolla", "(tutkinto1|tutkinto2|tutkinto3|tutkinto4|tutkinto6)");
         relatedQuestionRule.addChild(createGradeGrid());
         arvosanatRyhmä.addChild(relatedQuestionRule);
+        RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule5", "millatutkinnolla", "(tutkinto5|tutkinto7)");
+        relatedQuestionRule2.addChild(new Text("nogradegrid", "Sinulta ei kysytä arvosanoja."));
+        arvosanatRyhmä.addChild(relatedQuestionRule2);
         arvosanatRyhmä.setHelp("Merkitse arvosanat siitä todistuksesta, jolla haet koulutukseen (perusopetus,tai sitä vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitä, mikäli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta. 1. Tarkista ja täydennä taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitäytetyistä. Huom! Valinnaisaineiden arvosanat merkitään vain mikäli niiden laajuus on vähintään kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilöllistettyjä arvosanoja, valitse listasta arvosana, jossa on tähti.");
 
     }
