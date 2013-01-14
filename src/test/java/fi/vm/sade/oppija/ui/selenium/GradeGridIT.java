@@ -18,6 +18,10 @@ package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -32,13 +36,23 @@ public class GradeGridIT extends AbstractSeleniumBase {
 
     @Before
     public void init() {
-        FormModelDummyMemoryDaoImpl dummyMem = new FormModelDummyMemoryDaoImpl();
-        initModel(dummyMem.getModel());
+        super.before();
+        ApplicationPeriod applicationPeriod = new ApplicationPeriod("Yhteishaku");
+        FormModel formModel = new FormModel();
+        formModel.addApplicationPeriod(applicationPeriod);
+        Phase arvosanat = new Phase("arvosanat", "Arvosanat", false);
+        Form form = new Form("lomake", "yhteishaku");
+        form.addChild(arvosanat);
+        FormModelDummyMemoryDaoImpl dummyImpl = new FormModelDummyMemoryDaoImpl();
+        arvosanat.addChild(dummyImpl.createGradeGrid());
+        form.init();
+        applicationPeriod.addForm(form);
+        initModel(formModel);
     }
 
     @Test
     public void testTableExists() {
-        final String url = getBaseUrl() + "/" + "lomake/Yhteishaku/yhteishaku/arvosanat";
+        final String url = getBaseUrl() + "/lomake/Yhteishaku/lomake/arvosanat";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
 
@@ -48,7 +62,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
 
     @Test
     public void testAddLanguage() {
-        final String url = getBaseUrl() + "/" + "lomake/Yhteishaku/yhteishaku/arvosanat";
+        final String url = getBaseUrl() + "/lomake/Yhteishaku/lomake/arvosanat";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
 

@@ -331,8 +331,9 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     private void createArvosanat(Theme arvosanatRyhmä) {
-
-        arvosanatRyhmä.addChild(createGradeGrid());
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule4", "millatutkinnolla", "(tutkinto1|tutkinto2|tutkinto3|tutkinto4|tutkinto6)");
+        relatedQuestionRule.addChild(createGradeGrid());
+        arvosanatRyhmä.addChild(relatedQuestionRule);
         arvosanatRyhmä.setHelp("Merkitse arvosanat siitä todistuksesta, jolla haet koulutukseen (perusopetus,tai sitä vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitä, mikäli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta. 1. Tarkista ja täydennä taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitäytetyistä. Huom! Valinnaisaineiden arvosanat merkitään vain mikäli niiden laajuus on vähintään kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilöllistettyjä arvosanoja, valitse listasta arvosana, jossa on tähti.");
 
     }
@@ -470,7 +471,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     @Override
     public List<FormModel> find(FormModel formModel) {
-        return Lists.newArrayList(formModel);
+        return Lists.newArrayList(getModel());
     }
 
     @Override

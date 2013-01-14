@@ -44,9 +44,21 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
 
     @Test
     public void testAdditionalSubjects() {
-        final String url = getBaseUrl() + "/lomake/Yhteishaku/yhteishaku/hakutoiveet";
+        final String url = getBaseUrl() + "/lomake/Yhteishaku/yhteishaku/koulutustausta";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
+
+        driver.findElement(new By.ById("millatutkinnolla_tutkinto1")).click();
+        driver.findElement(new By.ById("peruskoulu2012_kylla")).click();
+
+        driver.findElement(new By.ById("suorittanut_suorittanut1")).click();
+        driver.findElement(new By.ById("suorittanut_suorittanut2")).click();
+        driver.findElement(new By.ById("suorittanut_suorittanut3")).click();
+        driver.findElement(new By.ById("suorittanut_suorittanut4")).click();
+
+        driver.findElement(new By.ById("osallistunut_ei")).click();
+
+        driver.findElement(new By.ByClassName("right")).click();
 
         // select a LOI
         driver.findElement(By.id("preference1-Opetuspiste"));
