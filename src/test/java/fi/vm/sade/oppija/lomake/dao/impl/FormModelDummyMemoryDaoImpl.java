@@ -370,7 +370,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         CheckBox lupa = new CheckBox("lupa", "Ohjeteksti lorem ipsum.");
         lupa.addOption("lupa1", "lupa1", "Haluan, että huoltajalleni lähetetään tieto sähköpostilla hakulomakkeen täyttämisestä");
         lupa.addOption("lupa2", "lupa2", "Minulle saa lähettää postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia");
-        lupa.addOption("lupa3", "lupa3", "Tietoni opiskeluvalinna tuloksista saa julkaista Internetissä");
+        lupa.addOption("lupa3", "lupa3", "Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissä");
         lupa.addOption("lupa4", "lupa4", "Valintaani koskevat tiedot saa lähettää minulle sähköisesti");
         lupa.addOption("lupa5", "lupa5", "Minulle saa lähettää tietoa opiskelijavalinnan etenemisestä ja tuloksista tekstiviestillä");
         lupa.setVerboseHelp(getVerboseHelp());
