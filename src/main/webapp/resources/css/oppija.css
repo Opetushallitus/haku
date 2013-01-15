@@ -2899,11 +2899,6 @@ button {
   text-transform: uppercase; }
 .applicant-grades tbody tr:nth-child(even) td {
   background-color: #f3f7f9; }
-.applicant-grades .btn-remove {
-  display: block;
-  position: absolute;
-  top: 8px;
-  right: 3px; }
 
 /*** Acceptance preference table
 ************************************************/
@@ -3018,10 +3013,10 @@ button {
   max-width: 70%; }
 
 #gradegrid-table .btn-remove {
-  display: block;
-  position: absolute;
+  display: inline-block;
   top: 8px;
-  right: 3px; }
+  right: 3px;
+  vertical-align: middle; }
 
 /*** Form summary table
 ************************************************/
