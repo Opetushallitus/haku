@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
@@ -53,7 +52,7 @@ import java.util.Map;
 
 @Component
 @Path("/lomake")
-public class FormController extends ExceptionController {
+public class FormController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
     public static final String DEFAULT_VIEW = "/elements/Phase";
@@ -78,7 +77,6 @@ public class FormController extends ExceptionController {
         LOGGER.debug("listApplicationPeriods");
         Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("path", "lomake/");
         model.put("linkList", applicationPerioidMap.keySet());
         return new Viewable(LINK_LIST_VIEW, model);
     }
@@ -97,7 +95,7 @@ public class FormController extends ExceptionController {
     @GET
     @Path("/{applicationPeriodId}/{formId}")
     public Response getApplication(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                                 @PathParam("formId") final String formId) throws URISyntaxException {
+                                   @PathParam("formId") final String formId) throws URISyntaxException {
         LOGGER.debug("getApplication {}, {}", new Object[]{applicationPeriodId, formId});
         Application application = applicationService.getApplication(new FormId(applicationPeriodId, formId));
         if (application.isNew()) {
@@ -115,6 +113,7 @@ public class FormController extends ExceptionController {
 
     @GET
     @Path("/{applicationPeriodId}/{formIdStr}/{elementId}")
+    @Produces(MediaType.TEXT_HTML)
     public Viewable getElement(@PathParam("applicationPeriodId") final String applicationPeriodId,
                                @PathParam("formIdStr") final String formIdStr,
                                @PathParam("elementId") final String elementId) {
@@ -168,16 +167,15 @@ public class FormController extends ExceptionController {
     @Path("/{applicationPeriodId}/{formId}/{phaseId}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response savePhase(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                                  @PathParam("formId") final String formId,
-                                  @PathParam("phaseId") final String phaseId,
-                                  MultivaluedMap<String, String> multiValues) throws URISyntaxException {
+                              @PathParam("formId") final String formId,
+                              @PathParam("phaseId") final String phaseId,
+                              MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId,
                 phaseId, toSingleValueMap(multiValues)));
 
         Map<String, Object> model = new HashMap<String, Object>();
-        String path = DEFAULT_VIEW;
 
         model.put("hakemusId", hakuLomakeId);
         if (applicationState.isValid()) {
@@ -191,7 +189,7 @@ public class FormController extends ExceptionController {
             Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
             model.put("element", activeForm.getPhase(phaseId));
             model.put("form", activeForm);
-            return Response.status(Response.Status.OK).entity(new Viewable(path, model)).build();
+            return Response.status(Response.Status.OK).entity(new Viewable(DEFAULT_VIEW, model)).build();
         }
 
     }
@@ -199,8 +197,8 @@ public class FormController extends ExceptionController {
     @POST
     @Path("/{applicationPeriodId}/{formId}/send")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Viewable submitApplication( @PathParam("applicationPeriodId") final String applicationPeriodId,
-                                          @PathParam("formId") final String formId) {
+    public Viewable submitApplication(@PathParam("applicationPeriodId") final String applicationPeriodId,
+                                      @PathParam("formId") final String formId) {
         LOGGER.debug("submitApplication {}, {}", new Object[]{applicationPeriodId, formId});
         String oid = applicationService.submitApplication(new FormId(applicationPeriodId, formId));
         RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationPeriodId, formId, oid);
@@ -210,8 +208,8 @@ public class FormController extends ExceptionController {
     @GET
     @Path("/{applicationPeriodId}/{formId}/valmis/{oid}/")
     public Viewable getComplete(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                                    @PathParam("formId") final String formId,
-                                    @PathParam("oid") final String oid) {
+                                @PathParam("formId") final String formId,
+                                @PathParam("oid") final String oid) {
 
         LOGGER.debug("getComplete {}, {}", new Object[]{applicationPeriodId, formId});
         Map<String, Object> model = new HashMap<String, Object>();
@@ -235,8 +233,8 @@ public class FormController extends ExceptionController {
     @GET
     @Path("/{applicationPeriodId}/{formId}/{vaiheId}/{teemaId}/help")
     public Viewable getFormHelp(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                                    @PathParam("formId") final String formId, @PathParam("vaiheId") final String vaiheId,
-                                    @PathParam("teemaId") final String teemaId) {
+                                @PathParam("formId") final String formId, @PathParam("vaiheId") final String vaiheId,
+                                @PathParam("teemaId") final String teemaId) {
 
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         Phase phase = activeForm.getPhase(vaiheId);
@@ -262,8 +260,6 @@ public class FormController extends ExceptionController {
     }
 
     /**
-     *
-     *
      * @param applicationPeriodId
      * @param formIdStr
      * @param gradeGridId
@@ -272,13 +268,13 @@ public class FormController extends ExceptionController {
     @GET
     @Path("/{applicationPeriodId}/{formIdStr}/{gradeGridId}/additionalLanguageRow")
     public Viewable getAdditionalLanguageRow(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                                   @PathParam("formIdStr") final String formIdStr,
-                                   @PathParam("gradeGridId") final String gradeGridId) {
+                                             @PathParam("formIdStr") final String formIdStr,
+                                             @PathParam("gradeGridId") final String gradeGridId) {
 
         LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, gradeGridId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
         Element element = activeForm.getElementById(gradeGridId);
-        GradeGrid gradeGrid = (GradeGrid)element;
+        GradeGrid gradeGrid = (GradeGrid) element;
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("element", gradeGrid);
 

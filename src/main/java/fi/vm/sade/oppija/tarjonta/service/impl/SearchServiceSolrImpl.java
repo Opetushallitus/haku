@@ -29,7 +29,6 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 
 import java.util.*;
 
@@ -47,7 +46,7 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public SearchResult search(MultiValueMap<String, String> parameters) throws SearchException {
+    public SearchResult search(final Set<Map.Entry<String, List<String>>> parameters) throws SearchException {
         final SolrQuery solrQuery = mapToSolrQueryTransformer.transform(parameters);
         return query(solrQuery);
     }

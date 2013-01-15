@@ -22,22 +22,22 @@
 
     <ul class="minimal">
         <li class="heading"><spring:message code="tarjonta.koulutuksenperustiedot.koulutusala"/></li>
-        <li class="emphasized"><c:out value="${searchResult['LOSEducationDomain']}"/></li>
+        <li class="emphasized"><c:out value="${it.searchResult['LOSEducationDomain']}"/></li>
 
         <li class="heading"><spring:message code="tarjonta.koulutuksenperustiedot.opintoala"/></li>
-        <li class="emphasized"><c:out value="${searchResult['LOSStydyDomain']}"/></li>
+        <li class="emphasized"><c:out value="${it.searchResult['LOSStydyDomain']}"/></li>
 
         <li class="heading"><spring:message code="tarjonta.koulutuksenperustiedot.koulutusohjelma"/></li>
-        <li class="emphasized"><c:out value="${searchResult['LOSName']}"/></li>
+        <li class="emphasized"><c:out value="${it.searchResult['LOSName']}"/></li>
 
         <li class="heading"><spring:message code="tarjonta.koulutuksenperustiedot.tutkinto"/></li>
-        <li class="emphasized"><c:out value="${searchResult['LOSDegreeTitle']}"/></li>
+        <li class="emphasized"><c:out value="${it.searchResult['LOSDegreeTitle']}"/></li>
 
         <li class="heading"><spring:message code="tarjonta.koulutuksenperustiedot.tutkintonimike"/></li>
-        <li class="emphasized"><c:out value="${searchResult['LOSQualification']}"/></li>
+        <li class="emphasized"><c:out value="${it.searchResult['LOSQualification']}"/></li>
 
         <li class="heading"><spring:message code="tarjonta.koulutuksenperustiedot.opintojenlaajuus"/></li>
-        <li class="emphasized"><c:out value="${searchResult['LOSCredits']}"/>&nbsp;<spring:message
-                code="tarjonta.koulutuskuvaus.${searchResult['LOSCreditsUnit']}" text="?_?"/></li>
+        <li class="emphasized"><c:out value="${it.searchResult['LOSCredits']}"/>&nbsp;<spring:message
+                code="tarjonta.koulutuskuvaus.${it.searchResult['LOSCreditsUnit']}" text="?_?"/></li>
     </ul>
 </div>

@@ -32,14 +32,14 @@
 
         <div class="clear"></div>
         <div class="pagetitle">
-                    <h1>${searchResult['AOTitle']}</h1>
-                    <a href="#">${searchResult['LOSDegreeTitle']}</a>
+            <h1>${it.searchResult['AOTitle']}</h1>
+            <a href="#">${it.searchResult['LOSDegreeTitle']}</a>
 
-                    <div class="set-right">
-                        <jsp:include page="sections/muistiJaVertailuValitsimet.jsp"/>
-                    </div>
+            <div class="set-right">
+                <jsp:include page="sections/muistiJaVertailuValitsimet.jsp"/>
+            </div>
 
-                </div>
+        </div>
 
         <jsp:include page="sections/koulutustiedonvalilehdet.jsp"/>
 

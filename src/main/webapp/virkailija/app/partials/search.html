@@ -1,281 +1,301 @@
+<!--
+  ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+  ~
+  ~ This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+  ~ soon as they will be approved by the European Commission - subsequent versions
+  ~ of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ European Union Public Licence for more details.
+  -->
+
 <div id="viewport">
-    <div id="overlay" style="display: none;">
+<div id="overlay" style="display: none;">
+</div>
+<div id="wrapper">
+<header id="siteheader">
+    <div class="primarylinks">
+        <a href="#">Oppijan verkkopalvelu</a> &nbsp;
+        <a href="#">Virkailijan työpöytä</a>
     </div>
-    <div id="wrapper">
-        <header id="siteheader">
-            <div class="primarylinks">
-                <a href="#">Oppijan verkkopalvelu</a> &nbsp;
-                <a href="#">Virkailijan työpöytä</a>
-            </div>
-            <div class="secondarylinks">
-                <a href="#">Omat tiedot</a> &nbsp;
-                <a href="#">Viestintä</a> &nbsp;
-                <a href="#">Asiakaspalvelu</a> &nbsp;
-                <a href="#">Tukipalvelut</a>
-            </div>
-        </header>
-        <nav id="navigation" class="grid16-16">
+    <div class="secondarylinks">
+        <a href="#">Omat tiedot</a> &nbsp;
+        <a href="#">Viestintä</a> &nbsp;
+        <a href="#">Asiakaspalvelu</a> &nbsp;
+        <a href="#">Tukipalvelut</a>
+    </div>
+</header>
+<nav id="navigation" class="grid16-16">
 
-            <ul class="level1">
-                <li><a href="#" class=""><span>Organisaation tiedot</span></a></li>
-                <li>
-                    <a href="index.html" class="current"><span>Koulutustarjonta</span></a>
-                    <ul class="level2">
-                        <li><a href="#" class="">Koulutuksen tiedot</a></li>
-                        <li><a href="#" class="">Koulutuksen toteutus ja hakukohde</a></li>
-                        <li><a href="#" class="">Organisaation kuvailevat tiedot</a></li>
-                        <li><a href="#" class="">Järjestämissopimukset</a></li>
-                        <li><a href="#" class="">Järjestämisluvat</a></li>
-                    </ul>
-                </li>
-                <li><a href="#" class=""><span>Valintaperusteet</span></a></li>
-                <li><a href="#" class=""><span>Koulutussuunnittelu</span></a></li>
-                <li><a href="#" class=""><span>Sisällönhallinta</span></a></li>
+    <ul class="level1">
+        <li><a href="#" class=""><span>Organisaation tiedot</span></a></li>
+        <li>
+            <a href="index.html" class="current"><span>Koulutustarjonta</span></a>
+            <ul class="level2">
+                <li><a href="#" class="">Koulutuksen tiedot</a></li>
+                <li><a href="#" class="">Koulutuksen toteutus ja hakukohde</a></li>
+                <li><a href="#" class="">Organisaation kuvailevat tiedot</a></li>
+                <li><a href="#" class="">Järjestämissopimukset</a></li>
+                <li><a href="#" class="">Järjestämisluvat</a></li>
             </ul>
+        </li>
+        <li><a href="#" class=""><span>Valintaperusteet</span></a></li>
+        <li><a href="#" class=""><span>Koulutussuunnittelu</span></a></li>
+        <li><a href="#" class=""><span>Sisällönhallinta</span></a></li>
+    </ul>
 
-        </nav>
-        <section id="searchSection">
-            <form id="searchform" ng-submit="search()">
-                <div class="grid16-6">
-                    <div class="form-item margin-top-2">
-                        <div class="form-item-content">
-                            <input type="text" id="entry" class="search" placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero" ng-model="term"/>
-                        </div>
-
-                        <label for="search-selection">Haku:</label>
-
-                        <div class="form-item-content">
-                            <select name="search-selection" id="search-selection">
-                                <option value="default">Oletuksena käynnissä oleva haku</option>
-                            </select>
-                        </div>
-
-                        <label class="form-item-label" for="hakukohde">Hakukohde:</label>
-
-                        <div class="form-item-content">
-
-                            <input type="text" name="Kentta" id="hakukohde" placeholder="hae nimellä tai koodilla"/>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="grid16-5">
-                    <div class="form-item ">
-                        <label for="preference-phase">Hakutoiveen tila:</label>
-
-                        <div class="form-item-content">
-                            <select class="width-100" name="preference-phase" id="preference-phase">
-                                <option value="all">Kaikki</option>
-                                <option value="ready">Valmis</option>
-                                <option value="draft">Kesken</option>
-                            </select>
-                        </div>
-                        <div class="form-item-content">
-                            <div class="field-container-checkbox">
-                                <input type="checkbox" name="fetch-passive" value="fetch-passive" id="fetch-passive"/>
-                                <label for="fetch-passive">Hae myös passiiviset</label>
-                            </div>
-                            <div class="field-container-checkbox">
-                                <input type="checkbox" name="discretionary" value="discretionary" id="discretionary"/>
-                                <label for="discretionary">Hae vain harkinnanvaraisesti hakeneet</label>
-                            </div>
-                        </div>
-                        <input class="button secondary" type="button" value="Tyhjennä" ng-click="reset()">
-                        <input class="button primary" type="submit" value="Hae">
-                    </div>
-                </div>
-                <div class="grid16-5">
-                    <div class="form-item">
-                        <div class="form-item-row">
-                            <div class="form-item">
-                                <label class="form-item-label" for="vuosi">Lähtökoulu</label>
-
-                                <div class="form-item-content">
-                                    <input type="text" name="vuosi" id="vuosi"/>
-                                </div>
-                            </div>
-                            <div class="form-item">
-                                <label class="form-item-label" for="paattoluokka">Päättöluokka</label>
-
-                                <div class="form-item-content">
-                                    <select id="paattoluokka">
-                                        <option value="all">kaikki</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </section>
-        <section class="grid16-16 margin-top-2">
-            <a href="#" class="button">Yksilöi henkilöitä (0 kpl)</a>
-            <a href="#" class="button">Päällekkäisiä hakemuksia (0 kpl)</a>
-            <a href="#" class="button">Tarkasta sähköisiä liitteitä (0 kpl)</a>
-        </section>
-
-        <section class="grid16-16 margin-top-2">
-            <div class="tabs">
-                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemukset"
-                   class="tab current"><span>Hakemukset ({{applications.length}})</span></a>
-                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakutoiveet" class="tab"><span>Hakutoiveet</span></a>
-            </div>
-
-            <div class="tabsheets">
-
-            <section id="hakemukset" style="display: block" class="tabsheet" data-tabs-group="applicationtabs"
-                     data-tabs-id="hakemukset">
-
-                <a href="#" class="button">Avaa hakemus</a>
-                <a href="#" class="button">Merkitse paperiliitteitä</a>
-                <a href="#" class="button">Syötä paperihakemuksia</a>
-                <a href="#" class="button">Vie lista exceliin</a>
-                <a href="#" class="button">Tulosta lista</a>
-                <div class="clear"></div>
-                
-                <span>Hakutulos: {{applications.length}} osumaa</span>
-
-                <div class="margin-top-2 margin-bottom-1">    
-                    <div class="field-container-checkbox inline-block">
-                        <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
-                        <label for="KenttaId">valitse kaikki</label>
-                    </div>
-                    
-
-                    <div class="offset-left-16-12 float-right">
-                        <div class="float-right">
-                            <div class="pagination inline-block margin-right-2">
-                                <a href="#">&laquo</a>
-                                <a href="#">1</a>
-                                <span>|</span>
-                                <a href="#">2</a>
-                                <span>|</span>
-                                <a href="#">3</a>
-                                <a href="#">&raquo</a>
-                            </div>
-
-                            <select name="showresults" id="showResultsTop">
-                                <option value="50">Näytä 50/sivu</option>
-                                <option value="100">Näytä 100/sivu</option>
-                            </select>
-                        </div>
-                    </div>
+</nav>
+<section id="searchSection">
+    <form id="searchform" ng-submit="search()">
+        <div class="grid16-6">
+            <div class="form-item margin-top-2">
+                <div class="form-item-content">
+                    <input type="text" id="entry" class="search"
+                           placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero" ng-model="term"/>
                 </div>
 
-                <table class="virkailija-table-1">
-                    <thead>
-                    <tr>
-                        <td></td>
-                        <td>Sukunimi</td>
-                        <td>Etunimi</td>
-                        <td>Henkilötunnus</td>
-                        <td>Hakemusnro</td>
-                        <td>Hakemuksen tila</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="application in applications">
-                            <td><input type="checkbox" /></td>
-                            <td>{{application.vastaukset.henkilotiedot.Sukunimi}}</td>
-                            <td>{{application.vastaukset.henkilotiedot.Etunimet}}</td>
-                            <td>{{application.vastaukset.henkilotiedot.Henkilotunnus}}</td>
-                            <td><a href="{{context}}/virkailija/hakemus/{{application.oid}}/" target="_blank">{{application.oid}}</a></td>
-                            <td>{{application.state}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <label for="search-selection">Haku:</label>
 
-                
-                <div class="offset-left-16-12 float-right margin-top-1">
-                    <div class="pagination margin-top-1 inline-block margin-right-2">
-                        <a href="#">&laquo</a>
-                        <a href="#">1</a>
-                        <span>|</span>
-                        <a href="#">2</a>
-                        <span>|</span>
-                        <a href="#">3</a>
-                        <a href="#">&raquo</a>
-                    </div>
-
-                    <select name="showresults" id="showResultsBottom">
-                        <option value="50">Näytä 50/sivu</option>
-                        <option value="100">Näytä 100/sivu</option>
+                <div class="form-item-content">
+                    <select name="search-selection" id="search-selection">
+                        <option value="default">Oletuksena käynnissä oleva haku</option>
                     </select>
                 </div>
-                
 
-                <div class="clear"></div>
-            </section>
+                <label class="form-item-label" for="hakukohde">Hakukohde:</label>
 
-            <section id="hakutoiveet" style="display: block" class="tabsheet" data-tabs-group="applicationtabs"
-                     data-tabs-id="hakutoiveet"></section>
+                <div class="form-item-content">
+
+                    <input type="text" name="Kentta" id="hakukohde" placeholder="hae nimellä tai koodilla"/>
+
+                </div>
+            </div>
         </div>
-    </section>
+        <div class="grid16-5">
+            <div class="form-item ">
+                <label for="preference-phase">Hakutoiveen tila:</label>
 
-    <footer id="footer" class="grid16-16">
-        <div class="footer-container">
+                <div class="form-item-content">
+                    <select class="width-100" name="preference-phase" id="preference-phase">
+                        <option value="all">Kaikki</option>
+                        <option value="ready">Valmis</option>
+                        <option value="draft">Kesken</option>
+                    </select>
+                </div>
+                <div class="form-item-content">
+                    <div class="field-container-checkbox">
+                        <input type="checkbox" name="fetch-passive" value="fetch-passive" id="fetch-passive"/>
+                        <label for="fetch-passive">Hae myös passiiviset</label>
+                    </div>
+                    <div class="field-container-checkbox">
+                        <input type="checkbox" name="discretionary" value="discretionary" id="discretionary"/>
+                        <label for="discretionary">Hae vain harkinnanvaraisesti hakeneet</label>
+                    </div>
+                </div>
+                <input class="button secondary" type="button" value="Tyhjennä" ng-click="reset()">
+                <input class="button primary" type="submit" value="Hae">
+            </div>
+        </div>
+        <div class="grid16-5">
+            <div class="form-item">
+                <div class="form-item-row">
+                    <div class="form-item">
+                        <label class="form-item-label" for="vuosi">Lähtökoulu</label>
 
-            <div class="grid16-4">
-                <div class="grid-container">
-                    Leipäteksti #000 line-height: 1.8em font-size: 1.3em (body font-size: 62.5% = 10px) Lorem ipsum dolor
-                    sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                    aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
-                    euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet,
-                    consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam
-                    erat volutpat.
+                        <div class="form-item-content">
+                            <input type="text" name="vuosi" id="vuosi"/>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-item-label" for="paattoluokka">Päättöluokka</label>
+
+                        <div class="form-item-content">
+                            <select id="paattoluokka">
+                                <option value="all">kaikki</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+<section class="grid16-16 margin-top-2">
+    <a href="#" class="button">Yksilöi henkilöitä (0 kpl)</a>
+    <a href="#" class="button">Päällekkäisiä hakemuksia (0 kpl)</a>
+    <a href="#" class="button">Tarkasta sähköisiä liitteitä (0 kpl)</a>
+</section>
+
+<section class="grid16-16 margin-top-2">
+    <div class="tabs">
+        <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemukset"
+           class="tab current"><span>Hakemukset ({{applications.length}})</span></a>
+        <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakutoiveet"
+           class="tab"><span>Hakutoiveet</span></a>
+    </div>
+
+    <div class="tabsheets">
+
+        <section id="hakemukset" style="display: block" class="tabsheet" data-tabs-group="applicationtabs"
+                 data-tabs-id="hakemukset">
+
+            <a href="#" class="button">Avaa hakemus</a>
+            <a href="#" class="button">Merkitse paperiliitteitä</a>
+            <a href="#" class="button">Syötä paperihakemuksia</a>
+            <a href="#" class="button">Vie lista exceliin</a>
+            <a href="#" class="button">Tulosta lista</a>
+
+            <div class="clear"></div>
+
+            <span>Hakutulos: {{applications.length}} osumaa</span>
+
+            <div class="margin-top-2 margin-bottom-1">
+                <div class="field-container-checkbox inline-block">
+                    <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
+                    <label for="KenttaId">valitse kaikki</label>
+                </div>
+
+
+                <div class="offset-left-16-12 float-right">
+                    <div class="float-right">
+                        <div class="pagination inline-block margin-right-2">
+                            <a href="#">&laquo</a>
+                            <a href="#">1</a>
+                            <span>|</span>
+                            <a href="#">2</a>
+                            <span>|</span>
+                            <a href="#">3</a>
+                            <a href="#">&raquo</a>
+                        </div>
+
+                        <select name="showresults" id="showResultsTop">
+                            <option value="50">Näytä 50/sivu</option>
+                            <option value="100">Näytä 100/sivu</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
+            <table class="virkailija-table-1">
+                <thead>
+                <tr>
+                    <td></td>
+                    <td>Sukunimi</td>
+                    <td>Etunimi</td>
+                    <td>Henkilötunnus</td>
+                    <td>Hakemusnro</td>
+                    <td>Hakemuksen tila</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="application in applications">
+                    <td><input type="checkbox"/></td>
+                    <td>{{application.vastaukset.henkilotiedot.Sukunimi}}</td>
+                    <td>{{application.vastaukset.henkilotiedot.Etunimet}}</td>
+                    <td>{{application.vastaukset.henkilotiedot.Henkilotunnus}}</td>
+                    <td><a href="{{context}}/virkailija/hakemus/{{application.oid}}/" target="_blank">{{application.oid}}</a>
+                    </td>
+                    <td>{{application.state}}</td>
+                </tr>
+                </tbody>
+            </table>
 
-            <div class="grid16-12">
-                <div class="grid16-4 ">
-                    <div class="grid-container">
-                        <h3> 1st column - Lorem ipsum</h3>
 
-                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                            tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
-                    </div>
+            <div class="offset-left-16-12 float-right margin-top-1">
+                <div class="pagination margin-top-1 inline-block margin-right-2">
+                    <a href="#">&laquo</a>
+                    <a href="#">1</a>
+                    <span>|</span>
+                    <a href="#">2</a>
+                    <span>|</span>
+                    <a href="#">3</a>
+                    <a href="#">&raquo</a>
                 </div>
-                <div class="grid16-4">
-                    <div class="grid-container">
-                        <h3>2nd column - Lorem ipsum </h3>
 
-                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                            tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet,
-                            consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                            aliquam erat volutpat. </p>
-                    </div>
-                </div>
-                <div class="grid16-4">
-                    <div class="grid-container">
-                        <h3> 3st column - Lorem ipsum</h3>
-
-                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                            tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
-                    </div>
-                </div>
-                <div class="grid16-4">
-                    <div class="grid-container">
-                        <h3>4nd column - Lorem ipsum </h3>
-
-                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                            tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet,
-                            consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                            aliquam erat volutpat. </p>
-                    </div>
-                </div>
-                <div class="grid16-8 footer-logo">
-                    <img src="../content/logo-opetus-ja-kulttuuriministerio.png">
-                </div>
-                <div class="grid16-8 footer-logo">
-                    <img src="../content/logo-oph.png">
-                </div>
+                <select name="showresults" id="showResultsBottom">
+                    <option value="50">Näytä 50/sivu</option>
+                    <option value="100">Näytä 100/sivu</option>
+                </select>
             </div>
 
 
             <div class="clear"></div>
-        </div>
-    </footer>
-    <div class="clear"></div>
+        </section>
+
+        <section id="hakutoiveet" style="display: block" class="tabsheet" data-tabs-group="applicationtabs"
+                 data-tabs-id="hakutoiveet"></section>
     </div>
+</section>
+
+<footer id="footer" class="grid16-16">
+    <div class="footer-container">
+
+        <div class="grid16-4">
+            <div class="grid-container">
+                Leipäteksti #000 line-height: 1.8em font-size: 1.3em (body font-size: 62.5% = 10px) Lorem ipsum dolor
+                sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+                aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
+                euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet,
+                consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam
+                erat volutpat.
+            </div>
+        </div>
+
+
+        <div class="grid16-12">
+            <div class="grid16-4 ">
+                <div class="grid-container">
+                    <h3> 1st column - Lorem ipsum</h3>
+
+                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+                        tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                </div>
+            </div>
+            <div class="grid16-4">
+                <div class="grid-container">
+                    <h3>2nd column - Lorem ipsum </h3>
+
+                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+                        tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet,
+                        consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+                        aliquam erat volutpat. </p>
+                </div>
+            </div>
+            <div class="grid16-4">
+                <div class="grid-container">
+                    <h3> 3st column - Lorem ipsum</h3>
+
+                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+                        tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                </div>
+            </div>
+            <div class="grid16-4">
+                <div class="grid-container">
+                    <h3>4nd column - Lorem ipsum </h3>
+
+                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+                        tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet,
+                        consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+                        aliquam erat volutpat. </p>
+                </div>
+            </div>
+            <div class="grid16-8 footer-logo">
+                <img src="../../static-html/content/logo-opetus-ja-kulttuuriministerio.png">
+            </div>
+            <div class="grid16-8 footer-logo">
+                <img src="../../static-html/content/logo-oph.png">
+            </div>
+        </div>
+
+
+        <div class="clear"></div>
+    </div>
+</footer>
+<div class="clear"></div>
+</div>
 </div>

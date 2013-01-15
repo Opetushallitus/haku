@@ -16,9 +16,8 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-import fi.vm.sade.oppija.ui.controller.SectionController;
+import com.sun.jersey.api.view.Viewable;
 import org.junit.Test;
-import org.springframework.web.servlet.ModelAndView;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,8 +28,9 @@ public class SectionControllerTest {
 
     @Test
     public void testGetPage() throws Exception {
-        ModelAndView test = sectionController.getPage(TEST_SECTION);
-        assertEquals(TEST_SECTION, test.getViewName());
-
+        Viewable viewable = sectionController.getPage(TEST_SECTION);
+        assertEquals("/" + TEST_SECTION, viewable.getTemplateName());
     }
+
+
 }

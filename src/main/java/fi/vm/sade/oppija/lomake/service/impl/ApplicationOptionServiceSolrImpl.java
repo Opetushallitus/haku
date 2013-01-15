@@ -46,7 +46,7 @@ public class ApplicationOptionServiceSolrImpl implements ApplicationOptionServic
         if (!startswith.isEmpty()) {
             parameters.put("LOPInstitutionInfoName", createParameter(term + "*"));
             parameters.put("ASName", createParameter(hakuId));
-            SearchResult search = service.search(parameters);
+            SearchResult search = service.search(parameters.entrySet());
             List<Map<String, Object>> items = search.getItems();
             for (Map<String, Object> item : items) {
                 organizations.add(new Organization((String) item.get("LOPId"), (String) item.get("LOPInstitutionInfoName")));
@@ -60,7 +60,7 @@ public class ApplicationOptionServiceSolrImpl implements ApplicationOptionServic
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(2);
         parameters.put("ASName", createParameter(hakuId));
         parameters.put("LOPId", createParameter(organisaatioId));
-        SearchResult search = service.search(parameters);
+        SearchResult search = service.search(parameters.entrySet());
 
         List<ApplicationOption> hakukohteet = new ArrayList<ApplicationOption>(search.getSize());
         List<Map<String, Object>> items = search.getItems();

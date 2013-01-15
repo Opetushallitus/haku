@@ -10,15 +10,14 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
 
 package fi.vm.sade.oppija.ui.controller;
 
-import fi.vm.sade.oppija.ui.controller.AdminController;
+import com.sun.jersey.api.view.Viewable;
 import org.junit.Test;
-import org.springframework.web.servlet.ModelAndView;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -28,14 +27,14 @@ public class AdminControllerTest {
     AdminController adminController = new AdminController();
 
     @Test
-    public void testUploadViewName() throws Exception {
-        ModelAndView modelAndView = adminController.upload();
-        assertEquals(AdminController.ADMIN_UPLOAD_VIEW, modelAndView.getViewName());
+    public void testUploadTemplate() throws Exception {
+        Viewable upload = adminController.upload();
+        assertEquals(AdminController.ADMIN_UPLOAD_VIEW, upload.getTemplateName());
     }
 
     @Test
-    public void testUploadModelContainAttachmentKey() throws Exception {
-        ModelAndView modelAndView = adminController.upload();
-        assertTrue(modelAndView.getModel().containsKey(AdminController.ATTACHMENT_MODEL));
+    public void testUploadModel() throws Exception {
+        Viewable upload = adminController.upload();
+        assertTrue(upload.getModel() == AdminController.ATTACHMENT_MODEL);
     }
 }

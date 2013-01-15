@@ -18,12 +18,12 @@
   --%>
 <div class="result-options set-right">
     <div class="field-container-checkbox left-intend-2" style="display: inline-block">
-        <input type="checkbox" name="muistilistaan" value="${id}" id="muistilista_${id}"/>
-        <label for="muistilista_${id}"><spring:message code="tarjonta.lisaamuistilistaan"/></label>
+        <input type="checkbox" name="muistilistaan" value="${it.id}" id="muistilista_${it.id}"/>
+        <label for="muistilista_${it.id}"><spring:message code="tarjonta.lisaamuistilistaan"/></label>
     </div>
 
     <div class="field-container-checkbox left-intend-2">
-        <input type="checkbox" name="vertailulistaan" value="${id}" id="vertailulista_${id}"/>
-        <label for="vertailulista_${id}"><spring:message code="tarjonta.lisaavertailulistaan"/></label>
+        <input type="checkbox" name="vertailulistaan" value="${it.id}" id="vertailulista_${it.id}"/>
+        <label for="vertailulista_${it.id}"><spring:message code="tarjonta.lisaavertailulistaan"/></label>
     </div>
 </div>

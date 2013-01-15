@@ -21,7 +21,7 @@
     <div class="grid16-8">
         <div class="module">
             <figure class="image set-left" style="width:33%;">
-                <img src="content/Poju3.jpg" alt=""/>
+                <img src="static-html/content/Poju3.jpg" alt=""/>
                 <figcaption>Lorem ipsum dolor sit amet</figcaption>
             </figure>
             <h1>Lorem ipsum dolor sit amet consectuer adipiscing elit</h1>
@@ -48,7 +48,7 @@
 
         <div class="module">
             <figure class="image set-right" style="width:25%;">
-                <img src="content/IMG_0551.jpg" alt=""/>
+                <img src="static-html/content/IMG_0551.jpg" alt=""/>
                 <figcaption>Lorem ipsum dolor sit amet</figcaption>
             </figure>
             <span class="h4">Tiedote</span>
@@ -70,7 +70,7 @@
 
         <div class="module">
             <figure class="image set-right" style="width:33%;">
-                <img src="content/_MG_4961.jpg" alt=""/>
+                <img src="static-html/content/_MG_4961.jpg" alt=""/>
                 <figcaption>Lorem ipsum dolor sit amet</figcaption>
             </figure>
             <span class="h4">Artikkeli</span>
@@ -92,7 +92,7 @@
         <div class="module">
             <h3>In eleifend metus ut arcu lobortis malesuada.</h3>
             <figure class="video" style="">
-                <img src="content/tytot2.jpg" alt=""/>
+                <img src="static-html/content/tytot2.jpg" alt=""/>
                 <figcaption>Lorem ipsum dolor sit amet</figcaption>
             </figure>
             <h1>Lorem ipsum dolor sit amet consectuer adipiscing elit</h1>
@@ -122,7 +122,7 @@
         <div class="module">
             <h4>Päivän kuva</h4>
             <figure class="image" style="">
-                <img src="content/Tervetuloa.jpg" alt=""/>
+                <img src="static-html/content/Tervetuloa.jpg" alt=""/>
                 <figcaption>Lorem ipsum dolor sit amet</figcaption>
             </figure>
 
@@ -135,7 +135,7 @@
         <div class="module bottom-border">
             <h3>Blogikirjoitus</h3>
             <figure class="image set-left" style="width:25%;">
-                <img src="content/IMG_0187.jpg" alt=""/>
+                <img src="static-html/content/IMG_0187.jpg" alt=""/>
             </figure>
             Taina Tainanen pohtii Tulevaisuusseminaarissa esitettyä näkemystä korkeakoulujen yhteistyömallista...
             <br/>

@@ -21,10 +21,10 @@
 
     <div class="clear"></div>
     <legend class="h3"><spring:message code="tarjonta.koulutuksentavoite"/></legend>
-    <p><c:out value="${searchResult['LOSDescriptionEducationAndProfessionalGoals']}" /></p>
+    <p><c:out value="${it.searchResult['LOSDescriptionEducationAndProfessionalGoals']}"/></p>
 
     <legend class="h3">Suuntautumisvaihtoehdon valinta</legend>
-    <p><c:out value="${searchResult['tmpLOSEducationField']}" /></p>
+    <p><c:out value="${it.searchResult['tmpLOSEducationField']}"/></p>
     <!--
     <ul>
         <li><a href="#">Markkinointi</a></li>
@@ -34,10 +34,10 @@
     -->
 
     <legend class="h3"><spring:message code="tarjonta.jatkoopintomahdollisuudet"/></legend>
-    <p><c:out value="${searchResult['LOSDescriptionAccessToFurtherStudies']}"/></p>
+    <p><c:out value="${it.searchResult['LOSDescriptionAccessToFurtherStudies']}"/></p>
 
     <legend class="h3"><spring:message code="tarjonta.opintojenrakenne"/></legend>
-    <p><c:out value="${searchResult['LOSDescriptionStructureDiagram']}"/></p>
+    <p><c:out value="${it.searchResult['LOSDescriptionStructureDiagram']}"/></p>
 
     <%-- enable when los structure is provided in a structured form --%>
     <%--

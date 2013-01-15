@@ -52,11 +52,11 @@
 </table>
 <script type="text/javascript">
     var sortabletable_settings = {
-        contextPath : "${pageContext.request.contextPath}",
-        applicationPeriodId : "${hakemusId.applicationPeriodId}",
-        formId : "${hakemusId.formId}",
-        vaiheId : "${vaihe.id}",
-        teemaId : "${parent.id}"
+        contextPath: "${pageContext.request.contextPath}",
+        applicationPeriodId: "${it.hakemusId.applicationPeriodId}",
+        formId: "${it.hakemusId.formId}",
+        vaiheId: "${it.vaihe.id}",
+        teemaId: "${it.parent.id}"
     }
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/sortabletable.js"></script>

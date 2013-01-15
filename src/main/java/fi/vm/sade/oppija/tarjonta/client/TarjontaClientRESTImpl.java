@@ -22,9 +22,6 @@ import org.springframework.web.client.RestTemplate;
 import javax.xml.transform.Source;
 import java.net.URI;
 
-/**
- * @author hannu
- */
 @Component
 public class TarjontaClientRESTImpl implements TarjontaClient {
 

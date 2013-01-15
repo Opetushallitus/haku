@@ -16,7 +16,9 @@
 
 package fi.vm.sade.oppija.tarjonta.controller;
 
-import fi.vm.sade.oppija.ExceptionController;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.tarjonta.domain.SearchFilters;
 import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
@@ -24,23 +26,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Map;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import java.util.*;
 
 
 @Controller
-public class SearchController extends ExceptionController {
+@Path("tarjontatiedot")
+public class SearchController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
-    public static final String VIEW_NAME_ITEMS = "tarjonta/tarjontatiedot";
-    public static final String VIEW_NAME_KOULUTUSKUVAUS = "tarjonta/koulutuskuvaus";
+    public static final String VIEW_NAME_ITEMS = "/tarjonta/tarjontatiedot";
+    public static final String VIEW_NAME_KOULUTUSKUVAUS = "/tarjonta/koulutuskuvaus";
     public static final String MODEL_NAME = "searchResult";
     public static final String PARAMETERS_SINGLE_VALUE = "parameters";
     public static final String PARAMETERS_MULTI_VALUE = "parameters_multi";
@@ -55,27 +57,40 @@ public class SearchController extends ExceptionController {
         this.searchFilters = searchFilters;
     }
 
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public Viewable listTarjontatiedot() {
+        //LOGGER.debug("parameters: " + parameters);
+        Map<String, List<String>> parameters = new HashMap<String, List<String>>(1);
+        parameters.put("text", Lists.newArrayList("*"));
+        Set<Map.Entry<String, List<String>>> setOfParameters = parameters.entrySet();
+        SearchResult searchResult = service.search(setOfParameters);
+        Map<String, String> parameterMaps = toSingleValueMap(setOfParameters);
 
-    @RequestMapping(value = "/tarjontatiedot", method = RequestMethod.GET, produces = "text/html; charset=UTF-8")
-    public ModelAndView listTarjontatiedot(@RequestParam MultiValueMap<String, String> parameters) {
-        LOGGER.debug("parameters: " + parameters);
-        SearchResult searchResult = service.search(parameters);
-        ModelAndView modelAndView = new ModelAndView(VIEW_NAME_ITEMS);
-        modelAndView.addObject(MODEL_NAME, searchResult);
-        modelAndView.addObject(PARAMETERS_MULTI_VALUE, parameters);
-        modelAndView.addObject(PARAMETERS_SINGLE_VALUE, parameters.toSingleValueMap());
-        modelAndView.addObject(SEARCH_FILTERS, searchFilters.getFilters());
-        return modelAndView;
+        ImmutableMap<String, Object> model = ImmutableMap.of(
+                MODEL_NAME, searchResult,
+                PARAMETERS_MULTI_VALUE, parameters,
+                PARAMETERS_SINGLE_VALUE, parameterMaps,
+                SEARCH_FILTERS, searchFilters.getFilters());
+        return new Viewable(VIEW_NAME_ITEMS, model);
     }
 
-
-    @RequestMapping(value = "/tarjontatiedot/{tarjontatietoId}", method = RequestMethod.GET, produces = "text/html; charset=UTF-8")
-    public ModelAndView getTarjontatiedot(@PathVariable final String tarjontatietoId) {
+    @GET
+    @Path("{tarjontatietoId}")
+    @Produces(MediaType.TEXT_HTML)
+    public Viewable getTarjontatiedot(@PathParam("tarjontatietoId") final String tarjontatietoId) {
         LOGGER.info("tarjontatiedot/" + tarjontatietoId);
-        Map<String, Object> searchResult = service.searchById(tarjontatietoId);
-        ModelAndView modelAndView = new ModelAndView(VIEW_NAME_KOULUTUSKUVAUS);
-        modelAndView.addObject(MODEL_NAME, searchResult);
-        return modelAndView;
+        ImmutableMap<String, Map<String, Object>> model = ImmutableMap.of(MODEL_NAME, service.searchById(tarjontatietoId));
+        return new Viewable(VIEW_NAME_KOULUTUSKUVAUS, model);
+    }
+
+    public static Map<String, String> toSingleValueMap(final Set<Map.Entry<String, List<String>>> setOfparameters) {
+        LinkedHashMap<String, String> singleValueMap = new LinkedHashMap<String, String>();
+        for (Map.Entry<String, List<String>> stringStringEntry : setOfparameters) {
+            singleValueMap.put(stringStringEntry.getKey(), stringStringEntry.getValue().get(0));
+        }
+        return singleValueMap;
     }
 
 }
+

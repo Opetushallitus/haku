@@ -17,34 +17,35 @@
   --%>
 
 <!DOCTYPE HTML>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
 <html>
 <head>
     <META http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
-    <link href="${pageContext.request.contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet"/>
+    <link href="${contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet"/>
     <title>admin</title>
 </head>
 <body>
 <ul>
-    <li><a href="${pageContext.request.contextPath}/lomake/">Hakujen selaus</a></li>
-    <li><a href="${pageContext.request.contextPath}/admin/upload">Admin - Lataa malli tiedostona</a></li>
-    <li><a href="${pageContext.request.contextPath}/admin/edit">Admin - Muokkaa mallia</a></li>
-    <li><a href="${pageContext.request.contextPath}/admin/model">Admin - Tämänhetkinen malli (json)</a></li>
-    <li><a href="${pageContext.request.contextPath}/static-html/lomake.html">Staattinen lomake</a></li>
-    <li><a href="${pageContext.request.contextPath}/static-html/index.html">Staattinen etusivu</a></li>
-    <li><a href="${pageContext.request.contextPath}/static-html/vapaasanahaku.html">Vapaasanahaku staattinen ui</a></li>
-    <li><a href="${pageContext.request.contextPath}">Oppijan verkkopalvelu</a></li>
-    <li><a href="${pageContext.request.contextPath}/tarjontatiedot">Oppijan verkkopalvelu - Vapaasanahaku</a></li>
-    <li><a href="${pageContext.request.contextPath}/static-html/add.html">Oppijan verkkopalvelu - Lataa aineisto</a>
+    <li><a href="${contextPath}/lomake/">Hakujen selaus</a></li>
+    <li><a href="${contextPath}/admin/upload">Admin - Lataa malli tiedostona</a></li>
+    <li><a href="${contextPath}/admin/edit">Admin - Muokkaa mallia</a></li>
+    <li><a href="${contextPath}/admin/model">Admin - Tämänhetkinen malli (json)</a></li>
+    <li><a href="${contextPath}/static-html/lomake.html">Staattinen lomake</a></li>
+    <li><a href="${contextPath}/static-html/index.html">Staattinen etusivu</a></li>
+    <li><a href="${contextPath}/static-html/vapaasanahaku.html">Vapaasanahaku staattinen ui</a></li>
+    <li><a href="${contextPath}">Oppijan verkkopalvelu</a></li>
+    <li><a href="${contextPath}/tarjontatiedot">Oppijan verkkopalvelu - Vapaasanahaku</a></li>
+    <li><a href="${contextPath}/static-html/add.html">Oppijan verkkopalvelu - Lataa aineisto</a>
     </li>
-    <li><a href="${pageContext.request.contextPath}/admin/index/update">Oppijan verkkopalvelu - Päivitä hakuindeksi</a>
+    <li><a href="${contextPath}/admin/index/update">Oppijan verkkopalvelu - Päivitä hakuindeksi</a>
     </li>
-    <li><a href="${pageContext.request.contextPath}/admin/index/drop">Oppijan verkkopalvelu - Tyhjennä hakuindeksi</a>
+    <li><a href="${contextPath}/admin/index/drop">Oppijan verkkopalvelu - Tyhjennä hakuindeksi</a>
     </li>
 </ul>
 
 <h3>Properties:</h3>
-<c:forEach var="property" items="${properties}">
+<c:forEach var="property" items="${it}">
     <p><b>${property.key}:</b> ${property.value}</p>
 </c:forEach>
 

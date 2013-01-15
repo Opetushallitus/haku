@@ -26,16 +26,12 @@ import org.springframework.web.client.RestTemplate;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
-/**
- * @author jukka
- * @version 11/1/1210:50 AM}
- * @since 1.1
- */
 @Component
 public class SolrClient {
 
     @Value("${tarjonta.index.url}")
     private String solrUrl;
+
     private final RestTemplate restTemplate = new RestTemplate();
 
 

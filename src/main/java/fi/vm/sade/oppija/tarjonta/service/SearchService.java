@@ -18,15 +18,16 @@ package fi.vm.sade.oppija.tarjonta.service;
 
 import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
 import fi.vm.sade.oppija.tarjonta.domain.exception.SearchException;
-import org.springframework.util.MultiValueMap;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface SearchService {
 
 
-    SearchResult search(MultiValueMap<String, String> parameters) throws SearchException;
+    SearchResult search(final Set<Map.Entry<String, List<String>>> parameters) throws SearchException;
 
     Map<String, Object> searchById(final String field);
 

@@ -17,33 +17,22 @@
   --%>
 
 <!DOCTYPE HTML>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
 <html>
 <head>
-    <META http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/styles.css" type="text/css">
-    <title>admin</title>
+    <link rel="stylesheet" href="${contextPath}/resources/css/styles.css" type="text/css">
+    <title>Admin</title>
 </head>
-
 <body>
-
-<div>
-    <c:forEach var="link" items="${form.navigation.children}">
-        <a ${link.attributeString}>${link.value}</a>&nbsp;
-    </c:forEach>
-</div>
-
-<form method="post" accept-charset="utf-8" action="edit/post" enctype="multipart/form-data">
+<form method="post" accept-charset="utf-8" action="edit/post" enctype="application/x-www-form-urlencoded">
     <input id="tallenna" name="tallenna" type="submit" value="Tallenna"/>
 
     <div>
-        <textarea name="model" id="model" rows="2000" cols="200"><c:out value="${model}"/></textarea>
-    </div>
-    <div>
-
+        <textarea name="model" id="model" rows="2000" cols="200"><c:out value="${it}"/></textarea>
     </div>
 </form>
-
 </body>
 
 </html>

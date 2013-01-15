@@ -23,15 +23,15 @@
             <tr>
 
                 <td class="term"><spring:message code="tarjonta.definitions.edellisenävuonnahakhyv"/></td>
-                <td class="description">${searchResult['AOLastYearTotalApplicants']}/${searchResult['tmpAOLastYearQualified']}</td>
+                <td class="description">${it.searchResult['AOLastYearTotalApplicants']}/${it.searchResult['tmpAOLastYearQualified']}</td>
             </tr>
             <tr>
                 <td class="term"><spring:message code="tarjonta.definitions.maksimipistemäärä"/></td>
-                <td class="description">${searchResult['AOLastYearMaxScore']}</td>
+                <td class="description">${it.searchResult['AOLastYearMaxScore']}</td>
             </tr>
             <tr>
                 <td class="term"><spring:message code="tarjonta.definitions.alinhyväksyttypistemäärä"/>&nbsp; 2011</td>
-                <td class="description">${searchResult['AOLastYearMinScore']}</td>
+                <td class="description">${it.searchResult['AOLastYearMinScore']}</td>
             </tr>
             <%--
             <tr>

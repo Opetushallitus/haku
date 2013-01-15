@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -14,20 +15,21 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 
 <head>
 
     <title>Opetushallitus</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link href="${pageContext.request.contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/resources/jquery/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
+    <link href="${contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet"/>
+    <link href="${contextPath}/resources/jquery/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
           type="text/css" rel="stylesheet"/>
-    <script src="${pageContext.request.contextPath}/resources/jquery/jquery-1.8.0.min.js"
+    <script src="${contextPath}/resources/jquery/jquery-1.8.0.min.js"
             type="text/javascript"></script>
-    <script src="${pageContext.request.contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"
+    <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"
             type="text/javascript"></script>
-    <script src="${pageContext.request.contextPath}/resources/javascript/master.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
 
 
 </head>

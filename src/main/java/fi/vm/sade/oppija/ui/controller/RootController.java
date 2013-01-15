@@ -16,46 +16,24 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import com.sun.jersey.api.view.Viewable;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
-/**
- * @author jukka
- * @version 10/11/128:55 AM}
- * @since 1.1
- */
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
+@Path("/")
 @Controller
-@RequestMapping(value = "/", method = RequestMethod.GET)
 public class RootController {
 
-    public static final String INDEX_VIEW = "index";
-    public static final String LOCALE_VIEW = "locale";
-    public static final String LOCALE_MODEL_NAME = "locale";
-    public static final String LOCALE_MODEL_VALUE_FI = "fi";
+    public static final String INDEX_VIEW = "/index";
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView getFrontPage() {
-        return new ModelAndView(INDEX_VIEW);
-    }
-
-    @RequestMapping(value = "/fi", method = RequestMethod.GET)
-    public ModelAndView selectLocale() {
-        final ModelAndView modelAndView = new ModelAndView(LOCALE_VIEW);
-        modelAndView.addObject(LOCALE_MODEL_NAME, LOCALE_MODEL_VALUE_FI);
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/en", method = RequestMethod.GET)
-    public ModelAndView selectEnLocale() {
-        return new ModelAndView(LOCALE_VIEW);
-    }
-
-    @RequestMapping(value = "/sv", method = RequestMethod.GET)
-    public ModelAndView selectSVLocale() {
-        return new ModelAndView(LOCALE_VIEW);
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public Viewable getFrontPage() {
+        return new Viewable(INDEX_VIEW);
     }
 
 }

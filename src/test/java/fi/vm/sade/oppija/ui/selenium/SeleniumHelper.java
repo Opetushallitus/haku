@@ -58,6 +58,6 @@ public class SeleniumHelper {
     }
 
     public void logout() {
-        getDriver().get(baseUrl + "/logout");
+        getDriver().get(baseUrl + "/user/logout");
     }
 }

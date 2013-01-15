@@ -21,12 +21,8 @@ import fi.vm.sade.oppija.tarjonta.domain.exception.SearchException;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
 import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -38,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 public class SearchServiceTest {
     @Test
     public void testSearch() throws Exception {
-        final SearchResult search = new MockSearchService().search(new LinkedMultiValueMap<String, String>());
+        final SearchResult search = new MockSearchService().search(new LinkedMultiValueMap<String, String>().entrySet());
         assertEquals(0, search.getSize());
     }
 
@@ -57,7 +53,7 @@ public class SearchServiceTest {
     private class MockSearchService implements SearchService {
 
         @Override
-        public SearchResult search(MultiValueMap<String, String> parameters) throws SearchException {
+        public SearchResult search(Set<Map.Entry<String, List<String>>> parameters) throws SearchException {
             return new SearchResult(new ArrayList<Map<String, Collection<Object>>>());
         }
 

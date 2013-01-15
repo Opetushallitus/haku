@@ -21,8 +21,8 @@
 <div id="${element.id}">
     <c:set var="key" value="${element.relatedElementId}"/>
     <script type="text/javascript">
-        (function() {
-            $("[name=\"${key}\"]").change(function(event) {
+        (function () {
+            $("[name=\"${key}\"]").change(function (event) {
                 var childIds = [<c:forEach var="child" items="${element.children}" varStatus="status">"${child.id}"${not status.last ? ', ' : ''}</c:forEach>], ruleChilds = $("#${element.id} .rule-childs");
                 if ($(this).val().search("${element.expression}") !== -1) {
                     if (ruleChilds.html().trim() === "") {
@@ -34,9 +34,9 @@
             });
 
             var ruleData = {
-                getRuleChild : function(childIds, index, ruleChilds) {
-                    $.get('${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}/' + childIds[index],
-                            function(data) {
+                getRuleChild: function (childIds, index, ruleChilds) {
+                    $.get('${pageContext.request.contextPath}/lomake/${it.hakemusId.applicationPeriodId}/${it.hakemusId.formId}/' + childIds[index],
+                            function (data) {
                                 ruleChilds.append(data);
                                 if (childIds.length - 1 > index) {
                                     ruleData.getRuleChild(childIds, ++index, ruleChilds);

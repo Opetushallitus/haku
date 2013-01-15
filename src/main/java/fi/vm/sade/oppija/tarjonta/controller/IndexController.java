@@ -20,13 +20,16 @@ import fi.vm.sade.oppija.tarjonta.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@Path("admin/index")
 @Controller
 @Secured("ROLE_ADMIN")
 public class IndexController {
@@ -37,21 +40,24 @@ public class IndexController {
     @Autowired
     IndexService indexService;
 
-    @RequestMapping(value = "/admin/index/update")
-    @ResponseBody
+    @GET
+    @Path("update")
+    @Produces(MediaType.TEXT_PLAIN)
     public String updateIndex() throws URISyntaxException {
         URI uri = new URI(tarjontaUrl);
         return indexService.update(uri);
     }
 
-    @RequestMapping(value = "/admin/index/generate")
-    @ResponseBody
+    @GET
+    @Path("generate")
+    @Produces(MediaType.TEXT_PLAIN)
     public String generateIndex() throws IOException {
         return Boolean.toString(indexService.generate());
     }
 
-    @RequestMapping(value = "/admin/index/drop")
-    @ResponseBody
+    @GET
+    @Path("drop")
+    @Produces(MediaType.TEXT_PLAIN)
     public String dropIndex() throws IOException {
         return Boolean.toString(indexService.drop());
     }

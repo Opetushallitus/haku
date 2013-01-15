@@ -17,20 +17,11 @@
 package fi.vm.sade.oppija.tarjonta.controller;
 
 import fi.vm.sade.oppija.tarjonta.domain.SearchFilters;
-import fi.vm.sade.oppija.tarjonta.domain.SearchResult;
-import fi.vm.sade.oppija.tarjonta.domain.exception.SearchException;
 import fi.vm.sade.oppija.tarjonta.service.SearchService;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class SearchControllerTest {
 
@@ -38,39 +29,15 @@ public class SearchControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        SearchService searchService = createMockService();
+        SearchService searchService = mock(SearchService.class);
+
         SearchFilters searchFilters = new SearchFilters(searchService);
         searchController = new SearchController(searchService, searchFilters);
     }
 
     @Test
-    public void testExceptions() throws Exception {
-        String expected = "msg";
-        Throwable t = new Throwable(expected);
-        ModelAndView mav = searchController.exceptions(t);
-        Object actual = mav.getModel().get("message");
-        assertEquals(expected, actual);
+    public void testGetTarjontatiedot() throws Exception {
+        searchController.getTarjontatiedot("1");
     }
 
-
-    private SearchService createMockService() {
-        return new SearchService() {
-            List<Map<String, Collection<Object>>> items = new ArrayList<Map<String, Collection<Object>>>(0);
-
-            @Override
-            public SearchResult search(MultiValueMap<String, String> parameters) throws SearchException {
-                return new SearchResult(items);
-            }
-
-            @Override
-            public Map<String, Object> searchById(String field) {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
-            }
-
-            @Override
-            public Collection<String> getUniqValuesByField(String field) {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
-            }
-        };
-    }
 }

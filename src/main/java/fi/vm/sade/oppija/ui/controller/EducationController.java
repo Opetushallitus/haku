@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import com.google.common.collect.Lists;
+import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationOption;
 import fi.vm.sade.oppija.lomake.domain.FormId;
@@ -28,11 +30,12 @@ import fi.vm.sade.oppija.lomake.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -40,8 +43,8 @@ import java.util.Set;
  *
  * @author Mikko Majapuro
  */
+@Path(EducationController.EDUCATION_CONTROLLER_PATH)
 @Controller
-@RequestMapping(value = EducationController.EDUCATION_CONTROLLER_PATH)
 public class EducationController {
 
     public static final String TERM = "term";
@@ -58,31 +61,41 @@ public class EducationController {
     @Autowired
     AdditionalQuestionService additionalQuestionService;
 
-    @RequestMapping(value = "/{hakuId}/organisaatio/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = TERM)
-    @ResponseBody
-    public List<Organization> searchOrganisaatio(@PathVariable final String hakuId, @RequestParam(TERM) String term) {
+    @GET
+    @Path("/{hakuId}/organisaatio/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Organization> searchOrganisaatio(@PathParam("hakuId") final String hakuId,
+                                                 @QueryParam(TERM) final String term) {
         return applicationOptionService.searchOrganisaatio(hakuId, term);
     }
 
-    @RequestMapping(value = "/{hakuId}/hakukohde/search", method = RequestMethod.GET, produces = "application/json; charset=UTF-8", params = "organisaatioId")
-    @ResponseBody
-    public List<ApplicationOption> searchHakukohde(@PathVariable final String hakuId, @RequestParam("organisaatioId") String organisaatioId) {
+    @GET
+    @Path("/{hakuId}/hakukohde/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ApplicationOption> searchHakukohde(@PathParam("hakuId") final String hakuId,
+                                                   @QueryParam("organisaatioId") final String organisaatioId) {
         return applicationOptionService.searchHakukohde(hakuId, organisaatioId);
     }
 
-    @RequestMapping(value = "/additionalquestion/{hakuId}/{lomakeId}/{vaiheId}/{teemaId}/{hakukohdeId}", method = RequestMethod.GET)
-    public ModelAndView getAdditionalQuestions(@PathVariable final String hakuId, @PathVariable final String lomakeId, @PathVariable final String teemaId,
-                                               @PathVariable final String vaiheId, @PathVariable final String hakukohdeId,
-                                               @RequestParam(value = "preview", required = false) Boolean preview) {
-        String viewName = preview != null && preview ? "additionalQuestionsPreview" : "additionalQuestions";
-        final ModelAndView modelAndView = new ModelAndView(viewName);
+    @GET
+    @Path("/additionalquestion/{hakuId}/{lomakeId}/{vaiheId}/{teemaId}/{hakukohdeId}")
+    @Produces(MediaType.TEXT_HTML)
+    public Viewable getAdditionalQuestions(@PathParam("hakuId") final String hakuId,
+                                           @PathParam("lomakeId") final String lomakeId,
+                                           @PathParam("teemaId") final String teemaId,
+                                           @PathParam("vaiheId") final String vaiheId,
+                                           @PathParam("hakukohdeId") final String hakukohdeId,
+                                           @QueryParam("preview") final boolean preview) {
+        String viewName = preview ? "/additionalQuestionsPreview" : "/additionalQuestions";
+
+
         Form activeForm = formService.getActiveForm(hakuId, lomakeId);
         final FormId formId = new FormId(hakuId, activeForm.getId());
-        List<String> hakukohdeIds = new ArrayList<String>();
-        hakukohdeIds.add(hakukohdeId);
-        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, hakukohdeIds, formId, vaiheId);
-        modelAndView.addObject("additionalQuestions", additionalQuestions);
-        modelAndView.addObject("categoryData", applicationService.getApplication(formId).getVastauksetMerged());
-        return modelAndView;
+        Set<Question> additionalQuestions = additionalQuestionService.
+                findAdditionalQuestions(teemaId, Lists.newArrayList(hakukohdeId), formId, vaiheId);
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("additionalQuestions", additionalQuestions);
+        model.put("categoryData", applicationService.getApplication(formId).getVastauksetMerged());
+        return new Viewable(viewName, model);
     }
 }

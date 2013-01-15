@@ -26,7 +26,7 @@
 
         <div class="tabs">
             <a href="#" data-tabs-group="applicationtabs" data-tabs-id="haut"
-               class="tab current"><span>Koulutuksia (<c:out value="${searchResult.size}"/> kpl)</span></a>
+               class="tab current"><span>Koulutuksia (<c:out value="${it.searchResult.size}"/> kpl)</span></a>
             <a href="#" data-tabs-group="applicationtabs" data-tabs-id="koulutukset" class="tab"><span>Koulutustietoa (12 kpl)</span></a>
             <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakukohteet"
                class="tab"><span>Tarinoita (3 kpl)</span></a>
@@ -42,7 +42,7 @@
                     <form id="hakutulokset" action="" method="post">
 
                         <div class="toprow">
-                            <h1 class="set-left">Hakusana: <c:out value="${parameters.text}"/></h1>
+                            <h1 class="set-left">Hakusana: <c:out value="${it.parameters.text}"/></h1>
 
                             <div class="field-container-select set-right">
                                 <select name="sort" placeholder="Järjestä aakkosittain">

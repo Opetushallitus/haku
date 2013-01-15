@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import org.slf4j.Logger;
@@ -23,36 +24,68 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/oma")
+@Path("/oma")
 @Secured("ROLE_USER")
 public class PersonalServices {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(PersonalServices.class);
+    public static final String NOTELIST_VIEW = "/tarjonta/notelist";
+    public static final String COMPARISON_VIEW = "/tarjonta/comparison";
+    public static final String PERSONAL_TEMPLATE_VIEW = "/personal/template";
+    public static final String USER_APPLICATION_INFO_MODEL = "UserApplicationInfo";
+    public static final String SECTION_MODEL = "section";
 
     @Autowired
-    private ApplicationService applicationService;
+    public ApplicationService applicationService;
 
-    @RequestMapping
-    public ModelAndView hautKoulutuksiin() {
+    @GET
+    public Viewable hautKoulutuksiin() {
         return getApplications();
     }
 
-    @RequestMapping(value = "applications", method = RequestMethod.GET)
-    public ModelAndView getApplications() {
-        LOGGER.debug("getApplications");
+    @GET
+    @Path("vertailu")
+    public Viewable getUserComparison() {
+        return new Viewable(COMPARISON_VIEW);
+    }
 
-        ModelAndView modelAndView = new ModelAndView("personal/template");
+    @GET
+    @Path("applications")
+    public Viewable getApplications() {
+        LOGGER.debug("getApplications");
+        HashMap<String, Object> model = new HashMap<String, Object>(2);
         List<ApplicationInfo> userApplicationInfo = applicationService.getUserApplicationInfo();
-        modelAndView.addObject("section", "applications");
-        modelAndView.addObject("presentPeriodApplications", userApplicationInfo);
-        return modelAndView;
+        model.put(SECTION_MODEL, "applications");
+        model.put(USER_APPLICATION_INFO_MODEL, userApplicationInfo);
+        return new Viewable(PERSONAL_TEMPLATE_VIEW, model);
+    }
+
+    @GET
+    @Path(value = "muistilista")
+    public Viewable getUserNoteList() {
+        LOGGER.debug("getUserNoteList");
+        return new Viewable(NOTELIST_VIEW);
+    }
+
+    @POST
+    @Path(value = "muistilista")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void addApplicationOptionToNoteList(@FormParam("id") final String id) {
+        LOGGER.debug("addApplicationOptionToNoteList " + id);
+    }
+
+    @POST
+    @Path(value = "vertailu")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void addApplicationOptionToComparison(@FormParam("id") final String id) {
+        LOGGER.debug("addApplicationOptionToComparison" + id);
     }
 
 }

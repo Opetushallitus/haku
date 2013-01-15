@@ -20,9 +20,9 @@
 
 <jsp:include page="../top/top.jsp"/>
 
-<c:if test="${not empty section}">
+<c:if test="${not empty it.section}">
     <jsp:include page="navigationmenu.jsp"/>
-    <jsp:include page="${section}.jsp"/>
+    <jsp:include page="${it.section}.jsp"/>
 </c:if>
 
 <jsp:include page="../top/bottom.jsp"/>

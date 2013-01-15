@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.hakemus.controller;
 
-import fi.vm.sade.oppija.ExceptionController;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
@@ -25,29 +24,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author jukka
- * @version 10/26/122:14 PM}
- * @since 1.1
- */
 @Controller
-@RequestMapping(value = "/hakemukset", method = RequestMethod.GET)
+@Path("hakemukset")
 @Secured("ROLE_OFFICER")
-public class ApplicationController extends ExceptionController {
+public class ApplicationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class);
 
     @Autowired
     protected ApplicationService applicationService;
 
-    @RequestMapping(method = {RequestMethod.GET})
-    @ResponseBody
-    public List<Application> searchApplications(@RequestParam(value = "term", required = true) String term) {
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Application> searchApplications(@QueryParam("term") String term) {
         //TODO design search interface and remove this test impl
         List<Application> result = new ArrayList<Application>();
         try {
@@ -60,10 +55,10 @@ public class ApplicationController extends ExceptionController {
         }
     }
 
-    @RequestMapping(value = "hakemus/{oid:.+}", method = {RequestMethod.GET})
-    @ResponseBody
-    public Application getApplication(@PathVariable String oid) throws ResourceNotFoundException {
-
+    @GET
+    @Path("hakemus/{oid:.+}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Application getApplication(@PathParam("oid") String oid) throws ResourceNotFoundException {
         LOGGER.debug("oid {}", oid);
         return applicationService.getApplication(oid);
     }

@@ -16,9 +16,8 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-import fi.vm.sade.oppija.ui.controller.RootController;
+import com.sun.jersey.api.view.Viewable;
 import org.junit.Test;
-import org.springframework.web.servlet.ModelAndView;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,33 +26,8 @@ public class RootControllerTest {
     private RootController rootController = new RootController();
 
     @Test
-    public void testGetFrontPageView() throws Exception {
-        ModelAndView frontPage = rootController.getFrontPage();
-        assertEquals(frontPage.getViewName(), RootController.INDEX_VIEW);
-    }
-
-    @Test
-    public void testSelectLocale() throws Exception {
-        ModelAndView modelAndView = rootController.selectLocale();
-        assertEquals(modelAndView.getModel().get(RootController.LOCALE_MODEL_NAME), RootController.LOCALE_MODEL_VALUE_FI);
-    }
-
-    @Test
-    public void testSelectLocaleView() throws Exception {
-        ModelAndView modelAndView = rootController.selectLocale();
-        assertEquals(modelAndView.getViewName(), RootController.LOCALE_VIEW);
-    }
-
-    @Test
-    public void testSelectEnLocaleView() throws Exception {
-        ModelAndView modelAndView = rootController.selectEnLocale();
-        assertEquals(modelAndView.getViewName(), RootController.LOCALE_VIEW);
-    }
-
-    @Test
-    public void testSelectSVLocaleView() throws Exception {
-        ModelAndView modelAndView = rootController.selectSVLocale();
-        assertEquals(modelAndView.getViewName(), RootController.LOCALE_VIEW);
-
+    public void testGetIndexView() throws Exception {
+        Viewable frontPage = rootController.getFrontPage();
+        assertEquals(frontPage.getTemplateName(), RootController.INDEX_VIEW);
     }
 }

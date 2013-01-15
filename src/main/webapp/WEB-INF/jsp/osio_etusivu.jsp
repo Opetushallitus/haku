@@ -48,7 +48,7 @@
         <div class="module">
             <h1>Lorem ipsum dolor sit amet consectuer adipiscing elit</h1>
             <figure class="image set-left" style="width:40%;">
-                <img src="../content/IMG_0551.jpg" alt=""/>
+                <img src="static-html/content/IMG_0551.jpg" alt=""/>
             </figure>
             Maecenas fermentum driver.findElement(new By.ById("asuinmaa"))consectetur arcu quis imperdiet. Phasellus nec
             venenatis eros. Donec vulputate vestibulum
@@ -62,7 +62,7 @@
         <div class="module">
             <h1>Lorem ipsum dolor sit amet consectuer adipiscing elit</h1>
             <figure class="image set-left" style="width:40%;">
-                <img src="../content/IMG_0350.jpg" alt=""/>
+                <img src="static-html/content/IMG_0350.jpg" alt=""/>
             </figure>
             Maecenas fermentum consectetur arcu quis imperdiet. Phasellus nec venenatis eros. Donec vulputate vestibulum
             elit, id elementum ante suscipit eu. Suspendisse luctus accumsan placerat. Morbi et magna at dui ullamcorper

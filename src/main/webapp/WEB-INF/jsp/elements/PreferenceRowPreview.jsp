@@ -24,10 +24,10 @@
 <tr id="${element.id}-Opetuspiste">
     <td class="label"><c:out value="${element.title}"/></td>
     <td class="sublabel"><c:out value="${element.learningInstitutionLabel}"/></td>
-    <td><c:out value="${categoryData[textInputId]}"/></td>
+    <td><c:out value="${it.categoryData[textInputId]}"/></td>
 </tr>
 <tr id="${element.id}-Koulutus">
     <td class="label"></td>
     <td class="sublabel"><c:out value="${element.educationLabel}"/></td>
-    <td><c:out value="${categoryData[selectInputId]}"/></td>
+    <td><c:out value="${it.categoryData[selectInputId]}"/></td>
 </tr>

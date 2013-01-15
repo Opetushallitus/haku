@@ -17,11 +17,11 @@
 package fi.vm.sade.oppija.tarjonta.service.impl.query;
 
 import org.apache.solr.client.solrj.SolrQuery;
-import org.springframework.util.MultiValueMap;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MapToSolrQueryTransformer {
 
@@ -36,9 +36,9 @@ public class MapToSolrQueryTransformer {
         CREATOR_MAP.put("fl", new FieldsParameterAppender());
     }
 
-    public SolrQuery transform(final MultiValueMap<String, String> parameters) {
+    public SolrQuery transform(final Set<Map.Entry<String, List<String>>> parameters) {
         SolrQuery solrQuery = new SolrQuery();
-        for (Map.Entry<String, List<String>> parameter : parameters.entrySet()) {
+        for (Map.Entry<String, List<String>> parameter : parameters) {
             String key = parameter.getKey();
             if (CREATOR_MAP.containsKey(key)) {
                 SolrQueryAppender solrQueryAppender = CREATOR_MAP.get(key);

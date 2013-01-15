@@ -20,10 +20,10 @@
 
     <div class="clear"></div>
     <img src="${pageContext.request.contextPath}/content/bulevardi31.png"/>
-    <legend class="h3"><c:out value="${searchResult['LOPInstitutionInfoName']}"/></legend>
-    <a href="<c:out value="${searchResult['LOIWebLinkHOMEUri']}" />"><c:out
-            value="${searchResult['LOIWebLinkHOMELabel']}"/></a>
+    <legend class="h3"><c:out value="${it.searchResult['LOPInstitutionInfoName']}"/></legend>
+    <a href="<c:out value="${it.searchResult['LOIWebLinkHOMEUri']}" />"><c:out
+            value="${it.searchResult['LOIWebLinkHOMELabel']}"/></a>
 
-    <p><c:out value="${searchResult['LOPInstitutionInfoGeneralDescription']}"/></p>
+    <p><c:out value="${it.searchResult['LOPInstitutionInfoGeneralDescription']}"/></p>
 
 </section>

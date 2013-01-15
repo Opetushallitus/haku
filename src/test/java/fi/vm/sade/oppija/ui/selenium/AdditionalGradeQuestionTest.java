@@ -38,6 +38,7 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
 
     @Before
     public void init() {
+        super.before();
         FormModelDummyMemoryDaoImpl dummyMem = new FormModelDummyMemoryDaoImpl();
         initModel(dummyMem.getModel());
     }

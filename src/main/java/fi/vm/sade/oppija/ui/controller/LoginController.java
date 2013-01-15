@@ -22,64 +22,74 @@ package fi.vm.sade.oppija.ui.controller;
  * @since 1.1
  */
 
+import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpSession;
-import java.security.Principal;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
+import java.net.URI;
+import java.net.URISyntaxException;
 
-@Controller
+import static javax.ws.rs.core.Response.seeOther;
+
+@Component
+@Path("user")
 public class LoginController {
 
-    public static final String TOP_LOGIN_VIEW = "top/login";
-    public static final String LOGIN_VIEW = "login";
-    public static final String ERROR_MODEL_KEY = "error";
-    public static final String ERROR_MODEL_VALUE = "true";
+    public static final String TOP_LOGIN_VIEW = "/top/login";
+    public static final String LOGIN_VIEW = "/index";
+    public static final String USERNAME_SESSION_ATTRIBURE = "username";
 
     private final UserHolder userHolder;
 
     @Autowired
-    public LoginController(UserHolder userHolder) {
+    public LoginController(final UserHolder userHolder) {
         this.userHolder = userHolder;
     }
 
-    @RequestMapping(value = "/postLogin")
-    public String postLogin(HttpSession session, Principal principal) {
+    @GET
+    @Path("postLogin")
+    public Response postLoginRedirect(@Context HttpServletRequest req, @Context SecurityContext securityContext) throws URISyntaxException {
 
-        userHolder.login(new User(principal.getName()));
-        session.setAttribute("username", principal.getName());
+        String name = securityContext.getUserPrincipal().getName();
+        userHolder.login(new User(name));
 
-        if (principal.getName().equals("admin")) {
-            return "redirect:admin";
-        } else if (principal.getName().equals("officer")) {
-            return "redirect:virkailija/index.html";
+        req.getSession().setAttribute(USERNAME_SESSION_ATTRIBURE, name);
+
+        return getResponseByUsername(name);
+    }
+
+    @GET
+    @Path("login")
+    @Produces(MediaType.TEXT_HTML)
+    public Viewable login() {
+        return new Viewable(TOP_LOGIN_VIEW);
+    }
+
+    @GET
+    @Path("logout")
+    @Produces(MediaType.TEXT_HTML)
+    public Viewable logout() {
+        return new Viewable(LOGIN_VIEW);
+    }
+
+    private Response getResponseByUsername(String name) throws URISyntaxException {
+        if (name.equals("admin")) {
+            return seeOther(new URI("admin")).build();
+        } else if (name.equals("officer")) {
+            return seeOther(new URI("virkailija/app/index.html")).build();
         } else {
-            return "redirect:oma";
+            return seeOther(new URI("oma")).entity("").build();
         }
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
-        return TOP_LOGIN_VIEW;
-
-    }
-
-    @RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
-    public ModelAndView loginerror() {
-        ModelAndView modelAndView = new ModelAndView(LOGIN_VIEW);
-        modelAndView.addObject(ERROR_MODEL_KEY, ERROR_MODEL_VALUE);
-        return modelAndView;
-
-    }
-
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout() {
-        return LOGIN_VIEW;
     }
 
 }

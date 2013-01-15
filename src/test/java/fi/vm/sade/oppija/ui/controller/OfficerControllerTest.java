@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
 import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
@@ -32,7 +33,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.servlet.ModelAndView;
+
+import javax.ws.rs.core.Response;
+import java.net.URISyntaxException;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -81,31 +85,36 @@ public class OfficerControllerTest {
 
     @Test
     public void testGetApplication() throws Exception {
-        String redirect = officerController.getApplication("1.2.3.4.5.0");
-        assertEquals("redirect:/virkailija/hakemus/Yhteishaku/yhteishaku/esikatselu/1.2.3.4.5.0/", redirect);
+        Response response = officerController.getApplication("1.2.3.4.5.0");
+        assertEquals("/virkailija/hakemus/Yhteishaku/yhteishaku/esikatselu/1.2.3.4.5.0", getLocationHeader(response));
     }
 
     @Test
     public void testGetPhase() throws Exception {
-        ModelAndView mv = officerController.getPhase("Yhteishaku", "yhteishaku", "esikatselu", "1.2.3.4.5.0");
-        assertEquals("esikatselu", ((Element) mv.getModel().get("element")).getId());
-        assertEquals("1.2.3.4.5.0", mv.getModel().get("oid"));
-        assertEquals("yhteishaku", ((Form) mv.getModel().get("form")).getId());
-        assertEquals("valmis", mv.getModel().get("applicationPhaseId"));
-        assertEquals("yhteishaku", ((FormId) mv.getModel().get("hakemusId")).getFormId());
+        Viewable viewable = officerController.getPhase("Yhteishaku", "yhteishaku", "esikatselu", "1.2.3.4.5.0");
+        Map<String, Object> model = (Map<String, Object>) viewable.getModel();
+        assertEquals("esikatselu", ((Element) model.get("element")).getId());
+        assertEquals("1.2.3.4.5.0", model.get("oid"));
+        assertEquals("yhteishaku", ((Form) model.get("form")).getId());
+        assertEquals("valmis", model.get("applicationPhaseId"));
+        assertEquals("yhteishaku", ((FormId) model.get("hakemusId")).getFormId());
     }
 
     @Test
-    public void testSavePhase() {
+    public void testSavePhase() throws URISyntaxException {
         MultiValueMap<String, String> multiValues = new LinkedMultiValueMap<String, String>();
-        ModelAndView mv = officerController.savePhase("Yhteishaku", "yhteishaku", "henkilotiedot", "1.2.3.4.5.0", multiValues);
-        assertEquals("redirect:/virkailija/hakemus/Yhteishaku/yhteishaku/esikatselu/1.2.3.4.5.0/", mv.getViewName());
+        Response response = officerController.savePhase("Yhteishaku", "yhteishaku", "henkilotiedot", "1.2.3.4.5.0", multiValues);
+        assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 
     @Test
-    public void testChangeApplicationProcessState() {
-        String redirect = officerController.changeApplicationProcessState("1.2.3.4.5.0", "CANCELLED");
-        assertEquals("redirect:/virkailija/hakemus/Yhteishaku/yhteishaku/esikatselu/1.2.3.4.5.0/", redirect);
+    public void testChangeApplicationProcessState() throws URISyntaxException {
+        Response response = officerController.changeApplicationProcessState("1.2.3.4.5.0", "CANCELLED");
+        assertEquals("/virkailija/hakemus/Yhteishaku/yhteishaku/esikatselu/1.2.3.4.5.0", getLocationHeader(response));
         verify(officerController.applicationProcessStateService, times(1)).setApplicationProcessStateStatus("1.2.3.4.5.0", ApplicationProcessStateStatus.CANCELLED);
+    }
+
+    private String getLocationHeader(final Response response) {
+        return response.getMetadata().get("Location").get(0).toString();
     }
 }

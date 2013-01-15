@@ -17,34 +17,29 @@
   --%>
 
 <!DOCTYPE HTML>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
 <html>
 <head>
     <META http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/styles.css" type="text/css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/styles.css" type="text/css">
     <title>admin</title>
 </head>
 <body>
 
-<div>
-    <c:forEach var="link" items="${form.navigation.children}">
-        <a ${link.attributeString}>${link.value}</a>&nbsp;
-    </c:forEach>
-</div>
 <form method="post" action="upload" accept-charset="utf-8" enctype="multipart/form-data">
     <div>
 
-        <c:set var="element" value="${attachment}" scope="request"/>
+        <c:set var="element" value="${it}" scope="request"/>
         <jsp:include page="../elements/Attachment.jsp"/>
 
     </div>
     <div>
-
         <input type="submit" name="tallenna" value="Tallenna"/>
-
     </div>
 </form>
-<a href="${pageContext.request.contextPath}/admin">Takaisin</a>
+
+<a href="${contextPath}/admin">Takaisin</a>
 
 </body>
 </html>

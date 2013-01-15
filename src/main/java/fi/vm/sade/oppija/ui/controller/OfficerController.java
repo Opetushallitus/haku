@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-import fi.vm.sade.oppija.ExceptionController;
+import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
 import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
@@ -37,22 +37,29 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
-@Controller
-@RequestMapping(value = "/virkailija", method = RequestMethod.GET)
-@Secured("ROLE_OFFICER")
-public class OfficerController extends ExceptionController {
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.seeOther;
 
-    public static final String REDIRECT_VIRKAILIJA_HAKEMUS = "redirect:/virkailija/hakemus/";
+
+@Path("virkailija")
+@Controller
+@Secured("ROLE_OFFICER")
+public class OfficerController {
+
+    public static final String VIRKAILIJA_HAKEMUS_VIEW = "/virkailija/hakemus/";
     public static final Logger LOGGER = LoggerFactory.getLogger(OfficerController.class);
     public static final String DEFAULT_VIEW = "virkailija/Phase";
+
     @Autowired
     ApplicationService applicationService;
     @Autowired
@@ -61,63 +68,77 @@ public class OfficerController extends ExceptionController {
     @Autowired
     ApplicationProcessStateService applicationProcessStateService;
 
-    @RequestMapping(value = "/hakemus/{oid}", method = RequestMethod.GET)
-    public String getApplication(@PathVariable final String oid) throws ResourceNotFoundException {
+    @GET
+    @Path("/hakemus/{oid}")
+    public Response getApplication(@PathParam("oid") final String oid) throws ResourceNotFoundException, URISyntaxException {
         LOGGER.debug("officer getApplication by oid {}", new Object[]{oid});
         Application app = applicationService.getApplication(oid);
         FormId formId = app.getFormId();
         Phase phase = formService.getLastPhase(formId.getApplicationPeriodId(), formId.getFormId());
-        return REDIRECT_VIRKAILIJA_HAKEMUS + formId.getApplicationPeriodId() + "/" + formId.getFormId() + "/" + phase.getId() + "/" + oid + "/";
+        return seeOther(new URI(VIRKAILIJA_HAKEMUS_VIEW + formId.getApplicationPeriodId() + "/" + formId.getFormId() + "/" + phase.getId() + "/" + oid)).build();
     }
 
-    @RequestMapping(value = "/hakemus/{applicationPeriodId}/{formIdStr}/{phaseId}/{oid}", method = RequestMethod.GET)
-    public ModelAndView getPhase(@PathVariable final String applicationPeriodId,
-                                 @PathVariable final String formIdStr,
-                                 @PathVariable final String phaseId,
-                                 @PathVariable final String oid) throws ResourceNotFoundException {
+    @GET
+    @Path("/hakemus/{applicationPeriodId}/{formIdStr}/{phaseId}/{oid}")
+    @Produces(MediaType.TEXT_HTML)
+    public Viewable getPhase(@PathParam("applicationPeriodId") final String applicationPeriodId,
+                             @PathParam("formIdStr") final String formIdStr,
+                             @PathParam("phaseId") final String phaseId,
+                             @PathParam("oid") final String oid) throws ResourceNotFoundException {
 
         LOGGER.debug("getPhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, phaseId, oid});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
         Phase phase = activeForm.getPhase(phaseId);
-        final ModelAndView modelAndView = new ModelAndView("/virkailija/" + phase.getType());
         final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
         Application app = applicationService.getApplication(oid);
         Map<String, String> values = app.getVastauksetMerged();
         ApplicationProcessState processState = applicationProcessStateService.get(oid);
-        modelAndView.addObject("categoryData", values);
-        modelAndView.addObject("element", phase);
-        modelAndView.addObject("form", activeForm);
-        modelAndView.addObject("oid", oid);
-        modelAndView.addObject("applicationPhaseId", app.getVaiheId());
-        modelAndView.addObject("applicationProcessState", processState);
-        return modelAndView.addObject("hakemusId", formId);
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("categoryData", values);
+        model.put("element", phase);
+        model.put("form", activeForm);
+        model.put("oid", oid);
+        model.put("applicationPhaseId", app.getVaiheId());
+        model.put("applicationProcessState", processState);
+        model.put("hakemusId", formId);
+        return new Viewable("/virkailija/" + phase.getType(), model);
     }
 
-    @RequestMapping(value = "/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-    public ModelAndView savePhase(@PathVariable final String applicationPeriodId,
-                                  @PathVariable final String formId,
-                                  @PathVariable final String phaseId,
-                                  @PathVariable final String oid,
-                                  @RequestBody final MultiValueMap<String, String> multiValues) {
+    @POST
+    @Path("/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_HTML)
+    public Response savePhase(@PathParam("applicationPeriodId") final String applicationPeriodId,
+                              @PathParam("formId") final String formId,
+                              @PathParam("phaseId") final String phaseId,
+                              @PathParam("oid") final String oid,
+                              @RequestBody final MultiValueMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId, phaseId, multiValues.toSingleValueMap()), oid);
 
-        ModelAndView modelAndView = new ModelAndView(DEFAULT_VIEW);
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        Map<String, Object> model = new HashMap<String, Object>();
+        String templateName = DEFAULT_VIEW;
         if (applicationState.isValid()) {
-            modelAndView = new ModelAndView(REDIRECT_VIRKAILIJA_HAKEMUS + applicationPeriodId + "/" + formId + "/" + activeForm.getLastPhase().getId() + "/" + oid + "/");
+            templateName = VIRKAILIJA_HAKEMUS_VIEW + applicationPeriodId + "/" + formId + "/" + activeForm.getLastPhase().getId() + "/" + oid + "/";
+            return seeOther(new URI(templateName)).build();
+
         } else {
-            modelAndView.addAllObjects(applicationState.getModelObjects());
-            modelAndView.addObject("element", activeForm.getPhase(phaseId));
-            modelAndView.addObject("form", activeForm);
-            modelAndView.addObject("oid", oid);
+            model.putAll(applicationState.getModelObjects());
+            model.put("element", activeForm.getPhase(phaseId));
+            model.put("form", activeForm);
+            model.put("oid", oid);
         }
-        return modelAndView.addObject("hakemusId", hakuLomakeId);
+        model.put("hakemusId", hakuLomakeId);
+        return ok(new Viewable(templateName, model)).build();
     }
 
-    @RequestMapping(value = "/hakemus/{oid}/applicationProcessState/{status}/", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-    public String changeApplicationProcessState(@PathVariable final String oid, @PathVariable final String status) {
+    @POST
+    @Path("/hakemus/{oid}/applicationProcessState/{status}/")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_HTML)
+    public Response changeApplicationProcessState(@PathParam("oid") final String oid, @PathParam("status") final String status) throws URISyntaxException {
         LOGGER.debug("changeApplicationProcessState {}, {}", new Object[]{oid, status});
 
         // TODO: change when setApplicationProcessStateStatus returns correct exception and the updated application

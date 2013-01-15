@@ -22,8 +22,9 @@
 <div id="viewport">
     <div id="overlay">
         <a href="#" class="close"></a>
+
         <div id="popup">
-            <jsp:include page="login.jsp" />
+            <jsp:include page="login.jsp"/>
         </div>
     </div>
     <div id="site">
@@ -39,9 +40,9 @@
 
                 <div id="searchfield-wrapper">
                     <div id="searchfield">
-                        <form action="${pageContext.request.contextPath}/tarjontatiedot">
+                        <form action="${pageContext.request.contextPath}/tarjontatiedot" method="get">
                             <div class="field-container-text">
-                                <input type="text" name="text" required="required" value="${parameters.text}"
+                                <input type="text" name="text" required="required" value="${it.parameters.text}"
                                        class="haku"/>
                             </div>
                             <button class="btn-search" type="submit" id="btn-search" onclick="submit();">

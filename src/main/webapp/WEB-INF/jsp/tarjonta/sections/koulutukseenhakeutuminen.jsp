@@ -21,21 +21,22 @@
 
     <div class="clear"></div>
     <legend class="h3"><spring:message code="tarjonta.koulutukseenhakeutuminen.valintaperusteet"/></legend>
-    <p><c:out value="${searchResult['AOSelectionCriteriaDescription']}"/></p>
+    <p><c:out value="${it.searchResult['AOSelectionCriteriaDescription']}"/></p>
 
     <div class="clear"></div>
-        <legend class="h3"><spring:message code="tarjonta.koulutukseenhakeutuminen.pääsykoe"/>&nbsp;
-        <fmt:formatDate type="date" value="${searchResult['AOExaminationStart']}" /></legend>
-    <p><c:out value="${searchResult['AOExaminationDescription']}"/></p>
+    <legend class="h3"><spring:message code="tarjonta.koulutukseenhakeutuminen.pääsykoe"/>&nbsp;
+        <fmt:formatDate type="date" value="${it.searchResult['AOExaminationStart']}"/></legend>
+    <p><c:out value="${it.searchResult['AOExaminationDescription']}"/></p>
 
     <div class="clear"></div>
     <legend class="h3"><spring:message code="tarjonta.koulutukseenhakeutuminen.liitteet"/></legend>
-    <p><c:out value="${searchResult['AOAttachmentType']}"/></p>
-    <p><c:out value="${searchResult['AOAttachmentDescription']}"/></p>
+    <p><c:out value="${it.searchResult['AOAttachmentType']}"/></p>
+
+    <p><c:out value="${it.searchResult['AOAttachmentDescription']}"/></p>
 
     <div class="clear"></div>
     <legend class="h3"><spring:message code="tarjonta.koulutukseenhakeutuminen.lisätietoahakemisesta"/></legend>
-    <p><c:out value="${searchResult['tmpAOApplyAdditionalInfo']}"/></p>
+    <p><c:out value="${it.searchResult['tmpAOApplyAdditionalInfo']}"/></p>
 
 
 </section>

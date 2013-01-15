@@ -1,3 +1,19 @@
+<!--
+  ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+  ~
+  ~ This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+  ~ soon as they will be approved by the European Commission - subsequent versions
+  ~ of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ European Union Public Licence for more details.
+  -->
+
 <beans:beans xmlns="http://www.springframework.org/schema/security"
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -11,10 +27,11 @@
 
     <http use-expressions="true">
         <intercept-url pattern="/**" access="permitAll"/>
-        <form-login login-page="/login" login-processing-url="/j_spring_security_check" default-target-url="/postLogin"
+        <form-login login-page="/user/login" login-processing-url="/j_spring_security_check"
+                    default-target-url="/user/postLogin"
                     always-use-default-target="true"
                     authentication-failure-url="/login?error=1"/>
-        <logout logout-url="/logout"/>
+        <logout logout-url="/user/logout"/>
     </http>
 
     <authentication-manager>

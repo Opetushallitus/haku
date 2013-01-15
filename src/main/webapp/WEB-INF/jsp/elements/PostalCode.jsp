@@ -17,21 +17,21 @@
   --%>
 
 <div class="form-row">
-    <label id="label-${element.id}" for="${element.id}"
-           class="form-row-label ${element.attributes['required'].value}"><c:out value="${element.title}"/></label>
+    <label id="label-${it.element.id}" for="${it.element.id}"
+           class="form-row-label ${element.attributes['required'].value}"><c:out value="${it.element.title}"/></label>
 
     <div class="form-row-content">
         <div class="field-container-text">
-            <input type="text" ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"
+            <input type="text" ${it.element.attributeString} value="<c:out value='${it.categoryData[element.id]}'/>"
                    class="postal-code"/>
-            <input type="hidden" value="${categoryData['postitoimipaikka']}" name="postitoimipaikka"
+            <input type="hidden" value="${it.categoryData['postitoimipaikka']}" name="postitoimipaikka"
                    class="post-office"/>
-            <span class="post-office"><c:out value="${categoryData['postitoimipaikka']}"/></span>
+            <span class="post-office"><c:out value="${it.categoryData['postitoimipaikka']}"/></span>
         </div>
-        <span class="required-field"><c:out value="${errorMessages[element.id]}"/></span>
+        <span class="required-field"><c:out value="${it.errorMessages[element.id]}"/></span>
 
-        <div id="help-${element.id}">
-            <small><c:out value="${element.help}"/></small>
+        <div id="help-${it.element.id}">
+            <small><c:out value="${it.element.help}"/></small>
         </div>
     </div>
     <div class="clear"></div>
@@ -39,11 +39,11 @@
 </div>
 <script type="text/javascript">
     var postalcode_settings = {
-        applicationPeriodId : "${hakemusId.applicationPeriodId}",
-        formId : "${hakemusId.formId}",
-        vaiheId : "${vaihe.id}",
-        teemaId : "${parent.id}",
-        contextPath : "${pageContext.request.contextPath}"
+        applicationPeriodId: "${it.hakemusId.applicationPeriodId}",
+        formId: "${it.hakemusId.formId}",
+        vaiheId: "${vaihe.id}",
+        teemaId: "${parent.id}",
+        contextPath: "${contextPath}"
     }
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/postalcode.js"></script>

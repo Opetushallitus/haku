@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -16,7 +17,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
 <header id="siteheader">
     <div class="header-container">
         <div class="sitelogo">
@@ -24,12 +24,13 @@
         </div>
 
         <div class="actions">
+
+            <sec:authorize var="loggedIn" access="isAuthenticated()"/>
             <c:choose>
-                <c:when test="${not empty sessionScope['username']}">
+                <c:when test="${loggedIn}">
                     <ul>
-                        <li><a href="${pageContext.request.contextPath}/logout">Kirjaudu ulos</a></li>
-                        <li><a href="${pageContext.request.contextPath}/me"><c:out value="${sessionScope['username']}"/>
-                            <c:out value="${lastname}"/></a></li>
+                        <li><a href="${contextPath}/user/logout">Kirjaudu ulos</a></li>
+                        <li><a href="${contextPath}/me"><sec:authentication property="principal.username"/></a></li>
                     </ul>
                 </c:when>
                 <c:otherwise>

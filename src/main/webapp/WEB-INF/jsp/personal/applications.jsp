@@ -22,8 +22,8 @@
 <section class="content-container">
 
     <div class="grid16-12">
-        <h1>Kuluvan hakukauden hakemukset (${fn:length(presentPeriodApplications)} kpl)</h1>
-        <c:forEach var="info" items="${presentPeriodApplications}">
+        <h1>Kuluvan hakukauden hakemukset (${fn:length(UserApplicationInfo)} kpl)</h1>
+        <c:forEach var="info" items="${UserApplicationInfo}">
             <div><a href="${info.application.vaiheId}">${info.application.vaiheId}</a></div>
             <div><spring:message code="oma.lomake.tila.vireilla.${info.pending}"/></div>
             <li class="${('1' eq info.application.vaiheId) ? "current" : ""}"><spring:message

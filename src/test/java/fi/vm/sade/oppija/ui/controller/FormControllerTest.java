@@ -34,7 +34,6 @@ import fi.vm.sade.oppija.ui.common.RedirectToPhaseViewPath;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.ws.rs.core.Response;
 import java.net.URI;
@@ -80,7 +79,7 @@ public class FormControllerTest {
     }
 
     private String resolveRedirectPath(Response response) {
-        return ((URI)response.getMetadata().get("Location").get(0)).getPath();
+        return ((URI) response.getMetadata().get("Location").get(0)).getPath();
     }
 
     @Test
@@ -88,7 +87,7 @@ public class FormControllerTest {
         this.application.setVaiheId(TEST_PHASE);
         String expected = new RedirectToPhaseViewPath(APPLICATION_PERIOD_ID, FORM_ID, TEST_PHASE).getPath();
         Response response = formController.getApplication(APPLICATION_PERIOD_ID, FORM_ID);
-        String actual = ((URI)response.getMetadata().get("Location").get(0)).getPath();
+        String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
         assertEquals(expected, actual);
     }
 
@@ -125,13 +124,13 @@ public class FormControllerTest {
     @Test
     public void testGetCategoryMVCategory() throws Exception {
         Viewable viewable = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
-        assertEquals(FIRST_CATEGORY_ID, ((Phase) ((Map)viewable.getModel()).get("element")).getId());
+        assertEquals(FIRST_CATEGORY_ID, ((Phase) ((Map) viewable.getModel()).get("element")).getId());
     }
 
     @Test
     public void testGetCategoryModelSize() throws Exception {
         Viewable viewable = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
-        assertEquals(4, ((Map)viewable.getModel()).size());
+        assertEquals(4, ((Map) viewable.getModel()).size());
     }
 
     @Test
@@ -144,30 +143,6 @@ public class FormControllerTest {
     public void testGetCategoryWrongView() throws Exception {
         Viewable viewable = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
         assertNotSame(null, viewable.getTemplateName());
-    }
-
-    @Test
-    public void testResourceNotFoundExceptionMessage() throws Exception {
-        String message = "text";
-        ResourceNotFoundExceptionRuntime rnfv = new ResourceNotFoundExceptionRuntime(message);
-        ModelAndView modelAndView = formController.resourceNotFoundExceptions(rnfv);
-        assertEquals(message, modelAndView.getModel().get("message"));
-    }
-
-    @Test
-    public void testResourceNotFoundExceptionView() throws Exception {
-        String message = "text";
-        ResourceNotFoundExceptionRuntime rnfv = new ResourceNotFoundExceptionRuntime(message);
-        ModelAndView modelAndView = formController.resourceNotFoundExceptions(rnfv);
-        assertEquals(FormController.ERROR_NOTFOUND, modelAndView.getViewName());
-    }
-
-    @Test
-    public void testExceptions() throws Exception {
-        String message = "text";
-        NullPointerException nullPointerException = new NullPointerException(message);
-        ModelAndView modelAndView = formController.exceptions(nullPointerException);
-        assertEquals(FormController.ERROR_SERVERERROR, modelAndView.getViewName());
     }
 
     @Test()
@@ -183,14 +158,14 @@ public class FormControllerTest {
         HashMap<String, String> errorMessages = new HashMap<String, String>();
         errorMessages.put("", "");
         applicationState.addError(errorMessages);
-        Viewable viewable = (Viewable)formController.savePhase(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID, new MultivaluedMapImpl()).getEntity();
+        Viewable viewable = (Viewable) formController.savePhase(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID, new MultivaluedMapImpl()).getEntity();
         assertEquals(FormController.DEFAULT_VIEW, viewable.getTemplateName());
     }
 
     @Test
     public void testSaveCategoryValid() throws Exception {
         Response response = formController.savePhase(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID, new MultivaluedMapImpl());
-        String actual = ((URI)response.getMetadata().get("Location").get(0)).getPath();
+        String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
         assertEquals(new RedirectToPhaseViewPath(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID).getPath(), actual);
     }
 }

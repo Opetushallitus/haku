@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import com.sun.jersey.api.view.Viewable;
+import com.sun.jersey.multipart.FormDataParam;
 import fi.vm.sade.oppija.lomake.converter.FormModelToJsonString;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Attachment;
@@ -25,17 +27,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static javax.ws.rs.core.Response.seeOther;
 
 /**
  * @author jukka
@@ -43,12 +46,14 @@ import java.util.Map;
  * @since 1.1
  */
 @Controller
-@RequestMapping(value = "/admin")
+@Path("/admin")
 @Secured("ROLE_ADMIN")
 public class AdminController {
 
-    public static final String ADMIN_UPLOAD_VIEW = "admin/upload";
-    public static final String ATTACHMENT_MODEL = "attachment";
+    public static final String ADMIN_UPLOAD_VIEW = "/admin/upload";
+    public static final String ADMIN_INDEX_VIEW = "/admin/index";
+    public static final String ADMIN_EDIT_VIEW = "/admin/editModel";
+    public static final Attachment ATTACHMENT_MODEL = new Attachment("file", "Lataa malli json-objektina");
     @Autowired
     AdminService adminService;
 
@@ -66,60 +71,56 @@ public class AdminController {
     @Value("${tarjonta.data.url}")
     private String tarjontaDataUrl;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView getIndex() {
-        ModelAndView modelAndView = new ModelAndView("admin/index");
-
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public Viewable getIndex() {
         Map<String, Object> properties = new LinkedHashMap<String, Object>();
         properties.put("mongodb.url", mongoUrl);
         properties.put("mongo.db.name", mongoDbName);
         properties.put("mongo.test-db.name", mongoTestDbName);
         properties.put("tarjonta.index.url", tarjontaIndexUrl);
         properties.put("tarjonta.data.url", tarjontaDataUrl);
-
-        modelAndView.getModel().put("properties", properties);
-
-        return modelAndView;
+        return new Viewable(ADMIN_INDEX_VIEW, properties);
     }
 
-    @RequestMapping(value = "/upload", method = RequestMethod.GET)
-    public ModelAndView upload() {
-        return toUpload();
+    @GET
+    @Path("/upload")
+    @Produces(MediaType.TEXT_HTML)
+    public Viewable upload() {
+        return new Viewable(ADMIN_UPLOAD_VIEW, ATTACHMENT_MODEL);
     }
 
-    @RequestMapping(value = "/model", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-    @ResponseBody
+    @GET
+    @Path("/model")
+    @Produces(MediaType.APPLICATION_JSON)
     public FormModel asJson() {
         return formModelHolder.getModel();
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.GET, produces = "text/html; charset=UTF-8")
-    public ModelAndView editModel() {
-        final FormModel model = formModelHolder.getModel();
-        final ModelAndView modelAndView = new ModelAndView("admin/editModel");
-        final String convert = new FormModelToJsonString().apply(model);
-        modelAndView.addObject("model", convert);
-        return modelAndView;
+    @GET
+    @Path("/edit")
+    @Produces(MediaType.TEXT_HTML)
+    public Viewable editModel() {
+        final String convert = new FormModelToJsonString().apply(formModelHolder.getModel());
+        return new Viewable(ADMIN_EDIT_VIEW, convert);
     }
 
-    @RequestMapping(value = "/edit/post", method = RequestMethod.POST, consumes = "multipart/form-data; charset=UTF-8")
-    public String doActualEdit(HttpServletRequest request, @RequestParam("model") String json) {
+    @POST
+    @Path("/edit/post")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_HTML)
+    public Response doActualEdit(@FormParam("model") String json) throws URISyntaxException {
         adminService.replaceModel(json);
-        return "redirect:/admin";
+        return seeOther(new URI("/admin")).build();
     }
 
-
-    private ModelAndView toUpload() {
-        final ModelAndView modelAndView = new ModelAndView(ADMIN_UPLOAD_VIEW);
-        modelAndView.addObject(ATTACHMENT_MODEL, new Attachment("file", "Lataa malli json-objektina"));
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public ModelAndView receiveFile(@RequestParam("file") MultipartFile file) throws IOException {
-
-        adminService.replaceModel(file.getInputStream());
-        return toUpload();
+    @POST
+    @Path("/upload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_HTML)
+    public Viewable receiveFile(@FormDataParam("file") InputStream inputStream) throws IOException {
+        adminService.replaceModel(inputStream);
+        return new Viewable(ADMIN_UPLOAD_VIEW, ATTACHMENT_MODEL);
     }
 
 }
