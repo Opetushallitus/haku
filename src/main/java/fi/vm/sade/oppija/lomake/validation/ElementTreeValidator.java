@@ -24,6 +24,9 @@ import java.util.Map;
 
 public final class ElementTreeValidator {
 
+    private ElementTreeValidator() {
+    }
+
     public static ValidationResult validate(final Element element, final Map<String, String> values) {
         List<Validator> validators = element.getValidators();
         List<ValidationResult> listOfValidationResult = new ArrayList<ValidationResult>();
