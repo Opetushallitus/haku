@@ -50,7 +50,7 @@ public class ApplicationResource {
         List<Application> applications;
         if (asId != null) {
             // retrieve applications related to a single application system
-            return applications = applicationService.getApplicationsByApplicationSystem(asId);
+            return applicationService.getApplicationsByApplicationSystem(asId);
         } else {
             throw new JSONException(Response.Status.BAD_REQUEST, "Invalid application system id argument");
         }

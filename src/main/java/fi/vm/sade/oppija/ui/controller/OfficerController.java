@@ -75,7 +75,8 @@ public class OfficerController {
         Application app = applicationService.getApplication(oid);
         FormId formId = app.getFormId();
         Phase phase = formService.getLastPhase(formId.getApplicationPeriodId(), formId.getFormId());
-        return seeOther(new URI(VIRKAILIJA_HAKEMUS_VIEW + formId.getApplicationPeriodId() + "/" + formId.getFormId() + "/" + phase.getId() + "/" + oid)).build();
+        return seeOther(new URI(VIRKAILIJA_HAKEMUS_VIEW +
+                formId.getApplicationPeriodId() + "/" + formId.getFormId() + "/" + phase.getId() + "/" + oid)).build();
     }
 
     @GET
@@ -115,7 +116,8 @@ public class OfficerController {
                               @RequestBody final MultiValueMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
-        ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId, phaseId, multiValues.toSingleValueMap()), oid);
+        ApplicationState applicationState = applicationService.saveApplicationPhase(
+                new ApplicationPhase(hakuLomakeId, phaseId, multiValues.toSingleValueMap()), oid);
 
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         Map<String, Object> model = new HashMap<String, Object>();
