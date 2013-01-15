@@ -18,37 +18,18 @@ package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author jukka
- * @version 10/15/123:25 PM}
- * @since 1.1
- */
 public class HautKoulutuksiinTest extends AbstractSeleniumBase {
 
     private FormModelHelper formModelHelper;
 
     @Test
-    @Ignore
     public void testSaveHakemusAndList() {
-        buildFormWithOneQuestion();
-        loginAsNormalUser();
-        fillForm();
         loginAsNormalUser();
         assertTrue(weAreAtAjankohtaisetHakemukset());
-        assertTrue(hakemusListIncludesFilledForm());
-    }
-
-    private boolean hakemusListIncludesFilledForm() {
-        final String title = formModelHelper.getFirstForm().getTitle();
-        return seleniumHelper.getSelenium().isTextPresent(title);
     }
 
     private boolean weAreAtAjankohtaisetHakemukset() {
@@ -60,14 +41,4 @@ public class HautKoulutuksiinTest extends AbstractSeleniumBase {
         new HautKoulutuksiinPage(getBaseUrl(), seleniumHelper).login();
     }
 
-    private void fillForm() {
-        seleniumHelper.getDriver().get(getBaseUrl() + "/" + formModelHelper.getStartUrl());
-        seleniumHelper.getSelenium().type("eka", "arvo");
-        seleniumHelper.getSelenium().click("class=right");
-    }
-
-    private void buildFormWithOneQuestion() {
-        final FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextQuestion("eka", "kysymys"));
-        formModelHelper = initModel(formModel);
-    }
 }
