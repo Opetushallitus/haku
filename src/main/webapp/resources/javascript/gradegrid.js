@@ -3,8 +3,6 @@
 */
 
 var gradegrid = (function() {
-    console.log("settings: " + JSON.stringify(gradegrid_settings));
-
     var langRowUrl = gradegrid_settings.contextPath + '/lomake/' +
         gradegrid_settings.applicationSystemId + '/' + gradegrid_settings.formId + '/' +
         gradegrid_settings.elementId + '/' + 'additionalLanguageRow';
