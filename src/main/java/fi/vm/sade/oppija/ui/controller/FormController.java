@@ -56,6 +56,7 @@ public class FormController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
     public static final String DEFAULT_VIEW = "/elements/Phase";
+    public static final String ROOT_VIEW = "/elements/Root";
     public static final String VERBOSE_HELP_VIEW = "/help";
     public static final String LINK_LIST_VIEW = "/linkList";
     public static final String VALMIS_VIEW = "/valmis";
@@ -131,7 +132,7 @@ public class FormController {
         model.put("form", activeForm);
         model.put("hakemusId", formId);
 
-        return new Viewable("/elements/Root", model);
+        return new Viewable(ROOT_VIEW, model);
     }
 
     @GET
@@ -189,9 +190,11 @@ public class FormController {
         } else {
             model.putAll(applicationState.getModelObjects());
             Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-            model.put("element", activeForm.getPhase(phaseId));
+            Phase phase = activeForm.getPhase(phaseId);
+            model.put("element", phase);
             model.put("form", activeForm);
-            return Response.status(Response.Status.OK).entity(new Viewable(DEFAULT_VIEW, model)).build();
+            model.put("template", phase.getType());
+            return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, model)).build();
         }
 
     }
@@ -281,7 +284,7 @@ public class FormController {
         model.put("element", gradeGrid);
         model.put("template", "gradegrid/additionalLanguageRow");
 
-        return new Viewable("/elements/Root", model);
+        return new Viewable(ROOT_VIEW, model);
     }
 
     // TODO: implement param reader for Map

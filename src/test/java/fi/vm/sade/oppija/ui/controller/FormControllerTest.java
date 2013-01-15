@@ -64,12 +64,14 @@ public class FormControllerTest {
 
     @Before
     public void setUp() throws Exception {
+
         this.applicationService = mock(ApplicationService.class);
         this.formService = mock(FormService.class);
         final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(USER_HOLDER);
         this.formController = new FormController(formService, applicationService, userPrefillDataService);
         this.application = new Application();
         FORM.addChild(PHASE);
+        FORM.init();
         when(applicationService.getApplication(Matchers.<FormId>any())).thenReturn(this.application);
         when(formService.getFirstPhase(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(PHASE);
         when(formService.getActiveForm(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(FORM);
@@ -160,7 +162,7 @@ public class FormControllerTest {
         errorMessages.put("", "");
         applicationState.addError(errorMessages);
         Viewable viewable = (Viewable) formController.savePhase(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID, new MultivaluedMapImpl()).getEntity();
-        assertEquals(FormController.DEFAULT_VIEW, viewable.getTemplateName());
+        assertEquals(FormController.ROOT_VIEW, viewable.getTemplateName());
     }
 
     @Test
