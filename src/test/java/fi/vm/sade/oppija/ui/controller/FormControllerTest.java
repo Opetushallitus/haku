@@ -130,13 +130,13 @@ public class FormControllerTest {
     @Test
     public void testGetCategoryModelSize() throws Exception {
         Viewable viewable = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
-        assertEquals(4, ((Map) viewable.getModel()).size());
+        assertEquals(5, ((Map) viewable.getModel()).size());
     }
 
     @Test
     public void testGetCategoryView() throws Exception {
         Viewable viewable = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
-        assertEquals("/elements/Phase", viewable.getTemplateName());
+        assertEquals("/elements/Root", viewable.getTemplateName());
     }
 
     @Test

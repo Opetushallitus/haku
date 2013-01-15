@@ -18,10 +18,8 @@
   --%>
 
 <!DOCTYPE html>
-<c:set var="vaihe" value="${it.element}" scope="request"/>
-<c:set var="categoryData" value="${it.categoryData}" scope="request"/>
+<c:set var="vaihe" value="${element}" scope="request"/>
 <c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
-<c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <html>
 <head>

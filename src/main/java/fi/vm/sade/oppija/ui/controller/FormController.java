@@ -127,9 +127,11 @@ public class FormController {
         values = userPrefillDataService.populateWithPrefillData(values);
         model.put("categoryData", values);
         model.put("element", element);
+        model.put("template", element.getType());
         model.put("form", activeForm);
         model.put("hakemusId", formId);
-        return new Viewable("/elements/" + element.getType(), model);
+
+        return new Viewable("/elements/Root", model);
     }
 
     @GET
@@ -277,8 +279,9 @@ public class FormController {
         GradeGrid gradeGrid = (GradeGrid) element;
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("element", gradeGrid);
+        model.put("template", "gradegrid/additionalLanguageRow");
 
-        return new Viewable("/elements/gradegrid/additionalLanguageRow", model);
+        return new Viewable("/elements/Root", model);
     }
 
     // TODO: implement param reader for Map
