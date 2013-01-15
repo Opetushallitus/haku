@@ -27,10 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.*;
 
@@ -59,10 +56,10 @@ public class SearchController {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public Viewable listTarjontatiedot() {
+    public Viewable listTarjontatiedot(@QueryParam("text") String text) {
         //LOGGER.debug("parameters: " + parameters);
         Map<String, List<String>> parameters = new HashMap<String, List<String>>(1);
-        parameters.put("text", Lists.newArrayList("*"));
+        parameters.put("text", Lists.newArrayList(text));
         Set<Map.Entry<String, List<String>>> setOfParameters = parameters.entrySet();
         SearchResult searchResult = service.search(setOfParameters);
         Map<String, String> parameterMaps = toSingleValueMap(setOfParameters);

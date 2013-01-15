@@ -38,6 +38,7 @@ public class AdditionalQuestionsIT extends AbstractRemoteTest {
     @Test
     public void testAdditionalQuestion() {
         beginAt("education/additionalquestion/Yhteishaku/yhteishaku/hakutoiveet/hakutoiveetGrp/S1508");
+        System.out.println("");
         assertFormElementPresent("S1508_additional_question_1");
         assertElementPresentByXPath("//input[@value='q1_option_1']");
         assertElementPresentByXPath("//input[@value='q1_option_2']");

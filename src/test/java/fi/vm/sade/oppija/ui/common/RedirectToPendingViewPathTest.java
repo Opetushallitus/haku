@@ -28,7 +28,7 @@ public class RedirectToPendingViewPathTest extends ViewPathTest {
     public void testGetPath() throws Exception {
         RedirectToPendingViewPath redirectToPendingViewPath =
                 new RedirectToPendingViewPath(APPLICATION_PERIOD_ID, FORM_ID, OID);
-        assertEquals(REDIRECT_TO_FORM_PREFIX + "/valmis/" + OID + "/", redirectToPendingViewPath.getPath());
+        assertEquals(REDIRECT_TO_FORM_PREFIX + "/valmis/" + OID, redirectToPendingViewPath.getPath());
     }
 
     @Test(expected = NullPointerException.class)

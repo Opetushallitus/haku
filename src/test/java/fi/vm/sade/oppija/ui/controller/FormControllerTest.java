@@ -148,9 +148,10 @@ public class FormControllerTest {
     @Test()
     public void sendInvalid() throws Exception {
         when(applicationService.submitApplication(Matchers.<FormId>any())).thenReturn(OID);
-        Viewable viewable = formController.submitApplication(APPLICATION_PERIOD_ID, FORM_ID);
+        Response response = formController.submitApplication(APPLICATION_PERIOD_ID, FORM_ID);
         RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(APPLICATION_PERIOD_ID, FORM_ID, OID);
-        assertEquals(redirectToPendingViewPath.getPath(), viewable.getTemplateName());
+        String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
+        assertEquals(redirectToPendingViewPath.getPath(), actual);
     }
 
     @Test

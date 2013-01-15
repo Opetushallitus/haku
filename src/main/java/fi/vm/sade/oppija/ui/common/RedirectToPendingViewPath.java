@@ -32,7 +32,7 @@ public class RedirectToPendingViewPath implements ViewPath {
         Preconditions.checkNotNull(formId);
         Preconditions.checkNotNull(oid);
         Joiner joiner = Joiner.on("/").skipNulls();
-        path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId, VALMIS_VIEW, oid, "");
+        path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId, VALMIS_VIEW, oid);
     }
 
 

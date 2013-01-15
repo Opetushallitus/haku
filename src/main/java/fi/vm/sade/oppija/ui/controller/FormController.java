@@ -56,9 +56,9 @@ public class FormController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
     public static final String DEFAULT_VIEW = "/elements/Phase";
-    public static final String VERBOSE_HELP_VIEW = "help";
+    public static final String VERBOSE_HELP_VIEW = "/help";
     public static final String LINK_LIST_VIEW = "/linkList";
-    public static final String VALMIS_VIEW = "valmis";
+    public static final String VALMIS_VIEW = "/valmis";
 
     final FormService formService;
     private final ApplicationService applicationService;
@@ -199,16 +199,16 @@ public class FormController {
     @POST
     @Path("/{applicationPeriodId}/{formId}/send")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Viewable submitApplication(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                                      @PathParam("formId") final String formId) {
+    public Response submitApplication(@PathParam("applicationPeriodId") final String applicationPeriodId,
+                                      @PathParam("formId") final String formId) throws URISyntaxException {
         LOGGER.debug("submitApplication {}, {}", new Object[]{applicationPeriodId, formId});
         String oid = applicationService.submitApplication(new FormId(applicationPeriodId, formId));
         RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationPeriodId, formId, oid);
-        return new Viewable(redirectToPendingViewPath.getPath());
+        return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{formId}/valmis/{oid}/")
+    @Path("/{applicationPeriodId}/{formId}/valmis/{oid}")
     public Viewable getComplete(@PathParam("applicationPeriodId") final String applicationPeriodId,
                                 @PathParam("formId") final String formId,
                                 @PathParam("oid") final String oid) {

@@ -17,21 +17,21 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/screen.css" type="text/css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/screen.css" type="text/css">
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
+          href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
           type="text/css">
     <title>${form.title}</title>
-    <script src="${pageContext.request.contextPath}/resources/jquery/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/javascript/rules.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/javascript/master.js"></script>
+    <script src="${contextPath}/resources/jquery/jquery.min.js"></script>
+    <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
+    <script src="${contextPath}/resources/javascript/rules.js"></script>
+    <script src="${contextPath}/resources/javascript/master.js"></script>
 </head>
 <body>
 <div id="viewport">
@@ -70,11 +70,11 @@
 
                     <h2>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2012</h2>
                     <ul class="form-steps">
-                        <c:forEach var="link" items="${form.navigation.children}" varStatus="status">
+                        <c:forEach var="link" items="${it.form.navigation.children}" varStatus="status">
                             <li><span><span class="index">${status.count}</span>${link.value} &gt;</span></li>
                         </c:forEach>
                         <li><a class="current"><span class="index"><c:out
-                                value="${fn:length(form.navigation.children) + 1}"/></span><spring:message
+                                value="${fn:length(it.form.navigation.children) + 1}"/></span><spring:message
                                 code="lomake.valmis"/></a></li>
                     </ul>
                     <div class="clear"></div>
@@ -82,20 +82,20 @@
                 <div class="clear"></div>
 
                 <div class="form" data-form-step-id="7">
-                    <img src="${pageContext.request.contextPath}/static-html/content/Valmis-Kuva1.jpg" title="" alt=""
+                    <img src="${contextPath}/static-html/content/Valmis-Kuva1.jpg" title="" alt=""
                          class="set-right"/>
 
                     <h3 class="h2"><spring:message code="lomake.valmis.hakemuksesionvastaanotettu"/></h3>
 
                     <p class="application-number">
                         <spring:message code="lomake.valmis.hakulomakenumerosi"/>: <span class="number"><c:out
-                            value="${applicationNumber}"/></span>
+                            value="${it.applicationNumber}"/></span>
                     </p>
 
-                    <c:if test="${(not empty categoryData['Sähköposti'])}">
+                    <c:if test="${(not empty it.categoryData['Sähköposti'])}">
                     <p>
                         <spring:message code="lomake.valmis.sinulleonlahetettyvahvistussahkopostiisi"/>: <c:out
-                            value="${categoryData['Sähköposti']}"/>
+                            value="${it.categoryData['Sähköposti']}"/>
                     </p>
                     </c:if>
 
@@ -134,7 +134,7 @@
                     <div class="clear"></div>
                     <hr/>
 
-                    <img src="${pageContext.request.contextPath}/static-html/content/Valmis-Kuva3.jpg" title="" alt=""
+                    <img src="${contextPath}/static-html/content/Valmis-Kuva3.jpg" title="" alt=""
                          class="set-right"/>
 
                     <h3>Palautekysely</h3>

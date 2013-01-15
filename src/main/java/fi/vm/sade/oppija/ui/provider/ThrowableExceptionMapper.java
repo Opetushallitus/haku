@@ -31,31 +31,4 @@ public class ThrowableExceptionMapper implements ExceptionMapper<Throwable> {
     public Response toResponse(Throwable exception) {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new Viewable(ERROR_SERVERERROR, exception)).build();
     }
-
-
-//    public static final Logger LOGGER = LoggerFactory.getLogger(ExceptionController.class);
-//
-//       public static final String ERROR_NOTFOUND = "error/notfound";
-//       public static final String ERROR_SERVERERROR = "error/servererror";
-//       public static final String MODEL_STACK_TRACE = "stackTrace";
-//       public static final String MODEL_MESSAGE = "message";
-//
-//       @ResponseStatus(value = HttpStatus.NOT_FOUND)
-//       @ExceptionHandler(ResourceNotFoundExceptionRuntime.class)
-//       public ModelAndView resourceNotFoundExceptions(ResourceNotFoundExceptionRuntime e) {
-//           return createModelAndView(ERROR_NOTFOUND, e);
-//       }
-//
-//       @ExceptionHandler(Throwable.class)
-//       public ModelAndView exceptions(Throwable t) {
-//           return createModelAndView(ERROR_SERVERERROR, t);
-//       }
-//
-//       private ModelAndView createModelAndView(final String viewName, final Throwable t) {
-//           LOGGER.error("Sovellusvirhe:", t);
-//           ModelAndView modelAndView = new ModelAndView(viewName);
-//           modelAndView.addObject(MODEL_STACK_TRACE, t.toString());
-//           modelAndView.addObject(MODEL_MESSAGE, t.getMessage());
-//           return modelAndView;
-//       }
 }
