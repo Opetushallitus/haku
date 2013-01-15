@@ -28,18 +28,14 @@
           <legend class="h3">SALASANA</legend>
           <input name="j_password" type="password"/>
 
-          <div>
+          <div class="margin-top-1">
               <input name="login" value="Kirjaudu" type="submit"/>
           </div>
       </form>
 
-      <a href="#">Unohtuiko salasana?</a>
-
-      <div class="clear"></div>
-      <a href="#">Rekisteröidy palveluun</a>
-
-      <div class="clear"></div>
-      <a href="#" data-popup-action="close">Sulje</a>
+      <a href="#" class="block margin-vertical-1">Unohtuiko salasana?</a>
+      <a href="#" class="block margin-bottom-1">Rekisteröidy palveluun</a>
+      <a href="#" class="bold" data-popup-action="close">Sulje</a>
       <a href="#" class="helplink">?</a>
    
 </div>

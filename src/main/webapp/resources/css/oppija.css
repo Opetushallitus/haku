@@ -1225,7 +1225,14 @@ b, strong, .bold {
 /*** Links
 ************************************************/
 a {
+  text-decoration: none;
   color: #149dca; }
+  a:hover {
+    color: #200772; }
+  a:active {
+    color: #100062; }
+  a:visited {
+    color: #149dca; }
 
 /*** input 
 ************************************************/
@@ -1433,8 +1440,9 @@ hr {
 
 #popup .popup {
   margin: 0 auto;
+  width: 300px;
   position: relative;
-  border-radius: 3px;
+  border-radius: 20px;
   -webkit-box-shadow: 3px 3px 3px 0 #5f5f5f;
   -moz-box-shadow: 3px 3px 3px 0 #5f5f5f;
   -o-box-shadow: 3px 3px 3px 0 #5f5f5f;
@@ -1442,10 +1450,10 @@ hr {
   box-shadow: 3px 3px 3px 0 #5f5f5f;
   max-width: 900px;
   background: #eee;
-  border-radius: 5px;
   z-index: 1000;
   margin: 0 auto;
-  padding: 0 1em 1em; }
+  padding: 0 1em 1em;
+  border: 10px solid white; }
 #popup .close {
   display: block;
   position: absolute;
@@ -1461,6 +1469,24 @@ hr {
   display: inline-block; }
 #popup .tagset .tag {
   margin-bottom: 7px; }
+
+/***  Help link
+************************/
+.helplink {
+  float: right;
+  display: block;
+  width: 20px;
+  height: 21px;
+  color: transparent !important;
+  background-image: url(../img/help-icon-sprite_idle-hover-selected-disabled.png);
+  background-position: 0px center;
+  background-repeat: no-repeat; }
+  .helplink:hover {
+    background-position: -20px center; }
+  .helplink:active, .helplink:focus {
+    background-position: -40px center; }
+  .helplink:disabled, .helplink.disabled {
+    background-position: -60px center; }
 
 /*** Breadcrumb
 **************************************************************/
@@ -2291,23 +2317,6 @@ ul.unstyled {
 .hidden {
   display: none; }
 
-/***  Help link
-************************/
-.helplink {
-  display: block;
-  width: 20px;
-  height: 21px;
-  color: transparent;
-  background-image: url("../img/help-icon-sprite_idle-hover-selected-disabled.png");
-  background-position: 0px center;
-  background-repeat: no-repeat; }
-  .helplink:hover {
-    background-position: -20px center; }
-  .helplink:active, .helplink:focus {
-    background-position: -40px center; }
-  .helplink:disabled, .helplink.disabled {
-    background-position: -60px center; }
-
 /***  Linklist
 ************************/
 .linklist > span {
@@ -2814,8 +2823,6 @@ button {
     .theme-help .helplink:disabled, .theme-help .helplink.disabled {
       background-position: -60px center; }
 
-/***  Help link
-************************/
 /*** Form step navigation
 ************************************************/
 .form-steps {
@@ -3032,3 +3039,6 @@ button {
   padding-right: 1em; }
 .form-summary-table .extra {
   padding-left: 1em; }
+
+.required-field {
+  color: red; }

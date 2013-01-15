@@ -1665,6 +1665,8 @@ label, .label {
     border: 1px solid #ececec; }
   .virkailija-table-1 tbody tr:nth-child(even) td {
     background-color: #eee; }
+  .virkailija-table-1 tbody tr td:first-of-type {
+    text-align: center; }
   .virkailija-table-1 tbody tr:last-of-type td:first-of-type {
     -moz-border-bottom-left-radius: 5px;
     -webkit-border-bottom-left-radius: 5px;
@@ -1680,19 +1682,18 @@ label, .label {
   .virkailija-table-1 tr td.rule {
     padding-left: 3em;
     background-image: url(../img/ketju-saanto.png);
-    background-image: url("../img/ketju-saanto.png");
     background-repeat: no-repeat;
     background-position: 0.8em center;
     background-size: 1.5em; }
   .virkailija-table-1 tr td.follow-up-question {
     padding-left: 3em;
-    background-image: url("../img/nuoli-jatkokysymys.png");
+    background-image: url(../img/nuoli-jatkokysymys.png);
     background-repeat: no-repeat;
     background-position: 0.8em center;
     background-size: 1em; }
   .virkailija-table-1 tr td.condition {
     padding-left: 3em;
-    background-image: url("../img/pykala-ehto.png");
+    background-image: url(../img/pykala-ehto.png);
     background-repeat: no-repeat;
     background-position: 0.8em center;
     background-size: 1em; }
@@ -3272,7 +3273,7 @@ ul.orgmenu {
   width: 20px;
   height: 21px;
   color: transparent;
-  background-image: url("../img/help-icon-sprite_idle-hover-selected-disabled.png");
+  background-image: url(../img/help-icon-sprite_idle-hover-selected-disabled.png);
   background-position: 0px center;
   background-repeat: no-repeat; }
   .helplink:hover {
