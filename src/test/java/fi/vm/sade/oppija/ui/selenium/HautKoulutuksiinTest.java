@@ -17,14 +17,11 @@
 package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
 public class HautKoulutuksiinTest extends AbstractSeleniumBase {
-
-    private FormModelHelper formModelHelper;
 
     @Test
     public void testSaveHakemusAndList() {
