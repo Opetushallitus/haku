@@ -23,14 +23,12 @@ import org.slf4j.LoggerFactory;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * @author jukka
- * @version 10/2/122:43 PM}
- * @since 1.1
- */
 public class RegexRule {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegexRule.class);
+
+    private RegexRule() {
+    }
 
     public static boolean evaluate(String value, String expression) {
         if (value != null) {
