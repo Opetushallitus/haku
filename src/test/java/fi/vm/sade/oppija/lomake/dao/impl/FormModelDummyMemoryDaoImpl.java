@@ -341,12 +341,12 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     private void createHakutoiveet(Theme hakutoiveetRyhmä) {
         hakutoiveetRyhmä.setHelp("Merkitse tälle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinä järjestyksessä, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttää ne hakutoivelistalle. Voit halutessasi etsiä koulutuksia koulutuskorin kautta. harkitse hakutoivejärjestystä tarkoin, sillä se on sitova, etkä voi muuttaa sitä enää hakuajan jälkeen. Jos et pääse koulutukseen, jonka olet merkinnyt ensimmäiselle sijalle, tarkistetaan riittävätkö pisteesi toiselle sijalle merkitsemääsi hakutoiveeseen jne. Jos pääset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkä voi enää tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielä päästä. HUOM! Lukion oppimäärän tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).");
         SortableTable sortableTable = new SortableTable("preferencelist", "Hakutoiveet", "Ylös", "Alas");
-        PreferenceRow pr1 = new PreferenceRow("preference1", "Hakutoive 1", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
+        PreferenceRow pr1 = new PreferenceRow("preference1", "Hakutoive 1", "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
         pr1.addAttribute("required", "required");
-        PreferenceRow pr2 = new PreferenceRow("preference2", "Hakutoive 2", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
-        PreferenceRow pr3 = new PreferenceRow("preference3", "Hakutoive 3", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
-        PreferenceRow pr4 = new PreferenceRow("preference4", "Hakutoive 4", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
-        PreferenceRow pr5 = new PreferenceRow("preference5", "Hakutoive 5", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
+        PreferenceRow pr2 = new PreferenceRow("preference2", "Hakutoive 2", "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
+        PreferenceRow pr3 = new PreferenceRow("preference3", "Hakutoive 3", "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
+        PreferenceRow pr4 = new PreferenceRow("preference4", "Hakutoive 4", "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
+        PreferenceRow pr5 = new PreferenceRow("preference5", "Hakutoive 5", "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
         sortableTable.addChild(pr1);
         sortableTable.addChild(pr2);
         sortableTable.addChild(pr3);
