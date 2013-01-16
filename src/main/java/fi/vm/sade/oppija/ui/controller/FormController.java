@@ -136,7 +136,7 @@ public class FormController {
     }
 
     @GET
-    @Path("/{ applicationPeriodId}/{formId}/{elementId}/relatedData/{key}")
+    @Path("/{applicationPeriodId}/{formId}/{elementId}/relatedData/{key}")
     @Produces(MediaType.APPLICATION_JSON)
     public Serializable getElementRelatedData(@PathParam("applicationPeriodId") final String applicationPeriodId,
                                               @PathParam("formId") final String formId,
