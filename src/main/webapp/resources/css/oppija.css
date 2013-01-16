@@ -1695,80 +1695,6 @@ fieldset {
 label, .label {
   line-height: 2em; }
 
-/***  Input(checkbox), Input(radio)
-**********************************/
-.js-checkbox {
-  display: inline-block;
-  vertical-align: middle;
-  width: 24px;
-  height: 24px;
-  overflow: hidden;
-  background-image: url(../img/checkbox-sprite.png);
-  background-repeat: no-repeat;
-  background-position: 0px 0px;
-  cursor: pointer; }
-
-.js-checkbox:hover,
-.js-checkbox.hover {
-  background-position: -24px 0px; }
-
-.js-checkbox.selected {
-  background-position: -48px 0px; }
-
-.js-checkbox.focus {
-  background-position: 0px -24px; }
-
-.js-checkbox.focus:hover,
-.js-checkbox.focus.hover {
-  background-position: -24px -24px; }
-
-.js-checkbox.focus.selected {
-  background-position: -48px -24px; }
-
-.js-checkbox.disabled {
-  background-position: 0px -48px; }
-
-.js-checkbox.selected.disabled {
-  background-position: -48px -48px; }
-
-.js-radio {
-  display: inline-block;
-  vertical-align: middle;
-  width: 24px;
-  height: 24px;
-  overflow: hidden;
-  background-image: url(../img/radio-sprite.png);
-  background-repeat: no-repeat;
-  background-position: 0px 0px;
-  cursor: pointer; }
-
-.js-radio:hover,
-.js-radio.hover {
-  background-position: -24px 0px; }
-
-.js-radio.selected {
-  background-position: -48px 0px; }
-
-.js-radio.focus {
-  background-position: 0px -24px; }
-
-.js-radio.focus:hover,
-.js-radio.focus.hover {
-  background-position: -24px -24px; }
-
-.js-radio.focus.selected {
-  background-position: -48px -24px; }
-
-.js-radio.disabled {
-  background-position: 0px -48px; }
-
-.js-radio.selected.disabled {
-  background-position: -48px -48px; }
-
-.js-checkbox.disabled,
-.js-radio.disabled {
-  cursor: default; }
-
 /*** Input(text), Select
 **********************************/
 .field-container-select {
@@ -1791,15 +1717,17 @@ label, .label {
 /*** Form row structure
 ************************************************/
 .form-row {
+  margin: 1.5em 0px;
   clear: both; }
-
-.form-row-label {
-  float: left;
-  width: 173px;
-  text-align: right; }
-
-.form-row-content {
-  float: left; }
+  .form-row .form-row-label {
+    float: left;
+    width: 173px;
+    padding: 0px 17px 0px 0px;
+    text-align: right; }
+  .form-row .form-row-content {
+    float: left;
+    width: 300px;
+    max-width: 390px; }
 
 /*** Form item structure
 ************************************************/
@@ -1811,6 +1739,24 @@ label, .label {
 
 .form .form-item-content {
   padding: 0 0 0 1em; }
+
+/*** Form item row
+************************************************/
+.form-item-row .form-item {
+  display: inline-block;
+  padding-right: 1em; }
+
+/*** Form item structure
+************************************************/
+.form-item {
+  margin: 1.5em 0px;
+  clear: both; }
+
+.form-item-label {
+  color: #000000; }
+
+.form .form-item-content {
+  padding: 0px 0px 0px 1em; }
 
 /*** Form item row
 ************************************************/
@@ -1931,41 +1877,6 @@ label, .label {
 
 .field-container-text {
   padding: 0px 0.923em 0px 0px; }
-
-/*** Form row structure
-************************************************/
-.form-row {
-  margin: 1.5em 0px;
-  clear: both; }
-
-.form-row-label {
-  float: left;
-  width: 173px;
-  padding: 0px 17px 0px 0px;
-  text-align: right; }
-
-.form-row-content {
-  float: left;
-  width: 300px;
-  max-width: 390px; }
-
-/*** Form item structure
-************************************************/
-.form-item {
-  margin: 1.5em 0px;
-  clear: both; }
-
-.form-item-label {
-  color: #000000; }
-
-.form .form-item-content {
-  padding: 0px 0px 0px 1em; }
-
-/*** Form item row
-************************************************/
-.form-item-row .form-item {
-  display: inline-block;
-  padding-right: 1em; }
 
 /*** Field container radio
 ************************************************/
@@ -2465,6 +2376,42 @@ ul.unstyled {
   text-align: left; }
 #search-applications .form-row.narrow .form-row-content {
   max-width: 70%; }
+
+/*** Notifications
+************************************************/
+.notification {
+  display: inline-block;
+  padding: 15px 30px 15px 60px;
+  background-size: 30px;
+  background-repeat: no-repeat;
+  background-position: 15px center;
+  -webkit-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-text-shadow: 1px 1px 1px white;
+  -moz-text-shadow: 1px 1px 1px white;
+  -o-text-shadow: 1px 1px 1px white;
+  -ms-text-shadow: 1px 1px 1px white;
+  text-shadow: 1px 1px 1px white; }
+  .notification.warning {
+    background-image: url(../img/icon-notification.png);
+    background-color: #fee7a5;
+    color: #730d02; }
+  .notification.info {
+    color: #333;
+    background-color: #c2e6f1;
+    background-image: url(../img/icon-information.png); }
+  .notification.confirmation {
+    color: #333;
+    background-color: #c6f1cb;
+    background-image: url(../img/icon-accepted.png); }
 
 /*** compare
 ************************************************/
