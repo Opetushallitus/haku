@@ -35,4 +35,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     String getNewOid();
 
     List<Application> findByApplicationSystem(String asId);
+
+    boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn);
 }

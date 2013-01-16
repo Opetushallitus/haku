@@ -28,6 +28,7 @@ import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.exception.IllegalStateException;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
@@ -42,6 +43,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author jukka
@@ -55,6 +58,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final UserHolder userHolder;
     private final FormService formService;
     private final ApplicationProcessStateService applicationProcessStateService;
+    private static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))";
+    private final Pattern socialSecurityNumberPattern;
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
@@ -65,6 +70,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.userHolder = userHolder;
         this.formService = formService;
         this.applicationProcessStateService = applicationProcessStateService;
+        this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
     }
 
     @Override
@@ -91,6 +97,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         ValidationResult validationResult = ElementTreeValidator.validate(phase, vastaukset);
         applicationState.addError(validationResult.getErrorMessages());
         if (applicationState.isValid()) {
+            if (application.getOid() == null) {
+                checkIfExistsBySocialSecurityNumber(applicationPeriodId, vastaukset.get(SocialSecurityNumber.HENKILOTUNNUS));
+            }
             this.applicationDAO.tallennaVaihe(applicationState);
         }
         return applicationState;
@@ -109,6 +118,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Form form = formService.getForm(formId.getApplicationPeriodId(), formId.getFormId());
         ValidationResult validationResult = ElementTreeValidator.validate(form, application.getVastauksetMerged());
         if (!validationResult.hasErrors()) {
+            checkIfExistsBySocialSecurityNumber(formId.getApplicationPeriodId(), application.getVastauksetMerged().get(SocialSecurityNumber.HENKILOTUNNUS));
             String newOid = applicationDAO.getNewOid();
             application.setOid(newOid);
             if (!user.isKnown()) {
@@ -170,5 +180,14 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         return listOfApplications.get(0);
 
+    }
+
+    private void checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
+        if (asId != null && ssn != null) {
+            Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
+            if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumber(asId, ssn)) {
+                throw new IllegalStateException("Application already exists by social security number " + ssn);
+            }
+        }
     }
 }

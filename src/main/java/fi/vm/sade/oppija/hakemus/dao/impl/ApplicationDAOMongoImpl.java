@@ -27,8 +27,10 @@ import fi.vm.sade.oppija.hakemus.converter.DBObjectToApplicationFunction;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,11 +43,14 @@ import java.util.Map;
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> implements ApplicationDAO {
 
     private static final String OID_PREFIX = "1.2.3.4.5.";
+    private final EncrypterService shaEncrypter;
 
 
     @Autowired
-    public ApplicationDAOMongoImpl(DBObjectToApplicationFunction dbObjectToHakemusConverter, ApplicationToDBObjectFunction hakemusToBasicDBObjectConverter) {
+    public ApplicationDAOMongoImpl(DBObjectToApplicationFunction dbObjectToHakemusConverter, ApplicationToDBObjectFunction hakemusToBasicDBObjectConverter,
+                                   @Qualifier("shaEncrypter") EncrypterService shaEncrypter) {
         super(dbObjectToHakemusConverter, hakemusToBasicDBObjectConverter);
+        this.shaEncrypter = shaEncrypter;
     }
 
     @Override
@@ -97,6 +102,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
 
         return applications;
+    }
+
+    @Override
+    public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
+        if (asId != null && ssn != null) {
+            final DBObject query = new BasicDBObject("formId.applicationPeriodId", asId)
+                    .append("vastaukset.henkilotiedot.Henkilotunnus_digest", shaEncrypter.encrypt(ssn))
+                    .append("oid", new BasicDBObject("$exists", true));
+            return getCollection().count(query) > 0;
+        }
+        return false;
     }
 
     private Application findOneApplication(DBObject query) {

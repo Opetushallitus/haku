@@ -75,6 +75,11 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
+    public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public ApplicationState tallennaVaihe(final ApplicationState state) {
         Application application = find(new Application(state.getHakemus().getFormId(), state.getHakemus().getUser())).get(0);
         application.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());
