@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.oppija.hakemus.converter.DBObjectToApplicationFunction;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -108,7 +109,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
         if (asId != null && ssn != null) {
             final DBObject query = new BasicDBObject("formId.applicationPeriodId", asId)
-                    .append("vastaukset.henkilotiedot.Henkilotunnus_digest", shaEncrypter.encrypt(ssn))
+                    .append("vastaukset.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH, shaEncrypter.encrypt(ssn))
                     .append("oid", new BasicDBObject("$exists", true));
             return getCollection().count(query) > 0;
         }
