@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.tarjonta.controller;
 
 import fi.vm.sade.oppija.tarjonta.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
@@ -34,8 +35,8 @@ import java.net.URISyntaxException;
 @Secured("ROLE_ADMIN")
 public class IndexController {
 
-    //@Value("${tarjonta.data.url}")
-    String tarjontaUrl = "http://test-oppija.oph.ware.fi/tarjontadev/learningDownloadPOC.xml";
+    @Value("${tarjonta.data.url}")
+    String tarjontaUrl;
 
     @Autowired
     IndexService indexService;
