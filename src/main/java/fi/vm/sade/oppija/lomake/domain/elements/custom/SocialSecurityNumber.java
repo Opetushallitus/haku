@@ -22,6 +22,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.validation.Validator;
+import fi.vm.sade.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +97,7 @@ public class SocialSecurityNumber extends Question {
         List<Validator> listOfValidators = new ArrayList<Validator>();
         listOfValidators.addAll(this.sex.getValidators());
         listOfValidators.addAll(this.ssn.getValidators());
+        listOfValidators.add(new SocialSecurityNumberFieldValidator(ssn.getId(), getNationalityId()));
         listOfValidators.addAll(this.validators);
         return listOfValidators;
     }
