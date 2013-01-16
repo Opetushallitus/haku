@@ -14,8 +14,9 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.dao;
+package fi.vm.sade.oppija.common.dao;
 
+import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
 import org.junit.After;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,6 +41,11 @@ public abstract class AbstractDAOTest {
         }
 
     }
+
+    public TestDBFactoryBean getDbFactory() {
+        return this.dbFactory;
+    }
+
 
     protected abstract String getCollectionName();
 }

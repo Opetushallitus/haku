@@ -34,7 +34,23 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     String getNewOid();
 
+    /**
+     * Returns Applications that are included in one application system.
+     *
+     * @param asId application system id
+     * @return list of applications or an empty list if none are found
+     */
     List<Application> findByApplicationSystem(String asId);
+
+    /**
+     * Returns applications that apply to this application option, ie.
+     * applications where one of the selected application options is the
+     * one given as parameter.
+     *
+     * @param aoId application option identifier
+     * @return list of applications or an empty list if none are found
+     */
+    List<Application> findByApplicationOption(String aoId);
 
     /**
      * Checks if submitted application already exists by specified social security number and

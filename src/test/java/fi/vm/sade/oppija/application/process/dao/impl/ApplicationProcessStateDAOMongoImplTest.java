@@ -3,7 +3,7 @@ package fi.vm.sade.oppija.application.process.dao.impl;
 import fi.vm.sade.oppija.application.process.dao.ApplicationProcessStateDAO;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
-import fi.vm.sade.oppija.lomake.dao.AbstractDAOTest;
+import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;

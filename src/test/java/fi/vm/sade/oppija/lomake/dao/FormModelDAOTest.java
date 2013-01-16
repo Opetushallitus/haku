@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
+import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
@@ -75,7 +76,7 @@ public class FormModelDAOTest extends AbstractDAOTest {
     public void insertTestData() {
 
         try {
-            dbFactory.getObject().getCollection(getCollectionName()).insert(applicationPeriodTestDataObject);
+            getDbFactory().getObject().getCollection(getCollectionName()).insert(applicationPeriodTestDataObject);
         } catch (Exception e) {
             e.printStackTrace();
         }

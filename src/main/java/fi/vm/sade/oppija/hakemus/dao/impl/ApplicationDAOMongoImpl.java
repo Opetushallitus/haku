@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
 import fi.vm.sade.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.oppija.hakemus.converter.DBObjectToApplicationFunction;
@@ -103,6 +104,23 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
 
         return applications;
+    }
+
+    public List<Application> findByApplicationOption(String aoId) {
+
+        // TODO: resolve automatically
+        String aoPhaseId = "hakutoiveet";
+        String aoReq1 = "preference1-Koulutus-id";
+        String aoReq2 = "preference2-Koulutus-id";
+        String aoReq3 = "preference3-Koulutus-id";
+        String aoReq4 = "preference4-Koulutus-id";
+        String aoReq5 = "preference5-Koulutus-id";
+
+        DBObject query = QueryBuilder.start().or(
+            QueryBuilder.start("hakutoiveet.preference1-Koulutus-id").is(aoId).get()
+        ).get();
+
+        return findApplications(query);
     }
 
     @Override

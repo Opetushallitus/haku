@@ -16,14 +16,18 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.oppija.lomake.dao.AbstractDAOTest;
+import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.tools.FileHandling;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -49,8 +54,26 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
     private FormId formId;
 
+    protected static DBObject applicationTestDataObject;
+
+    @BeforeClass
+    public static void readTestData() {
+
+        String content = new FileHandling().readFile(getSystemResourceAsStream("application-test-data.json"));
+        applicationTestDataObject = (DBObject) JSON.parse(content);
+
+    }
+
+
     @Before
     public void setUp() throws Exception {
+
+        try {
+            getDbFactory().getObject().getCollection(getCollectionName()).insert(applicationTestDataObject);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         final String id = String.valueOf(System.currentTimeMillis());
         this.formId = new FormId(id, id);
     }
@@ -91,6 +114,6 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
     @Override
     protected String getCollectionName() {
-        return "hakemus";
+        return "application";
     }
 }
