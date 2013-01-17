@@ -17,7 +17,9 @@
 package fi.vm.sade.oppija.lomake.converter;
 
 import com.google.common.base.Function;
-import com.mongodb.util.JSON;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +32,8 @@ import org.springframework.stereotype.Component;
 public class FormModelToJsonString implements Function<FormModel, String> {
     @Override
     public String apply(FormModel formModel) {
-        return JSON.serialize(new FormModelToMap().apply(formModel));
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(new FormModelToMap().apply(formModel));
+//        return JSON.serialize(new FormModelToMap().apply(formModel));
     }
 }

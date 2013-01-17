@@ -88,9 +88,9 @@ public class ElementTreeValidatorTest {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("äidinkieli", "Suomi");
         values.put("kansalaisuus", "Suomi");
-        values.put("Etunimet", "Ville");
+        values.put("Etunimet", "Mika Ville");
         values.put("Sukunimi", "Rajapaju");
-        values.put("Kutsumanimi", "Mika Ville");
+        values.put("Kutsumanimi", "Mika");
         values.put("Sukupuoli", "m");
         values.put("Henkilotunnus", "010188-123X");
         return values;

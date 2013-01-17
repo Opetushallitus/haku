@@ -143,6 +143,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         kutsumanimi.setHelp("Valitse kutsumanimeksi jokin virallisista etunimistäsi");
         kutsumanimi.addAttribute("required", "required");
         kutsumanimi.addAttribute("size", "20");
+        kutsumanimi.addAttribute("containedInOther", "Etunimet");
         kutsumanimi.setVerboseHelp(getVerboseHelp());
         kutsumanimi.setInline(true);
 

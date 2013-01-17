@@ -28,6 +28,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.Validator;
+import fi.vm.sade.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldFieldValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
 
@@ -174,10 +175,14 @@ public abstract class Element {
 
     public void initValidators() {
         for (Map.Entry<String, Attribute> attribute : attributes.entrySet()) {
-            if (attribute.getKey().equals("required")) {
+            String key = attribute.getKey();
+            String value = attribute.getValue().getValue();
+            if (key.equals("required")) {
                 this.validators.add(new RequiredFieldFieldValidator(this.id));
-            } else if (attribute.getKey().equals("pattern")) {
-                this.validators.add(new RegexFieldFieldValidator(this.id, attribute.getValue().getValue()));
+            } else if (key.equals("pattern")) {
+                this.validators.add(new RegexFieldFieldValidator(this.id, value));
+            } else if (key.equals("containedInOther")) {
+                this.validators.add(new ContainedInOtherFieldValidator(this.id, value));
             }
         }
     }
