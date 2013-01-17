@@ -24,10 +24,13 @@
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
             <input ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"/>
+            <c:if test="${not empty errorMessages[element.id]}">
+              <div class="margin-top-1 notification warning"><c:out value="${errorMessages[element.id]}"/></div>
+            </c:if>
         </div>
-        <span class="required-field"><c:out value="${errorMessages[element.id]}"/></span>
 
-        <div id="help-${element.id}">
+
+        <div class="margin-top-1" id="help-${element.id}">
             <small>${element.help}</small>
         </div>
     </div>

@@ -30,7 +30,11 @@
             </c:forEach>
         </select>
         <small>${element.help}</small>
-        <span class="required-field"><c:out value="${errorMessages[element.id]}"/></span>
+        <c:if test="${not empty errorMessages[element.id]}">
+          <div class="margin-top-1 notification warning">
+            <span><c:out value="${errorMessages[element.id]}"/></span>
+          </div>
+        </c:if>
     </div>
     <div class="clear"></div>
 

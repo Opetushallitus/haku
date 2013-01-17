@@ -28,9 +28,12 @@
                    class="post-office"/>
             <span class="post-office"><c:out value="${categoryData['postitoimipaikka']}"/></span>
         </div>
-        <span class="required-field"><c:out value="${errorMessages[element.id]}"/></span>
-
-        <div id="help-${element.id}">
+        <c:if test="${not empty errorMessages[element.id]}">
+          <div class="margin-top-1 notification warning">
+            <span><c:out value="${errorMessages[element.id]}"/></span>
+          </div>
+        </c:if>
+        <div class="margin-top-1" id="help-${element.id}">
             <small><c:out value="${element.help}"/></small>
         </div>
     </div>

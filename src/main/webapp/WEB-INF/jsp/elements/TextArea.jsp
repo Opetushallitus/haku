@@ -24,9 +24,12 @@
         <div class="field-container-text">
             <textarea ${element.attributeString}><c:out value="${categoryData[element.id]}"/></textarea>
         </div>
-        <span class="required-field"><c:out value="${errorMessages[element.id]}"/></span>
-
-        <div id="help-${element.id}">
+        <c:if test="${not empty errorMessages[element.id]}">
+          <div class="margin-top-1 notification warning">
+            <c:out value="${errorMessages[element.id]}"/>
+          </div>
+        </c:if>
+        <div class="margin-top-1" id="help-${element.id}">
             <small>${element.help}</small>
         </div>
     </div>

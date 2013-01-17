@@ -23,7 +23,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
-    <link rel="stylesheet" href="${contextPath}/resources/css/screen.css" type="text/css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/oppija.css" type="text/css">
     <link rel="stylesheet"
           href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
           type="text/css">

@@ -22,7 +22,7 @@
 <head>
     <title>Opetushallitus </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link href="${pageContext.request.contextPath}/resources/css/screen.css" type="text/css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
 <div id="viewport">

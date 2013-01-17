@@ -17,7 +17,7 @@
   ~ European Union Public Licence for more details.
   --%>
 
-<div class="set-left">
+<div class="float-left">
     <c:choose>
         <c:when test="${vaihe.hasPrev}">
             <button class="left" name="vaiheId" type="submit" value="${vaihe.prev.id}"><span><span><spring:message
@@ -29,7 +29,7 @@
                 code="lomake.button.saveasdraft"/></span></span></button>
     </c:if>
 </div>
-<div class="set-right">
+<div class="float-right">
     <c:choose>
         <c:when test="${vaihe.hasNext}">
             <button class="right" name="vaiheId" type="submit" value="${vaihe.next.id}">

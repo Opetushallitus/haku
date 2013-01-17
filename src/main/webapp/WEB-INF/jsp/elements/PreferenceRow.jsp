@@ -23,7 +23,12 @@
                        data-selectinputid="${selectInputId}"
                        size="60"
                        ${sortableItem.attributes['required'].value}/>
-                <span class="required-field"><c:out value="${errorMessages[textInputId]}"/></span>
+                
+                <c:if test="${not empty errorMessages[textInputId]}">
+                  <div class="margin-top-1 notification warning">
+                    <span><c:out value="${errorMessages[textInputId]}"/></span>
+                  </div>
+                </c:if>
                 <input id="${hiddenInputId}" name="${hiddenInputId}" value="${categoryData[hiddenInputId]}" type="hidden"/>
             </div>
         </div>
