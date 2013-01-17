@@ -47,7 +47,6 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -160,7 +159,7 @@ public class FormController {
                                 @PathParam("formId") final String formId,
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException {
-        userPrefillDataService.addUserPrefillData(toSingleValueMap(multiValues));
+        userPrefillDataService.addUserPrefillData(MultivaluedMapUtil.toSingleValueMap(multiValues));
 
         return Response.seeOther(new URI(
                 new RedirectToFormViewPath(applicationPeriodId, formId).getPath())).build();
@@ -176,7 +175,7 @@ public class FormController {
         LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId,
-                phaseId, toSingleValueMap(multiValues)));
+                phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)));
 
         Map<String, Object> model = new HashMap<String, Object>();
 
@@ -286,14 +285,4 @@ public class FormController {
 
         return new Viewable(ROOT_VIEW, model);
     }
-
-    // TODO: implement param reader for Map
-    private Map<String, String> toSingleValueMap(MultivaluedMap<String, String> multi) {
-        HashMap<String, String> singleValueMap = new HashMap<String, String>(multi.size());
-        for (Map.Entry<String, List<String>> entry : multi.entrySet()) {
-            singleValueMap.put(entry.getKey(), entry.getValue().get(0));
-        }
-        return singleValueMap;
-    }
-
 }

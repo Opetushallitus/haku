@@ -19,7 +19,14 @@
   --%>
 
 <!DOCTYPE html>
-<c:set var="vaihe" value="${element}" scope="request"/>
+<c:set var="vaihe" value="${it.element}" scope="request"/>
+<c:set var="form" value="${it.form}" scope="request"/>
+<c:set var="oid" value="${it.oid}" scope="request"/>
+<c:set var="applicationPhaseId" value="${it.applicationPhaseId}" scope="request"/>
+<c:set var="applicationProcessState" value="${it.applicationProcessState}" scope="request"/>
+<c:set var="element" value="${it.element}" scope="request"/>
+<c:set var="hakemusId" value="${it.hakemusId}" scope="request"/>
+<c:set var="categoryData" value="${it.categoryData}" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
 <html>
 <head>
@@ -102,7 +109,7 @@
             <a href="#" class="button small disabled">Tee TOR haku</a>
             <c:if test="${applicationProcessState.status ne 'Peruttu'}">
                 <form class="inline-block" method="post"
-                      action="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/applicationProcessState/CANCELLED/">
+                      action="${contextPath}/virkailija/hakemus/${oid}/applicationProcessState/CANCELLED/">
                     <button type="submit"><span><span>Passivoi hakemus</span></span></button>
                 </form>
             </c:if>
@@ -122,7 +129,7 @@
                          style="display: block;">
 
                     <h3><c:out value="${categoryData['Etunimet']}"/>&nbsp;<c:out
-                            value="${it.categoryData['Sukunimi']}"/></h3>
+                            value="${categoryData['Sukunimi']}"/></h3>
 
                     <table class="width-50 margin-top-2">
                         <tr>
@@ -170,7 +177,7 @@
                             <a href="#" class="button small disabled">Tee TOR haku</a>
                             <c:if test="${applicationProcessState.status ne 'Peruttu'}">
                                 <form class="inline-block" method="post"
-                                      action="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/applicationProcessState/CANCELLED/">
+                                      action="${contextPath}/virkailija/hakemus/${oid}/applicationProcessState/CANCELLED/">
                                     <button type="submit"><span><span>Passivoi hakemus</span></span></button>
                                 </form>
                             </c:if>
@@ -183,10 +190,10 @@
         <footer id="footer" class="grid36-16">
             <div class="footer-container">
                 <div class="grid16-8 footer-logo">
-                    <img src="${contextPath}/content/logo-opetus-ja-kulttuuriministerio.png">
+                    <img src="${contextPath}/static-html/content/logo-opetus-ja-kulttuuriministerio.png">
                 </div>
                 <div class="grid16-8 footer-logo">
-                    <img src="${contextPath}/content/logo-oph.png">
+                    <img src="${contextPath}/static-html/content/logo-oph.png">
                 </div>
                 <div class="clear"></div>
             </div>

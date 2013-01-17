@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
 import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
@@ -34,6 +35,7 @@ import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -102,8 +104,7 @@ public class OfficerControllerTest {
 
     @Test
     public void testSavePhase() throws URISyntaxException {
-        MultiValueMap<String, String> multiValues = new LinkedMultiValueMap<String, String>();
-        Response response = officerController.savePhase("Yhteishaku", "yhteishaku", "henkilotiedot", "1.2.3.4.5.0", multiValues);
+        Response response = officerController.savePhase("Yhteishaku", "yhteishaku", "henkilotiedot", "1.2.3.4.5.0", new MultivaluedMapImpl());
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 

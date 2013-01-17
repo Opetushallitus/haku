@@ -36,11 +36,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -113,11 +112,11 @@ public class OfficerController {
                               @PathParam("formId") final String formId,
                               @PathParam("phaseId") final String phaseId,
                               @PathParam("oid") final String oid,
-                              @RequestBody final MultiValueMap<String, String> multiValues) throws URISyntaxException {
+                              final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(
-                new ApplicationPhase(hakuLomakeId, phaseId, multiValues.toSingleValueMap()), oid);
+                new ApplicationPhase(hakuLomakeId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)), oid);
 
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         Map<String, Object> model = new HashMap<String, Object>();
