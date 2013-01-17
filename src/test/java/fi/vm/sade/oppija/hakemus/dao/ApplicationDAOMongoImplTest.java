@@ -28,6 +28,7 @@ import fi.vm.sade.oppija.lomake.tools.FileHandling;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,6 +111,14 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         String oid1 = applicationDAO.getNewOid();
         String oid2 = applicationDAO.getNewOid();
         assertNotSame(oid1, oid2);
+    }
+
+    @Ignore
+    @Test
+    public void testFindByApplicationOption() {
+        List<Application> applications = applicationDAO.findByApplicationOption("S1508");
+        assertEquals(1, applications.size());
+
     }
 
     @Override

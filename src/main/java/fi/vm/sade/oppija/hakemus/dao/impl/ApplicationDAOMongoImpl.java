@@ -117,7 +117,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         String aoReq5 = "preference5-Koulutus-id";
 
         DBObject query = QueryBuilder.start().or(
-            QueryBuilder.start("hakutoiveet.preference1-Koulutus-id").is(aoId).get()
+            QueryBuilder.start("vastaukset.hakutoiveet.preference1-Koulutus-id").is(aoId).get(),
+            QueryBuilder.start("vastaukset.hakutoiveet.preference2-Koulutus-id").is(aoId).get()
         ).get();
 
         return findApplications(query);
