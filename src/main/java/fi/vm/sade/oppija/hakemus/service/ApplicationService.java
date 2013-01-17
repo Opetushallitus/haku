@@ -92,4 +92,14 @@ public interface ApplicationService {
      * @return
      */
     List<Application> getApplicationsByApplicationSystem(String applicationSystemId);
+
+    /**
+     * Returns all applications where one of the selected application options is the
+     * one given as parameter.
+     *
+     * @param applicationOptionId application option id
+     * @return list of applications
+     */
+    List<Application> getApplicationsByApplicationOption(String applicationOptionId);
+
 }

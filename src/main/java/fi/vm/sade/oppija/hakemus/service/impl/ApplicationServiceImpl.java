@@ -150,6 +150,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public List<Application> getApplicationsByApplicationOption(String applicationOptionId) {
+        return applicationDAO.findByApplicationOption(applicationOptionId);
+    }
+
+    @Override
     public List<ApplicationInfo> getUserApplicationInfo() {
         List<ApplicationInfo> listOfApplicationInfos = new ArrayList<ApplicationInfo>();
         List<Application> listOfUserApplications = applicationDAO.find(new Application(userHolder.getUser()));
