@@ -79,20 +79,20 @@ public class ApplicationResourceTest {
         }
     }
 
-    @Test
-    public void testGetApplications() {
-        List<Application> applications = this.applicationResource.getApplications(ASID);
-        assertEquals(1, applications.size());
-    }
-
-    @Test
-    public void getApplicationsWithInvalidASID() {try {
-        this.applicationResource.getApplications(null);
-        fail("ApplicationResource failed to throw exception");
-    }
-    catch (JSONException e) {
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), e.getResponse().getStatus());
-    }}
+//    @Test
+//    public void testGetApplications() {
+//        List<Application> applications = this.applicationResource.getApplications(ASID);
+//        assertEquals(1, applications.size());
+//    }
+//
+//    @Test
+//    public void getApplicationsWithInvalidASID() {try {
+//        this.applicationResource.getApplications(null);
+//        fail("ApplicationResource failed to throw exception");
+//    }
+//    catch (JSONException e) {
+//        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), e.getResponse().getStatus());
+//    }}
 
 
 }

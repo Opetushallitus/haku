@@ -43,18 +43,17 @@ public class ApplicationResource {
         this.applicationService = applicationService;
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Application> getApplications(@QueryParam("asid") String asId) {
-
-        List<Application> applications;
-        if (asId != null) {
-            // retrieve applications related to a single application system
-            return applicationService.getApplicationsByApplicationSystem(asId);
-        } else {
-            throw new JSONException(Response.Status.BAD_REQUEST, "Invalid application system id argument");
-        }
-    }
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<Application> getApplications(@QueryParam("asid") String asId) {
+//
+//        if (asId != null) {
+//            // retrieve applications related to a single application system
+//            return applicationService.getApplicationsByApplicationSystem(asId);
+//        } else {
+//            throw new JSONException(Response.Status.BAD_REQUEST, "Invalid application system id argument");
+//        }
+//    }
 
     @GET
     @Path("/{oid}")
@@ -70,4 +69,14 @@ public class ApplicationResource {
 
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Application> getApplicationsByAOId(@QueryParam("aoid") String aoid) {
+        if (aoid != null) {
+            // retrieve applications related to a single application system
+            return applicationService.getApplicationsByApplicationOption(aoid);
+        } else {
+            throw new JSONException(Response.Status.BAD_REQUEST, "Invalid application option id argument");
+        }
+    }
 }
