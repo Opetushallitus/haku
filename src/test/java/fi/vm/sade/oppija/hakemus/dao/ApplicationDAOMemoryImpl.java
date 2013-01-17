@@ -80,7 +80,7 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
 
     @Override
     public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     @Override

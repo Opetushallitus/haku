@@ -126,7 +126,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
-        if (asId != null && ssn != null) {
+        if (ssn != null) {
             final DBObject query = new BasicDBObject("formId.applicationPeriodId", asId)
                     .append("vastaukset.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH, shaEncrypter.encrypt(ssn))
                     .append("oid", new BasicDBObject("$exists", true));

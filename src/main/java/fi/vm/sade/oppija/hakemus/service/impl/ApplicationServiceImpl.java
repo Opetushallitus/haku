@@ -188,7 +188,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private void checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
-        if (asId != null && ssn != null) {
+        if (ssn != null) {
             Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
             if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumber(asId, ssn)) {
                 throw new IllegalStateException("Application already exists by social security number " + ssn);
