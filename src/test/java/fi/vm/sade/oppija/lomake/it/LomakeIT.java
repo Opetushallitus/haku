@@ -60,7 +60,7 @@ public class LomakeIT extends AbstractSeleniumBase {
 
         driver.findElement(new By.ByClassName("right")).click();
 
-        driver.findElement(new By.ByClassName("required-field"));
+        driver.findElement(new By.ByClassName("notification"));
 
         Select select = new Select(driver.findElement(new By.ById("asuinmaa")));
         select.selectByIndex(1);
@@ -86,7 +86,7 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(new By.ById("osallistunut_ei")).click();
 
         driver.findElement(new By.ByClassName("right")).click();
-        //Skip opetuspiste
+        //Skip toimipiste
         driver.findElement(By.id("preference1-Opetuspiste"));
         selenium.typeKeys("preference1-Opetuspiste", "Hel");
         driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
