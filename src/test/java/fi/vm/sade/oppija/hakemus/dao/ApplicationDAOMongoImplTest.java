@@ -113,7 +113,6 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         assertNotSame(oid1, oid2);
     }
 
-    @Ignore
     @Test
     public void testFindByApplicationOption() {
         List<Application> applications = applicationDAO.findByApplicationOption("S1508");
