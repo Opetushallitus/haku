@@ -43,18 +43,6 @@ public class ApplicationResource {
         this.applicationService = applicationService;
     }
 
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public List<Application> getApplications(@QueryParam("asid") String asId) {
-//
-//        if (asId != null) {
-//            // retrieve applications related to a single application system
-//            return applicationService.getApplicationsByApplicationSystem(asId);
-//        } else {
-//            throw new JSONException(Response.Status.BAD_REQUEST, "Invalid application system id argument");
-//        }
-//    }
-
     @GET
     @Path("/{oid}")
     @Produces(MediaType.APPLICATION_JSON)
