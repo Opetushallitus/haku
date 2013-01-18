@@ -636,6 +636,74 @@ table {
 .offset-right-16-15 {
   margin-right: 94.375%; }
 
+.grid-1 {
+  float: left;
+  width: 6.25%; }
+
+.grid-2 {
+  float: left;
+  width: 12.5%; }
+
+.grid-3 {
+  float: left;
+  width: 18.75%; }
+
+.grid-4 {
+  float: left;
+  width: 25%; }
+
+.grid-5 {
+  float: left;
+  width: 31.25%; }
+
+.grid-6 {
+  float: left;
+  width: 37.5%; }
+
+.grid-7 {
+  float: left;
+  width: 43.75%; }
+
+.grid-8 {
+  float: left;
+  width: 50%; }
+
+.grid-9 {
+  float: left;
+  width: 56.25%; }
+
+.grid-10 {
+  float: left;
+  width: 62.5%; }
+
+.grid-11 {
+  float: left;
+  width: 68.75%; }
+
+.grid-12 {
+  float: left;
+  width: 75%; }
+
+.grid-13 {
+  float: left;
+  width: 81.25%; }
+
+.grid-14 {
+  float: left;
+  width: 87.5%; }
+
+.grid-15 {
+  float: left;
+  width: 93.75%; }
+
+.grid-16 {
+  float: left;
+  width: 100%; }
+
+.gutter {
+  margin-left: 0.625%;
+  margin-right: 0.625%; }
+
 /*** Margin and padding
 ************************************************/
 /* Padding to all directions */
@@ -1792,84 +1860,6 @@ label, .label {
   width: 30%;
   float: left; }
 
-/*** Custom form styles
-************************************************/
-/*
- .table-field-label {
-    display:block;
-    padding-top:8px;
-
-    &.small {
-        padding-top: 3px;
-    }
- }
-
- .form-label-cell {
-    width:195px;
-    padding:5px 0px;
-    padding-right:1em;
-    text-align:right;  
- }
-
-.form-field-cell {
-    width:385px;
-    padding:5px 0px;
-}
-
-.field-text-containerbox {
-    padding:0px 12px 0px 0px;
-
-    input.text {
-        width:100%;
-    }
-}
-
-.field-search-containerbox {
-    padding:0px 32px 0px 0px;
-
-    input.text {
-        width:100%;
-    }
-}
-
-.field-select-containerbox {
-    padding:0px 0px 0px 0px;
-
-    select {
-        width:100%;
-    }
-}
-
-.field-textarea-containerbox {
-    padding:0px 2px 0px 0px;
-    textarea {
-        width:100%;
-    }
-}
-
-.tagset {
-    padding:5px 0px 10px 0px;
-
-    .tag {
-        display:inline-block;
-        line-height:18px;
-        margin:0px 7px 0px 0px;
-
-        .remove {
-            vertical-align:middle;
-            display:inline-block;
-            width:12px;
-            height:13px;
-            margin:0px 0px 0px 5px;
-            background-image:url(../img/tag-delete-icon.png);
-            background-repeat:no-repeat;
-            background-position:center left;
-            cursor:pointer;
-        }
-    }
-}
-
-*/
 /*** Input(text), Select
 **********************************/
 .field-container-select {
@@ -1944,6 +1934,7 @@ label, .label {
     height: 36px;
     line-height: 36px;
     background: #f6f6f6;
+    background: #c6c6c6;
     background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#c6c6c6));
     background: -webkit-linear-gradient(top, whitesmoke, #c6c6c6);
     background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
@@ -1951,6 +1942,7 @@ label, .label {
     background: -o-linear-gradient(top, whitesmoke, #c6c6c6); }
   .tabs .tab:hover span {
     background: #c6c6c6;
+    background: whitesmoke;
     background: -webkit-gradient(linear, left top, left bottom, from(#c6c6c6), to(whitesmoke));
     background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
     background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
@@ -1965,6 +1957,7 @@ label, .label {
   position: relative;
   top: 2px; }
   .tabs .tab.current span {
+    background: white;
     background: white;
     background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
     background: -webkit-linear-gradient(top, whitesmoke, white);

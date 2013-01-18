@@ -52,76 +52,67 @@
 </nav>
 <section id="searchSection">
     <form id="searchform" ng-submit="search()">
-        <div class="grid16-6">
-            <div class="form-item margin-top-2">
-                <div class="form-item-content">
-                    <input type="text" id="entry" class="search"
+        <div class="grid16-16">
+            <table class="form-layout-table width-100">
+                <tr>
+                    <td>
+                        <input type="text" id="entry" class="search"
                            placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero" ng-model="term"/>
-                </div>
-
-                <label for="search-selection">Haku:</label>
-
-                <div class="form-item-content">
-                    <select name="search-selection" id="search-selection">
-                        <option value="default">Oletuksena käynnissä oleva haku</option>
-                    </select>
-                </div>
-
-                <label class="form-item-label" for="hakukohde">Hakukohde:</label>
-
-                <div class="form-item-content">
-
-                    <input type="text" name="Kentta" id="hakukohde" placeholder="hae nimellä tai koodilla"/>
-
-                </div>
-            </div>
-        </div>
-        <div class="grid16-5">
-            <div class="form-item ">
-                <label for="preference-phase">Hakutoiveen tila:</label>
-
-                <div class="form-item-content">
-                    <select class="width-100" name="preference-phase" id="preference-phase">
-                        <option value="all">Kaikki</option>
-                        <option value="ready">Valmis</option>
-                        <option value="draft">Kesken</option>
-                    </select>
-                </div>
-                <div class="form-item-content">
-                    <div class="field-container-checkbox">
-                        <input type="checkbox" name="fetch-passive" value="fetch-passive" id="fetch-passive"/>
-                        <label for="fetch-passive">Hae myös passiiviset</label>
-                    </div>
-                    <div class="field-container-checkbox">
-                        <input type="checkbox" name="discretionary" value="discretionary" id="discretionary"/>
-                        <label for="discretionary">Hae vain harkinnanvaraisesti hakeneet</label>
-                    </div>
-                </div>
-                <input class="button secondary" type="button" value="Tyhjennä" ng-click="reset()">
-                <input class="button primary" type="submit" value="Hae">
-            </div>
-        </div>
-        <div class="grid16-5">
-            <div class="form-item">
-                <div class="form-item-row">
-                    <div class="form-item">
-                        <label class="form-item-label" for="vuosi">Lähtökoulu</label>
-
-                        <div class="form-item-content">
+                    </td>
+                    
+                    <td>
+                        <label for="preference-phase">Hakutoiveen tila:</label>
+                        <select class="width-100" name="preference-phase" id="preference-phase">
+                            <option value="all">Kaikki</option>
+                            <option value="ready">Valmis</option>
+                            <option value="draft">Kesken</option>
+                        </select>
+                    </td>
+                    
+                    <td>
+                        <div class="inline-block">
+                            <label class="block" for="vuosi">Lähtökoulu</label>
                             <input type="text" name="vuosi" id="vuosi"/>
                         </div>
-                    </div>
-                    <div class="form-item">
-                        <label class="form-item-label" for="paattoluokka">Päättöluokka</label>
-
-                        <div class="form-item-content">
+                        <div class="inline-block">
+                            <label class="block" for="paattoluokka">Päättöluokka</label>
                             <select id="paattoluokka">
                                 <option value="all">kaikki</option>
                             </select>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </td>     
+                </tr>
+                <tr>
+                    <td>
+                        <label class="block" for="search-selection">Haku:</label>
+                        <select name="search-selection" id="search-selection">
+                            <option value="default">Oletuksena käynnissä oleva haku</option>
+                        </select>
+                    </td>
+                    
+                    <td>
+                        <div>
+                            <input type="checkbox" name="fetch-passive" value="fetch-passive" id="fetch-passive"/>
+                            <label for="fetch-passive">Hae myös passiiviset</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="discretionary" value="discretionary" id="discretionary"/>
+                            <label for="discretionary">Hae vain harkinnanvaraisesti hakeneet</label>
+                        </div>
+                    </td>   
+                </tr>
+                <tr>
+                    <td>
+                        <label class="block" for="hakukohde">Hakukohde:</label>
+                         <input type="text" name="Kentta" id="hakukohde" placeholder="hae nimellä tai koodilla"/>
+                    </td>
+                    
+                    <td>
+                        <input class="button secondary" type="button" value="Tyhjennä" ng-click="reset()">
+                        <input class="button primary" type="submit" value="Hae">
+                    </td>
+                </tr>
+            </table>
         </div>
     </form>
 </section>
@@ -285,10 +276,10 @@
                 </div>
             </div>
             <div class="grid16-8 footer-logo">
-                <img src="../../static-html/content/logo-opetus-ja-kulttuuriministerio.png">
+                <img src="../../resources/img/logo-opetus-ja-kulttuuriministerio.png">
             </div>
             <div class="grid16-8 footer-logo">
-                <img src="../../static-html/content/logo-oph.png">
+                <img src="../../resources/img/logo-oph.png">
             </div>
         </div>
 
