@@ -32,8 +32,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     Application findDraftApplication(Application application);
 
-    String getNewOid();
-
     /**
      * Returns Applications that are included in one application system.
      *

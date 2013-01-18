@@ -107,13 +107,6 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     }
 
     @Test
-    public void testSequence() throws Exception {
-        String oid1 = applicationDAO.getNewOid();
-        String oid2 = applicationDAO.getNewOid();
-        assertNotSame(oid1, oid2);
-    }
-
-    @Test
     public void testFindByApplicationOption() {
         List<Application> applications = applicationDAO.findByApplicationOption("S1508");
         assertEquals(1, applications.size());

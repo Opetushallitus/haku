@@ -22,6 +22,7 @@ import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
@@ -55,6 +56,7 @@ import java.util.regex.Pattern;
 public class ApplicationServiceImpl implements ApplicationService {
 
     private final ApplicationDAO applicationDAO;
+    private final ApplicationOidService applicationOidService;
     private final UserHolder userHolder;
     private final FormService formService;
     private final ApplicationProcessStateService applicationProcessStateService;
@@ -65,12 +67,14 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
                                   final UserHolder userHolder,
                                   @Qualifier("formServiceImpl") final FormService formService,
-                                  @Qualifier("applicationProcessStateServiceImpl") final ApplicationProcessStateService applicationProcessStateService) {
+                                  @Qualifier("applicationProcessStateServiceImpl") final ApplicationProcessStateService applicationProcessStateService,
+                                  @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService) {
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
         this.formService = formService;
         this.applicationProcessStateService = applicationProcessStateService;
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
+        this.applicationOidService = applicationOidService;
     }
 
     @Override
@@ -119,7 +123,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         ValidationResult validationResult = ElementTreeValidator.validate(form, application.getVastauksetMerged());
         if (!validationResult.hasErrors()) {
             checkIfExistsBySocialSecurityNumber(formId.getApplicationPeriodId(), application.getVastauksetMerged().get(SocialSecurityNumber.HENKILOTUNNUS));
-            String newOid = applicationDAO.getNewOid();
+            String newOid = applicationOidService.generateNewOid();
             application.setOid(newOid);
             if (!user.isKnown()) {
                 application.removeUser();

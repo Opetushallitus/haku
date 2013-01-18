@@ -44,7 +44,6 @@ import java.util.Map;
 @Service("applicationDAOMongoImpl")
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> implements ApplicationDAO {
 
-    private static final String OID_PREFIX = "1.2.3.4.5.";
     private final EncrypterService shaEncrypter;
 
 
@@ -89,11 +88,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         final DBObject query = toDBObject.apply(application);
         query.put("oid", new BasicDBObject("$exists", false));
         return findOneApplication(query);
-    }
-
-    @Override
-    public String getNewOid() {
-        return OID_PREFIX + getNextId();
     }
 
     @Override

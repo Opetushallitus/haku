@@ -65,11 +65,6 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public String getNewOid() {
-        return "" + System.currentTimeMillis();
-    }
-
-    @Override
     public List<Application> findByApplicationSystem(String asId) {
         return null;
     }
