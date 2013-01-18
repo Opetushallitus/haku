@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.ui.it;
 
+import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
 import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import org.junit.Before;
