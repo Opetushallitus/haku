@@ -25,6 +25,7 @@ import com.mongodb.DBObject;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationOidDAO;
 import fi.vm.sade.oppija.lomake.dao.DBFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -38,11 +39,13 @@ public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
 
     private static final String SEQUENCE_FIELD = "seq";
     private static final String SEQUENCE_NAME = "applicationsequence";
-    private static final String OID_PREFIX = "1.2.3.4.5.";
 
     @Autowired
     protected DBFactoryBean factoryBean;
     protected DB db;
+
+    @Value("${application.oid.prefix}")
+    private String oidPrefix;
 
     @PostConstruct
     protected void init() {
@@ -69,7 +72,7 @@ public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
             res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
         }
 
-        return OID_PREFIX + res.get(SEQUENCE_FIELD).toString();
+        return oidPrefix + res.get(SEQUENCE_FIELD).toString();
     }
 
     protected DBCollection getSequence() {
