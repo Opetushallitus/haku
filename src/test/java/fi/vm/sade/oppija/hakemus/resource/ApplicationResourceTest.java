@@ -33,6 +33,7 @@ public class ApplicationResourceTest {
     private final String OID = "1.2.3.4.5.100";
     private final String INVALID_OID = "1.2.3.4.5.999";
     private final String ASID = "yhteishaku";
+    private final String AOID = "S1508";
 
     @Before
     public void setUp() {
@@ -44,6 +45,7 @@ public class ApplicationResourceTest {
         phase1.put("nimi", "Alan Turing");
         Map<String, Map<String, String>> phases = new HashMap<String, Map<String, String>>();
         phases.put("henkilotiedot", phase1);
+
         this.application = new Application(formId, new AnonymousUser(), phases);
         this.application.setOid(OID);
 
@@ -57,7 +59,7 @@ public class ApplicationResourceTest {
 
         ArrayList<Application> applications = new ArrayList<Application>();
         applications.add(this.application);
-        when(applicationService.getApplicationsByApplicationSystem(ASID)).thenReturn(applications);
+        when(applicationService.getApplicationsByApplicationOption(AOID)).thenReturn(applications);
 
         this.applicationResource = new ApplicationResource(this.applicationService);
     }
@@ -79,20 +81,20 @@ public class ApplicationResourceTest {
         }
     }
 
-//    @Test
-//    public void testGetApplications() {
-//        List<Application> applications = this.applicationResource.getApplications(ASID);
-//        assertEquals(1, applications.size());
-//    }
-//
-//    @Test
-//    public void getApplicationsWithInvalidASID() {try {
-//        this.applicationResource.getApplications(null);
-//        fail("ApplicationResource failed to throw exception");
-//    }
-//    catch (JSONException e) {
-//        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), e.getResponse().getStatus());
-//    }}
+    @Test
+    public void testGetApplications() {
+        List<Application> applications = this.applicationResource.getApplicationsByAOId(AOID);
+        assertEquals(1, applications.size());
+    }
+
+    @Test
+    public void getApplicationsWithInvalidASID() {try {
+        this.applicationResource.getApplicationsByAOId(null);
+        fail("ApplicationResource failed to throw exception");
+    }
+    catch (JSONException e) {
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), e.getResponse().getStatus());
+    }}
 
 
 }
