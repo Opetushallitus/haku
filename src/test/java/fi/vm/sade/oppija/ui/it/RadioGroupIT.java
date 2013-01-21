@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.ui.it;
 
-import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
+import fi.vm.sade.oppija.common.it.AbstractFormTest;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
@@ -36,7 +36,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
  * @version 9/18/121:44 PM}
  * @since 1.1
  */
-public class RadioGroupIT extends AbstractRemoteTest {
+public class RadioGroupIT extends AbstractFormTest {
 
     private FormModelHelper formModelHelper;
     private Radio radio;

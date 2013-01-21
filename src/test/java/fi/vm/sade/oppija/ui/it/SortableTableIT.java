@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.ui.it;
 
-import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
+import fi.vm.sade.oppija.common.it.AbstractFormTest;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
@@ -36,7 +36,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  *
  * @author Mikko Majapuro
  */
-public class SortableTableIT extends AbstractRemoteTest {
+public class SortableTableIT extends AbstractFormTest {
 
     private FormModelHelper formModelHelper;
 

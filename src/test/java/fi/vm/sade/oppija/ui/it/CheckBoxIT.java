@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.ui.it;
 
-import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
+import fi.vm.sade.oppija.common.it.AbstractFormTest;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
@@ -37,7 +37,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  * @version 9/18/128:54 AM}
  * @since 1.1
  */
-public class CheckBoxIT extends AbstractRemoteTest {
+public class CheckBoxIT extends AbstractFormTest {
     private FormModelHelper formModelHelper;
     private CheckBox checkBox;
 

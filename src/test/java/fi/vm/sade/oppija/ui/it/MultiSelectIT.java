@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.ui.it;
 
-import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
+import fi.vm.sade.oppija.common.it.AbstractFormTest;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
@@ -35,7 +35,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  * @version 9/18/122:03 PM}
  * @since 1.1
  */
-public class MultiSelectIT extends AbstractRemoteTest {
+public class MultiSelectIT extends AbstractFormTest {
 
     private FormModelHelper formModelHelper;
 

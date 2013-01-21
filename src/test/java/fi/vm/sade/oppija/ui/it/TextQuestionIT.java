@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.ui.it;
 
-import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
+import fi.vm.sade.oppija.common.it.AbstractFormTest;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
@@ -28,7 +28,7 @@ import java.io.IOException;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
-public class TextQuestionIT extends AbstractRemoteTest {
+public class TextQuestionIT extends AbstractFormTest {
     protected FormModel formModel;
     private FormModelHelper formModelHelper;
 

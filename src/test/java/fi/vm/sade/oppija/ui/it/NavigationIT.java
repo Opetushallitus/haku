@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.ui.it;
 
-import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
+import fi.vm.sade.oppija.common.it.AbstractFormTest;
 import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ import java.io.IOException;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
-public class NavigationIT extends AbstractRemoteTest {
+public class NavigationIT extends AbstractFormTest {
 
     @Before
     public void setUp() throws Exception {
