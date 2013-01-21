@@ -35,7 +35,6 @@ public abstract class AbstractFormTest extends AbstractRemoteTest {
 
     protected FormModelHelper initModel(FormModel formModel1) {
         super.initTestEngine();
-        setBaseUrl(getBaseUrl());
         beginAt("/admin/edit");
         login("admin");
         gotoPage("/admin/edit");
