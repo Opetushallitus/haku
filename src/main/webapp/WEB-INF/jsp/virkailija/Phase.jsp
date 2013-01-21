@@ -35,6 +35,7 @@
     <!--
         <link rel="stylesheet" href="${contextPath}/resources/css/screen.css" type="text/css">
         -->
+    
     <link rel="stylesheet"
           href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
           type="text/css">
@@ -161,11 +162,13 @@
                         <c:when test="${preview}">
                         
                             <div class="form">
+
                                 <c:forEach var="child" items="${vaihe.children}">
                                     <c:set var="element" value="${child}" scope="request"/>
                                     <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
                                     <jsp:include page="../elements/${child.type}Preview.jsp"/>
                                 </c:forEach>
+
                             </div>
                             
                         </c:when>
@@ -390,11 +393,11 @@
                         </table>
                     </div>
                     <div class="grid16-8">
-                        <table class="virkailija-table-1">
+                        <table class="virkailija-table-3">
                             <tbody>
                                 <tr>
                                     <td class="bold">00,0</td>
-                                    <td>Yleistäkoulumenestystä mittaava aritmeettinen keskiarvo (keskiarvo, jota käytetään perusopetuksen oppimäärällä ammatilliseen koulutukseen haettaessa)</p></td>
+                                    <td>Yleistäkoulumenestystä mittaava aritmeettinen keskiarvo (keskiarvo, jota käytetään perusopetuksen oppimäärällä ammatilliseen koulutukseen haettaessa)</td>
                                 </tr>
                                 <tr>
                                     <td class="bold">00,0</td>
@@ -409,6 +412,21 @@
                                     <td>Lukiovalinnoissa tasapistetilanteessa käytettävä keskiarvo</td>
                                 </tr>
                             </tbody>
+                        </table>
+                        <table class="virkailija-table-3 margin-top-4">
+                            <tr>
+                                <td>Esivalinnassa käytetty</td>
+                                <td>Valinnassa käytetty</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>Välitodistuksen arvosanat</td>
+                                <td>Päättötodistuksen arvosanat</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><a href="#">Muutoshistoria</a></td>
+                            </tr>
                         </table>
                     </div>
                     <div class="clear"></div>
@@ -552,7 +570,7 @@
                     </div>
                     <div class="clear"></div>
                 </section>
-                
+               
             </div>
         </section>
 

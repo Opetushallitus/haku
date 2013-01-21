@@ -1716,8 +1716,45 @@ label, .label {
 
 /*** Virkailija-table-3
 ************************************************/
+/* Common table style. To be used without thead/tbody/tfoot */
 .virkailija-table-3 {
-  background-color: #eee; }
+  width: 100%;
+  border-spacing: 1px;
+  border-collapse: separate; }
+  .virkailija-table-3 tr:first-of-type td:first-of-type {
+    -moz-border-top-left-radius: 5px;
+    -webkit-border-top-left-radius: 5px;
+    -o-border-top-left-radius: 5px;
+    -ms-border-top-left-radius: 5px;
+    border-top-left-radius: 5px;
+    border-left: 1px solid #ececec; }
+  .virkailija-table-3 tr:first-of-type td:last-of-type {
+    -moz-border-top-right-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -o-border-top-right-radius: 5px;
+    -ms-border-top-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border-right: 1px solid #ececec; }
+  .virkailija-table-3 tr:last-of-type td:first-of-type {
+    -moz-border-bottom-left-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -o-border-bottom-left-radius: 5px;
+    -ms-border-bottom-left-radius: 5px;
+    border-bottom-left-radius: 5px; }
+  .virkailija-table-3 tr:last-of-type td:last-of-type {
+    -moz-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -o-border-bottom-right-radius: 5px;
+    -ms-border-bottom-right-radius: 5px;
+    border-bottom-right-radius: 5px; }
+  .virkailija-table-3 tr:nth-child(even) td {
+    background-color: #f8f8f8; }
+  .virkailija-table-3 tr td {
+    text-align: center;
+    line-height: 1.5em;
+    padding: 0.5em 1em;
+    border-spacing: 0;
+    border: 1px solid #ececec; }
 
 a.button {
   text-decoration: none;

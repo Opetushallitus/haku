@@ -1,8 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"  %>
-	<table id="gradegrid-table" class="applicant-grades">
+	<!--
+    <table id="gradegrid-table" class="applicant-grades">
 		<thead>
+          -->
 			<tr>
 				<th></th>
 				<th colspan="2"><spring:message code="lomake.component.gradegrid.gradesTitle"/></th>
@@ -12,8 +14,10 @@
 				<td><spring:message code="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
 				<td><spring:message code="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
 			</tr>
+            <!--
 		</thead>
 		<tbody>
+        -->
 		    <!-- subjects that are listed before languages -->
 		    <c:forEach var="subject" items="${element.subjectsBeforeLanguages}">
 		        <c:set var="subject" value="${subject}" scope="request"/>
@@ -123,5 +127,7 @@
                     </td>
                 </tr>
             </c:forEach>
+            <!--
 		</tbody>
-	</table>
+    -->
+	<!--</table>-->
