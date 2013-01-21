@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * Renders as a language grade row in grade grid. Title is used to hold the scope

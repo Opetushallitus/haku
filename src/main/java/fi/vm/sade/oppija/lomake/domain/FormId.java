@@ -16,9 +16,9 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.commons.lang3.Validate;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.io.Serializable;
 

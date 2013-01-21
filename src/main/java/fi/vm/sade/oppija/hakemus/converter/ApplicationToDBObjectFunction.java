@@ -16,8 +16,6 @@
 
 package fi.vm.sade.oppija.hakemus.converter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Function;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -25,6 +23,8 @@ import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.service.EncrypterService;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +54,9 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
     @Override
     public DBObject apply(Application application) {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        mapper.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
-        mapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
+        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
+        mapper.disable(SerializationConfig.Feature.WRITE_EMPTY_JSON_ARRAYS);
+        mapper.disable(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
 
         final Map m = mapper.convertValue(application, Map.class);
         final Map<String, Map<String, String>> vastaukset = (Map<String, Map<String, String>>) m.get("vastaukset");

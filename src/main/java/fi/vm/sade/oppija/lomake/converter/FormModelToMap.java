@@ -16,10 +16,10 @@
 
 package fi.vm.sade.oppija.lomake.converter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Function;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 
 import java.util.Map;
 
@@ -32,7 +32,7 @@ public class FormModelToMap implements Function<FormModel, Map> {
     @Override
     public Map apply(FormModel formModel) {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
         return mapper.convertValue(formModel, Map.class);
     }
 }

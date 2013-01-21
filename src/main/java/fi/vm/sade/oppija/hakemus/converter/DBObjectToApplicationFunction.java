@@ -16,14 +16,14 @@
 
 package fi.vm.sade.oppija.hakemus.converter;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Function;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.service.EncrypterService;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -49,9 +49,9 @@ public class DBObjectToApplicationFunction implements Function<DBObject, Applica
     @Override
     public Application apply(DBObject dbObject) {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
-        mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
+        mapper.enable(DeserializationConfig.Feature.READ_ENUMS_USING_TO_STRING);
+        mapper.enable(SerializationConfig.Feature.WRITE_ENUMS_USING_TO_STRING);
 
         final Map fromValue = dbObject.toMap();
         final Map<String, Map<String, String>> vastaukset = (Map<String, Map<String, String>>) fromValue.get("vastaukset");

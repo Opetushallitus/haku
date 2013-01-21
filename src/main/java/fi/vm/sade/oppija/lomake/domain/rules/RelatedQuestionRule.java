@@ -16,8 +16,8 @@
 
 package fi.vm.sade.oppija.lomake.domain.rules;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Collections;
 import java.util.List;

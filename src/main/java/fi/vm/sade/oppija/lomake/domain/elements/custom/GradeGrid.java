@@ -16,9 +16,9 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
 

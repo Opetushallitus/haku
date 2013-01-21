@@ -15,7 +15,7 @@
  */
 package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;
 import java.util.Map;

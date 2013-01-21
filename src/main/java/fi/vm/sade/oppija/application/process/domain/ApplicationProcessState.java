@@ -18,14 +18,13 @@
 
 package fi.vm.sade.oppija.application.process.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fi.vm.sade.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.oppija.lomake.domain.ObjectIdSerializer;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
 
@@ -36,15 +35,14 @@ import java.io.Serializable;
 public class ApplicationProcessState implements Serializable {
 
     @JsonProperty(value = "_id")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    @JsonSerialize(using = ObjectIdSerializer.class, include = JsonSerialize.Inclusion.NON_NULL)
     @JsonDeserialize(using = ObjectIdDeserializer.class)
-    @JsonSerialize(using = ObjectIdSerializer.class)
     private org.bson.types.ObjectId id;
 
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private String oid;
 
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private String status;
 
     @JsonCreator

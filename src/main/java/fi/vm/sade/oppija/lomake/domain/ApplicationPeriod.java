@@ -16,8 +16,8 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.*;

@@ -1,6 +1,6 @@
 package fi.vm.sade.oppija.hakemus.resource;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * Error message object that is provided to a client in case an API invocation results

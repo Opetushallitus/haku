@@ -16,8 +16,8 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * @author Hannu Lyytikainen

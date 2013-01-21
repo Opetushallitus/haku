@@ -18,7 +18,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Text extends Element {
 

@@ -16,11 +16,11 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import org.bson.types.ObjectId;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.JsonSerializer;
+import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
@@ -29,7 +29,7 @@ import java.io.IOException;
  * @version 9/11/1210:50 AM}
  * @since 1.1
  */
-public class ObjectIdSerializer extends JsonSerializer<org.bson.types.ObjectId> {
+public class ObjectIdSerializer extends JsonSerializer<ObjectId> {
     @Override
     public void serialize(ObjectId objectId, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
         jsonGenerator.writeObject(objectId);

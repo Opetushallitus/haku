@@ -16,13 +16,16 @@
 
 package fi.vm.sade.oppija.hakemus.domain;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.oppija.lomake.domain.ObjectIdSerializer;
 import fi.vm.sade.oppija.lomake.domain.User;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -33,7 +36,7 @@ import java.util.Map;
  * @version 9/26/122:48 PM}
  * @since 1.1
  */
-@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Application implements Serializable {
 
@@ -42,9 +45,8 @@ public class Application implements Serializable {
 
 
     @JsonProperty(value = "_id")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = ObjectIdSerializer.class)
     @JsonDeserialize(using = ObjectIdDeserializer.class)
-    @JsonSerialize(using = ObjectIdSerializer.class)
     private org.bson.types.ObjectId id;
 
     private String oid;

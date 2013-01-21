@@ -18,12 +18,12 @@
 
 package fi.vm.sade.oppija.application.process.converter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Function;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 
 import java.util.Map;
 
@@ -35,7 +35,7 @@ public class ApplicationProcessStateToDBObject implements Function<ApplicationPr
     @Override
     public DBObject apply(final ApplicationProcessState applicationProcessState) {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
         Map map = mapper.convertValue(applicationProcessState, Map.class);
         return new BasicDBObject(map);
     }

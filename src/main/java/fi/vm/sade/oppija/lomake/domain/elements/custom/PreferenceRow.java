@@ -16,10 +16,10 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.vm.sade.oppija.lomake.domain.Attribute;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Map;
 

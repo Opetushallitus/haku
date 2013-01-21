@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * @author jukka

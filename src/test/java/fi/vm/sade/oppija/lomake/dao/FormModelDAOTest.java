@@ -16,8 +16,6 @@
 
 package fi.vm.sade.oppija.lomake.dao;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
@@ -28,6 +26,8 @@ import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.tools.FileHandling;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -116,7 +116,7 @@ public class FormModelDAOTest extends AbstractDAOTest {
 
     private String serialize(FormModel model) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
         final StringWriter w = new StringWriter();
         mapper.writeValue(w, model);
         return w.toString();

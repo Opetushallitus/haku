@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.UUID;
 

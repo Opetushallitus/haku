@@ -16,10 +16,9 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -35,13 +34,12 @@ public class FormModel implements Serializable {
 
     private static final long serialVersionUID = -530066716898062722L;
 
-    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
     final Map<String, ApplicationPeriod> applicationPerioidMap;
 
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = ObjectIdSerializer.class)
     @JsonProperty(value = "_id")
     @JsonDeserialize(using = ObjectIdDeserializer.class)
-    @JsonSerialize(using = ObjectIdSerializer.class)
     private org.bson.types.ObjectId id;
 
     public FormModel() {
