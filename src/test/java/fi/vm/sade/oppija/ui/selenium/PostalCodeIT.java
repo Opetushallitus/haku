@@ -59,7 +59,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         testivaihe.addChild(testiRyhma);
         Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
         postOffices.put("00100", new PostOffice("Helsinki"));
-        PostalCode postinumero = new PostalCode("postinumero", "postinumero", postOffices);
+        PostalCode postinumero = new PostalCode("postinumero1", "postinumero", postOffices);
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
@@ -77,9 +77,10 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         final String url = "lomake/test/lomake/testivaihe";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + "/" + url);
-        driver.findElement(By.id("postinumero"));
+        driver.findElement(By.id("postinumero1"));
         Selenium s = seleniumHelper.getSelenium();
-        s.typeKeys("postinumero", "00100");
+        s.typeKeys("postinumero1", "00100");
+
         driver.findElement(By.id("foo"));
         s.typeKeys("foo", "bar");
         assertTrue(seleniumHelper.getSelenium().isTextPresent("Helsinki"));
