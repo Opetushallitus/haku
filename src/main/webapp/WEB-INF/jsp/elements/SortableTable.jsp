@@ -55,8 +55,8 @@
         contextPath: "${pageContext.request.contextPath}",
         applicationPeriodId: "${it.hakemusId.applicationPeriodId}",
         formId: "${it.hakemusId.formId}",
-        vaiheId: "${it.vaihe.id}",
-        teemaId: "${it.parent.id}"
+        vaiheId: "${vaihe.id}",
+        teemaId: "${parent.id}"
     }
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/sortabletable.js"></script>
