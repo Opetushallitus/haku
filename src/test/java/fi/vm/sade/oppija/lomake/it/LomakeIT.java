@@ -43,21 +43,22 @@ public class LomakeIT extends AbstractSeleniumBase {
         FormModel model = this.model;
         initModel(model);
     }
-
+    
     @Test
     public void submitApplication() throws Exception {
         WebDriver driver = seleniumHelper.getDriver();
         Selenium selenium = seleniumHelper.getSelenium();
         driver.get(getBaseUrl() + "/lomake/");
+        selenium.setSpeed("3000");
         driver.findElement(new By.ById("Yhteishaku")).click();
         driver.findElement(new By.ById("yhteishaku")).click();
         selenium.typeKeys("Sukunimi", "Ankka");
         selenium.typeKeys("Etunimet", "Aku Kalle");
         selenium.typeKeys("Kutsumanimi", "A");
-        selenium.typeKeys("Henkilotunnus", "150520-1111");
+        selenium.typeKeys("Henkilotunnus", "150520-111E");
         selenium.typeKeys("Sähköposti", "aku.ankka@ankkalinna.al");
         selenium.typeKeys("matkapuhelinnumero", "0501000100");
-
+        
         driver.findElement(new By.ByClassName("right")).click();
 
         driver.findElement(new By.ByClassName("notification"));
