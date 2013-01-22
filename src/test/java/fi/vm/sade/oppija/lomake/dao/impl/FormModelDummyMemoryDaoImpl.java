@@ -402,9 +402,20 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         Radio peruskoulu2012 = new Radio("peruskoulu2012", "Saatko peruskoulun päättötodistuksen hakukeväänä 2012?");
         peruskoulu2012.addOption("kylla", "Kyllä", "Kyllä");
-        peruskoulu2012.addOption("ei", "Ei", "en, olen saanut päättötodistuksen jo aiemmin, vuonna");
+        peruskoulu2012.addOption("ei", "Ei", "En");
         peruskoulu2012.addAttribute("required", "required");
         peruskoulu2012.setVerboseHelp(getVerboseHelp());
+
+        TextQuestion paattotodistusvuosi = new TextQuestion("päättötodistusvuosi", "Olen saanut päättötodistuksen jo aiemmin, vuonna");
+        paattotodistusvuosi.addAttribute("placeholder", "vvvv");
+        paattotodistusvuosi.addAttribute("required", "required");
+        paattotodistusvuosi.addAttribute("pattern", "^([1][9]\\d\\d|200[0-9]|201[0-1])$");
+        paattotodistusvuosi.addAttribute("size", "4");
+        paattotodistusvuosi.addAttribute("maxlength", "4");
+
+        RelatedQuestionRule rule = new RelatedQuestionRule("rule6", peruskoulu2012.getId(), peruskoulu2012.getOptions().get(1).getValue());
+        rule.addChild(paattotodistusvuosi);
+        peruskoulu2012.addChild(rule);
 
         DropdownSelect tutkinnonOpetuskieli = new DropdownSelect("opetuskieli", "Mikä oli tukintosi opetuskieli");
         tutkinnonOpetuskieli.addOption("suomi", "Suomi", "Suomi");

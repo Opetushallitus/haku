@@ -2,8 +2,8 @@
   "applicationPerioidMap": {
     "Yhteishaku": {
       "id": "Yhteishaku",
-      "starts": 1358437097971,
-      "end": 1389973097971,
+      "starts": 1358852931922,
+      "end": 1390388931922,
       "forms": {
         "yhteishaku": {
           "type": "Form",
@@ -863,7 +863,67 @@
                               "type": "Radio",
                               "id": "peruskoulu2012",
                               "title": "Saatko peruskoulun päättötodistuksen hakukeväänä 2012?",
-                              "children": [],
+                              "children": [
+                                {
+                                  "type": "RelatedQuestionRule",
+                                  "id": "rule6",
+                                  "relatedElementId": "peruskoulu2012",
+                                  "expression": "Ei",
+                                  "children": [
+                                    {
+                                      "type": "TextQuestion",
+                                      "id": "päättötodistusvuosi",
+                                      "title": "Olen saanut päättötodistuksen jo aiemmin, vuonna",
+                                      "children": [],
+                                      "attributes": {
+                                        "id": {
+                                          "type": "Attribute",
+                                          "key": "id",
+                                          "value": "päättötodistusvuosi"
+                                        },
+                                        "maxlength": {
+                                          "type": "Attribute",
+                                          "key": "maxlength",
+                                          "value": "4"
+                                        },
+                                        "pattern": {
+                                          "type": "Attribute",
+                                          "key": "pattern",
+                                          "value": "^([1][9]\\d\\d|200[0-9]|201[0-1])$"
+                                        },
+                                        "placeholder": {
+                                          "type": "Attribute",
+                                          "key": "placeholder",
+                                          "value": "vvvv"
+                                        },
+                                        "name": {
+                                          "type": "Attribute",
+                                          "key": "name",
+                                          "value": "päättötodistusvuosi"
+                                        },
+                                        "required": {
+                                          "type": "Attribute",
+                                          "key": "required",
+                                          "value": "required"
+                                        },
+                                        "type": {
+                                          "type": "Attribute",
+                                          "key": "type",
+                                          "value": "text"
+                                        },
+                                        "size": {
+                                          "type": "Attribute",
+                                          "key": "size",
+                                          "value": "4"
+                                        }
+                                      },
+                                      "inline": false
+                                    }
+                                  ],
+                                  "attributes": {},
+                                  "childById": {}
+                                }
+                              ],
                               "attributes": {
                                 "id": {
                                   "type": "Attribute",
@@ -902,7 +962,7 @@
                                   "type": "Option",
                                   "id": "peruskoulu2012_ei",
                                   "value": "Ei",
-                                  "title": "en, olen saanut päättötodistuksen jo aiemmin, vuonna",
+                                  "title": "En",
                                   "children": [],
                                   "attributes": {
                                     "id": {
@@ -3335,7 +3395,67 @@
                               "type": "Radio",
                               "id": "peruskoulu2012",
                               "title": "Saatko peruskoulun päättötodistuksen hakukeväänä 2012?",
-                              "children": [],
+                              "children": [
+                                {
+                                  "type": "RelatedQuestionRule",
+                                  "id": "rule6",
+                                  "relatedElementId": "peruskoulu2012",
+                                  "expression": "Ei",
+                                  "children": [
+                                    {
+                                      "type": "TextQuestion",
+                                      "id": "päättötodistusvuosi",
+                                      "title": "Olen saanut päättötodistuksen jo aiemmin, vuonna",
+                                      "children": [],
+                                      "attributes": {
+                                        "id": {
+                                          "type": "Attribute",
+                                          "key": "id",
+                                          "value": "päättötodistusvuosi"
+                                        },
+                                        "maxlength": {
+                                          "type": "Attribute",
+                                          "key": "maxlength",
+                                          "value": "4"
+                                        },
+                                        "pattern": {
+                                          "type": "Attribute",
+                                          "key": "pattern",
+                                          "value": "^([1][9]\\d\\d|200[0-9]|201[0-1])$"
+                                        },
+                                        "placeholder": {
+                                          "type": "Attribute",
+                                          "key": "placeholder",
+                                          "value": "vvvv"
+                                        },
+                                        "name": {
+                                          "type": "Attribute",
+                                          "key": "name",
+                                          "value": "päättötodistusvuosi"
+                                        },
+                                        "required": {
+                                          "type": "Attribute",
+                                          "key": "required",
+                                          "value": "required"
+                                        },
+                                        "type": {
+                                          "type": "Attribute",
+                                          "key": "type",
+                                          "value": "text"
+                                        },
+                                        "size": {
+                                          "type": "Attribute",
+                                          "key": "size",
+                                          "value": "4"
+                                        }
+                                      },
+                                      "inline": false
+                                    }
+                                  ],
+                                  "attributes": {},
+                                  "childById": {}
+                                }
+                              ],
                               "attributes": {
                                 "id": {
                                   "type": "Attribute",
@@ -3374,7 +3494,7 @@
                                   "type": "Option",
                                   "id": "peruskoulu2012_ei",
                                   "value": "Ei",
-                                  "title": "en, olen saanut päättötodistuksen jo aiemmin, vuonna",
+                                  "title": "En",
                                   "children": [],
                                   "attributes": {
                                     "id": {
