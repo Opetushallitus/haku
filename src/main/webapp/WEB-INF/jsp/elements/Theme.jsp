@@ -9,7 +9,7 @@
     <hr/>
     <div class="theme-help">
     	<div class="help-text"><c:out value="${element.help}"/></div>
-    	<a href="${category.id}/${element.id}/help" target="_blank" class="helplink">?</a>
+    	<a href="${vaihe.id}/${element.id}/help" target="_blank" class="helplink">?</a>
     </div>
     <haku:viewChilds element="${element}"/>
 </fieldset>
