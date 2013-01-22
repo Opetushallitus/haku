@@ -46,9 +46,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private final EncrypterService shaEncrypter;
 
-    private static final String AO_PHASE = "";
-
-
+    private static final String FIELD_AO_1 = "vastaukset.hakutoiveet.preference1-Koulutus-id";
+    private static final String FIELD_AO_2 = "vastaukset.hakutoiveet.preference2-Koulutus-id";
+    private static final String FIELD_AO_3 = "vastaukset.hakutoiveet.preference3-Koulutus-id";
+    private static final String FIELD_AO_4 = "vastaukset.hakutoiveet.preference4-Koulutus-id";
+    private static final String FIELD_AO_5 = "vastaukset.hakutoiveet.preference5-Koulutus-id";
 
     @Autowired
     public ApplicationDAOMongoImpl(DBObjectToApplicationFunction dbObjectToHakemusConverter, ApplicationToDBObjectFunction hakemusToBasicDBObjectConverter,
@@ -105,17 +107,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     public List<Application> findByApplicationOption(String aoId) {
 
-        // TODO: resolve automatically
-        String aoPhaseId = "hakutoiveet";
-        String aoReq1 = "preference1-Koulutus-id";
-        String aoReq2 = "preference2-Koulutus-id";
-        String aoReq3 = "preference3-Koulutus-id";
-        String aoReq4 = "preference4-Koulutus-id";
-        String aoReq5 = "preference5-Koulutus-id";
-
         DBObject query = QueryBuilder.start().or(
-            QueryBuilder.start("vastaukset.hakutoiveet.preference1-Koulutus-id").is(aoId).get(),
-            QueryBuilder.start("vastaukset.hakutoiveet.preference2-Koulutus-id").is(aoId).get()
+            QueryBuilder.start(FIELD_AO_1).is(aoId).get(),
+            QueryBuilder.start(FIELD_AO_2).is(aoId).get(),
+            QueryBuilder.start(FIELD_AO_3).is(aoId).get(),
+            QueryBuilder.start(FIELD_AO_4).is(aoId).get(),
+            QueryBuilder.start(FIELD_AO_5).is(aoId).get()
         ).get();
 
         return findApplications(query);
