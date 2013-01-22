@@ -33,7 +33,7 @@ public class ApplicationResourceTest {
     private final String OID = "1.2.3.4.5.100";
     private final String INVALID_OID = "1.2.3.4.5.999";
     private final String ASID = "yhteishaku";
-    private final String AOID = "S1508";
+    private final String AOID = "776";
 
     @Before
     public void setUp() {

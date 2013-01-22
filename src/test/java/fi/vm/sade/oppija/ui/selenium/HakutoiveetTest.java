@@ -64,10 +64,10 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
 
-        TextQuestion textQuestion = new TextQuestion("S1514_additional_question_1", "Lorem ipsum");
+        TextQuestion textQuestion = new TextQuestion("776_additional_question_1", "Lorem ipsum");
         List<Question> lisakysymysList = new ArrayList<Question>();
         lisakysymysList.add(textQuestion);
-        lisakysymysMap.put("S1508", lisakysymysList);
+        lisakysymysMap.put("776", lisakysymysList);
         applicationPeriod.addForm(form);
 
         Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", "Hakutoiveet", lisakysymysMap);
@@ -85,7 +85,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         TextQuestion lisakysymys = new TextQuestion("lisakysymys", "Lisäkysymys");
         Theme lisakysymyksetRyhma = new Theme("lisakysymyksetGrp", "Lisäkysymykset", null);
         lisakysymykset.addChild(lisakysymyksetRyhma);
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", "preference1-Koulutus-id", "S1514");
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", "preference1-Koulutus-id", "776");
         relatedQuestionRule.addChild(lisakysymys);
         lisakysymyksetRyhma.addChild(relatedQuestionRule);
 
@@ -105,7 +105,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Hel");
         driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
-        driver.findElement(By.xpath("//option[@value='Sosiaali- ja terveysalan perustutkinto, pk']")).click();
+        driver.findElement(By.xpath("//option[@value='Ensihoidon koulutusohjelma, yo']")).click();
         //driver.findElement(By.id("P1_additional_question_1"));
     }
 

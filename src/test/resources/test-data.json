@@ -1266,29 +1266,29 @@
                   "id": "hakutoiveetGrp",
                   "title": "Hakutoiveet",
                   "additionalQuestions": {
-                    "S1508": [
+                    "776": [
                       {
                         "type": "Radio",
-                        "id": "S1508_additional_question_1",
+                        "id": "776_additional_question_1",
                         "title": "Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?",
                         "children": [],
                         "attributes": {
                           "id": {
                             "type": "Attribute",
                             "key": "id",
-                            "value": "S1508_additional_question_1"
+                            "value": "776_additional_question_1"
                           },
                           "name": {
                             "type": "Attribute",
                             "key": "name",
-                            "value": "S1508_additional_question_1"
+                            "value": "776_additional_question_1"
                           }
                         },
                         "inline": false,
                         "options": [
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_1_S1508_q1_option_1",
+                            "id": "776_additional_question_1_776_q1_option_1",
                             "value": "q1_option_1",
                             "title": "Ei",
                             "children": [],
@@ -1296,13 +1296,13 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_1_S1508_q1_option_1"
+                                "value": "776_additional_question_1_776_q1_option_1"
                               }
                             }
                           },
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_1_S1508_q1_option_2",
+                            "id": "776_additional_question_1_776_q1_option_2",
                             "value": "q1_option_2",
                             "title": "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi",
                             "children": [],
@@ -1310,7 +1310,7 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_1_S1508_q1_option_2"
+                                "value": "776_additional_question_1_776_q1_option_2"
                               }
                             }
                           }
@@ -1318,26 +1318,26 @@
                       },
                       {
                         "type": "Radio",
-                        "id": "S1508_additional_question_2",
+                        "id": "776_additional_question_2",
                         "title": "Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?",
                         "children": [],
                         "attributes": {
                           "id": {
                             "type": "Attribute",
                             "key": "id",
-                            "value": "S1508_additional_question_2"
+                            "value": "776_additional_question_2"
                           },
                           "name": {
                             "type": "Attribute",
                             "key": "name",
-                            "value": "S1508_additional_question_2"
+                            "value": "776_additional_question_2"
                           }
                         },
                         "inline": false,
                         "options": [
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_2_S1508_q2_option_1",
+                            "id": "776_additional_question_2_776_q2_option_1",
                             "value": "q2_option_1",
                             "title": "Ei",
                             "children": [],
@@ -1345,13 +1345,13 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_2_S1508_q2_option_1"
+                                "value": "776_additional_question_2_776_q2_option_1"
                               }
                             }
                           },
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_2_S1508_q2_option_2",
+                            "id": "776_additional_question_2_776_q2_option_2",
                             "value": "q2_option_2",
                             "title": "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi",
                             "children": [],
@@ -1359,7 +1359,7 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_2_S1508_q2_option_2"
+                                "value": "776_additional_question_2_776_q2_option_2"
                               }
                             }
                           }
@@ -1367,26 +1367,26 @@
                       },
                       {
                         "type": "Radio",
-                        "id": "S1508_additional_question_3",
+                        "id": "776_additional_question_3",
                         "title": "Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?",
                         "children": [],
                         "attributes": {
                           "id": {
                             "type": "Attribute",
                             "key": "id",
-                            "value": "S1508_additional_question_3"
+                            "value": "776_additional_question_3"
                           },
                           "name": {
                             "type": "Attribute",
                             "key": "name",
-                            "value": "S1508_additional_question_3"
+                            "value": "776_additional_question_3"
                           }
                         },
                         "inline": false,
                         "options": [
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_3_S1508_q3_option_1",
+                            "id": "776_additional_question_3_776_q3_option_1",
                             "value": "q3_option_1",
                             "title": "En, en ole osallistunut pääsykokeeseen",
                             "children": [],
@@ -1394,13 +1394,13 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_3_S1508_q3_option_1"
+                                "value": "776_additional_question_3_776_q3_option_1"
                               }
                             }
                           },
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_3_S1508_q3_option_2",
+                            "id": "776_additional_question_3_776_q3_option_2",
                             "value": "q3_option_2",
                             "title": "Ei, en halua käyttää tuloksia",
                             "children": [],
@@ -1408,13 +1408,13 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_3_S1508_q3_option_2"
+                                "value": "776_additional_question_3_776_q3_option_2"
                               }
                             }
                           },
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_3_S1508_q3_option_3",
+                            "id": "776_additional_question_3_776_q3_option_3",
                             "value": "q3_option_3",
                             "title": "Kyllä, haluan käyttää pääsykoetuloksia",
                             "children": [],
@@ -1422,7 +1422,7 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_3_S1508_q3_option_3"
+                                "value": "776_additional_question_3_776_q3_option_3"
                               }
                             }
                           }
@@ -1590,7 +1590,7 @@
                   "id": "arvosanatGrp",
                   "title": "Arvosanat",
                   "additionalQuestions": {
-                    "S1508": [
+                    "776": [
                       {
                         "type": "SubjectRow",
                         "id": "tietotekniikka",
@@ -3729,29 +3729,29 @@
                   "id": "hakutoiveetGrp",
                   "title": "Hakutoiveet",
                   "additionalQuestions": {
-                    "S1508": [
+                    "776": [
                       {
                         "type": "Radio",
-                        "id": "S1508_additional_question_1",
+                        "id": "776_additional_question_1",
                         "title": "Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?",
                         "children": [],
                         "attributes": {
                           "id": {
                             "type": "Attribute",
                             "key": "id",
-                            "value": "S1508_additional_question_1"
+                            "value": "776_additional_question_1"
                           },
                           "name": {
                             "type": "Attribute",
                             "key": "name",
-                            "value": "S1508_additional_question_1"
+                            "value": "776_additional_question_1"
                           }
                         },
                         "inline": false,
                         "options": [
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_1_S1508_q1_option_1",
+                            "id": "776_additional_question_1_776_q1_option_1",
                             "value": "q1_option_1",
                             "title": "Ei",
                             "children": [],
@@ -3759,13 +3759,13 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_1_S1508_q1_option_1"
+                                "value": "776_additional_question_1_776_q1_option_1"
                               }
                             }
                           },
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_1_S1508_q1_option_2",
+                            "id": "776_additional_question_1_776_q1_option_2",
                             "value": "q1_option_2",
                             "title": "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi",
                             "children": [],
@@ -3773,7 +3773,7 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_1_S1508_q1_option_2"
+                                "value": "776_additional_question_1_776_q1_option_2"
                               }
                             }
                           }
@@ -3781,26 +3781,26 @@
                       },
                       {
                         "type": "Radio",
-                        "id": "S1508_additional_question_2",
+                        "id": "776_additional_question_2",
                         "title": "Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?",
                         "children": [],
                         "attributes": {
                           "id": {
                             "type": "Attribute",
                             "key": "id",
-                            "value": "S1508_additional_question_2"
+                            "value": "776_additional_question_2"
                           },
                           "name": {
                             "type": "Attribute",
                             "key": "name",
-                            "value": "S1508_additional_question_2"
+                            "value": "776_additional_question_2"
                           }
                         },
                         "inline": false,
                         "options": [
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_2_S1508_q2_option_1",
+                            "id": "776_additional_question_2_776_q2_option_1",
                             "value": "q2_option_1",
                             "title": "Ei",
                             "children": [],
@@ -3808,13 +3808,13 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_2_S1508_q2_option_1"
+                                "value": "776_additional_question_2_776_q2_option_1"
                               }
                             }
                           },
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_2_S1508_q2_option_2",
+                            "id": "776_additional_question_2_776_q2_option_2",
                             "value": "q2_option_2",
                             "title": "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi",
                             "children": [],
@@ -3822,7 +3822,7 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_2_S1508_q2_option_2"
+                                "value": "776_additional_question_2_776_q2_option_2"
                               }
                             }
                           }
@@ -3830,26 +3830,26 @@
                       },
                       {
                         "type": "Radio",
-                        "id": "S1508_additional_question_3",
+                        "id": "776_additional_question_3",
                         "title": "Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?",
                         "children": [],
                         "attributes": {
                           "id": {
                             "type": "Attribute",
                             "key": "id",
-                            "value": "S1508_additional_question_3"
+                            "value": "776_additional_question_3"
                           },
                           "name": {
                             "type": "Attribute",
                             "key": "name",
-                            "value": "S1508_additional_question_3"
+                            "value": "776_additional_question_3"
                           }
                         },
                         "inline": false,
                         "options": [
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_3_S1508_q3_option_1",
+                            "id": "776_additional_question_3_776_q3_option_1",
                             "value": "q3_option_1",
                             "title": "En, en ole osallistunut pääsykokeeseen",
                             "children": [],
@@ -3857,13 +3857,13 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_3_S1508_q3_option_1"
+                                "value": "776_additional_question_3_776_q3_option_1"
                               }
                             }
                           },
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_3_S1508_q3_option_2",
+                            "id": "776_additional_question_3_776_q3_option_2",
                             "value": "q3_option_2",
                             "title": "Ei, en halua käyttää tuloksia",
                             "children": [],
@@ -3871,13 +3871,13 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_3_S1508_q3_option_2"
+                                "value": "776_additional_question_3_776_q3_option_2"
                               }
                             }
                           },
                           {
                             "type": "Option",
-                            "id": "S1508_additional_question_3_S1508_q3_option_3",
+                            "id": "776_additional_question_3_776_q3_option_3",
                             "value": "q3_option_3",
                             "title": "Kyllä, haluan käyttää pääsykoetuloksia",
                             "children": [],
@@ -3885,7 +3885,7 @@
                               "id": {
                                 "type": "Attribute",
                                 "key": "id",
-                                "value": "S1508_additional_question_3_S1508_q3_option_3"
+                                "value": "776_additional_question_3_776_q3_option_3"
                               }
                             }
                           }
@@ -4044,7 +4044,7 @@
                   "id": "arvosanatGrp",
                   "title": "Arvosanat",
                   "additionalQuestions": {
-                    "S1508": [
+                    "776": [
                       {
                         "type": "SubjectRow",
                         "id": "tietotekniikka",

@@ -71,10 +71,10 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         List<Question> oppiaineList = new ArrayList<Question>();
         oppiaineList.add(new SubjectRow("tietotekniikka", "Tietotekniikka"));
         oppiaineList.add(new SubjectRow("kansantaloustiede", "Kansantaloustiede"));
-        oppiaineMap.put("S1508", oppiaineList);
+        oppiaineMap.put("776", oppiaineList);
 
 
-        final String id = "S1508";
+        final String id = "776";
         Radio radio = new Radio(id + "_additional_question_1", "Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?");
         radio.addOption(id + "_q1_option_1", "q1_option_1", "Ei");
         radio.addOption(id + "_q1_option_2", "q1_option_2", "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi");

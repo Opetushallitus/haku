@@ -29,12 +29,12 @@ public class ApplicationIT extends AbstractRemoteTest {
     @Autowired
     TestDBFactoryBean dbFactory;
 
-    protected static DBObject applicationTestDataObject;
+    protected static List<DBObject> applicationTestDataObject;
 
     @BeforeClass
     public static void readTestData() {
         String content = new FileHandling().readFile(getSystemResourceAsStream("application-test-data.json"));
-        applicationTestDataObject = (DBObject) JSON.parse(content);
+        applicationTestDataObject = (List<DBObject>) JSON.parse(content);
     }
 
     @Before
@@ -49,12 +49,12 @@ public class ApplicationIT extends AbstractRemoteTest {
 
     @Test
     public void testFindByApplicationOption() throws IOException {
-        beginAt("applications?aoid=S1508");
+        beginAt("applications?aoid=776");
         String response = getPageSource();
 
         ObjectMapper mapper = new ObjectMapper();
         List<Application> applications = mapper.readValue(response, new TypeReference<List<Application>>() { });
-        assertEquals(1, applications.size());
+        assertEquals(2, applications.size());
     }
 
     @Test

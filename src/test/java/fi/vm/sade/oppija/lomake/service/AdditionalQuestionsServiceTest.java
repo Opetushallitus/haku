@@ -59,7 +59,7 @@ public class AdditionalQuestionsServiceTest {
     private ApplicationService createHakemusServiceMock() {
         ApplicationService applicationService = mock(ApplicationServiceImpl.class);
         Map<String, String> values = new HashMap<String, String>();
-        values.put("preference1-Koulutus-id", "S1508");
+        values.put("preference1-Koulutus-id", "776");
         Application application = new Application(FORM_ID, TESTUSER);
         application.addVaiheenVastaukset("hakutoiveet", values);
 

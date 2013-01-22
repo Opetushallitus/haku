@@ -55,13 +55,14 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
     private FormId formId;
 
-    protected static DBObject applicationTestDataObject;
+    protected static List<DBObject> applicationTestDataObject;
+
 
     @BeforeClass
     public static void readTestData() {
 
         String content = new FileHandling().readFile(getSystemResourceAsStream("application-test-data.json"));
-        applicationTestDataObject = (DBObject) JSON.parse(content);
+        applicationTestDataObject = (List<DBObject>) JSON.parse(content);
 
     }
 
@@ -108,9 +109,8 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
     @Test
     public void testFindByApplicationOption() {
-        List<Application> applications = applicationDAO.findByApplicationOption("S1508");
-        assertEquals(1, applications.size());
-
+        List<Application> applications = applicationDAO.findByApplicationOption("776");
+        assertEquals(2, applications.size());
     }
 
     @Override

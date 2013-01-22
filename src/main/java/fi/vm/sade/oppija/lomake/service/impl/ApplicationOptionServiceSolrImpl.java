@@ -65,7 +65,7 @@ public class ApplicationOptionServiceSolrImpl implements ApplicationOptionServic
         List<ApplicationOption> hakukohteet = new ArrayList<ApplicationOption>(search.getSize());
         List<Map<String, Object>> items = search.getItems();
         for (Map<String, Object> item : items) {
-            hakukohteet.add(new ApplicationOption((String) item.get("LOSId"), (String) item.get("AOTitle")));
+            hakukohteet.add(new ApplicationOption((String) item.get("AOId"), (String) item.get("AOTitle")));
         }
         return hakukohteet;
     }
