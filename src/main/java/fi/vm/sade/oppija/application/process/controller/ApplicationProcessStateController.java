@@ -41,21 +41,21 @@ public class ApplicationProcessStateController {
 
     @GET
     @Path("{oid:.+}")
-    public ApplicationProcessState getApplicationProcessState(final @PathParam("oid") String oid) {
+    public ApplicationProcessState getApplicationProcessState(@PathParam("oid") final String oid) {
         LOGGER.debug("getApplicationProcessState oid {}", oid);
         return applicationProcessStateService.get(oid);
     }
 
     @PUT
     @Path("/active/{oid:.+}")
-    public void putToActiveProcessStates(final @PathParam("oid") String oid) {
+    public void putToActiveProcessStates(@PathParam("oid") final String oid) {
         LOGGER.debug("put to active process state oid {}", oid);
         applicationProcessStateService.setApplicationProcessStateStatus(oid, ApplicationProcessStateStatus.ACTIVE);
     }
 
     @PUT
     @Path("/cancelled/{oid:.+}")
-    public void putToCancelledProcessStates(final @PathParam("oid") String oid) {
+    public void putToCancelledProcessStates(@PathParam("oid") final String oid) {
         LOGGER.debug("put to cancelled process state oid {}", oid);
         applicationProcessStateService.setApplicationProcessStateStatus(oid, ApplicationProcessStateStatus.CANCELLED);
     }
