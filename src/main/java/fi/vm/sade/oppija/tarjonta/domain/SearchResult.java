@@ -32,9 +32,9 @@ public class SearchResult {
             map.put("LOIIndexes", loids);
             final HashMap<String, String> los = new HashMap<String, String>();
             // SolrDocument ei implementoi entrySet()-metodia! java.lang.UnsupportedOperationException
-            for (String key : result.keySet()) { //NOSONAR
+            for (String key : result.keySet()) { 
                 if (key.startsWith("LOS") || key.startsWith("LOP") || key.startsWith("LOI")) {
-                    final Collection<Object> objects = result.get(key);
+                    final Collection<Object> objects = result.get(key); //NOSONAR
                     int k = 0;
                     for (Object object : objects) {
                         los.put(k + "-" + key, object.toString());
