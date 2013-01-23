@@ -2,8 +2,8 @@
   "applicationPerioidMap": {
     "Yhteishaku": {
       "id": "Yhteishaku",
-      "starts": 1358856713688,
-      "end": 1390392713688,
+      "starts": 1358931323676,
+      "end": 1390467323676,
       "forms": {
         "yhteishaku": {
           "type": "Form",

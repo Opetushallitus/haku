@@ -16,22 +16,22 @@
 
 package fi.vm.sade.oppija.lomake.tools;
 
-import fi.vm.sade.oppija.lomake.converter.FormModelToJsonString;
-import fi.vm.sade.oppija.lomake.converter.FormModelToMap;
-import fi.vm.sade.oppija.lomake.dao.FormModelDAO;
-import fi.vm.sade.oppija.lomake.dao.impl.FormModelDAOMongoImpl;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.lomake.domain.FormModelFactory;
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import fi.vm.sade.oppija.lomake.converter.FormModelToJsonString;
+import fi.vm.sade.oppija.lomake.dao.FormModelDAO;
+import fi.vm.sade.oppija.lomake.dao.impl.FormModelDAOMongoImpl;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.FormModelFactory;
 
 public class CommandExecutor {
     public static final Logger LOG = LoggerFactory.getLogger(CommandLineTooling.class);
@@ -81,7 +81,6 @@ public class CommandExecutor {
     }
 
     protected void export(File file) {
-        System.out.println(new FormModelToMap().apply(new FormModel()));
         final FormModel model = getService().find(new FormModel()).get(0);
         final String contentAsString = new FormModelToJsonString().apply(model);
         final String filename = createFilename(file, model);

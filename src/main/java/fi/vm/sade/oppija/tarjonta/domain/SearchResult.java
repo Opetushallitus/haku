@@ -31,8 +31,8 @@ public class SearchResult {
             final ArrayList<String> loids = new ArrayList<String>();
             map.put("LOIIndexes", loids);
             final HashMap<String, String> los = new HashMap<String, String>();
-            // SolrDocument eu implementoi entrySet()-metodia! java.lang.UnsupportedOperationException
-            for (String key : result.keySet()) {
+            // SolrDocument ei implementoi entrySet()-metodia! java.lang.UnsupportedOperationException
+            for (String key : result.keySet()) { //NOSONAR
                 if (key.startsWith("LOS") || key.startsWith("LOP") || key.startsWith("LOI")) {
                     final Collection<Object> objects = result.get(key);
                     int k = 0;
