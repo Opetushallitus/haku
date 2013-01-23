@@ -56,7 +56,8 @@
 </head>
 <body>
 <div id="viewport">
-<div id="overlay" style="display: none;">
+<div id="overlay">
+
 </div>
 <div id="wrapper">
 <header id="siteheader">
@@ -445,7 +446,102 @@
 </section>
 
 <section id="lisatiedot" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="lisatiedot">
-    <h1>Kelpoisuus ja liitteet</h1>
+    <h3>1. Hakutoive: Ehdollisesti valmis (odottaa liitettä)</h3>
+                    <form>
+                        <div class="offset-left-16-4 width-50">
+                            
+                            <h4>Kemian-, bio- ja materiaalitekniikka <a href="#" class="padding-left-4">valintaperustekuvaus</a></h4>
+                            <div class="margin-top-2">
+                                <input type="checkbox" id="korkeakoulukelpoisuus1" />
+                                <label for="korkeakoulukelpoisuus1" class="width-40 padding-left-2 inline-block vertical-align-middle">Korkeakoulukelpoisuus</label>
+                                <select class="width-50 inline-block" name="korkeakoulukelpoisuus1" id="korkeakoulukelpoisuus1">
+                                    <option value="choose">Valitse</option>
+                                    <option value="korkeakoulukelpoinen">Korkeakoulukelpoinen (rekisteri)</option>
+                                </select>
+                            </div>
+                            <div class="margin-top-2">
+                                <input type="checkbox" id="kielitaito" />
+                                <label for="kielitaito" class="width-40 padding-left-2 inline-block vertical-align-middle">Kielitaito</label>
+                                <select class="width-50 inline-block" name="kielitaito" id="kielitaito">
+                                    <option value="choose">Valitse</option>
+                                    <option value="riittamaton">Riittämätön kielitaito</option>
+                                </select>
+                            </div>
+                            <div class="margin-top-2">
+                                <input type="checkbox" id="ennakkotehtava" />
+                                <label for="ennakkotehtava" class="width-40 padding-left-2 inline-block">Ennakkotehtävä</label>
+                                <select class="width-50" name="ennakkotehtava" id="ennakkotehtava">
+                                    <option value="choose">Valitse</option>
+                                    <option value="eikelvollinen">Ei korkeakoulukelpoinen</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="width-100 margin-top-4">
+                            <label class="inline-block" for="tila">Hakutoiveen tila: </label>
+                            <select class="inline-block width-20" name="tila" id="tila">
+                                <option value="ehdollisestivalmis">Ehdollisesti valmis</option>
+                                <option value="valmis">Valmis</option>
+                                <option value="odottaaliitetta">Odottaa liitettä</option>
+                            </select>
+                            <select class="inline-block width-20 margin-left-4" name="hylkayksensyy" id="hylkayksensyy">
+                                <option value="riittamaton">Riittämätön</option>
+                                <option value="eikelvollinen">Ei korkeakoulukelpoinen</option>
+                                <option value="puuttuvasuoritus">Puuttuva suoritus tai arvosana</option>
+                            </select>
+                            <a href="#" class="inline-block button small primary margin-left-5">Tallenna</a>
+                        </div>
+
+                    </form>    
+                     <hr />
+                    <div class="clear"></div>
+                    <h3>1. Hakutoive: Ehdollisesti valmis (odottaa liitettä)</h3>
+                    <form>
+                        <div class="offset-left-16-4 width-50">
+                            
+                            <h4>Kemian-, bio- ja materiaalitekniikka <a href="#" class="padding-left-4">valintaperustekuvaus</a></h4>
+                            <div class="margin-top-2">
+                                <input type="checkbox" id="korkeakoulukelpoisuus1" />
+                                <label for="korkeakoulukelpoisuus1" class="width-40 padding-left-2 inline-block vertical-align-middle">Korkeakoulukelpoisuus</label>
+                                <select class="width-50 inline-block" name="korkeakoulukelpoisuus1" id="korkeakoulukelpoisuus1">
+                                    <option value="choose">Valitse</option>
+                                    <option value="korkeakoulukelpoinen">Korkeakoulukelpoinen (rekisteri)</option>
+                                </select>
+                            </div>
+                            <div class="margin-top-2">
+                                <input type="checkbox" id="kielitaito" />
+                                <label for="kielitaito" class="width-40 padding-left-2 inline-block vertical-align-middle">Kielitaito</label>
+                                <select class="width-50 inline-block" name="kielitaito" id="kielitaito">
+                                    <option value="choose">Valitse</option>
+                                    <option value="riittamaton">Riittämätön kielitaito</option>
+                                </select>
+                            </div>
+                            <div class="margin-top-2">
+                                <input type="checkbox" id="ennakkotehtava" />
+                                <label for="ennakkotehtava" class="width-40 padding-left-2 inline-block">Ennakkotehtävä</label>
+                                <select class="width-50" name="ennakkotehtava" id="ennakkotehtava">
+                                    <option value="choose">Valitse</option>
+                                    <option value="eikelvollinen">Ei korkeakoulukelpoinen</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="width-100 margin-top-4">
+                            <label class="inline-block" for="tila">Hakutoiveen tila: </label>
+                            <select class="inline-block width-20" name="tila" id="tila">
+                                <option value="ehdollisestivalmis">Ehdollisesti valmis</option>
+                                <option value="valmis">Valmis</option>
+                                <option value="odottaaliitetta">Odottaa liitettä</option>
+                            </select>
+                            <select class="inline-block width-20 margin-left-4" name="hylkayksensyy" id="hylkayksensyy">
+                                <option value="riittamaton">Riittämätön</option>
+                                <option value="eikelvollinen">Ei korkeakoulukelpoinen</option>
+                                <option value="puuttuvasuoritus">Puuttuva suoritus tai arvosana</option>
+                            </select>
+                            <a href="#" class="inline-block button small primary margin-left-5">Tallenna</a>
+                        </div>
+
+                    </form>    
+                     <hr />
+                    <div class="clear"></div>
 </section>
 <section id="arvosanat" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="arvosanat"
          style="display: block">
