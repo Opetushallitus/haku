@@ -21,9 +21,7 @@ import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -31,7 +29,7 @@ import java.util.regex.Pattern;
 
 /**
  * Validoi suomalaiset henkilötunnukset.
- * 
+ *
  * @author Mikko Majapuro
  * @author jteuho
  */
@@ -44,8 +42,9 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     private static final String ERROR_MESSAGE = "Suomen kansalaisen on syötettävä henkilötunnus";
     private static HashMap<String, Integer> centuries = new HashMap<String, Integer>();
     private static DateFormat fmt = new SimpleDateFormat("ddMMyyyy");
-    private static String[] checks = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", 
-            "D", "E", "F", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T", "U", "V", "W", "X", "Y" };
+    private static String[] checks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C",
+            "D", "E", "F", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T", "U", "V", "W", "X", "Y"};
+
     static {
         centuries.put("+", 1800);
         centuries.put("-", 1900);
@@ -59,7 +58,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     }
 
     public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId, final String nationalityId,
-            final String errorMessage, final String socialSecurityNumberPattern) {
+                                              final String errorMessage, final String socialSecurityNumberPattern) {
         super(socialSecurityNumberId, errorMessage);
         this.nationalityId = nationalityId;
         this.socialSecurityNumberPattern = Pattern.compile(socialSecurityNumberPattern);
@@ -102,7 +101,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
 
     /**
      * Tarkistaa, että annetussa hetussa on tunnistettava päivämäärä, ja että päivämäärä on menneisyydessä.
-     *  
+     *
      * @param socialSecurityNumber tarkastettavaksi
      * @return ValidationResult-olio mahdollisine virheviesteineen.
      */
