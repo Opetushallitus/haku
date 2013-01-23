@@ -201,10 +201,15 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         Question lahiosoite = createRequiredTextQuestion("lahiosoite", "Lähiosoite", "40");
         lahiosoite.setInline(true);
 
+        CheckBox ensisijainenOsoite = new CheckBox("EnsisijainenOsoite", "Ensisijainen osoite");
+        ensisijainenOsoite.addOption("EnsisijainenOsoite1", "ensisijainenOsoite", "Tämä on ensisijainen osoitteeni");
+        ensisijainenOsoite.setInline(true);
+        
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", asuinmaa.getId(), "fi");
         relatedQuestionRule.addChild(lahiosoite);
         relatedQuestionRule.addChild(postinumero);
         relatedQuestionRule.addChild(kotikunta);
+        relatedQuestionRule.addChild(ensisijainenOsoite);
         asuinmaa.addChild(relatedQuestionRule);
 
         TextArea osoite = new TextArea("osoite", "Osoite");

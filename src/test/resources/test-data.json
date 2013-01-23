@@ -2,8 +2,8 @@
   "applicationPerioidMap": {
     "Yhteishaku": {
       "id": "Yhteishaku",
-      "starts": 1358852931922,
-      "end": 1390388931922,
+      "starts": 1358856713688,
+      "end": 1390392713688,
       "forms": {
         "yhteishaku": {
           "type": "Form",
@@ -585,6 +585,41 @@
                                       "type": "Attribute",
                                       "key": "id",
                                       "value": "kotikunta_jomala"
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "CheckBox",
+                              "id": "EnsisijainenOsoite",
+                              "title": "Ensisijainen osoite",
+                              "children": [],
+                              "attributes": {
+                                "id": {
+                                  "type": "Attribute",
+                                  "key": "id",
+                                  "value": "EnsisijainenOsoite"
+                                },
+                                "name": {
+                                  "type": "Attribute",
+                                  "key": "name",
+                                  "value": "EnsisijainenOsoite"
+                                }
+                              },
+                              "inline": true,
+                              "options": [
+                                {
+                                  "type": "Option",
+                                  "id": "EnsisijainenOsoite_EnsisijainenOsoite1",
+                                  "value": "ensisijainenOsoite",
+                                  "title": "Tämä on ensisijainen osoitteeni",
+                                  "children": [],
+                                  "attributes": {
+                                    "id": {
+                                      "type": "Attribute",
+                                      "key": "id",
+                                      "value": "EnsisijainenOsoite_EnsisijainenOsoite1"
                                     }
                                   }
                                 }
@@ -3126,6 +3161,41 @@
                                       "type": "Attribute",
                                       "key": "id",
                                       "value": "kotikunta_jomala"
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "CheckBox",
+                              "id": "EnsisijainenOsoite",
+                              "title": "Ensisijainen osoite",
+                              "children": [],
+                              "attributes": {
+                                "id": {
+                                  "type": "Attribute",
+                                  "key": "id",
+                                  "value": "EnsisijainenOsoite"
+                                },
+                                "name": {
+                                  "type": "Attribute",
+                                  "key": "name",
+                                  "value": "EnsisijainenOsoite"
+                                }
+                              },
+                              "inline": true,
+                              "options": [
+                                {
+                                  "type": "Option",
+                                  "id": "EnsisijainenOsoite_EnsisijainenOsoite1",
+                                  "value": "ensisijainenOsoite",
+                                  "title": "Tämä on ensisijainen osoitteeni",
+                                  "children": [],
+                                  "attributes": {
+                                    "id": {
+                                      "type": "Attribute",
+                                      "key": "id",
+                                      "value": "EnsisijainenOsoite_EnsisijainenOsoite1"
                                     }
                                   }
                                 }
