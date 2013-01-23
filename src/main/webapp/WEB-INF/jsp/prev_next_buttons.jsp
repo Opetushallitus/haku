@@ -1,6 +1,6 @@
+<%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -16,17 +16,23 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
+<fmt:setBundle basename="messages" scope="session"/>
 <div class="float-left">
     <c:choose>
         <c:when test="${vaihe.hasPrev}">
-            <button class="left" name="vaiheId" type="submit" value="${vaihe.prev.id}"><span><span><spring:message
-                    code="lomake.button.previous"/></span></span></button>
+            <button class="left" name="vaiheId" type="submit" value="${vaihe.prev.id}">
+                <span>
+                    <span><fmt:message key="lomake.button.previous"/></span>
+                </span>
+            </button>
         </c:when>
     </c:choose>
     <c:if test="${not empty sessionScope['username']}">
-        <button class="save" name="vaiheId" type="submit" value="${vaihe.id}"><span><span><spring:message
-                code="lomake.button.saveasdraft"/></span></span></button>
+        <button class="save" name="vaiheId" type="submit" value="${vaihe.id}">
+            <span>
+                <span><fmt:message key="lomake.button.saveasdraft"/></span>
+            </span>
+        </button>
     </c:if>
 </div>
 <div class="float-right">
@@ -37,10 +43,10 @@
                 <span>
                     <c:choose>
                         <c:when test="${vaihe.next.preview}">
-                            <spring:message code="lomake.button.preview"/>
+                            <fmt:message key="lomake.button.preview"/>
                         </c:when>
                         <c:otherwise>
-                            <spring:message code="lomake.button.next"/>
+                            <fmt:message key="lomake.button.next"/>
                         </c:otherwise>
                     </c:choose>
                 </span>
@@ -48,8 +54,11 @@
             </button>
         </c:when>
         <c:otherwise>
-            <button class="right" name="vaiheId" type="submit" value="${vaihe.id}"><span><span><spring:message
-                    code="lomake.button.save"/></span></span></button>
+            <button class="right" name="vaiheId" type="submit" value="${vaihe.id}">
+                <span>
+                    <span><fmt:message key="lomake.button.save"/></span>
+                </span>
+            </button>
         </c:otherwise>
     </c:choose>
 </div>

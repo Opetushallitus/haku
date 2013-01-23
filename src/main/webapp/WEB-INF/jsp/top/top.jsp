@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -16,6 +17,7 @@
   --%>
 
 <!DOCTYPE html>
+<fmt:setBundle basename="messages" scope="session"/>
 <html>
 <jsp:include page="head.jsp"/>
 <body>

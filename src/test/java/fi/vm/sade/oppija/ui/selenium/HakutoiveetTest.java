@@ -93,7 +93,6 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         final fi.vm.sade.oppija.common.selenium.AdminEditPage adminEditPage = new fi.vm.sade.oppija.common.selenium.AdminEditPage(getBaseUrl(), seleniumHelper);
         seleniumHelper.navigate(adminEditPage);
         adminEditPage.login("admin");
-        seleniumHelper.getDriver().get(getBaseUrl() + "/admin/index/update");
     }
 
     @Test

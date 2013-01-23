@@ -32,26 +32,6 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
-    <filter-mapping>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <!-- this must be the first filter in chain! -->
-    <filter>
-        <filter-name>encoding-filter</filter-name>
-        <filter-class>
-            org.springframework.web.filter.CharacterEncodingFilter
-        </filter-class>
-        <init-param>
-            <param-name>encoding</param-name>
-            <param-value>UTF-8</param-value>
-        </init-param>
-        <init-param>
-            <param-name>forceEncoding</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </filter>
 
     <filter>
         <filter-name>jersey</filter-name>
@@ -61,12 +41,17 @@
             <param-value>true</param-value>
         </init-param>
         <init-param>
+            <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+            <param-value>fi.vm.sade.oppija.ui.LocaleFilter</param-value>
+        </init-param>
+        <init-param>
             <param-name>com.sun.jersey.config.property.JSPTemplatesBasePath</param-name>
             <param-value>/WEB-INF/jsp</param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-            <param-value>/(images|js|styles|(WEB-INF/jsp)|resources|virkailija/app|static-html|tarjontadev)/.*</param-value>
+            <param-value>/(images|js|styles|(WEB-INF/jsp)|resources|virkailija/app|static-html|tarjontadev)/.*
+            </param-value>
         </init-param>
     </filter>
 
@@ -78,10 +63,9 @@
     </listener>
 
     <filter-mapping>
-        <filter-name>encoding-filter</filter-name>
+        <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
     <filter-mapping>
         <filter-name>jersey</filter-name>
         <url-pattern>/*</url-pattern>
@@ -90,6 +74,7 @@
     <jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
             <trim-directive-whitespaces>true</trim-directive-whitespaces>
         </jsp-property-group>
         <taglib>

@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%--
@@ -17,13 +17,14 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<fmt:setBundle basename="messages"/>
 <div class="tabs">
-    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="kuvaus" class="tab current"><span><spring:message
-            code="tarjonta.koulutuksenkuvaus"/></span></a>
-    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakeutuminen" class="tab"><span><spring:message
-            code="tarjonta.koulutukseenhakeutuminen"/></span></a>
+    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="kuvaus" class="tab current"><span><fmt:message
+            key="tarjonta.koulutuksenkuvaus"/></span></a>
+    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakeutuminen" class="tab"><span><fmt:message
+            key="tarjonta.koulutukseenhakeutuminen"/></span></a>
     <a href="#" data-tabs-group="applicationtabs" data-tabs-id="opiskelupaikka" class="tab">
-    <span><spring:message code="tarjonta.oppilaitos"/></span></a>
+        <span><fmt:message key="tarjonta.oppilaitos"/></span></a>
 </div>
 
 <div class="tabsheets">

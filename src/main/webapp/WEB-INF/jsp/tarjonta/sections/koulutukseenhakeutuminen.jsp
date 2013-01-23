@@ -1,6 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -17,25 +16,26 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<fmt:setBundle basename="messages"/>
 <section id="hakeutuminen" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakeutuminen">
 
     <div class="clear"></div>
-    <legend class="h3"><spring:message code="tarjonta.koulutukseenhakeutuminen.valintaperusteet"/></legend>
+    <legend class="h3"><fmt:message key="tarjonta.koulutukseenhakeutuminen.valintaperusteet"/></legend>
     <p><c:out value="${it.searchResult['AOSelectionCriteriaDescription']}"/></p>
 
     <div class="clear"></div>
-    <legend class="h3"><spring:message code="tarjonta.koulutukseenhakeutuminen.pääsykoe"/>&nbsp;
+    <legend class="h3"><fmt:message key="tarjonta.koulutukseenhakeutuminen.pääsykoe"/>&nbsp;
         <fmt:formatDate type="date" value="${it.searchResult['AOExaminationStart']}"/></legend>
     <p><c:out value="${it.searchResult['AOExaminationDescription']}"/></p>
 
     <div class="clear"></div>
-    <legend class="h3"><spring:message code="tarjonta.koulutukseenhakeutuminen.liitteet"/></legend>
+    <legend class="h3"><fmt:message key="tarjonta.koulutukseenhakeutuminen.liitteet"/></legend>
     <p><c:out value="${it.searchResult['AOAttachmentType']}"/></p>
 
     <p><c:out value="${it.searchResult['AOAttachmentDescription']}"/></p>
 
     <div class="clear"></div>
-    <legend class="h3"><spring:message code="tarjonta.koulutukseenhakeutuminen.lisätietoahakemisesta"/></legend>
+    <legend class="h3"><fmt:message key="tarjonta.koulutukseenhakeutuminen.lisätietoahakemisesta"/></legend>
     <p><c:out value="${it.searchResult['tmpAOApplyAdditionalInfo']}"/></p>
 
 

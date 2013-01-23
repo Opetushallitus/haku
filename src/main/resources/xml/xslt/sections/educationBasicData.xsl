@@ -10,7 +10,7 @@
   ~
   ~ This program is distributed in the hope that it will be useful,
   ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   -->
 <xsl:stylesheet version="2.0"
@@ -48,28 +48,28 @@
 
                 <!--
          <li class="heading">
-             <spring:message code="tarjonta.koulutuksenperustiedot.koulutusohjelma"/>
+             <fmt:message key="tarjonta.koulutuksenperustiedot.koulutusohjelma"/>
          </li>
          <li class="emphasized">
              <c:out value="${searchResult['LOSName']}"/>
          </li>
 
          <li class="heading">
-             <spring:message code="tarjonta.koulutuksenperustiedot.tutkinto"/>
+             <fmt:message key="tarjonta.koulutuksenperustiedot.tutkinto"/>
          </li>
          <li class="emphasized">
              <c:out value="${searchResult['LOSDegreeTitle']}"/>
          </li>
 
          <li class="heading">
-             <spring:message code="tarjonta.koulutuksenperustiedot.tutkintonimike"/>
+             <fmt:message key="tarjonta.koulutuksenperustiedot.tutkintonimike"/>
          </li>
          <li class="emphasized">
              <c:out value="${searchResult['LOSQualification']}"/>
          </li>
 
          <li class="heading">
-             <spring:message code="tarjonta.koulutuksenperustiedot.opintojenlaajuus"/>
+             <fmt:message key="tarjonta.koulutuksenperustiedot.opintojenlaajuus"/>
          </li>
          <li class="emphasized"><c:out value="${searchResult['LOSCredits']}"/>&nbsp;
              <spring:message

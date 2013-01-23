@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -16,11 +16,12 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<fmt:setBundle basename="messages"/>
 <section id="kuvaus" style="display: block" class="tabsheet" data-tabs-group="applicationtabs"
          data-tabs-id="kuvaus">
 
     <div class="clear"></div>
-    <legend class="h3"><spring:message code="tarjonta.koulutuksentavoite"/></legend>
+    <legend class="h3"><fmt:message key="tarjonta.koulutuksentavoite"/></legend>
     <p><c:out value="${it.searchResult['LOSDescriptionEducationAndProfessionalGoals']}"/></p>
 
     <legend class="h3">Suuntautumisvaihtoehdon valinta</legend>
@@ -33,10 +34,10 @@
     </ul>
     -->
 
-    <legend class="h3"><spring:message code="tarjonta.jatkoopintomahdollisuudet"/></legend>
+    <legend class="h3"><fmt:message key="tarjonta.jatkoopintomahdollisuudet"/></legend>
     <p><c:out value="${it.searchResult['LOSDescriptionAccessToFurtherStudies']}"/></p>
 
-    <legend class="h3"><spring:message code="tarjonta.opintojenrakenne"/></legend>
+    <legend class="h3"><fmt:message key="tarjonta.opintojenrakenne"/></legend>
     <p><c:out value="${it.searchResult['LOSDescriptionStructureDiagram']}"/></p>
 
     <%-- enable when los structure is provided in a structured form --%>

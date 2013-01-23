@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%--
@@ -17,7 +17,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
+<fmt:setBundle basename="messages"/>
 <div class="grid16-6">
     <form id="hakusuodattimet" method="GET">
         <input type="hidden" name="text" value="${parameters.text}"/>
@@ -26,16 +26,14 @@
                 <div class="field-container-checkbox">
                     <input type="checkbox" name="tutkintoonjohtava" class="suodatin" value="DegreeProgramme"
                            id="tutkintoonjohtava" ${ (param['tutkintoonjohtava'] eq 'DegreeProgramme') ? "checked='checked'" : "" }/>
-                    <label for="tutkintoonjohtava"><spring:message
-                            code="tarjonta.haku.näytävaintutkintoonjohtavakoulutus"
-                            text="?_?"/></label>
+                    <label for="tutkintoonjohtava"><fmt:message
+                            key="tarjonta.haku.näytävaintutkintoonjohtavakoulutus"/></label>
                 </div>
 
                 <div class="field-container-checkbox">
                     <input type="checkbox" class="suodatin" value="true" name="hakumeneillaan"
                            id="hakumeneillaan" ${ (param['hakumeneillaan'] eq 'true') ? "checked='checked'" : "" }/>
-                    <label for="hakumeneillaan"><spring:message code="tarjonta.haku.hakumeneilläänjuurinyt"
-                                                                text="?_?"/></label>
+                    <label for="hakumeneillaan"><fmt:message key="tarjonta.haku.hakumeneilläänjuurinyt"/></label>
                 </div>
             </div>
             <div class="clear"></div>
@@ -73,7 +71,7 @@
         </jsp:include>
 
         <div class="form-item">
-            <legend class="h3"><spring:message code="tarjonta.haku.sijainti" text="?_?"/></legend>
+            <legend class="h3"><fmt:message key="tarjonta.haku.sijainti"/></legend>
             <div class="form-item-content">
                 <input type="text" name="location" size="30"/>
                 <button class="plus">

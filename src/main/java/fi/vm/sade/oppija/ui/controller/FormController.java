@@ -168,10 +168,11 @@ public class FormController {
     @POST
     @Path("/{applicationPeriodId}/{formId}/{phaseId}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_HTML)
     public Response savePhase(@PathParam("applicationPeriodId") final String applicationPeriodId,
                               @PathParam("formId") final String formId,
                               @PathParam("phaseId") final String phaseId,
-                              MultivaluedMap<String, String> multiValues) throws URISyntaxException {
+                              final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId,

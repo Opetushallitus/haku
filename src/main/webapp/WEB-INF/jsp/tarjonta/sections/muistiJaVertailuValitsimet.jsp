@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -16,14 +16,15 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<fmt:setBundle basename="messages"/>
 <div class="result-options set-right">
     <div class="field-container-checkbox left-intend-2" style="display: inline-block">
         <input type="checkbox" name="muistilistaan" value="${it.id}" id="muistilista_${it.id}"/>
-        <label for="muistilista_${it.id}"><spring:message code="tarjonta.lisaamuistilistaan"/></label>
+        <label for="muistilista_${it.id}"><fmt:message key="tarjonta.lisaamuistilistaan"/></label>
     </div>
 
     <div class="field-container-checkbox left-intend-2">
         <input type="checkbox" name="vertailulistaan" value="${it.id}" id="vertailulista_${it.id}"/>
-        <label for="vertailulista_${it.id}"><spring:message code="tarjonta.lisaavertailulistaan"/></label>
+        <label for="vertailulista_${it.id}"><fmt:message key="tarjonta.lisaavertailulistaan"/></label>
     </div>
 </div>

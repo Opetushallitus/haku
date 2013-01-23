@@ -19,16 +19,18 @@ package fi.vm.sade.oppija.lomake.validation;
 import org.apache.commons.lang3.Validate;
 
 public abstract class FieldValidator implements Validator {
-
     public final String fieldName;
     public final String errorMessage;
+    protected ValidationResult validValidationResult;
+    protected ValidationResult invalidValidationResult;
 
     protected FieldValidator(final String fieldName, final String errorMessage) {
         Validate.notNull(fieldName, "FieldName can't be null");
         Validate.notNull(errorMessage, "ErrorMessage can't be null");
-
         this.fieldName = fieldName;
         this.errorMessage = errorMessage;
+        validValidationResult = new ValidationResult();
+        invalidValidationResult = new ValidationResult(this.fieldName, this.errorMessage);
     }
 
 

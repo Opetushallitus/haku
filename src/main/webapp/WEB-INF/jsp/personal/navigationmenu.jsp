@@ -14,25 +14,25 @@
   ~ European Union Public Licence for more details.
   --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
+<fmt:setBundle basename="messages"/>
 <div class="grid16-4">
     <nav class="subnavigation">
         <ul class="menu-level-2">
-            <li><a href="personalservice"><spring:message code="oma.palvelu"/></a></li>
-            <li><a href="personalguide"><spring:message code="oma.omaopas"/></a></li>
-            <li><a href="messages"><spring:message code="oma.viestit"/></a></li>
-            <li><a href="applicationperiods"><spring:message code="oma.haut"/></a></li>
+            <li><a href="personalservice"><fmt:message key="oma.palvelu"/></a></li>
+            <li><a href="personalguide"><fmt:message key="oma.omaopas"/></a></li>
+            <li><a href="messages"><fmt:message key="oma.viestit"/></a></li>
+            <li><a href="applicationperiods"><fmt:message key="oma.haut"/></a></li>
             <ul class="menu-level-3">
-                <li><a href="applications"><spring:message code="oma.haut.hakemukset"/></a></li>
-                <li><a href="results"><spring:message code="oma.haut.tulokset"/></a></li>
-                <li><a href="accept"><spring:message code="oma.haut.vastaanotto"/></a></li>
-                <li><a href="guidance"><spring:message code="oma.haut.jalkiohjaus"/></a></li>
+                <li><a href="applications"><fmt:message key="oma.haut.hakemukset"/></a></li>
+                <li><a href="results"><fmt:message key="oma.haut.tulokset"/></a></li>
+                <li><a href="accept"><fmt:message key="oma.haut.vastaanotto"/></a></li>
+                <li><a href="guidance"><fmt:message key="oma.haut.jalkiohjaus"/></a></li>
             </ul>
-            <li><a href="details"><spring:message code="oma.tiedot"/></a></li>
-            <li><a href="credits"><spring:message code="oma.suoritukset"/></a></li>
-            <li><a href="notes"><spring:message code="oma.muistiinpanot"/></a></li>
+            <li><a href="details"><fmt:message key="oma.tiedot"/></a></li>
+            <li><a href="credits"><fmt:message key="oma.suoritukset"/></a></li>
+            <li><a href="notes"><fmt:message key="oma.muistiinpanot"/></a></li>
         </ul>
     </nav>
 </div>

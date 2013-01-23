@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -16,17 +16,17 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
+<fmt:setBundle basename="messages"/>
 <table id="gradegrid-table" class="applicant-grades">
     <thead>
     <tr>
         <th></th>
-        <th colspan="2"><spring:message code="lomake.component.gradegrid.gradesTitle"/></th>
+        <th colspan="2"><fmt:message key="lomake.component.gradegrid.gradesTitle"/></th>
     </tr>
     <tr>
-        <td><spring:message code="lomake.component.gradegrid.subjectTitle"/></td>
-        <td><spring:message code="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
-        <td><spring:message code="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
+        <td><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
+        <td><fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
+        <td><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
     </tr>
     </thead>
     <tbody>
@@ -124,8 +124,8 @@
     <!-- add new language row -->
     <tr>
         <td colspan=3>
-            <button id="add_language_button" class="link" type="button"><spring:message
-                    code="lomake.component.gradegrid.addLanguageLabel"/></button>
+            <button id="add_language_button" class="link" type="button"><fmt:message
+                    key="lomake.component.gradegrid.addLanguageLabel"/></button>
         </td>
     </tr>
 
@@ -169,10 +169,10 @@
 </table>
 <script>
     var gradegrid_settings = {
-        contextPath : "${pageContext.request.contextPath}",
-        applicationSystemId : "${hakemusId.applicationPeriodId}",
-        formId : "${hakemusId.formId}",
-        elementId : "${element.id}"
+        contextPath: "${pageContext.request.contextPath}",
+        applicationSystemId: "${hakemusId.applicationPeriodId}",
+        formId: "${hakemusId.formId}",
+        elementId: "${element.id}"
     };
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/gradegrid.js"></script>

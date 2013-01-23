@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -17,6 +17,8 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+
+<fmt:setBundle basename="messages" scope="session"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
 <!DOCTYPE html>
 <html>
@@ -74,8 +76,8 @@
                             <li><span><span class="index">${status.count}</span>${link.value} &gt;</span></li>
                         </c:forEach>
                         <li><a class="current"><span class="index"><c:out
-                                value="${fn:length(it.form.navigation.children) + 1}"/></span><spring:message
-                                code="lomake.valmis"/></a></li>
+                                value="${fn:length(it.form.navigation.children) + 1}"/></span><fmt:message
+                                key="lomake.valmis"/></a></li>
                     </ul>
                     <div class="clear"></div>
                 </div>
@@ -85,16 +87,16 @@
                     <img src="${contextPath}/static-html/content/Valmis-Kuva1.jpg" title="" alt=""
                          class="set-right"/>
 
-                    <h3 class="h2"><spring:message code="lomake.valmis.hakemuksesionvastaanotettu"/></h3>
+                    <h3 class="h2"><fmt:message key="lomake.valmis.hakemuksesionvastaanotettu"/></h3>
 
                     <p class="application-number">
-                        <spring:message code="lomake.valmis.hakulomakenumerosi"/>: <span class="number"><c:out
+                        <fmt:message key="lomake.valmis.hakulomakenumerosi"/>: <span class="number"><c:out
                             value="${it.applicationNumber}"/></span>
                     </p>
 
                     <c:if test="${(not empty it.categoryData['Sähköposti'])}">
                     <p>
-                        <spring:message code="lomake.valmis.sinulleonlahetettyvahvistussahkopostiisi"/>: <c:out
+                        <fmt:message key="lomake.valmis.sinulleonlahetettyvahvistussahkopostiisi"/>: <c:out
                             value="${it.categoryData['Sähköposti']}"/>
                     </p>
                     </c:if>
@@ -105,10 +107,10 @@
                         justo, sed consectetur enim. Curabitur nisl erat, egestas ut facilisis vel, interdum ac risus.
                     </p>
 
-                    <button class="print"><span><span><spring:message
-                            code="lomake.valmis.button.tulosta"/></span></span></button>
-                    <button class="pdf"><span><span><spring:message
-                            code="lomake.valmis.button.tallennapdf"/></span></span></button>
+                    <button class="print"><span><span><fmt:message
+                            key="lomake.valmis.button.tulosta"/></span></span></button>
+                    <button class="pdf"><span><span><fmt:message
+                            key="lomake.valmis.button.tallennapdf"/></span></span></button>
 
 
                     <div class="clear"></div>
@@ -155,7 +157,6 @@
                     </p>
 
                     <div class="clear"></div>
-                    <div>
 
             </section>
         </section>

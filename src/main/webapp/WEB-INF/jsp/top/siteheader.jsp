@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%--
@@ -17,6 +17,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<fmt:setBundle basename="messages" scope="session"/>
 <header id="siteheader">
     <div class="header-container">
         <div class="sitelogo">
@@ -49,8 +50,8 @@
                 <li><a href="?lang=fi">Suomeksi</a></li>
                 <li><a href="?lang=sv">På svenska</a></li>
                 <li><a href="?lang=en">in English</a></li>
-                <li><a href="#"><spring:message code="oppija.header.label.mobile"/></a></li>
-                <li><a href="#"><spring:message code="oppija.header.label.textversion"/></a></li>
+                <li><a href="#"><fmt:message key="oppija.header.label.mobile"/></a></li>
+                <li><a href="#"><fmt:message key="oppija.header.label.textversion"/></a></li>
             </ul>
 
             <div class="clear"></div>

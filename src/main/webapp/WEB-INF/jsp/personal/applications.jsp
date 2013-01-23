@@ -16,28 +16,27 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
+<fmt:setBundle basename="messages"/>
 <section class="content-container">
 
     <div class="grid16-12">
         <h1>Kuluvan hakukauden hakemukset (${fn:length(UserApplicationInfo)} kpl)</h1>
         <c:forEach var="info" items="${UserApplicationInfo}">
             <div><a href="${info.application.vaiheId}">${info.application.vaiheId}</a></div>
-            <div><spring:message code="oma.lomake.tila.vireilla.${info.pending}"/></div>
-            <li class="${('1' eq info.application.vaiheId) ? "current" : ""}"><spring:message
-                    code="oma.hakemus.tila.lahetys"/></li>
-            <li class="${('2' eq info.application.vaiheId) ? "current" : ""}"><spring:message
-                    code="oma.hakemus.tila.liitteet"/></li>
-            <li class="${('3' eq info.application.vaiheId) ? "current" : ""}"><spring:message
-                    code="oma.hakemus.tila.valintakokeet"/></li>
-            <li class="${('4' eq info.application.vaiheId) ? "current" : ""}"><spring:message
-                    code="oma.hakemus.tila.valintapaatos"/></li>
-            <li class="${('5' eq info.application.vaiheId) ? "current" : ""}"><spring:message
-                    code="oma.hakemus.tila.vastaanotto"/></li>
-            <li class="${('6' eq info.application.vaiheId) ? "current" : ""}"><spring:message
-                    code="oma.hakemus.tila.ilmoittautuminen"/></li>
+            <div><fmt:message key="oma.lomake.tila.vireilla.${info.pending}"/></div>
+            <li class="${('1' eq info.application.vaiheId) ? "current" : ""}"><fmt:message
+                    key="oma.hakemus.tila.lahetys"/></li>
+            <li class="${('2' eq info.application.vaiheId) ? "current" : ""}"><fmt:message
+                    key="oma.hakemus.tila.liitteet"/></li>
+            <li class="${('3' eq info.application.vaiheId) ? "current" : ""}"><fmt:message
+                    key="oma.hakemus.tila.valintakokeet"/></li>
+            <li class="${('4' eq info.application.vaiheId) ? "current" : ""}"><fmt:message
+                    key="oma.hakemus.tila.valintapaatos"/></li>
+            <li class="${('5' eq info.application.vaiheId) ? "current" : ""}"><fmt:message
+                    key="oma.hakemus.tila.vastaanotto"/></li>
+            <li class="${('6' eq info.application.vaiheId) ? "current" : ""}"><fmt:message
+                    key="oma.hakemus.tila.ilmoittautuminen"/></li>
         </c:forEach>
 
         <h1>Aiempien hakukausien hakemukset (${fn:length(prevPeriodApplications)} kpl)</h1>

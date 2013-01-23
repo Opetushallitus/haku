@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -16,30 +16,30 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
+<fmt:setBundle basename="messages"/>
 <div class="definitions">
     <div class="set-right">
         <table class="set-right">
             <tr>
 
-                <td class="term"><spring:message code="tarjonta.definitions.edellisenävuonnahakhyv"/></td>
+                <td class="term"><fmt:message key="tarjonta.definitions.edellisenävuonnahakhyv"/></td>
                 <td class="description">${it.searchResult['AOLastYearTotalApplicants']}/${it.searchResult['tmpAOLastYearQualified']}</td>
             </tr>
             <tr>
-                <td class="term"><spring:message code="tarjonta.definitions.maksimipistemäärä"/></td>
+                <td class="term"><fmt:message key="tarjonta.definitions.maksimipistemäärä"/></td>
                 <td class="description">${it.searchResult['AOLastYearMaxScore']}</td>
             </tr>
             <tr>
-                <td class="term"><spring:message code="tarjonta.definitions.alinhyväksyttypistemäärä"/>&nbsp; 2011</td>
+                <td class="term"><fmt:message key="tarjonta.definitions.alinhyväksyttypistemäärä"/>&nbsp; 2011</td>
                 <td class="description">${it.searchResult['AOLastYearMinScore']}</td>
             </tr>
             <%--
             <tr>
-                <td class="term"><spring:message code="tarjonta.definitions.alinhyväksyttypistemäärä"/> ????</td>
+                <td class="term"><fmt:message key="tarjonta.definitions.alinhyväksyttypistemäärä"/> ????</td>
                 <td class="description">???</td>
             </tr>
             <tr>
-                <td class="term"><spring:message code="tarjonta.definitions.alinhyväksyttypistemäärä"/> ????</td>
+                <td class="term"><fmt:message key="tarjonta.definitions.alinhyväksyttypistemäärä"/> ????</td>
                 <td class="description">???</td>
             </tr>
             --%>

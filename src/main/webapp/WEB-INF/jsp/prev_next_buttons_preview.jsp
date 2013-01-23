@@ -1,5 +1,6 @@
+<%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -15,7 +16,9 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
+<fmt:setBundle basename="messages"/>
+<fmt:requestEncoding value="utf-8"/>
+<fmt:setLocale value="sv"/>
 <c:set var="baseUrl"
        value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}"
        scope="request"/>
@@ -23,8 +26,11 @@
     <c:when test="${vaihe.hasPrev}">
         <form method="get" action="${baseUrl}/${vaihe.prev.id}">
             <div class="set-left">
-                <button class="left" name="nav-prev" type="submit" value="true"><span><span><spring:message
-                        code="lomake.button.previous"/></span></span></button>
+                <button class="left" name="nav-prev" type="submit" value="true">
+                    <span>
+                        <span><fmt:message key="lomake.button.previous"/></span>
+                    </span>
+                </button>
             </div>
         </form>
     </c:when>
@@ -34,16 +40,22 @@
         <c:when test="${vaihe.hasNext}">
             <form method="get" action="${baseUrl}/${vaihe.next.id}">
                 <div class="set-left">
-                    <button class="right" name="nav-next" type="submit" value="true"><span><span><spring:message
-                            code="lomake.button.next"/></span></span></button>
+                    <button class="right" name="nav-next" type="submit" value="true">
+                        <span>
+                            <span><fmt:message key="lomake.button.next"/></span>
+                        </span>
+                    </button>
                 </div>
             </form>
         </c:when>
         <c:otherwise>
             <form method="post" action="${baseUrl}/send">
                 <div class="set-left">
-                    <button class="right" name="nav-send" type="submit" value="true"><span><span><spring:message
-                            code="lomake.button.send"/></span></span></button>
+                    <button class="right" name="nav-send" type="submit" value="true">
+                        <span>
+                            <span><fmt:message key="lomake.button.send"/></span>
+                        </span>
+                    </button>
                 </div>
             </form>
         </c:otherwise>
