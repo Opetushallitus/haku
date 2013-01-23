@@ -16,7 +16,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
+<c:set var="categoryData" value="${it.categoryData}" scope="request"/>
 <c:forEach var="child" items="${it.additionalQuestions}">
     <c:set var="element" value="${child}" scope="request"/>
     <jsp:include page="elements/${child.type}.jsp"/>

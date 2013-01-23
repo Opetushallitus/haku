@@ -1,15 +1,15 @@
 (function(){
     var sortabletable = {
         moveRow : function(id, targetId) {
-            var value,
-                html,
-                target;
+            var $clone,
+                $target,
+                $targetClone;
             $('[id|="' + id + '"]').each(function(index) {
-               value = $(this).val();
-               html = $(this).html();
+               $clone = $(this).clone();
                $target =  $('[id|="' + targetId + '"]').eq(index);
-               $(this).val($target.val()).html($target.html());
-               $target.val(value).html(html);
+               $targetClone = $target.clone();
+               $(this).val($targetClone.val()).empty().append($targetClone.children());
+               $target.val($clone.val()).empty().append($clone.children());
             });
         }
     };
