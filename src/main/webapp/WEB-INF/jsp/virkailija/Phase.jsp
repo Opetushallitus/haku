@@ -56,9 +56,146 @@
 </head>
 <body>
 <div id="viewport">
-<div id="overlay">
-
-</div>
+    <div id="overlay">
+        <a href="#" class="close"></a>
+        <div id="popup">
+            <div class="arvosanat">
+                <h3>Perusopetus</h3>
+                <table class="virkailija-table-1">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th colspan="2" class="bold align-center">Hakemus 15.4.2012</th>
+                        <th colspan="2" class="bold align-center">Rekisteri TOR</th>
+                        <th colspan="2" class="bold align-center">Muokkaa tietoja</th>
+                    </tr>
+                    <tr>
+                        <td class="bold align-center">Oppiaine</td>
+                        <td class="bold align-center">Yhteinen oppiaine</td>
+                        <td class="bold align-center">Valinnaisaine</td>
+                        <td class="bold align-center">Yhteinen oppiaine</td>
+                        <td class="bold align-center">Valinnaisaine</td>
+                        <td class="bold align-center">Yhteinen oppiaine</td>
+                        <td class="bold align-center">Valinnaisaine</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Äidinkieli ja kirjallisuus</td>
+                        <td>8</td>
+                        <td></td>
+                        <td>8</td>
+                        <td></td>
+                        <td><input type="text" value="8"/></td>
+                        <td><input type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            A1-Kieli
+                            <select name="a1kieli" id="a1kieli">
+                                <option value="ruotsi">Ruotsi</option>
+                                <option value="englanti">Englanti</option>
+                                <option value="saksa">Saksa</option>
+                            </select>
+                        </td>
+                        <td>8</td>
+                        <td></td>
+                        <td>8</td>
+                        <td></td>
+                        <td><input type="text" value="8"/></td>
+                        <td><input type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            B1-Kieli
+                            <select name="b1kieli" id="b1kieli">
+                                <option value="ruotsi">Ruotsi</option>
+                                <option value="englanti">Englanti</option>
+                                <option value="saksa">Saksa</option>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td>7</td>
+                        <td></td>
+                        <td>8</td>
+                        <td></td>
+                        <td><input type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            B2-Kieli
+                            <select name="b2kieli" id="b2kieli">
+                                <option value="ruotsi">Ruotsi</option>
+                                <option value="englanti">Englanti</option>
+                                <option value="saksa">Saksa</option>
+                            </select>
+                        </td>
+                        <td>8</td>
+                        <td></td>
+                        <td>8</td>
+                        <td></td>
+                        <td><input type="text" value="8"/></td>
+                        <td><input type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">Lisää kieli</a></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Matematiikka</td>
+                        <td>8</td>
+                        <td></td>
+                        <td>8</td>
+                        <td></td>
+                        <td><input type="text" value="8"/></td>
+                        <td><input type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td>Biologia</td>
+                        <td>7</td>
+                        <td></td>
+                        <td>7</td>
+                        <td></td>
+                        <td><input type="text" value="7"/></td>
+                        <td><input type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td>Maantieto</td>
+                        <td>6</td>
+                        <td></td>
+                        <td>6</td>
+                        <td></td>
+                        <td><input type="text" value="6"/></td>
+                        <td><input type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td>Käsityö</td>
+                        <td>Ei arvosanaa(#)</td>
+                        <td></td>
+                        <td>Ei arvosanaa(#)</td>
+                        <td></td>
+                        <td><input type="text" value="Ei arvosanaa"/></td>
+                        <td><input type="text"/></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="grid16-4">
+                    <h4>(#) Hakijan vahvistama tieto</h4>
+                </div>
+                <div class="grid16-4 offset-left-16-8">
+                    <small class="float-right block">S = suoritettu</small>
+                    <div class="clear"></div>
+                    <small class="float-right block">- = ei arvosanaa</small>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
 <div id="wrapper">
 <header id="siteheader">
 
@@ -146,17 +283,16 @@
 
 <div class="tabs">
     <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemus"
-       class="tab"><span>Hakemus</span></a>
+       class="tab current"><span>Hakemus</span></a>
     <a href="#" data-tabs-group="applicationtabs" data-tabs-id="suoritustiedot" class="tab"><span>Suoritustiedot</span></a>
     <a href="#" data-tabs-group="applicationtabs" data-tabs-id="lisatiedot"
        class="tab"><span>Kelpoisuus ja liitteet</span></a>
-    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="arvosanat"
-       class="tab current"><span>Arvosanat</span></a>
+   
 </div>
 
 <div class="tabsheets">
 
-<section id="hakemus" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus">
+<section id="hakemus" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus" style="display: block">
 
 
     <c:set var="preview" value="${vaihe.preview}" scope="request"/>
@@ -353,7 +489,7 @@
                 </select>
             </td>
             <td>
-                <a href="#">Muokkaa arvosanoja</a>
+                <a href="#" data-popup-action="open">Muokkaa arvosanoja</a>
             </td>
         </tr>
 
@@ -542,142 +678,6 @@
                     </form>    
                      <hr />
                     <div class="clear"></div>
-</section>
-<section id="arvosanat" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="arvosanat"
-         style="display: block">
-    <h3>Perusopetus</h3>
-    <table class="virkailija-table-1">
-        <thead>
-        <tr>
-            <th></th>
-            <th colspan="2" class="bold align-center">Hakemus 15.4.2012</th>
-            <th colspan="2" class="bold align-center">Rekisteri TOR</th>
-            <th colspan="2" class="bold align-center">Muokkaa tietoja</th>
-        </tr>
-        <tr>
-            <td class="bold align-center">Oppiaine</td>
-            <td class="bold align-center">Yhteinen oppiaine</td>
-            <td class="bold align-center">Valinnaisaine</td>
-            <td class="bold align-center">Yhteinen oppiaine</td>
-            <td class="bold align-center">Valinnaisaine</td>
-            <td class="bold align-center">Yhteinen oppiaine</td>
-            <td class="bold align-center">Valinnaisaine</td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Äidinkieli ja kirjallisuus</td>
-            <td>8</td>
-            <td></td>
-            <td>8</td>
-            <td></td>
-            <td><input type="text" value="8"/></td>
-            <td><input type="text"/></td>
-        </tr>
-        <tr>
-            <td>
-                A1-Kieli
-                <select name="a1kieli" id="a1kieli">
-                    <option value="ruotsi">Ruotsi</option>
-                    <option value="englanti">Englanti</option>
-                    <option value="saksa">Saksa</option>
-                </select>
-            </td>
-            <td>8</td>
-            <td></td>
-            <td>8</td>
-            <td></td>
-            <td><input type="text" value="8"/></td>
-            <td><input type="text"/></td>
-        </tr>
-        <tr>
-            <td>
-                B1-Kieli
-                <select name="b1kieli" id="b1kieli">
-                    <option value="ruotsi">Ruotsi</option>
-                    <option value="englanti">Englanti</option>
-                    <option value="saksa">Saksa</option>
-                </select>
-            </td>
-            <td></td>
-            <td>7</td>
-            <td></td>
-            <td>8</td>
-            <td></td>
-            <td><input type="text"/></td>
-        </tr>
-        <tr>
-            <td>
-                B2-Kieli
-                <select name="b2kieli" id="b2kieli">
-                    <option value="ruotsi">Ruotsi</option>
-                    <option value="englanti">Englanti</option>
-                    <option value="saksa">Saksa</option>
-                </select>
-            </td>
-            <td>8</td>
-            <td></td>
-            <td>8</td>
-            <td></td>
-            <td><input type="text" value="8"/></td>
-            <td><input type="text"/></td>
-        </tr>
-        <tr>
-            <td><a href="#">Lisää kieli</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Matematiikka</td>
-            <td>8</td>
-            <td></td>
-            <td>8</td>
-            <td></td>
-            <td><input type="text" value="8"/></td>
-            <td><input type="text"/></td>
-        </tr>
-        <tr>
-            <td>Biologia</td>
-            <td>7</td>
-            <td></td>
-            <td>7</td>
-            <td></td>
-            <td><input type="text" value="7"/></td>
-            <td><input type="text"/></td>
-        </tr>
-        <tr>
-            <td>Maantieto</td>
-            <td>6</td>
-            <td></td>
-            <td>6</td>
-            <td></td>
-            <td><input type="text" value="6"/></td>
-            <td><input type="text"/></td>
-        </tr>
-        <tr>
-            <td>Käsityö</td>
-            <td>Ei arvosanaa(#)</td>
-            <td></td>
-            <td>Ei arvosanaa(#)</td>
-            <td></td>
-            <td><input type="text" value="Ei arvosanaa"/></td>
-            <td><input type="text"/></td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="grid16-4">
-        <h4>(#) Hakijan vahvistama tieto</h4>
-    </div>
-    <div class="grid16-4 offset-left-16-8">
-        <small class="float-right block">S = suoritettu</small>
-        <div class="clear"></div>
-        <small class="float-right block">- = ei arvosanaa</small>
-    </div>
-    <div class="clear"></div>
 </section>
 
 </div>
