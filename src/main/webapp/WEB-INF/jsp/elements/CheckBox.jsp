@@ -39,4 +39,5 @@
         </div>
 
     </div>
+    <haku:viewChilds element="${element}"/>
 </fieldset>
