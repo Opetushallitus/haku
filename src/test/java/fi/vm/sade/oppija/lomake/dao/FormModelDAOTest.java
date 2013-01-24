@@ -16,16 +16,15 @@
 
 package fi.vm.sade.oppija.lomake.dao;
 
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
-import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
-import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.tools.FileHandling;
+import static java.lang.ClassLoader.getSystemResourceAsStream;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.List;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.junit.Before;
@@ -37,15 +36,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.List;
-import java.util.Map;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 
-import static java.lang.ClassLoader.getSystemResourceAsStream;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
+import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.tools.FileHandling;
 
 /**
  * @author jukka
@@ -134,12 +135,6 @@ public class FormModelDAOTest extends AbstractDAOTest {
         formById.init();
         final Phase cat1 = formById.getFirstPhase();
         return cat1.getChildren();
-    }
-
-    private String getPeriodId(FormModel form) {
-        final Map<String, ApplicationPeriod> applicationPerioidMap = form.getApplicationPerioidMap();
-        final ApplicationPeriod applicationPeriod = applicationPerioidMap.entrySet().iterator().next().getValue();
-        return applicationPeriod.getId();
     }
 
     @Override

@@ -1,12 +1,11 @@
 package fi.vm.sade.oppija.lomake.tools;
 
+import java.io.File;
+
 import fi.vm.sade.oppija.lomake.converter.FormModelToJsonString;
-import fi.vm.sade.oppija.lomake.converter.FormModelToMap;
 import fi.vm.sade.oppija.lomake.dao.FormModelDAO;
 import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-
-import java.io.File;
 
 /**
  * @author jukka
@@ -26,7 +25,6 @@ public class TestModelExporter {
         }
 
         protected void export(File file) {
-            System.out.println(new FormModelToMap().apply(new FormModel()));
             final FormModel model = getService().find(new FormModel()).get(0);
             final String contentAsString = new FormModelToJsonString().applyPretty(model);
             final String filename = createFilename(file, model);

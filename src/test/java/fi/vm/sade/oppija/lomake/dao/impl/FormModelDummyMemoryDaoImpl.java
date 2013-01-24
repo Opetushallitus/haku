@@ -16,22 +16,45 @@
 
 package fi.vm.sade.oppija.lomake.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.oppija.lomake.dao.FormModelDAO;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
-import fi.vm.sade.oppija.lomake.domain.elements.*;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.domain.elements.Text;
+import fi.vm.sade.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.GradeGrid;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.LanguageRow;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.PostalCode;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.SortableTable;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.TextArea;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.Validator;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
 
 @Service("FormModelDummyMemoryDao")
 public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
@@ -201,8 +224,8 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         Question lahiosoite = createRequiredTextQuestion("lahiosoite", "Lähiosoite", "40");
         lahiosoite.setInline(true);
 
-        CheckBox ensisijainenOsoite = new CheckBox("EnsisijainenOsoite", "Ensisijainen osoite");
-        ensisijainenOsoite.addOption("EnsisijainenOsoite1", "ensisijainenOsoite", "Tämä on ensisijainen osoitteeni");
+        CheckBox ensisijainenOsoite = new CheckBox("ensisijainenOsoite", "Ensisijainen osoite");
+        ensisijainenOsoite.addOption("ensisijainenOsoite1", "ensisijainenOsoite1", "Tämä on ensisijainen osoitteeni");
         ensisijainenOsoite.setInline(true);
         
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", asuinmaa.getId(), "fi");
@@ -214,6 +237,9 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         TextArea osoite = new TextArea("osoite", "Osoite");
         osoite.addAttribute("required", "required");
+        osoite.addAttribute("rows", "6");
+        osoite.addAttribute("cols", "40");
+        osoite.addAttribute("style", "height: 8em");
         RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule2", asuinmaa.getId(), "sv");
         relatedQuestionRule2.addChild(osoite);
         osoite.setVerboseHelp(getVerboseHelp());
@@ -226,6 +252,16 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         matkapuhelinnumero.setVerboseHelp(getVerboseHelp());
         matkapuhelinnumero.setInline(true);
 
+        TextQuestion huoltajanPuhelinnumero = new TextQuestion("huoltajanPuhelinnumero", "Huoltajan puhelinnumero");
+        huoltajanPuhelinnumero.setHelp("Kirjoita tähän huoltajan puhelinnumero.");
+        huoltajanPuhelinnumero.addAttribute("size", "20");
+        huoltajanPuhelinnumero.setVerboseHelp(getVerboseHelp());
+        huoltajanPuhelinnumero.setInline(true);
+
+        AddElementRule addHuoltajanPuhelinnumero = new AddElementRule("addHuoltajanPuhelinnumeroRule", 
+                huoltajanPuhelinnumero.getId(), "Lisää huoltajan puhelinnumero");
+        addHuoltajanPuhelinnumero.addChild(huoltajanPuhelinnumero);
+        
         kotikunta.setHelp("Kotikunta on tyypillisesti se kunta, jossa asut.");
         aidinkieli.setHelp("Jos omaa äidinkieltäsi ei löydy valintalistasta, valitse äidinkieleksesi..");
 
@@ -240,6 +276,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                 .addChild(socialSecurityNumber)
                 .addChild(email)
                 .addChild(matkapuhelinnumero)
+                .addChild(addHuoltajanPuhelinnumero)
                 .addChild(asuinmaa)
                 .addChild(kansalaisuus)
                 .addChild(aidinkieli);
@@ -546,7 +583,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     @Override
     public List<Validator> getVaiheValidators(ApplicationState applicationState) {
-        return Collections.EMPTY_LIST;
+        return Collections.<Validator>emptyList();
     }
 
 

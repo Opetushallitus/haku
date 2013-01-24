@@ -20,6 +20,7 @@ package fi.vm.sade.oppija.lomake.domain.elements;
 import fi.vm.sade.oppija.lomake.domain.Attribute;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
+import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
@@ -59,6 +60,7 @@ import java.util.Map;
                 @JsonSubTypes.Type(value = TextQuestion.class),
                 @JsonSubTypes.Type(value = Phase.class),
                 @JsonSubTypes.Type(value = RelatedQuestionRule.class),
+                @JsonSubTypes.Type(value = AddElementRule.class),
                 @JsonSubTypes.Type(value = GradeGrid.class),
                 @JsonSubTypes.Type(value = SubjectRow.class),
                 @JsonSubTypes.Type(value = LanguageRow.class),

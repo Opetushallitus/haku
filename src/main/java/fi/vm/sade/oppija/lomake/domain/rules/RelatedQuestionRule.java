@@ -56,6 +56,6 @@ public class RelatedQuestionRule extends Rule {
         if (RegexRule.evaluate(value, expression)) {
             return this.getChildren();
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 }
