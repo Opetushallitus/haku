@@ -20,9 +20,7 @@ package fi.vm.sade.oppija.tarjonta.service.impl;
 import fi.vm.sade.oppija.tarjonta.client.SolrClient;
 import fi.vm.sade.oppija.tarjonta.client.TarjontaClient;
 import fi.vm.sade.oppija.tarjonta.service.IndexService;
-import fi.vm.sade.oppija.tarjonta.service.generator.DummyDataGenerator;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,6 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
-import java.util.Collection;
 
 @Service
 public class IndexerServiceImpl implements IndexService {
@@ -80,18 +77,6 @@ public class IndexerServiceImpl implements IndexService {
         return outputStream;
     }
 
-    @Override
-    public boolean generate() {
-        Collection<SolrInputDocument> documents = DummyDataGenerator.generate();
-        try {
-            httpSolrServer.add(documents);
-            httpSolrServer.commit();
-        } catch (Exception e) {
-            LOGGER.error("Indeksin päivitys epäonnistui");
-            return false;
-        }
-        return true;
-    }
 
     public boolean drop() {
         boolean dropped = false;

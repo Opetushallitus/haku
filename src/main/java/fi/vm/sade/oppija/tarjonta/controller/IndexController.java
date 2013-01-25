@@ -50,13 +50,6 @@ public class IndexController {
     }
 
     @GET
-    @Path("generate")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String generateIndex() throws IOException {
-        return Boolean.toString(indexService.generate());
-    }
-
-    @GET
     @Path("drop")
     @Produces(MediaType.TEXT_PLAIN)
     public String dropIndex() throws IOException {

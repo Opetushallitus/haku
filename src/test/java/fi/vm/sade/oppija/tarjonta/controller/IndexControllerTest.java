@@ -43,11 +43,6 @@ public class IndexControllerTest {
             public boolean drop() {
                 return true;
             }
-
-            @Override
-            public boolean generate() {
-                return true;
-            }
         };
         indexController = new IndexController();
         indexController.tarjontaUrl = "";
@@ -57,11 +52,6 @@ public class IndexControllerTest {
     @Test
     public void testUpdateIndex() throws Exception {
         assertEquals(EXPECTED_STRING, indexController.updateIndex());
-    }
-
-    @Test
-    public void testGenerateIndex() throws Exception {
-        assertEquals(String.valueOf(true), indexController.generateIndex());
     }
 
     @Test

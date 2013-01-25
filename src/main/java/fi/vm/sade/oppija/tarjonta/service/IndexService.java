@@ -22,6 +22,4 @@ public interface IndexService {
     String update(final URI uri);
 
     boolean drop();
-
-    boolean generate();
 }
