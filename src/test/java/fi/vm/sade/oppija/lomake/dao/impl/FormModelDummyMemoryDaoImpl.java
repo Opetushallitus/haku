@@ -16,12 +16,10 @@
 
 package fi.vm.sade.oppija.lomake.dao.impl;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.dao.FormModelDAO;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.*;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
@@ -29,13 +27,14 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 
 @Service("FormModelDummyMemoryDao")
 public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
@@ -81,12 +80,12 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         final String id = "776";
         Radio radio = new Radio(id + "_additional_question_1",
                 createI18NText("Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?"));
-        radio.addOption(id + "_q1_option_1", ElementUtil.createI18NText("Ei"), "q1_option_1");
-        radio.addOption(id + "_q1_option_2", ElementUtil.createI18NText("Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi"), "q1_option_2");
+        radio.addOption(id + "_q1_option_1", createI18NText("Ei"), "q1_option_1");
+        radio.addOption(id + "_q1_option_2", createI18NText("Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi"), "q1_option_2");
 
         Radio radio2 = new Radio(id + "_additional_question_2", createI18NText("Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?"));
-        radio2.addOption(id + "_q2_option_1", ElementUtil.createI18NText("Ei"), "q2_option_1");
-        radio2.addOption(id + "_q2_option_2", ElementUtil.createI18NText("Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi"), "q2_option_2");
+        radio2.addOption(id + "_q2_option_1", createI18NText("Ei"), "q2_option_1");
+        radio2.addOption(id + "_q2_option_2", createI18NText("Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi"), "q2_option_2");
 
         Radio radio3 = new Radio(id + "_additional_question_3", createI18NText("Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?"));
         radio3.addOption(id + "_q3_option_1", createI18NText("En, en ole osallistunut pääsykokeeseen"), "q3_option_1");
@@ -601,12 +600,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         postOffices.put("33540", tampere);
         postOffices.put("33200", tampere);
         return postOffices;
-    }
-
-
-    public static I18nText createI18NText(String text) {
-        return new I18nText("text_" + Long.toString(System.currentTimeMillis()),
-                ImmutableMap.of("fi", text, "sv", text + "_sv", "en", text + "_en"));
     }
 
 }
