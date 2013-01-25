@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 @Service("applicationProcessStateDAOMongoImpl")
 public class ApplicationProcessStateDAOMongoImpl extends AbstractDAOMongoImpl<ApplicationProcessState> implements ApplicationProcessStateDAO {
 
-    private static String COLLECTION_NAME = "applicationProcessState";
+    private static final String COLLECTION_NAME = "applicationProcessState";
 
     public ApplicationProcessStateDAOMongoImpl() {
         super(new DBObjectToApplicationProcessState(), new ApplicationProcessStateToDBObject());
