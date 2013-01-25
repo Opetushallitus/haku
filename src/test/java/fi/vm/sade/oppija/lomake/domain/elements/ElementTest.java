@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 import fi.vm.sade.oppija.lomake.domain.Attribute;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -24,9 +25,11 @@ import java.util.Collection;
 import static org.junit.Assert.*;
 
 public class ElementTest {
-    final Element testElement;
 
-    public ElementTest() {
+    private Element testElement;
+
+    @Before
+    public void setUp() throws Exception {
         testElement = new Element("test") {
         };
     }
@@ -87,5 +90,26 @@ public class ElementTest {
     public void testAddAttributes() throws Exception {
         Collection<Attribute> attributes = testElement.getAttributes().values();
         attributes.add(new Attribute("k", "v"));
+    }
+
+    @Test
+    public void testEqualsToNull() throws Exception {
+        assertFalse(testElement.equals(null));
+    }
+
+    @Test
+    public void testEqualsFalse() throws Exception {
+        assertFalse(testElement.equals(new Element("") {
+        }));
+    }
+
+    @Test
+    public void testEqualsDifferentClass() throws Exception {
+        assertFalse(testElement.equals(""));
+    }
+
+    @Test
+    public void testEqualsTrue() throws Exception {
+        assertTrue(testElement.equals(testElement));
     }
 }
