@@ -58,6 +58,9 @@ public class OfficerController {
     public static final String VIRKAILIJA_HAKEMUS_VIEW = "/virkailija/hakemus/";
     public static final Logger LOGGER = LoggerFactory.getLogger(OfficerController.class);
     public static final String DEFAULT_VIEW = "virkailija/Phase";
+    public static final String OID_PATH_PARAM = "oid";
+    public static final String PHASE_ID_PATH_PARAM = "phaseId";
+    public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
 
     @Autowired
     ApplicationService applicationService;
@@ -69,7 +72,8 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/{oid}")
-    public Response getApplication(@PathParam("oid") final String oid) throws ResourceNotFoundException, URISyntaxException {
+    public Response getApplication(@PathParam(OID_PATH_PARAM) final String oid)
+            throws ResourceNotFoundException, URISyntaxException {
         LOGGER.debug("officer getApplication by oid {}", new Object[]{oid});
         Application app = applicationService.getApplication(oid);
         FormId formId = app.getFormId();
@@ -81,10 +85,10 @@ public class OfficerController {
     @GET
     @Path("/hakemus/{applicationPeriodId}/{formIdStr}/{phaseId}/{oid}")
     @Produces(MediaType.TEXT_HTML)
-    public Viewable getPhase(@PathParam("applicationPeriodId") final String applicationPeriodId,
+    public Viewable getPhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                              @PathParam("formIdStr") final String formIdStr,
-                             @PathParam("phaseId") final String phaseId,
-                             @PathParam("oid") final String oid) throws ResourceNotFoundException {
+                             @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                             @PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException {
 
         LOGGER.debug("getPhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, phaseId, oid});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
@@ -108,10 +112,10 @@ public class OfficerController {
     @Path("/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
-    public Response savePhase(@PathParam("applicationPeriodId") final String applicationPeriodId,
+    public Response savePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                               @PathParam("formId") final String formId,
-                              @PathParam("phaseId") final String phaseId,
-                              @PathParam("oid") final String oid,
+                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                              @PathParam(OID_PATH_PARAM) final String oid,
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
@@ -139,7 +143,7 @@ public class OfficerController {
     @Path("/hakemus/{oid}/applicationProcessState/{status}/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
-    public Response changeApplicationProcessState(@PathParam("oid") final String oid, @PathParam("status") final String status) throws URISyntaxException {
+    public Response changeApplicationProcessState(@PathParam(OID_PATH_PARAM) final String oid, @PathParam("status") final String status) throws URISyntaxException {
         LOGGER.debug("changeApplicationProcessState {}, {}", new Object[]{oid, status});
 
         // TODO: change when setApplicationProcessStateStatus returns correct exception and the updated application
