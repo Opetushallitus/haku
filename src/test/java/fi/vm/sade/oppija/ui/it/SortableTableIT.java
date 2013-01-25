@@ -44,8 +44,8 @@ public class SortableTableIT extends AbstractFormTest {
     @Before
     public void init() throws IOException {
         final SortableTable table = new SortableTable("t1", createI18NText("Hakutoiveet"), "Ylös", "Alas");
-        final PreferenceRow row = new PreferenceRow("r1", createI18NText("Hakutoive 1"), "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
-        final PreferenceRow row2 = new PreferenceRow("r2", createI18NText("Hakutoive 2"), "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
+        final PreferenceRow row = new PreferenceRow("r1", createI18NText("Hakutoive 1"), createI18NText("Tyhjennä"), createI18NText("Koulutus"), createI18NText("Opetuspiste"), "Valitse koulutus");
+        final PreferenceRow row2 = new PreferenceRow("r2", createI18NText("Hakutoive 2"), createI18NText("Tyhjennä"), createI18NText("Koulutus"), createI18NText("Opetuspiste"), "Valitse koulutus");
         table.addChild(row);
         table.addChild(row2);
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(table);

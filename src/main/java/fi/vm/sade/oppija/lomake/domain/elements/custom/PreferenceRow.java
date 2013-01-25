@@ -33,11 +33,11 @@ import java.util.Map;
 public class PreferenceRow extends Question {
 
     // label text for reset button
-    private String resetLabel;
+    private I18nText resetLabel;
     // label text for education drop down select
-    private String educationLabel;
+    private I18nText educationLabel;
     // label text for learning institution input (Opetuspiste)
-    private String learningInstitutionLabel;
+    private I18nText learningInstitutionLabel;
     // place holder text for education select
     private String selectEducationPlaceholder;
 
@@ -46,9 +46,9 @@ public class PreferenceRow extends Question {
 
     public PreferenceRow(@JsonProperty(value = "id") final String id,
                          @JsonProperty(value = "i18nText") final I18nText i18nText,
-                         @JsonProperty(value = "resetLabel") final String resetLabel,
-                         @JsonProperty(value = "educationLabel") final String educationLabel,
-                         @JsonProperty(value = "learningInstitutionLabel") final String learningInstitutionLabel,
+                         @JsonProperty(value = "resetLabel") final I18nText resetLabel,
+                         @JsonProperty(value = "educationLabel") final I18nText educationLabel,
+                         @JsonProperty(value = "learningInstitutionLabel") final I18nText learningInstitutionLabel,
                          @JsonProperty(value = "selectEducationPlaceholder") final String selectEducationPlaceholder) {
         super(id, i18nText);
         this.resetLabel = resetLabel;
@@ -59,15 +59,15 @@ public class PreferenceRow extends Question {
         this.educationInputId = this.id + "-Koulutus";
     }
 
-    public String getResetLabel() {
+    public I18nText getResetLabel() {
         return resetLabel;
     }
 
-    public String getEducationLabel() {
+    public I18nText getEducationLabel() {
         return educationLabel;
     }
 
-    public String getLearningInstitutionLabel() {
+    public I18nText getLearningInstitutionLabel() {
         return learningInstitutionLabel;
     }
 

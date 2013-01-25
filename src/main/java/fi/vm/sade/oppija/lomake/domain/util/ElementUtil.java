@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.lomake.domain.util;
 
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 
 public final class ElementUtil {
     private ElementUtil() {
@@ -26,5 +27,13 @@ public final class ElementUtil {
     public static I18nText createI18NText(final String text) {
         return new I18nText("text_" + Long.toString(System.currentTimeMillis()),
                 ImmutableMap.of("fi", text, "sv", text + "_sv", "en", text + "_en"));
+    }
+
+    public static PreferenceRow createI18NPreferenceRow(final String id, final String title) {
+        return new PreferenceRow(id,
+                createI18NText(title),
+                createI18NText("Tyhjennä"),
+                createI18NText("Koulutus"),
+                createI18NText("Opetuspiste"), "Valitse koulutus");
     }
 }
