@@ -283,16 +283,16 @@
 
 <div class="tabs">
     <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemus"
-       class="tab current"><span>Hakemus</span></a>
+       class="tab"><span>Hakemus</span></a>
     <a href="#" data-tabs-group="applicationtabs" data-tabs-id="suoritustiedot" class="tab"><span>Suoritustiedot</span></a>
     <a href="#" data-tabs-group="applicationtabs" data-tabs-id="lisatiedot"
        class="tab"><span>Kelpoisuus ja liitteet</span></a>
-   
+    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="yksiloi" class="tab current"><span>Yksilöi henkilö</span></a>
 </div>
 
 <div class="tabsheets">
 
-<section id="hakemus" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus" style="display: block">
+<section id="hakemus" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus" >
 
 
     <c:set var="preview" value="${vaihe.preview}" scope="request"/>
@@ -678,6 +678,136 @@
                     </form>    
                      <hr />
                     <div class="clear"></div>
+</section>
+
+<section class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="yksiloi" style="display: block">
+    <div class="grid16-4">
+        <h4>Samalla syntymäajalla löytyi:</h4>
+        <ul>
+            <li>1 rekisteröitynyt käyttäjä</li>
+            <li>1 hakija samasta hausta</li>
+            <li>2 yksilöityä hakijaa</li>
+        </ul>
+    </div>
+    <div class="grid16-12">
+        <h4>Vertailukohteet järjestelmässä</h4>
+        <form action="">
+            <table class="virkailija-table-1">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Hakija</th>
+                        <th>Henkilötunnus</th>
+                        <th>Lähde</th>
+                        <th>Päivitetty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="radio" name="comparisongroup" value="1" /></td>
+                        <td>Yong li</td>
+                        <td>24035</td>
+                        <td>Hakemus: 452658, yhteishaku kevät 2012</td>
+                        <td>16.3.2012 klo. 13:15</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="comparisongroup" value="2" /></td>
+                        <td>Yong Li</td>
+                        <td>24035</td>
+                        <td>Hakemus: 136134, yhteishaku kevät 2012</td>
+                        <td>25.5.2012 klo. 12:12</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="comparisongroup" value="3" /></td>
+                        <td>Yong Li</td>
+                        <td>24035</td>
+                        <td>Hakemus: 637582, yhteishaku kevät 2012</td>
+                        <td>11.1.2012 klo. 10:01</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="comparisongroup" value="4" /></td>
+                        <td>Yong Li</td>
+                        <td>24035</td>
+                        <td>Hakemus: 1345234, yhteishaku kevät 2012</td>
+                        <td>6.1.2012 klo. 21:34</td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="#" class="float-right">Hae henkilö listalle</a>
+            <div class="margin-top-2">
+                <a href="#" class="button disabled">Ohita</a>
+                <a href="#" class="button">Ohita kaikki</a>
+                <a href="#" class="button">Hae uudelleen</a>
+            </div>
+        </form>
+    </div>
+
+    <hr />
+    <div class="offset-left-12-4 width-12-4">
+        <h3>Yksilöitävä henkilö</h3>
+        <p><span class="bold">Yong Li</span>, 24035</p>
+        <p>15.3.2012 klo. 12:16</p>
+
+    </div>
+    <div class="width-12-4">
+        <a href="#" class="button disabled float-right">Yhidstä henkilö</a>
+        <div class="clear"></div>
+        <a href="#" class="button disabled float-right">Ohita</a>
+    </div>
+    <table class="virkailija-table-1">
+        <tr>
+            <td>Etunimet</td>
+            <td>Yong</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Sukunimi</td>
+            <td>Li</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Kutsumanimi</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Henkilötunnus</td>
+            <td>24035</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>OID-koodi</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Hakemusnumero</td>
+            <td>12332</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Sukupuoli</td>
+            <td>Mies</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Kansalaisuus</td>
+            <td>Kiina</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Äidinkieli</td>
+            <td>kiina</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Kotikunta</td>
+            <td>Zhitzou</td>
+            <td></td>
+        </tr>
+    </table>
+
+    <div class="clear"></div>
 </section>
 
 </div>
