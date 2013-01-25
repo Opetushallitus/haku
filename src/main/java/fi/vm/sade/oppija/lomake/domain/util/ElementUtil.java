@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.lomake.domain.util;
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 
-public class ElementUtil {
+public final class ElementUtil {
     private ElementUtil() {
     }
 
