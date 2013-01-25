@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 import static org.junit.Assert.assertTrue;
 
 /**

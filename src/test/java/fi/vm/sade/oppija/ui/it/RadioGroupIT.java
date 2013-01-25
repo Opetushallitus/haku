@@ -28,7 +28,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
-import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 import static net.sourceforge.jwebunit.junit.JWebUnit.assertElementPresentByXPath;
 import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 

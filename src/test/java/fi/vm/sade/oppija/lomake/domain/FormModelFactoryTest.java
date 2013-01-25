@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import org.junit.Test;
 
-import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 import static org.junit.Assert.assertEquals;
 
 /**

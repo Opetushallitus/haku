@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

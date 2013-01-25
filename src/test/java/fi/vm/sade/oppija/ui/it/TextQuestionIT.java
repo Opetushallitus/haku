@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 public class TextQuestionIT extends AbstractFormTest {
