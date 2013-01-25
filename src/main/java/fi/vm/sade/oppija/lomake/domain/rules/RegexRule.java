@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegexRule {
+public final class RegexRule {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegexRule.class);
 
