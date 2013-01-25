@@ -256,12 +256,12 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         henkilötiedotRyhmä.addChild(sukunimi)
                 .addChild(etunimet)
                 .addChild(kutsumanimi)
+                .addChild(kansalaisuus)
                 .addChild(socialSecurityNumber)
                 .addChild(email)
                 .addChild(matkapuhelinnumero)
                 .addChild(addHuoltajanPuhelinnumero)
                 .addChild(asuinmaa)
-                .addChild(kansalaisuus)
                 .addChild(aidinkieli);
 
         createKoulutustausta(koulutustaustaRyhmä);

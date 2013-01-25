@@ -29,8 +29,8 @@
     (function() {
         var ssnId = "<c:out value="${ssnElement.ssn.id}"/>";
         $("#" + ssnId).change(function() {
-            var maleReg = /\d{6}\S\d{2}[13579]\w/;
-            var femaleReg = /\d{6}\S\d{2}[2468]\w/;
+            var maleReg   = /\d{6}[-+aA]\d{2}[13579]\w/;
+            var femaleReg = /\d{6}[-+aA]\d{2}[02468]\w/;
             if (maleReg.test($("#" + ssnId).val())) {
                 $("#<c:out value="${ssnElement.maleId}"/>").attr("checked", true);
             }
