@@ -15,6 +15,9 @@
  */
 package fi.vm.sade.oppija.lomake.validation.validators;
 
+import fi.vm.sade.oppija.lomake.validation.FieldValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,9 +26,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import fi.vm.sade.oppija.lomake.validation.FieldValidator;
-import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 
 /**
  * Validoi suomalaiset henkilötunnukset.
@@ -40,7 +40,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     private static final String FI = "fi";
     private static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))";
     private static final String ERROR_MESSAGE = "Suomen kansalaisen on syötettävä henkilötunnus";
-    private static HashMap<String, Integer> centuries = new HashMap<String, Integer>();
+    private static Map<String, Integer> centuries = new HashMap<String, Integer>();
     private DateFormat fmt;
     private static String[] checks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C",
             "D", "E", "F", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T", "U", "V", "W", "X", "Y"};
