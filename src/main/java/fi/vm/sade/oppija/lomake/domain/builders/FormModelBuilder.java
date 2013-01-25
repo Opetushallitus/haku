@@ -45,7 +45,9 @@ public class FormModelBuilder {
     private Phase phase = new Phase(VAIHE_ID, createI18NText(VAIHE_TITLE), false);
     private Theme theme = new Theme(TEEMA_ID, createI18NText(TEEMA_TITLE), null);
 
-    private FormBuilder formBuilder = new FormBuilder(FORM_ID, createI18NText("Tässä olisi kuvaava otsikko. Tämä on kuitenkin testiformi joka on luotu " + new Date()));
+    private FormBuilder formBuilder =
+            new FormBuilder(FORM_ID,
+                    createI18NText("Tässä olisi kuvaava otsikko. Tämä on kuitenkin testiformi joka on luotu " + new Date()));
 
     Form form = createForm(phase);
 
