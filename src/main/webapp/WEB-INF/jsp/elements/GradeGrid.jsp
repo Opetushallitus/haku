@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -82,9 +83,8 @@
                     <select id="${customScopeKey}" name="${customScopeKey}">
                         <option></option>
                         <c:forEach var="scopeOption" items="${element.scopeOptions}">
-                            <option value="${scopeOption.value}"
-                                ${(categoryData[customScopeKey] eq scopeOption.value) ? "selected=\"selected\"" : ""}>
-                                    ${scopeOption.title}</option>
+                            <option value="${scopeOption.value}" ${(categoryData[customScopeKey] eq scopeOption.value) ? "selected=\"selected\"" : ""}>
+                                <haku:i18nText value="${scopeOption.i18nText}"/></option>
                         </c:forEach>
                     </select>
                     <select id="${customLanguageKey}" name="${customLanguageKey}">
@@ -92,7 +92,7 @@
                         <c:forEach var="languageOption" items="${element.languageOptions}">
                             <option value="${languageOption.value}"
                                 ${(categoryData[customLanguageKey] eq languageOption.value) ? "selected=\"selected\"" : ""}>
-                                    ${languageOption.title}</option>
+                                <haku:i18nText value="${languageOption.i18nText}"/></option>
                         </c:forEach>
                     </select>
                 </td>
@@ -101,7 +101,8 @@
                         <select id="${customCommonGradeKey}" name="${customCommonGradeKey}" placeholder="Valitse">
                             <option></option>
                             <c:forEach var="grade" items="${element.gradeRange}">
-                                <option value="${grade.value}" ${(categoryData[customCommonGradeKey] eq grade.value) ? "selected=\"selected\"" : ""}>${grade.title}</option>
+                                <option value="${grade.value}" ${(categoryData[customCommonGradeKey] eq grade.value) ? "selected=\"selected\"" : ""}>
+                                    <haku:i18nText value="${grade.i18nText}"/></option>
                             </c:forEach>
                         </select>
                     </div>
@@ -111,7 +112,8 @@
                         <select id="${customOptionalGradeKey}" name="${customOptionalGradeKey}" placeholder="Valitse">
                             <option></option>
                             <c:forEach var="grade" items="${element.gradeRange}">
-                                <option value="${grade.value}" ${(categoryData[customOptionalGradeKey] eq grade.value) ? "selected=\"selected\"" : ""}>${grade.title}</option>
+                                <option value="${grade.value}" ${(categoryData[customOptionalGradeKey] eq grade.value) ? "selected=\"selected\"" : ""}>
+                                    <haku:i18nText value="${grade.i18nText}"/></option>
                             </c:forEach>
                         </select>
                     </div>

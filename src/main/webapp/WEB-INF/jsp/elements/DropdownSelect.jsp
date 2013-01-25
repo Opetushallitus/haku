@@ -18,23 +18,20 @@
 
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <div class="${styleBaseClass}">
-    <label class="${styleBaseClass}-label ${element.attributes['required'].value}"
-           for="label-${element.id}">${element.title}</label>
+
+    <haku:label element="${element}" styleBaseClass="${styleBaseClass}"/>
 
     <div class="${styleBaseClass}-content">
         <select ${element.attributeString}>
             <c:forEach var="option" items="${element.options}">
                 <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
                 <option name="${optionId}"
-                        value="${option.value}" ${(categoryData[element.id] eq option.value) ? "selected=\"selected\" " : " "} ${option.attributeString}>${option.title}</option>
+                        value="${option.value}" ${(categoryData[element.id] eq option.value) ? "selected=\"selected\" " : " "} ${option.attributeString}>
+                    <haku:i18nText value="${option.i18nText}"/></option>
             </c:forEach>
         </select>
-        <small>${element.help}</small>
-        <c:if test="${not empty errorMessages[element.id]}">
-          <div class="margin-top-1 notification warning">
-            <span><c:out value="${errorMessages[element.id]}"/></span>
-          </div>
-        </c:if>
+        <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
+        <haku:help element="${element}"/>
     </div>
     <div class="clear"></div>
 

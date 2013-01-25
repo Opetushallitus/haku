@@ -29,6 +29,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static junit.framework.Assert.assertEquals;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
@@ -43,9 +44,9 @@ public class CheckBoxIT extends AbstractFormTest {
 
     @Before
     public void init() throws IOException {
-        checkBox = new CheckBox("checkbox", "foo");
-        checkBox.addOption("checkbox_value", "value", "title");
-        checkBox.addOption("checkbox_value2", "value2", "title2");
+        checkBox = new CheckBox("checkbox", createI18NText("foo"));
+        checkBox.addOption("checkbox_value", createI18NText("title"), "value");
+        checkBox.addOption("checkbox_value2", createI18NText("title2"), "value2");
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox);
         this.formModelHelper = initModel(formModel);
     }

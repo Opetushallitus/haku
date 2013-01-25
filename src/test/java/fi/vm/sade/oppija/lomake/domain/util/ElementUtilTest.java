@@ -14,23 +14,27 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain.elements;
+package fi.vm.sade.oppija.lomake.domain.util;
 
-/**
- * @author jukka
- * @version 9/7/1210:38 AM}
- * @since 1.1
- */
-public class Link extends Element {
-    final String value;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
+import org.junit.Test;
 
-    public Link(String value, String href) {
-        super(href);
-        this.value = value;
-        addAttribute("href", href);
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+public class ElementUtilTest {
+
+    public static final String TEST_TEXT = "test";
+
+    @Test
+    public void testCreateI18NTextSize() throws Exception {
+        I18nText test = ElementUtil.createI18NText("test");
+        assertTrue(test.getTranslations().size() == 3);
     }
 
-    public String getValue() {
-        return value;
+    @Test
+    public void testCreateI18NTextFi() throws Exception {
+        I18nText test = ElementUtil.createI18NText(TEST_TEXT);
+        assertEquals(test.getTranslations().get("fi"), TEST_TEXT);
     }
 }

@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import org.junit.Before;
 import org.junit.Test;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static org.junit.Assert.*;
 
 public class ApplicationInfoTest {
@@ -33,7 +34,7 @@ public class ApplicationInfoTest {
     @Before
     public void setUp() throws Exception {
         applicationPeriod = new ApplicationPeriod();
-        form = new Form("id", "title");
+        form = new Form("id", createI18NText("title"));
         application = new Application();
         applicationInfo = new ApplicationInfo(application, form, applicationPeriod);
     }

@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static org.junit.Assert.assertNull;
 
 /**
@@ -55,35 +56,35 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         ApplicationPeriod applicationPeriod = new ApplicationPeriod("Yhteishaku");
         FormModel formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
-        Phase hakutoiveet = new Phase("hakutoiveet", "Hakutoiveet", false);
-        Phase lisakysymykset = new Phase("lisakysymykset", "Lisäkysymykset", false);
-        Form form = new Form("lomake", "yhteishaku");
+        Phase hakutoiveet = new Phase("hakutoiveet", createI18NText("Hakutoiveet"), false);
+        Phase lisakysymykset = new Phase("lisakysymykset", createI18NText("Lisäkysymykset"), false);
+        Form form = new Form("lomake", createI18NText("yhteishaku"));
         form.addChild(hakutoiveet);
         form.addChild(lisakysymykset);
         form.init();
 
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
 
-        TextQuestion textQuestion = new TextQuestion("776_additional_question_1", "Lorem ipsum");
+        TextQuestion textQuestion = new TextQuestion("776_additional_question_1", createI18NText("Lorem ipsum"));
         List<Question> lisakysymysList = new ArrayList<Question>();
         lisakysymysList.add(textQuestion);
         lisakysymysMap.put("776", lisakysymysList);
         applicationPeriod.addForm(form);
 
-        Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", "Hakutoiveet", lisakysymysMap);
+        Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", createI18NText("Hakutoiveet"), lisakysymysMap);
         hakutoiveet.addChild(hakutoiveetRyhmä);
         hakutoiveetRyhmä.setHelp("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.");
-        SortableTable sortableTable = new SortableTable("preferencelist", "Hakutoiveet", "Ylös", "Alas");
-        PreferenceRow pr1 = new PreferenceRow("preference1", "Hakutoive 1", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
-        PreferenceRow pr2 = new PreferenceRow("preference2", "Hakutoive 2", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
-        PreferenceRow pr3 = new PreferenceRow("preference3", "Hakutoive 3", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
+        SortableTable sortableTable = new SortableTable("preferencelist", createI18NText("Hakutoiveet"), "Ylös", "Alas");
+        PreferenceRow pr1 = new PreferenceRow("preference1", createI18NText("Hakutoive 1"), "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
+        PreferenceRow pr2 = new PreferenceRow("preference2", createI18NText("Hakutoive 2"), "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
+        PreferenceRow pr3 = new PreferenceRow("preference3", createI18NText("Hakutoive 3"), "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
         sortableTable.addChild(pr1);
         sortableTable.addChild(pr2);
         sortableTable.addChild(pr3);
         hakutoiveetRyhmä.addChild(sortableTable);
 
-        TextQuestion lisakysymys = new TextQuestion("lisakysymys", "Lisäkysymys");
-        Theme lisakysymyksetRyhma = new Theme("lisakysymyksetGrp", "Lisäkysymykset", null);
+        TextQuestion lisakysymys = new TextQuestion("lisakysymys", createI18NText("Lisäkysymys"));
+        Theme lisakysymyksetRyhma = new Theme("lisakysymyksetGrp", createI18NText("Lisäkysymykset"), null);
         lisakysymykset.addChild(lisakysymyksetRyhma);
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", "preference1-Koulutus-id", "776");
         relatedQuestionRule.addChild(lisakysymys);

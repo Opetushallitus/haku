@@ -17,7 +17,9 @@
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.lomake.domain.Attribute;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
@@ -49,13 +51,10 @@ import java.util.Map;
                 @JsonSubTypes.Type(value = Attachment.class),
                 @JsonSubTypes.Type(value = CheckBox.class),
                 @JsonSubTypes.Type(value = DropdownSelect.class),
-                @JsonSubTypes.Type(value = MultiSelect.class),
                 @JsonSubTypes.Type(value = Option.class),
                 @JsonSubTypes.Type(value = Radio.class),
                 @JsonSubTypes.Type(value = TextArea.class),
                 @JsonSubTypes.Type(value = Attachment.class),
-                @JsonSubTypes.Type(value = Navigation.class),
-                @JsonSubTypes.Type(value = Link.class),
                 @JsonSubTypes.Type(value = Theme.class),
                 @JsonSubTypes.Type(value = TextQuestion.class),
                 @JsonSubTypes.Type(value = Phase.class),
@@ -76,7 +75,9 @@ public abstract class Element {
     public static final String ID_DELIMITER = "_";
     protected final String id;
     protected transient String type = this.getClass().getSimpleName();
-    protected String help;
+    protected String help = "";
+
+    protected I18nText ihelp;
 
     protected final transient List<Validator> validators = new ArrayList<Validator>();
 
@@ -89,6 +90,10 @@ public abstract class Element {
 
     protected Element(@JsonProperty String id) {
         this.id = id;
+        addAttribute("id", id);
+        this.help = "";
+        this.ihelp = new I18nText(id + "_help",
+                ImmutableMap.of("fi", help, "sv", help + "_sv", "en", help + "_en"));
     }
 
     public String getId() {
@@ -112,10 +117,20 @@ public abstract class Element {
 
     public void setHelp(final String help) {
         this.help = help;
+        this.ihelp = new I18nText(id + "_help",
+                ImmutableMap.of("fi", help, "sv", help + "_sv", "en", help + "_en"));
     }
 
     public String getHelp() {
         return help;
+    }
+
+    public I18nText getIhelp() {
+        return ihelp;
+    }
+
+    public void setIhelp(I18nText ihelp) {
+        this.ihelp = ihelp;
     }
 
     public Element addChild(Element child) {

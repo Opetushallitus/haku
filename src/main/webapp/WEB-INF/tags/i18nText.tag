@@ -1,5 +1,6 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ tag description="i18nText" body-content="empty" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ attribute name="value" required="true" type="fi.vm.sade.oppija.lomake.domain.I18nText" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -15,7 +16,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
-<div class="form-item">
-    <b><haku:i18nText value="${element.i18nText}"/></b>
-</div>
+<c:if test="${not empty value}">
+    <c:set var="language" value="${sessionScope['javax.servlet.jsp.jstl.fmt.locale.session'].language}" scope="page"/>
+    <c:out value="${value.translations[language]}" escapeXml="true" default="???"/>
+</c:if>

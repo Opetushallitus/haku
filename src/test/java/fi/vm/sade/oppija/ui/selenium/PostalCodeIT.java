@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -48,18 +49,18 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         ApplicationPeriod applicationPeriod = new ApplicationPeriod("test");
         FormModel formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
-        Phase testivaihe = new Phase("testivaihe", "Testivaihe", false);
-        Form form = new Form("lomake", "yhteishaku");
+        Phase testivaihe = new Phase("testivaihe", createI18NText("Testivaihe"), false);
+        Form form = new Form("lomake", createI18NText("yhteishaku"));
         form.addChild(testivaihe);
         form.init();
 
         applicationPeriod.addForm(form);
 
-        Theme testiRyhma = new Theme("testiGrp", "TestiGrp", null);
+        Theme testiRyhma = new Theme("testiGrp", createI18NText("TestiGrp"), null);
         testivaihe.addChild(testiRyhma);
         Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
         postOffices.put("00100", new PostOffice("Helsinki"));
-        PostalCode postinumero = new PostalCode("postinumero1", "postinumero", postOffices);
+        PostalCode postinumero = new PostalCode("postinumero1", createI18NText("postinumero"), postOffices);
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
@@ -67,7 +68,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         postinumero.addAttribute("maxlength", "5");
         testiRyhma.addChild(postinumero);
 
-        TextQuestion tq = new TextQuestion("foo", "bar");
+        TextQuestion tq = new TextQuestion("foo", createI18NText("bar"));
         testiRyhma.addChild(tq);
         initModel(formModel);
     }

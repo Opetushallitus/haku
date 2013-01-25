@@ -19,8 +19,8 @@
 
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <fieldset class="${styleBaseClass}">
-    <legend class="${styleBaseClass}-label ${element.attributes['required'].value}"><c:out
-            value="${element.title}"/></legend>
+    <legend class="${styleBaseClass}-label ${element.attributes['required'].value}"><haku:i18nText
+            value="${element.i18nText}"/></legend>
     <div class="${styleBaseClass}-content">
 
         <c:set var="value" value="${(empty value) ? categoryData[element.id] : value}"/>
@@ -29,18 +29,13 @@
                 <c:set var="id" value="${option.id}"/>
                 <input id="${id}" type="radio" name="${element.id}"
                        value="${option.value}" ${(!empty disabled) ? "disabled=\"true\" " : " "} ${(value eq option.value) ? "checked=\"checked\" " : " "} ${option.attributeString}/>
-                <label for="${option.id}">${option.title}</label>
+                <label for="${option.id}"><haku:i18nText value="${option.i18nText}"/></label>
 
-                <div id="help-${element.id}-${option.id}">
-                    <small>${option.help}</small>
-                </div>
+                <haku:help element="${option}"/>
             </div>
         </c:forEach>
-        <c:if test="${not empty errorMessages[element.id]}">
-          <div class="notification warning">
-            <span><c:out value="${errorMessages[element.id]}"/></span>
-          </div>
-        </c:if>
+        <haku:errorMessage id="${element.id}"/>
+        <haku:help element="${element}"/>
     </div>
     <div class="clear"></div>
     <haku:viewChilds element="${element}"/>

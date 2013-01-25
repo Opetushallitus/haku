@@ -16,21 +16,17 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-/**
- * @author jukka
- * @version 9/7/1210:37 AM}
- * @since 1.1
- */
 public abstract class Question extends Titled {
 
     private boolean inline = false;
 
-    protected Question(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title) {
-        super(id, title);
-        addAttribute("id", id);
+    protected Question(@JsonProperty(value = "id") final String id,
+                       @JsonProperty(value = "i18nText") I18nText i18nText) {
+        super(id, i18nText);
         addAttribute("name", id);
     }
 

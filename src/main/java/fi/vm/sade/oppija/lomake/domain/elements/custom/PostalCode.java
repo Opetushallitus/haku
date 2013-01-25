@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -27,8 +28,9 @@ import java.util.Map;
  */
 public class PostalCode extends DataRelatedQuestion<PostOffice> {
 
-    public PostalCode(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
-                      @JsonProperty(value = "data") Map<String, PostOffice> data) {
-        super(id, title, data);
+    public PostalCode(@JsonProperty(value = "id") final String id,
+                      @JsonProperty(value = "i18nText") I18nText i18nText,
+                      @JsonProperty(value = "data") final Map<String, PostOffice> data) {
+        super(id, i18nText, data);
     }
 }

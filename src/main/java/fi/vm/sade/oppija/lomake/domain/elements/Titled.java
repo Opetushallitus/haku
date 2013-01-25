@@ -17,27 +17,26 @@
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-/**
- * @author jukka
- * @version 9/7/1210:36 AM}
- * @since 1.1
- */
 public abstract class Titled extends Element {
 
-    final String title;
+    private I18nText i18nText;
 
     // verbose help text that is rendered in a separate help window
     private String verboseHelp;
 
-    public Titled(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
+    public Titled(@JsonProperty(value = "id") final String id,
+                  @JsonProperty(value = "i18nText") final I18nText i18nText) {
         super(id);
-        this.title = title;
+        addAttribute("type", "text");
+        this.i18nText = i18nText;
     }
 
-    public String getTitle() {
-        return title;
+
+    public I18nText getI18nText() {
+        return i18nText;
     }
 
     public String getVerboseHelp() {

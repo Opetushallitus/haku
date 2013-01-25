@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static org.junit.Assert.assertEquals;
 
 public class HelpIT extends AbstractSeleniumBase {
@@ -38,10 +39,10 @@ public class HelpIT extends AbstractSeleniumBase {
     public static final String HELP_TEXT = "Apuva";
 
     private FormModelHelper formModelHelper;
+    private CheckBox checkBox = new CheckBox(ID, createI18NText(TITLE));
 
     @Test
     public void testCheckBox() {
-        CheckBox checkBox = new CheckBox(ID, TITLE);
         checkBox.setHelp(HELP_TEXT);
         String actualHelpText = initModelAndGetHelpText(checkBox);
         assertEquals(HELP_TEXT, actualHelpText);
@@ -49,7 +50,7 @@ public class HelpIT extends AbstractSeleniumBase {
 
     @Test
     public void testCheckBoxWithoutHelp() {
-        String actualHelpText = initModelAndGetHelpText(new CheckBox(ID, TITLE));
+        String actualHelpText = initModelAndGetHelpText(checkBox);
         assertEquals("", actualHelpText);
     }
 

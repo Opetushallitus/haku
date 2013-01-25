@@ -14,20 +14,17 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain.elements;
+package fi.vm.sade.oppija.lomake.domain.util;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 
-/**
- * @author jukka
- * @version 9/7/1210:50 AM}
- * @since 1.1
- */
-public class Navigation extends Element {
-
-    public Navigation(@JsonProperty(value = "id") String id) {
-        super(id);
+public class ElementUtil {
+    private ElementUtil() {
     }
 
-
+    public static I18nText createI18NText(final String text) {
+        return new I18nText("text_" + Long.toString(System.currentTimeMillis()),
+                ImmutableMap.of("fi", text, "sv", text + "_sv", "en", text + "_en"));
+    }
 }

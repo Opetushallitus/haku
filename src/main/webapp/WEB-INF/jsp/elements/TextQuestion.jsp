@@ -18,21 +18,17 @@
 
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <div class="${styleBaseClass}">
-    <label id="label-${element.id}" for="${element.id}"
-           class="${styleBaseClass}-label ${element.attributes['required'].value}">${element.title}</label>
+
+    <haku:label element="${element}" styleBaseClass="${styleBaseClass}"/>
 
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
             <input ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"/>
-            <c:if test="${not empty errorMessages[element.id]}">
-              <div class="margin-top-1 notification warning"><c:out value="${errorMessages[element.id]}"/></div>
-            </c:if>
+            <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
 
+        <haku:help element="${element}"/>
 
-        <div class="margin-top-1" id="help-${element.id}">
-            <small>${element.help}</small>
-        </div>
     </div>
     <div class="clear"></div>
     <haku:viewChilds element="${element}"/>

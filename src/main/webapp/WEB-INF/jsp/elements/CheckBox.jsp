@@ -19,24 +19,23 @@
 
 <fieldset class="${styleBaseClass}">
 
-    <legend class="${styleBaseClass}-label${element.attributes['required'].value}"><c:out
-            value="${element.title}"/></legend>
+    <legend class="${styleBaseClass}-label${element.attributes['required'].value}"><haku:i18nText
+            value="${element.i18nText}"/></legend>
     <div class="${styleBaseClass}-content">
         <c:forEach var="option" items="${element.options}">
             <div>${errors[option.id]}</div>
             <div class="field-container-checkbox">
                 <input type="checkbox" name="${option.id}"
                        value="${option.value}" ${(categoryData[option.id] eq option.value) ? "checked=\"checked\"" : ""} ${option.attributeString}/>
-                <label for="${option.id}">${option.title}</label>
+                <label for="${option.id}"><haku:i18nText value="${option.i18nText}"/></label>
+                <haku:help element="${option}"/>
+                <haku:viewChilds element="${option}"/>
             </div>
-            <haku:viewChilds element="${option}"/>
+
         </c:forEach>
 
-        <div>
-            <small>
-                <span class="help" id="help-${element.id}"><c:out value="${element.help}"/></span>
-            </small>
-        </div>
+        <haku:errorMessage id="${element.id}"/>
+        <haku:help element="${element}"/>
 
     </div>
     <haku:viewChilds element="${element}"/>

@@ -10,7 +10,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
 
@@ -29,6 +29,7 @@ import org.openqa.selenium.By;
 
 import java.io.IOException;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -44,7 +45,7 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
     @Before
     public void init() throws IOException {
 
-        TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", "Henkilötunnus");
+        TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", createI18NText("Henkilötunnus"));
         henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
         henkilötunnus.addAttribute("title", "ppkkvv*****");
         henkilötunnus.addAttribute("required", "required");
@@ -54,13 +55,13 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
         henkilötunnus.setHelp("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi");
         henkilötunnus.setInline(true);
 
-        Radio sukupuoli = new Radio("Sukupuoli", "Sukupuoli");
-        sukupuoli.addOption("mies", "Mies", "Mies");
-        sukupuoli.addOption("nainen", "Nainen", "Nainen");
+        Radio sukupuoli = new Radio("Sukupuoli", createI18NText("Sukupuoli"));
+        sukupuoli.addOption("mies", createI18NText("Mies"), "Mies");
+        sukupuoli.addOption("nainen", createI18NText("Nainen"), "Nainen");
         sukupuoli.addAttribute("required", "required");
         sukupuoli.setInline(true);
 
-        SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", "Henkilötunnus");
+        SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NText("Henkilötunnus"));
         socialSecurityNumber.setSsn(henkilötunnus);
         socialSecurityNumber.setSex(sukupuoli);
         socialSecurityNumber.setMaleId(sukupuoli.getOptions().get(0).getId());

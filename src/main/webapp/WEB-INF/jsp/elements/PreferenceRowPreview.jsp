@@ -22,7 +22,7 @@
 <c:set value="${element.id}-Koulutus-id" var="selectHiddenInputId" scope="page"/>
 <c:set value="${categoryData[selectHiddenInputId]}" var="hakukohdeId" scope="page"/>
 <tr id="${element.id}-Opetuspiste">
-    <td class="label"><c:out value="${element.title}"/></td>
+    <td class="label"><haku:i18nText value="${element.i18nText}"/></td>
     <td class="sublabel"><c:out value="${element.learningInstitutionLabel}"/></td>
     <td><c:out value="${it.categoryData[textInputId]}"/></td>
 </tr>

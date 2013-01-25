@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -86,26 +87,26 @@
             <td><c:out value="${element.customLanguageTitle}"/>&nbsp;
                 <c:forEach var="scopeOption" items="${element.scopeOptions}">
                     <c:if test="${(categoryData[customScopeKey] eq scopeOption.value)}">
-                        <c:out value="${scopeOption.title}"/>&nbsp;
+                        <haku:i18nText value="${scopeOption.i18nText}"/>&nbsp;
                     </c:if>
                 </c:forEach>
                 <c:forEach var="languageOption" items="${element.languageOptions}">
                     <c:if test="${(categoryData[customLanguageKey] eq languageOption.value)}">
-                        <c:out value="${languageOption.title}"/>
+                        <haku:i18nText value="${languageOption.i18nText}"/>
                     </c:if>
                 </c:forEach>
             </td>
             <td>
                 <c:forEach var="grade" items="${element.gradeRange}">
                     <c:if test="${(categoryData[customCommonGradeKey] eq grade.value)}">
-                        <c:out value="${grade.title}"/>
+                        <haku:i18nText value="${grade.i18nText}"/>
                     </c:if>
                 </c:forEach>
             </td>
             <td>
                 <c:forEach var="grade" items="${element.gradeRange}">
                     <c:if test="${(categoryData[customOptionalGradeKey] eq grade.value)}">
-                        <c:out value="${grade.title}"/>
+                        <haku:i18nText value="${grade.i18nText}"/>
                     </c:if>
                 </c:forEach>
             </td>

@@ -249,11 +249,11 @@ public class FormController {
         for (Element element : phase.getChildren()) {
             if (element.getId().equals(teemaId)) {
                 Theme theme = (Theme) element;
-                model.put("themeTitle", theme.getTitle());
+                model.put("themeTitle", theme.getI18nText().getTranslations().get("fi"));
                 HashMap<String, String> helpMap = new HashMap<String, String>();
                 for (Element tElement : theme.getChildren()) {
                     if (tElement instanceof Titled) {
-                        helpMap.put(((Titled) tElement).getTitle(), ((Titled) tElement).getVerboseHelp());
+                        helpMap.put(((Titled) tElement).getI18nText().getTranslations().get("fi"), ((Titled) tElement).getVerboseHelp());
                     }
                 }
                 model.put("themeHelpMap", helpMap);

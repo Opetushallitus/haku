@@ -32,14 +32,12 @@ import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
 import java.util.Map;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -65,11 +63,11 @@ public class OfficerControllerTest {
         app.setVaiheId("valmis");
         when(applicationService.getApplication(oid)).thenReturn(app);
 
-        Phase phase = new Phase("esikatselu", "esikatselu", true);
+        Phase phase = new Phase("esikatselu", createI18NText("esikatselu"), true);
         when(formService.getLastPhase("Yhteishaku", "yhteishaku")).thenReturn(phase);
 
-        Form form = new Form("yhteishaku", "yhteishaku");
-        form.addChild(new Phase("henkilotiedot", "henkilotiedot", false));
+        Form form = new Form("yhteishaku", createI18NText("yhteishaku"));
+        form.addChild(new Phase("henkilotiedot", createI18NText("henkilotiedot"), false));
         form.addChild(phase);
         form.init();
         when(formService.getActiveForm("Yhteishaku", "yhteishaku")).thenReturn(form);

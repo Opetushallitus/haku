@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.oppija.lomake.domain.Attribute;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -43,12 +44,13 @@ public class PreferenceRow extends Question {
     private String learningInstitutionInputId;
     private String educationInputId;
 
-    public PreferenceRow(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
-                         @JsonProperty(value = "resetLabel") String resetLabel,
-                         @JsonProperty(value = "educationLabel") String educationLabel,
-                         @JsonProperty(value = "learningInstitutionLabel") String learningInstitutionLabel,
-                         @JsonProperty(value = "selectEducationPlaceholder") String selectEducationPlaceholder) {
-        super(id, title);
+    public PreferenceRow(@JsonProperty(value = "id") final String id,
+                         @JsonProperty(value = "i18nText") final I18nText i18nText,
+                         @JsonProperty(value = "resetLabel") final String resetLabel,
+                         @JsonProperty(value = "educationLabel") final String educationLabel,
+                         @JsonProperty(value = "learningInstitutionLabel") final String learningInstitutionLabel,
+                         @JsonProperty(value = "selectEducationPlaceholder") final String selectEducationPlaceholder) {
+        super(id, i18nText);
         this.resetLabel = resetLabel;
         this.educationLabel = educationLabel;
         this.learningInstitutionLabel = learningInstitutionLabel;

@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -40,8 +41,8 @@ public class GradeGridIT extends AbstractSeleniumBase {
         ApplicationPeriod applicationPeriod = new ApplicationPeriod("Yhteishaku");
         FormModel formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
-        Phase arvosanat = new Phase("arvosanat", "Arvosanat", false);
-        Form form = new Form("lomake", "yhteishaku");
+        Phase arvosanat = new Phase("arvosanat", createI18NText("Arvosanat"), false);
+        Form form = new Form("lomake", createI18NText("yhteishaku"));
         form.addChild(arvosanat);
         FormModelDummyMemoryDaoImpl dummyImpl = new FormModelDummyMemoryDaoImpl();
         arvosanat.addChild(dummyImpl.createGradeGrid());

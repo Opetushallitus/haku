@@ -16,17 +16,14 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-/**
- * @author jukka
- * @version 9/7/121:28 PM}
- * @since 1.1
- */
 public class TextQuestion extends Question {
 
-    public TextQuestion(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
-        super(id, title);
+    public TextQuestion(@JsonProperty(value = "id") final String id,
+                        @JsonProperty(value = "i18nText") final I18nText i18nText) {
+        super(id, i18nText);
         addAttribute("type", "text");
     }
 }

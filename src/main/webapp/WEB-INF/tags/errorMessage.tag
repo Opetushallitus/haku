@@ -1,5 +1,7 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ tag description="i18nText" body-content="empty" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ attribute name="id" required="true" type="java.lang.String" %>
+<%@ attribute name="additionalClass" required="false" type="java.lang.String" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -15,7 +17,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
-<div class="form-item">
-    <b><haku:i18nText value="${element.i18nText}"/></b>
-</div>
+<c:if test="${not empty errorMessages[id]}">
+    <div class="notification warning ${additionalClass}"><c:out value="${errorMessages[element.id]}"/></div>
+</c:if>

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -24,22 +25,16 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author jukka
- * @version 9/7/1210:27 AM}
- * @since 1.1
- */
 public class Form extends Titled {
-
-    private transient Navigation navigation = new Navigation("top");
 
     private transient String firstPhaseId;
     private transient String lastPhaseId;
 
     final transient Map<String, Phase> phases = new HashMap<String, Phase>();
 
-    public Form(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
-        super(id, title);
+    public Form(@JsonProperty(value = "id") final String id,
+                @JsonProperty(value = "i18nText") final I18nText i18nText) {
+        super(id, i18nText);
     }
 
     public Phase getPhase(String phaseId) {
@@ -49,7 +44,6 @@ public class Form extends Titled {
     private void addPhase(Phase phase, Phase prev) {
         this.phases.put(phase.getId(), phase);
         phase.initChain(prev);
-        navigation.addChild(phase.asLink());
     }
 
     public void init() {
@@ -64,11 +58,6 @@ public class Form extends Titled {
             child.init();
             lastPhaseId = child.getId();
         }
-    }
-
-    @JsonIgnore
-    public Navigation getNavigation() {
-        return navigation;
     }
 
     @JsonIgnore

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
@@ -43,8 +44,9 @@ public class SocialSecurityNumber extends Question {
     private String nationalityId;
     public static final String HENKILOTUNNUS_HASH = "Henkilotunnus_digest";
 
-    public SocialSecurityNumber(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
-        super(id, title);
+    public SocialSecurityNumber(@JsonProperty(value = "id") final String id,
+                                @JsonProperty(value = "i18nText") final I18nText i18nText) {
+        super(id, i18nText);
         this.ssn = null;
         this.sex = null;
     }

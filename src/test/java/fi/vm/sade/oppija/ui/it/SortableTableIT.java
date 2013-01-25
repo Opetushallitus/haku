@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 import static junit.framework.Assert.assertEquals;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
@@ -42,9 +43,9 @@ public class SortableTableIT extends AbstractFormTest {
 
     @Before
     public void init() throws IOException {
-        final SortableTable table = new SortableTable("t1", "Hakutoiveet", "Ylös", "Alas");
-        final PreferenceRow row = new PreferenceRow("r1", "Hakutoive 1", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
-        final PreferenceRow row2 = new PreferenceRow("r2", "Hakutoive 2", "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
+        final SortableTable table = new SortableTable("t1", createI18NText("Hakutoiveet"), "Ylös", "Alas");
+        final PreferenceRow row = new PreferenceRow("r1", createI18NText("Hakutoive 1"), "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
+        final PreferenceRow row2 = new PreferenceRow("r2", createI18NText("Hakutoive 2"), "Tyhjennä", "Koulutus", "Opetuspiste", "Valitse koulutus");
         table.addChild(row);
         table.addChild(row2);
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(table);

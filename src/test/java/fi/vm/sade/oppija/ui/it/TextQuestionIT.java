@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 public class TextQuestionIT extends AbstractFormTest {
@@ -34,7 +35,7 @@ public class TextQuestionIT extends AbstractFormTest {
 
     @Before
     public void init() throws IOException {
-        formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextQuestion("sukunimi", "foo"));
+        formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextQuestion("sukunimi", createI18NText("foo")));
         this.formModelHelper = initModel(formModel);
     }
 

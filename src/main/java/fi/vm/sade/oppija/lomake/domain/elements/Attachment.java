@@ -16,18 +16,13 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-/**
- * @author jukka
- * @version 9/12/1210:19 AM}
- * @since 1.1
- */
 public class Attachment extends Titled {
 
-    public Attachment(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
-        super(id, title);
-        addAttribute("name", id);
-
+    public Attachment(@JsonProperty(value = "id") final String id,
+                      @JsonProperty(value = "i18nText") final I18nText i18nText) {
+        super(id, i18nText);
     }
 }

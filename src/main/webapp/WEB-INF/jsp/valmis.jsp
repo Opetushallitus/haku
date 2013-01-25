@@ -20,6 +20,8 @@
 
 <fmt:setBundle basename="messages" scope="session"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
+<c:set var="categoryData" value="${it.categoryData}" scope="request"/>
+<c:set var="form" value="${it.form}" scope="request"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,7 +31,7 @@
     <link rel="stylesheet"
           href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
           type="text/css">
-    <title>${form.title}</title>
+    <title><haku:i18nText value="${form.i18nText}"/></title>
     <script src="${contextPath}/resources/jquery/jquery.min.js"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
     <script src="${contextPath}/resources/javascript/rules.js"></script>
@@ -68,16 +70,20 @@
 
                 <div class="grid16-16">
 
-                    <h1>Hakulomake</h1>
+                    <h1><fmt:message key="form.title"/></h1>
 
-                    <h2>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2012</h2>
+                    <h2><haku:i18nText value="${form.i18nText}"/></h2>
+
                     <ul class="form-steps">
-                        <c:forEach var="link" items="${it.form.navigation.children}" varStatus="status">
-                            <li><span><span class="index">${status.count}</span>${link.value} &gt;</span></li>
+                        <c:forEach var="phase" items="${form.children}" varStatus="status">
+                            <li><span><span class="index">${status.count}</span><haku:i18nText
+                                    value="${phase.i18nText}"/> &gt;</span></li>
                         </c:forEach>
-                        <li><a class="current"><span class="index"><c:out
-                                value="${fn:length(it.form.navigation.children) + 1}"/></span><fmt:message
-                                key="lomake.valmis"/></a></li>
+                        <li>
+                            <a class="current"><span class="index"><c:out
+                                    value="${fn:length(form.children) + 1}"/></span><fmt:message
+                                    key="lomake.valmis"/></a>
+                        </li>
                     </ul>
                     <div class="clear"></div>
                 </div>
@@ -94,10 +100,10 @@
                             value="${it.applicationNumber}"/></span>
                     </p>
 
-                    <c:if test="${(not empty it.categoryData['Sähköposti'])}">
+                    <c:if test="${(not empty categoryData['Sähköposti'])}">
                     <p>
                         <fmt:message key="lomake.valmis.sinulleonlahetettyvahvistussahkopostiisi"/>: <c:out
-                            value="${it.categoryData['Sähköposti']}"/>
+                            value="${categoryData['Sähköposti']}"/>
                     </p>
                     </c:if>
 
@@ -107,16 +113,16 @@
                         justo, sed consectetur enim. Curabitur nisl erat, egestas ut facilisis vel, interdum ac risus.
                     </p>
 
-                    <button class="print"><span><span><fmt:message
-                            key="lomake.valmis.button.tulosta"/></span></span></button>
-                    <button class="pdf"><span><span><fmt:message
-                            key="lomake.valmis.button.tallennapdf"/></span></span></button>
+                    <button class="print"><span><span><fmt:message key="lomake.valmis.button.tulosta"/></span></span>
+                    </button>
+                    <button class="pdf"><span><span><fmt:message key="lomake.valmis.button.tallennapdf"/></span></span>
+                    </button>
 
 
                     <div class="clear"></div>
                     <hr/>
 
-                    <img src="${pageContext.request.contextPath}/static-html/content/Valmis-Kuva2.jpg" title="" alt=""
+                    <img src="${contextPath}/static-html/content/Valmis-Kuva2.jpg" title="" alt=""
                          class="set-left"/>
 
                     <h3>Muutoksen tekeminen</h3>

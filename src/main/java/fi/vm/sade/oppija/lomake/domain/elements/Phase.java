@@ -17,23 +17,20 @@
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-/**
- * @author jukka
- * @version 9/7/1210:28 AM}
- * @since 1.1
- */
 public class Phase extends Titled {
 
     private transient Phase next;
     private transient Phase prev;
     private boolean preview;
 
-    public Phase(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
+    public Phase(@JsonProperty(value = "id") String id,
+                 @JsonProperty(value = "i18nText") I18nText i18nText,
                  @JsonProperty(value = "preview") final boolean preview) {
-        super(id, title);
+        super(id, i18nText);
         this.preview = preview;
     }
 
@@ -70,10 +67,6 @@ public class Phase extends Titled {
     @JsonIgnore
     public Phase getPrev() {
         return prev;
-    }
-
-    public Link asLink() {
-        return new Link(title, id);
     }
 
     public boolean isPreview() {

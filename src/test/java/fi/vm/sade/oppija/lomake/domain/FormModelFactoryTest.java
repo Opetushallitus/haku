@@ -22,6 +22,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import org.junit.Test;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -38,15 +39,15 @@ public class FormModelFactoryTest {
 
     @Test
     public void testBuilderFrom() throws Exception {
-        final FormModel formModel = new FormModelBuilder().withDefaults().addChildToTeema(new TextQuestion("doo", "foo")).build();
+        final FormModel formModel = new FormModelBuilder().withDefaults().addChildToTeema(new TextQuestion("doo", createI18NText("foo"))).build();
         final FormModelHelper formModelHelper = new FormModelHelper(formModel);
         assertEquals("doo", formModelHelper.getFirstCategoryFirstTeemaChild().getId());
     }
 
     @Test
     public void testBuilderWithCategory() throws Exception {
-        final Phase phase = new Phase("ekaKategoria", "ensimmäinen kategoria", false);
-        final FormModel formModel = new FormModelBuilder(phase).withDefaults().addChildToTeema(new TextQuestion("doo", "foo")).build();
+        final Phase phase = new Phase("ekaKategoria", createI18NText("ensimmäinen kategoria"), false);
+        final FormModel formModel = new FormModelBuilder(phase).withDefaults().addChildToTeema(new TextQuestion("doo", createI18NText("foo"))).build();
         assertEquals("doo", new FormModelHelper(formModel).getFirstCategoryFirstTeemaChild().getId());
     }
 }

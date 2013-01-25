@@ -16,45 +16,26 @@
 
 package fi.vm.sade.oppija.lomake.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.stereotype.Service;
-
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.oppija.lomake.dao.FormModelDAO;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
-import fi.vm.sade.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.domain.elements.Text;
-import fi.vm.sade.oppija.lomake.domain.elements.Theme;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.GradeGrid;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.LanguageRow;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.PostalCode;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.SortableTable;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.TextArea;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.domain.elements.*;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.Validator;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
 
 @Service("FormModelDummyMemoryDao")
 public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
@@ -70,14 +51,14 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         this.applicationPeriod = new ApplicationPeriod("Yhteishaku");
         formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
-        Phase henkilötiedot = new Phase(firstCategoryId, "Henkilötiedot", false);
-        Phase koulutustausta = new Phase("koulutustausta", "Koulutustausta", false);
-        Phase hakutoiveet = new Phase("hakutoiveet", "Hakutoiveet", false);
-        Phase arvosanat = new Phase("arvosanat", "Arvosanat", false);
-        Phase lisätiedot = new Phase("lisatiedot", "Lisätiedot", false);
-        Phase esikatselu = new Phase("esikatselu", "Esikatselu", true);
+        Phase henkilötiedot = new Phase(firstCategoryId, createI18NText("Henkilötiedot"), false);
+        Phase koulutustausta = new Phase("koulutustausta", createI18NText("Koulutustausta"), false);
+        Phase hakutoiveet = new Phase("hakutoiveet", createI18NText("Hakutoiveet"), false);
+        Phase arvosanat = new Phase("arvosanat", createI18NText("Arvosanat"), false);
+        Phase lisätiedot = new Phase("lisatiedot", createI18NText("Lisätiedot"), false);
+        Phase esikatselu = new Phase("esikatselu", createI18NText("Esikatselu"), true);
 
-        Form form = new Form(formId, "Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013");
+        Form form = new Form(formId, createI18NText("Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013"));
         form.addChild(henkilötiedot);
         form.addChild(koulutustausta);
         form.addChild(hakutoiveet);
@@ -92,24 +73,25 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         Map<String, List<Question>> oppiaineMap = new HashMap<String, List<Question>>();
 
         List<Question> oppiaineList = new ArrayList<Question>();
-        oppiaineList.add(new SubjectRow("tietotekniikka", "Tietotekniikka"));
-        oppiaineList.add(new SubjectRow("kansantaloustiede", "Kansantaloustiede"));
+        oppiaineList.add(new SubjectRow("tietotekniikka", createI18NText("Tietotekniikka")));
+        oppiaineList.add(new SubjectRow("kansantaloustiede", createI18NText("Kansantaloustiede")));
         oppiaineMap.put("776", oppiaineList);
 
 
         final String id = "776";
-        Radio radio = new Radio(id + "_additional_question_1", "Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?");
-        radio.addOption(id + "_q1_option_1", "q1_option_1", "Ei");
-        radio.addOption(id + "_q1_option_2", "q1_option_2", "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi");
+        Radio radio = new Radio(id + "_additional_question_1",
+                createI18NText("Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?"));
+        radio.addOption(id + "_q1_option_1", ElementUtil.createI18NText("Ei"), "q1_option_1");
+        radio.addOption(id + "_q1_option_2", ElementUtil.createI18NText("Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi"), "q1_option_2");
 
-        Radio radio2 = new Radio(id + "_additional_question_2", "Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?");
-        radio2.addOption(id + "_q2_option_1", "q2_option_1", "Ei");
-        radio2.addOption(id + "_q2_option_2", "q2_option_2", "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi");
+        Radio radio2 = new Radio(id + "_additional_question_2", createI18NText("Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?"));
+        radio2.addOption(id + "_q2_option_1", ElementUtil.createI18NText("Ei"), "q2_option_1");
+        radio2.addOption(id + "_q2_option_2", ElementUtil.createI18NText("Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi"), "q2_option_2");
 
-        Radio radio3 = new Radio(id + "_additional_question_3", "Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?");
-        radio3.addOption(id + "_q3_option_1", "q3_option_1", "En, en ole osallistunut pääsykokeeseen");
-        radio3.addOption(id + "_q3_option_2", "q3_option_2", "Ei, en halua käyttää tuloksia");
-        radio3.addOption(id + "_q3_option_3", "q3_option_3", "Kyllä, haluan käyttää pääsykoetuloksia");
+        Radio radio3 = new Radio(id + "_additional_question_3", createI18NText("Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?"));
+        radio3.addOption(id + "_q3_option_1", createI18NText("En, en ole osallistunut pääsykokeeseen"), "q3_option_1");
+        radio3.addOption(id + "_q3_option_2", createI18NText("Ei, en halua käyttää tuloksia"), "q3_option_2");
+        radio3.addOption(id + "_q3_option_3", createI18NText("Kyllä, haluan käyttää pääsykoetuloksia"), "q3_option_3");
 
         List<Question> lisakysymysList = new ArrayList<Question>();
         lisakysymysList.add(radio);
@@ -118,13 +100,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         lisakysymysMap.put(id, lisakysymysList);
 
 
-        Theme henkilötiedotRyhmä = new Theme("HenkilotiedotGrp", "Henkilötiedot", null);
-        Theme koulutustaustaRyhmä = new Theme("KoulutustaustaGrp", "Koulutustausta", null);
-        Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", "Hakutoiveet", lisakysymysMap);
-        Theme arvosanatRyhmä = new Theme("arvosanatGrp", "Arvosanat", oppiaineMap);
-        Theme tyokokemusRyhmä = new Theme("tyokokemusGrp", "Työkokemus", null);
-        Theme lupatiedotRyhmä = new Theme("lupatiedotGrp", "Lupatiedot", null);
-        Theme yhteenvetoRyhmä = new Theme("yhteenvetoGrp", "yhteenveto", null);
+        Theme henkilötiedotRyhmä = new Theme("HenkilotiedotGrp", createI18NText("Henkilötiedot"), null);
+        Theme koulutustaustaRyhmä = new Theme("KoulutustaustaGrp", createI18NText("Koulutustausta"), null);
+        Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", createI18NText("Hakutoiveet"), lisakysymysMap);
+        Theme arvosanatRyhmä = new Theme("arvosanatGrp", createI18NText("Arvosanat"), oppiaineMap);
+        Theme tyokokemusRyhmä = new Theme("tyokokemusGrp", createI18NText("Työkokemus"), null);
+        Theme lupatiedotRyhmä = new Theme("lupatiedotGrp", createI18NText("Lupatiedot"), null);
+        Theme yhteenvetoRyhmä = new Theme("yhteenvetoGrp", createI18NText("yhteenveto"), null);
 
         henkilötiedot.addChild(henkilötiedotRyhmä);
         koulutustausta.addChild(koulutustaustaRyhmä);
@@ -133,36 +115,36 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         lisätiedot.addChild(tyokokemusRyhmä);
         lisätiedot.addChild(lupatiedotRyhmä);
 
-        DropdownSelect aidinkieli = new DropdownSelect("äidinkieli", "Äidinkieli");
-        aidinkieli.addOption("suomi", "Suomi", "Suomi");
-        aidinkieli.addOption("ruotsi", "Ruotsi", "Ruotsi");
+        DropdownSelect aidinkieli = new DropdownSelect("äidinkieli", createI18NText("Äidinkieli"));
+        aidinkieli.addOption("suomi", createI18NText("Suomi"), "Suomi");
+        aidinkieli.addOption("ruotsi", createI18NText("Ruotsi"), "Ruotsi");
         aidinkieli.addAttribute("placeholder", "Valitse Äidinkieli");
         aidinkieli.addAttribute("required", "required");
         aidinkieli.setVerboseHelp(getVerboseHelp());
         aidinkieli.setInline(true);
 
 
-        DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", "Kansalaisuus");
-        kansalaisuus.addOption("fi", "fi", "Suomi");
-        kansalaisuus.addOption("sv", "sv", "Ruotsi");
+        DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", createI18NText("Kansalaisuus"));
+        kansalaisuus.addOption("fi", createI18NText("Suomi"), "fi");
+        kansalaisuus.addOption("sv", createI18NText("Ruotsi"), "sv");
         kansalaisuus.addAttribute("placeholder", "Valitse kansalaisuus");
         kansalaisuus.addAttribute("required", "required");
         kansalaisuus.setHelp("Jos sinulla on kaksoiskansalaisuus, valitse toinen niistä");
         kansalaisuus.setVerboseHelp(getVerboseHelp());
         kansalaisuus.setInline(true);
 
-        DropdownSelect kotikunta = new DropdownSelect("kotikunta", "Kotikunta");
-        kotikunta.addOption("jalasjarvi, ", "Jalasjärvi", "Jalasjärvi");
-        kotikunta.addOption("janakkala", "Janakkala", "Janakkala");
-        kotikunta.addOption("joensuu", "Joensuu", "Joensuu");
-        kotikunta.addOption("jokioinen", "Jokioinen", "Jokioinen");
-        kotikunta.addOption("jomala", "Jomala", "Jomala");
+        DropdownSelect kotikunta = new DropdownSelect("kotikunta", createI18NText("Kotikunta"));
+        kotikunta.addOption("jalasjarvi, ", createI18NText("Jalasjärvi"), "Jalasjärvi");
+        kotikunta.addOption("janakkala", createI18NText("Janakkala"), "Janakkala");
+        kotikunta.addOption("joensuu", createI18NText("Joensuu"), "Joensuu");
+        kotikunta.addOption("jokioinen", createI18NText("Jokioinen"), "Jokioinen");
+        kotikunta.addOption("jomala", createI18NText("Jomala"), "Jomala");
         kotikunta.addAttribute("placeholder", "Valitse kotikunta");
         kotikunta.addAttribute("required", "required");
         kotikunta.setVerboseHelp(getVerboseHelp());
         kotikunta.setInline(true);
 
-        TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", "Kutsumanimi");
+        TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", createI18NText("Kutsumanimi"));
         kutsumanimi.setHelp("Valitse kutsumanimeksi jokin virallisista etunimistäsi");
         kutsumanimi.addAttribute("required", "required");
         kutsumanimi.addAttribute("size", "20");
@@ -170,13 +152,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         kutsumanimi.setVerboseHelp(getVerboseHelp());
         kutsumanimi.setInline(true);
 
-        TextQuestion email = new TextQuestion("Sähköposti", "Sähköpostiosoite");
+        TextQuestion email = new TextQuestion("Sähköposti", createI18NText("Sähköpostiosoite"));
         email.addAttribute("size", "40");
         email.setHelp("Kirjoita tähän sähköpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.");
         email.setVerboseHelp(getVerboseHelp());
         email.setInline(true);
 
-        TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", "Henkilötunnus");
+        TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", createI18NText("Henkilötunnus"));
         henkilötunnus.addAttribute("placeholder", "ppkkvv***** or dd.mm.yyyy");
         henkilötunnus.addAttribute("required", "required");
         henkilötunnus.addAttribute("pattern", "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))|[0-9]{2}[.][0-9]{2}[.][0-9]{4}");
@@ -186,14 +168,14 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         henkilötunnus.setVerboseHelp(getVerboseHelp());
         henkilötunnus.setInline(true);
 
-        Radio sukupuoli = new Radio("Sukupuoli", "Sukupuoli");
-        sukupuoli.addOption("mies", "Mies", "Mies");
-        sukupuoli.addOption("nainen", "Nainen", "Nainen");
+        Radio sukupuoli = new Radio("Sukupuoli", createI18NText("Sukupuoli"));
+        sukupuoli.addOption("mies", createI18NText("Mies"), "Mies");
+        sukupuoli.addOption("nainen", createI18NText("Nainen"), "Nainen");
         sukupuoli.addAttribute("required", "required");
         sukupuoli.setVerboseHelp(getVerboseHelp());
         sukupuoli.setInline(true);
 
-        SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", "Henkilötunnus");
+        SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NText("Henkilötunnus"));
         socialSecurityNumber.setSsn(henkilötunnus);
         socialSecurityNumber.setSex(sukupuoli);
         socialSecurityNumber.setMaleId(sukupuoli.getOptions().get(0).getId());
@@ -204,7 +186,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 //        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[13579]\\w", sukupuoli.getOptions().get(0));
 //        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[24680]\\w", sukupuoli.getOptions().get(1));
 
-        Element postinumero = new PostalCode("Postinumero", "Postinumero", getPostOffices());
+        Element postinumero = new PostalCode("Postinumero", createI18NText("Postinumero"), getPostOffices());
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
@@ -212,10 +194,10 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         postinumero.addAttribute("maxlength", "5");
         postinumero.setHelp("Kirjoita tähän osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, kuten kutsun valintakokeeseen tai valintapäätöksen.");
 
-        DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", "Asuinmaa");
-        asuinmaa.addOption("valitse", null, "Valitse");
-        asuinmaa.addOption("fi", "fi", "Suomi");
-        asuinmaa.addOption("sv", "sv", "Ruotsi");
+        DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", createI18NText("Asuinmaa"));
+        asuinmaa.addOption("valitse", null, "");
+        asuinmaa.addOption("fi", createI18NText("Suomi"), "fi");
+        asuinmaa.addOption("sv", createI18NText("Ruotsi"), "sv");
         asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
         asuinmaa.addAttribute("required", "required");
         asuinmaa.setVerboseHelp(getVerboseHelp());
@@ -224,10 +206,11 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         Question lahiosoite = createRequiredTextQuestion("lahiosoite", "Lähiosoite", "40");
         lahiosoite.setInline(true);
 
-        CheckBox ensisijainenOsoite = new CheckBox("ensisijainenOsoite", "Ensisijainen osoite");
-        ensisijainenOsoite.addOption("ensisijainenOsoite1", "ensisijainenOsoite1", "Tämä on ensisijainen osoitteeni");
+        CheckBox ensisijainenOsoite = new CheckBox("ensisijainenOsoite", createI18NText("Ensisijainen osoite"));
+        ensisijainenOsoite.addOption("ensisijainenOsoite1", createI18NText("Tämä on ensisijainen osoitteeni"), "ensisijainenOsoite1");
+
         ensisijainenOsoite.setInline(true);
-        
+
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", asuinmaa.getId(), "fi");
         relatedQuestionRule.addChild(lahiosoite);
         relatedQuestionRule.addChild(postinumero);
@@ -235,7 +218,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         relatedQuestionRule.addChild(ensisijainenOsoite);
         asuinmaa.addChild(relatedQuestionRule);
 
-        TextArea osoite = new TextArea("osoite", "Osoite");
+        TextArea osoite = new TextArea("osoite", createI18NText("Osoite"));
         osoite.addAttribute("required", "required");
         osoite.addAttribute("rows", "6");
         osoite.addAttribute("cols", "40");
@@ -246,24 +229,24 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         asuinmaa.addChild(relatedQuestionRule2);
         osoite.setInline(true);
 
-        TextQuestion matkapuhelinnumero = new TextQuestion("matkapuhelinnumero", "Matkapuhelinnumero");
+        TextQuestion matkapuhelinnumero = new TextQuestion("matkapuhelinnumero", createI18NText("Matkapuhelinnumero"));
         matkapuhelinnumero.setHelp("Kirjoita tähän matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.");
         matkapuhelinnumero.addAttribute("size", "20");
         matkapuhelinnumero.setVerboseHelp(getVerboseHelp());
         matkapuhelinnumero.setInline(true);
 
-        TextQuestion huoltajanPuhelinnumero = new TextQuestion("huoltajanPuhelinnumero", "Huoltajan puhelinnumero");
+        TextQuestion huoltajanPuhelinnumero = new TextQuestion("huoltajanPuhelinnumero", createI18NText("Huoltajan puhelinnumero"));
         huoltajanPuhelinnumero.setHelp("Kirjoita tähän huoltajan puhelinnumero.");
         huoltajanPuhelinnumero.addAttribute("size", "20");
         huoltajanPuhelinnumero.setVerboseHelp(getVerboseHelp());
         huoltajanPuhelinnumero.setInline(true);
 
-        AddElementRule addHuoltajanPuhelinnumero = new AddElementRule("addHuoltajanPuhelinnumeroRule", 
+        AddElementRule addHuoltajanPuhelinnumero = new AddElementRule("addHuoltajanPuhelinnumeroRule",
                 huoltajanPuhelinnumero.getId(), "Lisää huoltajan puhelinnumero");
         addHuoltajanPuhelinnumero.addChild(huoltajanPuhelinnumero);
-        
+
         kotikunta.setHelp("Kotikunta on tyypillisesti se kunta, jossa asut.");
-        aidinkieli.setHelp("Jos omaa äidinkieltäsi ei löydy valintalistasta, valitse äidinkieleksesi..");
+        aidinkieli.setHelp("Jos omaa äidinkieltäsi ei löydy valintalistasta, valitse äidinkieleksesi.");
 
         Question sukunimi = createRequiredTextQuestion("Sukunimi", "Sukunimi", "30");
         sukunimi.setInline(true);
@@ -297,40 +280,40 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     public GradeGrid createGradeGrid() {
 
         List<Option> gradeRange = new ArrayList<Option>();
-        gradeRange.add(new Option("grade_nograde", "-1", "Ei arvosanaa"));
-        gradeRange.add(new Option("grade_10", "10", "10"));
-        gradeRange.add(new Option("grade_9", "9", "9"));
-        gradeRange.add(new Option("grade_8", "8", "8"));
-        gradeRange.add(new Option("grade_7", "7", "7"));
-        gradeRange.add(new Option("grade_6", "6", "6"));
-        gradeRange.add(new Option("grade_5", "5", "5"));
-        gradeRange.add(new Option("grade_4", "4", "4"));
+        gradeRange.add(new Option("grade_nograde", createI18NText("Ei arvosanaa"), "-1"));
+        gradeRange.add(new Option("grade_10", createI18NText("10"), "10"));
+        gradeRange.add(new Option("grade_9", createI18NText("9"), "9"));
+        gradeRange.add(new Option("grade_8", createI18NText("8"), "8"));
+        gradeRange.add(new Option("grade_7", createI18NText("7"), "7"));
+        gradeRange.add(new Option("grade_6", createI18NText("6"), "6"));
+        gradeRange.add(new Option("grade_5", createI18NText("5"), "5"));
+        gradeRange.add(new Option("grade_4", createI18NText("4"), "4"));
 
-        SubjectRow finnish = new SubjectRow("subject_finnish", "Äidinkieli ja kirjallisuus");
+        SubjectRow finnish = new SubjectRow("subject_finnish", createI18NText("Äidinkieli ja kirjallisuus"));
         List<SubjectRow> subjectRowsBefore = new ArrayList<SubjectRow>();
         subjectRowsBefore.add(finnish);
 
-        LanguageRow a1 = new LanguageRow("lang_a1", "A1-kieli");
-        LanguageRow b1 = new LanguageRow("lang_b1", "B1-kieli");
+        LanguageRow a1 = new LanguageRow("lang_a1", createI18NText("A1-kieli"));
+        LanguageRow b1 = new LanguageRow("lang_b1", createI18NText("B1-kieli"));
 
         List<LanguageRow> languageRows = new ArrayList<LanguageRow>();
         languageRows.add(a1);
         languageRows.add(b1);
 
-        SubjectRow matematiikka = new SubjectRow("subject_matematiikka", "Matematiikka");
-        SubjectRow biologia = new SubjectRow("subject_biologia", "Biologia");
-        SubjectRow maantieto = new SubjectRow("subject_maantieto", "Maantieto");
-        SubjectRow fysiikka = new SubjectRow("subject_fysiikka", "Fysiikka");
-        SubjectRow kemia = new SubjectRow("subject_kemia", "Kemia");
-        SubjectRow terveystieto = new SubjectRow("subject_terveystieto", "Terveystieto");
-        SubjectRow uskonto = new SubjectRow("subject_uskonto", "Uskonto tai elämänkatsomustieto");
-        SubjectRow historia = new SubjectRow("subject_historia", "Historia");
-        SubjectRow yhteiskuntaoppi = new SubjectRow("subject_yhteiskuntaoppi", "Yhteiskuntaoppi");
-        SubjectRow musiikki = new SubjectRow("subject_musiikki", "Musiikki");
-        SubjectRow kuvataide = new SubjectRow("subject_kuvataide", "Kuvataide");
-        SubjectRow kasityo = new SubjectRow("subject_kasityo", "Käsityö");
-        SubjectRow liikunta = new SubjectRow("subject_liikunta", "Liikunta");
-        SubjectRow kotitalous = new SubjectRow("subject_kotitalous", "Kotitalous");
+        SubjectRow matematiikka = new SubjectRow("subject_matematiikka", createI18NText("Matematiikka"));
+        SubjectRow biologia = new SubjectRow("subject_biologia", createI18NText("Biologia"));
+        SubjectRow maantieto = new SubjectRow("subject_maantieto", createI18NText("Maantieto"));
+        SubjectRow fysiikka = new SubjectRow("subject_fysiikka", createI18NText("Fysiikka"));
+        SubjectRow kemia = new SubjectRow("subject_kemia", createI18NText("Kemia"));
+        SubjectRow terveystieto = new SubjectRow("subject_terveystieto", createI18NText("Terveystieto"));
+        SubjectRow uskonto = new SubjectRow("subject_uskonto", createI18NText("Uskonto tai elämänkatsomustieto"));
+        SubjectRow historia = new SubjectRow("subject_historia", createI18NText("Historia"));
+        SubjectRow yhteiskuntaoppi = new SubjectRow("subject_yhteiskuntaoppi", createI18NText("Yhteiskuntaoppi"));
+        SubjectRow musiikki = new SubjectRow("subject_musiikki", createI18NText("Musiikki"));
+        SubjectRow kuvataide = new SubjectRow("subject_kuvataide", createI18NText("Kuvataide"));
+        SubjectRow kasityo = new SubjectRow("subject_kasityo", createI18NText("Käsityö"));
+        SubjectRow liikunta = new SubjectRow("subject_liikunta", createI18NText("Liikunta"));
+        SubjectRow kotitalous = new SubjectRow("subject_kotitalous", createI18NText("Kotitalous"));
         List<SubjectRow> subjectRowsAfter = new ArrayList<SubjectRow>();
         subjectRowsAfter.add(matematiikka);
         subjectRowsAfter.add(biologia);
@@ -348,21 +331,21 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         subjectRowsAfter.add(kotitalous);
 
         List<Option> languageOptions = new ArrayList<Option>();
-        languageOptions.add(new Option("langoption_" + "eng", "eng", "englanti"));
-        languageOptions.add(new Option("langoption_" + "swe", "swe", "ruotsi"));
-        languageOptions.add(new Option("langoption_" + "fra", "fra", "ranska"));
-        languageOptions.add(new Option("langoption_" + "ger", "ger", "saksa"));
-        languageOptions.add(new Option("langoption_" + "rus", "rus", "venäjä"));
-        languageOptions.add(new Option("langoption_" + "fin", "fin", "suomi"));
+        languageOptions.add(new Option("langoption_" + "eng", createI18NText("englanti"), "eng"));
+        languageOptions.add(new Option("langoption_" + "swe", createI18NText("ruotsi"), "swe"));
+        languageOptions.add(new Option("langoption_" + "fra", createI18NText("ranska"), "fra"));
+        languageOptions.add(new Option("langoption_" + "ger", createI18NText("saksa"), "ger"));
+        languageOptions.add(new Option("langoption_" + "rus", createI18NText("venäjä"), "rus"));
+        languageOptions.add(new Option("langoption_" + "fin", createI18NText("suomi"), "fin"));
 
         List<Option> scopeOptions = new ArrayList<Option>();
-        scopeOptions.add(new Option("scopeoption_" + "a1", "a1", "A1"));
-        scopeOptions.add(new Option("scopeoption_" + "a2", "a2", "A2"));
-        scopeOptions.add(new Option("scopeoption_" + "b1", "b1", "B1"));
-        scopeOptions.add(new Option("scopeoption_" + "b2", "b2", "B2"));
-        scopeOptions.add(new Option("scopeoption_" + "b3", "b3", "B3"));
+        scopeOptions.add(new Option("scopeoption_" + "a1", createI18NText("A1"), "a1"));
+        scopeOptions.add(new Option("scopeoption_" + "a2", createI18NText("A2"), "a2"));
+        scopeOptions.add(new Option("scopeoption_" + "b1", createI18NText("B1"), "b1"));
+        scopeOptions.add(new Option("scopeoption_" + "b2", createI18NText("B2"), "b2"));
+        scopeOptions.add(new Option("scopeoption_" + "b3", createI18NText("B3"), "b3"));
 
-        GradeGrid gradeGrid = new GradeGrid("gradegrid", "Arvosanat",
+        GradeGrid gradeGrid = new GradeGrid("gradegrid", createI18NText("Arvosanat"),
                 "Kieli", subjectRowsBefore, languageRows,
                 subjectRowsAfter, scopeOptions, languageOptions, gradeRange);
         gradeGrid.setVerboseHelp(getVerboseHelp());
@@ -375,7 +358,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         relatedQuestionRule.addChild(createGradeGrid());
         arvosanatRyhmä.addChild(relatedQuestionRule);
         RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule5", "millatutkinnolla", "(tutkinto5|tutkinto7)");
-        relatedQuestionRule2.addChild(new Text("nogradegrid", "Sinulta ei kysytä arvosanoja."));
+        relatedQuestionRule2.addChild(new Text("nogradegrid", createI18NText("Sinulta ei kysytä arvosanoja.")));
         arvosanatRyhmä.addChild(relatedQuestionRule2);
         arvosanatRyhmä.setHelp("Merkitse arvosanat siitä todistuksesta, jolla haet koulutukseen (perusopetus,tai sitä vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitä, mikäli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta. 1. Tarkista ja täydennä taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitäytetyistä. Huom! Valinnaisaineiden arvosanat merkitään vain mikäli niiden laajuus on vähintään kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilöllistettyjä arvosanoja, valitse listasta arvosana, jossa on tähti.");
 
@@ -383,13 +366,13 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     private void createHakutoiveet(Theme hakutoiveetRyhmä) {
         hakutoiveetRyhmä.setHelp("Merkitse tälle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinä järjestyksessä, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttää ne hakutoivelistalle. Voit halutessasi etsiä koulutuksia koulutuskorin kautta. harkitse hakutoivejärjestystä tarkoin, sillä se on sitova, etkä voi muuttaa sitä enää hakuajan jälkeen. Jos et pääse koulutukseen, jonka olet merkinnyt ensimmäiselle sijalle, tarkistetaan riittävätkö pisteesi toiselle sijalle merkitsemääsi hakutoiveeseen jne. Jos pääset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkä voi enää tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielä päästä. HUOM! Lukion oppimäärän tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).");
-        SortableTable sortableTable = new SortableTable("preferencelist", "Hakutoiveet", "Ylös", "Alas");
-        PreferenceRow pr1 = new PreferenceRow("preference1", "Hakutoive 1", "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
+        SortableTable sortableTable = new SortableTable("preferencelist", createI18NText("Hakutoiveet"), "Ylös", "Alas");
+        PreferenceRow pr1 = new PreferenceRow("preference1", createI18NText("Hakutoive 1"), "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
         pr1.addAttribute("required", "required");
-        PreferenceRow pr2 = new PreferenceRow("preference2", "Hakutoive 2", "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
-        PreferenceRow pr3 = new PreferenceRow("preference3", "Hakutoive 3", "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
-        PreferenceRow pr4 = new PreferenceRow("preference4", "Hakutoive 4", "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
-        PreferenceRow pr5 = new PreferenceRow("preference5", "Hakutoive 5", "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
+        PreferenceRow pr2 = new PreferenceRow("preference2", createI18NText("Hakutoive 2"), "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
+        PreferenceRow pr3 = new PreferenceRow("preference3", createI18NText("Hakutoive 3"), "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
+        PreferenceRow pr4 = new PreferenceRow("preference4", createI18NText("Hakutoive 4"), "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
+        PreferenceRow pr5 = new PreferenceRow("preference5", createI18NText("Hakutoive 5"), "Tyhjennä", "Koulutus", "Toimipiste", "Valitse koulutus");
         sortableTable.addChild(pr1);
         sortableTable.addChild(pr2);
         sortableTable.addChild(pr3);
@@ -401,7 +384,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     private void createTyokokemus(Theme tyokokemus) {
         tyokokemus.setHelp("Työkokemukseksi lasketaan työ, josta sinulla on työtodistus. Työhön rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vähintään kolmen kuukauden pituinen työpajatoimintaan osallistuminen tai työharjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa työtodistukset ennen lopullista valintaa.");
-        TextQuestion tyokokemuskuukaudet = new TextQuestion("tyokokemuskuukaudet", "Työkokemus kuukausina");
+        TextQuestion tyokokemuskuukaudet = new TextQuestion("tyokokemuskuukaudet", createI18NText("Työkokemus kuukausina"));
         tyokokemuskuukaudet.setHelp("Merkitse kenttään hakuajan päättymiseen mennessä kertynyt työkokemuksesi. Voit käyttää laskemiseen apuna laskuria.");
         tyokokemuskuukaudet.addAttribute("placeholder", "kuukautta");
         tyokokemuskuukaudet.addAttribute("pattern", "[0-9]*");
@@ -411,17 +394,18 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     private void createLupatiedot(Theme lupatiedot) {
-        CheckBox lupa = new CheckBox("lupa", "Ohjeteksti lorem ipsum.");
-        lupa.addOption("lupa1", "lupa1", "Haluan, että huoltajalleni lähetetään tieto sähköpostilla hakulomakkeen täyttämisestä");
-        lupa.addOption("lupa2", "lupa2", "Minulle saa lähettää postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia");
-        lupa.addOption("lupa3", "lupa3", "Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissä");
-        lupa.addOption("lupa4", "lupa4", "Valintaani koskevat tiedot saa lähettää minulle sähköisesti");
-        lupa.addOption("lupa5", "lupa5", "Minulle saa lähettää tietoa opiskelijavalinnan etenemisestä ja tuloksista tekstiviestillä");
+        CheckBox lupa = new CheckBox("lupa", createI18NText("Ohjeteksti lorem ipsum."));
+        lupa.addOption("lupa1", createI18NText("Haluan, että huoltajalleni lähetetään tieto sähköpostilla hakulomakkeen täyttämisestä"), "lupa1");
+        lupa.addOption("lupa2", createI18NText("Minulle saa lähettää postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia"), "lupa2");
+        lupa.addOption("lupa3", createI18NText("Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissä"), "lupa3");
+        lupa.addOption("lupa4", createI18NText("Valintaani koskevat tiedot saa lähettää minulle sähköisesti"), "lupa4");
+        lupa.addOption("lupa5", createI18NText("Minulle saa lähettää tietoa opiskelijavalinnan etenemisestä ja tuloksista tekstiviestillä"), "lupa5");
         lupa.setVerboseHelp(getVerboseHelp());
 
-        Radio asiointikieli = new Radio("asiointikieli", "Asiointikieli");
-        asiointikieli.addOption("suomi", "suomi", "suomi");
-        asiointikieli.addOption("ruotsi", "ruotsi", "ruotsi", "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviä tietoja");
+        Radio asiointikieli = new Radio("asiointikieli", createI18NText("Asiointikieli"));
+        asiointikieli.setHelp("Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviä tietoja");
+        asiointikieli.addOption("suomi", createI18NText("Suomi"), "suomi");
+        asiointikieli.addOption("ruotsi", createI18NText("Ruotsi"), "ruotsi");
         asiointikieli.addAttribute("required", "required");
         asiointikieli.setVerboseHelp(getVerboseHelp());
 
@@ -431,24 +415,24 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     private void createKoulutustausta(Theme koulutustaustaRyhmä) {
         koulutustaustaRyhmä.setHelp("Merkitse tälle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitä vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimäärä. Lukion oppimäärän tai ylioppilastutkinnon suorittaneet eivät voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta.");
-        Radio millatutkinnolla = new Radio("millatutkinnolla", "Valitse tutkinto, jolla haet koulutukseen");
-        millatutkinnolla.addOption("tutkinto1", "tutkinto1", "Perusopetuksen oppimäärä", "Valitse tämä, jos olet käynyt peruskoulun.");
-        millatutkinnolla.addOption("tutkinto2", "tutkinto2", "Perusopetuksen erityisopetuksen osittain yksilöllistetty oppimäärä", "Valitse tämä, jos olet opiskellut yksilöllistetyn oppimäärän puolessa tai alle puolessa oppiaineista.");
-        millatutkinnolla.addOption("tutkinto3", "tutkinto3", "Perusopetuksen erityisopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain", "Valitse tämä, jos olet osallistunut harjaantumisopetukseen.");
-        millatutkinnolla.addOption("tutkinto4", "tutkinto4", "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä", "Valitse tämä, jos olet opiskellut peruskoulun kokonaan yksilöllistetyn oppimäärän mukaan tai olet opiskellut yli puolet opinnoistasi yksilöllistetyn opetuksen mukaan.");
-        millatutkinnolla.addOption("tutkinto5", "tutkinto5", "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)", "Valitse tämä vain, jos sinulla ei ole lainkaan päättötodistusta.");
-        millatutkinnolla.addOption("tutkinto6", "tutkinto6", "Lukion päättötodistus, ylioppilastutkinto tai abiturientti", "Valitse tämä, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvälinen ylioppilastutkinto, tai olet suorittanut yhdistelmätutkinnon, johon sisältyy lukion vahimmäisoppimäärää vastaavat opinnot.");
-        millatutkinnolla.addOption("tutkinto7", "tutkinto7", "Ulkomailla suoritettu koulutus", "Valitse tämä, jos olet suorittanut tutkintosi ulkomailla.");
+        Radio millatutkinnolla = new Radio("millatutkinnolla", createI18NText("Valitse tutkinto, jolla haet koulutukseen"));
+        millatutkinnolla.addOption("tutkinto1", createI18NText("Perusopetuksen oppimäärä"), "tutkinto1", "Valitse tämä, jos olet käynyt peruskoulun.");
+        millatutkinnolla.addOption("tutkinto2", createI18NText("Perusopetuksen erityisopetuksen osittain yksilöllistetty oppimäärä"), "tutkinto2", "Valitse tämä, jos olet opiskellut yksilöllistetyn oppimäärän puolessa tai alle puolessa oppiaineista.");
+        millatutkinnolla.addOption("tutkinto3", createI18NText("Perusopetuksen erityisopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain"), "tutkinto3", "Valitse tämä, jos olet osallistunut harjaantumisopetukseen.");
+        millatutkinnolla.addOption("tutkinto4", createI18NText("Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä"), "tutkinto4", "Valitse tämä, jos olet opiskellut peruskoulun kokonaan yksilöllistetyn oppimäärän mukaan tai olet opiskellut yli puolet opinnoistasi yksilöllistetyn opetuksen mukaan.");
+        millatutkinnolla.addOption("tutkinto5", createI18NText("Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)"), "tutkinto5", "Valitse tämä vain, jos sinulla ei ole lainkaan päättötodistusta.");
+        millatutkinnolla.addOption("tutkinto6", createI18NText("Lukion päättötodistus, ylioppilastutkinto tai abiturientti"), "tutkinto6", "Valitse tämä, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvälinen ylioppilastutkinto, tai olet suorittanut yhdistelmätutkinnon, johon sisältyy lukion vahimmäisoppimäärää vastaavat opinnot.");
+        millatutkinnolla.addOption("tutkinto7", createI18NText("Ulkomailla suoritettu koulutus"), "tutkinto7", "Valitse tämä, jos olet suorittanut tutkintosi ulkomailla.");
         millatutkinnolla.setVerboseHelp(getVerboseHelp());
         millatutkinnolla.addAttribute("required", "required");
 
-        Radio peruskoulu2012 = new Radio("peruskoulu2012", "Saatko peruskoulun päättötodistuksen hakukeväänä 2012?");
-        peruskoulu2012.addOption("kylla", "Kyllä", "Kyllä");
-        peruskoulu2012.addOption("ei", "Ei", "En");
+        Radio peruskoulu2012 = new Radio("peruskoulu2012", createI18NText("Saatko peruskoulun päättötodistuksen hakukeväänä 2012?"));
+        peruskoulu2012.addOption("kylla", createI18NText("Kyllä"), "kyllä");
+        peruskoulu2012.addOption("ei", createI18NText("En"), "ei");
         peruskoulu2012.addAttribute("required", "required");
         peruskoulu2012.setVerboseHelp(getVerboseHelp());
 
-        TextQuestion paattotodistusvuosi = new TextQuestion("päättötodistusvuosi", "Olen saanut päättötodistuksen jo aiemmin, vuonna");
+        TextQuestion paattotodistusvuosi = new TextQuestion("päättötodistusvuosi", createI18NText("Olen saanut päättötodistuksen jo aiemmin, vuonna"));
         paattotodistusvuosi.addAttribute("placeholder", "vvvv");
         paattotodistusvuosi.addAttribute("required", "required");
         paattotodistusvuosi.addAttribute("pattern", "^([1][9]\\d\\d|200[0-9]|201[0-1])$");
@@ -459,24 +443,24 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         rule.addChild(paattotodistusvuosi);
         peruskoulu2012.addChild(rule);
 
-        DropdownSelect tutkinnonOpetuskieli = new DropdownSelect("opetuskieli", "Mikä oli tukintosi opetuskieli");
-        tutkinnonOpetuskieli.addOption("suomi", "Suomi", "Suomi");
-        tutkinnonOpetuskieli.addOption("ruotsi", "Ruotsi", "Ruotsi");
+        DropdownSelect tutkinnonOpetuskieli = new DropdownSelect("opetuskieli", createI18NText("Mikä oli tukintosi opetuskieli"));
+        tutkinnonOpetuskieli.addOption("suomi", createI18NText("Suomi"), "Suomi");
+        tutkinnonOpetuskieli.addOption("ruotsi", createI18NText("Ruotsi"), "Ruotsi");
         tutkinnonOpetuskieli.addAttribute("placeholder", "Tutkintosi opetuskieli");
         tutkinnonOpetuskieli.setHelp("Merkitse tähän se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellä tasapuolisesti, valitse toinen niistä");
         tutkinnonOpetuskieli.setVerboseHelp(getVerboseHelp());
 
-        CheckBox suorittanut = new CheckBox("suorittanut", "Merkitse tähän, jos olet suorittanut jonkun seuraavista");
-        suorittanut.addOption("suorittanut1", "suorittanut1", "Perusopetuksen lisäopetuksen oppimäärä (kymppiluokka)");
-        suorittanut.addOption("suorittanut2", "suorittanut2", "Vammaisten valmentava ja kuntouttava opetus ja ohjaus");
-        suorittanut.addOption("suorittanut3", "suorittanut3", "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus");
-        suorittanut.addOption("suorittanut4", "suorittanut4", "Muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus (talouskoulu)");
-        suorittanut.addOption("suorittanut5", "suorittanut5", "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus (ammattistartti)");
+        CheckBox suorittanut = new CheckBox("suorittanut", createI18NText("Merkitse tähän, jos olet suorittanut jonkun seuraavista"));
+        suorittanut.addOption("suorittanut1", createI18NText("Perusopetuksen lisäopetuksen oppimäärä (kymppiluokka)"), "suorittanut1");
+        suorittanut.addOption("suorittanut2", createI18NText("Vammaisten valmentava ja kuntouttava opetus ja ohjaus"), "suorittanut2");
+        suorittanut.addOption("suorittanut3", createI18NText("Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus"), "suorittanut3");
+        suorittanut.addOption("suorittanut4", createI18NText("Muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus (talouskoulu)"), "suorittanut4");
+        suorittanut.addOption("suorittanut5", createI18NText("Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus (ammattistartti)"), "suorittanut5");
         suorittanut.setVerboseHelp(getVerboseHelp());
 
-        Radio osallistunut = new Radio("osallistunut", "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?");
-        osallistunut.addOption("ei", "Ei", "En");
-        osallistunut.addOption("kylla", "Kyllä", "Kyllä");
+        Radio osallistunut = new Radio("osallistunut", createI18NText("Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?"));
+        osallistunut.addOption("ei", createI18NText("En"), "Ei");
+        osallistunut.addOption("kylla", createI18NText("Kyllä"), "Kyllä");
         osallistunut.addAttribute("required", "required");
         osallistunut.setVerboseHelp(getVerboseHelp());
 
@@ -500,11 +484,11 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                 "Aenean ornare, mi non rutrum gravida, augue neque pretium leo, in porta justo mauris eget orci. Donec porttitor eleifend aliquam. Cras mattis tincidunt purus, et facilisis risus consequat vitae. Nunc consectetur, odio sit amet rhoncus iaculis, ipsum lectus pharetra lectus, sit amet vestibulum est mi commodo enim. Sed libero sem, iaculis a lobortis non, molestie id arcu. Donec gravida tincidunt ligula quis mattis. Nulla sit amet malesuada sem. Duis porta adipiscing purus iaculis consequat. Aliquam erat volutpat. ";
     }
 
-
     @Override
     public void insert(FormModel formModel) {
         throw new RuntimeException("Insert not implemented");
     }
+
 
     @Override
     public void insertModelAsJsonString(String builder) {
@@ -512,16 +496,16 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     private Question createRequiredTextQuestion(final String id, final String name, final String size) {
-        TextQuestion textQuestion = new TextQuestion(id, name);
+        TextQuestion textQuestion = new TextQuestion(id, createI18NText(name));
         textQuestion.addAttribute("required", "required");
         textQuestion.addAttribute("size", size);
         return textQuestion;
     }
 
-
     public FormModel getModel() {
         return formModel;
     }
+
 
     @Override
     public List<FormModel> find(FormModel formModel) {
@@ -586,7 +570,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         return Collections.<Validator>emptyList();
     }
 
-
     private Map<String, PostOffice> getPostOffices() {
         Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
         PostOffice helsinki = new PostOffice("Helsinki");
@@ -619,4 +602,11 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         postOffices.put("33200", tampere);
         return postOffices;
     }
+
+
+    public static I18nText createI18NText(String text) {
+        return new I18nText("text_" + Long.toString(System.currentTimeMillis()),
+                ImmutableMap.of("fi", text, "sv", text + "_sv", "en", text + "_en"));
+    }
+
 }

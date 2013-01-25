@@ -16,18 +16,15 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-/**
- * @author jukka
- * @version 9/7/122:04 PM}
- * @since 1.1
- */
 public class Radio extends OptionQuestion {
 
     private static final long serialVersionUID = 5782376533955721032L;
 
-    public Radio(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
-        super(id, title);
+    public Radio(@JsonProperty(value = "id") final String id,
+                 @JsonProperty(value = "i18nText") final I18nText i18nText) {
+        super(id, i18nText);
     }
 }

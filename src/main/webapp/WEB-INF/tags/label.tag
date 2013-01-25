@@ -1,5 +1,7 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ tag description="Outputs elements label" body-content="empty" pageEncoding="UTF-8" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ attribute name="element" required="true" type="fi.vm.sade.oppija.lomake.domain.elements.Element" %>
+<%@ attribute name="styleBaseClass" required="false" type="java.lang.String" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -15,7 +17,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
-<div class="form-item">
-    <b><haku:i18nText value="${element.i18nText}"/></b>
-</div>
+<label id="label-${element.id}" for="${element.id}"
+       class="${styleBaseClass}-label ${element.attributes['required'].value}"><haku:i18nText
+        value="${element.i18nText}"/></label>

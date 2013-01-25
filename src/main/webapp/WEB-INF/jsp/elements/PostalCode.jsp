@@ -15,10 +15,9 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
 <div class="form-row">
-    <label id="label-${element.id}" for="${element.id}"
-           class="form-row-label ${element.attributes['required'].value}"><c:out value="${element.title}"/></label>
+
+    <haku:label element="${element}" styleBaseClass="form-row"/>
 
     <div class="form-row-content">
         <div class="field-container-text">
@@ -28,14 +27,8 @@
                    class="post-office"/>
             <span class="post-office"><c:out value="${categoryData['postitoimipaikka']}"/></span>
         </div>
-        <c:if test="${not empty errorMessages[element.id]}">
-          <div class="margin-top-1 notification warning">
-            <span><c:out value="${errorMessages[element.id]}"/></span>
-          </div>
-        </c:if>
-        <div class="margin-top-1" id="help-${element.id}">
-            <small><c:out value="${element.help}"/></small>
-        </div>
+        <haku:errorMessage id="${element.id}"/>
+        <haku:help element="${element}"/>
     </div>
     <div class="clear"></div>
     <haku:viewChilds element="${element}"/>

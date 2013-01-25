@@ -27,23 +27,19 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static junit.framework.Assert.assertEquals;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
-/**
- * @author jukka
- * @version 9/18/122:13 PM}
- * @since 1.1
- */
 public class DropdownSelectIT extends AbstractFormTest {
 
     private FormModelHelper formModelHelper;
 
     @Before
     public void init() throws IOException {
-        final DropdownSelect select = new DropdownSelect("select", "foo");
-        select.addOption("value1", "select", "title");
-        select.addOption("value2", "select2", "title2");
+        final DropdownSelect select = new DropdownSelect("select", createI18NText("foo"));
+        select.addOption("value1", createI18NText("title"), "select");
+        select.addOption("value2", createI18NText("title2"), "select2");
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(select);
         this.formModelHelper = initModel(formModel);
     }

@@ -32,13 +32,14 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class FormServiceImplTest {
 
-    public static final Form FORM = new Form("FormId", "Form title");
-    public static final Phase PHASE = new Phase("phaseId", "", false);
+    public static final Form FORM = new Form("FormId", createI18NText("Form title"));
+    public static final Phase PHASE = new Phase("phaseId", createI18NText("Phase title"), false);
     public ApplicationPeriod applicationPeriod;
     private FormServiceImpl formService;
 

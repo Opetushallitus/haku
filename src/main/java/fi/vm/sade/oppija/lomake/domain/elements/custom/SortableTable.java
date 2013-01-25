@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -31,10 +32,11 @@ public class SortableTable extends Titled {
     // label text for down button
     private String moveDownLabel;
 
-    public SortableTable(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
-                         @JsonProperty(value = "moveUpLabel") String moveUpLabel,
-                         @JsonProperty(value = "moveDownLabel") String moveDownLabel) {
-        super(id, title);
+    public SortableTable(@JsonProperty(value = "id") final String id,
+                         @JsonProperty(value = "i18nText") final I18nText i18nText,
+                         @JsonProperty(value = "moveUpLabel") final String moveUpLabel,
+                         @JsonProperty(value = "moveDownLabel") final String moveDownLabel) {
+        super(id, i18nText);
         this.moveUpLabel = moveUpLabel;
         this.moveDownLabel = moveDownLabel;
     }

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -23,7 +24,9 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * @author Hannu Lyytikainen
  */
 public class SubjectRow extends Question {
-    public SubjectRow(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
-        super(id, title);
+
+    public SubjectRow(@JsonProperty(value = "id") final String id,
+                      @JsonProperty(value = "i18nText") final I18nText i18nText) {
+        super(id, i18nText);
     }
 }

@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -35,18 +36,18 @@ public class CustomLanguageRowTest {
 
     @Before
     public void setUp() throws Exception {
-        customLanguageRow = new CustomLanguageRow(ROW_ID, TITLE, SCOPE_OPTIONS);
+        customLanguageRow = new CustomLanguageRow(ROW_ID, createI18NText(TITLE), SCOPE_OPTIONS);
     }
 
     @Test
     public void testAddScopeOption() throws Exception {
-        customLanguageRow.addScopeOption(OPTION_ID, VALUE, TITLE);
+        customLanguageRow.addScopeOption(OPTION_ID, VALUE, createI18NText(TITLE));
         assertTrue(customLanguageRow.getScopeOptions().size() == 1);
     }
 
     @Test
     public void testGetScopeOptions() throws Exception {
-        customLanguageRow.addScopeOption(OPTION_ID, VALUE, TITLE);
+        customLanguageRow.addScopeOption(OPTION_ID, VALUE, createI18NText(TITLE));
         assertEquals(ROW_ID + CustomLanguageRow.ID_DELIMITER + OPTION_ID, customLanguageRow.getScopeOptions().get(0).getId());
     }
 }

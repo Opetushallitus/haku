@@ -16,25 +16,28 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements;
 
+import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author jukka
- * @version 9/7/1210:36 AM}
- * @since 1.1
- */
 public class Theme extends Titled {
 
-    Map<String, List<Question>> additionalQuestions;
+    final Map<String, List<Question>> additionalQuestions;
 
-    public Theme(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title,
-                 @JsonProperty(value = "additionalQuestions") Map<String, List<Question>> additionalQuestions) {
-        super(id, title);
-        this.additionalQuestions = additionalQuestions;
+    public Theme(@JsonProperty(value = "id") final String id,
+                 @JsonProperty(value = "i18nText") final I18nText i18nText,
+                 @JsonProperty(value = "additionalQuestions") final Map<String, List<Question>> additionalQuestions) {
+        super(id, i18nText);
+        if (additionalQuestions == null) {
+            this.additionalQuestions = ImmutableMap.copyOf(new HashMap<String, List<Question>>(0));
+        } else {
+            this.additionalQuestions = ImmutableMap.copyOf(additionalQuestions);
+        }
     }
 
     public Map<String, List<Question>> getAdditionalQuestions() {

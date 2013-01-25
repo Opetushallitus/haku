@@ -20,7 +20,7 @@
 <%-- set education specific additional questions for this theme --%>
 <c:set var="additionalQuestionList" value="${additionalQuestions[element.id]}" scope="request"/>
 <fieldset>
-    <legend class="h3"><c:out value="${element.title}"/></legend>
+    <legend class="h3"><haku:i18nText value="${element.i18nText}"/></legend>
     <hr>
     <c:forEach var="vaihe" items="${form.phases}">
         <c:if test="${(not vaihe.preview)}">
@@ -28,10 +28,12 @@
                 <c:if test="${(teema.id eq element.id)}">
                     <c:choose>
                         <c:when test="${oid eq null}">
-                            <c:set var="editUrl" value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${vaihe.id}"/>
+                            <c:set var="editUrl"
+                                   value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${vaihe.id}"/>
                         </c:when>
                         <c:otherwise>
-                            <c:set var="editUrl" value="${pageContext.request.contextPath}/virkailija/hakemus/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${vaihe.id}/${oid}/"/>
+                            <c:set var="editUrl"
+                                   value="${pageContext.request.contextPath}/virkailija/hakemus/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${vaihe.id}/${oid}/"/>
                         </c:otherwise>
                     </c:choose>
                     <form method="get"
@@ -48,7 +50,7 @@
     </c:forEach>
     <table class="form-summary-table width-50">
         <tbody>
-            <haku:viewChilds element="${element}"/>
+        <haku:viewChilds element="${element}"/>
         </tbody>
     </table>
 </fieldset>

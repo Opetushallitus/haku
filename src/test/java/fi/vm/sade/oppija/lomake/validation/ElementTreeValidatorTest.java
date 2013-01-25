@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -36,7 +37,7 @@ public class ElementTreeValidatorTest {
 
     @Before
     public void setUp() throws Exception {
-        textQuestion = new TextQuestion("id", "title");
+        textQuestion = new TextQuestion("id", createI18NText("title"));
         formModelDummyMemoryDao = new FormModelDummyMemoryDaoImpl();
         Form form = formModelDummyMemoryDao.getForm("Yhteishaku", "yhteishaku");
         form.init();

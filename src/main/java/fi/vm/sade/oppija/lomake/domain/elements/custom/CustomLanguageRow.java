@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -32,14 +33,15 @@ public class CustomLanguageRow extends LanguageRow {
 
     private List<Option> scopeOptions;
 
-    public CustomLanguageRow(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
+    public CustomLanguageRow(@JsonProperty(value = "id") String id,
+                             @JsonProperty(value = "i18nText") final I18nText i18nText,
                              @JsonProperty(value = "scopeOptions") List<Option> scopeOptions) {
-        super(id, title);
+        super(id, i18nText);
         this.scopeOptions = scopeOptions;
     }
 
-    public void addScopeOption(final String id, final String value, final String title) {
-        this.scopeOptions.add(new Option(this.getId() + ID_DELIMITER + id, value, title));
+    public void addScopeOption(final String id, final String value, final I18nText i18nText) {
+        this.scopeOptions.add(new Option(this.getId() + ID_DELIMITER + id, i18nText, value));
     }
 
     public List<Option> getScopeOptions() {

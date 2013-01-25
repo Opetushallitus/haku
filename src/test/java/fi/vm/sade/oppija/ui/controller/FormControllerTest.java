@@ -40,6 +40,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import static fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl.createI18NText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.mockito.Mockito.mock;
@@ -53,8 +54,8 @@ public class FormControllerTest {
     private static final String FORM_ID = "yhteishaku";
     public static final String TEST_PHASE = "test_phase";
     public static final String PHASE_TITLE = "title";
-    public static final Phase PHASE = new Phase(FIRST_CATEGORY_ID, PHASE_TITLE, false);
-    public static final Form FORM = new Form("id", "title");
+    public static final Phase PHASE = new Phase(FIRST_CATEGORY_ID, createI18NText(PHASE_TITLE), false);
+    public static final Form FORM = new Form("id", createI18NText("title"));
     private FormController formController;
     public static final UserHolder USER_HOLDER = new UserHolder();
     private ApplicationService applicationService;
@@ -96,7 +97,7 @@ public class FormControllerTest {
     @Test
     public void testGetFormAndRedirectToFirstCategoryNew() throws Exception {
         application.setVaiheId(null);
-        when(formService.getFirstPhase(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(new Phase(FIRST_CATEGORY_ID, "title", false));
+        when(formService.getFirstPhase(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(new Phase(FIRST_CATEGORY_ID, createI18NText("title"), false));
         String expected = "/lomake/" + APPLICATION_PERIOD_ID + "/" + FORM_ID + "/" + FIRST_CATEGORY_ID;
         Response response = formController.getApplication(APPLICATION_PERIOD_ID, FORM_ID);
         assertEquals(expected, resolveRedirectPath(response));

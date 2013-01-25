@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -46,15 +47,16 @@ public class GradeGrid extends Titled {
     // list of possible grades
     private List<Option> gradeRange;
 
-    public GradeGrid(@JsonProperty(value = "id") String id, @JsonProperty(value = "title") String title,
-                     @JsonProperty(value = "customLanguageTitle") String customLanguageTitle,
-                     @JsonProperty(value = "subjectsBeforeLanguages") List<SubjectRow> subjectsBeforeLanguages,
-                     @JsonProperty(value = "languages") List<LanguageRow> languages,
-                     @JsonProperty(value = "subjectsAfterLanguages") List<SubjectRow> subjectsAfterLanguages,
-                     @JsonProperty(value = "scopeOptions") List<Option> scopeOptions,
-                     @JsonProperty(value = "languageOptions") List<Option> languageOptions,
-                     @JsonProperty(value = "gradeRange") List<Option> gradeRange) {
-        super(id, title);
+    public GradeGrid(@JsonProperty(value = "id") final String id,
+                     @JsonProperty(value = "i18nText") final I18nText i18nText,
+                     @JsonProperty(value = "customLanguageTitle") final String customLanguageTitle,
+                     @JsonProperty(value = "subjectsBeforeLanguages") final List<SubjectRow> subjectsBeforeLanguages,
+                     @JsonProperty(value = "languages") final List<LanguageRow> languages,
+                     @JsonProperty(value = "subjectsAfterLanguages") final List<SubjectRow> subjectsAfterLanguages,
+                     @JsonProperty(value = "scopeOptions") final List<Option> scopeOptions,
+                     @JsonProperty(value = "languageOptions") final List<Option> languageOptions,
+                     @JsonProperty(value = "gradeRange") final List<Option> gradeRange) {
+        super(id, i18nText);
         this.customLanguageTitle = customLanguageTitle;
         this.subjectsBeforeLanguages = subjectsBeforeLanguages;
         this.languages = languages;

@@ -16,33 +16,25 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-/**
- * @author jukka
- * @version 9/7/1210:37 AM}
- * @since 1.1
- */
 public class Option extends Titled {
 
     private static final long serialVersionUID = 7365195779313847673L;
 
-    private String value;
-    private String title;
+    private final String value;
 
-    public Option(@JsonProperty(value = "id") String id, @JsonProperty(value = "value") String value, @JsonProperty(value = "title") String title) {
-        super(id, title);
-        addAttribute("id", id);
+    public Option(@JsonProperty(value = "id") final String id,
+                  @JsonProperty(value = "i18nText") final I18nText i18nText,
+                  @JsonProperty(value = "value") final String value) {
+        super(id, i18nText);
         this.value = value;
-        this.title = title;
     }
 
     public String getValue() {
         return value;
     }
 
-    public String getTitle() {
-        return title;
-    }
 }

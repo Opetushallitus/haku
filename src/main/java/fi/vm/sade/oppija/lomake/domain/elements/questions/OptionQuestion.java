@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -26,12 +27,9 @@ public abstract class OptionQuestion extends Question {
 
     private final List<Option> options = new ArrayList<Option>();
 
-    protected OptionQuestion(@JsonProperty(value = "id") final String id, @JsonProperty(value = "title") final String title) {
-        super(id, title);
-    }
-
-    public void addOption(final String id, final String value, final String title) {
-        this.options.add(new Option(this.getId() + ID_DELIMITER + id, value, title));
+    protected OptionQuestion(@JsonProperty(value = "id") String id,
+                             @JsonProperty(value = "i18nText") I18nText i18nText) {
+        super(id, i18nText);
     }
 
     @Override
@@ -42,8 +40,12 @@ public abstract class OptionQuestion extends Question {
         }
     }
 
-    public void addOption(final String id, final String value, final String title, final String help) {
-        Option opt = new Option(this.getId() + ID_DELIMITER + id, value, title);
+    public void addOption(final String id, final I18nText i18nText, final String value) {
+        this.options.add(new Option(this.getId() + ID_DELIMITER + id, i18nText, value));
+    }
+
+    public void addOption(final String id, final I18nText i18nText, final String value, final String help) {
+        Option opt = new Option(this.getId() + ID_DELIMITER + id, i18nText, value);
         opt.setHelp(help);
         this.options.add(opt);
     }

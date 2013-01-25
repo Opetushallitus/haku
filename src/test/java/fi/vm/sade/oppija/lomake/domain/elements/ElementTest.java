@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
+
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 import fi.vm.sade.oppija.lomake.domain.Attribute;
@@ -16,14 +32,15 @@ public class ElementTest {
     }
 
     @Test
-    public void testEmptyAttributeString() throws Exception {
-        assertEquals("", testElement.getAttributeString());
+    public void testDefaultAttributeString() throws Exception {
+        assertEquals("id=\"test\" ", testElement.getAttributeString());
     }
 
     @Test
     public void testOneAttributeString() throws Exception {
+        String defaultAttributes = testElement.getAttributeString();
         testElement.addAttribute("k", "v");
-        assertEquals("k=\"v\" ", testElement.getAttributeString());
+        assertEquals(defaultAttributes + "k=\"v\" ", testElement.getAttributeString());
     }
 
     @Test
