@@ -29,7 +29,7 @@ public class ValidInputNamesValidatorTest {
     private HashSet<String> validParameterNames = new HashSet<String>();
 
     @Test
-    public void testValidateWitoutParameters() throws Exception {
+    public void testValidateWithoutParameters() throws Exception {
         validParameterNames.add("nimi");
         ValidInputNamesValidator validInputNamesValidator = new ValidInputNamesValidator(validParameterNames);
         ValidationResult validationResult = validInputNamesValidator.validate(new HashMap<String, String>());
@@ -37,11 +37,21 @@ public class ValidInputNamesValidatorTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void testValidate() throws Exception {
+    public void testValidateInvalid() throws Exception {
+        validateWithParameter("key");
+    }
+
+    @Test
+    public void testValidateValid() throws Exception {
+        ValidationResult validate = validateWithParameter("nimi");
+        assertFalse(validate.hasErrors());
+    }
+
+    private ValidationResult validateWithParameter(final String parameterName) {
         validParameterNames.add("nimi");
         ValidInputNamesValidator validInputNamesValidator = new ValidInputNamesValidator(validParameterNames);
         HashMap<String, String> values = new HashMap<String, String>();
-        values.put("key", "value");
-        validInputNamesValidator.validate(values);
+        values.put(parameterName, "value");
+        return validInputNamesValidator.validate(values);
     }
 }
