@@ -23,11 +23,11 @@
 <c:set value="${categoryData[selectHiddenInputId]}" var="hakukohdeId" scope="page"/>
 <tr id="${element.id}-Opetuspiste">
     <td class="label"><haku:i18nText value="${element.i18nText}"/></td>
-    <td class="sublabel"><c:out value="${element.learningInstitutionLabel}"/></td>
+    <td class="sublabel"><haku:i18nText value="${sortableItem.learningInstitutionLabel}"/></td>
     <td><c:out value="${it.categoryData[textInputId]}"/></td>
 </tr>
 <tr id="${element.id}-Koulutus">
     <td class="label"></td>
-    <td class="sublabel"><c:out value="${element.educationLabel}"/></td>
+    <td class="sublabel"><haku:i18nText value="${sortableItem.educationLabel}"/></td>
     <td><c:out value="${it.categoryData[selectInputId]}"/></td>
 </tr>

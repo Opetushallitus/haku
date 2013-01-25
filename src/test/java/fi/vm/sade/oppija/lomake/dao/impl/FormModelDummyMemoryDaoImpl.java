@@ -370,9 +370,9 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         PreferenceRow pr1 = ElementUtil.createI18NPreferenceRow("preference1", "Hakutoive 1");
         pr1.addAttribute("required", "required");
         PreferenceRow pr2 = ElementUtil.createI18NPreferenceRow("preference2", "Hakutoive 2");
-        PreferenceRow pr3 = ElementUtil.createI18NPreferenceRow("preference1", "Hakutoive 3");
-        PreferenceRow pr4 = ElementUtil.createI18NPreferenceRow("preference1", "Hakutoive 4");
-        PreferenceRow pr5 = ElementUtil.createI18NPreferenceRow("preference1", "Hakutoive 5");
+        PreferenceRow pr3 = ElementUtil.createI18NPreferenceRow("preference3", "Hakutoive 3");
+        PreferenceRow pr4 = ElementUtil.createI18NPreferenceRow("preference4", "Hakutoive 4");
+        PreferenceRow pr5 = ElementUtil.createI18NPreferenceRow("preference5", "Hakutoive 5");
         sortableTable.addChild(pr1);
         sortableTable.addChild(pr2);
         sortableTable.addChild(pr3);
