@@ -29,10 +29,12 @@ import org.springframework.stereotype.Service;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URI;
 
 @Service
@@ -65,7 +67,7 @@ public class IndexerServiceImpl implements IndexService {
         }
     }
 
-    private ByteArrayOutputStream transform(Source source) throws Exception {
+    private ByteArrayOutputStream transform(Source source) throws IOException, TransformerException {
         final ClassPathResource classPathResource = new ClassPathResource("xml/xslt/tarjonta.xsl");
         StreamSource streamSource = new StreamSource(classPathResource.getInputStream());
         //next line is needed for relative imports in xslt to work
