@@ -59,6 +59,12 @@ public class FormController {
     public static final String LINK_LIST_VIEW = "/linkList";
     public static final String VALMIS_VIEW = "/valmis";
 
+    public static final String FORM_ID_PATH_PARAM = "formId";
+    public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
+    public static final String THEME_ID_PATH_PARAM = "themeId";
+    public static final String ELEMENT_ID_PATH_PARAM = "elementId";
+    public static final String FORM_ID_STR_PATH_PARAM = "formIdStr";
+
     final FormService formService;
     private final ApplicationService applicationService;
     private final UserPrefillDataService userPrefillDataService;
@@ -81,8 +87,8 @@ public class FormController {
     }
 
     @GET
-    @Path("/{applicationPeriodId}")
-    public Viewable listForms(@PathParam("applicationPeriodId") final String applicationPeriodId) {
+    @Path("/{applicationPeriodId}") //NOSONAR Avoid Duplicate Literals. Sotkuseksi menee, jos
+    public Viewable listForms(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId) {
         LOGGER.debug("listForms");
         ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(applicationPeriodId);
         Map<String, Object> model = new HashMap<String, Object>();
@@ -93,8 +99,8 @@ public class FormController {
 
     @GET
     @Path("/{applicationPeriodId}/{formId}")
-    public Response getApplication(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                                   @PathParam("formId") final String formId) throws URISyntaxException {
+    public Response getApplication(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                   @PathParam(FORM_ID_PATH_PARAM) final String formId) throws URISyntaxException {
         LOGGER.debug("getApplication {}, {}", new Object[]{applicationPeriodId, formId});
         Application application = applicationService.getApplication(new FormId(applicationPeriodId, formId));
         if (application.isNew()) {
@@ -113,9 +119,9 @@ public class FormController {
     @GET
     @Path("/{applicationPeriodId}/{formIdStr}/{elementId}")
     @Produces(MediaType.TEXT_HTML)
-    public Viewable getElement(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                               @PathParam("formIdStr") final String formIdStr,
-                               @PathParam("elementId") final String elementId) {
+    public Viewable getElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                               @PathParam(FORM_ID_STR_PATH_PARAM) final String formIdStr,
+                               @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
 
         LOGGER.debug("getElement {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, elementId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
@@ -136,9 +142,9 @@ public class FormController {
     @GET
     @Path("/{applicationPeriodId}/{formId}/{elementId}/relatedData/{key}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Serializable getElementRelatedData(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                                              @PathParam("formId") final String formId,
-                                              @PathParam("elementId") final String elementId,
+    public Serializable getElementRelatedData(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                              @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                                              @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                               @PathParam("key") final String key) {
         LOGGER.debug("getElementRelatedData {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, elementId, key});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
@@ -154,8 +160,8 @@ public class FormController {
     @POST
     @Path("/{applicationPeriodId}/{formId}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response prefillForm(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                                @PathParam("formId") final String formId,
+    public Response prefillForm(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                @PathParam(FORM_ID_PATH_PARAM) final String formId,
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException {
         userPrefillDataService.addUserPrefillData(MultivaluedMapUtil.toSingleValueMap(multiValues));
@@ -168,8 +174,8 @@ public class FormController {
     @Path("/{applicationPeriodId}/{formId}/{phaseId}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
-    public Response savePhase(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                              @PathParam("formId") final String formId,
+    public Response savePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                              @PathParam(FORM_ID_PATH_PARAM) final String formId,
                               @PathParam("phaseId") final String phaseId,
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
@@ -201,8 +207,8 @@ public class FormController {
     @POST
     @Path("/{applicationPeriodId}/{formId}/send")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response submitApplication(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                                      @PathParam("formId") final String formId) throws URISyntaxException {
+    public Response submitApplication(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                      @PathParam(FORM_ID_PATH_PARAM) final String formId) throws URISyntaxException {
         LOGGER.debug("submitApplication {}, {}", new Object[]{applicationPeriodId, formId});
         String oid = applicationService.submitApplication(new FormId(applicationPeriodId, formId));
         RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationPeriodId, formId, oid);
@@ -211,8 +217,8 @@ public class FormController {
 
     @GET
     @Path("/{applicationPeriodId}/{formId}/valmis/{oid}")
-    public Viewable getComplete(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                                @PathParam("formId") final String formId,
+    public Viewable getComplete(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                @PathParam(FORM_ID_PATH_PARAM) final String formId,
                                 @PathParam("oid") final String oid) {
 
         LOGGER.debug("getComplete {}, {}", new Object[]{applicationPeriodId, formId});
@@ -235,10 +241,10 @@ public class FormController {
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{formId}/{vaiheId}/{teemaId}/help")
-    public Viewable getFormHelp(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                                @PathParam("formId") final String formId, @PathParam("vaiheId") final String vaiheId,
-                                @PathParam("teemaId") final String teemaId) {
+    @Path("/{applicationPeriodId}/{formId}/{vaiheId}/{themeId}/help")
+    public Viewable getFormHelp(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                @PathParam(FORM_ID_PATH_PARAM) final String formId, @PathParam("vaiheId") final String vaiheId,
+                                @PathParam(THEME_ID_PATH_PARAM) final String themeId) {
 
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         Phase phase = activeForm.getPhase(vaiheId);
@@ -246,7 +252,7 @@ public class FormController {
         Map<String, Object> model = new HashMap<String, Object>();
 
         for (Element element : phase.getChildren()) {
-            if (element.getId().equals(teemaId)) {
+            if (element.getId().equals(themeId)) {
                 Theme theme = (Theme) element;
                 model.put("themeTitle", theme.getI18nText().getTranslations().get("fi"));
                 HashMap<String, String> helpMap = new HashMap<String, String>();
@@ -271,8 +277,8 @@ public class FormController {
      */
     @GET
     @Path("/{applicationPeriodId}/{formIdStr}/{gradeGridId}/additionalLanguageRow")
-    public Viewable getAdditionalLanguageRow(@PathParam("applicationPeriodId") final String applicationPeriodId,
-                                             @PathParam("formIdStr") final String formIdStr,
+    public Viewable getAdditionalLanguageRow(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                             @PathParam(FORM_ID_STR_PATH_PARAM) final String formIdStr,
                                              @PathParam("gradeGridId") final String gradeGridId) {
 
         LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, gradeGridId});
