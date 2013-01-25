@@ -54,7 +54,6 @@ import java.util.Map;
 public class FormController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
-    public static final String DEFAULT_VIEW = "/elements/Phase";
     public static final String ROOT_VIEW = "/elements/Root";
     public static final String VERBOSE_HELP_VIEW = "/help";
     public static final String LINK_LIST_VIEW = "/linkList";

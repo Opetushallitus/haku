@@ -47,7 +47,7 @@ public class Application implements Serializable {
     @JsonProperty(value = "_id")
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = ObjectIdSerializer.class)
     @JsonDeserialize(using = ObjectIdDeserializer.class)
-    private org.bson.types.ObjectId id;
+    private org.bson.types.ObjectId id; //NOSONAR Json-sarjallistajan käyttämä.
 
     private String oid;
     private FormId formId;
