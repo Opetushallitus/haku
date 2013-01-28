@@ -18,5 +18,5 @@
 
 <fieldset>
     <legend><haku:i18nText value="${element.i18nText}"/></legend>
-    <input type="file" id="${element.id}"/>
+    <input type="file" id="${element.id}" name="${element.id}"/>
 </fieldset>
