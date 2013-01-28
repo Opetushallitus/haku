@@ -366,20 +366,20 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     private void createHakutoiveet(Theme hakutoiveetRyhmä) {
         hakutoiveetRyhmä.setHelp("Merkitse tälle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinä järjestyksessä, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttää ne hakutoivelistalle. Voit halutessasi etsiä koulutuksia koulutuskorin kautta. harkitse hakutoivejärjestystä tarkoin, sillä se on sitova, etkä voi muuttaa sitä enää hakuajan jälkeen. Jos et pääse koulutukseen, jonka olet merkinnyt ensimmäiselle sijalle, tarkistetaan riittävätkö pisteesi toiselle sijalle merkitsemääsi hakutoiveeseen jne. Jos pääset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkä voi enää tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielä päästä. HUOM! Lukion oppimäärän tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).");
-        SortableTable sortableTable = new SortableTable("preferencelist", createI18NText("Hakutoiveet"), "Ylös", "Alas");
+        PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NText("Hakutoiveet"), "Ylös", "Alas");
         PreferenceRow pr1 = ElementUtil.createI18NPreferenceRow("preference1", "Hakutoive 1");
         pr1.addAttribute("required", "required");
         PreferenceRow pr2 = ElementUtil.createI18NPreferenceRow("preference2", "Hakutoive 2");
         PreferenceRow pr3 = ElementUtil.createI18NPreferenceRow("preference3", "Hakutoive 3");
         PreferenceRow pr4 = ElementUtil.createI18NPreferenceRow("preference4", "Hakutoive 4");
         PreferenceRow pr5 = ElementUtil.createI18NPreferenceRow("preference5", "Hakutoive 5");
-        sortableTable.addChild(pr1);
-        sortableTable.addChild(pr2);
-        sortableTable.addChild(pr3);
-        sortableTable.addChild(pr4);
-        sortableTable.addChild(pr5);
-        sortableTable.setVerboseHelp(getVerboseHelp());
-        hakutoiveetRyhmä.addChild(sortableTable);
+        preferenceTable.addChild(pr1);
+        preferenceTable.addChild(pr2);
+        preferenceTable.addChild(pr3);
+        preferenceTable.addChild(pr4);
+        preferenceTable.addChild(pr5);
+        preferenceTable.setVerboseHelp(getVerboseHelp());
+        hakutoiveetRyhmä.addChild(preferenceTable);
     }
 
     private void createTyokokemus(Theme tyokokemus) {

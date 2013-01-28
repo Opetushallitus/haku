@@ -64,7 +64,7 @@ import java.util.Map;
                 @JsonSubTypes.Type(value = SubjectRow.class),
                 @JsonSubTypes.Type(value = LanguageRow.class),
                 @JsonSubTypes.Type(value = CustomLanguageRow.class),
-                @JsonSubTypes.Type(value = SortableTable.class),
+                @JsonSubTypes.Type(value = PreferenceTable.class),
                 @JsonSubTypes.Type(value = PreferenceRow.class),
                 @JsonSubTypes.Type(value = PostalCode.class),
                 @JsonSubTypes.Type(value = SocialSecurityNumber.class),

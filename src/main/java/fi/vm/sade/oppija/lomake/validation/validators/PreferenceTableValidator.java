@@ -27,9 +27,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Preference table validator
  * @author Mikko Majapuro
  */
-public class PreferenceListValidator implements Validator {
+public class PreferenceTableValidator implements Validator {
 
     private final int rowCount;
     private final List<String> learningInstitutionInputIds;
@@ -38,7 +39,7 @@ public class PreferenceListValidator implements Validator {
     private List<String> educations;
     private Map<String, String> errors;
 
-    public PreferenceListValidator(final List<String> learningInstitutionInputIds, final List<String> educationInputIds) {
+    public PreferenceTableValidator(final List<String> learningInstitutionInputIds, final List<String> educationInputIds) {
         assert learningInstitutionInputIds.size() == educationInputIds.size();
         this.learningInstitutionInputIds = learningInstitutionInputIds;
         this.educationInputIds = educationInputIds;
@@ -76,6 +77,12 @@ public class PreferenceListValidator implements Validator {
         return new ValidationResult(errors);
     }
 
+    /**
+     * Checks that the both preference input fields has values or the both is null
+     * @param learningInstitution learning institution input value
+     * @param education education input value
+     * @return true if valid, false otherwise
+     */
     private boolean checkBothNullOrTyped(final String learningInstitution, final String education) {
         if ((learningInstitution == null || learningInstitution.isEmpty()) ^ (education == null || education.isEmpty())) {
             return false;
@@ -83,6 +90,12 @@ public class PreferenceListValidator implements Validator {
         return true;
     }
 
+    /**
+     * Checks that the given preference is unique in a preference table
+     * @param learningInstitution learning institute input value
+     * @param education education input value
+     * @return true if valid, false otherwise
+     */
     private boolean checkUnique(final String learningInstitution, final String education) {
         assert learningInstitutions.size() == educations.size();
 
@@ -98,6 +111,12 @@ public class PreferenceListValidator implements Validator {
         return true;
     }
 
+    /**
+     * Checks that there are no empty preference rows before the given preference
+     * @param values
+     * @param value
+     * @return true if valid, false otherwise
+     */
     private boolean checkEmptyRowBeforeGivenPreference(final List<String> values, final String value) {
         if (value != null && !value.isEmpty() && !values.isEmpty() && values.get(values.size() - 1) == null) {
             return false;

@@ -21,7 +21,7 @@ import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.SortableTable;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
 import net.sourceforge.jwebunit.api.IElement;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,17 +33,17 @@ import static junit.framework.Assert.assertEquals;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 /**
- * Sortable table integration tests
+ * Preference table integration tests
  *
  * @author Mikko Majapuro
  */
-public class SortableTableIT extends AbstractFormTest {
+public class PreferenceTableIT extends AbstractFormTest {
 
     private FormModelHelper formModelHelper;
 
     @Before
     public void init() throws IOException {
-        final SortableTable table = new SortableTable("t1", createI18NText("Hakutoiveet"), "Ylös", "Alas");
+        final PreferenceTable table = new PreferenceTable("t1", createI18NText("Hakutoiveet"), "Ylös", "Alas");
         final PreferenceRow row = new PreferenceRow("r1", createI18NText("Hakutoive 1"), createI18NText("Tyhjennä"), createI18NText("Koulutus"), createI18NText("Opetuspiste"), "Valitse koulutus");
         final PreferenceRow row2 = new PreferenceRow("r2", createI18NText("Hakutoive 2"), createI18NText("Tyhjennä"), createI18NText("Koulutus"), createI18NText("Opetuspiste"), "Valitse koulutus");
         table.addChild(row);

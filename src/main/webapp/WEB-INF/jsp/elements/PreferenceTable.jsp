@@ -59,5 +59,5 @@
         teemaId: "${parent.id}"
     }
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/sortabletable.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencetable.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencerow.js"></script>

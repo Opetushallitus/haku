@@ -20,7 +20,7 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.validation.Validator;
-import fi.vm.sade.oppija.lomake.validation.validators.PreferenceListValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.PreferenceTableValidator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -28,21 +28,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Table element with data sorting functionality
+ * Preference table element with row sorting functionality
  *
  * @author Mikko Majapuro
  */
-public class SortableTable extends Titled {
+public class PreferenceTable extends Titled {
 
     // label text for up button
     private String moveUpLabel;
     // label text for down button
     private String moveDownLabel;
 
-    public SortableTable(@JsonProperty(value = "id") final String id,
-                         @JsonProperty(value = "i18nText") final I18nText i18nText,
-                         @JsonProperty(value = "moveUpLabel") final String moveUpLabel,
-                         @JsonProperty(value = "moveDownLabel") final String moveDownLabel) {
+    public PreferenceTable(@JsonProperty(value = "id") final String id,
+                           @JsonProperty(value = "i18nText") final I18nText i18nText,
+                           @JsonProperty(value = "moveUpLabel") final String moveUpLabel,
+                           @JsonProperty(value = "moveDownLabel") final String moveDownLabel) {
         super(id, i18nText);
         this.moveUpLabel = moveUpLabel;
         this.moveDownLabel = moveDownLabel;
@@ -69,7 +69,7 @@ public class SortableTable extends Titled {
             educationInputIds.add(pr.getEducationInputId());
         }
 
-        listOfValidators.add(new PreferenceListValidator(learningInstitutionInputIds, educationInputIds));
+        listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds));
         return listOfValidators;
     }
 }
