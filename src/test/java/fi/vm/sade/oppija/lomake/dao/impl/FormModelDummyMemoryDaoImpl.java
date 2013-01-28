@@ -408,7 +408,17 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         asiointikieli.addOption("ruotsi", createI18NText("Ruotsi"), "ruotsi");
         asiointikieli.addAttribute("required", "required");
         asiointikieli.setVerboseHelp(getVerboseHelp());
-
+        
+        TextQuestion huoltajanemail = new TextQuestion("huoltajanemail", createI18NText("Huoltajan sähköpostiosoite"));
+        huoltajanemail.addAttribute("required", "required");
+        huoltajanemail.setInline(true);
+        
+        /* 
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule7", lupa.getId(), lupa.getOptions().get(0).getValue() );
+        relatedQuestionRule.addChild(huoltajanemail);
+        lupa.addChild(relatedQuestionRule);
+        */
+        
         lupatiedot.addChild(lupa);
         lupatiedot.addChild(asiointikieli);
     }
