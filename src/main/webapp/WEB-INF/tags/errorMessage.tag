@@ -18,5 +18,5 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:if test="${not empty errorMessages[id]}">
-    <div class="notification warning ${additionalClass}"><c:out value="${errorMessages[element.id]}"/></div>
+    <div class="notification warning ${additionalClass}"><c:out value="${errorMessages[id]}"/></div>
 </c:if>

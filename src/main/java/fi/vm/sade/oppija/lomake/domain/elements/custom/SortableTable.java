@@ -17,8 +17,15 @@
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.oppija.lomake.validation.Validator;
+import fi.vm.sade.oppija.lomake.validation.validators.PreferenceListValidator;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Table element with data sorting functionality
@@ -47,5 +54,22 @@ public class SortableTable extends Titled {
 
     public String getMoveDownLabel() {
         return moveDownLabel;
+    }
+
+    @Override
+    @JsonIgnore
+    public List<Validator> getValidators() {
+        List<Validator> listOfValidators = new ArrayList<Validator>();
+        List<String> learningInstitutionInputIds = new ArrayList<String>();
+        List<String> educationInputIds = new ArrayList<String>();
+
+        for (Element element : this.getChildren()) {
+            PreferenceRow pr = (PreferenceRow) element;
+            learningInstitutionInputIds.add(pr.getLearningInstitutionInputId());
+            educationInputIds.add(pr.getEducationInputId());
+        }
+
+        listOfValidators.add(new PreferenceListValidator(learningInstitutionInputIds, educationInputIds));
+        return listOfValidators;
     }
 }
