@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -20,7 +21,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Opetushallitus </title>
+    <title><haku:i18nText value="${it.theme.i18nText}"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link href="${pageContext.request.contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet"/>
 </head>
@@ -29,11 +30,11 @@
     <div id="overlay"></div>
     <div id="help-page">
         <section id="page">
-            <h1><c:out value="${it.themeTitle}"/></h1>
-            <c:forEach var="entry" items="${it.themeHelpMap}">
-                <h3><c:out value="${entry.key}"/></h3>
+            <h1><haku:i18nText value="${it.theme.i18nText}"/></h1>
+            <c:forEach var="entry" items="${it.listsOfTitledElements}">
+                <h3><haku:i18nText value="${entry.i18nText}"/></h3>
 
-                <p><c:out value="${entry.value}"/></p>
+                <p><c:out value="${entry.verboseHelp}"/></p>
             </c:forEach>
         </section>
     </div>

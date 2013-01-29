@@ -72,7 +72,6 @@ public class LomakeIT extends AbstractSeleniumBase {
         selenium.typeKeys("Postinumero", "00100");
 
         driver.findElement(new By.ByClassName("right")).click();
-        printElementsIdByXpath(driver, "//input");
 
         driver.findElement(new By.ByClassName("right")).click();
 
@@ -94,7 +93,6 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(By.xpath("//option[@value='Sosiaali- ja terveysalan perustutkinto, pk']")).click();
 
         driver.findElement(new By.ByClassName("right")).click();
-        printElementsIdByXpath(driver, "//select");
         select(driver);
 
         driver.findElement(new By.ByClassName("right")).click();
@@ -115,15 +113,8 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(new By.ById("yhteishaku")).click();
         String value = driver.findElement(new By.ById("Sukunimi")).getAttribute("value");
         assertTrue(StringUtils.isEmpty(value));
-
-
-    }
-
-    private void printElementsIdByXpath(final WebDriver driver, final String xpath) {
-        List<WebElement> elements = driver.findElements(new By.ByXPath(xpath));
-        for (WebElement element : elements) {
-            System.out.println("---->" + element.getAttribute("id"));
-        }
+        driver.findElement(new By.ByClassName("right")).click();
+        System.out.println("#");
     }
 
     private void select(final WebDriver driver) {

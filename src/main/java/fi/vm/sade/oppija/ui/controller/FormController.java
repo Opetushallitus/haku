@@ -22,7 +22,10 @@ import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
-import fi.vm.sade.oppija.lomake.domain.elements.*;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.GradeGrid;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
@@ -46,7 +49,9 @@ import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -247,24 +252,16 @@ public class FormController {
                                 @PathParam(THEME_ID_PATH_PARAM) final String themeId) {
 
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        Phase phase = activeForm.getPhase(vaiheId);
-
         Map<String, Object> model = new HashMap<String, Object>();
-
-        for (Element element : phase.getChildren()) {
-            if (element.getId().equals(themeId)) {
-                Theme theme = (Theme) element;
-                model.put("themeTitle", theme.getI18nText().getTranslations().get("fi"));
-                HashMap<String, String> helpMap = new HashMap<String, String>();
-                for (Element tElement : theme.getChildren()) {
-                    if (tElement instanceof Titled) {
-                        helpMap.put(((Titled) tElement).getI18nText().getTranslations().get("fi"), ((Titled) tElement).getVerboseHelp());
-                    }
-                }
-                model.put("themeHelpMap", helpMap);
-                break;
+        Element theme = activeForm.getElementById(themeId);
+        model.put("theme", theme);
+        List<Element> listsOfTitledElements = new ArrayList<Element>();
+        for (Element tElement : theme.getChildren()) {
+            if (tElement instanceof Titled) {
+                listsOfTitledElements.add(tElement);
             }
         }
+        model.put("listsOfTitledElements", listsOfTitledElements);
 
         return new Viewable(VERBOSE_HELP_VIEW, model);
     }
