@@ -1,19 +1,17 @@
 /*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
- *  * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
- *  *
- *  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
- *  * soon as they will be approved by the European Commission - subsequent versions
- *  * of the EUPL (the "Licence");
- *  *
- *  * You may not use this work except in compliance with the Licence.
- *  * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * European Union Public Licence for more details.
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
  *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
  */
 
 package fi.vm.sade.oppija.lomake.validation.validators;
@@ -28,6 +26,7 @@ import java.util.Map;
 
 /**
  * Preference table validator
+ *
  * @author Mikko Majapuro
  */
 public class PreferenceTableValidator implements Validator {
@@ -37,7 +36,6 @@ public class PreferenceTableValidator implements Validator {
     private final List<String> educationInputIds;
     private List<String> learningInstitutions;
     private List<String> educations;
-    private Map<String, String> errors;
 
     public PreferenceTableValidator(final List<String> learningInstitutionInputIds, final List<String> educationInputIds) {
         assert learningInstitutionInputIds.size() == educationInputIds.size();
@@ -50,9 +48,9 @@ public class PreferenceTableValidator implements Validator {
     public ValidationResult validate(Map<String, String> values) {
         learningInstitutions = new ArrayList<String>();
         educations = new ArrayList<String>();
-        errors = new HashMap<String, String>();
+        final Map<String, String> errors = new HashMap<String, String>();
 
-        for (int i  = 0; i < rowCount; ++i) {
+        for (int i = 0; i < rowCount; ++i) {
             String learningInstitutionInputId = learningInstitutionInputIds.get(i);
             String educationInputId = educationInputIds.get(i);
             String learningInstitution = values.get(learningInstitutionInputId);
@@ -79,8 +77,9 @@ public class PreferenceTableValidator implements Validator {
 
     /**
      * Checks that the both preference input fields has values or the both is null
+     *
      * @param learningInstitution learning institution input value
-     * @param education education input value
+     * @param education           education input value
      * @return true if valid, false otherwise
      */
     private boolean checkBothNullOrTyped(final String learningInstitution, final String education) {
@@ -92,8 +91,9 @@ public class PreferenceTableValidator implements Validator {
 
     /**
      * Checks that the given preference is unique in a preference table
+     *
      * @param learningInstitution learning institute input value
-     * @param education education input value
+     * @param education           education input value
      * @return true if valid, false otherwise
      */
     private boolean checkUnique(final String learningInstitution, final String education) {
@@ -102,10 +102,10 @@ public class PreferenceTableValidator implements Validator {
         if (learningInstitution != null && !learningInstitution.isEmpty() && education != null &&
                 !education.isEmpty()) {
             for (int i = 0; i < learningInstitutions.size(); ++i) {
-               if (learningInstitution.equals(learningInstitutions.get(i)) &&
-                       education.equals(educations.get(i))) {
-                   return false;
-               }
+                if (learningInstitution.equals(learningInstitutions.get(i)) &&
+                        education.equals(educations.get(i))) {
+                    return false;
+                }
             }
         }
         return true;
@@ -113,6 +113,7 @@ public class PreferenceTableValidator implements Validator {
 
     /**
      * Checks that there are no empty preference rows before the given preference
+     *
      * @param values
      * @param value
      * @return true if valid, false otherwise
