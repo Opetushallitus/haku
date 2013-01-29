@@ -126,7 +126,8 @@ public class OfficerController {
         Map<String, Object> model = new HashMap<String, Object>();
         String templateName = DEFAULT_VIEW;
         if (applicationState.isValid()) {
-            templateName = VIRKAILIJA_HAKEMUS_VIEW + applicationPeriodId + "/" + formId + "/" + activeForm.getLastPhase().getId() + "/" + oid + "/";
+            templateName = VIRKAILIJA_HAKEMUS_VIEW + applicationPeriodId + "/" +
+                    formId + "/" + activeForm.getLastPhase().getId() + "/" + oid + "/";
             return seeOther(new URI(templateName)).build();
 
         } else {
@@ -143,7 +144,8 @@ public class OfficerController {
     @Path("/hakemus/{oid}/applicationProcessState/{status}/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
-    public Response changeApplicationProcessState(@PathParam(OID_PATH_PARAM) final String oid, @PathParam("status") final String status) throws URISyntaxException {
+    public Response changeApplicationProcessState(@PathParam(OID_PATH_PARAM) final String oid,
+                                                  @PathParam("status") final String status) throws URISyntaxException {
         LOGGER.debug("changeApplicationProcessState {}, {}", new Object[]{oid, status});
 
         // TODO: change when setApplicationProcessStateStatus returns correct exception and the updated application
