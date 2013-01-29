@@ -52,10 +52,10 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
         driver.findElement(new By.ById("millatutkinnolla_tutkinto1")).click();
         driver.findElement(new By.ById("peruskoulu2012_kylla")).click();
 
-        driver.findElement(new By.ById("suorittanut_suorittanut1")).click();
-        driver.findElement(new By.ById("suorittanut_suorittanut2")).click();
-        driver.findElement(new By.ById("suorittanut_suorittanut3")).click();
-        driver.findElement(new By.ById("suorittanut_suorittanut4")).click();
+        driver.findElement(new By.ById("suorittanut1")).click();
+        driver.findElement(new By.ById("suorittanut2")).click();
+        driver.findElement(new By.ById("suorittanut3")).click();
+        driver.findElement(new By.ById("suorittanut4")).click();
 
         driver.findElement(new By.ById("osallistunut_ei")).click();
 

@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -15,21 +15,11 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
-<div class="${styleBaseClass}">
-
-    <haku:label element="${element}" styleBaseClass="${styleBaseClass}"/>
-
-    <div class="${styleBaseClass}-content">
-        <div class="field-container-text">
-            <input ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"/>
-            <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
-        </div>
-
+<fieldset class="form-item">
+    <legend class="form-item-label"><haku:i18nText value="${element.i18nText}"/></legend>
+    <div class="form-item-content">
+        <haku:errorMessage id="${element.id}"/>
         <haku:help element="${element}"/>
-
+        <haku:viewChilds element="${element}"/>
     </div>
-    <div class="clear"></div>
-    <haku:viewChilds element="${element}"/>
-</div>
-
+</fieldset>

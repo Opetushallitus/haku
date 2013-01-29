@@ -1,5 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core"
-           prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -16,22 +15,20 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <fieldset class="${styleBaseClass}">
     <legend class="${styleBaseClass}-label ${element.attributes['required'].value}"><haku:i18nText
             value="${element.i18nText}"/></legend>
     <div class="${styleBaseClass}-content">
-
         <c:set var="value" value="${(empty value) ? categoryData[element.id] : value}"/>
         <c:forEach var="option" items="${element.options}" varStatus="status">
+            <haku:errorMessage id="${option.id}"/>
             <div class="field-container-radio">
-                <c:set var="id" value="${option.id}"/>
-                <input id="${id}" type="radio" name="${element.id}"
+                <input id="${option.id}" type="radio" name="${element.id}"
                        value="${option.value}" ${(!empty disabled) ? "disabled=\"true\" " : " "} ${(value eq option.value) ? "checked=\"checked\" " : " "} ${option.attributeString}/>
                 <label for="${option.id}"><haku:i18nText value="${option.i18nText}"/></label>
-
                 <haku:help element="${option}"/>
+                <haku:viewChilds element="${option}"/>
             </div>
         </c:forEach>
         <haku:errorMessage id="${element.id}"/>

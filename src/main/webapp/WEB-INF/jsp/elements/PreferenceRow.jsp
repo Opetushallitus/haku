@@ -42,7 +42,6 @@
                        data-selectinputid="${selectInputId}"
                        size="60"
                 ${sortableItem.attributes['required'].value}/>
-
                 <haku:errorMessage id="${textInputId}" additionalClass="margin-top-1"/>
                 <input id="${hiddenInputId}" name="${hiddenInputId}" value="${categoryData[hiddenInputId]}"
                        type="hidden"/>

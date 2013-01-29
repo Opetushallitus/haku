@@ -15,7 +15,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
-<div class="form-item">
+<div class="form-item" id="${element.id}">
     <b><haku:i18nText value="${element.i18nText}"/></b>
 </div>

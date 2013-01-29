@@ -206,9 +206,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         Question lahiosoite = createRequiredTextQuestion("lahiosoite", "Lähiosoite", "40");
         lahiosoite.setInline(true);
 
-        CheckBox ensisijainenOsoite = new CheckBox("ensisijainenOsoite", createI18NText("Ensisijainen osoite"));
-        ensisijainenOsoite.addOption("ensisijainenOsoite1", createI18NText("Tämä on ensisijainen osoitteeni"), "ensisijainenOsoite1");
-
+        CheckBox ensisijainenOsoite = new CheckBox("ensisijainenOsoite1", createI18NText("Tämä on ensisijainen osoitteeni"));
         ensisijainenOsoite.setInline(true);
 
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", asuinmaa.getId(), "fi");
@@ -394,13 +392,31 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
     }
 
     private void createLupatiedot(Theme lupatiedot) {
-        CheckBox lupa = new CheckBox("lupa", createI18NText("Ohjeteksti lorem ipsum."));
-        lupa.addOption("lupa1", createI18NText("Haluan, että huoltajalleni lähetetään tieto sähköpostilla hakulomakkeen täyttämisestä"), "lupa1");
-        lupa.addOption("lupa2", createI18NText("Minulle saa lähettää postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia"), "lupa2");
-        lupa.addOption("lupa3", createI18NText("Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissä"), "lupa3");
-        lupa.addOption("lupa4", createI18NText("Valintaani koskevat tiedot saa lähettää minulle sähköisesti"), "lupa4");
-        lupa.addOption("lupa5", createI18NText("Minulle saa lähettää tietoa opiskelijavalinnan etenemisestä ja tuloksista tekstiviestillä"), "lupa5");
-        lupa.setVerboseHelp(getVerboseHelp());
+        TextQuestion email = new TextQuestion("lupa1_email", createI18NText("Sähköpostiosoite"));
+        email.addAttribute("size", "40");
+        email.addAttribute("required", "required");
+        email.setHelp("Kirjoita tähän huoltajan sähköpostiosoite");
+        email.setVerboseHelp(getVerboseHelp());
+        email.setInline(true);
+
+        CheckBox permission1 = new CheckBox("lupa1", createI18NText("Haluan, että huoltajalleni lähetetään tieto sähköpostilla hakulomakkeen täyttämisestä."));
+        CheckBox permission2 = new CheckBox("lupa2", createI18NText("Minulle saa lähettää postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia."));
+        CheckBox permission3 = new CheckBox("lupa3", createI18NText("Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissä."));
+        CheckBox permission4 = new CheckBox("lupa4", createI18NText("Valintaani koskevat tiedot saa lähettää minulle sähköisesti."));
+        CheckBox permission5 = new CheckBox("lupa5", createI18NText("Minulle saa lähettää tietoa opiskelijavalinnan etenemisestä ja tuloksista tekstiviestillä."));
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("lupa1_rule", permission1.getId(), "on");
+        relatedQuestionRule.addChild(email);
+        permission1.addChild(relatedQuestionRule);
+
+        Group group = new Group("permissionCheckboxes", createI18NText("Ryhmän otsikkotai ohjeteksti"));
+
+        group.addChild(permission1);
+        group.addChild(permission2);
+        group.addChild(permission3);
+        group.addChild(permission4);
+        group.addChild(permission5);
+        lupatiedot.addChild(group);
+        lupatiedot.setVerboseHelp(getVerboseHelp());
 
         Radio asiointikieli = new Radio("asiointikieli", createI18NText("Asiointikieli"));
         asiointikieli.setHelp("Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviä tietoja");
@@ -408,18 +424,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         asiointikieli.addOption("ruotsi", createI18NText("Ruotsi"), "ruotsi");
         asiointikieli.addAttribute("required", "required");
         asiointikieli.setVerboseHelp(getVerboseHelp());
-        
-        TextQuestion huoltajanemail = new TextQuestion("huoltajanemail", createI18NText("Huoltajan sähköpostiosoite"));
-        huoltajanemail.addAttribute("required", "required");
-        huoltajanemail.setInline(true);
-        
-        /* 
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule7", lupa.getId(), lupa.getOptions().get(0).getValue() );
-        relatedQuestionRule.addChild(huoltajanemail);
-        lupa.addChild(relatedQuestionRule);
-        */
-        
-        lupatiedot.addChild(lupa);
         lupatiedot.addChild(asiointikieli);
     }
 
@@ -460,13 +464,11 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         tutkinnonOpetuskieli.setHelp("Merkitse tähän se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellä tasapuolisesti, valitse toinen niistä");
         tutkinnonOpetuskieli.setVerboseHelp(getVerboseHelp());
 
-        CheckBox suorittanut = new CheckBox("suorittanut", createI18NText("Merkitse tähän, jos olet suorittanut jonkun seuraavista"));
-        suorittanut.addOption("suorittanut1", createI18NText("Perusopetuksen lisäopetuksen oppimäärä (kymppiluokka)"), "suorittanut1");
-        suorittanut.addOption("suorittanut2", createI18NText("Vammaisten valmentava ja kuntouttava opetus ja ohjaus"), "suorittanut2");
-        suorittanut.addOption("suorittanut3", createI18NText("Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus"), "suorittanut3");
-        suorittanut.addOption("suorittanut4", createI18NText("Muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus (talouskoulu)"), "suorittanut4");
-        suorittanut.addOption("suorittanut5", createI18NText("Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus (ammattistartti)"), "suorittanut5");
-        suorittanut.setVerboseHelp(getVerboseHelp());
+        CheckBox suorittanut1 = new CheckBox("suorittanut1", createI18NText("Perusopetuksen lisäopetuksen oppimäärä (kymppiluokka)"));
+        CheckBox suorittanut2 = new CheckBox("suorittanut2", createI18NText("Vammaisten valmentava ja kuntouttava opetus ja ohjaus"));
+        CheckBox suorittanut3 = new CheckBox("suorittanut3", createI18NText("Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus"));
+        CheckBox suorittanut4 = new CheckBox("suorittanut4", createI18NText("Muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus (talouskoulu)"));
+        CheckBox suorittanut5 = new CheckBox("suorittanut5", createI18NText("Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus (ammattistartti)"));
 
         Radio osallistunut = new Radio("osallistunut", createI18NText("Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?"));
         osallistunut.addOption("ei", createI18NText("En"), "Ei");
@@ -479,7 +481,11 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
                 "|" + millatutkinnolla.getOptions().get(2).getValue() + "|" + millatutkinnolla.getOptions().get(3).getValue() + ")");
         relatedQuestionRule.addChild(peruskoulu2012);
         relatedQuestionRule.addChild(tutkinnonOpetuskieli);
-        relatedQuestionRule.addChild(suorittanut);
+        relatedQuestionRule.addChild(suorittanut1);
+        relatedQuestionRule.addChild(suorittanut2);
+        relatedQuestionRule.addChild(suorittanut3);
+        relatedQuestionRule.addChild(suorittanut4);
+        relatedQuestionRule.addChild(suorittanut5);
         millatutkinnolla.addChild(relatedQuestionRule);
 
         koulutustaustaRyhmä.addChild(millatutkinnolla);

@@ -14,15 +14,16 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain.elements.questions;
+package fi.vm.sade.oppija.lomake.domain.elements;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class CheckBox extends Question {
+public class Group extends Titled {
 
-    public CheckBox(@JsonProperty(value = "id") final String id,
-                    @JsonProperty(value = "i18nText") final I18nText i18nText) {
+    public Group(@JsonProperty(value = "id") final String id,
+                 @JsonProperty(value = "i18nText") final I18nText i18nText) {
         super(id, i18nText);
     }
+
 }

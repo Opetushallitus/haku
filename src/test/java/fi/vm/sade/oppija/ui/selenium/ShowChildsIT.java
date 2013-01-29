@@ -22,7 +22,6 @@ import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import org.junit.Before;
@@ -36,43 +35,34 @@ import java.io.IOException;
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 import static org.junit.Assert.assertNotNull;
 
-
-/**
- * @author jukka
- * @version 9/20/123:26 PM}
- * @since 1.1
- */
 public class ShowChildsIT extends AbstractSeleniumBase {
 
     private FormModelHelper formModelHelper;
+    private CheckBox checkBox1;
 
     @Before
     public void init() throws IOException {
-        final CheckBox checkBox = new CheckBox("checkbox", createI18NText("Valitse jotain"));
-        checkBox.addOption("value", createI18NText("title"), "value");
-        checkBox.addOption("value2", createI18NText("title2"), "value2");
-
-        final Option option = checkBox.getOptions().get(0);
-        final Option option2 = checkBox.getOptions().get(1);
+        checkBox1 = new CheckBox("value", createI18NText("title"));
+        final CheckBox checkBox2 = new CheckBox("value2", createI18NText("title2"));
 
         final Theme theme = new Theme("ekaryhma", createI18NText("ekaryhma"), null);
         theme.addChild(new TextQuestion("alikysymys1", createI18NText("alikysymys1")));
         theme.addChild(new TextQuestion("alikysymys2", createI18NText("alikysymys2")));
 
-        final RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", option.getId(), ".*");
+        final RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", checkBox1.getId(), ".*");
         relatedQuestionRule.addChild(theme);
-        option.addChild(relatedQuestionRule);
+        checkBox1.addChild(relatedQuestionRule);
 
-        final RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule2", option2.getId(), ".*");
+        final RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule2", checkBox2.getId(), ".*");
         final TextQuestion textQuestion = new TextQuestion("laitakolmenollaa", createI18NText("Laita kolme nollaa tähän"));
         relatedQuestionRule2.addChild(textQuestion);
-        option2.addChild(relatedQuestionRule2);
+        checkBox2.addChild(relatedQuestionRule2);
 
         final RelatedQuestionRule relatedQuestionRule3 = new RelatedQuestionRule("rule3", textQuestion.getId(), "[0]{3}");
         relatedQuestionRule3.addChild(new TextQuestion("tamanakyykolmellanollalla", createI18NText("tamanakyykolmellanollalla")));
         textQuestion.addChild(relatedQuestionRule3);
 
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox);
+        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox1, checkBox2);
         this.formModelHelper = initModel(formModel);
     }
 
@@ -81,10 +71,10 @@ public class ShowChildsIT extends AbstractSeleniumBase {
         final String startUrl = formModelHelper.getStartUrl();
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + "/" + startUrl);
-        driver.findElement(By.name("checkbox_value"));
-        driver.findElement(By.id("checkbox_value2"));
-        driver.findElement(By.name("checkbox_value")).click();
+        WebElement checkbox = driver.findElement(By.id(checkBox1.getId()));
+        checkbox.click();
         final WebElement alikysymys1 = driver.findElement(By.id("alikysymys1"));
         assertNotNull(alikysymys1);
     }
+
 }

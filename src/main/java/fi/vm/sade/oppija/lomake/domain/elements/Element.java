@@ -50,6 +50,7 @@ import java.util.Map;
         {
                 @JsonSubTypes.Type(value = Attachment.class),
                 @JsonSubTypes.Type(value = CheckBox.class),
+                @JsonSubTypes.Type(value = Group.class),
                 @JsonSubTypes.Type(value = DropdownSelect.class),
                 @JsonSubTypes.Type(value = Option.class),
                 @JsonSubTypes.Type(value = Radio.class),
@@ -157,7 +158,6 @@ public abstract class Element {
             if (!"required".equals(attribute.getKey())) {
                 attrStr.append(attribute.getAsString());
             }
-
         }
         return attrStr.toString();
     }

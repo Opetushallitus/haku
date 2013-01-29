@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -16,27 +16,16 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
-
-<fieldset class="${styleBaseClass}">
-
-    <legend class="${styleBaseClass}-label${element.attributes['required'].value}"><haku:i18nText
-            value="${element.i18nText}"/></legend>
+<div class="${styleBaseClass}">
     <div class="${styleBaseClass}-content">
-        <c:forEach var="option" items="${element.options}">
-            <div>${errors[option.id]}</div>
-            <div class="field-container-checkbox">
-                <input type="checkbox" name="${option.id}"
-                       value="${option.value}" ${(categoryData[option.id] eq option.value) ? "checked=\"checked\"" : ""} ${option.attributeString}/>
-                <label for="${option.id}"><haku:i18nText value="${option.i18nText}"/></label>
-                <haku:help element="${option}"/>
-                <haku:viewChilds element="${option}"/>
-            </div>
-
-        </c:forEach>
-
-        <haku:errorMessage id="${element.id}"/>
+        <div class="field-container-checkbox">
+            <input type="checkbox"
+                   name="${element.id}" ${("on" eq categoryData[element.id]) ? "checked=\"checked\"" : ""} ${element.attributeString}/>
+            <label for="${element.id}"><haku:i18nText value="${element.i18nText}"/></label>
+            <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
+        </div>
         <haku:help element="${element}"/>
-
     </div>
+    <div class="clear"></div>
     <haku:viewChilds element="${element}"/>
-</fieldset>
+</div>

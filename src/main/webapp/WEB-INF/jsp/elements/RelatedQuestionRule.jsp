@@ -24,7 +24,12 @@
         (function () {
             $("[name=\"${key}\"]").change(function (event) {
                 var childIds = [<c:forEach var="child" items="${element.children}" varStatus="status">"${child.id}"${not status.last ? ', ' : ''}</c:forEach>], ruleChilds = $("#${element.id} .rule-childs");
-                if ($(this).val().search("${element.expression}") !== -1) {
+                if (($(this).is(':checkbox') && $(this).is(':checked'))) {
+                    if (ruleChilds.html().trim() === "") {
+                        ruleData.getRuleChild(childIds, 0, ruleChilds);
+                    }
+                }
+                else if (!$(this).is(':checkbox') && $(this).val().search("${element.expression}") !== -1) {
                     if (ruleChilds.html().trim() === "") {
                         ruleData.getRuleChild(childIds, 0, ruleChilds);
                     }

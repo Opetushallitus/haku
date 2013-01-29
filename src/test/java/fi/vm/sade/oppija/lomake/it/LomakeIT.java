@@ -43,7 +43,7 @@ public class LomakeIT extends AbstractSeleniumBase {
         FormModel model = this.model;
         initModel(model);
     }
-    
+
     @Test
     public void submitApplication() throws Exception {
         WebDriver driver = seleniumHelper.getDriver();
@@ -58,7 +58,7 @@ public class LomakeIT extends AbstractSeleniumBase {
         selenium.typeKeys("Henkilotunnus", "150520-111E");
         selenium.typeKeys("Sähköposti", "aku.ankka@ankkalinna.al");
         selenium.typeKeys("matkapuhelinnumero", "0501000100");
-        
+
         driver.findElement(new By.ByClassName("right")).click();
 
         driver.findElement(new By.ByClassName("notification"));
@@ -79,10 +79,10 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(new By.ById("millatutkinnolla_tutkinto1")).click();
         driver.findElement(new By.ById("peruskoulu2012_kylla")).click();
 
-        driver.findElement(new By.ById("suorittanut_suorittanut1")).click();
-        driver.findElement(new By.ById("suorittanut_suorittanut2")).click();
-        driver.findElement(new By.ById("suorittanut_suorittanut3")).click();
-        driver.findElement(new By.ById("suorittanut_suorittanut4")).click();
+        driver.findElement(new By.ById("suorittanut1")).click();
+        driver.findElement(new By.ById("suorittanut2")).click();
+        driver.findElement(new By.ById("suorittanut3")).click();
+        driver.findElement(new By.ById("suorittanut4")).click();
 
         driver.findElement(new By.ById("osallistunut_ei")).click();
 
@@ -100,7 +100,9 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(new By.ByClassName("right")).click();
 
         selenium.typeKeys("tyokokemuskuukaudet", "10");
-        clickAllCheckboxies(driver);
+        clickAllElements(driver, "//input[@type='checkbox']");
+
+        selenium.typeKeys("lupa1_email", "aiti@koti.fi");
         driver.findElement(new By.ById("asiointikieli_suomi")).click();
 
         driver.findElement(new By.ByClassName("right")).click();
@@ -134,8 +136,8 @@ public class LomakeIT extends AbstractSeleniumBase {
         }
     }
 
-    private void clickAllCheckboxies(final WebDriver driver) {
-        List<WebElement> elements = driver.findElements(new By.ByXPath("//checkbox"));
+    private void clickAllElements(final WebDriver driver, final String xpath) {
+        List<WebElement> elements = driver.findElements(new By.ByXPath(xpath));
         for (WebElement element : elements) {
             element.click();
         }

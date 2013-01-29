@@ -1,6 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
-
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -16,19 +15,15 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <tr>
     <td>
         <fieldset class="${styleBaseClass}">
-            <haku:i18nText value="${element.i18nText}"/>
-            <c:forEach var="option" items="${element.options}">
-                <div class="field-container-checkbox">
-                    <input type="checkbox" name="${option.id}" disabled="true"
-                           value="${option.value}" ${(categoryData[option.id] eq option.value) ? "checked=\"checked\"" : ""}/>
-                    <label for="${option.id}"><haku:i18nText value="${option.i18nText}"/></label>
-                </div>
-            </c:forEach>
+            <div class="field-container-checkbox">
+                <input type="checkbox" name="${element.id}"
+                       disabled="true" ${(categoryData[element.id] eq "on") ? "checked=\"checked\"" : ""}/>
+                <label for="${element.id}"><haku:i18nText value="${element.i18nText}"/></label>
+            </div>
         </fieldset>
     </td>
 </tr>

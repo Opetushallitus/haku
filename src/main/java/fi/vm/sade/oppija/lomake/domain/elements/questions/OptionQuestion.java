@@ -40,14 +40,17 @@ public abstract class OptionQuestion extends Question {
         }
     }
 
-    public void addOption(final String id, final I18nText i18nText, final String value) {
-        this.options.add(new Option(this.getId() + ID_DELIMITER + id, i18nText, value));
+    public Option addOption(final String id, final I18nText i18nText, final String value) {
+        Option option = new Option(this.getId() + ID_DELIMITER + id, i18nText, value);
+        this.options.add(option);
+        return option;
     }
 
-    public void addOption(final String id, final I18nText i18nText, final String value, final String help) {
-        Option opt = new Option(this.getId() + ID_DELIMITER + id, i18nText, value);
-        opt.setHelp(help);
-        this.options.add(opt);
+    public Option addOption(final String id, final I18nText i18nText, final String value, final String help) {
+        Option option = new Option(this.getId() + ID_DELIMITER + id, i18nText, value);
+        option.setHelp(help);
+        this.options.add(option);
+        return option;
     }
 
     public List<Option> getOptions() {

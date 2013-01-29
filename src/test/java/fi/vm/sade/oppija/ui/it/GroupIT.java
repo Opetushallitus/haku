@@ -20,8 +20,8 @@ import fi.vm.sade.oppija.common.it.AbstractFormTest;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
+import fi.vm.sade.oppija.lomake.domain.elements.Group;
 import fi.vm.sade.oppija.lomake.domain.elements.Text;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import net.sourceforge.jwebunit.api.IElement;
 import org.junit.Before;
@@ -30,46 +30,42 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static net.sourceforge.jwebunit.junit.JWebUnit.*;
+import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
+import static net.sourceforge.jwebunit.junit.JWebUnit.getElementByXPath;
 
-public class CheckBoxIT extends AbstractFormTest {
-    public static final String CHECKBOX_ID = "checkbox";
-    public static final Text TEXT_ELEMENT = new Text("textId", ElementUtil.createI18NText("text"));
+public class GroupIT extends AbstractFormTest {
+    public static final String GROUP_ID = "grpid";
+    public static final Text CHILD_ELEMENT = new Text("textId", ElementUtil.createI18NText("text"));
     private FormModelHelper formModelHelper;
-    private CheckBox checkBox;
 
     @Before
     public void init() throws IOException {
-        checkBox = new CheckBox(CHECKBOX_ID, createI18NText("foo"));
-        checkBox.addChild(TEXT_ELEMENT);
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox);
+        Group group = new Group(GROUP_ID, createI18NText("foo"));
+        group.addChild(CHILD_ELEMENT);
+        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(group);
         this.formModelHelper = initModel(formModel);
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);
     }
 
     @Test
-    public void testInputType() throws IOException {
-        final IElement elementById = getElementById(CHECKBOX_ID);
-        assertEquals("checkbox", elementById.getAttribute("type"));
+    public void testFieldSet() throws IOException {
+        locateElementByXPath("//fieldset[@class='form-item']");
     }
 
     @Test
-    public void testCheckboxFieldContainer() throws IOException {
-        final IElement elementByXPath = getElementByXPath("//div[@class='field-container-checkbox']");
-        assertNotNull("Xpath //div[@class='field-container-checkbox'] not found", elementByXPath);
+    public void testLegend() throws Exception {
+        locateElementByXPath("//legend[@class='form-item-label']");
     }
 
     @Test
-    public void testCheckboxDivClear() throws IOException {
-        final IElement elementByXPath = getElementByXPath("//div[@class='clear']");
-        assertNotNull("Xpath //div[@class='clear'] not found", elementByXPath);
+    public void testContainerDiv() throws Exception {
+        locateElementByXPath("//div[@class='form-item-content']");
     }
 
-    @Test
-    public void testChild() throws Exception {
-        assertNotNull("Unable to locate element with id \"textId", getElementById(TEXT_ELEMENT.getId()));
+    private void locateElementByXPath(final String xpath) {
+        final IElement elementById = getElementByXPath(xpath);
+        assertNotNull("Unable to locate element by xpath " + xpath, elementById);
     }
 }

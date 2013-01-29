@@ -16,33 +16,31 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements;
 
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import org.junit.Before;
+import org.junit.Test;
 
-import fi.vm.sade.oppija.lomake.domain.I18nText;
-import org.codehaus.jackson.annotate.JsonProperty;
+import static org.junit.Assert.assertEquals;
 
-public abstract class Titled extends Element {
+public class GroupTest {
 
-    private I18nText i18nText;
+    public static final String ID = "ID";
+    public static final String TITLE = "title";
+    private Group group;
 
-    // verbose help text that is rendered in a separate help window
-    private String verboseHelp;
-
-    public Titled(@JsonProperty(value = "id") final String id,
-                  @JsonProperty(value = "i18nText") final I18nText i18nText) {
-        super(id);
-        this.i18nText = i18nText;
+    @Before
+    public void setUp() throws Exception {
+        group = new Group(ID, ElementUtil.createI18NText(TITLE));
     }
 
-
-    public I18nText getI18nText() {
-        return i18nText;
+    @Test
+    public void testId() throws Exception {
+        assertEquals(ID, group.getId());
     }
 
-    public String getVerboseHelp() {
-        return verboseHelp;
-    }
-
-    public void setVerboseHelp(String verboseHelp) {
-        this.verboseHelp = verboseHelp;
+    @Test
+    public void testTitle() throws Exception {
+        // TODO group(Titled) paljastaa liikaa sisäistä rakennetta.
+        assertEquals(TITLE, group.getI18nText().getTranslations().get("fi"));
     }
 }
