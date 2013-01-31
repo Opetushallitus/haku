@@ -386,7 +386,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         TextQuestion tyokokemuskuukaudet = new TextQuestion("tyokokemuskuukaudet", createI18NText("Työkokemus kuukausina"));
         tyokokemuskuukaudet.setHelp("Merkitse kenttään hakuajan päättymiseen mennessä kertynyt työkokemuksesi. Voit käyttää laskemiseen apuna laskuria.");
         tyokokemuskuukaudet.addAttribute("placeholder", "kuukautta");
-        tyokokemuskuukaudet.addAttribute("pattern", "[0-9]*");
+        tyokokemuskuukaudet.addAttribute("pattern", "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$");
         tyokokemuskuukaudet.addAttribute("size", "8");
         tyokokemuskuukaudet.setVerboseHelp(getVerboseHelp());
         tyokokemus.addChild(tyokokemuskuukaudet);

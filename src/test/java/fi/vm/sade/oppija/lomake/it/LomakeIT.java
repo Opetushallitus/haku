@@ -97,13 +97,19 @@ public class LomakeIT extends AbstractSeleniumBase {
 
         driver.findElement(new By.ByClassName("right")).click();
 
-        selenium.typeKeys("tyokokemuskuukaudet", "10");
+        selenium.typeKeys("tyokokemuskuukaudet", "1001");
         clickAllElements(driver, "//input[@type='checkbox']");
 
         selenium.typeKeys("lupa1_email", "aiti@koti.fi");
         driver.findElement(new By.ById("asiointikieli_suomi")).click();
 
         driver.findElement(new By.ByClassName("right")).click();
+
+        // HAK-20.
+        driver.findElement(new By.ById("tyokokemuskuukaudet"));
+        selenium.typeKeys("tyokokemuskuukaudet", "\b\b\b\b2"); // \b is backspace
+        driver.findElement(new By.ByClassName("right")).click();
+
         driver.findElement(new By.ByClassName("right")).click();
         String oid = driver.findElement(new By.ByClassName("number")).getText();
         assertTrue(oid.startsWith("1.2.3.4.5"));

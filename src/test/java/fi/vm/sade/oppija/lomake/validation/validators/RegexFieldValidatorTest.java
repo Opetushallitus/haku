@@ -31,6 +31,7 @@ public class RegexFieldValidatorTest {
     public static final String ERROR_MESSAGE = "kenttä on virheellinen";
     public static final String FIELD_NAME = "kenttä";
     public static final String PATTERN = "[A-Za-z]{3}";
+    public static final String PATTERN_WORK_EXPERIENCE = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$"; // 0-1000
     public static final String TEST_VALUE = "ABC";
 
     private Map<String, String> values;
@@ -70,10 +71,61 @@ public class RegexFieldValidatorTest {
         createValidator(null);
     }
 
+    @Test
+    public void testValidateWorkExperience_negative() throws Exception {
+        ValidationResult validationResult = validateWorkExperience("-1");
+        assertTrue(validationResult.hasErrors());
+    }
+
+    @Test
+    public void testValidateValidWorkExperiencies() throws Exception {
+        ValidationResult validationResult;
+        for (int i = 0; i <= 1000; i++) {
+            validationResult = validateWorkExperience(String.valueOf(i));
+            assertFalse(validationResult.hasErrors());
+        }
+    }
+
+    @Test
+    public void testValidateWorkExperienceUpperLimit() throws Exception {
+        ValidationResult validationResult = validateWorkExperience("1001");
+        assertTrue(validationResult.hasErrors());
+    }
+
+    @Test
+    public void testValidateWorkExperienceEmpty() throws Exception {
+        ValidationResult validationResult = validateWorkExperience("");
+        assertFalse(validationResult.hasErrors());
+    }
+
+    @Test
+    public void testValidateWorkExperienceSpace() throws Exception {
+        ValidationResult validationResult = validateWorkExperience(" ");
+        assertTrue(validationResult.hasErrors());
+    }
+
+    @Test
+    public void testValidateWorkExperienceSign() throws Exception {
+        ValidationResult validationResult = validateWorkExperience("-");
+        assertTrue(validationResult.hasErrors());
+    }
+
+    @Test
+    public void testValidateWorkExperienceWithoutValue() throws Exception {
+        RegexFieldFieldValidator validator = createValidator(PATTERN_WORK_EXPERIENCE);
+        ValidationResult validationResult = validator.validate(values);
+        assertFalse(validationResult.hasErrors());
+    }
+
+    private ValidationResult validateWorkExperience(final String value) {
+        values.put(FIELD_NAME, value);
+        RegexFieldFieldValidator validator = createValidator(PATTERN_WORK_EXPERIENCE);
+        return validator.validate(values);
+    }
+
 
     private RegexFieldFieldValidator createValidator(final String pattern) {
         return new RegexFieldFieldValidator(FIELD_NAME, ERROR_MESSAGE, pattern);
-
     }
 
 
