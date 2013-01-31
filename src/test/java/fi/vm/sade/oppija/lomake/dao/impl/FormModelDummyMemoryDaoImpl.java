@@ -464,11 +464,12 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         tutkinnonOpetuskieli.setHelp("Merkitse tähän se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellä tasapuolisesti, valitse toinen niistä");
         tutkinnonOpetuskieli.setVerboseHelp(getVerboseHelp());
 
-        CheckBox suorittanut1 = new CheckBox("suorittanut1", createI18NText("Perusopetuksen lisäopetuksen oppimäärä (kymppiluokka)"));
+        CheckBox suorittanut1 = new CheckBox("suorittanut1", createI18NText("Kymppiluokka (perusopetuksen lisäopetuksen oppimäärä, vähintään 1100 tuntia)"));
         CheckBox suorittanut2 = new CheckBox("suorittanut2", createI18NText("Vammaisten valmentava ja kuntouttava opetus ja ohjaus"));
         CheckBox suorittanut3 = new CheckBox("suorittanut3", createI18NText("Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus"));
-        CheckBox suorittanut4 = new CheckBox("suorittanut4", createI18NText("Muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus (talouskoulu)"));
-        CheckBox suorittanut5 = new CheckBox("suorittanut5", createI18NText("Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus (ammattistartti)"));
+        CheckBox suorittanut4 = new CheckBox("suorittanut4", createI18NText("Talouskoulu (muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus)"));
+        CheckBox suorittanut5 = new CheckBox("suorittanut5", createI18NText("Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vähintään 20 tuntia)"));
+        CheckBox suorittanut6 = new CheckBox("suorittanut6", createI18NText("Kansanopiston lukuvuoden mittainen linja ammatilliseen peruskoulutukseen"));
 
         Radio osallistunut = new Radio("osallistunut", createI18NText("Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?"));
         osallistunut.addOption("ei", createI18NText("En"), "Ei");
@@ -486,6 +487,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         relatedQuestionRule.addChild(suorittanut3);
         relatedQuestionRule.addChild(suorittanut4);
         relatedQuestionRule.addChild(suorittanut5);
+        relatedQuestionRule.addChild(suorittanut6);
         millatutkinnolla.addChild(relatedQuestionRule);
 
         koulutustaustaRyhmä.addChild(millatutkinnolla);
