@@ -50,6 +50,7 @@ public class SeleniumHelper {
     }
 
     public void close() {
+        driver.quit();
         driver.close();
     }
 
