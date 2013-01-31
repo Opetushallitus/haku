@@ -153,7 +153,8 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         kutsumanimi.setInline(true);
 
         TextQuestion email = new TextQuestion("Sähköposti", createI18NText("Sähköpostiosoite"));
-        email.addAttribute("size", "40");
+        email.addAttribute("size", "50");
+        email.addAttribute("pattern", "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$");
         email.setHelp("Kirjoita tähän sähköpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.");
         email.setVerboseHelp(getVerboseHelp());
         email.setInline(true);

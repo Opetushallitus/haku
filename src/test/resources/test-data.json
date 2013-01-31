@@ -2,14 +2,14 @@
   "applicationPerioidMap": {
     "Yhteishaku": {
       "id": "Yhteishaku",
-      "starts": 1359637026165,
-      "end": 1391173026165,
+      "starts": 1359640869728,
+      "end": 1391176869728,
       "forms": {
         "yhteishaku": {
           "type": "Form",
           "id": "yhteishaku",
           "i18nText": {
-            "id": "text_1359637026181",
+            "id": "text_1359640869746",
             "translations": {
               "fi": "Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013",
               "sv": "Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013_sv",
@@ -30,7 +30,7 @@
               "type": "Phase",
               "id": "henkilotiedot",
               "i18nText": {
-                "id": "text_1359637026166",
+                "id": "text_1359640869729",
                 "translations": {
                   "fi": "Henkilötiedot",
                   "sv": "Henkilötiedot_sv",
@@ -52,7 +52,7 @@
                   "type": "Theme",
                   "id": "HenkilotiedotGrp",
                   "i18nText": {
-                    "id": "text_1359637026182",
+                    "id": "text_1359640869747",
                     "translations": {
                       "fi": "Henkilötiedot",
                       "sv": "Henkilötiedot_sv",
@@ -74,7 +74,7 @@
                       "type": "TextQuestion",
                       "id": "Sukunimi",
                       "i18nText": {
-                        "id": "text_1359637026188",
+                        "id": "text_1359640869753",
                         "translations": {
                           "fi": "Sukunimi",
                           "sv": "Sukunimi_sv",
@@ -124,7 +124,7 @@
                       "type": "TextQuestion",
                       "id": "Etunimet",
                       "i18nText": {
-                        "id": "text_1359637026188",
+                        "id": "text_1359640869753",
                         "translations": {
                           "fi": "Etunimet",
                           "sv": "Etunimet_sv",
@@ -174,7 +174,7 @@
                       "type": "TextQuestion",
                       "id": "Kutsumanimi",
                       "i18nText": {
-                        "id": "text_1359637026184",
+                        "id": "text_1359640869748",
                         "translations": {
                           "fi": "Kutsumanimi",
                           "sv": "Kutsumanimi_sv",
@@ -230,7 +230,7 @@
                       "type": "DropdownSelect",
                       "id": "kansalaisuus",
                       "i18nText": {
-                        "id": "text_1359637026184",
+                        "id": "text_1359640869748",
                         "translations": {
                           "fi": "Kansalaisuus",
                           "sv": "Kansalaisuus_sv",
@@ -276,7 +276,7 @@
                           "type": "Option",
                           "id": "kansalaisuus_fi",
                           "i18nText": {
-                            "id": "text_1359637026184",
+                            "id": "text_1359640869748",
                             "translations": {
                               "fi": "Suomi",
                               "sv": "Suomi_sv",
@@ -306,7 +306,7 @@
                           "type": "Option",
                           "id": "kansalaisuus_sv",
                           "i18nText": {
-                            "id": "text_1359637026184",
+                            "id": "text_1359640869748",
                             "translations": {
                               "fi": "Ruotsi",
                               "sv": "Ruotsi_sv",
@@ -338,7 +338,7 @@
                       "type": "SocialSecurityNumber",
                       "id": "ssn_question",
                       "i18nText": {
-                        "id": "text_1359637026184",
+                        "id": "text_1359640869749",
                         "translations": {
                           "fi": "Henkilötunnus",
                           "sv": "Henkilötunnus_sv",
@@ -372,7 +372,7 @@
                         "type": "TextQuestion",
                         "id": "Henkilotunnus",
                         "i18nText": {
-                          "id": "text_1359637026184",
+                          "id": "text_1359640869749",
                           "translations": {
                             "fi": "Henkilötunnus",
                             "sv": "Henkilötunnus_sv",
@@ -438,7 +438,7 @@
                         "type": "Radio",
                         "id": "Sukupuoli",
                         "i18nText": {
-                          "id": "text_1359637026184",
+                          "id": "text_1359640869749",
                           "translations": {
                             "fi": "Sukupuoli",
                             "sv": "Sukupuoli_sv",
@@ -479,7 +479,7 @@
                             "type": "Option",
                             "id": "Sukupuoli_mies",
                             "i18nText": {
-                              "id": "text_1359637026184",
+                              "id": "text_1359640869749",
                               "translations": {
                                 "fi": "Mies",
                                 "sv": "Mies_sv",
@@ -509,7 +509,7 @@
                             "type": "Option",
                             "id": "Sukupuoli_nainen",
                             "i18nText": {
-                              "id": "text_1359637026184",
+                              "id": "text_1359640869749",
                               "translations": {
                                 "fi": "Nainen",
                                 "sv": "Nainen_sv",
@@ -545,7 +545,7 @@
                       "type": "TextQuestion",
                       "id": "Sähköposti",
                       "i18nText": {
-                        "id": "text_1359637026184",
+                        "id": "text_1359640869749",
                         "translations": {
                           "fi": "Sähköpostiosoite",
                           "sv": "Sähköpostiosoite_sv",
@@ -568,6 +568,11 @@
                           "key": "id",
                           "value": "Sähköposti"
                         },
+                        "pattern": {
+                          "type": "Attribute",
+                          "key": "pattern",
+                          "value": "^[a-zA-Z0-9.!#$%\u0026’*+/\u003d?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$"
+                        },
                         "name": {
                           "type": "Attribute",
                           "key": "name",
@@ -581,7 +586,7 @@
                         "size": {
                           "type": "Attribute",
                           "key": "size",
-                          "value": "40"
+                          "value": "50"
                         }
                       },
                       "verboseHelp": " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec dolor quam. Duis sodales placerat scelerisque. Suspendisse porta mauris eu felis malesuada rutrum. Aliquam varius fringilla mi sed luctus. Nam in enim ipsum. Sed lobortis lorem sit amet justo blandit et tempus ante eleifend. Proin egestas, magna et condimentum egestas, arcu mauris tincidunt augue, eget varius diam massa nec nisi. Proin dolor risus, tincidunt non faucibus imperdiet, fringilla quis massa. Curabitur pharetra posuere est, sit amet pulvinar urna facilisis at. Praesent posuere feugiat elit vel porttitor. Integer venenatis, arcu ac suscipit ornare, augue nibh tempus libero, eget molestie turpis massa quis purus. Suspendisse id libero dolor. Ut eget velit augue, eget fringilla erat. Quisque sed neque non arcu elementum vehicula eget at est. Etiam dictum fringilla mi, sit amet sodales tortor facilisis in.\n\nNunc nisl felis, placerat non pellentesque non, dapibus non sem. Nunc et consectetur tellus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla facilisi. Nulla facilisi. Etiam lobortis, justo non eleifend rhoncus, eros felis vestibulum metus, ut ullamcorper neque urna et velit. Duis congue tincidunt urna non consectetur. Phasellus quis ligula et libero convallis eleifend non quis velit. Morbi luctus, ligula sed mollis placerat, nunc justo tempor velit, eget dignissim ante ipsum eu elit. Sed interdum urna in justo eleifend id fringilla mi facilisis. Ut id sapien erat. Aenean urna quam, aliquet nec imperdiet quis, suscipit eu nunc. Vestibulum vitae dolor in sapien auctor hendrerit et et turpis. Ut at diam eu sapien blandit blandit at in lorem.\n\nAenean ornare, mi non rutrum gravida, augue neque pretium leo, in porta justo mauris eget orci. Donec porttitor eleifend aliquam. Cras mattis tincidunt purus, et facilisis risus consequat vitae. Nunc consectetur, odio sit amet rhoncus iaculis, ipsum lectus pharetra lectus, sit amet vestibulum est mi commodo enim. Sed libero sem, iaculis a lobortis non, molestie id arcu. Donec gravida tincidunt ligula quis mattis. Nulla sit amet malesuada sem. Duis porta adipiscing purus iaculis consequat. Aliquam erat volutpat. ",
@@ -591,7 +596,7 @@
                       "type": "TextQuestion",
                       "id": "matkapuhelinnumero",
                       "i18nText": {
-                        "id": "text_1359637026188",
+                        "id": "text_1359640869753",
                         "translations": {
                           "fi": "Matkapuhelinnumero",
                           "sv": "Matkapuhelinnumero_sv",
@@ -652,7 +657,7 @@
                           "type": "TextQuestion",
                           "id": "huoltajanPuhelinnumero",
                           "i18nText": {
-                            "id": "text_1359637026188",
+                            "id": "text_1359640869753",
                             "translations": {
                               "fi": "Huoltajan puhelinnumero",
                               "sv": "Huoltajan puhelinnumero_sv",
@@ -708,7 +713,7 @@
                       "type": "DropdownSelect",
                       "id": "asuinmaa",
                       "i18nText": {
-                        "id": "text_1359637026188",
+                        "id": "text_1359640869753",
                         "translations": {
                           "fi": "Asuinmaa",
                           "sv": "Asuinmaa_sv",
@@ -744,7 +749,7 @@
                               "type": "TextQuestion",
                               "id": "lahiosoite",
                               "i18nText": {
-                                "id": "text_1359637026188",
+                                "id": "text_1359640869753",
                                 "translations": {
                                   "fi": "Lähiosoite",
                                   "sv": "Lähiosoite_sv",
@@ -794,7 +799,7 @@
                               "type": "PostalCode",
                               "id": "Postinumero",
                               "i18nText": {
-                                "id": "text_1359637026187",
+                                "id": "text_1359640869752",
                                 "translations": {
                                   "fi": "Postinumero",
                                   "sv": "Postinumero_sv",
@@ -931,7 +936,7 @@
                               "type": "DropdownSelect",
                               "id": "kotikunta",
                               "i18nText": {
-                                "id": "text_1359637026184",
+                                "id": "text_1359640869748",
                                 "translations": {
                                   "fi": "Kotikunta",
                                   "sv": "Kotikunta_sv",
@@ -977,7 +982,7 @@
                                   "type": "Option",
                                   "id": "kotikunta_jalasjarvi, ",
                                   "i18nText": {
-                                    "id": "text_1359637026184",
+                                    "id": "text_1359640869748",
                                     "translations": {
                                       "fi": "Jalasjärvi",
                                       "sv": "Jalasjärvi_sv",
@@ -1007,7 +1012,7 @@
                                   "type": "Option",
                                   "id": "kotikunta_janakkala",
                                   "i18nText": {
-                                    "id": "text_1359637026184",
+                                    "id": "text_1359640869748",
                                     "translations": {
                                       "fi": "Janakkala",
                                       "sv": "Janakkala_sv",
@@ -1037,7 +1042,7 @@
                                   "type": "Option",
                                   "id": "kotikunta_joensuu",
                                   "i18nText": {
-                                    "id": "text_1359637026184",
+                                    "id": "text_1359640869748",
                                     "translations": {
                                       "fi": "Joensuu",
                                       "sv": "Joensuu_sv",
@@ -1067,7 +1072,7 @@
                                   "type": "Option",
                                   "id": "kotikunta_jokioinen",
                                   "i18nText": {
-                                    "id": "text_1359637026184",
+                                    "id": "text_1359640869748",
                                     "translations": {
                                       "fi": "Jokioinen",
                                       "sv": "Jokioinen_sv",
@@ -1097,7 +1102,7 @@
                                   "type": "Option",
                                   "id": "kotikunta_jomala",
                                   "i18nText": {
-                                    "id": "text_1359637026184",
+                                    "id": "text_1359640869748",
                                     "translations": {
                                       "fi": "Jomala",
                                       "sv": "Jomala_sv",
@@ -1129,7 +1134,7 @@
                               "type": "CheckBox",
                               "id": "ensisijainenOsoite1",
                               "i18nText": {
-                                "id": "text_1359637026188",
+                                "id": "text_1359640869753",
                                 "translations": {
                                   "fi": "Tämä on ensisijainen osoitteeni",
                                   "sv": "Tämä on ensisijainen osoitteeni_sv",
@@ -1189,7 +1194,7 @@
                               "type": "TextArea",
                               "id": "osoite",
                               "i18nText": {
-                                "id": "text_1359637026188",
+                                "id": "text_1359640869753",
                                 "translations": {
                                   "fi": "Osoite",
                                   "sv": "Osoite_sv",
@@ -1303,7 +1308,7 @@
                           "type": "Option",
                           "id": "asuinmaa_fi",
                           "i18nText": {
-                            "id": "text_1359637026188",
+                            "id": "text_1359640869753",
                             "translations": {
                               "fi": "Suomi",
                               "sv": "Suomi_sv",
@@ -1333,7 +1338,7 @@
                           "type": "Option",
                           "id": "asuinmaa_sv",
                           "i18nText": {
-                            "id": "text_1359637026188",
+                            "id": "text_1359640869753",
                             "translations": {
                               "fi": "Ruotsi",
                               "sv": "Ruotsi_sv",
@@ -1365,7 +1370,7 @@
                       "type": "DropdownSelect",
                       "id": "äidinkieli",
                       "i18nText": {
-                        "id": "text_1359637026183",
+                        "id": "text_1359640869748",
                         "translations": {
                           "fi": "Äidinkieli",
                           "sv": "Äidinkieli_sv",
@@ -1411,7 +1416,7 @@
                           "type": "Option",
                           "id": "äidinkieli_suomi",
                           "i18nText": {
-                            "id": "text_1359637026183",
+                            "id": "text_1359640869748",
                             "translations": {
                               "fi": "Suomi",
                               "sv": "Suomi_sv",
@@ -1441,7 +1446,7 @@
                           "type": "Option",
                           "id": "äidinkieli_ruotsi",
                           "i18nText": {
-                            "id": "text_1359637026183",
+                            "id": "text_1359640869748",
                             "translations": {
                               "fi": "Ruotsi",
                               "sv": "Ruotsi_sv",
@@ -1491,7 +1496,7 @@
               "type": "Phase",
               "id": "koulutustausta",
               "i18nText": {
-                "id": "text_1359637026181",
+                "id": "text_1359640869745",
                 "translations": {
                   "fi": "Koulutustausta",
                   "sv": "Koulutustausta_sv",
@@ -1513,7 +1518,7 @@
                   "type": "Theme",
                   "id": "KoulutustaustaGrp",
                   "i18nText": {
-                    "id": "text_1359637026182",
+                    "id": "text_1359640869747",
                     "translations": {
                       "fi": "Koulutustausta",
                       "sv": "Koulutustausta_sv",
@@ -1535,7 +1540,7 @@
                       "type": "Radio",
                       "id": "millatutkinnolla",
                       "i18nText": {
-                        "id": "text_1359637026188",
+                        "id": "text_1359640869754",
                         "translations": {
                           "fi": "Valitse tutkinto, jolla haet koulutukseen",
                           "sv": "Valitse tutkinto, jolla haet koulutukseen_sv",
@@ -1571,7 +1576,7 @@
                               "type": "Radio",
                               "id": "peruskoulu2012",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Saatko peruskoulun päättötodistuksen hakukeväänä 2012?",
                                   "sv": "Saatko peruskoulun päättötodistuksen hakukeväänä 2012?_sv",
@@ -1607,7 +1612,7 @@
                                       "type": "TextQuestion",
                                       "id": "päättötodistusvuosi",
                                       "i18nText": {
-                                        "id": "text_1359637026189",
+                                        "id": "text_1359640869754",
                                         "translations": {
                                           "fi": "Olen saanut päättötodistuksen jo aiemmin, vuonna",
                                           "sv": "Olen saanut päättötodistuksen jo aiemmin, vuonna_sv",
@@ -1703,7 +1708,7 @@
                                   "type": "Option",
                                   "id": "peruskoulu2012_kylla",
                                   "i18nText": {
-                                    "id": "text_1359637026189",
+                                    "id": "text_1359640869754",
                                     "translations": {
                                       "fi": "Kyllä",
                                       "sv": "Kyllä_sv",
@@ -1733,7 +1738,7 @@
                                   "type": "Option",
                                   "id": "peruskoulu2012_ei",
                                   "i18nText": {
-                                    "id": "text_1359637026189",
+                                    "id": "text_1359640869754",
                                     "translations": {
                                       "fi": "En",
                                       "sv": "En_sv",
@@ -1765,7 +1770,7 @@
                               "type": "DropdownSelect",
                               "id": "opetuskieli",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Mikä oli tukintosi opetuskieli",
                                   "sv": "Mikä oli tukintosi opetuskieli_sv",
@@ -1806,7 +1811,7 @@
                                   "type": "Option",
                                   "id": "opetuskieli_suomi",
                                   "i18nText": {
-                                    "id": "text_1359637026189",
+                                    "id": "text_1359640869754",
                                     "translations": {
                                       "fi": "Suomi",
                                       "sv": "Suomi_sv",
@@ -1836,7 +1841,7 @@
                                   "type": "Option",
                                   "id": "opetuskieli_ruotsi",
                                   "i18nText": {
-                                    "id": "text_1359637026189",
+                                    "id": "text_1359640869754",
                                     "translations": {
                                       "fi": "Ruotsi",
                                       "sv": "Ruotsi_sv",
@@ -1868,7 +1873,7 @@
                               "type": "CheckBox",
                               "id": "suorittanut1",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Kymppiluokka (perusopetuksen lisäopetuksen oppimäärä, vähintään 1100 tuntia)",
                                   "sv": "Kymppiluokka (perusopetuksen lisäopetuksen oppimäärä, vähintään 1100 tuntia)_sv",
@@ -1903,7 +1908,7 @@
                               "type": "CheckBox",
                               "id": "suorittanut2",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Vammaisten valmentava ja kuntouttava opetus ja ohjaus",
                                   "sv": "Vammaisten valmentava ja kuntouttava opetus ja ohjaus_sv",
@@ -1938,7 +1943,7 @@
                               "type": "CheckBox",
                               "id": "suorittanut3",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus",
                                   "sv": "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus_sv",
@@ -1973,7 +1978,7 @@
                               "type": "CheckBox",
                               "id": "suorittanut4",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus)",
                                   "sv": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus)_sv",
@@ -2008,7 +2013,7 @@
                               "type": "CheckBox",
                               "id": "suorittanut5",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vähintään 20 tuntia)",
                                   "sv": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vähintään 20 tuntia)_sv",
@@ -2043,7 +2048,7 @@
                               "type": "CheckBox",
                               "id": "suorittanut6",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Kansanopiston lukuvuoden mittainen linja ammatilliseen peruskoulutukseen",
                                   "sv": "Kansanopiston lukuvuoden mittainen linja ammatilliseen peruskoulutukseen_sv",
@@ -2109,7 +2114,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto1",
                           "i18nText": {
-                            "id": "text_1359637026188",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Perusopetuksen oppimäärä",
                               "sv": "Perusopetuksen oppimäärä_sv",
@@ -2139,7 +2144,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto2",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Perusopetuksen erityisopetuksen osittain yksilöllistetty oppimäärä",
                               "sv": "Perusopetuksen erityisopetuksen osittain yksilöllistetty oppimäärä_sv",
@@ -2169,7 +2174,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto3",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Perusopetuksen erityisopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain",
                               "sv": "Perusopetuksen erityisopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain_sv",
@@ -2199,7 +2204,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto4",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä",
                               "sv": "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä_sv",
@@ -2229,7 +2234,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto5",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)",
                               "sv": "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)_sv",
@@ -2259,7 +2264,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto6",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Lukion päättötodistus, ylioppilastutkinto tai abiturientti",
                               "sv": "Lukion päättötodistus, ylioppilastutkinto tai abiturientti_sv",
@@ -2289,7 +2294,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto7",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Ulkomailla suoritettu koulutus",
                               "sv": "Ulkomailla suoritettu koulutus_sv",
@@ -2321,7 +2326,7 @@
                       "type": "Radio",
                       "id": "osallistunut",
                       "i18nText": {
-                        "id": "text_1359637026189",
+                        "id": "text_1359640869754",
                         "translations": {
                           "fi": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?",
                           "sv": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?_sv",
@@ -2362,7 +2367,7 @@
                           "type": "Option",
                           "id": "osallistunut_ei",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "En",
                               "sv": "En_sv",
@@ -2392,7 +2397,7 @@
                           "type": "Option",
                           "id": "osallistunut_kylla",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Kyllä",
                               "sv": "Kyllä_sv",
@@ -2442,7 +2447,7 @@
               "type": "Phase",
               "id": "hakutoiveet",
               "i18nText": {
-                "id": "text_1359637026181",
+                "id": "text_1359640869745",
                 "translations": {
                   "fi": "Hakutoiveet",
                   "sv": "Hakutoiveet_sv",
@@ -2464,7 +2469,7 @@
                   "type": "Theme",
                   "id": "hakutoiveetGrp",
                   "i18nText": {
-                    "id": "text_1359637026183",
+                    "id": "text_1359640869747",
                     "translations": {
                       "fi": "Hakutoiveet",
                       "sv": "Hakutoiveet_sv",
@@ -2477,7 +2482,7 @@
                         "type": "Radio",
                         "id": "776_additional_question_1",
                         "i18nText": {
-                          "id": "text_1359637026182",
+                          "id": "text_1359640869746",
                           "translations": {
                             "fi": "Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?",
                             "sv": "Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?_sv",
@@ -2512,7 +2517,7 @@
                             "type": "Option",
                             "id": "776_additional_question_1_776_q1_option_1",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869746",
                               "translations": {
                                 "fi": "Ei",
                                 "sv": "Ei_sv",
@@ -2542,7 +2547,7 @@
                             "type": "Option",
                             "id": "776_additional_question_1_776_q1_option_2",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869747",
                               "translations": {
                                 "fi": "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi",
                                 "sv": "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi_sv",
@@ -2574,7 +2579,7 @@
                         "type": "Radio",
                         "id": "776_additional_question_2",
                         "i18nText": {
-                          "id": "text_1359637026182",
+                          "id": "text_1359640869747",
                           "translations": {
                             "fi": "Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?",
                             "sv": "Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?_sv",
@@ -2609,7 +2614,7 @@
                             "type": "Option",
                             "id": "776_additional_question_2_776_q2_option_1",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869747",
                               "translations": {
                                 "fi": "Ei",
                                 "sv": "Ei_sv",
@@ -2639,7 +2644,7 @@
                             "type": "Option",
                             "id": "776_additional_question_2_776_q2_option_2",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869747",
                               "translations": {
                                 "fi": "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi",
                                 "sv": "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi_sv",
@@ -2671,7 +2676,7 @@
                         "type": "Radio",
                         "id": "776_additional_question_3",
                         "i18nText": {
-                          "id": "text_1359637026182",
+                          "id": "text_1359640869747",
                           "translations": {
                             "fi": "Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?",
                             "sv": "Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?_sv",
@@ -2706,7 +2711,7 @@
                             "type": "Option",
                             "id": "776_additional_question_3_776_q3_option_1",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869747",
                               "translations": {
                                 "fi": "En, en ole osallistunut pääsykokeeseen",
                                 "sv": "En, en ole osallistunut pääsykokeeseen_sv",
@@ -2736,7 +2741,7 @@
                             "type": "Option",
                             "id": "776_additional_question_3_776_q3_option_2",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869747",
                               "translations": {
                                 "fi": "Ei, en halua käyttää tuloksia",
                                 "sv": "Ei, en halua käyttää tuloksia_sv",
@@ -2766,7 +2771,7 @@
                             "type": "Option",
                             "id": "776_additional_question_3_776_q3_option_3",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869747",
                               "translations": {
                                 "fi": "Kyllä, haluan käyttää pääsykoetuloksia",
                                 "sv": "Kyllä, haluan käyttää pääsykoetuloksia_sv",
@@ -2810,7 +2815,7 @@
                       "type": "PreferenceTable",
                       "id": "preferencelist",
                       "i18nText": {
-                        "id": "text_1359637026189",
+                        "id": "text_1359640869755",
                         "translations": {
                           "fi": "Hakutoiveet",
                           "sv": "Hakutoiveet_sv",
@@ -2833,7 +2838,7 @@
                           "type": "PreferenceRow",
                           "id": "preference1",
                           "i18nText": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Hakutoive 1",
                               "sv": "Hakutoive 1_sv",
@@ -2841,7 +2846,7 @@
                             }
                           },
                           "resetLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Tyhjennä",
                               "sv": "Tyhjennä_sv",
@@ -2849,7 +2854,7 @@
                             }
                           },
                           "educationLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Koulutus",
                               "sv": "Koulutus_sv",
@@ -2857,7 +2862,7 @@
                             }
                           },
                           "learningInstitutionLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Opetuspiste",
                               "sv": "Opetuspiste_sv",
@@ -2900,7 +2905,7 @@
                           "type": "PreferenceRow",
                           "id": "preference2",
                           "i18nText": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Hakutoive 2",
                               "sv": "Hakutoive 2_sv",
@@ -2908,7 +2913,7 @@
                             }
                           },
                           "resetLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Tyhjennä",
                               "sv": "Tyhjennä_sv",
@@ -2916,7 +2921,7 @@
                             }
                           },
                           "educationLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Koulutus",
                               "sv": "Koulutus_sv",
@@ -2924,7 +2929,7 @@
                             }
                           },
                           "learningInstitutionLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Opetuspiste",
                               "sv": "Opetuspiste_sv",
@@ -2962,7 +2967,7 @@
                           "type": "PreferenceRow",
                           "id": "preference3",
                           "i18nText": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Hakutoive 3",
                               "sv": "Hakutoive 3_sv",
@@ -2970,7 +2975,7 @@
                             }
                           },
                           "resetLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Tyhjennä",
                               "sv": "Tyhjennä_sv",
@@ -2978,7 +2983,7 @@
                             }
                           },
                           "educationLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Koulutus",
                               "sv": "Koulutus_sv",
@@ -2986,7 +2991,7 @@
                             }
                           },
                           "learningInstitutionLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Opetuspiste",
                               "sv": "Opetuspiste_sv",
@@ -3024,7 +3029,7 @@
                           "type": "PreferenceRow",
                           "id": "preference4",
                           "i18nText": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Hakutoive 4",
                               "sv": "Hakutoive 4_sv",
@@ -3032,7 +3037,7 @@
                             }
                           },
                           "resetLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Tyhjennä",
                               "sv": "Tyhjennä_sv",
@@ -3040,7 +3045,7 @@
                             }
                           },
                           "educationLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Koulutus",
                               "sv": "Koulutus_sv",
@@ -3048,7 +3053,7 @@
                             }
                           },
                           "learningInstitutionLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Opetuspiste",
                               "sv": "Opetuspiste_sv",
@@ -3086,7 +3091,7 @@
                           "type": "PreferenceRow",
                           "id": "preference5",
                           "i18nText": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Hakutoive 5",
                               "sv": "Hakutoive 5_sv",
@@ -3094,7 +3099,7 @@
                             }
                           },
                           "resetLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Tyhjennä",
                               "sv": "Tyhjennä_sv",
@@ -3102,7 +3107,7 @@
                             }
                           },
                           "educationLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Koulutus",
                               "sv": "Koulutus_sv",
@@ -3110,7 +3115,7 @@
                             }
                           },
                           "learningInstitutionLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Opetuspiste",
                               "sv": "Opetuspiste_sv",
@@ -3176,7 +3181,7 @@
               "type": "Phase",
               "id": "arvosanat",
               "i18nText": {
-                "id": "text_1359637026181",
+                "id": "text_1359640869745",
                 "translations": {
                   "fi": "Arvosanat",
                   "sv": "Arvosanat_sv",
@@ -3198,7 +3203,7 @@
                   "type": "Theme",
                   "id": "arvosanatGrp",
                   "i18nText": {
-                    "id": "text_1359637026183",
+                    "id": "text_1359640869748",
                     "translations": {
                       "fi": "Arvosanat",
                       "sv": "Arvosanat_sv",
@@ -3211,7 +3216,7 @@
                         "type": "SubjectRow",
                         "id": "tietotekniikka",
                         "i18nText": {
-                          "id": "text_1359637026182",
+                          "id": "text_1359640869746",
                           "translations": {
                             "fi": "Tietotekniikka",
                             "sv": "Tietotekniikka_sv",
@@ -3246,7 +3251,7 @@
                         "type": "SubjectRow",
                         "id": "kansantaloustiede",
                         "i18nText": {
-                          "id": "text_1359637026182",
+                          "id": "text_1359640869746",
                           "translations": {
                             "fi": "Kansantaloustiede",
                             "sv": "Kansantaloustiede_sv",
@@ -3308,7 +3313,7 @@
                           "type": "GradeGrid",
                           "id": "gradegrid",
                           "i18nText": {
-                            "id": "text_1359637026191",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Arvosanat",
                               "sv": "Arvosanat_sv",
@@ -3321,7 +3326,7 @@
                               "type": "SubjectRow",
                               "id": "subject_finnish",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "Äidinkieli ja kirjallisuus",
                                   "sv": "Äidinkieli ja kirjallisuus_sv",
@@ -3358,7 +3363,7 @@
                               "type": "LanguageRow",
                               "id": "lang_a1",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "A1-kieli",
                                   "sv": "A1-kieli_sv",
@@ -3393,7 +3398,7 @@
                               "type": "LanguageRow",
                               "id": "lang_b1",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "B1-kieli",
                                   "sv": "B1-kieli_sv",
@@ -3430,7 +3435,7 @@
                               "type": "SubjectRow",
                               "id": "subject_matematiikka",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Matematiikka",
                                   "sv": "Matematiikka_sv",
@@ -3465,7 +3470,7 @@
                               "type": "SubjectRow",
                               "id": "subject_biologia",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Biologia",
                                   "sv": "Biologia_sv",
@@ -3500,7 +3505,7 @@
                               "type": "SubjectRow",
                               "id": "subject_maantieto",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Maantieto",
                                   "sv": "Maantieto_sv",
@@ -3535,7 +3540,7 @@
                               "type": "SubjectRow",
                               "id": "subject_fysiikka",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Fysiikka",
                                   "sv": "Fysiikka_sv",
@@ -3570,7 +3575,7 @@
                               "type": "SubjectRow",
                               "id": "subject_kemia",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Kemia",
                                   "sv": "Kemia_sv",
@@ -3605,7 +3610,7 @@
                               "type": "SubjectRow",
                               "id": "subject_terveystieto",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Terveystieto",
                                   "sv": "Terveystieto_sv",
@@ -3640,7 +3645,7 @@
                               "type": "SubjectRow",
                               "id": "subject_uskonto",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Uskonto tai elämänkatsomustieto",
                                   "sv": "Uskonto tai elämänkatsomustieto_sv",
@@ -3675,7 +3680,7 @@
                               "type": "SubjectRow",
                               "id": "subject_historia",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Historia",
                                   "sv": "Historia_sv",
@@ -3710,7 +3715,7 @@
                               "type": "SubjectRow",
                               "id": "subject_yhteiskuntaoppi",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Yhteiskuntaoppi",
                                   "sv": "Yhteiskuntaoppi_sv",
@@ -3745,7 +3750,7 @@
                               "type": "SubjectRow",
                               "id": "subject_musiikki",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Musiikki",
                                   "sv": "Musiikki_sv",
@@ -3780,7 +3785,7 @@
                               "type": "SubjectRow",
                               "id": "subject_kuvataide",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Kuvataide",
                                   "sv": "Kuvataide_sv",
@@ -3815,7 +3820,7 @@
                               "type": "SubjectRow",
                               "id": "subject_kasityo",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Käsityö",
                                   "sv": "Käsityö_sv",
@@ -3850,7 +3855,7 @@
                               "type": "SubjectRow",
                               "id": "subject_liikunta",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Liikunta",
                                   "sv": "Liikunta_sv",
@@ -3885,7 +3890,7 @@
                               "type": "SubjectRow",
                               "id": "subject_kotitalous",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Kotitalous",
                                   "sv": "Kotitalous_sv",
@@ -3922,7 +3927,7 @@
                               "type": "Option",
                               "id": "scopeoption_a1",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "A1",
                                   "sv": "A1_sv",
@@ -3952,7 +3957,7 @@
                               "type": "Option",
                               "id": "scopeoption_a2",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "A2",
                                   "sv": "A2_sv",
@@ -3982,7 +3987,7 @@
                               "type": "Option",
                               "id": "scopeoption_b1",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "B1",
                                   "sv": "B1_sv",
@@ -4012,7 +4017,7 @@
                               "type": "Option",
                               "id": "scopeoption_b2",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "B2",
                                   "sv": "B2_sv",
@@ -4042,7 +4047,7 @@
                               "type": "Option",
                               "id": "scopeoption_b3",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869757",
                                 "translations": {
                                   "fi": "B3",
                                   "sv": "B3_sv",
@@ -4074,7 +4079,7 @@
                               "type": "Option",
                               "id": "langoption_eng",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "englanti",
                                   "sv": "englanti_sv",
@@ -4104,7 +4109,7 @@
                               "type": "Option",
                               "id": "langoption_swe",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "ruotsi",
                                   "sv": "ruotsi_sv",
@@ -4134,7 +4139,7 @@
                               "type": "Option",
                               "id": "langoption_fra",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "ranska",
                                   "sv": "ranska_sv",
@@ -4164,7 +4169,7 @@
                               "type": "Option",
                               "id": "langoption_ger",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "saksa",
                                   "sv": "saksa_sv",
@@ -4194,7 +4199,7 @@
                               "type": "Option",
                               "id": "langoption_rus",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "venäjä",
                                   "sv": "venäjä_sv",
@@ -4224,7 +4229,7 @@
                               "type": "Option",
                               "id": "langoption_fin",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "suomi",
                                   "sv": "suomi_sv",
@@ -4256,7 +4261,7 @@
                               "type": "Option",
                               "id": "grade_nograde",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "Ei arvosanaa",
                                   "sv": "Ei arvosanaa_sv",
@@ -4286,7 +4291,7 @@
                               "type": "Option",
                               "id": "grade_10",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "10",
                                   "sv": "10_sv",
@@ -4316,7 +4321,7 @@
                               "type": "Option",
                               "id": "grade_9",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "9",
                                   "sv": "9_sv",
@@ -4346,7 +4351,7 @@
                               "type": "Option",
                               "id": "grade_8",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "8",
                                   "sv": "8_sv",
@@ -4376,7 +4381,7 @@
                               "type": "Option",
                               "id": "grade_7",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "7",
                                   "sv": "7_sv",
@@ -4406,7 +4411,7 @@
                               "type": "Option",
                               "id": "grade_6",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "6",
                                   "sv": "6_sv",
@@ -4436,7 +4441,7 @@
                               "type": "Option",
                               "id": "grade_5",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "5",
                                   "sv": "5_sv",
@@ -4466,7 +4471,7 @@
                               "type": "Option",
                               "id": "grade_4",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "4",
                                   "sv": "4_sv",
@@ -4541,7 +4546,7 @@
                           "type": "Text",
                           "id": "nogradegrid",
                           "i18nText": {
-                            "id": "text_1359637026191",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Sinulta ei kysytä arvosanoja.",
                               "sv": "Sinulta ei kysytä arvosanoja._sv",
@@ -4598,7 +4603,7 @@
               "type": "Phase",
               "id": "lisatiedot",
               "i18nText": {
-                "id": "text_1359637026181",
+                "id": "text_1359640869745",
                 "translations": {
                   "fi": "Lisätiedot",
                   "sv": "Lisätiedot_sv",
@@ -4620,7 +4625,7 @@
                   "type": "Theme",
                   "id": "tyokokemusGrp",
                   "i18nText": {
-                    "id": "text_1359637026183",
+                    "id": "text_1359640869748",
                     "translations": {
                       "fi": "Työkokemus",
                       "sv": "Työkokemus_sv",
@@ -4642,7 +4647,7 @@
                       "type": "TextQuestion",
                       "id": "tyokokemuskuukaudet",
                       "i18nText": {
-                        "id": "text_1359637026191",
+                        "id": "text_1359640869757",
                         "translations": {
                           "fi": "Työkokemus kuukausina",
                           "sv": "Työkokemus kuukausina_sv",
@@ -4707,7 +4712,7 @@
                   "type": "Theme",
                   "id": "lupatiedotGrp",
                   "i18nText": {
-                    "id": "text_1359637026183",
+                    "id": "text_1359640869748",
                     "translations": {
                       "fi": "Lupatiedot",
                       "sv": "Lupatiedot_sv",
@@ -4729,7 +4734,7 @@
                       "type": "Group",
                       "id": "permissionCheckboxes",
                       "i18nText": {
-                        "id": "text_1359637026192",
+                        "id": "text_1359640869757",
                         "translations": {
                           "fi": "Ryhmän otsikkotai ohjeteksti",
                           "sv": "Ryhmän otsikkotai ohjeteksti_sv",
@@ -4750,7 +4755,7 @@
                           "type": "CheckBox",
                           "id": "lupa1",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Haluan, että huoltajalleni lähetetään tieto sähköpostilla hakulomakkeen täyttämisestä.",
                               "sv": "Haluan, että huoltajalleni lähetetään tieto sähköpostilla hakulomakkeen täyttämisestä._sv",
@@ -4786,7 +4791,7 @@
                                   "type": "TextQuestion",
                                   "id": "lupa1_email",
                                   "i18nText": {
-                                    "id": "text_1359637026191",
+                                    "id": "text_1359640869757",
                                     "translations": {
                                       "fi": "Sähköpostiosoite",
                                       "sv": "Sähköpostiosoite_sv",
@@ -4862,7 +4867,7 @@
                           "type": "CheckBox",
                           "id": "lupa2",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Minulle saa lähettää postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia.",
                               "sv": "Minulle saa lähettää postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia._sv",
@@ -4897,7 +4902,7 @@
                           "type": "CheckBox",
                           "id": "lupa3",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissä.",
                               "sv": "Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissä._sv",
@@ -4932,7 +4937,7 @@
                           "type": "CheckBox",
                           "id": "lupa4",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Valintaani koskevat tiedot saa lähettää minulle sähköisesti.",
                               "sv": "Valintaani koskevat tiedot saa lähettää minulle sähköisesti._sv",
@@ -4967,7 +4972,7 @@
                           "type": "CheckBox",
                           "id": "lupa5",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Minulle saa lähettää tietoa opiskelijavalinnan etenemisestä ja tuloksista tekstiviestillä.",
                               "sv": "Minulle saa lähettää tietoa opiskelijavalinnan etenemisestä ja tuloksista tekstiviestillä._sv",
@@ -5011,7 +5016,7 @@
                       "type": "Radio",
                       "id": "asiointikieli",
                       "i18nText": {
-                        "id": "text_1359637026192",
+                        "id": "text_1359640869757",
                         "translations": {
                           "fi": "Asiointikieli",
                           "sv": "Asiointikieli_sv",
@@ -5052,7 +5057,7 @@
                           "type": "Option",
                           "id": "asiointikieli_suomi",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Suomi",
                               "sv": "Suomi_sv",
@@ -5082,7 +5087,7 @@
                           "type": "Option",
                           "id": "asiointikieli_ruotsi",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Ruotsi",
                               "sv": "Ruotsi_sv",
@@ -5133,7 +5138,7 @@
               "type": "Phase",
               "id": "esikatselu",
               "i18nText": {
-                "id": "text_1359637026181",
+                "id": "text_1359640869745",
                 "translations": {
                   "fi": "Esikatselu",
                   "sv": "Esikatselu_sv",
@@ -5155,7 +5160,7 @@
                   "type": "Theme",
                   "id": "HenkilotiedotGrp",
                   "i18nText": {
-                    "id": "text_1359637026182",
+                    "id": "text_1359640869747",
                     "translations": {
                       "fi": "Henkilötiedot",
                       "sv": "Henkilötiedot_sv",
@@ -5177,7 +5182,7 @@
                       "type": "TextQuestion",
                       "id": "Sukunimi",
                       "i18nText": {
-                        "id": "text_1359637026188",
+                        "id": "text_1359640869753",
                         "translations": {
                           "fi": "Sukunimi",
                           "sv": "Sukunimi_sv",
@@ -5227,7 +5232,7 @@
                       "type": "TextQuestion",
                       "id": "Etunimet",
                       "i18nText": {
-                        "id": "text_1359637026188",
+                        "id": "text_1359640869753",
                         "translations": {
                           "fi": "Etunimet",
                           "sv": "Etunimet_sv",
@@ -5277,7 +5282,7 @@
                       "type": "TextQuestion",
                       "id": "Kutsumanimi",
                       "i18nText": {
-                        "id": "text_1359637026184",
+                        "id": "text_1359640869748",
                         "translations": {
                           "fi": "Kutsumanimi",
                           "sv": "Kutsumanimi_sv",
@@ -5333,7 +5338,7 @@
                       "type": "DropdownSelect",
                       "id": "kansalaisuus",
                       "i18nText": {
-                        "id": "text_1359637026184",
+                        "id": "text_1359640869748",
                         "translations": {
                           "fi": "Kansalaisuus",
                           "sv": "Kansalaisuus_sv",
@@ -5379,7 +5384,7 @@
                           "type": "Option",
                           "id": "kansalaisuus_fi",
                           "i18nText": {
-                            "id": "text_1359637026184",
+                            "id": "text_1359640869748",
                             "translations": {
                               "fi": "Suomi",
                               "sv": "Suomi_sv",
@@ -5409,7 +5414,7 @@
                           "type": "Option",
                           "id": "kansalaisuus_sv",
                           "i18nText": {
-                            "id": "text_1359637026184",
+                            "id": "text_1359640869748",
                             "translations": {
                               "fi": "Ruotsi",
                               "sv": "Ruotsi_sv",
@@ -5441,7 +5446,7 @@
                       "type": "SocialSecurityNumber",
                       "id": "ssn_question",
                       "i18nText": {
-                        "id": "text_1359637026184",
+                        "id": "text_1359640869749",
                         "translations": {
                           "fi": "Henkilötunnus",
                           "sv": "Henkilötunnus_sv",
@@ -5475,7 +5480,7 @@
                         "type": "TextQuestion",
                         "id": "Henkilotunnus",
                         "i18nText": {
-                          "id": "text_1359637026184",
+                          "id": "text_1359640869749",
                           "translations": {
                             "fi": "Henkilötunnus",
                             "sv": "Henkilötunnus_sv",
@@ -5541,7 +5546,7 @@
                         "type": "Radio",
                         "id": "Sukupuoli",
                         "i18nText": {
-                          "id": "text_1359637026184",
+                          "id": "text_1359640869749",
                           "translations": {
                             "fi": "Sukupuoli",
                             "sv": "Sukupuoli_sv",
@@ -5582,7 +5587,7 @@
                             "type": "Option",
                             "id": "Sukupuoli_mies",
                             "i18nText": {
-                              "id": "text_1359637026184",
+                              "id": "text_1359640869749",
                               "translations": {
                                 "fi": "Mies",
                                 "sv": "Mies_sv",
@@ -5612,7 +5617,7 @@
                             "type": "Option",
                             "id": "Sukupuoli_nainen",
                             "i18nText": {
-                              "id": "text_1359637026184",
+                              "id": "text_1359640869749",
                               "translations": {
                                 "fi": "Nainen",
                                 "sv": "Nainen_sv",
@@ -5648,7 +5653,7 @@
                       "type": "TextQuestion",
                       "id": "Sähköposti",
                       "i18nText": {
-                        "id": "text_1359637026184",
+                        "id": "text_1359640869749",
                         "translations": {
                           "fi": "Sähköpostiosoite",
                           "sv": "Sähköpostiosoite_sv",
@@ -5671,6 +5676,11 @@
                           "key": "id",
                           "value": "Sähköposti"
                         },
+                        "pattern": {
+                          "type": "Attribute",
+                          "key": "pattern",
+                          "value": "^[a-zA-Z0-9.!#$%\u0026’*+/\u003d?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$"
+                        },
                         "name": {
                           "type": "Attribute",
                           "key": "name",
@@ -5684,7 +5694,7 @@
                         "size": {
                           "type": "Attribute",
                           "key": "size",
-                          "value": "40"
+                          "value": "50"
                         }
                       },
                       "verboseHelp": " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec dolor quam. Duis sodales placerat scelerisque. Suspendisse porta mauris eu felis malesuada rutrum. Aliquam varius fringilla mi sed luctus. Nam in enim ipsum. Sed lobortis lorem sit amet justo blandit et tempus ante eleifend. Proin egestas, magna et condimentum egestas, arcu mauris tincidunt augue, eget varius diam massa nec nisi. Proin dolor risus, tincidunt non faucibus imperdiet, fringilla quis massa. Curabitur pharetra posuere est, sit amet pulvinar urna facilisis at. Praesent posuere feugiat elit vel porttitor. Integer venenatis, arcu ac suscipit ornare, augue nibh tempus libero, eget molestie turpis massa quis purus. Suspendisse id libero dolor. Ut eget velit augue, eget fringilla erat. Quisque sed neque non arcu elementum vehicula eget at est. Etiam dictum fringilla mi, sit amet sodales tortor facilisis in.\n\nNunc nisl felis, placerat non pellentesque non, dapibus non sem. Nunc et consectetur tellus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla facilisi. Nulla facilisi. Etiam lobortis, justo non eleifend rhoncus, eros felis vestibulum metus, ut ullamcorper neque urna et velit. Duis congue tincidunt urna non consectetur. Phasellus quis ligula et libero convallis eleifend non quis velit. Morbi luctus, ligula sed mollis placerat, nunc justo tempor velit, eget dignissim ante ipsum eu elit. Sed interdum urna in justo eleifend id fringilla mi facilisis. Ut id sapien erat. Aenean urna quam, aliquet nec imperdiet quis, suscipit eu nunc. Vestibulum vitae dolor in sapien auctor hendrerit et et turpis. Ut at diam eu sapien blandit blandit at in lorem.\n\nAenean ornare, mi non rutrum gravida, augue neque pretium leo, in porta justo mauris eget orci. Donec porttitor eleifend aliquam. Cras mattis tincidunt purus, et facilisis risus consequat vitae. Nunc consectetur, odio sit amet rhoncus iaculis, ipsum lectus pharetra lectus, sit amet vestibulum est mi commodo enim. Sed libero sem, iaculis a lobortis non, molestie id arcu. Donec gravida tincidunt ligula quis mattis. Nulla sit amet malesuada sem. Duis porta adipiscing purus iaculis consequat. Aliquam erat volutpat. ",
@@ -5694,7 +5704,7 @@
                       "type": "TextQuestion",
                       "id": "matkapuhelinnumero",
                       "i18nText": {
-                        "id": "text_1359637026188",
+                        "id": "text_1359640869753",
                         "translations": {
                           "fi": "Matkapuhelinnumero",
                           "sv": "Matkapuhelinnumero_sv",
@@ -5755,7 +5765,7 @@
                           "type": "TextQuestion",
                           "id": "huoltajanPuhelinnumero",
                           "i18nText": {
-                            "id": "text_1359637026188",
+                            "id": "text_1359640869753",
                             "translations": {
                               "fi": "Huoltajan puhelinnumero",
                               "sv": "Huoltajan puhelinnumero_sv",
@@ -5811,7 +5821,7 @@
                       "type": "DropdownSelect",
                       "id": "asuinmaa",
                       "i18nText": {
-                        "id": "text_1359637026188",
+                        "id": "text_1359640869753",
                         "translations": {
                           "fi": "Asuinmaa",
                           "sv": "Asuinmaa_sv",
@@ -5847,7 +5857,7 @@
                               "type": "TextQuestion",
                               "id": "lahiosoite",
                               "i18nText": {
-                                "id": "text_1359637026188",
+                                "id": "text_1359640869753",
                                 "translations": {
                                   "fi": "Lähiosoite",
                                   "sv": "Lähiosoite_sv",
@@ -5897,7 +5907,7 @@
                               "type": "PostalCode",
                               "id": "Postinumero",
                               "i18nText": {
-                                "id": "text_1359637026187",
+                                "id": "text_1359640869752",
                                 "translations": {
                                   "fi": "Postinumero",
                                   "sv": "Postinumero_sv",
@@ -6034,7 +6044,7 @@
                               "type": "DropdownSelect",
                               "id": "kotikunta",
                               "i18nText": {
-                                "id": "text_1359637026184",
+                                "id": "text_1359640869748",
                                 "translations": {
                                   "fi": "Kotikunta",
                                   "sv": "Kotikunta_sv",
@@ -6080,7 +6090,7 @@
                                   "type": "Option",
                                   "id": "kotikunta_jalasjarvi, ",
                                   "i18nText": {
-                                    "id": "text_1359637026184",
+                                    "id": "text_1359640869748",
                                     "translations": {
                                       "fi": "Jalasjärvi",
                                       "sv": "Jalasjärvi_sv",
@@ -6110,7 +6120,7 @@
                                   "type": "Option",
                                   "id": "kotikunta_janakkala",
                                   "i18nText": {
-                                    "id": "text_1359637026184",
+                                    "id": "text_1359640869748",
                                     "translations": {
                                       "fi": "Janakkala",
                                       "sv": "Janakkala_sv",
@@ -6140,7 +6150,7 @@
                                   "type": "Option",
                                   "id": "kotikunta_joensuu",
                                   "i18nText": {
-                                    "id": "text_1359637026184",
+                                    "id": "text_1359640869748",
                                     "translations": {
                                       "fi": "Joensuu",
                                       "sv": "Joensuu_sv",
@@ -6170,7 +6180,7 @@
                                   "type": "Option",
                                   "id": "kotikunta_jokioinen",
                                   "i18nText": {
-                                    "id": "text_1359637026184",
+                                    "id": "text_1359640869748",
                                     "translations": {
                                       "fi": "Jokioinen",
                                       "sv": "Jokioinen_sv",
@@ -6200,7 +6210,7 @@
                                   "type": "Option",
                                   "id": "kotikunta_jomala",
                                   "i18nText": {
-                                    "id": "text_1359637026184",
+                                    "id": "text_1359640869748",
                                     "translations": {
                                       "fi": "Jomala",
                                       "sv": "Jomala_sv",
@@ -6232,7 +6242,7 @@
                               "type": "CheckBox",
                               "id": "ensisijainenOsoite1",
                               "i18nText": {
-                                "id": "text_1359637026188",
+                                "id": "text_1359640869753",
                                 "translations": {
                                   "fi": "Tämä on ensisijainen osoitteeni",
                                   "sv": "Tämä on ensisijainen osoitteeni_sv",
@@ -6292,7 +6302,7 @@
                               "type": "TextArea",
                               "id": "osoite",
                               "i18nText": {
-                                "id": "text_1359637026188",
+                                "id": "text_1359640869753",
                                 "translations": {
                                   "fi": "Osoite",
                                   "sv": "Osoite_sv",
@@ -6406,7 +6416,7 @@
                           "type": "Option",
                           "id": "asuinmaa_fi",
                           "i18nText": {
-                            "id": "text_1359637026188",
+                            "id": "text_1359640869753",
                             "translations": {
                               "fi": "Suomi",
                               "sv": "Suomi_sv",
@@ -6436,7 +6446,7 @@
                           "type": "Option",
                           "id": "asuinmaa_sv",
                           "i18nText": {
-                            "id": "text_1359637026188",
+                            "id": "text_1359640869753",
                             "translations": {
                               "fi": "Ruotsi",
                               "sv": "Ruotsi_sv",
@@ -6468,7 +6478,7 @@
                       "type": "DropdownSelect",
                       "id": "äidinkieli",
                       "i18nText": {
-                        "id": "text_1359637026183",
+                        "id": "text_1359640869748",
                         "translations": {
                           "fi": "Äidinkieli",
                           "sv": "Äidinkieli_sv",
@@ -6514,7 +6524,7 @@
                           "type": "Option",
                           "id": "äidinkieli_suomi",
                           "i18nText": {
-                            "id": "text_1359637026183",
+                            "id": "text_1359640869748",
                             "translations": {
                               "fi": "Suomi",
                               "sv": "Suomi_sv",
@@ -6544,7 +6554,7 @@
                           "type": "Option",
                           "id": "äidinkieli_ruotsi",
                           "i18nText": {
-                            "id": "text_1359637026183",
+                            "id": "text_1359640869748",
                             "translations": {
                               "fi": "Ruotsi",
                               "sv": "Ruotsi_sv",
@@ -6585,7 +6595,7 @@
                   "type": "Theme",
                   "id": "KoulutustaustaGrp",
                   "i18nText": {
-                    "id": "text_1359637026182",
+                    "id": "text_1359640869747",
                     "translations": {
                       "fi": "Koulutustausta",
                       "sv": "Koulutustausta_sv",
@@ -6607,7 +6617,7 @@
                       "type": "Radio",
                       "id": "millatutkinnolla",
                       "i18nText": {
-                        "id": "text_1359637026188",
+                        "id": "text_1359640869754",
                         "translations": {
                           "fi": "Valitse tutkinto, jolla haet koulutukseen",
                           "sv": "Valitse tutkinto, jolla haet koulutukseen_sv",
@@ -6643,7 +6653,7 @@
                               "type": "Radio",
                               "id": "peruskoulu2012",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Saatko peruskoulun päättötodistuksen hakukeväänä 2012?",
                                   "sv": "Saatko peruskoulun päättötodistuksen hakukeväänä 2012?_sv",
@@ -6679,7 +6689,7 @@
                                       "type": "TextQuestion",
                                       "id": "päättötodistusvuosi",
                                       "i18nText": {
-                                        "id": "text_1359637026189",
+                                        "id": "text_1359640869754",
                                         "translations": {
                                           "fi": "Olen saanut päättötodistuksen jo aiemmin, vuonna",
                                           "sv": "Olen saanut päättötodistuksen jo aiemmin, vuonna_sv",
@@ -6775,7 +6785,7 @@
                                   "type": "Option",
                                   "id": "peruskoulu2012_kylla",
                                   "i18nText": {
-                                    "id": "text_1359637026189",
+                                    "id": "text_1359640869754",
                                     "translations": {
                                       "fi": "Kyllä",
                                       "sv": "Kyllä_sv",
@@ -6805,7 +6815,7 @@
                                   "type": "Option",
                                   "id": "peruskoulu2012_ei",
                                   "i18nText": {
-                                    "id": "text_1359637026189",
+                                    "id": "text_1359640869754",
                                     "translations": {
                                       "fi": "En",
                                       "sv": "En_sv",
@@ -6837,7 +6847,7 @@
                               "type": "DropdownSelect",
                               "id": "opetuskieli",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Mikä oli tukintosi opetuskieli",
                                   "sv": "Mikä oli tukintosi opetuskieli_sv",
@@ -6878,7 +6888,7 @@
                                   "type": "Option",
                                   "id": "opetuskieli_suomi",
                                   "i18nText": {
-                                    "id": "text_1359637026189",
+                                    "id": "text_1359640869754",
                                     "translations": {
                                       "fi": "Suomi",
                                       "sv": "Suomi_sv",
@@ -6908,7 +6918,7 @@
                                   "type": "Option",
                                   "id": "opetuskieli_ruotsi",
                                   "i18nText": {
-                                    "id": "text_1359637026189",
+                                    "id": "text_1359640869754",
                                     "translations": {
                                       "fi": "Ruotsi",
                                       "sv": "Ruotsi_sv",
@@ -6940,7 +6950,7 @@
                               "type": "CheckBox",
                               "id": "suorittanut1",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Kymppiluokka (perusopetuksen lisäopetuksen oppimäärä, vähintään 1100 tuntia)",
                                   "sv": "Kymppiluokka (perusopetuksen lisäopetuksen oppimäärä, vähintään 1100 tuntia)_sv",
@@ -6975,7 +6985,7 @@
                               "type": "CheckBox",
                               "id": "suorittanut2",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Vammaisten valmentava ja kuntouttava opetus ja ohjaus",
                                   "sv": "Vammaisten valmentava ja kuntouttava opetus ja ohjaus_sv",
@@ -7010,7 +7020,7 @@
                               "type": "CheckBox",
                               "id": "suorittanut3",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus",
                                   "sv": "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus_sv",
@@ -7045,7 +7055,7 @@
                               "type": "CheckBox",
                               "id": "suorittanut4",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus)",
                                   "sv": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus)_sv",
@@ -7080,7 +7090,7 @@
                               "type": "CheckBox",
                               "id": "suorittanut5",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vähintään 20 tuntia)",
                                   "sv": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vähintään 20 tuntia)_sv",
@@ -7115,7 +7125,7 @@
                               "type": "CheckBox",
                               "id": "suorittanut6",
                               "i18nText": {
-                                "id": "text_1359637026189",
+                                "id": "text_1359640869754",
                                 "translations": {
                                   "fi": "Kansanopiston lukuvuoden mittainen linja ammatilliseen peruskoulutukseen",
                                   "sv": "Kansanopiston lukuvuoden mittainen linja ammatilliseen peruskoulutukseen_sv",
@@ -7181,7 +7191,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto1",
                           "i18nText": {
-                            "id": "text_1359637026188",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Perusopetuksen oppimäärä",
                               "sv": "Perusopetuksen oppimäärä_sv",
@@ -7211,7 +7221,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto2",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Perusopetuksen erityisopetuksen osittain yksilöllistetty oppimäärä",
                               "sv": "Perusopetuksen erityisopetuksen osittain yksilöllistetty oppimäärä_sv",
@@ -7241,7 +7251,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto3",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Perusopetuksen erityisopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain",
                               "sv": "Perusopetuksen erityisopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain_sv",
@@ -7271,7 +7281,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto4",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä",
                               "sv": "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä_sv",
@@ -7301,7 +7311,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto5",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)",
                               "sv": "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)_sv",
@@ -7331,7 +7341,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto6",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Lukion päättötodistus, ylioppilastutkinto tai abiturientti",
                               "sv": "Lukion päättötodistus, ylioppilastutkinto tai abiturientti_sv",
@@ -7361,7 +7371,7 @@
                           "type": "Option",
                           "id": "millatutkinnolla_tutkinto7",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Ulkomailla suoritettu koulutus",
                               "sv": "Ulkomailla suoritettu koulutus_sv",
@@ -7393,7 +7403,7 @@
                       "type": "Radio",
                       "id": "osallistunut",
                       "i18nText": {
-                        "id": "text_1359637026189",
+                        "id": "text_1359640869754",
                         "translations": {
                           "fi": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?",
                           "sv": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?_sv",
@@ -7434,7 +7444,7 @@
                           "type": "Option",
                           "id": "osallistunut_ei",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "En",
                               "sv": "En_sv",
@@ -7464,7 +7474,7 @@
                           "type": "Option",
                           "id": "osallistunut_kylla",
                           "i18nText": {
-                            "id": "text_1359637026189",
+                            "id": "text_1359640869754",
                             "translations": {
                               "fi": "Kyllä",
                               "sv": "Kyllä_sv",
@@ -7505,7 +7515,7 @@
                   "type": "Theme",
                   "id": "hakutoiveetGrp",
                   "i18nText": {
-                    "id": "text_1359637026183",
+                    "id": "text_1359640869747",
                     "translations": {
                       "fi": "Hakutoiveet",
                       "sv": "Hakutoiveet_sv",
@@ -7518,7 +7528,7 @@
                         "type": "Radio",
                         "id": "776_additional_question_1",
                         "i18nText": {
-                          "id": "text_1359637026182",
+                          "id": "text_1359640869746",
                           "translations": {
                             "fi": "Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?",
                             "sv": "Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?_sv",
@@ -7553,7 +7563,7 @@
                             "type": "Option",
                             "id": "776_additional_question_1_776_q1_option_1",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869746",
                               "translations": {
                                 "fi": "Ei",
                                 "sv": "Ei_sv",
@@ -7583,7 +7593,7 @@
                             "type": "Option",
                             "id": "776_additional_question_1_776_q1_option_2",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869747",
                               "translations": {
                                 "fi": "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi",
                                 "sv": "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi_sv",
@@ -7615,7 +7625,7 @@
                         "type": "Radio",
                         "id": "776_additional_question_2",
                         "i18nText": {
-                          "id": "text_1359637026182",
+                          "id": "text_1359640869747",
                           "translations": {
                             "fi": "Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?",
                             "sv": "Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?_sv",
@@ -7650,7 +7660,7 @@
                             "type": "Option",
                             "id": "776_additional_question_2_776_q2_option_1",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869747",
                               "translations": {
                                 "fi": "Ei",
                                 "sv": "Ei_sv",
@@ -7680,7 +7690,7 @@
                             "type": "Option",
                             "id": "776_additional_question_2_776_q2_option_2",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869747",
                               "translations": {
                                 "fi": "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi",
                                 "sv": "Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi_sv",
@@ -7712,7 +7722,7 @@
                         "type": "Radio",
                         "id": "776_additional_question_3",
                         "i18nText": {
-                          "id": "text_1359637026182",
+                          "id": "text_1359640869747",
                           "translations": {
                             "fi": "Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?",
                             "sv": "Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?_sv",
@@ -7747,7 +7757,7 @@
                             "type": "Option",
                             "id": "776_additional_question_3_776_q3_option_1",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869747",
                               "translations": {
                                 "fi": "En, en ole osallistunut pääsykokeeseen",
                                 "sv": "En, en ole osallistunut pääsykokeeseen_sv",
@@ -7777,7 +7787,7 @@
                             "type": "Option",
                             "id": "776_additional_question_3_776_q3_option_2",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869747",
                               "translations": {
                                 "fi": "Ei, en halua käyttää tuloksia",
                                 "sv": "Ei, en halua käyttää tuloksia_sv",
@@ -7807,7 +7817,7 @@
                             "type": "Option",
                             "id": "776_additional_question_3_776_q3_option_3",
                             "i18nText": {
-                              "id": "text_1359637026182",
+                              "id": "text_1359640869747",
                               "translations": {
                                 "fi": "Kyllä, haluan käyttää pääsykoetuloksia",
                                 "sv": "Kyllä, haluan käyttää pääsykoetuloksia_sv",
@@ -7851,7 +7861,7 @@
                       "type": "PreferenceTable",
                       "id": "preferencelist",
                       "i18nText": {
-                        "id": "text_1359637026189",
+                        "id": "text_1359640869755",
                         "translations": {
                           "fi": "Hakutoiveet",
                           "sv": "Hakutoiveet_sv",
@@ -7874,7 +7884,7 @@
                           "type": "PreferenceRow",
                           "id": "preference1",
                           "i18nText": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Hakutoive 1",
                               "sv": "Hakutoive 1_sv",
@@ -7882,7 +7892,7 @@
                             }
                           },
                           "resetLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Tyhjennä",
                               "sv": "Tyhjennä_sv",
@@ -7890,7 +7900,7 @@
                             }
                           },
                           "educationLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Koulutus",
                               "sv": "Koulutus_sv",
@@ -7898,7 +7908,7 @@
                             }
                           },
                           "learningInstitutionLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Opetuspiste",
                               "sv": "Opetuspiste_sv",
@@ -7941,7 +7951,7 @@
                           "type": "PreferenceRow",
                           "id": "preference2",
                           "i18nText": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Hakutoive 2",
                               "sv": "Hakutoive 2_sv",
@@ -7949,7 +7959,7 @@
                             }
                           },
                           "resetLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Tyhjennä",
                               "sv": "Tyhjennä_sv",
@@ -7957,7 +7967,7 @@
                             }
                           },
                           "educationLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Koulutus",
                               "sv": "Koulutus_sv",
@@ -7965,7 +7975,7 @@
                             }
                           },
                           "learningInstitutionLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Opetuspiste",
                               "sv": "Opetuspiste_sv",
@@ -8003,7 +8013,7 @@
                           "type": "PreferenceRow",
                           "id": "preference3",
                           "i18nText": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Hakutoive 3",
                               "sv": "Hakutoive 3_sv",
@@ -8011,7 +8021,7 @@
                             }
                           },
                           "resetLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Tyhjennä",
                               "sv": "Tyhjennä_sv",
@@ -8019,7 +8029,7 @@
                             }
                           },
                           "educationLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Koulutus",
                               "sv": "Koulutus_sv",
@@ -8027,7 +8037,7 @@
                             }
                           },
                           "learningInstitutionLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Opetuspiste",
                               "sv": "Opetuspiste_sv",
@@ -8065,7 +8075,7 @@
                           "type": "PreferenceRow",
                           "id": "preference4",
                           "i18nText": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Hakutoive 4",
                               "sv": "Hakutoive 4_sv",
@@ -8073,7 +8083,7 @@
                             }
                           },
                           "resetLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Tyhjennä",
                               "sv": "Tyhjennä_sv",
@@ -8081,7 +8091,7 @@
                             }
                           },
                           "educationLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Koulutus",
                               "sv": "Koulutus_sv",
@@ -8089,7 +8099,7 @@
                             }
                           },
                           "learningInstitutionLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Opetuspiste",
                               "sv": "Opetuspiste_sv",
@@ -8127,7 +8137,7 @@
                           "type": "PreferenceRow",
                           "id": "preference5",
                           "i18nText": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Hakutoive 5",
                               "sv": "Hakutoive 5_sv",
@@ -8135,7 +8145,7 @@
                             }
                           },
                           "resetLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Tyhjennä",
                               "sv": "Tyhjennä_sv",
@@ -8143,7 +8153,7 @@
                             }
                           },
                           "educationLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Koulutus",
                               "sv": "Koulutus_sv",
@@ -8151,7 +8161,7 @@
                             }
                           },
                           "learningInstitutionLabel": {
-                            "id": "text_1359637026190",
+                            "id": "text_1359640869755",
                             "translations": {
                               "fi": "Opetuspiste",
                               "sv": "Opetuspiste_sv",
@@ -8208,7 +8218,7 @@
                   "type": "Theme",
                   "id": "arvosanatGrp",
                   "i18nText": {
-                    "id": "text_1359637026183",
+                    "id": "text_1359640869748",
                     "translations": {
                       "fi": "Arvosanat",
                       "sv": "Arvosanat_sv",
@@ -8221,7 +8231,7 @@
                         "type": "SubjectRow",
                         "id": "tietotekniikka",
                         "i18nText": {
-                          "id": "text_1359637026182",
+                          "id": "text_1359640869746",
                           "translations": {
                             "fi": "Tietotekniikka",
                             "sv": "Tietotekniikka_sv",
@@ -8256,7 +8266,7 @@
                         "type": "SubjectRow",
                         "id": "kansantaloustiede",
                         "i18nText": {
-                          "id": "text_1359637026182",
+                          "id": "text_1359640869746",
                           "translations": {
                             "fi": "Kansantaloustiede",
                             "sv": "Kansantaloustiede_sv",
@@ -8318,7 +8328,7 @@
                           "type": "GradeGrid",
                           "id": "gradegrid",
                           "i18nText": {
-                            "id": "text_1359637026191",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Arvosanat",
                               "sv": "Arvosanat_sv",
@@ -8331,7 +8341,7 @@
                               "type": "SubjectRow",
                               "id": "subject_finnish",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "Äidinkieli ja kirjallisuus",
                                   "sv": "Äidinkieli ja kirjallisuus_sv",
@@ -8368,7 +8378,7 @@
                               "type": "LanguageRow",
                               "id": "lang_a1",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "A1-kieli",
                                   "sv": "A1-kieli_sv",
@@ -8403,7 +8413,7 @@
                               "type": "LanguageRow",
                               "id": "lang_b1",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "B1-kieli",
                                   "sv": "B1-kieli_sv",
@@ -8440,7 +8450,7 @@
                               "type": "SubjectRow",
                               "id": "subject_matematiikka",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Matematiikka",
                                   "sv": "Matematiikka_sv",
@@ -8475,7 +8485,7 @@
                               "type": "SubjectRow",
                               "id": "subject_biologia",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Biologia",
                                   "sv": "Biologia_sv",
@@ -8510,7 +8520,7 @@
                               "type": "SubjectRow",
                               "id": "subject_maantieto",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Maantieto",
                                   "sv": "Maantieto_sv",
@@ -8545,7 +8555,7 @@
                               "type": "SubjectRow",
                               "id": "subject_fysiikka",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Fysiikka",
                                   "sv": "Fysiikka_sv",
@@ -8580,7 +8590,7 @@
                               "type": "SubjectRow",
                               "id": "subject_kemia",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Kemia",
                                   "sv": "Kemia_sv",
@@ -8615,7 +8625,7 @@
                               "type": "SubjectRow",
                               "id": "subject_terveystieto",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Terveystieto",
                                   "sv": "Terveystieto_sv",
@@ -8650,7 +8660,7 @@
                               "type": "SubjectRow",
                               "id": "subject_uskonto",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Uskonto tai elämänkatsomustieto",
                                   "sv": "Uskonto tai elämänkatsomustieto_sv",
@@ -8685,7 +8695,7 @@
                               "type": "SubjectRow",
                               "id": "subject_historia",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Historia",
                                   "sv": "Historia_sv",
@@ -8720,7 +8730,7 @@
                               "type": "SubjectRow",
                               "id": "subject_yhteiskuntaoppi",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Yhteiskuntaoppi",
                                   "sv": "Yhteiskuntaoppi_sv",
@@ -8755,7 +8765,7 @@
                               "type": "SubjectRow",
                               "id": "subject_musiikki",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Musiikki",
                                   "sv": "Musiikki_sv",
@@ -8790,7 +8800,7 @@
                               "type": "SubjectRow",
                               "id": "subject_kuvataide",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Kuvataide",
                                   "sv": "Kuvataide_sv",
@@ -8825,7 +8835,7 @@
                               "type": "SubjectRow",
                               "id": "subject_kasityo",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Käsityö",
                                   "sv": "Käsityö_sv",
@@ -8860,7 +8870,7 @@
                               "type": "SubjectRow",
                               "id": "subject_liikunta",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Liikunta",
                                   "sv": "Liikunta_sv",
@@ -8895,7 +8905,7 @@
                               "type": "SubjectRow",
                               "id": "subject_kotitalous",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "Kotitalous",
                                   "sv": "Kotitalous_sv",
@@ -8932,7 +8942,7 @@
                               "type": "Option",
                               "id": "scopeoption_a1",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "A1",
                                   "sv": "A1_sv",
@@ -8962,7 +8972,7 @@
                               "type": "Option",
                               "id": "scopeoption_a2",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "A2",
                                   "sv": "A2_sv",
@@ -8992,7 +9002,7 @@
                               "type": "Option",
                               "id": "scopeoption_b1",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "B1",
                                   "sv": "B1_sv",
@@ -9022,7 +9032,7 @@
                               "type": "Option",
                               "id": "scopeoption_b2",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "B2",
                                   "sv": "B2_sv",
@@ -9052,7 +9062,7 @@
                               "type": "Option",
                               "id": "scopeoption_b3",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869757",
                                 "translations": {
                                   "fi": "B3",
                                   "sv": "B3_sv",
@@ -9084,7 +9094,7 @@
                               "type": "Option",
                               "id": "langoption_eng",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "englanti",
                                   "sv": "englanti_sv",
@@ -9114,7 +9124,7 @@
                               "type": "Option",
                               "id": "langoption_swe",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "ruotsi",
                                   "sv": "ruotsi_sv",
@@ -9144,7 +9154,7 @@
                               "type": "Option",
                               "id": "langoption_fra",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "ranska",
                                   "sv": "ranska_sv",
@@ -9174,7 +9184,7 @@
                               "type": "Option",
                               "id": "langoption_ger",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "saksa",
                                   "sv": "saksa_sv",
@@ -9204,7 +9214,7 @@
                               "type": "Option",
                               "id": "langoption_rus",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "venäjä",
                                   "sv": "venäjä_sv",
@@ -9234,7 +9244,7 @@
                               "type": "Option",
                               "id": "langoption_fin",
                               "i18nText": {
-                                "id": "text_1359637026191",
+                                "id": "text_1359640869756",
                                 "translations": {
                                   "fi": "suomi",
                                   "sv": "suomi_sv",
@@ -9266,7 +9276,7 @@
                               "type": "Option",
                               "id": "grade_nograde",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "Ei arvosanaa",
                                   "sv": "Ei arvosanaa_sv",
@@ -9296,7 +9306,7 @@
                               "type": "Option",
                               "id": "grade_10",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "10",
                                   "sv": "10_sv",
@@ -9326,7 +9336,7 @@
                               "type": "Option",
                               "id": "grade_9",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "9",
                                   "sv": "9_sv",
@@ -9356,7 +9366,7 @@
                               "type": "Option",
                               "id": "grade_8",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "8",
                                   "sv": "8_sv",
@@ -9386,7 +9396,7 @@
                               "type": "Option",
                               "id": "grade_7",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "7",
                                   "sv": "7_sv",
@@ -9416,7 +9426,7 @@
                               "type": "Option",
                               "id": "grade_6",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "6",
                                   "sv": "6_sv",
@@ -9446,7 +9456,7 @@
                               "type": "Option",
                               "id": "grade_5",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "5",
                                   "sv": "5_sv",
@@ -9476,7 +9486,7 @@
                               "type": "Option",
                               "id": "grade_4",
                               "i18nText": {
-                                "id": "text_1359637026190",
+                                "id": "text_1359640869755",
                                 "translations": {
                                   "fi": "4",
                                   "sv": "4_sv",
@@ -9551,7 +9561,7 @@
                           "type": "Text",
                           "id": "nogradegrid",
                           "i18nText": {
-                            "id": "text_1359637026191",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Sinulta ei kysytä arvosanoja.",
                               "sv": "Sinulta ei kysytä arvosanoja._sv",
@@ -9599,7 +9609,7 @@
                   "type": "Theme",
                   "id": "tyokokemusGrp",
                   "i18nText": {
-                    "id": "text_1359637026183",
+                    "id": "text_1359640869748",
                     "translations": {
                       "fi": "Työkokemus",
                       "sv": "Työkokemus_sv",
@@ -9621,7 +9631,7 @@
                       "type": "TextQuestion",
                       "id": "tyokokemuskuukaudet",
                       "i18nText": {
-                        "id": "text_1359637026191",
+                        "id": "text_1359640869757",
                         "translations": {
                           "fi": "Työkokemus kuukausina",
                           "sv": "Työkokemus kuukausina_sv",
@@ -9686,7 +9696,7 @@
                   "type": "Theme",
                   "id": "lupatiedotGrp",
                   "i18nText": {
-                    "id": "text_1359637026183",
+                    "id": "text_1359640869748",
                     "translations": {
                       "fi": "Lupatiedot",
                       "sv": "Lupatiedot_sv",
@@ -9708,7 +9718,7 @@
                       "type": "Group",
                       "id": "permissionCheckboxes",
                       "i18nText": {
-                        "id": "text_1359637026192",
+                        "id": "text_1359640869757",
                         "translations": {
                           "fi": "Ryhmän otsikkotai ohjeteksti",
                           "sv": "Ryhmän otsikkotai ohjeteksti_sv",
@@ -9729,7 +9739,7 @@
                           "type": "CheckBox",
                           "id": "lupa1",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Haluan, että huoltajalleni lähetetään tieto sähköpostilla hakulomakkeen täyttämisestä.",
                               "sv": "Haluan, että huoltajalleni lähetetään tieto sähköpostilla hakulomakkeen täyttämisestä._sv",
@@ -9765,7 +9775,7 @@
                                   "type": "TextQuestion",
                                   "id": "lupa1_email",
                                   "i18nText": {
-                                    "id": "text_1359637026191",
+                                    "id": "text_1359640869757",
                                     "translations": {
                                       "fi": "Sähköpostiosoite",
                                       "sv": "Sähköpostiosoite_sv",
@@ -9841,7 +9851,7 @@
                           "type": "CheckBox",
                           "id": "lupa2",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Minulle saa lähettää postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia.",
                               "sv": "Minulle saa lähettää postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia._sv",
@@ -9876,7 +9886,7 @@
                           "type": "CheckBox",
                           "id": "lupa3",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissä.",
                               "sv": "Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissä._sv",
@@ -9911,7 +9921,7 @@
                           "type": "CheckBox",
                           "id": "lupa4",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Valintaani koskevat tiedot saa lähettää minulle sähköisesti.",
                               "sv": "Valintaani koskevat tiedot saa lähettää minulle sähköisesti._sv",
@@ -9946,7 +9956,7 @@
                           "type": "CheckBox",
                           "id": "lupa5",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Minulle saa lähettää tietoa opiskelijavalinnan etenemisestä ja tuloksista tekstiviestillä.",
                               "sv": "Minulle saa lähettää tietoa opiskelijavalinnan etenemisestä ja tuloksista tekstiviestillä._sv",
@@ -9990,7 +10000,7 @@
                       "type": "Radio",
                       "id": "asiointikieli",
                       "i18nText": {
-                        "id": "text_1359637026192",
+                        "id": "text_1359640869757",
                         "translations": {
                           "fi": "Asiointikieli",
                           "sv": "Asiointikieli_sv",
@@ -10031,7 +10041,7 @@
                           "type": "Option",
                           "id": "asiointikieli_suomi",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Suomi",
                               "sv": "Suomi_sv",
@@ -10061,7 +10071,7 @@
                           "type": "Option",
                           "id": "asiointikieli_ruotsi",
                           "i18nText": {
-                            "id": "text_1359637026192",
+                            "id": "text_1359640869757",
                             "translations": {
                               "fi": "Ruotsi",
                               "sv": "Ruotsi_sv",
