@@ -480,7 +480,8 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "(" +
                 millatutkinnolla.getOptions().get(0).getValue() + "|" + millatutkinnolla.getOptions().get(1).getValue() +
-                "|" + millatutkinnolla.getOptions().get(2).getValue() + "|" + millatutkinnolla.getOptions().get(3).getValue() + ")");
+                "|" + millatutkinnolla.getOptions().get(2).getValue() + "|" + millatutkinnolla.getOptions().get(3).getValue() +
+                "|" + millatutkinnolla.getOptions().get(5).getValue() + ")");
         relatedQuestionRule.addChild(peruskoulu2012);
         relatedQuestionRule.addChild(tutkinnonOpetuskieli);
         relatedQuestionRule.addChild(suorittanut1);
