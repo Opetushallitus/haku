@@ -430,6 +430,25 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     private void createKoulutustausta(Theme koulutustaustaRyhmä) {
         koulutustaustaRyhmä.setHelp("Merkitse tälle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitä vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimäärä. Lukion oppimäärän tai ylioppilastutkinnon suorittaneet eivät voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta.");
+
+
+
+
+
+
+        Radio osallistunut = new Radio("osallistunut", createI18NText("Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?"));
+        osallistunut.addOption("ei", createI18NText("En"), "Ei");
+        osallistunut.addOption("kylla", createI18NText("Kyllä"), "Kyllä");
+        osallistunut.addAttribute("required", "required");
+        osallistunut.setVerboseHelp(getVerboseHelp());
+
+
+
+        koulutustaustaRyhmä.addChild(createKoulutustaustaRadio());
+        koulutustaustaRyhmä.addChild(osallistunut);
+    }
+
+    public Radio createKoulutustaustaRadio() {
         Radio millatutkinnolla = new Radio("millatutkinnolla", createI18NText("Valitse tutkinto, jolla haet koulutukseen"));
         millatutkinnolla.addOption("tutkinto1", createI18NText("Perusopetuksen oppimäärä"), "tutkinto1", "Valitse tämä, jos olet käynyt peruskoulun.");
         millatutkinnolla.addOption("tutkinto2", createI18NText("Perusopetuksen erityisopetuksen osittain yksilöllistetty oppimäärä"), "tutkinto2", "Valitse tämä, jos olet opiskellut yksilöllistetyn oppimäärän puolessa tai alle puolessa oppiaineista.");
@@ -447,7 +466,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         peruskoulu2012.addAttribute("required", "required");
         peruskoulu2012.setVerboseHelp(getVerboseHelp());
 
-        TextQuestion paattotodistusvuosi = new TextQuestion("päättötodistusvuosi", createI18NText("Olen saanut päättötodistuksen jo aiemmin, vuonna"));
+        TextQuestion paattotodistusvuosi = new TextQuestion("paattotodistusvuosi", createI18NText("Olen saanut päättötodistuksen jo aiemmin, vuonna"));
         paattotodistusvuosi.addAttribute("placeholder", "vvvv");
         paattotodistusvuosi.addAttribute("required", "required");
         paattotodistusvuosi.addAttribute("pattern", "^([1][9]\\d\\d|200[0-9]|201[0-1])$");
@@ -458,13 +477,6 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         rule.addChild(paattotodistusvuosi);
         peruskoulu2012.addChild(rule);
 
-        DropdownSelect tutkinnonOpetuskieli = new DropdownSelect("opetuskieli", createI18NText("Mikä oli tukintosi opetuskieli"));
-        tutkinnonOpetuskieli.addOption("suomi", createI18NText("Suomi"), "Suomi");
-        tutkinnonOpetuskieli.addOption("ruotsi", createI18NText("Ruotsi"), "Ruotsi");
-        tutkinnonOpetuskieli.addAttribute("placeholder", "Tutkintosi opetuskieli");
-        tutkinnonOpetuskieli.setHelp("Merkitse tähän se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellä tasapuolisesti, valitse toinen niistä");
-        tutkinnonOpetuskieli.setVerboseHelp(getVerboseHelp());
-
         CheckBox suorittanut1 = new CheckBox("suorittanut1", createI18NText("Kymppiluokka (perusopetuksen lisäopetuksen oppimäärä, vähintään 1100 tuntia)"));
         CheckBox suorittanut2 = new CheckBox("suorittanut2", createI18NText("Vammaisten valmentava ja kuntouttava opetus ja ohjaus"));
         CheckBox suorittanut3 = new CheckBox("suorittanut3", createI18NText("Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus"));
@@ -472,16 +484,17 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         CheckBox suorittanut5 = new CheckBox("suorittanut5", createI18NText("Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vähintään 20 tuntia)"));
         CheckBox suorittanut6 = new CheckBox("suorittanut6", createI18NText("Kansanopiston lukuvuoden mittainen linja ammatilliseen peruskoulutukseen"));
 
-        Radio osallistunut = new Radio("osallistunut", createI18NText("Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?"));
-        osallistunut.addOption("ei", createI18NText("En"), "Ei");
-        osallistunut.addOption("kylla", createI18NText("Kyllä"), "Kyllä");
-        osallistunut.addAttribute("required", "required");
-        osallistunut.setVerboseHelp(getVerboseHelp());
+        DropdownSelect tutkinnonOpetuskieli = new DropdownSelect("opetuskieli", createI18NText("Mikä oli tukintosi opetuskieli"));
+        tutkinnonOpetuskieli.addOption("suomi", createI18NText("Suomi"), "Suomi");
+        tutkinnonOpetuskieli.addOption("ruotsi", createI18NText("Ruotsi"), "Ruotsi");
+        tutkinnonOpetuskieli.addAttribute("placeholder", "Tutkintosi opetuskieli");
+        tutkinnonOpetuskieli.setHelp("Merkitse tähän se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellä tasapuolisesti, valitse toinen niistä");
+        tutkinnonOpetuskieli.setVerboseHelp(getVerboseHelp());
 
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "(" +
                 millatutkinnolla.getOptions().get(0).getValue() + "|" + millatutkinnolla.getOptions().get(1).getValue() +
-                "|" + millatutkinnolla.getOptions().get(2).getValue() + "|" + millatutkinnolla.getOptions().get(3).getValue() +
-                "|" + millatutkinnolla.getOptions().get(5).getValue() + ")");
+                "|" + millatutkinnolla.getOptions().get(2).getValue() + "|" + millatutkinnolla.getOptions().get(3).getValue() + ")");
+
         relatedQuestionRule.addChild(peruskoulu2012);
         relatedQuestionRule.addChild(tutkinnonOpetuskieli);
         relatedQuestionRule.addChild(suorittanut1);
@@ -490,10 +503,21 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         relatedQuestionRule.addChild(suorittanut4);
         relatedQuestionRule.addChild(suorittanut5);
         relatedQuestionRule.addChild(suorittanut6);
+
+        TextQuestion lukiovuosi = new TextQuestion("lukiovuosi", createI18NText("Minä vuonna olet saanut lukiotodistuksen?"));
+        lukiovuosi.addAttribute("placeholder", "vvvv");
+        lukiovuosi.addAttribute("required", "required");
+        lukiovuosi.addAttribute("pattern", "^([1][9]\\d\\d|200[0-9]|201[0-1])$");
+        lukiovuosi.addAttribute("size", "4");
+        lukiovuosi.addAttribute("maxlength", "4");
+
+        RelatedQuestionRule lukioRule = new RelatedQuestionRule("rule7", millatutkinnolla.getId(), millatutkinnolla.getOptions().get(5).getValue());
+        lukioRule.addChild(lukiovuosi);
+
+        millatutkinnolla.addChild(lukioRule);
         millatutkinnolla.addChild(relatedQuestionRule);
 
-        koulutustaustaRyhmä.addChild(millatutkinnolla);
-        koulutustaustaRyhmä.addChild(osallistunut);
+        return millatutkinnolla;
     }
 
     private String getVerboseHelp() {
