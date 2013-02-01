@@ -35,10 +35,14 @@ public class EducationBackgroundTest extends AbstractSeleniumBase {
 
         driver.findElement(new By.ById("millatutkinnolla_tutkinto1")).click();
 
+        driver.findElement(new By.ById("peruskoulu2012_ei")).click();
 
-        System.out.println("dd");
+        driver.findElement(new By.ByName("paattotodistusvuosi"));
 
-    // millatutkinnolla_tutkinto1
+        driver.findElement(new By.ById("millatutkinnolla_tutkinto6")).click();
+
+        driver.findElement(new By.ByName("lukiovuosi"));
+
     }
 
 }
