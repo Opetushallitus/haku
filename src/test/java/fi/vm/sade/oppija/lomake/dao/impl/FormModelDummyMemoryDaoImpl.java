@@ -42,6 +42,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     final ApplicationPeriod applicationPeriod;
     private FormModel formModel;
+    public static String MOBILE_PHONE_PATTERN = "^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
 
     public FormModelDummyMemoryDaoImpl() {
         this("yhteishaku", "henkilotiedot");
@@ -230,7 +231,8 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         TextQuestion matkapuhelinnumero = new TextQuestion("matkapuhelinnumero", createI18NText("Matkapuhelinnumero"));
         matkapuhelinnumero.setHelp("Kirjoita tähän matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.");
-        matkapuhelinnumero.addAttribute("size", "20");
+        matkapuhelinnumero.addAttribute("size", "30");
+        matkapuhelinnumero.addAttribute("pattern", MOBILE_PHONE_PATTERN);
         matkapuhelinnumero.setVerboseHelp(getVerboseHelp());
         matkapuhelinnumero.setInline(true);
 

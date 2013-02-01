@@ -50,7 +50,8 @@ public class AdminEditPage extends LoginPage implements PageObject {
 
 
     public void submitForm(FormModel formModel1) {
-        final String convert = new FormModelToJsonString().apply(formModel1);
+        String convert = new FormModelToJsonString().apply(formModel1);
+        convert = convert.replaceAll("\\\\", "\\\\\\\\");
         final WebElement model = driver.findElement(By.id("model"));
         model.clear();
         selenium.runScript("document.getElementById('model').value='" + convert + "'");
