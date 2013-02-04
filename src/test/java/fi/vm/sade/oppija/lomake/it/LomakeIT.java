@@ -111,6 +111,8 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(new By.ByClassName("right")).click();
 
         driver.findElement(new By.ByClassName("right")).click();
+        driver.findElement(By.id("submit_confirm")).click();
+
         String oid = driver.findElement(new By.ByClassName("number")).getText();
         assertTrue(oid.startsWith("1.2.3.4.5"));
 

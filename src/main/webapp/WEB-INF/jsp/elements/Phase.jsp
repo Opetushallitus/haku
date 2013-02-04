@@ -24,6 +24,8 @@
 <c:set var="vaihe" value="${element}" scope="request"/>
 <c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+<c:set var="preview" value="${vaihe.preview}" scope="request"/>
+
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -39,20 +41,40 @@
 <body>
 <div id="viewport">
     <div id="overlay">
-	
-			<div class="popover-wrapper" id="areyousure" style="z-index:1000;display:none;">
-				<span class="popover-close">&#8203;</span>
-				<div class="popover">
-					<span class="popover-close">&#8203;</span>
-					<div class="popover-header">
-						<!-- Popover title -->
-					</div>
-					<div class="popover-content">
-						<!-- Popover content -->
-					</div>
-				</div>
-			</div>
-	
+        <c:choose>
+            <c:when test="${preview}">
+                <c:set var="baseUrl"
+                       value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}"
+                    scope="request"/>
+
+
+                <div class="popover-wrapper" id="areyousure" style="z-index:1000;display:none;">
+                    <span class="popover-close">&#8203;</span>
+                    <div class="popover">
+                        <span class="popover-close">&#8203;</span>
+                        <div class="popover-header">
+                            <!-- Popover title -->
+                        </div>
+                        <div class="popover-content">
+                            <form method="post" action="${baseUrl}/send">
+                                <!-- Popover content -->
+                                <button name="nav-send" value="true" data-po-hide="areyousure">
+                                    <span>
+                                        <span>Ei</span>
+                                    </span>
+                                </button>
+                                <button id="submit_confirm" name="nav-send" type="submit" value="true">
+                                    <span>
+                                        <span>Joo</span>
+                                    </span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </c:when>
+	    </c:choose>
+
     </div>
     <div id="site">
         <div id="sitecontent">
@@ -79,7 +101,6 @@
                 <div class="clear"></div>
             </div>
 
-            <c:set var="preview" value="${vaihe.preview}" scope="request"/>
             <c:choose>
                 <c:when test="${preview}">
                     <div class="form">

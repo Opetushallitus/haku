@@ -49,16 +49,14 @@
             </form>
         </c:when>
         <c:otherwise>
-            <form method="post" action="${baseUrl}/send">
                 <div class="set-left">
 					<a href="#" data-po-show="areyousure">Test</a>
-                    <button class="right" name="nav-send" type="submit" value="true">
+                    <button class="right" name="nav-send" data-po-show="areyousure" value="true">
                         <span>
                             <span><fmt:message key="lomake.button.send"/></span>
                         </span>
                     </button>
                 </div>
-            </form>
         </c:otherwise>
     </c:choose>
 </div>
