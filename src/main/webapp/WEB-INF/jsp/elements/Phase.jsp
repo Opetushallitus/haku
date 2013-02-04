@@ -40,7 +40,7 @@
 <div id="viewport">
     <div id="overlay">
 	
-			<div class="popover-wrapper" id="<!-- Id -->" style="z-index:1000;">
+			<div class="popover-wrapper" id="areyousure" style="z-index:1000;display:none;">
 				<span class="popover-close">&#8203;</span>
 				<div class="popover">
 					<span class="popover-close">&#8203;</span>

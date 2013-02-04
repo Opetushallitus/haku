@@ -51,8 +51,8 @@
         <c:otherwise>
             <form method="post" action="${baseUrl}/send">
                 <div class="set-left">
-					<a href="#" class="popovertest" data-po-add="new">Test</a>
-                    <button class="right" name="nav-send" type="submit" value="true" data-po-add="new">
+					<a href="#" data-po-show="areyousure">Test</a>
+                    <button class="right" name="nav-send" type="submit" value="true">
                         <span>
                             <span><fmt:message key="lomake.button.send"/></span>
                         </span>

@@ -187,7 +187,7 @@ $(document).ready(function(){
 			content = 'test <a class="popovertest" data-po-add="new" href="#">Test</a>';
 			title = 'Laatikon otsikko';
 		
-			html =  '<div class="popover-wrapper" id="'+id+'" style="z-index:'+(popover.handlers.autoGenCount*100)+';">';
+			html =  '<div class="popover-wrapper generated" id="'+id+'" style="z-index:'+(popover.handlers.autoGenCount*100)+';">';
 			html += 	popover_close;
 			html += 	'<div class="popover">';
 			html += 		popover_close;
@@ -207,14 +207,30 @@ $(document).ready(function(){
 			popover.set.size($('#'+id+' .popover'));
 			popover.set.position($('#'+id+' .popover'));
 		},
+		hide:function(id){
+			if($('#'+id).length != 0)
+			{
+				$('#'+id).hide();
+				popover.handlers.openPopovers--;
+				popover.set.overlay();
+			}
+		},
 		remove:function(target){
-			console.log(target.length);
-			console.log($(target).length)
 			if(target.length != 0 && $(target).length != 0)
 			{
 				$(target).closest('.popover-wrapper').remove(); // Alternatively .detach()
 				popover.handlers.openPopovers--;
 				popover.set.overlay();
+			}
+		},
+		show:function(id){
+			if($('#'+id).length != 0)
+			{
+				$('#'+id).show();
+				popover.handlers.openPopovers++;
+				popover.set.overlay();
+				popover.set.size($('#'+id+' .popover'));
+				popover.set.position($('#'+id+' .popover'));
 			}
 		},
 		set : {
@@ -292,15 +308,34 @@ $(document).ready(function(){
 				});
 				*/
 			
+				// Remove or hide popover from closing links
 				$('body').on('click', '.popover-wrapper .popover-close', function(){
-					target = $(this).closest('.popover-wrapper').find('.popover');
-					popover.remove(target);
+					
+					// If window was generated dynamically remove, else just hide
+					if($(this).closest('.popover-wrapper').hasClass('generated'))
+					{
+						target = $(this).closest('.popover-wrapper').find('.popover');
+						popover.remove(target);
+					}
+					else
+					{
+						id = $(this).closest('.popover-wrapper').attr('id');
+						popover.hide(id);
+					}
 				});
 				
+				// Generate new popover
 				$('body').on('click', '[data-po-add]', function(event){
 					event.preventDefault();
 					popover.add();
 
+				});
+				
+				// Show already existing popover with id
+				$('body').on('click', '[data-po-show]', function(event){
+					event.preventDefault();
+					id = $(this).attr('data-po-show');
+					popover.show(id);
 				});
 			}
 		}

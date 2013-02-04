@@ -2529,6 +2529,7 @@ ul.unstyled {
       font-size: 14px;
       font-weight: bold;
       width: auto;
+      min-height: 17px;
       border-radius: 3px 3px 0px 0px;
       padding: 12px 45px 12px 20px;
       border-bottom: 1px solid #149ecb;
