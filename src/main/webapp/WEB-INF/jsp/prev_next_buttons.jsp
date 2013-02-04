@@ -20,7 +20,7 @@
 <div class="float-left">
     <c:choose>
         <c:when test="${vaihe.hasPrev}">
-            <button class="left" name="vaiheId" type="submit" value="${vaihe.prev.id}">
+            <button class="left" name="phaseId" type="submit" value="${vaihe.prev.id}">
                 <span>
                     <span><fmt:message key="lomake.button.previous"/></span>
                 </span>
@@ -28,7 +28,7 @@
         </c:when>
     </c:choose>
     <c:if test="${not empty sessionScope['username']}">
-        <button class="save" name="vaiheId" type="submit" value="${vaihe.id}">
+        <button class="save" name="phaseId" type="submit" value="${vaihe.id}">
             <span>
                 <span><fmt:message key="lomake.button.saveasdraft"/></span>
             </span>
@@ -38,7 +38,7 @@
 <div class="float-right">
     <c:choose>
         <c:when test="${vaihe.hasNext}">
-            <button class="right" name="vaiheId" type="submit" value="${vaihe.next.id}">
+            <button class="right" name="phaseId" type="submit" value="${vaihe.next.id}">
             <span>
                 <span>
                     <c:choose>
@@ -54,7 +54,7 @@
             </button>
         </c:when>
         <c:otherwise>
-            <button class="right" name="vaiheId" type="submit" value="${vaihe.id}">
+            <button class="right" name="phaseId" type="submit" value="${vaihe.id}">
                 <span>
                     <span><fmt:message key="lomake.button.save"/></span>
                 </span>

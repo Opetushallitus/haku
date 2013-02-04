@@ -41,8 +41,7 @@ import java.util.Map;
 public class Application implements Serializable {
 
     private static final long serialVersionUID = -7491168801255850954L;
-    public static final String VAIHE_ID = "vaiheId";
-
+    public static final String VAIHE_ID = "phaseId";
 
     @JsonProperty(value = "_id")
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = ObjectIdSerializer.class)
@@ -52,18 +51,18 @@ public class Application implements Serializable {
     private String oid;
     private FormId formId;
     private User user;
-    private String vaiheId;
+    private String phaseId;
 
-    private Map<String, Map<String, String>> vastaukset = new HashMap<String, Map<String, String>>();
+    private Map<String, Map<String, String>> answers = new HashMap<String, Map<String, String>>();
     private Map<String, String> meta = new HashMap<String, String>();
 
     @JsonCreator
-    public Application(@JsonProperty(value = "hakuLomakeId") final FormId formId,
+    public Application(@JsonProperty(value = "formId") final FormId formId,
                        @JsonProperty(value = "user") final User user,
-                       @JsonProperty(value = "vastaukset") Map<String, Map<String, String>> vastaukset) {
+                       @JsonProperty(value = "answers") Map<String, Map<String, String>> answers) {
         this(formId, user);
-        if (vastaukset != null) {
-            this.vastaukset = vastaukset;
+        if (answers != null) {
+            this.answers = answers;
         }
     }
 
@@ -83,14 +82,14 @@ public class Application implements Serializable {
 
 
     @JsonIgnore
-    public Application(@JsonProperty(value = "hakuLomakeId") final FormId formId,
+    public Application(@JsonProperty(value = "formId") final FormId formId,
                        @JsonProperty(value = "user") final User user) {
         this.formId = formId;
         this.user = user;
     }
 
     @JsonIgnore
-    public Application(@JsonProperty(value = "hakuLomakeId") final FormId formId,
+    public Application(@JsonProperty(value = "formId") final FormId formId,
                        @JsonProperty(value = "user") final User user,
                        final String oid) {
         this.formId = formId;
@@ -98,14 +97,14 @@ public class Application implements Serializable {
         this.oid = oid;
     }
 
-    public Application(User user, ApplicationPhase vaihe) {
-        this(vaihe.getFormId(), user);
-        addVaiheenVastaukset(vaihe.getVaiheId(), vaihe.getVastaukset());
+    public Application(User user, ApplicationPhase phase) {
+        this(phase.getFormId(), user);
+        addVaiheenVastaukset(phase.getPhaseId(), phase.getAnswers());
     }
 
-    public Application(String oid, ApplicationPhase vaihe) {
-        this(vaihe.getFormId(), oid);
-        addVaiheenVastaukset(vaihe.getVaiheId(), vaihe.getVastaukset());
+    public Application(String oid, ApplicationPhase phase) {
+        this(phase.getFormId(), oid);
+        addVaiheenVastaukset(phase.getPhaseId(), phase.getAnswers());
     }
 
     public Application(final FormId formId, final String oid) {
@@ -114,9 +113,9 @@ public class Application implements Serializable {
     }
 
 
-    public Application addVaiheenVastaukset(final String vaiheId, Map<String, String> vastaukset) {
-        this.vaiheId = vastaukset.remove(VAIHE_ID);
-        this.vastaukset.put(vaiheId, vastaukset);
+    public Application addVaiheenVastaukset(final String phaseId, Map<String, String> answers) {
+        this.phaseId = answers.remove(VAIHE_ID);
+        this.answers.put(phaseId, answers);
         return this;
     }
 
@@ -130,11 +129,11 @@ public class Application implements Serializable {
 
     @JsonIgnore
     public Map<String, String> getVastauksetMerged() {
-        final Map<String, String> vastaukset = new HashMap<String, String>();
-        for (Map<String, String> vaiheenVastaukset : this.vastaukset.values()) {
-            vastaukset.putAll(vaiheenVastaukset);
+        final Map<String, String> answers = new HashMap<String, String>();
+        for (Map<String, String> phaseAnswers : this.answers.values()) {
+            answers.putAll(phaseAnswers);
         }
-        return vastaukset;
+        return answers;
     }
 
     @JsonIgnore
@@ -149,11 +148,11 @@ public class Application implements Serializable {
 
     @JsonIgnore
     public boolean isNew() {
-        return this.vaiheId == null;
+        return this.phaseId == null;
     }
 
-    public Map<String, Map<String, String>> getVastaukset() {
-        return vastaukset;
+    public Map<String, Map<String, String>> getAnswers() {
+        return answers;
     }
 
     public String getOid() {
@@ -164,12 +163,12 @@ public class Application implements Serializable {
         this.oid = oid;
     }
 
-    public String getVaiheId() {
-        return vaiheId;
+    public String getPhaseId() {
+        return phaseId;
     }
 
-    public void setVaiheId(final String vaiheId) {
-        this.vaiheId = vaiheId;
+    public void setPhaseId(final String phaseId) {
+        this.phaseId = phaseId;
     }
 
     public Map<String, String> getMeta() {

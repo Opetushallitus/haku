@@ -117,7 +117,7 @@ public class FormController {
         } else {
             return Response.seeOther(new URI(
                     new RedirectToPhaseViewPath(applicationPeriodId, formId,
-                            application.getVaiheId()).getPath())).build();
+                            application.getPhaseId()).getPath())).build();
         }
     }
 
@@ -195,7 +195,7 @@ public class FormController {
 
             return Response.seeOther(new URI(
                     new RedirectToPhaseViewPath(applicationPeriodId, formId,
-                            applicationState.getHakemus().getVaiheId()).getPath())).build();
+                            applicationState.getHakemus().getPhaseId()).getPath())).build();
 
         } else {
             model.putAll(applicationState.getModelObjects());
@@ -239,7 +239,7 @@ public class FormController {
             throw new ResourceNotFoundExceptionRuntime("Could not find pending application");
         }
 
-        model.put("categoryData", application.getVastaukset());
+        model.put("categoryData", application.getAnswers());
         model.put("hakemusId", hakuLomakeId);
         model.put("applicationNumber", application.getOid());
         return new Viewable(VALMIS_VIEW, model);

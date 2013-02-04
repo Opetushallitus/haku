@@ -46,11 +46,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private final EncrypterService shaEncrypter;
 
-    private static final String FIELD_AO_1 = "vastaukset.hakutoiveet.preference1-Koulutus-id";
-    private static final String FIELD_AO_2 = "vastaukset.hakutoiveet.preference2-Koulutus-id";
-    private static final String FIELD_AO_3 = "vastaukset.hakutoiveet.preference3-Koulutus-id";
-    private static final String FIELD_AO_4 = "vastaukset.hakutoiveet.preference4-Koulutus-id";
-    private static final String FIELD_AO_5 = "vastaukset.hakutoiveet.preference5-Koulutus-id";
+    private static final String FIELD_AO_1 = "answers.hakutoiveet.preference1-Koulutus-id";
+    private static final String FIELD_AO_2 = "answers.hakutoiveet.preference2-Koulutus-id";
+    private static final String FIELD_AO_3 = "answers.hakutoiveet.preference3-Koulutus-id";
+    private static final String FIELD_AO_4 = "answers.hakutoiveet.preference4-Koulutus-id";
+    private static final String FIELD_AO_5 = "answers.hakutoiveet.preference5-Koulutus-id";
 
     @Autowired
     public ApplicationDAOMongoImpl(DBObjectToApplicationFunction dbObjectToHakemusConverter, ApplicationToDBObjectFunction hakemusToBasicDBObjectConverter,
@@ -73,7 +73,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         Application uusiApplication = state.getHakemus();
         Map<String, String> vastauksetMerged = uusiApplication.getVastauksetMerged();
         queryApplication.addVaiheenVastaukset(state.getVaiheId(), vastauksetMerged);
-        queryApplication.setVaiheId(uusiApplication.getVaiheId());
+        queryApplication.setPhaseId(uusiApplication.getPhaseId());
 
         one = toDBObject.apply(queryApplication);
 

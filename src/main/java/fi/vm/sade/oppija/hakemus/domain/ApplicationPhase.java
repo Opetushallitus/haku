@@ -24,24 +24,24 @@ import java.util.Map;
 public class ApplicationPhase {
 
     private final FormId formId;
-    private final String vaiheId;
-    private final Map<String, String> vastaukset = new HashMap<String, String>();
+    private final String phaseId;
+    private final Map<String, String> answers = new HashMap<String, String>();
 
-    public ApplicationPhase(final FormId formId, final String vaiheId, final Map<String, String> vastaukset) {
+    public ApplicationPhase(final FormId formId, final String phaseId, final Map<String, String> answers) {
         this.formId = formId;
-        this.vaiheId = vaiheId;
-        this.vastaukset.putAll(vastaukset);
+        this.phaseId = phaseId;
+        this.answers.putAll(answers);
     }
 
     public FormId getFormId() {
         return formId;
     }
 
-    public String getVaiheId() {
-        return vaiheId;
+    public String getPhaseId() {
+        return phaseId;
     }
 
-    public Map<String, String> getVastaukset() {
-        return this.vastaukset;
+    public Map<String, String> getAnswers() {
+        return this.answers;
     }
 }

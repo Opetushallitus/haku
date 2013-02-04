@@ -36,12 +36,12 @@ public class ApplicationPhaseTest {
 
     @Test
     public void testGetVaiheId() throws Exception {
-        assertEquals(vaiheid, vaihe.getVaiheId());
+        assertEquals(vaiheid, vaihe.getPhaseId());
 
     }
 
     @Test
     public void testGetVastaukset() throws Exception {
-        assertEquals(vastaukset, vaihe.getVastaukset());
+        assertEquals(vastaukset, vaihe.getAnswers());
     }
 }

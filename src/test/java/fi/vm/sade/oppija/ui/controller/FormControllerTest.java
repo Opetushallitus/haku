@@ -77,7 +77,7 @@ public class FormControllerTest {
         when(formService.getFirstPhase(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(PHASE);
         when(formService.getActiveForm(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(FORM);
         applicationState = new ApplicationState(application, FIRST_CATEGORY_ID);
-        application.setVaiheId(FIRST_CATEGORY_ID);
+        application.setPhaseId(FIRST_CATEGORY_ID);
         when(applicationService.saveApplicationPhase(Matchers.<ApplicationPhase>any())).thenReturn(applicationState);
     }
 
@@ -87,7 +87,7 @@ public class FormControllerTest {
 
     @Test
     public void testGetFormAndRedirectToFirstCategory() throws Exception {
-        this.application.setVaiheId(TEST_PHASE);
+        this.application.setPhaseId(TEST_PHASE);
         String expected = new RedirectToPhaseViewPath(APPLICATION_PERIOD_ID, FORM_ID, TEST_PHASE).getPath();
         Response response = formController.getApplication(APPLICATION_PERIOD_ID, FORM_ID);
         String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
@@ -96,7 +96,7 @@ public class FormControllerTest {
 
     @Test
     public void testGetFormAndRedirectToFirstCategoryNew() throws Exception {
-        application.setVaiheId(null);
+        application.setPhaseId(null);
         when(formService.getFirstPhase(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(new Phase(FIRST_CATEGORY_ID, createI18NText("title"), false));
         String expected = "/lomake/" + APPLICATION_PERIOD_ID + "/" + FORM_ID + "/" + FIRST_CATEGORY_ID;
         Response response = formController.getApplication(APPLICATION_PERIOD_ID, FORM_ID);

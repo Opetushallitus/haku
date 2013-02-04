@@ -61,7 +61,7 @@ public class ApplicationInfoTest {
 
     @Test
     public void testIsPending() throws Exception {
-        this.applicationInfo.application.setVaiheId(ApplicationInfo.STATE_PENDING);
+        this.applicationInfo.application.setPhaseId(ApplicationInfo.STATE_PENDING);
         assertTrue(applicationInfo.isPending());
     }
 }

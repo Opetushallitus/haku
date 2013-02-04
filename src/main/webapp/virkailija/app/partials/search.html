@@ -180,9 +180,9 @@
                     <tbody>
                     <tr ng-repeat="application in applications">
                         <td><input type="checkbox"/></td>
-                        <td>{{application.vastaukset.henkilotiedot.Sukunimi}}</td>
-                        <td>{{application.vastaukset.henkilotiedot.Etunimet}}</td>
-                        <td>{{application.vastaukset.henkilotiedot.Henkilotunnus}}</td>
+                        <td>{{application.answers.henkilotiedot.Sukunimi}}</td>
+                        <td>{{application.answers.henkilotiedot.Etunimet}}</td>
+                        <td>{{application.answers.henkilotiedot.Henkilotunnus}}</td>
                         <td><a href="{{context}}/virkailija/hakemus/{{application.oid}}/" target="_blank">{{application.oid}}</a>
                         </td>
                         <td>{{application.state}}</td>

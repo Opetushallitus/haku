@@ -60,7 +60,7 @@ public class OfficerControllerTest {
         FormId formId = new FormId("Yhteishaku", "yhteishaku");
         String oid = "1.2.3.4.5.0";
         Application app = new Application(formId, oid);
-        app.setVaiheId("valmis");
+        app.setPhaseId("valmis");
         when(applicationService.getApplication(oid)).thenReturn(app);
 
         Phase phase = new Phase("esikatselu", createI18NText("esikatselu"), true);

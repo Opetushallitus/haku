@@ -5,7 +5,7 @@
 		"type" : "User",
 		"userName" : "admin"
 	},
-	"vastaukset" : {
+	"answers" : {
 		"henkilotiedot" : {
 			"Sukupuoli" : "Mies",
 			"kansalaisuus" : "fi",
@@ -102,7 +102,7 @@
 		"applicationPeriodId" : "Yhteishaku",
 		"formId" : "yhteishaku"
 	},
-	"vaiheId" : "esikatselu"
+	"phaseId" : "esikatselu"
 },
 {
 	"type" : "Application",
@@ -110,7 +110,7 @@
 		"type" : "User",
 		"userName" : "admin"
 	},
-	"vastaukset" : {
+	"answers" : {
 		"henkilotiedot" : {
 			"Sukupuoli" : "Mies",
 			"kansalaisuus" : "fi",
@@ -207,6 +207,6 @@
 		"applicationPeriodId" : "Yhteishaku",
 		"formId" : "yhteishaku"
 	},
-	"vaiheId" : "esikatselu"
+	"phaseId" : "esikatselu"
 }
 ]

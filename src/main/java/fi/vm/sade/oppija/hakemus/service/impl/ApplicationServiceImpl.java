@@ -91,12 +91,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, Application application) {
-        final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getVaiheId());
+        final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
         final String applicationPeriodId = applicationState.getHakemus().getFormId().getApplicationPeriodId();
         final String formId = applicationState.getHakemus().getFormId().getFormId();
         final Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        final Phase phase = activeForm.getPhase(applicationPhase.getVaiheId());
-        final Map<String, String> vastaukset = applicationPhase.getVastaukset();
+        final Phase phase = activeForm.getPhase(applicationPhase.getPhaseId());
+        final Map<String, String> vastaukset = applicationPhase.getAnswers();
 
         ValidationResult validationResult = ElementTreeValidator.validate(phase, vastaukset);
         applicationState.addError(validationResult.getErrorMessages());

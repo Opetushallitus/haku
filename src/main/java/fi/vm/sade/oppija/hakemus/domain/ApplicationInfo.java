@@ -50,7 +50,7 @@ public class ApplicationInfo {
     }
 
     public boolean isPending() {
-        return STATE_PENDING.equals(this.application.getVaiheId());
+        return STATE_PENDING.equals(this.application.getPhaseId());
     }
 
 }

@@ -102,7 +102,7 @@ public class OfficerController {
         model.put("element", phase);
         model.put("form", activeForm);
         model.put("oid", oid);
-        model.put("applicationPhaseId", app.getVaiheId());
+        model.put("applicationPhaseId", app.getPhaseId());
         model.put("applicationProcessState", processState);
         model.put("hakemusId", formId);
         return new Viewable("/virkailija/" + phase.getType(), model);
