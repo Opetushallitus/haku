@@ -293,8 +293,21 @@ $(document).ready(function(){
 				}
 				
 				content_width = $(target).find('.popover-content').width();
+				content_outerwidth = $(target).find('.popover-content').outerWidth(true);
+				content_padding = content_outerwidth-content_width;
+
+				// Content area has minimum width
+				if (content_outerwidth < 460)
+				{
+					content_width = 460-content_padding;
+				}
 				
-				$(target).css({'width':content_width+'px'});
+				popover_width = content_width-content_padding;
+				
+				console.log(content_width);
+				
+				$(target).find('.popover-content').css({'width':content_width+'px'});
+				$(target).css({'width':popover_width+'px'});
 				
 			},
 			triggers:function(){
@@ -342,7 +355,7 @@ $(document).ready(function(){
 				$('body').on('click', '[data-po-hide]', function(event){
 					event.preventDefault();
 					id = $(this).attr('data-po-hide');
-					popover.show(id);
+					popover.hide(id);
 				});
 			}
 		}
