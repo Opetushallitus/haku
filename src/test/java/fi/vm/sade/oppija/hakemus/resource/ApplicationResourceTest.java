@@ -1,6 +1,7 @@
 package fi.vm.sade.oppija.hakemus.resource;
 
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
 import fi.vm.sade.oppija.lomake.domain.FormId;
@@ -29,6 +30,7 @@ public class ApplicationResourceTest {
     private ApplicationService applicationService;
     private ApplicationResource applicationResource;
     private Application application;
+    private ApplicationDTO applicationDTO;
 
     private final String OID = "1.2.3.4.5.100";
     private final String INVALID_OID = "1.2.3.4.5.999";
@@ -48,6 +50,7 @@ public class ApplicationResourceTest {
 
         this.application = new Application(formId, new AnonymousUser(), phases);
         this.application.setOid(OID);
+        this.applicationDTO = new ApplicationDTO(this.application);
 
         try {
             when(applicationService.getApplication(OID)).thenReturn(this.application);
@@ -66,8 +69,8 @@ public class ApplicationResourceTest {
 
     @Test
     public void testGetApplication() {
-        Application a = this.applicationResource.getApplication(OID);
-        assertEquals(this.application, a);
+        ApplicationDTO a = this.applicationResource.getApplication(OID);
+        assertEquals(this.applicationDTO.getOid(), a.getOid());
     }
 
     @Test
@@ -83,7 +86,7 @@ public class ApplicationResourceTest {
 
     @Test
     public void testGetApplications() {
-        List<Application> applications = this.applicationResource.getApplicationsByAOId(AOID);
+        List<ApplicationDTO> applications = this.applicationResource.getApplicationsByAOId(AOID);
         assertEquals(1, applications.size());
     }
 

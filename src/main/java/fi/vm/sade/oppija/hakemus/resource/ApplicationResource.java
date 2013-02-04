@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.hakemus.resource;
 
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,10 +48,10 @@ public class ApplicationResource {
     @GET
     @Path("/{oid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Application getApplication(@PathParam("oid") String oid) {
+    public ApplicationDTO getApplication(@PathParam("oid") String oid) {
 
         try {
-            return applicationService.getApplication(oid);
+            return new ApplicationDTO(applicationService.getApplication(oid));
         } catch (ResourceNotFoundException e) {
             throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application");
 
@@ -59,10 +61,15 @@ public class ApplicationResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Application> getApplicationsByAOId(@QueryParam("aoid") String aoid) {
+    public List<ApplicationDTO> getApplicationsByAOId(@QueryParam("aoid") String aoid) {
         if (aoid != null) {
             // retrieve applications related to a single application system
-            return applicationService.getApplicationsByApplicationOption(aoid);
+            List<Application> applications = applicationService.getApplicationsByApplicationOption(aoid);
+            List<ApplicationDTO> applicationDTOs = new ArrayList<ApplicationDTO>();
+            for (Application application : applications) {
+                applicationDTOs.add(new ApplicationDTO(application));
+            }
+            return applicationDTOs;
         } else {
             throw new JSONException(Response.Status.BAD_REQUEST, "Invalid application option id argument");
         }

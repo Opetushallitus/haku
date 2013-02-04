@@ -4,6 +4,7 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationDTO;
 import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
 import fi.vm.sade.oppija.lomake.tools.FileHandling;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -53,7 +54,7 @@ public class ApplicationIT extends AbstractRemoteTest {
         String response = getPageSource();
 
         ObjectMapper mapper = new ObjectMapper();
-        List<Application> applications = mapper.readValue(response, new TypeReference<List<Application>>() { });
+        List<ApplicationDTO> applications = mapper.readValue(response, new TypeReference<List<ApplicationDTO>>() { });
         assertEquals(2, applications.size());
     }
 
@@ -63,7 +64,7 @@ public class ApplicationIT extends AbstractRemoteTest {
         String response = getPageSource();
 
         ObjectMapper mapper = new ObjectMapper();
-        List<Application> applications = mapper.readValue(response, new TypeReference<List<Application>>() { });
+        List<ApplicationDTO> applications = mapper.readValue(response, new TypeReference<List<ApplicationDTO>>() { });
         assertEquals(0, applications.size());
     }
 
