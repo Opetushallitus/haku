@@ -41,11 +41,7 @@ import java.util.Map;
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 import static javax.ws.rs.core.Response.seeOther;
 
-/**
- * @author jukka
- * @version 9/12/1210:14 AM}
- * @since 1.1
- */
+
 @Controller
 @Path("/admin")
 @Secured("ROLE_ADMIN")
