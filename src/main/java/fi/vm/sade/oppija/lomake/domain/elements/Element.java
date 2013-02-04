@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.ISO88591NameValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldFieldValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -200,6 +201,8 @@ public abstract class Element {
                 this.validators.add(new RegexFieldFieldValidator(this.id, value));
             } else if (key.equals("containedInOther")) {
                 this.validators.add(new ContainedInOtherFieldValidator(this.id, value));
+            } else if (key.equals("iso8859name")) {
+                this.validators.add(new ISO88591NameValidator(this.id));
             }
         }
     }

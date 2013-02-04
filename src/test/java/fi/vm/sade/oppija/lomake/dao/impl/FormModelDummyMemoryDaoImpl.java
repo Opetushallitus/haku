@@ -251,8 +251,10 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
         Question sukunimi = createRequiredTextQuestion("Sukunimi", "Sukunimi", "30");
         sukunimi.setInline(true);
+        sukunimi.addAttribute("iso8859name", "iso8859name");
         Question etunimet = createRequiredTextQuestion("Etunimet", "Etunimet", "30");
         etunimet.setInline(true);
+        etunimet.addAttribute("iso8859name", "iso8859name");
 
         henkilötiedotRyhmä.addChild(sukunimi)
                 .addChild(etunimet)
@@ -434,16 +436,11 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         koulutustaustaRyhmä.setHelp("Merkitse tälle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitä vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimäärä. Lukion oppimäärän tai ylioppilastutkinnon suorittaneet eivät voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta.");
 
 
-
-
-
-
         Radio osallistunut = new Radio("osallistunut", createI18NText("Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?"));
         osallistunut.addOption("ei", createI18NText("En"), "Ei");
         osallistunut.addOption("kylla", createI18NText("Kyllä"), "Kyllä");
         osallistunut.addAttribute("required", "required");
         osallistunut.setVerboseHelp(getVerboseHelp());
-
 
 
         koulutustaustaRyhmä.addChild(createKoulutustaustaRadio());
