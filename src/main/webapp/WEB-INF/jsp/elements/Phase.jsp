@@ -39,6 +39,20 @@
 <body>
 <div id="viewport">
     <div id="overlay">
+	
+			<div class="popover-wrapper" id="<!-- Id -->" style="z-index:1000;">
+				<span class="popover-close">&#8203;</span>
+				<div class="popover">
+					<span class="popover-close">&#8203;</span>
+					<div class="popover-header">
+						<!-- Popover title -->
+					</div>
+					<div class="popover-content">
+						<!-- Popover content -->
+					</div>
+				</div>
+			</div>
+	
     </div>
     <div id="site">
         <div id="sitecontent">
