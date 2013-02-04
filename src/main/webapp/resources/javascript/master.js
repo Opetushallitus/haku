@@ -337,6 +337,13 @@ $(document).ready(function(){
 					id = $(this).attr('data-po-show');
 					popover.show(id);
 				});
+				
+				// Hide already existing popover with id
+				$('body').on('click', '[data-po-hide]', function(event){
+					event.preventDefault();
+					id = $(this).attr('data-po-hide');
+					popover.show(id);
+				});
 			}
 		}
 
