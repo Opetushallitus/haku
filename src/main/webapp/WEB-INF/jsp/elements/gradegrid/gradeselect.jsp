@@ -18,8 +18,8 @@
 
 <!-- gradeSelectId has to be set -->
 <div class="field-container-select">
-    <select id="${gradeSelectId}" name="${gradeSelectId}" placeholder="Valitse">
-        <option></option>
+    <select id="${gradeSelectId}" name="${gradeSelectId}" required = "required">
+        <c:if test="${showEmptyOption}"><option></option></c:if>
         <c:forEach var="grade" items="${element.gradeRange}">
             <option value="${grade.value}" ${(categoryData[gradeSelectId] eq grade.value) ? "selected=\"selected\"" : ""}>
                 <haku:i18nText value="${grade.i18nText}"/></option>

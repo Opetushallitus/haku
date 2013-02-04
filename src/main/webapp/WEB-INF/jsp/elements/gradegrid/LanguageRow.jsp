@@ -18,7 +18,7 @@
   --%>
 
 <haku:i18nText value="${language.i18nText}"/>&nbsp;
-<select ${language.attributeString}>
+<select ${language.attributeString} required="required">
     <option></option>
     <c:forEach var="option" items="${element.languageOptions}">
         <c:set value="${language.id}.${option.id}" var="optionId" scope="page"/>

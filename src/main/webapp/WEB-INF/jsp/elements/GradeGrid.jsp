@@ -40,10 +40,12 @@
             </td>
             <td>
                 <c:set var="gradeSelectId" value="common-${subject.id}" scope="request"/>
+                <c:set var="showEmptyOption" value="true" scope="request"/>
                 <jsp:include page="gradegrid/gradeselect.jsp"/>
             </td>
             <td>
                 <c:set var="gradeSelectId" value="optional-${subject.id}" scope="request"/>
+                <c:set var="showEmptyOption" value="false" scope="request"/>
                 <jsp:include page="gradegrid/gradeselect.jsp"/>
             </td>
         </tr>
@@ -58,10 +60,12 @@
             </td>
             <td>
                 <c:set var="gradeSelectId" value="common-${language.id}" scope="request"/>
+                <c:set var="showEmptyOption" value="true" scope="request"/>
                 <jsp:include page="gradegrid/gradeselect.jsp"/>
             </td>
             <td>
                 <c:set var="gradeSelectId" value="optional-${language.id}" scope="request"/>
+                <c:set var="showEmptyOption" value="false" scope="request"/>
                 <jsp:include page="gradegrid/gradeselect.jsp"/>
             </td>
         </tr>
@@ -80,14 +84,14 @@
 
             <tr class="gradegrid-language-row gradegrid-custom-language-row">
                 <td><c:out value="${element.customLanguageTitle}"/>
-                    <select id="${customScopeKey}" name="${customScopeKey}">
+                    <select id="${customScopeKey}" name="${customScopeKey}" required="required">
                         <option></option>
                         <c:forEach var="scopeOption" items="${element.scopeOptions}">
                             <option value="${scopeOption.value}" ${(categoryData[customScopeKey] eq scopeOption.value) ? "selected=\"selected\"" : ""}>
                                 <haku:i18nText value="${scopeOption.i18nText}"/></option>
                         </c:forEach>
                     </select>
-                    <select id="${customLanguageKey}" name="${customLanguageKey}">
+                    <select id="${customLanguageKey}" name="${customLanguageKey}" required="required">
                         <option></option>
                         <c:forEach var="languageOption" items="${element.languageOptions}">
                             <option value="${languageOption.value}"
@@ -95,10 +99,11 @@
                                 <haku:i18nText value="${languageOption.i18nText}"/></option>
                         </c:forEach>
                     </select>
+                    <a href="#" class="btn-remove"></a>
                 </td>
                 <td>
                     <div class="field-container-select">
-                        <select id="${customCommonGradeKey}" name="${customCommonGradeKey}" placeholder="Valitse">
+                        <select id="${customCommonGradeKey}" name="${customCommonGradeKey}" required="required">
                             <option></option>
                             <c:forEach var="grade" items="${element.gradeRange}">
                                 <option value="${grade.value}" ${(categoryData[customCommonGradeKey] eq grade.value) ? "selected=\"selected\"" : ""}>
@@ -109,8 +114,7 @@
                 </td>
                 <td>
                     <div class="field-container-select">
-                        <select id="${customOptionalGradeKey}" name="${customOptionalGradeKey}" placeholder="Valitse">
-                            <option></option>
+                        <select id="${customOptionalGradeKey}" name="${customOptionalGradeKey}">
                             <c:forEach var="grade" items="${element.gradeRange}">
                                 <option value="${grade.value}" ${(categoryData[customOptionalGradeKey] eq grade.value) ? "selected=\"selected\"" : ""}>
                                     <haku:i18nText value="${grade.i18nText}"/></option>
@@ -140,10 +144,12 @@
             </td>
             <td>
                 <c:set var="gradeSelectId" value="common-${subject.id}" scope="request"/>
+                <c:set var="showEmptyOption" value="true" scope="request"/>
                 <jsp:include page="gradegrid/gradeselect.jsp"/>
             </td>
             <td>
                 <c:set var="gradeSelectId" value="optional-${subject.id}" scope="request"/>
+                <c:set var="showEmptyOption" value="false" scope="request"/>
                 <jsp:include page="gradegrid/gradeselect.jsp"/>
             </td>
         </tr>
@@ -158,10 +164,12 @@
             </td>
             <td>
                 <c:set var="gradeSelectId" value="common-${subject.id}" scope="request"/>
+                <c:set var="showEmptyOption" value="true" scope="request"/>
                 <jsp:include page="gradegrid/gradeselect.jsp"/>
             </td>
             <td>
                 <c:set var="gradeSelectId" value="optional-${subject.id}" scope="request"/>
+                <c:set var="showEmptyOption" value="false" scope="request"/>
                 <jsp:include page="gradegrid/gradeselect.jsp"/>
             </td>
         </tr>
