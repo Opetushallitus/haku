@@ -33,5 +33,6 @@ $(document).ready(function() {
     //add listner for dynamically added language rows
     $('#gradegrid-table').on('click', 'a.btn-remove', function() {
         $(this).parent().parent().remove();
+        return false;
     });
 })
