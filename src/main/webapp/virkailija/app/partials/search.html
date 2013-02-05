@@ -64,19 +64,19 @@
                 <table class="form-layout-table width-100">
                     <tr>
                         <td>
-                            <input type="text" id="entry" class="search"
+                            <input type="text" id="entry" class="search width-60"
                                placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero" ng-model="term"/>
                         </td>
                         
                         <td>
                             <label for="preference-phase">Hakutoiveen tila:</label>
-                            <select class="width-100" name="preference-phase" id="preference-phase">
+                            <select class="width-50" name="preference-phase" id="preference-phase">
                                 <option value="all">Kaikki</option>
                                 <option value="ready">Valmis</option>
                                 <option value="draft">Kesken</option>
                             </select>
                         </td>
-                        
+                        <!--
                         <td>
                             <div class="inline-block">
                                 <label class="block" for="vuosi">Lähtökoulu</label>
@@ -88,14 +88,18 @@
                                     <option value="all">kaikki</option>
                                 </select>
                             </div>
-                        </td>     
+
+                        </td>
+                        -->
                     </tr>
                     <tr>
                         <td>
+                            <!--
                             <label class="block" for="search-selection">Haku:</label>
                             <select name="search-selection" id="search-selection">
                                 <option value="default">Oletuksena käynnissä oleva haku</option>
                             </select>
+                            -->
                         </td>
                         
                         <td>
@@ -103,16 +107,18 @@
                                 <input type="checkbox" name="fetch-passive" value="fetch-passive" id="fetch-passive"/>
                                 <label for="fetch-passive">Hae myös passiiviset</label>
                             </div>
+                            <!--
                             <div>
                                 <input type="checkbox" name="discretionary" value="discretionary" id="discretionary"/>
                                 <label for="discretionary">Hae vain harkinnanvaraisesti hakeneet</label>
                             </div>
-                        </td>   
+                            -->
+                        </td>
                     </tr>
                     <tr>
                         <td>
                             <label class="block" for="hakukohde">Hakukohde:</label>
-                             <input type="text" name="Kentta" id="hakukohde" placeholder="hae nimellä tai koodilla"/>
+                             <input class="width-60" type="text" name="Kentta" id="hakukohde" placeholder="hae nimellä tai koodilla"/>
                         </td>
                         
                         <td>
@@ -124,12 +130,13 @@
             </div>
         </form>
     </section>
+    <!--
     <section class="grid16-16 margin-top-2">
         <a href="#" class="button">Yksilöi henkilöitä (0 kpl)</a>
         <a href="#" class="button">Päällekkäisiä hakemuksia (0 kpl)</a>
         <a href="#" class="button">Tarkasta sähköisiä liitteitä (0 kpl)</a>
     </section>
-
+    -->
     <section class="grid16-16 margin-top-2">
         
         <tabs>
@@ -139,11 +146,12 @@
                      data-tabs-id="hakemukset">
         -->
                 <a href="#" class="button">Avaa hakemus</a>
+                <!--
                 <a href="#" class="button">Merkitse paperiliitteitä</a>
                 <a href="#" class="button">Syötä paperihakemuksia</a>
                 <a href="#" class="button">Vie lista exceliin</a>
                 <a href="#" class="button">Tulosta lista</a>
-
+                -->
                 <div class="clear"></div>
 
                 <span>Hakutulos: {{applications.length}} osumaa</span>
@@ -154,7 +162,7 @@
                         <label for="KenttaId">valitse kaikki</label>
                     </div>
 
-
+                    <!--
                     <div class="offset-left-16-12 float-right">
                         <div class="float-right">
                             <div class="pagination inline-block margin-right-2">
@@ -173,6 +181,7 @@
                             </select>
                         </div>
                     </div>
+                    -->
                 </div>
 
                 <table class="virkailija-table-1">
@@ -199,7 +208,7 @@
                     </tbody>
                 </table>
 
-
+                <!--
                 <div class="offset-left-16-12 float-right margin-top-1">
                     <div class="pagination margin-top-1 inline-block margin-right-2">
                         <a href="#">&laquo</a>
@@ -216,13 +225,15 @@
                         <option value="100">Näytä 100/sivu</option>
                     </select>
                 </div>
-
+                -->
 
                 <div class="clear"></div>
             </pane>
+            <!--
             <pane title="Hakutoiveet">
 
             </pane>
+            -->
         </tabs>
         
     </section>
