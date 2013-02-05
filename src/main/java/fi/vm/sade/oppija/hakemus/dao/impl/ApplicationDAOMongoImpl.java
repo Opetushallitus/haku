@@ -71,8 +71,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             queryApplication = fromDBObject.apply(one);
         }
         Application uusiApplication = state.getHakemus();
-        Map<String, String> vastauksetMerged = uusiApplication.getVastauksetMerged();
-        queryApplication.addVaiheenVastaukset(state.getVaiheId(), vastauksetMerged);
+        Map<String, String> answersMerged = uusiApplication.getVastauksetMerged();
+        queryApplication.addVaiheenVastaukset(state.getVaiheId(), answersMerged);
         queryApplication.setPhaseId(uusiApplication.getPhaseId());
 
         one = toDBObject.apply(queryApplication);
@@ -122,7 +122,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
         if (ssn != null) {
             final DBObject query = new BasicDBObject("formId.applicationPeriodId", asId)
-                    .append("vastaukset.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH, shaEncrypter.encrypt(ssn))
+                    .append("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH, shaEncrypter.encrypt(ssn))
                     .append("oid", new BasicDBObject("$exists", true));
             return getCollection().count(query) > 0;
         }

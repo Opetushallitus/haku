@@ -22,7 +22,7 @@ describe('Controllers', function(){
 
             $httpBackend = _$httpBackend_;
             $httpBackend.expectGET("/context.html/hakemukset?term=1.2.3.4.5.0").
-                respond([{vastaukset:{henkilotiedot:{Sukunimi: "Testaaja", Etunimet: "Teppo Topias", Henkilotunnus: "120187-1234"}}, oid : "1.2.3.4.5.1", state: "Voimassa"}]);
+                respond([{answers:{henkilotiedot:{Sukunimi: "Testaaja", Etunimet: "Teppo Topias", Henkilotunnus: "120187-1234"}}, oid : "1.2.3.4.5.1", state: "Voimassa"}]);
             scope = $rootScope.$new();
             ctrl = $controller(SearchCtrl, {$scope: scope, Config: Config});
         }));
@@ -34,7 +34,7 @@ describe('Controllers', function(){
             scope.search();
             $httpBackend.flush();
             expect(scope.applications.length).toBe(1);
-            expect(scope.applications).toEqualData([{vastaukset:{henkilotiedot:{Sukunimi: "Testaaja", Etunimet: "Teppo Topias", Henkilotunnus: "120187-1234"}}, oid : "1.2.3.4.5.1", state: "Voimassa"}]);
+            expect(scope.applications).toEqualData([{answers:{henkilotiedot:{Sukunimi: "Testaaja", Etunimet: "Teppo Topias", Henkilotunnus: "120187-1234"}}, oid : "1.2.3.4.5.1", state: "Voimassa"}]);
         });
 
 

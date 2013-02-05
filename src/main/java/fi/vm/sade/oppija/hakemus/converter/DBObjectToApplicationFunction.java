@@ -54,9 +54,9 @@ public class DBObjectToApplicationFunction implements Function<DBObject, Applica
         mapper.enable(SerializationConfig.Feature.WRITE_ENUMS_USING_TO_STRING);
 
         final Map fromValue = dbObject.toMap();
-        final Map<String, Map<String, String>> vastaukset = (Map<String, Map<String, String>>) fromValue.get("vastaukset");
-        if (vastaukset != null) {
-            final Map<String, String> henkilotiedot = vastaukset.get("henkilotiedot");
+        final Map<String, Map<String, String>> answers = (Map<String, Map<String, String>>) fromValue.get("answers");
+        if (answers != null) {
+            final Map<String, String> henkilotiedot = answers.get("henkilotiedot");
             if (henkilotiedot != null && henkilotiedot.containsKey(SocialSecurityNumber.HENKILOTUNNUS)) {
                 final String hetu = henkilotiedot.get(SocialSecurityNumber.HENKILOTUNNUS);
                 henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS, encrypterService.decrypt(hetu));

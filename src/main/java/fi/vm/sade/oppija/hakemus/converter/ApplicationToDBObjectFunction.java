@@ -59,10 +59,10 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
         mapper.disable(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
 
         final Map m = mapper.convertValue(application, Map.class);
-        final Map<String, Map<String, String>> vastaukset = (Map<String, Map<String, String>>) m.get("vastaukset");
+        final Map<String, Map<String, String>> answers = (Map<String, Map<String, String>>) m.get("answers");
 
-        if (vastaukset != null) {
-            final Map<String, String> henkilotiedot = vastaukset.get("henkilotiedot");
+        if (answers != null) {
+            final Map<String, String> henkilotiedot = answers.get("henkilotiedot");
             if (henkilotiedot != null && henkilotiedot.containsKey(SocialSecurityNumber.HENKILOTUNNUS)) {
                 final String hetu = henkilotiedot.get(SocialSecurityNumber.HENKILOTUNNUS);
                 henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS, aesEncypter.encrypt(hetu));
