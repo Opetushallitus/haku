@@ -91,6 +91,7 @@
                                 <haku:i18nText value="${scopeOption.i18nText}"/></option>
                         </c:forEach>
                     </select>
+                    <haku:errorMessage id="${customScopeKey}"/>
                     <select id="${customLanguageKey}" name="${customLanguageKey}" required="required">
                         <option></option>
                         <c:forEach var="languageOption" items="${element.languageOptions}">
@@ -99,6 +100,7 @@
                                 <haku:i18nText value="${languageOption.i18nText}"/></option>
                         </c:forEach>
                     </select>
+                    <haku:errorMessage id="${customLanguageKey}"/>
                     <a href="#" class="btn-remove"></a>
                 </td>
                 <td>
@@ -110,16 +112,18 @@
                                     <haku:i18nText value="${grade.i18nText}"/></option>
                             </c:forEach>
                         </select>
+                        <haku:errorMessage id="${customCommonGradeKey}"/>
                     </div>
                 </td>
                 <td>
                     <div class="field-container-select">
-                        <select id="${customOptionalGradeKey}" name="${customOptionalGradeKey}">
+                        <select id="${customOptionalGradeKey}" name="${customOptionalGradeKey}" required="required">
                             <c:forEach var="grade" items="${element.gradeRange}">
                                 <option value="${grade.value}" ${(categoryData[customOptionalGradeKey] eq grade.value) ? "selected=\"selected\"" : ""}>
                                     <haku:i18nText value="${grade.i18nText}"/></option>
                             </c:forEach>
                         </select>
+                        <haku:errorMessage id="${customOptionalGradeKey}"/>
                     </div>
                 </td>
             </tr>

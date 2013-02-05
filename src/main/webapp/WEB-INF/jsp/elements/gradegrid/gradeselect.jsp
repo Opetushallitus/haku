@@ -25,4 +25,5 @@
                 <haku:i18nText value="${grade.i18nText}"/></option>
         </c:forEach>
     </select>
+    <haku:errorMessage id="${gradeSelectId}"/>
 </div>

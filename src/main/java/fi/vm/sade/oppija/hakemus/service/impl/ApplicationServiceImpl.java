@@ -42,6 +42,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -98,7 +99,15 @@ public class ApplicationServiceImpl implements ApplicationService {
         final Phase phase = activeForm.getPhase(applicationPhase.getPhaseId());
         final Map<String, String> vastaukset = applicationPhase.getAnswers();
 
-        ValidationResult validationResult = ElementTreeValidator.validate(phase, vastaukset);
+        Map<String, String> allAnswers = new HashMap<String, String>();
+        //if the current phase has previous phase, get all the answers for validating rules
+        if (phase.isHasPrev()) {
+            Application current = getApplication(applicationState.getHakemus().getFormId());
+            allAnswers.putAll(current.getVastauksetMerged());
+        }
+        allAnswers.putAll(vastaukset);
+
+        ValidationResult validationResult = ElementTreeValidator.validate(phase, allAnswers);
         applicationState.addError(validationResult.getErrorMessages());
         if (applicationState.isValid()) {
             if (application.getOid() == null) {
@@ -106,6 +115,8 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
             this.applicationDAO.tallennaVaihe(applicationState);
         }
+        //sets all answers merged, needed for re-rendering view if errors
+        applicationState.setAnswersMerged(allAnswers);
         return applicationState;
     }
 

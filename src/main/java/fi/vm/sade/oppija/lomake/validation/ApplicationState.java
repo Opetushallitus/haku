@@ -69,4 +69,7 @@ public class ApplicationState {
         return VALMIS.equals(vaiheId);
     }
 
+    public void setAnswersMerged(Map<String, String> answersMerged) {
+        modelObjects.put("categoryData", answersMerged);
+    }
 }

@@ -19,8 +19,12 @@ package fi.vm.sade.oppija.lomake.domain.elements.custom;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomake.validation.Validator;
+import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -94,4 +98,24 @@ public class GradeGrid extends Titled {
         return customLanguageTitle;
     }
 
+    @Override
+    @JsonIgnore
+    public List<Validator> getValidators() {
+        List<Validator> listOfValidators = new ArrayList<Validator>();
+        for (SubjectRow subjectRow : subjectsBeforeLanguages) {
+             addRequiredValidators(listOfValidators, subjectRow.getId());
+        }
+        for (LanguageRow languageRow : languages) {
+            addRequiredValidators(listOfValidators, languageRow.getId());
+        }
+        for (SubjectRow subjectRow : subjectsAfterLanguages) {
+            addRequiredValidators(listOfValidators, subjectRow.getId());
+        }
+        return listOfValidators;
+    }
+
+    private void addRequiredValidators(final List<Validator> listOfValidators, final String id) {
+        listOfValidators.add(new RequiredFieldFieldValidator("common-" + id));
+        listOfValidators.add(new RequiredFieldFieldValidator("optional-" + id));
+    }
 }
