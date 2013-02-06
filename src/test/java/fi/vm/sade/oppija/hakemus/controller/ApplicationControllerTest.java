@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
 import java.util.LinkedList;
 import java.util.List;
 
+import fi.vm.sade.oppija.hakemus.resource.ApplicationResource;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
@@ -39,17 +40,16 @@ public class ApplicationControllerTest {
 
     private ApplicationService applicationService;
     private Application application;
-    private ApplicationController applicationController;
+    private ApplicationResource applicationResource;
 
     @Test
     public void testSearchApplicationsFound() throws Exception {
         this.application = new Application();
         this.applicationService = mock(ApplicationService.class);
         when(applicationService.findApplications(TERM)).thenReturn(Lists.newArrayList(this.application));
-        applicationController = new ApplicationController();
-        applicationController.applicationService = this.applicationService;
+        applicationResource = new ApplicationResource(this.applicationService);
         
-        List<Application> applications = applicationController.searchApplications(TERM);
+        List<Application> applications = applicationResource.findApplications(TERM, "", false, "");
         assertFalse(applications.isEmpty());
     }
     
@@ -58,10 +58,9 @@ public class ApplicationControllerTest {
         this.application = new Application();
         this.applicationService = mock(ApplicationService.class);
         when(applicationService.findApplications(TERM)).thenReturn(new LinkedList<Application>());
-        applicationController = new ApplicationController();
-        applicationController.applicationService = this.applicationService;
+        applicationResource = new ApplicationResource(this.applicationService);
         
-        List<Application> applications = applicationController.searchApplications(TERM);
+        List<Application> applications = applicationResource.findApplications(TERM, "", false, "");
         assertNotNull(applications);
         assertTrue(applications.isEmpty());
     }
@@ -71,10 +70,9 @@ public class ApplicationControllerTest {
         this.application = new Application();
         this.applicationService = mock(ApplicationService.class);
         when(applicationService.getApplication(TERM)).thenReturn(this.application);
-        applicationController = new ApplicationController();
-        applicationController.applicationService = this.applicationService;
+        applicationResource = new ApplicationResource(this.applicationService);
         
-        Application application = applicationController.getApplication(TERM);
+        Application application = applicationResource.getApplicationByOid(TERM);
         assertEquals(this.application, application);
     }
 

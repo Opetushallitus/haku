@@ -20,6 +20,8 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +41,7 @@ import java.util.List;
 public class ApplicationResource {
 
     private ApplicationService applicationService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
 
     @Autowired
     public ApplicationResource(ApplicationService applicationService) {
@@ -46,7 +49,7 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("/{oid}")
+    @Path("/process/{oid}")
     @Produces(MediaType.APPLICATION_JSON)
     public ApplicationDTO getApplication(@PathParam("oid") String oid) {
 
@@ -60,6 +63,7 @@ public class ApplicationResource {
     }
 
     @GET
+    @Path("/process")
     @Produces(MediaType.APPLICATION_JSON)
     public List<ApplicationDTO> getApplicationsByAOId(@QueryParam("aoid") String aoid) {
         if (aoid != null) {
@@ -73,5 +77,29 @@ public class ApplicationResource {
         } else {
             throw new JSONException(Response.Status.BAD_REQUEST, "Invalid application option id argument");
         }
+    }
+
+    @GET
+    @Path("{oid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Application getApplicationByOid(@PathParam("oid") String oid) {
+        LOGGER.debug("Getting application by oid : {}", oid);
+        try {
+            return applicationService.getApplication(oid);
+        } catch (ResourceNotFoundException e) {
+            throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application");
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Application> findApplications(@DefaultValue("") @QueryParam("q") String q,
+                                              @DefaultValue("") @QueryParam("appState") String appState,
+                                              @DefaultValue("false") @QueryParam("fetchPassive") boolean fetchPassive,
+                                              @DefaultValue("") @QueryParam("appPreference") String appPreference) {
+        LOGGER.debug("Finding applications q:{}, appState:{}, fetchPassive:{}, appPreference:{}", new Object[]{q, appState, fetchPassive, appPreference});
+        List<Application> result = new ArrayList<Application>();
+        result.addAll(applicationService.findApplications(q));
+        return result;
     }
 }

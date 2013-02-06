@@ -50,7 +50,7 @@ public class ApplicationIT extends AbstractRemoteTest {
 
     @Test
     public void testFindByApplicationOption() throws IOException {
-        beginAt("applications?aoid=776");
+        beginAt("applications/process/?aoid=776");
         String response = getPageSource();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -60,7 +60,7 @@ public class ApplicationIT extends AbstractRemoteTest {
 
     @Test
     public void testFindByInvalidApplicationOption() throws IOException {
-        beginAt("applications?aoid=INVALID");
+        beginAt("applications/process/?aoid=INVALID");
         String response = getPageSource();
 
         ObjectMapper mapper = new ObjectMapper();

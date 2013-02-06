@@ -65,15 +65,17 @@
                     <tr>
                         <td>
                             <input type="text" id="entry" class="search width-60"
-                               placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero" ng-model="term"/>
+                               placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero" ng-model="q"/>
                         </td>
                         
                         <td>
-                            <label for="preference-phase">Hakutoiveen tila:</label>
-                            <select class="width-50" name="preference-phase" id="preference-phase">
-                                <option value="all">Kaikki</option>
-                                <option value="ready">Valmis</option>
-                                <option value="draft">Kesken</option>
+                            <label for="application-state">Hakemuksen tila:</label>
+                            <select class="width-50" id="application-state" ng-model="applicationState">
+                                <option value="">Kaikki</option>
+                                <option value="voimassa">Voimassa</option>
+                                <option value="peruttu">Peruttu</option>
+                                <option value="myöhästynyt">Myöhästynyt</option>
+                                <option value="eihakemusta">Ei hakemusta (perustiedot siirretty)</option>
                             </select>
                         </td>
                         <!--
@@ -104,7 +106,7 @@
                         
                         <td>
                             <div>
-                                <input type="checkbox" name="fetch-passive" value="fetch-passive" id="fetch-passive"/>
+                                <input type="checkbox" value="fetch-passive" id="fetch-passive" ng-model="fetchPassive"/>
                                 <label for="fetch-passive">Hae myös passiiviset</label>
                             </div>
                             <!--
@@ -117,8 +119,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="block" for="hakukohde">Hakukohde:</label>
-                             <input class="width-60" type="text" name="Kentta" id="hakukohde" placeholder="hae nimellä tai koodilla"/>
+                            <label class="block" for="application-preference">Hakukohde:</label>
+                             <input class="width-60" type="text" id="application-preference" placeholder="hae nimellä tai koodilla" ng-model="applicationPreference"/>
                         </td>
                         
                         <td>

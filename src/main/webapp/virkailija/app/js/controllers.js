@@ -4,17 +4,22 @@
 
 
 function SearchCtrl($scope, Application, Config) {
-    $scope.applications = [];
-    $scope.term = '';
     $scope.context = Config.context;
 
     $scope.search = function() {
-        $scope.applications = Application.query({term: $scope.term});
+        $scope.applications = Application.query({q: $scope.q, appState: $scope.applicationState,
+            fetchPassive: $scope.fetchPassive, appPreference: $scope.applicationPreference});
     };
 
     $scope.reset = function() {
         $scope.applications = [];
+        $scope.q = '';
+        $scope.applicationState = '';
+        $scope.fetchPassive = false;
+        $scope.applicationPreference = '';
     };
+
+    $scope.reset();
 }
 
 
