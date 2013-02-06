@@ -21,16 +21,16 @@ describe('Controllers', function(){
         beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, Config) {
 
             $httpBackend = _$httpBackend_;
-            $httpBackend.expectGET("/context.html/hakemukset?term=1.2.3.4.5.0").
+            $httpBackend.expectGET("/context.html/applications?appPreference=&appState=&fetchPassive=false&q=1.2.3.4.5.1").
                 respond([{answers:{henkilotiedot:{Sukunimi: "Testaaja", Etunimet: "Teppo Topias", Henkilotunnus: "120187-1234"}}, oid : "1.2.3.4.5.1", state: "Voimassa"}]);
             scope = $rootScope.$new();
             ctrl = $controller(SearchCtrl, {$scope: scope, Config: Config});
         }));
 
 
-        it('should search "applications" model with 2 application fetched', function() {
+        it('should search "applications" model with 1 application fetched', function() {
             expect(scope.applications).toEqual([]);
-            scope.term = "1.2.3.4.5.0";
+            scope.q = "1.2.3.4.5.1";
             scope.search();
             $httpBackend.flush();
             expect(scope.applications.length).toBe(1);
@@ -39,7 +39,7 @@ describe('Controllers', function(){
 
 
         it('should clear all the fetched applications when reset called', function() {
-            scope.term = "1.2.3.4.5.0";
+            scope.q = "1.2.3.4.5.1";
             scope.search();
             $httpBackend.flush();
             scope.reset();
