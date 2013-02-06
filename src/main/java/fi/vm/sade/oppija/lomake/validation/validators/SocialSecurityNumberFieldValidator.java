@@ -35,25 +35,31 @@ import java.util.regex.Pattern;
  */
 public class SocialSecurityNumberFieldValidator extends FieldValidator {
 
+    // Sonarin mukaan tässä luokassa on isosti taikanumeroita. Niin on.
+    // Hetussa on määrättyjä asioita tarkoittavia numeroita määrätyillä
+    // paikoilla, enkä ala tehdä niitä varten erityisjärjestelyjä.
+    
     private String nationalityId;
     private final Pattern socialSecurityNumberPattern;
     private static final String FI = "fi";
-    private static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))";
-    private static final String ERROR_MESSAGE = "Suomen kansalaisen on syötettävä henkilötunnus";
+    private static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}[aA+-][0-9]{3}([0-9]|[a-z]|[A-Z]))";
+    private static final String NOT_A_DATE_ERROR = "Henkilötunnuksen alkuosa ei muodosta päivämäärää";
+    private static final String DOB_IN_FUTURE = "Henkilötunnuksen syntymäaika on tulevaisuudessa";
+    private static final String GENERIC_ERROR_MESSAGE = "Henkilötunnus puuttuu tai on virheellinen";
     private static Map<String, Integer> centuries = new HashMap<String, Integer>();
     private DateFormat fmt;
     private static String[] checks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C",
             "D", "E", "F", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T", "U", "V", "W", "X", "Y"};
 
     static {
-        centuries.put("+", 1800);
-        centuries.put("-", 1900);
-        centuries.put("a", 2000);
-        centuries.put("A", 2000);
+        centuries.put("+", 1800); // NOSONAR
+        centuries.put("-", 1900); // NOSONAR
+        centuries.put("a", 2000); // NOSONAR
+        centuries.put("A", 2000); // NOSONAR
     }
 
     public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId, final String nationalityId) {
-        this(socialSecurityNumberId, nationalityId, ERROR_MESSAGE, SOCIAL_SECURITY_NUMBER_PATTERN);
+        this(socialSecurityNumberId, nationalityId, GENERIC_ERROR_MESSAGE, SOCIAL_SECURITY_NUMBER_PATTERN);
     }
 
     public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId, final String nationalityId,
@@ -74,7 +80,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
             Matcher matcher = socialSecurityNumberPattern.matcher(socialSecurityNumber);
             if (nationality.equalsIgnoreCase(FI)) {
                 if (!matcher.matches()) {
-                    validationResult = new ValidationResult(fieldName, errorMessage);
+                    validationResult = new ValidationResult(fieldName, GENERIC_ERROR_MESSAGE);
                 }
                 if (!validationResult.hasErrors()) {
                     validationResult = checkDOB(socialSecurityNumber);
@@ -89,13 +95,13 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
 
     private ValidationResult checkCheckSum(String socialSecurityNumber) {
         ValidationResult result = new ValidationResult();
-        String dob = socialSecurityNumber.substring(0, 6);
-        String id = socialSecurityNumber.substring(7, 10);
-        String check = socialSecurityNumber.substring(10, 11);
+        String dob = socialSecurityNumber.substring(0, 6); // NOSONAR
+        String id = socialSecurityNumber.substring(7, 10); // NOSONAR
+        String check = socialSecurityNumber.substring(10, 11); // NOSONAR
         int ssnNumber = Integer.valueOf(dob + id);
-        String myCheck = checks[ssnNumber % 31];
+        String myCheck = checks[ssnNumber % 31]; // NOSONAR
         if (!check.equalsIgnoreCase(myCheck)) {
-            result = new ValidationResult(fieldName, errorMessage);
+            result = new ValidationResult(fieldName, GENERIC_ERROR_MESSAGE);
         }
         return result;
     }
@@ -108,17 +114,17 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
      */
     private ValidationResult checkDOB(String socialSecurityNumber) {
         ValidationResult result = new ValidationResult();
-        String dayAndMonth = socialSecurityNumber.substring(0, 4);
-        String year = Integer.toString((centuries.get(socialSecurityNumber.substring(6, 7)) + Integer
-                .valueOf(socialSecurityNumber.substring(4, 6))));
+        String dayAndMonth = socialSecurityNumber.substring(0, 4); // NOSONAR
+        String year = Integer.toString((centuries.get(socialSecurityNumber.substring(6, 7)) + Integer // NOSONAR
+                .valueOf(socialSecurityNumber.substring(4, 6)))); // NOSONAR
         Date dob = null;
         try {
             dob = fmt.parse(dayAndMonth + year);
         } catch (ParseException e) {
-            result = new ValidationResult(fieldName, errorMessage);
+            result = new ValidationResult(fieldName, NOT_A_DATE_ERROR);
         }
         if (dob != null && dob.after(new Date())) {
-            result = new ValidationResult(fieldName, errorMessage);
+            result = new ValidationResult(fieldName, DOB_IN_FUTURE);
         }
         return result;
     }
