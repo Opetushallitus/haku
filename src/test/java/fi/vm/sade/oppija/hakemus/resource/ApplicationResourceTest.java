@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.fail;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -63,7 +64,7 @@ public class ApplicationResourceTest {
         ArrayList<Application> applications = new ArrayList<Application>();
         applications.add(this.application);
         when(applicationService.getApplicationsByApplicationOption(AOID)).thenReturn(applications);
-
+        when(applicationService.findApplications(OID)).thenReturn(applications);
         this.applicationResource = new ApplicationResource(this.applicationService);
     }
 
@@ -99,5 +100,26 @@ public class ApplicationResourceTest {
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), e.getResponse().getStatus());
     }}
 
+    @Test
+    public void testFindApplications() {
+        List<Application> applications = this.applicationResource.findApplications(OID, "", false, "");
+        assertEquals(1, applications.size());
+    }
 
+    @Test
+    public void testFindApplicationsNoMatch() {
+        List<Application> applications = this.applicationResource.findApplications(INVALID_OID, "", false, "");
+        assertEquals(0, applications.size());
+    }
+
+    @Test
+    public void testGetApplicationsByOid() {
+        Application application = this.applicationResource.getApplicationByOid(OID);
+        assertNotNull(application);
+    }
+
+    @Test(expected = JSONException.class)
+    public void testGetApplicationByInvalidOid() {
+        this.applicationResource.getApplicationByOid(INVALID_OID);
+    }
 }

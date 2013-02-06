@@ -19,6 +19,7 @@ import java.util.List;
 
 import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 import static net.sourceforge.jwebunit.junit.JWebUnit.getPageSource;
 
@@ -68,4 +69,45 @@ public class ApplicationIT extends AbstractRemoteTest {
         assertEquals(0, applications.size());
     }
 
+
+    @Test
+    public void testFindAllApplications() throws IOException {
+        beginAt("applications");
+        String response = getPageSource();
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<Application> applications = mapper.readValue(response, new TypeReference<List<Application>>() { });
+        assertEquals(2, applications.size());
+    }
+
+    @Test
+    public void testFindApplications() throws IOException {
+        beginAt("applications?q=1.2.3.4.5.3");
+        String response = getPageSource();
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<Application> applications = mapper.readValue(response, new TypeReference<List<Application>>() { });
+        assertEquals(1, applications.size());
+    }
+
+    @Test
+    public void testFindApplicationsNoMatch() throws IOException {
+        beginAt("applications?q=nomatch");
+        String response = getPageSource();
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<Application> applications = mapper.readValue(response, new TypeReference<List<Application>>() { });
+        assertEquals(0, applications.size());
+    }
+
+    @Test
+    public void testGetApplication() throws IOException {
+        beginAt("applications/1.2.3.4.5.3/");
+        String response = getPageSource();
+
+        ObjectMapper mapper = new ObjectMapper();
+        Application application = mapper.readValue(response, new TypeReference<Application>() { });
+        assertNotNull(application);
+        assertEquals("1.2.3.4.5.3", application.getOid());
+    }
 }
