@@ -105,7 +105,7 @@ public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
         Theme koulutustaustaRyhmä = new Theme("KoulutustaustaGrp", createI18NText("Koulutustausta"), null);
         Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", createI18NText("Hakutoiveet"), lisakysymysMap);
         Theme arvosanatRyhmä = new Theme("arvosanatGrp", createI18NText("Arvosanat"), oppiaineMap);
-        Theme tyokokemusRyhmä = new Theme("tyokokemusGrp", createI18NText("Työkokemus"), null);
+        WorkExperienceTheme tyokokemusRyhmä = new WorkExperienceTheme("tyokokemusGrp", createI18NText("Työkokemus"), null, "32");
         Theme lupatiedotRyhmä = new Theme("lupatiedotGrp", createI18NText("Lupatiedot"), null);
         Theme yhteenvetoRyhmä = new Theme("yhteenvetoGrp", createI18NText("yhteenveto"), null);
 

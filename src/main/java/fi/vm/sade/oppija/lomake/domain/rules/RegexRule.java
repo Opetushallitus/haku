@@ -39,4 +39,19 @@ public final class RegexRule {
         }
         return false;
     }
+
+    public static boolean evaluateAtLeastOne(String[] values, String expression) {
+        if (values != null && values.length > 0) {
+            final Pattern compile = Pattern.compile(expression);
+            for (int i = 0; i < values.length; i++) {
+                Matcher matcher = compile.matcher(values[i]);
+                LOGGER.debug("Using regexp: {} for value: {}, matches: {}", new Object[]{expression, values[i], matcher.matches()});
+                if (matcher.matches()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

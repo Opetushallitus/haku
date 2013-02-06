@@ -29,13 +29,14 @@
                         selected = 'selected = "selected"';
                         preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"));
                     }
-                    $selectInput.append('<option value="' + item.name + '" ' + selected + ' data-id="' + item.id + '">' + item.name + '</option>');
+                    $selectInput.append('<option value="' + item.name + '" ' + selected + ' data-id="' + item.id + '" data-educationdegree="' + item.educationDegree + '">' + item.name + '</option>');
                 });
             });
         },
 
         clearSelectInput : function(selectInputId) {
             $("#" + selectInputId + "-id").val("");
+            $("#" + selectInputId + "-educationDegree").val("");
             $("#" + selectInputId).html("<option></option>");
 
         },
@@ -91,11 +92,14 @@
     });
 
     $(".field-container-select select").change(function(event) {
-        var $hiddenInput = $("#" + this.id + "-id"), selectedId, value = $(this).val();
+        var $hiddenInput = $("#" + this.id + "-id"), $educationDegreeInput = $("#" + this.id + "-educationDegree"),
+            selectedId, educationDegree, value = $(this).val();
         $(this).children().removeAttr("selected");
         $(this).children("option[value='" + value + "']").attr("selected", "selected");
         selectedId = $("#" + this.id + " option:selected").data("id");
         $hiddenInput.val(selectedId);
+        educationDegree = $("#" + this.id + " option:selected").data("educationdegree");
+        $educationDegreeInput.val(educationDegree);
         preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"));
     });
 })();

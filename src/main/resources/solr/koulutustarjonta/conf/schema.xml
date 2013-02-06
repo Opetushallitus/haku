@@ -29,6 +29,7 @@
 
         <field name="AOId" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="AOTitle" type="text_general" indexed="true" stored="true" multiValued="false"/>
+        <field name="AOEducationDegree" type="text_general" indexed="false" stored="true" multiValued="false"/>
         <field name="AODescription" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="AOLastYearMaxScore" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="AOLastYearMinScore" type="text_general" indexed="true" stored="true" multiValued="false"/>

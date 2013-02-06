@@ -31,10 +31,13 @@ public class ApplicationOption implements Serializable {
 
     private String id;
     private String name;
+    private String educationDegree;
 
-    public ApplicationOption(@JsonProperty(value = "id") String id, @JsonProperty(value = "name") String name) {
+    public ApplicationOption(@JsonProperty(value = "id") String id, @JsonProperty(value = "name") String name,
+                             @JsonProperty(value = "educationDegree") String educationDegree) {
         this.id = id;
         this.name = name;
+        this.educationDegree = educationDegree;
     }
 
     public String getId() {
@@ -43,5 +46,9 @@ public class ApplicationOption implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public String getEducationDegree() {
+        return educationDegree;
     }
 }

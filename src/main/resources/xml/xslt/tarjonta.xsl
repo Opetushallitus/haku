@@ -47,8 +47,6 @@
                 <xsl:call-template name="AOView_fi"/>
 
             </field>
-
-
             <field name="AOId">
                 <xsl:variable name="identifier" select="types:Identifier"/>
                 <xsl:value-of select="fn:tokenize($identifier, '/')[last()]"/>
@@ -56,6 +54,8 @@
             <field name="AOTitle">
                 <xsl:value-of select="types:Title"/>
             </field>
+            <!-- TODO: resolve from top level Learning Opportunity -->
+            <field name="AOEducationDegree">32</field>
             <!-- DEPRECATED
             <field name="AODescription">
                 <xsl:value-of select="types:Description"/>
