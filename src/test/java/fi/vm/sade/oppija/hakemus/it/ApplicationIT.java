@@ -43,6 +43,7 @@ public class ApplicationIT extends AbstractRemoteTest {
     public void setUp() throws Exception {
         super.initTestEngine();
         try {
+            dbFactory.getObject().getCollection("application").drop();
             dbFactory.getObject().getCollection("application").insert(applicationTestDataObject);
         } catch (Exception e) {
             e.printStackTrace();
