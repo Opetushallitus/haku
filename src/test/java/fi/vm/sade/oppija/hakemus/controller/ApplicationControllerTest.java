@@ -16,17 +16,22 @@
 
 package fi.vm.sade.oppija.hakemus.controller;
 
-import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import org.junit.Test;
+
+import com.google.common.collect.Lists;
+
+import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 
 public class ApplicationControllerTest {
 
@@ -36,25 +41,41 @@ public class ApplicationControllerTest {
     private Application application;
     private ApplicationController applicationController;
 
-    @Before
-    public void setUp() throws Exception {
+    @Test
+    public void testSearchApplicationsFound() throws Exception {
+        this.application = new Application();
+        this.applicationService = mock(ApplicationService.class);
+        when(applicationService.findApplications(TERM)).thenReturn(Lists.newArrayList(this.application));
+        applicationController = new ApplicationController();
+        applicationController.applicationService = this.applicationService;
+        
+        List<Application> applications = applicationController.searchApplications(TERM);
+        assertFalse(applications.isEmpty());
+    }
+    
+    @Test
+    public void testSearchApplicationsNotFound() throws Exception {
+        this.application = new Application();
+        this.applicationService = mock(ApplicationService.class);
+        when(applicationService.findApplications(TERM)).thenReturn(new LinkedList<Application>());
+        applicationController = new ApplicationController();
+        applicationController.applicationService = this.applicationService;
+        
+        List<Application> applications = applicationController.searchApplications(TERM);
+        assertNotNull(applications);
+        assertTrue(applications.isEmpty());
+    }
+
+    @Test
+    public void testGetApplication() throws Exception {
         this.application = new Application();
         this.applicationService = mock(ApplicationService.class);
         when(applicationService.getApplication(TERM)).thenReturn(this.application);
         applicationController = new ApplicationController();
         applicationController.applicationService = this.applicationService;
-    }
-
-    @Test
-    public void testSearchApplicationsFound() throws Exception {
-        List<Application> applications = applicationController.searchApplications(TERM);
-        assertFalse(applications.isEmpty());
-    }
-
-
-    @Test
-    public void testGetApplication() throws Exception {
+        
         Application application = applicationController.getApplication(TERM);
         assertEquals(this.application, application);
     }
+
 }

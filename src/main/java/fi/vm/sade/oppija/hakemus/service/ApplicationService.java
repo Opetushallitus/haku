@@ -102,4 +102,17 @@ public interface ApplicationService {
      */
     List<Application> getApplicationsByApplicationOption(String applicationOptionId);
 
+    /**
+     * Return applications that match to given search term. Term is matched against
+     *      - applications' OID 
+     *      - applicants' ID
+     *      - applicants' DOB
+     *      - applicants' hetu
+     *      - applicants' name
+     * 
+     * @param term
+     * @return
+     */
+    List<Application> findApplications(String term);
+
 }

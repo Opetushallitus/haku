@@ -16,6 +16,18 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
 import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
@@ -37,16 +49,6 @@ import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author jukka
@@ -62,7 +64,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final FormService formService;
     private final ApplicationProcessStateService applicationProcessStateService;
     private static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))";
+    private static final String OID_PATTERN = "^[0-9]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+$";
     private final Pattern socialSecurityNumberPattern;
+    private final Pattern oidPattern;
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
@@ -75,6 +79,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.formService = formService;
         this.applicationProcessStateService = applicationProcessStateService;
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
+        this.oidPattern = Pattern.compile(OID_PATTERN);
         this.applicationOidService = applicationOidService;
     }
 
@@ -193,6 +198,22 @@ public class ApplicationServiceImpl implements ApplicationService {
         return listOfApplications.get(0);
     }
 
+    @Override
+    public List<Application> findApplications(final String term) {
+        // First figure out which field should be matched
+        Application application = new Application();
+        List<Application> applications = new LinkedList<Application>();
+        if (oidPattern.matcher(term).matches()) {
+            application.setOid(term);
+            applications.addAll(applicationDAO.find(application));
+        } else if (socialSecurityNumberPattern.matcher(term).matches()){
+            applications.addAll(applicationDAO.findByApplicantSsn(term));
+        } else {
+            applications.addAll(applicationDAO.findByApplicantName(term));
+        }
+        return applications;
+    }
+
     private Application getApplication(final Application application) throws ResourceNotFoundException {
         List<Application> listOfApplications = applicationDAO.find(application);
         if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
@@ -210,4 +231,5 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
         }
     }
+
 }

@@ -16,12 +16,21 @@
 
 package fi.vm.sade.oppija.hakemus.dao.impl;
 
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
+
 import fi.vm.sade.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.oppija.hakemus.converter.DBObjectToApplicationFunction;
@@ -31,12 +40,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -142,6 +145,23 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private List<Application> findApplications(DBObject dbObject) {
         final DBCursor dbCursor = getCollection().find(dbObject);
         return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
+    }
+
+    @Override
+    public List<Application> findByApplicantName(String term) {
+        Pattern namePattern = Pattern.compile(term, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+        DBObject query = QueryBuilder.start().or(
+                QueryBuilder.start("answers.henkilotiedot.Etunimet").regex(namePattern).get(),
+                QueryBuilder.start("answers.henkilotiedot.Sukunimi").regex(namePattern).get())
+                .get();
+        return findApplications(query);
+    }
+
+    @Override
+    public List<Application> findByApplicantSsn(String term) {
+        DBObject query = QueryBuilder.start("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH)
+                .is(shaEncrypter.encrypt(term)).get();
+        return findApplications(query);
     }
 
 }

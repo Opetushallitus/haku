@@ -58,7 +58,9 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
         mapper.disable(SerializationConfig.Feature.WRITE_EMPTY_JSON_ARRAYS);
         mapper.disable(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
 
+        @SuppressWarnings("rawtypes")
         final Map m = mapper.convertValue(application, Map.class);
+        @SuppressWarnings("unchecked")
         final Map<String, Map<String, String>> answers = (Map<String, Map<String, String>>) m.get("answers");
 
         if (answers != null) {
@@ -67,7 +69,6 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
                 final String hetu = henkilotiedot.get(SocialSecurityNumber.HENKILOTUNNUS);
                 henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS, aesEncypter.encrypt(hetu));
                 henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS_HASH, shaEncrypter.encrypt(hetu));
-
             }
         }
         final BasicDBObject basicDBObject = new BasicDBObject(m);

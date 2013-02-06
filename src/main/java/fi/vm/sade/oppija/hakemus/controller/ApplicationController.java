@@ -45,14 +45,8 @@ public class ApplicationController {
     public List<Application> searchApplications(@QueryParam("term") String term) {
         //TODO design search interface and remove this test impl
         List<Application> result = new ArrayList<Application>();
-        try {
-            Application app = applicationService.getApplication(term);
-            result.add(app);
-            return result;
-        } catch (ResourceNotFoundException e) {
-            //return empty list if not found
-            return result;
-        }
+        result.addAll(applicationService.findApplications(term));
+        return result;
     }
 
     @GET
