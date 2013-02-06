@@ -54,8 +54,9 @@
             <field name="AOTitle">
                 <xsl:value-of select="types:Title"/>
             </field>
-            <!-- TODO: resolve from top level Learning Opportunity -->
-            <field name="AOEducationDegree">32</field>
+            <field name="AOEducationDegree">
+                <xsl:value-of select="types:EducationDegree"/>
+            </field>
             <!-- DEPRECATED
             <field name="AODescription">
                 <xsl:value-of select="types:Description"/>

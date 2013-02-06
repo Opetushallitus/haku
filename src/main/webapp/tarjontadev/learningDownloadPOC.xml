@@ -876,6 +876,10 @@
         <!-- hakukohteen nimi -->
         <Title xml:lang="fi">Ensihoidon koulutusohjelma, yo</Title>
 
+        <!-- Added for testing purposes -->
+        <EducationDegree>30</EducationDegree>
+
+
         <!-- viittaus hakuun johon tämä hakukohde kuuluu -->
         <ApplicationSystemRef>
 
@@ -1033,6 +1037,9 @@
 
         <!-- hakukohteen nimi -->
         <Title xml:lang="fi">Sosiaali- ja terveysalan perustutkinto, pk</Title>
+
+        <!-- Added for testing purposes -->
+        <EducationDegree>32</EducationDegree>
 
         <!-- viittaus hakuun johon tämä hakukohde kuuluu -->
         <ApplicationSystemRef>
