@@ -3,6 +3,7 @@ package fi.vm.sade.oppija.lomake.domain.elements.custom;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.oppija.util.OppijaConstants;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
@@ -14,9 +15,7 @@ import java.util.Map;
 public class WorkExperienceTheme extends Theme {
 
     // Degree types of the requested application options
-    private String[] aoEducationDegreeKeys = {"preference1-Koulutus-educationDegree", "preference2-Koulutus-educationDegree",
-            "preference3-Koulutus-educationDegree", "preference4-Koulutus-educationDegree",
-            "preference5-Koulutus-educationDegree"};
+    private String[] aoEducationDegreeKeys = OppijaConstants.AO_EDUCATION_DEGREE_KEYS;
     // degree type that needs to be applied to
     // so that this phase is rendered
     private String requiredEducationDegree;
