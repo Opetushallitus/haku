@@ -15,7 +15,7 @@ import static org.junit.Assert.fail;
 /**
  * @author Hannu Lyytikainen
  */
-public class WorkEducationPhaseTest extends AbstractSeleniumBase {
+public class WorkEducationThemeTest extends AbstractSeleniumBase {
 
     private FormModelHelper formModelHelper;
 
