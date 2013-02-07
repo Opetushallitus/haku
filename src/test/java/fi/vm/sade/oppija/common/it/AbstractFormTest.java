@@ -17,31 +17,20 @@
 package fi.vm.sade.oppija.common.it;
 
 import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.converter.FormModelToJsonString;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import net.sourceforge.jwebunit.util.TestingEngineRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.*;
-
-/**
- * @author jukka
- * @version 9/13/123:42 PM}
- * @since 1.1
- */
 public abstract class AbstractFormTest extends AbstractRemoteTest {
+    public static final Logger LOGGER = LoggerFactory.getLogger(AbstractFormTest.class);
 
     public AbstractFormTest() {
     }
 
-    protected FormModelHelper initModel(FormModel formModel1) {
+    protected FormModelHelper updateModelAndCreateFormModelHelper(FormModel formModel) {
         super.initTestEngine();
-        beginAt("/admin/edit");
-        login("admin");
-        gotoPage("/admin/edit");
-        final String convert = new FormModelToJsonString().apply(formModel1);
-        setTextField("model", convert);
-        submit("tallenna");
-        return new FormModelHelper(formModel1);
+        new AdminResourceClient(getBaseUrl()).updateModel(formModel);
+        return new FormModelHelper(formModel);
     }
 
 }

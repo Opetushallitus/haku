@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PostalCode;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -59,7 +60,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         Theme testiRyhma = new Theme("testiGrp", createI18NText("TestiGrp"), null);
         testivaihe.addChild(testiRyhma);
         Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
-        postOffices.put("00100", new PostOffice("Helsinki"));
+        postOffices.put("00100", new PostOffice("00100", ElementUtil.createI18NText("Helsinki")));
         PostalCode postinumero = new PostalCode("postinumero1", createI18NText("postinumero"), postOffices);
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
@@ -70,7 +71,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
 
         TextQuestion tq = new TextQuestion("foo", createI18NText("bar"));
         testiRyhma.addChild(tq);
-        initModel(formModel);
+        updateIndexAndFormModel(formModel);
     }
 
     @Test

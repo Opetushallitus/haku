@@ -41,7 +41,7 @@ public class DropdownSelectIT extends AbstractFormTest {
         select.addOption("value1", createI18NText("title"), "select");
         select.addOption("value2", createI18NText("title2"), "select2");
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(select);
-        this.formModelHelper = initModel(formModel);
+        this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
     }
 
     @Test

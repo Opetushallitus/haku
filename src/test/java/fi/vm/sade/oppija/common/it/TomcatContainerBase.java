@@ -22,9 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.setTextField;
-import static net.sourceforge.jwebunit.junit.JWebUnit.submit;
-
 /**
  * @author jukka
  * @version 9/18/1210:44 AM}
@@ -41,9 +38,5 @@ public abstract class TomcatContainerBase {
         return container.getBaseUrl();
     }
 
-    protected void login(String admin) {
-        setTextField("j_username", "admin");
-        setTextField("j_password", "admin");
-        submit();
-    }
+
 }

@@ -14,53 +14,49 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.dao.impl;
+package fi.vm.sade.oppija.lomake;
 
-import com.google.common.collect.Lists;
-import fi.vm.sade.oppija.lomake.dao.FormModelDAO;
+import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.*;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
-import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.lomake.validation.ApplicationState;
-import fi.vm.sade.oppija.lomake.validation.Validator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 
-@Service("FormModelDummyMemoryDao")
-public class
-        FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
+@Service
+@SuppressWarnings("all")
+public class Yhteishaku2013 {
 
-    final ApplicationPeriod applicationPeriod;
-    private FormModel formModel;
+    private final ApplicationPeriod applicationPeriod;
     public static String MOBILE_PHONE_PATTERN = "^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
 
-    public FormModelDummyMemoryDaoImpl() {
-        this("yhteishaku", "henkilotiedot");
-    }
+    private final KoodistoService koodistoService;
 
-    public FormModelDummyMemoryDaoImpl(final String formId, final String firstCategoryId) {
+    @Autowired
+    public Yhteishaku2013(final KoodistoService koodistoService) {
+        this.koodistoService = koodistoService;
         this.applicationPeriod = new ApplicationPeriod("Yhteishaku");
-        formModel = new FormModel();
-        formModel.addApplicationPeriod(applicationPeriod);
-        Phase henkilötiedot = new Phase(firstCategoryId, createI18NText("Henkilötiedot"), false);
+        Phase henkilötiedot = new Phase("henkilotiedot", createI18NText("Henkilötiedot"), false);
         Phase koulutustausta = new Phase("koulutustausta", createI18NText("Koulutustausta"), false);
         Phase hakutoiveet = new Phase("hakutoiveet", createI18NText("Hakutoiveet"), false);
         Phase arvosanat = new Phase("arvosanat", createI18NText("Arvosanat"), false);
         Phase lisätiedot = new Phase("lisatiedot", createI18NText("Lisätiedot"), false);
         Phase esikatselu = new Phase("esikatselu", createI18NText("Esikatselu"), true);
 
-        Form form = new Form(formId, createI18NText("Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013"));
+        Form form = new Form("yhteishaku", createI18NText("Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013"));
         form.addChild(henkilötiedot);
         form.addChild(koulutustausta);
         form.addChild(hakutoiveet);
@@ -185,11 +181,12 @@ public class
         socialSecurityNumber.setFemaleId(sukupuoli.getOptions().get(1).getId());
         socialSecurityNumber.setNationalityId(kansalaisuus.getId());
 
-//        SelectingSubmitRule autofillhetu = new SelectingSubmitRule(henkilötunnus.getId(), sukupuoli.getId());
-//        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[13579]\\w", sukupuoli.getOptions().get(0));
-//        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[24680]\\w", sukupuoli.getOptions().get(1));
+        //        SelectingSubmitRule autofillhetu = new SelectingSubmitRule(henkilötunnus.getId(), sukupuoli.getId());
+        //        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[13579]\\w", sukupuoli.getOptions().get(0));
+        //        autofillhetu.addBinding(henkilötunnus, sukupuoli, "\\d{6}\\S\\d{2}[24680]\\w", sukupuoli.getOptions().get(1));
 
-        Element postinumero = new PostalCode("Postinumero", createI18NText("Postinumero"), getPostOffices());
+        Element postinumero = new PostalCode("Postinumero", createI18NText("Postinumero"),
+                createPostOffices());
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
@@ -283,15 +280,7 @@ public class
 
     public GradeGrid createGradeGrid() {
 
-        List<Option> gradeRange = new ArrayList<Option>();
-        gradeRange.add(new Option("grade_nograde", createI18NText("Ei arvosanaa"), "-1"));
-        gradeRange.add(new Option("grade_10", createI18NText("10"), "10"));
-        gradeRange.add(new Option("grade_9", createI18NText("9"), "9"));
-        gradeRange.add(new Option("grade_8", createI18NText("8"), "8"));
-        gradeRange.add(new Option("grade_7", createI18NText("7"), "7"));
-        gradeRange.add(new Option("grade_6", createI18NText("6"), "6"));
-        gradeRange.add(new Option("grade_5", createI18NText("5"), "5"));
-        gradeRange.add(new Option("grade_4", createI18NText("4"), "4"));
+        List<Option> gradeRange = koodistoService.getGradeRanges();
 
         SubjectRow finnish = new SubjectRow("subject_finnish", createI18NText("Äidinkieli ja kirjallisuus"));
         List<SubjectRow> subjectRowsBefore = new ArrayList<SubjectRow>();
@@ -528,17 +517,6 @@ public class
                 "Aenean ornare, mi non rutrum gravida, augue neque pretium leo, in porta justo mauris eget orci. Donec porttitor eleifend aliquam. Cras mattis tincidunt purus, et facilisis risus consequat vitae. Nunc consectetur, odio sit amet rhoncus iaculis, ipsum lectus pharetra lectus, sit amet vestibulum est mi commodo enim. Sed libero sem, iaculis a lobortis non, molestie id arcu. Donec gravida tincidunt ligula quis mattis. Nulla sit amet malesuada sem. Duis porta adipiscing purus iaculis consequat. Aliquam erat volutpat. ";
     }
 
-    @Override
-    public void insert(FormModel formModel) {
-        throw new RuntimeException("Insert not implemented");
-    }
-
-
-    @Override
-    public void insertModelAsJsonString(String builder) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
     private Question createRequiredTextQuestion(final String id, final String name, final String size) {
         TextQuestion textQuestion = new TextQuestion(id, createI18NText(name));
         textQuestion.addAttribute("required", "required");
@@ -546,105 +524,16 @@ public class
         return textQuestion;
     }
 
-    public FormModel getModel() {
-        return formModel;
+    public ApplicationPeriod getApplicationPeriod() {
+        return applicationPeriod;
     }
 
-
-    @Override
-    public List<FormModel> find(FormModel formModel) {
-        return Lists.newArrayList(getModel());
-    }
-
-    @Override
-    public void update(FormModel o, FormModel n) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void delete(FormModel formModel) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public Form getActiveForm(String applicationPeriodId, String formId) {
-        try {
-            return formModel.getApplicationPeriodById(applicationPeriodId).getFormById(formId);
-        } catch (Exception e) {
-            throw new ResourceNotFoundExceptionRuntime("Not found");
+    private Map<String, PostOffice> createPostOffices() {
+        List<PostOffice> listOfPostOffices = koodistoService.getPostOffices();
+        Map<String, PostOffice> postOfficeMap = new HashMap<String, PostOffice>(listOfPostOffices.size());
+        for (PostOffice postOffice : listOfPostOffices) {
+            postOfficeMap.put(postOffice.getPostcode(), postOffice);
         }
+        return ImmutableMap.copyOf(postOfficeMap);
     }
-
-    @Override
-    public Phase getFirstPhase(String applicationPeriodId, String formId) {
-        try {
-            return this.getActiveForm(applicationPeriodId, formId).getFirstPhase();
-        } catch (Exception e) {
-            throw new ResourceNotFoundExceptionRuntime("Not found");
-        }
-    }
-
-    @Override
-    public Phase getLastPhase(String applicationPeriodId, String formId) {
-        try {
-            return this.getActiveForm(applicationPeriodId, formId).getLastPhase();
-        } catch (Exception e) {
-            throw new ResourceNotFoundExceptionRuntime("Not found");
-        }
-    }
-
-    @Override
-    public Map<String, ApplicationPeriod> getApplicationPerioidMap() {
-        return getModel().getApplicationPerioidMap();
-    }
-
-    @Override
-    public ApplicationPeriod getApplicationPeriodById(final String applicationPeriodId) {
-        return getModel().getApplicationPeriodById(applicationPeriodId);
-    }
-
-    @Override
-    public Form getForm(String applicationPeriodId, String formId) {
-        ApplicationPeriod applicationPeriod = getApplicationPeriodById(applicationPeriodId);
-        return applicationPeriod.getFormById(formId);
-    }
-
-    @Override
-    public List<Validator> getVaiheValidators(ApplicationState applicationState) {
-        return Collections.<Validator>emptyList();
-    }
-
-    private Map<String, PostOffice> getPostOffices() {
-        Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
-        PostOffice helsinki = new PostOffice("Helsinki");
-        PostOffice espoo = new PostOffice("Espoo");
-        PostOffice tampere = new PostOffice("Tampere");
-        postOffices.put("00180", helsinki);
-        postOffices.put("00002", helsinki);
-        postOffices.put("00100", helsinki);
-        postOffices.put("00102", helsinki);
-        postOffices.put("00120", helsinki);
-        postOffices.put("00130", helsinki);
-        postOffices.put("00140", helsinki);
-        postOffices.put("00150", helsinki);
-        postOffices.put("00160", helsinki);
-        postOffices.put("00170", helsinki);
-        postOffices.put("00190", helsinki);
-        postOffices.put("00200", helsinki);
-        postOffices.put("02100", espoo);
-        postOffices.put("02110", espoo);
-        postOffices.put("02120", espoo);
-        postOffices.put("02130", espoo);
-        postOffices.put("02140", espoo);
-        postOffices.put("02150", espoo);
-        postOffices.put("02160", espoo);
-        postOffices.put("02170", espoo);
-        postOffices.put("02230", espoo);
-        postOffices.put("33100", tampere);
-        postOffices.put("33310", tampere);
-        postOffices.put("33540", tampere);
-        postOffices.put("33200", tampere);
-        return postOffices;
-    }
-
 }

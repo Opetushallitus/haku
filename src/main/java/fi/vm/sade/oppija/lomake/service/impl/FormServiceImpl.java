@@ -62,7 +62,8 @@ public class FormServiceImpl implements FormService {
         if (!applicationPeriod.isActive()) {
             throw new ResourceNotFoundExceptionRuntime("Not active");
         }
-        return applicationPeriod.getFormById(formId);
+        Form formById = applicationPeriod.getFormById(formId);
+        return formById;
     }
 
     @Override

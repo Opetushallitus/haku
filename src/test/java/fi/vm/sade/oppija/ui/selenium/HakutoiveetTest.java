@@ -54,15 +54,14 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
     @Before
     public void init() throws IOException {
         super.before();
-        ApplicationPeriod applicationPeriod = new ApplicationPeriod("Yhteishaku");
         FormModel formModel = new FormModel();
+        ApplicationPeriod applicationPeriod = new ApplicationPeriod("Yhteishaku");
         formModel.addApplicationPeriod(applicationPeriod);
+        Form form = new Form("lomake", createI18NText("yhteishaku"));
         Phase hakutoiveet = new Phase("hakutoiveet", createI18NText("Hakutoiveet"), false);
         Phase lisakysymykset = new Phase("lisakysymykset", createI18NText("Lisäkysymykset"), false);
-        Form form = new Form("lomake", createI18NText("yhteishaku"));
         form.addChild(hakutoiveet);
         form.addChild(lisakysymykset);
-        form.init();
 
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
 
@@ -70,7 +69,6 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         List<Question> lisakysymysList = new ArrayList<Question>();
         lisakysymysList.add(textQuestion);
         lisakysymysMap.put("776", lisakysymysList);
-        applicationPeriod.addForm(form);
 
         Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", createI18NText("Hakutoiveet"), lisakysymysMap);
         hakutoiveet.addChild(hakutoiveetRyhmä);
@@ -90,31 +88,22 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", "preference1-Koulutus-id", "776");
         relatedQuestionRule.addChild(lisakysymys);
         lisakysymyksetRyhma.addChild(relatedQuestionRule);
-
-        initModel(formModel);
-        final fi.vm.sade.oppija.common.selenium.AdminEditPage adminEditPage = new fi.vm.sade.oppija.common.selenium.AdminEditPage(getBaseUrl(), seleniumHelper);
-        seleniumHelper.navigate(adminEditPage);
-        adminEditPage.login("admin");
+        form.init();
+        applicationPeriod.addForm(form);
+        updateIndexAndFormModel(formModel);
     }
 
     @Test
-    public void testEducationPreference() throws InterruptedException {
-        final String url = "lomake/Yhteishaku/lomake/hakutoiveet";
+    public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
         final WebDriver driver = seleniumHelper.getDriver();
-        driver.get(getBaseUrl() + "/" + url);
+        seleniumHelper.navigate("/lomake/Yhteishaku/lomake/hakutoiveet");
         driver.findElement(By.id("preference1-Opetuspiste"));
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Hel");
         driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
         driver.findElement(By.xpath("//option[@value='Ensihoidon koulutusohjelma, yo']")).click();
-        //driver.findElement(By.id("P1_additional_question_1"));
-    }
-
-    @Test
-    public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
-        testEducationPreference();
-        final WebDriver driver = seleniumHelper.getDriver();
         driver.findElement(By.xpath("//button[@class='right']")).click();
+        //seleniumHelper.navigate("/lomake/Yhteishaku/lomake/lisakysymykset");
         driver.findElement(By.id("lisakysymys"));
     }
 

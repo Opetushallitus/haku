@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.lomake.service;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.hakemus.service.impl.ApplicationServiceImpl;
-import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
+import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
@@ -49,7 +49,7 @@ public class AdditionalQuestionsServiceTest {
     private AdditionalQuestionService additionalQuestionService;
 
     public AdditionalQuestionsServiceTest() {
-        FormService formService = new FormModelDummyMemoryDaoImpl();
+        FormService formService = new FormServiceMockImpl();
         ApplicationService applicationService = createHakemusServiceMock();
 
         additionalQuestionService = new AdditionalQuestionServiceImpl(formService, applicationService);

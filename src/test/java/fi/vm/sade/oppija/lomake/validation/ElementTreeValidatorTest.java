@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
-import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
+import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
@@ -33,12 +33,12 @@ import static org.junit.Assert.assertTrue;
 public class ElementTreeValidatorTest {
 
     private TextQuestion textQuestion;
-    private FormModelDummyMemoryDaoImpl formModelDummyMemoryDao;
+    private FormServiceMockImpl formModelDummyMemoryDao;
 
     @Before
     public void setUp() throws Exception {
         textQuestion = new TextQuestion("id", createI18NText("title"));
-        formModelDummyMemoryDao = new FormModelDummyMemoryDaoImpl();
+        formModelDummyMemoryDao = new FormServiceMockImpl();
         Form form = formModelDummyMemoryDao.getForm("Yhteishaku", "yhteishaku");
         form.init();
 

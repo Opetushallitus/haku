@@ -27,13 +27,37 @@ public class PostOffice implements Serializable {
 
     private static final long serialVersionUID = -7984081943035919928L;
 
-    private String name;
+    final String postcode;
+    final I18nText postOffice;
 
-    public PostOffice(@JsonProperty(value = "name") final String name) {
-        this.name = name;
+    public PostOffice(@JsonProperty(value = "postcode") final String postcode,
+                      @JsonProperty(value = "postOffice") final I18nText i18nText) {
+        this.postOffice = i18nText;
+        this.postcode = postcode;
     }
 
-    public String getName() {
-        return name;
+    public I18nText getPostOffice() {
+        return postOffice;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PostOffice that = (PostOffice) o;
+
+        if (!postcode.equals(that.postcode)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return postcode.hashCode();
     }
 }

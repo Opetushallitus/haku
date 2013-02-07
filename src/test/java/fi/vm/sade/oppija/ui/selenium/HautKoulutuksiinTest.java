@@ -25,17 +25,8 @@ public class HautKoulutuksiinTest extends AbstractSeleniumBase {
 
     @Test
     public void testSaveHakemusAndList() {
-        loginAsNormalUser();
-        assertTrue(weAreAtAjankohtaisetHakemukset());
+        seleniumHelper.loginAs("test");
+        seleniumHelper.navigate("/oma/applications");
+        assertTrue(seleniumHelper.getSelenium().isTextPresent("Kuluvan hakukauden hakemukset"));
     }
-
-    private boolean weAreAtAjankohtaisetHakemukset() {
-        return seleniumHelper.getSelenium().isTextPresent("Kuluvan hakukauden hakemukset");
-    }
-
-    private void loginAsNormalUser() {
-        seleniumHelper.logout();
-        new HautKoulutuksiinPage(getBaseUrl(), seleniumHelper).login();
-    }
-
 }

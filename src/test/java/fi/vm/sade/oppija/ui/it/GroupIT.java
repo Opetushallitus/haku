@@ -44,7 +44,7 @@ public class GroupIT extends AbstractFormTest {
         Group group = new Group(GROUP_ID, createI18NText("foo"));
         group.addChild(CHILD_ELEMENT);
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(group);
-        this.formModelHelper = initModel(formModel);
+        this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);
     }

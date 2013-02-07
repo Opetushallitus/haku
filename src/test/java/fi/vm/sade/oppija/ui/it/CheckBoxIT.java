@@ -45,7 +45,8 @@ public class CheckBoxIT extends AbstractFormTest {
         checkBox = new CheckBox(CHECKBOX_ID, createI18NText("foo"));
         checkBox.addChild(TEXT_ELEMENT);
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox);
-        this.formModelHelper = initModel(formModel);
+        this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
+
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);
     }

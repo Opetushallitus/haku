@@ -36,7 +36,7 @@ public class TextQuestionIT extends AbstractFormTest {
     @Before
     public void init() throws IOException {
         formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextQuestion("sukunimi", createI18NText("foo")));
-        this.formModelHelper = initModel(formModel);
+        this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
     }
 
     @Test

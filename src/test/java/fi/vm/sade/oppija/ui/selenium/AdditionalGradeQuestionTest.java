@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.ui.selenium;
 
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
+import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -39,8 +39,8 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
     @Before
     public void init() {
         super.before();
-        FormModelDummyMemoryDaoImpl dummyMem = new FormModelDummyMemoryDaoImpl();
-        initModel(dummyMem.getModel());
+        FormServiceMockImpl dummyMem = new FormServiceMockImpl();
+        updateIndexAndFormModel(dummyMem.getModel());
     }
 
     @Test

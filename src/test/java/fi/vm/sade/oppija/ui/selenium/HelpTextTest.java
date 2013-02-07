@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
+import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -29,8 +29,8 @@ public class HelpTextTest extends AbstractSeleniumBase {
 
     @Before
     public void init() {
-        FormModelDummyMemoryDaoImpl dummyMem = new FormModelDummyMemoryDaoImpl();
-        initModel(dummyMem.getModel());
+        FormServiceMockImpl dummyMem = new FormServiceMockImpl();
+        updateModel(dummyMem.getModel());
     }
 
     @Test

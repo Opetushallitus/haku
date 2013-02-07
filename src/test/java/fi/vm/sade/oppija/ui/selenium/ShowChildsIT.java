@@ -63,7 +63,7 @@ public class ShowChildsIT extends AbstractSeleniumBase {
         textQuestion.addChild(relatedQuestionRule3);
 
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox1, checkBox2);
-        this.formModelHelper = initModel(formModel);
+        this.formModelHelper = updateIndexAndFormModel(formModel);
     }
 
     @Test

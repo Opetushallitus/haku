@@ -16,8 +16,9 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
+import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -44,11 +45,11 @@ public class GradeGridIT extends AbstractSeleniumBase {
         Phase arvosanat = new Phase("arvosanat", createI18NText("Arvosanat"), false);
         Form form = new Form("lomake", createI18NText("yhteishaku"));
         form.addChild(arvosanat);
-        FormModelDummyMemoryDaoImpl dummyImpl = new FormModelDummyMemoryDaoImpl();
-        arvosanat.addChild(dummyImpl.createGradeGrid());
+        Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl());
+        arvosanat.addChild(yhteishaku2013.createGradeGrid());
         form.init();
         applicationPeriod.addForm(form);
-        initModel(formModel);
+        updateIndexAndFormModel(formModel);
     }
 
     @Test

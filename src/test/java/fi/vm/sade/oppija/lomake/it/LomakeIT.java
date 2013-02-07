@@ -18,8 +18,7 @@ package fi.vm.sade.oppija.lomake.it;
 
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,14 +33,11 @@ import static org.junit.Assert.assertTrue;
 
 public class LomakeIT extends AbstractSeleniumBase {
 
-    private FormModel model;
 
     @Before
     public void setUp() throws Exception {
-        FormModelDummyMemoryDaoImpl formModelDummyMemoryDao = new FormModelDummyMemoryDaoImpl();
-        this.model = formModelDummyMemoryDao.getModel();
-        FormModel model = this.model;
-        initModel(model);
+        FormServiceMockImpl formModelDummyMemoryDao = new FormServiceMockImpl();
+        updateIndexAndFormModel(formModelDummyMemoryDao.getModel());
     }
 
     @Test
@@ -122,7 +118,6 @@ public class LomakeIT extends AbstractSeleniumBase {
         String value = driver.findElement(new By.ById("Sukunimi")).getAttribute("value");
         assertTrue(StringUtils.isEmpty(value));
         driver.findElement(new By.ByClassName("right")).click();
-        System.out.println("#");
     }
 
     private void select(final WebDriver driver) {

@@ -16,32 +16,16 @@
 
 package fi.vm.sade.oppija.common.selenium;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
-
+import fi.vm.sade.oppija.common.it.AdminResourceClient;
+import fi.vm.sade.oppija.common.it.TomcatContainerBase;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.SeleniumContainer;
 import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.common.it.TomcatContainerBase;
 import fi.vm.sade.oppija.ui.selenium.SeleniumHelper;
 import org.junit.Before;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * @author jukka
- * @version 10/15/121:13 PM}
- * @since 1.1
- *        <p/>
- *        NOTE: NO OTHER CONTEXT DEFINITIONS here, do not mix test context with
- *        it-context
- */
 public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected SeleniumHelper seleniumHelper;
@@ -63,46 +47,15 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         seleniumHelper.logout();
     }
 
-    protected FormModelHelper initModel(FormModel formModel1) {
-
-        final AdminEditPage adminEditPage = new AdminEditPage(getBaseUrl(), seleniumHelper);
-        seleniumHelper.navigate(adminEditPage);
-        adminEditPage.login("admin");
-        seleniumHelper.navigate(adminEditPage);
-        adminEditPage.submitForm(formModel1);
-        seleniumHelper.getDriver().get(getBaseUrl() + "/" + "admin/index/update");
-        seleniumHelper.logout();
-        return new FormModelHelper(formModel1);
-    }
-    
-    protected void screenshot(String suffix) {
-        WebDriver driver = seleniumHelper.getDriver();
-        String filename = "target/" + this.getClass().getSimpleName() + "_" +suffix + ".png";
-        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        File dstFile = new File(filename);
-        FileChannel source = null;
-        FileChannel destination = null;
-        try {
-            if (!dstFile.exists()) {
-                dstFile.createNewFile();
-            }
-            source = new FileInputStream(srcFile).getChannel();
-            destination = new FileOutputStream(dstFile).getChannel();
-            destination.transferFrom(source, 0, source.size());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (source != null) {
-                    source.close();
-                }
-                if (destination != null) {
-                    destination.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    protected FormModelHelper updateIndexAndFormModel(FormModel formModel) {
+        AdminResourceClient adminResourceClient = new AdminResourceClient(getBaseUrl());
+        adminResourceClient.updateIndex();
+        adminResourceClient.updateModel(formModel);
+        return new FormModelHelper(formModel);
     }
 
+    protected void updateModel(FormModel formModel) {
+        AdminResourceClient adminResourceClient = new AdminResourceClient(getBaseUrl());
+        adminResourceClient.updateModel(formModel);
+    }
 }

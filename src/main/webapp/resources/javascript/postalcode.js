@@ -14,26 +14,27 @@
  * European Union Public Licence for more details.
  */
 
-(function() {
+(function () {
     var addressController = {
-        clear : function() {
+        clear: function () {
             $('span.post-office').html('');
             $('input:hidden.post-office').val('');
             $('input:text.postal-code').val('');
         }
     };
 
-    $('input:text.postal-code').blur(function(event) {
+    $('input:text.postal-code').blur(function (event) {
         var value = this.value, re5digit = /^\d{5}$/, elementId = this.id;
 
         if (value && value.length === 5 && value.search(re5digit) !== -1) {
             $.getJSON(postalcode_settings.contextPath + "/lomake/" + postalcode_settings.applicationPeriodId + "/" +
                 postalcode_settings.formId + "/" + elementId +
                 "/relatedData/" + value,
-                function(data) {
-                    if (data && data.name) {
-                        $('span.post-office').html(data.name);
-                        $('input:hidden.post-office').val(data.name);
+                function (data) {
+                    if (data && data.postOffice) {
+                        var postOffice = data.postOffice.translations[postalcode_settings.lang];
+                        $('span.post-office').html(postOffice);
+                        $('input:hidden.post-office').val(postOffice);
                     } else {
                         addressController.clear();
                     }

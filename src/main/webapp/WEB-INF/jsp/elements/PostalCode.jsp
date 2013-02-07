@@ -39,7 +39,8 @@
         formId: "${hakemusId.formId}",
         vaiheId: "${vaihe.id}",
         teemaId: "${parent.id}",
-        contextPath: "${pageContext.request.contextPath}"
+        contextPath: "${pageContext.request.contextPath}",
+        lang: "${sessionScope['javax.servlet.jsp.jstl.fmt.locale.session'].language}"
     }
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/postalcode.js"></script>

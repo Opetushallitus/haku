@@ -16,7 +16,9 @@
 
 package fi.vm.sade.oppija.lomake.service.impl;
 
+import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
@@ -46,7 +48,7 @@ public class FormServiceImplTest {
     @Before
     public void setUp() throws Exception {
         this.applicationPeriod = new ApplicationPeriod("ApplicationPeriodId");
-        FormModelHolder holder = new FormModelHolder();
+        FormModelHolder holder = new FormModelHolder(new Yhteishaku2013(new KoodistoServiceMockImpl()));
         FormModel model = new FormModel();
         applicationPeriod.addForm(FORM);
         FORM.addChild(PHASE);

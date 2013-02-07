@@ -33,7 +33,6 @@ public abstract class Titled extends Element {
         this.i18nText = i18nText;
     }
 
-
     public I18nText getI18nText() {
         return i18nText;
     }

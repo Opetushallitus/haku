@@ -49,7 +49,7 @@ public class PreferenceTableIT extends AbstractFormTest {
         table.addChild(row);
         table.addChild(row2);
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(table);
-        this.formModelHelper = initModel(formModel);
+        this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
     }
 
     @Test

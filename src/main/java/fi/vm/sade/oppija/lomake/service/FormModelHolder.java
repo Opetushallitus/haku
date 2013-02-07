@@ -16,18 +16,23 @@
 
 package fi.vm.sade.oppija.lomake.service;
 
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * @author jukka
- * @version 9/11/122:47 PM}
- * @since 1.1
- */
 @Service
 public class FormModelHolder {
 
     private FormModel formModel;
+
+    @Autowired
+    public FormModelHolder(final Yhteishaku2013 yhteishaku2013) {
+        formModel = new FormModel();
+        formModel.addApplicationPeriod(yhteishaku2013.getApplicationPeriod());
+        FormModelInitializer formModelInitializer = new FormModelInitializer(this.formModel);
+        formModelInitializer.initModel();
+    }
 
     public FormModel getModel() {
         return formModel;
@@ -42,7 +47,6 @@ public class FormModelHolder {
         FormModelInitializer formModelInitializer = new FormModelInitializer(model);
         formModelInitializer.initModel();
         this.formModel = model;
-
     }
 
 

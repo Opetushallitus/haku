@@ -45,6 +45,10 @@ public class SeleniumHelper {
         driver.get(pageObject.getUrl());
     }
 
+    public void navigate(final String path) {
+        driver.navigate().to(baseUrl + path);
+    }
+
     public Selenium getSelenium() {
         return selenium;
     }
@@ -56,6 +60,13 @@ public class SeleniumHelper {
 
     public WebDriver getDriver() {
         return driver;
+    }
+
+    public void loginAs(final String username) {
+        getDriver().get(baseUrl + "/user/login");
+        selenium.type("j_username", username);
+        selenium.type("j_password", username);
+        selenium.submit("login");
     }
 
     public void logout() {

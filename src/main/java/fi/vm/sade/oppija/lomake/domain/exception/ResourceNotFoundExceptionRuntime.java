@@ -22,4 +22,8 @@ public class ResourceNotFoundExceptionRuntime extends RuntimeException {
     public ResourceNotFoundExceptionRuntime(final String message) {
         super(message);
     }
+
+    public ResourceNotFoundExceptionRuntime(final String message, final Exception exception) {
+        super(message, exception);
+    }
 }

@@ -48,7 +48,7 @@ public class RadioGroupIT extends AbstractFormTest {
         radio.addOption("value1", createI18NText("radio"), "title");
         radio.addOption("value2", createI18NText("radio2"), "title2");
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(radio);
-        this.formModelHelper = initModel(formModel);
+        this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
     }
 
     @Test

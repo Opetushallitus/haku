@@ -68,7 +68,7 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
         socialSecurityNumber.setFemaleId(sukupuoli.getOptions().get(1).getId());
 
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(socialSecurityNumber);
-        this.formModelHelper = initModel(formModel);
+        this.formModelHelper = updateIndexAndFormModel(formModel);
     }
 
 

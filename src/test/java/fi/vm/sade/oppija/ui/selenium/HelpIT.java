@@ -58,7 +58,7 @@ public class HelpIT extends AbstractSeleniumBase {
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(
                 element
         );
-        this.formModelHelper = initModel(formModel);
+        this.formModelHelper = updateIndexAndFormModel(formModel);
         this.seleniumHelper.getDriver().get(getBaseUrl() + "/" + formModelHelper.getStartUrl());
         WebElement helpWebElement = seleniumHelper.getDriver().findElement(By.id(HELP_ID));
         return helpWebElement.getText();

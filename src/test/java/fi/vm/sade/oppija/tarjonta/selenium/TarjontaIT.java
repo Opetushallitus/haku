@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.tarjonta.selenium;
 
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.common.selenium.AdminEditPage;
+import fi.vm.sade.oppija.common.selenium.LoginPage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,10 +27,10 @@ public class TarjontaIT extends AbstractSeleniumBase {
 
     @Before
     public void setUp() throws Exception {
-        final AdminEditPage adminEditPage = new AdminEditPage(getBaseUrl(), seleniumHelper);
-        seleniumHelper.navigate(adminEditPage);
-        adminEditPage.login("admin");
+        final LoginPage loginPage = new LoginPage(seleniumHelper.getSelenium());
+        loginPage.login("admin");
         seleniumHelper.getDriver().get(getBaseUrl() + "/admin/index/update");
+        seleniumHelper.logout();
     }
 
     @Test

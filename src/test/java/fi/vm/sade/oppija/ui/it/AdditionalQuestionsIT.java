@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.ui.it;
 
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.lomake.dao.impl.FormModelDummyMemoryDaoImpl;
+import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,9 +31,9 @@ public class AdditionalQuestionsIT extends AbstractFormTest {
 
     @Before
     public void init() {
-        FormModelDummyMemoryDaoImpl dummyMem = new FormModelDummyMemoryDaoImpl();
+        FormServiceMockImpl dummyMem = new FormServiceMockImpl();
         FormModel formModel = dummyMem.getModel();
-        initModel(formModel);
+        updateModelAndCreateFormModelHelper(formModel);
     }
 
     @Test

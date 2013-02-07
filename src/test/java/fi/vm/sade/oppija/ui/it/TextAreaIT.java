@@ -42,7 +42,7 @@ public class TextAreaIT extends AbstractFormTest {
     @Before
     public void init() throws IOException {
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextArea("vapaa_teksti", createI18NText("foo")));
-        this.formModelHelper = initModel(formModel);
+        this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
     }
 
     @Test
