@@ -35,16 +35,6 @@ public class SeleniumHelper {
         this.baseUrl = baseUrl;
     }
 
-    protected void login(String user) {
-        selenium.type("j_username", user);
-        selenium.type("j_password", user);
-        selenium.submit("login");
-    }
-
-    public void navigate(PageObject pageObject) {
-        driver.get(pageObject.getUrl());
-    }
-
     public void navigate(final String path) {
         driver.navigate().to(baseUrl + path);
     }

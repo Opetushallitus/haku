@@ -39,10 +39,6 @@ public class FormModelHelper {
         return "lomake/" + getFirstApplicationPerioid().getId() + "/" + getFirstForm().getId() + "/" + phase.getId();
     }
 
-    public String getFormId(Phase phase) {
-        return "form-" + phase.getId();
-    }
-
     public String getFirstCategoryFormId() {
         return "form-" + getFirstCategory().getId();
     }

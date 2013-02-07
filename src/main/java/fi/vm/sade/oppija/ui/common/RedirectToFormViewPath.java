@@ -18,12 +18,9 @@ package fi.vm.sade.oppija.ui.common;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class RedirectToFormViewPath implements ViewPath {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(RedirectToFormViewPath.class);
     private final String path;
 
     public RedirectToFormViewPath(final String applicationPeriodId, final String formId) {

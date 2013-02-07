@@ -31,7 +31,7 @@ public class ValidationResult {
     }
 
     public ValidationResult() {
-        this.errors = Collections.<String, String>emptyMap();
+        this.errors = Collections.emptyMap();
     }
 
     public ValidationResult(final String key, final String error) {

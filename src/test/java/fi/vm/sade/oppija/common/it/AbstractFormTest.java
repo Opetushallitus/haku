@@ -18,14 +18,8 @@ package fi.vm.sade.oppija.common.it;
 
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class AbstractFormTest extends AbstractRemoteTest {
-    public static final Logger LOGGER = LoggerFactory.getLogger(AbstractFormTest.class);
-
-    public AbstractFormTest() {
-    }
 
     protected FormModelHelper updateModelAndCreateFormModelHelper(FormModel formModel) {
         super.initTestEngine();

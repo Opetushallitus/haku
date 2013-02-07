@@ -45,6 +45,10 @@ import static org.junit.Assert.assertTrue;
 public class PostalCodeIT extends AbstractSeleniumBase {
 
 
+    public static final String POST_OFFICE = "Helsinki";
+    public static final String POSTCODE = "00100";
+    public static final String POSTCODE_ID = "postinumero1";
+
     @Before
     public void init() throws IOException {
         ApplicationPeriod applicationPeriod = new ApplicationPeriod("test");
@@ -60,8 +64,8 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         Theme testiRyhma = new Theme("testiGrp", createI18NText("TestiGrp"), null);
         testivaihe.addChild(testiRyhma);
         Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
-        postOffices.put("00100", new PostOffice("00100", ElementUtil.createI18NText("Helsinki")));
-        PostalCode postinumero = new PostalCode("postinumero1", createI18NText("postinumero"), postOffices);
+        postOffices.put("00100", new PostOffice(POSTCODE, ElementUtil.createI18NText(POST_OFFICE)));
+        PostalCode postinumero = new PostalCode(POSTCODE_ID, createI18NText("postinumero"), postOffices);
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
@@ -71,7 +75,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
 
         TextQuestion tq = new TextQuestion("foo", createI18NText("bar"));
         testiRyhma.addChild(tq);
-        updateIndexAndFormModel(formModel);
+        updateModel(formModel);
     }
 
     @Test
@@ -79,12 +83,12 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         final String url = "lomake/test/lomake/testivaihe";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + "/" + url);
-        driver.findElement(By.id("postinumero1"));
+        driver.findElement(By.id(POSTCODE_ID));
         Selenium s = seleniumHelper.getSelenium();
-        s.typeKeys("postinumero1", "00100");
+        s.typeKeys(POSTCODE_ID, POSTCODE);
 
         driver.findElement(By.id("foo"));
         s.typeKeys("foo", "bar");
-        assertTrue(seleniumHelper.getSelenium().isTextPresent("Helsinki"));
+        assertTrue(seleniumHelper.getSelenium().isTextPresent(POST_OFFICE));
     }
 }

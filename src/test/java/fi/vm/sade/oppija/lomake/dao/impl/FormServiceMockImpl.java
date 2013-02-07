@@ -25,11 +25,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.lomake.validation.ApplicationState;
-import fi.vm.sade.oppija.lomake.validation.Validator;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public class FormServiceMockImpl implements FormService {
@@ -83,11 +79,6 @@ public class FormServiceMockImpl implements FormService {
     public Form getForm(String applicationPeriodId, String formId) {
         ApplicationPeriod applicationPeriod = getApplicationPeriodById(applicationPeriodId);
         return applicationPeriod.getFormById(formId);
-    }
-
-    @Override
-    public List<Validator> getVaiheValidators(ApplicationState applicationState) {
-        return Collections.<Validator>emptyList();
     }
 
     public FormModel getModel() {

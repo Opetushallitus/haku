@@ -19,10 +19,7 @@ package fi.vm.sade.oppija.lomake.service;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.validation.ApplicationState;
-import fi.vm.sade.oppija.lomake.validation.Validator;
 
-import java.util.List;
 import java.util.Map;
 
 public interface FormService {
@@ -38,6 +35,4 @@ public interface FormService {
     Form getForm(String applicationPeriodId, String formId);
 
     Form getActiveForm(final String applicationPeriodId, final String formId);
-
-    List<Validator> getVaiheValidators(ApplicationState applicationState);
 }

@@ -43,21 +43,4 @@ public class PostOffice implements Serializable {
     public String getPostcode() {
         return postcode;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PostOffice that = (PostOffice) o;
-
-        if (!postcode.equals(that.postcode)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return postcode.hashCode();
-    }
 }

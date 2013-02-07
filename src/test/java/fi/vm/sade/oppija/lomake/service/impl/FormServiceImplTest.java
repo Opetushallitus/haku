@@ -17,26 +17,18 @@
 package fi.vm.sade.oppija.lomake.service.impl;
 
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
-import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.Yhteishaku2013;
-import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
-import fi.vm.sade.oppija.lomake.validation.ApplicationState;
-import fi.vm.sade.oppija.lomake.validation.Validator;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class FormServiceImplTest {
 
@@ -72,21 +64,5 @@ public class FormServiceImplTest {
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testGetApplicationPeriodByIdNotFound() throws Exception {
         formService.getApplicationPeriodById("lskdjflsdk");
-    }
-
-    @Test
-    public void testGetVaiheValidators() throws Exception {
-        FormId formId = new FormId(applicationPeriod.getId(), FORM.getId());
-        Application application = new Application(formId, new AnonymousUser());
-        List<Validator> listOfValidators = formService.getVaiheValidators(new ApplicationState(application, PHASE.getId()));
-        assertTrue(listOfValidators.isEmpty());
-    }
-
-    @Test(expected = ResourceNotFoundExceptionRuntime.class)
-    public void testGetVaiheValidatorsPhaseNotFound() throws Exception {
-        FormId formId = new FormId(applicationPeriod.getId(), FORM.getId());
-        Application application = new Application(formId, new AnonymousUser());
-        List<Validator> listOfValidators = formService.getVaiheValidators(new ApplicationState(application, "randomid"));
-        assertTrue(listOfValidators.isEmpty());
     }
 }

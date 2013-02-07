@@ -27,8 +27,6 @@ import static org.junit.Assert.*;
 
 public class ValidationResultTest {
 
-    public static final String TEST_MESSAGE = "test message";
-    public static final String FIELD_NAME = "test";
     private ValidationResult validationResult;
 
     @Before
