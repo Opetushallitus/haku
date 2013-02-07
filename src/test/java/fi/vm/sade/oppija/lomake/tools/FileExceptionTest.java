@@ -16,18 +16,14 @@
 
 package fi.vm.sade.oppija.lomake.tools;
 
-import org.apache.commons.io.IOUtils;
+import org.junit.Test;
 
-import java.io.IOException;
-import java.io.InputStream;
+import static org.junit.Assert.assertEquals;
 
-public class FileHandling {
-
-    public String readFile(InputStream inputStream) {
-        try {
-            return IOUtils.toString(inputStream, "UTF-8");
-        } catch (IOException e) {
-            throw new FileException(e);
-        }
+public class FileExceptionTest {
+    @Test
+    public void testMessage() throws Exception {
+        FileException fileException = new FileException(new Throwable());
+        assertEquals(FileException.DEFAULT_ERROR_MESSAGE, fileException.getMessage());
     }
 }
