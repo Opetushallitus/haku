@@ -22,6 +22,8 @@ import org.springframework.stereotype.Controller;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 @Controller
 @Path("/osio")
@@ -29,6 +31,7 @@ public class SectionController {
 
     @GET
     @Path("{section}")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable getPage(@PathParam("section") final String section) {
         return new Viewable("/" + section);
     }

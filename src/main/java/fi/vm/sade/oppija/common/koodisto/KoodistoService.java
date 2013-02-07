@@ -14,26 +14,18 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.ui.controller;
+package fi.vm.sade.oppija.common.koodisto;
 
-import com.sun.jersey.api.view.Viewable;
-import org.springframework.stereotype.Controller;
+import fi.vm.sade.oppija.lomake.domain.PostOffice;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import java.util.List;
 
-@Path("/")
-@Controller
-public class RootController {
+public interface KoodistoService {
+    List<PostOffice> getPostOffices();
 
-    public static final String INDEX_VIEW = "/index";
+    List<SubjectRow> getSubjects();
 
-    @GET
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    public Viewable getFrontPage() {
-        return new Viewable(INDEX_VIEW);
-    }
-
+    List<Option> getGradeRanges();
 }

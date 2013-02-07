@@ -84,7 +84,7 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/{applicationPeriodId}/{formIdStr}/{phaseId}/{oid}")
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable getPhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                              @PathParam("formIdStr") final String formIdStr,
                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
@@ -111,7 +111,7 @@ public class OfficerController {
     @POST
     @Path("/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Response savePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                               @PathParam("formId") final String formId,
                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
@@ -143,7 +143,7 @@ public class OfficerController {
     @POST
     @Path("/hakemus/{oid}/applicationProcessState/{status}/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Response changeApplicationProcessState(@PathParam(OID_PATH_PARAM) final String oid,
                                                   @PathParam("status") final String status) throws URISyntaxException {
         LOGGER.debug("changeApplicationProcessState {}, {}", new Object[]{oid, status});

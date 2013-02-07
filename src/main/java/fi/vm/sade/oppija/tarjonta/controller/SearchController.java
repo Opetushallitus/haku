@@ -55,7 +55,7 @@ public class SearchController {
     }
 
     @GET
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable listTarjontatiedot(@QueryParam("text") String text) {
         //LOGGER.debug("parameters: " + parameters);
         Map<String, List<String>> parameters = new HashMap<String, List<String>>(1);
@@ -74,7 +74,7 @@ public class SearchController {
 
     @GET
     @Path("{tarjontatietoId}")
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable getTarjontatiedot(@PathParam("tarjontatietoId") final String tarjontatietoId) {
         LOGGER.info("tarjontatiedot/" + tarjontatietoId);
         ImmutableMap<String, Map<String, Object>> model = ImmutableMap.of(MODEL_NAME, service.searchById(tarjontatietoId));

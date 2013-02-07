@@ -63,7 +63,7 @@ public class EducationController {
 
     @GET
     @Path("/{hakuId}/organisaatio/search")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<Organization> searchOrganisaatio(@PathParam("hakuId") final String hakuId,
                                                  @QueryParam(TERM) final String term) {
         return applicationOptionService.searchOrganisaatio(hakuId, term);
@@ -71,7 +71,7 @@ public class EducationController {
 
     @GET
     @Path("/{hakuId}/hakukohde/search")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<ApplicationOption> searchHakukohde(@PathParam("hakuId") final String hakuId,
                                                    @QueryParam("organisaatioId") final String organisaatioId) {
         return applicationOptionService.searchHakukohde(hakuId, organisaatioId);
@@ -79,7 +79,7 @@ public class EducationController {
 
     @GET
     @Path("/additionalquestion/{hakuId}/{lomakeId}/{vaiheId}/{teemaId}/{hakukohdeId}")
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable getAdditionalQuestions(@PathParam("hakuId") final String hakuId,
                                            @PathParam("lomakeId") final String lomakeId,
                                            @PathParam("teemaId") final String teemaId,

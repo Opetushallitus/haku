@@ -14,26 +14,20 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.ui.controller;
+package fi.vm.sade.oppija.common.koodisto.impl;
 
-import com.sun.jersey.api.view.Viewable;
-import org.springframework.stereotype.Controller;
+import com.google.common.base.Function;
+import fi.vm.sade.koodisto.service.types.common.KoodiType;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+public class KoodiTypeToGradeRangeOptionFunction implements Function<KoodiType, Option> {
 
-@Path("/")
-@Controller
-public class RootController {
+    public static final String ID_PREFIX = "grade_";
 
-    public static final String INDEX_VIEW = "/index";
-
-    @GET
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    public Viewable getFrontPage() {
-        return new Viewable(INDEX_VIEW);
+    @Override
+    public Option apply(final KoodiType koodiType) {
+        return new Option(ID_PREFIX + koodiType.getKoodiArvo(), new I18nText(koodiType.getKoodiArvo(), TranslationsUtil.createTranslationsMap(koodiType)), koodiType.getKoodiArvo());
     }
 
 }

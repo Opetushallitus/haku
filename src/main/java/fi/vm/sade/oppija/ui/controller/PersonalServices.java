@@ -46,18 +46,21 @@ public class PersonalServices {
     public ApplicationService applicationService;
 
     @GET
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable hautKoulutuksiin() {
         return getApplications();
     }
 
     @GET
     @Path("vertailu")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable getUserComparison() {
         return new Viewable(COMPARISON_VIEW);
     }
 
     @GET
     @Path("applications")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable getApplications() {
         LOGGER.debug("getApplications");
         HashMap<String, Object> model = new HashMap<String, Object>(2);
@@ -69,6 +72,7 @@ public class PersonalServices {
 
     @GET
     @Path(value = "muistilista")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable getUserNoteList() {
         LOGGER.debug("getUserNoteList");
         return new Viewable(NOTELIST_VIEW);

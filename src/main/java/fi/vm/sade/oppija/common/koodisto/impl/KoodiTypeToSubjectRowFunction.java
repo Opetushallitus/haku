@@ -14,26 +14,21 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.ui.controller;
+package fi.vm.sade.oppija.common.koodisto.impl;
 
-import com.sun.jersey.api.view.Viewable;
-import org.springframework.stereotype.Controller;
+import com.google.common.base.Function;
+import fi.vm.sade.koodisto.service.types.common.KoodiType;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import java.util.Map;
 
-@Path("/")
-@Controller
-public class RootController {
+public class KoodiTypeToSubjectRowFunction implements Function<KoodiType, SubjectRow> {
 
-    public static final String INDEX_VIEW = "/index";
-
-    @GET
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    public Viewable getFrontPage() {
-        return new Viewable(INDEX_VIEW);
+    @Override
+    public SubjectRow apply(final KoodiType koodiType) {
+        Map<String, String> translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
+        String koodiArvo = koodiType.getKoodiArvo();
+        return new SubjectRow(koodiArvo, new I18nText(koodiArvo, translationsMap));
     }
-
 }

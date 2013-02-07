@@ -69,6 +69,7 @@ public class FormController {
     public static final String THEME_ID_PATH_PARAM = "themeId";
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
     public static final String FORM_ID_STR_PATH_PARAM = "formIdStr";
+    public static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
     final FormService formService;
     private final ApplicationService applicationService;
@@ -83,6 +84,7 @@ public class FormController {
     }
 
     @GET
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable listApplicationPeriods() {
         LOGGER.debug("listApplicationPeriods");
         Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
@@ -93,6 +95,7 @@ public class FormController {
 
     @GET
     @Path("/{applicationPeriodId}") //NOSONAR Avoid Duplicate Literals. Sotkuseksi menee, jos
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable listForms(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId) {
         LOGGER.debug("listForms");
         ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(applicationPeriodId);
@@ -123,7 +126,7 @@ public class FormController {
 
     @GET
     @Path("/{applicationPeriodId}/{formIdStr}/{elementId}")
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                @PathParam(FORM_ID_STR_PATH_PARAM) final String formIdStr,
                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
@@ -192,7 +195,6 @@ public class FormController {
 
         model.put("hakemusId", hakuLomakeId);
         if (applicationState.isValid()) {
-
             return Response.seeOther(new URI(
                     new RedirectToPhaseViewPath(applicationPeriodId, formId,
                             applicationState.getHakemus().getPhaseId()).getPath())).build();
@@ -222,6 +224,7 @@ public class FormController {
 
     @GET
     @Path("/{applicationPeriodId}/{formId}/valmis/{oid}")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getComplete(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                 @PathParam(FORM_ID_PATH_PARAM) final String formId,
                                 @PathParam("oid") final String oid) {
@@ -247,6 +250,7 @@ public class FormController {
 
     @GET
     @Path("/{applicationPeriodId}/{formId}/{vaiheId}/{themeId}/help")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getFormHelp(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                 @PathParam(FORM_ID_PATH_PARAM) final String formId, @PathParam("vaiheId") final String vaiheId,
                                 @PathParam(THEME_ID_PATH_PARAM) final String themeId) {
@@ -266,14 +270,9 @@ public class FormController {
         return new Viewable(VERBOSE_HELP_VIEW, model);
     }
 
-    /**
-     * @param applicationPeriodId
-     * @param formIdStr
-     * @param gradeGridId
-     * @return
-     */
     @GET
     @Path("/{applicationPeriodId}/{formIdStr}/{gradeGridId}/additionalLanguageRow")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getAdditionalLanguageRow(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                              @PathParam(FORM_ID_STR_PATH_PARAM) final String formIdStr,
                                              @PathParam("gradeGridId") final String gradeGridId) {

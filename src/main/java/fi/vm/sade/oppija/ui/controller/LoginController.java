@@ -70,14 +70,14 @@ public class LoginController {
 
     @GET
     @Path("login")
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable login() {
         return new Viewable(TOP_LOGIN_VIEW);
     }
 
     @GET
     @Path("logout")
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable logout() {
         return new Viewable(LOGIN_VIEW);
     }

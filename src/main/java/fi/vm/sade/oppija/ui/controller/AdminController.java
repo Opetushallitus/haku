@@ -17,11 +17,9 @@
 package fi.vm.sade.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
-import com.sun.jersey.multipart.FormDataParam;
 import fi.vm.sade.oppija.lomake.converter.FormModelToJsonString;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Attachment;
-import fi.vm.sade.oppija.lomake.service.AdminService;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,15 +29,13 @@ import org.springframework.stereotype.Controller;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-import static javax.ws.rs.core.Response.seeOther;
+import static javax.ws.rs.core.Response.created;
 
 
 @Controller
@@ -51,8 +47,6 @@ public class AdminController {
     public static final String ADMIN_INDEX_VIEW = "/admin/index";
     public static final String ADMIN_EDIT_VIEW = "/admin/editModel";
     public static final Attachment ATTACHMENT_MODEL = new Attachment("file", createI18NText("Lataa malli json-objektina"));
-    @Autowired
-    AdminService adminService;
 
     @Autowired
     FormModelHolder formModelHolder;
@@ -69,7 +63,7 @@ public class AdminController {
     private String tarjontaDataUrl;
 
     @GET
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable getIndex() {
         Map<String, Object> properties = new LinkedHashMap<String, Object>();
         properties.put("mongodb.url", mongoUrl);
@@ -82,42 +76,33 @@ public class AdminController {
 
     @GET
     @Path("/upload")
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable upload() {
         return new Viewable(ADMIN_UPLOAD_VIEW, ATTACHMENT_MODEL);
     }
 
     @GET
     @Path("/model")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public FormModel asJson() {
         return formModelHolder.getModel();
     }
 
+    @POST
+    @Path("/model")
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    public Response doActualEdit(final FormModel formModel) throws URISyntaxException {
+        formModelHolder.updateModel(formModel);
+        return created(new URI("/lomake/")).build();
+    }
+
     @GET
     @Path("/edit")
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable editModel() {
         final String convert = new FormModelToJsonString().apply(formModelHolder.getModel());
         return new Viewable(ADMIN_EDIT_VIEW, convert);
-    }
-
-    @POST
-    @Path("/edit/post")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_HTML)
-    public Response doActualEdit(@FormParam("model") String json) throws URISyntaxException {
-        adminService.replaceModel(json);
-        return seeOther(new URI("/admin")).build();
-    }
-
-    @POST
-    @Path("/upload")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.TEXT_HTML)
-    public Viewable receiveFile(@FormDataParam("file") InputStream inputStream) throws IOException {
-        adminService.replaceModel(inputStream);
-        return new Viewable(ADMIN_UPLOAD_VIEW, ATTACHMENT_MODEL);
     }
 
 }

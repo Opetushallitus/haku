@@ -16,24 +16,11 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-import com.sun.jersey.api.view.Viewable;
-import org.springframework.stereotype.Controller;
+import org.junit.Test;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+public class KoodistoControllerTest {
+    @Test
+    public void testPrint() throws Exception {
 
-@Path("/")
-@Controller
-public class RootController {
-
-    public static final String INDEX_VIEW = "/index";
-
-    @GET
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    public Viewable getFrontPage() {
-        return new Viewable(INDEX_VIEW);
     }
-
 }

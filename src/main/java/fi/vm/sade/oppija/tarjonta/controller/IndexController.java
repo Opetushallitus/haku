@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.tarjonta.controller;
 import fi.vm.sade.oppija.tarjonta.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.GET;
@@ -32,7 +31,6 @@ import java.net.URISyntaxException;
 
 @Path("admin/index")
 @Controller
-@Secured("ROLE_ADMIN")
 public class IndexController {
 
     @Value("${tarjonta.data.url}")
@@ -43,7 +41,7 @@ public class IndexController {
 
     @GET
     @Path("update")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     public String updateIndex() throws URISyntaxException {
         URI uri = new URI(tarjontaUrl);
         return indexService.update(uri);
@@ -51,7 +49,7 @@ public class IndexController {
 
     @GET
     @Path("drop")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     public String dropIndex() throws IOException {
         return Boolean.toString(indexService.drop());
     }
