@@ -481,7 +481,7 @@ public class
         CheckBox suorittanut2 = new CheckBox("suorittanut2", createI18NText("Vammaisten valmentava ja kuntouttava opetus ja ohjaus"));
         CheckBox suorittanut3 = new CheckBox("suorittanut3", createI18NText("Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus"));
         CheckBox suorittanut4 = new CheckBox("suorittanut4", createI18NText("Talouskoulu (muuna kuin ammatillisena peruskoulutuksena järjestettävä kotitalousopetus)"));
-        CheckBox suorittanut5 = new CheckBox("suorittanut5", createI18NText("Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vähintään 20 tuntia)"));
+        CheckBox suorittanut5 = new CheckBox("suorittanut5", createI18NText("Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vähintään 20 opintoviikkoa)"));
         CheckBox suorittanut6 = new CheckBox("suorittanut6", createI18NText("Kansanopiston lukuvuoden mittainen linja ammatilliseen peruskoulutukseen"));
 
         DropdownSelect tutkinnonOpetuskieli = new DropdownSelect("opetuskieli", createI18NText("Mikä oli tukintosi opetuskieli"));
