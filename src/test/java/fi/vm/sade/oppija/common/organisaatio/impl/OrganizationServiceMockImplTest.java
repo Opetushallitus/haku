@@ -36,7 +36,7 @@ public class OrganizationServiceMockImplTest {
     };
 
     /**
-     * Filter ors by predicate
+     * Filter orgs by predicate
      */
     private List<OrganisaatioPerustietoType> filter(final Predicate<?> predicate) {
         final List<OrganisaatioPerustietoType> result = Lists.newArrayList(Iterables.filter(organisaatioService.orgs,
