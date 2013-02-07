@@ -22,12 +22,16 @@ import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 
+@Service
+@Profile("dev")
 public class KoodistoServiceMockImpl implements KoodistoService {
 
     private final List<Option> listOfGradeGrades;

@@ -28,6 +28,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +36,7 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 @Service
+@Profile("default")
 public class KoodistoServiceImpl implements KoodistoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KoodistoServiceImpl.class);
