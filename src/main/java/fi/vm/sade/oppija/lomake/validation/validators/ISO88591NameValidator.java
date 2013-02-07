@@ -33,7 +33,6 @@ public class ISO88591NameValidator extends FieldValidator {
         super(fieldName, errorMessage);
     }
 
-
     @Override
     public ValidationResult validate(Map<String, String> values) {
         String value = values.get(fieldName);
@@ -54,7 +53,7 @@ public class ISO88591NameValidator extends FieldValidator {
             if ((letter == false &&
                     cs.charAt(i) != ' ' &&
                     cs.charAt(i) != '-' &&
-                    cs.charAt(i) != ',') || (i == 0 && !letter)) {
+                    cs.charAt(i) != ',') || ((i == 0 && !letter) || (i == sz - 1 && !letter))) {
                 return false;
             }
         }
