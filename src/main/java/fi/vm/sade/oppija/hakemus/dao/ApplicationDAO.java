@@ -16,11 +16,11 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
-import java.util.List;
-
 import fi.vm.sade.oppija.common.dao.BaseDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+
+import java.util.List;
 
 /**
  * DAO interface for saving, updating and finding applications made by users.
@@ -53,8 +53,9 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     /**
      * Checks if submitted application already exists by specified social security number and
      * application system
+     *
      * @param asId application system id
-     * @param ssn social security number
+     * @param ssn  social security number
      * @return true if application exists, false otherwise
      */
     boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn);
@@ -70,8 +71,9 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     /**
      * Return all applications where applicants ssn matches given term.
+     *
      * @param term
      * @return
      */
-    public List<Application> findByApplicantSsn(String term);
+    List<Application> findByApplicantSsn(String term);
 }

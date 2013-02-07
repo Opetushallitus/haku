@@ -19,14 +19,14 @@ import java.io.IOException;
 import java.util.List;
 
 public interface OrganizationService {
-    
+
     /**
      * Search Organisations from Organisaatio service. Throws
      * {@link IOException} if there's a problem accessing the service.
-     * 
+     *
      * @param criteria
      * @return
      * @throws IOException
      */
-    public List<Organization> search(SearchCriteria criteria) throws IOException;
+    List<Organization> search(SearchCriteria criteria) throws IOException;
 }
