@@ -38,7 +38,8 @@ import java.util.*;
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 
 @Service("FormModelDummyMemoryDao")
-public class FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
+public class
+        FormModelDummyMemoryDaoImpl implements FormModelDAO, FormService {
 
     final ApplicationPeriod applicationPeriod;
     private FormModel formModel;
