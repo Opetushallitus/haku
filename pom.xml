@@ -688,6 +688,9 @@
                         <exclude>**/selenium/*.java</exclude>
                     </excludes>
                     <argLine>-Xms512M -Xmx1G -XX:MaxPermSize=512M</argLine>
+                    <systemPropertyVariables>
+                    <spring.profiles.active>dev</spring.profiles.active>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 
