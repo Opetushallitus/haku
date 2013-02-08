@@ -743,7 +743,6 @@
 
         <profile>
             <id>integration-test</id>
-
             <build>
                 <plugins>
                     <plugin>
@@ -760,6 +759,9 @@
                             <classpathDependencyExcludes>
                                 <classpathDependencyExcludes>net.sf.saxon:Saxon-HE</classpathDependencyExcludes>
                             </classpathDependencyExcludes>
+                            <systemProperties>
+                                <spring.profiles.active>dev</spring.profiles.active>
+                            </systemProperties>
                         </configuration>
                         <executions>
                             <execution>
