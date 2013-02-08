@@ -15,6 +15,7 @@
  */
 package fi.vm.sade.oppija.common.organisaatio;
 
+import java.util.Date;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
@@ -23,55 +24,45 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 
 public class Organization {
 
-    
     public static enum Type {
-        KOULUTUSTOIMIJA("Koulutustoimija"), MUU_ORGANISAATIO("Muu organisaatio"), OPETUSPISTE("Opetuspiste"), OPPILAITOS("Oppilaitos"), OPPISOPIMUSTOIMIPISTE("Oppisopimustoimipiste");
+        KOULUTUSTOIMIJA("Koulutustoimija"), MUU_ORGANISAATIO("Muu organisaatio"), OPETUSPISTE("Opetuspiste"), OPPILAITOS(
+                "Oppilaitos"), OPPISOPIMUSTOIMIPISTE("Oppisopimustoimipiste");
         private final String value;
-        
-    
-        Type(String value){
-            this.value=value;
+
+        Type(String value) {
+            this.value = value;
         }
-        
+
         public String getValue() {
             return value;
         }
     }
 
+    private Date endDate;
+
     private I18nText name;
 
     private String oid;
 
-    private String parentOid;
-
-    public String getParentOid() {
-        return parentOid;
-    }
-
     private List<Type> types;
 
-    public Organization(final I18nText name, final String oid, final String parentOid, final List<Type> types) {
+    private String parentOid;
+
+    private Date startDate;
+
+    public Organization() {
+    }
+
+    public Organization(final I18nText name, final String oid, final String parentOid,
+            final List<Type> types, Date startDate, Date endDate) {
         if (oid == null)
             throw new NullPointerException("Oid cannot be null");
         this.name = name;
         this.oid = oid;
         this.parentOid = parentOid;
         this.types = ImmutableList.copyOf(types);
-    }
-    
-    public Organization() {
-    }
-
-    public I18nText getName() {
-        return name;
-    }
-
-    public String getOid() {
-        return oid;
-    }
-
-    public List<Type> getTypes() {
-        return types;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public boolean equals(Object oOther) {
@@ -82,5 +73,29 @@ public class Organization {
 
         return false;
 
-    };
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public I18nText getName() {
+        return name;
+    }
+
+    public String getOid() {
+        return oid;
+    }
+
+    public String getParentOid() {
+        return parentOid;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public List<Type> getTypes() {
+        return types;
+    }
 }

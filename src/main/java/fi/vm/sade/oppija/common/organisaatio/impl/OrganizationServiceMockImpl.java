@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +72,38 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         }
     }
 
+    static class OrgIncludePassivePredicate implements Predicate<Organization> {
+
+        private final boolean includePassive;
+
+        public OrgIncludePassivePredicate(boolean includePassive) {
+            this.includePassive = includePassive;
+        }
+
+        public boolean apply(Organization org) {
+            if (!includePassive && org.getEndDate() != null)
+                return org.getEndDate().before(new Date());
+
+            return true;
+        }
+    }
+
+    static class OrgIncludePlannedPredicate implements Predicate<Organization> {
+
+        private final boolean includePlanned;
+
+        public OrgIncludePlannedPredicate(boolean includePlanned) {
+            this.includePlanned = includePlanned;
+        }
+
+        public boolean apply(Organization org) {
+            if (!includePlanned) 
+                return org.getStartDate().before(new Date());
+            
+            return true;
+        }
+    }
+
     /**
      * Predicate that matches organization type.
      */
@@ -108,7 +141,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         final InputStream input = getClass().getResourceAsStream("/org-mock-data.json");
         ObjectMapper mapper = new ObjectMapper();
         try {
-            for(Organization org: mapper.readValue(input, Organization[].class)) {
+            for (Organization org : mapper.readValue(input, Organization[].class)) {
                 add(org);
             }
         } catch (Throwable t) {
@@ -168,9 +201,9 @@ public class OrganizationServiceMockImpl implements OrganizationService {
     }
 
     protected Organization getOrganization(final String name, final String oid, final String parentOid,
-            Organization.Type... types) {
+            Date startDate, Date endDate, Organization.Type... types) {
         I18nText orgName = getI18nText("nimi", "fi", name + "_fi", "en", name + "_en", "sv", name + "_sv");
-        Organization org = new Organization(orgName, oid, parentOid, Arrays.asList(types));
+        Organization org = new Organization(orgName, oid, parentOid, Arrays.asList(types), startDate, endDate);
         return org;
     }
 
@@ -184,8 +217,10 @@ public class OrganizationServiceMockImpl implements OrganizationService {
 
     @Override
     public List<Organization> search(SearchCriteria criteria) throws IOException {
-        Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchString()),
-                new OrgTypePredicate(criteria.getType()));
+        final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchString()),
+                new OrgTypePredicate(criteria.getOrganizationType()),
+                new OrgIncludePassivePredicate(criteria.isIncludePassive()),
+                new OrgIncludePlannedPredicate(criteria.isIncludePlanned()));
         return Lists.newArrayList(Iterables.filter(orgs, predicate));
     }
 }

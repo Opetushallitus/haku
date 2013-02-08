@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.common.organisaatio.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,7 +34,11 @@ public class OrganisaatioPerustietoTypeToOrganizationFunction implements
                         return Organization.Type.valueOf(src.toString());
                     }
                 });
-        final Organization entity = new Organization(new I18nText("name", name), oid, parentOid, types);
+        
+        final Date startDate = dto.getAlkuPvm();
+        final Date endDate = dto.getLakkautusPvm();
+        
+        final Organization entity = new Organization(new I18nText("name", name), oid, parentOid, types, startDate, endDate);
         return entity;
     }
 }

@@ -17,20 +17,56 @@ package fi.vm.sade.oppija.common.organisaatio;
 
 public class SearchCriteria {
 
-    private final Organization.Type type;
-    private final String searchString;
+    private boolean includePassive;
 
-    public SearchCriteria(final Organization.Type type, final String searchString) {
-        this.type = type;
-        this.searchString = searchString;
+    private boolean includePlanned;
+
+    private String learningInstitutionType;
+    
+    private Organization.Type organizationType;
+
+    private String searchString;
+
+    public SearchCriteria() {
     }
 
-    public Organization.Type getType() {
-        return type;
+    public String getLearningInstitutionType() {
+        return learningInstitutionType;
+    }
+    public Organization.Type getOrganizationType() {
+        return organizationType;
     }
 
     public String getSearchString() {
         return searchString;
+    }
+
+    public boolean isIncludePassive() {
+        return includePassive;
+    }
+
+    public boolean isIncludePlanned() {
+        return includePlanned;
+    }
+
+    public void setIncludePassive(boolean includePassive) {
+        this.includePassive = includePassive;
+    }
+
+    public void setIncludePlanned(boolean includePlanned) {
+        this.includePlanned = includePlanned;
+    }
+
+    public void setLearningInstitutionType(String learningInstitutionType) {
+        this.learningInstitutionType = learningInstitutionType;
+    }
+
+    public void setOrganizationType(Organization.Type organizationType) {
+        this.organizationType = organizationType;
+    }
+
+    public void setSearchString(String searchString) {
+        this.searchString = searchString;
     }
 
 }

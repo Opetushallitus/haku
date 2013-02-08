@@ -28,7 +28,6 @@ import fi.vm.sade.oppija.common.organisaatio.Organization;
 import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
-import fi.vm.sade.organisaatio.api.model.types.OrganisaatioDTO;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioSearchCriteriaDTO;
 
@@ -51,9 +50,15 @@ public class OrganizationServiceImpl implements OrganizationService {
             criteriaDTO.setSearchStr(criteria.getSearchString());
         }
 
-        if (criteria.getType() != null) {
-            criteriaDTO.setOrganisaatioTyyppi(criteria.getType().toString());
+        if (criteria.getOrganizationType() != null) {
+            criteriaDTO.setOrganisaatioTyyppi(criteria.getOrganizationType().getValue());
         }
+
+        criteriaDTO.setSuunnitellut(criteria.isIncludePlanned());
+ 
+        criteriaDTO.setLakkautetut(criteria.isIncludePassive());
+
+        criteriaDTO.setOppilaitosTyyppi(criteria.getLearningInstitutionType());
 
         List<OrganisaatioPerustietoType> result = service.searchBasicOrganisaatios(criteriaDTO);
         return Lists.newArrayList(Lists.transform(result, new OrganisaatioPerustietoTypeToOrganizationFunction()));

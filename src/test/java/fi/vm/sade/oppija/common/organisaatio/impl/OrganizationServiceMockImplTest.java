@@ -21,6 +21,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -31,6 +32,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.oppija.common.organisaatio.Organization;
+import fi.vm.sade.oppija.common.organisaatio.Organization.Type;
 import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import fi.vm.sade.oppija.common.organisaatio.impl.OrganizationServiceMockImpl.OrgNamePredicate;
 import fi.vm.sade.oppija.common.organisaatio.impl.OrganizationServiceMockImpl.OrgTypePredicate;
@@ -45,13 +47,16 @@ public class OrganizationServiceMockImplTest {
      */
     static final OrganizationServiceMockImpl organisaatioService = new OrganizationServiceMockImpl() {
 
+        final Date now = new Date();
+        final Date start = new Date(now.getTime()-1000*60*60*24);
+        final Date end = new Date(now.getTime()+1000*60*60*24);
         public void init() {
-            add(getOrganization("nimi1", "1", null, Organization.Type.KOULUTUSTOIMIJA));
-            add(getOrganization("nimi2", "2", "1", Organization.Type.OPPILAITOS));
-            add(getOrganization("nimi3", "3", "1", Organization.Type.OPPILAITOS));
-            add(getOrganization("nimi4", "4", "1", Organization.Type.OPPILAITOS));
-            add(getOrganization("nimi5", "5", "4", Organization.Type.OPPILAITOS));
-        };
+            add(getOrganization("nimi1", "1", (String)null, start, end, Organization.Type.KOULUTUSTOIMIJA));
+            add(getOrganization("nimi2", "2", "1", start, end, Organization.Type.OPPILAITOS));
+            add(getOrganization("nimi3", "3", "1", start, end, Organization.Type.OPPILAITOS));
+            add(getOrganization("nimi4", "4", "1", start, end, Organization.Type.OPPILAITOS));
+            add(getOrganization("nimi5", "5", "4", start, end, Organization.Type.OPPILAITOS));
+        }
     };
 
     /**
@@ -100,7 +105,8 @@ public class OrganizationServiceMockImplTest {
     @Test
     public void testReadTestData() throws IOException {
         OrganizationServiceMockImpl impl = new OrganizationServiceMockImpl();
-        SearchCriteria criteria = new SearchCriteria(null, "Espoo");
+        SearchCriteria criteria = new SearchCriteria();
+        criteria.setSearchString("espoo");
         assertTrue("No search results found", impl.search(criteria).size() > 0);
     }
 }
