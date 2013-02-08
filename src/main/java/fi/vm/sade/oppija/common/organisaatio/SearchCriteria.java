@@ -23,7 +23,7 @@ public class SearchCriteria {
 
     private String learningInstitutionType;
     
-    private Organization.Type organizationType;
+    private String organizationType;
 
     private String searchString;
 
@@ -33,7 +33,7 @@ public class SearchCriteria {
     public String getLearningInstitutionType() {
         return learningInstitutionType;
     }
-    public Organization.Type getOrganizationType() {
+    public String getOrganizationType() {
         return organizationType;
     }
 
@@ -57,11 +57,17 @@ public class SearchCriteria {
         this.includePlanned = includePlanned;
     }
 
+    /*
+     * Koodistosta Oppilaitostyyppi
+     */
     public void setLearningInstitutionType(String learningInstitutionType) {
         this.learningInstitutionType = learningInstitutionType;
     }
 
-    public void setOrganizationType(Organization.Type organizationType) {
+    /*
+     * Koodistosta Organisaatiotyyppi
+     */
+    public void setOrganizationType(String organizationType) {
         this.organizationType = organizationType;
     }
 

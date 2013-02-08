@@ -51,7 +51,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         }
 
         if (criteria.getOrganizationType() != null) {
-            criteriaDTO.setOrganisaatioTyyppi(criteria.getOrganizationType().getValue());
+            criteriaDTO.setOrganisaatioTyyppi(criteria.getOrganizationType());
         }
 
         criteriaDTO.setSuunnitellut(criteria.isIncludePlanned());

@@ -28,10 +28,10 @@ public class OrganisaatioPerustietoTypeToOrganizationFunction implements
         final String oid = dto.getOid();
         final String parentOid = dto.getParentOid();
 
-        final List<Organization.Type> types = Lists.transform(dto.getTyypit(),
-                new Function<OrganisaatioTyyppi, Organization.Type>() {
-                    public Organization.Type apply(OrganisaatioTyyppi src) {
-                        return Organization.Type.valueOf(src.toString());
+        final List<String> types = Lists.transform(dto.getTyypit(),
+                new Function<OrganisaatioTyyppi, String>() {
+                    public String apply(OrganisaatioTyyppi src) {
+                        return src.toString();
                     }
                 });
         

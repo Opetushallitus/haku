@@ -32,7 +32,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.oppija.common.organisaatio.Organization;
-import fi.vm.sade.oppija.common.organisaatio.Organization.Type;
 import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import fi.vm.sade.oppija.common.organisaatio.impl.OrganizationServiceMockImpl.OrgNamePredicate;
 import fi.vm.sade.oppija.common.organisaatio.impl.OrganizationServiceMockImpl.OrgTypePredicate;
@@ -51,11 +50,11 @@ public class OrganizationServiceMockImplTest {
         final Date start = new Date(now.getTime()-1000*60*60*24);
         final Date end = new Date(now.getTime()+1000*60*60*24);
         public void init() {
-            add(getOrganization("nimi1", "1", (String)null, start, end, Organization.Type.KOULUTUSTOIMIJA));
-            add(getOrganization("nimi2", "2", "1", start, end, Organization.Type.OPPILAITOS));
-            add(getOrganization("nimi3", "3", "1", start, end, Organization.Type.OPPILAITOS));
-            add(getOrganization("nimi4", "4", "1", start, end, Organization.Type.OPPILAITOS));
-            add(getOrganization("nimi5", "5", "4", start, end, Organization.Type.OPPILAITOS));
+            add(getOrganization("nimi1", "1", (String)null, start, end, "Koulutustoimija"));
+            add(getOrganization("nimi2", "2", "1", start, end, "Oppilaitos"));
+            add(getOrganization("nimi3", "3", "1", start, end, "Oppilaitos"));
+            add(getOrganization("nimi4", "4", "1", start, end, "Oppilaitos"));
+            add(getOrganization("nimi5", "5", "4", start, end, "Oppilaitos"));
         }
     };
 
@@ -82,23 +81,23 @@ public class OrganizationServiceMockImplTest {
         assertEquals(5, filter(new OrgNamePredicate("nimi")).size());
         assertEquals(5, filter(new OrgNamePredicate(null)).size());
 
-        assertEquals(1, filter(new OrgTypePredicate(Organization.Type.KOULUTUSTOIMIJA)).size());
-        assertEquals(4, filter(new OrgTypePredicate(Organization.Type.OPPILAITOS)).size());
+        assertEquals(1, filter(new OrgTypePredicate("Koulutustoimija")).size());
+        assertEquals(4, filter(new OrgTypePredicate("Oppilaitos")).size());
         assertEquals(5, filter(new OrgTypePredicate(null)).size());
 
         assertEquals(
                 1,
                 filter(
-                        Predicates.and(new OrgTypePredicate(Organization.Type.KOULUTUSTOIMIJA), new OrgNamePredicate(
+                        Predicates.and(new OrgTypePredicate("Koulutustoimija"), new OrgNamePredicate(
                                 "nimi1"))).size());
         assertEquals(
                 0,
                 filter(
-                        Predicates.and(new OrgTypePredicate(Organization.Type.KOULUTUSTOIMIJA), new OrgNamePredicate(
+                        Predicates.and(new OrgTypePredicate("Koulutustoimija"), new OrgNamePredicate(
                                 "nimi2"))).size());
         assertEquals(
                 4,
-                filter(Predicates.and(new OrgTypePredicate(Organization.Type.OPPILAITOS), new OrgNamePredicate("nimi")))
+                filter(Predicates.and(new OrgTypePredicate("Oppilaitos"), new OrgNamePredicate("nimi")))
                         .size());
     }
 

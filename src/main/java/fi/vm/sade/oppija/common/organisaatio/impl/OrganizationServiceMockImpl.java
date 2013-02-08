@@ -109,14 +109,14 @@ public class OrganizationServiceMockImpl implements OrganizationService {
      */
     static class OrgTypePredicate implements Predicate<Organization> {
 
-        private final Organization.Type tyyppi;
+        private final String type;
 
-        public OrgTypePredicate(Organization.Type tyyppi) {
-            this.tyyppi = tyyppi;
+        public OrgTypePredicate(String tyyppi) {
+            this.type = tyyppi;
         }
 
         public boolean apply(Organization org) {
-            return tyyppi == null ? true : org.getTypes().contains(tyyppi);
+            return type == null ? true : org.getTypes().contains(type);
         }
     }
 
@@ -201,7 +201,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
     }
 
     protected Organization getOrganization(final String name, final String oid, final String parentOid,
-            Date startDate, Date endDate, Organization.Type... types) {
+            Date startDate, Date endDate, String... types) {
         final I18nText orgName = getI18nText("nimi", "fi", name + "_fi", "en", name + "_en", "sv", name + "_sv");
         final Organization org = new Organization(orgName, oid, parentOid, Arrays.asList(types), startDate, endDate);
         return org;

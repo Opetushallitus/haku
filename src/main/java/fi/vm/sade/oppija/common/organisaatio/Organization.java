@@ -24,27 +24,13 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 
 public class Organization {
 
-    public static enum Type {
-        KOULUTUSTOIMIJA("Koulutustoimija"), MUU_ORGANISAATIO("Muu organisaatio"), OPETUSPISTE("Opetuspiste"), OPPILAITOS(
-                "Oppilaitos"), OPPISOPIMUSTOIMIPISTE("Oppisopimustoimipiste");
-        private final String value;
-
-        Type(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-    }
-
     private Date endDate;
 
     private I18nText name;
 
     private String oid;
 
-    private List<Type> types;
+    private List<String> types;
 
     private String parentOid;
 
@@ -54,7 +40,7 @@ public class Organization {
     }
 
     public Organization(final I18nText name, final String oid, final String parentOid,
-            final List<Type> types, Date startDate, Date endDate) {
+            final List<String> types, Date startDate, Date endDate) {
         if (oid == null)
             throw new NullPointerException("Oid cannot be null");
         this.name = name;
@@ -95,7 +81,7 @@ public class Organization {
         return startDate;
     }
 
-    public List<Type> getTypes() {
+    public List<String> getTypes() {
         return types;
     }
 }
