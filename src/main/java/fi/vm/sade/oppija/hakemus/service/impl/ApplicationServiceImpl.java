@@ -24,6 +24,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import fi.vm.sade.oppija.common.authentication.AuthenticationService;
+import fi.vm.sade.oppija.common.authentication.Person;
+import fi.vm.sade.oppija.common.authentication.impl.AuthenticationServiceMockImpl;
+import fi.vm.sade.oppija.util.OppijaConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -58,6 +64,8 @@ import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationServiceImpl.class);
+
     private final ApplicationDAO applicationDAO;
     private final ApplicationOidService applicationOidService;
     private final UserHolder userHolder;
@@ -67,17 +75,20 @@ public class ApplicationServiceImpl implements ApplicationService {
     private static final String OID_PATTERN = "^[0-9]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+$";
     private final Pattern socialSecurityNumberPattern;
     private final Pattern oidPattern;
+    private final AuthenticationService authenticationService;
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
                                   final UserHolder userHolder,
                                   @Qualifier("formServiceImpl") final FormService formService,
                                   @Qualifier("applicationProcessStateServiceImpl") final ApplicationProcessStateService applicationProcessStateService,
-                                  @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService) {
+                                  @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
+                                  AuthenticationService authenticationService) {
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
         this.formService = formService;
         this.applicationProcessStateService = applicationProcessStateService;
+        this.authenticationService = authenticationService;
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
         this.oidPattern = Pattern.compile(OID_PATTERN);
         this.applicationOidService = applicationOidService;
@@ -136,14 +147,36 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application1 = new Application(formId, user);
         Application application = applicationDAO.findDraftApplication(application1);
         Form form = formService.getForm(formId.getApplicationPeriodId(), formId.getFormId());
-        ValidationResult validationResult = ElementTreeValidator.validate(form, application.getVastauksetMerged());
+        Map<String, String> allAnswers = application.getVastauksetMerged();
+        ValidationResult validationResult = ElementTreeValidator.validate(form, allAnswers);
         if (!validationResult.hasErrors()) {
-            checkIfExistsBySocialSecurityNumber(formId.getApplicationPeriodId(), application.getVastauksetMerged().get(SocialSecurityNumber.HENKILOTUNNUS));
+            checkIfExistsBySocialSecurityNumber(formId.getApplicationPeriodId(), allAnswers.get(SocialSecurityNumber.HENKILOTUNNUS));
             String newOid = applicationOidService.generateNewOid();
             application.setOid(newOid);
             if (!user.isKnown()) {
                 application.removeUser();
             }
+
+            // invoke authentication service to obtain oid
+            Person person = new Person(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES), allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME),
+                    allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME), allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER),
+                    false, allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL), allAnswers.get(OppijaConstants.ELEMENT_ID_SEX),
+                    allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY), false, allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE),
+                    allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY), allAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE));
+
+            String personOid = null;
+
+            try {
+                personOid = this.authenticationService.addPerson(person);
+            } catch (Exception e) {
+                LOGGER.warn("Could not obtain person oid by invoking authentication service, using mock as a fall back, " +
+                        "reason: " + e.getMessage());
+                AuthenticationService auth = new AuthenticationServiceMockImpl();
+                personOid = auth.addPerson(person);
+            }
+
+            application.setPersonOid(personOid);
+
             this.applicationDAO.update(application1, application);
             this.applicationProcessStateService.setApplicationProcessStateStatus(newOid, ApplicationProcessStateStatus.ACTIVE);
             return newOid;

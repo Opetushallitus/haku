@@ -29,7 +29,7 @@
     <!--<import resource="security-cas-ldap-context.xml"/>-->
 
     <context:property-placeholder
-            location="classpath:haku.properties, file:///${user.home:''}/oph-configuration/haku.properties"
+            location="classpath:haku.properties, file:///${user.home:''}/oph-configuration/haku.properties, file:///${user.home:''}/oph-configuration/common.properties"
             ignore-resource-not-found="true"/>
 
     <context:annotation-config/>
@@ -45,6 +45,7 @@
 
     <import resource="haku-context.xml"/>
     <import resource="tarjonta-context.xml"/>
+    <import resource="authentication-service-context.xml"/>
 
     <import resource="classpath:/META-INF/spring/logger-mock-context.xml"/>
 

@@ -52,6 +52,7 @@ public class Application implements Serializable {
     private FormId formId;
     private User user;
     private String phaseId;
+    private String personOid;
 
     private Map<String, Map<String, String>> answers = new HashMap<String, Map<String, String>>();
     private Map<String, String> meta = new HashMap<String, String>();
@@ -181,5 +182,13 @@ public class Application implements Serializable {
 
     public void setFormId(FormId formId) {
         this.formId = formId;
+    }
+
+    public String getPersonOid() {
+        return personOid;
+    }
+
+    public void setPersonOid(String personOid) {
+        this.personOid = personOid;
     }
 }

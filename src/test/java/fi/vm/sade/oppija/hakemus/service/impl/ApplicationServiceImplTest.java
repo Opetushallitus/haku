@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Before;
@@ -40,7 +39,6 @@ import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
 
 public class ApplicationServiceImplTest {
 
@@ -63,7 +61,7 @@ public class ApplicationServiceImplTest {
     @Test
     public void testFindApplicationBySsn() {
         ApplicationServiceImpl service = new ApplicationServiceImpl
-                (applicationDAO, null, null, null, null);
+                (applicationDAO, null, null, null, null, null);
         List<Application> results = service.findApplications(SSN);
         assertNotNull(results);
         assertEquals(1, results.size());
@@ -73,7 +71,7 @@ public class ApplicationServiceImplTest {
     @Test
     public void testFindApplicationByName() {
         ApplicationServiceImpl service = new ApplicationServiceImpl
-                (applicationDAO, null, null, null, null);
+                (applicationDAO, null, null, null, null, null);
         List<Application> results = service.findApplications(NAME);
         assertNotNull(results);
         assertEquals(1, results.size());
@@ -83,7 +81,7 @@ public class ApplicationServiceImplTest {
     @Test
     public void testFindApplicationByOid() {
         ApplicationServiceImpl service = new ApplicationServiceImpl
-                (applicationDAO, null, null, null, null);
+                (applicationDAO, null, null, null, null, null);
         application.setOid(OID);
         List<Application> results = service.findApplications(OID);
         assertNotNull(results);

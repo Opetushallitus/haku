@@ -32,16 +32,19 @@ import java.util.Map;
 public class ApplicationDTO {
 
     private String oid;
+    private String personOid;
     private String asId;
     private Map<String, String> answers;
     private Map<String, String> additionalInfo;
 
     @JsonCreator
     public ApplicationDTO(@JsonProperty(value = "oid") final String oid,
+                          @JsonProperty(value = "personOid") final String personOid,
                           @JsonProperty(value = "asId") final String asId,
                           @JsonProperty(value = "answers") Map<String, String> answers,
                           @JsonProperty(value = "additionalInfo") Map<String, String> additionalInfo) {
         this.oid = oid;
+        this.personOid = personOid;
         this.asId = asId;
         this.answers = answers;
         this.additionalInfo = additionalInfo;
@@ -50,6 +53,7 @@ public class ApplicationDTO {
 
     public ApplicationDTO(Application application) {
         this.oid = application.getOid();
+        this.personOid = application.getPersonOid();
         this.asId = application.getFormId().getApplicationPeriodId();
         this.answers = application.getVastauksetMerged();
         this.additionalInfo = null;
@@ -69,6 +73,14 @@ public class ApplicationDTO {
 
     public String getOid() {
         return oid;
+    }
+
+    public String getPersonOid() {
+        return personOid;
+    }
+
+    public void setPersonOid(String personOid) {
+        this.personOid = personOid;
     }
 
     public void setAnswers(Map<String, String> answers) {
