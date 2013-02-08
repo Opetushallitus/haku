@@ -139,7 +139,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
 
     protected void init() {
         final InputStream input = getClass().getResourceAsStream("/org-mock-data.json");
-        ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new ObjectMapper();
         try {
             for (Organization org : mapper.readValue(input, Organization[].class)) {
                 add(org);
@@ -153,7 +153,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
      * Fill parents and childs for matches.
      */
     List<Organization> fillTree(final List<Organization> matches) {
-        Map<String, Organization> result = Maps.newHashMap();
+        final Map<String, Organization> result = Maps.newHashMap();
         for (Organization org : matches) {
             result.put(org.getOid(), org);
             addParents(org, result);
@@ -191,7 +191,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
     private void addChildren(final Organization org, final Map<String, Organization> result) {
         Preconditions.checkNotNull(org);
 
-        Collection<Organization> children = parentChild.get(org.getOid());
+        final Collection<Organization> children = parentChild.get(org.getOid());
         for (Organization child : children) {
             if (!result.containsKey(child.getOid())) {
                 result.put(child.getOid(), child);
@@ -202,13 +202,13 @@ public class OrganizationServiceMockImpl implements OrganizationService {
 
     protected Organization getOrganization(final String name, final String oid, final String parentOid,
             Date startDate, Date endDate, Organization.Type... types) {
-        I18nText orgName = getI18nText("nimi", "fi", name + "_fi", "en", name + "_en", "sv", name + "_sv");
-        Organization org = new Organization(orgName, oid, parentOid, Arrays.asList(types), startDate, endDate);
+        final I18nText orgName = getI18nText("nimi", "fi", name + "_fi", "en", name + "_en", "sv", name + "_sv");
+        final Organization org = new Organization(orgName, oid, parentOid, Arrays.asList(types), startDate, endDate);
         return org;
     }
 
     private I18nText getI18nText(String id, String... kv) {
-        HashMap<String, String> translations = Maps.newHashMap();
+        final HashMap<String, String> translations = Maps.newHashMap();
         for (int i = 0; i < kv.length / 2; i++) {
             translations.put(kv[i * 2], kv[i * 2 + 1]);
         }

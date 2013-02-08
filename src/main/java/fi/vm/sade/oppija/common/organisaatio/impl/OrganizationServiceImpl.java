@@ -45,7 +45,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public List<Organization> search(SearchCriteria criteria) throws IOException {
 
-        OrganisaatioSearchCriteriaDTO criteriaDTO = new OrganisaatioSearchCriteriaDTO();
+        final OrganisaatioSearchCriteriaDTO criteriaDTO = new OrganisaatioSearchCriteriaDTO();
         if (criteria.getSearchString() != null) {
             criteriaDTO.setSearchStr(criteria.getSearchString());
         }
@@ -60,7 +60,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         criteriaDTO.setOppilaitosTyyppi(criteria.getLearningInstitutionType());
 
-        List<OrganisaatioPerustietoType> result = service.searchBasicOrganisaatios(criteriaDTO);
+        final List<OrganisaatioPerustietoType> result = service.searchBasicOrganisaatios(criteriaDTO);
         return Lists.newArrayList(Lists.transform(result, new OrganisaatioPerustietoTypeToOrganizationFunction()));
     }
 
