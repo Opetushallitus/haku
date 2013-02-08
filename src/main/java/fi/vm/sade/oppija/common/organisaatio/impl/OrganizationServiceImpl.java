@@ -18,20 +18,31 @@ package fi.vm.sade.oppija.common.organisaatio.impl;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
+
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.oppija.common.organisaatio.Organization;
 import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
+import fi.vm.sade.organisaatio.api.model.types.OrganisaatioDTO;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioSearchCriteriaDTO;
 
+@Service
+@Profile("default")
 public class OrganizationServiceImpl implements OrganizationService {
 
-    //TODO inject 
-    private OrganisaatioService service;
+    private final OrganisaatioService service;
 
+    @Autowired
+    public OrganizationServiceImpl(OrganisaatioService service) {
+        this.service = service;
+    }
+    
     @Override
     public List<Organization> search(SearchCriteria criteria) throws IOException {
 

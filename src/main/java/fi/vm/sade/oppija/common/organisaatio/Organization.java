@@ -23,21 +23,32 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 
 public class Organization {
 
+    
     public static enum Type {
-        KOULUTUSTOIMIJA, MUU_ORGANISAATIO, OPETUSPISTE, OPPILAITOS, OPPISOPIMUSTOIMIPISTE
+        KOULUTUSTOIMIJA("Koulutustoimija"), MUU_ORGANISAATIO("Muu organisaatio"), OPETUSPISTE("Opetuspiste"), OPPILAITOS("Oppilaitos"), OPPISOPIMUSTOIMIPISTE("Oppisopimustoimipiste");
+        private final String value;
+        
+    
+        Type(String value){
+            this.value=value;
+        }
+        
+        public String getValue() {
+            return value;
+        }
     }
 
-    private final I18nText name;
+    private I18nText name;
 
-    private final String oid;
+    private String oid;
 
-    private final String parentOid;
+    private String parentOid;
 
     public String getParentOid() {
         return parentOid;
     }
 
-    private final List<Type> types;
+    private List<Type> types;
 
     public Organization(final I18nText name, final String oid, final String parentOid, final List<Type> types) {
         if (oid == null)
@@ -46,6 +57,9 @@ public class Organization {
         this.oid = oid;
         this.parentOid = parentOid;
         this.types = ImmutableList.copyOf(types);
+    }
+    
+    public Organization() {
     }
 
     public I18nText getName() {

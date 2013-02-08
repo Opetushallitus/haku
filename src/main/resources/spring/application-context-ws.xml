@@ -23,5 +23,9 @@
     <jaxws:client id="koodiPublicService"
                   serviceClass="fi.vm.sade.koodisto.service.KoodiService"
                   address="${koodi.service.url}"/>
+                  
+    <jaxws:client id="organisaatioService"
+		          serviceClass="fi.vm.sade.organisaatio.api.model.OrganisaatioService"
+		          address="${organisaatio.service.url}" />
 
 </beans>

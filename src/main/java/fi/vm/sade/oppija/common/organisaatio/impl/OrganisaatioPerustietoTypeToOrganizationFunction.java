@@ -21,9 +21,9 @@ public class OrganisaatioPerustietoTypeToOrganizationFunction implements
     @Override
     public Organization apply(final OrganisaatioPerustietoType dto) {
         final HashMap<String, String> name = new HashMap<String, String>();
-        name.put(FI, dto.getNimiFi());
-        name.put(SV, dto.getNimiSv());
-        name.put(EN, dto.getNimiEn());
+        if(dto.getNimiFi()!=null) name.put(FI, dto.getNimiFi());
+        if(dto.getNimiSv()!=null) name.put(SV, dto.getNimiSv());
+        if(dto.getNimiEn()!=null) name.put(EN, dto.getNimiEn());
         final String oid = dto.getOid();
         final String parentOid = dto.getParentOid();
 
