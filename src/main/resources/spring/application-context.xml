@@ -43,7 +43,6 @@
         <property name="maxUploadSize" value="1000000"/>
     </bean>
 
-    <import resource="application-context-ws.xml"/>
     <import resource="haku-context.xml"/>
     <import resource="tarjonta-context.xml"/>
 
