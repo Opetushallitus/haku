@@ -71,7 +71,8 @@ import java.util.Map;
                 @JsonSubTypes.Type(value = PostalCode.class),
                 @JsonSubTypes.Type(value = SocialSecurityNumber.class),
                 @JsonSubTypes.Type(value = Text.class),
-                @JsonSubTypes.Type(value = WorkExperienceTheme.class)
+                @JsonSubTypes.Type(value = WorkExperienceTheme.class),
+                @JsonSubTypes.Type(value = Notification.class)
         }
 )
 public abstract class Element {

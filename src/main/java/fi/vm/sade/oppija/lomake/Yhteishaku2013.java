@@ -1,17 +1,19 @@
 /*
- * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
- * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
- * soon as they will be approved by the European Commission - subsequent versions
- * of the EUPL (the "Licence");
+ *  * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *  *
+ *  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ *  * soon as they will be approved by the European Commission - subsequent versions
+ *  * of the EUPL (the "Licence");
+ *  *
+ *  * You may not use this work except in compliance with the Licence.
+ *  * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *  *
+ *  * This program is distributed in the hope that it will be useful,
+ *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  * European Union Public Licence for more details.
  *
- * You may not use this work except in compliance with the Licence.
- * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * European Union Public Licence for more details.
  */
 
 package fi.vm.sade.oppija.lomake;
@@ -449,22 +451,12 @@ public class Yhteishaku2013 {
         millatutkinnolla.setVerboseHelp(getVerboseHelp());
         millatutkinnolla.addAttribute("required", "required");
 
-        Radio peruskoulu2012 = new Radio("peruskoulu2012", createI18NText("Saatko peruskoulun päättötodistuksen hakukeväänä 2012?"));
-        peruskoulu2012.addOption("kylla", createI18NText("Kyllä"), "kyllä");
-        peruskoulu2012.addOption("ei", createI18NText("En"), "ei");
-        peruskoulu2012.addAttribute("required", "required");
-        peruskoulu2012.setVerboseHelp(getVerboseHelp());
-
-        TextQuestion paattotodistusvuosi = new TextQuestion("paattotodistusvuosi", createI18NText("Olen saanut päättötodistuksen jo aiemmin, vuonna"));
-        paattotodistusvuosi.addAttribute("placeholder", "vvvv");
-        paattotodistusvuosi.addAttribute("required", "required");
-        paattotodistusvuosi.addAttribute("pattern", "^([1][9]\\d\\d|200[0-9]|201[0-1])$");
-        paattotodistusvuosi.addAttribute("size", "4");
-        paattotodistusvuosi.addAttribute("maxlength", "4");
-
-        RelatedQuestionRule rule = new RelatedQuestionRule("rule6", peruskoulu2012.getId(), peruskoulu2012.getOptions().get(1).getValue());
-        rule.addChild(paattotodistusvuosi);
-        peruskoulu2012.addChild(rule);
+        TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion("paattotodistusvuosi_peruskoulu", createI18NText("Minä vuonna sait/saat peruskoulun päättötodistuksen?"));
+        paattotodistusvuosiPeruskoulu.addAttribute("placeholder", "vvvv");
+        paattotodistusvuosiPeruskoulu.addAttribute("required", "required");
+        paattotodistusvuosiPeruskoulu.addAttribute("pattern", "^([1][9]\\d\\d|200[0-9]|201[0-3])$");
+        paattotodistusvuosiPeruskoulu.addAttribute("size", "4");
+        paattotodistusvuosiPeruskoulu.addAttribute("maxlength", "4");
 
         CheckBox suorittanut1 = new CheckBox("suorittanut1", createI18NText("Kymppiluokka (perusopetuksen lisäopetuksen oppimäärä, vähintään 1100 tuntia)"));
         CheckBox suorittanut2 = new CheckBox("suorittanut2", createI18NText("Vammaisten valmentava ja kuntouttava opetus ja ohjaus"));
@@ -473,38 +465,92 @@ public class Yhteishaku2013 {
         CheckBox suorittanut5 = new CheckBox("suorittanut5", createI18NText("Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vähintään 20 opintoviikkoa)"));
         CheckBox suorittanut6 = new CheckBox("suorittanut6", createI18NText("Kansanopiston lukuvuoden mittainen linja ammatilliseen peruskoulutukseen"));
 
+        /*
         DropdownSelect tutkinnonOpetuskieli = new DropdownSelect("opetuskieli", createI18NText("Mikä oli tukintosi opetuskieli"));
         tutkinnonOpetuskieli.addOption("suomi", createI18NText("Suomi"), "Suomi");
         tutkinnonOpetuskieli.addOption("ruotsi", createI18NText("Ruotsi"), "Ruotsi");
         tutkinnonOpetuskieli.addAttribute("placeholder", "Tutkintosi opetuskieli");
         tutkinnonOpetuskieli.setHelp("Merkitse tähän se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellä tasapuolisesti, valitse toinen niistä");
         tutkinnonOpetuskieli.setVerboseHelp(getVerboseHelp());
+        */
 
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "(" +
                 millatutkinnolla.getOptions().get(0).getValue() + "|" + millatutkinnolla.getOptions().get(1).getValue() +
                 "|" + millatutkinnolla.getOptions().get(2).getValue() + "|" + millatutkinnolla.getOptions().get(3).getValue() + ")");
 
-        relatedQuestionRule.addChild(peruskoulu2012);
-        relatedQuestionRule.addChild(tutkinnonOpetuskieli);
+        RelatedQuestionRule paattotodistusvuosiPeruskouluRule = new RelatedQuestionRule("rule8", paattotodistusvuosiPeruskoulu.getId(), "^([1][9]\\d\\d|200[0-9]|201[0-1])$");
+
+        relatedQuestionRule.addChild(paattotodistusvuosiPeruskoulu);
+        //relatedQuestionRule.addChild(tutkinnonOpetuskieli);
         relatedQuestionRule.addChild(suorittanut1);
         relatedQuestionRule.addChild(suorittanut2);
         relatedQuestionRule.addChild(suorittanut3);
         relatedQuestionRule.addChild(suorittanut4);
         relatedQuestionRule.addChild(suorittanut5);
         relatedQuestionRule.addChild(suorittanut6);
+        relatedQuestionRule.addChild(paattotodistusvuosiPeruskouluRule);
 
-        TextQuestion lukiovuosi = new TextQuestion("lukiovuosi", createI18NText("Minä vuonna olet saanut lukiotodistuksen?"));
-        lukiovuosi.addAttribute("placeholder", "vvvv");
-        lukiovuosi.addAttribute("required", "required");
-        lukiovuosi.addAttribute("pattern", "^([1][9]\\d\\d|200[0-9]|201[0-1])$");
-        lukiovuosi.addAttribute("size", "4");
-        lukiovuosi.addAttribute("maxlength", "4");
+        TextQuestion lukioPaattotodistusVuosi = new TextQuestion("lukioPaattotodistusVuosi", createI18NText("Päättötodistuksen vuosi"));
+        lukioPaattotodistusVuosi.addAttribute("placeholder", "vvvv");
+        lukioPaattotodistusVuosi.addAttribute("required", "required");
+        lukioPaattotodistusVuosi.addAttribute("pattern", "^([1][9]\\d\\d|200[0-9]|201[0-3])$");
+        lukioPaattotodistusVuosi.addAttribute("size", "4");
+        lukioPaattotodistusVuosi.addAttribute("maxlength", "4");
+        lukioPaattotodistusVuosi.setInline(true);
+
+        TextQuestion ylioppilastodistuksenVuosi = new TextQuestion("ylioppilastodistuksenVuosi", createI18NText("Ylioppilastodistuksen vuosi"));
+        ylioppilastodistuksenVuosi.addAttribute("placeholder", "vvvv");
+        ylioppilastodistuksenVuosi.addAttribute("required", "required");
+        ylioppilastodistuksenVuosi.addAttribute("pattern", "^([1][9]\\d\\d|200[0-9]|201[0-3])$");
+        ylioppilastodistuksenVuosi.addAttribute("size", "4");
+        ylioppilastodistuksenVuosi.addAttribute("maxlength", "4");
+        ylioppilastodistuksenVuosi.setInline(true);
+
+        DropdownSelect ylioppilastutkinto = new DropdownSelect("ylioppilastutkinto", createI18NText("Ylioppilastutkinto"));
+        ylioppilastutkinto.addOption("fi", createI18NText("Suomalainen ylioppilastutkinto"), "fi");
+        ylioppilastutkinto.addOption("ib", createI18NText("International Baccalaureate (IB) -tutkinto"), "ib");
+        ylioppilastutkinto.addOption("eb", createI18NText("European Baccalaureate (EB) -tutkinto"), "eb");
+        ylioppilastutkinto.addOption("rp", createI18NText("Reifeprũfung (RP) -tutkinto"), "rp");
+        ylioppilastutkinto.addAttribute("required", "required");
+        ylioppilastutkinto.setInline(true);
+
+        Group lukioGroup = new Group("lukioGroup", createI18NText("Täytä lukion suorittamiseen liittyvät tiedot"));
+        lukioGroup.addChild(lukioPaattotodistusVuosi);
+        lukioGroup.addChild(ylioppilastodistuksenVuosi);
+        lukioGroup.addChild(ylioppilastutkinto);
 
         RelatedQuestionRule lukioRule = new RelatedQuestionRule("rule7", millatutkinnolla.getId(), millatutkinnolla.getOptions().get(5).getValue());
-        lukioRule.addChild(lukiovuosi);
+        lukioRule.addChild(lukioGroup);
 
         millatutkinnolla.addChild(lukioRule);
         millatutkinnolla.addChild(relatedQuestionRule);
+
+
+        Radio suorittanutAmmatillisenTutkinnon = new Radio("ammatillinenTutkintoSuoritettu", createI18NText("Oletko suorittanut jonkun ammatillisen perustutkinnon, muun ammatillisen tutkinnon tai korkeakoulututkinnon?"));
+        suorittanutAmmatillisenTutkinnon.addOption("kylla", createI18NText("Kyllä"), "kyllä");
+        suorittanutAmmatillisenTutkinnon.addOption("ei", createI18NText("En"), "ei");
+        suorittanutAmmatillisenTutkinnon.addAttribute("required", "required");
+
+        Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio("koulutuspaikkaAmmatillisenTutkintoon", createI18NText("Onko sinulla koulutuspaikka ammatilliseen perustutkintoon johtavassa oppilaitoksessa tai lukiossa?"));
+        koulutuspaikkaAmmatillisenTutkintoon.addOption("kylla", createI18NText("Kyllä"), "kyllä");
+        koulutuspaikkaAmmatillisenTutkintoon.addOption("ei", createI18NText("Ei"), "ei");
+        koulutuspaikkaAmmatillisenTutkintoon.addAttribute("required", "required");
+
+
+        lukioRule.addChild(suorittanutAmmatillisenTutkinnon);
+        lukioRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
+        paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
+        paattotodistusvuosiPeruskouluRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
+
+        RelatedQuestionRule suorittanutAmmatillisenTutkinnonRule = new RelatedQuestionRule("rule9", suorittanutAmmatillisenTutkinnon.getId(), "^kyllä$");
+        Notification notification1 = new Notification("notification1", createI18NText("Yhteishaun ammatillisen koulutuksen koulutuspaikat on varattu hakijoille, jotka ovat ilman koulutuspaikkaa. Huomioi, että et voi hakea ammatillisen koulutuksen tällä hakulomakkeella, koska olet jo suorittanut ammatilliseen perustutkintoon johtavan koulutuksen tai lukiokoulutuksen."), Notification.NotificationType.INFO);
+        suorittanutAmmatillisenTutkinnonRule.addChild(notification1);
+        suorittanutAmmatillisenTutkinnon.addChild(suorittanutAmmatillisenTutkinnonRule);
+
+        RelatedQuestionRule koulutuspaikkaAmmatillisenTutkintoonRule = new RelatedQuestionRule("rule10", koulutuspaikkaAmmatillisenTutkintoon.getId(), "^kyllä$");
+        Notification notification2 = new Notification("notification2", createI18NText("Yhteishaun ammatillisen koulutuksen koulutuspaikat on varattu hakijoille, jotka ovat ilman koulutuspaikkaa. Huomioi, että et voi hakea ammatillisen koulutuksen tällä hakulomakkeella, koska olet jo suorittamassa ammatilliseen perustutkintoon johtavaa koulutusta tai lukiokoulutusta."), Notification.NotificationType.INFO);
+        koulutuspaikkaAmmatillisenTutkintoonRule.addChild(notification2);
+        koulutuspaikkaAmmatillisenTutkintoon.addChild(koulutuspaikkaAmmatillisenTutkintoonRule);
 
         return millatutkinnolla;
     }

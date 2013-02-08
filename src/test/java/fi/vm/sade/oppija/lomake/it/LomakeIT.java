@@ -72,7 +72,8 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(new By.ByClassName("right")).click();
 
         driver.findElement(new By.ById("millatutkinnolla_tutkinto1")).click();
-        driver.findElement(new By.ById("peruskoulu2012_kylla")).click();
+        driver.findElement(new By.ById("paattotodistusvuosi_peruskoulu"));
+        selenium.typeKeys("paattotodistusvuosi_peruskoulu", "2013");
 
         driver.findElement(new By.ById("suorittanut1")).click();
         driver.findElement(new By.ById("suorittanut2")).click();

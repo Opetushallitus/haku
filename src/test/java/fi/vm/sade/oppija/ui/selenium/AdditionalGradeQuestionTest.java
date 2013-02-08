@@ -48,10 +48,10 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
         final String url = getBaseUrl() + "/lomake/Yhteishaku/yhteishaku/koulutustausta";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
-
+        Selenium s = seleniumHelper.getSelenium();
         driver.findElement(new By.ById("millatutkinnolla_tutkinto1")).click();
-        driver.findElement(new By.ById("peruskoulu2012_kylla")).click();
-
+        driver.findElement(new By.ById("paattotodistusvuosi_peruskoulu"));
+        s.typeKeys("paattotodistusvuosi_peruskoulu", "2013");
         driver.findElement(new By.ById("suorittanut1")).click();
         driver.findElement(new By.ById("suorittanut2")).click();
         driver.findElement(new By.ById("suorittanut3")).click();
@@ -63,7 +63,7 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
 
         // select a LOI
         driver.findElement(By.id("preference1-Opetuspiste"));
-        Selenium s = seleniumHelper.getSelenium();
+
 
         s.typeKeys("preference1-Opetuspiste", "Hel");
 
