@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -16,7 +17,8 @@
   ~ European Union Public Licence for more details.
   --%>
 
-<table class="preference-sort">
+<haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
+<table id="${element.id}" class="preference-sort">
     <tbody>
     <c:forEach var="child" items="${element.children}" varStatus="status">
         <tr>

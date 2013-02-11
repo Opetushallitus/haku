@@ -16,16 +16,25 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
+import com.google.common.base.Predicate;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.validation.Validator;
+import fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.PreferenceTableValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static com.google.common.base.Predicates.and;
+import static com.google.common.base.Predicates.or;
+import static fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator.ValidatorPredicate.validate;
 
 /**
  * Preference table element with row sorting functionality
@@ -62,14 +71,24 @@ public class PreferenceTable extends Titled {
         List<Validator> listOfValidators = new ArrayList<Validator>();
         List<String> learningInstitutionInputIds = new ArrayList<String>();
         List<String> educationInputIds = new ArrayList<String>();
+        List<Predicate<Map<String, String>>> preferencePredicates = new ArrayList<Predicate<Map<String, String>>>();
 
         for (Element element : this.getChildren()) {
             PreferenceRow pr = (PreferenceRow) element;
             learningInstitutionInputIds.add(pr.getLearningInstitutionInputId());
             educationInputIds.add(pr.getEducationInputId());
+            preferencePredicates.add(validate(new RegexFieldFieldValidator(pr.getEducationInputId() + "-educationDegree", "^32$")));
         }
 
         listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds));
+        Predicate<Map<String, String>> predicate = and(or(and(validate(new RegexFieldFieldValidator("ammatillinenTutkintoSuoritettu", "^kyllä$")),
+                validate(new RequiredFieldFieldValidator("ammatillinenTutkintoSuoritettu", ""))),
+                and(validate(new RegexFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon", "^kyllä$")),
+                        validate(new RequiredFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon", "")))),
+                or(preferencePredicates));
+        FunctionalValidator fv = new FunctionalValidator(predicate, this.getId(),
+                "Et voi hakea ammatillisen koulutuksen tällä hakulomakkeella, koska olet jo suorittanut/suorittamassa ammatilliseen perustutkintoon johtavaa koulutusta tai lukiokoulutusta.");
+        listOfValidators.add(fv);
         return listOfValidators;
     }
 }
