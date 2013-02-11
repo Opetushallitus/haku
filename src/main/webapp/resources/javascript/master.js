@@ -360,7 +360,7 @@ $(document).ready(function(){
 		settings : {
 			listenTimeout : 500
 		},
-		build:function{
+		build:function(){
 			orgSearch.listen.listHeight();
 		},
 		listen : {
