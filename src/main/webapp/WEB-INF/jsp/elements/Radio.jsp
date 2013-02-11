@@ -24,7 +24,7 @@
         <c:forEach var="option" items="${element.options}" varStatus="status">
             <haku:errorMessage id="${option.id}"/>
             <div class="field-container-radio">
-                <input id="${option.id}" type="radio" name="${element.id}"
+                <input type="radio" name="${element.id}"
                        value="${option.value}" ${(!empty disabled) ? "disabled=\"true\" " : " "} ${(value eq option.value) ? "checked=\"checked\" " : " "} ${option.attributeString}/>
                 <label for="${option.id}"><haku:i18nText value="${option.i18nText}"/></label>
                 <haku:help element="${option}"/>

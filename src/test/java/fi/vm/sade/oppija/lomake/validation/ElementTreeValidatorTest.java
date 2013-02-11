@@ -40,8 +40,6 @@ public class ElementTreeValidatorTest {
         textQuestion = new TextQuestion("id", createI18NText("title"));
         formModelDummyMemoryDao = new FormServiceMockImpl();
         Form form = formModelDummyMemoryDao.getForm("Yhteishaku", "yhteishaku");
-        form.init();
-
     }
 
     @Test(expected = NullPointerException.class)
@@ -67,33 +65,33 @@ public class ElementTreeValidatorTest {
         assertTrue(validationResult.hasErrors());
     }
 
-    @Test()
-    public void testValidateAsuinMaaSV() throws Exception {
-        Phase phase = formModelDummyMemoryDao.getFirstPhase("Yhteishaku", "yhteishaku");
-        HashMap<String, String> values = fillFormWithoutAsuinmaa();
-        values.put("asuinmaa", "sv");
-        ValidationResult validationResult = ElementTreeValidator.validate(phase, values);
-        assertTrue(validationResult.getErrorMessages().size() == 1);
+    @Test
+    public void testValidateAsuinmaaSV() throws Exception {
+        testAsuinmaa("sv", 1);
     }
 
-    @Test()
-    public void testValidateAsuinMaaFI() throws Exception {
+    @Test
+    public void testValidateAsuinmaaFI() throws Exception {
+        testAsuinmaa("fi", 3);
+    }
+
+    private void testAsuinmaa(final String asuinmaa, final int errorCount) {
         Phase phase = formModelDummyMemoryDao.getFirstPhase("Yhteishaku", "yhteishaku");
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
-        values.put("asuinmaa", "fi");
+        values.put("asuinmaa", asuinmaa);
         ValidationResult validationResult = ElementTreeValidator.validate(phase, values);
-        assertTrue(validationResult.getErrorMessages().size() == 3);
+        assertTrue(validationResult.getErrorMessages().size() == errorCount);
     }
 
     private HashMap<String, String> fillFormWithoutAsuinmaa() {
         HashMap<String, String> values = new HashMap<String, String>();
-        values.put("äidinkieli", "Suomi");
-        values.put("kansalaisuus", "Suomi");
+        values.put("äidinkieli", "fi");
+        values.put("kansalaisuus", "fi");
         values.put("Etunimet", "Mika Ville");
         values.put("Sukunimi", "Rajapaju");
         values.put("Kutsumanimi", "Mika");
-        values.put("Sukupuoli", "m");
-        values.put("Henkilotunnus", "010188-123X");
+        values.put("Sukupuoli", "n");
+        values.put("Henkilotunnus", "110293-906X");
         return values;
     }
 
