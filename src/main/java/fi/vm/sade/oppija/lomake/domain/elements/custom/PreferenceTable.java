@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.google.common.base.Predicates.and;
+import static com.google.common.base.Predicates.not;
 import static com.google.common.base.Predicates.or;
 import static fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator.ValidatorPredicate.validate;
 
@@ -81,11 +82,11 @@ public class PreferenceTable extends Titled {
         }
 
         listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds));
-        Predicate<Map<String, String>> predicate = and(or(and(validate(new RegexFieldFieldValidator("ammatillinenTutkintoSuoritettu", "^kyllä$")),
+        Predicate<Map<String, String>> predicate = and(not(and(or(and(validate(new RegexFieldFieldValidator("ammatillinenTutkintoSuoritettu", "^kyllä$")),
                 validate(new RequiredFieldFieldValidator("ammatillinenTutkintoSuoritettu", ""))),
                 and(validate(new RegexFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon", "^kyllä$")),
                         validate(new RequiredFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon", "")))),
-                or(preferencePredicates));
+                or(preferencePredicates))));
         FunctionalValidator fv = new FunctionalValidator(predicate, this.getId(),
                 "Et voi hakea ammatillisen koulutuksen tällä hakulomakkeella, koska olet jo suorittanut/suorittamassa ammatilliseen perustutkintoon johtavaa koulutusta tai lukiokoulutusta.");
         listOfValidators.add(fv);

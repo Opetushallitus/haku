@@ -45,9 +45,9 @@ public class FunctionalValidator implements Validator {
     public ValidationResult validate(Map<String, String> values) {
 
         if (this.predicate.apply(values)) {
-            return new ValidationResult(inputId, errorMessage);
+            return new ValidationResult();
         }
-        return new ValidationResult();
+        return new ValidationResult(inputId, errorMessage);
     }
 
     public static class ValidatorPredicate implements Predicate<Map<String, String>> {
