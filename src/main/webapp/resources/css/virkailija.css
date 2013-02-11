@@ -1,3 +1,4 @@
+@charset "CP850";
 /* normalize.css v2.0.1 | MIT License | git.io/normalize */
 /* ==========================================================================
    HTML5 display definitions
@@ -1852,6 +1853,17 @@ label, .label {
     padding: 0.5em 1em;
     border-spacing: 0;
     border: 1px solid #ececec; }
+
+/*
+	Taulukko tyyli perustietojen näyttämiselle, esim. hakijan henkilötietot
+*/
+.perustieto-table {
+  width: 100%; }
+  .perustieto-table tbody tr td:nth-child(odd) {
+    text-align: right; }
+  .perustieto-table tbody tr td:nth-child(even) {
+    font-weight: bold;
+    text-align: left; }
 
 a.button {
   text-decoration: none;
