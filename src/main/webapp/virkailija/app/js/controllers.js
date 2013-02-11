@@ -26,3 +26,9 @@ function SearchCtrl($scope, Application, Config) {
 function MyCtrl2() {
 }
 MyCtrl2.$inject = [];
+
+function HakemusCtrl($scope, Application, Config) {
+
+	
+}
+

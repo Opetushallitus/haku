@@ -31,6 +31,112 @@
     <script src="js/directives.js"></script>
 </head>
 <body>
-<div ng-view></div>
+
+<div id="viewport">
+    <div id="overlay" style="display: none;"></div>
+    <div id="wrapper">
+    <header id="siteheader">
+        <div class="primarylinks">
+            <a href="#">Oppijan verkkopalvelu</a> &nbsp;
+            <a href="#">Virkailijan työpöytä</a>
+        </div>
+        <div class="secondarylinks">
+            <a href="#">Omat tiedot</a> &nbsp;
+            <a href="#">Viestintä</a> &nbsp;
+            <a href="#">Asiakaspalvelu</a> &nbsp;
+            <a href="#">Tukipalvelut</a>
+        </div>
+    </header>
+    <nav id="navigation" class="grid16-16">
+
+        <ul class="level1">
+            <li><a href="#" class=""><span>Organisaation tiedot</span></a></li>
+            <li>
+                <a href="index.html" class="current"><span>Koulutustarjonta</span></a>
+                <ul class="level2">
+                    <li><a href="#" class="">Koulutuksen tiedot</a></li>
+                    <li><a href="#" class="">Koulutuksen toteutus ja hakukohde</a></li>
+                    <li><a href="#" class="">Organisaation kuvailevat tiedot</a></li>
+                    <li><a href="#" class="">Järjestämissopimukset</a></li>
+                    <li><a href="#" class="">Järjestämisluvat</a></li>
+                </ul>
+            </li>
+            <li><a href="#" class=""><span>Valintaperusteet</span></a></li>
+            <li><a href="#" class=""><span>Koulutussuunnittelu</span></a></li>
+            <li><a href="#" class=""><span>Sisällönhallinta</span></a></li>
+        </ul>
+
+    </nav>
+
+<div style="clear:both;" ng-view></div>
+
+            <footer id="footer" class="grid16-16 margin-top-4">
+                <div class="footer-container">
+
+                    <div class="grid16-4">
+                        <div class="grid-container">
+                            Leipäteksti #000 line-height: 1.8em font-size: 1.3em (body font-size: 62.5% = 10px) Lorem ipsum dolor
+                            sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+                            aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
+                            euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet,
+                            consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam
+                            erat volutpat.
+                        </div>
+                    </div>
+
+
+                    <div class="grid16-12">
+                        <div class="grid16-4 ">
+                            <div class="grid-container">
+                                <h3> 1st column - Lorem ipsum</h3>
+
+                                <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+                                    tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                            </div>
+                        </div>
+                        <div class="grid16-4">
+                            <div class="grid-container">
+                                <h3>2nd column - Lorem ipsum </h3>
+
+                                <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+                                    tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet,
+                                    consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+                                    aliquam erat volutpat. </p>
+                            </div>
+                        </div>
+                        <div class="grid16-4">
+                            <div class="grid-container">
+                                <h3> 3st column - Lorem ipsum</h3>
+
+                                <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+                                    tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                            </div>
+                        </div>
+                        <div class="grid16-4">
+                            <div class="grid-container">
+                                <h3>4nd column - Lorem ipsum </h3>
+
+                                <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+                                    tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet,
+                                    consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+                                    aliquam erat volutpat. </p>
+                            </div>
+                        </div>
+                        <div class="grid16-8 footer-logo">
+                            <img src="../../resources/img/logo-opetus-ja-kulttuuriministerio.png">
+                        </div>
+                        <div class="grid16-8 footer-logo">
+                            <img src="../../resources/img/logo-oph.png">
+                        </div>
+                    </div>
+
+
+                    <div class="clear"></div>
+                </div>
+            </footer>
+        <div class="clear"></div>
+    </div>
+</div>
+
 </body>
 </html>
