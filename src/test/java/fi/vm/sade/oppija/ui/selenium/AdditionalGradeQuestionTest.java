@@ -25,7 +25,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -74,7 +74,7 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
         // navigate to grade phase
         s.click("class=right");
         driver.findElement(By.xpath("//table[@id='gradegrid-table']"));
-        assertEquals(18, driver.findElements(By.xpath("//table[@id='gradegrid-table']/tbody/tr")).size());
+        assertTrue(driver.findElements(By.xpath("//table[@id='gradegrid-table']/tbody/tr")).size() > 10);
 
 
     }

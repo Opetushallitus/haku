@@ -41,7 +41,7 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KoodistoServiceImpl.class);
     public static final String CODE_POST = "posti";
-    public static final String CODE_SUBJECT = "oppiaine";
+    public static final String CODE_SUBJECT = "oppiaineet";
     public static final String CODE_GRADE_RANGE = "ARVOSANA-ASTEIKKO";
 
 
@@ -71,14 +71,14 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Option> getGradeRanges() {
         return ImmutableList.copyOf(
-                Lists.transform(
-                        getKoodiTypes(CODE_GRADE_RANGE),
-                        new KoodiTypeToGradeRangeOptionFunction()));
+                Lists.reverse(
+                        Lists.transform(
+                                getKoodiTypes(CODE_GRADE_RANGE),
+                                new KoodiTypeToGradeRangeOptionFunction())));
     }
 
 
     private List<KoodiType> getKoodiTypes(final String koodistoUri) {
-
         SearchKoodisByKoodistoCriteriaType searchKoodisByKoodistoCriteriaType = new SearchKoodisByKoodistoCriteriaType();
         searchKoodisByKoodistoCriteriaType.setKoodistoUri(koodistoUri);
         List<KoodiType> koodiTypes = newArrayList();

@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.common.koodisto.impl;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class KoodistoServiceMockImplTest {
 
@@ -32,16 +32,16 @@ public class KoodistoServiceMockImplTest {
 
     @Test
     public void testGetPostOffices() throws Exception {
-        assertTrue(koodistoServiceMock.getPostOffices().size() == 3);
+        assertEquals(koodistoServiceMock.listOfPostOffices, koodistoServiceMock.getPostOffices());
     }
 
     @Test
     public void testGetSubjects() throws Exception {
-        assertTrue(koodistoServiceMock.getSubjects().isEmpty());
+        assertEquals(koodistoServiceMock.listOfSubjectsRows, koodistoServiceMock.getSubjects());
     }
 
     @Test
     public void testGetGradeRanges() throws Exception {
-        assertTrue(koodistoServiceMock.getGradeRanges().size() == 8);
+        assertEquals(koodistoServiceMock.listOfGradeGrades, koodistoServiceMock.getGradeRanges());
     }
 }

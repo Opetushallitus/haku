@@ -1,19 +1,17 @@
 /*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
- *  * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
- *  *
- *  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
- *  * soon as they will be approved by the European Commission - subsequent versions
- *  * of the EUPL (the "Licence");
- *  *
- *  * You may not use this work except in compliance with the Licence.
- *  * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * European Union Public Licence for more details.
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
  *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
  */
 
 package fi.vm.sade.oppija.lomake;
@@ -115,14 +113,14 @@ public class Yhteishaku2013 {
         lisätiedot.addChild(tyokokemusRyhmä);
         lisätiedot.addChild(lupatiedotRyhmä);
 
+
         DropdownSelect aidinkieli = new DropdownSelect("äidinkieli", createI18NText("Äidinkieli"));
-        aidinkieli.addOption("suomi", createI18NText("Suomi"), "Suomi");
-        aidinkieli.addOption("ruotsi", createI18NText("Ruotsi"), "Ruotsi");
+        aidinkieli.addOption("suomi", createI18NText("Suomi"), "fi");
+        aidinkieli.addOption("ruotsi", createI18NText("Ruotsi"), "sv");
         aidinkieli.addAttribute("placeholder", "Valitse Äidinkieli");
         aidinkieli.addAttribute("required", "required");
         aidinkieli.setVerboseHelp(getVerboseHelp());
         aidinkieli.setInline(true);
-
 
         DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", createI18NText("Kansalaisuus"));
         kansalaisuus.addOption("fi", createI18NText("Suomi"), "fi");
@@ -170,8 +168,8 @@ public class Yhteishaku2013 {
         henkilötunnus.setInline(true);
 
         Radio sukupuoli = new Radio("Sukupuoli", createI18NText("Sukupuoli"));
-        sukupuoli.addOption("mies", createI18NText("Mies"), "Mies");
-        sukupuoli.addOption("nainen", createI18NText("Nainen"), "Nainen");
+        sukupuoli.addOption("mies", createI18NText("Mies"), "m");
+        sukupuoli.addOption("nainen", createI18NText("Nainen"), "n");
         sukupuoli.addAttribute("required", "required");
         sukupuoli.setVerboseHelp(getVerboseHelp());
         sukupuoli.setInline(true);
@@ -283,8 +281,23 @@ public class Yhteishaku2013 {
     public GradeGrid createGradeGrid() {
 
         List<Option> gradeRange = koodistoService.getGradeRanges();
-
+        List<SubjectRow> subjects = koodistoService.getSubjects();
         SubjectRow finnish = new SubjectRow("subject_finnish", createI18NText("Äidinkieli ja kirjallisuus"));
+        List<SubjectRow> subjectRowsAfter = new ArrayList<SubjectRow>();
+        for (SubjectRow subject : subjects) {
+            String id = subject.getId();
+            if ("AI".equals(id)) {
+                finnish = subject;
+            } else if (id.startsWith("A1") ||
+                    id.startsWith("B1") ||
+                    id.startsWith("A2") ||
+                    id.startsWith("B2") ||
+                    id.startsWith("B3")) {
+
+            } else {
+                subjectRowsAfter.add(subject);
+            }
+        }
         List<SubjectRow> subjectRowsBefore = new ArrayList<SubjectRow>();
         subjectRowsBefore.add(finnish);
 
@@ -294,36 +307,6 @@ public class Yhteishaku2013 {
         List<LanguageRow> languageRows = new ArrayList<LanguageRow>();
         languageRows.add(a1);
         languageRows.add(b1);
-
-        SubjectRow matematiikka = new SubjectRow("subject_matematiikka", createI18NText("Matematiikka"));
-        SubjectRow biologia = new SubjectRow("subject_biologia", createI18NText("Biologia"));
-        SubjectRow maantieto = new SubjectRow("subject_maantieto", createI18NText("Maantieto"));
-        SubjectRow fysiikka = new SubjectRow("subject_fysiikka", createI18NText("Fysiikka"));
-        SubjectRow kemia = new SubjectRow("subject_kemia", createI18NText("Kemia"));
-        SubjectRow terveystieto = new SubjectRow("subject_terveystieto", createI18NText("Terveystieto"));
-        SubjectRow uskonto = new SubjectRow("subject_uskonto", createI18NText("Uskonto tai elämänkatsomustieto"));
-        SubjectRow historia = new SubjectRow("subject_historia", createI18NText("Historia"));
-        SubjectRow yhteiskuntaoppi = new SubjectRow("subject_yhteiskuntaoppi", createI18NText("Yhteiskuntaoppi"));
-        SubjectRow musiikki = new SubjectRow("subject_musiikki", createI18NText("Musiikki"));
-        SubjectRow kuvataide = new SubjectRow("subject_kuvataide", createI18NText("Kuvataide"));
-        SubjectRow kasityo = new SubjectRow("subject_kasityo", createI18NText("Käsityö"));
-        SubjectRow liikunta = new SubjectRow("subject_liikunta", createI18NText("Liikunta"));
-        SubjectRow kotitalous = new SubjectRow("subject_kotitalous", createI18NText("Kotitalous"));
-        List<SubjectRow> subjectRowsAfter = new ArrayList<SubjectRow>();
-        subjectRowsAfter.add(matematiikka);
-        subjectRowsAfter.add(biologia);
-        subjectRowsAfter.add(maantieto);
-        subjectRowsAfter.add(fysiikka);
-        subjectRowsAfter.add(kemia);
-        subjectRowsAfter.add(terveystieto);
-        subjectRowsAfter.add(uskonto);
-        subjectRowsAfter.add(historia);
-        subjectRowsAfter.add(yhteiskuntaoppi);
-        subjectRowsAfter.add(musiikki);
-        subjectRowsAfter.add(kuvataide);
-        subjectRowsAfter.add(kasityo);
-        subjectRowsAfter.add(liikunta);
-        subjectRowsAfter.add(kotitalous);
 
         List<Option> languageOptions = new ArrayList<Option>();
         languageOptions.add(new Option("langoption_" + "eng", createI18NText("englanti"), "eng"));

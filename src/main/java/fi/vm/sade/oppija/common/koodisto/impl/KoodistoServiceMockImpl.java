@@ -34,9 +34,9 @@ import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 @Profile("dev")
 public class KoodistoServiceMockImpl implements KoodistoService {
 
-    private final List<Option> listOfGradeGrades;
-    private final List<PostOffice> postOffices;
-    private final List<SubjectRow> listOfSubjectsRows;
+    public final List<Option> listOfGradeGrades;
+    public final List<PostOffice> listOfPostOffices;
+    public final List<SubjectRow> listOfSubjectsRows;
 
     public KoodistoServiceMockImpl() {
         List<Option> listOfGradeGrades = new ArrayList<Option>();
@@ -50,18 +50,41 @@ public class KoodistoServiceMockImpl implements KoodistoService {
         listOfGradeGrades.add(new Option("grade_4", createI18NText("4"), "4"));
         this.listOfGradeGrades = ImmutableList.copyOf(listOfGradeGrades);
 
-        List<PostOffice> postOffices = new ArrayList<PostOffice>();
-        postOffices.add(createPostOffice("00100", "Helsinki"));
-        postOffices.add(createPostOffice("02100", "Espoo"));
-        postOffices.add(createPostOffice("33100", "Tampere"));
-        this.postOffices = ImmutableList.copyOf(postOffices);
+        this.listOfPostOffices = ImmutableList.of(
+                createPostOffice("00100", "Helsinki"),
+                createPostOffice("02100", "Espoo"),
+                createPostOffice("33100", "Tampere"));
+        this.listOfSubjectsRows = ImmutableList.of(
+                new SubjectRow("A1", createI18NText("A1-kieli")),
+                new SubjectRow("A12", createI18NText("A12-kieli")),
+                new SubjectRow("A2", createI18NText("A2-kieli")),
+                new SubjectRow("A22", createI18NText("A22-kieli")),
+                new SubjectRow("AI", createI18NText("Äidinkieli ja kirjallisuus")),
+                new SubjectRow("B1", createI18NText("B1-kieli")),
+                new SubjectRow("B2", createI18NText("B2-kieli")),
+                new SubjectRow("B22", createI18NText("B22-kieli")),
+                new SubjectRow("B23", createI18NText("B23-kieli")),
+                new SubjectRow("B3", createI18NText("B3-kieli")),
+                new SubjectRow("MA", createI18NText("Matematiikka")),
+                new SubjectRow("BI", createI18NText("Biologia")),
+                new SubjectRow("GE", createI18NText("Maantieto")),
+                new SubjectRow("FY", createI18NText("Fysiikka")),
+                new SubjectRow("KE", createI18NText("Kemia")),
+                new SubjectRow("TE", createI18NText("Terveystieto")),
+                new SubjectRow("KT", createI18NText("Uskonto tai elämänkatsomustieto")),
+                new SubjectRow("HI", createI18NText("Historia")),
+                new SubjectRow("YH", createI18NText("Yhteiskuntaoppi")),
+                new SubjectRow("MU", createI18NText("Musiikki")),
+                new SubjectRow("KU", createI18NText("Kuvataide")),
+                new SubjectRow("KS", createI18NText("Käsityö")),
+                new SubjectRow("LI", createI18NText("Liikunta"))
+        );
 
-        this.listOfSubjectsRows = ImmutableList.copyOf(new ArrayList<SubjectRow>());
     }
 
     @Override
     public List<PostOffice> getPostOffices() {
-        return this.postOffices;
+        return this.listOfPostOffices;
     }
 
     @Override
@@ -71,7 +94,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
     @Override
     public List<Option> getGradeRanges() {
-        return listOfGradeGrades;
+        return this.listOfGradeGrades;
     }
 
     private static PostOffice createPostOffice(final String postCode, final String text) {

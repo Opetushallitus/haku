@@ -16,8 +16,11 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.validation.Validator;
+import fi.vm.sade.oppija.lomake.validation.validators.ValueSetValidator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.ArrayList;
@@ -54,7 +57,7 @@ public abstract class OptionQuestion extends Question {
     }
 
     public List<Option> getOptions() {
-        return options;
+        return ImmutableList.copyOf(options);
     }
 
     @Override
@@ -65,6 +68,18 @@ public abstract class OptionQuestion extends Question {
             listOfElements.addAll(option.getChildren());
         }
         return listOfElements;
+    }
+
+    @Override
+    public List<Validator> getValidators() {
+        List<Validator> listOfValidator = new ArrayList<Validator>();
+        listOfValidator.addAll(super.getValidators());
+        List<String> values = new ArrayList<String>();
+        for (Option option : options) {
+            values.add(option.getValue());
+        }
+        listOfValidator.add(new ValueSetValidator(this.getId(), "Virheellinen arvo", values));
+        return listOfValidator;
     }
 }
 
