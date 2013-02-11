@@ -2524,21 +2524,7 @@ ul.actionmenu {
     text-decoration: none; }
     #orgsearch .expander:hover {
       background: #c5e5ef;
-      /* Old browsers */
-      /* IE9 SVG, needs conditional override of 'filter' to 'none' */
-      background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2M1ZTVlZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5YmQ0ZTYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-      background: -moz-linear-gradient(left, #c5e5ef 0%, #9bd4e6 100%);
-      /* FF3.6+ */
-      background: -webkit-gradient(linear, left top, right top, color-stop(0%, #c5e5ef), color-stop(100%, #9bd4e6));
-      /* Chrome,Safari4+ */
-      background: -webkit-linear-gradient(left, #c5e5ef 0%, #9bd4e6 100%);
-      /* Chrome10+,Safari5.1+ */
-      background: -o-linear-gradient(left, #c5e5ef 0%, #9bd4e6 100%);
-      /* Opera 11.10+ */
-      background: -ms-linear-gradient(left, #c5e5ef 0%, #9bd4e6 100%);
-      /* IE10+ */
-      background: linear-gradient(to right, #c5e5ef 0%, #9bd4e6 100%);
-      /* W3C */ }
+      /* Old browsers */ }
     #orgsearch .expander .labelpos {
       display: block;
       position: absolute;
@@ -2600,12 +2586,67 @@ ul.actionmenu {
     padding: 0px 0px 0px 0px;
     height: 100%; }
   #orgsearch .orgsearchform {
-    padding: 9px 9px 9px 9px;
+    width: 100%;
+    height: auto;
     border-bottom: 1px solid #e8e8e8; }
+    #orgsearch .orgsearchform fieldset {
+      width: auto;
+      padding: 9px 9px 9px 9px; }
     #orgsearch .orgsearchform .field-search-containerbox,
     #orgsearch .orgsearchform .field-select-containerbox,
     #orgsearch .orgsearchform .field-container-checkbox {
       margin-bottom: 0.5em; }
+  #orgsearch .orgsearchlist {
+    width: 100%;
+    overflow: auto; }
+  #orgsearch .treelist {
+    overflow: auto; }
+    #orgsearch .treelist .branch {
+      padding-left: 12px; }
+    #orgsearch .treelist li {
+      margin: 0px; }
+      #orgsearch .treelist li .icon {
+        z-index: 100; }
+        #orgsearch .treelist li .icon.file {
+          display: none; }
+      #orgsearch .treelist li .label {
+        margin: 0px;
+        position: relative;
+        display: block;
+        border: solid 0px transparent;
+        border-top-width: 1px;
+        border-bottom-width: 1px; }
+      #orgsearch .treelist li .label:before {
+        content: '';
+        height: 100%;
+        width: 150px;
+        display: block;
+        position: absolute;
+        top: -1px;
+        left: -150px;
+        border: solid 0px transparent;
+        border-top-width: 1px;
+        border-bottom-width: 1px; }
+      #orgsearch .treelist li .label:hover,
+      #orgsearch .treelist li .label:hover:before {
+        border-top-color: #d5ecf3;
+        border-bottom-color: #8fb5c2;
+        background: #c5e5ef;
+        /* Old browsers */
+        /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+        background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2M1ZTVlZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5YmQ0ZTYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+        background-image: -moz-linear-gradient(top, #c5e5ef 0%, #9bd4e6 100%);
+        /* FF3.6+ */
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c5e5ef), color-stop(100%, #9bd4e6));
+        /* Chrome,Safari4+ */
+        background-image: -webkit-linear-gradient(top, #c5e5ef 0%, #9bd4e6 100%);
+        /* Chrome10+,Safari5.1+ */
+        background-image: -o-linear-gradient(top, #c5e5ef 0%, #9bd4e6 100%);
+        /* Opera 11.10+ */
+        background-image: -ms-linear-gradient(top, #c5e5ef 0%, #9bd4e6 100%);
+        /* IE10+ */
+        background-image: linear-gradient(to bottom, #c5e5ef 0%, #9bd4e6 100%);
+        /* W3C */ }
 
 /*
 .ie7  #orgsearch .expander .label,
@@ -2766,6 +2807,42 @@ ul.orgmenu {
     background-position: -40px center; }
   .helplink:disabled, .helplink.disabled {
     background-position: -60px center; }
+
+/*** Notifications
+************************************************/
+.notification {
+  display: inline-block;
+  padding: 15px 30px 15px 60px;
+  background-size: 30px;
+  background-repeat: no-repeat;
+  background-position: 15px center;
+  -webkit-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-text-shadow: 1px 1px 1px white;
+  -moz-text-shadow: 1px 1px 1px white;
+  -o-text-shadow: 1px 1px 1px white;
+  -ms-text-shadow: 1px 1px 1px white;
+  text-shadow: 1px 1px 1px white; }
+  .notification.warning {
+    background-image: url(../img/icon-notification.png);
+    background-color: #fee7a5;
+    color: #730d02; }
+  .notification.info {
+    color: #333;
+    background-color: #c2e6f1;
+    background-image: url(../img/icon-information.png); }
+  .notification.confirmation {
+    color: #333;
+    background-color: #c6f1cb;
+    background-image: url(../img/icon-accepted.png); }
 
 .portlet {
   background: none repeat scroll 0 0 white;
@@ -3070,30 +3147,40 @@ ul.dropmenu-list {
     .logictree .value > .label {
       color: #000000; }
 
-.gradingformula {
+.gradingformula,
+.gradingformula-dragged {
   padding: 1em; }
-  .gradingformula ul {
+  .gradingformula ul,
+  .gradingformula-dragged ul {
     background-image: url(../img/logictree-line-vertical.gif);
     background-repeat: no-repeat;
     background-position: 10px 0px;
     padding: 18px 0px 0px 10px;
     margin: 0px; }
-    .gradingformula ul > li {
+    .gradingformula ul > li,
+    .gradingformula-dragged ul > li {
       display: block;
       list-style-type: none;
       padding: 0px 0px 18px 18px;
       background-image: url(../img/logictree-line-vertical.gif), url(../img/logictree-line-horizontal.gif);
       background-repeat: repeat-y, no-repeat;
       background-position: 0px -13px, 2px 9px; }
-    .gradingformula ul > li:last-child {
+    .gradingformula ul > li:last-child,
+    .gradingformula-dragged ul > li:last-child {
       background-repeat: no-repeat, no-repeat;
       padding-bottom: 0px; }
-  .gradingformula .frame, .gradingformula .function, .gradingformula .parameter {
+  .gradingformula .frame, .gradingformula .function, .gradingformula .parameter,
+  .gradingformula-dragged .frame,
+  .gradingformula-dragged .function,
+  .gradingformula-dragged .parameter {
     display: inline-block;
     position: relative;
     height: 18px;
     line-height: 18px; }
-    .gradingformula .frame .icon, .gradingformula .function .icon, .gradingformula .parameter .icon {
+    .gradingformula .frame .icon, .gradingformula .function .icon, .gradingformula .parameter .icon,
+    .gradingformula-dragged .frame .icon,
+    .gradingformula-dragged .function .icon,
+    .gradingformula-dragged .parameter .icon {
       display: inline-block;
       margin-right: 0.5em;
       width: 18px;
@@ -3102,24 +3189,39 @@ ul.dropmenu-list {
       background-color: transparent;
       background-image: url("../img/18x18-ui-icons.png");
       background-repeat: no-repeat; }
-      .gradingformula .frame .icon.dropmenu, .gradingformula .function .icon.dropmenu, .gradingformula .parameter .icon.dropmenu {
+      .gradingformula .frame .icon.dropmenu, .gradingformula .function .icon.dropmenu, .gradingformula .parameter .icon.dropmenu,
+      .gradingformula-dragged .frame .icon.dropmenu,
+      .gradingformula-dragged .function .icon.dropmenu,
+      .gradingformula-dragged .parameter .icon.dropmenu {
         position: relative;
         background-image: none;
         width: auto; }
-        .gradingformula .frame .icon.dropmenu > .dropmenu-list, .gradingformula .function .icon.dropmenu > .dropmenu-list, .gradingformula .parameter .icon.dropmenu > .dropmenu-list {
+        .gradingformula .frame .icon.dropmenu > .dropmenu-list, .gradingformula .function .icon.dropmenu > .dropmenu-list, .gradingformula .parameter .icon.dropmenu > .dropmenu-list,
+        .gradingformula-dragged .frame .icon.dropmenu > .dropmenu-list,
+        .gradingformula-dragged .function .icon.dropmenu > .dropmenu-list,
+        .gradingformula-dragged .parameter .icon.dropmenu > .dropmenu-list {
           position: absolute;
           top: 16px;
           left: 0px;
           background-image: none;
           background-color: #eeeeee; }
-          .gradingformula .frame .icon.dropmenu > .dropmenu-list > li, .gradingformula .function .icon.dropmenu > .dropmenu-list > li, .gradingformula .parameter .icon.dropmenu > .dropmenu-list > li {
+          .gradingformula .frame .icon.dropmenu > .dropmenu-list > li, .gradingformula .function .icon.dropmenu > .dropmenu-list > li, .gradingformula .parameter .icon.dropmenu > .dropmenu-list > li,
+          .gradingformula-dragged .frame .icon.dropmenu > .dropmenu-list > li,
+          .gradingformula-dragged .function .icon.dropmenu > .dropmenu-list > li,
+          .gradingformula-dragged .parameter .icon.dropmenu > .dropmenu-list > li {
             background-image: none; }
-    .gradingformula .frame .label, .gradingformula .function .label, .gradingformula .parameter .label {
+    .gradingformula .frame .label, .gradingformula .function .label, .gradingformula .parameter .label,
+    .gradingformula-dragged .frame .label,
+    .gradingformula-dragged .function .label,
+    .gradingformula-dragged .parameter .label {
       display: inline-block;
       height: 18px;
       line-height: 18px;
       color: #000000; }
-    .gradingformula .frame .dropmenu-list, .gradingformula .function .dropmenu-list, .gradingformula .parameter .dropmenu-list {
+    .gradingformula .frame .dropmenu-list, .gradingformula .function .dropmenu-list, .gradingformula .parameter .dropmenu-list,
+    .gradingformula-dragged .frame .dropmenu-list,
+    .gradingformula-dragged .function .dropmenu-list,
+    .gradingformula-dragged .parameter .dropmenu-list {
       position: absolute;
       left: 0px;
       top: 18px;
@@ -3127,14 +3229,29 @@ ul.dropmenu-list {
       background-image: none;
       background-color: #eeeeee;
       padding-left: 0px; }
-      .gradingformula .frame .dropmenu-list > li, .gradingformula .function .dropmenu-list > li, .gradingformula .parameter .dropmenu-list > li {
+      .gradingformula .frame .dropmenu-list > li, .gradingformula .function .dropmenu-list > li, .gradingformula .parameter .dropmenu-list > li,
+      .gradingformula-dragged .frame .dropmenu-list > li,
+      .gradingformula-dragged .function .dropmenu-list > li,
+      .gradingformula-dragged .parameter .dropmenu-list > li {
         background-image: none;
         padding-left: 0px; }
-    .gradingformula .frame:hover .dropmenu-list, .gradingformula .function:hover .dropmenu-list, .gradingformula .parameter:hover .dropmenu-list {
+    .gradingformula .frame:hover .dropmenu-list, .gradingformula .function:hover .dropmenu-list, .gradingformula .parameter:hover .dropmenu-list,
+    .gradingformula-dragged .frame:hover .dropmenu-list,
+    .gradingformula-dragged .function:hover .dropmenu-list,
+    .gradingformula-dragged .parameter:hover .dropmenu-list {
       display: block; }
-    .gradingformula .frame:active .label, .gradingformula .frame .active .label, .gradingformula .function:active .label, .gradingformula .function .active .label, .gradingformula .parameter:active .label, .gradingformula .parameter .active .label {
+    .gradingformula .frame:active .label, .gradingformula .frame .active .label, .gradingformula .function:active .label, .gradingformula .function .active .label, .gradingformula .parameter:active .label, .gradingformula .parameter .active .label,
+    .gradingformula-dragged .frame:active .label,
+    .gradingformula-dragged .frame .active .label,
+    .gradingformula-dragged .function:active .label,
+    .gradingformula-dragged .function .active .label,
+    .gradingformula-dragged .parameter:active .label,
+    .gradingformula-dragged .parameter .active .label {
       background-color: #e6f8fe; }
-    .gradingformula .frame .dropzone, .gradingformula .function .dropzone, .gradingformula .parameter .dropzone {
+    .gradingformula .frame .dropzone, .gradingformula .function .dropzone, .gradingformula .parameter .dropzone,
+    .gradingformula-dragged .frame .dropzone,
+    .gradingformula-dragged .function .dropzone,
+    .gradingformula-dragged .parameter .dropzone {
       display: inline-block;
       margin-right: 0.5em;
       width: 50px;
@@ -3142,16 +3259,64 @@ ul.dropmenu-list {
       border: solid 0px transparent;
       background-color: transparent;
       background-repeat: no-repeat; }
-  .gradingformula .frame .icon {
+  .gradingformula .frame .icon,
+  .gradingformula-dragged .frame .icon {
     background-position: -126px 0px; }
-  .gradingformula > .frame {
+  .gradingformula > .frame,
+  .gradingformula-dragged > .frame {
     padding-top: 18px; }
-  .gradingformula .function .icon {
+  .gradingformula .function .icon,
+  .gradingformula-dragged .function .icon {
     background-position: -90px 0px; }
-    .gradingformula .function .icon.sum {
+    .gradingformula .function .icon.sum,
+    .gradingformula-dragged .function .icon.sum {
       background-position: -36px 0px; }
-  .gradingformula .parameter .icon {
+  .gradingformula .parameter .icon,
+  .gradingformula-dragged .parameter .icon {
     background-position: -72px 0px; }
+  .gradingformula .placeholder,
+  .gradingformula .empty,
+  .gradingformula-dragged .placeholder,
+  .gradingformula-dragged .empty {
+    position: relative;
+    margin: 0 0 18px 0;
+    padding: 0;
+    min-height: 18px;
+    background: #f5f5f5;
+    border: 1px dashed #bbbbbb;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box; }
+    .gradingformula .placeholder:before,
+    .gradingformula .empty:before,
+    .gradingformula-dragged .placeholder:before,
+    .gradingformula-dragged .empty:before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: -1px;
+      bottom: -19px;
+      height: 18px;
+      width: 2px;
+      padding: 0px;
+      margin: 0px;
+      background-image: url(../img/logictree-line-vertical.gif);
+      background-repeat: repeat-y;
+      background-position: 0px -13px; }
+    .gradingformula .placeholder:last-child:before,
+    .gradingformula .empty:last-child:before,
+    .gradingformula-dragged .placeholder:last-child:before,
+    .gradingformula-dragged .empty:last-child:before {
+      display: none; }
+
+.gradingformula-dragged {
+  position: absolute;
+  pointer-events: none;
+  z-index: 9999;
+  list-style-type: none;
+  padding: 0px 0px 0px 18px;
+  border: 1px dashed #bbbbbb;
+  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.75); }
 
 .field-container-twinselect {
   overflow: hidden; }

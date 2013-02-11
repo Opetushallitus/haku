@@ -4,75 +4,72 @@
 							<span class="label">
 								Organisaatiohaku
 							</span>
-							<!--
-							<span class="arrows">&gt;&gt;</span>
-							<span class="labelpivot">
-								labelpivot
-								
-								<span class="labelrotate">
-									labelrotate
-									<span class="label">
-										Organisaatiohaku
-										
-									</span>
-								</span>
-							</span>
-							<span class="arrows">&gt;&gt;</span>
-							-->
 						</span>
 					</a>
 					
 					<div class="expanded-content" style="">
 						
 						<form class="orgsearchform" style="">
-						
-							<div class="field-search-containerbox">
-								<input type="text" name="" class="text search" />
-							</div>
-							
-							<div class="field-select-containerbox">
-								<select>
-									<option>Valitse organisaatiotyyppi</option>
-								</select>
-							</div>
-							
-							<div class="field-select-containerbox">
-								<select>
-									<option>Valitse oppilaitostyyppi</option>
-								</select>
-							</div>
-							
-							<div class="field-container-checkbox">
-								<input type="checkbox" name="" id="osc1" value="" />
-								<label for="osc1">Näytä myös lakkautetut</label>
-							</div>
-							<div class="field-container-checkbox">
-								<input type="checkbox" name="" id="osc2" value="" />
-								<label for="osc2">Näytä myös suunnitellut</label>
-							</div>
+							<fieldset>
+								<div class="field-search-containerbox">
+									<input type="text" name="" class="text search" />
+								</div>
+								
+								<div class="field-select-containerbox">
+									<select>
+										<option>Valitse organisaatiotyyppi</option>
+									</select>
+								</div>
+								
+								<div class="field-select-containerbox">
+									<select>
+										<option>Valitse oppilaitostyyppi</option>
+									</select>
+								</div>
+								
+								<div class="field-container-checkbox">
+									<input type="checkbox" name="" id="osc1" value="" />
+									<label for="osc1">Näytä myös lakkautetut</label>
+								</div>
+								<div class="field-container-checkbox">
+									<input type="checkbox" name="" id="osc2" value="" />
+									<label for="osc2">Näytä myös suunnitellut</label>
+								</div>
 
-						
-							<button class="button primary small">Hae</button>
-						
+							
+								<button class="button small">Hae</button>
+								<button class="button small float-right">Tyhjennä</button>
+								<div class="clear"></div>
+							</fieldset>
 						</form>
 						
-						<ul class="orgmenu" style="height:194px;overflow:auto;">
-							<li class="closed">
-								<a href="#" class="category"><span class="folder">&#8203;</span>Rantalohjan lukio</a>
-								<ul>
-									<li><a href="#" data-tagset-id="organisation">Rantalohjan lukio</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#" class="category"><span class="folder">&#8203;</span>Rantalohjan ammattiopisto</a>
-								<ul>
-									<li><a href="#" data-tagset-id="organisation">Terveyden ja hyvinvoinnin toimipiste</a></li>
-									<li><a href="#" data-tagset-id="organisation">Autoalan toimipiste</a></li>
-								</ul>
-							</li>
-						</ul>
-						
-						
-						
+						<div class="orgsearchlist">
+							<ul class="treelist collapsible">
+								<li>
+									<span class="icon folder collapse open">&#8203;</span>
+									<a href="#" class="label">Rantalohjan lukio</a>
+									<ul class="branch">
+										<li>
+											<span class="icon file">&#8203;</span>
+											<a href="#" class="label">Rantalohjan lukio</a>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<span class="icon folder collapse open">&#8203;</span>
+									<a href="#" class="label">Rantalohjan ammattiopisto</a>
+									<ul class="branch">
+										<li>
+											<span class="icon file">&#8203;</span>
+											<a href="#" class="label">Terveyden ja hyvinvoinnin toimipiste</a>
+										</li>
+										<li>
+											<span class="icon file">&#8203;</span>
+											<a href="#" class="label">Autoalan toimipiste</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
 					</div>
 				</div>

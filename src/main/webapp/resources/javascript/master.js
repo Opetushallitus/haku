@@ -175,7 +175,9 @@ $(document).ready(function(){
 			popover.handlers.autoGenCount++;
 		
 			popover_close = '<span class="popover-close">&#8203;</span>';
-			/*
+			
+			
+			/* @todo: Handle "alert" type, where popover must be closed via dedicated button/link with possible callback.
 			if (params.type == 'alert')
 			{
 				if (params.close == false)
@@ -312,15 +314,6 @@ $(document).ready(function(){
 			},
 			triggers:function(){
 			
-				/*
-				$('body').on('click', '.popover-test', function(){
-					params = [];
-					params.template = $(this).attr('data-popover');
-					console.log(params);
-					popover.generate(params);
-				});
-				*/
-			
 				// Remove or hide popover from closing links
 				$('body').on('click', '.popover-wrapper .popover-close', function(){
 					
@@ -359,10 +352,36 @@ $(document).ready(function(){
 				});
 			}
 		}
-
 	}
 	
 	popover.build();
+	
+	var orgSearch = {
+		settings : {
+			listenTimeout : 500
+		},
+		build:function{
+			orgSearch.listen.listHeight();
+		},
+		listen : {
+			listHeight:function(){
+				// Listen for changes in 
+			
+				height = $('#orgsearch').height();
+				setTimeout(function(){
+					if(height != $('#orgsearch').height())
+					{
+						form_height = $('#orgsearch .orgsearchform').outerHeight(true);
+						list_height = height-form_height;
+						$('#orgsearch .orgsearchlist').css({'height':list_height+'px'});
+					}
+					orgSearch.listen.listHeight();
+				}, orgSearch.settings.listenTimeout);
+			}
+		}
+	}
+	
+	orgSearch.build();
 	
 	var tabsMenu = {
 		build:function(){
