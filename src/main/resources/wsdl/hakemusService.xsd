@@ -9,7 +9,7 @@
     <xs:import namespace="http://hakemus.service.sade.vm.fi/schema" schemaLocation="hakemus.xsd" />
 
     <xs:element name="haeHakemukset" type="tns:HaeHakemuksetTyyppi" />
-    <xs:element name="haeHakemuksetVastaus" type="tns:HaeHakemuksetTyyppiVastausTyyppi" />
+    <xs:element name="haeHakemuksetVastaus" type="tns:HaeHakemuksetVastausTyyppi" />
 
     <xs:complexType name="HaeHakemuksetTyyppi">
         <xs:sequence>
@@ -23,7 +23,7 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="HaeHakemuksetTyyppiVastausTyyppi">
+    <xs:complexType name="HaeHakemuksetVastausTyyppi">
         <xs:sequence>
             <xs:element name="hakemus" type="hakemus:Hakemus" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
