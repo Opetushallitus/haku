@@ -25,7 +25,7 @@
 
     <xs:complexType name="HaeHakemuksetVastausTyyppi">
         <xs:sequence>
-            <xs:element name="hakemus" type="hakemus:Hakemus" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="hakemus" type="hakemus:HakemusTyyppi" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
 </xs:schema>

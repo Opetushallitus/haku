@@ -6,7 +6,7 @@
 	xmlns:tns="http://hakemus.service.sade.vm.fi/schema"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
-	<xs:complexType name="Hakemus">
+	<xs:complexType name="HakemusTyyppi">
 		<xs:sequence >
             <xs:element name="hakukohde" type="tns:HakukohdeTyyppi" minOccurs="0"  maxOccurs="unbounded"/>
 			<xs:element name="avainArvo" type="tns:AvainArvoTyyppi" minOccurs="0" maxOccurs="unbounded"/>
