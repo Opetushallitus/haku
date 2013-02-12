@@ -66,9 +66,19 @@
             </ul>
         </nav>
 
-        <jsp:include page="searchOrg.jsp"/>
-        <jsp:include page="searchForm.jsp"/>
-        <jsp:include page="searchResults.jsp"/>
+        <table class="structural-table" style="margin-left: 0.625%;width:99.375%;">
+            <tbody>
+                <tr>
+                    <td>
+                       <jsp:include page="searchOrg.jsp"/>
+                    </td>
+                    <td>
+                        <jsp:include page="searchForm.jsp"/>
+                        <jsp:include page="searchResults.jsp"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <jsp:include page="footer.jsp"/>
 
         <div class="clear"></div>
