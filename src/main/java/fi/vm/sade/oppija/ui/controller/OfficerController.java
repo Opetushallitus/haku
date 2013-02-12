@@ -44,6 +44,7 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static javax.ws.rs.core.Response.ok;
@@ -155,5 +156,15 @@ public class OfficerController {
         } catch (ResourceNotFoundException e) {
             throw new ResourceNotFoundExceptionRuntime("Updated application not found.");
         }
+    }
+
+    @GET
+    @Path("/hakemus/")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    public Viewable search(@QueryParam("term") final String term) {
+        Map<String, Object> model = new HashMap<String, Object>();
+        List<Application> applications = applicationService.findApplications(term);
+        model.put("applications", applications);
+        return new Viewable("/virkailija/searchIndex", model);
     }
 }
