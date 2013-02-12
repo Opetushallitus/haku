@@ -346,7 +346,14 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        
+        <!-- jersey client -->
+        <dependency>
+	        <groupId>com.sun.jersey.contribs</groupId>
+	        <artifactId>jersey-apache-client</artifactId>
+	        <version>${jersey.version}</version>
+        </dependency>
+            
         <!-- it -->
         <dependency>
             <groupId>net.sourceforge.jwebunit</groupId>
