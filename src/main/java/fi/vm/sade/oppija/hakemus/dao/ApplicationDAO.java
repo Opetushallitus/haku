@@ -16,11 +16,11 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
+import java.util.List;
+
 import fi.vm.sade.oppija.common.dao.BaseDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
-
-import java.util.List;
 
 /**
  * DAO interface for saving, updating and finding applications made by users.
@@ -32,6 +32,17 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     Application findDraftApplication(Application application);
 
+    /**
+     * Return list of applications that match given model application, state and 
+     * @param application
+     * @param state
+     * @param fetchPassive
+     * @param preference
+     * @return
+     */
+    List<Application> find(Application application, String state, boolean fetchPassive,
+            String preference);
+    
     /**
      * Returns Applications that are included in one application system.
      *
@@ -67,7 +78,7 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @param term
      * @return
      */
-    List<Application> findByApplicantName(String term);
+    List<Application> findByApplicantName(String term, String state, boolean fetchPassive, String preference);
 
     /**
      * Return all applications where applicants ssn matches given term.
@@ -75,5 +86,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @param term
      * @return
      */
-    List<Application> findByApplicantSsn(String term);
+    List<Application> findByApplicantSsn(String term, String state, boolean fetchPassive, String preference);
+
 }

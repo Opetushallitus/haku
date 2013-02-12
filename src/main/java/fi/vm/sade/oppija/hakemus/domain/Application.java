@@ -40,6 +40,10 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Application implements Serializable {
 
+    public enum State {
+        ACTIVE, PASSIVE
+    }
+    
     private static final long serialVersionUID = -7491168801255850954L;
     public static final String VAIHE_ID = "phaseId";
 
@@ -49,6 +53,7 @@ public class Application implements Serializable {
     private org.bson.types.ObjectId id; //NOSONAR Json-sarjallistajan käyttämä.
 
     private String oid;
+    private State state;
     private FormId formId;
     private User user;
     private String phaseId;
@@ -113,8 +118,16 @@ public class Application implements Serializable {
         this.oid = oid;
     }
 
-
-    public Application addVaiheenVastaukset(final String phaseId, Map<String, String> answers) {
+    public void deactivate() {
+        state = State.PASSIVE;
+    }
+    
+    public void activate() {
+        state = State.ACTIVE;
+    }
+    
+    // final, koska kutsutaan konstruktorista
+    final public Application addVaiheenVastaukset(final String phaseId, Map<String, String> answers) {
         this.phaseId = answers.remove(VAIHE_ID);
         this.answers.put(phaseId, answers);
         return this;
@@ -164,6 +177,14 @@ public class Application implements Serializable {
         this.oid = oid;
     }
 
+    public void setState(State state) {
+        this.state = state;
+    }
+    
+    public State getState() {
+        return this.state;
+    }
+    
     public String getPhaseId() {
         return phaseId;
     }

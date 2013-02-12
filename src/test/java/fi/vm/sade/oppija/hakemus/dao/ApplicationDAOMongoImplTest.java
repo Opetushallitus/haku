@@ -113,6 +113,24 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         assertEquals(2, applications.size());
     }
 
+    @Test
+    public void testFindByHetuActive() {
+        List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M", "", false, "");
+        assertEquals(2, applications.size());
+    }
+
+    @Test
+    public void testFindByHetuAlsoPassive() {
+        List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M", "", true, "");
+        assertEquals(3, applications.size());
+    }
+
+    @Test
+    public void testFindByHetuPassive() {
+        List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M", "PASSIVE", false, "");
+        assertEquals(1, applications.size());
+    }
+
     @Override
     protected String getCollectionName() {
         return "application";

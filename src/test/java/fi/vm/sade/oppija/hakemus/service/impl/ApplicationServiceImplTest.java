@@ -16,6 +16,17 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.List;
 
 import org.junit.Before;
@@ -25,20 +36,6 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-
-
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
 
 public class ApplicationServiceImplTest {
 
@@ -53,29 +50,29 @@ public class ApplicationServiceImplTest {
     public void setUp() {
         application = new Application();
         applicationDAO = mock(ApplicationDAO.class);
-        when(applicationDAO.findByApplicantSsn(SSN)).thenReturn(Lists.newArrayList(application));
-        when(applicationDAO.findByApplicantName(NAME)).thenReturn(Lists.newArrayList(application));
-        when(applicationDAO.find(any(Application.class))).thenReturn(Lists.newArrayList(application));
+        when(applicationDAO.findByApplicantSsn(eq(SSN), anyString(), anyBoolean(), anyString())).thenReturn(Lists.newArrayList(application));
+        when(applicationDAO.findByApplicantName(eq(NAME), anyString(), anyBoolean(), anyString())).thenReturn(Lists.newArrayList(application));
+        when(applicationDAO.find(any(Application.class), anyString(), anyBoolean(), anyString())).thenReturn(Lists.newArrayList(application));
     }
 
     @Test
     public void testFindApplicationBySsn() {
         ApplicationServiceImpl service = new ApplicationServiceImpl
                 (applicationDAO, null, null, null, null, null);
-        List<Application> results = service.findApplications(SSN);
+        List<Application> results = service.findApplications(SSN, "", Boolean.FALSE, "");
         assertNotNull(results);
         assertEquals(1, results.size());
-        verify(applicationDAO, only()).findByApplicantSsn(SSN);
+        verify(applicationDAO, only()).findByApplicantSsn(eq(SSN), anyString(), anyBoolean(), anyString());
     }
     
     @Test
     public void testFindApplicationByName() {
         ApplicationServiceImpl service = new ApplicationServiceImpl
                 (applicationDAO, null, null, null, null, null);
-        List<Application> results = service.findApplications(NAME);
+        List<Application> results = service.findApplications(NAME, "", false, "");
         assertNotNull(results);
         assertEquals(1, results.size());
-        verify(applicationDAO, only()).findByApplicantName(NAME);
+        verify(applicationDAO, only()).findByApplicantName(eq(NAME), anyString(), anyBoolean(), anyString());
     }
     
     @Test
@@ -83,9 +80,9 @@ public class ApplicationServiceImplTest {
         ApplicationServiceImpl service = new ApplicationServiceImpl
                 (applicationDAO, null, null, null, null, null);
         application.setOid(OID);
-        List<Application> results = service.findApplications(OID);
+        List<Application> results = service.findApplications(OID, null, false, null);
         assertNotNull(results);
         assertEquals(1, results.size());
-        verify(applicationDAO, only()).find(any(Application.class));
+        verify(applicationDAO, only()).find(any(Application.class), anyString(), anyBoolean(), anyString());
     }
 }

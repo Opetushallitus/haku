@@ -16,6 +16,9 @@
 
 package fi.vm.sade.oppija.hakemus.dao.impl;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -61,12 +64,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         super(dbObjectToHakemusConverter, hakemusToBasicDBObjectConverter);
         this.shaEncrypter = shaEncrypter;
     }
-
+    
     @Override
     public ApplicationState tallennaVaihe(ApplicationState state) {
 
         Application queryApplication = new Application(state.getHakemus().getFormId(), state.getHakemus().getUser(),
                 state.getHakemus().getOid());
+        queryApplication.activate();
         final DBObject query = toDBObject.apply(queryApplication);
 
         DBObject one = getCollection().findOne(query);
@@ -92,6 +96,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
+    public List<Application> find(Application application, String state, boolean fetchPassive, String preference) {
+        
+        return find(application);
+    }
+    
+    @Override
     public Application findDraftApplication(final Application application) {
         final DBObject query = toDBObject.apply(application);
         query.put("oid", new BasicDBObject("$exists", false));
@@ -104,20 +114,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         dbObject.put("formId.applicationPeriodId", asId);
         List<Application> applications = findApplications(dbObject);
 
-
         return applications;
     }
 
     public List<Application> findByApplicationOption(String aoId) {
-
-        DBObject query = QueryBuilder.start().or(
-            QueryBuilder.start(FIELD_AO_1).is(aoId).get(),
-            QueryBuilder.start(FIELD_AO_2).is(aoId).get(),
-            QueryBuilder.start(FIELD_AO_3).is(aoId).get(),
-            QueryBuilder.start(FIELD_AO_4).is(aoId).get(),
-            QueryBuilder.start(FIELD_AO_5).is(aoId).get()
-        ).get();
-
+        DBObject query = queryByPreference(aoId).get();
         return findApplications(query);
     }
 
@@ -132,6 +133,16 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return false;
     }
 
+    private QueryBuilder queryByPreference(String aoId) {
+        return QueryBuilder.start().or(
+                QueryBuilder.start(FIELD_AO_1).is(aoId).get(),
+                QueryBuilder.start(FIELD_AO_2).is(aoId).get(),
+                QueryBuilder.start(FIELD_AO_3).is(aoId).get(),
+                QueryBuilder.start(FIELD_AO_4).is(aoId).get(),
+                QueryBuilder.start(FIELD_AO_5).is(aoId).get()
+            );
+    }
+    
     private Application findOneApplication(DBObject query) {
         List<Application> listOfApplications = findApplications(query);
         if (listOfApplications.size() == 1) {
@@ -148,20 +159,51 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<Application> findByApplicantName(String term) {
+    public List<Application> findByApplicantName(String term, String state, boolean fetchPassive, String preference) {
         Pattern namePattern = Pattern.compile(term, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
-        DBObject query = QueryBuilder.start().or(
-                QueryBuilder.start("answers.henkilotiedot.Etunimet").regex(namePattern).get(),
-                QueryBuilder.start("answers.henkilotiedot.Sukunimi").regex(namePattern).get())
-                .get();
+        DBObject query = QueryBuilder.start().and( 
+                QueryBuilder.start().or(
+                        QueryBuilder.start("answers.henkilotiedot.Etunimet").regex(namePattern).get(),
+                        QueryBuilder.start("answers.henkilotiedot.Sukunimi").regex(namePattern).get()).get(),
+                QueryBuilder.start().or(buildQueryFilter(state, fetchPassive, preference)).get()
+                ).get();
         return findApplications(query);
     }
 
     @Override
-    public List<Application> findByApplicantSsn(String term) {
-        DBObject query = QueryBuilder.start("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH)
-                .is(shaEncrypter.encrypt(term)).get();
+    public List<Application> findByApplicantSsn(String term, String state, boolean fetchPassive, String preference) {
+
+        DBObject query = QueryBuilder.start().and(
+                QueryBuilder.start("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH)
+                    .is(shaEncrypter.encrypt(term)).get(),
+                QueryBuilder.start().or(buildQueryFilter(state, fetchPassive, preference)).get()).get();
         return findApplications(query);
+    }
+
+    private DBObject[] buildQueryFilter(String state, boolean fetchPassive, String preference) {
+        ArrayList<DBObject> filters = new ArrayList<DBObject>(2);
+       DBObject stateQuery = null;
+        if (!isEmpty(state)) {
+             for (Application.State s : Application.State.values()) {
+                if (Application.State.valueOf(state).equals(s)) {
+                    stateQuery = QueryBuilder.start("state").is(state).get();
+                    break;
+                }
+            }
+        } else if (fetchPassive) {
+            stateQuery = QueryBuilder.start().or(
+                    QueryBuilder.start("state").is(Application.State.ACTIVE.toString()).get(),
+                    QueryBuilder.start("state").is(Application.State.PASSIVE.toString()).get()).get();
+        } else {
+            stateQuery = QueryBuilder.start("state").is(Application.State.ACTIVE.toString()).get();
+        }
+            
+        filters.add(stateQuery);
+        
+        if (!isEmpty(preference)) {
+            filters.add(queryByPreference(preference).get());
+        }
+        return filters.toArray(new DBObject[filters.size()]);
     }
 
 }

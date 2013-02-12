@@ -16,14 +16,14 @@
 
 package fi.vm.sade.oppija.hakemus.service;
 
+import java.util.List;
+
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
-
-import java.util.List;
 
 public interface ApplicationService {
 
@@ -113,6 +113,6 @@ public interface ApplicationService {
      * @param term
      * @return
      */
-    List<Application> findApplications(String term);
+    List<Application> findApplications(String term, String state, boolean fetchPassive, String preference);
 
 }

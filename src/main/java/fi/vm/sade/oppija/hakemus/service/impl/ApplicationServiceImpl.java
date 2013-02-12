@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
 import fi.vm.sade.oppija.common.authentication.impl.AuthenticationServiceMockImpl;
@@ -232,17 +233,19 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> findApplications(final String term) {
-        // First figure out which field should be matched
+    public List<Application> findApplications(final String term, final String state, final boolean fetchPassive, final String preference) {
         Application application = new Application();
         List<Application> applications = new LinkedList<Application>();
         if (oidPattern.matcher(term).matches()) {
             application.setOid(term);
-            applications.addAll(applicationDAO.find(application));
+            application.setState(fetchPassive ? null : Application.State.ACTIVE);
+            applications.addAll(applicationDAO.find(application, state, fetchPassive, preference));
         } else if (socialSecurityNumberPattern.matcher(term).matches()){
-            applications.addAll(applicationDAO.findByApplicantSsn(term));
+            applications.addAll(applicationDAO.findByApplicantSsn(term, state, fetchPassive, preference));
+        } else if (!StringUtils.isEmpty(term)){
+            applications.addAll(applicationDAO.findByApplicantName(term, state, fetchPassive, preference));
         } else {
-            applications.addAll(applicationDAO.findByApplicantName(term));
+            applications.addAll(applicationDAO.find(application, state, fetchPassive, preference));
         }
         return applications;
     }

@@ -1,27 +1,27 @@
 package fi.vm.sade.oppija.hakemus.resource;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.core.Response;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.fail;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Hannu Lyytikainen
@@ -64,7 +64,7 @@ public class ApplicationResourceTest {
         ArrayList<Application> applications = new ArrayList<Application>();
         applications.add(this.application);
         when(applicationService.getApplicationsByApplicationOption(AOID)).thenReturn(applications);
-        when(applicationService.findApplications(OID)).thenReturn(applications);
+        when(applicationService.findApplications(OID, "", false, "")).thenReturn(applications);
         this.applicationResource = new ApplicationResource(this.applicationService);
     }
 

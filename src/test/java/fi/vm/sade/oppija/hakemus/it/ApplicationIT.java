@@ -49,6 +49,7 @@ public class ApplicationIT extends AbstractRemoteTest {
 
     protected static List<DBObject> applicationTestDataObject;
 
+    @SuppressWarnings("unchecked")
     @BeforeClass
     public static void readTestData() throws IOException {
         String content = IOUtils.toString(getSystemResourceAsStream("application-test-data.json"), "UTF-8");
@@ -97,7 +98,7 @@ public class ApplicationIT extends AbstractRemoteTest {
         ObjectMapper mapper = new ObjectMapper();
         List<Application> applications = mapper.readValue(response, new TypeReference<List<Application>>() {
         });
-        assertEquals(2, applications.size());
+        assertEquals(3, applications.size());
     }
 
     @Test

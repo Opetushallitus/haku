@@ -87,13 +87,19 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public List<Application> findByApplicantName(String term) {
+    public List<Application> find(Application application, String state, boolean fetchPassive, String preference) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Application>  findByApplicantSsn(String term) {
+    public List<Application> findByApplicantName(String term, String state, boolean fetchPassive, String preference) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Application> findByApplicantSsn(String term, String state, boolean fetchPassive, String preference) {
         // TODO Auto-generated method stub
         return null;
     }
