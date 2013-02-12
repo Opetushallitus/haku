@@ -5,7 +5,7 @@
            xsi:schemaLocation="
 			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
-<!--
+
     <bean id="authInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
         <constructor-arg>
             <map>
@@ -21,10 +21,15 @@
         </constructor-arg>
     </bean>
 
+    <!--
     <jaxws:client id="userManagementService"
                   serviceClass="fi.vm.sade.authentication.service.UserManagementService"
                   address="${usermanagement.webservice.url}" />
 -->
+    <jaxws:client id="userManagementService"
+                  serviceClass="fi.vm.sade.authentication.service.UserManagementService"
+                  address="http://luokka.hard.ware.fi:8181/cxf/userManagementService" />
+
 </beans>
 
 

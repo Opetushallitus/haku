@@ -84,7 +84,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   @Qualifier("formServiceImpl") final FormService formService,
                                   @Qualifier("applicationProcessStateServiceImpl") final ApplicationProcessStateService applicationProcessStateService,
                                   @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
-                                  @Qualifier("authenticationServiceMockImpl") AuthenticationService authenticationService) {
+                                  AuthenticationService authenticationService) {
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
         this.formService = formService;
