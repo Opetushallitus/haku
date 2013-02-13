@@ -51,8 +51,13 @@
 	orgSearch.build();
 	
 	$('#search-applications').click(function(event){
+        var $q = $('#entry'), $appState = $('#application-state'),
+            $fetchPassive = $('#fetch-passive'), $appPreference = $('#application-preference');
         $.getJSON(page_settings.contextPath + "/applications", {
-
+            q : $q.val(),
+            appState : $appState.val(),
+            fetchPassive : $fetchPassive.prop("checked"),
+            appPreference : $appPreference.val()
         }, function(data) {
             var $tbody = $('#application-table tbody:first');
             $tbody.empty();
