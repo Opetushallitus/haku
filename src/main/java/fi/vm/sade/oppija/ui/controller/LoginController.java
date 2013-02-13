@@ -86,7 +86,7 @@ public class LoginController {
         if (name.equals("admin")) {
             return seeOther(new URI("admin")).build();
         } else if (name.equals("officer")) {
-            return seeOther(new URI("virkailija/app/index.html")).build();
+            return seeOther(new URI("virkailija/hakemus")).build();
         } else {
             return seeOther(new URI("oma")).entity("").build();
         }

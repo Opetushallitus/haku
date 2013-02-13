@@ -162,10 +162,10 @@ public class OfficerController {
     @GET
     @Path("/hakemus/")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    public Viewable search(@QueryParam("term") final String term) {
+    public Viewable search() {
         Map<String, Object> model = new HashMap<String, Object>();
-        List<Application> applications = Lists.newArrayList();//applicationService.findApplications(term);
-        model.put("applications", applications);
+        //List<Application> applications = Lists.newArrayList();//applicationService.findApplications(term);
+        //model.put("applications", applications);
         return new Viewable("/virkailija/searchIndex", model);
     }
 }

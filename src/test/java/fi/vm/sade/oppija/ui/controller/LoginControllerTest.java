@@ -83,7 +83,7 @@ public class LoginControllerTest {
 
     @Test
     public void testPostLoginRedirectLocationOfficer() throws Exception {
-        testLocation("officer", "virkailija/app/index.html");
+        testLocation("officer", "virkailija/hakemus");
     }
 
     @Test

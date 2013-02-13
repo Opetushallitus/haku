@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -14,6 +15,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
 <footer id="footer" class="grid16-16 margin-top-4">
     <div class="footer-container">
 
@@ -72,10 +74,10 @@
                 </div>
             </div>
             <div class="grid16-8 footer-logo">
-                <img src="../../resources/img/logo-opetus-ja-kulttuuriministerio.png">
+                <img src="${contextPath}/resources/img/logo-opetus-ja-kulttuuriministerio.png">
             </div>
             <div class="grid16-8 footer-logo">
-                <img src="../../resources/img/logo-oph.png">
+                <img src="${contextPath}/resources/img/logo-oph.png">
             </div>
         </div>
 
