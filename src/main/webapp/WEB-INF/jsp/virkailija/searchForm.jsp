@@ -18,18 +18,17 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <section id="searchSection">
-    <form id="searchform" ng-submit="search()">
+    <form id="searchform">
         <div class="grid16-16">
             <table class="form-layout-table width-100">
                 <tr>
                     <td>
                         <input type="text" id="entry" class="search width-60"
-                               placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero" ng-model="q"/>
+                               placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero"/>
                     </td>
-
                     <td>
                         <label for="application-state">Hakemuksen tila:</label>
-                        <select class="width-50" id="application-state" ng-model="applicationState">
+                        <select class="width-50" id="application-state">
                             <option value="">Kaikki</option>
                             <option value="voimassa">Voimassa</option>
                             <option value="peruttu">Peruttu</option>
@@ -37,160 +36,67 @@
                             <option value="eihakemusta">Ei hakemusta (perustiedot siirretty)</option>
                         </select>
                     </td>
-                    <!--
-                    <td>
-                        <div class="inline-block">
-                            <label class="block" for="vuosi">Lähtökoulu</label>
-                            <input type="text" name="vuosi" id="vuosi"/>
-                        </div>
-                        <div class="inline-block">
-                            <label class="block" for="paattoluokka">Päättöluokka</label>
-                            <select id="paattoluokka">
-                                <option value="all">kaikki</option>
-                            </select>
-                        </div>
-
-                    </td>
-                    -->
                 </tr>
                 <tr>
                     <td>
-                        <!--
-                        <label class="block" for="search-selection">Haku:</label>
-                        <select name="search-selection" id="search-selection">
-                            <option value="default">Oletuksena käynnissä oleva haku</option>
-                        </select>
-                        -->
                     </td>
-
                     <td>
                         <div>
-                            <input type="checkbox" value="fetch-passive" id="fetch-passive"
-                                   ng-model="fetchPassive"/>
+                            <input type="checkbox" value="fetch-passive" id="fetch-passive"/>
                             <label for="fetch-passive">Hae myös passiiviset</label>
                         </div>
-                        <!--
-                        <div>
-                            <input type="checkbox" name="discretionary" value="discretionary" id="discretionary"/>
-                            <label for="discretionary">Hae vain harkinnanvaraisesti hakeneet</label>
-                        </div>
-                        -->
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <label class="block" for="application-preference">Hakukohde:</label>
-                        <input class="width-60" type="text" id="application-preference"
-                               placeholder="hae nimellä tai koodilla" ng-model="applicationPreference"/>
+                        <input class="width-60" type="text" id="application-preference" placeholder="hae nimellä tai koodilla"/>
                     </td>
 
                     <td>
-                        <input class="button secondary small" type="button" value="Tyhjennä"
-                               ng-click="reset()">
-                        <input class="button primary small" type="submit" value="Hae">
+                        <input class="button secondary small" type="button" value="Tyhjennä">
+                        <input id="search-applications" class="button primary small" type="submit" value="Hae">
                     </td>
                 </tr>
             </table>
         </div>
     </form>
 </section>
-<!--
 <section class="grid16-16 margin-top-2">
-    <a href="#" class="button small">Yksilöi henkilöitä (0 kpl)</a>
-    <a href="#" class="button small">Päällekkäisiä hakemuksia (0 kpl)</a>
-    <a href="#" class="button small">Tarkasta sähköisiä liitteitä (0 kpl)</a>
-</section>
--->
-<section class="grid16-16 margin-top-2">
+    <div class="tabs">
+        <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemukset" class="tab current"><span>Hakemukset</span></a>
+    </div>
+    <div class="tabsheets">
+        <section id="hakemukset" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemukset" style="display: block">
+                <a href="#" class="button small">Avaa hakemus</a>
+                <div class="clear"></div>
 
-    <tabs>
-        <pane title="Hakemukset {{applications.length}}">
-            <!--
-            <section id="hakemukset" style="display: block" class="tabsheet" data-tabs-group="applicationtabs"
-                     data-tabs-id="hakemukset">
-        -->
-            <a href="#" class="button small">Avaa hakemus</a>
-            <!--
-            <a href="#" class="button small">Merkitse paperiliitteitä</a>
-            <a href="#" class="button small">Syötä paperihakemuksia</a>
-            <a href="#" class="button small">Vie lista exceliin</a>
-            <a href="#" class="button small">Tulosta lista</a>
-            -->
-            <div class="clear"></div>
+                <span>Hakutulos: 0 osumaa</span>
 
-            <span>Hakutulos: {{applications.length}} osumaa</span>
-
-            <div class="margin-top-2 margin-bottom-1">
-                <div class="field-container-checkbox inline-block">
-                    <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
-                    <label for="KenttaId">valitse kaikki</label>
-                </div>
-
-                <!--
-                <div class="offset-left-16-12 float-right">
-                    <div class="float-right">
-                        <div class="pagination inline-block margin-right-2">
-                            <a href="#">&laquo</a>
-                            <a href="#">1</a>
-                            <span>|</span>
-                            <a href="#">2</a>
-                            <span>|</span>
-                            <a href="#">3</a>
-                            <a href="#">&raquo</a>
-                        </div>
-
-                        <select name="showresults" id="showResultsTop">
-                            <option value="50">Näytä 50/sivu</option>
-                            <option value="100">Näytä 100/sivu</option>
-                        </select>
+                <div class="margin-top-2 margin-bottom-1">
+                    <div class="field-container-checkbox inline-block">
+                        <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
+                        <label for="KenttaId">valitse kaikki</label>
                     </div>
                 </div>
-                -->
-            </div>
 
-            <table class="virkailija-table-1">
-                <thead>
-                <tr>
-                    <td></td>
-                    <td>Sukunimi</td>
-                    <td>Etunimi</td>
-                    <td>Henkilötunnus</td>
-                    <td>Hakemusnro</td>
-                    <td>Hakemuksen tila</td>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-
-            <!--
-            <div class="offset-left-16-12 float-right margin-top-1">
-                <div class="pagination margin-top-1 inline-block margin-right-2">
-                    <a href="#">&laquo</a>
-                    <a href="#">1</a>
-                    <span>|</span>
-                    <a href="#">2</a>
-                    <span>|</span>
-                    <a href="#">3</a>
-                    <a href="#">&raquo</a>
-                </div>
-
-                <select name="showresults" id="showResultsBottom">
-                    <option value="50">Näytä 50/sivu</option>
-                    <option value="100">Näytä 100/sivu</option>
-                </select>
-            </div>
-            -->
-
-            <div class="clear"></div>
-        </pane>
-        <!--
-        <pane title="Hakutoiveet">
-
-        </pane>
-        -->
-    </tabs>
-
+                <table id="application-table" class="virkailija-table-1">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>Sukunimi</td>
+                            <td>Etunimi</td>
+                            <td>Henkilötunnus</td>
+                            <td>Hakemusnro</td>
+                            <td>Hakemuksen tila</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div class="clear"></div>
+        </section>
+    </div>
 </section>
 
 

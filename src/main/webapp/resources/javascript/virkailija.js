@@ -50,5 +50,22 @@
 	
 	orgSearch.build();
 	
-	
+	$('#search-applications').click(function(event){
+        $.getJSON(page_settings.contextPath + "/applications", {
+
+        }, function(data) {
+            var $tbody = $('#application-table tbody:first');
+            $tbody.empty();
+            $(data).each(function(index, item) {
+                var henkilotiedot = item.answers.henkilotiedot;
+                $tbody.append('<tr><td><input type="checkbox"/></td><td>' +
+                    henkilotiedot.Sukunimi + '</td><td>' +
+                    henkilotiedot.Etunimet + '</td><td>' +
+                    henkilotiedot.Henkilotunnus + '</td><td><a href="' +
+                    page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
+                    item.oid + '</a></td><td>' + item.state + '</td></tr>');
+            });
+        });
+        return false;
+    });
 });
