@@ -49,28 +49,58 @@
 	}
 	
 	orgSearch.build();
-	
-	$('#search-applications').click(function(event){
-        var $q = $('#entry'), $appState = $('#application-state'),
-            $fetchPassive = $('#fetch-passive'), $appPreference = $('#application-preference');
-        $.getJSON(page_settings.contextPath + "/applications", {
-            q : $q.val(),
-            appState : $appState.val(),
-            fetchPassive : $fetchPassive.prop("checked"),
-            appPreference : $appPreference.val()
-        }, function(data) {
-            var $tbody = $('#application-table tbody:first');
-            $tbody.empty();
-            $(data).each(function(index, item) {
-                var henkilotiedot = item.answers.henkilotiedot;
-                $tbody.append('<tr><td><input type="checkbox"/></td><td>' +
-                    henkilotiedot.Sukunimi + '</td><td>' +
-                    henkilotiedot.Etunimet + '</td><td>' +
-                    henkilotiedot.Henkilotunnus + '</td><td><a href="' +
-                    page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
-                    item.oid + '</a></td><td>' + item.state + '</td></tr>');
+
+
+    var applicationSearch = (function() {
+        var self = this, $q = $('#entry'), $appState = $('#application-state'),
+            $fetchPassive = $('#fetch-passive'), $appPreference = $('#application-preference'),
+            $tbody = $('#application-table tbody:first'), $resultcount = $('#resultcount'),
+            $applicationTabLabel = $('#application-tab-label');
+
+        this.search = function() {
+
+            $.getJSON(page_settings.contextPath + "/applications", {
+                q : $q.val(),
+                appState : $appState.val(),
+                fetchPassive : $fetchPassive.prop("checked"),
+                appPreference : $appPreference.val()
+            }, function(data) {
+                $tbody.empty();
+                self.updateCounters(data.length);
+                $(data).each(function(index, item) {
+                    var henkilotiedot = item.answers.henkilotiedot;
+                    $tbody.append('<tr><td><input type="checkbox"/></td><td>' +
+                        henkilotiedot.Sukunimi + '</td><td>' +
+                        henkilotiedot.Etunimet + '</td><td>' +
+                        henkilotiedot.Henkilotunnus + '</td><td><a href="' +
+                        page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
+                        item.oid + '</a></td><td>' + item.state + '</td></tr>');
+                });
             });
-        });
+        },
+        this.updateCounters = function(count) {
+            $resultcount.empty().append(count);
+            $applicationTabLabel.empty().append('Hakemukset ' +  count);
+        },
+        this.reset = function() {
+            self.updateCounters(0);
+            $tbody.empty();
+            $q.val('');
+            $appState.val('');
+            $fetchPassive.prop("checked", false);
+            $appPreference.val('');
+        }
+        return this;
+    })();
+
+
+	$('#search-applications').click(function(event){
+        applicationSearch.search();
+        return false;
+    });
+
+    $('#reset-search').click(function(event){
+        applicationSearch.reset();
         return false;
     });
 });

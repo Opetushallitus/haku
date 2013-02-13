@@ -54,7 +54,7 @@
                     </td>
 
                     <td>
-                        <input class="button secondary small" type="button" value="Tyhjennä">
+                        <input id="reset-search" class="button secondary small" type="button" value="Tyhjennä">
                         <input id="search-applications" class="button primary small" type="submit" value="Hae">
                     </td>
                 </tr>
@@ -64,14 +64,14 @@
 </section>
 <section class="grid16-16 margin-top-2">
     <div class="tabs">
-        <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemukset" class="tab current"><span>Hakemukset</span></a>
+        <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemukset" class="tab current"><span id="application-tab-label">Hakemukset 0</span></a>
     </div>
     <div class="tabsheets">
         <section id="hakemukset" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemukset" style="display: block">
                 <a href="#" class="button small">Avaa hakemus</a>
                 <div class="clear"></div>
 
-                <span>Hakutulos: 0 osumaa</span>
+                <span>Hakutulos: <span id="resultcount">0</span> osumaa</span>
 
                 <div class="margin-top-2 margin-bottom-1">
                     <div class="field-container-checkbox inline-block">
