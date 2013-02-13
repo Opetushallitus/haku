@@ -283,71 +283,68 @@
 
 <div class="tabs">
     <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemus"
-       class="tab"><span>Hakemus</span></a>
-    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="suoritustiedot" class="tab"><span>Suoritustiedot</span></a>
+       class="tab current"><span>Hakemus</span></a>
+   <%--
+   <a href="#" data-tabs-group="applicationtabs" data-tabs-id="suoritustiedot" class="tab"><span>Suoritustiedot</span></a>
     <a href="#" data-tabs-group="applicationtabs" data-tabs-id="lisatiedot"
        class="tab"><span>Kelpoisuus ja liitteet</span></a>
-    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="yksiloi" class="tab current"><span>Yksilöi henkilö</span></a>
+    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="yksiloi" class="tab"><span>Yksilöi henkilö</span></a>
+    --%>
 </div>
 
 <div class="tabsheets">
+    <section id="hakemus" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus" style="display: block">
+        <c:set var="preview" value="${vaihe.preview}" scope="request"/>
+        <c:choose>
+            <c:when test="${preview}">
 
-<section id="hakemus" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus" >
+                <div class="form">
 
+                    <c:forEach var="child" items="${vaihe.children}">
+                        <c:set var="element" value="${child}" scope="request"/>
+                        <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
+                        <jsp:include page="../elements/${child.type}Preview.jsp"/>
+                    </c:forEach>
 
-    <c:set var="preview" value="${vaihe.preview}" scope="request"/>
+                </div>
+            </c:when>
+            <c:otherwise>
 
-    <c:choose>
-        <c:when test="${preview}">
+                <form id="form-${vaihe.id}" class="form" method="post">
+                    <c:forEach var="child" items="${vaihe.children}">
+                        <c:set var="element" value="${child}" scope="request"/>
+                        <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
+                        <jsp:include page="../elements/${child.type}.jsp"/>
+                    </c:forEach>
+                    <button class="save" name="vaiheId" type="submit"
+                            value="${applicationPhaseId}"><span><span><fmt:message
+                            key="lomake.button.save"/></span></span></button>
+                </form>
 
-            <div class="form">
+            </c:otherwise>
 
-                <c:forEach var="child" items="${vaihe.children}">
-                    <c:set var="element" value="${child}" scope="request"/>
-                    <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
-                    <jsp:include page="../elements/${child.type}Preview.jsp"/>
-                </c:forEach>
+        </c:choose>
 
+        <hr/>
+
+        <c:if test="${(preview)}">
+            <div>
+                <a href="#" class="button small back"></a>
+                <a href="#" class="button small">Tee VRK haku</a>
+                <a href="#" class="button small disabled">Tee TOR haku</a>
+                <c:if test="${applicationProcessState.status ne 'Peruttu'}">
+                    <form class="inline-block" method="post"
+                          action="${contextPath}/virkailija/hakemus/${oid}/applicationProcessState/CANCELLED/">
+                        <button type="submit"><span><span>Passivoi hakemus</span></span></button>
+                    </form>
+                </c:if>
             </div>
 
-        </c:when>
-        <c:otherwise>
+        </c:if>
 
-            <form id="form-${vaihe.id}" class="form" method="post">
-                <c:forEach var="child" items="${vaihe.children}">
-                    <c:set var="element" value="${child}" scope="request"/>
-                    <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
-                    <jsp:include page="../elements/${child.type}.jsp"/>
-                </c:forEach>
-                <button class="save" name="vaiheId" type="submit"
-                        value="${applicationPhaseId}"><span><span><fmt:message
-                        key="lomake.button.save"/></span></span></button>
-            </form>
+    </section>
 
-        </c:otherwise>
-
-    </c:choose>
-
-    <hr/>
-
-    <c:if test="${(preview)}">
-        <div>
-            <a href="#" class="button small back"></a>
-            <a href="#" class="button small">Tee VRK haku</a>
-            <a href="#" class="button small disabled">Tee TOR haku</a>
-            <c:if test="${applicationProcessState.status ne 'Peruttu'}">
-                <form class="inline-block" method="post"
-                      action="${contextPath}/virkailija/hakemus/${oid}/applicationProcessState/CANCELLED/">
-                    <button type="submit"><span><span>Passivoi hakemus</span></span></button>
-                </form>
-            </c:if>
-        </div>
-
-    </c:if>
-
-</section>
-
-
+ <%--
 <section id="suoritustiedot" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="suoritustiedot">
 
 <div class="linklist margin-bottom-4">
@@ -809,7 +806,7 @@
 
     <div class="clear"></div>
 </section>
-
+   --%>
 </div>
 </section>
 
