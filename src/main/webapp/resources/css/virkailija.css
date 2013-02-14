@@ -1866,10 +1866,18 @@ label, .label {
     text-align: left; }
 
 .key-value-table tbody tr th {
-  padding-top: 1em;
-  text-align: left; }
+  text-align: left;
+  font-weight: bold;
+  border-right: 10px solid transparent; }
+  .key-value-table tbody tr th.heading {
+    padding-top: 1.5em;
+    font-style: normal; }
+  .key-value-table tbody tr th.label {
+    font-weight: normal;
+    font-style: italic; }
 .key-value-table tbody tr td {
-  text-align: left; }
+  text-align: left;
+  border-right: 10px solid transparent; }
 .key-value-table tbody tr td:first-child {
   text-align: right; }
 
