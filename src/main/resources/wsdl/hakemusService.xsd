@@ -13,7 +13,7 @@
 
     <xs:complexType name="HaeHakemuksetTyyppi">
         <xs:sequence>
-            <xs:element name="oid" type="xs:string" maxOccurs="unbounded" minOccurs="1" />
+            <xs:element name="hakukohdeOid" type="xs:string" maxOccurs="unbounded" minOccurs="1" />
         </xs:sequence>
     </xs:complexType>
 
