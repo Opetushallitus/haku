@@ -35,8 +35,6 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 
-@Service
-@Profile("default")
 public class ValintaperusteetServiceImpl implements ValintaperusteetService {
 
     private final WebResource service;

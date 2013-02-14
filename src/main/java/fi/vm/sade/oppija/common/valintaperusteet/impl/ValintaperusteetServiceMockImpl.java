@@ -28,7 +28,7 @@ import fi.vm.sade.oppija.common.valintaperusteet.InputParameter;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 
 @Service
-@Profile("dev")
+@Profile("default")
 public class ValintaperusteetServiceMockImpl implements ValintaperusteetService {
 
     private final LinkedListMultimap<String, InputParameter> questions = LinkedListMultimap.create();
