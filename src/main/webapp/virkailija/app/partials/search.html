@@ -31,17 +31,16 @@
                     <tr>
                         <td>
                             <input type="text" id="entry" class="search width-60"
-                               placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero" ng-model="q"/>
+                               placeholder="nimi, henkilätunnus, oppijanumero, hakemusnumero" ng-model="q"/>
                         </td>
                         
                         <td>
                             <label for="application-state">Hakemuksen tila:</label>
                             <select class="width-50" id="application-state" ng-model="applicationState">
                                 <option value="">Kaikki</option>
-                                <option value="voimassa">Voimassa</option>
-                                <option value="peruttu">Peruttu</option>
-                                <option value="myöhästynyt">Myöhästynyt</option>
-                                <option value="eihakemusta">Ei hakemusta (perustiedot siirretty)</option>
+                                <option value="ACTIVE">Voimassa</option>
+                                <option value="PASSIVE">Peruttu</option>
+                                <option value="INCOMPLETE">Puutteellinen</option>
                             </select>
                         </td>
                         <!--

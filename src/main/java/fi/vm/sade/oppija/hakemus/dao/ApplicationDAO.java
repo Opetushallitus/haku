@@ -88,4 +88,22 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      */
     List<Application> findByApplicantSsn(String term, String state, boolean fetchPassive, String preference);
 
+    /**
+     * Return applications which oid or applicants' oid matches given term.
+     * 
+     * @param term
+     * @param state
+     * @param fetchPassive
+     * @param preference
+     * @return
+     */
+    List<Application> findByOid(String term, String state, boolean fetchPassive, String preference);
+
+    List<Application> findByApplicationOid(String term, String state, boolean fetchPassive,
+            String preference);
+
+    List<Application> findByUserOid(String term, String state, boolean fetchPassive, String preference);
+
+    List<Application> findAllFiltered(String state, boolean fetchPassive, String preference);
+
 }

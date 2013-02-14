@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Iterables;
@@ -58,9 +59,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_AO_4 = "answers.hakutoiveet.preference4-Koulutus-id";
     private static final String FIELD_AO_5 = "answers.hakutoiveet.preference5-Koulutus-id";
 
+    private static final String FIELD_APPLICATION_OID = "oid";
+    private static final String FIELD_PERSON_OID = "personOid";
+    private static final String FIELD_APPLICATION_STATE = "state";
+
+    @Value("${application.oid.prefix}")
+    private String applicationOidPrefix;
+    @Value("${user.oid.prefix}")
+    private String userOidPrefix;
+    
     @Autowired
-    public ApplicationDAOMongoImpl(DBObjectToApplicationFunction dbObjectToHakemusConverter, ApplicationToDBObjectFunction hakemusToBasicDBObjectConverter,
-                                   @Qualifier("shaEncrypter") EncrypterService shaEncrypter) {
+    public ApplicationDAOMongoImpl(DBObjectToApplicationFunction dbObjectToHakemusConverter, 
+            ApplicationToDBObjectFunction hakemusToBasicDBObjectConverter,
+            @Qualifier("shaEncrypter") EncrypterService shaEncrypter) {
         super(dbObjectToHakemusConverter, hakemusToBasicDBObjectConverter);
         this.shaEncrypter = shaEncrypter;
     }
@@ -83,8 +94,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         queryApplication.setPhaseId(uusiApplication.getPhaseId());
 
         one = toDBObject.apply(queryApplication);
-
-
         getCollection().update(query, one, true, false);
 
         return state;
@@ -97,14 +106,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public List<Application> find(Application application, String state, boolean fetchPassive, String preference) {
-        
         return find(application);
     }
     
     @Override
     public Application findDraftApplication(final Application application) {
         final DBObject query = toDBObject.apply(application);
-        query.put("oid", new BasicDBObject("$exists", false));
+        query.put(FIELD_APPLICATION_OID, new BasicDBObject("$exists", false));
         return findOneApplication(query);
     }
 
@@ -127,12 +135,25 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (ssn != null) {
             final DBObject query = new BasicDBObject("formId.applicationPeriodId", asId)
                     .append("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH, shaEncrypter.encrypt(ssn))
-                    .append("oid", new BasicDBObject("$exists", true));
+                    .append(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true));
             return getCollection().count(query) > 0;
         }
         return false;
     }
 
+    @Override
+    public List<Application> findAllFiltered(String state, boolean fetchPassive, String preference) {
+        DBObject[] filters = buildQueryFilter(state, fetchPassive, preference);
+        QueryBuilder baseQuery = QueryBuilder.start();
+        DBObject query;
+        if (filters.length > 0) {
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+        } else {
+            query = baseQuery.get();
+        }
+        return findApplications(query);
+    }
+    
     private QueryBuilder queryByPreference(String aoId) {
         return QueryBuilder.start().or(
                 QueryBuilder.start(FIELD_AO_1).is(aoId).get(),
@@ -160,50 +181,104 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public List<Application> findByApplicantName(String term, String state, boolean fetchPassive, String preference) {
-        Pattern namePattern = Pattern.compile(term, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
-        DBObject query = QueryBuilder.start().and( 
-                QueryBuilder.start().or(
+        DBObject query;
+        DBObject[] filters = buildQueryFilter(state, fetchPassive, preference);
+        Pattern namePattern = Pattern.compile(term, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);            
+        QueryBuilder baseQuery = QueryBuilder.start().or(
                         QueryBuilder.start("answers.henkilotiedot.Etunimet").regex(namePattern).get(),
-                        QueryBuilder.start("answers.henkilotiedot.Sukunimi").regex(namePattern).get()).get(),
-                QueryBuilder.start().or(buildQueryFilter(state, fetchPassive, preference)).get()
-                ).get();
+                        QueryBuilder.start("answers.henkilotiedot.Sukunimi").regex(namePattern).get());
+        if (filters.length > 0) {
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+        } else {
+            query = baseQuery.get();
+        }
+        return findApplications(query);
+    }
+    
+    @Override
+    public List<Application> findByOid(String term, String state, boolean fetchPassive, String preference) {
+        DBObject oidQuery = null;
+        if (term.startsWith(applicationOidPrefix)) {
+            oidQuery = QueryBuilder.start(FIELD_APPLICATION_OID).is(term).get();
+        } else if (term.startsWith(userOidPrefix)) {
+            oidQuery = QueryBuilder.start(FIELD_PERSON_OID).is(term).get();
+        } else {
+            oidQuery = QueryBuilder.start().or(
+                    QueryBuilder.start(FIELD_APPLICATION_OID).is(applicationOidPrefix + "." + term).get(),
+                    QueryBuilder.start(FIELD_PERSON_OID).is(userOidPrefix + "." + term).get()).get();
+        }
+        DBObject query = QueryBuilder.start().and(oidQuery,
+                QueryBuilder.start().or(buildQueryFilter(state, fetchPassive, preference)).get()).get();
         return findApplications(query);
     }
 
     @Override
-    public List<Application> findByApplicantSsn(String term, String state, boolean fetchPassive, String preference) {
+    public List<Application> findByApplicationOid(String term, String state, boolean fetchPassive, String preference) {
+        DBObject[] filters = buildQueryFilter(state, fetchPassive, preference);
+        QueryBuilder baseQuery = QueryBuilder.start(FIELD_APPLICATION_OID).is(term);
+        DBObject query;
+        if (filters.length > 0) {
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+        } else {
+            query = baseQuery.get();
+        }
+        return findApplications(query);
+    }
 
-        DBObject query = QueryBuilder.start().and(
-                QueryBuilder.start("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH)
-                    .is(shaEncrypter.encrypt(term)).get(),
-                QueryBuilder.start().or(buildQueryFilter(state, fetchPassive, preference)).get()).get();
+    @Override
+    public List<Application> findByUserOid(String term, String state, boolean fetchPassive, String preference) {
+        DBObject[] filters = buildQueryFilter(state, fetchPassive, preference);
+        QueryBuilder baseQuery = QueryBuilder.start(FIELD_PERSON_OID).is(term);
+        DBObject query;
+        if (filters.length > 0) {
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+        } else {
+            query = baseQuery.get();
+        }
+        return findApplications(query);
+    }
+    
+    @Override
+    public List<Application> findByApplicantSsn(String term, String state, boolean fetchPassive, String preference) {
+        DBObject[] filters = buildQueryFilter(state, fetchPassive, preference);
+        QueryBuilder baseQuery = QueryBuilder.start("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH)
+                .is(shaEncrypter.encrypt(term));
+        DBObject query;
+        if (filters.length > 0) {
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+        } else {
+            query = baseQuery.get();
+        }
         return findApplications(query);
     }
 
     private DBObject[] buildQueryFilter(String state, boolean fetchPassive, String preference) {
         ArrayList<DBObject> filters = new ArrayList<DBObject>(2);
-       DBObject stateQuery = null;
+        DBObject stateQuery = null;
+
         if (!isEmpty(state)) {
-             for (Application.State s : Application.State.values()) {
+            for (Application.State s : Application.State.values()) {
                 if (Application.State.valueOf(state).equals(s)) {
-                    stateQuery = QueryBuilder.start("state").is(state).get();
+                    if (fetchPassive && !s.equals(Application.State.PASSIVE)) {
+                        stateQuery = QueryBuilder
+                                .start().or(QueryBuilder.start(FIELD_APPLICATION_STATE).is(s.toString()).get(),
+                                        QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.PASSIVE.toString()).get()).get();
+                        
+                    } else {
+                        stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).is(state).get();
+                    }
                     break;
                 }
             }
-        } else if (fetchPassive) {
-            stateQuery = QueryBuilder.start().or(
-                    QueryBuilder.start("state").is(Application.State.ACTIVE.toString()).get(),
-                    QueryBuilder.start("state").is(Application.State.PASSIVE.toString()).get()).get();
-        } else {
-            stateQuery = QueryBuilder.start("state").is(Application.State.ACTIVE.toString()).get();
         }
-            
-        filters.add(stateQuery);
+
+        if (stateQuery != null) {
+            filters.add(stateQuery);
+        }
         
         if (!isEmpty(preference)) {
             filters.add(queryByPreference(preference).get());
         }
         return filters.toArray(new DBObject[filters.size()]);
     }
-
 }

@@ -72,10 +72,35 @@ public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
             res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
         }
 
-        return oidPrefix + res.get(SEQUENCE_FIELD).toString();
+        return oidPrefix + "." + formatOid(res.get(SEQUENCE_FIELD).toString());
     }
 
+    @Override
+    public String getOidPrefix() {
+        return oidPrefix;
+    }
+    
     protected DBCollection getSequence() {
         return db.getCollection(SEQUENCE_NAME);
+    }
+
+    String formatOid(String oid) {
+        oid = oid + checksum(oid);
+        oid = String.format("%011d", Integer.valueOf(oid));
+        return oid;
+    }
+    
+    String checksum(String oid) {
+        int sum = 0;
+        int[] multipliers = new int[] {7,3,1};
+        int multiplierIndex = 0;
+        for (int i = oid.length() -1; i >= 0; i--) {
+            int curr = Integer.valueOf(String.valueOf(oid.charAt(i)));
+            sum += curr * multipliers[multiplierIndex % 3];
+            multiplierIndex++;
+        }
+        sum = (10 - (sum % 10)) % 10; // Summa vähennetään seuraavasta tasakymmenestä
+        String checksum = String.valueOf(sum);
+        return checksum;
     }
 }

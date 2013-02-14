@@ -16,10 +16,10 @@
 
 package fi.vm.sade.oppija.hakemus.domain;
 
-import fi.vm.sade.oppija.lomake.domain.FormId;
-import fi.vm.sade.oppija.lomake.domain.ObjectIdDeserializer;
-import fi.vm.sade.oppija.lomake.domain.ObjectIdSerializer;
-import fi.vm.sade.oppija.lomake.domain.User;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -27,9 +27,10 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.ObjectIdDeserializer;
+import fi.vm.sade.oppija.lomake.domain.ObjectIdSerializer;
+import fi.vm.sade.oppija.lomake.domain.User;
 
 /**
  * @author jukka
@@ -41,12 +42,12 @@ import java.util.Map;
 public class Application implements Serializable {
 
     public enum State {
-        ACTIVE, PASSIVE
+        ACTIVE, PASSIVE, INCOMPLETE
     }
     
     private static final long serialVersionUID = -7491168801255850954L;
     public static final String VAIHE_ID = "phaseId";
-
+    
     @JsonProperty(value = "_id")
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = ObjectIdSerializer.class)
     @JsonDeserialize(using = ObjectIdDeserializer.class)
@@ -176,7 +177,7 @@ public class Application implements Serializable {
     public void setOid(String oid) {
         this.oid = oid;
     }
-
+    
     public void setState(State state) {
         this.state = state;
     }

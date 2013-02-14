@@ -16,12 +16,15 @@
 
 package fi.vm.sade.oppija.hakemus.it;
 
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
-import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
-import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationDTO;
-import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
+import static java.lang.ClassLoader.getSystemResourceAsStream;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
+import static net.sourceforge.jwebunit.junit.JWebUnit.getPageSource;
+
+import java.io.IOException;
+import java.util.List;
+
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -30,14 +33,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
-import java.util.List;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 
-import static java.lang.ClassLoader.getSystemResourceAsStream;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
-import static net.sourceforge.jwebunit.junit.JWebUnit.getPageSource;
+import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
+import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationDTO;
+import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
 
 /**
  * @author Hannu Lyytikainen
@@ -103,7 +105,7 @@ public class ApplicationIT extends AbstractRemoteTest {
 
     @Test
     public void testFindApplications() throws IOException {
-        beginAt("applications?q=1.2.3.4.5.3");
+        beginAt("applications?q=1.2.3.4.5.00000010003");
         String response = getPageSource();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -125,13 +127,13 @@ public class ApplicationIT extends AbstractRemoteTest {
 
     @Test
     public void testGetApplication() throws IOException {
-        beginAt("applications/1.2.3.4.5.3/");
+        beginAt("applications/1.2.3.4.5.00000010003/");
         String response = getPageSource();
 
         ObjectMapper mapper = new ObjectMapper();
         Application application = mapper.readValue(response, new TypeReference<Application>() {
         });
         assertNotNull(application);
-        assertEquals("1.2.3.4.5.3", application.getOid());
+        assertEquals("1.2.3.4.5.00000010003", application.getOid());
     }
 }

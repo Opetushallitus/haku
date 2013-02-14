@@ -41,4 +41,9 @@ public class ApplicationOidServiceImpl implements ApplicationOidService {
     public String generateNewOid() {
         return applicationOidDAO.generateNewOid();
     }
+
+    @Override
+    public String getOidPrefix() {
+        return applicationOidDAO.getOidPrefix();
+    }
 }

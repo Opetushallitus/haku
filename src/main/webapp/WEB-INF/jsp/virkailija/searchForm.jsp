@@ -28,12 +28,11 @@
                     </td>
                     <td>
                         <label for="application-state">Hakemuksen tila:</label>
-                        <select class="width-50" id="application-state">
+                        <select class="width-50" id="application-state" ng-model="applicationState">
                             <option value="">Kaikki</option>
-                            <option value="voimassa">Voimassa</option>
-                            <option value="peruttu">Peruttu</option>
-                            <option value="myöhästynyt">Myöhästynyt</option>
-                            <option value="eihakemusta">Ei hakemusta (perustiedot siirretty)</option>
+                            <option value="ACTIVE">Voimassa</option>
+                            <option value="PASSIVE">Peruttu</option>
+                            <option value="INCOMPLETE">Puutteellinen</option>
                         </select>
                     </td>
                 </tr>

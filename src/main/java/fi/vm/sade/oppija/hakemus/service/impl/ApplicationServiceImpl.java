@@ -25,10 +25,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import fi.vm.sade.oppija.common.authentication.AuthenticationService;
-import fi.vm.sade.oppija.common.authentication.Person;
-import fi.vm.sade.oppija.common.authentication.impl.AuthenticationServiceMockImpl;
-import fi.vm.sade.oppija.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +33,9 @@ import org.springframework.stereotype.Service;
 
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
 import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
+import fi.vm.sade.oppija.common.authentication.AuthenticationService;
+import fi.vm.sade.oppija.common.authentication.Person;
+import fi.vm.sade.oppija.common.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
@@ -56,6 +55,9 @@ import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.oppija.util.OppijaConstants;
+
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 /**
  * @author jukka
@@ -66,7 +68,7 @@ import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 public class ApplicationServiceImpl implements ApplicationService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationServiceImpl.class);
-
+    
     private final ApplicationDAO applicationDAO;
     private final ApplicationOidService applicationOidService;
     private final UserHolder userHolder;
@@ -74,8 +76,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationProcessStateService applicationProcessStateService;
     private static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))";
     private static final String OID_PATTERN = "^[0-9]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+$";
+    private static final String SHORT_OID_PATTERN = "^[0-9]{11}$";
     private final Pattern socialSecurityNumberPattern;
     private final Pattern oidPattern;
+    private final Pattern shortOidPattern;
     private final AuthenticationService authenticationService;
 
     @Autowired
@@ -92,6 +96,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.authenticationService = authenticationService;
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
         this.oidPattern = Pattern.compile(OID_PATTERN);
+        this.shortOidPattern = Pattern.compile(SHORT_OID_PATTERN);
         this.applicationOidService = applicationOidService;
     }
 
@@ -236,16 +241,20 @@ public class ApplicationServiceImpl implements ApplicationService {
     public List<Application> findApplications(final String term, final String state, final boolean fetchPassive, final String preference) {
         Application application = new Application();
         List<Application> applications = new LinkedList<Application>();
-        if (oidPattern.matcher(term).matches()) {
-            application.setOid(term);
-            application.setState(fetchPassive ? null : Application.State.ACTIVE);
-            applications.addAll(applicationDAO.find(application, state, fetchPassive, preference));
+        if (shortOidPattern.matcher(term).matches() ) {
+            applications.addAll(applicationDAO.findByOid(term, state, fetchPassive, preference));
+        } else if (oidPattern.matcher(term).matches()) { 
+            if (term.startsWith(applicationOidService.getOidPrefix())) {
+                applications.addAll(applicationDAO.findByApplicationOid(term, state, fetchPassive, preference));
+            } else {
+                applications.addAll(applicationDAO.findByUserOid(term, state, fetchPassive, preference));
+            }
         } else if (socialSecurityNumberPattern.matcher(term).matches()){
             applications.addAll(applicationDAO.findByApplicantSsn(term, state, fetchPassive, preference));
         } else if (!StringUtils.isEmpty(term)){
             applications.addAll(applicationDAO.findByApplicantName(term, state, fetchPassive, preference));
-        } else {
-            applications.addAll(applicationDAO.find(application, state, fetchPassive, preference));
+        } else if (isEmpty(term)){
+            applications.addAll(applicationDAO.findAllFiltered(state, fetchPassive, preference));
         }
         return applications;
     }

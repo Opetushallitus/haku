@@ -97,7 +97,7 @@
 			"lupa_lupa1" : "lupa1"
 		}
 	},
-	"oid" : "1.2.3.4.5.3",
+    "oid" : "1.2.3.4.5.00000010003",
 	"state" : "ACTIVE",
 	"formId" : {
 		"type" : "FormId",
@@ -204,7 +204,7 @@
             "lupa_lupa1" : "lupa1"
         }
     },
-    "oid" : "1.2.3.4.5.4",
+    "oid" : "1.2.3.4.5.00000020006",
     "state" : "ACTIVE",
     "formId" : {
         "type" : "FormId",
@@ -311,7 +311,7 @@
             "lupa_lupa1" : "lupa1"
         }
     },
-    "oid" : "1.2.3.4.5.5",
+    "oid" : "1.2.3.4.5.00000030009",
     "state" : "PASSIVE",
     "formId" : {
         "type" : "FormId",

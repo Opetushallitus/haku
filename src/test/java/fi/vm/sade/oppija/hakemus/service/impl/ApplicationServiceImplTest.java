@@ -18,10 +18,9 @@ package fi.vm.sade.oppija.hakemus.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.eq;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
@@ -36,29 +35,35 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 
 public class ApplicationServiceImplTest {
 
     ApplicationDAO applicationDAO;
+    ApplicationOidService applicationOidService;
     Application application;
 
     String SSN = "250584-3847";
-    String OID = "1.2.3.4.5.0";
+    String OID = "1.2.3.4.5.12345678901";
+    String SHORT_OID = "12345678901";
     String NAME = "Test Example";
     
     @Before
     public void setUp() {
         application = new Application();
         applicationDAO = mock(ApplicationDAO.class);
+        applicationOidService = mock(ApplicationOidService.class);
         when(applicationDAO.findByApplicantSsn(eq(SSN), anyString(), anyBoolean(), anyString())).thenReturn(Lists.newArrayList(application));
         when(applicationDAO.findByApplicantName(eq(NAME), anyString(), anyBoolean(), anyString())).thenReturn(Lists.newArrayList(application));
-        when(applicationDAO.find(any(Application.class), anyString(), anyBoolean(), anyString())).thenReturn(Lists.newArrayList(application));
+        when(applicationDAO.findByApplicationOid(eq(OID), anyString(), anyBoolean(), anyString())).thenReturn(Lists.newArrayList(application));
+        when(applicationDAO.findByOid(eq(SHORT_OID), anyString(), anyBoolean(), anyString())).thenReturn(Lists.newArrayList(application));
+        when(applicationOidService.getOidPrefix()).thenReturn("1.2.3.4.5");
     }
 
     @Test
     public void testFindApplicationBySsn() {
         ApplicationServiceImpl service = new ApplicationServiceImpl
-                (applicationDAO, null, null, null, null, null);
+                (applicationDAO, null, null, null, applicationOidService, null);
         List<Application> results = service.findApplications(SSN, "", Boolean.FALSE, "");
         assertNotNull(results);
         assertEquals(1, results.size());
@@ -68,7 +73,7 @@ public class ApplicationServiceImplTest {
     @Test
     public void testFindApplicationByName() {
         ApplicationServiceImpl service = new ApplicationServiceImpl
-                (applicationDAO, null, null, null, null, null);
+                (applicationDAO, null, null, null, applicationOidService, null);
         List<Application> results = service.findApplications(NAME, "", false, "");
         assertNotNull(results);
         assertEquals(1, results.size());
@@ -78,11 +83,22 @@ public class ApplicationServiceImplTest {
     @Test
     public void testFindApplicationByOid() {
         ApplicationServiceImpl service = new ApplicationServiceImpl
-                (applicationDAO, null, null, null, null, null);
+                (applicationDAO, null, null, null, applicationOidService, null);
         application.setOid(OID);
-        List<Application> results = service.findApplications(OID, null, false, null);
+        List<Application> results = service.findApplications(OID, "", false, "");
         assertNotNull(results);
         assertEquals(1, results.size());
-        verify(applicationDAO, only()).find(any(Application.class), anyString(), anyBoolean(), anyString());
+        verify(applicationDAO, only()).findByApplicationOid(eq(OID), anyString(), anyBoolean(), anyString());
+    }
+    
+    @Test
+    public void testFindApplicationByShortOid() {
+        ApplicationServiceImpl service = new ApplicationServiceImpl
+                (applicationDAO, null, null, null, applicationOidService, null);
+        application.setOid(OID);
+        List<Application> results = service.findApplications(SHORT_OID, "", false, "");
+        assertNotNull(results);
+        assertEquals(1, results.size());
+        verify(applicationDAO, only()).findByOid(eq(SHORT_OID), anyString(), anyBoolean(), anyString());
     }
 }

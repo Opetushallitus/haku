@@ -16,9 +16,13 @@
  *
  */
 
-package fi.vm.sade.oppija.hakemus.dao;
+package fi.vm.sade.oppija.hakemus.dao.impl;
 
 import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
+import fi.vm.sade.oppija.hakemus.dao.ApplicationOidDAO;
+import fi.vm.sade.oppija.hakemus.dao.impl.ApplicationDAOMongoImpl;
+import fi.vm.sade.oppija.hakemus.dao.impl.ApplicationOidDAOMongoImpl;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +32,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Mikko Majapuro
@@ -52,5 +57,19 @@ public class ApplicationOidDAOMongoImplTest extends AbstractDAOTest {
         assertNotNull(oid1);
         assertNotNull(oid2);
         assertNotSame(oid1, oid2);
+    }
+    
+    @Test
+    public void testFormat() {
+        // OIDin tarkistesumma lasketaan kuten suomalaisissa pankkiviitteissä.
+        // Testiä varten summat laskettu Tuataralla, 
+        // http://tarkistusmerkit.teppovuori.fi/tuatara.htm#viite
+        ApplicationOidDAOMongoImpl mongoImpl = new ApplicationOidDAOMongoImpl();
+        String formattedOid = mongoImpl.formatOid("1111");
+        assertEquals("00000011112", formattedOid);
+        formattedOid = mongoImpl.formatOid("1313");
+        assertEquals("00000013136", formattedOid);
+        formattedOid = mongoImpl.formatOid("2847535");
+        assertEquals("00028475358", formattedOid);
     }
 }

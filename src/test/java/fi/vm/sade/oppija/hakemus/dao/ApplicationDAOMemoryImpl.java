@@ -104,4 +104,29 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
         return null;
     }
 
+    @Override
+    public List<Application> findByOid(String term, String state, boolean fetchPassive,
+            String preference) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Application> findByApplicationOid(String term, String state, boolean fetchPassive, String preference) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Application> findByUserOid(String term, String state, boolean fetchPassive, String preference) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Application> findAllFiltered(String state, boolean fetchPassive, String preference) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
