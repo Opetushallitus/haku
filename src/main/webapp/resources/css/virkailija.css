@@ -1865,6 +1865,14 @@ label, .label {
     font-weight: bold;
     text-align: left; }
 
+.key-value-table tbody tr th {
+  padding-top: 1em;
+  text-align: left; }
+.key-value-table tbody tr td {
+  text-align: left; }
+.key-value-table tbody tr td:first-child {
+  text-align: right; }
+
 a.button {
   text-decoration: none;
   color: #000000;
@@ -2060,11 +2068,14 @@ a.button {
     background-repeat: no-repeat;
     background-position: left center;
     vertical-align: middle;
-    box-shadow: none; }
+    box-shadow: none;
+    transition: all 0s ease 0s; }
     .button.blueplus:hover {
-      background-position: right center; }
+      background-position: right center;
+      transition: all 0s ease 0s; }
     .button.blueplus:focus, .button.blueplus:active {
-      background-position: center center; }
+      background-position: center center;
+      transition: all 0s ease 0s; }
     .button.blueplus span {
       display: none; }
   .button.small {
@@ -2608,6 +2619,8 @@ ul.actionmenu {
     #orgsearch .orgsearchform .field-select-containerbox,
     #orgsearch .orgsearchform .field-container-checkbox {
       margin-bottom: 0.5em; }
+    #orgsearch .orgsearchform .buttons {
+      text-align: right; }
   #orgsearch .orgsearchlist {
     width: 100%;
     overflow: auto; }
