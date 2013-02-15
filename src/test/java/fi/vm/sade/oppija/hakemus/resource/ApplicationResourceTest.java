@@ -49,7 +49,7 @@ public class ApplicationResourceTest {
         Map<String, Map<String, String>> phases = new HashMap<String, Map<String, String>>();
         phases.put("henkilotiedot", phase1);
 
-        this.application = new Application(formId, new AnonymousUser(), phases);
+        this.application = new Application(formId, new AnonymousUser(), phases, null);
         this.application.setOid(OID);
         this.applicationDTO = new ApplicationDTO(this.application);
 

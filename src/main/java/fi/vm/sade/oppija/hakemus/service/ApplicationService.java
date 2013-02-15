@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.hakemus.service;
 
 import java.util.List;
+import java.util.Map;
 
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
@@ -115,4 +116,14 @@ public interface ApplicationService {
      */
     List<Application> findApplications(String term, String state, boolean fetchPassive, String preference);
 
+
+    /**
+     * Saves additional info key value pairs to the application
+     * @param oid application oid
+     * @param additionalInfo additional info key value pairs
+     * @throws ResourceNotFoundException
+     */
+    void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo) throws ResourceNotFoundException;
+
+    List<String> getApplicationPreferenceOids(final String applicationOid) throws ResourceNotFoundException;
 }

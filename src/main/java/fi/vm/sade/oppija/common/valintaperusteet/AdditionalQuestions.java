@@ -15,7 +15,9 @@
  */
 package fi.vm.sade.oppija.common.valintaperusteet;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -26,9 +28,11 @@ import com.google.common.collect.LinkedListMultimap;
 public class AdditionalQuestions {
 
     private final LinkedListMultimap<String /* oid */, InputParameter> questions = LinkedListMultimap.create();
+    private final Map<String /* key */, InputParameter> questionMap = new HashMap<String, InputParameter>();
 
     public void addParameter(final String oid, final InputParameter param) {
         questions.put(oid, param);
+        questionMap.put(param.getKey(), param);
     }
 
     /**
@@ -50,6 +54,10 @@ public class AdditionalQuestions {
                 return phase.equals(input.getPhase());
             }
         }));
+    }
+
+    public List<InputParameter> getAllQuestions() {
+        return ImmutableList.copyOf(questionMap.values());
     }
 
     @Override

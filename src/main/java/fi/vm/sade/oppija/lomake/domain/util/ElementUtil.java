@@ -18,7 +18,14 @@ package fi.vm.sade.oppija.lomake.domain.util;
 
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class ElementUtil {
     private ElementUtil() {
@@ -35,5 +42,20 @@ public final class ElementUtil {
                 createI18NText("Tyhjennä"),
                 createI18NText("Koulutus"),
                 createI18NText("Opetuspiste"), "Valitse koulutus");
+    }
+
+    public static <E extends Element> Map<String, E> findElementsByType(Element element, Class<E> eClass) {
+        Map<String, E> elements = new HashMap<String, E>();
+        findElementByType(element, elements, eClass);
+        return elements;
+    }
+
+    private static <E extends Element> void findElementByType(final Element element, final  Map<String, E> elements, Class<E> eClass) {
+        if (element.getClass().isAssignableFrom(eClass)) {
+            elements.put(element.getId(), (E)element);
+        }
+        for (Element child : element.getChildren()) {
+            findElementByType(child, elements, eClass);
+        }
     }
 }

@@ -21,6 +21,8 @@ import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
 import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
+import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
+import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
@@ -42,6 +44,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -63,6 +66,7 @@ public class OfficerController {
     public static final String OID_PATH_PARAM = "oid";
     public static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
+    public static final String ADDITIONAL_INFO_VIEW = "/virkailija/additionalInfo";
 
     @Autowired
     ApplicationService applicationService;
@@ -71,6 +75,8 @@ public class OfficerController {
     FormService formService;
     @Autowired
     ApplicationProcessStateService applicationProcessStateService;
+    @Autowired
+    ValintaperusteetService valintaperusteetService;
 
     @GET
     @Path("/hakemus/{oid}")
@@ -140,6 +146,32 @@ public class OfficerController {
         }
         model.put("hakemusId", hakuLomakeId);
         return ok(new Viewable(templateName, model)).build();
+    }
+
+    @POST
+    @Path("/hakemus/{oid}/additionalInfo")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    public Response saveAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid, final MultivaluedMap<String, String> multiValues)
+            throws URISyntaxException, ResourceNotFoundException {
+        LOGGER.debug("saveAdditionalInfo {}, {}", new Object[]{oid, multiValues});
+        applicationService.saveApplicationAdditionalInfo(oid, MultivaluedMapUtil.toSingleValueMap(multiValues));
+        String templateName = VIRKAILIJA_HAKEMUS_VIEW + oid + "/";
+        return seeOther(new URI(templateName)).build();
+    }
+
+    @GET
+    @Path("/hakemus/{oid}/additionalInfo")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    public Viewable getAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException, IOException {
+        Map<String, Object> model = new HashMap<String, Object>();
+        Application app = applicationService.getApplication(oid);
+        List<String> applicationPreferenceOids = applicationService.getApplicationPreferenceOids(oid);
+        AdditionalQuestions additionalQuestions = valintaperusteetService.retrieveAdditionalQuestions(applicationPreferenceOids);
+        model.put("application", app);
+        model.put("additionalQuestions", additionalQuestions);
+        String templateName = ADDITIONAL_INFO_VIEW;
+        return new Viewable(templateName, model);
     }
 
     @POST

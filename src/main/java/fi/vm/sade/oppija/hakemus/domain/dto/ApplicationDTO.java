@@ -56,7 +56,7 @@ public class ApplicationDTO {
         this.personOid = application.getPersonOid();
         this.asId = application.getFormId().getApplicationPeriodId();
         this.answers = application.getVastauksetMerged();
-        this.additionalInfo = null;
+        this.additionalInfo = application.getAdditionalInfo();
     }
 
     public String getAsId() {

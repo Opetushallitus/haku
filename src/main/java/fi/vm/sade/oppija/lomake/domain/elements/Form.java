@@ -21,9 +21,7 @@ import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntim
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Form extends Titled {
 

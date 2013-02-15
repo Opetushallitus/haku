@@ -20,6 +20,7 @@ import fi.vm.sade.oppija.lomake.domain.Attribute;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Map;
@@ -81,6 +82,11 @@ public class PreferenceRow extends Question {
 
     public String getEducationInputId() {
         return educationInputId;
+    }
+
+    @JsonIgnore
+    public String getEducationOidInputId() {
+        return educationInputId + "-id";
     }
 
     @Override

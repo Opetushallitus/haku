@@ -24,6 +24,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -257,6 +261,31 @@ public class ApplicationServiceImpl implements ApplicationService {
             applications.addAll(applicationDAO.findAllFiltered(state, fetchPassive, preference));
         }
         return applications;
+    }
+
+    @Override
+    public void saveApplicationAdditionalInfo(String oid, Map<String, String> additionalInfo) throws ResourceNotFoundException {
+        Application query = new Application(oid);
+        Application current = getApplication(query);
+        current.setAdditionalInfo(additionalInfo);
+        applicationDAO.update(query, current);
+    }
+
+    @Override
+    public List<String> getApplicationPreferenceOids(String applicationOid) throws ResourceNotFoundException {
+        List<String> oids = new ArrayList<String>();
+        Application application = getApplication(applicationOid);
+        FormId formId = application.getFormId();
+        final Form activeForm = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
+        Map<String, PreferenceRow> preferenceRows = ElementUtil.<PreferenceRow>findElementsByType(activeForm, PreferenceRow.class);
+        Map<String, String> answers = application.getVastauksetMerged();
+        for (PreferenceRow pr : preferenceRows.values()) {
+           String oid = answers.get(pr.getEducationOidInputId());
+           if (oid != null && !oid.trim().isEmpty()) {
+               oids.add(oid);
+           }
+        }
+        return oids;
     }
 
     private Application getApplication(final Application application) throws ResourceNotFoundException {

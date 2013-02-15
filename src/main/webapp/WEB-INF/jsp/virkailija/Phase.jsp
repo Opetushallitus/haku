@@ -305,7 +305,7 @@
                         <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
                         <jsp:include page="../elements/${child.type}Preview.jsp"/>
                     </c:forEach>
-
+                    <jsp:include page="./additionalInfoPreview.jsp"/>
                 </div>
             </c:when>
             <c:otherwise>

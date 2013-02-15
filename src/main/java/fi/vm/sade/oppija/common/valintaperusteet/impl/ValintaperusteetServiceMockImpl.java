@@ -28,15 +28,14 @@ import fi.vm.sade.oppija.common.valintaperusteet.InputParameter;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 
 @Service
-@Profile("default")
 public class ValintaperusteetServiceMockImpl implements ValintaperusteetService {
 
     private final LinkedListMultimap<String, InputParameter> questions = LinkedListMultimap.create();
 
     public ValintaperusteetServiceMockImpl() {
         //TODO add reasonable mock data
-        addQ("1234567", "1", "aidinkieli_yo", "DESIMAALILUKU");
-        addQ("1234567", "2", "matematiikka_yo", "DESIMAALILUKU");
+        addQ("873", "1", "kielikoe", "DESIMAALILUKU");
+        addQ("873", "2", "palikkatesti", "TOTUUSARVO");
     }
 
     private void addQ(String oid, String phase, String key, String type) {

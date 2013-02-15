@@ -62,14 +62,19 @@ public class Application implements Serializable {
 
     private Map<String, Map<String, String>> answers = new HashMap<String, Map<String, String>>();
     private Map<String, String> meta = new HashMap<String, String>();
+    private Map<String, String> additionalInfo = new HashMap<String, String>();
 
     @JsonCreator
     public Application(@JsonProperty(value = "formId") final FormId formId,
                        @JsonProperty(value = "user") final User user,
-                       @JsonProperty(value = "answers") Map<String, Map<String, String>> answers) {
+                       @JsonProperty(value = "answers") Map<String, Map<String, String>> answers,
+                       @JsonProperty(value = "additionalInfo") Map<String, String> additionalInfo) {
         this(formId, user);
         if (answers != null) {
             this.answers = answers;
+        }
+        if (additionalInfo != null) {
+            this.additionalInfo = additionalInfo;
         }
     }
 
@@ -168,6 +173,14 @@ public class Application implements Serializable {
 
     public Map<String, Map<String, String>> getAnswers() {
         return answers;
+    }
+
+    public Map<String, String> getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(Map<String, String> additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
     public String getOid() {
