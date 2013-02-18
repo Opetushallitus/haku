@@ -25,7 +25,7 @@ import java.util.List;
 
 public final class TestObjectCreator {
     public static final String LYHYT_NIMI = "lyhyt nimi";
-    public static final String KOODI_ARVO = "koodi arvo";
+    public static final String KOODI_KOODI_URI_AND_ARVO = "koodi arvo";
 
     public static KoodiMetadataType createKoodiMetadataType() {
         KoodiMetadataType koodiMetadataType = new KoodiMetadataType();
@@ -36,12 +36,13 @@ public final class TestObjectCreator {
 
     public static KoodiType createKoodiType(final String koodiArvo) {
         KoodiType koodiType = new KoodiType();
+        koodiType.setKoodiUri(koodiArvo);
         koodiType.setKoodiArvo(koodiArvo);
         return koodiType;
     }
 
     public static List<KoodiType> createKoodiTypeList() {
-        KoodiType koodiType = createKoodiType(KOODI_ARVO);
+        KoodiType koodiType = createKoodiType(KOODI_KOODI_URI_AND_ARVO);
         koodiType.getMetadata().add(createKoodiMetadataType());
         return Lists.newArrayList(koodiType);
     }

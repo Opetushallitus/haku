@@ -32,13 +32,13 @@ public class KoodiTypeToPostOfficeFunctionTest {
     @Before
     public void setUp() throws Exception {
         koodiTypeToPostOfficeFunction = new KoodiTypeToPostOfficeFunction();
-        this.koodiType = TestObjectCreator.createKoodiType(TestObjectCreator.KOODI_ARVO);
+        this.koodiType = TestObjectCreator.createKoodiType(TestObjectCreator.KOODI_KOODI_URI_AND_ARVO);
     }
 
     @Test
     public void testApplyId() throws Exception {
         PostOffice postOffice = koodiTypeToPostOfficeFunction.apply(koodiType);
-        assertEquals(TestObjectCreator.KOODI_ARVO, postOffice.getPostcode());
+        assertEquals(TestObjectCreator.KOODI_KOODI_URI_AND_ARVO, postOffice.getPostcode());
     }
 
     @Test

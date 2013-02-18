@@ -24,35 +24,32 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-public class KoodiTypeToGradeRangeOptionFunctionTest {
-
-    private KoodiTypeToGradeRangeOptionFunction koodiTypeToGradeRangeOptionFunction;
+public class KoodiTypeToOptionFunctionTest {
+    private KoodiTypeToOptionFunction koodiTypeToOptionFunction;
     private KoodiType koodiType;
 
     @Before
     public void setUp() throws Exception {
-        koodiTypeToGradeRangeOptionFunction = new KoodiTypeToGradeRangeOptionFunction();
-        this.koodiType = TestObjectCreator.createKoodiType(TestObjectCreator.KOODI_ARVO);
-
+        koodiTypeToOptionFunction = new KoodiTypeToOptionFunction();
+        this.koodiType = TestObjectCreator.createKoodiType(TestObjectCreator.KOODI_KOODI_URI_AND_ARVO);
     }
 
     @Test
     public void testApplyId() throws Exception {
-        Option option = koodiTypeToGradeRangeOptionFunction.apply(koodiType);
-        assertEquals(KoodiTypeToGradeRangeOptionFunction.ID_PREFIX +
-                TestObjectCreator.KOODI_ARVO, option.getId());
+        Option option = koodiTypeToOptionFunction.apply(koodiType);
+        assertEquals(TestObjectCreator.KOODI_KOODI_URI_AND_ARVO, option.getId());
     }
 
     @Test
     public void testApplyText() throws Exception {
         koodiType.getMetadata().add(TestObjectCreator.createKoodiMetadataType());
-        Option option = koodiTypeToGradeRangeOptionFunction.apply(koodiType);
+        Option option = koodiTypeToOptionFunction.apply(koodiType);
         assertFalse(option.getI18nText().getTranslations().isEmpty());
     }
 
     @Test
     public void testApplyValue() throws Exception {
-        Option option = koodiTypeToGradeRangeOptionFunction.apply(koodiType);
-        assertEquals(TestObjectCreator.KOODI_ARVO, option.getValue());
+        Option option = koodiTypeToOptionFunction.apply(koodiType);
+        assertEquals(TestObjectCreator.KOODI_KOODI_URI_AND_ARVO, option.getValue());
     }
 }

@@ -34,9 +34,13 @@ import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 @Profile("dev")
 public class KoodistoServiceMockImpl implements KoodistoService {
 
+    public static final String LEARNING_INSTITUTION_TYPE = "Yliopistot";
+    public static final String ORGANIZATION_TYPE = "Toimipiste";
     public final List<Option> listOfGradeGrades;
     public final List<PostOffice> listOfPostOffices;
     public final List<SubjectRow> listOfSubjectsRows;
+    public final List<Option> listOfLearningInstitutionTypes;
+    public final List<Option> listOfOrganizationtypes;
 
     public KoodistoServiceMockImpl() {
         List<Option> listOfGradeGrades = new ArrayList<Option>();
@@ -79,6 +83,13 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 new SubjectRow("KS", createI18NText("Käsityö")),
                 new SubjectRow("LI", createI18NText("Liikunta"))
         );
+        this.listOfLearningInstitutionTypes = ImmutableList.of(
+                new Option(LEARNING_INSTITUTION_TYPE,
+                        createI18NText(LEARNING_INSTITUTION_TYPE), LEARNING_INSTITUTION_TYPE));
+        this.listOfOrganizationtypes =
+                ImmutableList.of(
+                        new Option(ORGANIZATION_TYPE,
+                                createI18NText(ORGANIZATION_TYPE), ORGANIZATION_TYPE));
 
     }
 
@@ -95,6 +106,16 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getGradeRanges() {
         return this.listOfGradeGrades;
+    }
+
+    @Override
+    public List<Option> getLearningInstitutionTypes() {
+        return this.listOfLearningInstitutionTypes;
+    }
+
+    @Override
+    public List<Option> getOrganizationtypes() {
+        return this.listOfOrganizationtypes;
     }
 
     private static PostOffice createPostOffice(final String postCode, final String text) {

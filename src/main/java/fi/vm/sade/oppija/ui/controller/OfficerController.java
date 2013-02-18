@@ -16,11 +16,11 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-import com.google.common.collect.Lists;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
 import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
+import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
@@ -67,7 +67,11 @@ public class OfficerController {
     public static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
     public static final String ADDITIONAL_INFO_VIEW = "/virkailija/additionalInfo";
+    public static final String CODE_LEARNING_INSTITUTION_TYPES = "Oppilaitostyyppi";
+    public static final String CODE_ORGANIZATIONTYPES = "Organisaatiotyyppi";
 
+    @Autowired
+    private KoodistoService koodistoService;
     @Autowired
     ApplicationService applicationService;
     @Autowired
@@ -200,6 +204,8 @@ public class OfficerController {
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable search() {
         Map<String, Object> model = new HashMap<String, Object>();
+        model.put("organizationTypes", koodistoService.getOrganizationtypes());
+        model.put("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
         return new Viewable("/virkailija/searchIndex", model);
     }
 }

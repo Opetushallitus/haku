@@ -44,4 +44,15 @@ public class KoodistoServiceMockImplTest {
     public void testGetGradeRanges() throws Exception {
         assertEquals(koodistoServiceMock.listOfGradeGrades, koodistoServiceMock.getGradeRanges());
     }
+
+    @Test
+    public void testGetOrganizationTypes() throws Exception {
+        assertEquals(koodistoServiceMock.getOrganizationtypes(), koodistoServiceMock.getOrganizationtypes());
+    }
+
+    @Test
+    public void testGetLearningInstitutionTypes() throws Exception {
+        assertEquals(koodistoServiceMock.getLearningInstitutionTypes(),
+                koodistoServiceMock.getLearningInstitutionTypes());
+    }
 }

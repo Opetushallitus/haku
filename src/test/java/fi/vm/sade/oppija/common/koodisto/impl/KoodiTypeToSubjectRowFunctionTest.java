@@ -13,7 +13,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-
 package fi.vm.sade.oppija.common.koodisto.impl;
 
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
@@ -33,14 +32,14 @@ public class KoodiTypeToSubjectRowFunctionTest {
     @Before
     public void setUp() throws Exception {
         koodiTypeToSubjectRowFunction = new KoodiTypeToSubjectRowFunction();
-        this.koodiType = TestObjectCreator.createKoodiType(TestObjectCreator.KOODI_ARVO);
+        this.koodiType = TestObjectCreator.createKoodiType(TestObjectCreator.KOODI_KOODI_URI_AND_ARVO);
 
     }
 
     @Test
     public void testApplyId() throws Exception {
         SubjectRow subjectRow = koodiTypeToSubjectRowFunction.apply(koodiType);
-        assertEquals(TestObjectCreator.KOODI_ARVO, subjectRow.getId());
+        assertEquals(TestObjectCreator.KOODI_KOODI_URI_AND_ARVO, subjectRow.getId());
     }
 
     @Test
@@ -49,6 +48,4 @@ public class KoodiTypeToSubjectRowFunctionTest {
         SubjectRow subjectRow = koodiTypeToSubjectRowFunction.apply(koodiType);
         assertFalse(subjectRow.getI18nText().getTranslations().isEmpty());
     }
-
-
 }

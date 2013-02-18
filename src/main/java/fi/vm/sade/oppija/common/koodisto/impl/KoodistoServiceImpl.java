@@ -43,7 +43,8 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_POST = "posti";
     public static final String CODE_SUBJECT = "oppiaineet";
     public static final String CODE_GRADE_RANGE = "ARVOSANA-ASTEIKKO";
-
+    public static final String CODE_LEARNING_INSTITUTION_TYPES = "Oppilaitostyyppi";
+    public static final String CODE_ORGANIZATIONTYPES = "Organisaatiotyyppi";
 
     private final KoodiService koodiService;
 
@@ -74,7 +75,25 @@ public class KoodistoServiceImpl implements KoodistoService {
                 Lists.reverse(
                         Lists.transform(
                                 getKoodiTypes(CODE_GRADE_RANGE),
-                                new KoodiTypeToGradeRangeOptionFunction())));
+                                new KoodiTypeToOptionFunction())));
+    }
+
+    @Override
+    public List<Option> getLearningInstitutionTypes() {
+        return codesToOptions(CODE_LEARNING_INSTITUTION_TYPES);
+    }
+
+    @Override
+    public List<Option> getOrganizationtypes() {
+        return codesToOptions(CODE_ORGANIZATIONTYPES);
+    }
+
+    private List<Option> codesToOptions(final String codeName) {
+        return ImmutableList.copyOf(
+                Lists.reverse(
+                        Lists.transform(
+                                getKoodiTypes(codeName),
+                                new KoodiTypeToOptionFunction())));
     }
 
 

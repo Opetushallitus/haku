@@ -15,21 +15,19 @@
  */
 package fi.vm.sade.oppija.common.organisaatio.impl;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
-
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.oppija.common.organisaatio.Organization;
 import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioSearchCriteriaDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.List;
 
 @Service
 @Profile("default")
@@ -41,11 +39,12 @@ public class OrganizationServiceImpl implements OrganizationService {
     public OrganizationServiceImpl(OrganisaatioService service) {
         this.service = service;
     }
-    
+
     @Override
     public List<Organization> search(SearchCriteria criteria) throws IOException {
 
         final OrganisaatioSearchCriteriaDTO criteriaDTO = new OrganisaatioSearchCriteriaDTO();
+        criteriaDTO.setMaxResults(10000);
         if (criteria.getSearchString() != null) {
             criteriaDTO.setSearchStr(criteria.getSearchString());
         }
@@ -55,11 +54,9 @@ public class OrganizationServiceImpl implements OrganizationService {
         }
 
         criteriaDTO.setSuunnitellut(criteria.isIncludePlanned());
- 
         criteriaDTO.setLakkautetut(criteria.isIncludePassive());
 
         criteriaDTO.setOppilaitosTyyppi(criteria.getLearningInstitutionType());
-
         final List<OrganisaatioPerustietoType> result = service.searchBasicOrganisaatios(criteriaDTO);
         return Lists.newArrayList(Lists.transform(result, new OrganisaatioPerustietoTypeToOrganizationFunction()));
     }

@@ -52,4 +52,14 @@ public class KoodistoServiceImplTest {
     public void testGetGradeRanges() throws Exception {
         assertFalse(koodistoService.getGradeRanges().isEmpty());
     }
+
+    @Test
+    public void testGetOrganizationTypes() throws Exception {
+        assertFalse(koodistoService.getOrganizationtypes().isEmpty());
+    }
+
+    @Test
+    public void testGetLearningInstitutionTypes() throws Exception {
+        assertFalse(koodistoService.getLearningInstitutionTypes().isEmpty());
+    }
 }

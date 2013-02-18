@@ -21,13 +21,11 @@ import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 
-public class KoodiTypeToGradeRangeOptionFunction implements Function<KoodiType, Option> {
-
-    public static final String ID_PREFIX = "grade_";
+public class KoodiTypeToOptionFunction implements Function<KoodiType, Option> {
 
     @Override
     public Option apply(final KoodiType koodiType) {
-        return new Option(ID_PREFIX + koodiType.getKoodiArvo(), new I18nText(koodiType.getKoodiArvo(), TranslationsUtil.createTranslationsMap(koodiType)), koodiType.getKoodiArvo());
+        return new Option(koodiType.getKoodiUri(), new I18nText(koodiType.getKoodiUri(), TranslationsUtil.createTranslationsMap(koodiType)), koodiType.getKoodiUri());
     }
 
 }
