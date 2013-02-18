@@ -29,6 +29,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 //@Service // enable when real authentication service can be used
 public class AuthenticationServiceImpl implements AuthenticationService {
 
+    public static final long ID_117 = 117L;
+    public static final long ID_120 = 120L;
+    public static final String KIELITYYPPI_SUOMI = "suomi";
+    public static final String KIELI_KOODI = "fi";
     private UserManagementService userManagementService;
 
     @Autowired
@@ -53,16 +57,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // allows adding people with koodisto languahe codes
         KielisyysType contactLanguageType = new KielisyysType();
         contactLanguageType.setKieliKoodi("fi");
-        contactLanguageType.setId(117l);
-        contactLanguageType.setKieliTyyppi("suomi");
+        contactLanguageType.setId(ID_117);
+        contactLanguageType.setKieliTyyppi(KIELITYYPPI_SUOMI);
         addHenkiloDataType.setAsiointiKieli(contactLanguageType);
         KielisyysType lang = new KielisyysType();
-        lang.setId(117l);
-        lang.setKieliKoodi("fi");
-        lang.setKieliTyyppi("suomi");
+        lang.setId(ID_117);
+        lang.setKieliKoodi(KIELI_KOODI);
+        lang.setKieliTyyppi(KIELITYYPPI_SUOMI);
         KansalaisuusType nat = new KansalaisuusType();
-        nat.setId(120L);
-        nat.setKansalaisuusKoodi("fi");
+        nat.setId(ID_120);
+        nat.setKansalaisuusKoodi(KIELI_KOODI);
         addHenkiloDataType.getKielisyys().add(lang);
         addHenkiloDataType.getKansalaisuus().add(nat);
 
