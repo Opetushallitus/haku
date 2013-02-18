@@ -249,7 +249,7 @@
     <c:if test="${applicationProcessState.status ne 'Peruttu'}">
         <form class="inline-block" method="post"
               action="${contextPath}/virkailija/hakemus/${oid}/applicationProcessState/CANCELLED/">
-            <button type="submit"><span><span>Passivoi hakemus</span></span></button>
+            <button class="small" type="submit"><span><span>Passivoi hakemus</span></span></button>
         </form>
     </c:if>
 </div>
@@ -335,7 +335,7 @@
                 <c:if test="${applicationProcessState.status ne 'Peruttu'}">
                     <form class="inline-block" method="post"
                           action="${contextPath}/virkailija/hakemus/${oid}/applicationProcessState/CANCELLED/">
-                        <button type="submit"><span><span>Passivoi hakemus</span></span></button>
+                        <button class="small" type="submit"><span><span>Passivoi hakemus</span></span></button>
                     </form>
                 </c:if>
             </div>

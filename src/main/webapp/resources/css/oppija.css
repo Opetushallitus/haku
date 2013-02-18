@@ -2979,117 +2979,93 @@ button {
 ************************************************/
 .preference-sort {
   width: 100%; }
-
-.preference-sort tbody tr td {
-  border: solid 1px #e1e1e1;
-  border-top-color: #ececec;
-  border-bottom-color: #c2c2c2;
-  vertical-align: top;
-  padding: 2em 1.5em;
-  background-color: #ffffff; }
-
-.preference-sort tbody tr:nth-child(odd) td {
-  background-color: #f9fbfc; }
-
-.preference-sort button.reset {
-  float: right; }
-
-.preference-sort .index {
-  text-align: center; }
-
-.preference-sort .index .up span,
-.preference-sort .index .down span {
-  border: solid 16px black;
-  width: 0px;
-  height: 0px;
-  border-left-color: transparent;
-  border-right-color: transparent;
-  background-color: transparent;
-  padding: 0px;
-  margin: 2px;
-  position: relative;
-  background-image: none; }
-
-.preference-sort .index .up span {
-  border-top-width: 0px; }
-
-.preference-sort .index .down span {
-  border-bottom-width: 0px; }
-
-.preference-sort .index .up span span,
-.preference-sort .index .down span span {
-  border: solid 15px #feba00;
-  width: 0px;
-  height: 0px;
-  overflow: hidden;
-  border-left-color: transparent;
-  border-right-color: transparent;
-  background-color: transparent;
-  padding: 0px;
-  margin: 0px;
-  position: absolute;
-  left: -15px; }
-
-.preference-sort .index .up span span {
-  border-top-width: 0px;
-  bottom: -16px; }
-
-.preference-sort .index .down span span {
-  border-bottom-width: 0px;
-  top: -15px; }
-
-.preference-sort .index .up:hover span span {
-  border-top-width: 0px;
-  bottom: -15px; }
-
-.preference-sort .index .down:hover span span {
-  border-bottom-width: 0px;
-  top: -16px; }
-
-.preference-sort .index .up:active span span,
-.preference-sort .index .up:focus span span {
-  left: -14px;
-  bottom: -16px;
-  border-width: 14px;
-  border-top-width: 0px; }
-
-.preference-sort .index .down:active span span,
-.preference-sort .index .down:focus span span {
-  left: -14px;
-  top: -14px;
-  border-width: 14px;
-  border-bottom-width: 0px; }
-
-.preference-sort .index .label {
-  text-transform: uppercase; }
-
-.preference-sort .preference-fields {
-  margin-right: 1.5em;
-  float: left; }
-
-.preference-sort .preference-fields .form-row {
-  margin: 1em 100px 0px 0px; }
-
-.preference-sort .preference-fields .form-row:first-child {
-  margin-top: 0px; }
-
-.preference-sort .preference-fields .form-row-label {
-  width: 83px;
-  float: left; }
-
-.preference-sort .preference-fields .form-row-content {
-  margin-left: 100px;
-  float: none;
-  width: 100%; }
-
-.preference-sort legend {
-  display: inline; }
+  .preference-sort tbody tr td {
+    border: solid 1px #e1e1e1;
+    border-top-color: #ececec;
+    border-bottom-color: #c2c2c2;
+    vertical-align: top;
+    padding: 2em 1.5em;
+    background-color: #ffffff; }
+  .preference-sort tbody tr:nth-child(odd) td {
+    background-color: #f9fbfc; }
+  .preference-sort button.reset {
+    float: right; }
+  .preference-sort .index {
+    text-align: center; }
+    .preference-sort .index .up span,
+    .preference-sort .index .down span {
+      border: solid 16px black;
+      width: 0px;
+      height: 0px;
+      border-left-color: transparent;
+      border-right-color: transparent;
+      background-color: transparent;
+      padding: 0px;
+      margin: 2px;
+      position: relative;
+      background-image: none; }
+      .preference-sort .index .up span span,
+      .preference-sort .index .down span span {
+        border: solid 15px #feba00;
+        width: 0px;
+        height: 0px;
+        overflow: hidden;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        background-color: transparent;
+        padding: 0px;
+        margin: 0px;
+        position: absolute;
+        left: -15px; }
+    .preference-sort .index .up span {
+      border-top-width: 0px; }
+      .preference-sort .index .up span span {
+        border-top-width: 0px;
+        bottom: -16px; }
+    .preference-sort .index .up:hover span span {
+      border-top-width: 0px;
+      bottom: -15px; }
+    .preference-sort .index .up:active span span, .preference-sort .index .up:focus span span {
+      left: -14px;
+      bottom: -16px;
+      border-width: 14px;
+      border-top-width: 0px; }
+    .preference-sort .index .down span {
+      border-bottom-width: 0px; }
+      .preference-sort .index .down span span {
+        border-bottom-width: 0px;
+        top: -15px; }
+    .preference-sort .index .down:hover span span {
+      border-bottom-width: 0px;
+      top: -16px; }
+    .preference-sort .index .down:active span span, .preference-sort .index .down:focus span span {
+      left: -14px;
+      top: -14px;
+      border-width: 14px;
+      border-bottom-width: 0px; }
+    .preference-sort .index .label {
+      text-transform: uppercase; }
+  .preference-sort .preference-fields {
+    margin-right: 1.5em;
+    float: left; }
+    .preference-sort .preference-fields .form-row {
+      margin: 1em 100px 0px 0px; }
+    .preference-sort .preference-fields .form-row:first-child {
+      margin-top: 0px; }
+    .preference-sort .preference-fields .form-row-label {
+      width: 83px;
+      float: left; }
+    .preference-sort .preference-fields .form-row-content {
+      margin-left: 100px;
+      float: none;
+      width: 100%; }
+  .preference-sort legend {
+    display: inline; }
 
 #search-applications .form-row.narrow .form-row-label {
   width: 100px;
   max-width: 30%;
   text-align: left; }
-
 #search-applications .form-row.narrow .form-row-content {
   max-width: 70%; }
 
