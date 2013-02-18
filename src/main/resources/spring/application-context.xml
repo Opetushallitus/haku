@@ -30,7 +30,7 @@
 
     <context:property-placeholder
             location="classpath:haku.properties, file:///${user.home:''}/oph-configuration/haku.properties,
-            file:///${user.home:''}/oph-configuration/common.properties, classpath:authentication-ui.properties"
+            file:///${user.home:''}/oph-configuration/common.properties"
             ignore-resource-not-found="true"/>
 
     <context:annotation-config/>
