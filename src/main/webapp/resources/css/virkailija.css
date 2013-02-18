@@ -414,6 +414,14 @@ table {
 .italic {
   font-style: italic; }
 
+.line-through {
+  text-decoration: line-through; }
+
+/*** Color
+************************************************/
+.red {
+  color: red; }
+
 /*** Background-color
 ************************************************/
 .grey {
@@ -2130,7 +2138,7 @@ a.button {
     background-image: url("../img/excel-icon.png");
     background-repeat: no-repeat;
     background-position: 5px center; }
-  .button.disabled, button.disabled {
+  .button.disabled, .button:disabled, .button[disabled], button.disabled, button:disabled, button[disabled] {
     color: rgba(0, 0, 0, 0.5);
     border-color: #d5d5d5;
     background-color: #e3e3e3;
@@ -2773,6 +2781,7 @@ ul.actionmenu {
   #orgsearch .orgsearchform {
     width: 100%;
     height: auto;
+    padding-top: 1px;
     border-bottom: 1px solid #e8e8e8; }
     #orgsearch .orgsearchform fieldset {
       width: auto;
@@ -2787,7 +2796,7 @@ ul.actionmenu {
     width: 100%;
     overflow: auto; }
   #orgsearch .treelist {
-    overflow: auto; }
+    overflow: visible; }
     #orgsearch .treelist .branch {
       padding-left: 12px; }
     #orgsearch .treelist li {
@@ -3525,25 +3534,66 @@ ul.dropmenu-list {
     .gradingformula-dragged .function:hover .dropmenu-list,
     .gradingformula-dragged .parameter:hover .dropmenu-list {
       display: block; }
-    .gradingformula .frame:active .label, .gradingformula .frame .active .label, .gradingformula .function:active .label, .gradingformula .function .active .label, .gradingformula .parameter:active .label, .gradingformula .parameter .active .label,
+    .gradingformula .frame:active .label, .gradingformula .frame.active .label, .gradingformula .function:active .label, .gradingformula .function.active .label, .gradingformula .parameter:active .label, .gradingformula .parameter.active .label,
     .gradingformula-dragged .frame:active .label,
-    .gradingformula-dragged .frame .active .label,
+    .gradingformula-dragged .frame.active .label,
     .gradingformula-dragged .function:active .label,
-    .gradingformula-dragged .function .active .label,
+    .gradingformula-dragged .function.active .label,
     .gradingformula-dragged .parameter:active .label,
-    .gradingformula-dragged .parameter .active .label {
+    .gradingformula-dragged .parameter.active .label {
       background-color: #e6f8fe; }
+    .gradingformula .frame.line-through span.label, .gradingformula .function.line-through span.label, .gradingformula .parameter.line-through span.label,
+    .gradingformula-dragged .frame.line-through span.label,
+    .gradingformula-dragged .function.line-through span.label,
+    .gradingformula-dragged .parameter.line-through span.label {
+      text-decoration: line-through; }
     .gradingformula .frame .dropzone, .gradingformula .function .dropzone, .gradingformula .parameter .dropzone,
     .gradingformula-dragged .frame .dropzone,
     .gradingformula-dragged .function .dropzone,
     .gradingformula-dragged .parameter .dropzone {
       display: inline-block;
       margin-right: 0.5em;
-      width: 50px;
+      width: 150px;
       height: 18px;
       border: solid 0px transparent;
       background-color: transparent;
       background-repeat: no-repeat; }
+  .gradingformula .notification,
+  .gradingformula-dragged .notification {
+    display: inline-block;
+    vertical-align: middle;
+    height: 18px;
+    padding: 0 15px;
+    background-image: none;
+    position: relative;
+    top: -2px;
+    -webkit-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+    -o-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+    -ms-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -o-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-text-shadow: 1px 1px 1px white;
+    -moz-text-shadow: 1px 1px 1px white;
+    -o-text-shadow: 1px 1px 1px white;
+    -ms-text-shadow: 1px 1px 1px white;
+    text-shadow: 1px 1px 1px white; }
+    .gradingformula .notification.warning,
+    .gradingformula-dragged .notification.warning {
+      background-color: #fee7a5;
+      color: #730d02; }
+    .gradingformula .notification.info,
+    .gradingformula-dragged .notification.info {
+      color: #333;
+      background-color: #c2e6f1; }
+    .gradingformula .notification.confirmation,
+    .gradingformula-dragged .notification.confirmation {
+      color: #333;
+      background-color: #c6f1cb; }
   .gradingformula .frame .icon,
   .gradingformula-dragged .frame .icon {
     background-position: -126px 0px; }

@@ -413,6 +413,14 @@ table {
 .italic {
   font-style: italic; }
 
+.line-through {
+  text-decoration: line-through; }
+
+/*** Color
+************************************************/
+.red {
+  color: red; }
+
 /*** Background-color
 ************************************************/
 .grey {
