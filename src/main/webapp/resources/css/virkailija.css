@@ -1322,6 +1322,10 @@ h2,
 .h2 {
   font-size: 1.15385em; }
 
+h3,
+.h3 {
+  font-size: 1em; }
+
 /*** Textarea
 *************************************/
 textarea {
@@ -1420,6 +1424,13 @@ hr {
   margin: 0.5em 0px;
   background-color: #bbe7f5;
   clear: both; }
+
+/*** Oppijan ja Virkailijan yhteisesti
+**** käyttämien html koodin tyyli
+**** poikkeukset
+*************************************/
+#wrapper.virkailija legend.h3 {
+  font-size: 1.15385em; }
 
 /*** Wrapper
 **************************************************************/
@@ -1729,7 +1740,8 @@ label, .label {
   .structural-table > tbody > tr > td {
     padding: 0px;
     margin: 0px;
-    border-width: 0px; }
+    border-width: 0px;
+    vertical-align: top; }
 
 /*** Virkailija-table-1 
 ************************************************/
@@ -2675,7 +2687,7 @@ ul.actionmenu {
   width: 100%;
   height: 100%;
   padding: 0px 0px 0px 0px;
-  min-height: 700px;
+  min-height: 500px;
   width: 0px;
   margin: 0px 32px 0px 0px; }
   #orgsearch.expand {
