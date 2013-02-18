@@ -16,30 +16,10 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import fi.vm.sade.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
 import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
-import fi.vm.sade.oppija.common.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
@@ -51,15 +31,27 @@ import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.exception.IllegalStateException;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.util.OppijaConstants;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
@@ -72,7 +64,7 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 public class ApplicationServiceImpl implements ApplicationService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationServiceImpl.class);
-    
+
     private final ApplicationDAO applicationDAO;
     private final ApplicationOidService applicationOidService;
     private final UserHolder userHolder;
@@ -232,21 +224,20 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<Application> findApplications(final String term, final String state, final boolean fetchPassive, final String preference) {
-        Application application = new Application();
         List<Application> applications = new LinkedList<Application>();
-        if (shortOidPattern.matcher(term).matches() ) {
+        if (shortOidPattern.matcher(term).matches()) {
             applications.addAll(applicationDAO.findByOid(term, state, fetchPassive, preference));
-        } else if (oidPattern.matcher(term).matches()) { 
+        } else if (oidPattern.matcher(term).matches()) {
             if (term.startsWith(applicationOidService.getOidPrefix())) {
                 applications.addAll(applicationDAO.findByApplicationOid(term, state, fetchPassive, preference));
             } else {
                 applications.addAll(applicationDAO.findByUserOid(term, state, fetchPassive, preference));
             }
-        } else if (socialSecurityNumberPattern.matcher(term).matches()){
+        } else if (socialSecurityNumberPattern.matcher(term).matches()) {
             applications.addAll(applicationDAO.findByApplicantSsn(term, state, fetchPassive, preference));
-        } else if (!StringUtils.isEmpty(term)){
+        } else if (!StringUtils.isEmpty(term)) {
             applications.addAll(applicationDAO.findByApplicantName(term, state, fetchPassive, preference));
-        } else if (isEmpty(term)){
+        } else if (isEmpty(term)) {
             applications.addAll(applicationDAO.findAllFiltered(state, fetchPassive, preference));
         }
         return applications;
@@ -269,10 +260,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         Map<String, PreferenceRow> preferenceRows = ElementUtil.<PreferenceRow>findElementsByType(activeForm, PreferenceRow.class);
         Map<String, String> answers = application.getVastauksetMerged();
         for (PreferenceRow pr : preferenceRows.values()) {
-           String oid = answers.get(pr.getEducationOidInputId());
-           if (oid != null && !oid.trim().isEmpty()) {
-               oids.add(oid);
-           }
+            String oid = answers.get(pr.getEducationOidInputId());
+            if (oid != null && !oid.trim().isEmpty()) {
+                oids.add(oid);
+            }
         }
         return oids;
     }
