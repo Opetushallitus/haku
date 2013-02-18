@@ -67,8 +67,6 @@ public class OfficerController {
     public static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
     public static final String ADDITIONAL_INFO_VIEW = "/virkailija/additionalInfo";
-    public static final String CODE_LEARNING_INSTITUTION_TYPES = "Oppilaitostyyppi";
-    public static final String CODE_ORGANIZATIONTYPES = "Organisaatiotyyppi";
 
     @Autowired
     private KoodistoService koodistoService;
