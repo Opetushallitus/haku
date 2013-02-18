@@ -127,7 +127,7 @@ $(document).ready(function () {
             $.getJSON("/haku/organization/hakemus?" + $('#orgsearchform').serialize(),
                 function (data) {
                     var toTree = function (data) {
-                        var ul = $(document.createElement("ul")).addClass("treelist");
+                        var ul = $(document.createElement("ul"));
                         for (var i = 0; i < data.length; i++) {
                             var children = data[i].children;
                             var li = createListItem(children.length < 1, data[i].organization);
@@ -138,8 +138,10 @@ $(document).ready(function () {
                         }
                         return ul;
                     };
+
                     $('#orgsearchlist').empty();
                     $('#orgsearchlist').append(toTree(data));
+                    $('#orgsearchlist').find('ul').eq(0).addClass("treelist");
                 }
             );
             return false;
