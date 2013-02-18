@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.organization;
+package fi.vm.sade.oppija.organization.resource;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
