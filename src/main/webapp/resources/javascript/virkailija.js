@@ -73,14 +73,14 @@ $(document).ready(function () {
             $applicationTabLabel = $('#application-tab-label');
 
         this.search = function () {
-            $('#search-applications').attr('disabled', 'disabled');
+
             $.getJSON(page_settings.contextPath + "/applications", {
                 q: $q.val(),
                 oid: oid.val(),
                 appState: $appState.val(),
                 fetchPassive: $fetchPassive.prop("checked"),
                 appPreference: $appPreference.val()
-            },function (data) {
+            }, function (data) {
                 $tbody.empty();
                 self.updateCounters(data.length);
                 $(data).each(function (index, item) {
@@ -92,9 +92,7 @@ $(document).ready(function () {
                         page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
                         item.oid + '</a></td><td>' + item.state + '</td></tr>');
                 });
-            }).complete(function () {
-                    ('#search-applications').removeAttr('disabled');
-                });
+            });
         },
             this.updateCounters = function (count) {
                 $resultcount.empty().append(count);
@@ -123,9 +121,9 @@ $(document).ready(function () {
     });
 
     var orgSearch = (function () {
-
         $('#search-organizations').click(function (event) {
             var parameters = $('#orgsearchform').serialize();
+            $('#search-organizations').attr('disabled', 'disabled');
             $.getJSON("/haku/organization/hakemus?" + $('#orgsearchform').serialize(),
                 function (data) {
                     var toTree = function (data) {
@@ -145,7 +143,9 @@ $(document).ready(function () {
                     $('#orgsearchlist').append(toTree(data));
                     $('#orgsearchlist').find('ul').eq(0).addClass("treelist").removeClass('branch');
                 }
-            );
+            ).complete(function () {
+                    $('#search-organizations').removeAttr('disabled');
+                });
             return false;
         });
         function createListItem(leaf, org) {
