@@ -49,6 +49,14 @@
                         </td>
                     </tr>
                 </c:forEach>
+                <c:forEach var="data" items="${additionalInfo}">
+                    <c:if test="${additionalQuestions.questionMap[data.key] eq null}">
+                        <tr>
+                            <td class="label"><c:out value='${data.key}'/></td>
+                            <td><c:out value='${data.value}'/></td>
+                        </tr>
+                    </c:if>
+                </c:forEach>
             </tbody>
         </table>
     </form>

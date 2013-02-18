@@ -120,6 +120,46 @@ $(document).ready(function () {
         return false;
     });
 
+    var additionalInfo = (function () {
+        var self = this, $extraData = $('#extra-data');
+
+        this.addNewRow = function () {
+            var $row = $('<div class="form-row"></div>'), $inputKey = $('<input type="text" placeholder="Avain" class="extra-key-input"/>'),
+                $inputValue = $('<input type="text" placeholder="Arvo" class="margin-horizontal-4"/>');
+
+            $inputKey.bind('change', function() {
+                $(this).next().prop("name", this.value);
+            });
+            $row.append($inputKey);
+            $row.append($inputValue);
+            $extraData.append($row);
+        }
+
+        this.init = function () {
+            $('.extra-key-input').each(function (index, domEle) {
+                $(domEle).bind('change', function() {
+                    $(this).next().prop("name", this.value);
+                });
+            });
+        }
+
+        this.removeRow = function(row) {
+            $(row).remove();
+        }
+        self.init();
+        return this;
+    })();
+
+
+    $('#add_key_value_button').click(function (event) {
+        additionalInfo.addNewRow();
+    });
+
+    $('.remove_key_value_button').click(function (event) {
+        var row = $(this).parent();
+        additionalInfo.removeRow(row);
+    });
+
     var orgSearch = (function () {
         $('#search-organizations').click(function (event) {
             var parameters = $('#orgsearchform').serialize();

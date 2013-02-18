@@ -60,6 +60,10 @@ public class AdditionalQuestions {
         return ImmutableList.copyOf(questionMap.values());
     }
 
+    public Map<String, InputParameter> getQuestionMap() {
+        return questionMap;
+    }
+
     @Override
     public String toString() {
         return String.format("%s, questions (%d) %s", this.getClass().getName(), this.questions.entries().size(), questions);
