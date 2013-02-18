@@ -40,8 +40,9 @@ public class Organization {
 
     public Organization(final I18nText name, final String oid, final String parentOid,
                         final List<String> types, Date startDate, Date endDate) {
-        if (oid == null)
+        if (oid == null) {
             throw new NullPointerException("Oid cannot be null");
+        }
         this.name = name;
         this.oid = oid;
         this.parentOid = parentOid;
