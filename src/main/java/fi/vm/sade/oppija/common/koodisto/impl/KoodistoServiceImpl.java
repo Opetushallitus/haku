@@ -44,7 +44,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_SUBJECT = "oppiaineet";
     public static final String CODE_GRADE_RANGE = "ARVOSANA-ASTEIKKO";
     public static final String CODE_LEARNING_INSTITUTION_TYPES = "Oppilaitostyyppi";
-    public static final String CODE_ORGANIZATIONTYPES = "Organisaatiotyyppi";
+    public static final String CODE_ORGANIZATION_TYPES = "Organisaatiotyyppi";
 
     private final KoodiService koodiService;
 
@@ -85,7 +85,7 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getOrganizationtypes() {
-        return codesToOptions(CODE_ORGANIZATIONTYPES);
+        return codesToOptions(CODE_ORGANIZATION_TYPES);
     }
 
     private List<Option> codesToOptions(final String codeName) {

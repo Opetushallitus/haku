@@ -20,7 +20,7 @@
 <c:set var="additionalInfo" value="${it.application.additionalInfo}" scope="request"/>
 <fieldset>
     <legend class="h3">Syötettävät tiedot</legend>
-	<hr/>
+    <hr/>
     <form method="get" action="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/additionalInfo">
         <button class="float-right legend-align edit-link" type="submit">
             <span>
@@ -29,34 +29,34 @@
         </button>
         <table class="form-summary-table width-50">
             <tbody>
-                <c:forEach var="question" items="${additionalQuestions.allQuestions}">
+            <c:forEach var="question" items="${additionalQuestions.allQuestions}">
+                <tr>
+                    <td class="label"><c:out value='${question.key}'/></td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${question.type eq 'TOTUUSARVO'}">
+                                <c:if test="${additionalInfo[question.key] eq true}">
+                                    <c:out value="Kyllä"/>
+                                </c:if>
+                                <c:if test="${additionalInfo[question.key] eq false}">
+                                    <c:out value="Ei"/>
+                                </c:if>
+                            </c:when>
+                            <c:otherwise>
+                                <c:out value="${additionalInfo[question.key]}"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
+            </c:forEach>
+            <c:forEach var="data" items="${additionalInfo}">
+                <c:if test="${additionalQuestions.questionMap[data.key] eq null}">
                     <tr>
-                        <td class="label"><c:out value='${question.key}'/></td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${question.type eq 'TOTUUSARVO'}">
-                                    <c:if test="${additionalInfo[question.key] eq true}">
-                                        <c:out value="Kyllä"/>
-                                    </c:if>
-                                    <c:if test="${additionalInfo[question.key] eq false}">
-                                       <c:out value="Ei"/>
-                                    </c:if>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:out value="${additionalInfo[question.key]}"/>
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
+                        <td class="label"><c:out value='${data.key}'/></td>
+                        <td><c:out value='${data.value}'/></td>
                     </tr>
-                </c:forEach>
-                <c:forEach var="data" items="${additionalInfo}">
-                    <c:if test="${additionalQuestions.questionMap[data.key] eq null}">
-                        <tr>
-                            <td class="label"><c:out value='${data.key}'/></td>
-                            <td><c:out value='${data.value}'/></td>
-                        </tr>
-                    </c:if>
-                </c:forEach>
+                </c:if>
+            </c:forEach>
             </tbody>
         </table>
     </form>

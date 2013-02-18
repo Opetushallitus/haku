@@ -41,7 +41,8 @@ import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 public class Yhteishaku2013 {
 
     private final ApplicationPeriod applicationPeriod;
-    public static String MOBILE_PHONE_PATTERN = "^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
+    public static String MOBILE_PHONE_PATTERN =
+            "^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
 
     private final KoodistoService koodistoService;
 
@@ -56,7 +57,8 @@ public class Yhteishaku2013 {
         Phase lisätiedot = new Phase("lisatiedot", createI18NText("Lisätiedot"), false);
         Phase esikatselu = new Phase("esikatselu", createI18NText("Esikatselu"), true);
 
-        Form form = new Form("yhteishaku", createI18NText("Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013"));
+        Form form = new Form("yhteishaku",
+                createI18NText("Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, syksy 2013"));
         form.addChild(henkilötiedot);
         form.addChild(koulutustausta);
         form.addChild(hakutoiveet);
@@ -271,8 +273,12 @@ public class Yhteishaku2013 {
         createTyokokemus(tyokokemusRyhmä);
         createLupatiedot(lupatiedotRyhmä);
 
-        esikatselu.addChild(henkilötiedotRyhmä).
-                addChild(koulutustaustaRyhmä).addChild(hakutoiveetRyhmä).addChild(arvosanatRyhmä).addChild(tyokokemusRyhmä).addChild(lupatiedotRyhmä);
+        esikatselu.addChild(henkilötiedotRyhmä)
+                .addChild(koulutustaustaRyhmä)
+                .addChild(hakutoiveetRyhmä)
+                .addChild(arvosanatRyhmä)
+                .addChild(tyokokemusRyhmä)
+                .addChild(lupatiedotRyhmä);
 
         yhteenvetoRyhmä.setHelp("Kiitos, hakemuksesi on vastaanotettu");
 

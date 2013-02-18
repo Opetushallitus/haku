@@ -15,17 +15,14 @@
  */
 package fi.vm.sade.oppija.common.valintaperusteet.impl;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
-
 import com.google.common.collect.LinkedListMultimap;
-
 import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.InputParameter;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.List;
 
 @Service
 public class ValintaperusteetServiceMockImpl implements ValintaperusteetService {
