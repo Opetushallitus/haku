@@ -15,12 +15,11 @@
  */
 package fi.vm.sade.oppija.common.organisaatio;
 
+import com.google.common.collect.ImmutableList;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
+
 import java.util.Date;
 import java.util.List;
-
-import com.google.common.collect.ImmutableList;
-
-import fi.vm.sade.oppija.lomake.domain.I18nText;
 
 public class Organization {
 
@@ -40,7 +39,7 @@ public class Organization {
     }
 
     public Organization(final I18nText name, final String oid, final String parentOid,
-            final List<String> types, Date startDate, Date endDate) {
+                        final List<String> types, Date startDate, Date endDate) {
         if (oid == null)
             throw new NullPointerException("Oid cannot be null");
         this.name = name;
@@ -51,14 +50,21 @@ public class Organization {
         this.endDate = endDate;
     }
 
-    public boolean equals(Object oOther) {
-        if (oOther instanceof Organization) {
-            Organization other = (Organization) oOther;
-            return other.getOid().equals(oid);
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        return false;
+        Organization that = (Organization) o;
 
+        if (!oid.equals(that.oid)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return oid.hashCode();
     }
 
     public Date getEndDate() {
