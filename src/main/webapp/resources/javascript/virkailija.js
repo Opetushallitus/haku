@@ -125,13 +125,19 @@ $(document).ready(function () {
 
         this.addNewRow = function () {
             var $row = $('<div class="form-row"></div>'), $inputKey = $('<input type="text" placeholder="Avain" class="extra-key-input"/>'),
-                $inputValue = $('<input type="text" placeholder="Arvo" class="margin-horizontal-4"/>');
+                $inputValue = $('<input type="text" placeholder="Arvo" class="margin-horizontal-4"/>'),
+                $removeButton = $('<button class="remove_key_value_button link" type="button">Poista</button>');
 
             $inputKey.bind('change', function() {
                 $(this).next().prop("name", this.value);
             });
+            $removeButton.bind('click', function() {
+                var row = $(this).parent();
+                additionalInfo.removeRow(row);
+            });
             $row.append($inputKey);
             $row.append($inputValue);
+            $row.append($removeButton);
             $extraData.append($row);
         }
 
