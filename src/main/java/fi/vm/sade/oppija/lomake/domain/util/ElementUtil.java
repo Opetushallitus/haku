@@ -21,10 +21,7 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public final class ElementUtil {
@@ -50,9 +47,9 @@ public final class ElementUtil {
         return elements;
     }
 
-    private static <E extends Element> void findElementByType(final Element element, final  Map<String, E> elements, Class<E> eClass) {
+    private static <E extends Element> void findElementByType(final Element element, final Map<String, E> elements, Class<E> eClass) {
         if (element.getClass().isAssignableFrom(eClass)) {
-            elements.put(element.getId(), (E)element);
+            elements.put(element.getId(), (E) element);
         }
         for (Element child : element.getChildren()) {
             findElementByType(child, elements, eClass);
