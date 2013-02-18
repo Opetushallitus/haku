@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Profile("dev")
 public class AuthenticationServiceMockImpl implements AuthenticationService {
 
-    private final String oidPrefix = "9.8.7.6.5.";
+    private final String oidPrefix = "1.2.246.562.24.";
 
     public String addPerson(Person person) {
         return oidPrefix + String.valueOf(Math.round(Math.random() * 1000000000));

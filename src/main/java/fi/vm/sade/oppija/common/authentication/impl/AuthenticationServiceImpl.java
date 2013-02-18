@@ -2,10 +2,7 @@ package fi.vm.sade.oppija.common.authentication.impl;
 
 import fi.vm.sade.authentication.service.UserManagementService;
 import fi.vm.sade.authentication.service.types.AddHenkiloDataType;
-import fi.vm.sade.authentication.service.types.dto.HenkiloType;
-import fi.vm.sade.authentication.service.types.dto.HenkiloTyyppiType;
-import fi.vm.sade.authentication.service.types.dto.KielisyysType;
-import fi.vm.sade.authentication.service.types.dto.SukupuoliType;
+import fi.vm.sade.authentication.service.types.dto.*;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,24 +16,42 @@ import org.springframework.stereotype.Service;
 @Profile("default")
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    @Autowired
     private UserManagementService userManagementService;
+
+    @Autowired
+    public AuthenticationServiceImpl(UserManagementService userManagementService) {
+        this.userManagementService = userManagementService;
+    }
 
     public String addPerson(Person person) {
         AddHenkiloDataType addHenkiloDataType = new AddHenkiloDataType();
-        KielisyysType contactLanguageType = new KielisyysType();
-        contactLanguageType.setKieliKoodi(person.getContactLanguage());
-        addHenkiloDataType.setAsiointiKieli(contactLanguageType);
         addHenkiloDataType.setEiSuomalaistaHetua(Boolean.FALSE);
         addHenkiloDataType.setEtunimet(person.getFirstNames());
         addHenkiloDataType.setHenkiloTyyppi(HenkiloTyyppiType.OPPIJA);
         addHenkiloDataType.setHetu(person.getSocialSecurityNumber());
-        addHenkiloDataType.setKayttajatunnus(person.getEmail()); //?
+        addHenkiloDataType.setKayttajatunnus(person.getEmail());
         addHenkiloDataType.setKotikunta(person.getHomeCity());
         addHenkiloDataType.setKutsumanimi(person.getNickName());
         addHenkiloDataType.setSukunimi(person.getLastName());
         addHenkiloDataType.setSukupuoli(resolveSexType(person.getSex()));
         addHenkiloDataType.setTurvakielto(person.isSecurityOrder());
+
+        // TODO: resolve proper language when user management service
+        // allows adding people with koodisto languahe codes
+        KielisyysType contactLanguageType = new KielisyysType();
+        contactLanguageType.setKieliKoodi("fi");
+        contactLanguageType.setId(117l);
+        contactLanguageType.setKieliTyyppi("suomi");
+        addHenkiloDataType.setAsiointiKieli(contactLanguageType);
+        KielisyysType lang = new KielisyysType();
+        lang.setId(117l);
+        lang.setKieliKoodi("fi");
+        lang.setKieliTyyppi("suomi");
+        KansalaisuusType nat = new KansalaisuusType();
+        nat.setId(120L);
+        nat.setKansalaisuusKoodi("fi");
+        addHenkiloDataType.getKielisyys().add(lang);
+        addHenkiloDataType.getKansalaisuus().add(nat);
 
         HenkiloType henkiloType = userManagementService.addHenkilo(addHenkiloDataType);
 
@@ -44,7 +59,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private SukupuoliType resolveSexType(String sex) {
-        // do stuff
+        //TODO: is there a koodisto for sex?
 
         return SukupuoliType.MIES;
     }
