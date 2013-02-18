@@ -129,4 +129,10 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
         return null;
     }
 
+    @Override
+    public List<Application> findByApplicantDob(String term, String state, boolean fetchPassive, String preference) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

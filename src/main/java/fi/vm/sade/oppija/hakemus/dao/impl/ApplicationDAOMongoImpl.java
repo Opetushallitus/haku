@@ -18,11 +18,19 @@ package fi.vm.sade.oppija.hakemus.dao.impl;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.activemq.protobuf.compiler.TextFormat;
+import org.codehaus.jackson.map.module.SimpleAbstractTypeResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -197,18 +205,23 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     
     @Override
     public List<Application> findByOid(String term, String state, boolean fetchPassive, String preference) {
-        DBObject oidQuery = null;
+        DBObject[] filters = buildQueryFilter(state, fetchPassive, preference);
+        QueryBuilder baseQuery;
         if (term.startsWith(applicationOidPrefix)) {
-            oidQuery = QueryBuilder.start(FIELD_APPLICATION_OID).is(term).get();
+            baseQuery = QueryBuilder.start(FIELD_APPLICATION_OID).is(term);
         } else if (term.startsWith(userOidPrefix)) {
-            oidQuery = QueryBuilder.start(FIELD_PERSON_OID).is(term).get();
+            baseQuery = QueryBuilder.start(FIELD_PERSON_OID).is(term);
         } else {
-            oidQuery = QueryBuilder.start().or(
+            baseQuery = QueryBuilder.start().or(
                     QueryBuilder.start(FIELD_APPLICATION_OID).is(applicationOidPrefix + "." + term).get(),
-                    QueryBuilder.start(FIELD_PERSON_OID).is(userOidPrefix + "." + term).get()).get();
+                    QueryBuilder.start(FIELD_PERSON_OID).is(userOidPrefix + "." + term).get());
         }
-        DBObject query = QueryBuilder.start().and(oidQuery,
-                QueryBuilder.start().or(buildQueryFilter(state, fetchPassive, preference)).get()).get();
+        DBObject query;
+        if (filters.length > 0) {
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+        } else {
+            query = baseQuery.get();
+        }
         return findApplications(query);
     }
 
@@ -250,6 +263,38 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             query = baseQuery.get();
         }
         return findApplications(query);
+    }
+    
+    @Override
+    public List<Application> findByApplicantDob(String term, String state, boolean fetchPassive, String preference) {
+        DBObject[] filters = buildQueryFilter(state, fetchPassive, preference);
+        String dob = hetuDobToIsoDate(term);
+        QueryBuilder baseQuery = QueryBuilder.start("answers.henkilotiedot.syntymaaika").is(dob);
+        DBObject query;
+        if (filters.length > 0) {
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+        } else {
+            query = baseQuery.get();
+        }
+        return findApplications(query);
+    }
+
+    private String hetuDobToIsoDate(String term) {
+        DateFormat dobFmt = new SimpleDateFormat("ddMMyy");
+        DateFormat isoFmt = new SimpleDateFormat("yyyy-MM-dd");
+        dobFmt.setLenient(false);
+        try {
+            Date dob = dobFmt.parse(term);
+            if (new Date().before(dob)) {
+                Calendar cal = GregorianCalendar.getInstance();
+                cal.setTime(dob);
+                cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 100);
+                dob = cal.getTime();
+            }
+            return isoFmt.format(dob);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Can not parse "+term+" as date", e);
+        }
     }
 
     private DBObject[] buildQueryFilter(String state, boolean fetchPassive, String preference) {

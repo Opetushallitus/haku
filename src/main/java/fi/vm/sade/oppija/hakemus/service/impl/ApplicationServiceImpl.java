@@ -71,9 +71,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final FormService formService;
     private final ApplicationProcessStateService applicationProcessStateService;
     private static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))";
+    private static final String DATE_OF_BIRTH_PATTERN = "[0-9]{6}";
     private static final String OID_PATTERN = "^[0-9]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+$";
     private static final String SHORT_OID_PATTERN = "^[0-9]{11}$";
     private final Pattern socialSecurityNumberPattern;
+    private final Pattern dobPattern;
     private final Pattern oidPattern;
     private final Pattern shortOidPattern;
     private final AuthenticationService authenticationService;
@@ -91,6 +93,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.applicationProcessStateService = applicationProcessStateService;
         this.authenticationService = authenticationService;
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
+        this.dobPattern = Pattern.compile(DATE_OF_BIRTH_PATTERN);
         this.oidPattern = Pattern.compile(OID_PATTERN);
         this.shortOidPattern = Pattern.compile(SHORT_OID_PATTERN);
         this.applicationOidService = applicationOidService;
@@ -235,7 +238,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
         } else if (socialSecurityNumberPattern.matcher(term).matches()) {
             applications.addAll(applicationDAO.findByApplicantSsn(term, state, fetchPassive, preference));
-        } else if (!StringUtils.isEmpty(term)) {
+        } else if (dobPattern.matcher(term).matches()) {
+            applications.addAll(applicationDAO.findByApplicantDob(term, state, fetchPassive, preference));
+        } else if (!StringUtils.isEmpty(term)){
             applications.addAll(applicationDAO.findByApplicantName(term, state, fetchPassive, preference));
         } else if (isEmpty(term)) {
             applications.addAll(applicationDAO.findAllFiltered(state, fetchPassive, preference));

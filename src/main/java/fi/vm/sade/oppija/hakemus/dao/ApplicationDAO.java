@@ -106,4 +106,7 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     List<Application> findAllFiltered(String state, boolean fetchPassive, String preference);
 
+    List<Application> findByApplicantDob(String term, String state, boolean fetchPassive,
+            String preference);
+
 }
