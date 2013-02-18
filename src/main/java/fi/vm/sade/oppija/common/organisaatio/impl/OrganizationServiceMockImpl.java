@@ -15,34 +15,22 @@
  */
 package fi.vm.sade.oppija.common.organisaatio.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-
+import com.google.common.collect.*;
 import fi.vm.sade.oppija.common.organisaatio.Organization;
 import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 /**
  * Mock that returns test data.
@@ -81,9 +69,9 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         }
 
         public boolean apply(Organization org) {
-            if (!includePassive && org.getEndDate() != null)
+            if (!includePassive && org.getEndDate() != null) {
                 return org.getEndDate().before(new Date());
-
+            }
             return true;
         }
     }
@@ -97,9 +85,9 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         }
 
         public boolean apply(Organization org) {
-            if (!includePlanned) 
+            if (!includePlanned) {
                 return org.getStartDate().before(new Date());
-            
+            }
             return true;
         }
     }
@@ -164,7 +152,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
 
     /**
      * Add parent orgs recursively
-     * 
+     *
      * @param org
      * @param result
      */
@@ -184,7 +172,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
 
     /**
      * Add children orgs recursively.
-     * 
+     *
      * @param org
      * @param result
      */
@@ -201,7 +189,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
     }
 
     protected Organization getOrganization(final String name, final String oid, final String parentOid,
-            Date startDate, Date endDate, String... types) {
+                                           Date startDate, Date endDate, String... types) {
         final I18nText orgName = getI18nText("nimi", "fi", name + "_fi", "en", name + "_en", "sv", name + "_sv");
         final Organization org = new Organization(orgName, oid, parentOid, Arrays.asList(types), startDate, endDate);
         return org;
