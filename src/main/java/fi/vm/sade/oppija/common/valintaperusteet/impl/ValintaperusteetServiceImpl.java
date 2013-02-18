@@ -15,25 +15,20 @@
  */
 package fi.vm.sade.oppija.common.valintaperusteet.impl;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.core.MediaType;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
-
 import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
+import org.springframework.beans.factory.annotation.Value;
+
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public class ValintaperusteetServiceImpl implements ValintaperusteetService {
 
@@ -77,7 +72,7 @@ public class ValintaperusteetServiceImpl implements ValintaperusteetService {
                     }
                 }
             }
-            throw new IOException(String.format("Failed to retrieve data with params '%s', http status:%i", oids,
+            throw new IOException(String.format("Failed to retrieve data with params '%s', http status:%d", oids,
                     response.getStatus()));
         } else {
             return new AdditionalQuestions();
