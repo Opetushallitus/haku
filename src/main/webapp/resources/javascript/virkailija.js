@@ -73,14 +73,14 @@ $(document).ready(function () {
             $applicationTabLabel = $('#application-tab-label');
 
         this.search = function () {
-
+            $('#search-applications').attr('disabled', 'disabled');
             $.getJSON(page_settings.contextPath + "/applications", {
                 q: $q.val(),
                 oid: oid.val(),
                 appState: $appState.val(),
                 fetchPassive: $fetchPassive.prop("checked"),
                 appPreference: $appPreference.val()
-            }, function (data) {
+            },function (data) {
                 $tbody.empty();
                 self.updateCounters(data.length);
                 $(data).each(function (index, item) {
@@ -92,7 +92,9 @@ $(document).ready(function () {
                         page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
                         item.oid + '</a></td><td>' + item.state + '</td></tr>');
                 });
-            });
+            }).complete(function () {
+                    ('#search-applications').removeAttr('disabled');
+                });
         },
             this.updateCounters = function (count) {
                 $resultcount.empty().append(count);
@@ -127,7 +129,7 @@ $(document).ready(function () {
             $.getJSON("/haku/organization/hakemus?" + $('#orgsearchform').serialize(),
                 function (data) {
                     var toTree = function (data) {
-                        var ul = $(document.createElement("ul"));
+                        var ul = $(document.createElement("ul")).addClass('branch');
                         for (var i = 0; i < data.length; i++) {
                             var children = data[i].children;
                             var li = createListItem(children.length < 1, data[i].organization);
@@ -141,7 +143,7 @@ $(document).ready(function () {
 
                     $('#orgsearchlist').empty();
                     $('#orgsearchlist').append(toTree(data));
-                    $('#orgsearchlist').find('ul').eq(0).addClass("treelist");
+                    $('#orgsearchlist').find('ul').eq(0).addClass("treelist").removeClass('branch');
                 }
             );
             return false;
