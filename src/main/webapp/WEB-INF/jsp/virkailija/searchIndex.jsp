@@ -28,6 +28,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link href="${contextPath}/resources/css/virkailija.css" type="text/css" rel="stylesheet"/>
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
 </head>
 <body>
@@ -35,15 +36,15 @@
 <script type="text/javascript">
     var page_settings = {
         contextPath: "${pageContext.request.contextPath}"
-        }
+    }
 </script>
 <div id="viewport">
     <div id="overlay" style="display: none;"></div>
     <div id="wrapper">
         <header id="siteheader">
             <div class="primarylinks">
-                <a href="#">Oppijan verkkopalvelu</a> &nbsp;
-                <a href="#">Virkailijan työpöytä</a>
+                <a href="/haku">Oppijan verkkopalvelu</a> &nbsp;
+                <a href="/haku/virkailija/hakemus">Virkailijan työpöytä</a>
             </div>
             <div class="secondarylinks">
                 <a href="#">Omat tiedot</a> &nbsp;
@@ -73,14 +74,14 @@
 
         <table class="structural-table" style="margin-left: 0.625%;width:99.375%;">
             <tbody>
-                <tr>
-                    <td>
-                       <jsp:include page="searchOrg.jsp"/>
-                    </td>
-                    <td>
-                        <jsp:include page="searchForm.jsp"/>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    <jsp:include page="searchOrg.jsp"/>
+                </td>
+                <td>
+                    <jsp:include page="searchForm.jsp"/>
+                </td>
+            </tr>
             </tbody>
         </table>
         <jsp:include page="footer.jsp"/>

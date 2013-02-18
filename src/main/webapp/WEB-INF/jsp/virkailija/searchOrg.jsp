@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -23,75 +23,58 @@
     <div id="orgsearch" class="expand">
         <a href="#" class="expander">
         <span class="labelpos">
-            <span class="label">
-                Organisaatiohaku
-            </span>
+            <span class="label">Organisaatiohaku</span>
         </span>
         </a>
 
         <div class="expanded-content" style="">
 
-            <form class="orgsearchform" style="">
+            <form id="orgsearchform" class="orgsearchform" style="">
                 <fieldset>
                     <div class="field-search-containerbox">
-                        <input type="text" name="" class="text search"/>
+                        <input type="text" value="${it.searchString}" name="searchString" class="text search"
+                               placeholder="Hakuehto"/>
                     </div>
 
                     <div class="field-select-containerbox">
-                        <select>
-                            <option>Valitse organisaatiotyyppi</option>
+                        <select name="organizationType">
+                            <option value="" disabled selected>Valitse organisaatiotyyppi</option>
+                            <c:forEach var="option" items="${it.organizationTypes}">
+                                <option value="${option.value}"><haku:i18nText value="${option.i18nText}"/></option>
+                            </c:forEach>
                         </select>
                     </div>
 
                     <div class="field-select-containerbox">
-                        <select>
-                            <option>Valitse oppilaitostyyppi</option>
+                        <select name="learningInstitutionType">
+                            <option value="" disabled selected>Valitse oppilaitostyyppi</option>
+                            <c:forEach var="option" items="${it.learningInstitutionTypes}">
+                                <option value="${option.value}"><haku:i18nText value="${option.i18nText}"/></option>
+                            </c:forEach>
                         </select>
                     </div>
-
                     <div class="field-container-checkbox">
-                        <input type="checkbox" name="" id="osc1" value=""/>
+                        <input type="checkbox" name="includePassive"
+                               id="osc1" ${it.includePassive ? 'checked="checked"' : ''}
+                               value="${not it.includePassive}"/>
                         <label for="osc1">Näytä myös lakkautetut</label>
                     </div>
+
                     <div class="field-container-checkbox">
-                        <input type="checkbox" name="" id="osc2" value=""/>
+                        <input type="checkbox" name="includePlanned"
+                               id="osc2" ${it.includePlanned ? 'checked="checked"' : ''}
+                               value="${not it.includePlanned}"/>
                         <label for="osc2">Näytä myös suunnitellut</label>
                     </div>
 
-
-                    <button class="button small">Hae</button>
-                    <button class="button small float-right">Tyhjennä</button>
-                    <div class="clear"></div>
+                    <div class="buttons">
+                        <button class="button small" type="reset">Tyhjennä</button>
+                        <button id="search-organizations" class="button primary small">Hae</button>
+                    </div>
                 </fieldset>
             </form>
 
-            <div class="orgsearchlist">
-                <ul class="treelist collapsible">
-                    <li>
-                        <span class="icon folder collapse open">&#8203;</span>
-                        <a href="#" class="label">Rantalohjan lukio</a>
-                        <ul class="branch">
-                            <li>
-                                <span class="icon file">&#8203;</span>
-                                <a href="#" class="label">Rantalohjan lukio</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="icon folder collapse open">&#8203;</span>
-                        <a href="#" class="label">Rantalohjan ammattiopisto</a>
-                        <ul class="branch">
-                            <li>
-                                <span class="icon file">&#8203;</span>
-                                <a href="#" class="label">Terveyden ja hyvinvoinnin toimipiste</a>
-                            </li>
-                            <li>
-                                <span class="icon file">&#8203;</span>
-                                <a href="#" class="label">Autoalan toimipiste</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+            <div class="orgsearchlist" id="orgsearchlist">
             </div>
         </div>
     </div>

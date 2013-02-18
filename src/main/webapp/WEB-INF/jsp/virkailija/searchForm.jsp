@@ -19,6 +19,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <section id="searchSection">
     <form id="searchform">
+        <input type="hidden" id="oid" name="oid">
+
         <div class="grid16-16">
             <table class="form-layout-table width-100">
                 <tr>
@@ -49,7 +51,8 @@
                 <tr>
                     <td>
                         <label class="block" for="application-preference">Hakukohde:</label>
-                        <input class="width-60" type="text" id="application-preference" placeholder="hae nimellä tai koodilla"/>
+                        <input class="width-60" type="text" id="application-preference"
+                               placeholder="hae nimellä tai koodilla"/>
                     </td>
 
                     <td>
@@ -63,37 +66,40 @@
 </section>
 <section class="grid16-16 margin-top-2">
     <div class="tabs">
-        <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemukset" class="tab current"><span id="application-tab-label">Hakemukset 0</span></a>
+        <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemukset" class="tab current"><span
+                id="application-tab-label">Hakemukset 0</span></a>
     </div>
     <div class="tabsheets">
-        <section id="hakemukset" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemukset" style="display: block">
-                <a href="#" class="button small">Avaa hakemus</a>
-                <div class="clear"></div>
+        <section id="hakemukset" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemukset"
+                 style="display: block">
+            <a href="#" class="button small">Avaa hakemus</a>
 
-                <span>Hakutulos: <span id="resultcount">0</span> osumaa</span>
+            <div class="clear"></div>
 
-                <div class="margin-top-2 margin-bottom-1">
-                    <div class="field-container-checkbox inline-block">
-                        <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
-                        <label for="KenttaId">valitse kaikki</label>
-                    </div>
+            <span>Hakutulos: <span id="resultcount">0</span> osumaa</span>
+
+            <div class="margin-top-2 margin-bottom-1">
+                <div class="field-container-checkbox inline-block">
+                    <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
+                    <label for="KenttaId">valitse kaikki</label>
                 </div>
+            </div>
 
-                <table id="application-table" class="virkailija-table-1">
-                    <thead>
-                        <tr>
-                            <td></td>
-                            <td>Sukunimi</td>
-                            <td>Etunimi</td>
-                            <td>Henkilötunnus</td>
-                            <td>Hakemusnro</td>
-                            <td>Hakemuksen tila</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-                <div class="clear"></div>
+            <table id="application-table" class="virkailija-table-1">
+                <thead>
+                <tr>
+                    <td></td>
+                    <td>Sukunimi</td>
+                    <td>Etunimi</td>
+                    <td>Henkilötunnus</td>
+                    <td>Hakemusnro</td>
+                    <td>Hakemuksen tila</td>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div class="clear"></div>
         </section>
     </div>
 </section>

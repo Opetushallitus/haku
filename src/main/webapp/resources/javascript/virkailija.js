@@ -1,73 +1,89 @@
-﻿$(document).ready(function(){
+﻿/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
+
+$(document).ready(function () {
 
 
 // Organisation search 
 // Handle presentation of organisation search form and results
 
-	var orgSearch = {
-		settings : {
-			listenTimeout : 1000
-		},
-		build:function(){
-			orgSearch.set.listHeight();
-			orgSearch.listen.dialogDimensions();
-		},
-		listen : {
-			dialogDimensions:function(){
-				// Listen for changes in organisation search height, 
-				// and adjust search results list's height accordinly
-			
-				height = $('#orgsearch').height();
-				width = $('#orgsearch').outerWidth(true);
-				setTimeout(function(){
-					if(height != $('#orgsearch').height())
-					{
-						orgSearch.set.listHeight();
-					}
-					if(width != $('#orgsearch').outerWidth(true))
-					{
-						orgSearch.set.tableCellWidth();
-					}
-					orgSearch.listen.dialogDimensions();
-				}, orgSearch.settings.listenTimeout);
-			}
-		},
-		set : {
-			listHeight:function(){
-				// Set organisation search result list to fill remaining vertical space
-				height = $('#orgsearch').height();
-				form_height = $('#orgsearch .orgsearchform').outerHeight(true);
-				list_height = height-form_height;
-				$('#orgsearch .orgsearchlist').css({'height':list_height+'px'});
-			},
-			tableCellWidth:function(){
-				// Set organisation search dialog's parenting table cell width
-				width = $('#orgsearch').outerWidth(true);
-				$('#orgsearch').parent('td').css({'width':width+'px'});
-			}
-		}
-	}
-	
-	orgSearch.build();
+    var orgSearch = {
+        settings: {
+            listenTimeout: 1000
+        },
+        build: function () {
+            orgSearch.set.listHeight();
+            orgSearch.listen.dialogDimensions();
+        },
+        listen: {
+            dialogDimensions: function () {
+                // Listen for changes in organisation search height,
+                // and adjust search results list's height accordinly
+
+                height = $('#orgsearch').height();
+                width = $('#orgsearch').outerWidth(true);
+                setTimeout(function () {
+                    if (height != $('#orgsearch').height()) {
+                        orgSearch.set.listHeight();
+                    }
+                    if (width != $('#orgsearch').outerWidth(true)) {
+                        orgSearch.set.tableCellWidth();
+                    }
+                    orgSearch.listen.dialogDimensions();
+                }, orgSearch.settings.listenTimeout);
+            }
+        },
+        set: {
+            listHeight: function () {
+                // Set organisation search result list to fill remaining vertical space
+                height = $('#orgsearch').height();
+                form_height = $('#orgsearch .orgsearchform').outerHeight(true);
+                list_height = height - form_height;
+                $('#orgsearch .orgsearchlist').css({'height': list_height + 'px'});
+            },
+            tableCellWidth: function () {
+                // Set organisation search dialog's parenting table cell width
+                width = $('#orgsearch').outerWidth(true);
+                $('#orgsearch').parent('td').css({'width': width + 'px'});
+            }
+        }
+    }
+
+    orgSearch.build();
 
 
-    var applicationSearch = (function() {
+    var applicationSearch = (function () {
+        var oid = $('#oid');
         var self = this, $q = $('#entry'), $appState = $('#application-state'),
             $fetchPassive = $('#fetch-passive'), $appPreference = $('#application-preference'),
             $tbody = $('#application-table tbody:first'), $resultcount = $('#resultcount'),
             $applicationTabLabel = $('#application-tab-label');
 
-        this.search = function() {
+        this.search = function () {
 
             $.getJSON(page_settings.contextPath + "/applications", {
-                q : $q.val(),
-                appState : $appState.val(),
-                fetchPassive : $fetchPassive.prop("checked"),
-                appPreference : $appPreference.val()
-            }, function(data) {
+                q: $q.val(),
+                oid: oid.val(),
+                appState: $appState.val(),
+                fetchPassive: $fetchPassive.prop("checked"),
+                appPreference: $appPreference.val()
+            }, function (data) {
                 $tbody.empty();
                 self.updateCounters(data.length);
-                $(data).each(function(index, item) {
+                $(data).each(function (index, item) {
                     var henkilotiedot = item.answers.henkilotiedot;
                     $tbody.append('<tr><td><input type="checkbox"/></td><td>' +
                         henkilotiedot.Sukunimi + '</td><td>' +
@@ -78,29 +94,90 @@
                 });
             });
         },
-        this.updateCounters = function(count) {
-            $resultcount.empty().append(count);
-            $applicationTabLabel.empty().append('Hakemukset ' +  count);
-        },
-        this.reset = function() {
-            self.updateCounters(0);
-            $tbody.empty();
-            $q.val('');
-            $appState.val('');
-            $fetchPassive.prop("checked", false);
-            $appPreference.val('');
-        }
+            this.updateCounters = function (count) {
+                $resultcount.empty().append(count);
+                $applicationTabLabel.empty().append('Hakemukset ' + count);
+            },
+            this.reset = function () {
+                self.updateCounters(0);
+                $tbody.empty();
+                $q.val('');
+                $appState.val('');
+                $fetchPassive.prop("checked", false);
+                $appPreference.val('');
+            }
         return this;
     })();
 
 
-	$('#search-applications').click(function(event){
+    $('#search-applications').click(function (event) {
         applicationSearch.search();
         return false;
     });
 
-    $('#reset-search').click(function(event){
+    $('#reset-search').click(function (event) {
         applicationSearch.reset();
         return false;
     });
+
+    var orgSearch = (function () {
+
+        $('#search-organizations').click(function (event) {
+            var parameters = $('#orgsearchform').serialize();
+            $.getJSON("/haku/organization/hakemus?" + $('#orgsearchform').serialize(),
+                function (data) {
+                    var toTree = function (data) {
+                        var ul = $(document.createElement("ul")).addClass("treelist");
+                        for (var i = 0; i < data.length; i++) {
+                            var children = data[i].children;
+                            var li = createListItem(children.length < 1, data[i].organization);
+                            var childItems = toTree(children);
+                            childItems.appendTo(li);
+                            li.appendTo(ul);
+                            childItems.hide();
+                        }
+                        return ul;
+                    };
+                    $('#orgsearchlist').empty();
+                    $('#orgsearchlist').append(toTree(data));
+                }
+            );
+            return false;
+        });
+        function createListItem(leaf, org) {
+            var li = $(document.createElement("li"));
+            var icon = leaf ? 'file' : 'folder';
+            var label = $(document.createElement('span')).html(org.name.translations.fi).attr("id", org.oid);
+            var link = $(document.createElement('a')).attr('href', '#').addClass('label');
+            var span = $(document.createElement('span')).addClass('icon close').addClass(icon).html('&#8203;');
+            span.appendTo(link);
+            label.appendTo(link);
+            link.appendTo(li);
+            if (!leaf) {
+                span.click(function (e) {
+                    e.preventDefault();
+                    $(this).parent().parent().children('ul').slideToggle();
+                    toggleIcon($(this));
+                });
+            }
+            label.click(function (e) {
+                $('#oid').val($(this).attr('id'));
+                e.preventDefault();
+            });
+
+            return li;
+        }
+
+        function toggleIcon(children) {
+            if (children.hasClass('close')) {
+                children.removeClass('close');
+                children.addClass('open');
+            } else {
+                children.removeClass('open');
+                children.addClass('close');
+            }
+        }
+
+    })();
+
 });
