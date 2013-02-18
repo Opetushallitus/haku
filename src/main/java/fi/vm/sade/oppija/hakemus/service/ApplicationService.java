@@ -125,5 +125,18 @@ public interface ApplicationService {
      */
     void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo) throws ResourceNotFoundException;
 
+    /**
+     * Method to get the oids of the application preferences
+     * @param applicationOid application oid
+     * @return list of application preference oids
+     * @throws ResourceNotFoundException
+     */
     List<String> getApplicationPreferenceOids(final String applicationOid) throws ResourceNotFoundException;
+
+    /**
+     * Method to get the oids of the application preferences
+     * @param application application containing all the data
+     * @return list of application preference oids
+     */
+    List<String> getApplicationPreferenceOids(final Application application);
 }

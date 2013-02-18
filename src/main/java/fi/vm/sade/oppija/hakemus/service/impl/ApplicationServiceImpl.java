@@ -253,8 +253,13 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<String> getApplicationPreferenceOids(String applicationOid) throws ResourceNotFoundException {
-        List<String> oids = new ArrayList<String>();
         Application application = getApplication(applicationOid);
+        return getApplicationPreferenceOids(application);
+    }
+
+    @Override
+    public List<String> getApplicationPreferenceOids(Application application) {
+        List<String> oids = new ArrayList<String>();
         FormId formId = application.getFormId();
         final Form activeForm = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
         Map<String, PreferenceRow> preferenceRows = ElementUtil.<PreferenceRow>findElementsByType(activeForm, PreferenceRow.class);

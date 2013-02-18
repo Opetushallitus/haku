@@ -108,7 +108,7 @@ public class OfficerController {
         Map<String, String> values = app.getVastauksetMerged();
         ApplicationProcessState processState = applicationProcessStateService.get(oid);
         Map<String, Object> model = new HashMap<String, Object>();
-        List<String> applicationPreferenceOids = applicationService.getApplicationPreferenceOids(oid);
+        List<String> applicationPreferenceOids = applicationService.getApplicationPreferenceOids(app);
         AdditionalQuestions additionalQuestions = valintaperusteetService.retrieveAdditionalQuestions(applicationPreferenceOids);
         model.put("application", app);
         model.put("additionalQuestions", additionalQuestions);
@@ -172,7 +172,7 @@ public class OfficerController {
     public Viewable getAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException, IOException {
         Map<String, Object> model = new HashMap<String, Object>();
         Application app = applicationService.getApplication(oid);
-        List<String> applicationPreferenceOids = applicationService.getApplicationPreferenceOids(oid);
+        List<String> applicationPreferenceOids = applicationService.getApplicationPreferenceOids(app);
         AdditionalQuestions additionalQuestions = valintaperusteetService.retrieveAdditionalQuestions(applicationPreferenceOids);
         model.put("application", app);
         model.put("additionalQuestions", additionalQuestions);
