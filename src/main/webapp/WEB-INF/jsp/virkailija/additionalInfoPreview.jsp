@@ -20,7 +20,7 @@
 <c:set var="additionalInfo" value="${it.application.additionalInfo}" scope="request"/>
 <fieldset>
     <legend class="h3">Syötettävät tiedot</legend>
-    <hr>
+	<hr/>
     <form method="get" action="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/additionalInfo">
         <button class="float-right legend-align edit-link" type="submit">
             <span>
