@@ -21,7 +21,7 @@
 <fieldset>
     <legend class="h3">Syötettävät tiedot</legend>
     <form method="get" action="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/additionalInfo">
-        <button class="set-right legend-align" type="submit">
+        <button class="float-right legend-align edit-link" type="submit">
             <span>
                 <span>Muokkaa</span>
             </span>

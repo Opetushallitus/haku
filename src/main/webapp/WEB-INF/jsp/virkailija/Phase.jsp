@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -19,6 +20,7 @@
   --%>
 
 <!DOCTYPE html>
+<fmt:setBundle basename="messages"/>
 <c:set var="vaihe" value="${it.element}" scope="request"/>
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="oid" value="${it.oid}" scope="request"/>
