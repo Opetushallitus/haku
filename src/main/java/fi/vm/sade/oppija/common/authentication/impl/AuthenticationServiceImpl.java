@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author Hannu Lyytikainen
  */
-@Service
-@Profile("default")
+//@Service // enable when real authentication service can be used
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private UserManagementService userManagementService;

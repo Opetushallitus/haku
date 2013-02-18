@@ -174,18 +174,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                     allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY), false, allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE),
                     allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY), allAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE));
 
-            String personOid = null;
-
-            try {
-                personOid = this.authenticationService.addPerson(person);
-            } catch (Exception e) {
-                LOGGER.warn("Could not obtain person oid by invoking authentication service, using mock as a fall back, " +
-                        "reason: " + e.getMessage());
-                AuthenticationService auth = new AuthenticationServiceMockImpl();
-                personOid = auth.addPerson(person);
-            }
-
-            application.setPersonOid(personOid);
+            application.setPersonOid(this.authenticationService.addPerson(person));
 
             this.applicationDAO.update(application1, application);
             this.applicationProcessStateService.setApplicationProcessStateStatus(newOid, ApplicationProcessStateStatus.ACTIVE);

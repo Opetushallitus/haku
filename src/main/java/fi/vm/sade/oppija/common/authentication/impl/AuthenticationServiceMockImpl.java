@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
  * @author Hannu Lyytikainen
  */
 @Service
-@Profile("dev")
 public class AuthenticationServiceMockImpl implements AuthenticationService {
 
     private final String oidPrefix = "1.2.246.562.24.";
