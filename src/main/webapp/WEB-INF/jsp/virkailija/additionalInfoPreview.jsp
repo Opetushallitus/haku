@@ -16,6 +16,8 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<c:set var="additionalQuestions" value="${it.additionalQuestions}" scope="request"/>
+<c:set var="additionalInfo" value="${it.application.additionalInfo}" scope="request"/>
 <fieldset>
     <legend class="h3">Syötettävät tiedot</legend>
     <form method="get" action="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/additionalInfo">
@@ -26,6 +28,26 @@
         </button>
         <table class="form-summary-table width-50">
             <tbody>
+                <c:forEach var="question" items="${additionalQuestions.allQuestions}">
+                    <tr>
+                        <td class="label"><c:out value='${question.key}'/></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${question.type eq 'TOTUUSARVO'}">
+                                    <c:if test="${additionalInfo[question.key] eq true}">
+                                        <c:out value="Kyllä"/>
+                                    </c:if>
+                                    <c:if test="${additionalInfo[question.key] eq false}">
+                                       <c:out value="Ei"/>
+                                    </c:if>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:out value="${additionalInfo[question.key]}"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
     </form>

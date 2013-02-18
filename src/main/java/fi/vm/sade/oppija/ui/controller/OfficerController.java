@@ -96,7 +96,7 @@ public class OfficerController {
     public Viewable getPhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                              @PathParam("formIdStr") final String formIdStr,
                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                             @PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException {
+                             @PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException, IOException {
 
         LOGGER.debug("getPhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, phaseId, oid});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
@@ -106,6 +106,10 @@ public class OfficerController {
         Map<String, String> values = app.getVastauksetMerged();
         ApplicationProcessState processState = applicationProcessStateService.get(oid);
         Map<String, Object> model = new HashMap<String, Object>();
+        List<String> applicationPreferenceOids = applicationService.getApplicationPreferenceOids(oid);
+        AdditionalQuestions additionalQuestions = valintaperusteetService.retrieveAdditionalQuestions(applicationPreferenceOids);
+        model.put("application", app);
+        model.put("additionalQuestions", additionalQuestions);
         model.put("categoryData", values);
         model.put("element", phase);
         model.put("form", activeForm);

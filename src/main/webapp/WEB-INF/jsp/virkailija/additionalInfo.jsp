@@ -93,8 +93,7 @@
                                 <c:forEach var="question" items="${additionalQuestions.allQuestions}">
 
                                             <div class="form-row">
-                                                <label id="label-${question.key}" for="${question.key}"
-                                                                                               class="form-row-label"><c:out value='${question.key}'/></label>
+                                                <label id="label-${question.key}" for="${question.key}" class="form-row-label"><c:out value='${question.key}'/></label>
                                                 <div class="form-row-content">
                                                     <c:choose>
                                                         <c:when test="${question.type eq 'DESIMAALILUKU'}">

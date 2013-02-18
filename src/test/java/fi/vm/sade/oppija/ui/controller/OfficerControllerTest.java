@@ -21,6 +21,8 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
 import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
+import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
+import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
@@ -35,6 +37,7 @@ import org.junit.Test;
 
 import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
@@ -56,12 +59,14 @@ public class OfficerControllerTest {
         ApplicationService applicationService = mock(ApplicationService.class);
         FormService formService = mock(FormService.class);
         ApplicationProcessStateService applicationProcessStateService = mock(ApplicationProcessStateService.class);
+        ValintaperusteetService valintaperusteetService = mock(ValintaperusteetService.class);
 
         FormId formId = new FormId("Yhteishaku", "yhteishaku");
         String oid = "1.2.3.4.5.0";
         Application app = new Application(formId, oid);
         app.setPhaseId("valmis");
         when(applicationService.getApplication(oid)).thenReturn(app);
+        when(applicationService.getApplicationPreferenceOids(anyString())).thenReturn(new ArrayList<String>());
 
         Phase phase = new Phase("esikatselu", createI18NText("esikatselu"), true);
         when(formService.getLastPhase("Yhteishaku", "yhteishaku")).thenReturn(phase);
@@ -78,9 +83,12 @@ public class OfficerControllerTest {
         ApplicationProcessState processState = new ApplicationProcessState(oid, ApplicationProcessStateStatus.ACTIVE.toString());
         when(applicationProcessStateService.get(oid)).thenReturn(processState);
 
+        when(valintaperusteetService.retrieveAdditionalQuestions(anyList())).thenReturn(new AdditionalQuestions());
+
         officerController.applicationService = applicationService;
         officerController.formService = formService;
         officerController.applicationProcessStateService = applicationProcessStateService;
+        officerController.valintaperusteetService = valintaperusteetService;
     }
 
     @Test

@@ -54,29 +54,33 @@ public class ValintaperusteetServiceImpl implements ValintaperusteetService {
     @Override
     public AdditionalQuestions retrieveAdditionalQuestions(List<String> oids) throws IOException {
 
-        ClientResponse response = null;
+        if (oids != null && !oids.isEmpty()) {
+            ClientResponse response = null;
 
-        try {
-            response = service.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
-                    .post(ClientResponse.class, oids);
+            try {
+                response = service.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
+                        .post(ClientResponse.class, oids);
 
-            Map<String, Map<String, Map<String, String>>> entity = null;
-            if (response.getStatus() == 200) {
-                entity = response.getEntity(Map.class);
-                return converter.apply(entity);
-            }
-        } catch (Throwable t) {
-            throw new IOException(String.format("Failed to retrieve data, exception: %s", t.getClass().getName()));
-        } finally {
-            if (response != null) {
-                try {
-                    response.close();
-                } catch (Throwable t) {
-                    // silently ignore
+                Map<String, Map<String, Map<String, String>>> entity = null;
+                if (response.getStatus() == 200) {
+                    entity = response.getEntity(Map.class);
+                    return converter.apply(entity);
+                }
+            } catch (Throwable t) {
+                throw new IOException(String.format("Failed to retrieve data, exception: %s", t.getClass().getName()));
+            } finally {
+                if (response != null) {
+                    try {
+                        response.close();
+                    } catch (Throwable t) {
+                        // silently ignore
+                    }
                 }
             }
+            throw new IOException(String.format("Failed to retrieve data with params '%s', http status:%i", oids,
+                    response.getStatus()));
+        } else {
+            return new AdditionalQuestions();
         }
-        throw new IOException(String.format("Failed to retrieve data with params '%s', http status:%i", oids,
-                response.getStatus()));
     }
 }
