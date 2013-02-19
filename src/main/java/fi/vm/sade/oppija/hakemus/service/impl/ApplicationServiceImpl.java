@@ -163,14 +163,19 @@ public class ApplicationServiceImpl implements ApplicationService {
                 application.removeUser();
             }
 
-            // invoke authentication service to obtain oid
-            Person person = new Person(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES), allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME),
-                    allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME), allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER),
-                    false, allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL), allAnswers.get(OppijaConstants.ELEMENT_ID_SEX),
-                    allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY), false, allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE),
-                    allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY), allAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE));
+            // create student id for finnish applicants
+            if (allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY).equals(OppijaConstants.NATIONALITY_CODE_FI)) {
 
-            application.setPersonOid(this.authenticationService.addPerson(person));
+                // invoke authentication service to obtain oid
+                Person person = new Person(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES), allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME),
+                        allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME), allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER),
+                        false, allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL), allAnswers.get(OppijaConstants.ELEMENT_ID_SEX),
+                        allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY), false, allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE),
+                        allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY), allAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE));
+
+                application.setPersonOid(this.authenticationService.addPerson(person));
+
+            }
 
             this.applicationDAO.update(application1, application);
             this.applicationProcessStateService.setApplicationProcessStateStatus(newOid, ApplicationProcessStateStatus.ACTIVE);
