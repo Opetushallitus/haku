@@ -22,11 +22,14 @@ import fi.vm.sade.authentication.service.types.dto.*;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Hannu Lyytikainen
  */
-//@Service // enable when real authentication service can be used
+@Service
+@Profile("default")
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     public static final long ID_117 = 117L;
@@ -77,7 +80,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private SukupuoliType resolveSexType(String sex) {
         //TODO: is there a koodisto for sex?
-
-        return SukupuoliType.MIES;
+        return sex.equals("m") ? SukupuoliType.MIES : SukupuoliType.NAINEN;
     }
 }
