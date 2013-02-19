@@ -18,16 +18,14 @@ package fi.vm.sade.oppija.hakemus.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -57,6 +55,7 @@ public class ApplicationServiceImplTest {
         when(applicationDAO.findByApplicantName(eq(NAME), anyString(), anyBoolean(), anyString())).thenReturn(Lists.newArrayList(application));
         when(applicationDAO.findByApplicationOid(eq(OID), anyString(), anyBoolean(), anyString())).thenReturn(Lists.newArrayList(application));
         when(applicationDAO.findByOid(eq(SHORT_OID), anyString(), anyBoolean(), anyString())).thenReturn(Lists.newArrayList(application));
+        when(applicationDAO.find(any(Application.class))).thenReturn(Lists.newArrayList(application));
         when(applicationOidService.getOidPrefix()).thenReturn("1.2.3.4.5");
     }
 
@@ -100,5 +99,15 @@ public class ApplicationServiceImplTest {
         assertNotNull(results);
         assertEquals(1, results.size());
         verify(applicationDAO, only()).findByOid(eq(SHORT_OID), anyString(), anyBoolean(), anyString());
+    }
+
+    @Test
+    public void testSaveApplicationAdditionalInfo() throws ResourceNotFoundException {
+        ApplicationServiceImpl service = new ApplicationServiceImpl
+                (applicationDAO, null, null, null, applicationOidService, null);
+        Map<String, String> additionalInfo = new HashMap<String, String>();
+        additionalInfo.put("key", "value");
+        service.saveApplicationAdditionalInfo(OID, additionalInfo);
+        verify(applicationDAO, times(1)).update(any(Application.class), any(Application.class));
     }
 }
