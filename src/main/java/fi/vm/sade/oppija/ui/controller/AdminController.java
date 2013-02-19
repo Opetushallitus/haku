@@ -61,6 +61,12 @@ public class AdminController {
     private String tarjontaIndexUrl;
     @Value("${tarjonta.data.url}")
     private String tarjontaDataUrl;
+    @Value("${hakemus.aes.key}")
+    private String aesKey;
+    @Value("${hakemus.aes.salt}")
+    private String aesSalt;
+    @Value("${hakemus.sha.salt}")
+    private String shaSalt;
 
     @GET
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
@@ -71,6 +77,10 @@ public class AdminController {
         properties.put("mongo.test-db.name", mongoTestDbName);
         properties.put("tarjonta.index.url", tarjontaIndexUrl);
         properties.put("tarjonta.data.url", tarjontaDataUrl);
+        properties.put("hakemus.aes.key", aesKey);
+        properties.put("hakemus.aes.salt", aesSalt);
+        properties.put("hakemus.sha.salt", shaSalt);
+
         return new Viewable(ADMIN_INDEX_VIEW, properties);
     }
 
