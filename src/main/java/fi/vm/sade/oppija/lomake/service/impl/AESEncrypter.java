@@ -10,7 +10,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
 
@@ -43,13 +43,14 @@ public class AESEncrypter implements EncrypterService {
     public static final String AES = "AES";
     public static final String AES_CBC_PKCS5_PADDING = "AES/CBC/PKCS5Padding";
     public static final String PBKDF_2_WITH_HMAC_SHA_1 = "PBKDF2WithHmacSHA1";
+    public static final String CHARSET_NAME = "UTF-8";
     private final SecretKey secret;
 
 
     @Autowired
     public AESEncrypter(@Value("${hakemus.aes.key}") String passPhrase, @Value("${hakemus.aes.salt}") String salt) throws Exception {
         SecretKeyFactory factory = SecretKeyFactory.getInstance(PBKDF_2_WITH_HMAC_SHA_1);
-        KeySpec spec = new PBEKeySpec(passPhrase.toCharArray(), salt.getBytes(), ITERATION_COUNT, KEY_LENGTH);
+        KeySpec spec = new PBEKeySpec(passPhrase.toCharArray(), salt.getBytes("UTF-8"), ITERATION_COUNT, KEY_LENGTH);
         SecretKey tmp = factory.generateSecret(spec);
 
         this.secret = new SecretKeySpec(tmp.getEncoded(), AES);
@@ -67,7 +68,7 @@ public class AESEncrypter implements EncrypterService {
     }
 
     public String encryptInternal(String encrypt) throws Exception {
-        byte[] bytes = encrypt.getBytes("UTF8");
+        byte[] bytes = encrypt.getBytes("UTF-8");
         byte[] encrypted = encrypt(bytes);
         return DatatypeConverter.printBase64Binary(encrypted);
     }
@@ -93,7 +94,7 @@ public class AESEncrypter implements EncrypterService {
     private String decryptInternal(String encrypt) throws Exception {
         byte[] bytes = DatatypeConverter.parseBase64Binary(encrypt);
         byte[] decrypted = decrypt(bytes);
-        return new String(decrypted, "UTF8");
+        return new String(decrypted, CHARSET_NAME);
     }
 
     public String decrypt(String encrypt) {
