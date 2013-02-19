@@ -191,8 +191,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
     protected Organization getOrganization(final String name, final String oid, final String parentOid,
                                            Date startDate, Date endDate, String... types) {
         final I18nText orgName = getI18nText("nimi", "fi", name + "_fi", "en", name + "_en", "sv", name + "_sv");
-        final Organization org = new Organization(orgName, oid, parentOid, Arrays.asList(types), startDate, endDate);
-        return org;
+        return new Organization(orgName, oid, parentOid, Arrays.asList(types), startDate, endDate);
     }
 
     private I18nText getI18nText(String id, String... kv) {

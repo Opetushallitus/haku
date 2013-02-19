@@ -18,19 +18,15 @@ package fi.vm.sade.oppija.lomake.service.impl;
 
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.lomake.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -61,8 +57,7 @@ public class FormServiceImpl implements FormService {
         if (!applicationPeriod.isActive()) {
             throw new ResourceNotFoundExceptionRuntime("Not active");
         }
-        Form formById = applicationPeriod.getFormById(formId);
-        return formById;
+        return applicationPeriod.getFormById(formId);
     }
 
     @Override
@@ -102,27 +97,5 @@ public class FormServiceImpl implements FormService {
         }
         return applicationPeriodById;
     }
-
-    private List<Validator> getPhaseValidators(final FormId formId, final String phaseId) {
-        final Phase phase = getPhaseById(formId, phaseId);
-        return phase.getValidators();
-    }
-
-    private Phase getPhaseById(FormId formId, String phaseId) {
-        Phase phase = getActiveForm(formId.getApplicationPeriodId(), formId.getFormId()).getPhase(phaseId);
-        if (phase == null) {
-            throw new ResourceNotFoundExceptionRuntime("Phase '" + phaseId + "' Not found");
-        }
-        return phase;
-    }
-
-    private List<Validator> getAllValidators(final FormId formId) {
-        final ArrayList<Validator> validators = new ArrayList<Validator>();
-        final Form activeForm = getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
-        for (Phase phase : activeForm.getPhases()) {
-            validators.addAll(phase.getValidators());
-        }
-        return validators;
-    }
-
 }
+

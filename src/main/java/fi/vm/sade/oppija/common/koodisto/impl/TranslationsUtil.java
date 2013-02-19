@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 public final class TranslationsUtil {
+    private TranslationsUtil() {
+    }
+
     public static Map<String, String> createTranslationsMap(final KoodiType koodiType) {
         List<KoodiMetadataType> metadata = koodiType.getMetadata();
         Map<String, String> translations = new HashMap<String, String>();

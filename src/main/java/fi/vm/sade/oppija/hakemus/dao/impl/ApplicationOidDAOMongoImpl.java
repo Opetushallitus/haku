@@ -1,19 +1,17 @@
 /*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
- *  * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
- *  *
- *  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
- *  * soon as they will be approved by the European Commission - subsequent versions
- *  * of the EUPL (the "Licence");
- *  *
- *  * You may not use this work except in compliance with the Licence.
- *  * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * European Union Public Licence for more details.
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
  *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
  */
 
 package fi.vm.sade.oppija.hakemus.dao.impl;
@@ -32,6 +30,7 @@ import javax.annotation.PostConstruct;
 
 /**
  * Mongodb implementation of ApplicationOidDAO
+ *
  * @author Mikko Majapuro
  */
 @Service("applicationOidDAOMongoImpl")
@@ -79,28 +78,26 @@ public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
     public String getOidPrefix() {
         return oidPrefix;
     }
-    
+
     protected DBCollection getSequence() {
         return db.getCollection(SEQUENCE_NAME);
     }
 
     String formatOid(String oid) {
         oid = oid + checksum(oid);
-        oid = String.format("%011d", Integer.valueOf(oid));
-        return oid;
+        return String.format("%011d", Integer.valueOf(oid));
     }
-    
+
     String checksum(String oid) {
         int sum = 0;
-        int[] multipliers = new int[] {7,3,1};
+        int[] multipliers = new int[]{7, 3, 1};
         int multiplierIndex = 0;
-        for (int i = oid.length() -1; i >= 0; i--) {
+        for (int i = oid.length() - 1; i >= 0; i--) {
             int curr = Integer.valueOf(String.valueOf(oid.charAt(i)));
             sum += curr * multipliers[multiplierIndex % 3];
             multiplierIndex++;
         }
         sum = (10 - (sum % 10)) % 10; // Summa vähennetään seuraavasta tasakymmenestä
-        String checksum = String.valueOf(sum);
-        return checksum;
+        return String.valueOf(sum);
     }
 }

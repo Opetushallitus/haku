@@ -59,7 +59,6 @@ public class OrganisaatioPerustietoTypeToOrganizationFunction implements
         final Date startDate = dto.getAlkuPvm();
         final Date endDate = dto.getLakkautusPvm();
 
-        final Organization entity = new Organization(new I18nText("name", name), oid, parentOid, types, startDate, endDate);
-        return entity;
+        return new Organization(new I18nText("name", name), oid, parentOid, types, startDate, endDate);
     }
 }

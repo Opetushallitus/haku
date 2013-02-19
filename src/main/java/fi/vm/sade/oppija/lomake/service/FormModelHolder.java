@@ -43,7 +43,7 @@ public class FormModelHolder {
      *
      * @param model new model
      */
-    public void updateModel(final FormModel model) {
+    public synchronized void updateModel(final FormModel model) {
         FormModelInitializer formModelInitializer = new FormModelInitializer(model);
         formModelInitializer.initModel();
         this.formModel = model;

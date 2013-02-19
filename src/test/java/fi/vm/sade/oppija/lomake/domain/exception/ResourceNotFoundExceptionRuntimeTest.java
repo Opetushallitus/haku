@@ -23,11 +23,17 @@ import static org.junit.Assert.assertEquals;
 public class ResourceNotFoundExceptionRuntimeTest {
 
     public static final String MESSAGE = "virhe";
+    public static final NullPointerException EXCEPTION = new NullPointerException();
 
     @Test
     public void testMessage() throws Exception {
         ResourceNotFoundExceptionRuntime resourceNotFoundExceptionRuntime = new ResourceNotFoundExceptionRuntime(MESSAGE);
         assertEquals(MESSAGE, resourceNotFoundExceptionRuntime.getMessage());
+    }
 
+    @Test
+    public void testException() throws Exception {
+        ResourceNotFoundExceptionRuntime resourceNotFoundExceptionRuntime = new ResourceNotFoundExceptionRuntime(MESSAGE, EXCEPTION);
+        assertEquals(EXCEPTION, resourceNotFoundExceptionRuntime.getCause());
     }
 }

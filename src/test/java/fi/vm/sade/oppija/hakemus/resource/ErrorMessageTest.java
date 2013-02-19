@@ -16,24 +16,17 @@
 
 package fi.vm.sade.oppija.hakemus.resource;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import org.junit.Test;
 
-/**
- * Error message object that is provided to a client in case an API invocation results
- * in an error.
- *
- * @author Hannu Lyytikainen
- */
-public class ErrorMessage {
+import static org.junit.Assert.assertEquals;
 
-    private final String message;
+public class ErrorMessageTest {
 
-    public ErrorMessage(@JsonProperty(value = "message") String message) {
-        this.message = message;
+    public static final String MESSAGE = "message";
+
+    @Test
+    public void testGetMessage() throws Exception {
+        ErrorMessage errorMessage = new ErrorMessage(MESSAGE);
+        assertEquals(errorMessage.getMessage(), MESSAGE);
     }
-
-    public String getMessage() {
-        return message;
-    }
-
 }
