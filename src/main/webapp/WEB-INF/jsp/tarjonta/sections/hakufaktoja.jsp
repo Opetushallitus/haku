@@ -32,7 +32,7 @@
     <form action="${pageContext.request.contextPath}/lomake/${it.searchResult['ASName']}/${it.searchResult['tmpLomakeId']}"
           method="post">
         <input type="hidden" name="preference1-Opetuspiste" value="${it.searchResult['LOPInstitutionInfoName']}"/>
-        <input type="hidden" name="preference1-Opetuspiste-id" value="${it.searchResult['LOPId']}"/>
+        <input type="hidden" name="preference1-Opetuspiste-id" value="${it.searchResult['LOPOid']}"/>
         <input type="hidden" name="preference1-Koulutus" value="${it.searchResult['AOTitle']}"/>
         <input type="hidden" name="preference1-Koulutus-id" value="${it.searchResult['AOId']}"/>
         <input type="hidden" name="enabling-submit"/>
