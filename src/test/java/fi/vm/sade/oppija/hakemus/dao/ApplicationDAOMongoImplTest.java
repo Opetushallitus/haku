@@ -115,22 +115,22 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
     @Test
     public void testFindByHetuActive() {
-        List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M", "ACTIVE", false, "");
+        List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M", new ApplicationQueryParameters("ACTIVE", false, "", null));
         assertEquals(2, applications.size());
     }
 
     @Test
     public void testFindByHetuAlsoPassive() {
-        List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M", "ACTIVE", true, "");
+        List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M", new ApplicationQueryParameters("ACTIVE", true, "", null));
         assertEquals(3, applications.size());
     }
 
     @Test
     public void testFindByHetuPassive() {
-        List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M", "PASSIVE", false, "");
+        List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M", new ApplicationQueryParameters("PASSIVE", false, "", null));
         assertEquals(1, applications.size());
         // Shouldn't matter, if querying for "passive, and also passive"
-        applications = applicationDAO.findByApplicantSsn("050998-957M", "PASSIVE", true, "");
+        applications = applicationDAO.findByApplicantSsn("050998-957M", new ApplicationQueryParameters("PASSIVE", true, "", null));
         assertEquals(1, applications.size());
     }
 

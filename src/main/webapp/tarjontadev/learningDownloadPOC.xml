@@ -819,11 +819,11 @@
 
         <!-- viittaus organisaation palvelun organisaatioon jota tämä rakenne kuvailee -->
         <OrganizationRef>
-            <OidRef>1.2.3.4.5</OidRef>
+            <OidRef>1.2.246.562.10.95390556524</OidRef>
         </OrganizationRef>
 
         <InstitutionInfo>
-            <Name>Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö</Name>
+            <Name>Espoon yhteislyseon lukio op</Name>
             <AcademicCalendar>Lorem Lipsum</AcademicCalendar>
             <AcademicAuthorities>Lorem Lipsum</AcademicAuthorities>
             <AdmissionProcedures>Lorem Lipsum</AdmissionProcedures>

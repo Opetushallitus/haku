@@ -40,7 +40,7 @@ public class AutoCompleteIT extends AbstractSeleniumBase {
 
     @Test
     public void testOneMatch() throws IOException {
-        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/Yhteishaku/organisaatio/search?term=Hels");
+        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/Yhteishaku/organisaatio/search?term=Esp");
         assertFalse(seleniumHelper.getSelenium().isTextPresent("[]"));
     }
 

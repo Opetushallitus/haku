@@ -43,16 +43,7 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
 
     @Test
     public void testWorkExperienceShown() {
-        final String startUrl = formModelHelper.getFormUrl(formModelHelper.getFirstForm().getPhase("hakutoiveet"));
-
-        Selenium selenium = seleniumHelper.getSelenium();
-
-        WebDriver driver = seleniumHelper.getDriver();
-        driver.get(getBaseUrl() + "/" + startUrl);
-
-        driver.findElement(By.id("preference1-Opetuspiste"));
-        selenium.typeKeys("preference1-Opetuspiste", "Hel");
-        driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
+        WebDriver driver = gotoHakutoiveet();
         driver.findElement(By.xpath("//option[@data-id='873']")).click();
 
         driver.findElement(new By.ByClassName("right")).click();
@@ -61,8 +52,7 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
         driver.findElement(new By.ById("tyokokemuskuukaudet"));
     }
 
-    @Test
-    public void testWorkExperienceNotShown() {
+    private WebDriver gotoHakutoiveet() {
         final String startUrl = formModelHelper.getFormUrl(formModelHelper.getFirstForm().getPhase("hakutoiveet"));
 
         Selenium selenium = seleniumHelper.getSelenium();
@@ -70,9 +60,13 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
         WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + "/" + startUrl);
 
-        driver.findElement(By.id("preference1-Opetuspiste"));
-        selenium.typeKeys("preference1-Opetuspiste", "Hel");
-        driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
+        inputOpetuspiste(selenium, driver);
+        return driver;
+    }
+
+    @Test
+    public void testWorkExperienceNotShown() {
+        WebDriver driver = gotoHakutoiveet();
         driver.findElement(By.xpath("//option[@data-id='776']")).click();
 
         driver.findElement(new By.ByClassName("right")).click();
@@ -84,5 +78,11 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
         } catch (NoSuchElementException e) {
             // test passed
         }
+    }
+
+    private void inputOpetuspiste(Selenium selenium, WebDriver driver) {
+        driver.findElement(By.id("preference1-Opetuspiste"));
+        selenium.typeKeys("preference1-Opetuspiste", "Esp");
+        driver.findElement(By.linkText("Espoon yhteislyseon lukio op")).click();
     }
 }

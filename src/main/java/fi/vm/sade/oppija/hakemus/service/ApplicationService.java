@@ -16,15 +16,16 @@
 
 package fi.vm.sade.oppija.hakemus.service;
 
-import java.util.List;
-import java.util.Map;
-
+import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+
+import java.util.List;
+import java.util.Map;
 
 public interface ApplicationService {
 
@@ -64,7 +65,7 @@ public interface ApplicationService {
      * @param oid
      * @return application
      * @throws ResourceNotFoundException thrown when an application is not found
-     * with the given oid
+     *                                   with the given oid
      */
     Application getApplication(String oid) throws ResourceNotFoundException;
 
@@ -77,8 +78,6 @@ public interface ApplicationService {
     String submitApplication(final FormId formId);
 
     /**
-     *
-     *
      * @param hakuLomakeId
      * @param oid
      * @return
@@ -105,21 +104,22 @@ public interface ApplicationService {
 
     /**
      * Return applications that match to given search term. Term is matched against
-     *      - applications' OID 
-     *      - applicants' ID
-     *      - applicants' DOB
-     *      - applicants' hetu
-     *      - applicants' name
-     * 
+     * - applications' OID
+     * - applicants' ID
+     * - applicants' DOB
+     * - applicants' hetu
+     * - applicants' name
+     *
      * @param term
      * @return
      */
-    List<Application> findApplications(String term, String state, boolean fetchPassive, String preference);
+    List<Application> findApplications(final String term, final ApplicationQueryParameters applicationQueryParameters);
 
 
     /**
      * Saves additional info key value pairs to the application
-     * @param oid application oid
+     *
+     * @param oid            application oid
      * @param additionalInfo additional info key value pairs
      * @throws ResourceNotFoundException
      */
@@ -127,6 +127,7 @@ public interface ApplicationService {
 
     /**
      * Method to get the oids of the application preferences
+     *
      * @param applicationOid application oid
      * @return list of application preference oids
      * @throws ResourceNotFoundException
@@ -135,6 +136,7 @@ public interface ApplicationService {
 
     /**
      * Method to get the oids of the application preferences
+     *
      * @param application application containing all the data
      * @return list of application preference oids
      */

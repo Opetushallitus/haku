@@ -64,6 +64,7 @@
         <field name="LOSEducationDegree" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOSStydyDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOPId" type="string" indexed="true" stored="true" multiValued="true"/>
+        <field name="LOPOid" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="LOPInstitutionInfoName" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="LOPInstitutionInfoGeneralDescription" type="text_general" indexed="true" stored="true"
                multiValued="true"/>

@@ -11,7 +11,7 @@
   ~
   ~ This program is distributed in the hope that it will be useful,
   ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   -->
 <xsl:stylesheet version="2.0"
@@ -258,6 +258,9 @@
     <xsl:template match="/types:LearningOpportunityDownloadData/types:LearningOpportunityProvider">
         <field name="LOPId">
             <xsl:value-of select="@id"/>
+        </field>
+        <field name="LOPOid">
+            <xsl:value-of select="./types:OrganizationRef/types:OidRef"/>
         </field>
         <field name="LOPInstitutionInfoName">
             <xsl:value-of select="./types:InstitutionInfo/types:Name"/>

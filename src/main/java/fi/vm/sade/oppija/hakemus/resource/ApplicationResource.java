@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.hakemus.resource;
 
+import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
@@ -96,10 +97,11 @@ public class ApplicationResource {
     public List<Application> findApplications(@DefaultValue("") @QueryParam("q") String query,
                                               @DefaultValue("") @QueryParam("appState") String appState,
                                               @DefaultValue("false") @QueryParam("fetchPassive") boolean fetchPassive,
-                                              @DefaultValue("") @QueryParam("appPreference") String appPreference) {
+                                              @DefaultValue("") @QueryParam("appPreference") String appPreference,
+                                              @DefaultValue("") @QueryParam("lopOid") String lopOid) {
         LOGGER.debug("Finding applications q:{}, appState:{}, fetchPassive:{}, appPreference:{}", new Object[]{query, appState, fetchPassive, appPreference});
         List<Application> result = new ArrayList<Application>();
-        result.addAll(applicationService.findApplications(query, appState, fetchPassive, appPreference));
+        result.addAll(applicationService.findApplications(query, new ApplicationQueryParameters(appState, fetchPassive, appPreference, lopOid)));
         return result;
     }
 }

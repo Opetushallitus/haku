@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateServ
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
+import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
@@ -226,24 +227,24 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> findApplications(final String term, final String state, final boolean fetchPassive, final String preference) {
+    public List<Application> findApplications(final String term, final ApplicationQueryParameters applicationQueryParameters) {
         List<Application> applications = new LinkedList<Application>();
         if (shortOidPattern.matcher(term).matches()) {
-            applications.addAll(applicationDAO.findByOid(term, state, fetchPassive, preference));
+            applications.addAll(applicationDAO.findByOid(term, applicationQueryParameters));
         } else if (oidPattern.matcher(term).matches()) {
             if (term.startsWith(applicationOidService.getOidPrefix())) {
-                applications.addAll(applicationDAO.findByApplicationOid(term, state, fetchPassive, preference));
+                applications.addAll(applicationDAO.findByApplicationOid(term, applicationQueryParameters));
             } else {
-                applications.addAll(applicationDAO.findByUserOid(term, state, fetchPassive, preference));
+                applications.addAll(applicationDAO.findByUserOid(term, applicationQueryParameters));
             }
         } else if (socialSecurityNumberPattern.matcher(term).matches()) {
-            applications.addAll(applicationDAO.findByApplicantSsn(term, state, fetchPassive, preference));
+            applications.addAll(applicationDAO.findByApplicantSsn(term, applicationQueryParameters));
         } else if (dobPattern.matcher(term).matches()) {
-            applications.addAll(applicationDAO.findByApplicantDob(term, state, fetchPassive, preference));
-        } else if (!StringUtils.isEmpty(term)){
-            applications.addAll(applicationDAO.findByApplicantName(term, state, fetchPassive, preference));
+            applications.addAll(applicationDAO.findByApplicantDob(term, applicationQueryParameters));
+        } else if (!StringUtils.isEmpty(term)) {
+            applications.addAll(applicationDAO.findByApplicantName(term, applicationQueryParameters));
         } else if (isEmpty(term)) {
-            applications.addAll(applicationDAO.findAllFiltered(state, fetchPassive, preference));
+            applications.addAll(applicationDAO.findAllFiltered(applicationQueryParameters));
         }
         return applications;
     }

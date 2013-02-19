@@ -34,7 +34,7 @@ import static org.junit.Assert.assertTrue;
 
 public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
 
-    public static final String OPETUSPISTE = "Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö";
+    public static final String OPETUSPISTE = "Espoon yhteislyseon lukio op";
 
     @Before
     public void init() {
@@ -65,7 +65,7 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
         driver.findElement(By.id("preference1-Opetuspiste"));
 
 
-        s.typeKeys("preference1-Opetuspiste", "Hel");
+        s.typeKeys("preference1-Opetuspiste", "Esp");
 
         WebElement element = driver.findElement(By.linkText(OPETUSPISTE));
         element.click();

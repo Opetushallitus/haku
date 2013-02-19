@@ -16,11 +16,11 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
-import java.util.List;
-
 import fi.vm.sade.oppija.common.dao.BaseDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+
+import java.util.List;
 
 /**
  * DAO interface for saving, updating and finding applications made by users.
@@ -33,16 +33,14 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     Application findDraftApplication(Application application);
 
     /**
-     * Return list of applications that match given model application, state and 
+     * Return list of applications that match given model application, state and
+     *
      * @param application
-     * @param state
-     * @param fetchPassive
-     * @param preference
+     * @param applicationQueryParameters
      * @return
      */
-    List<Application> find(Application application, String state, boolean fetchPassive,
-            String preference);
-    
+    List<Application> find(Application application);
+
     /**
      * Returns Applications that are included in one application system.
      *
@@ -78,7 +76,7 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @param term
      * @return
      */
-    List<Application> findByApplicantName(String term, String state, boolean fetchPassive, String preference);
+    List<Application> findByApplicantName(String term, ApplicationQueryParameters applicationQueryParameters);
 
     /**
      * Return all applications where applicants ssn matches given term.
@@ -86,27 +84,23 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @param term
      * @return
      */
-    List<Application> findByApplicantSsn(String term, String state, boolean fetchPassive, String preference);
+    List<Application> findByApplicantSsn(String term, ApplicationQueryParameters applicationQueryParameters);
 
     /**
      * Return applications which oid or applicants' oid matches given term.
-     * 
+     *
+     * @param applicationQueryParameters
      * @param term
-     * @param state
-     * @param fetchPassive
-     * @param preference
      * @return
      */
-    List<Application> findByOid(String term, String state, boolean fetchPassive, String preference);
+    List<Application> findByOid(String term, ApplicationQueryParameters applicationQueryParameters);
 
-    List<Application> findByApplicationOid(String term, String state, boolean fetchPassive,
-            String preference);
+    List<Application> findByApplicationOid(String term, ApplicationQueryParameters applicationQueryParameters);
 
-    List<Application> findByUserOid(String term, String state, boolean fetchPassive, String preference);
+    List<Application> findByUserOid(String term, ApplicationQueryParameters applicationQueryParameters);
 
-    List<Application> findAllFiltered(String state, boolean fetchPassive, String preference);
+    List<Application> findAllFiltered(ApplicationQueryParameters applicationQueryParameters);
 
-    List<Application> findByApplicantDob(String term, String state, boolean fetchPassive,
-            String preference);
+    List<Application> findByApplicantDob(String term, ApplicationQueryParameters applicationQueryParameters);
 
 }

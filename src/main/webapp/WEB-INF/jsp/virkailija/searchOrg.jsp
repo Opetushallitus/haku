@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="buttons">
-                        <button class="button small" type="reset">Tyhjennä</button>
+                        <button d="reset-organizations" class="button small" type="reset">Tyhjennä</button>
                         <button id="search-organizations" class="button primary small">Hae</button>
                     </div>
                 </fieldset>

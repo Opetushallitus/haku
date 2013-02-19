@@ -85,8 +85,8 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(new By.ByClassName("right")).click();
         //Skip toimipiste
         driver.findElement(By.id("preference1-Opetuspiste"));
-        selenium.typeKeys("preference1-Opetuspiste", "Hel");
-        driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
+        selenium.typeKeys("preference1-Opetuspiste", "Esp");
+        driver.findElement(By.linkText("Espoon yhteislyseon lukio op")).click();
         driver.findElement(By.xpath("//option[@value='Sosiaali- ja terveysalan perustutkinto, pk']")).click();
 
         driver.findElement(new By.ByClassName("right")).click();

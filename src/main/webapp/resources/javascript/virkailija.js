@@ -79,7 +79,8 @@ $(document).ready(function () {
                 oid: oid.val(),
                 appState: $appState.val(),
                 fetchPassive: $fetchPassive.prop("checked"),
-                appPreference: $appPreference.val()
+                appPreference: $appPreference.val(),
+                lopOid: $('#lopOid').val()
             }, function (data) {
                 $tbody.empty();
                 self.updateCounters(data.length);
@@ -128,10 +129,10 @@ $(document).ready(function () {
                 $inputValue = $('<input type="text" placeholder="Arvo" class="margin-horizontal-4"/>'),
                 $removeButton = $('<button class="remove_key_value_button link" type="button">Poista</button>');
 
-            $inputKey.bind('change', function() {
+            $inputKey.bind('change', function () {
                 $(this).next().prop("name", this.value);
             });
-            $removeButton.bind('click', function() {
+            $removeButton.bind('click', function () {
                 var row = $(this).parent();
                 additionalInfo.removeRow(row);
             });
@@ -143,13 +144,13 @@ $(document).ready(function () {
 
         this.init = function () {
             $('.extra-key-input').each(function (index, domEle) {
-                $(domEle).bind('change', function() {
+                $(domEle).bind('change', function () {
                     $(this).next().prop("name", this.value);
                 });
             });
         }
 
-        this.removeRow = function(row) {
+        this.removeRow = function (row) {
             $(row).remove();
         }
         self.init();
@@ -167,6 +168,9 @@ $(document).ready(function () {
     });
 
     var orgSearch = (function () {
+        $('#reset-organizations').click(function (event) {
+            $('#lopOid').val('');
+        });
         $('#search-organizations').click(function (event) {
             var parameters = $('#orgsearchform').serialize();
             $('#search-organizations').attr('disabled', 'disabled');
@@ -211,7 +215,7 @@ $(document).ready(function () {
                 });
             }
             label.click(function (e) {
-                $('#oid').val($(this).attr('id'));
+                $('#lopOid').val($(this).attr('id'));
                 e.preventDefault();
             });
 

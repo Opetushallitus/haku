@@ -99,8 +99,8 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         seleniumHelper.navigate("/lomake/Yhteishaku/lomake/hakutoiveet");
         driver.findElement(By.id("preference1-Opetuspiste"));
         Selenium s = seleniumHelper.getSelenium();
-        s.typeKeys("preference1-Opetuspiste", "Hel");
-        driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
+        s.typeKeys("preference1-Opetuspiste", "Esp");
+        driver.findElement(By.linkText("Espoon yhteislyseon lukio op")).click();
         driver.findElement(By.xpath("//option[@value='Ensihoidon koulutusohjelma, yo']")).click();
         driver.findElement(By.xpath("//button[@class='right']")).click();
         //seleniumHelper.navigate("/lomake/Yhteishaku/lomake/lisakysymykset");
@@ -113,8 +113,8 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + "/" + url);
         Selenium s = seleniumHelper.getSelenium();
-        s.typeKeys("preference1-Opetuspiste", "Hel");
-        driver.findElement(By.linkText("Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö")).click();
+        s.typeKeys("preference1-Opetuspiste", "Eso");
+        driver.findElement(By.linkText("Espoon yhteislyseon lukio op")).click();
         driver.findElement(By.xpath("//option[@value='Ensihoidon koulutusohjelma, yo']")).click();
         driver.findElement(By.xpath("//button[@name='nav-next']")).click();
         assertNull(driver.findElement(By.id("lisakysymys")));

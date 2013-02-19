@@ -79,6 +79,36 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
+    public List<Application> findByApplicantName(String term, ApplicationQueryParameters applicationQueryParameters) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Application> findByApplicantSsn(String term, ApplicationQueryParameters applicationQueryParameters) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Application> findByOid(String term, ApplicationQueryParameters applicationQueryParameters) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Application> findByApplicationOid(String term, ApplicationQueryParameters applicationQueryParameters) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Application> findByUserOid(String term, ApplicationQueryParameters applicationQueryParameters) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Application> findAllFiltered(ApplicationQueryParameters applicationQueryParameters) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public ApplicationState tallennaVaihe(final ApplicationState state) {
         Application application = find(new Application(state.getHakemus().getFormId(), state.getHakemus().getUser())).get(0);
         application.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());
@@ -87,50 +117,7 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public List<Application> find(Application application, String state, boolean fetchPassive, String preference) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public List<Application> findByApplicantName(String term, String state, boolean fetchPassive, String preference) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public List<Application> findByApplicantSsn(String term, String state, boolean fetchPassive, String preference) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public List<Application> findByOid(String term, String state, boolean fetchPassive,
-            String preference) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public List<Application> findByApplicationOid(String term, String state, boolean fetchPassive, String preference) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public List<Application> findByUserOid(String term, String state, boolean fetchPassive, String preference) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public List<Application> findAllFiltered(String state, boolean fetchPassive, String preference) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public List<Application> findByApplicantDob(String term, String state, boolean fetchPassive, String preference) {
+    public List<Application> findByApplicantDob(String term, ApplicationQueryParameters applicationQueryParameters) {
         // TODO Auto-generated method stub
         return null;
     }
