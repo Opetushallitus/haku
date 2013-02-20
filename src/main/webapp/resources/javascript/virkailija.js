@@ -174,7 +174,7 @@ $(document).ready(function () {
         $('#search-organizations').click(function (event) {
             var parameters = $('#orgsearchform').serialize();
             $('#search-organizations').attr('disabled', 'disabled');
-            $.getJSON("/haku/organization/hakemus?" + $('#orgsearchform').serialize(),
+            $.getJSON(page_settings.contextPath + "/organization/hakemus?" + $('#orgsearchform').serialize(),
                 function (data) {
                     var toTree = function (data) {
                         var ul = $(document.createElement("ul")).addClass('branch');
