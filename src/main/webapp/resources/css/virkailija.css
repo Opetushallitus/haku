@@ -2714,7 +2714,8 @@ ul.actionmenu {
     padding: 0px 0px 0px 8px;
     height: 100%;
     cursor: pointer;
-    text-decoration: none; }
+    text-decoration: none;
+    outline: none; }
     #orgsearch .expander:hover {
       background: #c5e5ef;
       /* Old browsers */ }

@@ -18,9 +18,8 @@
   ~ European Union Public Licence for more details.
   --%>
 
-<div style="clear:both;">
 
-    <div id="orgsearch" class="expand">
+    <div id="orgsearch" class="">
         <a href="#" class="expander">
         <span class="labelpos">
             <span class="label">Organisaatiohaku</span>
@@ -78,4 +77,4 @@
             </div>
         </div>
     </div>
-</div>
+

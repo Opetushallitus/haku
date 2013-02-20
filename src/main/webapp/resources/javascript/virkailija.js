@@ -20,13 +20,15 @@ $(document).ready(function () {
 // Organisation search 
 // Handle presentation of organisation search form and results
 
-    var orgSearch = {
+    var orgSearchDialog = {
         settings: {
             listenTimeout: 1000
         },
         build: function () {
-            orgSearch.set.listHeight();
-            orgSearch.listen.dialogDimensions();
+            orgSearchDialog.set.listHeight();
+			orgSearchDialog.set.tableCellWidth();
+            orgSearchDialog.listen.dialogDimensions();
+			orgSearchDialog.set.triggers();
         },
         listen: {
             dialogDimensions: function () {
@@ -37,13 +39,15 @@ $(document).ready(function () {
                 width = $('#orgsearch').outerWidth(true);
                 setTimeout(function () {
                     if (height != $('#orgsearch').height()) {
-                        orgSearch.set.listHeight();
+                        orgSearchDialog.set.listHeight();
                     }
                     if (width != $('#orgsearch').outerWidth(true)) {
-                        orgSearch.set.tableCellWidth();
+                        orgSearchDialog.set.tableCellWidth();
                     }
-                    orgSearch.listen.dialogDimensions();
-                }, orgSearch.settings.listenTimeout);
+                    
+					orgSearchDialog.listen.dialogDimensions();
+					
+                }, orgSearchDialog.settings.listenTimeout);
             }
         },
         set: {
@@ -58,11 +62,28 @@ $(document).ready(function () {
                 // Set organisation search dialog's parenting table cell width
                 width = $('#orgsearch').outerWidth(true);
                 $('#orgsearch').parent('td').css({'width': width + 'px'});
-            }
+            },
+			triggers: function() {
+				$('body').on('click', '#orgsearch a.expander', function(event){
+					event.preventDefault();
+					target = $(this).closest('#orgsearch');
+					if (target.hasClass('expand'))
+					{
+						target.removeClass('expand');
+						orgSearchDialog.set.tableCellWidth();
+					}
+					else
+					{
+						target.addClass('expand');
+						orgSearchDialog.set.tableCellWidth();
+						orgSearchDialog.set.listHeight();
+					}
+				});
+			}
         }
     }
 
-    orgSearch.build();
+    orgSearchDialog.build();
 
 
     var applicationSearch = (function () {
