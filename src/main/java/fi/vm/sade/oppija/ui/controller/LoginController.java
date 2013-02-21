@@ -60,12 +60,17 @@ public class LoginController {
     @Path("postLogin")
     public Response postLoginRedirect(@Context HttpServletRequest req, @Context SecurityContext securityContext) throws URISyntaxException {
 
+        String redirect = req.getParameter("redirect");
+        if (redirect != null) {
+            Response.temporaryRedirect(new URI(redirect));
+        }
+
         String name = securityContext.getUserPrincipal().getName();
         userHolder.login(new User(name));
 
         req.getSession().setAttribute(USERNAME_SESSION_ATTRIBURE, name);
 
-        return getResponseByUsername(name);
+        return getResponseByUsername(name, req);
     }
 
     @GET
@@ -82,13 +87,13 @@ public class LoginController {
         return new Viewable(LOGIN_VIEW);
     }
 
-    private Response getResponseByUsername(String name) throws URISyntaxException {
-        if (name.equals("admin")) {
-            return seeOther(new URI("admin")).build();
+    private Response getResponseByUsername(String name, HttpServletRequest req) throws URISyntaxException {
+        if (name.equals("admin") || name.equals("admin@oph.fi")) {
+            return seeOther(new URI(req.getContextPath() + "/admin")).build();
         } else if (name.equals("officer")) {
-            return seeOther(new URI("virkailija/hakemus")).build();
+            return seeOther(new URI(req.getContextPath() + "/virkailija/hakemus")).build();
         } else {
-            return seeOther(new URI("oma")).entity("").build();
+            return seeOther(new URI(req.getContextPath() + "/oma")).entity("").build();
         }
     }
 

@@ -486,7 +486,6 @@
 
         <!-- cas -->
 
-        <!--
         <dependency>
             <groupId>org.jasig.cas</groupId>
             <artifactId>cas-client-core</artifactId>
@@ -498,7 +497,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-cas</artifactId>
@@ -549,6 +547,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
+            <version>2.4.8</version>
+        </dependency>
 
         <dependency>
             <groupId>fi.vm.sade.organisaatio</groupId>
@@ -558,6 +561,12 @@
         <dependency>
             <groupId>fi.vm.sade.auth</groupId>
             <artifactId>authentication-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- TODO: cas refac tuolta cas:n takia tarvittavat jutut vois olla jossain muualla -->
+        <dependency>
+            <groupId>fi.vm.sade.generic</groupId>
+            <artifactId>generic-service</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -675,7 +684,6 @@
             <name>JBoss Repository</name>
             <url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
         </repository>
-
     </repositories>
     <build>
         <plugins>

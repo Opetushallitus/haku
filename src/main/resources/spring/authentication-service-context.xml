@@ -14,28 +14,23 @@
             file:///${user.home:''}/oph-configuration/common.properties"
             ignore-resource-not-found="true"/>
 
-    <bean id="authInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
-        <constructor-arg>
-            <map>
-                <entry key="action" value="UsernameToken Timestamp" />
-                <entry key="user" value="${webservice.username}" />
-                <entry key="passwordType" value="PasswordText" />
-                <entry key="passwordCallbackRef">
-                    <bean class="fi.vm.sade.authentication.authorizationsupport.PropertyBackedCallback">
-                        <property name="password" value="${webservice.password}" />
-                    </bean>
-                </entry>
-            </map>
-        </constructor-arg>
-    </bean>
+    <beans profile="default">
 
-    <jaxws:client id="userManagementService"
-                  serviceClass="fi.vm.sade.authentication.service.UserManagementService"
-                  address="${usermanagement.webservice.url}">
-        <jaxws:outInterceptors>
-            <ref bean="authInterceptor" />
-        </jaxws:outInterceptors>
-    </jaxws:client>
+        <jaxws:client id="userManagementService"
+                      serviceClass="fi.vm.sade.authentication.service.UserManagementService"
+                      address="${usermanagement.webservice.url.backend}">
+            <jaxws:outInterceptors>
+                <bean class="fi.vm.sade.authentication.cas.CasApplicationAsAUserInterceptor">
+                    <property name="webCasUrl" value="${web.url.cas}"/>
+                    <property name="targetService" value="${cas.service.authentication-service}/j_spring_cas_security_check"/>
+                    <property name="appClientUsername" value="${haku.app.username.to.usermanagement}"/>
+                    <property name="appClientPassword" value="${haku.app.password.to.usermanagement}"/>
+                </bean>
+            </jaxws:outInterceptors>
+        </jaxws:client>
+
+    </beans>
+
 </beans>
 
 

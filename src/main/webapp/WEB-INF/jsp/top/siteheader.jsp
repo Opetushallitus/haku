@@ -22,6 +22,7 @@
     <div class="header-container">
         <div class="sitelogo">
             <a href="${pageContext.request.contextPath}">Sivuston logo</a>
+            <a href="${contextPath}/test/addPerson">/test/addPerson</a>
         </div>
 
         <div class="actions">
@@ -31,12 +32,14 @@
                 <c:when test="${loggedIn}">
                     <ul>
                         <li><a href="${contextPath}/user/logout">Kirjaudu ulos</a></li>
+                        <li><a href="${contextPath}/j_spring_cas_security_logout">CAS Logout</a></li>
                         <li><a href="${contextPath}/me"><sec:authentication property="principal.username"/></a></li>
                     </ul>
                 </c:when>
                 <c:otherwise>
                     <ul>
                         <li><a href="#" data-popup-action="open">Kirjaudu sisään</a></li>
+                        <li><a href="${contextPath}/user/postLogin?redirect=${pageContext.request.requestURL}">CAS Login</a></li>
                     </ul>
                 </c:otherwise>
             </c:choose>
