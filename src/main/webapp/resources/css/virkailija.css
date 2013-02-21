@@ -2445,14 +2445,26 @@ button {
   border: none;
   background-image: url("../img/remove-sprite_idle-hover-selected-disabled.png");
   background-position: 0px center;
+  background-color: transparent;
   overflow: hidden;
-  color: transparent; }
+  color: transparent;
+  box-shadow: none;
+  transition: all 0s ease 0s; }
   .remove:hover {
-    background-position: -24px center; }
+    background-position: -24px center;
+    transition: all 0s ease 0s;
+    background-color: transparent;
+    box-shadow: none; }
   .remove:focus, .remove:active {
-    background-position: -48px center; }
+    background-position: -48px center;
+    transition: all 0s ease 0s;
+    background-color: transparent;
+    box-shadow: none; }
   .remove:disabled {
-    background-position: -72px center; }
+    background-position: -72px center;
+    transition: all 0s ease 0s;
+    background-color: transparent;
+    box-shadow: none; }
   .remove span {
     display: none; }
 

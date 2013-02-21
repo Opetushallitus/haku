@@ -108,8 +108,8 @@
                                                     <input type="text" name="${question.key}" value="<c:out value='${additionalInfo[question.key]}'/>"/>
                                                 </c:when>
                                                 <c:when test="${question.type eq 'TOTUUSARVO'}">
-                                                    <input type="radio" name="${question.key}" value="true" ${(additionalInfo[question.key] eq 'true') ? "checked=\"checked\" " : " "}>Kyllä</input>
-                                                    <input type="radio" name="${question.key}" value="false" ${(additionalInfo[question.key] eq 'false') ? "checked=\"checked\" " : " "}>Ei</input>
+                                                    <input type="radio" name="${question.key}" id="${question.key}-true" value="true" ${(additionalInfo[question.key] eq 'true') ? "checked=\"checked\" " : " "} /> <label for="${question.key}-true">Kyllä</label>
+                                                    <input type="radio" name="${question.key}" id="${question.key}-false" value="false" ${(additionalInfo[question.key] eq 'false') ? "checked=\"checked\" " : " "} /> <label for="${question.key}-false">Ei</label>
                                                 </c:when>
                                             </c:choose>
                                         </div>
@@ -123,16 +123,28 @@
                                         <div class="form-row">
                                             <input type="text" placeholder="Avain" value="${data.key}" class="extra-key-input"/>
                                             <input type="text" placeholder="Arvo" name="${data.key}" value="${data.value}" class="margin-horizontal-4"/>
-                                            <button class="remove_key_value_button link" type="button">Poista</button>
+                                            <button class="remove_key_value_button remove" type="button"><span>Poista</span></button>
                                         </div>
                                     </c:if>
                                 </c:forEach>
                             </div>
                             <div class="clear"></div>
-                            <button id="add_key_value_button" class="link" type="button">Lisää tieto</button>
+                            <button id="add_key_value_button" class="blueplus" type="button"><span>Lisää tieto</span></button>
                         </fieldset>
                     </form>
-              </section>
+				</section>
+				<footer class="grid16-16" id="footer">
+					<div class="footer-container">
+						<div class="grid16-8 footer-logo">
+							<img src="/haku/resources/img/logo-opetus-ja-kulttuuriministerio.png">
+						</div>
+						<div class="grid16-8 footer-logo">
+							<img src="/haku/resources/img/logo-oph.png">
+						</div>
+						<div class="clear"></div>
+					</div>
+				</footer>
+				<div class="clear"></div>
             </div>
         </div>
     </body>

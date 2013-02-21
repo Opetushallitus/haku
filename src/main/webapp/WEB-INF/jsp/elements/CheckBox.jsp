@@ -17,6 +17,7 @@
   --%>
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <div class="${styleBaseClass}">
+	<c:if test="${styleBaseClass=='form-row'}"><div class="${styleBaseClass}-label">&#8302;</div></c:if>
     <div class="${styleBaseClass}-content">
         <div class="field-container-checkbox">
             <input type="checkbox"

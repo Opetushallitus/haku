@@ -25,8 +25,10 @@
             <table class="form-layout-table width-100">
                 <tr>
                     <td>
-                        <input type="text" id="entry" class="search width-60"
-                               placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero"/>
+						<div class="field-search-containerbox">
+							<input type="text" id="entry" class="search width-60"
+								   placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero"/>
+						</div>
                     </td>
                     <td>
                         <label for="application-state">Hakemuksen tila:</label>
@@ -51,8 +53,10 @@
                 <tr>
                     <td>
                         <label class="block" for="application-preference">Hakukohde:</label>
+						<div class="field-text-containerbox">
                         <input class="width-60" type="text" id="application-preference"
                                placeholder="hae nimellä tai koodilla"/>
+						</div>
                     </td>
 
                     <td>
