@@ -46,7 +46,7 @@ public class TomcatContainer implements DisposableBean {
     /**
      * The temporary directory in which Tomcat and the app are deployed.
      */
-    private static String mWorkingDir = "target/it";
+    private static final String M_WORKING_DIR = "target/it";
     private static final String SOLR_SOLR_HOME = "solr.solr.home";
     private static final String TARJONTA_INDEX_URL = "tarjonta.index.url";
     private static final String TARJONTA_DATA_URL = "tarjonta.data.url";
@@ -103,8 +103,8 @@ public class TomcatContainer implements DisposableBean {
     private void createTomcat() {
         mTomcat = new Tomcat();
         mTomcat.setPort(0);
-        mTomcat.setBaseDir(mWorkingDir);
-        mTomcat.getHost().setAppBase(mWorkingDir);
+        mTomcat.setBaseDir(M_WORKING_DIR);
+        mTomcat.getHost().setAppBase(M_WORKING_DIR);
         mTomcat.getHost().setAutoDeploy(true);
         mTomcat.getHost().setDeployOnStartup(false);
     }
@@ -136,10 +136,14 @@ public class TomcatContainer implements DisposableBean {
     }
 
     private static File createPackage() throws IOException {
-        File webApp = new File(mWorkingDir, getApplicationId());
+        final File workDir = new File(M_WORKING_DIR);
+        if (!workDir.exists()) {
+            workDir.mkdirs();
+        }
+        File webApp = new File(M_WORKING_DIR, getApplicationId());
         File oldWebApp = new File(webApp.getAbsolutePath());
         FileUtils.deleteDirectory(oldWebApp);
-        new ZipExporterImpl(createWebArchive()).exportTo(new File(mWorkingDir + "/" + packageName()), true);
+        new ZipExporterImpl(createWebArchive()).exportTo(new File(M_WORKING_DIR + "/" + packageName()), true);
         return webApp;
     }
 
