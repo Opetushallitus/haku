@@ -35,14 +35,6 @@ public abstract class OptionQuestion extends Question {
         super(id, i18nText);
     }
 
-    @Override
-    public void init() {
-        super.init();
-        for (Option option : options) {
-            option.init();
-        }
-    }
-
     public Option addOption(final String id, final I18nText i18nText, final String value) {
         Option option = new Option(this.getId() + ID_DELIMITER + id, i18nText, value);
         this.options.add(option);
@@ -54,6 +46,10 @@ public abstract class OptionQuestion extends Question {
         option.setHelp(help);
         this.options.add(option);
         return option;
+    }
+
+    public final void addOptions(final List<Option> countries) {
+        this.options.addAll(countries);
     }
 
     public List<Option> getOptions() {

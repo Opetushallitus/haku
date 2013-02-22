@@ -55,34 +55,19 @@ public class ElementTest {
     }
 
 
-    @Test
+    @Test(expected = NullPointerException.class)
     public void testNullKeyAttributeString() throws AssertionError {
-        try {
-            testElement.addAttribute(null, "v");
-            fail();
-        } catch (AssertionError e) {
-            // expected=AssertionError.class cannot be used here, because junit uses it internally
-        }
+        testElement.addAttribute(null, "v");
     }
 
-    @Test
+    @Test(expected = NullPointerException.class)
     public void testNullValueAttributeString() {
-        try {
-            testElement.addAttribute(null, "v");
-            fail();
-        } catch (AssertionError e) {
-            // expected=AssertionError.class cannot be used here, because junit uses it internally
-        }
+        testElement.addAttribute("v", null);
     }
 
-    @Test
+    @Test(expected = NullPointerException.class)
     public void testNullKeyAndValueAttributeString() throws Exception {
-        try {
-            testElement.addAttribute(null, null);
-            fail();
-        } catch (AssertionError e) {
-            // expected=AssertionError.class cannot be used here, because junit uses it internally
-        }
+        testElement.addAttribute(null, null);
     }
 
 

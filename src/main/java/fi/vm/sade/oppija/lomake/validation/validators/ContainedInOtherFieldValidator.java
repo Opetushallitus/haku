@@ -16,15 +16,15 @@
 
 package fi.vm.sade.oppija.lomake.validation.validators;
 
-import java.util.Map;
-
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+
+import java.util.Map;
 
 public class ContainedInOtherFieldValidator extends FieldValidator {
 
     final String otherFieldName;
-    
+
     public ContainedInOtherFieldValidator(final String fieldName, final String otherFieldName) {
         super(fieldName, "Virheellinen syöte");
         this.otherFieldName = otherFieldName;
@@ -33,12 +33,11 @@ public class ContainedInOtherFieldValidator extends FieldValidator {
     @Override
     public ValidationResult validate(Map<String, String> values) {
         String otherValue = values.get(otherFieldName);
-        String thisValue = values.get(fieldName); 
-        ValidationResult result = new ValidationResult();
+        String thisValue = values.get(fieldName);
         if (otherValue == null || !otherValue.contains(thisValue)) {
-            result = new ValidationResult(fieldName, errorMessage);
+            return invalidValidationResult;
         }
-        return result;
+        return validValidationResult;
     }
 
 }

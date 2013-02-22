@@ -30,7 +30,7 @@ public final class RegexRule {
     private RegexRule() {
     }
 
-    public static boolean evaluate(String value, String expression) {
+    public static boolean evaluate(final String value, final String expression) {
         if (value != null) {
             final Pattern compile = Pattern.compile(expression);
             Matcher matcher = compile.matcher(value);

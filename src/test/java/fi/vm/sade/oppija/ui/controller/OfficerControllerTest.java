@@ -100,7 +100,7 @@ public class OfficerControllerTest {
 
     @Test
     public void testGetApplication() throws Exception {
-        Response response = officerController.getApplication(OID);
+        Response response = officerController.RedirectToLastPhase(OID);
         assertEquals("/virkailija/hakemus/Yhteishaku/yhteishaku/esikatselu/" + OID, getLocationHeader(response));
     }
 
@@ -134,9 +134,9 @@ public class OfficerControllerTest {
         Map<String, Object> model = (Map<String, Object>) viewable.getModel();
         assertNotNull(model);
         assertTrue(model.containsKey("application"));
-        assertEquals(OID, ((Application)model.get("application")).getOid());
+        assertEquals(OID, ((Application) model.get("application")).getOid());
         assertTrue(model.containsKey("additionalQuestions"));
-        assertEquals(1, ((AdditionalQuestions)model.get("additionalQuestions")).getAllQuestions().size());
+        assertEquals(1, ((AdditionalQuestions) model.get("additionalQuestions")).getAllQuestions().size());
     }
 
     @Test

@@ -17,7 +17,11 @@
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 
+import com.google.common.base.Objects;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import fi.vm.sade.oppija.lomake.domain.Attribute;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
@@ -40,6 +44,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author jukka
@@ -87,9 +93,8 @@ public abstract class Element {
 
     protected final List<Element> children = new ArrayList<Element>();
 
-    @JsonDeserialize(keyAs = String.class, contentAs = Attribute.class)
-    @JsonSerialize(keyAs = String.class, contentAs = Attribute.class)
-    protected final Map<String, Attribute> attributes = new HashMap<String, Attribute>();
+
+    protected Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 
 
     protected Element(@JsonProperty String id) {
@@ -109,14 +114,19 @@ public abstract class Element {
         return type;
     }
 
-    public List<Element> getChildren() {
-        return children;
-    }
 
     @JsonDeserialize(keyAs = String.class, contentAs = Attribute.class)
     @JsonSerialize(keyAs = String.class, contentAs = Attribute.class)
     public Map<String, Attribute> getAttributes() {
         return attributes;
+    }
+
+    @JsonDeserialize(keyAs = String.class, contentAs = Attribute.class)
+    @JsonSerialize(keyAs = String.class, contentAs = Attribute.class)
+    public void setAttributes(final Map<String, Attribute> attributes) {
+        for (Map.Entry<String, Attribute> entry : attributes.entrySet()) {
+            addAttribute(entry.getValue().getKey(), entry.getValue().getValue());
+        }
     }
 
     public void setHelp(final String help) {
@@ -143,14 +153,17 @@ public abstract class Element {
     }
 
     public void addAttribute(final String key, final String value) {
+        checkNotNull(key, "Attribute's key cannot be null");
+        checkNotNull(value, "Attribute's value cannot be null");
         this.attributes.put(key, new Attribute(key, value));
-    }
-
-
-    public void init() {
-        initValidators();
-        for (Element child : children) {
-            child.init();
+        if (key.equals("required")) {
+            addValidator(new RequiredFieldFieldValidator(this.id));
+        } else if (key.equals("pattern")) {
+            addValidator(new RegexFieldFieldValidator(this.id, value));
+        } else if (key.equals("containedInOther")) {
+            addValidator(new ContainedInOtherFieldValidator(this.id, value));
+        } else if (key.equals("iso8859name")) {
+            addValidator(new ISO88591NameValidator(this.id));
         }
     }
 
@@ -176,40 +189,33 @@ public abstract class Element {
 
         Element element = (Element) o;
 
-        if (id != null ? !id.equals(element.id) : element.id != null) {
-            return false;
-        }
-
-        return true;
+        return Objects.equal(this.id, element.id);
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return Objects.hashCode(id);
     }
 
     @JsonIgnore
     public List<Validator> getValidators() {
-        return validators;
+        return ImmutableList.copyOf(validators);
     }
 
-    public void initValidators() {
-        for (Map.Entry<String, Attribute> attribute : attributes.entrySet()) {
-            String key = attribute.getKey();
-            String value = attribute.getValue().getValue();
-            if (key.equals("required")) {
-                this.validators.add(new RequiredFieldFieldValidator(this.id));
-            } else if (key.equals("pattern")) {
-                this.validators.add(new RegexFieldFieldValidator(this.id, value));
-            } else if (key.equals("containedInOther")) {
-                this.validators.add(new ContainedInOtherFieldValidator(this.id, value));
-            } else if (key.equals("iso8859name")) {
-                this.validators.add(new ISO88591NameValidator(this.id));
-            }
-        }
+    public void addValidator(final Validator validator) {
+        System.out.println("add validator : " + validator);
+        this.validators.add(validator);
     }
 
     public List<Element> getChildren(Map<String, String> values) {
         return getChildren();
+    }
+
+    public List<Element> getChildren() {
+        return ImmutableList.copyOf(children);
+    }
+
+    public List<Element> getChildren(final Predicate predicate) {
+        return ImmutableList.copyOf(Iterables.filter(children, predicate));
     }
 }

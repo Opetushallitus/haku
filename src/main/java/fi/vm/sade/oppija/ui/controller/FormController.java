@@ -109,7 +109,7 @@ public class FormController {
     @Path("/{applicationPeriodId}/{formId}")
     public Response getApplication(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                    @PathParam(FORM_ID_PATH_PARAM) final String formId) throws URISyntaxException {
-        LOGGER.debug("getApplication {}, {}", new Object[]{applicationPeriodId, formId});
+        LOGGER.debug("RedirectToLastPhase {}, {}", new Object[]{applicationPeriodId, formId});
         Application application = applicationService.getApplication(new FormId(applicationPeriodId, formId));
         if (application.isNew()) {
 

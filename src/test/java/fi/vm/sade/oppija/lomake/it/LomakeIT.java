@@ -33,7 +33,6 @@ import static org.junit.Assert.assertTrue;
 
 public class LomakeIT extends AbstractSeleniumBase {
 
-
     @Before
     public void setUp() throws Exception {
         FormServiceMockImpl formModelDummyMemoryDao = new FormServiceMockImpl();
@@ -55,7 +54,7 @@ public class LomakeIT extends AbstractSeleniumBase {
         selenium.typeKeys("Sähköposti", "aku.ankka@ankkalinna.al");
         selenium.typeKeys("matkapuhelinnumero", "0501000100");
 
-        driver.findElement(new By.ByClassName("right")).click();
+        clickNextPhase(driver);
 
         driver.findElement(new By.ByClassName("notification"));
 
@@ -67,9 +66,9 @@ public class LomakeIT extends AbstractSeleniumBase {
         selenium.typeKeys("lahiosoite", "Katu 1");
         selenium.typeKeys("Postinumero", "00100");
 
-        driver.findElement(new By.ByClassName("right")).click();
+        clickNextPhase(driver);
 
-        driver.findElement(new By.ByClassName("right")).click();
+        clickNextPhase(driver);
 
         driver.findElement(new By.ById("millatutkinnolla_tutkinto1")).click();
         driver.findElement(new By.ById("paattotodistusvuosi_peruskoulu"));
@@ -82,17 +81,17 @@ public class LomakeIT extends AbstractSeleniumBase {
 
         driver.findElement(new By.ById("osallistunut_ei")).click();
 
-        driver.findElement(new By.ByClassName("right")).click();
+        clickNextPhase(driver);
         //Skip toimipiste
         driver.findElement(By.id("preference1-Opetuspiste"));
         selenium.typeKeys("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("Espoon yhteislyseon lukio op")).click();
         driver.findElement(By.xpath("//option[@value='Sosiaali- ja terveysalan perustutkinto, pk']")).click();
 
-        driver.findElement(new By.ByClassName("right")).click();
+        clickNextPhase(driver);
         select(driver);
 
-        driver.findElement(new By.ByClassName("right")).click();
+        clickNextPhase(driver);
 
         selenium.typeKeys("tyokokemuskuukaudet", "1001");
         clickAllElements(driver, "//input[@type='checkbox']");
@@ -100,14 +99,14 @@ public class LomakeIT extends AbstractSeleniumBase {
         selenium.typeKeys("lupa1_email", "aiti@koti.fi");
         driver.findElement(new By.ById("asiointikieli_suomi")).click();
 
-        driver.findElement(new By.ByClassName("right")).click();
+        clickNextPhase(driver);
 
         // HAK-20.
         driver.findElement(new By.ById("tyokokemuskuukaudet"));
         selenium.typeKeys("tyokokemuskuukaudet", "\b\b\b\b2"); // \b is backspace
-        driver.findElement(new By.ByClassName("right")).click();
+        clickNextPhase(driver);
 
-        driver.findElement(new By.ByClassName("right")).click();
+        clickNextPhase(driver);
         driver.findElement(By.id("submit_confirm")).click();
 
         String oid = driver.findElement(new By.ByClassName("number")).getText();
@@ -118,6 +117,10 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(new By.ById("yhteishaku")).click();
         String value = driver.findElement(new By.ById("Sukunimi")).getAttribute("value");
         assertTrue(StringUtils.isEmpty(value));
+        clickNextPhase(driver);
+    }
+
+    private void clickNextPhase(WebDriver driver) {
         driver.findElement(new By.ByClassName("right")).click();
     }
 

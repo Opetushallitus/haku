@@ -27,8 +27,7 @@ import org.junit.Test;
 import java.util.HashMap;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ElementTreeValidatorTest {
 
@@ -60,7 +59,8 @@ public class ElementTreeValidatorTest {
 
     @Test()
     public void testValidateRequiredElement() throws Exception {
-        textQuestion.getValidators().add(new RequiredFieldFieldValidator("id", "Error message"));
+        textQuestion.addValidator
+                (new RequiredFieldFieldValidator("id", "Error message"));
         ValidationResult validationResult = ElementTreeValidator.validate(textQuestion, new HashMap<String, String>());
         assertTrue(validationResult.hasErrors());
     }
@@ -80,7 +80,7 @@ public class ElementTreeValidatorTest {
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", asuinmaa);
         ValidationResult validationResult = ElementTreeValidator.validate(phase, values);
-        assertTrue(validationResult.getErrorMessages().size() == errorCount);
+        assertEquals(validationResult.getErrorMessages().size(), errorCount);
     }
 
     private HashMap<String, String> fillFormWithoutAsuinmaa() {

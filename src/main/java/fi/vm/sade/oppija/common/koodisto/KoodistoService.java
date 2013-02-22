@@ -33,4 +33,9 @@ public interface KoodistoService {
 
     List<Option> getOrganizationtypes();
 
+    List<Option> getCountries();
+
+    List<Option> getNationalities();
+
+    List<Option> getLanguages();
 }

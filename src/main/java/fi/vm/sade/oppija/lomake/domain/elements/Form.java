@@ -21,7 +21,9 @@ import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntim
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Form extends Titled {
 
@@ -53,7 +55,6 @@ public class Form extends Titled {
             if (firstPhaseId == null) {
                 firstPhaseId = child.getId();
             }
-            child.init();
             lastPhaseId = child.getId();
         }
     }

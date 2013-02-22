@@ -33,5 +33,13 @@ public abstract class FieldValidator implements Validator {
         invalidValidationResult = new ValidationResult(this.fieldName, this.errorMessage);
     }
 
-
+    @Override
+    public String toString() {
+        return "FieldValidator{" +
+                "fieldName='" + fieldName + '\'' +
+                ", errorMessage='" + errorMessage + '\'' +
+                ", validValidationResult=" + validValidationResult +
+                ", invalidValidationResult=" + invalidValidationResult +
+                '}';
+    }
 }

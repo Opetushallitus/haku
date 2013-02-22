@@ -41,6 +41,9 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<SubjectRow> listOfSubjectsRows;
     public final List<Option> listOfLearningInstitutionTypes;
     public final List<Option> listOfOrganizationtypes;
+    public final List<Option> listOfCountries;
+    public final List<Option> listOfLanguages;
+    public final List<Option> listOfNationalities;
 
     public KoodistoServiceMockImpl() {
         List<Option> listOfGradeGrades = new ArrayList<Option>();
@@ -91,6 +94,30 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                         new Option(ORGANIZATION_TYPE,
                                 createI18NText(ORGANIZATION_TYPE), ORGANIZATION_TYPE));
 
+        this.listOfCountries =
+                ImmutableList.of(
+                        new Option("suomi",
+                                createI18NText("Suomi"), "fi"),
+                        new Option("ruotsi",
+                                createI18NText("Ruotsi"), "sv"));
+
+        this.listOfLanguages = listOfCountries;
+        this.listOfNationalities = listOfCountries;
+
+
+        ImmutableList.of(
+                new Option("jalasjarvi",
+                        createI18NText("Jalasjärvi"), "jalasjarvi"),
+                new Option("janakkala",
+                        createI18NText("Janakkala"), "janakkala"),
+                new Option("joensuu",
+                        createI18NText("Joensuu"), "joensuu"),
+                new Option("jokioinen",
+                        createI18NText("jokioinen"), "jokioinen"),
+                new Option("jomala",
+                        createI18NText("Jomala"), "jomala")
+        );
+
     }
 
     @Override
@@ -116,6 +143,21 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getOrganizationtypes() {
         return this.listOfOrganizationtypes;
+    }
+
+    @Override
+    public List<Option> getCountries() {
+        return this.listOfCountries;
+    }
+
+    @Override
+    public List<Option> getNationalities() {
+        return this.listOfNationalities;
+    }
+
+    @Override
+    public List<Option> getLanguages() {
+        return this.listOfLanguages;
     }
 
     private static PostOffice createPostOffice(final String postCode, final String text) {

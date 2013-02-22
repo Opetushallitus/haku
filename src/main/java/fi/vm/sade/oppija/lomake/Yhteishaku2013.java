@@ -117,16 +117,18 @@ public class Yhteishaku2013 {
 
 
         DropdownSelect aidinkieli = new DropdownSelect("äidinkieli", createI18NText("Äidinkieli"));
-        aidinkieli.addOption("suomi", createI18NText("Suomi"), "fi");
-        aidinkieli.addOption("ruotsi", createI18NText("Ruotsi"), "sv");
+        aidinkieli.addOptions(koodistoService.getLanguages());
+        //aidinkieli.addOption("suomi", createI18NText("Suomi"), "fi");
+        //aidinkieli.addOption("ruotsi", createI18NText("Ruotsi"), "sv");
         aidinkieli.addAttribute("placeholder", "Valitse Äidinkieli");
         aidinkieli.addAttribute("required", "required");
         aidinkieli.setVerboseHelp(getVerboseHelp());
         aidinkieli.setInline(true);
 
         DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", createI18NText("Kansalaisuus"));
-        kansalaisuus.addOption("fi", createI18NText("Suomi"), "fi");
-        kansalaisuus.addOption("sv", createI18NText("Ruotsi"), "sv");
+        kansalaisuus.addOptions(koodistoService.getNationalities());
+        //kansalaisuus.addOption("fi", createI18NText("Suomi"), "fi");
+        //kansalaisuus.addOption("sv", createI18NText("Ruotsi"), "sv");
         kansalaisuus.addAttribute("placeholder", "Valitse kansalaisuus");
         kansalaisuus.addAttribute("required", "required");
         kansalaisuus.setHelp("Jos sinulla on kaksoiskansalaisuus, valitse toinen niistä");
@@ -197,9 +199,10 @@ public class Yhteishaku2013 {
         postinumero.setHelp("Kirjoita tähän osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, kuten kutsun valintakokeeseen tai valintapäätöksen.");
 
         DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", createI18NText("Asuinmaa"));
-        asuinmaa.addOption("valitse", null, "");
-        asuinmaa.addOption("fi", createI18NText("Suomi"), "fi");
-        asuinmaa.addOption("sv", createI18NText("Ruotsi"), "sv");
+        Option option = asuinmaa.addOption("valitse", null, "");
+        asuinmaa.addOptions(koodistoService.getCountries());
+        //asuinmaa.addOption("fi", createI18NText("Suomi"), "fi");
+        //asuinmaa.addOption("sv", createI18NText("Ruotsi"), "sv");
         asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
         asuinmaa.addAttribute("required", "required");
         asuinmaa.setVerboseHelp(getVerboseHelp());

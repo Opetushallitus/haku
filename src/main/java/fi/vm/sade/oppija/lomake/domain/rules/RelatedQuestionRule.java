@@ -23,11 +23,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author jukka
- * @version 9/20/124:49 PM}
- * @since 1.1
- */
 public class RelatedQuestionRule extends Rule {
 
 

@@ -67,6 +67,7 @@ public class OfficerController {
     public static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
     public static final String ADDITIONAL_INFO_VIEW = "/virkailija/additionalInfo";
+    public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + ";charset=UTF-8";
 
     @Autowired
     private KoodistoService koodistoService;
@@ -82,9 +83,9 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/{oid}")
-    public Response getApplication(@PathParam(OID_PATH_PARAM) final String oid)
+    public Response RedirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid)
             throws ResourceNotFoundException, URISyntaxException {
-        LOGGER.debug("officer getApplication by oid {}", new Object[]{oid});
+        LOGGER.debug("RedirectToLastPhase by oid {}", new Object[]{oid});
         Application app = applicationService.getApplication(oid);
         FormId formId = app.getFormId();
         Phase phase = formService.getLastPhase(formId.getApplicationPeriodId(), formId.getFormId());
@@ -94,7 +95,7 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/{applicationPeriodId}/{formIdStr}/{phaseId}/{oid}")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Viewable getPhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                              @PathParam("formIdStr") final String formIdStr,
                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
@@ -125,12 +126,13 @@ public class OfficerController {
     @POST
     @Path("/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Response savePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                               @PathParam("formId") final String formId,
                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                               @PathParam(OID_PATH_PARAM) final String oid,
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
+
         LOGGER.debug("savePhase {}, {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(
@@ -157,7 +159,7 @@ public class OfficerController {
     @POST
     @Path("/hakemus/{oid}/additionalInfo")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Response saveAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid, final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException, ResourceNotFoundException {
         LOGGER.debug("saveAdditionalInfo {}, {}", new Object[]{oid, multiValues});
@@ -168,7 +170,7 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/{oid}/additionalInfo")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Viewable getAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException, IOException {
         Map<String, Object> model = new HashMap<String, Object>();
         Application app = applicationService.getApplication(oid);
@@ -183,7 +185,7 @@ public class OfficerController {
     @POST
     @Path("/hakemus/{oid}/applicationProcessState/{status}/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Response changeApplicationProcessState(@PathParam(OID_PATH_PARAM) final String oid,
                                                   @PathParam("status") final String status) throws URISyntaxException {
         LOGGER.debug("changeApplicationProcessState {}, {}", new Object[]{oid, status});
@@ -191,7 +193,7 @@ public class OfficerController {
         // TODO: change when setApplicationProcessStateStatus returns correct exception and the updated application
         applicationProcessStateService.setApplicationProcessStateStatus(oid, ApplicationProcessStateStatus.valueOf(status));
         try {
-            return getApplication(oid);
+            return RedirectToLastPhase(oid);
         } catch (ResourceNotFoundException e) {
             throw new ResourceNotFoundExceptionRuntime("Updated application not found.");
         }

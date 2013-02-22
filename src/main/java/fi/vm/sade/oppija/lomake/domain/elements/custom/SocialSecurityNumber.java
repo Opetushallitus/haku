@@ -57,12 +57,10 @@ public class SocialSecurityNumber extends Question {
 
     public void setSex(Radio sex) {
         this.sex = sex;
-        this.sex.initValidators();
     }
 
     public void setSsn(TextQuestion ssn) {
         this.ssn = ssn;
-        this.ssn.initValidators();
     }
 
     public Radio getSex() {

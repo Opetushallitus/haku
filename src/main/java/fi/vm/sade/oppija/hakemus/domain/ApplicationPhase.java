@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.hakemus.domain;
 
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class ApplicationPhase {
     public ApplicationPhase(final FormId formId, final String phaseId, final Map<String, String> answers) {
         this.formId = formId;
         this.phaseId = phaseId;
-        this.answers.putAll(answers);
+        this.answers.putAll(ImmutableMap.copyOf(answers));
     }
 
     public FormId getFormId() {

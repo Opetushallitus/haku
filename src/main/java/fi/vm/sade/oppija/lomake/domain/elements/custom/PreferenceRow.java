@@ -16,14 +16,11 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
-import fi.vm.sade.oppija.lomake.domain.Attribute;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
-
-import java.util.Map;
 
 /**
  * Renders as a user's application preference row. Title is used to hold the name of the preference row (Hakutoive 1, Hakutoive 2 etc.)
@@ -90,12 +87,12 @@ public class PreferenceRow extends Question {
     }
 
     @Override
-    public void initValidators() {
-        for (Map.Entry<String, Attribute> attribute : attributes.entrySet()) {
-            if (attribute.getKey().equals("required")) {
-                this.validators.add(new RequiredFieldFieldValidator(learningInstitutionInputId));
-                this.validators.add(new RequiredFieldFieldValidator(educationInputId));
-            }
+    public void addAttribute(final String key, final String value) {
+        if ("required".equals(key)) {
+            this.validators.add(new RequiredFieldFieldValidator(learningInstitutionInputId));
+            this.validators.add(new RequiredFieldFieldValidator(educationInputId));
+        } else {
+            super.addAttribute(key, value);
         }
     }
 }

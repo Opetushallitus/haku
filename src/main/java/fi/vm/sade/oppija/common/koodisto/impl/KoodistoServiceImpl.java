@@ -45,6 +45,9 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_GRADE_RANGE = "ARVOSANA-ASTEIKKO";
     public static final String CODE_LEARNING_INSTITUTION_TYPES = "Oppilaitostyyppi";
     public static final String CODE_ORGANIZATION_TYPES = "Organisaatiotyyppi";
+    public static final String CODE_COUNTRIES = "maat kaksimerkkisellä arvolla";
+    public static final String CODE_NATIONALITIES = "";
+    public static final String CODE_LANGUAGES = "";
 
     private final KoodiService koodiService;
 
@@ -86,6 +89,21 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Option> getOrganizationtypes() {
         return codesToOptions(CODE_ORGANIZATION_TYPES);
+    }
+
+    @Override
+    public List<Option> getCountries() {
+        return codesToOptions(CODE_COUNTRIES);
+    }
+
+    @Override
+    public List<Option> getNationalities() {
+        return codesToOptions(CODE_NATIONALITIES);
+    }
+
+    @Override
+    public List<Option> getLanguages() {
+        return codesToOptions(CODE_LANGUAGES);
     }
 
     private List<Option> codesToOptions(final String codeName) {
