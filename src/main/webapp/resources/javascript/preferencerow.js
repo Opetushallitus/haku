@@ -54,6 +54,7 @@
     $('button.reset').click(function(event) {
         var id = $(this).data('id');
         $('[id|="' + id + '"]').val('').html('');
+        preferenceRow.clearSelectInput(id + "-Koulutus");
     });
 
     $(".field-container-text input:text").each(function(index) {
