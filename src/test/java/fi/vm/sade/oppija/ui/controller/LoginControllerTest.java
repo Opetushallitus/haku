@@ -48,6 +48,7 @@ public class LoginControllerTest {
     @Before
     public void setUp() throws Exception {
         when(httpServletRequest.getSession()).thenReturn(httpSession);
+        when(httpServletRequest.getContextPath()).thenReturn("");
         when(securityContext.getUserPrincipal()).thenReturn(principal);
         when(principal.getName()).thenReturn("admin");
         Mockito.doAnswer(new Answer() {
