@@ -568,6 +568,20 @@
             <groupId>fi.vm.sade.generic</groupId>
             <artifactId>generic-service</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-bundle</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>fi.vm.sade.generic</groupId>
+                    <artifactId>generic-dao</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.osgi</groupId>
+                    <artifactId>spring-osgi-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>esb-authorization-support</artifactId>
