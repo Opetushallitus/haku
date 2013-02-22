@@ -7,22 +7,42 @@ var gradegrid = (function() {
         gradegrid_settings.applicationSystemId + '/' + gradegrid_settings.formId + '/' +
         gradegrid_settings.elementId + '/' + 'additionalLanguageRow';
 
-    function appendRow(rowHtml) {
-        rowHtml.addClass('gradegrid-language-row').addClass('gradegrid-custom-language-row');
-        var customLanguageCount = $(".gradegrid-custom-language-row").length;
-        $(rowHtml.find('select').get(0)).attr('id', 'custom-scope_' + customLanguageCount).attr('name', 'custom-scope_' + customLanguageCount);
-        $(rowHtml.find('select').get(1)).attr('id', 'custom-language_' + customLanguageCount).attr('name', 'custom-language_' + customLanguageCount);
-        $(rowHtml.find('select').get(2)).attr('id', 'custom-commongrade_' + customLanguageCount).attr('name', 'custom-commongrade_' + customLanguageCount);
-        $(rowHtml.find('select').get(3)).attr('id', 'custom-optionalgrade_' + customLanguageCount).attr('name', 'custom-optionalgrade_' + customLanguageCount);
-        $("#gradegrid-table tr.gradegrid-language-row:last").after(rowHtml);
+    function appendRow($rowHtml) {
+        $rowHtml.data("gradegrid-row", {lang: true, customLang: true});
+
+        $("tr").filter(
+            function(index) {
+                return $(this).data("gradegrid-row");
+            }
+        ).last().after($rowHtml);
+    }
+
+    function updateCustomLanguageIndices() {
+        $("tr").filter(
+            function() {
+                return $(this).data("gradegrid-row") && $(this).data("gradegrid-row").customLang;
+            }
+        ).each(
+            function(i, langRow) {
+                $($(langRow).find('select').get(0)).attr('id', 'custom-scope_' + i).attr('name', 'custom-scope_' + i);
+                $($(langRow).find('select').get(1)).attr('id', 'custom-language_' + i).attr('name', 'custom-language_' + i);
+                $($(langRow).find('select').get(2)).attr('id', 'custom-commongrade_' + i).attr('name', 'custom-commongrade_' + i);
+                $($(langRow).find('select').get(3)).attr('id', 'custom-optionalgrade_' + i).attr('name', 'custom-optionalgrade_' + i);
+            }
+        );
     }
 
     return {
         addLanguage: function(event) {
             $.get(langRowUrl, function(data){
                 appendRow($(data));
+                updateCustomLanguageIndices();
             });
-            
+        },
+        removeLanguage: function(event) {
+            $(this).parent().parent().remove();
+            updateCustomLanguageIndices();
+            return false;
         }
     };
 }());
@@ -31,8 +51,5 @@ $(document).ready(function() {
    $("#add_language_button").click(gradegrid.addLanguage);
 
     //add listner for dynamically added language rows
-    $('#gradegrid-table').on('click', 'a.btn-remove', function() {
-        $(this).parent().parent().remove();
-        return false;
-    });
+    $('#gradegrid-table').on('click', 'a.btn-remove', gradegrid.removeLanguage);
 })

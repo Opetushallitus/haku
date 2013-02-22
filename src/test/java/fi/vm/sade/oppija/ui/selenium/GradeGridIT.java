@@ -28,7 +28,10 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import java.util.concurrent.TimeUnit;
+
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -70,6 +73,6 @@ public class GradeGridIT extends AbstractSeleniumBase {
 
         driver.findElement(By.id("add_language_button")).click();
 
-        assertNotNull(driver.findElement(By.className("gradegrid-custom-language-row")));
+        assertNotNull(driver.findElement(By.id("custom-scope_0")));
     }
 }

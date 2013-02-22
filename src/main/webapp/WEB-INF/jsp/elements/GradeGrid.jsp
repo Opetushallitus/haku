@@ -54,7 +54,7 @@
     <%-- languages --%>
     <c:forEach var="language" items="${element.languages}">
         <c:set var="language" value="${language}" scope="request"/>
-        <tr class="gradegrid-language-row">
+        <tr data-gradegrid-row="'{}'">
             <td>
                 <jsp:include page="gradegrid/LanguageRow.jsp"/>
             </td>
@@ -82,7 +82,7 @@
             <c:set var="customCommonGradeKey" value="custom-commongrade_${customIndex}" scope="page"/>
             <c:set var="customOptionalGradeKey" value="custom-optionalgrade_${customIndex}" scope="page"/>
 
-            <tr class="gradegrid-language-row gradegrid-custom-language-row">
+            <tr data-gradegrid-row="'{'customLang': true}'">
                 <td><c:out value="${element.customLanguageTitle}"/>
                     <select id="${customScopeKey}" name="${customScopeKey}" required="required">
                         <option></option>
