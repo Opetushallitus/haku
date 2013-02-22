@@ -51,7 +51,7 @@ public class LoggerAspect {
      * Logs event when a form phase is successfully saved
      * as application data in data store.
      */
-    @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.hakemus.dao.ApplicationDAO.submit(..)) && args(lomakeId,user,..)",
+    @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.hakemus.service.ApplicationService.submitApplication()) && args(lomakeId,user,..)",
             returning = "oid")
     public void logSavePhase(FormId lomakeId, User user, String oid) {
         try {
