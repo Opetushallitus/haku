@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.service.impl.AdditionalQuestionServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -42,6 +43,7 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
+@ActiveProfiles(profiles = "dev")
 public class AdditionalQuestionsServiceTest {
 
     public static final FormId FORM_ID = new FormId("Yhteishaku", "yhteishaku");
