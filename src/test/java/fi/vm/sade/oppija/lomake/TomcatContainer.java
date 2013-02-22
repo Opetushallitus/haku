@@ -40,6 +40,8 @@ public class TomcatContainer implements DisposableBean {
 
     private static final String WEBAPP_SRC = "src/main/webapp";
     private static final String RESOURCES_SRC = "src/main/resources";
+    public static final String SPRING_PROFILES_ACTIVE_KEY = "spring.profiles.active";
+    public static final String SPRING_PROFILES_ACTIVE_VALUE_DEV = "dev";
 
     /**
      * The temporary directory in which Tomcat and the app are deployed.
@@ -113,7 +115,7 @@ public class TomcatContainer implements DisposableBean {
         System.setProperty(TARJONTA_INDEX_URL, "http://localhost:" + getPort() + "/solr/");
         System.setProperty(TARJONTA_DATA_URL, "http://localhost:" + getPort() + "/haku/tarjontadev/learningDownloadPOC.xml");
         System.setProperty(MONGO_DB_NAME, name);
-
+        System.setProperty(SPRING_PROFILES_ACTIVE_KEY, SPRING_PROFILES_ACTIVE_VALUE_DEV);
         prepareSolr();
         mTomcat.addWebapp(mTomcat.getHost(), "/solr", solr.getAbsolutePath());
         mTomcat.addWebapp(mTomcat.getHost(), getContextPath(), webApp.getAbsolutePath());
@@ -134,10 +136,6 @@ public class TomcatContainer implements DisposableBean {
     }
 
     private static File createPackage() throws IOException {
-        final File workDir = new File(mWorkingDir);
-        if (!workDir.exists()) {
-            boolean ignored = workDir.mkdirs();
-        }
         File webApp = new File(mWorkingDir, getApplicationId());
         File oldWebApp = new File(webApp.getAbsolutePath());
         FileUtils.deleteDirectory(oldWebApp);
