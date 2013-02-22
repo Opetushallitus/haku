@@ -70,7 +70,7 @@ public class LoginController {
 
         req.getSession().setAttribute(USERNAME_SESSION_ATTRIBURE, name);
 
-        return getResponseByUsername(name, req);
+        return getResponseByUsername(name);
     }
 
     @GET
@@ -87,13 +87,13 @@ public class LoginController {
         return new Viewable(LOGIN_VIEW);
     }
 
-    private Response getResponseByUsername(String name, HttpServletRequest req) throws URISyntaxException {
+    private Response getResponseByUsername(String name) throws URISyntaxException {
         if (name.equals("admin") || name.equals("admin@oph.fi")) {
-            return seeOther(new URI(req.getContextPath() + "/admin")).build();
+            return seeOther(new URI("admin")).build();
         } else if (name.equals("officer")) {
-            return seeOther(new URI(req.getContextPath() + "/virkailija/hakemus")).build();
+            return seeOther(new URI("virkailija/hakemus")).build();
         } else {
-            return seeOther(new URI(req.getContextPath() + "/oma")).entity("").build();
+            return seeOther(new URI("oma")).entity("").build();
         }
     }
 

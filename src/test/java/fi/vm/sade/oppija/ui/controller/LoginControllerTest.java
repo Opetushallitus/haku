@@ -79,17 +79,17 @@ public class LoginControllerTest {
 
     @Test
     public void testPostLoginRedirectLocation() throws Exception {
-        testLocation("admin", "/admin");
+        testLocation("admin", "admin");
     }
 
     @Test
     public void testPostLoginRedirectLocationOfficer() throws Exception {
-        testLocation("officer", "/virkailija/hakemus");
+        testLocation("officer", "virkailija/hakemus");
     }
 
     @Test
     public void testPostLoginRedirectLocationOma() throws Exception {
-        testLocation("test", "/oma");
+        testLocation("test", "oma");
     }
 
     private void testLocation(final String name, final String expectedLocation) throws URISyntaxException {
