@@ -39,7 +39,6 @@ public class AdditionalQuestionsIT extends AbstractFormTest {
     @Test
     public void testAdditionalQuestion() {
         beginAt("education/additionalquestion/Yhteishaku/yhteishaku/hakutoiveet/hakutoiveetGrp/776");
-        System.out.println("");
         assertFormElementPresent("776_additional_question_1");
         assertElementPresentByXPath("//input[@value='q1_option_1']");
         assertElementPresentByXPath("//input[@value='q1_option_2']");

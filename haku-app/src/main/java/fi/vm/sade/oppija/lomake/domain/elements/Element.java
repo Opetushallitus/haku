@@ -203,7 +203,6 @@ public abstract class Element {
     }
 
     public void addValidator(final Validator validator) {
-        System.out.println("add validator : " + validator);
         this.validators.add(validator);
     }
 

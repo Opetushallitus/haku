@@ -35,7 +35,6 @@ public class RequiredFieldFieldValidator extends FieldValidator {
 
     @Override
     public ValidationResult validate(final Map<String, String> values) {
-        System.out.println("validate " + fieldName + "|" + values);
         if (values == null || StringUtils.isBlank(values.get(fieldName))) {
             return invalidValidationResult;
         }
