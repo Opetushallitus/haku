@@ -1,4 +1,0 @@
-pom.version=${pom.version}
-project.version=${project.version}
-build.date=${buildDate}
-bamboo.buildNumber=${bambooBuildNumber}
