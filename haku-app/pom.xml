@@ -814,7 +814,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/haku/resources/</outputDirectory>
+                            <outputDirectory>${basedir}/target/haku-app/resources/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/resources</directory>
@@ -830,7 +830,7 @@
             </plugin>
         </plugins>
 
-        <finalName>haku</finalName>
+        <finalName>haku-app</finalName>
     </build>
 
     <profiles>
