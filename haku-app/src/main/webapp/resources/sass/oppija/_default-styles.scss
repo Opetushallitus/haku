@@ -1,0 +1,286 @@
+
+
+
+
+
+html, body
+{
+	margin:0px;
+}
+
+body{
+	font-family: 'PT Sans', helvetica, arial, sans-serif;
+	font-size:0.813em;
+	background-color:#ffffff;
+	color:#3e3e3e;
+	line-height:1.3em;
+}
+
+input, textarea, select, option
+{
+	font-family:inherit;
+	font-size:inherit;
+}
+
+
+
+
+/*** Basic styles
+**************************************************************/
+
+h1, h2, h3, h4,
+.h1, .h2, .h3, .h4
+{
+	display:block;
+	font-weight:bold;
+	color:#000000;
+}
+
+h1, .h1
+{
+	font-size:1.846em;
+	line-height:1.3em;
+}
+
+h2, .h2
+{
+	font-size:1.385em;
+	line-height:1.3em;
+}
+
+h3, .h3
+{
+	font-size:1.154em;
+	line-height:1.3em;
+}
+
+h4, .h4
+{
+	font-size:1em;
+	font-weight:normal;
+	line-height:1.3em;
+	text-transform:uppercase;
+	color:#149ecb;
+}
+
+h5, .h5 {
+	font-size: 1em;
+	font-weight: normal;
+	line-height: 1.3em;
+	text-transform: uppercase;
+	color: #000;
+}
+
+b, strong, .bold 
+{ 
+	font-weight: bold; 
+}
+
+
+.uppercase
+{
+	text-transform:uppercase;
+}
+
+/*** Links
+************************************************/
+
+a
+{
+	color:#149dca;
+}
+
+
+
+/*** input 
+************************************************/
+
+/***  Input(text), select
+**********************************/
+
+input[type="text"],
+input[type="password"], 
+select, 
+textarea {
+    background-color: #ebf3f7;
+    background-image: none;
+    border: none;
+    box-shadow: 0 1px 1px #B5B5B5 inset, 0 -1px 4px rgba(0, 0, 0, 0.05) inset;
+    color: #676767;
+    padding: 0px 0px 0px 0.769em;
+	@include rounded-corners(4px);
+    font-size: 1em;
+    height: 2em;
+    line-height: 2em;
+    vertical-align: middle;
+}
+
+input[type="text"]:focus, 
+input[type="password"]:focus,
+select:focus {
+    background-color: #fff5da;
+}
+
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+select:disabled {
+    background-color: #eaeaea;
+    background-image: url('../img/texture-45dg-lines-gray.gif');
+    background-repeat: repeat;
+    background-position: top left;
+}
+
+
+
+
+select {
+    line-height: 1.231em;
+    padding-top: 0.385em;
+    padding-bottom: 0.385em;
+}
+
+select option {
+    padding: 0px 0px 0px 0.769em;
+    vertical-align: middle;
+}
+
+
+/*** Table
+************************************************/
+
+
+/*** Images
+************************************************/
+
+img
+{
+	max-width:100%;
+	
+	&.float-right,
+	&.set-right
+	{
+		margin-left:2em;
+	}
+	
+	&.float-left,
+	&.set-left
+	{
+		margin-right:2em;
+	}
+}
+
+a img
+{
+	border:none;
+}
+
+/*** Misc
+************************************************/
+
+hr
+{
+	display:block;
+	margin:1.5em 0px;
+	height:1px;
+	width:100%;
+	border:none;
+	background-color:#feba00;
+}
+
+.set-left{float:left;}
+.set-right{float:right;}
+.set-center
+{
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.left-intend-1 { padding-left: 10px; }
+.left-intend-2 { padding-left: 20px; }
+.left-intend-3 { padding-left: 30px; }
+
+.module 
+{
+	padding-bottom: 2em;
+}
+
+.module.bottom-border
+{
+	padding-bottom: 1em;
+	border-bottom:2px solid #3caed4;
+	margin-bottom:1em;
+}
+
+.pagetitle {
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+
+/*** Structure
+**************************************************************/
+
+#viewport
+{
+	
+}
+
+#site
+{
+	background: #ffffff;
+}
+
+#siteheader
+{
+   background-color:#ffffff;
+}
+
+#siteheader .header-container,
+#sitefooter,
+#sitecontent, /* Remove this when #sitecontent has been replaced with #page in every instance*/
+#page
+{
+	width:auto;
+	max-width:1140px;
+	margin:0px auto;
+}
+
+#sitefooter .footer-container
+{
+	margin-left: 0.625%;
+    margin-right: 0.625%;
+	margin-bottom:3em;
+	border:4px solid #ffffff;
+	background-color:#dcdcdc;
+    padding: 1em 0;
+	@include rounded-corners(3px);
+	box-shadow:0px 0px 1px 1px #dcdcdc;
+}
+
+
+
+
+/*** Responsive grid (test)
+************************************************/
+
+@media screen and (max-width: 600px) {
+	body
+	{
+		font-size:0.688em;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.grid16-8,
+	.grid16-4,
+	.grid16-16 {
+		float: left;
+		margin-left: 0.625%;
+		margin-right: 0.625%;
+		width: 98.75%;
+	}
+}
+
+
+
+

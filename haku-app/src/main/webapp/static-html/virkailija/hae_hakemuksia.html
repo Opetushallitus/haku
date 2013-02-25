@@ -1,0 +1,406 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>Opetushallitus </title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="../../resources/css/normalize.css" type="text/css" rel="stylesheet" />
+        <link href="../../resources/css/virkailija.css" type="text/css" rel="stylesheet" />
+        <script type="text/javascript" src="../../resources/jquery/jquery-1.8.0.min.js"></script>
+        <script type="text/javascript" src="../../resources/javascript/master.js"></script>
+
+        <!--[if gte IE 9]>
+          <style type="text/css">
+            .tabs .tab span {
+               filter: none;
+            }
+            
+            
+          </style>
+        <![endif]-->
+    </head>
+    <body>
+        <div id="viewport">
+            <div id="overlay" style="display: none;">
+                
+            </div>
+            <div id="wrapper">
+                <header id="siteheader">
+
+                    <div class="primarylinks">
+                        <a href="#">Oppijan verkkopalvelu</a> &nbsp;
+                        <a href="#">Virkailijan työpöytä</a>
+                    </div>
+
+                    <div class="secondarylinks">
+                        <a href="#">Omat tiedot</a> &nbsp;
+                        <a href="#">Viestintä</a> &nbsp;
+                        <a href="#">Asiakaspalvelu</a> &nbsp;
+                        <a href="#">Tukipalvelut</a>
+                    </div>
+
+                </header>
+                
+                <section id="page">
+                    <nav id="navigation" class="grid16-16">
+                    
+                        <ul class="level1">
+                            <li><a href="#" class=""><span>Organisaation tiedot</span></a></li>
+                            <li>
+                                <a href="index.html" class="current"><span>Koulutustarjonta</span></a>
+                                <ul class="level2">
+                                    <li><a href="#" class="">Koulutuksen tiedot</a></li>
+                                    <li><a href="#" class="">Koulutuksen toteutus ja hakukohde</a></li>
+                                    <li><a href="#" class="">Organisaation kuvailevat tiedot</a></li>
+                                    <li><a href="#" class="">Järjestämissopimukset</a></li>
+                                    <li><a href="#" class="">Järjestämisluvat</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#" class=""><span>Valintaperusteet</span></a></li>
+                            <li><a href="#" class=""><span>Koulutussuunnittelu</span></a></li>
+                            <li><a href="#" class=""><span>Sisällönhallinta</span></a></li>
+                        </ul>
+
+                    </nav>
+
+                
+                    <form id="searchform" method="get">
+                        <div class="grid16-6">
+                            <div class="form-item margin-top-2">
+                                <div class="form-item-content">
+                                    <input type="text" id="entry" class="search" />    
+                                </div>
+                                
+                                <label for="search-selection">Haku:</label>
+                                <div class="form-item-content">
+                                    <select name="search-selection" id="search-selection">
+                                        <option value="default">Oletuksena käynnissä oleva haku</option>
+                                    </select>
+                                </div>
+                                
+                                <label class="form-item-label" for="hakukohde">Hakukohde:</label>
+                                <div class="form-item-content">
+                             
+                                    <input type="text" name="Kentta" id="hakukohde" />
+                             
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid16-5">
+                            <div class="form-item ">
+                                <label for="application-phase">Hakemuksen tila: </label>
+                                <div class="form-item-content">
+                                    <select class="width-100" name="application-phase" id="application-phase">
+                                        <option value="all">Kaikki</option>
+                                        <option value="ready">Valmis</option>
+                                    </select>
+                                </div>
+                                 <div class="form-item-content">
+                                    <div class="field-container-checkbox">
+                                        <input type="checkbox" name="fetch-passive" value="fetch-passive" id="fetch-passive" />
+                                        <label for="fetch-passive">Hae myös passiiviset</label>
+                                    </div>
+                                    <div class="field-container-checkbox">
+                                        <input type="checkbox" name="discretionary" value="discretionary" id="discretionary" />
+                                        <label for="discretionary">Hae vain harkinnanvaraisesti hakeneet</label>
+                                    </div>
+                                 </div>
+                                <a href="#" class="button secondary">Tyhjennä</a>
+                                <a href="#" class="button primary">Hae</a>
+                            </div>
+                        </div>
+                        <div class="grid16-5">
+                            <div class="form-item">
+                                <div class="form-item-row">
+                                    <div class="form-item">
+                                        <label class="form-item-label" for="vuosi">Lähtökoulu</label>
+                                        <div class="form-item-content">
+                                            <input type="text" name="vuosi" id="vuosi" />
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <label class="form-item-label" for="hakukausi">Hakukausi</label>
+                                        <div class="form-item-content">
+                                            <select id="hakukausi">
+                                                <option value="syksy">Syksy</option>
+                                                <option value="kevat">Kevät</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="grid16-16 margin-top-2">
+                    <a href="#" class="button">Yksilöi henkilöitä (3 kpl)</a>
+                    <a href="#" class="button">Päällekkäisiä hakemuksia (2 kpl)</a>
+                    <a href="#" class="button">Tarkasta sähköisiä liitteitä (124 kpl)</a>
+                </section>
+
+                <section class="grid16-16 margin-top-2">
+
+                    <div class="tabs">
+                        <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemukset"
+                           class="tab current"><span>Hakemukset (113)</span></a>
+                        <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakutoiveet" class="tab"><span>Hakutoiveet</span></a>
+                    </div>
+
+                    <div class="tabsheets">
+
+                        <section id="hakemukset" style="display: block" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemukset"> 
+                            
+                            <a href="#" class="button small">Avaa hakemus</a>
+                            <a href="#" class="button small">Merkitse paperiliitteitä</a>
+                            <a href="#" class="button small">Syötä paperihakemuksia</a>
+                            <div class="float-right">
+                                <a href="#" class="button small excel">Vie lista exceliin</a>
+                                <a href="#" class="button small print">Tulosta lista</a>
+                            </div>
+
+                            <div class="grid16-8">
+                                <span>Hakutulos: 113 osumaa</span>
+                                <div class="field-container-checkbox margin-top-1">
+                                    <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId" />
+                                    <label for="KenttaId">Kentän otsikko</label>
+                                </div>
+                            </div>
+
+                            <div class="grid16-4 float-right">
+                                <div class="float-right">
+                                    <div class="pagination inline-block margin-right-2">
+                                        <a href="#">&laquo;</a>
+                                        <a href="#">1</a>
+                                        <span>|</span>
+                                        <a href="#">2</a>
+                                        <span>|</span>
+                                        <a href="#">3</a>
+                                        <a href="#">&raquo;</a>
+                                    </div>
+
+                                    <select name="showresults" class="inline-block" id="showresults-top">
+                                        <option value="50">Näytä 50/sivu</option>
+                                        <option value="100">Näytä 100/sivu</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <table class="table-1">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Sukunimi</th>
+                                        <th>Etunimi</th>
+                                        <th>Henkilötunnus</th>
+                                        <th>Hakemusnro</th>
+                                        <th>Hakemuksen tila</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Aaltonen</td>
+                                        <td>Aino</td>
+                                        <td>010197-123A</td>
+                                        <td>12345</td>
+                                        <td>Valmis</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Angeria</td>
+                                        <td>Hanna-Maria</td>
+                                        <td>010197-123A</td>
+                                        <td>72642</td>
+                                        <td>Valmis</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Asikainen</td>
+                                        <td>Esa</td>
+                                        <td>010197-123A</td>
+                                        <td>72253</td>
+                                        <td>Passivoitu</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Eerikäinen</td>
+                                        <td>Matti</td>
+                                        <td>010197-123A</td>
+                                        <td>71342</td>
+                                        <td>Ei hakemusta (perustiedot siirretty)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Eskelinen</td>
+                                        <td>Leena</td>
+                                        <td>010197-123A</td>
+                                        <td>72652</td>
+                                        <td>Ehdollisesti valmis</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Aaltonen</td>
+                                        <td>Aino</td>
+                                        <td>010197-123A</td>
+                                        <td>12345</td>
+                                        <td>Valmis</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Angeria</td>
+                                        <td>Hanna-Maria</td>
+                                        <td>010197-123A</td>
+                                        <td>72642</td>
+                                        <td>Valmis</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Asikainen</td>
+                                        <td>Esa</td>
+                                        <td>010197-123A</td>
+                                        <td>72253</td>
+                                        <td>Passivoitu</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Eerikäinen</td>
+                                        <td>Matti</td>
+                                        <td>010197-123A</td>
+                                        <td>71342</td>
+                                        <td>Ei hakemusta (perustiedot siirretty)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Eskelinen</td>
+                                        <td>Leena</td>
+                                        <td>010197-123A</td>
+                                        <td>72652</td>
+                                        <td>Ehdollisesti valmis</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Aaltonen</td>
+                                        <td>Aino</td>
+                                        <td>010197-123A</td>
+                                        <td>12345</td>
+                                        <td>Valmis</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Angeria</td>
+                                        <td>Hanna-Maria</td>
+                                        <td>010197-123A</td>
+                                        <td>72642</td>
+                                        <td>Valmis</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Asikainen</td>
+                                        <td>Esa</td>
+                                        <td>010197-123A</td>
+                                        <td>72253</td>
+                                        <td>Passivoitu</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Eerikäinen</td>
+                                        <td>Matti</td>
+                                        <td>010197-123A</td>
+                                        <td>71342</td>
+                                        <td>Ei hakemusta (perustiedot siirretty)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center"><input type="checkbox" /></td>
+                                        <td>Eskelinen</td>
+                                        <td>Leena</td>
+                                        <td>010197-123A</td>
+                                        <td>72652</td>
+                                        <td>Ehdollisesti valmis</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="grid16-4 float-right">
+                                <div class="float-right">
+                                    <div class="pagination inline-block margin-right-2">
+                                        <a href="#">&laquo;</a>
+                                        <a href="#">1</a>
+                                        <span>|</span>
+                                        <a href="#">2</a>
+                                        <span>|</span>
+                                        <a href="#">3</a>
+                                        <a href="#">&raquo;</a>
+                                    </div>
+
+                                    <select name="showresults" class="inline-block" id="showresults-bottom">
+                                        <option value="50">Näytä 50/sivu</option>
+                                        <option value="100">Näytä 100/sivu</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="clear"></div>
+                        </section>
+
+                        <section id="hakutoiveet" style="display: block" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakutoiveet"></section>
+                    </div>
+                </section>
+
+                <footer id="footer" class="grid16-16">
+                    <div class="footer-container">
+                    
+                        <div class="grid16-4">
+                            <div class="grid-container">
+            Leipäteksti #000 line-height: 1.8em font-size: 1.3em (body font-size: 62.5% = 10px) Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. 
+                            </div>
+                        </div>
+
+
+                        <div class="grid16-12">
+                            <div class="grid16-4 ">
+                                <div class="grid-container">
+                                    <h3> 1st column - Lorem ipsum</h3>
+                                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                                </div>
+                            </div>
+                            <div class="grid16-4">
+                                <div class="grid-container">
+                                    <h3>2nd column - Lorem ipsum </h3>
+                                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                                </div>
+                            </div>
+                            <div class="grid16-4">
+                                <div class="grid-container">
+                                    <h3> 3st column - Lorem ipsum</h3>
+                                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                                </div>
+                            </div>
+                            <div class="grid16-4">
+                                <div class="grid-container">
+                                    <h3>4nd column - Lorem ipsum </h3>
+                                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                                </div>
+                            </div>
+                            <div class="grid16-8 footer-logo">
+                                <img src="../content/logo-opetus-ja-kulttuuriministerio.png">
+                            </div>
+                            <div class="grid16-8 footer-logo">
+                                <img src="../content/logo-oph.png">
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        <div class="clear"></div>
+                    </div>
+                </footer>
+                <div class="clear"></div>
+            </div>
+
+
+        </div>
+    </body>
+</html>

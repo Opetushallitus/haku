@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Opetushallitus </title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="../resources/css/screen.css" type="text/css" rel="stylesheet"/>
+    <link href="../resources/css/oppija.css" type="text/css" rel="stylesheet" />
+    <link type="text/css" href="../resources/jquery/jquery-ui-theme/jquery-ui-1.8.23.custom.css" rel="stylesheet"/>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
+    <script type="text/javascript" src="../resources/jquery/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="../resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
+    <script type="text/javascript" src="../resources/javascript/master.js"></script>
+    <script type="text/javascript" src="layout/javascript/protofunctions.js"></script>
+
+</head>
+<body>
+<div id="viewport">
+<div id="overlay"></div>
+<div id="site">
+
+<header id="siteheader">
+
+    <div class="sitelogo">
+        <a href="index.html">Sivuston logo</a>
+    </div>
+
+    <div class="actions">
+
+        <ul>
+            <li><a href="#">Kirjaudu ulos</a></li>
+            <li><a href="#">Mikko mallikas</a></li>
+        </ul>
+
+        <ul>
+            <li><a href="#">Sanasto</a></li>
+            <li><a href="#">Kysy neuvoa</a></li>
+            <li><a href="#">Hakuajat</a></li>
+        </ul>
+
+        <ul>
+            <li><a href="#">På svenska</a></li>
+            <li><a href="#">in English</a></li>
+            <li><a href="#">Mobiili</a></li>
+            <li><a href="#">Tekstiversio</a></li>
+        </ul>
+
+        <div class="clear"></div>
+    </div>
+
+    <div class="line clear"></div>
+</header>
+<section id="page">
+<section id="pageheader">
+
+    <nav class="main-navigation" class="grid16-16">
+        <ul class="navigation">
+            <li class="home"><a href="index.html">Etusivu</a></li>
+            <li><a href="lukio.html">Lukio</a></li>
+            <li><a href="#">Ammatillinen koulutus</a></li>
+            <li><a href="#">Ammattikorkeakoulu</a></li>
+            <li><a href="#">Yliopisto</a></li>
+            <li><a href="#">Täydennyskoulutus</a></li>
+            <li><a href="#">Opintojen valinta</a></li>
+        </ul>
+    </nav>
+
+    <div id="breadcrumb" class="grid16-16">
+        <ul>
+            <li class="home"><a href="#"></a></li>
+            <li class="breadcrumb-item"><a href="#">sivu 1</a></li>
+            <li class="breadcrumb-item"><a href="#">sivu 2</a></li>
+            <li class="breadcrumb-item"><a href="#">sivu 3</a></li>
+            <li class="breadcrumb-item current"><a href="#">sivu 4</a></li>
+            <li class="clear"></li>
+        </ul>
+    </div>
+
+    <div id="searchfield-wrapper" class="grid16-16">
+        <div id="searchfield">
+            <div class="field-container-text">
+                <input type="text"/>
+            </div>
+            <button class="btn-search">
+                <span><span></span></span>
+            </button>
+
+        </div>
+    </div>
+
+</section>
+<section id="vapaasanahaku" class="content-container">
+
+
+<div class="grid16-12">
+
+<div class="tabs">
+    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="haut"
+       class="tab current"><span>Koulutuksia (24 kpl)</span></a>
+    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="koulutukset"
+       class="tab"><span>Koulutustietoa (12 kpl)</span></a>
+    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakukohteet" class="tab"><span>Tarinoita (3 kpl)</span></a>
+    <a href="#" data-tabs-group="applicationtabs" data-tabs-id="oppilaitokset" class="tab"><span>Oppilaitoksia (5 kpl)</span></a>
+</div>
+
+<div class="tabsheets">
+<section id="koulutuksia" style="display: block" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="haut">
+
+<div class="grid16-6">
+    <form id="suodatin" action="" method="post">
+
+        <fieldset class="form-item">
+            <a href="#" class="helplink float-right">?</a>
+            <input type="checkbox" name="suodatin" value="dolor" id="Liikennevaline-dolor"/>
+            <label for="Liikennevaline-dolor">Näytä vain tutkintoon johtava koulutus</label>                
+            <div class="clear"></div>
+
+
+        </fieldset>
+
+        <fieldset class="form-item">
+            <legend class="h3 form-item-label float-left">Pohjakoulutus</legend>
+            <a href="#" class="helplink float-right">?</a>
+            <div class="clear"></div>
+            <small>Valitse ylin suorittamasi koulutus</small>
+
+            <div class="form-item-content">
+                <div>
+                    <input type="radio" name="perusopetus" id="perusopetus" />
+                    <label for="perusopetus">Perusopetus</label>
+                </div>
+                <div class="margin-left-4">
+                    <input type="checkbox" name="opetusmaara" id="opetusmaara" />
+                    <label for="opetusmaara">Yksilöllistetty oppimäärä</label>
+                </div>
+                <div>
+                    <input type="radio" name="Lukio" id="Lukio" />
+                    <label for="Lukio">Lukio/Ylioppilas</label>
+                </div>
+                <div>
+                    <input type="radio" name="yliopistotutkinto" id="yliopistotutkinto" />
+                    <label for="yliopistotutkinto">Yliopistotutkinto</label>
+                </div>
+
+            </div>
+
+        </fieldset>
+
+        <fieldset class="form-item">
+            <legend class="h3 margin-bottom-2">Haettavan koulutuksen tyyppi</legend>
+            <label class="h5">Sijainti</label>
+            <div class="form-item-content margin-bottom-2">
+                <input type="text" name="Kentta" id="KenttaId" size="30"/>
+                <button class="plus">
+                    <span><span></span></span>
+                </button>
+            </div>
+
+            <label for="language">Kieli</label>
+            <div>
+                <select class="width-100" name="language" id="language">
+                    <option value="fi">Suomi</option>
+                    <option value="swe">Ruotsi</option>
+                </select>
+            </div>
+            <div class="clear"></div>
+        </fieldset>
+
+        <fieldset class="form-item">
+            <legend class="h3">Opintojen alkamisajankohta</legend>
+            <div class="field-container-select">
+                <select name="Alkamisajankohta" placeholder="Valitse kansalaisuus" id="Alkamisajankohta"
+                        required="required">
+                    <option name="Alkamisajankohta.Alkamisajankohta.suomi" value="Kevät 2013" selected="selected"
+                            id="Alkamisajankohta-suomi">Kevät 2013
+                    </option>
+                    <option name="Alkamisajankohta.Alkamisajankohta.ruotsi" value="Syksy 2014"
+                            id="Alkamisajankohta-ruotsi">Syksy 2014
+                    </option>
+                </select>
+            </div>
+        </fieldset>
+
+    </form>
+</div>
+<div class="grid16-10">
+    <form id="hakutulokset" action="" method="post">
+
+        <div class="toprow">
+            <h1 class="float-left">Hakusana: liikunta</h1>
+
+            <div class="field-container-select float-right">
+                <select name="sorting" id="sorting">
+                    <option value="sorting">Aakkosjärjestys</option>
+                    <option value="descending">Laskeva</option>
+                    <option value="ascending">Nouseva</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="form-item search-result">
+            <ul class="result float-left" style="display: inline-block; margin-right: 20px">
+                <li><a href="koulutuskuvaus.html" class="form-row-link bold">Liikunnanohjauksen perustutkinto PK;
+                    Liikunnanohjaaja; Kevät 2013; Kisakallion urheilupuisto; Lohja</a></li>
+                <li><a href="koulutuskuvaus.html" class="form-row-link left-intend-2">- Liikunnanohjauksen
+                    koulutusohjelma</a></li>
+
+            </ul>
+            <div class="result-options">
+                <div class="field-container-checkbox float-left left-intend-2" style="display: inline-block">
+                    <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
+                    <label for="KenttaId">Lisää muistilistaan</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+
+
+        <div class="form-item search-result">
+            <ul class="result float-left" style="display: inline-block; margin-right: 20px">
+                <li><a href="koulutuskuvaus.html" class="form-row-link bold">Liikunnanohjauksen perustutkinto PK;
+                    Liikuntaneuvoja; Syksy 2013; Suomen Urheilupuisto; Vierumäki</a></li>
+                <li><a href="koulutuskuvaus.html" class="form-row-link left-intend-2">- Liikunnanohjauksen
+                    koulutusohjelma</a></li>
+
+            </ul>
+            <div class="result-options">
+                <div class="field-container-checkbox float-left left-intend-2" style="display: inline-block">
+                    <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
+                    <label for="KenttaId">Lisää muistilistaan</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+    </form>
+</div>
+<div class="clear"></div>
+
+</section>
+<section id="koulutustietoa" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="koulutukset">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</section>
+<section id="tarinoita" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakukohteet">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</section>
+<section id="koulutukset" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="koulutukset">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</section>
+
+</div>
+</div>
+<div class="grid16-4">
+    <aside id="sidemenu">
+        <div id="notelist">
+            <div class="heading">
+                <h2>Muistilista</h2>
+            </div>
+            <div class="sidemenu-content">
+                <ul>
+                    <li>Lorem ipsum dolor sit amet</li>
+                    <li>Lorem ipsum dolor sit amet</li>
+                </ul>
+                <button>
+                    <span><span>siirry muistilistaan</span></span>
+                </button>
+                <p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua.</i></p>
+            </div>
+        </div>
+        <div id="authentication">
+            <div class="heading">
+                <h2>Kirjautuminen</h2>
+            </div>
+            <div class="sidemenu-content">
+
+                <form id="kirjautuminen" action="" method="post">
+                    <legend class="h3">KÄYTTÄJÄTUNNUS</legend>
+                    <div class="form-item-content">
+                        <input type="text" name="kayttajatunnus" id="kayttajatunnusId" size="30"/>
+                    </div>
+                    <legend class="h3">SALASANA</legend>
+                    <div class="form-item-content">
+                        <input type="text" name="salasana" id="salasanaId" size="30"/>
+                    </div>
+
+                    <input type="submit"/>
+                </form>
+                <div class="clear"></div>
+
+
+                <a href="#" class="helplink">?</a>
+                <a href="#">Unohtuiko salasana?</a>
+                <a href="#">Rekisteröidy palveluun</a>
+
+            </div>
+        </div>
+    </aside>
+</div>
+<div class="clear"></div>
+</section>
+</section>
+<footer id="sitefooter"></footer>
+</div>
+
+</div>
+</body>
+</html>

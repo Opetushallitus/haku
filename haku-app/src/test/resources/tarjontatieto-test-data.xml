@@ -1,0 +1,16 @@
+<add>
+    <doc>
+        <field name="tunniste">1</field>
+        <field name="nimi">Liikunnanohjauksen perustutkinto</field>
+        <field name="otsikko">title</field>
+        <field name="kuvaus">description</field>
+        <field name="sisalto">content</field>
+        <field name="linkki">/haku/fi/yhteishaku/form</field>
+        <field name="koulutustyyppi">Lukiokoulutus</field>
+        <field name="pohjakoulutus">Perusopetus</field>
+        <field name="koulutuskieli">Suomi</field>
+        <field name="opetusmuoto">Monimuoto-opetus</field>
+        <field name="oppilaitostyyppi">Ammattikoulu</field>
+        <field name="tutkintoon_johtava">true</field>
+    </doc>
+</add>

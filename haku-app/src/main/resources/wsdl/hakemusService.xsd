@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="unqualified"
+           targetNamespace="http://hakemus.service.sade.vm.fi/messages" version="1.0"
+           xmlns:tns="http://hakemus.service.sade.vm.fi/messages"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:hakemus="http://hakemus.service.sade.vm.fi/schema"
+        >
+
+    <xs:import namespace="http://hakemus.service.sade.vm.fi/schema" schemaLocation="hakemus.xsd" />
+
+    <xs:element name="haeHakemukset" type="tns:HaeHakemuksetTyyppi" />
+    <xs:element name="haeHakemuksetVastaus" type="tns:HaeHakemuksetVastausTyyppi" />
+
+    <xs:complexType name="HaeHakemuksetTyyppi">
+        <xs:sequence>
+            <xs:element name="hakukohdeOid" type="xs:string" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="HakuParametritTyyppi">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="hakukohde" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="HaeHakemuksetVastausTyyppi">
+        <xs:sequence>
+            <xs:element name="hakemus" type="hakemus:HakemusTyyppi" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

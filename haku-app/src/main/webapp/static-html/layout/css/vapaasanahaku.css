@@ -1,0 +1,29 @@
+
+
+.minimal {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.form-row ul {
+    margin: 0;
+}
+
+/*** Misc
+**************************************************************/
+
+.toprow {
+    padding-top: 20px;
+}
+
+.toprow h1 {
+    margin: 0;
+}
+
+.toprow .set-right {
+    padding-left: 20px;
+}
+
+
+
+
