@@ -61,7 +61,6 @@ public class TomcatContainer implements DisposableBean {
     private final String name;
 
     public TomcatContainer(final String name) throws LifecycleException, IOException {
-        System.setProperty("webdriver.firefox.bin", "/Users/hannu/software/Firefox15.app/Contents/MacOS/firefox");
         this.name = name;
         createTomcat();
         mTomcat.start();
