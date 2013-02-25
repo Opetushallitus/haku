@@ -1732,13 +1732,20 @@ label, .label {
         box-shadow: none; }
         #navigation .level2 li a:hover {
           background-color: #feedbd; }
+        #navigation .level2 li a span, #navigation .level2 li a:hover span {
+          padding: 0px;
+          margin: 0px;
+          color: #0C566E;
+          background-color: transparent;
+          border-radius: 0px; }
       #navigation .level2 li a.current {
         background-color: #feedbd; }
 
 /*** form-layout-table
 ************************************************/
 .form-layout-table td {
-  border: 10px solid transparent; }
+  border: 10px solid transparent;
+  vertical-align: top; }
 
 .structural-table {
   width: 100%;

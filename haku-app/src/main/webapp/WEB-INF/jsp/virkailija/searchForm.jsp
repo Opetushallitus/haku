@@ -20,48 +20,47 @@
 <section id="searchSection">
     <form id="searchform">
         <input type="hidden" id="lopOid" name="lopoid">
-
         <div class="grid16-16">
             <table class="form-layout-table width-100">
                 <tr>
                     <td>
+						<label for="application-state">Hae hakemuksia:</label>
 						<div class="field-search-containerbox">
 							<input type="text" id="entry" class="search width-60"
-								   placeholder="nimi, henkilötunnus, oppijanumero, hakemusnumero"/>
+								   placeholder=""/>
+							
 						</div>
+						<small>Hae hakijan nimellä, henkilötunnuksella, oppijanumerolla tai hakemusnumerolla.</small>
                     </td>
                     <td>
                         <label for="application-state">Hakemuksen tila:</label>
+						<div class="field-select-containerbox">
                         <select class="width-50" id="application-state" ng-model="applicationState">
                             <option value="">Kaikki</option>
                             <option value="ACTIVE">Voimassa</option>
                             <option value="PASSIVE">Peruttu</option>
                             <option value="INCOMPLETE">Puutteellinen</option>
                         </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <div>
-                            <input type="checkbox" value="fetch-passive" id="fetch-passive"/>
+						</div>
+						<div class="field-container-checkbox">
+							<input type="checkbox" value="fetch-passive" id="fetch-passive"/>
                             <label for="fetch-passive">Hae myös passiiviset</label>
-                        </div>
+						</div>
                     </td>
                 </tr>
+
                 <tr>
                     <td>
                         <label class="block" for="application-preference">Hakukohde:</label>
 						<div class="field-text-containerbox">
                         <input class="width-60" type="text" id="application-preference"
-                               placeholder="hae nimellä tai koodilla"/>
+                               placeholder="hakukohteen nimi tai koodi"/>
 						</div>
                     </td>
 
-                    <td>
-                        <input id="reset-search" class="button secondary small" type="button" value="Tyhjennä">
-                        <input id="search-applications" class="button primary small" type="submit" value="Hae">
+                    <td style="vertical-align:bottom;">
+                        <input id="reset-search" class="button secondary small" type="button" value="Tyhjennä" style="margin-bottom:1px;" />
+                        <input id="search-applications" class="button primary small" type="submit" value="Hae" style="margin-bottom:1px;" />
                     </td>
                 </tr>
             </table>

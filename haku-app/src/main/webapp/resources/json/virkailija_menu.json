@@ -1,0 +1,96 @@
+﻿{
+    "menu": {
+        "attributes": {
+            "class": "level1"
+        },
+        "items": [
+            {
+                "attributes": {},
+                "link": {
+                    "text": "Organisaation tiedot",
+                    "href": "#"
+                },
+                "icon": "icon test"
+            },
+            {
+                "attributes": {},
+                "link": {
+                    "text": "Koulutustarjonta",
+                    "href": "#"
+                },
+                "icon": "icon test",
+                "menu": {
+                    "attributes": {
+                        "class": "level2"
+                    },
+                    "items": [
+                        {
+                            "attributes": {},
+                            "link": {
+                                "text": "Koulutuksen tiedot",
+                                "href": "#"
+                            },
+                            "icon": "icon test"
+                        },
+                        {
+                            "attributes": {},
+                            "link": {
+                                "text": "Koulutuksen toteutus ja hakukohde",
+                                "href": "#"
+                            },
+                            "icon": "icon test"
+                        },
+                        {
+                            "attributes": {},
+                            "link": {
+                                "text": "Organisaation kuvailevat tiedot",
+                                "href": "#"
+                            },
+                            "icon": "icon test"
+                        },
+                        {
+                            "attributes": {},
+                            "link": {
+                                "text": "Järjestämissopimukset",
+                                "href": "#"
+                            },
+                            "icon": "icon test"
+                        },
+                        {
+                            "attributes": {},
+                            "link": {
+                                "text": "Järjestämisluvat",
+                                "href": "#"
+                            },
+                            "icon": "icon test"
+                        }
+                    ]
+                }
+            },
+            {
+                "attributes": {},
+                "link": {
+                    "text": "Valintaperusteet",
+                    "href": "#"
+                },
+                "icon": "icon test"
+            },
+            {
+                "attributes": {},
+                "link": {
+                    "text": "Koulutussuunnittelu",
+                    "href": "#"
+                },
+                "icon": "icon test"
+            },
+            {
+                "attributes": {},
+                "link": {
+                    "text": "Sisällönhallinta",
+                    "href": "#"
+                },
+                "icon": "icon test"
+            }
+        ]
+    }
+}

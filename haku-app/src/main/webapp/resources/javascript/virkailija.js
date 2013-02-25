@@ -16,6 +16,69 @@
 
 $(document).ready(function () {
 
+var mainmenu = {
+	build:function(){
+		mainmenu.get.data();
+		mainmenu.set.triggers();
+	},
+	get : {
+		data:function(){
+		
+			jQuery.ajax({
+				url: "/haku-app/resources/json/virkailija_menu.json",
+				type: "POST",
+				dataType: "json",
+				async: false,
+				success: function (data) {
+					mainmenu.generate.html(data);
+				}
+			});
+
+		}
+	},
+	generate : {
+		html:function(json){
+			var menu = mainmenu.generate.menuHtml(json.menu);
+			$('#navigation').html(menu);
+		},
+		menuHtml:function(menu){
+
+			var $menu = $('<ul/>').attr(menu.attributes);
+			$.each(menu.items, function(itemIndex, itemData) {
+				var $item = $('<li/>').attr(itemData.attributes).appendTo($menu);
+				var $link = $('<a/>').appendTo($item);            
+				$.each(itemData.link, function(linkKey, linkVal) {
+					if (linkKey === 'text') {
+						var $text = $('<span/>').text(linkVal);
+						$link.html($text);
+					} 
+					else {$link.attr(linkKey, linkVal);}
+				});
+				if (itemData.hasOwnProperty('menu')) {
+					$item.append(mainmenu.generate.menuHtml(itemData.menu));
+				}
+			});
+			return $menu;
+			
+		}
+	},
+	set : {
+		triggers:function(){
+			$('body').on('mouseover', '#navigation ul li', function(){
+				$(this).children('ul').show();
+			});
+			
+			$('body').on('mouseout', '#navigation ul li', function(){
+				$(this).children('ul').hide();
+			});
+		}
+	}
+}
+
+mainmenu.build();
+
+
+
 
 // Organisation search 
 // Handle presentation of organisation search form and results
