@@ -13,7 +13,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-
 package fi.vm.sade.oppija.application.process.controller;
 
 import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
