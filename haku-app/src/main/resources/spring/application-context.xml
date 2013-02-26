@@ -65,6 +65,7 @@
         <import resource="authentication-service-context.xml"/>
 
         <import resource="classpath:/META-INF/spring/logger-mock-context.xml"/>
+        <import resource="cxf-context.xml" />
     </beans>
 
 </beans>
