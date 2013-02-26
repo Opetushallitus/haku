@@ -592,10 +592,6 @@
                     <groupId>fi.vm.sade.generic</groupId>
                     <artifactId>generic-dao</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.osgi</groupId>
-                    <artifactId>spring-osgi-core</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
