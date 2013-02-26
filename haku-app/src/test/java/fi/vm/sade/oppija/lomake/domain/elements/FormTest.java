@@ -39,6 +39,6 @@ public class FormTest {
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testGetElementByIdNotFound() throws Exception {
         form.addChild(expectedElement);
-        Element actualElement = form.getElementById(ID_TO_GET + "2");
+   		form.getElementById(ID_TO_GET + "2");
     }
 }

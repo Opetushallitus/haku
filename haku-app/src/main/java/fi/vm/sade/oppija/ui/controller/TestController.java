@@ -16,30 +16,19 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.oppija.common.authentication.AuthenticationService;
-import fi.vm.sade.oppija.common.authentication.Person;
-import fi.vm.sade.oppija.lomake.converter.FormModelToJsonString;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.lomake.domain.elements.Attachment;
-import fi.vm.sade.oppija.lomake.service.FormModelHolder;
+import java.util.Arrays;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-import static javax.ws.rs.core.Response.created;
+import fi.vm.sade.oppija.common.authentication.AuthenticationService;
+import fi.vm.sade.oppija.common.authentication.Person;
 
 
 @Controller

@@ -16,18 +16,20 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
-import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
-import org.junit.Before;
-import org.junit.Test;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+
+import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
 
 public class ElementTreeValidatorTest {
 
@@ -38,7 +40,6 @@ public class ElementTreeValidatorTest {
     public void setUp() throws Exception {
         textQuestion = new TextQuestion("id", createI18NText("title"));
         formModelDummyMemoryDao = new FormServiceMockImpl();
-        Form form = formModelDummyMemoryDao.getForm("Yhteishaku", "yhteishaku");
     }
 
     @Test(expected = NullPointerException.class)

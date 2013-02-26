@@ -50,7 +50,8 @@ public class SearchResult {
             for (String losKey : los.keySet()) {
                 final String[] split = losKey.split("-");
                 int k = Integer.parseInt(split[0]);
-                HashMap<String, String> o = (HashMap<String, String>) map.get("LOIIndex" + k);
+                @SuppressWarnings("unchecked")
+				HashMap<String, String> o = (HashMap<String, String>) map.get("LOIIndex" + k);
                 if (o == null) {
                     o = new HashMap<String, String>();
                     map.put("LOIIndex" + k, o);

@@ -25,7 +25,8 @@ import java.util.Map;
 
 public class I18nText implements Serializable {
 
-    private final String id;
+	private static final long serialVersionUID = 3485756393751579235L;
+	private final String id;
     private final Map<String, String> translations;
 
     @JsonCreator

@@ -32,7 +32,9 @@ import java.io.Serializable;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class ApplicationProcessState implements Serializable {
 
-    @JsonProperty(value = "_id")
+	private static final long serialVersionUID = 8629187412527344976L;
+
+	@JsonProperty(value = "_id")
     @JsonSerialize(using = ObjectIdSerializer.class, include = JsonSerialize.Inclusion.NON_NULL)
     @JsonDeserialize(using = ObjectIdDeserializer.class)
     private org.bson.types.ObjectId id; //NOSONAR Json-sarjallistajan käyttämä.

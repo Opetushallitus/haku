@@ -25,7 +25,9 @@ import javax.ws.rs.core.Response;
  * @author Hannu Lyytikainen
  */
 public class JSONException extends WebApplicationException {
-    public JSONException(Response.Status status, String message) {
+	private static final long serialVersionUID = -8605546676961029723L;
+
+	public JSONException(Response.Status status, String message) {
       super(Response.status(status).entity(new ErrorMessage(message)).type(MediaType.APPLICATION_JSON).build());
     }
 }

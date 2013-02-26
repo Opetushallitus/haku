@@ -204,7 +204,8 @@ public class OrganizationServiceMockImpl implements OrganizationService {
 
     @Override
     public List<Organization> search(SearchCriteria criteria) throws IOException {
-        final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchString()),
+        @SuppressWarnings("unchecked")
+		final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchString()),
                 new OrgTypePredicate(criteria.getOrganizationType()),
                 new OrgIncludePassivePredicate(criteria.isIncludePassive()),
                 new OrgIncludePlannedPredicate(criteria.isIncludePlanned()));

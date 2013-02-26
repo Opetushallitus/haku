@@ -1,81 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>fi.vm.sade.haku</groupId>
-    <artifactId>haku</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>Haku :: Parent</name>
+	<groupId>fi.vm.sade.haku</groupId>
+	<artifactId>haku</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Haku :: Parent</name>
 
-    <modules>
-        <module>hakemus-api</module>
-        <module>haku-app</module>
-    </modules>
+	<modules>
+		<module>hakemus-api</module>
+		<module>haku-app</module>
+	</modules>
 
-    <properties>
-        <project.svn.base>https://penaali.hard.ware.fi/svn/generic/${project.artifactId}</project.svn.base>
-        <junit.version>4.10</junit.version>
-        <spring.version>3.1.3.RELEASE</spring.version>
-        <jersey.version>1.17</jersey.version>
-        <servlet.version>3.0.1</servlet.version>
-        <mongo.version>2.8.0</mongo.version>
-        <slf4j.version>1.6.6</slf4j.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <clover.outputDirectory>/data00/atlassian/application-data/bamboo/www/clover_haku</clover.outputDirectory>
-        <maven.build.timestamp.format>dd.MM.yyyy HH:mm</maven.build.timestamp.format>
-        <buildDate>${maven.build.timestamp}</buildDate>
-        <cxf.version>2.4.6</cxf.version>
-        <solr.version>4.0.0-BETA</solr.version>
-    </properties>
-    <profiles>
-        <profile>
-            <id>sonar</id>
-            <properties>
-                <!-- Dynamic analysis relates to unit tests. By default, those unit tests
-                    are executed but you can optionally decide to do only static analysis or
-                    to reuse existing reports which have been previously generated. Possible
-                    values are true, false, reuseReports. -->
-                <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+	<properties>
+		<project.svn.base>https://penaali.hard.ware.fi/svn/generic/${project.artifactId}</project.svn.base>
+		<junit.version>4.10</junit.version>
+		<spring.version>3.1.3.RELEASE</spring.version>
+		<jersey.version>1.17</jersey.version>
+		<servlet.version>3.0.1</servlet.version>
+		<mongo.version>2.8.0</mongo.version>
+		<slf4j.version>1.6.6</slf4j.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<clover.outputDirectory>/data00/atlassian/application-data/bamboo/www/clover_haku</clover.outputDirectory>
+		<maven.build.timestamp.format>dd.MM.yyyy HH:mm</maven.build.timestamp.format>
+		<buildDate>${maven.build.timestamp}</buildDate>
+		<cxf.version>2.4.6</cxf.version>
+		<solr.version>4.0.0-BETA</solr.version>
+	</properties>
 
-                <!-- The absolute or relative path of the surefire reports directory.
-                    Used only if sonar.dynamicAnalysis is reuseReports. -->
-                <sonar.surefire.reportsPath>${project.build.directory}/surefire-reports</sonar.surefire.reportsPath>
-                <!-- The absolute or relative path of the clover xml report file. Used
-                    only if sonar.dynamicAnalysis is reuseReports. -->
-                <sonar.core.codeCoveragePlugin>clover</sonar.core.codeCoveragePlugin>
-                <sonar.clover.reportPath>${clover.outputDirectory}/clover.xml</sonar.clover.reportPath>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<executions>
+					<execution>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
-                <!-- EXAMPLE FOR MYSQL mysqldump -usonar -pDx4k7T23x3ox8yS sonar > sonar.db.bak.sql -->
-                <sonar.jdbc.url>jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8
-                </sonar.jdbc.url>
-                <sonar.jdbc.driverClassName>com.mysql.jdbc.Driver</sonar.jdbc.driverClassName>
-                <sonar.jdbc.username>sonar</sonar.jdbc.username>
-                <sonar.jdbc.password>Dx4k7T23x3ox8yS</sonar.jdbc.password>
-                <!-- optional URL to server. Default value is http://localhost:9000 -->
-                <sonar.host.url>http://pulpetti.hard.ware.fi:9000/sonar</sonar.host.url>
-            </properties>
-            <dependencies>
-                <dependency>
-                    <groupId>org.codehaus.sonar-plugins</groupId>
-                    <artifactId>sonar-clover-plugin</artifactId>
-                    <version>2.8</version>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
-    <distributionManagement>
-        <repository>
-            <id>oph-sade-artifactory</id>
-            <name>oph-sade-artifactory-releases</name>
-            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-release-local</url>
-        </repository>
-        <snapshotRepository>
-            <id>oph-sade-artifactory</id>
-            <name>oph-sade-artifactory-snapshots</name>
-            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-snapshot-local</url>
-        </snapshotRepository>
-    </distributionManagement>
+	<profiles>
+		<profile>
+			<id>sonar</id>
+			<properties>
+				<!-- Dynamic analysis relates to unit tests. By default, those unit tests 
+					are executed but you can optionally decide to do only static analysis or 
+					to reuse existing reports which have been previously generated. Possible 
+					values are true, false, reuseReports. -->
+				<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+
+				<!-- The absolute or relative path of the surefire reports directory. 
+					Used only if sonar.dynamicAnalysis is reuseReports. -->
+				<sonar.surefire.reportsPath>${project.build.directory}/surefire-reports</sonar.surefire.reportsPath>
+				<!-- The absolute or relative path of the clover xml report file. Used 
+					only if sonar.dynamicAnalysis is reuseReports. -->
+				<sonar.core.codeCoveragePlugin>clover</sonar.core.codeCoveragePlugin>
+				<sonar.clover.reportPath>${clover.outputDirectory}/clover.xml</sonar.clover.reportPath>
+
+				<!-- EXAMPLE FOR MYSQL mysqldump -usonar -pDx4k7T23x3ox8yS sonar > sonar.db.bak.sql -->
+				<sonar.jdbc.url>jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8
+				</sonar.jdbc.url>
+				<sonar.jdbc.driverClassName>com.mysql.jdbc.Driver</sonar.jdbc.driverClassName>
+				<sonar.jdbc.username>sonar</sonar.jdbc.username>
+				<sonar.jdbc.password>Dx4k7T23x3ox8yS</sonar.jdbc.password>
+				<!-- optional URL to server. Default value is http://localhost:9000 -->
+				<sonar.host.url>http://pulpetti.hard.ware.fi:9000/sonar</sonar.host.url>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.codehaus.sonar-plugins</groupId>
+					<artifactId>sonar-clover-plugin</artifactId>
+					<version>2.8</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+	<distributionManagement>
+		<repository>
+			<id>oph-sade-artifactory</id>
+			<name>oph-sade-artifactory-releases</name>
+			<url>http://penaali.hard.ware.fi/artifactory/oph-sade-release-local</url>
+		</repository>
+		<snapshotRepository>
+			<id>oph-sade-artifactory</id>
+			<name>oph-sade-artifactory-snapshots</name>
+			<url>http://penaali.hard.ware.fi/artifactory/oph-sade-snapshot-local</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>

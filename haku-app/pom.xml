@@ -24,8 +24,6 @@
         <groupId>fi.vm.sade.haku</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>fi.vm.sade.haku</groupId>
-    <version>1.0-SNAPSHOT</version>
     <artifactId>haku-app</artifactId>
     <packaging>war</packaging>
     <name>Oppijan verkkopalvelu :: Haku App</name>
@@ -697,22 +695,6 @@
     </repositories>
     <build>
         <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.5.1</version>
-                <executions>
-                    <execution>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
             <plugin>
                 <!-- explicitly define maven-deploy-plugin after other to force exec
                     order -->
