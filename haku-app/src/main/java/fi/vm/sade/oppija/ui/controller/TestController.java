@@ -45,7 +45,6 @@ public class TestController {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/addPerson")
     public String getIndex() {
-        System.out.println("env.activeProfiles: "+ Arrays.asList(env.getActiveProfiles()));
         Person p = new Person("Testi", "Testi", "Persoona", null, true, "testi.persoona@oph.fi", "MALE", "Helsinki", false, "fi", "FINLAND", "fi");
         return "authenticationService: "+authenticationService+", result: "+authenticationService.addPerson(p);
     }

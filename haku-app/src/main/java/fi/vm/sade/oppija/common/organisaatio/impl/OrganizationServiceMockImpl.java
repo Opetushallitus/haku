@@ -110,8 +110,8 @@ public class OrganizationServiceMockImpl implements OrganizationService {
 
     private final Multimap<String, Organization> parentChild = ArrayListMultimap.create();
 
-    private final HashMap<String, Organization> oidOrg = new HashMap<String, Organization>();
-    final ArrayList<Organization> orgs = Lists.newArrayList();
+    private final Map<String, Organization> oidOrg = new HashMap<String, Organization>();
+    final List<Organization> orgs = Lists.newArrayList();
 
     protected OrganisaatioPerustietoType oph;
 
@@ -132,9 +132,9 @@ public class OrganizationServiceMockImpl implements OrganizationService {
             for (Organization org : mapper.readValue(input, Organization[].class)) {
                 add(org);
             }
-        } catch (Throwable t) {
-            throw new RuntimeException("Failed to initialize mock data", t);
-        }
+        } catch (IOException ioe) {
+            throw new RuntimeException("Failed to initialize mock data", ioe);
+        } 
     }
 
     /*
@@ -205,7 +205,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
     @Override
     public List<Organization> search(SearchCriteria criteria) throws IOException {
         @SuppressWarnings("unchecked")
-		final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchString()),
+        final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchString()),
                 new OrgTypePredicate(criteria.getOrganizationType()),
                 new OrgIncludePassivePredicate(criteria.isIncludePassive()),
                 new OrgIncludePlannedPredicate(criteria.isIncludePlanned()));

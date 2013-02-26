@@ -18,6 +18,8 @@ package fi.vm.sade.oppija.common.koodisto.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
+import fi.vm.sade.koodisto.service.GenericFault;
 import fi.vm.sade.koodisto.service.KoodiService;
 import fi.vm.sade.koodisto.service.types.SearchKoodisByKoodistoCriteriaType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
@@ -114,14 +116,13 @@ public class KoodistoServiceImpl implements KoodistoService {
                                 new KoodiTypeToOptionFunction())));
     }
 
-
     private List<KoodiType> getKoodiTypes(final String koodistoUri) {
         SearchKoodisByKoodistoCriteriaType searchKoodisByKoodistoCriteriaType = new SearchKoodisByKoodistoCriteriaType();
         searchKoodisByKoodistoCriteriaType.setKoodistoUri(koodistoUri);
         List<KoodiType> koodiTypes = newArrayList();
         try {
             koodiTypes = koodiService.searchKoodisByKoodisto(searchKoodisByKoodistoCriteriaType);
-        } catch (Throwable t) {
+        } catch (GenericFault t) {
             LOGGER.warn("Error calling koodisto", t);
         }
         return ImmutableList.copyOf(koodiTypes);

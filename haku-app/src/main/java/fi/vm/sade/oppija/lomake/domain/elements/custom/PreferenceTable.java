@@ -88,7 +88,8 @@ public class PreferenceTable extends Titled {
                         validate(new RequiredFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon", "")))),
                 or(preferencePredicates))));
         FunctionalValidator fv = new FunctionalValidator(predicate, this.getId(),
-                "Et voi hakea ammatillisen koulutuksen tällä hakulomakkeella, koska olet jo suorittanut/suorittamassa ammatilliseen perustutkintoon johtavaa koulutusta tai lukiokoulutusta.");
+                "Et voi hakea ammatillisen koulutuksen tällä hakulomakkeella, koska olet jo suorittanut/suorittamassa ammatilliseen perustutkintoon " +
+                "johtavaa koulutusta tai lukiokoulutusta.");
         listOfValidators.add(fv);
         return listOfValidators;
     }

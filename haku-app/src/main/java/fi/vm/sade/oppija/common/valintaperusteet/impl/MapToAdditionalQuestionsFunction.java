@@ -16,6 +16,7 @@
 package fi.vm.sade.oppija.common.valintaperusteet.impl;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.common.base.Function;
 
@@ -29,16 +30,18 @@ public class MapToAdditionalQuestionsFunction implements
     public AdditionalQuestions apply(Map<String, Map<String, Map<String, String>>> input) {
         final AdditionalQuestions aq = new AdditionalQuestions();
 
-        for (String oid : input.keySet()) {
-            final Map<String, Map<String, String>> v = input.get(oid);
-            for (String phase : v.keySet()) {
-                for (Map.Entry<String, String> entry : v.get(phase).entrySet()) {
+        for (Entry<String, Map<String, Map<String, String>>> oid : input.entrySet()) {
+        	String oidKey = oid.getKey();
+            final Map<String, Map<String, String>> value = oid.getValue();
+            for (String phase : value.keySet()) {
+                for (Map.Entry<String, String> entry : value.get(phase).entrySet()) {
                     final String key = entry.getKey();
                     final String type = entry.getValue();
                     InputParameter param = new InputParameter(key, type, phase);
-                    aq.addParameter(oid, param);
+                    aq.addParameter(oidKey, param);
                 }
             }
+            
         }
         return aq;
     }

@@ -16,6 +16,7 @@
 package fi.vm.sade.oppija.common.valintaperusteet.impl;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -57,19 +58,16 @@ public class ValintaperusteetServiceImpl implements ValintaperusteetService {
                         .post(ClientResponse.class, oids);
 
                 Map<String, Map<String, Map<String, String>>> entity = null;
-                if (response.getStatus() == 200) {
+                if (response.getClientResponseStatus() == ClientResponse.Status.OK) {
                     entity = response.getEntity(Map.class);
                     return converter.apply(entity);
                 }
-            } catch (Throwable t) {
-                throw new IOException(String.format("Failed to retrieve data, exception: %s", t.getClass().getName()));
+            } catch (ClientHandlerException t) {
+                throw new IOException(String.format("Failed to retrieve data, exception: %s", t));
             } finally {
                 if (response != null) {
-                    try {
-                        response.close();
-                    } catch (Throwable t) {
-                        // silently ignore
-                    }
+                	// Saattaa heittää ClientHandlerExceptionin
+                    response.close();
                 }
             }
             throw new IOException(String.format("Failed to retrieve data with params '%s', http status:%d", oids,
