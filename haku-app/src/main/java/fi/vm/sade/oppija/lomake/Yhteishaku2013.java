@@ -41,7 +41,7 @@ import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 public class Yhteishaku2013 {
 
     private final ApplicationPeriod applicationPeriod;
-    public static String MOBILE_PHONE_PATTERN = "^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
+    public static String mobilePhonePattern = "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
 
     private final KoodistoService koodistoService;
 
@@ -80,7 +80,7 @@ public class Yhteishaku2013 {
         Radio radio = new Radio(
                 id + "_additional_question_1",
                 createI18NText("Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä " +
-                		"tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?"));
+                        "tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?"));
         radio.addOption(id + "_q1_option_1", createI18NText("Ei"), "q1_option_1");
         radio.addOption(id + "_q1_option_2", createI18NText("Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi"),
                 "q1_option_2");
@@ -88,7 +88,7 @@ public class Yhteishaku2013 {
         Radio radio2 = new Radio(
                 id + "_additional_question_2",
                 createI18NText("Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko " +
-                		"opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?"));
+                        "opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?"));
         radio2.addOption(id + "_q2_option_1", createI18NText("Ei"), "q2_option_1");
         radio2.addOption(id + "_q2_option_2",
                 createI18NText("Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi"), "q2_option_2");
@@ -109,7 +109,7 @@ public class Yhteishaku2013 {
         Theme henkilotiedotRyhma = new Theme("HenkilotiedotGrp", createI18NText("Henkilötiedot"), null);
         Theme koulutustaustaRyhma = new Theme("KoulutustaustaGrp", createI18NText("Koulutustausta"), null);
         Theme hakutoiveetRyhma = new Theme("hakutoiveetGrp", createI18NText("Hakutoiveet"), lisakysymysMap);
-        Theme arvosanatRyhmä = new Theme("arvosanatGrp", createI18NText("Arvosanat"), oppiaineMap);
+        Theme arvosanatRyhma = new Theme("arvosanatGrp", createI18NText("Arvosanat"), oppiaineMap);
         WorkExperienceTheme tyokokemusRyhma = new WorkExperienceTheme("tyokokemusGrp", createI18NText("Työkokemus"),
                 null, "32");
         Theme lupatiedotRyhma = new Theme("lupatiedotGrp", createI18NText("Lupatiedot"), null);
@@ -118,7 +118,7 @@ public class Yhteishaku2013 {
         henkilotiedot.addChild(henkilotiedotRyhma);
         koulutustausta.addChild(koulutustaustaRyhma);
         hakutoiveet.addChild(hakutoiveetRyhma);
-        arvosanat.addChild(arvosanatRyhmä);
+        arvosanat.addChild(arvosanatRyhma);
         lisatiedot.addChild(tyokokemusRyhma);
         lisatiedot.addChild(lupatiedotRyhma);
 
@@ -163,9 +163,9 @@ public class Yhteishaku2013 {
 
         TextQuestion email = new TextQuestion("Sähköposti", createI18NText("Sähköpostiosoite"));
         email.addAttribute("size", "50");
-        email.addAttribute("pattern", "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$");
+        email.addAttribute("pattern", "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$");
         email.setHelp("Kirjoita tähän sähköpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat " +
-        		"vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.");
+                "vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.");
         email.setVerboseHelp(getVerboseHelp());
         email.setInline(true);
 
@@ -207,9 +207,8 @@ public class Yhteishaku2013 {
         postinumero.addAttribute("pattern", "[0-9]{5}");
         postinumero.addAttribute("placeholder", "#####");
         postinumero.addAttribute("maxlength", "5");
-        postinumero
-                .setHelp("Kirjoita tähän osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, kuten kutsun valintakokeeseen tai " +
-                		"valintapäätöksen.");
+        postinumero.setHelp("Kirjoita tähän osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, kuten kutsun valintakokeeseen tai " +
+                "valintapäätöksen.");
 
         DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", createI18NText("Asuinmaa"));
         Option option = asuinmaa.addOption("valitse", null, "");
@@ -249,7 +248,7 @@ public class Yhteishaku2013 {
         TextQuestion matkapuhelinnumero = new TextQuestion("matkapuhelinnumero", createI18NText("Matkapuhelinnumero"));
         matkapuhelinnumero.setHelp("Kirjoita tähän matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.");
         matkapuhelinnumero.addAttribute("size", "30");
-        matkapuhelinnumero.addAttribute("pattern", MOBILE_PHONE_PATTERN);
+        matkapuhelinnumero.addAttribute("pattern", mobilePhonePattern);
         matkapuhelinnumero.setVerboseHelp(getVerboseHelp());
         matkapuhelinnumero.setInline(true);
 
@@ -280,12 +279,12 @@ public class Yhteishaku2013 {
 
         createKoulutustausta(koulutustaustaRyhma);
         createHakutoiveet(hakutoiveetRyhma);
-        createArvosanat(arvosanatRyhmä);
+        createArvosanat(arvosanatRyhma);
         createTyokokemus(tyokokemusRyhma);
         createLupatiedot(lupatiedotRyhma);
 
         esikatselu.addChild(henkilotiedotRyhma).addChild(koulutustaustaRyhma).addChild(hakutoiveetRyhma)
-                .addChild(arvosanatRyhmä).addChild(tyokokemusRyhma).addChild(lupatiedotRyhma);
+                .addChild(arvosanatRyhma).addChild(tyokokemusRyhma).addChild(lupatiedotRyhma);
 
         yhteenvetoRyhma.setHelp("Kiitos, hakemuksesi on vastaanotettu");
 
@@ -301,7 +300,7 @@ public class Yhteishaku2013 {
             String id = subject.getId();
             if ("AI".equals(id)) {
                 finnish = subject;
-            } else if ( ! (id.startsWith("A1") || id.startsWith("B1") || id.startsWith("A2") || id.startsWith("B2")
+            } else if (!(id.startsWith("A1") || id.startsWith("B1") || id.startsWith("A2") || id.startsWith("B2")
                     || id.startsWith("B3"))) {
                 subjectRowsAfter.add(subject);
             }
@@ -348,25 +347,25 @@ public class Yhteishaku2013 {
         relatedQuestionRule2.addChild(new Text("nogradegrid", createI18NText("Sinulta ei kysytä arvosanoja.")));
         arvosanatRyhma.addChild(relatedQuestionRule2);
         arvosanatRyhma
-                .setHelp("Merkitse arvosanat siitä todistuksesta, jolla haet koulutukseen (perusopetus,tai sitä vastaavat opinnot, lukiokoulutus). Korotetut " +
-                		"arvosanat voit merkitä, mikäli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimäärän tai " +
-                		"ylioppilastutkinnon, et voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset " +
-                		"tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta. 1. Tarkista ja täydennä taulukkoon todistuksen oppiaineet ja arvosanat, " +
-                		"jotka poikkeavat esitäytetyistä. Huom! Valinnaisaineiden arvosanat merkitään vain mikäli niiden laajuus on vähintään kaksi " +
-                		"vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilöllistettyjä arvosanoja, valitse listasta arvosana, " +
-                		"jossa on tähti.");
+                .setHelp("Merkitse arvosanat siitä todistuksesta, jolla haet koulutukseen (perusopetus,tai sitä vastaavat opinnot, lukiokoulutus). " +
+                        "Korotetut arvosanat voit merkitä, mikäli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion " +
+                        "oppimäärän tai ylioppilastutkinnon, et voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkinnolla et voi hakea. " +
+                        "Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta. 1. Tarkista ja täydennä taulukkoon todistuksen " +
+                        "oppiaineet ja arvosanat, jotka poikkeavat esitäytetyistä. Huom! Valinnaisaineiden arvosanat merkitään vain mikäli niiden " +
+                        "laajuus on vähintään kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilöllistettyjä " +
+                        "arvosanoja, valitse listasta arvosana, jossa on tähti.");
 
     }
 
     private void createHakutoiveet(Theme hakutoiveetRyhma) {
         hakutoiveetRyhma
                 .setHelp("Merkitse tälle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinä järjestyksessä, kun toivot tulevasi niihin " +
-                		"valituksi. Jos olet valinnut korissa koulutuksia, voit siirttää ne hakutoivelistalle. Voit halutessasi etsiä koulutuksia " +
-                		"koulutuskorin kautta. harkitse hakutoivejärjestystä tarkoin, sillä se on sitova, etkä voi muuttaa sitä enää hakuajan jälkeen. Jos " +
-                		"et pääse koulutukseen, jonka olet merkinnyt ensimmäiselle sijalle, tarkistetaan riittävätkö pisteesi toiselle sijalle merkitsemääsi " +
-                		"hakutoiveeseen jne. Jos pääset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, " +
-                		"etkä voi enää tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielä päästä. HUOM! Lukion oppimäärän tai ylioppilastutkinnon " +
-                		"suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).");
+                        "valituksi. Jos olet valinnut korissa koulutuksia, voit siirttää ne hakutoivelistalle. Voit halutessasi etsiä koulutuksia " +
+                		"koulutuskorin kautta. harkitse hakutoivejärjestystä tarkoin, sillä se on sitova, etkä voi muuttaa sitä enää hakuajan jälkeen. " +
+                		"Jos et pääse koulutukseen, jonka olet merkinnyt ensimmäiselle sijalle, tarkistetaan riittävätkö pisteesi toiselle sijalle " +
+                		"merkitsemääsi hakutoiveeseen jne. Jos pääset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat " +
+                		"automaattisesti, etkä voi enää tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielä päästä. HUOM! Lukion oppimäärän tai " +
+                        "ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).");
         PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NText("Hakutoiveet"), "Ylös",
                 "Alas");
         PreferenceRow pr1 = ElementUtil.createI18NPreferenceRow("preference1", "Hakutoive 1");
@@ -387,8 +386,8 @@ public class Yhteishaku2013 {
     private void createTyokokemus(Theme tyokokemus) {
         tyokokemus
                 .setHelp("Työkokemukseksi lasketaan työ, josta sinulla on työtodistus. Työhön rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, " +
-                		"siviilipalvelus, vähintään kolmen kuukauden pituinen työpajatoimintaan osallistuminen tai työharjoitteluun osallistuminen, " +
-                		"oppisopimuskoulutus. Oppilaitos tarkistaa työtodistukset ennen lopullista valintaa.");
+                        "siviilipalvelus, vähintään kolmen kuukauden pituinen työpajatoimintaan osallistuminen tai työharjoitteluun osallistuminen, " +
+                        "oppisopimuskoulutus. Oppilaitos tarkistaa työtodistukset ennen lopullista valintaa.");
         TextQuestion tyokokemuskuukaudet = new TextQuestion("tyokokemuskuukaudet",
                 createI18NText("Työkokemus kuukausina"));
         tyokokemuskuukaudet
@@ -446,11 +445,11 @@ public class Yhteishaku2013 {
 
     private void createKoulutustausta(Theme koulutustaustaRyhma) {
         koulutustaustaRyhma
-                .setHelp("Merkitse tälle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitä vain yhden kohdan. HUOM! Jos " +
-                		"olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimäärä. Lukion oppimäärän tai " +
-                		"ylioppilastutkinnon suorittaneet eivät voi hakea perusopetuksen päättötodistuksella. Ammatillisella perustutkintotodistuksella et " +
-                		"voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyväksytyiksi tulleilta " +
-                		"hakijoilta.");
+                .setHelp("Merkitse tälle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitä vain yhden kohdan. HUOM! " +
+                        "Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimäärä. Lukion oppimäärän " +
+                        "tai ylioppilastutkinnon suorittaneet eivät voi hakea perusopetuksen päättötodistuksella. Ammatillisella " +
+                        "perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat " +
+                        "todistukset hyväksytyiksi tulleilta hakijoilta.");
 
         Radio osallistunut = new Radio("osallistunut",
                 createI18NText("Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?"));
@@ -618,8 +617,8 @@ public class Yhteishaku2013 {
         Notification notification1 = new Notification(
                 "notification1",
                 createI18NText("Yhteishaun ammatillisen koulutuksen koulutuspaikat on varattu hakijoille, jotka ovat ilman koulutuspaikkaa. Huomioi, " +
-                		"että et voi hakea ammatillisen koulutuksen tällä hakulomakkeella, koska olet jo suorittanut ammatilliseen perustutkintoon " +
-                		"johtavan koulutuksen tai lukiokoulutuksen."),
+                        "että et voi hakea ammatillisen koulutuksen tällä hakulomakkeella, koska olet jo suorittanut ammatilliseen perustutkintoon " +
+                        "johtavan koulutuksen tai lukiokoulutuksen."),
                 Notification.NotificationType.INFO);
         suorittanutAmmatillisenTutkinnonRule.addChild(notification1);
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutAmmatillisenTutkinnonRule);
@@ -629,8 +628,8 @@ public class Yhteishaku2013 {
         Notification notification2 = new Notification(
                 "notification2",
                 createI18NText("Yhteishaun ammatillisen koulutuksen koulutuspaikat on varattu hakijoille, jotka ovat ilman koulutuspaikkaa. Huomioi, " +
-                		"että et voi hakea ammatillisen koulutuksen tällä hakulomakkeella, koska olet jo suorittamassa ammatilliseen perustutkintoon " +
-                		"johtavaa koulutusta tai lukiokoulutusta."),
+                        "että et voi hakea ammatillisen koulutuksen tällä hakulomakkeella, koska olet jo suorittamassa ammatilliseen perustutkintoon " +
+                        "johtavaa koulutusta tai lukiokoulutusta."),
                 Notification.NotificationType.INFO);
         koulutuspaikkaAmmatillisenTutkintoonRule.addChild(notification2);
         koulutuspaikkaAmmatillisenTutkintoon.addChild(koulutuspaikkaAmmatillisenTutkintoonRule);
@@ -640,12 +639,12 @@ public class Yhteishaku2013 {
 
     private String getVerboseHelp() {
         return " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec dolor quam. Duis sodales placerat scelerisque. Suspendisse " +
-        		"porta mauris eu felis malesuada rutrum. Aliquam varius fringilla mi sed luctus. Nam in enim ipsum. Sed lobortis lorem sit amet justo " +
-        		"blandit et tempus ante eleifend. Proin egestas, magna et condimentum egestas, arcu mauris tincidunt augue, eget varius diam massa nec " +
-        		"nisi. Proin dolor risus, tincidunt non faucibus imperdiet, fringilla quis massa. Curabitur pharetra posuere est, sit amet pulvinar urna " +
-        		"facilisis at. Praesent posuere feugiat elit vel porttitor. Integer venenatis, arcu ac suscipit ornare, augue nibh tempus libero, eget " +
-        		"molestie turpis massa quis purus. Suspendisse id libero dolor. Ut eget velit augue, eget fringilla erat. Quisque sed neque non arcu " +
-        		"elementum vehicula eget at est. Etiam dictum fringilla mi, sit amet sodales tortor facilisis in.\n"
+                "porta mauris eu felis malesuada rutrum. Aliquam varius fringilla mi sed luctus. Nam in enim ipsum. Sed lobortis lorem sit amet justo " +
+                "blandit et tempus ante eleifend. Proin egestas, magna et condimentum egestas, arcu mauris tincidunt augue, eget varius diam massa nec " +
+                "nisi. Proin dolor risus, tincidunt non faucibus imperdiet, fringilla quis massa. Curabitur pharetra posuere est, sit amet pulvinar urna " +
+                "facilisis at. Praesent posuere feugiat elit vel porttitor. Integer venenatis, arcu ac suscipit ornare, augue nibh tempus libero, eget " +
+                "molestie turpis massa quis purus. Suspendisse id libero dolor. Ut eget velit augue, eget fringilla erat. Quisque sed neque non arcu " +
+                "elementum vehicula eget at est. Etiam dictum fringilla mi, sit amet sodales tortor facilisis in.\n"
                 + "\n"
                 + "Nunc nisl felis, placerat non pellentesque non, dapibus non sem. Nunc et consectetur tellus. Class aptent taciti sociosqu ad litora " +
                 "torquent per conubia nostra, per inceptos himenaeos. Nulla facilisi. Nulla facilisi. Etiam lobortis, justo non eleifend rhoncus, eros " +
