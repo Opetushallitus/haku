@@ -578,7 +578,7 @@
             <artifactId>authentication-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <!-- TODO: cas refac tuolta cas:n takia tarvittavat jutut vois olla jossain muualla -->
+        <!-- TODO: cas todo tuolta cas:n takia tarvittavat jutut vois olla jossain muualla -->
         <dependency>
             <groupId>fi.vm.sade.generic</groupId>
             <artifactId>generic-service</artifactId>
