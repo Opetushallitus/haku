@@ -16,17 +16,31 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ApplicationQueryParameters {
     private final String state;
     private final boolean fetchPassive;
-    private final String preference;
+    private final List<String> preferences = new ArrayList<String>();
     private final String LOPOid;
+
+    public ApplicationQueryParameters() {
+        this.state = "";
+        this.fetchPassive = false;
+        this.LOPOid = "";
+    }
+
+    public ApplicationQueryParameters(final List<String> preferences) {
+        this();
+        this.preferences.addAll(preferences);
+    }
 
     public ApplicationQueryParameters(final String state, final boolean fetchPassive,
                                       final String preference, final String lopOid) {
         this.state = state;
         this.fetchPassive = fetchPassive;
-        this.preference = preference;
+        addPreference(preference);
         LOPOid = lopOid;
     }
 
@@ -38,8 +52,14 @@ public class ApplicationQueryParameters {
         return fetchPassive;
     }
 
-    public String getPreference() {
-        return preference;
+    public List<String> getPreferences() {
+        return preferences;
+    }
+
+    public void addPreference(String preference) {
+        if (preference != null && !preference.isEmpty()) {
+            this.preferences.add(preference);
+        }
     }
 
     public String getLOPOid() {

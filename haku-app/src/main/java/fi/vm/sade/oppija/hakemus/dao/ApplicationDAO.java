@@ -54,10 +54,10 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * applications where one of the selected application options is the
      * one given as parameter.
      *
-     * @param aoId application option identifier
+     * @param aoIds list of application option identifiers
      * @return list of applications or an empty list if none are found
      */
-    List<Application> findByApplicationOption(String aoId);
+    List<Application> findByApplicationOption(List<String> aoIds);
 
     /**
      * Checks if submitted application already exists by specified social security number and

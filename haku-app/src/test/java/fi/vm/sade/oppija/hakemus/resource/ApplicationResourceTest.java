@@ -33,8 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import static junit.framework.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -77,7 +76,7 @@ public class ApplicationResourceTest {
 
         ArrayList<Application> applications = new ArrayList<Application>();
         applications.add(this.application);
-        when(applicationService.getApplicationsByApplicationOption(AOID)).thenReturn(applications);
+        when(applicationService.getApplicationsByApplicationOption(anyList())).thenReturn(applications);
         when(applicationService.findApplications(eq(OID), any(ApplicationQueryParameters.class))).thenReturn(applications);
         this.applicationResource = new ApplicationResource(this.applicationService);
     }

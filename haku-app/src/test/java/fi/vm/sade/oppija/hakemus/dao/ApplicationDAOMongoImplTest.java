@@ -37,6 +37,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -111,7 +112,9 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
     @Test
     public void testFindByApplicationOption() {
-        List<Application> applications = applicationDAO.findByApplicationOption("776");
+        List<String> aoids = new ArrayList<String>();
+        aoids.add("776");
+        List<Application> applications = applicationDAO.findByApplicationOption(aoids);
         assertEquals(2, applications.size());
     }
 

@@ -126,8 +126,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return applications;
     }
 
-    public List<Application> findByApplicationOption(String aoId) {
-        DBObject query = queryByPreference(aoId).get();
+    public List<Application> findByApplicationOption(List<String> aoIds) {
+        DBObject query = queryByPreference(aoIds).get();
         return findApplications(query);
     }
 
@@ -155,13 +155,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return findApplications(query);
     }
 
-    private QueryBuilder queryByPreference(String aoId) {
+    private QueryBuilder queryByPreference(List<String> aoIds) {
         return QueryBuilder.start().or(
-                QueryBuilder.start(FIELD_AO_1).is(aoId).get(),
-                QueryBuilder.start(FIELD_AO_2).is(aoId).get(),
-                QueryBuilder.start(FIELD_AO_3).is(aoId).get(),
-                QueryBuilder.start(FIELD_AO_4).is(aoId).get(),
-                QueryBuilder.start(FIELD_AO_5).is(aoId).get()
+                QueryBuilder.start(FIELD_AO_1).in(aoIds).get(),
+                QueryBuilder.start(FIELD_AO_2).in(aoIds).get(),
+                QueryBuilder.start(FIELD_AO_3).in(aoIds).get(),
+                QueryBuilder.start(FIELD_AO_4).in(aoIds).get(),
+                QueryBuilder.start(FIELD_AO_5).in(aoIds).get()
         );
     }
 
@@ -325,9 +325,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             filters.add(stateQuery);
         }
 
-        String preference = applicationQueryParameters.getPreference();
-        if (!isEmpty(preference)) {
-            filters.add(queryByPreference(preference).get());
+        List<String> preferences = applicationQueryParameters.getPreferences();
+        if (preferences != null && !preferences.isEmpty()) {
+            filters.add(queryByPreference(preferences).get());
         }
         String lopOid = applicationQueryParameters.getLOPOid();
         if (!isEmpty(lopOid)) {

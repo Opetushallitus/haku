@@ -203,8 +203,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> getApplicationsByApplicationOption(String applicationOptionId) {
-        return applicationDAO.findByApplicationOption(applicationOptionId);
+    public List<Application> getApplicationsByApplicationOption(List<String> applicationOptionIds) {
+        return applicationDAO.findByApplicationOption(applicationOptionIds);
     }
 
     @Override

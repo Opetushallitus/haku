@@ -97,10 +97,10 @@ public interface ApplicationService {
      * Returns all applications where one of the selected application options is the
      * one given as parameter.
      *
-     * @param applicationOptionId application option id
+     * @param applicationOptionIds list of application option ids
      * @return list of applications
      */
-    List<Application> getApplicationsByApplicationOption(String applicationOptionId);
+    List<Application> getApplicationsByApplicationOption(List<String> applicationOptionIds);
 
     /**
      * Return applications that match to given search term. Term is matched against

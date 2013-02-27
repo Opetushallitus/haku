@@ -69,7 +69,9 @@ public class ApplicationResource {
     public List<ApplicationDTO> getApplicationsByAOId(@QueryParam("aoid") String aoid) {
         if (aoid != null) {
             // retrieve applications related to a single application system
-            List<Application> applications = applicationService.getApplicationsByApplicationOption(aoid);
+            List<String> aoids = new ArrayList<String>();
+            aoids.add(aoid);
+            List<Application> applications = applicationService.getApplicationsByApplicationOption(aoids);
             List<ApplicationDTO> applicationDTOs = new ArrayList<ApplicationDTO>();
             for (Application application : applications) {
                 applicationDTOs.add(new ApplicationDTO(application));

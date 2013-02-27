@@ -69,7 +69,7 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
         return null;
     }
 
-    public List<Application> findByApplicationOption(String aoId) {
+    public List<Application> findByApplicationOption(List<String> aoIds) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
