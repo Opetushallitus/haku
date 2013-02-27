@@ -20,7 +20,7 @@
 <div class="float-left">
     <c:choose>
         <c:when test="${vaihe.hasPrev}">
-            <button class="left" name="phaseId" type="submit" value="${vaihe.prev.id}">
+            <button class="left" name="phaseId" type="submit" value="${vaihe.prev.id}-skip-validators">
                 <span>
                     <span><fmt:message key="lomake.button.previous"/></span>
                 </span>

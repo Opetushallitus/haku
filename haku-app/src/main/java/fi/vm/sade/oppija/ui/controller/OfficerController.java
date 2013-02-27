@@ -135,8 +135,8 @@ public class OfficerController {
 
         LOGGER.debug("savePhase {}, {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
-        ApplicationState applicationState = applicationService.saveApplicationPhase(
-                new ApplicationPhase(hakuLomakeId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)), oid);
+        ApplicationPhase phase = new ApplicationPhase(hakuLomakeId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues));
+        ApplicationState applicationState = applicationService.saveApplicationPhase(phase, oid, false);
 
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         Map<String, Object> model = new HashMap<String, Object>();

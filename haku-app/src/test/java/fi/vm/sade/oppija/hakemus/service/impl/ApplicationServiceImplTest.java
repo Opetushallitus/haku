@@ -20,7 +20,9 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
+import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -110,5 +112,14 @@ public class ApplicationServiceImplTest {
         additionalInfo.put("key", "value");
         service.saveApplicationAdditionalInfo(OID, additionalInfo);
         verify(applicationDAO, times(1)).update(any(Application.class), any(Application.class));
+    }
+    
+    @Test
+    public void testSavePhase() {
+        ApplicationServiceImpl service = new ApplicationServiceImpl(
+                applicationDAO, null, null, null, applicationOidService, null);
+        ApplicationPhase applicationPhase = new ApplicationPhase(new FormId("period", "form"), "phase", null);
+        boolean skipValidators = false;
+        service.saveApplicationPhase(applicationPhase, skipValidators);
     }
 }

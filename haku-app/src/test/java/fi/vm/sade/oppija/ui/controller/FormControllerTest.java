@@ -45,6 +45,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.eq;
 
 public class FormControllerTest {
 
@@ -78,7 +79,7 @@ public class FormControllerTest {
         when(formService.getActiveForm(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(FORM);
         applicationState = new ApplicationState(application, FIRST_CATEGORY_ID);
         application.setPhaseId(FIRST_CATEGORY_ID);
-        when(applicationService.saveApplicationPhase(Matchers.<ApplicationPhase>any())).thenReturn(applicationState);
+        when(applicationService.saveApplicationPhase(Matchers.<ApplicationPhase>any(), eq(false))).thenReturn(applicationState);
     }
 
     private String resolveRedirectPath(Response response) {

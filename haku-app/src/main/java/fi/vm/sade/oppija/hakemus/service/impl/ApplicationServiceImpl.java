@@ -107,13 +107,29 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, boolean skipValidators) {
+        final Application application = new Application(this.userHolder.getUser(), applicationPhase);
+        return saveApplicationPhase(applicationPhase, application, skipValidators);
+    }
+
+    @Override
     public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, String oid) {
         final Application application = new Application(oid, applicationPhase);
         return saveApplicationPhase(applicationPhase, application);
     }
 
     @Override
+    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, String oid, boolean skipValidators) {
+        final Application application = new Application(oid, applicationPhase);
+        return saveApplicationPhase(applicationPhase, application, skipValidators);
+    }
+
+    @Override
     public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, Application application) {
+        return saveApplicationPhase(applicationPhase, application, false);
+    }
+    
+    private ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, Application application, boolean skipValidators) {
         final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
         final String applicationPeriodId = applicationState.getHakemus().getFormId().getApplicationPeriodId();
         final String formId = applicationState.getHakemus().getFormId().getFormId();
@@ -129,8 +145,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         allAnswers.putAll(vastaukset);
 
-        ValidationResult validationResult = ElementTreeValidator.validate(phase, allAnswers);
-        applicationState.addError(validationResult.getErrorMessages());
+        if ( ! skipValidators ) { 
+            ValidationResult validationResult = ElementTreeValidator.validate(phase, allAnswers);
+            applicationState.addError(validationResult.getErrorMessages());
+        }
         if (applicationState.isValid()) {
             if (application.getOid() == null) {
                 checkIfExistsBySocialSecurityNumber(applicationPeriodId, vastaukset.get(SocialSecurityNumber.HENKILOTUNNUS));

@@ -31,7 +31,7 @@ public class MapToAdditionalQuestionsFunction implements
         final AdditionalQuestions aq = new AdditionalQuestions();
 
         for (Entry<String, Map<String, Map<String, String>>> oid : input.entrySet()) {
-        	String oidKey = oid.getKey();
+            String oidKey = oid.getKey();
             final Map<String, Map<String, String>> value = oid.getValue();
             for (String phase : value.keySet()) {
                 for (Map.Entry<String, String> entry : value.get(phase).entrySet()) {

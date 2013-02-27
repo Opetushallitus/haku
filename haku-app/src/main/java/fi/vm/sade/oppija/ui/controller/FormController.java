@@ -188,8 +188,10 @@ public class FormController {
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
-        ApplicationState applicationState = applicationService.saveApplicationPhase(new ApplicationPhase(hakuLomakeId,
-                phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)));
+        boolean skipValidators = skipValidators(multiValues); 
+
+        ApplicationState applicationState = applicationService.saveApplicationPhase(
+                new ApplicationPhase(hakuLomakeId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)), skipValidators);
 
         Map<String, Object> model = new HashMap<String, Object>();
 
@@ -209,6 +211,19 @@ public class FormController {
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, model)).build();
         }
 
+    }
+
+    private boolean skipValidators(MultivaluedMap<String, String> multiValues) {
+        List<String> phaseIdList = multiValues.get("phaseId");
+        if (phaseIdList == null || phaseIdList.size() == 0) {
+            return false;
+        }
+        boolean skipValidators = phaseIdList.get(0).endsWith("-skip-validators");
+        if (skipValidators) {
+            String realPhaseId = multiValues.get("phaseId").get(0);
+            multiValues.get("phaseId").set(0, realPhaseId.substring(0, realPhaseId.lastIndexOf("-skip-validators")));
+        }
+        return skipValidators;
     }
 
     @POST

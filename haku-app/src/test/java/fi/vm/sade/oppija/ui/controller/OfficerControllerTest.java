@@ -83,7 +83,7 @@ public class OfficerControllerTest {
         when(formService.getActiveForm("Yhteishaku", "yhteishaku")).thenReturn(form);
 
         ApplicationState applicationState = new ApplicationState(app, "henkilotiedot");
-        when(applicationService.saveApplicationPhase(any(ApplicationPhase.class), eq(OID))).thenReturn(applicationState);
+        when(applicationService.saveApplicationPhase(any(ApplicationPhase.class), eq(OID), eq(false))).thenReturn(applicationState);
 
         ApplicationProcessState processState = new ApplicationProcessState(OID, ApplicationProcessStateStatus.ACTIVE.toString());
         when(applicationProcessStateService.get(OID)).thenReturn(processState);
