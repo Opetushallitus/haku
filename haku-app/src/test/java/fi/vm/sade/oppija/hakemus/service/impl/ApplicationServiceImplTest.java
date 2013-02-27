@@ -24,6 +24,8 @@ import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.service.FormService;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,6 +43,7 @@ public class ApplicationServiceImplTest {
     ApplicationDAO applicationDAO;
     ApplicationOidService applicationOidService;
     Application application;
+    FormService formService;
 
     String SSN = "250584-3847";
     String OID = "1.2.3.4.5.12345678901";
@@ -54,6 +57,7 @@ public class ApplicationServiceImplTest {
         application = new Application();
         applicationDAO = mock(ApplicationDAO.class);
         applicationOidService = mock(ApplicationOidService.class);
+        formService = mock(FormService.class);
         when(applicationDAO.findByApplicantSsn(eq(SSN), eq(applicationQueryParameters))).thenReturn(Lists.newArrayList(application));
         when(applicationDAO.findByApplicantName(eq(NAME), eq(applicationQueryParameters))).thenReturn(Lists.newArrayList(application));
         when(applicationDAO.findByApplicationOid(eq(OID), eq(applicationQueryParameters))).thenReturn(Lists.newArrayList(application));
@@ -112,14 +116,5 @@ public class ApplicationServiceImplTest {
         additionalInfo.put("key", "value");
         service.saveApplicationAdditionalInfo(OID, additionalInfo);
         verify(applicationDAO, times(1)).update(any(Application.class), any(Application.class));
-    }
-    
-    @Test
-    public void testSavePhase() {
-        ApplicationServiceImpl service = new ApplicationServiceImpl(
-                applicationDAO, null, null, null, applicationOidService, null);
-        ApplicationPhase applicationPhase = new ApplicationPhase(new FormId("period", "form"), "phase", null);
-        boolean skipValidators = false;
-        service.saveApplicationPhase(applicationPhase, skipValidators);
     }
 }
