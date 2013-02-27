@@ -14,7 +14,8 @@
     <import resource="classpath:META-INF/cxf/cxf-extension-http.xml" />
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
 
-    <jaxws:endpoint id="hakemusService"  address="/ws"
-                    implementorClass="fi.vm.sade.oppija.hakemus.service.impl.HakemusServiceImpl">
+    <bean id="hakemusServiceImpl" class="fi.vm.sade.oppija.hakemus.service.impl.HakemusServiceImpl" />
+
+    <jaxws:endpoint id="hakemusService"  address="/ws" implementor="#hakemusServiceImpl">
     </jaxws:endpoint>
 </beans>
