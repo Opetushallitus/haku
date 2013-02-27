@@ -38,4 +38,6 @@ public interface KoodistoService {
     List<Option> getNationalities();
 
     List<Option> getLanguages();
+
+    List<Option> getMunicipalities();
 }

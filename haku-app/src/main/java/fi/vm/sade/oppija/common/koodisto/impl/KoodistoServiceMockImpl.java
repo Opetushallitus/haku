@@ -31,7 +31,7 @@ import java.util.List;
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 
 @Service
-@Profile("dev")
+@Profile("default")
 public class KoodistoServiceMockImpl implements KoodistoService {
 
     public static final String LEARNING_INSTITUTION_TYPE = "Yliopistot";
@@ -44,6 +44,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Option> listOfCountries;
     public final List<Option> listOfLanguages;
     public final List<Option> listOfNationalities;
+    public final List<Option> listOfMunicipalities;
 
     public KoodistoServiceMockImpl() {
         List<Option> listOfGradeGrades = new ArrayList<Option>();
@@ -61,6 +62,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 createPostOffice("00100", "Helsinki"),
                 createPostOffice("02100", "Espoo"),
                 createPostOffice("33100", "Tampere"));
+
         this.listOfSubjectsRows = ImmutableList.of(
                 new SubjectRow("A1", createI18NText("A1-kieli")),
                 new SubjectRow("A12", createI18NText("A12-kieli")),
@@ -96,16 +98,17 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
         this.listOfCountries =
                 ImmutableList.of(
-                        new Option("suomi",
-                                createI18NText("Suomi"), "fi"),
-                        new Option("ruotsi",
-                                createI18NText("Ruotsi"), "sv"));
+                        new Option("FI",
+                                createI18NText("Suomi"), "FI"),
+                        new Option("SV",
+                                createI18NText("Ruotsi"), "SV"));
 
         this.listOfLanguages = listOfCountries;
+
         this.listOfNationalities = listOfCountries;
 
 
-        ImmutableList.of(
+        this.listOfMunicipalities = ImmutableList.of(
                 new Option("jalasjarvi",
                         createI18NText("Jalasjärvi"), "jalasjarvi"),
                 new Option("janakkala",
@@ -158,6 +161,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getLanguages() {
         return this.listOfLanguages;
+    }
+
+    @Override
+    public List<Option> getMunicipalities() {
+        return this.listOfMunicipalities;
     }
 
     private static PostOffice createPostOffice(final String postCode, final String text) {

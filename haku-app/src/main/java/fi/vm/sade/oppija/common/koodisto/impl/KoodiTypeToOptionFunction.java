@@ -25,9 +25,9 @@ public class KoodiTypeToOptionFunction implements Function<KoodiType, Option> {
 
     @Override
     public Option apply(final KoodiType koodiType) {
-        return new Option(koodiType.getKoodiUri(),
-                new I18nText(koodiType.getKoodiUri(), TranslationsUtil.createTranslationsMap(koodiType)),
-                koodiType.getKoodiUri());
+        return new Option(koodiType.getKoodiArvo(),
+                new I18nText(koodiType.getKoodiArvo(), TranslationsUtil.createTranslationsMap(koodiType)),
+                koodiType.getKoodiArvo());
     }
 
 }

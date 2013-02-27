@@ -38,7 +38,7 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 @Service
-@Profile("default")
+@Profile("dev")
 public class KoodistoServiceImpl implements KoodistoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KoodistoServiceImpl.class);
@@ -50,6 +50,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_COUNTRIES = "maat kaksimerkkisellä arvolla";
     public static final String CODE_NATIONALITIES = "";
     public static final String CODE_LANGUAGES = "";
+    public static final String CODE_MUNICIPALITY = "KUNTA";
 
     private final KoodiService koodiService;
 
@@ -106,6 +107,11 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Option> getLanguages() {
         return codesToOptions(CODE_LANGUAGES);
+    }
+
+    @Override
+    public List<Option> getMunicipalities() {
+        return codesToOptions(CODE_MUNICIPALITY);
     }
 
     private List<Option> codesToOptions(final String codeName) {

@@ -142,11 +142,12 @@ public class Yhteishaku2013 {
         kansalaisuus.setInline(true);
 
         DropdownSelect kotikunta = new DropdownSelect("kotikunta", createI18NText("Kotikunta"));
-        kotikunta.addOption("jalasjarvi, ", createI18NText("Jalasjärvi"), "Jalasjärvi");
-        kotikunta.addOption("janakkala", createI18NText("Janakkala"), "Janakkala");
-        kotikunta.addOption("joensuu", createI18NText("Joensuu"), "Joensuu");
-        kotikunta.addOption("jokioinen", createI18NText("Jokioinen"), "Jokioinen");
-        kotikunta.addOption("jomala", createI18NText("Jomala"), "Jomala");
+        kotikunta.addOptions(koodistoService.getMunicipalities());
+//        kotikunta.addOption("jalasjarvi, ", createI18NText("Jalasjärvi"), "Jalasjärvi");
+//        kotikunta.addOption("janakkala", createI18NText("Janakkala"), "Janakkala");
+//        kotikunta.addOption("joensuu", createI18NText("Joensuu"), "Joensuu");
+//        kotikunta.addOption("jokioinen", createI18NText("Jokioinen"), "Jokioinen");
+//        kotikunta.addOption("jomala", createI18NText("Jomala"), "Jomala");
         kotikunta.addAttribute("placeholder", "Valitse kotikunta");
         kotikunta.addAttribute("required", "required");
         kotikunta.setVerboseHelp(getVerboseHelp());
@@ -227,7 +228,7 @@ public class Yhteishaku2013 {
                 createI18NText("Tämä on ensisijainen osoitteeni"));
         ensisijainenOsoite.setInline(true);
 
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", asuinmaa.getId(), "fi");
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", asuinmaa.getId(), "FI");
         relatedQuestionRule.addChild(lahiosoite);
         relatedQuestionRule.addChild(postinumero);
         relatedQuestionRule.addChild(kotikunta);
@@ -239,7 +240,7 @@ public class Yhteishaku2013 {
         osoite.addAttribute("rows", "6");
         osoite.addAttribute("cols", "40");
         osoite.addAttribute("style", "height: 8em");
-        RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule2", asuinmaa.getId(), "sv");
+        RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule2", asuinmaa.getId(), "(?!FI)([A-Z]{2})");
         relatedQuestionRule2.addChild(osoite);
         osoite.setVerboseHelp(getVerboseHelp());
         asuinmaa.addChild(relatedQuestionRule2);
