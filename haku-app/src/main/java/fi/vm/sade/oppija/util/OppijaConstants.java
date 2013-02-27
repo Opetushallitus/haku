@@ -44,6 +44,8 @@ public class OppijaConstants {
     public static final String ELEMENT_ID_NATIONALITY = "kansalaisuus";
     public static final String ELEMENT_ID_CONTACT_LANGUAGE = "äidinkieli";
 
+    public static final String PREFERENCE_ID = "preference%d-Koulutus-id";
+
     public static final String NATIONALITY_CODE_FI = "fi";
 
 }
