@@ -60,6 +60,14 @@
             <property name="maxUploadSize" value="1000000"/>
         </bean>
 
+        <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+            <property name="converters">
+                <list>
+                    <bean class="fi.vm.sade.oppija.hakemus.converter.ApplicationToHakemusTyyppi" />
+                </list>
+            </property>
+        </bean>
+
         <import resource="haku-context.xml"/>
         <import resource="tarjonta-context.xml"/>
         <import resource="authentication-service-context.xml"/>
