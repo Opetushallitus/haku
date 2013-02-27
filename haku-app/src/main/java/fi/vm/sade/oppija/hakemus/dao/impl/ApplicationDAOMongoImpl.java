@@ -148,7 +148,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         QueryBuilder baseQuery = QueryBuilder.start();
         DBObject query;
         if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and
+                    (filters).get()).get();
         } else {
             query = baseQuery.get();
         }
@@ -199,7 +200,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 QueryBuilder.start("answers.henkilotiedot.Etunimet").regex(namePattern).get(),
                 QueryBuilder.start("answers.henkilotiedot.Sukunimi").regex(namePattern).get());
         if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
         } else {
             query = baseQuery.get();
         }
@@ -221,7 +222,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
         DBObject query;
         if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
         } else {
             query = baseQuery.get();
         }
@@ -234,7 +235,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         QueryBuilder baseQuery = QueryBuilder.start(FIELD_APPLICATION_OID).is(term);
         DBObject query;
         if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
         } else {
             query = baseQuery.get();
         }
@@ -247,7 +248,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         QueryBuilder baseQuery = QueryBuilder.start(FIELD_PERSON_OID).is(term);
         DBObject query;
         if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
         } else {
             query = baseQuery.get();
         }
@@ -261,7 +262,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 .is(shaEncrypter.encrypt(term));
         DBObject query;
         if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
         } else {
             query = baseQuery.get();
         }
@@ -275,7 +276,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         QueryBuilder baseQuery = QueryBuilder.start("answers.henkilotiedot.syntymaaika").is(dob);
         DBObject query;
         if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().or(filters).get()).get();
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
         } else {
             query = baseQuery.get();
         }
@@ -333,6 +334,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (!isEmpty(lopOid)) {
             filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
         }
+
+        if (applicationQueryParameters.isFetchSubmittedOnly()) {
+            DBObject f = new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true));
+            filters.add(f);
+        }
+
         return filters.toArray(new DBObject[filters.size()]);
     }
 }

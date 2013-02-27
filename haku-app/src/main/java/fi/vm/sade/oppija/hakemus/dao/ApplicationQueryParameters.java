@@ -24,6 +24,7 @@ public class ApplicationQueryParameters {
     private final boolean fetchPassive;
     private final List<String> preferences = new ArrayList<String>();
     private final String LOPOid;
+    private final boolean fetchSubmittedOnly = true;
 
     public ApplicationQueryParameters() {
         this.state = "";
@@ -64,5 +65,9 @@ public class ApplicationQueryParameters {
 
     public String getLOPOid() {
         return LOPOid;
+    }
+
+    public boolean isFetchSubmittedOnly() {
+        return fetchSubmittedOnly;
     }
 }
