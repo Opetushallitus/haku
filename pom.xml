@@ -12,7 +12,8 @@
 	<modules>
 		<module>hakemus-api</module>
 		<module>haku-app</module>
-	</modules>
+        <module>koulutusinformaatio-service</module>
+    </modules>
 
     <properties>
         <project.svn.base>https://penaali.hard.ware.fi/svn/generic/${project.artifactId}</project.svn.base>
