@@ -17,22 +17,42 @@
     <wsdl:message name="haeHakemukset">
         <wsdl:part name="parameters" element="messages:haeHakemukset" />
     </wsdl:message>
-    
     <wsdl:message name="haeHakemuksetVastaus">
         <wsdl:part name="parameters" element="messages:haeHakemuksetVastaus" />
     </wsdl:message>
-    
+
+    <wsdl:message name="haeHakutoiveet">
+        <wsdl:part name="parameters" element="messages:haeHakutoiveet" />
+    </wsdl:message>
+    <wsdl:message name="haeHakutoiveetVastaus">
+        <wsdl:part name="parameters" element="messages:haeHakutoiveetVastaus" />
+    </wsdl:message>
+
+
     <wsdl:portType name="HakemusService">
         <wsdl:documentation>Palvelurajapinta, jonka kautta voidaan hakea hakemuksia hakukohteille</wsdl:documentation>
         <wsdl:operation name="haeHakemukset">
             <wsdl:input message="tns:haeHakemukset" />
             <wsdl:output message="tns:haeHakemuksetVastaus" />
         </wsdl:operation>
+        <wsdl:operation name="haeHakutoiveet">
+            <wsdl:input message="tns:haeHakutoiveet" />
+            <wsdl:output message="tns:haeHakutoiveetVastaus" />
+        </wsdl:operation>
     </wsdl:portType>
 
     <wsdl:binding name="HakemusServiceSoapBinding" type="tns:HakemusService">
         <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
         <wsdl:operation name="haeHakemukset">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="haeHakutoiveet">
             <soap:operation soapAction="" style="document" />
             <wsdl:input>
                 <soap:body use="literal" />

@@ -10,12 +10,10 @@
 
     <xs:element name="haeHakemukset" type="tns:HaeHakemuksetTyyppi" />
     <xs:element name="haeHakemuksetVastaus" type="tns:HaeHakemuksetVastausTyyppi" />
+    <xs:element name="haeHakutoiveet" type="tns:HaeHakutoiveetTyyppi" />
+    <xs:element name="haeHakutoiveetVastaus" type="tns:HaeHakutoiveetVastausTyyppi" />
 
-    <xs:complexType name="HaeHakemuksetTyyppi">
-        <xs:sequence>
-            <xs:element name="hakukohdeOid" type="xs:string" maxOccurs="unbounded" minOccurs="1" />
-        </xs:sequence>
-    </xs:complexType>
+
 
     <xs:complexType name="HakuParametritTyyppi">
         <xs:sequence>
@@ -23,9 +21,28 @@
         </xs:sequence>
     </xs:complexType>
 
+
+    <xs:complexType name="HaeHakemuksetTyyppi">
+        <xs:sequence>
+            <xs:element name="hakukohdeOid" type="xs:string" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
     <xs:complexType name="HaeHakemuksetVastausTyyppi">
         <xs:sequence>
             <xs:element name="hakemus" type="hakemus:HakemusTyyppi" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
+
+    <xs:complexType name="HaeHakutoiveetTyyppi">
+        <xs:sequence>
+            <xs:element name="hakuOid" type="xs:string" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="HaeHakutoiveetVastausTyyppi">
+        <xs:sequence>
+            <xs:element name="hakutoive" type="hakemus:HakutoiveTyyppi" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+
 </xs:schema>
