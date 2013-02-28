@@ -502,20 +502,9 @@
         <!-- cas -->
 
         <dependency>
-            <groupId>org.jasig.cas</groupId>
-            <artifactId>cas-client-core</artifactId>
-            <version>3.1.10</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-cas</artifactId>
-            <version>${spring.version}</version>
+            <groupId>fi.vm.sade.auth</groupId>
+            <artifactId>generic-security</artifactId>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
@@ -537,53 +526,10 @@
                     <artifactId>spring-beans</artifactId>
                     <groupId>org.springframework</groupId>
                 </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-ldap</artifactId>
-            <version>${spring.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>spring-core</artifactId>
-                    <groupId>org.springframework</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>spring-context</artifactId>
-                    <groupId>org.springframework</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>spring-beans</artifactId>
-                    <groupId>org.springframework</groupId>
-                </exclusion>
                 <exclusion>
                     <artifactId>commons-lang</artifactId>
                     <groupId>commons-lang</groupId>
                 </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
-            <version>2.4.8</version>
-        </dependency>
-
-        <dependency>
-            <groupId>fi.vm.sade.organisaatio</groupId>
-            <artifactId>organisaatio-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>fi.vm.sade.auth</groupId>
-            <artifactId>authentication-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <!-- TODO: cas todo tuolta cas:n takia tarvittavat jutut vois olla jossain muualla -->
-        <dependency>
-            <groupId>fi.vm.sade.generic</groupId>
-            <artifactId>generic-service</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <exclusions>
                 <exclusion>
                     <groupId>org.apache.cxf</groupId>
                     <artifactId>cxf-bundle</artifactId>
@@ -592,13 +538,6 @@
                     <groupId>fi.vm.sade.generic</groupId>
                     <artifactId>generic-dao</artifactId>
                 </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <artifactId>esb-authorization-support</artifactId>
-            <groupId>fi.vm.sade.auth</groupId>
-            <version>${project.version}</version>
-            <exclusions>
                 <exclusion>
                     <groupId>org.apache.camel</groupId>
                     <artifactId>camel-core</artifactId>
@@ -612,10 +551,6 @@
                     <artifactId>geronimo-servlet_2.5_spec</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>javax.ws.rs</groupId>
                     <artifactId>jsr311-api</artifactId>
                 </exclusion>
@@ -623,22 +558,19 @@
                     <groupId>org.apache.cxf</groupId>
                     <artifactId>cxf-bundle</artifactId>
                 </exclusion>
-
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>fi.vm.sade.organisaatio</groupId>
+            <artifactId>organisaatio-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-ws-security</artifactId>
-            <version>${cxf.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-            </exclusions>
-
+            <groupId>fi.vm.sade.auth</groupId>
+            <artifactId>authentication-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
-
 
         <!-- CXF dependencies -->
         <dependency>
