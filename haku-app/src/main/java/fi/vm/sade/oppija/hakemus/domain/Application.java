@@ -41,7 +41,7 @@ import java.util.Map;
 public class Application implements Serializable {
 
     public enum State {
-        ACTIVE, PASSIVE, INCOMPLETE
+        ACTIVE, PASSIVE, INCOMPLETE;
     }
 
     private static final long serialVersionUID = -7491168801255850954L;

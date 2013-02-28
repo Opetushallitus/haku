@@ -16,10 +16,35 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.seeOther;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Controller;
+
 import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.oppija.application.process.domain.ApplicationProcessState;
-import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
-import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
+
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
@@ -33,26 +58,6 @@ import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Controller;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static javax.ws.rs.core.Response.ok;
-import static javax.ws.rs.core.Response.seeOther;
 
 
 @Path("virkailija")
@@ -77,13 +82,11 @@ public class OfficerController {
     @Qualifier("formServiceImpl")
     FormService formService;
     @Autowired
-    ApplicationProcessStateService applicationProcessStateService;
-    @Autowired
     ValintaperusteetService valintaperusteetService;
 
     @GET
     @Path("/hakemus/{oid}")
-    public Response RedirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid)
+    public Response redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid)
             throws ResourceNotFoundException, URISyntaxException {
         LOGGER.debug("RedirectToLastPhase by oid {}", new Object[]{oid});
         Application app = applicationService.getApplication(oid);
@@ -107,7 +110,6 @@ public class OfficerController {
         final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
         Application app = applicationService.getApplication(oid);
         Map<String, String> values = app.getVastauksetMerged();
-        ApplicationProcessState processState = applicationProcessStateService.get(oid);
         Map<String, Object> model = new HashMap<String, Object>();
         List<String> applicationPreferenceOids = applicationService.getApplicationPreferenceOids(app);
         AdditionalQuestions additionalQuestions = valintaperusteetService.retrieveAdditionalQuestions(applicationPreferenceOids);
@@ -118,7 +120,6 @@ public class OfficerController {
         model.put("form", activeForm);
         model.put("oid", oid);
         model.put("applicationPhaseId", app.getPhaseId());
-        model.put("applicationProcessState", processState);
         model.put("hakemusId", formId);
         return new Viewable("/virkailija/" + phase.getType(), model);
     }
@@ -190,12 +191,11 @@ public class OfficerController {
                                                   @PathParam("status") final String status) throws URISyntaxException {
         LOGGER.debug("changeApplicationProcessState {}, {}", new Object[]{oid, status});
 
-        // TODO: change when setApplicationProcessStateStatus returns correct exception and the updated application
-        applicationProcessStateService.setApplicationProcessStateStatus(oid, ApplicationProcessStateStatus.valueOf(status));
         try {
-            return RedirectToLastPhase(oid);
+            applicationService.setApplicationState(oid, status);
+            return redirectToLastPhase(oid);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundExceptionRuntime("Updated application not found.");
+            throw new ResourceNotFoundExceptionRuntime("Updated application not found.", e);
         }
     }
 

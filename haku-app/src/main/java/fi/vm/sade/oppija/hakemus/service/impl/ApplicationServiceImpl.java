@@ -16,8 +16,6 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
-import fi.vm.sade.oppija.application.process.domain.ApplicationProcessStateStatus;
-import fi.vm.sade.oppija.application.process.service.ApplicationProcessStateService;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
@@ -50,6 +48,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.mongodb.DBObject;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,7 +70,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationOidService applicationOidService;
     private final UserHolder userHolder;
     private final FormService formService;
-    private final ApplicationProcessStateService applicationProcessStateService;
     private static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))";
     private static final String DATE_OF_BIRTH_PATTERN = "[0-9]{6}";
     private static final String OID_PATTERN = "^[0-9]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+$";
@@ -85,13 +84,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
                                   final UserHolder userHolder,
                                   @Qualifier("formServiceImpl") final FormService formService,
-                                  @Qualifier("applicationProcessStateServiceImpl") final ApplicationProcessStateService applicationProcessStateService,
                                   @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
                                   AuthenticationService authenticationService) {
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
         this.formService = formService;
-        this.applicationProcessStateService = applicationProcessStateService;
         this.authenticationService = authenticationService;
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
         this.dobPattern = Pattern.compile(DATE_OF_BIRTH_PATTERN);
@@ -145,7 +142,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         allAnswers.putAll(vastaukset);
 
-        if ( ! skipValidators ) { 
+        if (!skipValidators) { 
             ValidationResult validationResult = ElementTreeValidator.validate(phase, allAnswers);
             applicationState.addError(validationResult.getErrorMessages());
         }
@@ -195,8 +192,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             }
 
+            application.setState(Application.State.ACTIVE);
             this.applicationDAO.update(application1, application);
-            this.applicationProcessStateService.setApplicationProcessStateStatus(newOid, ApplicationProcessStateStatus.ACTIVE);
             return newOid;
         } else {
             throw new IllegalStateException("Could not send the application");
@@ -302,6 +299,16 @@ public class ApplicationServiceImpl implements ApplicationService {
         return oids;
     }
 
+
+    @Override
+    public void setApplicationState(String oid, String state) throws ResourceNotFoundException {
+        Application queryApplication = getApplication(oid);
+        Application application = getApplication(oid);
+        application.setState(Application.State.valueOf(state));
+        applicationDAO.update(queryApplication, application);
+    }
+
+    
     private Application getApplication(final Application application) throws ResourceNotFoundException {
         List<Application> listOfApplications = applicationDAO.find(application);
         if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
