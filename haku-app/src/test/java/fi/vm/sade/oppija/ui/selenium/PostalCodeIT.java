@@ -47,7 +47,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
 
     public static final String POST_OFFICE = "Helsinki";
     public static final String POSTCODE = "00100";
-    public static final String POSTCODE_ID = "postinumero1";
+    public static final String POSTCODE_ID = "postinumero";
 
     @Before
     public void init() throws IOException {
@@ -64,8 +64,8 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         Theme testiRyhma = new Theme("testiGrp", createI18NText("TestiGrp"), null);
         testivaihe.addChild(testiRyhma);
         Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
-        postOffices.put("00100", new PostOffice(POSTCODE, ElementUtil.createI18NText(POST_OFFICE)));
-        PostalCode postinumero = new PostalCode(POSTCODE_ID, createI18NText("postinumero"), postOffices);
+        postOffices.put(POSTCODE, new PostOffice(POSTCODE, ElementUtil.createI18NText(POST_OFFICE)));
+        PostalCode postinumero = new PostalCode(POSTCODE_ID, createI18NText(POSTCODE_ID), postOffices);
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
@@ -83,12 +83,10 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         final String url = "lomake/test/lomake/testivaihe";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + "/" + url);
-        driver.findElement(By.id(POSTCODE_ID));
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys(POSTCODE_ID, POSTCODE);
-
-        driver.findElement(By.id("foo"));
         s.typeKeys("foo", "bar");
+        driver.findElement(By.xpath("//*[text()='"+ POST_OFFICE+ "']"));
         assertTrue(seleniumHelper.getSelenium().isTextPresent(POST_OFFICE));
     }
 }
