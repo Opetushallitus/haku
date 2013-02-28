@@ -87,6 +87,5 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         s.typeKeys(POSTCODE_ID, POSTCODE);
         s.typeKeys("foo", "bar");
         driver.findElement(By.xpath("//*[text()='"+ POST_OFFICE+ "']"));
-        assertTrue(seleniumHelper.getSelenium().isTextPresent(POST_OFFICE));
     }
 }
