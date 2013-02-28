@@ -31,7 +31,7 @@ import java.util.List;
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 
 @Service
-@Profile("default")
+@Profile("dev")
 public class KoodistoServiceMockImpl implements KoodistoService {
 
     public static final String LEARNING_INSTITUTION_TYPE = "Yliopistot";

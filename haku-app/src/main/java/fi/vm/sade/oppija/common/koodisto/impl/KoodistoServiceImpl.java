@@ -38,7 +38,7 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 @Service
-@Profile("dev")
+@Profile("default")
 public class KoodistoServiceImpl implements KoodistoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KoodistoServiceImpl.class);
