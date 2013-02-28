@@ -80,6 +80,7 @@ public class OfficerControllerTest {
 
         ApplicationState applicationState = new ApplicationState(app, "henkilotiedot");
         when(applicationService.saveApplicationPhase(any(ApplicationPhase.class), eq(OID), eq(false))).thenReturn(applicationState);
+        when(applicationService.updateApplication(eq(OID), any(ApplicationPhase.class))).thenReturn(applicationState);
 
         AdditionalQuestions additionalQuestions = new AdditionalQuestions();
         additionalQuestions.addParameter(OID, new InputParameter("avain", "KOKONAISLUKU", "1"));
