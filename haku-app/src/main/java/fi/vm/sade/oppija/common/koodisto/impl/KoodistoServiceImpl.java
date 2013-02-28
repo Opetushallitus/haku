@@ -48,8 +48,8 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_LEARNING_INSTITUTION_TYPES = "Oppilaitostyyppi";
     public static final String CODE_ORGANIZATION_TYPES = "Organisaatiotyyppi";
     public static final String CODE_COUNTRIES = "maat kaksimerkkisellä arvolla";
-    public static final String CODE_NATIONALITIES = "";
-    public static final String CODE_LANGUAGES = "";
+    public static final String CODE_NATIONALITIES = CODE_COUNTRIES;
+    public static final String CODE_LANGUAGES = "KIELI";
     public static final String CODE_MUNICIPALITY = "KUNTA";
 
     private final KoodiService koodiService;

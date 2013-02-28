@@ -38,15 +38,16 @@ import java.io.IOException;
  */
 public class TomcatContainer implements DisposableBean {
 
-    private static final String WEBAPP_SRC = "haku-app/src/main/webapp";
-    private static final String RESOURCES_SRC = "haku-app/src/main/resources";
+    public static final String HAKU_APP = "";//"haku-app/";
+    private static final String WEBAPP_SRC = HAKU_APP + "src/main/webapp";
+    private static final String RESOURCES_SRC = HAKU_APP + "src/main/resources";
     public static final String SPRING_PROFILES_ACTIVE_KEY = "spring.profiles.active";
     public static final String SPRING_PROFILES_ACTIVE_VALUE_DEV = "dev";
 
     /**
      * The temporary directory in which Tomcat and the app are deployed.
      */
-    private static final String M_WORKING_DIR = "haku-app/target/it";
+    private static final String M_WORKING_DIR = HAKU_APP + "target/it";
     private static final String SOLR_SOLR_HOME = "solr.solr.home";
     private static final String TARJONTA_INDEX_URL = "tarjonta.index.url";
     private static final String TARJONTA_DATA_URL = "tarjonta.data.url";
@@ -111,9 +112,9 @@ public class TomcatContainer implements DisposableBean {
 
 
     private void createWebApp(File webApp) throws IOException {
-        System.setProperty(SOLR_SOLR_HOME, new File("haku-app/target/resources/solr").getAbsolutePath());
+        System.setProperty(SOLR_SOLR_HOME, new File(HAKU_APP + "target/resources/solr").getAbsolutePath());
         System.setProperty(TARJONTA_INDEX_URL, "http://localhost:" + getPort() + "/solr/");
-        System.setProperty(TARJONTA_DATA_URL, "http://localhost:" + getPort() + "/haku-app/tarjontadev/learningDownloadPOC.xml");
+        System.setProperty(TARJONTA_DATA_URL, "http://localhost:" + getPort() + "/" + getApplicationId() + "/tarjontadev/learningDownloadPOC.xml");
         System.setProperty(MONGO_DB_NAME, name);
         System.setProperty(SPRING_PROFILES_ACTIVE_KEY, SPRING_PROFILES_ACTIVE_VALUE_DEV);
         prepareSolr();
@@ -124,7 +125,7 @@ public class TomcatContainer implements DisposableBean {
 
 
     private void prepareSolr() throws IOException {
-        final File target = new File("haku-app/target");
+        final File target = new File(HAKU_APP + "target");
         org.apache.commons.io.FileUtils.copyDirectoryToDirectory(new File(RESOURCES_SRC), target);
 
 
@@ -157,7 +158,7 @@ public class TomcatContainer implements DisposableBean {
 
     private static WebArchive createWebArchive() {
         MavenDependencyResolver resolver = DependencyResolvers.use(MavenDependencyResolver.class);
-        final EffectivePomMavenDependencyResolver effectivePomMavenDependencyResolver = resolver.loadEffectivePom("haku-app/pom.xml").importAllDependencies();
+        final EffectivePomMavenDependencyResolver effectivePomMavenDependencyResolver = resolver.loadEffectivePom(HAKU_APP + "pom.xml").importAllDependencies();
         final File[] files1 = effectivePomMavenDependencyResolver.resolveAsFiles();
 
         for (File file : files1) {

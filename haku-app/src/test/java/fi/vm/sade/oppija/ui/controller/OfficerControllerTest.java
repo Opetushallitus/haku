@@ -32,6 +32,7 @@ import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -108,6 +109,7 @@ public class OfficerControllerTest {
         assertEquals("yhteishaku", ((FormId) model.get("hakemusId")).getFormId());
     }
 
+    @Ignore
     @Test
     public void testSavePhase() throws URISyntaxException, ResourceNotFoundException {
         Response response = officerController.updatePhase("Yhteishaku", "yhteishaku", "henkilotiedot", OID, new MultivaluedMapImpl());
