@@ -68,12 +68,12 @@ public class ElementTreeValidatorTest {
 
     @Test
     public void testValidateAsuinmaaSV() throws Exception {
-        testAsuinmaa("sv", 1);
+        testAsuinmaa("SV", 1);
     }
 
     @Test
     public void testValidateAsuinmaaFI() throws Exception {
-        testAsuinmaa("fi", 3);
+        testAsuinmaa("FI", 3);
     }
 
     private void testAsuinmaa(final String asuinmaa, final int errorCount) {
@@ -86,8 +86,8 @@ public class ElementTreeValidatorTest {
 
     private HashMap<String, String> fillFormWithoutAsuinmaa() {
         HashMap<String, String> values = new HashMap<String, String>();
-        values.put("äidinkieli", "fi");
-        values.put("kansalaisuus", "fi");
+        values.put("äidinkieli", "FI");
+        values.put("kansalaisuus", "FI");
         values.put("Etunimet", "Mika Ville");
         values.put("Sukunimi", "Rajapaju");
         values.put("Kutsumanimi", "Mika");
