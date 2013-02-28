@@ -48,8 +48,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.mongodb.DBObject;
-
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -142,7 +140,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         allAnswers.putAll(vastaukset);
 
-        if (!skipValidators) { 
+        if ( ! skipValidators ) { 
             ValidationResult validationResult = ElementTreeValidator.validate(phase, allAnswers);
             applicationState.addError(validationResult.getErrorMessages());
         }
@@ -191,8 +189,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 application.setPersonOid(this.authenticationService.addPerson(person));
 
             }
-
-            application.setState(Application.State.ACTIVE);
+            application.activate();
             this.applicationDAO.update(application1, application);
             return newOid;
         } else {
@@ -299,16 +296,30 @@ public class ApplicationServiceImpl implements ApplicationService {
         return oids;
     }
 
-
     @Override
-    public void setApplicationState(String oid, String state) throws ResourceNotFoundException {
-        Application queryApplication = getApplication(oid);
+    public ApplicationState updateApplication(final String oid, final ApplicationPhase applicationPhase) throws ResourceNotFoundException {
+        Application queryApplication = new Application(oid);
         Application application = getApplication(oid);
-        application.setState(Application.State.valueOf(state));
+        application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
+
+        final Form activeForm = formService.getForm(applicationPhase.getFormId());
+
+        Collection<Phase> phases = activeForm.getPhases();
+        List<ValidationResult> listOfValidationResults = new ArrayList<ValidationResult>();
+        for (Phase phase : phases) {
+            listOfValidationResults.add(ElementTreeValidator.validate(phase, application.getVastauksetMerged()));
+        }
+        ValidationResult validationResult = new ValidationResult(listOfValidationResults);
+        if (validationResult.hasErrors()) {
+            application.incomplete();
+        } else {
+            application.activate();
+        }
         applicationDAO.update(queryApplication, application);
+
+        return new ApplicationState(application, applicationPhase.getPhaseId());
     }
 
-    
     private Application getApplication(final Application application) throws ResourceNotFoundException {
         List<Application> listOfApplications = applicationDAO.find(application);
         if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {

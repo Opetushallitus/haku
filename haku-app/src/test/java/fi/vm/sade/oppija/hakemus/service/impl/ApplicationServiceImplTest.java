@@ -50,6 +50,7 @@ public class ApplicationServiceImplTest {
     String SHORT_OID = "12345678901";
     String NAME = "Test Example";
     private ApplicationQueryParameters applicationQueryParameters;
+    private ApplicationServiceImpl service;
 
     @Before
     public void setUp() {
@@ -64,12 +65,11 @@ public class ApplicationServiceImplTest {
         when(applicationDAO.findByOid(eq(SHORT_OID), eq(applicationQueryParameters))).thenReturn(Lists.newArrayList(application));
         when(applicationDAO.find(any(Application.class))).thenReturn(Lists.newArrayList(application));
         when(applicationOidService.getOidPrefix()).thenReturn("1.2.3.4.5");
+        service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, null);
     }
 
     @Test
     public void testFindApplicationBySsn() {
-        ApplicationServiceImpl service = new ApplicationServiceImpl
-                (applicationDAO, null, null, null, applicationOidService, null);
         List<Application> results = service.findApplications(SSN, applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.size());
@@ -78,8 +78,6 @@ public class ApplicationServiceImplTest {
 
     @Test
     public void testFindApplicationByName() {
-        ApplicationServiceImpl service = new ApplicationServiceImpl
-                (applicationDAO, null, null, null, applicationOidService, null);
         List<Application> results = service.findApplications(NAME, applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.size());
@@ -88,8 +86,6 @@ public class ApplicationServiceImplTest {
 
     @Test
     public void testFindApplicationByOid() {
-        ApplicationServiceImpl service = new ApplicationServiceImpl
-                (applicationDAO, null, null, null, applicationOidService, null);
         application.setOid(OID);
         List<Application> results = service.findApplications(OID, applicationQueryParameters);
         assertNotNull(results);
@@ -99,8 +95,6 @@ public class ApplicationServiceImplTest {
 
     @Test
     public void testFindApplicationByShortOid() {
-        ApplicationServiceImpl service = new ApplicationServiceImpl
-                (applicationDAO, null, null, null, applicationOidService, null);
         application.setOid(OID);
         List<Application> results = service.findApplications(SHORT_OID, applicationQueryParameters);
         assertNotNull(results);
@@ -110,8 +104,6 @@ public class ApplicationServiceImplTest {
 
     @Test
     public void testSaveApplicationAdditionalInfo() throws ResourceNotFoundException {
-        ApplicationServiceImpl service = new ApplicationServiceImpl
-                (applicationDAO, null, null, null, applicationOidService, null);
         Map<String, String> additionalInfo = new HashMap<String, String>();
         additionalInfo.put("key", "value");
         service.saveApplicationAdditionalInfo(OID, additionalInfo);

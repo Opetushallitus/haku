@@ -186,7 +186,7 @@ public class FormController {
                               @PathParam(FORM_ID_PATH_PARAM) final String formId,
                               @PathParam("phaseId") final String phaseId,
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
-        LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
+        LOGGER.debug("updatePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         boolean skipValidators = skipValidators(multiValues); 
 

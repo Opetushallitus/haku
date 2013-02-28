@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.lomake.service.impl;
 
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
@@ -63,6 +64,11 @@ public class FormServiceImpl implements FormService {
     @Override
     public Form getForm(String applicationPeriodId, String formId) {
         return getApplicationPeriodById(applicationPeriodId).getFormById(formId);
+    }
+
+    @Override
+    public Form getForm(FormId formId) {
+        return getForm(formId.getApplicationPeriodId(), formId.getFormId());
     }
 
     @Override

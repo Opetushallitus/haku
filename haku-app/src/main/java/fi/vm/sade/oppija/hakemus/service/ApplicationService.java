@@ -160,13 +160,7 @@ public interface ApplicationService {
      * @return list of application preference oids
      */
     List<String> getApplicationPreferenceOids(final Application application);
-    
-    /**
-     * Change application state. State must match one of those defined in Application.State.
-     * 
-     * @param oid
-     * @param state
-     * @throws ResourceNotFoundException 
-     */
-    void setApplicationState(final String oid, final String state) throws ResourceNotFoundException;
+
+
+    ApplicationState updateApplication(final String oid, final ApplicationPhase applicationPhase) throws ResourceNotFoundException;
 }

@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.hakemus.domain;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.Maps;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.oppija.lomake.domain.ObjectIdSerializer;
@@ -31,11 +33,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author jukka
- * @version 9/26/122:48 PM}
- * @since 1.1
- */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Application implements Serializable {
@@ -123,18 +120,41 @@ public class Application implements Serializable {
         this.oid = oid;
     }
 
-    public void deactivate() {
+    @JsonIgnore
+    public void passivate() {
         state = State.PASSIVE;
     }
 
+    @JsonIgnore
     public void activate() {
         state = State.ACTIVE;
     }
 
+    @JsonIgnore
+    public void incomplete() {
+        state = State.INCOMPLETE;
+    }
+
+    @JsonIgnore
+    public boolean isActive() {
+        return state.equals(State.ACTIVE);
+    }
+
+    @JsonIgnore
+    public boolean isPassive() {
+        return state.equals(State.PASSIVE);
+    }
+
+    @JsonIgnore
+    public boolean isIncomplete() {
+        return state.equals(State.INCOMPLETE);
+    }
+
     // final, koska kutsutaan konstruktorista
     public final Application addVaiheenVastaukset(final String phaseId, Map<String, String> answers) {
-        this.phaseId = answers.remove(VAIHE_ID);
-        this.answers.put(phaseId, answers);
+        this.phaseId = answers.get(VAIHE_ID);
+        Map<String, String> answersWithoutPhaseId = Maps.filterKeys(answers, Predicates.not(Predicates.equalTo(VAIHE_ID)));
+        this.answers.put(phaseId, answersWithoutPhaseId);
         return this;
     }
 

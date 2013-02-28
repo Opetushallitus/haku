@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.lomake.service;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 
@@ -33,6 +34,7 @@ public interface FormService {
     ApplicationPeriod getApplicationPeriodById(final String applicationPeriodId);
 
     Form getForm(String applicationPeriodId, String formId);
+    Form getForm(final FormId formId);
 
     Form getActiveForm(final String applicationPeriodId, final String formId);
 }

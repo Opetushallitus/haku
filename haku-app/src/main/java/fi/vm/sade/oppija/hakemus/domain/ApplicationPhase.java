@@ -31,7 +31,7 @@ public class ApplicationPhase {
     public ApplicationPhase(final FormId formId, final String phaseId, final Map<String, String> answers) {
         this.formId = formId;
         this.phaseId = phaseId;
-        this.answers.putAll(ImmutableMap.copyOf(answers));
+        this.answers.putAll(answers);
     }
 
     public FormId getFormId() {
@@ -43,6 +43,6 @@ public class ApplicationPhase {
     }
 
     public Map<String, String> getAnswers() {
-        return this.answers;
+        return ImmutableMap.copyOf(this.answers);
     }
 }

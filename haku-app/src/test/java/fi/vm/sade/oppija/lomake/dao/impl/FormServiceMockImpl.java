@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.lomake.dao.impl;
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
@@ -79,6 +80,11 @@ public class FormServiceMockImpl implements FormService {
     public Form getForm(String applicationPeriodId, String formId) {
         ApplicationPeriod applicationPeriod = getApplicationPeriodById(applicationPeriodId);
         return applicationPeriod.getFormById(formId);
+    }
+
+    @Override
+    public Form getForm(FormId formId) {
+        return this.getForm(formId.getApplicationPeriodId(), formId.getFormId());
     }
 
     public FormModel getModel() {

@@ -36,7 +36,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * Return list of applications that match given model application, state and
      *
      * @param application
-     * @param applicationQueryParameters
      * @return
      */
     List<Application> find(Application application);
