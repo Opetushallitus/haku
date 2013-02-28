@@ -1,0 +1,40 @@
+package fi.vm.sade.oppija.hakemus.converter;
+
+import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.util.OppijaConstants;
+import fi.vm.sade.service.hakemus.schema.HakukohdeTyyppi;
+import org.springframework.core.convert.converter.Converter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @author Mikko Majapuro
+ */
+public abstract class AbstractApplicationConverter<T> implements Converter<Application, T> {
+
+    protected List<HakukohdeTyyppi> getPreferences(Map<String, String> keyValues) {
+        List<HakukohdeTyyppi> preferences = new ArrayList<HakukohdeTyyppi>();
+        int i = 1;
+
+        while(true) {
+            String key = String.format(OppijaConstants.PREFERENCE_ID, i);
+            if (keyValues.containsKey(key)) {
+                String value = keyValues.get(key);
+                if (value != null && !value.isEmpty()) {
+                    HakukohdeTyyppi preference = new HakukohdeTyyppi();
+                    preference.setHakukohdeOid(value);
+                    preference.setPrioriteetti(i);
+                    preferences.add(preference);
+                    ++i;
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+        return preferences;
+    }
+}

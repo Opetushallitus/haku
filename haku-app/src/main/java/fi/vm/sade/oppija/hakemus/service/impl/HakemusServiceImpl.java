@@ -34,7 +34,7 @@ public class HakemusServiceImpl implements HakemusService {
             @WebParam(name = "hakukohdeOid", targetNamespace = "")
             java.util.List<java.lang.String> hakukohdeOid) {
 
-        List<Application> applications = applicationService.findApplications("", new ApplicationQueryParameters(hakukohdeOid));
+        List<Application> applications = applicationService.getApplicationsByApplicationOption(hakukohdeOid);
         return Lists.transform(applications, new Function<Application, HakemusTyyppi>() {
             @Override
             public HakemusTyyppi apply(Application application) {
@@ -45,6 +45,12 @@ public class HakemusServiceImpl implements HakemusService {
 
     @Override
     public List<HakutoiveTyyppi> haeHakutoiveet(@WebParam(name = "hakuOid", targetNamespace = "") List<String> hakuOid) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        List<Application> applications = applicationService.getApplicationsByApplicationSystem(hakuOid);
+        return Lists.transform(applications, new Function<Application, HakutoiveTyyppi>() {
+            @Override
+            public HakutoiveTyyppi apply(Application application) {
+                return conversionService.convert(application, HakutoiveTyyppi.class);
+            }
+        });
     }
 }

@@ -32,6 +32,7 @@ public class HakemusServiceImplTest {
         List<Application> applications = new ArrayList<Application>();
         applications.add(app);
         when(applicationService.findApplications(eq(""), any(ApplicationQueryParameters.class))).thenReturn(applications);
+        when(applicationService.getApplicationsByApplicationOption(anyList())).thenReturn(applications);
         conversionService = mock(ConversionService.class);
         HakemusTyyppi hakemus = new HakemusTyyppi();
         hakemus.setHakemusOid(app.getOid());
@@ -47,7 +48,7 @@ public class HakemusServiceImplTest {
         Assert.assertNotNull(hakemukset);
         Assert.assertEquals(1, hakemukset.size());
         Assert.assertEquals("1.2.3.4.5.1", hakemukset.get(0).getHakemusOid());
-        verify(applicationService, times(1)).findApplications(eq(""), any(ApplicationQueryParameters.class));
+        verify(applicationService, times(1)).getApplicationsByApplicationOption(anyList());
         verify(conversionService, times(1)).convert(any(Object.class), eq(HakemusTyyppi.class));
     }
 }

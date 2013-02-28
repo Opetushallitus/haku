@@ -41,12 +41,12 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     List<Application> find(Application application);
 
     /**
-     * Returns Applications that are included in one application system.
+     * Returns Applications that are included in specified application systems.
      *
-     * @param asId application system id
+     * @param asIds application system ids
      * @return list of applications or an empty list if none are found
      */
-    List<Application> findByApplicationSystem(String asId);
+    List<Application> findByApplicationSystem(List<String> asIds);
 
     /**
      * Returns applications that apply to this application option, ie.

@@ -65,7 +65,7 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public List<Application> findByApplicationSystem(String asId) {
+    public List<Application> findByApplicationSystem(List<String> asIds) {
         return null;
     }
 
