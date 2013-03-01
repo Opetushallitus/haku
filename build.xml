@@ -29,24 +29,17 @@
 
         <echo>Copy new haku-app.war</echo>
 
-    	<if>
-    		<available file="haku-app/target/haku-app.war" />
-        	<then>
-		    	<scp file="haku-app/target/haku-app.war"	
-		             todir="tomcat@${tomcat-host}:/data00/tomcat/apache-tomcat-7.0.29/webapps/"
-		             keyfile="${user.home}/.ssh/id_rsa"
-		             />
-        	</then>
-    	</if>
-    	<if>
-    		<available file="target/haku-app.war" />
-    		<then>
-		        <scp file="target/haku-app.war"	
-		             todir="tomcat@${tomcat-host}:/data00/tomcat/apache-tomcat-7.0.29/webapps/"
-		             keyfile="${user.home}/.ssh/id_rsa"
-		             />
-    		</then>
-    	</if>
+    	<available file="haku-app/target/haku-app.war"
+    	           property="haku.war.path"
+    	           value="haku-app/target/haku-app.war" />
+    	<available file="target/haku-app.war"
+    	           property="haku.war.path"
+    	           value="haku-app/target/haku-app.war" />
+    	
+	   	<scp file="${haku.war.path}"	
+	         todir="tomcat@${tomcat-host}:/data00/tomcat/apache-tomcat-7.0.29/webapps/"
+	         keyfile="${user.home}/.ssh/id_rsa"
+	         />
 
         <echo>rename haku-app.war as ROOT</echo>
         <sshexec command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT;
