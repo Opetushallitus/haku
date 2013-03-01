@@ -2,6 +2,7 @@
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ attribute name="element" required="true" type="fi.vm.sade.oppija.lomake.domain.elements.Element" %>
 <%@ attribute name="styleBaseClass" required="false" type="java.lang.String" %>
+<%@ tag trimDirectiveWhitespaces="true" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~

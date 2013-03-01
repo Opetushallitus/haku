@@ -1,7 +1,7 @@
 <%@ tag description="i18nText" body-content="empty" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ attribute name="id" required="true" type="java.lang.String" %>
-<%@ attribute name="additionalClass" required="false" type="java.lang.String" %>
+<%@ attribute name="messages" required="true" type="java.util.Map" %>
+<%@ attribute name="additionalClass" required="true" type="java.lang.String" %>
 <%@ tag trimDirectiveWhitespaces="true" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -18,6 +18,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<c:if test="${not empty errorMessages[id]}">
-    <div class="notification warning ${additionalClass}"><c:out value="${errorMessages[id]}"/></div>
-</c:if>
+<c:forEach var="message" items="${messages}">
+    <div class="notification ${additionalClass}"><c:out value="${message.value}" escapeXml="true"/></div>
+</c:forEach>
+
