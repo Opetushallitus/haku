@@ -30,7 +30,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * API for accessing applications.
@@ -105,5 +107,20 @@ public class ApplicationResource {
         List<Application> result = new ArrayList<Application>();
         result.addAll(applicationService.findApplications(query, new ApplicationQueryParameters(appState, fetchPassive, appPreference, lopOid)));
         return result;
+    }
+
+    @GET
+    @Path("{oid}/{key}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String, String> getApplicationKeyValue(@PathParam("oid") String oid, @PathParam("key") String key) {
+        Map<String, String> keyValue = new HashMap<String, String>();
+
+        try {
+            String value = applicationService.getApplicationKeyValue(oid, key);
+            keyValue.put(key, value);
+        } catch (ResourceNotFoundException e) {
+            throw new JSONException(Response.Status.NOT_FOUND, e.getMessage());
+        }
+        return keyValue;
     }
 }

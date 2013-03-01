@@ -70,6 +70,9 @@ public class ApplicationResourceTest {
         try {
             when(applicationService.getApplication(OID)).thenReturn(this.application);
             when(applicationService.getApplication(INVALID_OID)).thenThrow(new ResourceNotFoundException("Application Not Found"));
+            when(applicationService.getApplicationKeyValue(eq(OID), eq("key"))).thenReturn("value");
+            when(applicationService.getApplicationKeyValue(eq(INVALID_OID), eq("key"))).thenThrow(new ResourceNotFoundException("Application Not Found"));
+            when(applicationService.getApplicationKeyValue(eq(OID), eq("nonExistingKey"))).thenThrow(new ResourceNotFoundException("Key of the application Not Found"));
         } catch (ResourceNotFoundException e) {
             // do nothing
         }
@@ -134,5 +137,24 @@ public class ApplicationResourceTest {
     @Test(expected = JSONException.class)
     public void testGetApplicationByInvalidOid() {
         this.applicationResource.getApplicationByOid(INVALID_OID);
+    }
+
+    @Test
+    public void testGetApplicationKeyValue() {
+        Map<String, String> value = applicationResource.getApplicationKeyValue(OID, "key");
+        assertNotNull(value);
+        assertTrue(value.containsKey("key"));
+        assertEquals("value", value.get("key"));
+        assertEquals(1, value.size());
+    }
+
+    @Test(expected = JSONException.class)
+    public void testGetApplicationKeyValueNonExistingApplication() {
+        applicationResource.getApplicationKeyValue(INVALID_OID, "key");
+    }
+
+    @Test(expected = JSONException.class)
+    public void testGetApplicationKeyValueNonExistingKey() {
+        applicationResource.getApplicationKeyValue(OID, "nonExistingKey");
     }
 }

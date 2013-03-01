@@ -297,6 +297,18 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public String getApplicationKeyValue(String applicationOid, String key) throws ResourceNotFoundException {
+        Application application = getApplication(applicationOid);
+        if (application.getAdditionalInfo().containsKey(key)) {
+            return application.getAdditionalInfo().get(key);
+        } else if (application.getVastauksetMerged().containsKey(key)) {
+            return application.getVastauksetMerged().get(key);
+        } else {
+            throw new ResourceNotFoundException(String.format("Could not find application : %s value of key : %s", applicationOid, key));
+        }
+    }
+
+    @Override
     public ApplicationState updateApplication(final String oid, final ApplicationPhase applicationPhase) throws ResourceNotFoundException {
         Application queryApplication = new Application(oid);
         Application application = getApplication(oid);
@@ -323,7 +335,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private Application getApplication(final Application application) throws ResourceNotFoundException {
         List<Application> listOfApplications = applicationDAO.find(application);
         if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
-            throw new ResourceNotFoundException("Could not find application " + listOfApplications.size());
+            throw new ResourceNotFoundException("Could not find application " + application.getOid());
         }
         return listOfApplications.get(0);
 

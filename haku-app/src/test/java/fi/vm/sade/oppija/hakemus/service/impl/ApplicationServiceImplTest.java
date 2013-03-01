@@ -60,6 +60,9 @@ public class ApplicationServiceImplTest {
     public void setUp() {
         applicationQueryParameters = new ApplicationQueryParameters("", false, "", "");
         application = new Application();
+        Map<String, String> answers = new HashMap<String, String>();
+        answers.put("avain", "arvo");
+        application.addVaiheenVastaukset("test", answers);
         applicationDAO = mock(ApplicationDAO.class);
         applicationOidService = mock(ApplicationOidService.class);
         formService = mock(FormService.class);
@@ -112,5 +115,17 @@ public class ApplicationServiceImplTest {
         additionalInfo.put("key", "value");
         service.saveApplicationAdditionalInfo(OID, additionalInfo);
         verify(applicationDAO, times(1)).update(any(Application.class), any(Application.class));
+    }
+
+    @Test
+    public void testGetApplicationKeyValue() throws ResourceNotFoundException {
+        String value = service.getApplicationKeyValue(OID, "avain");
+        assertNotNull(value);
+        assertEquals("arvo", value);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetApplicationKeyValueKeyNotExists() throws ResourceNotFoundException {
+        service.getApplicationKeyValue(OID, "nonExistingKey");
     }
 }

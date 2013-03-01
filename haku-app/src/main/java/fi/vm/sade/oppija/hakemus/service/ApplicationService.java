@@ -161,6 +161,14 @@ public interface ApplicationService {
      */
     List<String> getApplicationPreferenceOids(final Application application);
 
+    /**
+     * Gets the value of the specified application and key
+     * @param applicationOid  application oid
+     * @param key
+     * @return value of the key
+     * @throws ResourceNotFoundException
+     */
+    String getApplicationKeyValue(final String applicationOid, final String key) throws ResourceNotFoundException;
 
     ApplicationState updateApplication(final String oid, final ApplicationPhase applicationPhase) throws ResourceNotFoundException;
 }
