@@ -28,7 +28,7 @@
                  passphrase="" trust="true" failonerror="false" />
 
         <echo>Copy new haku-app.war</echo>
-        <scp file="haku-app/target/haku-app.war"
+        <scp file="target/haku-app.war"	
              todir="tomcat@${tomcat-host}:/data00/tomcat/apache-tomcat-7.0.29/webapps/"
              keyfile="${user.home}/.ssh/id_rsa"
              />
