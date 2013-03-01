@@ -44,7 +44,7 @@ public class HakemusServiceImpl implements HakemusService {
     }
 
     @Override
-    public List<HakutoiveTyyppi> haeHakutoiveet(@WebParam(name = "hakuOid", targetNamespace = "") List<String> hakuOid) {
+    public List<HakutoiveTyyppi> haeHakutoiveet(@WebParam(name = "hakuOid", targetNamespace = "") String hakuOid) {
         List<Application> applications = applicationService.getApplicationsByApplicationSystem(hakuOid);
         return Lists.transform(applications, new Function<Application, HakutoiveTyyppi>() {
             @Override

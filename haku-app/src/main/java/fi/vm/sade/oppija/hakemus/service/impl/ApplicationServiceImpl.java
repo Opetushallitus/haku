@@ -209,9 +209,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> getApplicationsByApplicationSystem(List<String> applicationSystemIds) {
+    public List<Application> getApplicationsByApplicationSystem(String applicationSystemId) {
 
-        return applicationDAO.findByApplicationSystem(applicationSystemIds);
+        return applicationDAO.findByApplicationSystem(applicationSystemId);
     }
 
     @Override

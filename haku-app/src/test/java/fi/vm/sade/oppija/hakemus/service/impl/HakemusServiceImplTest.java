@@ -29,6 +29,7 @@ public class HakemusServiceImplTest {
     private HakemusService hakemusService;
     private ApplicationService applicationService;
     private ConversionService conversionService;
+    private static final String APP_SYSTEM_OID = "yhteishaku";
 
     @Before
     public void setUp() {
@@ -43,7 +44,7 @@ public class HakemusServiceImplTest {
         applications.add(app);
         when(applicationService.findApplications(eq(""), any(ApplicationQueryParameters.class))).thenReturn(applications);
         when(applicationService.getApplicationsByApplicationOption(anyList())).thenReturn(applications);
-        when(applicationService.getApplicationsByApplicationSystem(anyList())).thenReturn(applications);
+        when(applicationService.getApplicationsByApplicationSystem(eq(APP_SYSTEM_OID))).thenReturn(applications);
         conversionService = mock(ConversionService.class);
         ApplicationToHakutoiveTyyppi applicationToHakutoiveTyyppi = new ApplicationToHakutoiveTyyppi();
         ApplicationToHakemusTyyppi applicationToHakemusTyyppi = new ApplicationToHakemusTyyppi();
@@ -67,15 +68,13 @@ public class HakemusServiceImplTest {
 
     @Test
     public void testHaeHakutoiveet() {
-        List<String> oids = new ArrayList<String>();
-        oids.add("yhteishaku");
-        List<HakutoiveTyyppi> hakutoiveet = hakemusService.haeHakutoiveet(oids);
+        List<HakutoiveTyyppi> hakutoiveet = hakemusService.haeHakutoiveet(APP_SYSTEM_OID);
         Assert.assertNotNull(hakutoiveet);
         Assert.assertEquals(1, hakutoiveet.size());
         Assert.assertNotNull(hakutoiveet.get(0));
         Assert.assertEquals("1.2.3.4.5.1", hakutoiveet.get(0).getHakemusOid());
         Assert.assertEquals(3, hakutoiveet.get(0).getHakutoive().size());
-        verify(applicationService, times(1)).getApplicationsByApplicationSystem(anyList());
+        verify(applicationService, times(1)).getApplicationsByApplicationSystem(eq(APP_SYSTEM_OID));
         verify(conversionService, times(3)).convert(any(Object.class), eq(HakutoiveTyyppi.class));
     }
 }

@@ -105,12 +105,12 @@ public interface ApplicationService {
     Application getPendingApplication(final FormId hakuLomakeId, final String oid) throws ResourceNotFoundException;
 
     /**
-     * Retrieves all submitted applications related to specified application systems
+     * Retrieves all submitted applications related to specified application system
      *
-     * @param applicationSystemIds
+     * @param applicationSystemId
      * @return list of applications
      */
-    List<Application> getApplicationsByApplicationSystem(List<String> applicationSystemIds);
+    List<Application> getApplicationsByApplicationSystem(String applicationSystemId);
 
     /**
      * Returns all applications where one of the selected application options is the
