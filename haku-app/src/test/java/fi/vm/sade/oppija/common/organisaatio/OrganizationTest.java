@@ -59,7 +59,7 @@ public class OrganizationTest {
         assertEquals(OID.hashCode(), organization.hashCode());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testNullOid() throws Exception {
         createOrganization(null);
     }

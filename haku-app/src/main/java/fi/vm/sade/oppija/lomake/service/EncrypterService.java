@@ -16,6 +16,9 @@
 
 package fi.vm.sade.oppija.lomake.service;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+
 /**
  * @author jukka
  * @version 12/13/124:02 PM}

@@ -16,27 +16,31 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
-import com.google.common.collect.Lists;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
-import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
-import fi.vm.sade.oppija.lomake.domain.FormId;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.lomake.service.FormService;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.google.common.collect.Lists;
+
+import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
+import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
+import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.service.FormService;
 
 public class ApplicationServiceImplTest {
 

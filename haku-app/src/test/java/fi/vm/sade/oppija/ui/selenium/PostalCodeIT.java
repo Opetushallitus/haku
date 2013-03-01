@@ -16,7 +16,19 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
 import com.thoughtworks.selenium.Selenium;
+
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
@@ -27,17 +39,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PostalCode;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
-import org.junit.Before;
-import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mikko Majapuro

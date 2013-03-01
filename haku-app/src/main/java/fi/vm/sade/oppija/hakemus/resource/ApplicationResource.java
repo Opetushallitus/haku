@@ -57,7 +57,7 @@ public class ApplicationResource {
         try {
             return new ApplicationDTO(applicationService.getApplication(oid));
         } catch (ResourceNotFoundException e) {
-            throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application");
+            throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application", e);
 
         }
 
@@ -90,7 +90,7 @@ public class ApplicationResource {
         try {
             return applicationService.getApplication(oid);
         } catch (ResourceNotFoundException e) {
-            throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application");
+            throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application", e);
         }
     }
 

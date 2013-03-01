@@ -94,7 +94,7 @@ public class OfficerControllerTest {
 
     @Test
     public void testGetApplication() throws Exception {
-        Response response = officerController.RedirectToLastPhase(OID);
+        Response response = officerController.redirectToLastPhase(OID);
         assertEquals("/virkailija/hakemus/Yhteishaku/yhteishaku/esikatselu/" + OID, getLocationHeader(response));
     }
 

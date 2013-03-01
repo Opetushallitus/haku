@@ -204,6 +204,30 @@
 
     </profiles>
 
+
+        <repositories>
+		        <repository>
+				            <id>codehaus</id>
+					                <url>http://repository.codehaus.org/org/codehaus</url>
+							        </repository>
+								        <repository>
+										            <id>oph-sade-artifactory-snapshots</id>
+											                <url>http://penaali.hard.ware.fi/artifactory/oph-sade-snapshot-local</url>
+													            <snapshots>
+															                    <enabled>true</enabled>
+																	                </snapshots>
+																			        </repository>
+																				        <repository>
+																						            <id>oph-sade-artifactory-releases</id>
+																							                <url>http://penaali.hard.ware.fi/artifactory/oph-sade-release-local</url>
+																									        </repository>
+																										        <repository>
+																												            <id>repository.jboss.org</id>
+																													                <name>JBoss Repository</name>
+																															            <url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+																																            </repository>
+																																	        </repositories>
+
 	<distributionManagement>
 		<repository>
 			<id>oph-sade-artifactory</id>

@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import fi.vm.sade.oppija.lomake.domain.exception.ConfigurationException;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -48,7 +50,7 @@ public class SHA2Encrypter implements EncrypterService {
         try {
             return countDigest(encrypt + salt);
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new ConfigurationException(e);
         }
     }
 

@@ -70,6 +70,7 @@ public class FormController {
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
     public static final String FORM_ID_STR_PATH_PARAM = "formIdStr";
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
+    private static final String PHASE_ID_PARAM = "phaseId";
 
     final FormService formService;
     private final ApplicationService applicationService;
@@ -184,7 +185,7 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML)
     public Response savePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                               @PathParam(FORM_ID_PATH_PARAM) final String formId,
-                              @PathParam("phaseId") final String phaseId,
+                              @PathParam(PHASE_ID_PARAM) final String phaseId,
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("updatePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
@@ -254,7 +255,7 @@ public class FormController {
         try {
             application = applicationService.getPendingApplication(hakuLomakeId, oid);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundExceptionRuntime("Could not find pending application");
+            throw new ResourceNotFoundExceptionRuntime("Could not find pending application", e);
         }
 
         model.put("categoryData", application.getAnswers());

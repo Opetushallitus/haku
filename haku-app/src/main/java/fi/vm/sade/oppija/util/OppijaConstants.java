@@ -22,6 +22,10 @@ package fi.vm.sade.oppija.util;
  */
 public class OppijaConstants {
 
+    private OppijaConstants() {
+        // Utility class, no need for instances
+    }
+    
     /*
     names of the fields that hold the information about the education degree
     of a selected application option

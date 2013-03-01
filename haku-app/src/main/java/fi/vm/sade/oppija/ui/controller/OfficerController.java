@@ -88,7 +88,7 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/{oid}")
-    public Response RedirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid)
+    public Response redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid)
             throws ResourceNotFoundException, URISyntaxException {
         LOGGER.debug("RedirectToLastPhase by oid {}", new Object[]{oid});
         Application app = applicationService.getApplication(oid);
@@ -197,9 +197,9 @@ public class OfficerController {
         LOGGER.debug("changeApplicationProcessState {}, {}", new Object[]{oid, status});
         //applicationService.
         try {
-            return RedirectToLastPhase(oid);
+            return redirectToLastPhase(oid);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundExceptionRuntime("Updated application not found.");
+            throw new ResourceNotFoundExceptionRuntime("Updated application not found.", e);
         }
     }
 }

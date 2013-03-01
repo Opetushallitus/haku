@@ -16,10 +16,13 @@
 
 package fi.vm.sade.oppija.lomake.service.impl;
 
-import fi.vm.sade.oppija.lomake.service.EncrypterService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.util.Arrays;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -28,10 +31,13 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.KeySpec;
-import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import fi.vm.sade.oppija.lomake.domain.exception.ConfigurationException;
+import fi.vm.sade.oppija.lomake.service.EncrypterService;
 
 @Service("aesEncrypter")
 public class AESEncrypter implements EncrypterService {
@@ -48,32 +54,45 @@ public class AESEncrypter implements EncrypterService {
 
 
     @Autowired
-    public AESEncrypter(@Value("${hakemus.aes.key}") String passPhrase, @Value("${hakemus.aes.salt}") String salt) throws Exception {
+    public AESEncrypter(@Value("${hakemus.aes.key}") String passPhrase, @Value("${hakemus.aes.salt}") String salt) 
+            throws InvalidKeySpecException, NoSuchAlgorithmException, UnsupportedEncodingException {
         SecretKeyFactory factory = SecretKeyFactory.getInstance(PBKDF_2_WITH_HMAC_SHA_1);
         KeySpec spec = new PBEKeySpec(passPhrase.toCharArray(), salt.getBytes("UTF-8"), ITERATION_COUNT, KEY_LENGTH);
         SecretKey tmp = factory.generateSecret(spec);
-
         this.secret = new SecretKeySpec(tmp.getEncoded(), AES);
-
-
     }
 
+    @Override
     public String encrypt(String encrypt) {
         try {
             return encryptInternal(encrypt);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new ConfigurationException(e);
+        } catch (GeneralSecurityException e) {
+            throw new ConfigurationException(e);
         }
-
     }
 
-    public String encryptInternal(String encrypt) throws Exception {
+    @Override
+    public String decrypt(String encrypt) {
+        try {
+            return decryptInternal(encrypt);
+        } catch (UnsupportedEncodingException e) {
+            throw new ConfigurationException(e);
+        } catch (GeneralSecurityException e) {
+            throw new ConfigurationException(e);
+        }
+    }
+    
+    private String encryptInternal(String encrypt) 
+            throws UnsupportedEncodingException, GeneralSecurityException {
         byte[] bytes = encrypt.getBytes("UTF-8");
         byte[] encrypted = encrypt(bytes);
         return DatatypeConverter.printBase64Binary(encrypted);
     }
 
-    public byte[] encrypt(byte[] plain) throws Exception {
+    private byte[] encrypt(byte[] plain) 
+            throws GeneralSecurityException {
         byte[] iv = generateIv();
 
         Cipher ecipher = Cipher.getInstance(AES_CBC_PKCS5_PADDING);
@@ -91,19 +110,10 @@ public class AESEncrypter implements EncrypterService {
         return result;
     }
 
-    private String decryptInternal(String encrypt) throws Exception {
+    private String decryptInternal(String encrypt) throws GeneralSecurityException, UnsupportedEncodingException {
         byte[] bytes = DatatypeConverter.parseBase64Binary(encrypt);
         byte[] decrypted = decrypt(bytes);
         return new String(decrypted, CHARSET_NAME);
-    }
-
-    public String decrypt(String encrypt) {
-        try {
-            return decryptInternal(encrypt);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     protected byte[] generateIv() throws NoSuchAlgorithmException {
@@ -114,7 +124,7 @@ public class AESEncrypter implements EncrypterService {
     }
 
 
-    public byte[] decrypt(byte[] encrypt) throws Exception {
+    private byte[] decrypt(byte[] encrypt) throws GeneralSecurityException {
         Cipher dcipher = Cipher.getInstance(AES_CBC_PKCS5_PADDING);
         dcipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(Arrays.copyOfRange(encrypt, 0, IV_SIZE)));
         return dcipher.doFinal(Arrays.copyOfRange(encrypt, IV_SIZE, encrypt.length));
