@@ -32,7 +32,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
-import fi.vm.sade.oppija.lomake.domain.exception.IllegalStateException;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.FormService;
@@ -305,6 +304,20 @@ public class ApplicationServiceImpl implements ApplicationService {
             return application.getVastauksetMerged().get(key);
         } else {
             throw new ResourceNotFoundException(String.format("Could not find application : %s value of key : %s", applicationOid, key));
+        }
+    }
+
+    @Override
+    public void putApplicationAdditionalInfoKeyValue(String applicationOid, String key, String value) throws ResourceNotFoundException {
+        Application query = new Application(applicationOid);
+        Application application = getApplication(query);
+        if (value == null) {
+            throw new IllegalArgumentException("Value can't be null");
+        } else if (application.getVastauksetMerged().containsKey(key)) {
+            throw new IllegalStateException(String.format("Key of the given additional information is found on the application form : key %s", key));
+        } else {
+            application.getAdditionalInfo().put(key, value);
+            applicationDAO.update(query, application);
         }
     }
 

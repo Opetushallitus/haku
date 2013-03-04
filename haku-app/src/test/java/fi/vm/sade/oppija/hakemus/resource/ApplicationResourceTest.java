@@ -34,8 +34,7 @@ import java.util.Map;
 
 import static junit.framework.Assert.*;
 import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -73,6 +72,8 @@ public class ApplicationResourceTest {
             when(applicationService.getApplicationKeyValue(eq(OID), eq("key"))).thenReturn("value");
             when(applicationService.getApplicationKeyValue(eq(INVALID_OID), eq("key"))).thenThrow(new ResourceNotFoundException("Application Not Found"));
             when(applicationService.getApplicationKeyValue(eq(OID), eq("nonExistingKey"))).thenThrow(new ResourceNotFoundException("Key of the application Not Found"));
+            doThrow(new IllegalStateException()).when(applicationService).putApplicationAdditionalInfoKeyValue(eq(OID), eq("key"), anyString());
+            doThrow(new IllegalStateException()).when(applicationService).putApplicationAdditionalInfoKeyValue(anyString(), anyString(), isNull(String.class));
         } catch (ResourceNotFoundException e) {
             // do nothing
         }
@@ -156,5 +157,21 @@ public class ApplicationResourceTest {
     @Test(expected = JSONException.class)
     public void testGetApplicationKeyValueNonExistingKey() {
         applicationResource.getApplicationKeyValue(OID, "nonExistingKey");
+    }
+
+    @Test
+    public void testPutApplicationAdditionalInfoKeyValue() throws ResourceNotFoundException {
+        applicationResource.putApplicationAdditionalInfoKeyValue(OID, "newKey", "value");
+        verify(applicationService, times(1)).putApplicationAdditionalInfoKeyValue(eq(OID), eq("newKey"), eq("value"));
+    }
+
+    @Test(expected = JSONException.class)
+    public void testPutApplicationAdditionalInfoKeyValueIllegalKey() throws ResourceNotFoundException {
+        applicationResource.putApplicationAdditionalInfoKeyValue(OID, "key", "value");
+    }
+
+    @Test(expected = JSONException.class)
+    public void testPutApplicationAdditionalInfoKeyValueNullValue() throws ResourceNotFoundException {
+        applicationResource.putApplicationAdditionalInfoKeyValue(OID, "newKey", null);
     }
 }

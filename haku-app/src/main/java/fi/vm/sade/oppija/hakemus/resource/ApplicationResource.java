@@ -123,4 +123,20 @@ public class ApplicationResource {
         }
         return keyValue;
     }
+
+    @PUT
+    @Path("{oid}/{key}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void putApplicationAdditionalInfoKeyValue(@PathParam("oid") String oid, @PathParam("key") String key,
+                                                     @QueryParam("value") String value) {
+        try {
+            applicationService.putApplicationAdditionalInfoKeyValue(oid, key, value);
+        } catch (ResourceNotFoundException e) {
+            throw new JSONException(Response.Status.NOT_FOUND, e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new JSONException(Response.Status.CONFLICT, e.getMessage());
+        } catch (IllegalArgumentException e) {
+            throw new JSONException(Response.Status.BAD_REQUEST, e.getMessage());
+        }
+    }
 }

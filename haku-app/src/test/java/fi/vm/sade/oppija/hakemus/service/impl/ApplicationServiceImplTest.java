@@ -128,4 +128,22 @@ public class ApplicationServiceImplTest {
     public void testGetApplicationKeyValueKeyNotExists() throws ResourceNotFoundException {
         service.getApplicationKeyValue(OID, "nonExistingKey");
     }
+
+    @Test
+    public void testPutApplicationAdditionalInfoKeyValue() throws ResourceNotFoundException {
+        service.putApplicationAdditionalInfoKeyValue(OID, "key", "value");
+        verify(applicationDAO, times(1)).find(any(Application.class));
+        verify(applicationDAO, times(1)).update(any(Application.class), any(Application.class));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testPutApplicationAdditionalInfoKeyValueIllegalKey() throws ResourceNotFoundException {
+        service.putApplicationAdditionalInfoKeyValue(OID, "avain", "value");
+        verify(applicationDAO, times(1)).find(any(Application.class));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testPutApplicationAdditionalInfoKeyValueNullValue() throws ResourceNotFoundException {
+        service.putApplicationAdditionalInfoKeyValue(OID, "key", null);
+    }
 }

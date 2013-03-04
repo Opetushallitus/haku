@@ -170,5 +170,14 @@ public interface ApplicationService {
      */
     String getApplicationKeyValue(final String applicationOid, final String key) throws ResourceNotFoundException;
 
+    /**
+     * Puts a additional information key value pair to the application
+     * @param applicationOid application oid
+     * @param key key of the additional information
+     * @param value value of the key
+     * @throws ResourceNotFoundException
+     */
+    void putApplicationAdditionalInfoKeyValue(final String applicationOid, final String key, final String value) throws ResourceNotFoundException;
+
     ApplicationState updateApplication(final String oid, final ApplicationPhase applicationPhase) throws ResourceNotFoundException;
 }
