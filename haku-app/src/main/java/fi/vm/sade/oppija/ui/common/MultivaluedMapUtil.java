@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.ui.controller;
+package fi.vm.sade.oppija.ui.common;
 
 import javax.ws.rs.core.MultivaluedMap;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public final class MultivaluedMapUtil {
     private MultivaluedMapUtil() {
     }// TODO: implement param reader for Map
 
-    static Map<String, String> toSingleValueMap(MultivaluedMap<String, String> multi) {
+    public static Map<String, String> toSingleValueMap(MultivaluedMap<String, String> multi) {
         HashMap<String, String> singleValueMap = new HashMap<String, String>(multi.size());
         for (Map.Entry<String, List<String>> entry : multi.entrySet()) {
             singleValueMap.put(entry.getKey(), entry.getValue().get(0));

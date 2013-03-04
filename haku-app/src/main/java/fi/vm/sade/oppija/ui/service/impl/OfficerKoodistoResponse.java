@@ -1,6 +1,5 @@
 package fi.vm.sade.oppija.ui.service.impl;
 
-import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 

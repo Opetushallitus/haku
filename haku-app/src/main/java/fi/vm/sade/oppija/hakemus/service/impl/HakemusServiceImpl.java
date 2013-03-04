@@ -2,7 +2,6 @@ package fi.vm.sade.oppija.hakemus.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.service.hakemus.HakemusService;
@@ -25,8 +24,8 @@ public class HakemusServiceImpl implements HakemusService {
 
     @Autowired
     public HakemusServiceImpl(ApplicationService applicationService, ConversionService conversionService) {
-       this.applicationService = applicationService;
-       this.conversionService = conversionService;
+        this.applicationService = applicationService;
+        this.conversionService = conversionService;
     }
 
     @Override

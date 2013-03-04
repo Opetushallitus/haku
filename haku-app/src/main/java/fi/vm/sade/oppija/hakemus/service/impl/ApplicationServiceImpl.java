@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.hakemus.service.impl;
 
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
-import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
@@ -49,7 +48,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -305,6 +303,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public void update(final Application queryApplication, final Application application) {
         this.applicationDAO.update(queryApplication, application);
     }
+
     @Override
     public String getApplicationKeyValue(String applicationOid, String key) throws ResourceNotFoundException {
         Application application = getApplication(applicationOid);
