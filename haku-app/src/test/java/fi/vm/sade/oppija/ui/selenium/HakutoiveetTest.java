@@ -50,7 +50,6 @@ import static org.junit.Assert.assertNull;
  *
  * @author Mikko Majapuro
  */
-@Ignore
 public class HakutoiveetTest extends AbstractSeleniumBase {
 
     @Before

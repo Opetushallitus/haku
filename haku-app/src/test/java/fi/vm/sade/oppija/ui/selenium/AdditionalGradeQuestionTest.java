@@ -32,7 +32,6 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Hannu Lyytikainen
  */
-@Ignore
 public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
 
     public static final String OPETUSPISTE = "Espoon yhteislyseon lukio op";

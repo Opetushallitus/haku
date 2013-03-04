@@ -32,7 +32,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-@Ignore
 public class LomakeIT extends AbstractSeleniumBase {
 
     @Before
