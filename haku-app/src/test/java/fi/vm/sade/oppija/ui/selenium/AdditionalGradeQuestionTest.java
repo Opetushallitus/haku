@@ -20,6 +20,7 @@ import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -31,7 +32,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Hannu Lyytikainen
  */
-
+@Ignore
 public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
 
     public static final String OPETUSPISTE = "Espoon yhteislyseon lukio op";

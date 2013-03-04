@@ -30,6 +30,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -49,6 +50,7 @@ import static org.junit.Assert.assertNull;
  *
  * @author Mikko Majapuro
  */
+@Ignore
 public class HakutoiveetTest extends AbstractSeleniumBase {
 
     @Before

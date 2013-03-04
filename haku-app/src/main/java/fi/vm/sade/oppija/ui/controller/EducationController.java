@@ -18,14 +18,14 @@ package fi.vm.sade.oppija.ui.controller;
 
 import com.google.common.collect.Lists;
 import com.sun.jersey.api.view.Viewable;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.Organization;
+import fi.vm.sade.koulutusinformaatio.service.ApplicationOptionService;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.domain.ApplicationOption;
 import fi.vm.sade.oppija.lomake.domain.FormId;
-import fi.vm.sade.oppija.lomake.domain.Organization;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
-import fi.vm.sade.oppija.lomake.service.ApplicationOptionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

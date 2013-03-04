@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -31,6 +32,7 @@ import static org.junit.Assert.fail;
 /**
  * @author Hannu Lyytikainen
  */
+@Ignore
 public class WorkExperienceThemeTest extends AbstractSeleniumBase {
 
     private FormModelHelper formModelHelper;
