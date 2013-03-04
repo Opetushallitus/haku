@@ -16,9 +16,13 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
+import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -38,5 +42,14 @@ public final class ElementTreeValidator {
             listOfValidationResult.add(validate(child, values));
         }
         return new ValidationResult(listOfValidationResult);
+    }
+
+    public static ValidationResult validateForm(final Form form, final Application application) {
+        Collection<Phase> phases = form.getPhases();
+        List<ValidationResult> listOfValidationResults = new ArrayList<ValidationResult>();
+        for (Phase p : phases) { // TODO fix phases
+            listOfValidationResults.add(ElementTreeValidator.validate(p, application.getVastauksetMerged()));
+        }
+        return new ValidationResult(listOfValidationResults);
     }
 }

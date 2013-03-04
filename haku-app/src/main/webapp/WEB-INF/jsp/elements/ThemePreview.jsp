@@ -29,11 +29,11 @@
                     <c:choose>
                         <c:when test="${oid eq null}">
                             <c:set var="editUrl"
-                                   value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${vaihe.id}"/>
+                                   value="${pageContext.request.contextPath}/lomake/${application.formId.applicationPeriodId}/${application.formId.formId}/${vaihe.id}"/>
                         </c:when>
                         <c:otherwise>
                             <c:set var="editUrl"
-                                   value="${pageContext.request.contextPath}/virkailija/hakemus/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${vaihe.id}/${oid}/"/>
+                                   value="${pageContext.request.contextPath}/virkailija/hakemus/${application.formId.applicationPeriodId}/${application.formId.formId}/${vaihe.id}/${oid}/"/>
                         </c:otherwise>
                     </c:choose>
                     <form method="get"

@@ -77,13 +77,18 @@ public class FormServiceMockImpl implements FormService {
     }
 
     @Override
-    public Form getForm(String applicationPeriodId, String formId) {
+    public Form getForm(final String applicationPeriodId, final String formId) {
         ApplicationPeriod applicationPeriod = getApplicationPeriodById(applicationPeriodId);
         return applicationPeriod.getFormById(formId);
     }
 
     @Override
-    public Form getForm(FormId formId) {
+    public Form getActiveForm(final FormId formId) {
+        return this.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
+    }
+
+    @Override
+    public Form getForm(final FormId formId) {
         return this.getForm(formId.getApplicationPeriodId(), formId.getFormId());
     }
 

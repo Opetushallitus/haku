@@ -189,7 +189,7 @@ public class FormController {
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("updatePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
-        boolean skipValidators = skipValidators(multiValues); 
+        boolean skipValidators = skipValidators(multiValues);
 
         ApplicationState applicationState = applicationService.saveApplicationPhase(
                 new ApplicationPhase(hakuLomakeId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)), skipValidators);

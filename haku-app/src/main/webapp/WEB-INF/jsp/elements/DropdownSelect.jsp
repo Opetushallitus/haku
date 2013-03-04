@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~

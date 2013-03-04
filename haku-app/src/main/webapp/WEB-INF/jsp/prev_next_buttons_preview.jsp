@@ -20,7 +20,7 @@
 <fmt:requestEncoding value="utf-8"/>
 <fmt:setLocale value="sv"/>
 <c:set var="baseUrl"
-       value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}"
+       value="${pageContext.request.contextPath}/lomake/${application.formId.applicationPeriodId}/${application.formId.formId}"
        scope="request"/>
 <c:choose>
     <c:when test="${vaihe.hasPrev}">

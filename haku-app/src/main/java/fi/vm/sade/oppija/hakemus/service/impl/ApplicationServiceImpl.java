@@ -18,6 +18,8 @@ package fi.vm.sade.oppija.hakemus.service.impl;
 
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
+import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
+import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
@@ -47,6 +49,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -76,6 +79,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final Pattern oidPattern;
     private final Pattern shortOidPattern;
     private final AuthenticationService authenticationService;
+
+    @Autowired
+    ValintaperusteetService valintaperusteetService;
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
@@ -122,7 +128,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, Application application) {
         return saveApplicationPhase(applicationPhase, application, false);
     }
-    
+
     private ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, Application application, boolean skipValidators) {
         final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
         final String applicationPeriodId = applicationState.getHakemus().getFormId().getApplicationPeriodId();
@@ -139,7 +145,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         allAnswers.putAll(vastaukset);
 
-        if ( ! skipValidators ) { 
+        if (!skipValidators) {
             ValidationResult validationResult = ElementTreeValidator.validate(phase, allAnswers);
             applicationState.addError(validationResult.getErrorMessages());
         }
@@ -296,6 +302,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public void update(final Application queryApplication, final Application application) {
+        this.applicationDAO.update(queryApplication, application);
+    }
+    @Override
     public String getApplicationKeyValue(String applicationOid, String key) throws ResourceNotFoundException {
         Application application = getApplication(applicationOid);
         if (application.getAdditionalInfo().containsKey(key)) {
@@ -321,30 +331,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
     }
 
-    @Override
-    public ApplicationState updateApplication(final String oid, final ApplicationPhase applicationPhase) throws ResourceNotFoundException {
-        Application queryApplication = new Application(oid);
-        Application application = getApplication(oid);
-        application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
-
-        final Form activeForm = formService.getForm(applicationPhase.getFormId());
-
-        Collection<Phase> phases = activeForm.getPhases();
-        List<ValidationResult> listOfValidationResults = new ArrayList<ValidationResult>();
-        for (Phase phase : phases) {
-            listOfValidationResults.add(ElementTreeValidator.validate(phase, application.getVastauksetMerged()));
-        }
-        ValidationResult validationResult = new ValidationResult(listOfValidationResults);
-        if (validationResult.hasErrors()) {
-            application.incomplete();
-        } else {
-            application.activate();
-        }
-        applicationDAO.update(queryApplication, application);
-
-        return new ApplicationState(application, applicationPhase.getPhaseId());
-    }
-
     private Application getApplication(final Application application) throws ResourceNotFoundException {
         List<Application> listOfApplications = applicationDAO.find(application);
         if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
@@ -362,5 +348,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
         }
     }
+
 
 }

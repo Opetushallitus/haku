@@ -37,7 +37,7 @@ public interface ApplicationService {
      * Save answers of a single form phase. Phase is saved to the currently modified application of the user session.
      *
      * @param applicationPhase
-     * @param skipValidators set to true, if you want the phase to be saved regardless of validation results
+     * @param skipValidators   set to true, if you want the phase to be saved regardless of validation results
      * @return application state
      */
     ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, boolean skipValidators);
@@ -64,7 +64,7 @@ public interface ApplicationService {
      *
      * @param applicationPhase
      * @param oid
-     * @param skipValidators set to true, if you want the phase to be saved regardless of validation results
+     * @param skipValidators   set to true, if you want the phase to be saved regardless of validation results
      * @return application state
      */
     ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final String oid, final boolean skipValidators);
@@ -161,9 +161,12 @@ public interface ApplicationService {
      */
     List<String> getApplicationPreferenceOids(final Application application);
 
+    void update(final Application queryApplication, final Application application);
+
     /**
      * Gets the value of the specified application and key
-     * @param applicationOid  application oid
+     *
+     * @param applicationOid application oid
      * @param key
      * @return value of the key
      * @throws ResourceNotFoundException
@@ -179,5 +182,4 @@ public interface ApplicationService {
      */
     void putApplicationAdditionalInfoKeyValue(final String applicationOid, final String key, final String value) throws ResourceNotFoundException;
 
-    ApplicationState updateApplication(final String oid, final ApplicationPhase applicationPhase) throws ResourceNotFoundException;
 }

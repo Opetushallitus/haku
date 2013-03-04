@@ -17,23 +17,16 @@
 package fi.vm.sade.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.oppija.common.koodisto.KoodistoService;
-import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
-import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
-import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
-import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.ui.common.UriUtil;
+import fi.vm.sade.oppija.ui.service.OfficerUIService;
+import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
@@ -44,9 +37,6 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.seeOther;
@@ -57,73 +47,58 @@ import static javax.ws.rs.core.Response.seeOther;
 @Secured("ROLE_OFFICER")
 public class OfficerController {
 
-    public static final String VIRKAILIJA_HAKEMUS_VIEW = "/virkailija/hakemus/";
     public static final Logger LOGGER = LoggerFactory.getLogger(OfficerController.class);
+    public static final String VIRKAILIJA_HAKEMUS_VIEW = "/virkailija/hakemus";
     public static final String DEFAULT_VIEW = "/virkailija/Phase";
     public static final String OID_PATH_PARAM = "oid";
     public static final String PHASE_ID_PATH_PARAM = "phaseId";
+    public static final String FORM_ID_PATH_PARAM = "formId";
     public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
     public static final String ADDITIONAL_INFO_VIEW = "/virkailija/additionalInfo";
+    public static final String SEARCH_INDEX_VIEW = "/virkailija/searchIndex";
     public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + ";charset=UTF-8";
+    public static final String VIRKAILIJA_PHASE_VIEW = "/virkailija/Phase";
+
 
     @Autowired
-    private KoodistoService koodistoService;
-    @Autowired
-    ApplicationService applicationService;
-    @Autowired
-    @Qualifier("formServiceImpl")
-    FormService formService;
-    @Autowired
-    ValintaperusteetService valintaperusteetService;
+    OfficerUIService officerUIService;
 
     @GET
     @Path("/hakemus/")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable search() {
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("organizationTypes", koodistoService.getOrganizationtypes());
-        model.put("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
-        return new Viewable("/virkailija/searchIndex", model);
+        UIServiceResponse uiServiceResponse = officerUIService.getOrganizationAndLearningInstitutions();
+
+        return new Viewable(SEARCH_INDEX_VIEW, uiServiceResponse.getModel());
     }
 
     @GET
     @Path("/hakemus/{oid}")
     public Response redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid)
             throws ResourceNotFoundException, URISyntaxException {
-        LOGGER.debug("RedirectToLastPhase by oid {}", new Object[]{oid});
-        Application app = applicationService.getApplication(oid);
-        FormId formId = app.getFormId();
-        Phase phase = formService.getLastPhase(formId.getApplicationPeriodId(), formId.getFormId());
-        return seeOther(new URI(VIRKAILIJA_HAKEMUS_VIEW +
-                formId.getApplicationPeriodId() + "/" + formId.getFormId() + "/" + phase.getId() + "/" + oid)).build();
+        LOGGER.debug("redirectToLastPhase {}", new Object[]{oid});
+        Application application = officerUIService.getApplicationWithLastPhase(oid);
+        FormId formId = application.getFormId();
+        URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW,
+                formId.getApplicationPeriodId(),
+                formId.getFormId(),
+                application.getPhaseId(),
+                application.getOid());
+        return seeOther(path).build();
     }
 
     @GET
-    @Path("/hakemus/{applicationPeriodId}/{formIdStr}/{phaseId}/{oid}")
+    @Path("/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable getPhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
-                             @PathParam("formIdStr") final String formIdStr,
-                             @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                             @PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException, IOException {
+    public Viewable getPreview(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                               @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                               @PathParam(OID_PATH_PARAM) final String oid)
+            throws ResourceNotFoundException, IOException {
 
-        LOGGER.debug("getPhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, phaseId, oid});
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
-        Phase phase = activeForm.getPhase(phaseId);
-        final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
-        Application app = applicationService.getApplication(oid);
-        Map<String, String> values = app.getVastauksetMerged();
-        Map<String, Object> model = new HashMap<String, Object>();
-        List<String> applicationPreferenceOids = applicationService.getApplicationPreferenceOids(app);
-        AdditionalQuestions additionalQuestions = valintaperusteetService.retrieveAdditionalQuestions(applicationPreferenceOids);
-        model.put("application", app);
-        model.put("additionalQuestions", additionalQuestions);
-        model.put("categoryData", values);
-        model.put("element", phase);
-        model.put("form", activeForm);
-        model.put("oid", oid);
-        model.put("applicationPhaseId", app.getPhaseId());
-        model.put("hakemusId", formId);
-        return new Viewable("/virkailija/" + phase.getType(), model);
+        LOGGER.debug("getPreview {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid});
+        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, phaseId);
+        return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel()); // TODO remove hardcoded Phase
     }
 
     @POST
@@ -134,31 +109,20 @@ public class OfficerController {
                                 @PathParam("formId") final String formId,
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(OID_PATH_PARAM) final String oid,
-                                final MultivaluedMap<String, String> multiValues) throws URISyntaxException, ResourceNotFoundException {
+                                final MultivaluedMap<String, String> multiValues)
+            throws URISyntaxException, ResourceNotFoundException {
 
         LOGGER.debug("updatePhase {}, {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
 
-        ApplicationState applicationState = applicationService.updateApplication(oid,
+        UIServiceResponse uiServiceResponse = officerUIService.updateApplication(oid,
                 new ApplicationPhase(hakuLomakeId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)));
 
-        //ApplicationState applicationState = applicationService.saveApplicationPhase(
-        //        new ApplicationPhase(hakuLomakeId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)), oid);
-
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        Map<String, Object> model = new HashMap<String, Object>();
-
-        if (applicationState.isValid()) {
-            String URI = VIRKAILIJA_HAKEMUS_VIEW + applicationPeriodId + "/" +
-                    formId + "/" + activeForm.getLastPhase().getId() + "/" + oid + "/";
-            return seeOther(new URI(URI)).build();
+        if (uiServiceResponse.hasErrors()) {
+            return ok(new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel())).build();
         } else {
-            model.putAll(applicationState.getModelObjects());
-            model.put("element", activeForm.getPhase(phaseId));
-            model.put("form", activeForm);
-            model.put("oid", oid);
-            model.put("hakemusId", hakuLomakeId);
-            return ok(new Viewable(DEFAULT_VIEW, model)).build();
+            URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, applicationPeriodId, formId, "esikatselu", oid);
+            return seeOther(path).build();
         }
     }
 
@@ -166,40 +130,21 @@ public class OfficerController {
     @Path("/hakemus/{oid}/additionalInfo")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Response saveAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid, final MultivaluedMap<String, String> multiValues)
+    public Response saveAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid,
+                                       final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException, ResourceNotFoundException {
         LOGGER.debug("saveAdditionalInfo {}, {}", new Object[]{oid, multiValues});
-        applicationService.saveApplicationAdditionalInfo(oid, MultivaluedMapUtil.toSingleValueMap(multiValues));
-        String templateName = VIRKAILIJA_HAKEMUS_VIEW + oid + "/";
-        return seeOther(new URI(templateName)).build();
+        officerUIService.saveApplicationAdditionalInfo(oid, MultivaluedMapUtil.toSingleValueMap(multiValues));
+        return seeOther(UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, oid, "")).build();
     }
 
     @GET
     @Path("/hakemus/{oid}/additionalInfo")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable getAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException, IOException {
-        Map<String, Object> model = new HashMap<String, Object>();
-        Application app = applicationService.getApplication(oid);
-        List<String> applicationPreferenceOids = applicationService.getApplicationPreferenceOids(app);
-        AdditionalQuestions additionalQuestions = valintaperusteetService.retrieveAdditionalQuestions(applicationPreferenceOids);
-        model.put("application", app);
-        model.put("additionalQuestions", additionalQuestions);
-        String templateName = ADDITIONAL_INFO_VIEW;
-        return new Viewable(templateName, model);
-    }
-
-    @POST
-    @Path("/hakemus/{oid}/applicationProcessState/{status}/")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Response changeApplicationProcessState(@PathParam(OID_PATH_PARAM) final String oid,
-                                                  @PathParam("status") final String status) throws URISyntaxException {
-        LOGGER.debug("changeApplicationProcessState {}, {}", new Object[]{oid, status});
-        //applicationService.
-        try {
-            return redirectToLastPhase(oid);
-        } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundExceptionRuntime("Updated application not found.", e);
-        }
+    public Viewable getAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid)
+            throws ResourceNotFoundException, IOException {
+        LOGGER.debug("getAdditionalInfo  {}, {}", new Object[]{oid});
+        UIServiceResponse uiServiceResponse = officerUIService.getAdditionalInfo(oid);
+        return new Viewable(ADDITIONAL_INFO_VIEW, uiServiceResponse.getModel());
     }
 }

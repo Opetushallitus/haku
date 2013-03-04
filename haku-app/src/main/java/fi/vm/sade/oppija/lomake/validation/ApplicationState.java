@@ -25,6 +25,7 @@ import java.util.Map;
 public class ApplicationState {
 
     private static final String HAKEMUS_KEY = "hakemus";
+    private static final String APPLICATION_KEY = "application";
     public static final String VALMIS = "valmis";
     private final Map<String, String> errors = new HashMap<String, String>();
     private final Map<String, Object> modelObjects = new HashMap<String, Object>();
@@ -32,9 +33,15 @@ public class ApplicationState {
 
     public ApplicationState(final Application application, final String vaiheId) {
         modelObjects.put(HAKEMUS_KEY, application);
+        modelObjects.put(APPLICATION_KEY, application);
         modelObjects.put("categoryData", application.getVastauksetMerged());
         modelObjects.put("errorMessages", errors);
+        modelObjects.put("applicationPhaseId", application.getPhaseId());
         this.vaiheId = vaiheId;
+    }
+
+    public void addModelObject(final String key, final Object object) {
+        this.modelObjects.put(key, object);
     }
 
     public boolean isValid() {

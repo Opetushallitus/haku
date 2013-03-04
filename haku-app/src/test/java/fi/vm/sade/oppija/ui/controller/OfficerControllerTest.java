@@ -25,14 +25,14 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
-import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.ui.service.OfficerUIService;
+import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -40,11 +40,10 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -54,6 +53,7 @@ import static org.mockito.Mockito.*;
  */
 public class OfficerControllerTest {
 
+    public static final String PREVIEW_PHASE = "esikatselu";
     private OfficerController officerController;
     private static final String OID = "1.2.3.4.5.0";
 
@@ -70,7 +70,7 @@ public class OfficerControllerTest {
         when(applicationService.getApplication(OID)).thenReturn(app);
         when(applicationService.getApplicationPreferenceOids(anyString())).thenReturn(new ArrayList<String>());
 
-        Phase phase = new Phase("esikatselu", createI18NText("esikatselu"), true);
+        Phase phase = new Phase(PREVIEW_PHASE, createI18NText(PREVIEW_PHASE), true);
         when(formService.getLastPhase("Yhteishaku", "yhteishaku")).thenReturn(phase);
 
         Form form = new Form("yhteishaku", createI18NText("yhteishaku"));
@@ -81,68 +81,50 @@ public class OfficerControllerTest {
 
         ApplicationState applicationState = new ApplicationState(app, "henkilotiedot");
         when(applicationService.saveApplicationPhase(any(ApplicationPhase.class), eq(OID), eq(false))).thenReturn(applicationState);
-        when(applicationService.updateApplication(eq(OID), any(ApplicationPhase.class))).thenReturn(applicationState);
 
         AdditionalQuestions additionalQuestions = new AdditionalQuestions();
         additionalQuestions.addParameter(OID, new InputParameter("avain", "KOKONAISLUKU", "1"));
         when(valintaperusteetService.retrieveAdditionalQuestions(anyList())).thenReturn(additionalQuestions);
 
-        officerController.applicationService = applicationService;
-        officerController.formService = formService;
-        officerController.valintaperusteetService = valintaperusteetService;
+        OfficerUIService officerApplicationService = mock(OfficerUIService.class);
+        UIServiceResponse uiServiceResponse = new UIServiceResponse();
+        when(officerApplicationService.getValidatedApplication(OID, PREVIEW_PHASE)).thenReturn(uiServiceResponse);
+        when(officerApplicationService.getAdditionalInfo(OID)).thenReturn(uiServiceResponse);
+        when(officerApplicationService.updateApplication(eq(OID), any(ApplicationPhase.class))).thenReturn(uiServiceResponse);
+        when(officerApplicationService.getApplicationWithLastPhase(eq(OID))).thenReturn(app);
+        officerController.officerUIService = officerApplicationService;
     }
 
     @Test
     public void testGetApplication() throws Exception {
         Response response = officerController.redirectToLastPhase(OID);
-        assertEquals("/virkailija/hakemus/Yhteishaku/yhteishaku/esikatselu/" + OID, getLocationHeader(response));
+        assertEquals("/virkailija/hakemus/Yhteishaku/yhteishaku/valmis/" + OID, getLocationHeader(response));
     }
 
     @Test
     public void testGetPhase() throws Exception {
-        Viewable viewable = officerController.getPhase("Yhteishaku", "yhteishaku", "esikatselu", OID);
-        Map<String, Object> model = (Map<String, Object>) viewable.getModel();
-        assertEquals("esikatselu", ((Element) model.get("element")).getId());
-        assertEquals(OID, model.get("oid"));
-        assertEquals("yhteishaku", ((Form) model.get("form")).getId());
-        assertEquals("valmis", model.get("applicationPhaseId"));
-        assertEquals("yhteishaku", ((FormId) model.get("hakemusId")).getFormId());
+        Viewable viewable = officerController.getPreview("Yhteishaku", "yhteishaku", PREVIEW_PHASE, OID);
+        assertEquals(OfficerController.VIRKAILIJA_PHASE_VIEW, viewable.getTemplateName());
     }
 
-    @Ignore
     @Test
     public void testSavePhase() throws URISyntaxException, ResourceNotFoundException {
         Response response = officerController.updatePhase("Yhteishaku", "yhteishaku", "henkilotiedot", OID, new MultivaluedMapImpl());
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 
-//    @Test
-//    public void testChangeApplicationProcessState() throws URISyntaxException {
-//        Response response = officerController.changeApplicationProcessState(OID, "CANCELLED");
-//        assertEquals("/virkailija/hakemus/Yhteishaku/yhteishaku/esikatselu/" + OID, getLocationHeader(response));
-//        verify(officerController.applicationProcessStateService, times(1)).setApplicationProcessStateStatus(OID, ApplicationProcessStateStatus.CANCELLED);
-//    }
-
     @Test
     public void testGetAdditionalInfo() throws ResourceNotFoundException, IOException {
         Viewable viewable = officerController.getAdditionalInfo(OID);
-        Map<String, Object> model = (Map<String, Object>) viewable.getModel();
-        assertNotNull(model);
-        assertTrue(model.containsKey("application"));
-        assertEquals(OID, ((Application) model.get("application")).getOid());
-        assertTrue(model.containsKey("additionalQuestions"));
-        assertEquals(1, ((AdditionalQuestions) model.get("additionalQuestions")).getAllQuestions().size());
+        assertEquals(OfficerController.ADDITIONAL_INFO_VIEW, viewable.getTemplateName());
     }
 
     @Test
-    public void testSaveAdditionalInfo() throws ResourceNotFoundException, URISyntaxException {
+    public void testSaveAdditionalInfo() throws ResourceNotFoundException, URISyntaxException, IOException {
         MultivaluedMap<String, String> additionalInfo = new MultivaluedMapImpl();
-        List<String> values = new ArrayList<String>();
-        values.add("value");
-        additionalInfo.put("key", values);
+        additionalInfo.put("key", newArrayList("value"));
         Response response = officerController.saveAdditionalInfo(OID, additionalInfo);
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
-        verify(officerController.applicationService, times(1)).saveApplicationAdditionalInfo(eq(OID), anyMap());
     }
 
     private String getLocationHeader(final Response response) {

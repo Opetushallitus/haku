@@ -34,7 +34,10 @@ public interface FormService {
     ApplicationPeriod getApplicationPeriodById(final String applicationPeriodId);
 
     Form getForm(String applicationPeriodId, String formId);
+
     Form getForm(final FormId formId);
 
     Form getActiveForm(final String applicationPeriodId, final String formId);
+
+    Form getActiveForm(final FormId formId);
 }
