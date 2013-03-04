@@ -37,4 +37,12 @@ public abstract class AbstractApplicationConverter<T> implements Converter<Appli
         }
         return preferences;
     }
+
+    protected String getFirstNames(Map<String, String> keyValues) {
+        return keyValues.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES);
+    }
+
+    protected String getLastName(Map<String, String> keyValues) {
+        return keyValues.get(OppijaConstants.ELEMENT_ID_LAST_NAME);
+    }
 }

@@ -20,9 +20,12 @@ public class ApplicationToHakemusTyyppi extends AbstractApplicationConverter<Hak
         HakemusTyyppi hakemusTyyppi = new HakemusTyyppi();
         hakemusTyyppi.setHakemusOid(application.getOid());
         hakemusTyyppi.setHakijaOid(application.getPersonOid());
-        hakemusTyyppi.getAvainArvo().addAll(getKeyValues(application.getVastauksetMerged()));
+        Map<String, String> answers = application.getVastauksetMerged();
+        hakemusTyyppi.setHakijanEtunimi(getFirstNames(answers));
+        hakemusTyyppi.setHakijanSukunimi(getLastName(answers));
+        hakemusTyyppi.getAvainArvo().addAll(getKeyValues(answers));
         hakemusTyyppi.getAvainArvo().addAll(getKeyValues(application.getAdditionalInfo()));
-        hakemusTyyppi.getHakutoive().addAll(getPreferences(application.getVastauksetMerged()));
+        hakemusTyyppi.getHakutoive().addAll(getPreferences(answers));
 
         return hakemusTyyppi;
     }

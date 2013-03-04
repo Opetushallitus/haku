@@ -23,6 +23,8 @@ public class ApplicationToHakemusTyyppiTest {
         Application application = new Application("1.2.3.4.5.1");
         application.setPersonOid("1.3.3.3.3.4444");
         Map<String, String> answers = new HashMap<String, String>();
+        answers.put("Etunimet", "Aaro Eero");
+        answers.put("Sukunimi", "Testaaja");
         answers.put("key1", "value1");
         answers.put("key2", "value2");
         answers.put("key3", "value3");
@@ -40,6 +42,8 @@ public class ApplicationToHakemusTyyppiTest {
         assertNotNull(hakemus);
         assertEquals(application.getOid(), hakemus.getHakemusOid());
         assertEquals(application.getPersonOid(), hakemus.getHakijaOid());
+        assertEquals("Aaro Eero", hakemus.getHakijanEtunimi());
+        assertEquals("Testaaja", hakemus.getHakijanSukunimi());
         assertEquals(3, hakemus.getHakutoive().size());
         assertEquals(1, hakemus.getHakutoive().get(0).getPrioriteetti());
         assertEquals("1.5.5.5.5.1234", hakemus.getHakutoive().get(0).getHakukohdeOid());
@@ -48,6 +52,6 @@ public class ApplicationToHakemusTyyppiTest {
         assertEquals(3, hakemus.getHakutoive().get(2).getPrioriteetti());
         assertEquals("1.5.5.5.5.7777", hakemus.getHakutoive().get(2).getHakukohdeOid());
 
-        assertEquals(9, hakemus.getAvainArvo().size());
+        assertEquals(11, hakemus.getAvainArvo().size());
     }
 }
