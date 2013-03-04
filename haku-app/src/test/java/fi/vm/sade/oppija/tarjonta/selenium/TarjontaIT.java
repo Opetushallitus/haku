@@ -24,7 +24,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-@Ignore
 public class TarjontaIT extends AbstractSeleniumBase {
 
     @Before
@@ -54,7 +53,7 @@ public class TarjontaIT extends AbstractSeleniumBase {
     @Test
     public void testPuuttuvaKuvaus() throws Exception {
         seleniumHelper.getDriver().get(getBaseUrl() + "/tarjontatiedot/0");
-        boolean elementPresent = seleniumHelper.getSelenium().isTextPresent("Pyytämääsi resurssia ei löytynyt");
+        boolean elementPresent = seleniumHelper.getSelenium().isTextPresent("Koulutuskuvausta 0 ei löytynyt");
         assertTrue(elementPresent);
     }
 
