@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.controller;
+package fi.vm.sade.oppija.tarjonta.controller;
 
 import fi.vm.sade.koulutusinformaatio.domain.SearchFilters;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;

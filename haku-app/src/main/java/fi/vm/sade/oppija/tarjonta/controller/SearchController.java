@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.controller;
+package fi.vm.sade.oppija.tarjonta.controller;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
