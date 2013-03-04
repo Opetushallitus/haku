@@ -33,17 +33,10 @@
         <!--<property name="messageSelector" value="category = 'test' OR category = 'junit'"/>-->
     <!--</bean>-->
 
-    <!--<bean id="HttpSolrServer"-->
-          <!--class="org.apache.solr.client.solrj.impl.HttpSolrServer">-->
-        <!--<constructor-arg>-->
-            <!--<value>${tarjonta.index.url}</value>-->
-        <!--</constructor-arg>-->
-    <!--</bean>-->
-
     <bean id="HttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>
-            <value>http://localhost:8080/solr/</value>
+            <value>${tarjonta.index.url}</value>
         </constructor-arg>
     </bean>
 
