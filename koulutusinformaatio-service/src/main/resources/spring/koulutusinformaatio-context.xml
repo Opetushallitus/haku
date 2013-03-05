@@ -33,6 +33,8 @@
         <!--<property name="messageSelector" value="category = 'test' OR category = 'junit'"/>-->
     <!--</bean>-->
 
+    <context:component-scan base-package="fi.vm.sade.koulutusinformaatio"/>
+
     <bean id="HttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>

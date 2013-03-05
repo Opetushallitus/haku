@@ -25,6 +25,7 @@ import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.service.impl.UserPrefillDataServiceImpl;
@@ -61,6 +62,7 @@ public class FormControllerTest {
     public static final UserHolder USER_HOLDER = new UserHolder();
     private ApplicationService applicationService;
     private FormService formService;
+    private AdditionalQuestionService additionalQuestionService;
     private Application application;
     private ApplicationState applicationState;
 
@@ -70,7 +72,8 @@ public class FormControllerTest {
         this.applicationService = mock(ApplicationService.class);
         this.formService = mock(FormService.class);
         final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(USER_HOLDER);
-        this.formController = new FormController(formService, applicationService, userPrefillDataService);
+        this.additionalQuestionService = mock(AdditionalQuestionService.class);
+        this.formController = new FormController(formService, applicationService, userPrefillDataService, additionalQuestionService);
         this.application = new Application();
         FORM.addChild(PHASE);
         FORM.init();

@@ -42,9 +42,10 @@
         },
 
         searchAdditionalQuestions : function(hakukohdeId, additionalQuestionsId) {
-            var url = sortabletable_settings.contextPath + "/education/additionalquestion/" + sortabletable_settings.applicationPeriodId + "/" +
+            var url = sortabletable_settings.contextPath + "/lomake/" + sortabletable_settings.applicationPeriodId + "/" +
                 sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
-                sortabletable_settings.teemaId + "/" + hakukohdeId;
+                sortabletable_settings.teemaId + "/additionalquestions/" + hakukohdeId;
+
             $.get(url, function(data) {
                 $("#" + additionalQuestionsId).html(data);
             });

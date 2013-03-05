@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import com.google.common.collect.Lists;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
@@ -28,8 +29,10 @@ import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.GradeGrid;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserPrefillDataService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -50,10 +53,7 @@ import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @Path("/lomake")
@@ -76,13 +76,17 @@ public class FormController {
     final FormService formService;
     private final ApplicationService applicationService;
     private final UserPrefillDataService userPrefillDataService;
+    private final AdditionalQuestionService additionalQuestionService;
+
 
     @Autowired
     public FormController(@Qualifier("formServiceImpl") final FormService formService,
-                          final ApplicationService applicationService, final UserPrefillDataService userPrefillDataService) {
+                          final ApplicationService applicationService, final UserPrefillDataService userPrefillDataService,
+                          final AdditionalQuestionService additionalQuestionService) {
         this.formService = formService;
         this.applicationService = applicationService;
         this.userPrefillDataService = userPrefillDataService;
+        this.additionalQuestionService = additionalQuestionService;
     }
 
     @GET
@@ -303,5 +307,26 @@ public class FormController {
         model.put("template", "gradegrid/additionalLanguageRow");
 
         return new Viewable(ROOT_VIEW, model);
+    }
+
+    @GET
+    @Path("/{applicationPeriodId}/{formIdStr}/{phaseId}/{themeId}/additionalquestions/{aoId}")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    public Viewable getAdditionalQuestions(@PathParam("applicationPeriodId") final String applicationPeriodId,
+                                           @PathParam("formIdStr") final String formIdStr,
+                                           @PathParam("phaseId") final String phaseId,
+                                           @PathParam("themeId") final String themeId,
+                                           @PathParam("aoId") final String aoId,
+                                           @QueryParam("preview") final boolean preview) {
+        String viewName = preview ? "/additionalQuestionsPreview" : "/additionalQuestions";
+
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
+        final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
+        Set<Question> additionalQuestions = additionalQuestionService.
+                findAdditionalQuestions(themeId, Lists.newArrayList(aoId), formId, phaseId);
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("additionalQuestions", additionalQuestions);
+        model.put("categoryData", applicationService.getApplication(formId).getVastauksetMerged());
+        return new Viewable(viewName, model);
     }
 }

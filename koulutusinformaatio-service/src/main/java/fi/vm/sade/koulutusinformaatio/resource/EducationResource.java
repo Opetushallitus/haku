@@ -21,6 +21,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Organization;
 import fi.vm.sade.koulutusinformaatio.service.ApplicationOptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -31,6 +32,7 @@ import java.util.List;
  *
  * @author Mikko Majapuro
  */
+@Component
 @Path(EducationResource.EDUCATION_CONTROLLER_PATH)
 public class EducationResource {
 
@@ -41,6 +43,7 @@ public class EducationResource {
     @Autowired
     ApplicationOptionService applicationOptionService;
 
+    @GET
     @Path("/{hakuId}/organisaatio/search")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<Organization> searchOrganisaatio(@PathParam("hakuId") final String hakuId,
