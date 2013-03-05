@@ -5,7 +5,6 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class UIServiceResponse {
     public static final String OID = "oid";
