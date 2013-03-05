@@ -214,7 +214,7 @@ public abstract class Element {
         return ImmutableList.copyOf(children);
     }
 
-	public List<Element> getChildren(final Predicate predicate) {
+    public List<Element> getChildren(final Predicate predicate) {
         return ImmutableList.copyOf(Iterables.filter(children, predicate));
     }
 }
