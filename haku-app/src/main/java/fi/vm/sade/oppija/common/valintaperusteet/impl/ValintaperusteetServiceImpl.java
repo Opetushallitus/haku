@@ -66,7 +66,7 @@ public class ValintaperusteetServiceImpl implements ValintaperusteetService {
                 throw new IOException(String.format("Failed to retrieve data, exception: %s", t));
             } finally {
                 if (response != null) {
-                	// Saattaa heittää ClientHandlerExceptionin
+                    // Saattaa heittää ClientHandlerExceptionin
                     response.close();
                 }
             }
