@@ -42,7 +42,7 @@ public class HakemusServiceImpl implements HakemusService {
         });
     }
 
-    @Override
+    /*@Override
     public List<HakutoiveTyyppi> haeHakutoiveet(@WebParam(name = "hakuOid", targetNamespace = "") String hakuOid) {
         List<Application> applications = applicationService.getApplicationsByApplicationSystem(hakuOid);
         return Lists.transform(applications, new Function<Application, HakutoiveTyyppi>() {
@@ -51,5 +51,5 @@ public class HakemusServiceImpl implements HakemusService {
                 return conversionService.convert(application, HakutoiveTyyppi.class);
             }
         });
-    }
+    }*/
 }

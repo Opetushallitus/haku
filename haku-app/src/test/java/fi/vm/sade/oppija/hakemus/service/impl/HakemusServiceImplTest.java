@@ -66,7 +66,7 @@ public class HakemusServiceImplTest {
         verify(conversionService, times(1)).convert(any(Object.class), eq(HakemusTyyppi.class));
     }
 
-    @Test
+    /*@Test
     public void testHaeHakutoiveet() {
         List<HakutoiveTyyppi> hakutoiveet = hakemusService.haeHakutoiveet(APP_SYSTEM_OID);
         Assert.assertNotNull(hakutoiveet);
@@ -76,5 +76,5 @@ public class HakemusServiceImplTest {
         Assert.assertEquals(3, hakutoiveet.get(0).getHakutoive().size());
         verify(applicationService, times(1)).getApplicationsByApplicationSystem(eq(APP_SYSTEM_OID));
         verify(conversionService, times(3)).convert(any(Object.class), eq(HakutoiveTyyppi.class));
-    }
+    }*/
 }
