@@ -45,7 +45,7 @@ import static javax.ws.rs.core.Response.seeOther;
 
 @Path("virkailija")
 @Controller
-@Secured("ROLE_OFFICER")
+@Secured("ROLE_VIRKAILIJA")
 public class OfficerController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(OfficerController.class);
