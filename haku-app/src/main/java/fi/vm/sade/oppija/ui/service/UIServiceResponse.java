@@ -9,6 +9,7 @@ import java.util.Map;
 public class UIServiceResponse {
     public static final String OID = "oid";
     public static final String HAKEMUS = "hakemus"; // TODO remove
+    public static final String HAKEMUS_ID = "hakemusId"; // TODO remove
     public static final String APPLICATION = "application";
     public static final String CATEGORY_DATA = "categoryData";
     public static final String APPLICATION_PHASE_ID = "applicationPhaseId";
@@ -28,6 +29,7 @@ public class UIServiceResponse {
     public void setApplication(final Application application) {
         this.addObjectToModel(APPLICATION, application);
         this.addObjectToModel(HAKEMUS, application);
+        this.addObjectToModel(HAKEMUS_ID, application.getFormId());
         this.addObjectToModel(OID, application.getOid());
         this.addObjectToModel(APPLICATION_PHASE_ID, application.getPhaseId());
         this.addObjectToModel(CATEGORY_DATA, application.getVastauksetMerged());
