@@ -26,7 +26,6 @@
         </div>
 
         <div class="actions">
-
             <sec:authorize var="loggedIn" access="isAuthenticated()"/>
             <c:choose>
                 <c:when test="${loggedIn}">
@@ -56,7 +55,14 @@
                 <li><a href="#"><fmt:message key="oppija.header.label.mobile"/></a></li>
                 <li><a href="#"><fmt:message key="oppija.header.label.textversion"/></a></li>
             </ul>
-
+            <ul>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <li><a href="${contextPath}/admin">Admin</a></li>
+                </sec:authorize>
+                <sec:authorize access="hasRole('ROLE_VIRKAILIJA')">
+                    <li><a href="${contextPath}/virkailija/hakemus">Hakemusten käsittely</a></li>
+                </sec:authorize>
+            </ul>
             <div class="clear"></div>
         </div>
     </div>
