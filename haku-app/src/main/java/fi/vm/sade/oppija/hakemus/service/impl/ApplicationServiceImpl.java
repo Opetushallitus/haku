@@ -16,6 +16,24 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
@@ -41,18 +59,6 @@ import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.util.OppijaConstants;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.apache.commons.lang.StringUtils.isEmpty;
 
 /**
  * @author jukka
@@ -83,10 +89,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
-                                  final UserHolder userHolder,
-                                  @Qualifier("formServiceImpl") final FormService formService,
-                                  @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
-                                  AuthenticationService authenticationService) {
+            final UserHolder userHolder, @Qualifier("formServiceImpl") final FormService formService,
+            @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
+            AuthenticationService authenticationService) {
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
         this.formService = formService;
@@ -127,7 +132,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         return saveApplicationPhase(applicationPhase, application, false);
     }
 
-    private ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, Application application, boolean skipValidators) {
+    private ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, Application application,
+            boolean skipValidators) {
         final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
         final String applicationPeriodId = applicationState.getHakemus().getFormId().getApplicationPeriodId();
         final String formId = applicationState.getHakemus().getFormId().getFormId();
@@ -136,7 +142,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         final Map<String, String> vastaukset = applicationPhase.getAnswers();
 
         Map<String, String> allAnswers = new HashMap<String, String>();
-        //if the current phase has previous phase, get all the answers for validating rules
+        // if the current phase has previous phase, get all the answers for
+        // validating rules
         if (phase.isHasPrev()) {
             Application current = getApplication(applicationState.getHakemus().getFormId());
             allAnswers.putAll(current.getVastauksetMerged());
@@ -145,15 +152,20 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         if (!skipValidators) {
             ValidationResult validationResult = ElementTreeValidator.validate(phase, allAnswers);
+            if (application.getOid() == null) {
+                validationResult = checkIfExistsBySocialSecurityNumber(applicationPeriodId,
+                        vastaukset.get(SocialSecurityNumber.HENKILOTUNNUS), validationResult);
+            }
             applicationState.addError(validationResult.getErrorMessages());
         }
         if (applicationState.isValid()) {
             if (application.getOid() == null) {
-                checkIfExistsBySocialSecurityNumber(applicationPeriodId, vastaukset.get(SocialSecurityNumber.HENKILOTUNNUS));
+                checkIfExistsBySocialSecurityNumber(applicationPeriodId,
+                        vastaukset.get(SocialSecurityNumber.HENKILOTUNNUS));
             }
             this.applicationDAO.tallennaVaihe(applicationState);
         }
-        //sets all answers merged, needed for re-rendering view if errors
+        // sets all answers merged, needed for re-rendering view if errors
         applicationState.setAnswersMerged(allAnswers);
         return applicationState;
     }
@@ -171,8 +183,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         Form form = formService.getForm(formId.getApplicationPeriodId(), formId.getFormId());
         Map<String, String> allAnswers = application.getVastauksetMerged();
         ValidationResult validationResult = ElementTreeValidator.validate(form, allAnswers);
+        validationResult = checkIfExistsBySocialSecurityNumber(formId.getApplicationPeriodId(),
+                allAnswers.get(SocialSecurityNumber.HENKILOTUNNUS), validationResult);
         if (!validationResult.hasErrors()) {
-            checkIfExistsBySocialSecurityNumber(formId.getApplicationPeriodId(), allAnswers.get(SocialSecurityNumber.HENKILOTUNNUS));
+
             String newOid = applicationOidService.generateNewOid();
             application.setOid(newOid);
             if (!user.isKnown()) {
@@ -183,11 +197,16 @@ public class ApplicationServiceImpl implements ApplicationService {
             if (allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY).equals(OppijaConstants.NATIONALITY_CODE_FI)) {
 
                 // invoke authentication service to obtain oid
-                Person person = new Person(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES), allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME),
-                        allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME), allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER),
-                        false, allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL), allAnswers.get(OppijaConstants.ELEMENT_ID_SEX),
-                        allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY), false, allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE),
-                        allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY), allAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE));
+                Person person = new Person(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES),
+                        allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME),
+                        allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME),
+                        allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER), false,
+                        allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL),
+                        allAnswers.get(OppijaConstants.ELEMENT_ID_SEX),
+                        allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY), false,
+                        allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE),
+                        allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY),
+                        allAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE));
 
                 application.setPersonOid(this.authenticationService.addPerson(person));
 
@@ -227,7 +246,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         List<ApplicationInfo> listOfApplicationInfos = new ArrayList<ApplicationInfo>();
         List<Application> listOfUserApplications = applicationDAO.find(new Application(userHolder.getUser()));
         for (Application application : listOfUserApplications) {
-            final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(application.getFormId().getApplicationPeriodId());
+            final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(application.getFormId()
+                    .getApplicationPeriodId());
             final String id = applicationPeriod.getId();
             final String formId = application.getFormId().getFormId();
             final Form form = formService.getForm(id, formId);
@@ -247,7 +267,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> findApplications(final String term, final ApplicationQueryParameters applicationQueryParameters) {
+    public List<Application> findApplications(final String term,
+            final ApplicationQueryParameters applicationQueryParameters) {
         List<Application> applications = new LinkedList<Application>();
         if (shortOidPattern.matcher(term).matches()) {
             applications.addAll(applicationDAO.findByOid(term, applicationQueryParameters));
@@ -270,7 +291,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void saveApplicationAdditionalInfo(String oid, Map<String, String> additionalInfo) throws ResourceNotFoundException {
+    public void saveApplicationAdditionalInfo(String oid, Map<String, String> additionalInfo)
+            throws ResourceNotFoundException {
         Application query = new Application(oid);
         Application current = getApplication(query);
         current.setAdditionalInfo(additionalInfo);
@@ -288,7 +310,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         List<String> oids = new ArrayList<String>();
         FormId formId = application.getFormId();
         final Form activeForm = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
-        Map<String, PreferenceRow> preferenceRows = ElementUtil.<PreferenceRow>findElementsByType(activeForm, PreferenceRow.class);
+        Map<String, PreferenceRow> preferenceRows = ElementUtil.<PreferenceRow> findElementsByType(activeForm,
+                PreferenceRow.class);
         Map<String, String> answers = application.getVastauksetMerged();
         for (PreferenceRow pr : preferenceRows.values()) {
             String oid = answers.get(pr.getEducationOidInputId());
@@ -312,18 +335,21 @@ public class ApplicationServiceImpl implements ApplicationService {
         } else if (application.getVastauksetMerged().containsKey(key)) {
             return application.getVastauksetMerged().get(key);
         } else {
-            throw new ResourceNotFoundException(String.format("Could not find application : %s value of key : %s", applicationOid, key));
+            throw new ResourceNotFoundException(String.format("Could not find application : %s value of key : %s",
+                    applicationOid, key));
         }
     }
 
     @Override
-    public void putApplicationAdditionalInfoKeyValue(String applicationOid, String key, String value) throws ResourceNotFoundException {
+    public void putApplicationAdditionalInfoKeyValue(String applicationOid, String key, String value)
+            throws ResourceNotFoundException {
         Application query = new Application(applicationOid);
         Application application = getApplication(query);
         if (value == null) {
             throw new IllegalArgumentException("Value can't be null");
         } else if (application.getVastauksetMerged().containsKey(key)) {
-            throw new IllegalStateException(String.format("Key of the given additional information is found on the application form : key %s", key));
+            throw new IllegalStateException(String.format(
+                    "Key of the given additional information is found on the application form : key %s", key));
         } else {
             application.getAdditionalInfo().put(key, value);
             applicationDAO.update(query, application);
@@ -348,5 +374,20 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
     }
 
+    private ValidationResult checkIfExistsBySocialSecurityNumber(String asId, String ssn,
+            ValidationResult validationResult) {
+        if (validationResult == null) {
+            validationResult = new ValidationResult();
+        }
+        if (ssn != null) {
+            Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
+            if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumber(asId, ssn)) {
+                ValidationResult result = new ValidationResult("Henkilotunnus",
+                        "Henkilötunnuksella on jo jätetty hakemus");
+                return new ValidationResult(Arrays.asList(new ValidationResult[] { validationResult, result }));
+            }
+        }
+        return validationResult;
+    }
 
 }

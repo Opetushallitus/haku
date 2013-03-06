@@ -149,8 +149,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         QueryBuilder baseQuery = QueryBuilder.start();
         DBObject query;
         if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and
-                    (filters).get()).get();
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
         } else {
             query = baseQuery.get();
         }

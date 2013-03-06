@@ -105,7 +105,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
         }
         return result;
     }
-
+    
     /**
      * Tarkistaa, että annetussa hetussa on tunnistettava päivämäärä, ja että päivämäärä on menneisyydessä.
      *
