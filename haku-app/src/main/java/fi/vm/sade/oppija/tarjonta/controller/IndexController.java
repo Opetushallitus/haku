@@ -16,8 +16,9 @@
 
 package fi.vm.sade.oppija.tarjonta.controller;
 
-import fi.vm.sade.koulutusinformaatio.service.IndexService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
@@ -37,21 +38,22 @@ public class IndexController {
     String tarjontaUrl;
 
     @Autowired
-    IndexService indexService;
+    @Qualifier("indexerServiceXSLTImpl")
+    IndexerService indexerService;
 
     @GET
     @Path("update")
     @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     public String updateIndex() throws URISyntaxException {
         URI uri = new URI(tarjontaUrl);
-        return indexService.update(uri);
+        return indexerService.update(uri);
     }
 
     @GET
     @Path("drop")
     @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     public String dropIndex() throws IOException {
-        return Boolean.toString(indexService.drop());
+        return Boolean.toString(indexerService.drop());
     }
 
 }

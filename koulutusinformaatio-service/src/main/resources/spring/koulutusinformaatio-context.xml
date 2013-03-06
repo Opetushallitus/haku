@@ -53,7 +53,7 @@
         <constructor-arg ref="HttpSolrServer"/>
     </bean>
 
-    <bean id="indexService" class="fi.vm.sade.koulutusinformaatio.service.impl.IndexerServiceImpl">
+    <bean id="indexService" class="fi.vm.sade.koulutusinformaatio.service.impl.IndexerServiceXSLTImpl">
         <constructor-arg>
             <ref bean="HttpSolrServer"/>
         </constructor-arg>

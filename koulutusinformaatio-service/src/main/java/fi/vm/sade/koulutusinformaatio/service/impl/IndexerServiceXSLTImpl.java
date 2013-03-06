@@ -19,7 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.client.SolrClient;
 import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
-import fi.vm.sade.koulutusinformaatio.service.IndexService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +38,9 @@ import java.io.IOException;
 import java.net.URI;
 
 @Service
-public class IndexerServiceImpl implements IndexService {
+public class IndexerServiceXSLTImpl implements IndexerService {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(IndexerServiceImpl.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(IndexerServiceXSLTImpl.class);
 
     private final HttpSolrServer httpSolrServer;
 
@@ -48,7 +48,7 @@ public class IndexerServiceImpl implements IndexService {
 
     private final SolrClient client;
     @Autowired
-    public IndexerServiceImpl(HttpSolrServer httpSolrServer, TarjontaClient tarjontaClient, SolrClient client) {
+    public IndexerServiceXSLTImpl(HttpSolrServer httpSolrServer, TarjontaClient tarjontaClient, SolrClient client) {
         this.httpSolrServer = httpSolrServer;
         this.tarjontaClient = tarjontaClient;
         this.client = client;

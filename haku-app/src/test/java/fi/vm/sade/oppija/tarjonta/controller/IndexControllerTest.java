@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.tarjonta.controller;
 
-import fi.vm.sade.koulutusinformaatio.service.IndexService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,11 +28,11 @@ public class IndexControllerTest {
 
     public static final String EXPECTED_STRING = "done";
     private IndexController indexController;
-    private IndexService indexService;
+    private IndexerService indexerService;
 
     @Before
     public void setUp() throws Exception {
-        indexService = new IndexService() {
+        indexerService = new IndexerService() {
 
             @Override
             public String update(URI uri) {
@@ -46,7 +46,7 @@ public class IndexControllerTest {
         };
         indexController = new IndexController();
         indexController.tarjontaUrl = "";
-        indexController.indexService = indexService;
+        indexController.indexerService = indexerService;
     }
 
     @Test

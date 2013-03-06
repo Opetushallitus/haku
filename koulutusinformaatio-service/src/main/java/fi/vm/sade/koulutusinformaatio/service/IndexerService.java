@@ -18,7 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service;
 
 import java.net.URI;
 
-public interface IndexService {
+public interface IndexerService {
     String update(final URI uri);
 
     boolean drop();
