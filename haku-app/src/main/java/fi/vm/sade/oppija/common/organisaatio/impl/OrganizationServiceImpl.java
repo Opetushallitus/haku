@@ -33,6 +33,7 @@ import java.util.List;
 @Profile("default")
 public class OrganizationServiceImpl implements OrganizationService {
 
+    public static final int MAX_RESULTS = 10000;
     private final OrganisaatioService service;
 
     @Autowired
@@ -44,7 +45,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     public List<Organization> search(SearchCriteria criteria) throws IOException {
 
         final OrganisaatioSearchCriteriaDTO criteriaDTO = new OrganisaatioSearchCriteriaDTO();
-        criteriaDTO.setMaxResults(10000);
+        criteriaDTO.setMaxResults(MAX_RESULTS);
         if (criteria.getSearchString() != null) {
             criteriaDTO.setSearchStr(criteria.getSearchString());
         }

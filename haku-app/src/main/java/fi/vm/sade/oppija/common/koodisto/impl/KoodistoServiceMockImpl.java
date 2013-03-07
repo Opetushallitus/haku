@@ -64,16 +64,16 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 createPostOffice("33100", "Tampere"));
 
         this.listOfSubjectsRows = ImmutableList.of(
-                new SubjectRow("A1", createI18NText("A1-kieli")),
-                new SubjectRow("A12", createI18NText("A12-kieli")),
-                new SubjectRow("A2", createI18NText("A2-kieli")),
-                new SubjectRow("A22", createI18NText("A22-kieli")),
-                new SubjectRow("AI", createI18NText("Äidinkieli ja kirjallisuus")),
-                new SubjectRow("B1", createI18NText("B1-kieli")),
-                new SubjectRow("B2", createI18NText("B2-kieli")),
-                new SubjectRow("B22", createI18NText("B22-kieli")),
-                new SubjectRow("B23", createI18NText("B23-kieli")),
-                new SubjectRow("B3", createI18NText("B3-kieli")),
+                new SubjectRow("A1", true, true, createI18NText("A1-kieli")),
+                new SubjectRow("A12", true, true, createI18NText("A12-kieli")),
+                new SubjectRow("A2", true, true, createI18NText("A2-kieli")),
+                new SubjectRow("A22", true, true, createI18NText("A22-kieli")),
+                new SubjectRow("AI", true, true, createI18NText("Äidinkieli ja kirjallisuus")),
+                new SubjectRow("B1", true, true, createI18NText("B1-kieli")),
+                new SubjectRow("B2", true, true, createI18NText("B2-kieli")),
+                new SubjectRow("B22", true, true, createI18NText("B22-kieli")),
+                new SubjectRow("B23", true, true, createI18NText("B23-kieli")),
+                new SubjectRow("B3", true, true, createI18NText("B3-kieli")),
                 new SubjectRow("MA", createI18NText("Matematiikka")),
                 new SubjectRow("BI", createI18NText("Biologia")),
                 new SubjectRow("GE", createI18NText("Maantieto")),
@@ -86,7 +86,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 new SubjectRow("MU", createI18NText("Musiikki")),
                 new SubjectRow("KU", createI18NText("Kuvataide")),
                 new SubjectRow("KS", createI18NText("Käsityö")),
-                new SubjectRow("LI", createI18NText("Liikunta"))
+                new SubjectRow("LI", false, false, createI18NText("Liikunta"))
         );
         this.listOfLearningInstitutionTypes = ImmutableList.of(
                 new Option(LEARNING_INSTITUTION_TYPE,

@@ -20,9 +20,9 @@
 <%-- hidden custom languge row that can be cloned and
 included into the table to add new languages
 this always has to be the last row--%>
-<tr>
-    <td>
 
+<tr class="dynamic">
+    <td>
         <c:out value="${element.customLanguageTitle}"/>&nbsp;
         <select required="required">
             <option></option>
@@ -43,6 +43,15 @@ this always has to be the last row--%>
         <div class="field-container-select">
             <select name="arvosana-1" required="required">
                 <option></option>
+                <c:forEach var="grade" items="${element.gradeRange}">
+                    <option value="${grade.value}"><haku:i18nText value="${grade.i18nText}"/></option>
+                </c:forEach>
+            </select>
+        </div>
+    </td>
+    <td>
+        <div class="field-container-select">
+            <select name="arvosana-1" required="required">
                 <c:forEach var="grade" items="${element.gradeRange}">
                     <option value="${grade.value}"><haku:i18nText value="${grade.i18nText}"/></option>
                 </c:forEach>

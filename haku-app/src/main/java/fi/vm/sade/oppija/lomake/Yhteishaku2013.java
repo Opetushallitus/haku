@@ -72,8 +72,8 @@ public class Yhteishaku2013 {
         Map<String, List<Question>> oppiaineMap = new HashMap<String, List<Question>>();
 
         List<Question> oppiaineList = new ArrayList<Question>();
-        oppiaineList.add(new SubjectRow("tietotekniikka", createI18NText("Tietotekniikka")));
-        oppiaineList.add(new SubjectRow("kansantaloustiede", createI18NText("Kansantaloustiede")));
+        oppiaineList.add(new SubjectRow("tietotekniikka", false, false, createI18NText("Tietotekniikka")));
+        oppiaineList.add(new SubjectRow("kansantaloustiede", false, false, createI18NText("Kansantaloustiede")));
         oppiaineMap.put("1.2.246.562.14.79893512065", oppiaineList);
 
         final String id = "1.2.246.562.14.79893512065";
@@ -294,7 +294,7 @@ public class Yhteishaku2013 {
 
         List<Option> gradeRange = koodistoService.getGradeRanges();
         List<SubjectRow> subjects = koodistoService.getSubjects();
-        SubjectRow finnish = new SubjectRow("subject_finnish", createI18NText("Äidinkieli ja kirjallisuus"));
+        SubjectRow finnish = new SubjectRow("subject_finnish", false, false, createI18NText("Äidinkieli ja kirjallisuus"));
         List<SubjectRow> subjectRowsAfter = new ArrayList<SubjectRow>();
         for (SubjectRow subject : subjects) {
             String id = subject.getId();
@@ -483,7 +483,7 @@ public class Yhteishaku2013 {
                         createI18NText("Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä"),
                         "tutkinto4",
                         "Valitse tämä, jos olet opiskellut peruskoulun kokonaan yksilöllistetyn oppimäärän mukaan tai olet opiskellut yli puolet " +
-                        "opinnoistasi yksilöllistetyn opetuksen mukaan.");
+                                "opinnoistasi yksilöllistetyn opetuksen mukaan.");
         millatutkinnolla.addOption("tutkinto5",
                 createI18NText("Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)"), "tutkinto5",
                 "Valitse tämä vain, jos sinulla ei ole lainkaan päättötodistusta.");
@@ -493,7 +493,7 @@ public class Yhteishaku2013 {
                         createI18NText("Lukion päättötodistus, ylioppilastutkinto tai abiturientti"),
                         "tutkinto6",
                         "Valitse tämä, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvälinen ylioppilastutkinto, tai olet suorittanut " +
-                        "yhdistelmätutkinnon, johon sisältyy lukion vahimmäisoppimäärää vastaavat opinnot.");
+                                "yhdistelmätutkinnon, johon sisältyy lukion vahimmäisoppimäärää vastaavat opinnot.");
         millatutkinnolla.addOption("tutkinto7", createI18NText("Ulkomailla suoritettu koulutus"), "tutkinto7",
                 "Valitse tämä, jos olet suorittanut tutkintosi ulkomailla.");
         millatutkinnolla.setVerboseHelp(getVerboseHelp());

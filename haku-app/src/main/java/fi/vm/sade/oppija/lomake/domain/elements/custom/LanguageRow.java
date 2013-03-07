@@ -30,6 +30,6 @@ public class LanguageRow extends SubjectRow {
 
     public LanguageRow(@JsonProperty(value = "id") String id,
                        @JsonProperty(value = "i18nText") I18nText i18nText) {
-        super(id, i18nText);
+        super(id, true, true, i18nText);
     }
 }

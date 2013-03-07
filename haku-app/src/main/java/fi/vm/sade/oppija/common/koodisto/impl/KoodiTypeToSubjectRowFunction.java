@@ -29,6 +29,9 @@ public class KoodiTypeToSubjectRowFunction implements Function<KoodiType, Subjec
     public SubjectRow apply(final KoodiType koodiType) {
         Map<String, String> translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
         String koodiArvo = koodiType.getKoodiArvo();
-        return new SubjectRow(koodiArvo, new I18nText(koodiArvo, translationsMap));
+        boolean language = koodiArvo.startsWith("A1") || koodiArvo.startsWith("A2") ||
+                koodiArvo.startsWith("B1") || koodiArvo.startsWith("B2") || koodiArvo.startsWith("B3"); // TODO koodistosta
+        boolean optionalGrades = true; // TODO koodistosta
+        return new SubjectRow(koodiArvo, optionalGrades, language, new I18nText(koodiArvo, translationsMap));
     }
 }

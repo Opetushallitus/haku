@@ -16,24 +16,6 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
@@ -59,6 +41,18 @@ import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.util.OppijaConstants;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 /**
  * @author jukka
@@ -89,9 +83,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
-            final UserHolder userHolder, @Qualifier("formServiceImpl") final FormService formService,
-            @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
-            AuthenticationService authenticationService) {
+                                  final UserHolder userHolder, @Qualifier("formServiceImpl") final FormService formService,
+                                  @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
+                                  AuthenticationService authenticationService) {
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
         this.formService = formService;
@@ -133,7 +127,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, Application application,
-            boolean skipValidators) {
+                                                  boolean skipValidators) {
         final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
         final String applicationPeriodId = applicationState.getHakemus().getFormId().getApplicationPeriodId();
         final String formId = applicationState.getHakemus().getFormId().getFormId();
@@ -187,8 +181,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 allAnswers.get(SocialSecurityNumber.HENKILOTUNNUS), validationResult);
         if (!validationResult.hasErrors()) {
 
-            String newOid = applicationOidService.generateNewOid();
-            application.setOid(newOid);
+            application.setOid(applicationOidService.generateNewOid());
             if (!user.isKnown()) {
                 application.removeUser();
             }
@@ -213,7 +206,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
             application.activate();
             this.applicationDAO.update(application1, application);
-            return newOid;
+            return application.getOid();
         } else {
             throw new IllegalStateException("Could not send the application");
         }
@@ -268,7 +261,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<Application> findApplications(final String term,
-            final ApplicationQueryParameters applicationQueryParameters) {
+                                              final ApplicationQueryParameters applicationQueryParameters) {
         List<Application> applications = new LinkedList<Application>();
         if (shortOidPattern.matcher(term).matches()) {
             applications.addAll(applicationDAO.findByOid(term, applicationQueryParameters));
@@ -310,7 +303,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         List<String> oids = new ArrayList<String>();
         FormId formId = application.getFormId();
         final Form activeForm = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
-        Map<String, PreferenceRow> preferenceRows = ElementUtil.<PreferenceRow> findElementsByType(activeForm,
+        Map<String, PreferenceRow> preferenceRows = ElementUtil.<PreferenceRow>findElementsByType(activeForm,
                 PreferenceRow.class);
         Map<String, String> answers = application.getVastauksetMerged();
         for (PreferenceRow pr : preferenceRows.values()) {
@@ -375,7 +368,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private ValidationResult checkIfExistsBySocialSecurityNumber(String asId, String ssn,
-            ValidationResult validationResult) {
+                                                                 ValidationResult validationResult) {
         if (validationResult == null) {
             validationResult = new ValidationResult();
         }
@@ -384,7 +377,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumber(asId, ssn)) {
                 ValidationResult result = new ValidationResult("Henkilotunnus",
                         "Henkilötunnuksella on jo jätetty hakemus");
-                return new ValidationResult(Arrays.asList(new ValidationResult[] { validationResult, result }));
+                return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
             }
         }
         return validationResult;

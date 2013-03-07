@@ -15,13 +15,12 @@
  */
 package fi.vm.sade.oppija.common.valintaperusteet.impl;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.google.common.base.Function;
-
 import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.InputParameter;
+
+import java.util.Map;
+import java.util.Map.Entry;
 
 //XXX this is fragile because the representation might change any time
 public class MapToAdditionalQuestionsFunction implements
@@ -33,15 +32,15 @@ public class MapToAdditionalQuestionsFunction implements
         for (Entry<String, Map<String, Map<String, String>>> oid : input.entrySet()) {
             String oidKey = oid.getKey();
             final Map<String, Map<String, String>> value = oid.getValue();
-            for (String phase : value.keySet()) {
-                for (Map.Entry<String, String> entry : value.get(phase).entrySet()) {
+            for (Entry<String, Map<String, String>> phase : value.entrySet()) {
+                for (Map.Entry<String, String> entry : value.get(phase.getKey()).entrySet()) {
                     final String key = entry.getKey();
                     final String type = entry.getValue();
-                    InputParameter param = new InputParameter(key, type, phase);
+                    InputParameter param = new InputParameter(key, type, phase.getKey());
                     aq.addParameter(oidKey, param);
                 }
             }
-            
+
         }
         return aq;
     }

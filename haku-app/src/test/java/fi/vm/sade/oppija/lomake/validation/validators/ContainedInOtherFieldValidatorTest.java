@@ -16,15 +16,14 @@
 
 package fi.vm.sade.oppija.lomake.validation.validators;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import fi.vm.sade.oppija.lomake.validation.FieldValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import org.junit.Test;
 
 import java.util.HashMap;
 
-import org.junit.Test;
-
-import fi.vm.sade.oppija.lomake.validation.FieldValidator;
-import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ContainedInOtherFieldValidatorTest {
 
@@ -40,7 +39,7 @@ public class ContainedInOtherFieldValidatorTest {
         ValidationResult result = validator.validate(values);
         assertFalse(result.hasErrors());
     }
-    
+
     @Test
     public void testPartialMatch() {
         HashMap<String, String> values = new HashMap<String, String>();
@@ -49,7 +48,7 @@ public class ContainedInOtherFieldValidatorTest {
         ValidationResult result = validator.validate(values);
         assertFalse(result.hasErrors());
     }
-    
+
     @Test
     public void testNoMatch() {
         HashMap<String, String> values = new HashMap<String, String>();
@@ -59,4 +58,12 @@ public class ContainedInOtherFieldValidatorTest {
         assertTrue(result.hasErrors());
     }
 
+    @Test
+    public void testNoMatchNull() {
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put(thatField, "FirstName");
+        values.put(thisField, null);
+        ValidationResult result = validator.validate(values);
+        assertTrue(result.hasErrors());
+    }
 }

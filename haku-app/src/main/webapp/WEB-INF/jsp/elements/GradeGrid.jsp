@@ -1,5 +1,4 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
@@ -21,171 +20,70 @@
 <table id="gradegrid-table" class="applicant-grades">
     <thead>
     <tr>
-        <th></th>
-        <th colspan="2"><fmt:message key="lomake.component.gradegrid.gradesTitle"/></th>
+        <th colspan="4"><fmt:message key="lomake.component.gradegrid.gradesTitle"/></th>
     </tr>
     <tr>
         <td><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
         <td><fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
         <td><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
+        <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
     </tr>
     </thead>
     <tbody>
     <!-- subjects that are listed before languages -->
-    <c:forEach var="subject" items="${element.subjectsBeforeLanguages}">
-        <c:set var="subject" value="${subject}" scope="request"/>
-        <tr>
-            <td>
-                <jsp:include page="gradegrid/SubjectRow.jsp"/>
-            </td>
-            <td>
-                <c:set var="gradeSelectId" value="common-${subject.id}" scope="request"/>
-                <c:set var="showEmptyOption" value="true" scope="request"/>
-                <jsp:include page="gradegrid/gradeselect.jsp"/>
-            </td>
-            <td>
-                <c:set var="gradeSelectId" value="optional-${subject.id}" scope="request"/>
-                <c:set var="showEmptyOption" value="false" scope="request"/>
-                <jsp:include page="gradegrid/gradeselect.jsp"/>
-            </td>
-        </tr>
-    </c:forEach>
+    <haku:subjectRows subjects="${element.subjectsBeforeLanguages}" element="${element}" data="${categoryData}"/>
 
     <%-- languages --%>
     <c:forEach var="language" items="${element.languages}">
-        <c:set var="language" value="${language}" scope="request"/>
         <tr data-gradegrid-row="'{}'">
             <td>
-                <jsp:include page="gradegrid/LanguageRow.jsp"/>
+                <haku:languageSelect language="${language}" data="${categoryData}"
+                                     options="${element.languageOptions}"/>
             </td>
             <td>
-                <c:set var="gradeSelectId" value="common-${language.id}" scope="request"/>
-                <c:set var="showEmptyOption" value="true" scope="request"/>
-                <jsp:include page="gradegrid/gradeselect.jsp"/>
+                <haku:gradeSelect id="common-${language.id}" options="${element.gradeRange}"
+                                  data="${categoryData}" showEmptyOption="true"/>
             </td>
             <td>
-                <c:set var="gradeSelectId" value="optional-${language.id}" scope="request"/>
-                <c:set var="showEmptyOption" value="false" scope="request"/>
-                <jsp:include page="gradegrid/gradeselect.jsp"/>
+                <c:if test="${language.optionalGrades}">
+                    <haku:gradeSelect id="optional-common-${language.id}" options="${element.gradeRange}"
+                                      data="${categoryData}"/>
+                </c:if>
+            </td>
+            <td>
+                <c:if test="${language.optionalGrades}">
+                    <haku:gradeSelect id="second-optional-common-${language.id}" options="${element.gradeRange}"
+                                      data="${categoryData}"/>
+                </c:if>
             </td>
         </tr>
     </c:forEach>
 
     <%-- custom selected languages --%>
-    <c:forEach var="entry" items="${categoryData}">
+    <haku:customSelectedLanguages data="${categoryData}" gradeGrid="${element}"/>
 
-        <c:if test="${fn:startsWith(entry.key,'custom-scope')}">
-            <c:set var="customIndex" value="${fn:substringAfter(entry.key, 'custom-scope_')}" scope="page"/>
-
-            <c:set var="customScopeKey" value="custom-scope_${customIndex}" scope="page"/>
-            <c:set var="customLanguageKey" value="custom-language_${customIndex}" scope="page"/>
-            <c:set var="customCommonGradeKey" value="custom-commongrade_${customIndex}" scope="page"/>
-            <c:set var="customOptionalGradeKey" value="custom-optionalgrade_${customIndex}" scope="page"/>
-
-            <tr data-gradegrid-row="'{'customLang': true}'">
-                <td><c:out value="${element.customLanguageTitle}"/>
-                    <select id="${customScopeKey}" name="${customScopeKey}" required="required">
-                        <option></option>
-                        <c:forEach var="scopeOption" items="${element.scopeOptions}">
-                            <option value="${scopeOption.value}" ${(categoryData[customScopeKey] eq scopeOption.value) ? "selected=\"selected\"" : ""}>
-                                <haku:i18nText value="${scopeOption.i18nText}"/></option>
-                        </c:forEach>
-                    </select>
-                    <haku:errorMessage id="${customScopeKey}"/>
-                    <select id="${customLanguageKey}" name="${customLanguageKey}" required="required">
-                        <option></option>
-                        <c:forEach var="languageOption" items="${element.languageOptions}">
-                            <option value="${languageOption.value}"
-                                ${(categoryData[customLanguageKey] eq languageOption.value) ? "selected=\"selected\"" : ""}>
-                                <haku:i18nText value="${languageOption.i18nText}"/></option>
-                        </c:forEach>
-                    </select>
-                    <haku:errorMessage id="${customLanguageKey}"/>
-                    <a href="#" class="btn-remove"></a>
-                </td>
-                <td>
-                    <div class="field-container-select">
-                        <select id="${customCommonGradeKey}" name="${customCommonGradeKey}" required="required">
-                            <option></option>
-                            <c:forEach var="grade" items="${element.gradeRange}">
-                                <option value="${grade.value}" ${(categoryData[customCommonGradeKey] eq grade.value) ? "selected=\"selected\"" : ""}>
-                                    <haku:i18nText value="${grade.i18nText}"/></option>
-                            </c:forEach>
-                        </select>
-                        <haku:errorMessage id="${customCommonGradeKey}"/>
-                    </div>
-                </td>
-                <td>
-                    <div class="field-container-select">
-                        <select id="${customOptionalGradeKey}" name="${customOptionalGradeKey}" required="required">
-                            <c:forEach var="grade" items="${element.gradeRange}">
-                                <option value="${grade.value}" ${(categoryData[customOptionalGradeKey] eq grade.value) ? "selected=\"selected\"" : ""}>
-                                    <haku:i18nText value="${grade.i18nText}"/></option>
-                            </c:forEach>
-                        </select>
-                        <haku:errorMessage id="${customOptionalGradeKey}"/>
-                    </div>
-                </td>
-            </tr>
-        </c:if>
-
-    </c:forEach>
 
     <!-- add new language row -->
-    <tr>
-        <td colspan=3>
+    <tr id="add-lang">
+        <td colspan=4>
             <button id="add_language_button" class="link" type="button"><fmt:message
                     key="lomake.component.gradegrid.addLanguageLabel"/></button>
         </td>
     </tr>
 
     <%-- subjects that are listed after languages --%>
-    <c:forEach var="subject" items="${element.subjectsAfterLanguages}">
-        <c:set var="subject" value="${subject}" scope="request"/>
-        <tr>
-            <td>
-                <jsp:include page="gradegrid/SubjectRow.jsp"/>
-            </td>
-            <td>
-                <c:set var="gradeSelectId" value="common-${subject.id}" scope="request"/>
-                <c:set var="showEmptyOption" value="true" scope="request"/>
-                <jsp:include page="gradegrid/gradeselect.jsp"/>
-            </td>
-            <td>
-                <c:set var="gradeSelectId" value="optional-${subject.id}" scope="request"/>
-                <c:set var="showEmptyOption" value="false" scope="request"/>
-                <jsp:include page="gradegrid/gradeselect.jsp"/>
-            </td>
-        </tr>
-    </c:forEach>
+    <haku:subjectRows subjects="${element.subjectsAfterLanguages}" element="${element}" data="${categoryData}"/>
 
     <%-- subjects that are specific to the education selected by the user --%>
-    <c:forEach var="subject" items="${additionalQuestionList}">
-        <c:set var="subject" value="${subject}" scope="request"/>
-        <tr>
-            <td>
-                <jsp:include page="gradegrid/SubjectRow.jsp"/>
-            </td>
-            <td>
-                <c:set var="gradeSelectId" value="common-${subject.id}" scope="request"/>
-                <c:set var="showEmptyOption" value="true" scope="request"/>
-                <jsp:include page="gradegrid/gradeselect.jsp"/>
-            </td>
-            <td>
-                <c:set var="gradeSelectId" value="optional-${subject.id}" scope="request"/>
-                <c:set var="showEmptyOption" value="false" scope="request"/>
-                <jsp:include page="gradegrid/gradeselect.jsp"/>
-            </td>
-        </tr>
-    </c:forEach>
+    <haku:subjectRows subjects="${additionalQuestionList}" element="${element}" data="${categoryData}"/>
 
     </tbody>
 </table>
 <script>
     var gradegrid_settings = {
         contextPath: "${pageContext.request.contextPath}",
-        applicationSystemId: "${hakemusId.applicationPeriodId}",
-        formId: "${hakemusId.formId}",
+        applicationSystemId: "${it.hakemusId.applicationPeriodId}",
+        formId: "${it.hakemusId.formId}",
         elementId: "${element.id}"
     };
 </script>

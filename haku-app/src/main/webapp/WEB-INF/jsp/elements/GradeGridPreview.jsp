@@ -31,43 +31,33 @@
     <td><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
     <td><fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
     <td><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
+    <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
 </tr>
 <!--
 </thead>
 <tbody>
 -->
 <!-- subjects that are listed before languages -->
-<c:forEach var="subject" items="${element.subjectsBeforeLanguages}">
-    <c:set var="subject" value="${subject}" scope="request"/>
-    <tr>
-        <td>
-            <jsp:include page="gradegrid/SubjectRow.jsp"/>
-        </td>
-        <td>
-            <c:set var="gradeSelectId" value="common-${subject.id}" scope="request"/>
-            <jsp:include page="gradegrid/gradeselectPreview.jsp"/>
-        </td>
-        <td>
-            <c:set var="gradeSelectId" value="optional-${subject.id}" scope="request"/>
-            <jsp:include page="gradegrid/gradeselectPreview.jsp"/>
-        </td>
-    </tr>
-</c:forEach>
+<haku:subjectRows subjects="${element.subjectsBeforeLanguages}" element="${element}" data="${categoryData}"/>
 
 <%-- languages --%>
 <c:forEach var="language" items="${element.languages}">
-    <c:set var="language" value="${language}" scope="request"/>
     <tr class="gradegrid-language-row">
         <td>
-            <jsp:include page="gradegrid/LanguageRowPreview.jsp"/>
+            <haku:languageSelect language="${language}" data="${categoryData}"
+                                 options="${element.languageOptions}" preview="${preview}"/>
         </td>
         <td>
-            <c:set var="gradeSelectId" value="common-${language.id}" scope="request"/>
-            <jsp:include page="gradegrid/gradeselectPreview.jsp"/>
+            <haku:gradeSelect id="common-${language.id}" data="${categoryData}" preview="${preview}"
+                              options="${element.gradeRange}"/>
         </td>
         <td>
-            <c:set var="gradeSelectId" value="optional-${language.id}" scope="request"/>
-            <jsp:include page="gradegrid/gradeselectPreview.jsp"/>
+            <haku:gradeSelect id="optional-common-${language.id}" data="${categoryData}"
+                              preview="${preview}" options="${element.gradeRange}"/>
+        </td>
+        <td>
+            <haku:gradeSelect id="second-optional-common-${language.id}" data="${categoryData}"
+                              preview="${preview}" options="${element.gradeRange}"/>
         </td>
     </tr>
 </c:forEach>
@@ -82,6 +72,7 @@
         <c:set var="customLanguageKey" value="custom-language_${customIndex}" scope="page"/>
         <c:set var="customCommonGradeKey" value="custom-commongrade_${customIndex}" scope="page"/>
         <c:set var="customOptionalGradeKey" value="custom-optionalgrade_${customIndex}" scope="page"/>
+        <c:set var="customSecondOptionalGradeKey" value="custom-secondoptionalgrade_${customIndex}" scope="page"/>
 
         <tr class="gradegrid-language-row gradegrid-custom-language-row">
             <td><c:out value="${element.customLanguageTitle}"/>&nbsp;
@@ -110,45 +101,22 @@
                     </c:if>
                 </c:forEach>
             </td>
+            <td>
+                <c:forEach var="grade" items="${element.gradeRange}">
+                    <c:if test="${(categoryData[customSecondOptionalGradeKey] eq grade.value)}">
+                        <haku:i18nText value="${grade.i18nText}"/>
+                    </c:if>
+                </c:forEach>
+            </td>
         </tr>
     </c:if>
 
 </c:forEach>
 <%-- subjects that are listed after languages --%>
-<c:forEach var="subject" items="${element.subjectsAfterLanguages}">
-    <c:set var="subject" value="${subject}" scope="request"/>
-    <tr>
-        <td>
-            <jsp:include page="gradegrid/SubjectRow.jsp"/>
-        </td>
-        <td>
-            <c:set var="gradeSelectId" value="common-${subject.id}" scope="request"/>
-            <jsp:include page="gradegrid/gradeselectPreview.jsp"/>
-        </td>
-        <td>
-            <c:set var="gradeSelectId" value="optional-${subject.id}" scope="request"/>
-            <jsp:include page="gradegrid/gradeselectPreview.jsp"/>
-        </td>
-    </tr>
-</c:forEach>
+<haku:subjectRows subjects="${element.subjectsAfterLanguages}" element="${element}" data="${categoryData}"/>
 
 <%-- subjects that are specific to the education selected by the user --%>
-<c:forEach var="subject" items="${additionalQuestionList}">
-    <c:set var="subject" value="${subject}" scope="request"/>
-    <tr>
-        <td>
-            <jsp:include page="gradegrid/SubjectRow.jsp"/>
-        </td>
-        <td>
-            <c:set var="gradeSelectId" value="common-${subject.id}" scope="request"/>
-            <jsp:include page="gradegrid/gradeselectPreview.jsp"/>
-        </td>
-        <td>
-            <c:set var="gradeSelectId" value="optional-${subject.id}" scope="request"/>
-            <jsp:include page="gradegrid/gradeselectPreview.jsp"/>
-        </td>
-    </tr>
-</c:forEach>
+<haku:subjectRows subjects="${additionalQuestionList}" element="${element}" data="${categoryData}"/>
 <!--
 </tbody>
 -->

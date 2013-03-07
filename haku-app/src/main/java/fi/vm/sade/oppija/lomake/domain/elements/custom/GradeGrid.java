@@ -103,19 +103,23 @@ public class GradeGrid extends Titled {
     public List<Validator> getValidators() {
         List<Validator> listOfValidators = new ArrayList<Validator>();
         for (SubjectRow subjectRow : subjectsBeforeLanguages) {
-             addRequiredValidators(listOfValidators, subjectRow.getId());
+            addRequiredValidators(listOfValidators, subjectRow);
         }
         for (LanguageRow languageRow : languages) {
-            addRequiredValidators(listOfValidators, languageRow.getId());
+            addRequiredValidators(listOfValidators, languageRow);
         }
         for (SubjectRow subjectRow : subjectsAfterLanguages) {
-            addRequiredValidators(listOfValidators, subjectRow.getId());
+            addRequiredValidators(listOfValidators, subjectRow);
         }
         return listOfValidators;
     }
 
-    private void addRequiredValidators(final List<Validator> listOfValidators, final String id) {
-        listOfValidators.add(new RequiredFieldFieldValidator("common-" + id));
-        listOfValidators.add(new RequiredFieldFieldValidator("optional-" + id));
+    private void addRequiredValidators(final List<Validator> listOfValidators, final SubjectRow subjectRow) {
+        String subjectRowId = subjectRow.getId();
+        listOfValidators.add(new RequiredFieldFieldValidator("common-" + subjectRowId));
+        if (subjectRow.isOptionalGrades()) {
+            listOfValidators.add(new RequiredFieldFieldValidator("optional-common-" + subjectRowId));
+            listOfValidators.add(new RequiredFieldFieldValidator("second-optional-common-" + subjectRowId));
+        }
     }
 }
