@@ -6,7 +6,6 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.service.hakemus.HakemusService;
 import fi.vm.sade.service.hakemus.schema.HakemusTyyppi;
-import fi.vm.sade.service.hakemus.schema.HakutoiveTyyppi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
