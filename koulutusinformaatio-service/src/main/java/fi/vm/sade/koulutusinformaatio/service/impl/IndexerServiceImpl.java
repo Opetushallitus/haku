@@ -71,6 +71,8 @@ public class IndexerServiceImpl implements IndexerService {
         boolean dropped = false;
         try {
             httpSolrServer.deleteByQuery("*:*");
+            httpSolrServer.commit();
+            httpSolrServer.optimize();
             dropped = true;
         } catch (Exception e) {
             LOGGER.error("drop failed", e);
