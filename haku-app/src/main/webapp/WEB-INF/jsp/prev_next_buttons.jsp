@@ -27,6 +27,7 @@
             </button>
         </c:when>
     </c:choose>
+    <%--
     <c:if test="${not empty sessionScope['username']}">
         <button class="save" name="phaseId" type="submit" value="${vaihe.id}">
             <span>
@@ -34,6 +35,7 @@
             </span>
         </button>
     </c:if>
+    --%>
 </div>
 <div class="float-right">
     <c:choose>
