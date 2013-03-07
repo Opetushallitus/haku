@@ -36,6 +36,8 @@ public class CustomLanguageRowTest {
 
     @Before
     public void setUp() throws Exception {
+
+        SCOPE_OPTIONS.clear();
         customLanguageRow = new CustomLanguageRow(ROW_ID, createI18NText(TITLE), SCOPE_OPTIONS);
     }
 
