@@ -15,12 +15,13 @@
  */
 package fi.vm.sade.oppija.hakemus.converter;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -40,9 +41,6 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
-import fi.vm.sade.oppija.lomake.validation.validators.SocialSecurityNumberValidatorTest;
-
-import static org.apache.commons.lang.StringUtils.isEmpty;
 
 /**
  * @author jukka
@@ -105,7 +103,7 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
         String month = ssn.substring(2, 4); // NOSONAR
         String year = Integer.toString((centuries.get(ssn.substring(6, 7)) + // NOSONAR 
                 Integer.valueOf(ssn.substring(4, 6)))); // NOSONAR
-        String dob = String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
+        String dob = year+"-"+month+"-"+day;
         try {
             isoDate.parse(dob);
             return dob;
