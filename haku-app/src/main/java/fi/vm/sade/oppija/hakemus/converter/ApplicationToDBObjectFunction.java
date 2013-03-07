@@ -20,6 +20,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
@@ -37,6 +39,10 @@ import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.service.EncrypterService;
+import fi.vm.sade.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.SocialSecurityNumberValidatorTest;
+
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 /**
  * @author jukka
@@ -83,6 +89,10 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
     }
     
     private String ssnToDateOfBirth(String ssn) {
+        Pattern ssnPattern = Pattern.compile(SocialSecurityNumberFieldValidator.SOCIAL_SECURITY_NUMBER_PATTERN);
+        if (isEmpty(ssn) || !ssnPattern.matcher(ssn).matches()) {
+            return "";
+        }
         HashMap<String, Integer> centuries = new HashMap<String, Integer>();
         centuries.put("+", 1800); // NOSONAR
         centuries.put("-", 1900); // NOSONAR

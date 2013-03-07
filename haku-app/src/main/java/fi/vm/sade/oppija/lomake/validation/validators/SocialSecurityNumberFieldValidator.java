@@ -42,7 +42,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     private String nationalityId;
     private final Pattern socialSecurityNumberPattern;
     private static final String FI = "fi";
-    private static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}[aA+-][0-9]{3}([0-9]|[a-z]|[A-Z]))";
+    public static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}[aA+-][0-9]{3}([0-9]|[a-z]|[A-Z]))";
     private static final String NOT_A_DATE_ERROR = "Henkilötunnuksen alkuosa ei muodosta päivämäärää";
     private static final String DOB_IN_FUTURE = "Henkilötunnuksen syntymäaika on tulevaisuudessa";
     private static final String GENERIC_ERROR_MESSAGE = "Henkilötunnus puuttuu tai on virheellinen";
