@@ -82,9 +82,9 @@ public class PreferenceTable extends Titled {
         }
 
         listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds));
-        Predicate<Map<String, String>> predicate = and(not(and(or(and(validate(new RegexFieldFieldValidator("ammatillinenTutkintoSuoritettu", "^kyllä$")),
+        Predicate<Map<String, String>> predicate = and(not(and(or(and(validate(new RegexFieldFieldValidator("ammatillinenTutkintoSuoritettu", "^true$")),
                 validate(new RequiredFieldFieldValidator("ammatillinenTutkintoSuoritettu", ""))),
-                and(validate(new RegexFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon", "^kyllä$")),
+                and(validate(new RegexFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon", "^true$")),
                         validate(new RequiredFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon", "")))),
                 or(preferencePredicates))));
         FunctionalValidator fv = new FunctionalValidator(predicate, this.getId(),

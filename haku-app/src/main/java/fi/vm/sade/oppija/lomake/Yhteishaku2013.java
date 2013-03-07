@@ -453,8 +453,8 @@ public class Yhteishaku2013 {
 
         Radio osallistunut = new Radio("osallistunut",
                 createI18NText("Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?"));
-        osallistunut.addOption("ei", createI18NText("En"), "Ei");
-        osallistunut.addOption("kylla", createI18NText("Kyllä"), "Kyllä");
+        osallistunut.addOption("ei", createI18NText("En"), "false");
+        osallistunut.addOption("kylla", createI18NText("Kyllä"), "true");
         osallistunut.addAttribute("required", "required");
         osallistunut.setVerboseHelp(getVerboseHelp());
 
@@ -596,15 +596,15 @@ public class Yhteishaku2013 {
         Radio suorittanutAmmatillisenTutkinnon = new Radio(
                 "ammatillinenTutkintoSuoritettu",
                 createI18NText("Oletko suorittanut jonkun ammatillisen perustutkinnon, muun ammatillisen tutkinnon tai korkeakoulututkinnon?"));
-        suorittanutAmmatillisenTutkinnon.addOption("kylla", createI18NText("Kyllä"), "kyllä");
-        suorittanutAmmatillisenTutkinnon.addOption("ei", createI18NText("En"), "ei");
+        suorittanutAmmatillisenTutkinnon.addOption("kylla", createI18NText("Kyllä"), "true");
+        suorittanutAmmatillisenTutkinnon.addOption("ei", createI18NText("En"), "false");
         suorittanutAmmatillisenTutkinnon.addAttribute("required", "required");
 
         Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio(
                 "koulutuspaikkaAmmatillisenTutkintoon",
                 createI18NText("Onko sinulla koulutuspaikka ammatilliseen perustutkintoon johtavassa oppilaitoksessa tai lukiossa?"));
-        koulutuspaikkaAmmatillisenTutkintoon.addOption("kylla", createI18NText("Kyllä"), "kyllä");
-        koulutuspaikkaAmmatillisenTutkintoon.addOption("ei", createI18NText("Ei"), "ei");
+        koulutuspaikkaAmmatillisenTutkintoon.addOption("kylla", createI18NText("Kyllä"), "true");
+        koulutuspaikkaAmmatillisenTutkintoon.addOption("ei", createI18NText("Ei"), "false");
         koulutuspaikkaAmmatillisenTutkintoon.addAttribute("required", "required");
 
         lukioRule.addChild(suorittanutAmmatillisenTutkinnon);
@@ -613,7 +613,7 @@ public class Yhteishaku2013 {
         paattotodistusvuosiPeruskouluRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
 
         RelatedQuestionRule suorittanutAmmatillisenTutkinnonRule = new RelatedQuestionRule("rule9",
-                suorittanutAmmatillisenTutkinnon.getId(), "^kyllä$");
+                suorittanutAmmatillisenTutkinnon.getId(), "^true");
         Notification notification1 = new Notification(
                 "notification1",
                 createI18NText("Yhteishaun ammatillisen koulutuksen koulutuspaikat on varattu hakijoille, jotka ovat ilman koulutuspaikkaa. Huomioi, " +
@@ -624,7 +624,7 @@ public class Yhteishaku2013 {
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutAmmatillisenTutkinnonRule);
 
         RelatedQuestionRule koulutuspaikkaAmmatillisenTutkintoonRule = new RelatedQuestionRule("rule10",
-                koulutuspaikkaAmmatillisenTutkintoon.getId(), "^kyllä$");
+                koulutuspaikkaAmmatillisenTutkintoon.getId(), "^true$");
         Notification notification2 = new Notification(
                 "notification2",
                 createI18NText("Yhteishaun ammatillisen koulutuksen koulutuspaikat on varattu hakijoille, jotka ovat ilman koulutuspaikkaa. Huomioi, " +
