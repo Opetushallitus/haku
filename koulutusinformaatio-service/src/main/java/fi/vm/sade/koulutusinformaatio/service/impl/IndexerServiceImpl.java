@@ -54,6 +54,7 @@ public class IndexerServiceImpl implements IndexerService {
             Collection<SolrInputDocument> documents = parseDocuments(source);
             httpSolrServer.add(documents);
             httpSolrServer.commit();
+            httpSolrServer.optimize();
         } catch (Exception e) {
             LOGGER.error("Indeksin päivitys epäonnistui ", e);
             return "error";

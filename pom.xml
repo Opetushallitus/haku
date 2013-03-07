@@ -30,7 +30,7 @@
         <maven.build.timestamp.format>dd.MM.yyyy HH:mm</maven.build.timestamp.format>
         <buildDate>${maven.build.timestamp}</buildDate>
         <cxf.version>2.4.6</cxf.version>
-        <solr.version>4.0.0-BETA</solr.version>
+        <solr.version>4.1.0</solr.version>
         <mockito.version>1.9.5</mockito.version>
     </properties>
 

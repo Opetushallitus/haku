@@ -529,8 +529,8 @@ but may be good for SKUs.  Can insert dashes in the wrong place and still match.
                                   ratesFileLocation: URL or path to rates JSON file (default latest.json on the web)
                                   refreshInterval: Number of minutes between each rates fetch (default: 1440, min: 60)
         -->
-        <fieldType name="currency" class="solr.CurrencyField" precisionStep="8" defaultCurrency="USD"
-                   currencyConfig="currency.xml"/>
+        <!--<fieldType name="currency" class="solr.CurrencyField" precisionStep="8" defaultCurrency="USD"
+                   currencyConfig="currency.xml"/>-->
 
         <!-- Finnish -->
         <fieldType name="text_fi" class="solr.TextField" positionIncrementGap="100">
