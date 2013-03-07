@@ -138,7 +138,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>${spring.version}</version>
+            <version>${spring-security.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>spring-aop</artifactId>
@@ -165,7 +165,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>${spring.version}</version>
+            <version>${spring-security.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>spring-beans</artifactId>
@@ -196,7 +196,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>${spring.version}</version>
+            <version>${spring-security.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>spring-core</artifactId>
@@ -219,7 +219,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
-            <version>${spring.version}</version>
+            <version>${spring-security.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>spring-aop</artifactId>
