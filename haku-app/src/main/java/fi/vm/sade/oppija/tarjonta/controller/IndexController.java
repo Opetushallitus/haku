@@ -38,7 +38,7 @@ public class IndexController {
     String tarjontaUrl;
 
     @Autowired
-    @Qualifier("indexerServiceXSLTImpl")
+    @Qualifier("indexerServiceImpl")
     IndexerService indexerService;
 
     @GET

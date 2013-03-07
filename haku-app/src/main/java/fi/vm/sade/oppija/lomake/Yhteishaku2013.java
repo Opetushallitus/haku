@@ -74,9 +74,9 @@ public class Yhteishaku2013 {
         List<Question> oppiaineList = new ArrayList<Question>();
         oppiaineList.add(new SubjectRow("tietotekniikka", createI18NText("Tietotekniikka")));
         oppiaineList.add(new SubjectRow("kansantaloustiede", createI18NText("Kansantaloustiede")));
-        oppiaineMap.put("776", oppiaineList);
+        oppiaineMap.put("1.2.246.562.14.79893512065", oppiaineList);
 
-        final String id = "776";
+        final String id = "1.2.246.562.14.79893512065";
         Radio radio = new Radio(
                 id + "_additional_question_1",
                 createI18NText("Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä " +

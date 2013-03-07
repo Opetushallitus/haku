@@ -66,10 +66,10 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
 
-        TextQuestion textQuestion = new TextQuestion("776_additional_question_1", createI18NText("Lorem ipsum"));
+        TextQuestion textQuestion = new TextQuestion("1.2.246.562.14.79893512065_additional_question_1", createI18NText("Lorem ipsum"));
         List<Question> lisakysymysList = new ArrayList<Question>();
         lisakysymysList.add(textQuestion);
-        lisakysymysMap.put("776", lisakysymysList);
+        lisakysymysMap.put("1.2.246.562.14.79893512065", lisakysymysList);
 
         Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", createI18NText("Hakutoiveet"), lisakysymysMap);
         hakutoiveet.addChild(hakutoiveetRyhmä);
@@ -86,7 +86,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         TextQuestion lisakysymys = new TextQuestion("lisakysymys", createI18NText("Lisäkysymys"));
         Theme lisakysymyksetRyhma = new Theme("lisakysymyksetGrp", createI18NText("Lisäkysymykset"), null);
         lisakysymykset.addChild(lisakysymyksetRyhma);
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", "preference1-Koulutus-id", "776");
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", "preference1-Koulutus-id", "1.2.246.562.14.79893512065");
         relatedQuestionRule.addChild(lisakysymys);
         lisakysymyksetRyhma.addChild(relatedQuestionRule);
         form.init();
@@ -101,8 +101,8 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         driver.findElement(By.id("preference1-Opetuspiste"));
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Esp");
-        driver.findElement(By.linkText("Espoon yhteislyseon lukio op")).click();
-        driver.findElement(By.xpath("//option[@value='Ensihoidon koulutusohjelma, yo']")).click();
+        driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
+        driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
         driver.findElement(By.xpath("//button[@class='right']")).click();
         //seleniumHelper.navigate("/lomake/Yhteishaku/lomake/lisakysymykset");
         driver.findElement(By.id("lisakysymys"));
@@ -115,8 +115,8 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         driver.get(getBaseUrl() + "/" + url);
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Eso");
-        driver.findElement(By.linkText("Espoon yhteislyseon lukio op")).click();
-        driver.findElement(By.xpath("//option[@value='Ensihoidon koulutusohjelma, yo']")).click();
+        driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
+        driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
         driver.findElement(By.xpath("//button[@name='nav-next']")).click();
         assertNull(driver.findElement(By.id("lisakysymys")));
     }

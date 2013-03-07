@@ -38,16 +38,16 @@ public class AdditionalQuestionsIT extends AbstractFormTest {
 
     @Test
     public void testAdditionalQuestion() {
-        beginAt("lomake/Yhteishaku/yhteishaku/hakutoiveet/hakutoiveetGrp/additionalquestions/776");
-        assertFormElementPresent("776_additional_question_1");
+        beginAt("lomake/Yhteishaku/yhteishaku/hakutoiveet/hakutoiveetGrp/additionalquestions/1.2.246.562.14.79893512065");
+        assertFormElementPresent("1.2.246.562.14.79893512065_additional_question_1");
         assertElementPresentByXPath("//input[@value='q1_option_1']");
         assertElementPresentByXPath("//input[@value='q1_option_2']");
 
-        assertFormElementPresent("776_additional_question_2");
+        assertFormElementPresent("1.2.246.562.14.79893512065_additional_question_2");
         assertElementPresentByXPath("//input[@value='q2_option_1']");
         assertElementPresentByXPath("//input[@value='q2_option_2']");
 
-        assertFormElementPresent("776_additional_question_3");
+        assertFormElementPresent("1.2.246.562.14.79893512065_additional_question_3");
         assertElementPresentByXPath("//input[@value='q3_option_1']");
         assertElementPresentByXPath("//input[@value='q3_option_2']");
         assertElementPresentByXPath("//input[@value='q3_option_3']");
