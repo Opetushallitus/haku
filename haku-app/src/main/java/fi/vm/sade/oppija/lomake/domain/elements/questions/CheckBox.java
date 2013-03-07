@@ -21,8 +21,18 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class CheckBox extends Question {
 
+    private String value = "true";
+
     public CheckBox(@JsonProperty(value = "id") final String id,
                     @JsonProperty(value = "i18nText") final I18nText i18nText) {
         super(id, i18nText);
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

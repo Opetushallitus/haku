@@ -21,7 +21,7 @@
     <div class="${styleBaseClass}-content">
         <div class="field-container-checkbox">
             <input type="checkbox"
-                   name="${element.id}" ${("on" eq categoryData[element.id]) ? "checked=\"checked\"" : ""} ${element.attributeString}/>
+                   name="${element.id}" ${(element.value eq categoryData[element.id]) ? "checked=\"checked\"" : ""} ${element.attributeString} value="${element.value}"/>
             <label for="${element.id}"><haku:i18nText value="${element.i18nText}"/></label>
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
