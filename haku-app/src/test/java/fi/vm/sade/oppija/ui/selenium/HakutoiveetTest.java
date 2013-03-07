@@ -95,6 +95,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
     }
 
     @Test
+    @Ignore
     public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
         final WebDriver driver = seleniumHelper.getDriver();
         seleniumHelper.navigate("/lomake/Yhteishaku/lomake/hakutoiveet");
