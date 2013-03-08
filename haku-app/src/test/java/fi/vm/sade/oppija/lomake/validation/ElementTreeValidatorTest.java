@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -77,7 +78,7 @@ public class ElementTreeValidatorTest {
     }
 
     private void testAsuinmaa(final String asuinmaa, final int errorCount) {
-        Phase phase = formModelDummyMemoryDao.getFirstPhase("Yhteishaku", "yhteishaku");
+        Phase phase = formModelDummyMemoryDao.getFirstPhase(Yhteishaku2013.ASID, "yhteishaku");
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", asuinmaa);
         ValidationResult validationResult = ElementTreeValidator.validate(phase, values);

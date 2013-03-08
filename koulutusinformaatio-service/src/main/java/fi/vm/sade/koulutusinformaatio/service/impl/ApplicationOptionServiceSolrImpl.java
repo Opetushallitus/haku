@@ -45,7 +45,7 @@ public class ApplicationOptionServiceSolrImpl implements ApplicationOptionServic
         String startswith = term.trim();
         if (!startswith.isEmpty()) {
             parameters.put("LOPInstitutionInfoName", createParameter(term + "*"));
-            parameters.put("ASName", createParameter(hakuId));
+            parameters.put("ASId", createParameter(hakuId));
             SearchResult search = service.search(parameters.entrySet());
             List<Map<String, Object>> items = search.getItems();
             for (Map<String, Object> item : items) {
@@ -58,7 +58,7 @@ public class ApplicationOptionServiceSolrImpl implements ApplicationOptionServic
     @Override
     public List<ApplicationOption> searchHakukohde(final String hakuId, final String organisaatioId) {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(2);
-        parameters.put("ASName", createParameter(hakuId));
+        parameters.put("ASId", createParameter(hakuId));
         parameters.put("LOPOid", createParameter(organisaatioId));
         SearchResult search = service.search(parameters.entrySet());
 

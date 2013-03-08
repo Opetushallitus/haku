@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.ui.selenium;
 
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -45,7 +46,7 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
 
     @Test
     public void testAdditionalSubjects() {
-        final String url = getBaseUrl() + "/lomake/Yhteishaku/yhteishaku/koulutustausta";
+        final String url = getBaseUrl() + "/lomake/"+ Yhteishaku2013.ASID + "/yhteishaku/koulutustausta";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
         Selenium s = seleniumHelper.getSelenium();

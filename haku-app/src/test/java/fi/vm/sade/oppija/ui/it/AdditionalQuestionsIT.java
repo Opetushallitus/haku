@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.ui.it;
 
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import org.junit.Before;
@@ -38,7 +39,7 @@ public class AdditionalQuestionsIT extends AbstractFormTest {
 
     @Test
     public void testAdditionalQuestion() {
-        beginAt("lomake/Yhteishaku/yhteishaku/hakutoiveet/hakutoiveetGrp/additionalquestions/1.2.246.562.14.79893512065");
+        beginAt("lomake/" + Yhteishaku2013.ASID + "/yhteishaku/hakutoiveet/hakutoiveetGrp/additionalquestions/1.2.246.562.14.79893512065");
         assertFormElementPresent("1.2.246.562.14.79893512065_additional_question_1");
         assertElementPresentByXPath("//input[@value='q1_option_1']");
         assertElementPresentByXPath("//input[@value='q1_option_2']");
@@ -55,7 +56,7 @@ public class AdditionalQuestionsIT extends AbstractFormTest {
 
     @Test
     public void testNoAdditionalQuestion() {
-        beginAt("lomake/Yhteishaku/yhteishaku/hakutoiveet/hakutoiveetGrp/additionalquestions/6_1");
+        beginAt("lomake/" + Yhteishaku2013.ASID + "/yhteishaku/hakutoiveet/hakutoiveetGrp/additionalquestions/6_1");
         assertFormElementNotPresent("6_1_additional_question_1");
         assertElementNotPresentByXPath("//input[@value='q2_option_1']");
         assertElementNotPresentByXPath("//input[@value='q2_option_2']");

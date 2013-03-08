@@ -21,6 +21,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
@@ -52,7 +53,7 @@ public class FormControllerTest {
 
     public static final String OID = "1.1.1";
     private static final String FIRST_CATEGORY_ID = "henkilotiedot";
-    private static final String APPLICATION_PERIOD_ID = "Yhteishaku";
+    private static final String APPLICATION_PERIOD_ID = Yhteishaku2013.ASID;
     private static final String FORM_ID = "yhteishaku";
     public static final String TEST_PHASE = "test_phase";
     public static final String PHASE_TITLE = "title";

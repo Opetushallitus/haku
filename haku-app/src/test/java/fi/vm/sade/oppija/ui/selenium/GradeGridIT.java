@@ -40,7 +40,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
     @Before
     public void init() {
         super.before();
-        ApplicationPeriod applicationPeriod = new ApplicationPeriod("Yhteishaku");
+        ApplicationPeriod applicationPeriod = new ApplicationPeriod(Yhteishaku2013.ASID);
         FormModel formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
         Phase arvosanat = new Phase("arvosanat", createI18NText("Arvosanat"), false);
@@ -55,7 +55,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
 
     @Test
     public void testTableExists() {
-        final String url = getBaseUrl() + "/lomake/Yhteishaku/lomake/arvosanat";
+        final String url = getBaseUrl() + "/lomake/" + Yhteishaku2013.ASID + "/lomake/arvosanat";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
 
@@ -65,7 +65,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
 
     @Test
     public void testAddLanguage() {
-        final String url = getBaseUrl() + "/lomake/Yhteishaku/lomake/arvosanat";
+        final String url = getBaseUrl() + "/lomake/" + Yhteishaku2013.ASID + "/lomake/arvosanat";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
 

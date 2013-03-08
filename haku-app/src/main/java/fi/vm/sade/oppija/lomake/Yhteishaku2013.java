@@ -40,6 +40,8 @@ import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 @SuppressWarnings("all")
 public class Yhteishaku2013 {
 
+    public static final String ASID = "1.2.246.562.5.50476818906";
+
     private final ApplicationPeriod applicationPeriod;
     public static String mobilePhonePattern = "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
 
@@ -48,7 +50,7 @@ public class Yhteishaku2013 {
     @Autowired
     public Yhteishaku2013(final KoodistoService koodistoService) {
         this.koodistoService = koodistoService;
-        this.applicationPeriod = new ApplicationPeriod("Yhteishaku");
+        this.applicationPeriod = new ApplicationPeriod(ASID);
         Phase henkilotiedot = new Phase("henkilotiedot", createI18NText("Henkilötiedot"), false);
         Phase koulutustausta = new Phase("koulutustausta", createI18NText("Koulutustausta"), false);
         Phase hakutoiveet = new Phase("hakutoiveet", createI18NText("Hakutoiveet"), false);

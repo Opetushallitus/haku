@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.lomake.it;
 
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -46,7 +47,7 @@ public class LomakeIT extends AbstractSeleniumBase {
         Selenium selenium = seleniumHelper.getSelenium();
         driver.get(getBaseUrl() + "/lomake/");
         selenium.setSpeed("3000");
-        driver.findElement(new By.ById("Yhteishaku")).click();
+        driver.findElement(new By.ById(Yhteishaku2013.ASID)).click();
         driver.findElement(new By.ById("yhteishaku")).click();
         selenium.typeKeys("Sukunimi", "Ankka");
         selenium.typeKeys("Etunimet", "Aku Kalle");
@@ -114,7 +115,7 @@ public class LomakeIT extends AbstractSeleniumBase {
         assertTrue(oid.startsWith("1.2.3.4.5"));
 
         driver.get(getBaseUrl() + "/lomake/");
-        driver.findElement(new By.ById("Yhteishaku")).click();
+        driver.findElement(new By.ById(Yhteishaku2013.ASID)).click();
         driver.findElement(new By.ById("yhteishaku")).click();
         String value = driver.findElement(new By.ById("Sukunimi")).getAttribute("value");
         assertTrue(StringUtils.isEmpty(value));

@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.lomake.service;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.hakemus.service.impl.ApplicationServiceImpl;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
@@ -46,7 +47,7 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles(profiles = "dev")
 public class AdditionalQuestionsServiceTest {
 
-    public static final FormId FORM_ID = new FormId("Yhteishaku", "yhteishaku");
+    public static final FormId FORM_ID = new FormId(Yhteishaku2013.ASID, "yhteishaku");
     public static final User TESTUSER = new User("testuser");
     private AdditionalQuestionService additionalQuestionService;
 

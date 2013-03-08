@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.ui.it;
 
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,28 +36,28 @@ public class NavigationIT extends AbstractFormTest {
 
     @Test
     public void testNavigationExists() throws IOException {
-        beginAt("/lomake/Yhteishaku/yhteishaku/henkilotiedot");
+        beginAt("/lomake/" + Yhteishaku2013.ASID + "/yhteishaku/henkilotiedot");
         assertLinkPresent("nav-henkilotiedot");
         assertLinkPresent("nav-koulutustausta");
     }
 
     @Test
     public void testFirstGategoryNavButtons() throws IOException {
-        beginAt("/lomake/Yhteishaku/yhteishaku/henkilotiedot");
+        beginAt("/lomake/" + Yhteishaku2013.ASID + "/yhteishaku/henkilotiedot");
         assertElementPresentByXPath("//button[@class='right']");
         assertElementNotPresentByXPath("//button[@class='left']");
     }
 
     @Test
     public void testMiddleGategoryNavButtons() throws IOException {
-        beginAt("/lomake/Yhteishaku/yhteishaku/koulutustausta");
+        beginAt("/lomake/" + Yhteishaku2013.ASID + "/yhteishaku/koulutustausta");
         assertElementPresentByXPath("//button[@class='right']");
         assertElementPresentByXPath("//button[@class='left']");
     }
 
     @Test
     public void testLastGategoryNavButtons() throws IOException {
-        beginAt("/lomake/Yhteishaku/yhteishaku/esikatselu");
+        beginAt("/lomake/" + Yhteishaku2013.ASID + "/yhteishaku/esikatselu");
         assertElementNotPresentByXPath("//button[@name='nav-next']");
         assertElementPresentByXPath("//button[@class='left']");
         assertElementPresentByXPath("//button[@class='right']");

@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import org.junit.Before;
@@ -40,19 +41,19 @@ public class AutoCompleteIT extends AbstractSeleniumBase {
 
     @Test
     public void testOneMatch() throws IOException {
-        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/Yhteishaku/organisaatio/search?term=Esp");
+        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/" + Yhteishaku2013.ASID + "/organisaatio/search?term=Esp");
         assertFalse(seleniumHelper.getSelenium().isTextPresent("[]"));
     }
 
     @Test
     public void testNoMatch() throws IOException {
-        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/Yhteishaku/organisaatio/search?term=xyz");
+        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/" + Yhteishaku2013.ASID + "/organisaatio/search?term=xyz");
         seleniumHelper.getSelenium().isTextPresent("[]");
     }
 
     @Test
     public void testEmptySearchTerm() throws IOException {
-        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/Yhteishaku/organisaatio/search?term=");
+        seleniumHelper.getDriver().get(this.getBaseUrl() + "/education/" + Yhteishaku2013.ASID + "/organisaatio/search?term=");
         seleniumHelper.getSelenium().isTextPresent("[]");
     }
 }

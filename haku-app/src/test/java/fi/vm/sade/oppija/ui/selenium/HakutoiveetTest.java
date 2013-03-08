@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.ui.selenium;
 
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -56,7 +57,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
     public void init() throws IOException {
         super.before();
         FormModel formModel = new FormModel();
-        ApplicationPeriod applicationPeriod = new ApplicationPeriod("Yhteishaku");
+        ApplicationPeriod applicationPeriod = new ApplicationPeriod(Yhteishaku2013.ASID);
         formModel.addApplicationPeriod(applicationPeriod);
         Form form = new Form("lomake", createI18NText("yhteishaku"));
         Phase hakutoiveet = new Phase("hakutoiveet", createI18NText("Hakutoiveet"), false);
@@ -98,7 +99,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
     @Ignore
     public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
         final WebDriver driver = seleniumHelper.getDriver();
-        seleniumHelper.navigate("/lomake/Yhteishaku/lomake/hakutoiveet");
+        seleniumHelper.navigate("/lomake/" + Yhteishaku2013.ASID + "/lomake/hakutoiveet");
         driver.findElement(By.id("preference1-Opetuspiste"));
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Esp");
@@ -111,7 +112,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
     @Test(expected = NoSuchElementException.class)
     public void testEducationPreferenceNoAdditionalQuestion() throws InterruptedException {
-        final String url = "lomake/Yhteishaku/lomake/hakutoiveet";
+        final String url = "lomake/" + Yhteishaku2013.ASID + "/lomake/hakutoiveet";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + "/" + url);
         Selenium s = seleniumHelper.getSelenium();
