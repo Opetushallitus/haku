@@ -45,7 +45,7 @@ public class IndexerServiceImpl implements IndexerService {
     EventListener listener;
 
     @Autowired
-    public IndexerServiceImpl(HttpSolrServer httpSolrServer, TarjontaClient tarjontaClient, SolrClient client, EventHandler eventHandler) {
+    public IndexerServiceImpl(HttpSolrServer httpSolrServer, TarjontaClient tarjontaClient, SolrClient client) {
         this.httpSolrServer = httpSolrServer;
         this.tarjontaClient = tarjontaClient;
         this.client = client;
