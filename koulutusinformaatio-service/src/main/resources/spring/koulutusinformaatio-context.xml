@@ -13,7 +13,7 @@
             ignore-resource-not-found="false" properties-ref="defaultProps"/>
 
 
-    <import resource="classpath:META-INF/spring/events-context.xml" />
+    <!--<import resource="classpath:META-INF/spring/events-context.xml" />  -->
 
     <!--
     Register durable subscription to receive events, notice clientId AND durableSubscriptionName
@@ -33,11 +33,11 @@
         <!--<property name="messageSelector" value="category = 'test' OR category = 'junit'"/>-->
     <!--</bean>-->
 
-    <bean id="eventsMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-        <property name="connectionFactory" ref="eventsJmsFactory"/>     <!-- defined in "events-context.xml" -->
-        <property name="destination" ref="eventsDestination"/>          <!-- defined in "events-context.xml" -->
-        <property name="messageListener" ref="eventsMessageListener"/>  <!-- defined in "events-context.xml" -->
-    </bean>
+    <!--<bean id="eventsMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="eventsJmsFactory"/>
+        <property name="destination" ref="eventsDestination"/>
+        <property name="messageListener" ref="eventsMessageListener"/>
+    </bean>    -->
 
 
     <context:component-scan base-package="fi.vm.sade.koulutusinformaatio"/>
