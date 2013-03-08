@@ -4,12 +4,10 @@ import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-@Ignore
 public class OfficerApplicationPreviewResponseTest {
 
 
@@ -18,17 +16,17 @@ public class OfficerApplicationPreviewResponseTest {
     private OfficerApplicationPreviewResponse officerApplicationPreviewResponse =
             new OfficerApplicationPreviewResponse();
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testSetFormNull() {
         officerApplicationPreviewResponse.setForm(null);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testSetElementNull() {
         officerApplicationPreviewResponse.setElement(null);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testSetAdditionalQuestionsNull() {
         officerApplicationPreviewResponse.setAdditionalQuestions(null);
     }

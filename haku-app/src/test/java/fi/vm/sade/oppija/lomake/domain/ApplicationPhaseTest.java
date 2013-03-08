@@ -20,28 +20,48 @@ import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
 public class ApplicationPhaseTest {
-    private final FormId formId = new FormId("appid", "formid");
-    private final HashMap<String, String> vastaukset = new HashMap<String, String>();
-    private final String vaiheid = "vaiheid";
-    private final ApplicationPhase vaihe = new ApplicationPhase(formId, vaiheid, vastaukset);
+    private final static String ID = "ID";
+    private final FormId formId = new FormId(ID, ID);
+    private final Map<String, String> answers = new HashMap<String, String>();
+    private final ApplicationPhase applicationPhase = new ApplicationPhase(formId, ID, answers);
 
     @Test
     public void testGetHakemusId() throws Exception {
-        assertEquals(formId, vaihe.getFormId());
+        assertEquals(formId, applicationPhase.getFormId());
     }
 
     @Test
     public void testGetVaiheId() throws Exception {
-        assertEquals(vaiheid, vaihe.getPhaseId());
-
+        assertEquals(ID, applicationPhase.getPhaseId());
     }
 
     @Test
     public void testGetVastaukset() throws Exception {
-        assertEquals(vastaukset, vaihe.getAnswers());
+        assertEquals(answers, applicationPhase.getAnswers());
+    }
+
+    @Test(expected = java.lang.UnsupportedOperationException.class)
+    public void testGetVastauksetModify() throws Exception {
+        applicationPhase.getAnswers().put(ID, ID);
+    }
+
+    @Test(expected = java.lang.IllegalArgumentException.class)
+    public void testConstructNullFormId() throws Exception {
+        new ApplicationPhase(null, ID, answers);
+    }
+
+    @Test(expected = java.lang.IllegalArgumentException.class)
+    public void testConstructNullPhaseId() throws Exception {
+        new ApplicationPhase(formId, null, answers);
+    }
+
+    @Test(expected = java.lang.IllegalArgumentException.class)
+    public void testConstructNullAnswers() throws Exception {
+        new ApplicationPhase(formId, ID, null);
     }
 }

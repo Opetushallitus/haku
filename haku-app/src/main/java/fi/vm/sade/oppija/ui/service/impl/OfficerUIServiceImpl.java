@@ -71,12 +71,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public UIServiceResponse updateApplication(String oid, ApplicationPhase applicationPhase) throws ResourceNotFoundException {
+    public UIServiceResponse updateApplication(final String oid, final ApplicationPhase applicationPhase) throws ResourceNotFoundException {
 
         Application queryApplication = new Application(oid);
         Application application = this.applicationService.getApplication(oid);
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
-
         final Form activeForm = formService.getForm(application.getFormId());
         ValidationResult formValidationResult = ElementTreeValidator.validateForm(activeForm, application);
         if (formValidationResult.hasErrors()) {
