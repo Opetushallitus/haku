@@ -41,8 +41,8 @@ public class IndexerServiceImpl implements IndexerService {
     private final SolrClient client;
 
 
-    @Autowired
-    EventListener listener;
+    /*@Autowired
+    EventListener listener;*/
 
     @Autowired
     public IndexerServiceImpl(HttpSolrServer httpSolrServer, TarjontaClient tarjontaClient, SolrClient client) {
