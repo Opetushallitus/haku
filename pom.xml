@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>fi.vm.sade.haku</groupId>
-	<artifactId>haku</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>Haku :: Parent</name>
+    <groupId>fi.vm.sade.haku</groupId>
+    <artifactId>haku</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Haku :: Parent</name>
 
-	<modules>
-		<module>hakemus-api</module>
-		<module>haku-app</module>
+    <modules>
+        <module>hakemus-api</module>
+        <module>haku-app</module>
         <module>koulutusinformaatio-service</module>
     </modules>
 
@@ -23,7 +23,7 @@
         <jersey.version>1.17.1</jersey.version>
         <servlet.version>3.0.1</servlet.version>
         <mongo-driver.version>2.10.1</mongo-driver.version>
-        <slf4j.version>1.6.6</slf4j.version>
+        <slf4j.version>1.7.2</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <clover.outputDirectory>/data00/atlassian/application-data/bamboo/www/clover_haku</clover.outputDirectory>
@@ -207,39 +207,39 @@
     </profiles>
 
 
-        <repositories>
-		        <repository>
-				            <id>codehaus</id>
-					                <url>http://repository.codehaus.org/org/codehaus</url>
-							        </repository>
-								        <repository>
-										            <id>oph-sade-artifactory-snapshots</id>
-											                <url>http://penaali.hard.ware.fi/artifactory/oph-sade-snapshot-local</url>
-													            <snapshots>
-															                    <enabled>true</enabled>
-																	                </snapshots>
-																			        </repository>
-																				        <repository>
-																						            <id>oph-sade-artifactory-releases</id>
-																							                <url>http://penaali.hard.ware.fi/artifactory/oph-sade-release-local</url>
-																									        </repository>
-																										        <repository>
-																												            <id>repository.jboss.org</id>
-																													                <name>JBoss Repository</name>
-																															            <url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-																																            </repository>
-																																	        </repositories>
+    <repositories>
+        <repository>
+            <id>codehaus</id>
+            <url>http://repository.codehaus.org/org/codehaus</url>
+        </repository>
+        <repository>
+            <id>oph-sade-artifactory-snapshots</id>
+            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-snapshot-local</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>oph-sade-artifactory-releases</id>
+            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-release-local</url>
+        </repository>
+        <repository>
+            <id>repository.jboss.org</id>
+            <name>JBoss Repository</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+        </repository>
+    </repositories>
 
-	<distributionManagement>
-		<repository>
-			<id>oph-sade-artifactory</id>
-			<name>oph-sade-artifactory-releases</name>
-			<url>http://penaali.hard.ware.fi/artifactory/oph-sade-release-local</url>
-		</repository>
-		<snapshotRepository>
-			<id>oph-sade-artifactory</id>
-			<name>oph-sade-artifactory-snapshots</name>
-			<url>http://penaali.hard.ware.fi/artifactory/oph-sade-snapshot-local</url>
-		</snapshotRepository>
-	</distributionManagement>
+    <distributionManagement>
+        <repository>
+            <id>oph-sade-artifactory</id>
+            <name>oph-sade-artifactory-releases</name>
+            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-release-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>oph-sade-artifactory</id>
+            <name>oph-sade-artifactory-snapshots</name>
+            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
