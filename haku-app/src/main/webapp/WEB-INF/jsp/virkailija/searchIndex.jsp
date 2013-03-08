@@ -47,6 +47,8 @@
                 <a href="/haku/virkailija/hakemus">Virkailijan työpöytä</a>
             </div>
             <div class="secondarylinks">
+                <a href="${contextPath}/user/logout">Kirjaudu ulos</a> &nbsp;
+                <a href="${contextPath}/j_spring_cas_security_logout">CAS Logout</a> &nbsp;
                 <a href="#">Omat tiedot</a> &nbsp;
                 <a href="#">Viestintä</a> &nbsp;
                 <a href="#">Asiakaspalvelu</a> &nbsp;

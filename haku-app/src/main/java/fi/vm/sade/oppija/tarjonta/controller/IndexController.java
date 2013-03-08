@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.tarjonta.controller;
 
+import com.google.common.collect.ImmutableMap;
+import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,6 +38,7 @@ import java.net.URISyntaxException;
 @Secured("ROLE_ADMIN")
 public class IndexController {
 
+    public static final String ADMIN_UPDATE_INDEX_VIEW = "/admin/updateIndex";
     @Value("${tarjonta.data.url}")
     String tarjontaUrl;
 
@@ -45,10 +48,11 @@ public class IndexController {
 
     @GET
     @Path("update")
-    @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
-    public String updateIndex() throws URISyntaxException {
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    public Viewable updateIndex() throws URISyntaxException {
         URI uri = new URI(tarjontaUrl);
-        return indexerService.update(uri);
+        ImmutableMap<String, String> model = ImmutableMap.of("result", indexerService.update(uri));
+        return new Viewable(ADMIN_UPDATE_INDEX_VIEW, model);
     }
 
     @GET

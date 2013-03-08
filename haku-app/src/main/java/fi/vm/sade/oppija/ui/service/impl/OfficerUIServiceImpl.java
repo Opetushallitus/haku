@@ -98,7 +98,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public Application getApplicationWithLastPhase(String oid) throws ResourceNotFoundException {
+    public Application getApplicationWithLastPhase(final String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplication(oid);
         FormId formId = application.getFormId();
         Phase phase = formService.getLastPhase(formId.getApplicationPeriodId(), formId.getFormId());

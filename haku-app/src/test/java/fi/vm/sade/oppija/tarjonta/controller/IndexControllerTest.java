@@ -51,7 +51,8 @@ public class IndexControllerTest {
 
     @Test
     public void testUpdateIndex() throws Exception {
-        assertEquals(EXPECTED_STRING, indexController.updateIndex());
+        assertEquals(IndexController.ADMIN_UPDATE_INDEX_VIEW,
+                indexController.updateIndex().getTemplateName());
     }
 
     @Test

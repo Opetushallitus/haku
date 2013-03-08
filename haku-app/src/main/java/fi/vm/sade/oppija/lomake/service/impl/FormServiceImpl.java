@@ -101,7 +101,7 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public ApplicationPeriod getApplicationPeriodById(String applicationPeriodId) {
+    public ApplicationPeriod getApplicationPeriodById(final String applicationPeriodId) {
         ApplicationPeriod applicationPeriodById = getModel().getApplicationPeriodById(applicationPeriodId);
         if (applicationPeriodById == null) {
             throw new ResourceNotFoundExceptionRuntime("Application period " + applicationPeriodId + " not found");
