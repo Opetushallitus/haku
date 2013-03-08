@@ -1,5 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import fi.vm.sade.events.EventHandler;
+import fi.vm.sade.events.impl.EventListener;
 import fi.vm.sade.koulutusinformaatio.client.SolrClient;
 import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
 import fi.vm.sade.koulutusinformaatio.client.TarjontaClientRESTImpl;
@@ -38,8 +40,12 @@ public class IndexerServiceImpl implements IndexerService {
 
     private final SolrClient client;
 
+
     @Autowired
-    public IndexerServiceImpl(HttpSolrServer httpSolrServer, TarjontaClient tarjontaClient, SolrClient client) {
+    EventListener listener;
+
+    @Autowired
+    public IndexerServiceImpl(HttpSolrServer httpSolrServer, TarjontaClient tarjontaClient, SolrClient client, EventHandler eventHandler) {
         this.httpSolrServer = httpSolrServer;
         this.tarjontaClient = tarjontaClient;
         this.client = client;
@@ -160,10 +166,13 @@ public class IndexerServiceImpl implements IndexerService {
         solrDocument.addField("AOId", applicationOptionType.getIdentifier().getValue());
         solrDocument.addField("AOTitle", getValueOfExtendedString(applicationOptionType.getTitle().getLabel()));
 
-        LearningOpportunitySpecificationType learningOpportunitySpecificationType =
-                (LearningOpportunitySpecificationType)applicationOptionType.getLearningOpportunities().getParentRef().getRef();
-        solrDocument.addField("AOEducationDegree", learningOpportunitySpecificationType.getClassification().getEducationDegree().
-            getCode().getValue());
+        if (applicationOptionType.getLearningOpportunities().getParentRef() != null) {
+
+            LearningOpportunitySpecificationType learningOpportunitySpecificationType =
+                    (LearningOpportunitySpecificationType)applicationOptionType.getLearningOpportunities().getParentRef().getRef();
+            solrDocument.addField("AOEducationDegree", learningOpportunitySpecificationType.getClassification().getEducationDegree().
+                    getCode().getValue());
+        }
 
     }
 
