@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.GET;
@@ -32,6 +33,7 @@ import java.net.URISyntaxException;
 
 @Path("admin/index")
 @Controller
+@Secured("ROLE_ADMIN")
 public class IndexController {
 
     @Value("${tarjonta.data.url}")
