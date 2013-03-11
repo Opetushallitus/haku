@@ -79,8 +79,9 @@ public class Yhteishaku2013 {
         oppiaineMap.put("1.2.246.562.14.79893512065", oppiaineList);
 
         final String id = "1.2.246.562.14.79893512065";
+        final String elementIdPrefix = id.replace('.', '_');
         Radio radio = new Radio(
-                id + "_additional_question_1",
+                elementIdPrefix + "_additional_question_1",
                 createI18NText("Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä " +
                         "tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?"));
         radio.addOption(id + "_q1_option_1", createI18NText("Ei"), "q1_option_1");
@@ -88,7 +89,7 @@ public class Yhteishaku2013 {
                 "q1_option_2");
 
         Radio radio2 = new Radio(
-                id + "_additional_question_2",
+                elementIdPrefix + "_additional_question_2",
                 createI18NText("Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko " +
                         "opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?"));
         radio2.addOption(id + "_q2_option_1", createI18NText("Ei"), "q2_option_1");
@@ -96,11 +97,11 @@ public class Yhteishaku2013 {
                 createI18NText("Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi"), "q2_option_2");
 
         Radio radio3 = new Radio(
-                id + "_additional_question_3",
+                elementIdPrefix + "_additional_question_3",
                 createI18NText("Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?"));
-        radio3.addOption(id + "_q3_option_1", createI18NText("En, en ole osallistunut pääsykokeeseen"), "q3_option_1");
-        radio3.addOption(id + "_q3_option_2", createI18NText("Ei, en halua käyttää tuloksia"), "q3_option_2");
-        radio3.addOption(id + "_q3_option_3", createI18NText("Kyllä, haluan käyttää pääsykoetuloksia"), "q3_option_3");
+        radio3.addOption(elementIdPrefix + "_q3_option_1", createI18NText("En, en ole osallistunut pääsykokeeseen"), "q3_option_1");
+        radio3.addOption(elementIdPrefix + "_q3_option_2", createI18NText("Ei, en halua käyttää tuloksia"), "q3_option_2");
+        radio3.addOption(elementIdPrefix + "_q3_option_3", createI18NText("Kyllä, haluan käyttää pääsykoetuloksia"), "q3_option_3");
 
         List<Question> lisakysymysList = new ArrayList<Question>();
         lisakysymysList.add(radio);
