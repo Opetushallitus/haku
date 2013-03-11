@@ -102,7 +102,7 @@
     </div>
 
     <div class="grid16-16">
-        <a href="#" class="button small back"></a>
+        <a href="${contextPath}/virkailija/hakemus" class="button small back"></a>
         <a href="#" class="button small disabled">Tee VRK haku</a>
         <a href="#" class="button small disabled">Tee TOR haku</a>
         <a href="#" class="button small disabled">Passivoi hakemus</a>
@@ -176,7 +176,7 @@
 
                 <c:if test="${(preview)}">
                     <div>
-                        <a href="#" class="button small back"></a>
+                        <a href="${contextPath}/virkailija/hakemus" class="button small back"></a>
                         <a href="#" class="button small disabled">Tee VRK haku</a>
                         <a href="#" class="button small disabled">Tee TOR haku</a>
                         <a href="#" class="button small disabled">Passivoi hakemus</a>
