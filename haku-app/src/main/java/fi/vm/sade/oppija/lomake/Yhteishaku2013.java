@@ -524,6 +524,14 @@ public class Yhteishaku2013 {
         CheckBox suorittanut6 = new CheckBox("suorittanut6",
                 createI18NText("Kansanopiston lukuvuoden mittainen linja ammatilliseen peruskoulutukseen"));
 
+        Group suorittanutGroup = new Group("suorittanutgroup", createI18NText("Merkitse tähän, jos olet suorittanut jonkun seuraavista"));
+        suorittanutGroup.addChild(suorittanut1);
+        suorittanutGroup.addChild(suorittanut2);
+        suorittanutGroup.addChild(suorittanut3);
+        suorittanutGroup.addChild(suorittanut4);
+        suorittanutGroup.addChild(suorittanut5);
+        suorittanutGroup.addChild(suorittanut6);
+
         /*
          * DropdownSelect tutkinnonOpetuskieli = new
          * DropdownSelect("opetuskieli",
@@ -548,12 +556,7 @@ public class Yhteishaku2013 {
 
         relatedQuestionRule.addChild(paattotodistusvuosiPeruskoulu);
         // relatedQuestionRule.addChild(tutkinnonOpetuskieli);
-        relatedQuestionRule.addChild(suorittanut1);
-        relatedQuestionRule.addChild(suorittanut2);
-        relatedQuestionRule.addChild(suorittanut3);
-        relatedQuestionRule.addChild(suorittanut4);
-        relatedQuestionRule.addChild(suorittanut5);
-        relatedQuestionRule.addChild(suorittanut6);
+        relatedQuestionRule.addChild(suorittanutGroup);
         relatedQuestionRule.addChild(paattotodistusvuosiPeruskouluRule);
 
         TextQuestion lukioPaattotodistusVuosi = new TextQuestion("lukioPaattotodistusVuosi",
