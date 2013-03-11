@@ -28,7 +28,7 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.*;
 
-//@Service("applicationOptionServiceSolrImpl")
+@Service("applicationOptionServiceSolrImpl")
 public class ApplicationOptionServiceSolrImpl implements ApplicationOptionService {
 
     private final SearchService service;
@@ -49,7 +49,7 @@ public class ApplicationOptionServiceSolrImpl implements ApplicationOptionServic
             SearchResult search = service.search(parameters.entrySet());
             List<Map<String, Object>> items = search.getItems();
             for (Map<String, Object> item : items) {
-                organizations.add(new Organization((String) item.get("LOPOid"), (String) item.get("LOPInstitutionInfoName")));
+                organizations.add(new Organization((String) item.get("LOPId"), (String) item.get("LOPInstitutionInfoName")));
             }
         }
         return new ArrayList<Organization>(organizations);
@@ -59,7 +59,7 @@ public class ApplicationOptionServiceSolrImpl implements ApplicationOptionServic
     public List<ApplicationOption> searchHakukohde(final String hakuId, final String organisaatioId) {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(2);
         parameters.put("ASId", createParameter(hakuId));
-        parameters.put("LOPOid", createParameter(organisaatioId));
+        parameters.put("LOPId", createParameter(organisaatioId));
         SearchResult search = service.search(parameters.entrySet());
 
         List<ApplicationOption> hakukohteet = new ArrayList<ApplicationOption>(search.getSize());
