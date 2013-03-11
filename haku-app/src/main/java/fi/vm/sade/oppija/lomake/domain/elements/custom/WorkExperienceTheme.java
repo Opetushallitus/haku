@@ -30,7 +30,7 @@ import java.util.Map;
 public class WorkExperienceTheme extends Theme {
 
     // Degree types of the requested application options
-    private String[] aoEducationDegreeKeys = OppijaConstants.AO_EDUCATION_DEGREE_KEYS;
+    private String[] aoEducationDegreeKeys = OppijaConstants.getAoEducationDegreeKeys();
     // degree type that needs to be applied to
     // so that this phase is rendered
     private String requiredEducationDegree;
@@ -44,7 +44,7 @@ public class WorkExperienceTheme extends Theme {
     }
 
     public String[] getAoEducationDegreeKeys() {
-        return aoEducationDegreeKeys;
+        return aoEducationDegreeKeys.clone();
     }
 
     public void setRequiredEducationDegree(String requiredEducationDegree) {

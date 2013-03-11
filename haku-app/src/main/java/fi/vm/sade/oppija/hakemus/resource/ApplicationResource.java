@@ -119,7 +119,7 @@ public class ApplicationResource {
             String value = applicationService.getApplicationKeyValue(oid, key);
             keyValue.put(key, value);
         } catch (ResourceNotFoundException e) {
-            throw new JSONException(Response.Status.NOT_FOUND, e.getMessage());
+            throw new JSONException(Response.Status.NOT_FOUND, e.getMessage(), e);
         }
         return keyValue;
     }
@@ -132,11 +132,11 @@ public class ApplicationResource {
         try {
             applicationService.putApplicationAdditionalInfoKeyValue(oid, key, value);
         } catch (ResourceNotFoundException e) {
-            throw new JSONException(Response.Status.NOT_FOUND, e.getMessage());
+            throw new JSONException(Response.Status.NOT_FOUND, e.getMessage(), e);
         } catch (IllegalStateException e) {
-            throw new JSONException(Response.Status.CONFLICT, e.getMessage());
+            throw new JSONException(Response.Status.CONFLICT, e.getMessage(), e);
         } catch (IllegalArgumentException e) {
-            throw new JSONException(Response.Status.BAD_REQUEST, e.getMessage());
+            throw new JSONException(Response.Status.BAD_REQUEST, e.getMessage(), e);
         }
     }
 }

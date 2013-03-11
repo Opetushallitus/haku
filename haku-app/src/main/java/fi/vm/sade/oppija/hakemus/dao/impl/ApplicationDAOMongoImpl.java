@@ -122,7 +122,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject dbObject = QueryBuilder.start().and(QueryBuilder.start("formId.applicationPeriodId").is(asId).get(),
                 new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true))).get();
         List<Application> applications = findApplications(dbObject);
-
         return applications;
     }
 
@@ -181,7 +180,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (listOfApplications.size() == 1) {
             return listOfApplications.get(0);
         } else if (listOfApplications.size() > 1) {
-            throw new ResourceNotFoundExceptionRuntime("Found two or more applications found " + query);
+            throw new IllegalArgumentException("footos"); // ResourceNotFoundExceptionRuntime("Found two or more applications found " + query);
         }
         throw new ResourceNotFoundExceptionRuntime("Application not found " + query);
     }

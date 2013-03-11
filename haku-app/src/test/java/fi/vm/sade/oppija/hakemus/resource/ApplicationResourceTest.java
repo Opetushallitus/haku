@@ -51,6 +51,7 @@ public class ApplicationResourceTest {
     private final String ASID = "yhteishaku";
     private final String AOID = "776";
 
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp() {
         this.applicationService = mock(ApplicationService.class);

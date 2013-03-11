@@ -31,6 +31,7 @@ public class HakemusServiceImplTest {
     private ConversionService conversionService;
     private static final String APP_SYSTEM_OID = "yhteishaku";
 
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp() {
         applicationService = mock(ApplicationService.class);
@@ -54,6 +55,7 @@ public class HakemusServiceImplTest {
         hakemusService = new HakemusServiceImpl(applicationService, conversionService);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testHaeHakemukset() {
         List<String> oids = new ArrayList<String>();

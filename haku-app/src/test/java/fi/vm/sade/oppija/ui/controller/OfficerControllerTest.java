@@ -58,6 +58,7 @@ public class OfficerControllerTest {
     private OfficerController officerController;
     private static final String OID = "1.2.3.4.5.0";
 
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
         officerController = new OfficerController();

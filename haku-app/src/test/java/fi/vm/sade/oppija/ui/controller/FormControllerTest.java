@@ -129,12 +129,14 @@ public class FormControllerTest {
         formController.getApplication(null, null);
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void testGetCategoryMVCategory() throws Exception {
         Viewable viewable = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
         assertEquals(FIRST_CATEGORY_ID, ((Phase) ((Map) viewable.getModel()).get("element")).getId());
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void testGetCategoryModelSize() throws Exception {
         Viewable viewable = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);

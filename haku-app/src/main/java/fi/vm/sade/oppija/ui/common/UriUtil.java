@@ -5,7 +5,7 @@ import com.google.common.base.Joiner;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class UriUtil {
+public final class UriUtil {
 
     private UriUtil() {
     }

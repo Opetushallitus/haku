@@ -51,7 +51,7 @@ public class LoginControllerTest {
         when(httpServletRequest.getContextPath()).thenReturn("");
         when(securityContext.getUserPrincipal()).thenReturn(principal);
         when(principal.getName()).thenReturn("admin");
-        Mockito.doAnswer(new Answer() {
+        Mockito.doAnswer(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock aInvocation) throws Throwable {
                 return null;

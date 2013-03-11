@@ -58,16 +58,19 @@ public class PersonalServicesTest {
 
     @Test
     public void testGetApplicationsModelSize() throws Exception {
+        @SuppressWarnings("rawtypes")
         Map model = getApplicationsModel();
         assertTrue(model.size() == 2);
     }
 
     @Test
     public void testGetApplicationsModelInfo() throws Exception {
+        @SuppressWarnings("rawtypes")
         Map model = getApplicationsModel();
         assertEquals(model.get(PersonalServices.USER_APPLICATION_INFO_MODEL), applicationInfos);
     }
 
+    @SuppressWarnings("rawtypes")
     private Map getApplicationsModel() {
         Viewable viewable = personalServices.getApplications();
         return (Map) viewable.getModel();
@@ -75,6 +78,7 @@ public class PersonalServicesTest {
 
     @Test
     public void testGetApplicationsModelSection() throws Exception {
+        @SuppressWarnings("rawtypes")
         Map model = getApplicationsModel();
         assertEquals(model.get(PersonalServices.SECTION_MODEL), "applications");
     }

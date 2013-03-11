@@ -16,13 +16,12 @@
 
 package fi.vm.sade.oppija.tarjonta.controller;
 
-import fi.vm.sade.koulutusinformaatio.domain.SearchFilters;
-import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.mockito.Mockito.mock;
+import fi.vm.sade.koulutusinformaatio.domain.SearchFilters;
+import fi.vm.sade.koulutusinformaatio.service.SearchService;
 
 public class SearchControllerTest {
 

@@ -49,5 +49,6 @@ public class CreateOrgMockData {
                 new OrganisaatioPerustietoTypeToOrganizationFunction()));
         ObjectMapper mapper = new ObjectMapper();
         mapper.writer().writeValue(new File("/tmp/orgs.json"), transformed);
+        context.close();
     }
 }

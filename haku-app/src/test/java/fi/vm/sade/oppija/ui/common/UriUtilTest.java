@@ -10,7 +10,7 @@ public class UriUtilTest {
 
     @Test(expected = NullPointerException.class)
     public void testPathSegmentsToUri() throws Exception {
-        UriUtil.pathSegmentsToUri(null);
+        UriUtil.pathSegmentsToUri((String[])null);
     }
 
     @Test

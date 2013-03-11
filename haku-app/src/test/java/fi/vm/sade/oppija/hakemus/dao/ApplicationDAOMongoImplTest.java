@@ -44,6 +44,7 @@ import java.util.List;
 import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
@@ -61,18 +62,15 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
     protected static List<DBObject> applicationTestDataObject;
 
-
+    @SuppressWarnings("unchecked")
     @BeforeClass
     public static void readTestData() throws IOException {
         String content = IOUtils.toString(getSystemResourceAsStream("application-test-data.json"), "UTF-8");
         applicationTestDataObject = (List<DBObject>) JSON.parse(content);
-
     }
-
 
     @Before
     public void setUp() throws Exception {
-
         try {
             getDbFactory().getObject().getCollection(getCollectionName()).insert(applicationTestDataObject);
         } catch (Exception e) {
@@ -104,7 +102,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         List<Application> applications = applicationDAO.find(new Application(formId, TEST_USER));
         assertTrue(applications.isEmpty());
     }
-
+    
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testFindPendingApplicationNotFound() throws Exception {
         applicationDAO.findDraftApplication(new Application(formId, TEST_USER));
@@ -139,6 +137,31 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         assertEquals(1, applications.size());
     }
 
+    @Test
+    public void testFindByName() {
+        // Heikki
+        List<Application> applications = applicationDAO.findByApplicantName("Heikki", new ApplicationQueryParameters());
+        assertEquals(1, applications.size());
+        // Hessu * 2
+        applications = applicationDAO.findByApplicantName("Hessu", new ApplicationQueryParameters());
+        assertEquals(2, applications.size());
+        // Hessut ja Heikki
+        applications = applicationDAO.findByApplicantName("he", new ApplicationQueryParameters());
+        assertEquals(3, applications.size());
+        // Hessu, active
+        ApplicationQueryParameters activeParameters = new ApplicationQueryParameters(Application.State.ACTIVE.toString(), false, null, null);
+        applications = applicationDAO.findByApplicantName("Hessu", activeParameters);
+        assertEquals(1, applications.size());
+    }
+    
+    @Test
+    public void testCheckIfExistsBySocialSecurityNumber() {
+        assertTrue(applicationDAO.checkIfExistsBySocialSecurityNumber("Yhteishaku", "050998-957M"));
+        assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("Yhteishaku", "040597-334D"));
+        assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("Yhteishaku", ""));
+        assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("Yhteishaku", null));
+    }
+    
     @Override
     protected String getCollectionName() {
         return "application";

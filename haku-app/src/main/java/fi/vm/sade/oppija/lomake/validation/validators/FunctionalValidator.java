@@ -47,7 +47,7 @@ public class FunctionalValidator implements Validator {
         return new ValidationResult(inputId, errorMessage);
     }
 
-    public static class ValidatorPredicate implements Predicate<Map<String, String>> {
+    public static final class ValidatorPredicate implements Predicate<Map<String, String>> {
 
         private Validator validator;
 
