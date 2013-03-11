@@ -20,14 +20,15 @@
 <c:set value="${element.id}-Opetuspiste" var="textInputId" scope="page"/>
 <c:set value="${element.id}-Koulutus" var="selectInputId" scope="page"/>
 <c:set value="${element.id}-Koulutus-id" var="selectHiddenInputId" scope="page"/>
-<c:set value="${categoryData[selectHiddenInputId]}" var="hakukohdeId" scope="page"/>
-<tr id="${element.id}-Opetuspiste">
-    <td class="label"><haku:i18nText value="${element.i18nText}"/></td>
-    <td class="sublabel"><haku:i18nText value="${sortableItem.learningInstitutionLabel}"/></td>
-    <td><c:out value="${it.categoryData[textInputId]}"/></td>
-</tr>
-<tr id="${element.id}-Koulutus">
-    <td class="label"></td>
-    <td class="sublabel"><haku:i18nText value="${sortableItem.educationLabel}"/></td>
-    <td><c:out value="${it.categoryData[selectInputId]}"/></td>
-</tr>
+<c:if test="${not empty categoryData[selectHiddenInputId]}">
+    <tr id="${element.id}-Opetuspiste">
+        <td class="label"><haku:i18nText value="${element.i18nText}"/></td>
+        <td class="sublabel"><haku:i18nText value="${sortableItem.learningInstitutionLabel}"/></td>
+        <td><c:out value="${categoryData[textInputId]}"/></td>
+    </tr>
+    <tr id="${element.id}-Koulutus">
+        <td class="label"></td>
+        <td class="sublabel"><haku:i18nText value="${sortableItem.educationLabel}"/></td>
+        <td><c:out value="${categoryData[selectInputId]}"/></td>
+    </tr>
+</c:if>
