@@ -17,24 +17,52 @@
 package fi.vm.sade.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
+import fi.vm.sade.oppija.lomake.service.FormModelHolder;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class AdminControllerTest {
 
-    AdminController adminController = new AdminController();
+    private AdminController adminController;
+    private FormModelHolder formModelHolder;
+
+    @Before
+    public void setUp() throws Exception {
+        formModelHolder = mock(FormModelHolder.class);
+        when(formModelHolder.getModel()).thenReturn(null);
+        adminController = new AdminController(formModelHolder);
+    }
 
     @Test
     public void testUploadTemplate() throws Exception {
-        Viewable upload = adminController.upload();
-        assertEquals(AdminController.ADMIN_UPLOAD_VIEW, upload.getTemplateName());
+        Viewable viewable = adminController.upload();
+        assertEquals("Unexpected template name", AdminController.ADMIN_UPLOAD_VIEW, viewable.getTemplateName());
     }
 
     @Test
     public void testUploadModel() throws Exception {
         Viewable upload = adminController.upload();
         assertTrue(upload.getModel() == AdminController.ATTACHMENT_MODEL);
+    }
+
+    @Test
+    public void testGetIndex() throws Exception {
+        Viewable viewable = adminController.getIndex();
+        assertEquals("Unexpected template name", AdminController.ADMIN_INDEX_VIEW, viewable.getTemplateName());
+        assertTrue("Unexpected template name", 8 == ((Map) viewable.getModel()).size());
+    }
+
+    @Test
+    public void testEditModel() throws Exception {
+        Viewable viewable = adminController.editModel();
+        assertEquals("Unexpected template name", AdminController.ADMIN_EDIT_VIEW, viewable.getTemplateName());
+
     }
 }
