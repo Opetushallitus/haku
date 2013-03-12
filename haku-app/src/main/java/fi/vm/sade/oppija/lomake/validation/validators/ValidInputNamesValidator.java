@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomake.validation.Validator;
+import fi.vm.sade.oppija.lomake.validation.validators.exception.UnknownParameterName;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class ValidInputNamesValidator implements Validator {
     public ValidationResult validate(final Map<String, String> values) {
         for (String key : values.keySet()) {
             if (!validValues.contains(key)) {
-                throw new RuntimeException("Unknown parameter");
+                throw new UnknownParameterName("Unknown parameter");
             }
         }
         return new ValidationResult();
