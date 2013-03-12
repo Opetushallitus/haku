@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class MultivaluedMapUtil {
-    private MultivaluedMapUtil() {
+    private MultivaluedMapUtil() { // NOSONAR
     }// TODO: implement param reader for Map
 
     public static Map<String, String> toSingleValueMap(MultivaluedMap<String, String> multi) {

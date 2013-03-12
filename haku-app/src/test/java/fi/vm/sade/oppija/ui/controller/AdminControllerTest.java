@@ -37,7 +37,8 @@ public class AdminControllerTest {
     public void setUp() throws Exception {
         formModelHolder = mock(FormModelHolder.class);
         when(formModelHolder.getModel()).thenReturn(null);
-        adminController = new AdminController(formModelHolder);
+        adminController = new AdminController();
+        adminController.formModelHolder = formModelHolder;
     }
 
     @Test

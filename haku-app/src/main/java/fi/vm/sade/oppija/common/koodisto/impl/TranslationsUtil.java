@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class TranslationsUtil {
-    private TranslationsUtil() {
+    private TranslationsUtil() { // NOSONAR
     }
 
     public static Map<String, String> createTranslationsMap(final KoodiType koodiType) {

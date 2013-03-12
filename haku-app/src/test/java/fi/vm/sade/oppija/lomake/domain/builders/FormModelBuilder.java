@@ -26,11 +26,6 @@ import java.util.Date;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 
-/**
- * @author jukka
- * @version 9/7/1212:47 PM}
- * @since 1.1
- */
 public class FormModelBuilder {
 
     public static final String VAIHE_ID = "kategoria";
@@ -56,11 +51,6 @@ public class FormModelBuilder {
     }
 
     public FormModelBuilder() {
-    }
-
-    public FormModelBuilder(Phase phase) {
-        this.phase = phase;
-        form = createForm(phase);
     }
 
     public FormModel build() {

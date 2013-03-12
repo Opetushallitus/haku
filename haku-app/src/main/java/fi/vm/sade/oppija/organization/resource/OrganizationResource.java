@@ -45,7 +45,6 @@ public class OrganizationResource {
 
     @Autowired
     public OrganizationResource(final OrganizationService organizationService) {
-
         this.organizationService = organizationService;
     }
 

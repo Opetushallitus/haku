@@ -45,7 +45,6 @@ public class KoodistoServiceImplTest {
     @Test
     public void testGetSubjects() throws Exception {
         assertFalse(koodistoService.getSubjects().isEmpty());
-
     }
 
     @Test

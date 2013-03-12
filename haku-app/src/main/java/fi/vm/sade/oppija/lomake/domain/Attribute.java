@@ -16,17 +16,13 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
+import org.apache.commons.lang.Validate;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.io.Serializable;
 
-/**
- * @author jukka
- * @version 9/7/1210:30 AM}
- * @since 1.1
- */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Attribute implements Serializable {
 
@@ -36,8 +32,8 @@ public class Attribute implements Serializable {
     private final String value;
 
     public Attribute(@JsonProperty(value = "key") final String key, @JsonProperty(value = "value") final String value) {
-        assert key != null;
-        assert value != null;
+        Validate.notNull(key, "key is null");
+        Validate.notNull(value, "value is null");
         this.key = key;
         this.value = value;
     }

@@ -18,10 +18,8 @@ package fi.vm.sade.oppija.lomake.domain.elements;
 
 
 import com.google.common.base.Objects;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 import fi.vm.sade.oppija.lomake.domain.Attribute;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
@@ -172,7 +170,7 @@ public abstract class Element implements Serializable {
     public String getAttributeString() {
         StringBuilder attrStr = new StringBuilder();
         for (Attribute attribute : attributes.values()) {
-            if (!"required".equals(attribute.getKey())) {
+            if (!"required" .equals(attribute.getKey())) {
                 attrStr.append(attribute.getAsString());
             }
         }
@@ -213,9 +211,5 @@ public abstract class Element implements Serializable {
 
     public List<Element> getChildren() {
         return ImmutableList.copyOf(children);
-    }
-
-    public List<Element> getChildren(final Predicate predicate) {
-        return ImmutableList.copyOf(Iterables.filter(children, predicate));
     }
 }

@@ -50,7 +50,7 @@ public class AdminController {
     private static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
     @Autowired
-    FormModelHolder formModelHolder;
+    public FormModelHolder formModelHolder;
 
     @Value("${mongodb.url}")
     private String mongoUrl;
@@ -68,6 +68,9 @@ public class AdminController {
     private String aesSalt;
     @Value("${hakemus.sha.salt}")
     private String shaSalt;
+
+    public AdminController() {
+    }
 
     @GET
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)

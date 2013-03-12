@@ -30,9 +30,9 @@ public class ApplicationPhase {
     private final Map<String, String> answers = new HashMap<String, String>();
 
     public ApplicationPhase(final FormId formId, final String phaseId, final Map<String, String> answers) {
-        Validate.notNull(formId, "formId was null");
-        Validate.notNull(phaseId, "phaseId was null");
-        Validate.notNull(answers, "answers was null");
+        Validate.notNull(formId, "formId is null");
+        Validate.notNull(phaseId, "phaseId is null");
+        Validate.notNull(answers, "answers is null");
         this.formId = formId;
         this.phaseId = phaseId;
         this.answers.putAll(answers);
