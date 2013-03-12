@@ -45,6 +45,7 @@ public class ApplicationResource {
 
     private ApplicationService applicationService;
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
+    private static final String OID = "oid";
 
     @Autowired
     public ApplicationResource(ApplicationService applicationService) {
@@ -54,7 +55,7 @@ public class ApplicationResource {
     @GET
     @Path("/process/{oid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ApplicationDTO getApplication(@PathParam("oid") String oid) {
+    public ApplicationDTO getApplication(@PathParam(OID) String oid) {
 
         try {
             return new ApplicationDTO(applicationService.getApplication(oid));
@@ -87,7 +88,7 @@ public class ApplicationResource {
     @GET
     @Path("{oid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Application getApplicationByOid(@PathParam("oid") String oid) {
+    public Application getApplicationByOid(@PathParam(OID) String oid) {
         LOGGER.debug("Getting application by oid : {}", oid);
         try {
             return applicationService.getApplication(oid);
@@ -112,7 +113,7 @@ public class ApplicationResource {
     @GET
     @Path("{oid}/{key}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Map<String, String> getApplicationKeyValue(@PathParam("oid") String oid, @PathParam("key") String key) {
+    public Map<String, String> getApplicationKeyValue(@PathParam(OID) String oid, @PathParam("key") String key) {
         Map<String, String> keyValue = new HashMap<String, String>();
 
         try {
@@ -127,7 +128,7 @@ public class ApplicationResource {
     @PUT
     @Path("{oid}/{key}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void putApplicationAdditionalInfoKeyValue(@PathParam("oid") String oid, @PathParam("key") String key,
+    public void putApplicationAdditionalInfoKeyValue(@PathParam(OID) String oid, @PathParam("key") String key,
                                                      @QueryParam("value") String value) {
         try {
             applicationService.putApplicationAdditionalInfoKeyValue(oid, key, value);
