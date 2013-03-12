@@ -89,8 +89,8 @@ public class PreferenceRow extends Question {
     @Override
     public void addAttribute(final String key, final String value) {
         if ("required".equals(key)) {
-            this.validators.add(new RequiredFieldFieldValidator(learningInstitutionInputId));
-            this.validators.add(new RequiredFieldFieldValidator(educationInputId));
+            addValidator(new RequiredFieldFieldValidator(learningInstitutionInputId));
+            addValidator(new RequiredFieldFieldValidator(educationInputId));
         } else {
             super.addAttribute(key, value);
         }

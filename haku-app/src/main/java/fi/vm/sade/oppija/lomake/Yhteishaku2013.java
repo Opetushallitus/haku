@@ -43,7 +43,8 @@ public class Yhteishaku2013 {
     public static final String ASID = "1.2.246.562.5.50476818906";
 
     private final ApplicationPeriod applicationPeriod;
-    public static String mobilePhonePattern = "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
+    public static String mobilePhonePattern =
+            "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
 
     private final KoodistoService koodistoService;
 
