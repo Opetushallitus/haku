@@ -41,26 +41,27 @@ public class PersonalServices {
     public static final String PERSONAL_TEMPLATE_VIEW = "/personal/template";
     public static final String USER_APPLICATION_INFO_MODEL = "UserApplicationInfo";
     public static final String SECTION_MODEL = "section";
+    private static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
     @Autowired
     public ApplicationService applicationService;
 
     @GET
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable hautKoulutuksiin() {
         return getApplications();
     }
 
     @GET
     @Path("vertailu")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getUserComparison() {
         return new Viewable(COMPARISON_VIEW);
     }
 
     @GET
     @Path("applications")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getApplications() {
         LOGGER.debug("getApplications");
         HashMap<String, Object> model = new HashMap<String, Object>(2);
@@ -72,7 +73,7 @@ public class PersonalServices {
 
     @GET
     @Path(value = "muistilista")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getUserNoteList() {
         LOGGER.debug("getUserNoteList");
         return new Viewable(NOTELIST_VIEW);
