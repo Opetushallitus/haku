@@ -36,10 +36,10 @@ import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserPrefillDataService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.oppija.ui.common.RedirectToFormViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPhaseViewPath;
-import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,6 +131,14 @@ public class FormController {
     }
 
     @GET
+    @Path("/{applicationPeriodId}/{formIdStr}/esikatselu")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    public Viewable getPreview(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                               @PathParam(FORM_ID_STR_PATH_PARAM) final String formIdStr) {
+        return getElement(applicationPeriodId, formIdStr, "esikatselu");
+    }
+
+    @GET
     @Path("/{applicationPeriodId}/{formIdStr}/{elementId}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
@@ -185,6 +193,17 @@ public class FormController {
     }
 
     @POST
+    @Path("/{applicationPeriodId}/{formId}/esikatselu")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response submitApplication(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                      @PathParam(FORM_ID_PATH_PARAM) final String formId) throws URISyntaxException {
+        LOGGER.debug("submitApplication {}, {}", new Object[]{applicationPeriodId, formId});
+        String oid = applicationService.submitApplication(new FormId(applicationPeriodId, formId));
+        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationPeriodId, formId, oid);
+        return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
+    }
+
+    @POST
     @Path("/{applicationPeriodId}/{formId}/{phaseId}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
@@ -192,7 +211,7 @@ public class FormController {
                               @PathParam(FORM_ID_PATH_PARAM) final String formId,
                               @PathParam(PHASE_ID) final String phaseId,
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
-        LOGGER.debug("updatePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
+        LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         boolean skipValidators = skipValidators(multiValues);
 
@@ -230,17 +249,6 @@ public class FormController {
             multiValues.get(PHASE_ID).set(0, realPhaseId.substring(0, realPhaseId.lastIndexOf("-skip-validators")));
         }
         return skipValidators;
-    }
-
-    @POST
-    @Path("/{applicationPeriodId}/{formId}/send")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response submitApplication(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
-                                      @PathParam(FORM_ID_PATH_PARAM) final String formId) throws URISyntaxException {
-        LOGGER.debug("submitApplication {}, {}", new Object[]{applicationPeriodId, formId});
-        String oid = applicationService.submitApplication(new FormId(applicationPeriodId, formId));
-        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationPeriodId, formId, oid);
-        return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
     }
 
     @GET

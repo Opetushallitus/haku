@@ -45,36 +45,39 @@
             <c:when test="${preview}">
                 <c:set var="baseUrl"
                        value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}"
-                    scope="request"/>
+                       scope="request"/>
 
 
                 <div class="popover-wrapper" id="areyousure" style="z-index:1000;display:none;">
                     <span class="popover-close">&#8203;</span>
+
                     <div class="popover">
                         <span class="popover-close">&#8203;</span>
+
                         <div class="popover-header">
                             <fmt:message key="lomake.send.confirm.title"/>
                         </div>
                         <div class="popover-content">
-                            <form method="post" action="${baseUrl}/send">
-								<p><fmt:message key="lomake.send.confirm.message"/></p>
-								<button name="nav-send" value="true" data-po-hide="areyousure">
+                            <form method="post" action="${baseUrl}/esikatselu">
+                                <p><fmt:message key="lomake.send.confirm.message"/></p>
+                                <button name="nav-send" value="true" data-po-hide="areyousure">
 									<span>
 										<span><fmt:message key="lomake.send.confirm.no"/></span>
 									</span>
-								</button>
-								<button id="submit_confirm" class="primary set-right" name="nav-send" type="submit" value="true">
+                                </button>
+                                <button id="submit_confirm" class="primary set-right" name="nav-send" type="submit"
+                                        value="true">
 									<span>
 										<span><fmt:message key="lomake.send.confirm.yes"/></span>
 									</span>
-								</button>
-								<div class="clear"></div>
+                                </button>
+                                <div class="clear"></div>
                             </form>
                         </div>
                     </div>
                 </div>
             </c:when>
-	    </c:choose>
+        </c:choose>
 
     </div>
     <div id="site">

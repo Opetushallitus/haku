@@ -16,71 +16,71 @@
 
 $(document).ready(function () {
 
-var mainmenu = {
-	build:function(){
-		mainmenu.get.data();
-		mainmenu.set.triggers();
-	},
-	get : {
-		data:function(){
-		
-			jQuery.ajax({
-				url: "/haku-app/resources/json/virkailija_menu.json",
-				type: "POST",
-				dataType: "json",
-				async: false,
-				success: function (data) {
-					mainmenu.generate.html(data);
-				}
-			});
+    var mainmenu = {
+        build: function () {
+            mainmenu.get.data();
+            mainmenu.set.triggers();
+        },
+        get: {
+            data: function () {
 
-		}
-	},
-	generate : {
-		html:function(json){
-			var menu = mainmenu.generate.menuHtml(json.menu);
-			$('#navigation').html(menu);
-		},
-		menuHtml:function(menu){
+                jQuery.ajax({
+                    url: "/haku-app/resources/json/virkailija_menu.json",
+                    type: "POST",
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        mainmenu.generate.html(data);
+                    }
+                });
 
-			var $menu = $('<ul/>').attr(menu.attributes);
-			$.each(menu.items, function(itemIndex, itemData) {
-				var $item = $('<li/>').attr(itemData.attributes).appendTo($menu);
-				var $link = $('<a/>').appendTo($item);            
-				$.each(itemData.link, function(linkKey, linkVal) {
-					if (linkKey === 'text') {
-						var $text = $('<span/>').text(linkVal);
-						$link.html($text);
-					} 
-					else {$link.attr(linkKey, linkVal);}
-				});
-				if (itemData.hasOwnProperty('menu')) {
-					$item.append(mainmenu.generate.menuHtml(itemData.menu));
-				}
-			});
-			return $menu;
-			
-		}
-	},
-	set : {
-		triggers:function(){
-			$('body').on('mouseover', '#navigation ul li', function(){
-				$(this).children('ul').show();
-			});
-			
-			$('body').on('mouseout', '#navigation ul li', function(){
-				$(this).children('ul').hide();
-			});
-		}
-	}
-}
+            }
+        },
+        generate: {
+            html: function (json) {
+                var menu = mainmenu.generate.menuHtml(json.menu);
+                $('#navigation').html(menu);
+            },
+            menuHtml: function (menu) {
 
-mainmenu.build();
+                var $menu = $('<ul/>').attr(menu.attributes);
+                $.each(menu.items, function (itemIndex, itemData) {
+                    var $item = $('<li/>').attr(itemData.attributes).appendTo($menu);
+                    var $link = $('<a/>').appendTo($item);
+                    $.each(itemData.link, function (linkKey, linkVal) {
+                        if (linkKey === 'text') {
+                            var $text = $('<span/>').text(linkVal);
+                            $link.html($text);
+                        }
+                        else {
+                            $link.attr(linkKey, linkVal);
+                        }
+                    });
+                    if (itemData.hasOwnProperty('menu')) {
+                        $item.append(mainmenu.generate.menuHtml(itemData.menu));
+                    }
+                });
+                return $menu;
+
+            }
+        },
+        set: {
+            triggers: function () {
+                $('body').on('mouseover', '#navigation ul li', function () {
+                    $(this).children('ul').show();
+                });
+
+                $('body').on('mouseout', '#navigation ul li', function () {
+                    $(this).children('ul').hide();
+                });
+            }
+        }
+    }
+
+    mainmenu.build();
 
 
-
-
-// Organisation search 
+// Organisation search
 // Handle presentation of organisation search form and results
 
     var orgSearchDialog = {
@@ -89,9 +89,9 @@ mainmenu.build();
         },
         build: function () {
             orgSearchDialog.set.listHeight();
-			orgSearchDialog.set.tableCellWidth();
+            orgSearchDialog.set.tableCellWidth();
             orgSearchDialog.listen.dialogDimensions();
-			orgSearchDialog.set.triggers();
+            orgSearchDialog.set.triggers();
         },
         listen: {
             dialogDimensions: function () {
@@ -107,9 +107,9 @@ mainmenu.build();
                     if (width != $('#orgsearch').outerWidth(true)) {
                         orgSearchDialog.set.tableCellWidth();
                     }
-                    
-					orgSearchDialog.listen.dialogDimensions();
-					
+
+                    orgSearchDialog.listen.dialogDimensions();
+
                 }, orgSearchDialog.settings.listenTimeout);
             }
         },
@@ -126,23 +126,21 @@ mainmenu.build();
                 width = $('#orgsearch').outerWidth(true);
                 $('#orgsearch').parent('td').css({'width': width + 'px'});
             },
-			triggers: function() {
-				$('body').on('click', '#orgsearch a.expander', function(event){
-					event.preventDefault();
-					target = $(this).closest('#orgsearch');
-					if (target.hasClass('expand'))
-					{
-						target.removeClass('expand');
-						orgSearchDialog.set.tableCellWidth();
-					}
-					else
-					{
-						target.addClass('expand');
-						orgSearchDialog.set.tableCellWidth();
-						orgSearchDialog.set.listHeight();
-					}
-				});
-			}
+            triggers: function () {
+                $('body').on('click', '#orgsearch a.expander', function (event) {
+                    event.preventDefault();
+                    target = $(this).closest('#orgsearch');
+                    if (target.hasClass('expand')) {
+                        target.removeClass('expand');
+                        orgSearchDialog.set.tableCellWidth();
+                    }
+                    else {
+                        target.addClass('expand');
+                        orgSearchDialog.set.tableCellWidth();
+                        orgSearchDialog.set.listHeight();
+                    }
+                });
+            }
         }
     }
 
@@ -173,7 +171,7 @@ mainmenu.build();
                     $tbody.append('<tr><td><input type="checkbox"/></td><td>' +
                         henkilotiedot.Sukunimi + '</td><td>' +
                         henkilotiedot.Etunimet + '</td><td>' +
-                        henkilotiedot.Henkilotunnus + '</td><td><a href="' +
+                        henkilotiedot.Henkilotunnus + '</td><td><a class="application-link" href="' +
                         page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
                         item.oid + '</a></td><td>' + item.state + '</td></tr>');
                 });
