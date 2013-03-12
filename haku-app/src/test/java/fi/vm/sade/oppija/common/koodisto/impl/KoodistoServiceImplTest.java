@@ -62,4 +62,24 @@ public class KoodistoServiceImplTest {
     public void testGetLearningInstitutionTypes() throws Exception {
         assertFalse(koodistoService.getLearningInstitutionTypes().isEmpty());
     }
+
+    @Test
+    public void testGetCountries() throws Exception {
+        assertFalse(koodistoService.getCountries().isEmpty());
+    }
+
+    @Test
+    public void testGetNationalities() throws Exception {
+        assertFalse(koodistoService.getNationalities().isEmpty());
+    }
+
+    @Test
+    public void testGetLanguages() throws Exception {
+        assertFalse(koodistoService.getLanguages().isEmpty());
+    }
+
+    @Test
+    public void testGetMunicipalities() throws Exception {
+        assertFalse(koodistoService.getMunicipalities().isEmpty());
+    }
 }
