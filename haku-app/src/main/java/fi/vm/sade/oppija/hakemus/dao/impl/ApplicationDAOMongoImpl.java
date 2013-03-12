@@ -68,6 +68,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_APPLICATION_OID = "oid";
     private static final String FIELD_PERSON_OID = "personOid";
     private static final String FIELD_APPLICATION_STATE = "state";
+    private static final String EXISTS = "$exists";
 
     @Value("${application.oid.prefix}")
     private String applicationOidPrefix;
@@ -113,21 +114,20 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application findDraftApplication(final Application application) {
         final DBObject query = toDBObject.apply(application);
-        query.put(FIELD_APPLICATION_OID, new BasicDBObject("$exists", false));
+        query.put(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, false));
         return findOneApplication(query);
     }
 
     @Override
     public List<Application> findByApplicationSystem(String asId) {
         DBObject dbObject = QueryBuilder.start().and(QueryBuilder.start("formId.applicationPeriodId").is(asId).get(),
-                new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true))).get();
-        List<Application> applications = findApplications(dbObject);
-        return applications;
+                new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true))).get();
+        return findApplications(dbObject);
     }
 
     public List<Application> findByApplicationOption(List<String> aoIds) {
         DBObject query = queryByPreference(aoIds).get();
-        query.put(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true));
+        query.put(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
         return findApplications(query);
     }
 
@@ -136,7 +136,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (ssn != null) {
             final DBObject query = new BasicDBObject("formId.applicationPeriodId", asId)
                     .append("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH, shaEncrypter.encrypt(ssn))
-                    .append(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true));
+                    .append(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
             return getCollection().count(query) > 0;
         }
         return false;
@@ -165,13 +165,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         );
     }
 
-    private QueryBuilder queryByLearningOpportunityProviderOid(String LOPOid) {
+    private QueryBuilder queryByLearningOpportunityProviderOid(String lopOid) {
         return QueryBuilder.start().or(
-                QueryBuilder.start(FIELD_LOP_1).is(LOPOid).get(),
-                QueryBuilder.start(FIELD_LOP_2).is(LOPOid).get(),
-                QueryBuilder.start(FIELD_LOP_3).is(LOPOid).get(),
-                QueryBuilder.start(FIELD_LOP_4).is(LOPOid).get(),
-                QueryBuilder.start(FIELD_LOP_5).is(LOPOid).get()
+                QueryBuilder.start(FIELD_LOP_1).is(lopOid).get(),
+                QueryBuilder.start(FIELD_LOP_2).is(lopOid).get(),
+                QueryBuilder.start(FIELD_LOP_3).is(lopOid).get(),
+                QueryBuilder.start(FIELD_LOP_4).is(lopOid).get(),
+                QueryBuilder.start(FIELD_LOP_5).is(lopOid).get()
         );
     }
 
@@ -335,7 +335,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
 
         if (applicationQueryParameters.isFetchSubmittedOnly()) {
-            DBObject f = new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true));
+            DBObject f = new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
             filters.add(f);
         }
 
