@@ -71,7 +71,7 @@ public class FormController {
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
     public static final String FORM_ID_STR_PATH_PARAM = "formIdStr";
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
-    private static final String PHASE_ID_PARAM = "phaseId";
+    private static final String PHASE_ID = "phaseId";
 
     final FormService formService;
     private final ApplicationService applicationService;
@@ -190,7 +190,7 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML)
     public Response savePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                               @PathParam(FORM_ID_PATH_PARAM) final String formId,
-                              @PathParam(PHASE_ID_PARAM) final String phaseId,
+                              @PathParam(PHASE_ID) final String phaseId,
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("updatePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
@@ -220,14 +220,14 @@ public class FormController {
     }
 
     private boolean skipValidators(MultivaluedMap<String, String> multiValues) {
-        List<String> phaseIdList = multiValues.get("phaseId");
+        List<String> phaseIdList = multiValues.get(PHASE_ID);
         if (phaseIdList == null || phaseIdList.size() == 0) {
             return false;
         }
         boolean skipValidators = phaseIdList.get(0).endsWith("-skip-validators");
         if (skipValidators) {
-            String realPhaseId = multiValues.get("phaseId").get(0);
-            multiValues.get("phaseId").set(0, realPhaseId.substring(0, realPhaseId.lastIndexOf("-skip-validators")));
+            String realPhaseId = multiValues.get(PHASE_ID).get(0);
+            multiValues.get(PHASE_ID).set(0, realPhaseId.substring(0, realPhaseId.lastIndexOf("-skip-validators")));
         }
         return skipValidators;
     }
@@ -314,7 +314,7 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable getAdditionalQuestions(@PathParam("applicationPeriodId") final String applicationPeriodId,
                                            @PathParam("formIdStr") final String formIdStr,
-                                           @PathParam("phaseId") final String phaseId,
+                                           @PathParam(PHASE_ID) final String phaseId,
                                            @PathParam("themeId") final String themeId,
                                            @PathParam("aoId") final String aoId,
                                            @QueryParam("preview") final boolean preview) {
