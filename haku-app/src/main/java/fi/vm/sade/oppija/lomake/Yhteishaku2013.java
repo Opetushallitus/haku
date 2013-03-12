@@ -506,7 +506,7 @@ public class Yhteishaku2013 {
                 createI18NText("Minä vuonna sait/saat peruskoulun päättötodistuksen?"));
         paattotodistusvuosiPeruskoulu.addAttribute("placeholder", "vvvv");
         paattotodistusvuosiPeruskoulu.addAttribute("required", "required");
-        paattotodistusvuosiPeruskoulu.addAttribute("pattern", "^([1][9]\\d\\d|200[0-9]|201[0-3])$");
+        paattotodistusvuosiPeruskoulu.addAttribute("pattern", "^(19[0-9][0-9]|200[0-9]|201[0-3])$");
         paattotodistusvuosiPeruskoulu.addAttribute("size", "4");
         paattotodistusvuosiPeruskoulu.addAttribute("maxlength", "4");
 
@@ -553,7 +553,7 @@ public class Yhteishaku2013 {
                 + millatutkinnolla.getOptions().get(3).getValue() + ")");
 
         RelatedQuestionRule paattotodistusvuosiPeruskouluRule = new RelatedQuestionRule("rule8",
-                paattotodistusvuosiPeruskoulu.getId(), "^([1][9]\\d\\d|200[0-9]|201[0-1])$");
+                paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$");
 
         relatedQuestionRule.addChild(paattotodistusvuosiPeruskoulu);
         // relatedQuestionRule.addChild(tutkinnonOpetuskieli);
@@ -564,7 +564,7 @@ public class Yhteishaku2013 {
                 createI18NText("Päättötodistuksen vuosi"));
         lukioPaattotodistusVuosi.addAttribute("placeholder", "vvvv");
         lukioPaattotodistusVuosi.addAttribute("required", "required");
-        lukioPaattotodistusVuosi.addAttribute("pattern", "^([1][9]\\d\\d|200[0-9]|201[0-3])$");
+        lukioPaattotodistusVuosi.addAttribute("pattern", "^(19[0-9][0-9]|200[0-9]|201[0-3])$");
         lukioPaattotodistusVuosi.addAttribute("size", "4");
         lukioPaattotodistusVuosi.addAttribute("maxlength", "4");
         lukioPaattotodistusVuosi.setInline(true);
@@ -573,7 +573,7 @@ public class Yhteishaku2013 {
                 createI18NText("Ylioppilastodistuksen vuosi"));
         ylioppilastodistuksenVuosi.addAttribute("placeholder", "vvvv");
         ylioppilastodistuksenVuosi.addAttribute("required", "required");
-        ylioppilastodistuksenVuosi.addAttribute("pattern", "^([1][9]\\d\\d|200[0-9]|201[0-3])$");
+        ylioppilastodistuksenVuosi.addAttribute("pattern", "^(19[0-9][0-9]|200[0-9]|201[0-3])$");
         ylioppilastodistuksenVuosi.addAttribute("size", "4");
         ylioppilastodistuksenVuosi.addAttribute("maxlength", "4");
         ylioppilastodistuksenVuosi.setInline(true);
