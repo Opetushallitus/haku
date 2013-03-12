@@ -26,11 +26,12 @@ import static org.junit.Assert.*;
 
 public class ElementTest {
 
+    public static final String ID = "test";
     private Element testElement;
 
     @Before
     public void setUp() throws Exception {
-        testElement = new Element("test") {
+        testElement = new Element(ID) {
         };
     }
 
@@ -83,18 +84,28 @@ public class ElementTest {
     }
 
     @Test
-    public void testEqualsFalse() throws Exception {
-        assertFalse(testElement.equals(new Element("") {
-        }));
-    }
-
-    @Test
     public void testEqualsDifferentClass() throws Exception {
         assertFalse(testElement.equals(""));
     }
 
     @Test
-    public void testEqualsTrue() throws Exception {
+    public void testEqualsSame() throws Exception {
         assertTrue(testElement.equals(testElement));
+    }
+
+    @Test
+    public void testEqualsTrue() throws Exception {
+        assertTrue(new TestElement(ID).equals(new TestElement(ID)));
+    }
+
+    @Test
+    public void testEqualsFalse() throws Exception {
+        assertFalse(new TestElement(ID).equals(new TestElement(ID + "1")));
+    }
+
+    private class TestElement extends Element {
+        protected TestElement(final String id) {
+            super(id);
+        }
     }
 }
