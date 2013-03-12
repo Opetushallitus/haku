@@ -16,12 +16,26 @@
   ~ European Union Public Licence for more details.
   --%>
 <div class="form-item search-result">
+	<ul>
     <c:forEach var="item" items="${it.searchResult.items}">
-        ${item['html_searchResult_fi']}
-        <jsp:include page="muistiJaVertailuValitsimet.jsp">
-            <jsp:param name="item" value="${item}"/>
-        </jsp:include>
+		<li>
+			<div >
+		        <%--
+		        ${item['html_searchResult_fi']}
+		         --%>
+		         <div style="float: left; width: 70%; margin: 0; padding:0">
+		         <a href="${pageContext.request.contextPath}/tarjontatiedot/${item['AOId']}">${item['AOTitle']}</a> <br />
+		         ${item['ASName']} <br />
+		         ${item['LOPInstitutionInfoName']} <br />
+		         </div>
+		        <jsp:include page="muistiJaVertailuValitsimet.jsp">
+		            <jsp:param name="item" value="${item}"/>
+		        </jsp:include>
+			</div>
+			<div class="clear"></div>
+        </li>
     </c:forEach>
+	</ul>
 </div>
 
 <div class="clear"></div>

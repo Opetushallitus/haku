@@ -16,12 +16,17 @@
 
 package fi.vm.sade.oppija.tarjonta.controller;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import fi.vm.sade.koulutusinformaatio.domain.SearchFilters;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 
 public class SearchControllerTest {
 
@@ -29,10 +34,10 @@ public class SearchControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        SearchService searchService = Mockito.mock(SearchService.class);
+        SearchService searchService = mock(SearchService.class);
 
         SearchFilters searchFilters = new SearchFilters(searchService);
-        searchController = new SearchController(searchService, searchFilters);
+        searchController = new SearchController(searchService, searchFilters, null);
     }
 
     @Test

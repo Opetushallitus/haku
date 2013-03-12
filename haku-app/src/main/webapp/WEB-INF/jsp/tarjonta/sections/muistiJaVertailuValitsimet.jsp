@@ -17,13 +17,13 @@
   ~ European Union Public Licence for more details.
   --%>
 <fmt:setBundle basename="messages"/>
-<div class="result-options set-right">
-    <div class="field-container-checkbox left-intend-2" style="display: inline-block">
+<div class="result-options">
+    <div class="field-container-checkbox">
         <input type="checkbox" name="muistilistaan" value="${it.id}" id="muistilista_${it.id}"/>
         <label for="muistilista_${it.id}"><fmt:message key="tarjonta.lisaamuistilistaan"/></label>
     </div>
 
-    <div class="field-container-checkbox left-intend-2">
+    <div class="field-container-checkbox">
         <input type="checkbox" name="vertailulistaan" value="${it.id}" id="vertailulista_${it.id}"/>
         <label for="vertailulista_${it.id}"><fmt:message key="tarjonta.lisaavertailulistaan"/></label>
     </div>

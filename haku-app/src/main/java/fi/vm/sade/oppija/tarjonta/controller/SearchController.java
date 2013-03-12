@@ -22,6 +22,10 @@ import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.koulutusinformaatio.domain.SearchFilters;
 import fi.vm.sade.koulutusinformaatio.domain.SearchResult;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.service.FormModelHolder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,9 @@ import org.springframework.stereotype.Controller;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.*;
+import java.util.Map.Entry;
+
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 
 @Controller
@@ -47,11 +54,13 @@ public class SearchController {
 
     private final SearchService service;
     private final SearchFilters searchFilters;
+    private FormModelHolder formModelHolder;
 
     @Autowired
-    public SearchController(final SearchService searchService, final SearchFilters searchFilters) {
+    public SearchController(final SearchService searchService, final SearchFilters searchFilters, final FormModelHolder formModelHolder) {
         this.service = searchService;
         this.searchFilters = searchFilters;
+        this.formModelHolder = formModelHolder;
     }
 
     @GET
@@ -77,7 +86,18 @@ public class SearchController {
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable getTarjontatiedot(@PathParam("tarjontatietoId") final String tarjontatietoId) {
         LOGGER.info("tarjontatiedot/" + tarjontatietoId);
-        ImmutableMap<String, Map<String, Object>> model = ImmutableMap.of(MODEL_NAME, service.searchById(tarjontatietoId));
+        Map<String, Object> searchResult = service.searchById(tarjontatietoId);
+        String asId = (String) searchResult.get("ASId");
+        if (!isEmpty(asId)) {
+            ApplicationPeriod applicationPeriod = formModelHolder.getModel().getApplicationPeriodById(asId);
+            Map<String, Form> forms = applicationPeriod.getForms();
+            String formId = null;
+            for (Entry<String, Form> form : forms.entrySet()) {
+                formId = form.getKey();
+            }
+            searchResult.put("formId", formId);
+        }
+        ImmutableMap<String, Map<String, Object>> model = ImmutableMap.of(MODEL_NAME, searchResult);
         return new Viewable(VIEW_NAME_KOULUTUSKUVAUS, model);
     }
 
