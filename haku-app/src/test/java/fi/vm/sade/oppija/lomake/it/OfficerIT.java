@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.lomake.it;
 
+import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.common.selenium.LoginPage;
 import fi.vm.sade.oppija.lomake.HakuClient;
@@ -38,5 +39,16 @@ public class OfficerIT extends AbstractSeleniumBase {
         driver.findElement(new By.ById("millatutkinnolla_tutkinto6")).click();
         driver.findElement(new By.ByClassName("save")).click();
         driver.findElement(By.xpath("//*[contains(.,'INCOMPLETE')]"));
+    }
+
+    @Test
+    public void testOrganization() throws Exception {
+        WebDriver driver = seleniumHelper.getDriver();
+        Selenium selenium = seleniumHelper.getSelenium();
+        driver.findElement(new By.ByClassName("label")).click();
+        selenium.typeKeys("searchString", "Espoo");
+        driver.findElement(new By.ById("search-organizations")).click();
+        driver.findElement(new By.ById("1.2.246.562.10.10108401950"));
+
     }
 }
