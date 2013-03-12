@@ -23,13 +23,13 @@ public class ApplicationQueryParameters {
     private final String state;
     private final boolean fetchPassive;
     private final List<String> preferences = new ArrayList<String>();
-    private final String LOPOid;
-    private final boolean fetchSubmittedOnly = true;
+    private final String lopOid;
+    private static final boolean fetchSubmittedOnly = true;
 
     public ApplicationQueryParameters() {
         this.state = "";
         this.fetchPassive = false;
-        this.LOPOid = "";
+        this.lopOid = "";
     }
 
     public ApplicationQueryParameters(final List<String> preferences) {
@@ -42,7 +42,7 @@ public class ApplicationQueryParameters {
         this.state = state;
         this.fetchPassive = fetchPassive;
         addPreference(preference);
-        LOPOid = lopOid;
+        this.lopOid = lopOid;
     }
 
     public String getState() {
@@ -57,14 +57,14 @@ public class ApplicationQueryParameters {
         return preferences;
     }
 
-    public void addPreference(String preference) {
+    public final void addPreference(String preference) {
         if (preference != null && !preference.isEmpty()) {
             this.preferences.add(preference);
         }
     }
 
-    public String getLOPOid() {
-        return LOPOid;
+    public String getLopOid() {
+        return lopOid;
     }
 
     public boolean isFetchSubmittedOnly() {

@@ -329,7 +329,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (preferences != null && !preferences.isEmpty()) {
             filters.add(queryByPreference(preferences).get());
         }
-        String lopOid = applicationQueryParameters.getLOPOid();
+        String lopOid = applicationQueryParameters.getLopOid();
         if (!isEmpty(lopOid)) {
             filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
         }
