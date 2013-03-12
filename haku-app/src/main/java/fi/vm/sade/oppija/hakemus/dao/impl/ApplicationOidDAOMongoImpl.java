@@ -90,14 +90,14 @@ public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
 
     String checksum(String oid) {
         int sum = 0;
-        int[] multipliers = new int[]{7, 3, 1};
+        int[] multipliers = new int[]{7, 3, 1}; //NOSONAR
         int multiplierIndex = 0;
         for (int i = oid.length() - 1; i >= 0; i--) {
             int curr = Integer.valueOf(String.valueOf(oid.charAt(i)));
-            sum += curr * multipliers[multiplierIndex % 3];
+            sum += curr * multipliers[multiplierIndex % 3]; //NOSONAR
             multiplierIndex++;
         }
-        sum = (10 - (sum % 10)) % 10; // Summa vähennetään seuraavasta tasakymmenestä
+        sum = (10 - (sum % 10)) % 10; // Summa vähennetään seuraavasta tasakymmenestä //NOSONAR
         return String.valueOf(sum);
     }
 }
