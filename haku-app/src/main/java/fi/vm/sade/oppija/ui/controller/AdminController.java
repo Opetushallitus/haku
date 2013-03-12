@@ -47,6 +47,7 @@ public class AdminController {
     public static final String ADMIN_INDEX_VIEW = "/admin/index";
     public static final String ADMIN_EDIT_VIEW = "/admin/editModel";
     public static final Attachment ATTACHMENT_MODEL = new Attachment("file", createI18NText("Lataa malli json-objektina"));
+    private static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
     @Autowired
     FormModelHolder formModelHolder;
@@ -69,7 +70,7 @@ public class AdminController {
     private String shaSalt;
 
     @GET
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getIndex() {
         Map<String, Object> properties = new LinkedHashMap<String, Object>();
         properties.put("mongodb.url", mongoUrl);
@@ -86,22 +87,22 @@ public class AdminController {
 
     @GET
     @Path("/upload")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable upload() {
         return new Viewable(ADMIN_UPLOAD_VIEW, ATTACHMENT_MODEL);
     }
 
     @GET
     @Path("/model")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public FormModel asJson() {
         return formModelHolder.getModel();
     }
 
     @POST
     @Path("/model")
-    @Consumes(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public Response doActualEdit(final FormModel formModel) throws URISyntaxException {
         formModelHolder.updateModel(formModel);
         return created(new URI("/lomake/")).build();
@@ -109,7 +110,7 @@ public class AdminController {
 
     @GET
     @Path("/edit")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable editModel() {
         final String convert = new FormModelToJsonString().apply(formModelHolder.getModel());
         return new Viewable(ADMIN_EDIT_VIEW, convert);

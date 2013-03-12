@@ -40,6 +40,7 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,7 +82,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
                 @JsonSubTypes.Type(value = Notification.class)
         }
 )
-public abstract class Element {
+public abstract class Element implements Serializable {
     public static final String ID_DELIMITER = "_";
     protected final String id;
     protected transient String type = this.getClass().getSimpleName();

@@ -50,7 +50,7 @@ public class ISO88591NameValidator extends FieldValidator {
         int sz = cs.length();
         for (int i = 0; i < sz; i++) {
             boolean letter = Character.isLetter(cs.charAt(i));
-            if ((letter == false &&
+            if ((!letter &&
                     cs.charAt(i) != ' ' &&
                     cs.charAt(i) != '-' &&
                     cs.charAt(i) != ',') || ((i == 0 && !letter) || (i == sz - 1 && !letter))) {
