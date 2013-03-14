@@ -35,6 +35,7 @@
         <solr.version>4.1.0</solr.version>
         <mockito.version>1.9.5</mockito.version>
         <guava.version>14.0</guava.version>
+        <ehcache.version>2.4.8</ehcache.version> <!-- sallii monta samannimista cachemanageria -->
     </properties>
 
     <profiles>
