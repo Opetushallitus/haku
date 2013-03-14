@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.common.koodisto.impl;
 
-import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
@@ -24,6 +23,8 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,8 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public static final String ORGANIZATION_TYPE = "Toimipiste";
     public final List<Option> listOfGradeGrades;
     public final List<PostOffice> listOfPostOffices;
-    public final List<SubjectRow> listOfSubjectsRows;
+    public final List<SubjectRow> listOfSubjectsRowsPrimary;
+    public final List<SubjectRow> listOfSubjectsRowsSecondary;
     public final List<Option> listOfLearningInstitutionTypes;
     public final List<Option> listOfOrganizationtypes;
     public final List<Option> listOfCountries;
@@ -63,7 +65,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 createPostOffice("02100", "Espoo"),
                 createPostOffice("33100", "Tampere"));
 
-        this.listOfSubjectsRows = ImmutableList.of(
+        this.listOfSubjectsRowsPrimary = ImmutableList.of(
                 new SubjectRow("A1", true, true, createI18NText("A1-kieli")),
                 new SubjectRow("A12", true, true, createI18NText("A12-kieli")),
                 new SubjectRow("A2", true, true, createI18NText("A2-kieli")),
@@ -88,6 +90,18 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 new SubjectRow("KS", createI18NText("Käsityö")),
                 new SubjectRow("LI", false, false, createI18NText("Liikunta"))
         );
+        this.listOfSubjectsRowsSecondary = ImmutableList.of(
+                new SubjectRow("LUK_A1", true, true, createI18NText("A1-kieli")),
+                new SubjectRow("LUK_A2", true, true, createI18NText("A2-kieli")),
+                new SubjectRow("LUK_AI", true, true, createI18NText("Äidinkieli ja kirjallisuus")),
+                new SubjectRow("LUK_HI", false, false, createI18NText("Historia")),
+                new SubjectRow("LUK_YH", false, false, createI18NText("Yhteiskuntaoppi")),
+                new SubjectRow("LUK_MA", false, false, createI18NText("Matematiikka")),
+                new SubjectRow("LUK_FY", false, false, createI18NText("Fysiikka")),
+                new SubjectRow("LUK_KE", false, false, createI18NText("Kemia")),
+                new SubjectRow("LUK_BI", false, false, createI18NText("Biologia"))
+        );
+        
         this.listOfLearningInstitutionTypes = ImmutableList.of(
                 new Option(LEARNING_INSTITUTION_TYPE,
                         createI18NText(LEARNING_INSTITUTION_TYPE), LEARNING_INSTITUTION_TYPE));
@@ -129,12 +143,22 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     }
 
     @Override
-    public List<SubjectRow> getSubjects() {
-        return this.listOfSubjectsRows;
+    public List<SubjectRow> getSubjectsForPrimary() {
+        return this.listOfSubjectsRowsPrimary;
     }
 
     @Override
-    public List<Option> getGradeRanges() {
+    public List<Option> getGradeRangesForPrimary() {
+        return this.listOfGradeGrades;
+    }
+
+    @Override
+    public List<SubjectRow> getSubjectsForSecondary() {
+        return this.listOfSubjectsRowsSecondary;
+    }
+
+    @Override
+    public List<Option> getGradeRangesForSecondary() {
         return this.listOfGradeGrades;
     }
 

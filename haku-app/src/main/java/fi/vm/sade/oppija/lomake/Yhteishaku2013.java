@@ -294,18 +294,18 @@ public class Yhteishaku2013 {
 
     }
 
-    public GradeGrid createGradeGrid() {
+    public GradeGrid createGradeGrid(boolean primary) {
 
-        List<Option> gradeRange = koodistoService.getGradeRanges();
-        List<SubjectRow> subjects = koodistoService.getSubjects();
+        List<Option> gradeRange = primary ? koodistoService.getGradeRangesForPrimary() : koodistoService.getGradeRangesForSecondary();
+        List<SubjectRow> subjects = primary ? koodistoService.getSubjectsForPrimary() : koodistoService.getSubjectsForSecondary();
         SubjectRow finnish = new SubjectRow("subject_finnish", false, false, createI18NText("Äidinkieli ja kirjallisuus"));
         List<SubjectRow> subjectRowsAfter = new ArrayList<SubjectRow>();
         for (SubjectRow subject : subjects) {
             String id = subject.getId();
-            if ("AI".equals(id)) {
+            if (id.endsWith("AI")) {
                 finnish = subject;
-            } else if (!(id.startsWith("A1") || id.startsWith("B1") || id.startsWith("A2") || id.startsWith("B2")
-                    || id.startsWith("B3"))) {
+            } else if (!(id.endsWith("A1") || id.endsWith("B1") || id.endsWith("A2") || id.endsWith("B2")
+                    || id.endsWith("B3"))) {
                 subjectRowsAfter.add(subject);
             }
         }
@@ -342,14 +342,21 @@ public class Yhteishaku2013 {
     }
 
     private void createArvosanat(Theme arvosanatRyhma) {
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule4", "millatutkinnolla",
-                "(tutkinto1|tutkinto2|tutkinto3|tutkinto4|tutkinto6)");
-        relatedQuestionRule.addChild(createGradeGrid());
-        arvosanatRyhma.addChild(relatedQuestionRule);
-        RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule5", "millatutkinnolla",
+        RelatedQuestionRule relatedQuestionPK = new RelatedQuestionRule("rule_grade_pk", "millatutkinnolla",
+                "(tutkinto1|tutkinto2|tutkinto3|tutkinto4)");
+        relatedQuestionPK.addChild(createGradeGrid(true));
+        arvosanatRyhma.addChild(relatedQuestionPK);
+        
+        RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", "millatutkinnolla",
+                "(tutkinto6)");
+        relatedQuestionLukio.addChild(createGradeGrid(false));
+        arvosanatRyhma.addChild(relatedQuestionLukio);
+        
+        RelatedQuestionRule relatedQuestionEiTutkintoa = new RelatedQuestionRule("rule_grade_no", "millatutkinnolla",
                 "(tutkinto5|tutkinto7)");
-        relatedQuestionRule2.addChild(new Text("nogradegrid", createI18NText("Sinulta ei kysytä arvosanoja.")));
-        arvosanatRyhma.addChild(relatedQuestionRule2);
+        relatedQuestionEiTutkintoa.addChild(new Text("nogradegrid", createI18NText("Sinulta ei kysytä arvosanoja.")));
+        arvosanatRyhma.addChild(relatedQuestionEiTutkintoa);
+        
         arvosanatRyhma
                 .setHelp("Merkitse arvosanat siitä todistuksesta, jolla haet koulutukseen (perusopetus,tai sitä vastaavat opinnot, lukiokoulutus). " +
                         "Korotetut arvosanat voit merkitä, mikäli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion " +

@@ -47,7 +47,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
         Form form = new Form("lomake", createI18NText("yhteishaku"));
         form.addChild(arvosanat);
         Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl());
-        arvosanat.addChild(yhteishaku2013.createGradeGrid());
+        arvosanat.addChild(yhteishaku2013.createGradeGrid(true));
         form.init();
         applicationPeriod.addForm(form);
         updateIndexAndFormModel(formModel);

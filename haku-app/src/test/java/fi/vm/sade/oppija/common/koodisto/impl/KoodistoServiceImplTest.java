@@ -44,12 +44,12 @@ public class KoodistoServiceImplTest {
 
     @Test
     public void testGetSubjects() throws Exception {
-        assertFalse(koodistoService.getSubjects().isEmpty());
+        assertFalse(koodistoService.getSubjectsForPrimary().isEmpty());
     }
 
     @Test
     public void testGetGradeRanges() throws Exception {
-        assertFalse(koodistoService.getGradeRanges().isEmpty());
+        assertFalse(koodistoService.getGradeRangesForPrimary().isEmpty());
     }
 
     @Test
