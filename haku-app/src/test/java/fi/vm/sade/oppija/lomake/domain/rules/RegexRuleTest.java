@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.lomake.domain.rules;
 
 import org.junit.Test;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 /**

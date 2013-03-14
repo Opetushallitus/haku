@@ -27,6 +27,7 @@ import java.util.Map;
 
 public class Theme extends Titled {
 
+    private static final long serialVersionUID = -1394712276903310469L;
     final Map<String, List<Question>> additionalQuestions;
 
     public Theme(@JsonProperty(value = "id") final String id,

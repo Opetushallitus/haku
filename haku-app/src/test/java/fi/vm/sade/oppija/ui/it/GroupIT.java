@@ -30,7 +30,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertNotNull;
 import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 import static net.sourceforge.jwebunit.junit.JWebUnit.getElementByXPath;
 

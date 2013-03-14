@@ -26,6 +26,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 public class SubjectRow extends Question {
 
+    private static final long serialVersionUID = -7775452756396204586L;
     private final boolean optionalGrades;
     private final boolean language;
 

@@ -1,12 +1,12 @@
 package fi.vm.sade.koulutusinformaatio.event;
 
-import fi.vm.sade.events.Event;
-import fi.vm.sade.events.EventHandler;
-import fi.vm.sade.events.impl.EventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+
+import fi.vm.sade.events.Event;
+import fi.vm.sade.events.EventHandler;
+import fi.vm.sade.events.impl.EventListener;
 
 /**
  * @author Hannu Lyytikainen

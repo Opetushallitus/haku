@@ -28,6 +28,7 @@ import java.util.Map;
  * @since 1.1
  */
 public class Rule extends Element {
+    private static final long serialVersionUID = 3813759485194245286L;
     protected Map<String, Element> childById = new HashMap<String, Element>();
 
     protected Rule(@JsonProperty String id) {

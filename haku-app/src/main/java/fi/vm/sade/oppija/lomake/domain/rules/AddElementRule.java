@@ -23,6 +23,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 public class AddElementRule extends Rule {
 
+    private static final long serialVersionUID = -911312576973189581L;
     private final String relatedElementId;
     private final String text;
 

@@ -22,6 +22,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public abstract class Question extends Titled {
 
+    private static final long serialVersionUID = -6202853270204822932L;
     private boolean inline = false;
 
     protected Question(@JsonProperty(value = "id") final String id,

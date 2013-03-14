@@ -30,6 +30,7 @@ import java.util.Map;
  */
 public abstract class DataRelatedQuestion<E extends Serializable> extends Question {
 
+    private static final long serialVersionUID = 1051594528316818102L;
     protected Map<String, E> data;
 
 

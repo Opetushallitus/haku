@@ -32,6 +32,7 @@ public class ElementTest {
     @Before
     public void setUp() throws Exception {
         testElement = new Element(ID) {
+            private static final long serialVersionUID = 4741463711894448833L;
         };
     }
 

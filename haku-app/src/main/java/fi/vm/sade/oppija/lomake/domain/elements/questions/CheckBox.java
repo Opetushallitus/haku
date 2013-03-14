@@ -21,6 +21,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class CheckBox extends Question {
 
+    private static final long serialVersionUID = -3440726329489605608L;
     private String value = "true";
 
     public CheckBox(@JsonProperty(value = "id") final String id,

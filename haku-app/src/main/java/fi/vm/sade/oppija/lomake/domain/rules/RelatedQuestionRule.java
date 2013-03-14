@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class RelatedQuestionRule extends Rule {
 
-
+    private static final long serialVersionUID = -6030200061901263949L;
     private final String expression;
     private final String relatedElementId;
 

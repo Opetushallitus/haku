@@ -1,12 +1,16 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.events.EventHandler;
-import fi.vm.sade.events.impl.EventListener;
-import fi.vm.sade.koulutusinformaatio.client.SolrClient;
-import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
-import fi.vm.sade.koulutusinformaatio.client.TarjontaClientRESTImpl;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.tarjonta.publication.types.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Source;
+
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
@@ -14,17 +18,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.Source;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import fi.vm.sade.koulutusinformaatio.client.SolrClient;
+import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.tarjonta.publication.types.ApplicationOptionType;
+import fi.vm.sade.tarjonta.publication.types.ApplicationSystemType;
+import fi.vm.sade.tarjonta.publication.types.ExtendedStringType;
+import fi.vm.sade.tarjonta.publication.types.LearningOpportunityDownloadDataType;
+import fi.vm.sade.tarjonta.publication.types.LearningOpportunityInstanceRefType;
+import fi.vm.sade.tarjonta.publication.types.LearningOpportunityInstanceType;
+import fi.vm.sade.tarjonta.publication.types.LearningOpportunityProviderType;
+import fi.vm.sade.tarjonta.publication.types.LearningOpportunitySpecificationType;
+import fi.vm.sade.tarjonta.publication.types.TextType;
 
 /**
  * @author Hannu Lyytikainen

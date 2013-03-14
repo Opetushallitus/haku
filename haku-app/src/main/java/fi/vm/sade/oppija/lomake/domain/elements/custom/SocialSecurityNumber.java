@@ -33,6 +33,8 @@ import java.util.List;
  */
 public class SocialSecurityNumber extends Question {
 
+    private static final long serialVersionUID = -5573908500482185095L;
+
     public static final String HENKILOTUNNUS = "Henkilotunnus";
 
     private TextQuestion ssn;

@@ -28,6 +28,7 @@ import java.util.List;
 
 public abstract class OptionQuestion extends Question {
 
+    private static final long serialVersionUID = -2304711424350028559L;
     private final List<Option> options = new ArrayList<Option>();
 
     protected OptionQuestion(@JsonProperty(value = "id") String id,

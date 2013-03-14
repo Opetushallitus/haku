@@ -21,6 +21,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Attachment extends Titled {
 
+    private static final long serialVersionUID = -2015627840867960871L;
+
     public Attachment(@JsonProperty(value = "id") final String id,
                       @JsonProperty(value = "i18nText") final I18nText i18nText) {
         super(id, i18nText);

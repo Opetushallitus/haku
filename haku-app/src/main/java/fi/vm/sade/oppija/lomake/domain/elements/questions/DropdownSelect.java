@@ -21,6 +21,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class DropdownSelect extends OptionQuestion {
 
+    private static final long serialVersionUID = -4123932313676830396L;
+
     public DropdownSelect(@JsonProperty(value = "id") final String id,
                           @JsonProperty(value = "i18nText") final I18nText i18nText) {
         super(id, i18nText);

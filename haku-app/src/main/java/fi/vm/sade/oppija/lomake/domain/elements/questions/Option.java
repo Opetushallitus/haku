@@ -22,6 +22,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Option extends Titled {
 
+    private static final long serialVersionUID = 2199056039532430243L;
     private final String value;
 
     public Option(@JsonProperty(value = "id") final String id,

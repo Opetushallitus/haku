@@ -30,6 +30,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 public class PreferenceRow extends Question {
 
+    private static final long serialVersionUID = 5149303147942411002L;
     // label text for reset button
     private I18nText resetLabel;
     // label text for education drop down select

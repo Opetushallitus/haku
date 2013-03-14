@@ -34,6 +34,8 @@ import java.util.List;
  */
 public class GradeGrid extends Titled {
 
+    private static final long serialVersionUID = 7703132498783434771L;
+
     // label shown in custom language row ('Kieli' etc)
     private String customLanguageTitle;
 

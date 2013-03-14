@@ -31,6 +31,7 @@ import java.util.List;
  */
 public class CustomLanguageRow extends LanguageRow {
 
+    private static final long serialVersionUID = -5564003292698489331L;
     private List<Option> scopeOptions;
 
     public CustomLanguageRow(@JsonProperty(value = "id") String id,

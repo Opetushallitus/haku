@@ -44,6 +44,7 @@ import static fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator
  */
 public class PreferenceTable extends Titled {
 
+    private static final long serialVersionUID = 1289678491786047575L;
     // label text for up button
     private String moveUpLabel;
     // label text for down button

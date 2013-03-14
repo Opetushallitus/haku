@@ -28,6 +28,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 public class LanguageRow extends SubjectRow {
 
+    private static final long serialVersionUID = -7948001529240423265L;
+
     public LanguageRow(@JsonProperty(value = "id") String id,
                        @JsonProperty(value = "i18nText") I18nText i18nText) {
         super(id, true, true, i18nText);

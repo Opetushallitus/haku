@@ -22,6 +22,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class TextArea extends Question {
 
+    private static final long serialVersionUID = -8549493045339575750L;
     public static final String ROWS = "3";
     public static final String COLS = "20";
 

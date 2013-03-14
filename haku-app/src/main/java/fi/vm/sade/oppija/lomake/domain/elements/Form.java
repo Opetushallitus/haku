@@ -27,6 +27,7 @@ import java.util.Map;
 
 public class Form extends Titled {
 
+    private static final long serialVersionUID = 8083152169717295356L;
     private transient String firstPhaseId;
     private transient String lastPhaseId;
 

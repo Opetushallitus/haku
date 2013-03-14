@@ -29,6 +29,7 @@ import java.util.Map;
  */
 public class WorkExperienceTheme extends Theme {
 
+    private static final long serialVersionUID = -750846124976213900L;
     // Degree types of the requested application options
     private String[] aoEducationDegreeKeys = OppijaConstants.getAoEducationDegreeKeys();
     // degree type that needs to be applied to

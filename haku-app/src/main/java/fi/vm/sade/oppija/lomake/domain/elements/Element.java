@@ -81,6 +81,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
         }
 )
 public abstract class Element implements Serializable {
+    private static final long serialVersionUID = 3485937447100055723L;
     public static final String ID_DELIMITER = "_";
     protected final String id;
     protected transient String type = this.getClass().getSimpleName();

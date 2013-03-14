@@ -17,8 +17,8 @@
 package fi.vm.sade.oppija.hakemus.it;
 
 import static java.lang.ClassLoader.getSystemResourceAsStream;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 import static net.sourceforge.jwebunit.junit.JWebUnit.getPageSource;
 
