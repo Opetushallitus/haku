@@ -92,8 +92,15 @@ public class KoodistoServiceMockImpl implements KoodistoService {
         );
         this.listOfSubjectsRowsSecondary = ImmutableList.of(
                 new SubjectRow("LUK_A1", true, true, createI18NText("A1-kieli")),
+                new SubjectRow("LUK_A12", true, true, createI18NText("A12-kieli")),
                 new SubjectRow("LUK_A2", true, true, createI18NText("A2-kieli")),
+                new SubjectRow("LUK_A22", true, true, createI18NText("A22-kieli")),
                 new SubjectRow("LUK_AI", true, true, createI18NText("Äidinkieli ja kirjallisuus")),
+                new SubjectRow("LUK_B1", true, true, createI18NText("B1-kieli")),
+                new SubjectRow("LUK_B2", true, true, createI18NText("B2-kieli")),
+                new SubjectRow("LUK_B22", true, true, createI18NText("B22-kieli")),
+                new SubjectRow("LUK_B23", true, true, createI18NText("B23-kieli")),
+                new SubjectRow("LUK_B3", true, true, createI18NText("B3-kieli")),
                 new SubjectRow("LUK_HI", false, false, createI18NText("Historia")),
                 new SubjectRow("LUK_YH", false, false, createI18NText("Yhteiskuntaoppi")),
                 new SubjectRow("LUK_MA", false, false, createI18NText("Matematiikka")),

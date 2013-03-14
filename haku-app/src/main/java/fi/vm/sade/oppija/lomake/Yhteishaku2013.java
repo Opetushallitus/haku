@@ -304,8 +304,11 @@ public class Yhteishaku2013 {
             String id = subject.getId();
             if (id.endsWith("AI")) {
                 finnish = subject;
-            } else if (!(id.endsWith("A1") || id.endsWith("B1") || id.endsWith("A2") || id.endsWith("B2")
-                    || id.endsWith("B3"))) {
+            } else if (!(id.endsWith("A1") || id.endsWith("A12")  || id.endsWith("A13") 
+                    || id.endsWith("A2") || id.endsWith("A22")  || id.endsWith("23") 
+                    || id.endsWith("B1") || id.endsWith("B12")  || id.endsWith("B13") 
+                    || id.endsWith("B2") || id.endsWith("B22")  || id.endsWith("B23") 
+                    || id.endsWith("B3") || id.endsWith("B32")  || id.endsWith("B33"))){ 
                 subjectRowsAfter.add(subject);
             }
         }
