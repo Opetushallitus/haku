@@ -449,11 +449,11 @@ public class Yhteishaku2013 {
 
     private void createKoulutustausta(Theme koulutustaustaRyhma) {
         koulutustaustaRyhma
-                .setHelp("Merkitse tälle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitä vain yhden kohdan. HUOM! " +
-                        "Jos olet suorittanut lukion oppimäärän tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimäärä. Lukion oppimäärän " +
-                        "tai ylioppilastutkinnon suorittaneet eivät voi hakea perusopetuksen päättötodistuksella. Ammatillisella " +
-                        "perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat " +
-                        "todistukset hyväksytyiksi tulleilta hakijoilta.");
+                .setHelp("Merkitse tälle sivulle tiedot koulutustaustastasi. Valitse pohjakoulutus, jonka perusteella haet. " +
+                        "Voit merkitä vain yhden vaihtoehdon. Huom! Jos olet suorittanut lukion oppimäärän, et voi hakea " +
+                        "perusopetuksen päättötodistuksella. Jos oppivelvollisuutesi on keskeytynyt tai olet suoritta nut " +
+                        "tutkintosi ulkomailla, haet automaattisesti harkintaan perustuvassa valinnassa. Oppilaitokset " +
+                        "tarkistavat todistukset hyväksytyiksi tulleilta hakijoilta.");
 
         Radio osallistunut = new Radio("osallistunut",
                 createI18NText("Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pääsykokeisiin?"));
