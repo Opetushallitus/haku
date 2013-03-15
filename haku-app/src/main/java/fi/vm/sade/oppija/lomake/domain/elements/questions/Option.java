@@ -24,6 +24,7 @@ public class Option extends Titled {
 
     private static final long serialVersionUID = 2199056039532430243L;
     private final String value;
+    private boolean defaultOption = false;
 
     public Option(@JsonProperty(value = "id") final String id,
                   @JsonProperty(value = "i18nText") final I18nText i18nText,
@@ -36,4 +37,11 @@ public class Option extends Titled {
         return value;
     }
 
+    public void setDefaultOption(boolean defaultOption) {
+        this.defaultOption = defaultOption;
+    }
+
+    public boolean isDefaultOption() {
+        return defaultOption;
+    }
 }

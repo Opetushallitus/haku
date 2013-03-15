@@ -126,7 +126,12 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
         this.listOfLanguages = listOfCountries;
 
-        this.listOfNationalities = listOfCountries;
+        this.listOfNationalities =
+                ImmutableList.of(
+                        new Option("FI",
+                                createI18NText("Suomi"), "FI"),
+                        new Option("SV",
+                                createI18NText("Ruotsi"), "SV"));
 
 
         this.listOfMunicipalities = ImmutableList.of(

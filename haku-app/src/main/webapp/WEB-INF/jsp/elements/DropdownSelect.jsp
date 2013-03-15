@@ -27,7 +27,7 @@
             <c:forEach var="option" items="${element.options}">
                 <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
                 <option name="${element.id}"
-                        value="${option.value}" ${(categoryData[element.id] eq option.value) ? "selected=\"selected\" " : " "} ${option.attributeString}>
+                        value="${option.value}" ${(categoryData[element.id] eq option.value or (categoryData[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "} ${option.attributeString}>
                     <haku:i18nText value="${option.i18nText}"/></option>
             </c:forEach>
         </select>

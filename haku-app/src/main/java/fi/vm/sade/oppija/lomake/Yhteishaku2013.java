@@ -137,6 +137,7 @@ public class Yhteishaku2013 {
 
         DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", createI18NText("Kansalaisuus"));
         kansalaisuus.addOptions(koodistoService.getNationalities());
+        setDefaultOption("FI", kansalaisuus.getOptions());
         // kansalaisuus.addOption("fi", createI18NText("Suomi"), "fi");
         // kansalaisuus.addOption("sv", createI18NText("Ruotsi"), "sv");
         kansalaisuus.addAttribute("placeholder", "Valitse kansalaisuus");
@@ -694,5 +695,13 @@ public class Yhteishaku2013 {
             postOfficeMap.put(postOffice.getPostcode(), postOffice);
         }
         return ImmutableMap.copyOf(postOfficeMap);
+    }
+
+    private void setDefaultOption(final String value, final List<Option> options) {
+        for (Option opt : options) {
+            if (opt.getValue().equalsIgnoreCase(value)) {
+                opt.setDefaultOption(true);
+            }
+        }
     }
 }
