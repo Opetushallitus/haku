@@ -10,7 +10,7 @@ public final class UriUtil {
     private UriUtil() {
     }
 
-    public static final URI pathSegmentsToUri(String... paths) throws URISyntaxException {
+    public static URI pathSegmentsToUri(String... paths) throws URISyntaxException {
         Joiner joiner = Joiner.on("/").skipNulls();
         return new URI(joiner.join(paths));
     }
