@@ -15,6 +15,9 @@ import java.util.List;
 
 public class OfficerIT extends AbstractSeleniumBase {
 
+    private WebDriver driver;
+    private Selenium selenium;
+
     @Before
     public void setUp() throws Exception {
         FormServiceMockImpl formModelDummyMemoryDao = new FormServiceMockImpl();
@@ -23,22 +26,23 @@ public class OfficerIT extends AbstractSeleniumBase {
         hakuClient.apply();
         final LoginPage loginPage = new LoginPage(seleniumHelper.getSelenium());
         loginPage.login("officer");
+        driver = seleniumHelper.getDriver();
+        selenium = seleniumHelper.getSelenium();
     }
 
     @Test
-    public void testList() throws Exception {
-        WebDriver driver = seleniumHelper.getDriver();
-        driver.findElement(new By.ById("search-applications")).click();
-        List<WebElement> elements = driver.findElements(new By.ByClassName("application-link"));
-        WebElement applicationLink = elements.get(0);
+    public void testSearchAndModify() throws Exception {
+
+        clickSearch();
+        WebElement applicationLink = findApplicationLinks().get(0);
         applicationLink.click();
-        driver.findElement(By.xpath("//*[contains(.,'ACTIVE')]"));
+        checkApplicationState("ACTIVE");
         List<WebElement> editLinks = driver.findElements(new By.ByClassName("edit-link"));
         WebElement editLink = editLinks.get(1);
         editLink.click();
         driver.findElement(new By.ById("millatutkinnolla_tutkinto6")).click();
         driver.findElement(new By.ByClassName("save")).click();
-        driver.findElement(By.xpath("//*[contains(.,'INCOMPLETE')]"));
+        checkApplicationState("INCOMPLETE");
     }
 
     @Test
@@ -50,5 +54,47 @@ public class OfficerIT extends AbstractSeleniumBase {
         driver.findElement(new By.ById("search-organizations")).click();
         driver.findElement(new By.ById("1.2.246.562.10.10108401950"));
 
+    }
+
+    @Test
+    public void testSearchByName() throws Exception {
+        SearchByTerm("Urho");
+    }
+
+    @Test
+    public void testSearchByNameNotFound() throws Exception {
+        SearchByTerm("Urhoasdf");
+    }
+
+    @Test
+    public void testSearchByLastname() throws Exception {
+        SearchByTerm("Kekkonen");
+    }
+
+    @Test
+    public void testSearchBySsn() throws Exception {
+        SearchByTerm("270802-184A");
+    }
+
+    private void SearchByTerm(final String term) {
+        enterSearchTerm(term);
+        clickSearch();
+        findApplicationLinks();
+    }
+
+    private void enterSearchTerm(final String term) {
+        selenium.typeKeys("entry", term);
+    }
+
+    private void checkApplicationState(String applicationState) {
+        driver.findElement(By.xpath("//*[contains(.,'" + applicationState + "')]"));
+    }
+
+    private List<WebElement> findApplicationLinks() {
+        return driver.findElements(new By.ByClassName("application-link"));
+    }
+
+    private void clickSearch() {
+        driver.findElement(new By.ById("search-applications")).click();
     }
 }

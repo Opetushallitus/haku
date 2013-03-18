@@ -147,11 +147,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         QueryBuilder baseQuery = QueryBuilder.start();
         DBObject query;
-        if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
-        } else {
-            query = baseQuery.get();
-        }
+        query = newQueryBuilderWithFilters(filters, baseQuery);
         return findApplications(query);
     }
 
@@ -192,17 +188,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public List<Application> findByApplicantName(String term, ApplicationQueryParameters applicationQueryParameters) {
-        DBObject query;
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         Pattern namePattern = Pattern.compile(term, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
         QueryBuilder baseQuery = QueryBuilder.start().or(
                 QueryBuilder.start("answers.henkilotiedot.Etunimet").regex(namePattern).get(),
                 QueryBuilder.start("answers.henkilotiedot.Sukunimi").regex(namePattern).get());
-        if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
-        } else {
-            query = baseQuery.get();
-        }
+        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
         return findApplications(query);
     }
 
@@ -219,12 +210,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     QueryBuilder.start(FIELD_APPLICATION_OID).is(applicationOidPrefix + "." + term).get(),
                     QueryBuilder.start(FIELD_PERSON_OID).is(userOidPrefix + "." + term).get());
         }
-        DBObject query;
-        if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
-        } else {
-            query = baseQuery.get();
-        }
+        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
         return findApplications(query);
     }
 
@@ -232,12 +218,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public List<Application> findByApplicationOid(String term, ApplicationQueryParameters applicationQueryParameters) {
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         QueryBuilder baseQuery = QueryBuilder.start(FIELD_APPLICATION_OID).is(term);
-        DBObject query;
-        if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
-        } else {
-            query = baseQuery.get();
-        }
+        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
         return findApplications(query);
     }
 
@@ -245,12 +226,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public List<Application> findByUserOid(String term, ApplicationQueryParameters applicationQueryParameters) {
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         QueryBuilder baseQuery = QueryBuilder.start(FIELD_PERSON_OID).is(term);
-        DBObject query;
-        if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
-        } else {
-            query = baseQuery.get();
-        }
+        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
         return findApplications(query);
     }
 
@@ -259,12 +235,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         QueryBuilder baseQuery = QueryBuilder.start("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH)
                 .is(shaEncrypter.encrypt(term));
-        DBObject query;
-        if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
-        } else {
-            query = baseQuery.get();
-        }
+        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
         return findApplications(query);
     }
 
@@ -273,16 +244,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         String dob = hetuDobToIsoDate(term);
         QueryBuilder baseQuery = QueryBuilder.start("answers.henkilotiedot.syntymaaika").is(dob);
-        DBObject query;
-        if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
-        } else {
-            query = baseQuery.get();
-        }
+        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
         return findApplications(query);
     }
 
-    private String hetuDobToIsoDate(String term) {
+    private String hetuDobToIsoDate(final String term) {
         DateFormat dobFmt = new SimpleDateFormat("ddMMyy");
         DateFormat isoFmt = new SimpleDateFormat("yyyy-MM-dd");
         dobFmt.setLenient(false);
@@ -340,5 +306,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
 
         return filters.toArray(new DBObject[filters.size()]);
+    }
+
+    private DBObject newQueryBuilderWithFilters(final DBObject[] filters, final QueryBuilder baseQuery) {
+        DBObject query;
+        if (filters.length > 0) {
+            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
+        } else {
+            query = baseQuery.get();
+        }
+        return query;
     }
 }

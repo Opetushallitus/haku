@@ -42,9 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static java.lang.ClassLoader.getSystemResourceAsStream;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
@@ -102,7 +100,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         List<Application> applications = applicationDAO.find(new Application(formId, TEST_USER));
         assertTrue(applications.isEmpty());
     }
-    
+
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testFindPendingApplicationNotFound() throws Exception {
         applicationDAO.findDraftApplication(new Application(formId, TEST_USER));
@@ -153,7 +151,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         applications = applicationDAO.findByApplicantName("Hessu", activeParameters);
         assertEquals(1, applications.size());
     }
-    
+
     @Test
     public void testCheckIfExistsBySocialSecurityNumber() {
         assertTrue(applicationDAO.checkIfExistsBySocialSecurityNumber("Yhteishaku", "050998-957M"));
@@ -161,7 +159,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("Yhteishaku", ""));
         assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("Yhteishaku", null));
     }
-    
+
     @Override
     protected String getCollectionName() {
         return "application";
