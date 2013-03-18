@@ -61,11 +61,8 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
         sukupuoli.addAttribute("required", "required");
         sukupuoli.setInline(true);
 
-        SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NText("Henkilötunnus"));
-        socialSecurityNumber.setSsn(henkilötunnus);
-        socialSecurityNumber.setSex(sukupuoli);
-        socialSecurityNumber.setMaleId(sukupuoli.getOptions().get(0).getId());
-        socialSecurityNumber.setFemaleId(sukupuoli.getOptions().get(1).getId());
+        SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NText("Henkilötunnus"),
+                sukupuoli.getI18nText(), sukupuoli.getOptions().get(0), sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilötunnus);
 
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(socialSecurityNumber);
         this.formModelHelper = updateIndexAndFormModel(formModel);
@@ -78,11 +75,7 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
         seleniumHelper.getDriver().get(getBaseUrl() + "/" + startUrl);
         seleniumHelper.getSelenium().type("Henkilotunnus", "010101-111X");
 
-        String maleChecked = seleniumHelper.getDriver().findElement(By.id("Sukupuoli_mies")).getAttribute("checked");
-        String femaleChecked = seleniumHelper.getDriver().findElement(By.id("Sukupuoli_nainen")).getAttribute("checked");
-
-        assertEquals("true", maleChecked);
-        assertNull(femaleChecked);
+        seleniumHelper.getDriver().findElement(By.xpath("//*[text()='Mies']"));
     }
 
     @Test
@@ -91,11 +84,7 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
         seleniumHelper.getDriver().get(getBaseUrl() + "/" + startUrl);
         seleniumHelper.getSelenium().type("Henkilotunnus", "010101-112X");
 
-        String maleChecked = seleniumHelper.getDriver().findElement(By.id("Sukupuoli_mies")).getAttribute("checked");
-        String femaleChecked = seleniumHelper.getDriver().findElement(By.id("Sukupuoli_nainen")).getAttribute("checked");
-
-        assertEquals("true", femaleChecked);
-        assertNull(maleChecked);
+        seleniumHelper.getDriver().findElement(By.xpath("//*[text()='Nainen']"));
 
 
     }

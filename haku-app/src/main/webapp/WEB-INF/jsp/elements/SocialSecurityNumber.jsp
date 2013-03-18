@@ -20,22 +20,51 @@
 <c:set var="ssnElement" value="${element}"/>
 
 <c:set var="element" value="${ssnElement.ssn}" scope="request"/>
-<jsp:include page="/WEB-INF/jsp/elements/TextQuestion.jsp"/>
 
-<c:set var="element" value="${ssnElement.sex}" scope="request"/>
-<jsp:include page="/WEB-INF/jsp/elements/Radio.jsp"/>
+<c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
+<div class="${styleBaseClass}">
+    <haku:label element="${element}" styleBaseClass="${styleBaseClass}"/>
+    <div class="${styleBaseClass}-content">
+        <div class="field-container-text">
+            <input ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"/>
+            <span id="sex">
+                <c:if test="${categoryData[ssnElement.sexId] eq ssnElement.maleOption.value}">
+                    <haku:i18nText value="${ssnElement.maleOption.i18nText}"/>
+                </c:if>
+                <c:if test="${categoryData[ssnElement.sexId] eq ssnElement.femaleOption.value}">
+                    <haku:i18nText value="${ssnElement.femaleOption.i18nText}"/>
+                </c:if>
+            </span>
+            <input id="${ssnElement.sexId}" name="${ssnElement.sexId}" value="${categoryData[ssnElement.sexId]}" type="hidden"/>
+            <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
+        </div>
+        <haku:help element="${element}"/>
+    </div>
+    <div class="clear"></div>
+</div>
+
+
 
 <script>
     (function() {
-        var ssnId = "<c:out value="${ssnElement.ssn.id}"/>";
+        var ssnId = "<c:out value="${ssnElement.ssn.id}"/>",
+            maleLabel = "<haku:i18nText value="${ssnElement.maleOption.i18nText}"/>",
+            femaleLabel = "<haku:i18nText value="${ssnElement.femaleOption.i18nText}"/>",
+            maleValue = "<c:out value="${ssnElement.maleOption.value}"/>",
+            femaleValue = "<c:out value="${ssnElement.femaleOption.value}"/>",
+            sexId = "<c:out value="${ssnElement.sexId}"/>";
         $("#" + ssnId).change(function() {
             var maleReg   = /\d{6}[-+aA]\d{2}[13579]\w/;
             var femaleReg = /\d{6}[-+aA]\d{2}[02468]\w/;
             if (maleReg.test($("#" + ssnId).val())) {
-                $("#<c:out value="${ssnElement.maleId}"/>").attr("checked", true);
-            }
-            if (femaleReg.test($("#" + ssnId).val())) {
-                $("#<c:out value="${ssnElement.femaleId}"/>").attr("checked", true);
+                $("#sex").html(maleLabel);
+                $("#" + sexId).val(maleValue);
+            } else if (femaleReg.test($("#" + ssnId).val())) {
+                 $("#sex").html(femaleLabel);
+                 $("#" + sexId).val(femaleValue);
+            } else {
+                 $("#sex").html("");
+                 $("#" + sexId).val("");
             }
         });
     }());

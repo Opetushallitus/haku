@@ -138,8 +138,6 @@ public class Yhteishaku2013 {
         DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", createI18NText("Kansalaisuus"));
         kansalaisuus.addOptions(koodistoService.getNationalities());
         setDefaultOption("FI", kansalaisuus.getOptions());
-        // kansalaisuus.addOption("fi", createI18NText("Suomi"), "fi");
-        // kansalaisuus.addOption("sv", createI18NText("Ruotsi"), "sv");
         kansalaisuus.addAttribute("placeholder", "Valitse kansalaisuus");
         kansalaisuus.addAttribute("required", "required");
         kansalaisuus.setHelp("Jos sinulla on kaksoiskansalaisuus, valitse toinen niistä");
@@ -175,12 +173,11 @@ public class Yhteishaku2013 {
         email.setInline(true);
 
         TextQuestion henkilotunnus = new TextQuestion("Henkilotunnus", createI18NText("Henkilötunnus"));
-        henkilotunnus.addAttribute("placeholder", "ppkkvv***** or dd.mm.yyyy");
+        henkilotunnus.addAttribute("placeholder", "ppkkvv*****");
         henkilotunnus.addAttribute("required", "required");
-        henkilotunnus.addAttribute("pattern", "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))|[0-9]{2}[.][0-9]{2}[.][0-9]{4}");
+        henkilotunnus.addAttribute("pattern", "^([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))$");
         henkilotunnus.addAttribute("size", "11");
         henkilotunnus.addAttribute("maxlength", "11");
-        henkilotunnus.setHelp("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi");
         henkilotunnus.setVerboseHelp(getVerboseHelp());
         henkilotunnus.setInline(true);
 
@@ -191,20 +188,45 @@ public class Yhteishaku2013 {
         sukupuoli.setVerboseHelp(getVerboseHelp());
         sukupuoli.setInline(true);
 
-        SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question",
-                createI18NText("Henkilötunnus"));
-        socialSecurityNumber.setSsn(henkilotunnus);
-        socialSecurityNumber.setSex(sukupuoli);
-        socialSecurityNumber.setMaleId(sukupuoli.getOptions().get(0).getId());
-        socialSecurityNumber.setFemaleId(sukupuoli.getOptions().get(1).getId());
-        socialSecurityNumber.setNationalityId(kansalaisuus.getId());
+        SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NText("Henkilötunnus"),
+                sukupuoli.getI18nText(), sukupuoli.getOptions().get(0), sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilotunnus);
 
-        // SelectingSubmitRule autofillhetu = new
-        // SelectingSubmitRule(henkilötunnus.getId(), sukupuoli.getId());
-        // autofillhetu.addBinding(henkilötunnus, sukupuoli,
-        // "\\d{6}\\S\\d{2}[13579]\\w", sukupuoli.getOptions().get(0));
-        // autofillhetu.addBinding(henkilötunnus, sukupuoli,
-        // "\\d{6}\\S\\d{2}[24680]\\w", sukupuoli.getOptions().get(1));
+        TextQuestion syntymapaikka = new TextQuestion("syntymapaikka", createI18NText("Syntymäpaikka"));
+        syntymapaikka.addAttribute("size", "30");
+        syntymapaikka.addAttribute("required", "required");
+        syntymapaikka.setInline(true);
+
+        TextQuestion kansallinenIdTunnus = new TextQuestion("kansallinenIdTunnus", createI18NText("Kansallinen ID-tunnus"));
+        kansallinenIdTunnus.addAttribute("size", "30");
+        kansallinenIdTunnus.addAttribute("required", "required");
+        kansallinenIdTunnus.setInline(true);
+
+        TextQuestion passinnumero = new TextQuestion("passinnumero", createI18NText("Passinnumero"));
+        passinnumero.addAttribute("size", "30");
+        passinnumero.addAttribute("required", "required");
+        passinnumero.setInline(true);
+
+        Radio onkoSinullaSuomalainenHetu = new Radio("onkoSinullaSuomalainenHetu", createI18NText("Onko sinulla suomalainen henkilötunnus?"));
+        onkoSinullaSuomalainenHetu.addOption("true", createI18NText("Kyllä"), "true");
+        onkoSinullaSuomalainenHetu.addOption("false", createI18NText("Ei"), "false");
+        onkoSinullaSuomalainenHetu.addAttribute("required", "required");
+        onkoSinullaSuomalainenHetu.setVerboseHelp(getVerboseHelp());
+        onkoSinullaSuomalainenHetu.setInline(true);
+
+        RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FI$");
+        hetuRule.addChild(socialSecurityNumber);
+        RelatedQuestionRule ulkomaalaisenTunnisteetRule = new RelatedQuestionRule("ulkomaalaisenTunnisteetRule", kansalaisuus.getId(), "(?!FI)([A-Z]{2})");
+        ulkomaalaisenTunnisteetRule.addChild(onkoSinullaSuomalainenHetu);
+
+        RelatedQuestionRule suomalainenHetuRule = new RelatedQuestionRule("suomalainenHetuRule", onkoSinullaSuomalainenHetu.getId(), "^true");
+        suomalainenHetuRule.addChild(socialSecurityNumber);
+        onkoSinullaSuomalainenHetu.addChild(suomalainenHetuRule);
+
+        RelatedQuestionRule eiSuomalaistaHetuaRule = new RelatedQuestionRule("eiSuomalaistaHetuaRule", onkoSinullaSuomalainenHetu.getId(), "^false");
+        eiSuomalaistaHetuaRule.addChild(sukupuoli);
+        eiSuomalaistaHetuaRule.addChild(kansallinenIdTunnus);
+        eiSuomalaistaHetuaRule.addChild(passinnumero);
+        onkoSinullaSuomalainenHetu.addChild(eiSuomalaistaHetuaRule);
 
         Element postinumero = new PostalCode("Postinumero", createI18NText("Postinumero"), createPostOffices());
         postinumero.addAttribute("size", "5");
@@ -218,8 +240,7 @@ public class Yhteishaku2013 {
         DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", createI18NText("Asuinmaa"));
         Option option = asuinmaa.addOption("valitse", null, "");
         asuinmaa.addOptions(koodistoService.getCountries());
-        // asuinmaa.addOption("fi", createI18NText("Suomi"), "fi");
-        // asuinmaa.addOption("sv", createI18NText("Ruotsi"), "sv");
+
         asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
         asuinmaa.addAttribute("required", "required");
         asuinmaa.setVerboseHelp(getVerboseHelp());
@@ -279,7 +300,7 @@ public class Yhteishaku2013 {
         etunimet.addAttribute("iso8859name", "iso8859name");
 
         henkilotiedotRyhma.addChild(sukunimi).addChild(etunimet).addChild(kutsumanimi).addChild(kansalaisuus)
-                .addChild(socialSecurityNumber).addChild(email).addChild(matkapuhelinnumero)
+                .addChild(hetuRule).addChild(ulkomaalaisenTunnisteetRule).addChild(email).addChild(matkapuhelinnumero)
                 .addChild(addHuoltajanPuhelinnumero).addChild(asuinmaa).addChild(aidinkieli);
 
         createKoulutustausta(koulutustaustaRyhma);

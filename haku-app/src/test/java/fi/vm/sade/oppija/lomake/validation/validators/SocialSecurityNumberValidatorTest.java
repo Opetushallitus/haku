@@ -43,7 +43,7 @@ public class SocialSecurityNumberValidatorTest {
         values.put("kansalaisuus", "fi");
         for (String hetu : hetus) {
             values.put("henkilotunnus", hetu);
-            SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus", "kansalaisuus");
+            SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus");
             ValidationResult validationResult = validator.validate(values);
             assertFalse(validationResult.hasErrors());
         }
@@ -53,7 +53,7 @@ public class SocialSecurityNumberValidatorTest {
     public void testValidateInvalidCheck() throws Exception {
         values.put("henkilotunnus", "120187-123Z");
         values.put("kansalaisuus", "fi");
-        SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus", "kansalaisuus");
+        SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus");
         ValidationResult validationResult = validator.validate(values);
         assertTrue(validationResult.hasErrors());
     }
@@ -62,27 +62,9 @@ public class SocialSecurityNumberValidatorTest {
     public void testValidateInvalid() throws Exception {
         values.put("henkilotunnus", "10.02.1977");
         values.put("kansalaisuus", "fi");
-        SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus", "kansalaisuus");
+        SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus");
         ValidationResult validationResult = validator.validate(values);
         assertTrue(validationResult.hasErrors());
-    }
-
-    @Test
-    public void testValidateValidNotFinn() throws Exception {
-        values.put("henkilotunnus", "10.02.1977");
-        values.put("kansalaisuus", "sv");
-        SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus", "kansalaisuus");
-        ValidationResult validationResult = validator.validate(values);
-        assertFalse(validationResult.hasErrors());
-    }
-
-    @Test
-    public void testValidateValidDualNationality() throws Exception {
-        values.put("henkilotunnus", "120187-1234");
-        values.put("kansalaisuus", "sv");
-        SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus", "kansalaisuus");
-        ValidationResult validationResult = validator.validate(values);
-        assertFalse(validationResult.hasErrors());
     }
     
     @Test
@@ -91,7 +73,7 @@ public class SocialSecurityNumberValidatorTest {
         values.put("kansalaisuus", "fi");
         for (String hetu : hetus) {
             values.put("henkilotunnus", hetu);
-            SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus", "kansalaisuus");
+            SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus");
             ValidationResult validationResult = validator.validate(values);
             assertTrue(validationResult.hasErrors());
         }
@@ -101,7 +83,7 @@ public class SocialSecurityNumberValidatorTest {
     public void testNotYetBorn() {
         values.put("henkilotunnus", "311299A999E");
         values.put("kansalaisuus", "fi");
-        SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus", "kansalaisuus");
+        SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus");
         ValidationResult validationResult = validator.validate(values);
         assertTrue(validationResult.hasErrors());
     }

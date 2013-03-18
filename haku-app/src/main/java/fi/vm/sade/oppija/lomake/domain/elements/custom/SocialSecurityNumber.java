@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
@@ -39,67 +40,53 @@ public class SocialSecurityNumber extends Question {
 
     private TextQuestion ssn;
 
-    private Radio sex;
-
-    private String maleId;
-    private String femaleId;
-    private String nationalityId;
+    private Option maleOption;
+    private Option femaleOption;
+    private String sexId;
+    private I18nText sexI18nText;
     public static final String HENKILOTUNNUS_HASH = "Henkilotunnus_digest";
 
     public SocialSecurityNumber(@JsonProperty(value = "id") final String id,
-                                @JsonProperty(value = "i18nText") final I18nText i18nText) {
+                                @JsonProperty(value = "i18nText") final I18nText i18nText,
+                                @JsonProperty(value = "sexI18nText") final I18nText sexI18nText,
+                                @JsonProperty(value = "maleOption") final Option maleOption,
+                                @JsonProperty(value = "femaleOption") final Option femaleOption,
+                                @JsonProperty(value = "sexId") final String sexId,
+                                @JsonProperty(value = "ssn") final TextQuestion ssn) {
         super(id, i18nText);
-        this.ssn = null;
-        this.sex = null;
+        this.ssn = ssn;
+        this.maleOption = maleOption;
+        this.femaleOption = femaleOption;
+        this.sexId = sexId;
+        this.sexI18nText = sexI18nText;
     }
 
     public TextQuestion getSsn() {
         return ssn;
     }
 
-    public void setSex(Radio sex) {
-        this.sex = sex;
+    public Option getMaleOption() {
+        return maleOption;
     }
 
-    public void setSsn(TextQuestion ssn) {
-        this.ssn = ssn;
+    public Option getFemaleOption() {
+        return femaleOption;
     }
 
-    public Radio getSex() {
-        return sex;
+    public String getSexId() {
+        return sexId;
     }
 
-    public String getMaleId() {
-        return maleId;
-    }
-
-    public String getFemaleId() {
-        return femaleId;
-    }
-
-    public void setMaleId(String maleId) {
-        this.maleId = maleId;
-    }
-
-    public void setFemaleId(String femaleId) {
-        this.femaleId = femaleId;
-    }
-
-    public String getNationalityId() {
-        return nationalityId;
-    }
-
-    public void setNationalityId(String nationalityId) {
-        this.nationalityId = nationalityId;
+    public I18nText getSexI18nText() {
+        return sexI18nText;
     }
 
     @Override
     @JsonIgnore
     public List<Validator> getValidators() {
         List<Validator> listOfValidators = new ArrayList<Validator>();
-        listOfValidators.addAll(this.sex.getValidators());
         listOfValidators.addAll(this.ssn.getValidators());
-        listOfValidators.add(new SocialSecurityNumberFieldValidator(ssn.getId(), getNationalityId()));
+        listOfValidators.add(new SocialSecurityNumberFieldValidator(ssn.getId()));
         listOfValidators.addAll(this.validators);
         return listOfValidators;
     }

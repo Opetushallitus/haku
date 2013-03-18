@@ -38,10 +38,8 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     // Sonarin mukaan tässä luokassa on isosti taikanumeroita. Niin on.
     // Hetussa on määrättyjä asioita tarkoittavia numeroita määrätyillä
     // paikoilla, enkä ala tehdä niitä varten erityisjärjestelyjä.
-    
-    private String nationalityId;
+
     private final Pattern socialSecurityNumberPattern;
-    private static final String FI = "fi";
     public static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}[aA+-][0-9]{3}([0-9]|[a-z]|[A-Z]))";
     private static final String NOT_A_DATE_ERROR = "Henkilötunnuksen alkuosa ei muodosta päivämäärää";
     private static final String DOB_IN_FUTURE = "Henkilötunnuksen syntymäaika on tulevaisuudessa";
@@ -58,14 +56,13 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
         centuries.put("A", 2000); // NOSONAR
     }
 
-    public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId, final String nationalityId) {
-        this(socialSecurityNumberId, nationalityId, GENERIC_ERROR_MESSAGE, SOCIAL_SECURITY_NUMBER_PATTERN);
+    public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId) {
+        this(socialSecurityNumberId, GENERIC_ERROR_MESSAGE, SOCIAL_SECURITY_NUMBER_PATTERN);
     }
 
-    public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId, final String nationalityId,
+    public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId,
                                               final String errorMessage, final String socialSecurityNumberPattern) {
         super(socialSecurityNumberId, errorMessage);
-        this.nationalityId = nationalityId;
         this.socialSecurityNumberPattern = Pattern.compile(socialSecurityNumberPattern);
         fmt = new SimpleDateFormat("ddMMyyyy");
         fmt.setLenient(false);
@@ -74,20 +71,17 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     @Override
     public ValidationResult validate(Map<String, String> values) {
         String socialSecurityNumber = values.get(fieldName);
-        String nationality = values.get(nationalityId);
         ValidationResult validationResult = new ValidationResult();
-        if (socialSecurityNumber != null && nationality != null) {
+        if (socialSecurityNumber != null) {
             Matcher matcher = socialSecurityNumberPattern.matcher(socialSecurityNumber);
-            if (nationality.equalsIgnoreCase(FI)) {
-                if (!matcher.matches()) {
-                    validationResult = new ValidationResult(fieldName, GENERIC_ERROR_MESSAGE);
-                }
-                if (!validationResult.hasErrors()) {
-                    validationResult = checkDOB(socialSecurityNumber);
-                }
-                if (!validationResult.hasErrors()) {
-                    validationResult = checkCheckSum(socialSecurityNumber);
-                }
+            if (!matcher.matches()) {
+                validationResult = new ValidationResult(fieldName, GENERIC_ERROR_MESSAGE);
+            }
+            if (!validationResult.hasErrors()) {
+                validationResult = checkDOB(socialSecurityNumber);
+            }
+            if (!validationResult.hasErrors()) {
+                validationResult = checkCheckSum(socialSecurityNumber);
             }
         }
         return validationResult;

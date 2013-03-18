@@ -55,13 +55,9 @@
         })();
     </script>
     <div class="rule-childs clear">
-        <c:choose>
-            <c:when test="${not empty categoryData[key]}">
-                <c:if test="${fn:evaluate(categoryData[key], element.expression)}">
-                    <haku:viewChilds element="${element}"/>
-                </c:if>
-            </c:when>
-        </c:choose>
+        <c:if test="${fn:evaluate(categoryData[key], element.expression)}">
+            <haku:viewChilds element="${element}"/>
+        </c:if>
     </div>
     <noscript>
         <input type="submit" id="enabling-submit" name="enabling-submit" value="Ok"/>
