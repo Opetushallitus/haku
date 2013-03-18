@@ -7,4 +7,8 @@ public class ConfigurationException extends RuntimeException {
     public ConfigurationException(final Throwable cause) {
         super(cause);
     }
+
+    public ConfigurationException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 }

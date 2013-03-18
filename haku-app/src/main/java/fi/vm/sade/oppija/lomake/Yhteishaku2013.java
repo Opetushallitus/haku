@@ -83,7 +83,8 @@ public class Yhteishaku2013 {
         final String elementIdPrefix = id.replace('.', '_');
         Radio radio = new Radio(
                 elementIdPrefix + "_additional_question_1",
-                createI18NText("Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. Onko sinulla terveydellisiä " +
+                createI18NText("Tällä alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenä. " +
+                        "Onko sinulla terveydellisiä " +
                         "tekijöitä, jotka voivat olla opiskelijatksi ottamisen esteenä?"));
         radio.addOption(id + "_q1_option_1", createI18NText("Ei"), "q1_option_1");
         radio.addOption(id + "_q1_option_2", createI18NText("Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi"),
@@ -91,18 +92,24 @@ public class Yhteishaku2013 {
 
         Radio radio2 = new Radio(
                 elementIdPrefix + "_additional_question_2",
-                createI18NText("Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös opiskeluoikeuden peruuttamisessa. Onko " +
-                        "opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden turvallisuuden vaarantamisen takia?"));
+                createI18NText("Tässä koulutuksessa opiskelijaksi ottamisen esteenä voi olla eiempi päätös " +
+                        "opiskeluoikeuden peruuttamisessa. Onko " +
+                        "opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilöiden " +
+                        "turvallisuuden vaarantamisen takia?"));
         radio2.addOption(id + "_q2_option_1", createI18NText("Ei"), "q2_option_1");
         radio2.addOption(id + "_q2_option_2",
                 createI18NText("Kyllä. Ymmärrä, etten tästä johtuen ehkä tule valituksi"), "q2_option_2");
 
         Radio radio3 = new Radio(
                 elementIdPrefix + "_additional_question_3",
-                createI18NText("Jos olet osallistunut saman alan pääsykokeeseen, niin haluatko käyttää hyväksyttyjä koetuloksiasi?"));
-        radio3.addOption(elementIdPrefix + "_q3_option_1", createI18NText("En, en ole osallistunut pääsykokeeseen"), "q3_option_1");
-        radio3.addOption(elementIdPrefix + "_q3_option_2", createI18NText("Ei, en halua käyttää tuloksia"), "q3_option_2");
-        radio3.addOption(elementIdPrefix + "_q3_option_3", createI18NText("Kyllä, haluan käyttää pääsykoetuloksia"), "q3_option_3");
+                createI18NText("Jos olet osallistunut saman alan pääsykokeeseen, " +
+                        "niin haluatko käyttää hyväksyttyjä koetuloksiasi?"));
+        radio3.addOption(elementIdPrefix + "_q3_option_1",
+                createI18NText("En, en ole osallistunut pääsykokeeseen"), "q3_option_1");
+        radio3.addOption(elementIdPrefix + "_q3_option_2",
+                createI18NText("Ei, en halua käyttää tuloksia"), "q3_option_2");
+        radio3.addOption(elementIdPrefix + "_q3_option_3",
+                createI18NText("Kyllä, haluan käyttää pääsykoetuloksia"), "q3_option_3");
 
         List<Question> lisakysymysList = new ArrayList<Question>();
         lisakysymysList.add(radio);
@@ -167,7 +174,8 @@ public class Yhteishaku2013 {
         TextQuestion email = new TextQuestion("Sähköposti", createI18NText("Sähköpostiosoite"));
         email.addAttribute("size", "50");
         email.addAttribute("pattern", "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$");
-        email.setHelp("Kirjoita tähän sähköpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat " +
+        email.setHelp("Kirjoita tähän sähköpostiosoite, " +
+                "johon haluat vastaanottaa opiskelijavalintaan liittyviä tietoja ja jota käytät säännöllisesti. Saat " +
                 "vahvistuksen hakemuksen perille menosta tähän sähköpostiosoitteeseen.");
         email.setVerboseHelp(getVerboseHelp());
         email.setInline(true);
@@ -189,7 +197,8 @@ public class Yhteishaku2013 {
         sukupuoli.setInline(true);
 
         SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NText("Henkilötunnus"),
-                sukupuoli.getI18nText(), sukupuoli.getOptions().get(0), sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilotunnus);
+                sukupuoli.getI18nText(), sukupuoli.getOptions().get(0),
+                sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilotunnus);
 
         TextQuestion syntymapaikka = new TextQuestion("syntymapaikka", createI18NText("Syntymäpaikka"));
         syntymapaikka.addAttribute("size", "30");
@@ -206,7 +215,8 @@ public class Yhteishaku2013 {
         passinnumero.addAttribute("required", "required");
         passinnumero.setInline(true);
 
-        Radio onkoSinullaSuomalainenHetu = new Radio("onkoSinullaSuomalainenHetu", createI18NText("Onko sinulla suomalainen henkilötunnus?"));
+        Radio onkoSinullaSuomalainenHetu = new Radio("onkoSinullaSuomalainenHetu",
+                createI18NText("Onko sinulla suomalainen henkilötunnus?"));
         onkoSinullaSuomalainenHetu.addOption("true", createI18NText("Kyllä"), "true");
         onkoSinullaSuomalainenHetu.addOption("false", createI18NText("Ei"), "false");
         onkoSinullaSuomalainenHetu.addAttribute("required", "required");
@@ -215,14 +225,17 @@ public class Yhteishaku2013 {
 
         RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FI$");
         hetuRule.addChild(socialSecurityNumber);
-        RelatedQuestionRule ulkomaalaisenTunnisteetRule = new RelatedQuestionRule("ulkomaalaisenTunnisteetRule", kansalaisuus.getId(), "(?!FI)([A-Z]{2})");
+        RelatedQuestionRule ulkomaalaisenTunnisteetRule = new RelatedQuestionRule("ulkomaalaisenTunnisteetRule",
+                kansalaisuus.getId(), "(?!FI)([A-Z]{2})");
         ulkomaalaisenTunnisteetRule.addChild(onkoSinullaSuomalainenHetu);
 
-        RelatedQuestionRule suomalainenHetuRule = new RelatedQuestionRule("suomalainenHetuRule", onkoSinullaSuomalainenHetu.getId(), "^true");
+        RelatedQuestionRule suomalainenHetuRule = new RelatedQuestionRule("suomalainenHetuRule",
+                onkoSinullaSuomalainenHetu.getId(), "^true");
         suomalainenHetuRule.addChild(socialSecurityNumber);
         onkoSinullaSuomalainenHetu.addChild(suomalainenHetuRule);
 
-        RelatedQuestionRule eiSuomalaistaHetuaRule = new RelatedQuestionRule("eiSuomalaistaHetuaRule", onkoSinullaSuomalainenHetu.getId(), "^false");
+        RelatedQuestionRule eiSuomalaistaHetuaRule = new RelatedQuestionRule("eiSuomalaistaHetuaRule",
+                onkoSinullaSuomalainenHetu.getId(), "^false");
         eiSuomalaistaHetuaRule.addChild(sukupuoli);
         eiSuomalaistaHetuaRule.addChild(kansallinenIdTunnus);
         eiSuomalaistaHetuaRule.addChild(passinnumero);
@@ -234,7 +247,8 @@ public class Yhteishaku2013 {
         postinumero.addAttribute("pattern", "[0-9]{5}");
         postinumero.addAttribute("placeholder", "#####");
         postinumero.addAttribute("maxlength", "5");
-        postinumero.setHelp("Kirjoita tähän osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, kuten kutsun valintakokeeseen tai " +
+        postinumero.setHelp("Kirjoita tähän osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvää postia, " +
+                "kuten kutsun valintakokeeseen tai " +
                 "valintapäätöksen.");
 
         DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", createI18NText("Asuinmaa"));
@@ -265,7 +279,8 @@ public class Yhteishaku2013 {
         osoite.addAttribute("rows", "6");
         osoite.addAttribute("cols", "40");
         osoite.addAttribute("style", "height: 8em");
-        RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule2", asuinmaa.getId(), "(?!FI)([A-Z]{2})");
+        RelatedQuestionRule relatedQuestionRule2 =
+                new RelatedQuestionRule("rule2", asuinmaa.getId(), "(?!FI)([A-Z]{2})");
         relatedQuestionRule2.addChild(osoite);
         osoite.setVerboseHelp(getVerboseHelp());
         asuinmaa.addChild(relatedQuestionRule2);
@@ -318,19 +333,22 @@ public class Yhteishaku2013 {
 
     public GradeGrid createGradeGrid(boolean primary) {
 
-        List<Option> gradeRange = primary ? koodistoService.getGradeRangesForPrimary() : koodistoService.getGradeRangesForSecondary();
-        List<SubjectRow> subjects = primary ? koodistoService.getSubjectsForPrimary() : koodistoService.getSubjectsForSecondary();
-        SubjectRow finnish = new SubjectRow("subject_finnish", false, false, createI18NText("Äidinkieli ja kirjallisuus"));
+        List<Option> gradeRange = primary ?
+                koodistoService.getGradeRangesForPrimary() : koodistoService.getGradeRangesForSecondary();
+        List<SubjectRow> subjects = primary ?
+                koodistoService.getSubjectsForPrimary() : koodistoService.getSubjectsForSecondary();
+        SubjectRow finnish =
+                new SubjectRow("subject_finnish", false, false, createI18NText("Äidinkieli ja kirjallisuus"));
         List<SubjectRow> subjectRowsAfter = new ArrayList<SubjectRow>();
         for (SubjectRow subject : subjects) {
             String id = subject.getId();
             if (id.endsWith("AI")) {
                 finnish = subject;
-            } else if (!(id.endsWith("A1") || id.endsWith("A12")  || id.endsWith("A13") 
-                    || id.endsWith("A2") || id.endsWith("A22")  || id.endsWith("23") 
-                    || id.endsWith("B1") || id.endsWith("B12")  || id.endsWith("B13") 
-                    || id.endsWith("B2") || id.endsWith("B22")  || id.endsWith("B23") 
-                    || id.endsWith("B3") || id.endsWith("B32")  || id.endsWith("B33"))){ 
+            } else if (!(id.endsWith("A1") || id.endsWith("A12") || id.endsWith("A13")
+                    || id.endsWith("A2") || id.endsWith("A22") || id.endsWith("23")
+                    || id.endsWith("B1") || id.endsWith("B12") || id.endsWith("B13")
+                    || id.endsWith("B2") || id.endsWith("B22") || id.endsWith("B23")
+                    || id.endsWith("B3") || id.endsWith("B32") || id.endsWith("B33"))) {
                 subjectRowsAfter.add(subject);
             }
         }
@@ -371,17 +389,17 @@ public class Yhteishaku2013 {
                 "(tutkinto1|tutkinto2|tutkinto3|tutkinto4)");
         relatedQuestionPK.addChild(createGradeGrid(true));
         arvosanatRyhma.addChild(relatedQuestionPK);
-        
+
         RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", "millatutkinnolla",
                 "(tutkinto6)");
         relatedQuestionLukio.addChild(createGradeGrid(false));
         arvosanatRyhma.addChild(relatedQuestionLukio);
-        
+
         RelatedQuestionRule relatedQuestionEiTutkintoa = new RelatedQuestionRule("rule_grade_no", "millatutkinnolla",
                 "(tutkinto5|tutkinto7)");
         relatedQuestionEiTutkintoa.addChild(new Text("nogradegrid", createI18NText("Sinulta ei kysytä arvosanoja.")));
         arvosanatRyhma.addChild(relatedQuestionEiTutkintoa);
-        
+
         arvosanatRyhma
                 .setHelp("Merkitse arvosanat siitä todistuksesta, jolla haet koulutukseen (perusopetus,tai sitä vastaavat opinnot, lukiokoulutus). " +
                         "Korotetut arvosanat voit merkitä, mikäli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion " +
@@ -579,11 +597,11 @@ public class Yhteishaku2013 {
          * ); tutkinnonOpetuskieli.setVerboseHelp(getVerboseHelp());
          */
 
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "("
-                + millatutkinnolla.getOptions().get(0).getValue() + "|"
-                + millatutkinnolla.getOptions().get(1).getValue() + "|"
-                + millatutkinnolla.getOptions().get(2).getValue() + "|"
-                + millatutkinnolla.getOptions().get(3).getValue() + ")");
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "(" // NOSONAR
+                + millatutkinnolla.getOptions().get(0).getValue() + "|"   // NOSONAR
+                + millatutkinnolla.getOptions().get(1).getValue() + "|"   // NOSONAR
+                + millatutkinnolla.getOptions().get(2).getValue() + "|"   // NOSONAR
+                + millatutkinnolla.getOptions().get(3).getValue() + ")"); // NOSONAR
 
         RelatedQuestionRule paattotodistusvuosiPeruskouluRule = new RelatedQuestionRule("rule8",
                 paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$");

@@ -23,6 +23,7 @@ import fi.vm.sade.oppija.common.organisaatio.Organization;
 import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.exception.ConfigurationException;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.Profile;
@@ -133,8 +134,8 @@ public class OrganizationServiceMockImpl implements OrganizationService {
                 add(org);
             }
         } catch (IOException ioe) {
-            throw new RuntimeException("Failed to initialize mock data", ioe);
-        } 
+            throw new ConfigurationException("Failed to initialize mock data", ioe);
+        }
     }
 
     /*
