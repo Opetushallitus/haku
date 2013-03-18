@@ -27,10 +27,11 @@ import org.springframework.stereotype.Service;
 @Profile("dev")
 public class AuthenticationServiceMockImpl implements AuthenticationService {
 
-    private static final String oidPrefix = "1.2.246.562.24.";
+    public static final int RANGE_SIZE = 1000000000;
+    private static final String OID_PREFIX = "1.2.246.562.24.";
 
     public String addPerson(Person person) {
-        return oidPrefix + String.format("%011d", Math.round(Math.random() * 1000000000));
+        return OID_PREFIX + String.format("%011d", Math.round(Math.random() * RANGE_SIZE));
     }
 
 
