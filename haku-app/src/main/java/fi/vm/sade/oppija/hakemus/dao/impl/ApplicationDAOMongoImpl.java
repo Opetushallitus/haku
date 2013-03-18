@@ -250,7 +250,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private String hetuDobToIsoDate(final String term) {
         DateFormat dobFmt = new SimpleDateFormat("ddMMyy");
-        DateFormat isoFmt = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat isoFmt = new SimpleDateFormat("dd.MM.yyyy");
         dobFmt.setLenient(false);
         try {
             Date dob = dobFmt.parse(term);

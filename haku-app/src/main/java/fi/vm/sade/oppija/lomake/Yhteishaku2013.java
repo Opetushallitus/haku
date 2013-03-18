@@ -200,6 +200,10 @@ public class Yhteishaku2013 {
                 sukupuoli.getI18nText(), sukupuoli.getOptions().get(0),
                 sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilotunnus);
 
+        DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NText("Syntymäaika"));
+        syntymaaika.addAttribute("required", "required");
+        syntymaaika.setInline(true);
+
         TextQuestion syntymapaikka = new TextQuestion("syntymapaikka", createI18NText("Syntymäpaikka"));
         syntymapaikka.addAttribute("size", "30");
         syntymapaikka.addAttribute("required", "required");
@@ -236,9 +240,12 @@ public class Yhteishaku2013 {
 
         RelatedQuestionRule eiSuomalaistaHetuaRule = new RelatedQuestionRule("eiSuomalaistaHetuaRule",
                 onkoSinullaSuomalainenHetu.getId(), "^false");
+        eiSuomalaistaHetuaRule.addChild(syntymaaika);
+        eiSuomalaistaHetuaRule.addChild(syntymapaikka);
         eiSuomalaistaHetuaRule.addChild(sukupuoli);
         eiSuomalaistaHetuaRule.addChild(kansallinenIdTunnus);
         eiSuomalaistaHetuaRule.addChild(passinnumero);
+
         onkoSinullaSuomalainenHetu.addChild(eiSuomalaistaHetuaRule);
 
         Element postinumero = new PostalCode("Postinumero", createI18NText("Postinumero"), createPostOffices());

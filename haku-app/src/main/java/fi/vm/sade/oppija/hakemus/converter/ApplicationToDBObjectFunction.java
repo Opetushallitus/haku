@@ -96,14 +96,14 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
         centuries.put("-", 1900); // NOSONAR
         centuries.put("a", 2000); // NOSONAR
         centuries.put("A", 2000); // NOSONAR
-        DateFormat isoDate = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat isoDate = new SimpleDateFormat("dd.MM.yyyy");
         isoDate.setLenient(false);
 
         String day = ssn.substring(0, 2); // NOSONAR
         String month = ssn.substring(2, 4); // NOSONAR
         String year = Integer.toString((centuries.get(ssn.substring(6, 7)) + // NOSONAR 
                 Integer.valueOf(ssn.substring(4, 6)))); // NOSONAR
-        String dob = year+"-"+month+"-"+day;
+        String dob = day + "." + month + "." + year;
         try {
             isoDate.parse(dob);
             return dob;

@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
     <script src="${contextPath}/resources/jquery/jquery.min.js"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
+    <script src="${contextPath}/resources/jquery/jquery.ui.datepicker-fi.js"></script>
     <script src="${contextPath}/resources/javascript/rules.js"></script>
     <script src="${contextPath}/resources/javascript/master.js"></script>
     <title><haku:i18nText value="${form.i18nText}"/> - <haku:i18nText value="${vaihe.i18nText}"/></title>
