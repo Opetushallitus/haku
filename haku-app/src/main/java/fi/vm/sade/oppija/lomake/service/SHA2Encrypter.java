@@ -15,11 +15,11 @@
  */
 package fi.vm.sade.oppija.lomake.service;
 
+import fi.vm.sade.oppija.lomake.domain.exception.ConfigurationException;
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import fi.vm.sade.oppija.lomake.domain.exception.ConfigurationException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -46,7 +46,7 @@ public class SHA2Encrypter implements EncrypterService {
     }
 
     @Override
-    public String encrypt(String encrypt) {
+    public String encrypt(final String encrypt) {
         try {
             return countDigest(encrypt + salt);
         } catch (NoSuchAlgorithmException e) {
@@ -54,20 +54,9 @@ public class SHA2Encrypter implements EncrypterService {
         }
     }
 
-    private String countDigest(String encrypt) throws NoSuchAlgorithmException {
+    private String countDigest(final String encrypt) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance(ALGORITHM);
         md.update(encrypt.getBytes());
-
-        return convertToHex(md.digest());
-    }
-
-    private String convertToHex(byte[] byteData) {
-        //convert the byte to hex format
-        StringBuilder sb = new StringBuilder();
-        for (byte aByteData : byteData) {
-            sb.append(Integer.toString((aByteData & 0xff) + 0x100, 16).substring(1));
-        }
-
-        return sb.toString();
+        return new String(Hex.encodeHex(md.digest()));
     }
 }

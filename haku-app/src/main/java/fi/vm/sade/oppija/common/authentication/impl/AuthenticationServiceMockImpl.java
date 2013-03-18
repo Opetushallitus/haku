@@ -33,6 +33,4 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
     public String addPerson(Person person) {
         return OID_PREFIX + String.format("%011d", Math.round(Math.random() * RANGE_SIZE));
     }
-
-
 }
