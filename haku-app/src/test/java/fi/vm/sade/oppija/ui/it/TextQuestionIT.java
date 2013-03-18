@@ -24,8 +24,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
@@ -34,32 +32,34 @@ public class TextQuestionIT extends AbstractFormTest {
     private FormModelHelper formModelHelper;
 
     @Before
-    public void init() throws IOException {
-        formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextQuestion("sukunimi", createI18NText("foo")));
+    public void init() {
+        TextQuestion textQuestion = new TextQuestion("sukunimi", createI18NText("foo"));
+        textQuestion.setHelp(createI18NText("help"));
+        formModel = new FormModelBuilder().buildDefaultFormWithFields(textQuestion);
         this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
     }
 
     @Test
-    public void testFormExists() throws IOException {
+    public void testFormExists() {
         beginAt(formModelHelper.getStartUrl());
         final String formId = formModelHelper.getFirstCategoryFormId();
         assertFormPresent(formId);
     }
 
     @Test
-    public void testInputExists() throws IOException {
+    public void testInputExists() {
         beginAt(formModelHelper.getStartUrl());
         assertElementPresent("sukunimi");
     }
 
     @Test
-    public void testLabelExists() throws IOException {
+    public void testLabelExists() {
         beginAt(formModelHelper.getStartUrl());
         assertElementPresent("label-sukunimi");
     }
 
     @Test
-    public void testHelpExists() throws IOException {
+    public void testHelpExists() {
         beginAt(formModelHelper.getStartUrl());
         assertElementPresent("help-sukunimi");
     }

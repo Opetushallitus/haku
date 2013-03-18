@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.lomake.domain.elements;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.lomake.domain.Attribute;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
@@ -86,9 +85,8 @@ public abstract class Element implements Serializable {
     public static final String ID_DELIMITER = "_";
     protected final String id;
     protected transient String type = this.getClass().getSimpleName();
-    protected String help = "";
 
-    protected I18nText ihelp;
+    protected I18nText help;
 
     protected final transient List<Validator> validators = new ArrayList<Validator>();
 
@@ -101,9 +99,7 @@ public abstract class Element implements Serializable {
     protected Element(@JsonProperty String id) {
         this.id = id;
         addAttribute("id", id);
-        this.help = "";
-        this.ihelp = new I18nText(id + "_help",
-                ImmutableMap.of("fi", help, "sv", help + "_sv", "en", help + "_en"));
+        this.help = null;
     }
 
     public String getId() {
@@ -130,22 +126,12 @@ public abstract class Element implements Serializable {
         }
     }
 
-    public void setHelp(final String help) {
-        this.help = help;
-        this.ihelp = new I18nText(id + "_help",
-                ImmutableMap.of("fi", help, "sv", help + "_sv", "en", help + "_en"));
-    }
-
-    public String getHelp() {
+    public I18nText getHelp() {
         return help;
     }
 
-    public I18nText getIhelp() {
-        return ihelp;
-    }
-
-    public void setIhelp(I18nText ihelp) {
-        this.ihelp = ihelp;
+    public void setHelp(final I18nText help) {
+        this.help = help;
     }
 
     public Element addChild(Element child) {
@@ -172,7 +158,7 @@ public abstract class Element implements Serializable {
     public String getAttributeString() {
         StringBuilder attrStr = new StringBuilder();
         for (Attribute attribute : attributes.values()) {
-            if (!"required" .equals(attribute.getKey())) {
+            if (!"required".equals(attribute.getKey())) {
                 attrStr.append(attribute.getAsString());
             }
         }

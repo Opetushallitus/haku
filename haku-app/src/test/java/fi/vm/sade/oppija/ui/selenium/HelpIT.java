@@ -23,6 +23,7 @@ import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -39,19 +40,23 @@ public class HelpIT extends AbstractSeleniumBase {
     public static final String HELP_TEXT = "Apuva";
 
     private FormModelHelper formModelHelper;
-    private CheckBox checkBox = new CheckBox(ID, createI18NText(TITLE));
+    private CheckBox checkBox;
+
+    @Before
+    public void setUp() throws Exception {
+        checkBox = new CheckBox(ID, createI18NText(TITLE));
+    }
 
     @Test
     public void testCheckBox() {
-        checkBox.setHelp(HELP_TEXT);
+        checkBox.setHelp(createI18NText(HELP_TEXT));
         String actualHelpText = initModelAndGetHelpText(checkBox);
         assertEquals(HELP_TEXT, actualHelpText);
     }
 
-    @Test
+    @Test(expected = org.openqa.selenium.NoSuchElementException.class)
     public void testCheckBoxWithoutHelp() {
-        String actualHelpText = initModelAndGetHelpText(checkBox);
-        assertEquals("", actualHelpText);
+        initModelAndGetHelpText(checkBox);
     }
 
     private String initModelAndGetHelpText(Element element) {

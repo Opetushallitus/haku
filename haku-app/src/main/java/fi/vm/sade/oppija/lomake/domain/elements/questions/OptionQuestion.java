@@ -42,7 +42,7 @@ public abstract class OptionQuestion extends Question {
         return option;
     }
 
-    public Option addOption(final String id, final I18nText i18nText, final String value, final String help) {
+    public Option addOption(final String id, final I18nText i18nText, final String value, final I18nText help) {
         Option option = new Option(this.getId() + ID_DELIMITER + id, i18nText, value);
         option.setHelp(help);
         this.options.add(option);

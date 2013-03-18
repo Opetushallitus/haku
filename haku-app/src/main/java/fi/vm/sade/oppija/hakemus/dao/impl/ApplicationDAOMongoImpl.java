@@ -151,7 +151,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return findApplications(query);
     }
 
-    private QueryBuilder queryByPreference(List<String> aoIds) {
+    private QueryBuilder queryByPreference(final List<String> aoIds) {
         return QueryBuilder.start().or(
                 QueryBuilder.start(FIELD_AO_1).in(aoIds).get(),
                 QueryBuilder.start(FIELD_AO_2).in(aoIds).get(),
@@ -292,7 +292,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
 
         List<String> preferences = applicationQueryParameters.getPreferences();
-        if (preferences != null && !preferences.isEmpty()) {
+        if (!preferences.isEmpty()) {
             filters.add(queryByPreference(preferences).get());
         }
         String lopOid = applicationQueryParameters.getLopOid();

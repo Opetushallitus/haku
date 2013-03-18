@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,22 +28,23 @@ public class ApplicationQueryParameters {
     private final String lopOid;
 
     public ApplicationQueryParameters() {
-        this.state = "";
-        this.fetchPassive = false;
-        this.lopOid = "";
+        this(null, false, null);
     }
 
-    public ApplicationQueryParameters(final List<String> preferences) {
-        this();
-        this.preferences.addAll(preferences);
+    public ApplicationQueryParameters(final String state, final boolean fetchPassive) {
+        this(state, fetchPassive, null);
+    }
+
+    public ApplicationQueryParameters(final String state, final boolean fetchPassive, final String lopOid) {
+        this.state = state;
+        this.fetchPassive = fetchPassive;
+        this.lopOid = lopOid;
     }
 
     public ApplicationQueryParameters(final String state, final boolean fetchPassive,
                                       final String preference, final String lopOid) {
-        this.state = state;
-        this.fetchPassive = fetchPassive;
-        addPreference(preference);
-        this.lopOid = lopOid;
+        this(state, fetchPassive, lopOid);
+        this.preferences.add(preference);
     }
 
     public String getState() {
@@ -53,13 +56,7 @@ public class ApplicationQueryParameters {
     }
 
     public List<String> getPreferences() {
-        return preferences;
-    }
-
-    public final void addPreference(String preference) {
-        if (preference != null && !preference.isEmpty()) {
-            this.preferences.add(preference);
-        }
+        return ImmutableList.copyOf(preferences);
     }
 
     public String getLopOid() {

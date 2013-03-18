@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.rules;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -25,20 +26,20 @@ public class AddElementRule extends Rule {
 
     private static final long serialVersionUID = -911312576973189581L;
     private final String relatedElementId;
-    private final String text;
+    private final I18nText text;
 
     public AddElementRule(@JsonProperty(value = "id") String id,
-            @JsonProperty(value = "relatedElementId") String relatedElementId,
-            @JsonProperty(value = "text") String text) {
+                          @JsonProperty(value = "relatedElementId") String relatedElementId,
+                          @JsonProperty(value = "text") I18nText text) {
         super(id);
         this.text = text;
         this.relatedElementId = relatedElementId;
     }
 
-    public String getText() {
+    public I18nText getText() {
         return text;
     }
-    
+
     public String getRelatedElementId() {
         return relatedElementId;
     }

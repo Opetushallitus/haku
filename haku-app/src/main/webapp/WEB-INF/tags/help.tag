@@ -18,8 +18,8 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<c:if test="${not empty element.ihelp}">
+<c:if test="${not empty element.help}">
     <div class="margin-top-1" id="help-${element.id}">
-        <small><haku:i18nText value="${element.ihelp}"/></small>
+        <small><haku:i18nText value="${element.help}"/></small>
     </div>
 </c:if>

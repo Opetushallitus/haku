@@ -30,8 +30,6 @@ import org.openqa.selenium.By;
 import java.io.IOException;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 
 /**
@@ -52,7 +50,7 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
         henkilötunnus.addAttribute("pattern", "[0-9]{6}.[0-9]{4}");
         henkilötunnus.addAttribute("size", "11");
         henkilötunnus.addAttribute("maxlength", "11");
-        henkilötunnus.setHelp("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi");
+        henkilötunnus.setHelp(createI18NText("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi"));
         henkilötunnus.setInline(true);
 
         Radio sukupuoli = new Radio("Sukupuoli", createI18NText("Sukupuoli"));
