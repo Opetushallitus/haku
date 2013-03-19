@@ -426,19 +426,19 @@ public class Yhteishaku2013 {
 
     private void createHakutoiveet(Theme hakutoiveetRyhma) {
         hakutoiveetRyhma
-                .setHelp(createI18NText("Merkitse tälle sivulle koulutukset, joihin haluat hakea." +
+                .setHelp(createI18NText("<p>Merkitse tälle sivulle koulutukset, joihin haluat hakea." +
                         " Merkitse hakutoiveesi siinä järjestyksessä, kun toivot tulevasi niihin " +
                         "valituksi. Jos olet valinnut korissa koulutuksia, voit siirttää ne hakutoivelistalle. " +
                         "Voit halutessasi etsiä koulutuksia " +
                         "koulutuskorin kautta. harkitse hakutoivejärjestystä tarkoin, " +
-                        "sillä se on sitova, etkä voi muuttaa sitä enää hakuajan jälkeen. " +
+                        "sillä se on sitova, etkä voi muuttaa sitä enää hakuajan jälkeen. </p><p>" +
                         "Jos et pääse koulutukseen, jonka olet merkinnyt ensimmäiselle sijalle, " +
                         "tarkistetaan riittävätkö pisteesi toiselle sijalle " +
                         "merkitsemääsi hakutoiveeseen jne. Jos pääset esimerkiksi toisena " +
                         "toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat " +
                         "automaattisesti, etkä voi enää tulla valituksi niihin. " +
                         "Ylempiin hakutoiveisiin voit vielä päästä. HUOM! Lukion oppimäärän tai " +
-                        "ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo)."));
+                        "ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).</p>"));
         PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NText("Hakutoiveet"), "Ylös",
                 "Alas");
         PreferenceRow pr1 = ElementUtil.createI18NPreferenceRow("preference1", "Hakutoive 1");
