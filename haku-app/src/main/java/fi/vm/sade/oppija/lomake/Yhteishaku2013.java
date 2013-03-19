@@ -48,8 +48,8 @@ public class Yhteishaku2013 {
 
     private final KoodistoService koodistoService;
 
-    @Autowired
-    public Yhteishaku2013(final KoodistoService koodistoService) {
+    @Autowired // NOSONAR
+    public Yhteishaku2013(final KoodistoService koodistoService) { // NOSONAR
         this.koodistoService = koodistoService;
         this.applicationPeriod = new ApplicationPeriod(ASID);
         Phase henkilotiedot = new Phase("henkilotiedot", createI18NText("Henkilötiedot"), false);
@@ -544,7 +544,7 @@ public class Yhteishaku2013 {
         koulutustaustaRyhma.addChild(osallistunut);
     }
 
-    public Radio createKoulutustaustaRadio() {
+    public Radio createKoulutustaustaRadio() { //NOSONAR
         Radio millatutkinnolla = new Radio("millatutkinnolla",
                 createI18NText("Valitse tutkinto, jolla haet koulutukseen"));
         millatutkinnolla.addOption("tutkinto1", createI18NText("Perusopetuksen oppimäärä"), "tutkinto1",
