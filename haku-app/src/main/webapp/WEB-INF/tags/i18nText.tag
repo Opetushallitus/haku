@@ -19,5 +19,5 @@
   --%>
 <c:if test="${not empty value}">
     <c:set var="language" value="${sessionScope['javax.servlet.jsp.jstl.fmt.locale.session'].language}" scope="page"/>
-    <c:out value="${value.translations[language]}" escapeXml="true" default="???"/>
+    <c:out value="${value.translations[language]}" escapeXml="false" default="???"/>
 </c:if>
