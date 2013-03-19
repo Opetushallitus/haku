@@ -653,7 +653,7 @@ public class Yhteishaku2013 {
         lukioGroup.addChild(ylioppilastutkinto);
 
         RelatedQuestionRule lukioRule = new RelatedQuestionRule("rule7", millatutkinnolla.getId(), millatutkinnolla
-                .getOptions().get(5).getValue());
+                .getOptions().get(5).getValue()); // NOSONAR
         lukioRule.addChild(lukioGroup);
 
         millatutkinnolla.addChild(lukioRule);
