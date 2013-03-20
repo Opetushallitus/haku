@@ -17,14 +17,17 @@
 package fi.vm.sade.oppija.ui.it;
 
 
-import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.lomake.Yhteishaku2013;
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import static net.sourceforge.jwebunit.junit.JWebUnit.assertLinkNotPresent;
+import static net.sourceforge.jwebunit.junit.JWebUnit.assertLinkPresent;
+import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
+import static net.sourceforge.jwebunit.junit.JWebUnit.gotoPage;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.assertLinkPresent;
-import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
+import fi.vm.sade.oppija.common.it.AbstractFormTest;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
+import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 
 /**
  * @author Hannu Lyytikainen
@@ -52,6 +55,9 @@ public class FormIT extends AbstractFormTest {
     @Test
     public void testCategory() throws Exception {
         beginAt("/lomake/" + Yhteishaku2013.ASID + "/yhteishaku/henkilotiedot");
+        assertLinkPresent("nav-henkilotiedot");
+        assertLinkNotPresent("nav-koulutustausta");
+        gotoPage("/lomake/" + Yhteishaku2013.ASID + "/yhteishaku/koulutustausta");
         assertLinkPresent("nav-henkilotiedot");
         assertLinkPresent("nav-koulutustausta");
     }

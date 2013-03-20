@@ -213,13 +213,14 @@ public class FormController {
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
-        boolean skipValidators = skipValidators(multiValues);
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        boolean skipValidators = skipValidators(multiValues, activeForm, phaseId);
 
         ApplicationState applicationState = applicationService.saveApplicationPhase(
                 new ApplicationPhase(hakuLomakeId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)), skipValidators);
 
         Map<String, Object> model = new HashMap<String, Object>();
-
+        
         model.put("hakemusId", hakuLomakeId);
         if (applicationState.isValid()) {
             return Response.seeOther(new URI(
@@ -228,7 +229,6 @@ public class FormController {
 
         } else {
             model.putAll(applicationState.getModelObjects());
-            Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
             Phase phase = activeForm.getPhase(phaseId);
             model.put("element", phase);
             model.put("form", activeForm);
@@ -238,17 +238,27 @@ public class FormController {
 
     }
 
-    private boolean skipValidators(MultivaluedMap<String, String> multiValues) {
+    private boolean skipValidators(MultivaluedMap<String, String> multiValues, Form form, String phaseId) {
         List<String> phaseIdList = multiValues.get(PHASE_ID);
         if (phaseIdList == null || phaseIdList.size() == 0) {
-            return false;
+            return false; 
         }
-        boolean skipValidators = phaseIdList.get(0).endsWith("-skip-validators");
+
+        String targetPhaseId = phaseIdList.get(0);
+        boolean skipValidators = targetPhaseId.endsWith("-skip-validators");
         if (skipValidators) {
-            String realPhaseId = multiValues.get(PHASE_ID).get(0);
-            multiValues.get(PHASE_ID).set(0, realPhaseId.substring(0, realPhaseId.lastIndexOf("-skip-validators")));
+            targetPhaseId = targetPhaseId.substring(0, targetPhaseId.lastIndexOf("-skip-validators"));
+            multiValues.get(PHASE_ID).set(0, targetPhaseId);
         }
-        return skipValidators;
+
+        for (Phase phase : form.getPhases()) {
+            if (phase.getId().equals(targetPhaseId)) {
+                return skipValidators;
+            } else if (phase.getId().equals(phaseId)) {
+                return false; // Never skip validators when moving forwards
+            }
+        }
+        return false; // Do not skip, if neither the target phase nor the current phase was found in form's phases.
     }
 
     @GET

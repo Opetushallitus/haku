@@ -38,7 +38,7 @@ public class SolrClient {
     public String update(final ByteArrayOutputStream result) {
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_XML);
-        final HttpEntity httpEntity = new HttpEntity(result.toByteArray(), headers);
+        final HttpEntity<byte[]> httpEntity = new HttpEntity<byte[]>(result.toByteArray(), headers);
         final HashMap<String, String> uriVariables = new HashMap<String, String>();
         uriVariables.put("optimize", "true");
         return restTemplate.postForObject(solrUrl + "update?optimize=true", httpEntity, String.class, uriVariables);

@@ -105,6 +105,8 @@ public class ElementTest {
     }
 
     private class TestElement extends Element {
+        private static final long serialVersionUID = 5232304386159753660L;
+
         protected TestElement(final String id) {
             super(id);
         }

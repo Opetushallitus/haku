@@ -60,7 +60,6 @@ public class HakuClient {
         String phaseId = parsePhaseId(previousPhaseResponse.getLocation().toString());
         if (this.applicationData.containsKey(phaseId)) {
             Form form = mapToForm(this.applicationData.get(phaseId));
-            System.out.println("previous location "+previousPhaseResponse.getLocation());
             WebResource webResource = client.resource(previousPhaseResponse.getLocation());
             WebResource.Builder builder = webResource.getRequestBuilder();
             for (NewCookie cookie : cookies) {

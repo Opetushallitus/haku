@@ -37,6 +37,12 @@
     <script src="${contextPath}/resources/jquery/jquery.ui.datepicker-fi.js"></script>
     <script src="${contextPath}/resources/javascript/rules.js"></script>
     <script src="${contextPath}/resources/javascript/master.js"></script>
+    <script>
+    	function pastPhase(phaseId) {
+    		$('#form-${vaihe.id}').append('<input type="hidden" name="phaseId" value="'+phaseId+'-skip-validators" />');
+    		$('#form-${vaihe.id}').submit();
+    	}
+    </script>
     <title><haku:i18nText value="${form.i18nText}"/> - <haku:i18nText value="${vaihe.i18nText}"/></title>
 </head>
 <body>
@@ -88,12 +94,26 @@
 
                 <h2><haku:i18nText value="${form.i18nText}"/></h2>
                 <ul class="form-steps">
+                	<c:set var="pastPhases" value="true" scope="request" />
                     <c:forEach var="phase" items="${form.children}" varStatus="status">
                         <li>
-                            <a id="nav-${phase.id}" href="${phase.id}"
-                               <c:if test="${phase.id eq vaihe.id}">class="current"</c:if>>
-                                <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
-                            </a>
+                        	<c:if test="${pastPhases}">
+	                            <a id="nav-${phase.id}" href="javascript:pastPhase('${phase.id}')"
+	                               <c:if test="${phase.id eq vaihe.id}">class="current"</c:if>>
+	                                <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
+	                            </a>
+                            </c:if>
+                            <c:if test="${!pastPhases}">
+                            	<span>
+                            	<span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
+                            	</span>
+                            	<%--a id="nav-nav-${phase.id}" href="${phase.id}">
+                            	<span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
+                            	</a --%>
+                            </c:if>
+                        	<c:if test="${(pastPhases && phase.id eq vaihe.id)}">
+                        		<c:set var="pastPhases" value="false" />
+                            </c:if>
                         </li>
                     </c:forEach>
                     <li>
@@ -110,12 +130,14 @@
                 <c:when test="${preview}">
                     <div class="form">
                         <jsp:include page="../prev_next_buttons_preview.jsp"/>
+                        
                         <c:forEach var="child" items="${vaihe.children}">
                             <c:set var="element" value="${child}" scope="request"/>
                             <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
                             <jsp:include page="./${child.type}Preview.jsp"/>
                         </c:forEach>
                         <jsp:include page="../prev_next_buttons_preview.jsp"/>
+                    
                     </div>
                 </c:when>
                 <c:otherwise>

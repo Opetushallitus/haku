@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.ui.it;
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
 import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,7 +39,7 @@ public class NavigationIT extends AbstractFormTest {
     public void testNavigationExists() throws IOException {
         beginAt("/lomake/" + Yhteishaku2013.ASID + "/yhteishaku/henkilotiedot");
         assertLinkPresent("nav-henkilotiedot");
-        assertLinkPresent("nav-koulutustausta");
+        assertElementPresentByXPath("//span[@class='index']");
     }
 
     @Test
