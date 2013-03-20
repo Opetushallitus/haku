@@ -45,6 +45,10 @@
             <param-value>fi.vm.sade.oppija.ui.LocaleFilter</param-value>
         </init-param>
         <init-param>
+            <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+            <param-value>fi.vm.sade.oppija.common.filter.CorsFilter</param-value>
+        </init-param>
+        <init-param>
             <param-name>com.sun.jersey.config.property.JSPTemplatesBasePath</param-name>
             <param-value>/WEB-INF/jsp</param-value>
         </init-param>
