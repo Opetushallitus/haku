@@ -501,7 +501,7 @@ public class Yhteishaku2013 {
         relatedQuestionRule.addChild(email);
         permission1.addChild(relatedQuestionRule);
 
-        Group group = new Group("permissionCheckboxes", createI18NText("Ryhmän otsikkotai ohjeteksti"));
+        Group group = new Group("permissionCheckboxes", createI18NText("Ryhmän otsikko tai ohjeteksti"));
 
         group.addChild(permission1);
         group.addChild(permission2);
@@ -586,6 +586,32 @@ public class Yhteishaku2013 {
                 createI18NText("Valitse tämä, jos olet suorittanut tutkintosi ulkomailla."));
         millatutkinnolla.setVerboseHelp(getVerboseHelp());
         millatutkinnolla.addAttribute("required", "required");
+
+        Notification tutkinto7Notification = new Notification("tutkinto7-notification",
+                createI18NText("Koska olet suorittanut tutkintosi ulkomailla, " +
+                        "haet automaattisesti harkintaan perustuvassa valinnassa. " +
+                        "Toimita tutkintotodistuksesi suoraan kaikkiin oppilaitoksiin, " +
+                        "joihin haet. Todistukset tulee toimittaa perille hakuaikana."),
+                Notification.NotificationType.INFO);
+
+        Notification tutkinto5Notification = new Notification("tutkinto5-notification",
+                createI18NText("Koska oppivelvollisuutesi suorittaminen on keskeytynyt, " +
+                        "haet automaattisesti harkintaan perustuvassa valinnassa. " +
+                        "Toimita valinnassa käytettävät todistukset suoraan kaikkiin oppilaitoksiin, " +
+                        "joihin haet. Todistukset tulee toimittaa perille hakuaikana."),
+                Notification.NotificationType.INFO);
+
+
+        RelatedQuestionRule keskeytynytRule = new RelatedQuestionRule("tutkinto5-rule",
+                millatutkinnolla.getId(), "tutkinto5");
+
+        RelatedQuestionRule ulkomaillaSuoritettuTutkintoRule = new RelatedQuestionRule("tutkinto7-rule",
+                millatutkinnolla.getId(), "tutkinto7");
+
+        ulkomaillaSuoritettuTutkintoRule.addChild(tutkinto7Notification);
+        keskeytynytRule.addChild(tutkinto5Notification);
+        millatutkinnolla.addChild(ulkomaillaSuoritettuTutkintoRule);
+        millatutkinnolla.addChild(keskeytynytRule);
 
         TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion("paattotodistusvuosi_peruskoulu",
                 createI18NText("Minä vuonna sait/saat peruskoulun päättötodistuksen?"));
@@ -719,6 +745,7 @@ public class Yhteishaku2013 {
                         "koska olet jo suorittanut ammatilliseen perustutkintoon " +
                         "johtavan koulutuksen tai lukiokoulutuksen."),
                 Notification.NotificationType.INFO);
+
         suorittanutAmmatillisenTutkinnonRule.addChild(notification1);
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutAmmatillisenTutkinnonRule);
 
