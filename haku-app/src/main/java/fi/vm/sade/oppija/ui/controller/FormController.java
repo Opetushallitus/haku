@@ -25,7 +25,6 @@ import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.GradeGrid;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
@@ -119,7 +118,7 @@ public class FormController {
         Application application = applicationService.getApplication(new FormId(applicationPeriodId, formId));
         if (application.isNew()) {
 
-            Phase firstPhase = formService.getFirstPhase(applicationPeriodId, formId);
+            Element firstPhase = formService.getFirstPhase(applicationPeriodId, formId);
             return Response.seeOther(new URI(
                     new RedirectToPhaseViewPath(applicationPeriodId, formId, firstPhase.getId()).getPath())).build();
 
@@ -147,7 +146,7 @@ public class FormController {
 
         LOGGER.debug("getElement {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, elementId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
-        Element element = activeForm.getElementById(elementId);
+        Element element = activeForm.getChildById(elementId);
         Map<String, Object> model = new HashMap<String, Object>();
         final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
         Map<String, String> values = applicationService.getApplication(formId).getVastauksetMerged();
@@ -171,7 +170,7 @@ public class FormController {
         LOGGER.debug("getElementRelatedData {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, elementId, key});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         try {
-            DataRelatedQuestion<Serializable> element = (DataRelatedQuestion<Serializable>) activeForm.getElementById(elementId);
+            DataRelatedQuestion<Serializable> element = (DataRelatedQuestion<Serializable>) activeForm.getChildById(elementId);
             return element.getData(key);
         } catch (Exception e) {
             LOGGER.error(e.toString());
@@ -220,7 +219,7 @@ public class FormController {
                 new ApplicationPhase(hakuLomakeId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)), skipValidators);
 
         Map<String, Object> model = new HashMap<String, Object>();
-        
+
         model.put("hakemusId", hakuLomakeId);
         if (applicationState.isValid()) {
             return Response.seeOther(new URI(
@@ -229,7 +228,7 @@ public class FormController {
 
         } else {
             model.putAll(applicationState.getModelObjects());
-            Phase phase = activeForm.getPhase(phaseId);
+            Element phase = activeForm.getPhase(phaseId);
             model.put("element", phase);
             model.put("form", activeForm);
             model.put("template", phase.getType());
@@ -241,7 +240,7 @@ public class FormController {
     private boolean skipValidators(MultivaluedMap<String, String> multiValues, Form form, String phaseId) {
         List<String> phaseIdList = multiValues.get(PHASE_ID);
         if (phaseIdList == null || phaseIdList.size() == 0) {
-            return false; 
+            return false;
         }
 
         String targetPhaseId = phaseIdList.get(0);
@@ -251,7 +250,7 @@ public class FormController {
             multiValues.get(PHASE_ID).set(0, targetPhaseId);
         }
 
-        for (Phase phase : form.getPhases()) {
+        for (Element phase : form.getChildren()) {
             if (phase.getId().equals(targetPhaseId)) {
                 return skipValidators;
             } else if (phase.getId().equals(phaseId)) {
@@ -296,7 +295,7 @@ public class FormController {
 
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         Map<String, Object> model = new HashMap<String, Object>();
-        Element theme = activeForm.getElementById(themeId);
+        Element theme = activeForm.getChildById(themeId);
         model.put("theme", theme);
         List<Element> listsOfTitledElements = new ArrayList<Element>();
         for (Element tElement : theme.getChildren()) {
@@ -318,7 +317,7 @@ public class FormController {
 
         LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, gradeGridId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
-        Element element = activeForm.getElementById(gradeGridId);
+        Element element = activeForm.getChildById(gradeGridId);
         GradeGrid gradeGrid = (GradeGrid) element;
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("element", gradeGrid);

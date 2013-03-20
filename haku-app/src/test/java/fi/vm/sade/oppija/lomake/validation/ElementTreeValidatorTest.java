@@ -16,21 +16,18 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-
 import fi.vm.sade.oppija.lomake.Yhteishaku2013;
+import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
 import org.junit.Before;
 import org.junit.Test;
 
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
+import java.util.HashMap;
+
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static org.junit.Assert.*;
 
 public class ElementTreeValidatorTest {
 
@@ -78,7 +75,7 @@ public class ElementTreeValidatorTest {
     }
 
     private void testAsuinmaa(final String asuinmaa, final int errorCount) {
-        Phase phase = formModelDummyMemoryDao.getFirstPhase(Yhteishaku2013.ASID, "yhteishaku");
+        Element phase = formModelDummyMemoryDao.getFirstPhase(Yhteishaku2013.ASID, "yhteishaku");
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", asuinmaa);
         ValidationResult validationResult = ElementTreeValidator.validate(phase, values);

@@ -23,6 +23,7 @@ import fi.vm.sade.oppija.lomake.domain.Attribute;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.Validator;
@@ -199,5 +200,34 @@ public abstract class Element implements Serializable {
 
     public List<Element> getChildren() {
         return ImmutableList.copyOf(children);
+    }
+
+    @JsonIgnore
+    public Element getChildById(final String id) {
+        Element element = getChildById(this, id);
+        if (element == null) {
+            throw new ResourceNotFoundExceptionRuntime("Could not find element " + id);
+        }
+
+        return element;
+    }
+
+    @JsonIgnore
+    protected Element getChildById(final Element element, final String id) {
+        if (element.getId().equals(id)) {
+            return element;
+        }
+        Element tmp = null;
+        for (Element child : element.getChildren()) {
+            tmp = getChildById(child, id);
+            if (tmp != null) {
+                return tmp;
+            }
+        }
+        return tmp;
+    }
+
+    public final boolean hasChildren() {
+        return this.children != null && this.children.size() > 0;
     }
 }

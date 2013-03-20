@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans 	xmlns="http://www.springframework.org/schema/beans"
-           xmlns:jaxws="http://cxf.apache.org/jaxws"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:context="http://www.springframework.org/schema/context"
-           xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
 			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
 			http://www.springframework.org/schema/context
@@ -22,7 +22,8 @@
             <jaxws:outInterceptors>
                 <bean class="fi.vm.sade.authentication.cas.CasApplicationAsAUserInterceptor">
                     <property name="webCasUrl" value="${web.url.cas}"/>
-                    <property name="targetService" value="${cas.service.authentication-service}/j_spring_cas_security_check"/>
+                    <property name="targetService"
+                              value="${cas.service.authentication-service}/j_spring_cas_security_check"/>
                     <property name="appClientUsername" value="${haku.app.username.to.usermanagement}"/>
                     <property name="appClientPassword" value="${haku.app.password.to.usermanagement}"/>
                 </bean>
@@ -30,7 +31,6 @@
         </jaxws:client>
 
     </beans>
-
 </beans>
 
 

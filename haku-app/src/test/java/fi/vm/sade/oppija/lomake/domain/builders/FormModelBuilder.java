@@ -44,9 +44,9 @@ public class FormModelBuilder {
             new FormBuilder(FORM_ID,
                     createI18NText("Tässä olisi kuvaava otsikko. Tämä on kuitenkin testiformi joka on luotu " + new Date()));
 
-    Form form = createForm(phase);
+    Form form = (Form) createForm(phase);
 
-    private Form createForm(Phase phase) {
+    private Element createForm(Phase phase) {
         return formBuilder.withChild(phase.addChild(theme)).build();
     }
 

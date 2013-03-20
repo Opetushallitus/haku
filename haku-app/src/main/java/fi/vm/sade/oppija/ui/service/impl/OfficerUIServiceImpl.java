@@ -7,8 +7,8 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
@@ -83,7 +83,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         } else {
             application.activate();
         }
-        Phase phase = activeForm.getPhase(applicationPhase.getPhaseId());
+        Element phase = activeForm.getPhase(applicationPhase.getPhaseId());
         ValidationResult phaseValidationResult = ElementTreeValidator.validate(phase, applicationPhase.getAnswers());
 
         this.applicationService.update(queryApplication, application);
@@ -101,7 +101,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public Application getApplicationWithLastPhase(final String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplication(oid);
         FormId formId = application.getFormId();
-        Phase phase = formService.getLastPhase(formId.getApplicationPeriodId(), formId.getFormId());
+        Element phase = formService.getLastPhase(formId.getApplicationPeriodId(), formId.getFormId());
         application.setPhaseId(phase.getId());
         return application;
     }

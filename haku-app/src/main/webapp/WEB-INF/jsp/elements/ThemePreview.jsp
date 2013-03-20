@@ -22,18 +22,18 @@
 <fieldset>
     <legend class="h3"><haku:i18nText value="${element.i18nText}"/></legend>
     <hr>
-    <c:forEach var="vaihe" items="${form.phases}">
-        <c:if test="${(not vaihe.preview)}">
-            <c:forEach var="teema" items="${vaihe.children}">
+    <c:forEach var="phase" items="${form.children}">
+        <c:if test="${(not phase.preview)}">
+            <c:forEach var="teema" items="${phase.children}">
                 <c:if test="${(teema.id eq element.id)}">
                     <c:choose>
                         <c:when test="${oid eq null}">
                             <c:set var="editUrl"
-                                   value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${vaihe.id}"/>
+                                   value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}/${phase.id}"/>
                         </c:when>
                         <c:otherwise>
                             <c:set var="editUrl"
-                                   value="${pageContext.request.contextPath}/virkailija/hakemus/${application.formId.applicationPeriodId}/${application.formId.formId}/${vaihe.id}/${oid}/"/>
+                                   value="${pageContext.request.contextPath}/virkailija/hakemus/${application.formId.applicationPeriodId}/${application.formId.formId}/${phase.id}/${oid}/"/>
                         </c:otherwise>
                     </c:choose>
                     <form method="get"

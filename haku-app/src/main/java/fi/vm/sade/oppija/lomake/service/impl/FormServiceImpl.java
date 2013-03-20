@@ -20,8 +20,8 @@ package fi.vm.sade.oppija.lomake.service.impl;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import fi.vm.sade.oppija.lomake.service.FormService;
@@ -77,8 +77,8 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public Phase getFirstPhase(String applicationPeriodId, String formId) {
-        Phase firstPhase = getActiveForm(applicationPeriodId, formId).getFirstPhase();
+    public Element getFirstPhase(String applicationPeriodId, String formId) {
+        Element firstPhase = getActiveForm(applicationPeriodId, formId).getFirstChild();
         if (firstPhase == null) {
             throw new ResourceNotFoundExceptionRuntime("First phase not found");
         }
@@ -86,8 +86,8 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public Phase getLastPhase(String applicationPeriodId, String formId) {
-        Phase lastPhase = getActiveForm(applicationPeriodId, formId).getLastPhase();
+    public Element getLastPhase(String applicationPeriodId, String formId) {
+        Element lastPhase = getActiveForm(applicationPeriodId, formId).getLastPhase();
         if (lastPhase == null) {
             throw new ResourceNotFoundExceptionRuntime("Last phase not found");
         }

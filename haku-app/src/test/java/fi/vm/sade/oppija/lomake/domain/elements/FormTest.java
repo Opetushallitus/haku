@@ -32,13 +32,13 @@ public class FormTest {
     @Test
     public void testGetElementById() throws Exception {
         form.addChild(expectedElement);
-        Element actualElement = form.getElementById(ID_TO_GET);
+        Element actualElement = form.getChildById(ID_TO_GET);
         assertEquals(expectedElement, actualElement);
     }
 
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testGetElementByIdNotFound() throws Exception {
         form.addChild(expectedElement);
-   		form.getElementById(ID_TO_GET + "2");
+        form.getChildById(ID_TO_GET + "2");
     }
 }

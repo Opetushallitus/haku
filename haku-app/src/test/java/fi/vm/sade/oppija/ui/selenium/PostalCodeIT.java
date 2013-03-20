@@ -16,19 +16,7 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-
 import com.thoughtworks.selenium.Selenium;
-
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
@@ -39,6 +27,16 @@ import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PostalCode;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 
 /**
  * @author Mikko Majapuro
@@ -58,7 +56,6 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         Phase testivaihe = new Phase("testivaihe", createI18NText("Testivaihe"), false);
         Form form = new Form("lomake", createI18NText("yhteishaku"));
         form.addChild(testivaihe);
-        form.init();
 
         applicationPeriod.addForm(form);
 
@@ -87,6 +84,6 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys(POSTCODE_ID, POSTCODE);
         s.typeKeys("foo", "bar");
-        driver.findElement(By.xpath("//*[text()='"+ POST_OFFICE+ "']"));
+        driver.findElement(By.xpath("//*[text()='" + POST_OFFICE + "']"));
     }
 }

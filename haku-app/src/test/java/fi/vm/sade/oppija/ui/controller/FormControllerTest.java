@@ -45,9 +45,7 @@ import java.util.Map;
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.*;
 
 public class FormControllerTest {
 
@@ -77,7 +75,6 @@ public class FormControllerTest {
         this.formController = new FormController(formService, applicationService, userPrefillDataService, additionalQuestionService);
         this.application = new Application();
         FORM.addChild(PHASE);
-        FORM.init();
         when(applicationService.getApplication(Matchers.<FormId>any())).thenReturn(this.application);
         when(formService.getFirstPhase(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(PHASE);
         when(formService.getActiveForm(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(FORM);

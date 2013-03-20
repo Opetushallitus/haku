@@ -21,80 +21,49 @@ import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntim
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 public class Form extends Titled {
 
     private static final long serialVersionUID = 8083152169717295356L;
-    private transient String firstPhaseId;
-    private transient String lastPhaseId;
-
-    final transient Map<String, Phase> phases = new HashMap<String, Phase>();
 
     public Form(@JsonProperty(value = "id") final String id,
                 @JsonProperty(value = "i18nText") final I18nText i18nText) {
         super(id, i18nText);
     }
 
-    public Phase getPhase(String phaseId) {
-        return phases.get(phaseId);
-    }
-
-    private void addPhase(Phase phase, Phase prev) {
-        this.phases.put(phase.getId(), phase);
-        phase.initChain(prev);
-    }
-
-    public void init() {
-        Phase prev = null;
-        for (Element child : children) {
-            final Phase child1 = (Phase) child;
-            addPhase(child1, prev);
-            prev = child1;
-            if (firstPhaseId == null) {
-                firstPhaseId = child.getId();
-            }
-            lastPhaseId = child.getId();
-        }
+    @JsonIgnore
+    public Element getPhase(final String elementId) {
+        return getChildById(this, elementId);
     }
 
     @JsonIgnore
-    public Phase getFirstPhase() {
-        return getPhase(firstPhaseId);
+    public boolean isFirstChild(final Element phase) {
+        if (hasChildren()) {
+            return this.children.get(0).equals(phase);
+        }
+        return false;
     }
 
     @JsonIgnore
-    public Phase getLastPhase() {
-        return getPhase(lastPhaseId);
+    public boolean isLastChild(final Element phase) {
+        if (hasChildren()) {
+            return this.children.get(this.children.size() - 1).equals(phase);
+        }
+        return false;
     }
 
     @JsonIgnore
-    public Collection<Phase> getPhases() {
-        return phases.values();
+    public Element getFirstChild() {
+        if (!hasChildren()) {
+            throw new ResourceNotFoundExceptionRuntime("Could not find first child");
+        }
+        return this.getChildren().get(0);
     }
 
     @JsonIgnore
-    public Element getElementById(final String elementId) {
-        Element element = getChildById(this, elementId);
-        if (element == null) {
-            throw new ResourceNotFoundExceptionRuntime("Could not find element " + elementId);
+    public Element getLastPhase() {
+        if (!hasChildren()) {
+            throw new ResourceNotFoundExceptionRuntime("Could not find first child");
         }
-        return element;
-    }
-
-    private Element getChildById(final Element element, final String id) {
-        if (element.getId().equals(id)) {
-            return element;
-        }
-        Element tmp = null;
-        for (Element child : element.getChildren()) {
-            tmp = getChildById(child, id);
-            if (tmp != null) {
-                return tmp;
-            }
-        }
-        return tmp;
+        return this.children.get(this.children.size() - 1);
     }
 }

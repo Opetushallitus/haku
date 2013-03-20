@@ -30,8 +30,6 @@ public class FormModelHolder {
     public FormModelHolder(final Yhteishaku2013 yhteishaku2013) {
         formModel = new FormModel();
         formModel.addApplicationPeriod(yhteishaku2013.getApplicationPeriod());
-        FormModelInitializer formModelInitializer = new FormModelInitializer(this.formModel);
-        formModelInitializer.initModel();
     }
 
     public FormModel getModel() {
@@ -44,8 +42,6 @@ public class FormModelHolder {
      * @param model new model
      */
     public synchronized void updateModel(final FormModel model) {
-        FormModelInitializer formModelInitializer = new FormModelInitializer(model);
-        formModelInitializer.initModel();
         this.formModel = model;
     }
 

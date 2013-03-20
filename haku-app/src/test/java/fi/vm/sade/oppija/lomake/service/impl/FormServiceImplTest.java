@@ -47,7 +47,6 @@ public class FormServiceImplTest {
         model.addApplicationPeriod(applicationPeriod);
         holder.updateModel(model);
         formService = new FormServiceImpl(holder);
-        FORM.init();
     }
 
     @Test(expected = ResourceNotFoundExceptionRuntime.class)

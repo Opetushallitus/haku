@@ -16,10 +16,10 @@
 
 package fi.vm.sade.oppija.lomake.it;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
+import com.thoughtworks.selenium.Selenium;
+import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
+import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,11 +28,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import com.thoughtworks.selenium.Selenium;
+import java.util.List;
 
-import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.Yhteishaku2013;
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import static org.junit.Assert.assertTrue;
 
 public class LomakeIT extends AbstractSeleniumBase {
 
@@ -73,7 +71,11 @@ public class LomakeIT extends AbstractSeleniumBase {
 
         clickNextPhase(driver);
 
+        testHAK123AandHAK124(driver);
+
+
         driver.findElement(new By.ById("millatutkinnolla_tutkinto1")).click();
+
         driver.findElement(new By.ById("paattotodistusvuosi_peruskoulu"));
         selenium.typeKeys("paattotodistusvuosi_peruskoulu", "2013");
 
@@ -121,6 +123,13 @@ public class LomakeIT extends AbstractSeleniumBase {
         String value = driver.findElement(new By.ById("Sukunimi")).getAttribute("value");
         assertTrue(StringUtils.isEmpty(value));
         clickNextPhase(driver);
+    }
+
+    private void testHAK123AandHAK124(final WebDriver driver) {
+        driver.findElement(new By.ById("millatutkinnolla_tutkinto5")).click();
+        driver.findElement(new By.ById(Yhteishaku2013.TUTKINTO5_NOTIFICATION_ID));
+        driver.findElement(new By.ById("millatutkinnolla_tutkinto7")).click();
+        driver.findElement(new By.ById(Yhteishaku2013.TUTKINTO7_NOTIFICATION_ID));
     }
 
     private void clickNextPhase(WebDriver driver) {

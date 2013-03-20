@@ -18,16 +18,16 @@ package fi.vm.sade.oppija.lomake.service;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 
 import java.util.Map;
 
 public interface FormService {
 
-    Phase getFirstPhase(final String applicationPeriodId, final String formId);
+    Element getFirstPhase(final String applicationPeriodId, final String formId);
 
-    Phase getLastPhase(final String applicationPeriodId, final String formId);
+    Element getLastPhase(final String applicationPeriodId, final String formId);
 
     Map<String, ApplicationPeriod> getApplicationPerioidMap();
 

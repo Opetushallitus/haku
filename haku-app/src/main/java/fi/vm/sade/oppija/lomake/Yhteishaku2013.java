@@ -41,6 +41,8 @@ import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 public class Yhteishaku2013 {
 
     public static final String ASID = "1.2.246.562.5.50476818906";
+    public static final String TUTKINTO7_NOTIFICATION_ID = "tutkinto7-notification";
+    public static final String TUTKINTO5_NOTIFICATION_ID = "tutkinto5-notification";
 
     private final ApplicationPeriod applicationPeriod;
     public static String mobilePhonePattern =
@@ -67,7 +69,6 @@ public class Yhteishaku2013 {
         form.addChild(arvosanat);
         form.addChild(lisatiedot);
         form.addChild(esikatselu);
-        form.init();
 
         applicationPeriod.addForm(form);
 
@@ -587,14 +588,14 @@ public class Yhteishaku2013 {
         millatutkinnolla.setVerboseHelp(getVerboseHelp());
         millatutkinnolla.addAttribute("required", "required");
 
-        Notification tutkinto7Notification = new Notification("tutkinto7-notification",
+        Notification tutkinto7Notification = new Notification(TUTKINTO7_NOTIFICATION_ID,
                 createI18NText("Koska olet suorittanut tutkintosi ulkomailla, " +
                         "haet automaattisesti harkintaan perustuvassa valinnassa. " +
                         "Toimita tutkintotodistuksesi suoraan kaikkiin oppilaitoksiin, " +
                         "joihin haet. Todistukset tulee toimittaa perille hakuaikana."),
                 Notification.NotificationType.INFO);
 
-        Notification tutkinto5Notification = new Notification("tutkinto5-notification",
+        Notification tutkinto5Notification = new Notification(TUTKINTO5_NOTIFICATION_ID,
                 createI18NText("Koska oppivelvollisuutesi suorittaminen on keskeytynyt, " +
                         "haet automaattisesti harkintaan perustuvassa valinnassa. " +
                         "Toimita valinnassa käytettävät todistukset suoraan kaikkiin oppilaitoksiin, " +

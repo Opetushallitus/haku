@@ -37,26 +37,19 @@ public class OrganizationServiceImpl implements OrganizationService {
     private final OrganisaatioService service;
 
     @Autowired
-    public OrganizationServiceImpl(OrganisaatioService service) {
+    public OrganizationServiceImpl(final OrganisaatioService service) {
         this.service = service;
     }
 
     @Override
-    public List<Organization> search(SearchCriteria criteria) throws IOException {
+    public List<Organization> search(final SearchCriteria criteria) throws IOException {
 
         final OrganisaatioSearchCriteriaDTO criteriaDTO = new OrganisaatioSearchCriteriaDTO();
         criteriaDTO.setMaxResults(MAX_RESULTS);
-        if (criteria.getSearchString() != null) {
-            criteriaDTO.setSearchStr(criteria.getSearchString());
-        }
-
-        if (criteria.getOrganizationType() != null) {
-            criteriaDTO.setOrganisaatioTyyppi(criteria.getOrganizationType());
-        }
-
+        criteriaDTO.setSearchStr(criteria.getSearchString());
+        criteriaDTO.setOrganisaatioTyyppi(criteria.getOrganizationType());
         criteriaDTO.setSuunnitellut(criteria.isIncludePlanned());
         criteriaDTO.setLakkautetut(criteria.isIncludePassive());
-
         criteriaDTO.setOppilaitosTyyppi(criteria.getLearningInstitutionType());
         final List<OrganisaatioPerustietoType> result = service.searchBasicOrganisaatios(criteriaDTO);
         return Lists.newArrayList(Lists.transform(result, new OrganisaatioPerustietoTypeToOrganizationFunction()));

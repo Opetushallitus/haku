@@ -21,8 +21,8 @@ import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import fi.vm.sade.oppija.lomake.service.FormService;
@@ -49,16 +49,16 @@ public class FormServiceMockImpl implements FormService {
     }
 
     @Override
-    public Phase getFirstPhase(String applicationPeriodId, String formId) {
+    public Element getFirstPhase(String applicationPeriodId, String formId) {
         try {
-            return this.getActiveForm(applicationPeriodId, formId).getFirstPhase();
+            return this.getActiveForm(applicationPeriodId, formId).getFirstChild();
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRuntime("Not found");
         }
     }
 
     @Override
-    public Phase getLastPhase(String applicationPeriodId, String formId) {
+    public Element getLastPhase(String applicationPeriodId, String formId) {
         try {
             return this.getActiveForm(applicationPeriodId, formId).getLastPhase();
         } catch (Exception e) {

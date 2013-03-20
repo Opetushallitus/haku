@@ -18,8 +18,8 @@ package fi.vm.sade.oppija.lomake;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 
 
 /**
@@ -35,8 +35,8 @@ public class FormModelHelper {
 
     }
 
-    public String getFormUrl(Phase phase) {
-        return "lomake/" + getFirstApplicationPerioid().getId() + "/" + getFirstForm().getId() + "/" + phase.getId();
+    public String getFormUrl(final Element element) {
+        return "lomake/" + getFirstApplicationPerioid().getId() + "/" + getFirstForm().getId() + "/" + element.getId();
     }
 
     public String getFirstCategoryFormId() {
@@ -51,8 +51,8 @@ public class FormModelHelper {
         return formModel.getApplicationPerioidMap().entrySet().iterator().next().getValue();
     }
 
-    public Phase getFirstCategory() {
-        return getFirstForm().getFirstPhase();
+    public Element getFirstCategory() {
+        return getFirstForm().getFirstChild();
     }
 
     public String getStartUrl() {

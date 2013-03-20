@@ -78,7 +78,6 @@ public class OfficerControllerTest {
         Form form = new Form("yhteishaku", createI18NText("yhteishaku"));
         form.addChild(new Phase("henkilotiedot", createI18NText("henkilotiedot"), false));
         form.addChild(phase);
-        form.init();
         when(formService.getActiveForm(Yhteishaku2013.ASID, "yhteishaku")).thenReturn(form);
 
         ApplicationState applicationState = new ApplicationState(app, "henkilotiedot");

@@ -18,43 +18,33 @@
   --%>
 <fmt:setBundle basename="messages"/>
 <fmt:requestEncoding value="utf-8"/>
-<fmt:setLocale value="sv"/>
-<c:set var="baseUrl" value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}" scope="request"/>
-<c:choose>
-    <c:when test="${vaihe.hasPrev}">
-        <form method="get" action="${baseUrl}/${vaihe.prev.id}">
-            <div class="set-left">
-                <button class="left" name="nav-prev" type="submit" value="true">
+<c:set var="baseUrl"
+       value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}"
+       scope="page"/>
+<c:forEach var="item" items="${form.children}" varStatus="status">
+    <c:if test="${(not status.first) and (item eq vaihe)}">
+        <div class="float-left">
+            <form method="get" action="${baseUrl}/${tmpPrev.id}">
+                <button class="left" name="phaseId" type="submit" value="${tmpPrev.id}-skip-validators">
+                <span>
+                    <span><fmt:message key="lomake.button.previous"/></span>
+                </span>
+                </button>
+            </form>
+        </div>
+    </c:if>
+    <c:choose>
+        <c:when test="${(status.last) and (item eq vaihe)}">
+            <div class="float-right">
+                <button class="right" name="nav-send" data-po-show="areyousure" value="true">
                     <span>
-                        <span><fmt:message key="lomake.button.previous"/></span>
+                        <span><fmt:message key="lomake.button.send"/></span>
                     </span>
                 </button>
             </div>
-        </form>
-    </c:when>
-</c:choose>
-<div class="set-right">
-    <c:choose>
-        <c:when test="${vaihe.hasNext}">
-            <form method="get" action="${baseUrl}/${vaihe.next.id}">
-                <div class="set-left">
-                    <button class="right" name="nav-next" type="submit" value="true">
-                        <span>
-                            <span><fmt:message key="lomake.button.next"/></span>
-                        </span>
-                    </button>
-                </div>
-            </form>
+            <div class="clear"></div>
         </c:when>
-        <c:otherwise>
-                <div class="set-left">
-                    <button class="right" name="nav-send" data-po-show="areyousure" value="true">
-                        <span>
-                            <span><fmt:message key="lomake.button.send"/></span>
-                        </span>
-                    </button>
-                </div>
-        </c:otherwise>
     </c:choose>
-</div>
-<div class="clear"></div>
+    <c:set var="tmpPrev" value="${item}" scope="page"/>
+</c:forEach>
+<c:remove var="tmpPrev" scope="page"/>

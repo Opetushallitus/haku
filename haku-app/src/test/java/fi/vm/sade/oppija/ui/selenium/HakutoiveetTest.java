@@ -90,7 +90,6 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", "preference1-Koulutus-id", "1.2.246.562.14.79893512065");
         relatedQuestionRule.addChild(lisakysymys);
         lisakysymyksetRyhma.addChild(relatedQuestionRule);
-        form.init();
         applicationPeriod.addForm(form);
         updateIndexAndFormModel(formModel);
     }

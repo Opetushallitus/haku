@@ -53,7 +53,6 @@ public class OfficerUIServiceImplTest {
         officerUIService = new OfficerUIServiceImpl(
                 applicationService, formService, valintaperusteetService, koodistoService);
         form.addChild(phase);
-        form.init();
         when(applicationService.getApplicationPreferenceOids(application)).thenReturn(OIDS);
         when(applicationService.getApplication(OID)).thenReturn(application);
         when(valintaperusteetService.retrieveAdditionalQuestions(OIDS)).thenReturn(additionalQuestions);

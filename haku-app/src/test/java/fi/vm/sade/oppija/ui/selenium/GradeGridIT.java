@@ -16,14 +16,6 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.Yhteishaku2013;
@@ -31,6 +23,13 @@ import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Hannu Lyytikainen
@@ -48,7 +47,6 @@ public class GradeGridIT extends AbstractSeleniumBase {
         form.addChild(arvosanat);
         Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl());
         arvosanat.addChild(yhteishaku2013.createGradeGrid(true));
-        form.init();
         applicationPeriod.addForm(form);
         updateIndexAndFormModel(formModel);
     }

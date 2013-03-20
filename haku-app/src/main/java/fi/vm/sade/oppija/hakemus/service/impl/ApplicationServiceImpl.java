@@ -29,8 +29,8 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
@@ -132,13 +132,13 @@ public class ApplicationServiceImpl implements ApplicationService {
         final String applicationPeriodId = applicationState.getHakemus().getFormId().getApplicationPeriodId();
         final String formId = applicationState.getHakemus().getFormId().getFormId();
         final Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        final Phase phase = activeForm.getPhase(applicationPhase.getPhaseId());
+        final Element phase = activeForm.getPhase(applicationPhase.getPhaseId());
         final Map<String, String> vastaukset = applicationPhase.getAnswers();
 
         Map<String, String> allAnswers = new HashMap<String, String>();
         // if the current phase has previous phase, get all the answers for
         // validating rules
-        if (phase.isHasPrev()) {
+        if (activeForm.isFirstChild(phase)) {
             Application current = getApplication(applicationState.getHakemus().getFormId());
             allAnswers.putAll(current.getVastauksetMerged());
         }

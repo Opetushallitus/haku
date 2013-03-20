@@ -31,10 +31,4 @@ public class FormBuilder extends ElementBuilder {
         super.withChild(categories);
         return this;
     }
-
-    public Form build() {
-        final Form form = (Form) element;
-        form.init();
-        return form;
-    }
 }

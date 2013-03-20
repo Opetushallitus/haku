@@ -20,7 +20,6 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
@@ -66,7 +65,7 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     public Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, FormId formId, final String vaiheId) {
         Theme theme = null;
         Form form = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
-        Phase phase = form.getPhase(vaiheId);
+        Element phase = form.getPhase(vaiheId);
         for (Element e : phase.getChildren()) {
             if (e.getId().equals(teemaId)) {
                 theme = (Theme) e;
