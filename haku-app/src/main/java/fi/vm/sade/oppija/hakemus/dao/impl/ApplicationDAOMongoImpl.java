@@ -51,6 +51,7 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 @Service("applicationDAOMongoImpl")
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> implements ApplicationDAO {
 
+    public static final int HUNDRED = 100;
     private final EncrypterService shaEncrypter;
 
     private static final String FIELD_AO_1 = "answers.hakutoiveet.preference1-Koulutus-id";
@@ -257,7 +258,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             if (new Date().before(dob)) {
                 Calendar cal = GregorianCalendar.getInstance();
                 cal.setTime(dob);
-                cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 100);
+                cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - HUNDRED);
                 dob = cal.getTime();
             }
             return isoFmt.format(dob);
