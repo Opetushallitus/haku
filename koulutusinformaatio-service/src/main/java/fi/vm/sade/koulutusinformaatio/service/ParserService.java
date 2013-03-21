@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+
 import javax.xml.transform.Source;
 
 /**
@@ -25,6 +27,6 @@ import javax.xml.transform.Source;
  */
 public interface ParserService {
 
-    Object parse(Source data);
+    LearningOpportunityData parse(Source data);
 
 }
