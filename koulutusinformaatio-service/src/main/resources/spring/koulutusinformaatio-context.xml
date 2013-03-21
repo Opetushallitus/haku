@@ -49,7 +49,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="searchFilters" class="fi.vm.sade.koulutusinformaatio.domain.SearchFilters">
+    <bean id="searchFilters" class="fi.vm.sade.koulutusinformaatio.domain.search.SearchFilters">
         <constructor-arg ref="searchService"/>
     </bean>
 

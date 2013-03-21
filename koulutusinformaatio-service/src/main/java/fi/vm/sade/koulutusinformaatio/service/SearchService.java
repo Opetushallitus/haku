@@ -16,7 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.SearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.search.SearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
 import java.util.Collection;

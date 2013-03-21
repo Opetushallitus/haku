@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.domain;
+package fi.vm.sade.koulutusinformaatio.domain.search;
 
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;

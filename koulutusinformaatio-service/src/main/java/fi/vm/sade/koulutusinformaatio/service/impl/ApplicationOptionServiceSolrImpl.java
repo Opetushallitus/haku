@@ -16,9 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.Organization;
-import fi.vm.sade.koulutusinformaatio.domain.SearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.search.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.search.Organization;
+import fi.vm.sade.koulutusinformaatio.domain.search.SearchResult;
 import fi.vm.sade.koulutusinformaatio.service.ApplicationOptionService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.domain;
+package fi.vm.sade.koulutusinformaatio.domain.search;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 

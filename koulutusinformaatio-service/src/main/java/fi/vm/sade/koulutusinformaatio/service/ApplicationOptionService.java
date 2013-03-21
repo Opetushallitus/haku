@@ -16,8 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.Organization;
+import fi.vm.sade.koulutusinformaatio.domain.search.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.search.Organization;
 
 import java.util.List;
 

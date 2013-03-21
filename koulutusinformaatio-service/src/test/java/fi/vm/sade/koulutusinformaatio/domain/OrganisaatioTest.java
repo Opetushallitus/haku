@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import fi.vm.sade.koulutusinformaatio.domain.search.Organization;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
