@@ -35,7 +35,7 @@ public class IndexControllerTest {
         indexerService = new IndexerService() {
 
             @Override
-            public String update(URI uri) {
+            public String update() {
                 return EXPECTED_STRING;
             }
 
@@ -45,7 +45,6 @@ public class IndexControllerTest {
             }
         };
         indexController = new IndexController();
-        indexController.tarjontaUrl = "";
         indexController.indexerService = indexerService;
     }
 

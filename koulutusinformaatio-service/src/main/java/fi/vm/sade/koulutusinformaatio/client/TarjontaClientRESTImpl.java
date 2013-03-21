@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.client;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,6 +26,9 @@ import java.net.URI;
 @Component
 public class TarjontaClientRESTImpl implements TarjontaClient {
 
+    @Value("${tarjonta.data.url}")
+    String tarjontaUrl;
+
     private RestTemplate restTemplate;
 
     public TarjontaClientRESTImpl() {
@@ -32,7 +36,7 @@ public class TarjontaClientRESTImpl implements TarjontaClient {
     }
 
     @Override
-    public Source retrieveTarjontaAsSource(URI tarjontaUrl) {
+    public Source retrieveTarjontaAsSource() {
         return restTemplate.getForObject(tarjontaUrl, Source.class);
     }
 }

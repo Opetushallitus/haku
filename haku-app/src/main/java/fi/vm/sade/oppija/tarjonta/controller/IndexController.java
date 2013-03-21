@@ -39,8 +39,6 @@ import java.net.URISyntaxException;
 public class IndexController {
 
     public static final String ADMIN_UPDATE_INDEX_VIEW = "/admin/updateIndex";
-    @Value("${tarjonta.data.url}")
-    String tarjontaUrl;
 
     @Autowired
     @Qualifier("indexerServiceImpl")
@@ -50,8 +48,7 @@ public class IndexController {
     @Path("update")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable updateIndex() throws URISyntaxException {
-        URI uri = new URI(tarjontaUrl);
-        ImmutableMap<String, String> model = ImmutableMap.of("result", indexerService.update(uri));
+        ImmutableMap<String, String> model = ImmutableMap.of("result", indexerService.update());
         return new Viewable(ADMIN_UPDATE_INDEX_VIEW, model);
     }
 

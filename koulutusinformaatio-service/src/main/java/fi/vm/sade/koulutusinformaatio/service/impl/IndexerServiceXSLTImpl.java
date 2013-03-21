@@ -55,9 +55,9 @@ public class IndexerServiceXSLTImpl implements IndexerService {
     }
 
     @Override
-    public String update(final URI uri) {
+    public String update() {
 
-        final Source source = tarjontaClient.retrieveTarjontaAsSource(uri);
+        final Source source = tarjontaClient.retrieveTarjontaAsSource();
         try {
             final ByteArrayOutputStream result = transform(source);
             return client.update(result);

@@ -57,9 +57,9 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public String update(final URI uri) {
+    public String update() {
 
-        final Source source = tarjontaClient.retrieveTarjontaAsSource(uri);
+        final Source source = tarjontaClient.retrieveTarjontaAsSource();
 
         try {
             Collection<SolrInputDocument> documents = parseDocuments(source);

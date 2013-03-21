@@ -27,7 +27,7 @@ import java.net.URI;
  */
 public interface UpdateService {
 
-    public void updateEducationData(URI uri);
+    public void updateEducationData();
 
 
 }
