@@ -78,7 +78,7 @@
 
     <bean id="morphia" class="com.google.code.morphia.Morphia" />
 
-    <bean id="learningOpportunityParentDAO" class="fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityParentDAO">
+    <bean id="parentLearningOpportunityDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunityDAO">
         <constructor-arg>
             <ref bean="mongo"/>
         </constructor-arg>

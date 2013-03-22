@@ -7,9 +7,9 @@ import com.google.code.morphia.annotations.Id;
  * @author Mikko Majapuro
  */
 @Entity("learningOpportunities")
-public class LearningOpportunityParentEntity {
+public class ParentLearningOpportunityEntity {
 
-    public LearningOpportunityParentEntity() {
+    public ParentLearningOpportunityEntity() {
 
     }
 

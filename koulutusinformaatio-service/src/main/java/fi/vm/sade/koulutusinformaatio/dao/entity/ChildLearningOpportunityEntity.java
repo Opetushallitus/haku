@@ -7,9 +7,9 @@ import com.google.code.morphia.annotations.Id;
  * @author Mikko Majapuro
  */
 @Embedded
-public class LearningOpportunityChildEntity {
+public class ChildLearningOpportunityEntity {
 
-    public LearningOpportunityChildEntity() {
+    public ChildLearningOpportunityEntity() {
 
     }
 
