@@ -9,12 +9,12 @@ import com.google.code.morphia.annotations.Id;
 @Embedded
 public class ChildLearningOpportunityEntity {
 
-    public ChildLearningOpportunityEntity() {
-
-    }
-
     @Id
     private String id;
+    private String name;
+
+    public ChildLearningOpportunityEntity() {
+    }
 
     public String getId() {
         return id;
@@ -22,5 +22,13 @@ public class ChildLearningOpportunityEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
