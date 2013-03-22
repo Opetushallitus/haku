@@ -16,7 +16,7 @@ public class ParentLearningOpportunityEntity {
     private String id;
     private String name;
     @Embedded
-    private List<ChildLearningOpportunityEntity> childLearningOpportunityEntities;
+    private List<ChildLearningOpportunityEntity> children;
 
     public ParentLearningOpportunityEntity() {
     }
@@ -37,11 +37,11 @@ public class ParentLearningOpportunityEntity {
         this.name = name;
     }
 
-    public List<ChildLearningOpportunityEntity> getChildLearningOpportunityEntities() {
-        return childLearningOpportunityEntities;
+    public List<ChildLearningOpportunityEntity> getChildren() {
+        return children;
     }
 
-    public void setChildLearningOpportunityEntities(List<ChildLearningOpportunityEntity> childLearningOpportunityEntities) {
-        this.childLearningOpportunityEntities = childLearningOpportunityEntities;
+    public void setChildren(List<ChildLearningOpportunityEntity> children) {
+        this.children = children;
     }
 }

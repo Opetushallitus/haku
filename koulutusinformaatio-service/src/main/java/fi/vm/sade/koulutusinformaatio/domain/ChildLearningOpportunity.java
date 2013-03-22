@@ -29,6 +29,10 @@ public class ChildLearningOpportunity {
         this.name = name;
     }
 
+    public ChildLearningOpportunity() {
+
+    }
+
     public String getId() {
         return id;
     }
