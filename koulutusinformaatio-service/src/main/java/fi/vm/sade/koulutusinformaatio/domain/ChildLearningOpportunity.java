@@ -19,5 +19,39 @@ package fi.vm.sade.koulutusinformaatio.domain;
 /**
  * @author Hannu Lyytikainen
  */
-public class LearningOpportunityChild {
+public class ChildLearningOpportunity {
+
+    private String id;
+    private String name;
+    private String instanceId;
+
+    public ChildLearningOpportunity(String id, String name, String instanceId) {
+        this.id = id;
+        this.name = name;
+        this.instanceId = instanceId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
 }

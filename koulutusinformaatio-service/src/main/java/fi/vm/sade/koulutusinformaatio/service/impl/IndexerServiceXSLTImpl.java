@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.client.SolrClient;
 import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
+import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -38,6 +39,7 @@ import java.io.IOException;
 import java.net.URI;
 
 @Service
+@Deprecated
 public class IndexerServiceXSLTImpl implements IndexerService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(IndexerServiceXSLTImpl.class);
@@ -89,6 +91,11 @@ public class IndexerServiceXSLTImpl implements IndexerService {
             LOGGER.error("drop failed", e);
         }
         return dropped;
+    }
+
+    @Override
+    public void updateIndex(LearningOpportunityData data) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
 

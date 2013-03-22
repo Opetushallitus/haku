@@ -11,6 +11,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
 
+import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
@@ -57,6 +58,12 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
+    public void updateIndex(LearningOpportunityData data) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+
+    @Override
     public String update() {
 
         final Source source = tarjontaClient.retrieveTarjontaAsSource();
@@ -91,7 +98,6 @@ public class IndexerServiceImpl implements IndexerService {
         }
         return dropped;
     }
-
 
     public Collection<SolrInputDocument> parseDocuments(final Source source) throws JAXBException, MalformedURLException {
         Unmarshaller unmashaller = JAXBContext.newInstance(LearningOpportunityDownloadDataType.class.getPackage().getName()).createUnmarshaller();

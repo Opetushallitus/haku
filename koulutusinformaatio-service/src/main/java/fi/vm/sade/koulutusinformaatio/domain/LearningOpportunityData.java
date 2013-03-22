@@ -16,8 +16,20 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.List;
+
 /**
  * @author Hannu Lyytikainen
  */
 public class LearningOpportunityData {
+
+    private List<ParentLearningOpportunity> parentLearningOpportinities;
+
+    public List<ParentLearningOpportunity> getParentLearningOpportinities() {
+        return parentLearningOpportinities;
+    }
+
+    public void setParentLearningOpportinities(List<ParentLearningOpportunity> parentLearningOpportinities) {
+        this.parentLearningOpportinities = parentLearningOpportinities;
+    }
 }

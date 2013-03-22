@@ -16,8 +16,39 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Hannu Lyytikainen
  */
-public class LearningOpportunityParent {
+public class ParentLearningOpportunity {
+
+    private String id;
+    private String name;
+    private List<ChildLearningOpportunity> children = new ArrayList<ChildLearningOpportunity>();
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<ChildLearningOpportunity> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<ChildLearningOpportunity> children) {
+        this.children = children;
+    }
 }

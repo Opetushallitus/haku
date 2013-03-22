@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.tarjonta.controller;
 
+import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +43,11 @@ public class IndexControllerTest {
             @Override
             public boolean drop() {
                 return true;
+            }
+
+            @Override
+            public void updateIndex(LearningOpportunityData data) {
+                //To change body of implemented methods use File | Settings | File Templates.
             }
         };
         indexController = new IndexController();

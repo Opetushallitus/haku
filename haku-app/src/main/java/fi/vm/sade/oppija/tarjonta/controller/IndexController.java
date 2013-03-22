@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.tarjonta.controller;
 import com.google.common.collect.ImmutableMap;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,10 +45,16 @@ public class IndexController {
     @Qualifier("indexerServiceImpl")
     IndexerService indexerService;
 
+    @Autowired
+    @Qualifier("updateServiceImpl")
+    UpdateService updateService;
+
     @GET
     @Path("update")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable updateIndex() throws URISyntaxException {
+        // for testing new implementation
+        //updateService.updateEducationData();
         ImmutableMap<String, String> model = ImmutableMap.of("result", indexerService.update());
         return new Viewable(ADMIN_UPDATE_INDEX_VIEW, model);
     }
