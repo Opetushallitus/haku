@@ -43,8 +43,8 @@ public class ParserServiceImpl implements ParserService {
         LearningOpportunityData learningOpportunityData = new LearningOpportunityData();
 
         Unmarshaller unmashaller = JAXBContext.newInstance(LearningOpportunityDownloadDataType.class.getPackage().getName()).createUnmarshaller();
-        LearningOpportunityDownloadDataType learningOpportunityDownloadDataType = (LearningOpportunityDownloadDataType)unmashaller.unmarshal(source);;
-        List<LearningOpportunityInstanceType> loiList = learningOpportunityDownloadDataType.getLearningOpportunityInstance();
+        LearningOpportunityDownloadDataType downloadData = (LearningOpportunityDownloadDataType)unmashaller.unmarshal(source);;
+        List<LearningOpportunityInstanceType> loiList = downloadData.getLearningOpportunityInstance();
 
         // temporary map that holds child
         Map<String, ChildLearningOpportunity> children = new HashMap<String, ChildLearningOpportunity>();
@@ -56,12 +56,14 @@ public class ParserServiceImpl implements ParserService {
             children.put(newChild.getId(), newChild);
         }
 
-        List<LearningOpportunitySpecificationType> losList = learningOpportunityDownloadDataType.getLearningOpportunitySpecification();
+        List<LearningOpportunitySpecificationType> losList = downloadData.getLearningOpportunitySpecification();
         for (LearningOpportunitySpecificationType los : losList) {
             if (los.getChildLOSRefs() != null && !los.getChildLOSRefs().isEmpty()) {
                 parents.add(parseLearningOpportunityParent(los, children));
             }
         }
+
+
 
         learningOpportunityData.setParentLearningOpportinities(parents);
 
@@ -85,7 +87,7 @@ public class ParserServiceImpl implements ParserService {
 
         LearningOpportunitySpecificationType los = (LearningOpportunitySpecificationType) loi.getSpecificationRef().getRef();
 
-        ChildLearningOpportunity child = new ChildLearningOpportunity(los.getId(), resolveFinnishText(los.getName()), loi.getId());
+        ChildLearningOpportunity child = new ChildLearningOpportunity(los.getId(), resolveFinnishText(los.getName()));
 
         return child;
     }

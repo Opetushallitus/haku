@@ -23,12 +23,10 @@ public class ChildLearningOpportunity {
 
     private String id;
     private String name;
-    private String instanceId;
 
-    public ChildLearningOpportunity(String id, String name, String instanceId) {
+    public ChildLearningOpportunity(String id, String name) {
         this.id = id;
         this.name = name;
-        this.instanceId = instanceId;
     }
 
     public String getId() {
@@ -47,11 +45,4 @@ public class ChildLearningOpportunity {
         this.name = name;
     }
 
-    public String getInstanceId() {
-        return instanceId;
-    }
-
-    public void setInstanceId(String instanceId) {
-        this.instanceId = instanceId;
-    }
 }
