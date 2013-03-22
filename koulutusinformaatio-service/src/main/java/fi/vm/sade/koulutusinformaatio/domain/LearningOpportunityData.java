@@ -24,6 +24,15 @@ import java.util.List;
 public class LearningOpportunityData {
 
     private List<ParentLearningOpportunity> parentLearningOpportinities;
+    private List<ApplicationOption> applicationOptions;
+
+    public List<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
+    }
 
     public List<ParentLearningOpportunity> getParentLearningOpportinities() {
         return parentLearningOpportinities;

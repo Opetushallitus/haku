@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
@@ -49,7 +50,7 @@ public class ParserServiceImpl implements ParserService {
         // temporary map that holds child
         Map<String, ChildLearningOpportunity> children = new HashMap<String, ChildLearningOpportunity>();
 
-        List<ParentLearningOpportunity> parents = new ArrayList<ParentLearningOpportunity>();
+        Map<String, ParentLearningOpportunity> parents = new HashMap<String, ParentLearningOpportunity>();
 
         for (LearningOpportunityInstanceType loi : loiList) {
             ChildLearningOpportunity newChild = parseLearningOpportunityChild(loi);
@@ -59,13 +60,35 @@ public class ParserServiceImpl implements ParserService {
         List<LearningOpportunitySpecificationType> losList = downloadData.getLearningOpportunitySpecification();
         for (LearningOpportunitySpecificationType los : losList) {
             if (los.getChildLOSRefs() != null && !los.getChildLOSRefs().isEmpty()) {
-                parents.add(parseLearningOpportunityParent(los, children));
+                ParentLearningOpportunity parent = parseLearningOpportunityParent(los, children);
+                parents.put(parent.getId(), parent);
             }
         }
 
+        List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
 
+        List<ApplicationOptionType> applicationOptionTypes = downloadData.getApplicationOption();
+        for (ApplicationOptionType applicationOptionType : applicationOptionTypes) {
+            ApplicationOption ao = new ApplicationOption();
+            String aoId = applicationOptionType.getIdentifier().getValue();
+            ao.setId(aoId);
+            ao.setName(resolveFinnishText(applicationOptionType.getTitle().getLabel()));
+            ao.setApplicationSystemId(applicationOptionType.getApplicationSystemRef().getOidRef());
 
-        learningOpportunityData.setParentLearningOpportinities(parents);
+            // set application option refs to parent and child learning opportunities
+            LearningOpportunitySpecificationType aoParentLos =
+                    (LearningOpportunitySpecificationType)applicationOptionType.getLearningOpportunities().getParentRef().getRef();
+            ParentLearningOpportunity parent = parents.get(aoParentLos.getId());
+            parent.getApplicationOptionRefs().add(aoId);
+
+            // add education degree info to application option
+            ao.setEducationDegree(parent.getEducationDegree());
+
+            applicationOptions.add(ao);
+        }
+
+        learningOpportunityData.setApplicationOptions(applicationOptions);
+        learningOpportunityData.setParentLearningOpportinities(new ArrayList<ParentLearningOpportunity>(parents.values()));
 
         return learningOpportunityData;
     }
@@ -74,6 +97,7 @@ public class ParserServiceImpl implements ParserService {
         ParentLearningOpportunity parent = new ParentLearningOpportunity();
         parent.setId(los.getId());
         parent.setName(resolveFinnishText(los.getName()));
+        parent.setEducationDegree(los.getClassification().getEducationDegree().getCode().getValue());
         List<ChildLearningOpportunity> childList = new ArrayList<ChildLearningOpportunity>();
         for (LearningOpportunitySpecificationRefType ref : los.getChildLOSRefs()) {
             LearningOpportunitySpecificationType child = (LearningOpportunitySpecificationType) ref.getRef();

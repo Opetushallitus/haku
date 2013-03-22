@@ -20,4 +20,41 @@ package fi.vm.sade.koulutusinformaatio.domain;
  * @author Hannu Lyytikainen
  */
 public class ApplicationOption {
+
+    private String id;
+    private String name;
+    private String applicationSystemId;
+    private String educationDegree;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getApplicationSystemId() {
+        return applicationSystemId;
+    }
+
+    public void setApplicationSystemId(String applicationSystemId) {
+        this.applicationSystemId = applicationSystemId;
+    }
+
+    public String getEducationDegree() {
+        return educationDegree;
+    }
+
+    public void setEducationDegree(String educationDegree) {
+        this.educationDegree = educationDegree;
+    }
 }

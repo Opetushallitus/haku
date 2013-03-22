@@ -16,10 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import com.sun.org.apache.xpath.internal.SourceTreeManager;
-
-import java.net.URI;
-
 /**
  * Receives update notifications and handles the education data update process.
  *

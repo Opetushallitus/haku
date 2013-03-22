@@ -59,7 +59,9 @@ public class IndexerServiceImpl implements IndexerService {
 
     @Override
     public void updateIndex(LearningOpportunityData data) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
+
+
     }
 
 

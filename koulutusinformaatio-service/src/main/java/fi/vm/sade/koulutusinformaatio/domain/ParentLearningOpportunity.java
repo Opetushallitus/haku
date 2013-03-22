@@ -27,6 +27,25 @@ public class ParentLearningOpportunity {
     private String id;
     private String name;
     private List<ChildLearningOpportunity> children = new ArrayList<ChildLearningOpportunity>();
+    private List<String> applicationOptionRefs = new ArrayList<String>();
+
+    public String getEducationDegree() {
+        return educationDegree;
+    }
+
+    public void setEducationDegree(String educationDegree) {
+        this.educationDegree = educationDegree;
+    }
+
+    private String educationDegree;
+
+    public List<String> getApplicationOptionRefs() {
+        return applicationOptionRefs;
+    }
+
+    public void setApplicationOptionRefs(List<String> applicationOptionRefs) {
+        this.applicationOptionRefs = applicationOptionRefs;
+    }
 
     public String getId() {
         return id;
