@@ -23,8 +23,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class Phase extends Titled {
 
     private static final long serialVersionUID = 1369853692287570194L;
-    private transient Phase next;
-    private transient Phase prev;
     private boolean preview;
 
     public Phase(@JsonProperty(value = "id") String id,
