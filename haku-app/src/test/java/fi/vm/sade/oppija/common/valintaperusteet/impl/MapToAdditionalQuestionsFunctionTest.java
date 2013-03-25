@@ -15,25 +15,22 @@
  */
 package fi.vm.sade.oppija.common.valintaperusteet.impl;
 
+import com.google.common.base.Charsets;
+import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
+import fi.vm.sade.oppija.common.valintaperusteet.InputParameter;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Map;
 
-import org.junit.Assert;
-
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.junit.Test;
-
-import com.google.common.base.Charsets;
-
-import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
-import fi.vm.sade.oppija.common.valintaperusteet.InputParameter;
-
 public class MapToAdditionalQuestionsFunctionTest {
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Test
     public void test() throws JsonParseException, JsonMappingException, IOException {
         final String simple = "{\"2193293289\": {\"1\": {\"aidinkieli_yo\": \"DESIMAALILUKU\"}}}";
@@ -47,16 +44,14 @@ public class MapToAdditionalQuestionsFunctionTest {
         Assert.assertEquals("aidinkieli_yo", param.getKey());
         Assert.assertEquals("1", param.getPhase());
         Assert.assertEquals("DESIMAALILUKU", param.getType());
-        
+
         final String complex = "{\"2193293289\": {\"1\": {\"aidinkieli_yo\": \"DESIMAALILUKU\",\"foo\": \"TOTUUSARVO\"},\"2\": {\"foobar\": \"TOTUUSARVO\"}},\"1193293289\": {\"1\": {\"aidinkieli_yo\": \"DESIMAALILUKU\",\"foo\": \"TOTUUSARVO\"}}}";
         final Map complexMap = mapper.readValue(new ByteArrayInputStream(complex.getBytes(Charsets.UTF_8)), Map.class);
         q = new MapToAdditionalQuestionsFunction().apply(complexMap);
         Assert.assertEquals(3, q.getQuestistionsForHakukohde("2193293289").size());
-        Assert.assertEquals(2, q.getQuestistionsForHakukohdePhase("2193293289","1").size());
-        Assert.assertEquals(1, q.getQuestistionsForHakukohdePhase("2193293289","2").size());
         Assert.assertEquals(2, q.getQuestistionsForHakukohde("1193293289").size());
-               
-        
+
+
     }
 
 }

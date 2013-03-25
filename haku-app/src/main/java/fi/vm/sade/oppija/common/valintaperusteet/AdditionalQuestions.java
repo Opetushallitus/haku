@@ -15,15 +15,13 @@
  */
 package fi.vm.sade.oppija.common.valintaperusteet;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.LinkedListMultimap;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.LinkedListMultimap;
 
 public class AdditionalQuestions {
 
@@ -41,31 +39,5 @@ public class AdditionalQuestions {
     public List<InputParameter> getQuestistionsForHakukohde(final String oid) {
         Preconditions.checkNotNull(oid, "Oid cannot be null");
         return ImmutableList.copyOf(questions.get(oid));
-    }
-
-    /**
-     * Get questions for hakukohde, phase
-     */
-    public List<InputParameter> getQuestistionsForHakukohdePhase(final String oid, final String phase) {
-        Preconditions.checkNotNull(oid, "Oid cannot be null");
-        Preconditions.checkNotNull(phase, "Phase cannot be null");
-        return ImmutableList.copyOf(Iterables.filter(getQuestistionsForHakukohde(oid), new Predicate<InputParameter>() {
-            public boolean apply(InputParameter input) {
-                return phase.equals(input.getPhase());
-            }
-        }));
-    }
-
-    public List<InputParameter> getAllQuestions() {
-        return ImmutableList.copyOf(questionMap.values());
-    }
-
-    public Map<String, InputParameter> getQuestionMap() {
-        return questionMap;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s, questions (%d) %s", this.getClass().getName(), this.questions.entries().size(), questions);
     }
 }

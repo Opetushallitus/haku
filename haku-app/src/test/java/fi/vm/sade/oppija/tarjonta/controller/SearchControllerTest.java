@@ -16,24 +16,44 @@
 
 package fi.vm.sade.oppija.tarjonta.controller;
 
-import static org.mockito.Mockito.mock;
-
+import com.google.common.collect.Lists;
+import com.sun.jersey.api.view.Viewable;
+import fi.vm.sade.koulutusinformaatio.domain.search.SearchFilters;
+import fi.vm.sade.koulutusinformaatio.domain.search.SearchResult;
+import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import org.junit.Before;
 import org.junit.Test;
 
-import fi.vm.sade.koulutusinformaatio.domain.search.SearchFilters;
-import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anySet;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class SearchControllerTest {
 
+    public static final String KEY = "key";
+    public static final String VALUE = "value";
     private SearchController searchController;
+    private SearchService searchService;
 
     @Before
     public void setUp() throws Exception {
-        SearchService searchService = mock(SearchService.class);
+        searchService = mock(SearchService.class);
 
         SearchFilters searchFilters = new SearchFilters(searchService);
         searchController = new SearchController(searchService, searchFilters, null);
+    }
+
+    @Test
+    public void testListTarjontatiedot() throws Exception {
+        List<Map<String, Collection<Object>>> results = new ArrayList<Map<String, Collection<Object>>>(0);
+        SearchResult searchResult = new SearchResult(results);
+        when(searchService.search(anySet())).thenReturn(searchResult);
+        Viewable viewable = searchController.listTarjontatiedot(VALUE);
+        assertEquals(viewable.getTemplateName(), SearchController.VIEW_NAME_ITEMS);
+
     }
 
     @Test
@@ -41,4 +61,12 @@ public class SearchControllerTest {
         searchController.getTarjontatiedot("1");
     }
 
+    @Test
+    public void testToSingleValueMap() throws Exception {
+        Map<String, List<String>> parameters = new HashMap<String, List<String>>(1);
+        parameters.put(KEY, Lists.newArrayList(VALUE));
+        Set<Map.Entry<String, List<String>>> setOfParameters = parameters.entrySet();
+        Map<String, String> values = SearchController.toSingleValueMap(setOfParameters);
+        assertEquals(VALUE, values.get(KEY));
+    }
 }

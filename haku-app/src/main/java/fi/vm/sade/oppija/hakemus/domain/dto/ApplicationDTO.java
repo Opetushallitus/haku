@@ -16,12 +16,14 @@
 
 package fi.vm.sade.oppija.hakemus.domain.dto;
 
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -46,29 +48,25 @@ public class ApplicationDTO {
         this.oid = oid;
         this.personOid = personOid;
         this.asId = asId;
-        this.answers = answers;
-        this.additionalInfo = additionalInfo;
+        this.answers = getStringStringImmutableMap(answers);
+        this.additionalInfo = getStringStringImmutableMap(additionalInfo);
+    }
+
+    private ImmutableMap<String, String> getStringStringImmutableMap(Map<String, String> map) {
+        return ImmutableMap.copyOf(map == null ? Collections.<String, String>emptyMap() : map);
     }
 
 
     public ApplicationDTO(Application application) {
-        this.oid = application.getOid();
-        this.personOid = application.getPersonOid();
-        this.asId = application.getFormId().getApplicationPeriodId();
-        this.answers = application.getVastauksetMerged();
-        this.additionalInfo = application.getAdditionalInfo();
+        this(application.getOid(),
+                application.getPersonOid(),
+                application.getFormId().getApplicationPeriodId(),
+                application.getVastauksetMerged(),
+                application.getAdditionalInfo());
     }
 
     public String getAsId() {
         return asId;
-    }
-
-    public void setAsId(String asId) {
-        this.asId = asId;
-    }
-
-    public void setOid(String oid) {
-        this.oid = oid;
     }
 
     public String getOid() {
@@ -77,18 +75,6 @@ public class ApplicationDTO {
 
     public String getPersonOid() {
         return personOid;
-    }
-
-    public void setPersonOid(String personOid) {
-        this.personOid = personOid;
-    }
-
-    public void setAnswers(Map<String, String> answers) {
-        this.answers = answers;
-    }
-
-    public void setAdditionalInfo(Map<String, String> additionalInfo) {
-        this.additionalInfo = additionalInfo;
     }
 
     public Map<String, String> getAnswers() {

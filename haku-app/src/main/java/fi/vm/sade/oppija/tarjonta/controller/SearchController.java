@@ -25,7 +25,6 @@ import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +71,6 @@ public class SearchController {
         Set<Map.Entry<String, List<String>>> setOfParameters = parameters.entrySet();
         SearchResult searchResult = service.search(setOfParameters);
         Map<String, String> parameterMaps = toSingleValueMap(setOfParameters);
-
         ImmutableMap<String, Object> model = ImmutableMap.of(
                 MODEL_NAME, searchResult,
                 PARAMETERS_MULTI_VALUE, parameters,
