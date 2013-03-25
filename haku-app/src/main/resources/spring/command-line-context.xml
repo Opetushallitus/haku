@@ -30,7 +30,7 @@
     <bean id="HttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>
-            <value>${tarjonta.index.url}</value>
+            <value>${sorl.base.url}</value>
         </constructor-arg>
     </bean>
 
