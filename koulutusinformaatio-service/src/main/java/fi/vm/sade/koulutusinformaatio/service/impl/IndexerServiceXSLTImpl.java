@@ -25,6 +25,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +51,8 @@ public class IndexerServiceXSLTImpl implements IndexerService {
 
     private final SolrClient client;
     @Autowired
-    public IndexerServiceXSLTImpl(HttpSolrServer httpSolrServer, TarjontaClient tarjontaClient, SolrClient client) {
+    public IndexerServiceXSLTImpl(@Qualifier("HttpSolrServer") HttpSolrServer httpSolrServer,
+                                  TarjontaClient tarjontaClient, SolrClient client) {
         this.httpSolrServer = httpSolrServer;
         this.tarjontaClient = tarjontaClient;
         this.client = client;

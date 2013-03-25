@@ -48,6 +48,20 @@
         </constructor-arg>
     </bean>
 
+    <bean id="LOHttpSolrServer"
+          class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+        <constructor-arg>
+            <value>${sorl.base.url}${sorl.learningopportunity.url}</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="AOHttpSolrServer"
+          class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+        <constructor-arg>
+            <value>${sorl.base.url}${solr.applicationoption.url}</value>
+        </constructor-arg>
+    </bean>
+
     <bean id="morphia" class="com.google.code.morphia.Morphia" />
 
     <bean id="parentLearningOpportunityDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunityDAO">

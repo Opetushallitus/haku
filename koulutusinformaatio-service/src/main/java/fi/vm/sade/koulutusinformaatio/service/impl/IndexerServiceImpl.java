@@ -17,6 +17,7 @@ import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.client.SolrClient;
@@ -42,6 +43,10 @@ public class IndexerServiceImpl implements IndexerService {
     public static final Logger LOGGER = LoggerFactory.getLogger(IndexerServiceImpl.class);
 
     private final HttpSolrServer httpSolrServer;
+    // solr client for learning opportunity index
+    private final HttpSolrServer LOHttpSolrServer;
+    // solr client for application option index
+    private final HttpSolrServer AOHttpSolrServer;
 
     private final TarjontaClient tarjontaClient;
 
@@ -52,8 +57,13 @@ public class IndexerServiceImpl implements IndexerService {
     EventListener listener;*/
 
     @Autowired
-    public IndexerServiceImpl(HttpSolrServer httpSolrServer, TarjontaClient tarjontaClient, SolrClient client) {
+    public IndexerServiceImpl(@Qualifier("HttpSolrServer") HttpSolrServer httpSolrServer,
+                              @Qualifier("LOHttpSolrServer") HttpSolrServer LOHttpSolrServer,
+                              @Qualifier("AOHttpSolrServer") HttpSolrServer AOHttpSolrServer,
+                              TarjontaClient tarjontaClient, SolrClient client) {
         this.httpSolrServer = httpSolrServer;
+        this.LOHttpSolrServer = LOHttpSolrServer;
+        this.AOHttpSolrServer = AOHttpSolrServer;
         this.tarjontaClient = tarjontaClient;
         this.client = client;
     }
