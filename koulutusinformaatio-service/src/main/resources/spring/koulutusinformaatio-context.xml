@@ -39,7 +39,6 @@
         <property name="messageListener" ref="eventsMessageListener"/>
     </bean>    -->
 
-
     <context:component-scan base-package="fi.vm.sade.koulutusinformaatio"/>
 
     <bean id="HttpSolrServer"
@@ -47,33 +46,6 @@
         <constructor-arg>
             <value>${tarjonta.index.url}</value>
         </constructor-arg>
-    </bean>
-
-    <bean id="searchFilters" class="fi.vm.sade.koulutusinformaatio.domain.search.SearchFilters">
-        <constructor-arg ref="searchService"/>
-    </bean>
-
-    <bean id="tarjontaClient" class="fi.vm.sade.koulutusinformaatio.client.TarjontaClientRESTImpl"/>
-    <bean id="solrClient" class="fi.vm.sade.koulutusinformaatio.client.SolrClient"/>
-
-    <bean id="searchService" class="fi.vm.sade.koulutusinformaatio.service.impl.SearchServiceSolrImpl">
-        <constructor-arg ref="HttpSolrServer"/>
-    </bean>
-
-    <bean id="indexService" class="fi.vm.sade.koulutusinformaatio.service.impl.IndexerServiceXSLTImpl">
-        <constructor-arg>
-            <ref bean="HttpSolrServer"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="tarjontaClient"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="solrClient"/>
-        </constructor-arg>
-    </bean>
-
-    <bean id="applicationOptionServiceSolrImpl" class="fi.vm.sade.koulutusinformaatio.service.impl.ApplicationOptionServiceSolrImpl">
-        <constructor-arg ref="searchService"/>
     </bean>
 
     <bean id="morphia" class="com.google.code.morphia.Morphia" />
