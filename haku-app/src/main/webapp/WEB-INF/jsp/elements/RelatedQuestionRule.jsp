@@ -40,7 +40,7 @@
 
             var ruleData = {
                 getRuleChild: function (childIds, index, ruleChilds) {
-                    $.get('${pageContext.request.contextPath}/lomake/${it.hakemusId.applicationPeriodId}/${it.hakemusId.formId}/' + childIds[index],
+                    $.get(document.URL + '/' + childIds[index],
                             function (data) {
                                 ruleChilds.append(data);
                                 if (childIds.length - 1 > index) {

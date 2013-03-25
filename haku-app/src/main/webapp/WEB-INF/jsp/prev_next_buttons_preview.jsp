@@ -18,13 +18,11 @@
   --%>
 <fmt:setBundle basename="messages"/>
 <fmt:requestEncoding value="utf-8"/>
-<c:set var="baseUrl"
-       value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}"
-       scope="page"/>
+
 <c:forEach var="item" items="${form.children}" varStatus="status">
     <c:if test="${(not status.first) and (item eq vaihe)}">
         <div class="float-left">
-            <form method="get" action="${baseUrl}/${tmpPrev.id}">
+            <form method="get" action="${tmpPrev.id}">
                 <button class="left" name="phaseId" type="submit" value="${tmpPrev.id}-skip-validators">
                 <span>
                     <span><fmt:message key="lomake.button.previous"/></span>

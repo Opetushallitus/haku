@@ -20,18 +20,28 @@
 <table id="gradegrid-table" class="applicant-grades">
     <thead>
     <tr>
-        <th colspan="4"><fmt:message key="lomake.component.gradegrid.gradesTitle"/></th>
+        <c:if test="${not element.extraOptionalGrades}">
+            <th colspan="3"><fmt:message key="lomake.component.gradegrid.gradesTitle"/></th>
+        </c:if>
+        <c:if test="${element.extraOptionalGrades}">
+            <th colspan="4"><fmt:message key="lomake.component.gradegrid.gradesTitle"/></th>
+        </c:if>
     </tr>
     <tr>
         <td><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
         <td><fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
         <td><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
-        <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
+        <c:if test="${element.extraOptionalGrades}">
+            <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
+        </c:if>
     </tr>
     </thead>
     <tbody>
     <!-- subjects that are listed before languages -->
-    <haku:subjectRows subjects="${element.subjectsBeforeLanguages}" element="${element}" data="${categoryData}"/>
+    <haku:subjectRows subjects="${element.subjectsBeforeLanguages}"
+                      element="${element}"
+                      data="${categoryData}"
+                      extraOptionalGrades="${element.extraOptionalGrades}"/>
 
     <%-- languages --%>
     <c:forEach var="language" items="${element.languages}">
@@ -45,22 +55,21 @@
                                   data="${categoryData}" showEmptyOption="true"/>
             </td>
             <td>
-                <c:if test="${language.optionalGrades}">
-                    <haku:gradeSelect id="optional-common-${language.id}" options="${element.gradeRange}"
-                                      data="${categoryData}"/>
-                </c:if>
+                <haku:gradeSelect id="optional-common-${language.id}" options="${element.gradeRange}"
+                                  data="${categoryData}"/>
             </td>
-            <td>
-                <c:if test="${language.optionalGrades}">
+            <c:if test="${element.extraOptionalGrades}">
+                <td>
                     <haku:gradeSelect id="second-optional-common-${language.id}" options="${element.gradeRange}"
                                       data="${categoryData}"/>
-                </c:if>
-            </td>
+                </td>
+            </c:if>
         </tr>
     </c:forEach>
 
     <%-- custom selected languages --%>
-    <haku:customSelectedLanguages data="${categoryData}" gradeGrid="${element}"/>
+    <haku:customSelectedLanguages data="${categoryData}" gradeGrid="${element}"
+                                  extraOptionalGrades="${element.extraOptionalGrades}"/>
 
 
     <!-- add new language row -->
@@ -72,19 +81,19 @@
     </tr>
 
     <%-- subjects that are listed after languages --%>
-    <haku:subjectRows subjects="${element.subjectsAfterLanguages}" element="${element}" data="${categoryData}"/>
+    <haku:subjectRows subjects="${element.subjectsAfterLanguages}"
+                      element="${element}" data="${categoryData}" extraOptionalGrades="${element.extraOptionalGrades}"/>
 
     <%-- subjects that are specific to the education selected by the user --%>
-    <haku:subjectRows subjects="${additionalQuestionList}" element="${element}" data="${categoryData}"/>
+    <haku:subjectRows subjects="${additionalQuestionList}"
+                      element="${element}" data="${categoryData}" extraOptionalGrades="${element.extraOptionalGrades}"/>
 
     </tbody>
 </table>
 <script>
     var gradegrid_settings = {
-        contextPath: "${pageContext.request.contextPath}",
-        applicationSystemId: "${it.hakemusId.applicationPeriodId}",
-        formId: "${it.hakemusId.formId}",
-        elementId: "${element.id}"
+        elementId: "${element.id}",
+        extraCol: "${extraOptionalGrades}"
     };
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/gradegrid.js"></script>

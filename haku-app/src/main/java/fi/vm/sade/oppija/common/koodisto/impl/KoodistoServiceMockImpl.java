@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.common.koodisto.impl;
 
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
@@ -23,8 +24,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-
-import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +38,10 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public static final String ORGANIZATION_TYPE = "Toimipiste";
     public final List<Option> listOfGradeGrades;
     public final List<PostOffice> listOfPostOffices;
-    public final List<SubjectRow> listOfSubjectsRowsPrimary;
+    public final List<SubjectRow> listOfSubjects;
     public final List<SubjectRow> listOfSubjectsRowsSecondary;
     public final List<Option> listOfLearningInstitutionTypes;
-    public final List<Option> listOfOrganizationtypes;
+    public final List<Option> listOfOrganizationTypes;
     public final List<Option> listOfCountries;
     public final List<Option> listOfLanguages;
     public final List<Option> listOfNationalities;
@@ -65,17 +64,17 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 createPostOffice("02100", "Espoo"),
                 createPostOffice("33100", "Tampere"));
 
-        this.listOfSubjectsRowsPrimary = ImmutableList.of(
-                new SubjectRow("A1", true, true, createI18NText("A1-kieli")),
-                new SubjectRow("A12", true, true, createI18NText("A12-kieli")),
-                new SubjectRow("A2", true, true, createI18NText("A2-kieli")),
-                new SubjectRow("A22", true, true, createI18NText("A22-kieli")),
-                new SubjectRow("AI", true, true, createI18NText("Äidinkieli ja kirjallisuus")),
-                new SubjectRow("B1", true, true, createI18NText("B1-kieli")),
-                new SubjectRow("B2", true, true, createI18NText("B2-kieli")),
-                new SubjectRow("B22", true, true, createI18NText("B22-kieli")),
-                new SubjectRow("B23", true, true, createI18NText("B23-kieli")),
-                new SubjectRow("B3", true, true, createI18NText("B3-kieli")),
+        this.listOfSubjects = ImmutableList.of(
+                new SubjectRow("A1", createI18NText("A1-kieli")),
+                new SubjectRow("A12", createI18NText("A12-kieli")),
+                new SubjectRow("A2", createI18NText("A2-kieli")),
+                new SubjectRow("A22", createI18NText("A22-kieli")),
+                new SubjectRow("AI", createI18NText("Äidinkieli ja kirjallisuus")),
+                new SubjectRow("B1", createI18NText("B1-kieli")),
+                new SubjectRow("B2", createI18NText("B2-kieli")),
+                new SubjectRow("B22", createI18NText("B22-kieli")),
+                new SubjectRow("B23", createI18NText("B23-kieli")),
+                new SubjectRow("B3", createI18NText("B3-kieli")),
                 new SubjectRow("MA", createI18NText("Matematiikka")),
                 new SubjectRow("BI", createI18NText("Biologia")),
                 new SubjectRow("GE", createI18NText("Maantieto")),
@@ -88,31 +87,31 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 new SubjectRow("MU", createI18NText("Musiikki")),
                 new SubjectRow("KU", createI18NText("Kuvataide")),
                 new SubjectRow("KS", createI18NText("Käsityö")),
-                new SubjectRow("LI", false, false, createI18NText("Liikunta"))
+                new SubjectRow("LI", createI18NText("Liikunta"))
         );
         this.listOfSubjectsRowsSecondary = ImmutableList.of(
-                new SubjectRow("LUK_A1", true, true, createI18NText("A1-kieli")),
-                new SubjectRow("LUK_A12", true, true, createI18NText("A12-kieli")),
-                new SubjectRow("LUK_A2", true, true, createI18NText("A2-kieli")),
-                new SubjectRow("LUK_A22", true, true, createI18NText("A22-kieli")),
-                new SubjectRow("LUK_AI", true, true, createI18NText("Äidinkieli ja kirjallisuus")),
-                new SubjectRow("LUK_B1", true, true, createI18NText("B1-kieli")),
-                new SubjectRow("LUK_B2", true, true, createI18NText("B2-kieli")),
-                new SubjectRow("LUK_B22", true, true, createI18NText("B22-kieli")),
-                new SubjectRow("LUK_B23", true, true, createI18NText("B23-kieli")),
-                new SubjectRow("LUK_B3", true, true, createI18NText("B3-kieli")),
-                new SubjectRow("LUK_HI", false, false, createI18NText("Historia")),
-                new SubjectRow("LUK_YH", false, false, createI18NText("Yhteiskuntaoppi")),
-                new SubjectRow("LUK_MA", false, false, createI18NText("Matematiikka")),
-                new SubjectRow("LUK_FY", false, false, createI18NText("Fysiikka")),
-                new SubjectRow("LUK_KE", false, false, createI18NText("Kemia")),
-                new SubjectRow("LUK_BI", false, false, createI18NText("Biologia"))
+                new SubjectRow("LUK_A1", createI18NText("A1-kieli")),
+                new SubjectRow("LUK_A12", createI18NText("A12-kieli")),
+                new SubjectRow("LUK_A2", createI18NText("A2-kieli")),
+                new SubjectRow("LUK_A22", createI18NText("A22-kieli")),
+                new SubjectRow("LUK_AI", createI18NText("Äidinkieli ja kirjallisuus")),
+                new SubjectRow("LUK_B1", createI18NText("B1-kieli")),
+                new SubjectRow("LUK_B2", createI18NText("B2-kieli")),
+                new SubjectRow("LUK_B22", createI18NText("B22-kieli")),
+                new SubjectRow("LUK_B23", createI18NText("B23-kieli")),
+                new SubjectRow("LUK_B3", createI18NText("B3-kieli")),
+                new SubjectRow("LUK_HI", createI18NText("Historia")),
+                new SubjectRow("LUK_YH", createI18NText("Yhteiskuntaoppi")),
+                new SubjectRow("LUK_MA", createI18NText("Matematiikka")),
+                new SubjectRow("LUK_FY", createI18NText("Fysiikka")),
+                new SubjectRow("LUK_KE", createI18NText("Kemia")),
+                new SubjectRow("LUK_BI", createI18NText("Biologia"))
         );
-        
+
         this.listOfLearningInstitutionTypes = ImmutableList.of(
                 new Option(LEARNING_INSTITUTION_TYPE,
                         createI18NText(LEARNING_INSTITUTION_TYPE), LEARNING_INSTITUTION_TYPE));
-        this.listOfOrganizationtypes =
+        this.listOfOrganizationTypes =
                 ImmutableList.of(
                         new Option(ORGANIZATION_TYPE,
                                 createI18NText(ORGANIZATION_TYPE), ORGANIZATION_TYPE));
@@ -155,24 +154,15 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     }
 
     @Override
-    public List<SubjectRow> getSubjectsForPrimary() {
-        return this.listOfSubjectsRowsPrimary;
+    public List<SubjectRow> getSubjects() {
+        return this.listOfSubjects;
     }
 
     @Override
-    public List<Option> getGradeRangesForPrimary() {
+    public List<Option> getGradeRanges() {
         return this.listOfGradeGrades;
     }
 
-    @Override
-    public List<SubjectRow> getSubjectsForSecondary() {
-        return this.listOfSubjectsRowsSecondary;
-    }
-
-    @Override
-    public List<Option> getGradeRangesForSecondary() {
-        return this.listOfGradeGrades;
-    }
 
     @Override
     public List<Option> getLearningInstitutionTypes() {
@@ -181,7 +171,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
     @Override
     public List<Option> getOrganizationtypes() {
-        return this.listOfOrganizationtypes;
+        return this.listOfOrganizationTypes;
     }
 
     @Override

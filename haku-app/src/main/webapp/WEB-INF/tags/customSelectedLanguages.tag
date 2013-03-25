@@ -6,6 +6,7 @@
 
 <%@ attribute name="data" required="true" type="java.util.Map" %>
 <%@ attribute name="gradeGrid" required="true" type="fi.vm.sade.oppija.lomake.domain.elements.custom.GradeGrid" %>
+<%@ attribute name="extraOptionalGrades" required="true" type="java.lang.Boolean" %>
 
 <c:forEach var="entry" items="${data}">
 
@@ -29,10 +30,12 @@
                 <haku:gradeSelect id="custom-optionalgrade_${customIndex}"
                                   data="${categoryData}" options="${gradeGrid.gradeRange}"/>
             </td>
-            <td>
-                <haku:gradeSelect id="custom-secondoptionalgrade_${customIndex}"
-                                  data="${categoryData}" options="${gradeGrid.gradeRange}"/>
-            </td>
+            <c:if test="${extraOptionalGrades}">
+                <td>
+                    <haku:gradeSelect id="custom-secondoptionalgrade_${customIndex}"
+                                      data="${categoryData}" options="${gradeGrid.gradeRange}"/>
+                </td>
+            </c:if>
         </tr>
     </c:if>
 

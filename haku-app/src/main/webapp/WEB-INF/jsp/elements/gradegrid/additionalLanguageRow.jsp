@@ -51,20 +51,23 @@ this always has to be the last row--%>
     </td>
     <td>
         <div class="field-container-select">
-            <select name="arvosana-1" required="required">
+            <select name="arvosana-2" required="required">
                 <c:forEach var="grade" items="${element.gradeRange}">
                     <option value="${grade.value}"><haku:i18nText value="${grade.i18nText}"/></option>
                 </c:forEach>
             </select>
         </div>
     </td>
-    <td>
-        <div class="field-container-select">
-            <select name="arvosana-1" required="required">
-                <c:forEach var="grade" items="${element.gradeRange}">
-                    <option value="${grade.value}"><haku:i18nText value="${grade.i18nText}"/></option>
-                </c:forEach>
-            </select>
-        </div>
-    </td>
+
+    <c:if test="${element.extraOptionalGrades}">
+        <td>
+            <div class="field-container-select">
+                <select name="arvosana-3" required="required">
+                    <c:forEach var="grade" items="${element.gradeRange}">
+                        <option value="${grade.value}"><haku:i18nText value="${grade.i18nText}"/></option>
+                    </c:forEach>
+                </select>
+            </div>
+        </td>
+    </c:if>
 </tr>

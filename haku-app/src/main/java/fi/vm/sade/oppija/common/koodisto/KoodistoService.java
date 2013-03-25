@@ -25,13 +25,9 @@ import java.util.List;
 public interface KoodistoService {
     List<PostOffice> getPostOffices();
 
-    List<SubjectRow> getSubjectsForPrimary();
+    List<SubjectRow> getSubjects();
 
-    List<Option> getGradeRangesForPrimary();
-    
-    List<SubjectRow> getSubjectsForSecondary();
-
-    List<Option> getGradeRangesForSecondary();
+    List<Option> getGradeRanges();
 
     List<Option> getLearningInstitutionTypes();
 

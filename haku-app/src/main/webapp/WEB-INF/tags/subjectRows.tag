@@ -6,6 +6,7 @@
 <%@ attribute name="subjects" required="true" type="java.util.List" %>
 <%@ attribute name="element" required="true" type="fi.vm.sade.oppija.lomake.domain.elements.custom.GradeGrid" %>
 <%@ attribute name="data" required="true" type="java.util.Map" %>
+<%@ attribute name="extraOptionalGrades" required="true" type="java.lang.Boolean" %>
 
 <c:forEach var="subject" items="${subjects}">
     <tr>
@@ -17,16 +18,14 @@
                               showEmptyOption="true"/>
         </td>
         <td>
-            <c:if test="${subject.optionalGrades}">
-                <haku:gradeSelect id="optional-common-${subject.id}" options="${element.gradeRange}"
-                                  data="${data}"/>
-            </c:if>
+            <haku:gradeSelect id="optional-common-${subject.id}" options="${element.gradeRange}"
+                              data="${data}"/>
         </td>
-        <td>
-            <c:if test="${subject.optionalGrades}">
+        <c:if test="${extraOptionalGrades}">
+            <td>
                 <haku:gradeSelect id="second-optional-common-${subject.id}" options="${element.gradeRange}"
                                   data="${data}"/>
-            </c:if>
-        </td>
+            </td>
+        </c:if>
     </tr>
 </c:forEach>

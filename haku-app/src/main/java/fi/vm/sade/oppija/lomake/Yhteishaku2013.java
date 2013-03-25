@@ -83,8 +83,8 @@ public class Yhteishaku2013 {
         Map<String, List<Question>> oppiaineMap = new HashMap<String, List<Question>>();
 
         List<Question> oppiaineList = new ArrayList<Question>();
-        oppiaineList.add(new SubjectRow("tietotekniikka", false, false, createI18NText("Tietotekniikka")));
-        oppiaineList.add(new SubjectRow("kansantaloustiede", false, false, createI18NText("Kansantaloustiede")));
+        oppiaineList.add(new SubjectRow("tietotekniikka", createI18NText("Tietotekniikka")));
+        oppiaineList.add(new SubjectRow("kansantaloustiede", createI18NText("Kansantaloustiede")));
         oppiaineMap.put("1.2.246.562.14.79893512065", oppiaineList);
 
         final String id = "1.2.246.562.14.79893512065";
@@ -346,24 +346,21 @@ public class Yhteishaku2013 {
 
     }
 
-    public GradeGrid createGradeGrid(boolean primary) {
+    public GradeGrid createGradeGrid(final String id, boolean primary) {
 
-        List<Option> gradeRange = primary ?
-                koodistoService.getGradeRangesForPrimary() : koodistoService.getGradeRangesForSecondary();
-        List<SubjectRow> subjects = primary ?
-                koodistoService.getSubjectsForPrimary() : koodistoService.getSubjectsForSecondary();
-        SubjectRow finnish =
-                new SubjectRow("subject_finnish", false, false, createI18NText("Äidinkieli ja kirjallisuus"));
+        List<Option> gradeRange = koodistoService.getGradeRanges();
+        List<SubjectRow> subjects = koodistoService.getSubjects();
+        SubjectRow finnish = new SubjectRow("subject_finnish", createI18NText("Äidinkieli ja kirjallisuus"));
         List<SubjectRow> subjectRowsAfter = new ArrayList<SubjectRow>();
         for (SubjectRow subject : subjects) {
-            String id = subject.getId();
-            if (id.endsWith("AI")) {
+            String subjectId = subject.getId();
+            if (subjectId.endsWith("AI")) {
                 finnish = subject;
-            } else if (!(id.endsWith("A1") || id.endsWith("A12") || id.endsWith("A13")
-                    || id.endsWith("A2") || id.endsWith("A22") || id.endsWith("23")
-                    || id.endsWith("B1") || id.endsWith("B12") || id.endsWith("B13")
-                    || id.endsWith("B2") || id.endsWith("B22") || id.endsWith("B23")
-                    || id.endsWith("B3") || id.endsWith("B32") || id.endsWith("B33"))) {
+            } else if (!(subjectId.endsWith("A1") || subjectId.endsWith("A12") || subjectId.endsWith("A13")
+                    || subjectId.endsWith("A2") || subjectId.endsWith("A22") || subjectId.endsWith("23")
+                    || subjectId.endsWith("B1") || subjectId.endsWith("B12") || subjectId.endsWith("B13")
+                    || subjectId.endsWith("B2") || subjectId.endsWith("B22") || subjectId.endsWith("B23")
+                    || subjectId.endsWith("B3") || subjectId.endsWith("B32") || subjectId.endsWith("B33"))) {
                 subjectRowsAfter.add(subject);
             }
         }
@@ -392,8 +389,8 @@ public class Yhteishaku2013 {
         scopeOptions.add(new Option("scopeoption_" + "b2", createI18NText("B2"), "b2"));
         scopeOptions.add(new Option("scopeoption_" + "b3", createI18NText("B3"), "b3"));
 
-        GradeGrid gradeGrid = new GradeGrid("gradegrid", createI18NText("Arvosanat"), "Kieli", subjectRowsBefore,
-                languageRows, subjectRowsAfter, scopeOptions, languageOptions, gradeRange);
+        GradeGrid gradeGrid = new GradeGrid(id, createI18NText("Arvosanat"), "Kieli", subjectRowsBefore,
+                languageRows, subjectRowsAfter, scopeOptions, languageOptions, gradeRange, primary);
         gradeGrid.setVerboseHelp(getVerboseHelp());
 
         return gradeGrid;
@@ -401,13 +398,13 @@ public class Yhteishaku2013 {
 
     private void createArvosanat(Theme arvosanatRyhma) {
         RelatedQuestionRule relatedQuestionPK = new RelatedQuestionRule("rule_grade_pk", "millatutkinnolla",
-                "("+PERUSKOULU+"|tutkinto2|tutkinto3|tutkinto4)");
-        relatedQuestionPK.addChild(createGradeGrid(true));
+                "(" + PERUSKOULU + "|tutkinto2|tutkinto3|tutkinto4)");
+        relatedQuestionPK.addChild(createGradeGrid("grid_pk", true));
         arvosanatRyhma.addChild(relatedQuestionPK);
 
         RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", "millatutkinnolla",
-                "("+YLIOPPILAS+")");
-        relatedQuestionLukio.addChild(createGradeGrid(false));
+                "(" + YLIOPPILAS + ")");
+        relatedQuestionLukio.addChild(createGradeGrid("grid_yo", false));
         arvosanatRyhma.addChild(relatedQuestionLukio);
 
         RelatedQuestionRule relatedQuestionEiTutkintoa = new RelatedQuestionRule("rule_grade_no", "millatutkinnolla",

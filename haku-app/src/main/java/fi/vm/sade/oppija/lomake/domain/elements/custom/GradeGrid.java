@@ -41,7 +41,7 @@ public class GradeGrid extends Titled {
 
     // subjects that are listed before languages
     private List<SubjectRow> subjectsBeforeLanguages;
-    // languages
+
     private List<LanguageRow> languages;
     // subjects that are listed under the 'Add language' row
     private List<SubjectRow> subjectsAfterLanguages;
@@ -53,6 +53,8 @@ public class GradeGrid extends Titled {
     // list of possible grades
     private List<Option> gradeRange;
 
+    private boolean extraOptionalGrades;
+
     public GradeGrid(@JsonProperty(value = "id") final String id,
                      @JsonProperty(value = "i18nText") final I18nText i18nText,
                      @JsonProperty(value = "customLanguageTitle") final String customLanguageTitle,
@@ -61,7 +63,8 @@ public class GradeGrid extends Titled {
                      @JsonProperty(value = "subjectsAfterLanguages") final List<SubjectRow> subjectsAfterLanguages,
                      @JsonProperty(value = "scopeOptions") final List<Option> scopeOptions,
                      @JsonProperty(value = "languageOptions") final List<Option> languageOptions,
-                     @JsonProperty(value = "gradeRange") final List<Option> gradeRange) {
+                     @JsonProperty(value = "gradeRange") final List<Option> gradeRange,
+                     @JsonProperty(value = "extraOptionalGrades") final boolean extraOptionalGrades) {
         super(id, i18nText);
         this.customLanguageTitle = customLanguageTitle;
         this.subjectsBeforeLanguages = subjectsBeforeLanguages;
@@ -70,6 +73,7 @@ public class GradeGrid extends Titled {
         this.scopeOptions = scopeOptions;
         this.languageOptions = languageOptions;
         this.gradeRange = gradeRange;
+        this.extraOptionalGrades = extraOptionalGrades;
     }
 
     public List<Option> getGradeRange() {
@@ -100,6 +104,10 @@ public class GradeGrid extends Titled {
         return customLanguageTitle;
     }
 
+    public boolean isExtraOptionalGrades() {
+        return extraOptionalGrades;
+    }
+
     @Override
     @JsonIgnore
     public List<Validator> getValidators() {
@@ -119,8 +127,8 @@ public class GradeGrid extends Titled {
     private void addRequiredValidators(final List<Validator> listOfValidators, final SubjectRow subjectRow) {
         String subjectRowId = subjectRow.getId();
         listOfValidators.add(new RequiredFieldFieldValidator("common-" + subjectRowId));
-        if (subjectRow.isOptionalGrades()) {
-            listOfValidators.add(new RequiredFieldFieldValidator("optional-common-" + subjectRowId));
+        listOfValidators.add(new RequiredFieldFieldValidator("optional-common-" + subjectRowId));
+        if (this.extraOptionalGrades) {
             listOfValidators.add(new RequiredFieldFieldValidator("second-optional-common-" + subjectRowId));
         }
     }

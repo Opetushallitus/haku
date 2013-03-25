@@ -44,10 +44,20 @@ public class UserHolder implements Serializable {
     }
 
     public void login(User user) {
+        if (user.isKnown()) {
+            userPrefillData.put("Sähköposti", "esitaytetty_email@autofill.com"); // TODO remove
+        }
         this.user = user;
     }
 
-    public Map<String, String> getUserPrefillData() {
-        return userPrefillData;
+    public void addPrefillData(final Map<String, String> data) {
+        this.userPrefillData.putAll(data);
     }
+
+    public Map<String, String> populateWithPrefillData(final Map<String, String> data) {
+        Map<String, String> populated = new HashMap<String, String>(userPrefillData);
+        populated.putAll(data);
+        return populated;
+    }
+
 }

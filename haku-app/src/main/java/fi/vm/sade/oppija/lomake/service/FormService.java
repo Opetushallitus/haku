@@ -40,4 +40,5 @@ public interface FormService {
     Form getActiveForm(final String applicationPeriodId, final String formId);
 
     Form getActiveForm(final FormId formId);
+
 }

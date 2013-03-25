@@ -3,8 +3,7 @@
  */
 
 var gradegrid = (function () {
-    var langRowUrl = gradegrid_settings.contextPath + '/lomake/' +
-        gradegrid_settings.applicationSystemId + '/' + gradegrid_settings.formId + '/' +
+    var langRowUrl = document.URL + '/' +
         gradegrid_settings.elementId + '/' + 'additionalLanguageRow';
 
     function appendRow(rowHtml) {
@@ -18,7 +17,9 @@ var gradegrid = (function () {
             $(selects.get(1)).attr('id', 'custom-language_' + i).attr('name', 'custom-language_' + i);
             $(selects.get(2)).attr('id', 'custom-commongrade_' + i).attr('name', 'custom-commongrade_' + i);
             $(selects.get(3)).attr('id', 'custom-optionalgrade_' + i).attr('name', 'custom-optionalgrade_' + i);
-            $(selects.get(4)).attr('id', 'custom-secondoptionalgrade_' + i).attr('name', 'custom-secondoptionalgrade_' + i);
+            if (selects.length == 5) {
+                $(selects.get(4)).attr('id', 'custom-secondoptionalgrade_' + i).attr('name', 'custom-secondoptionalgrade_' + i);
+            }
         })
     }
 

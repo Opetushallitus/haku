@@ -36,18 +36,24 @@ import static org.junit.Assert.assertNotNull;
  */
 public class GradeGridIT extends AbstractSeleniumBase {
 
+    public static final String PHASE_ID = "arvosanat";
+    public static final String FORM_ID = "lomake";
+
     @Before
     public void init() {
         super.before();
         ApplicationPeriod applicationPeriod = new ApplicationPeriod(Yhteishaku2013.ASID);
-        FormModel formModel = new FormModel();
-        formModel.addApplicationPeriod(applicationPeriod);
-        Phase arvosanat = new Phase("arvosanat", createI18NText("Arvosanat"), false);
-        Form form = new Form("lomake", createI18NText("yhteishaku"));
+
+        Phase arvosanat = new Phase(PHASE_ID, createI18NText("Arvosanat"), false);
+        Form form = new Form(FORM_ID, createI18NText("yhteishaku"));
         form.addChild(arvosanat);
         Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl());
-        arvosanat.addChild(yhteishaku2013.createGradeGrid(true));
+        arvosanat.addChild(yhteishaku2013.createGradeGrid("id", true));
         applicationPeriod.addForm(form);
+
+
+        FormModel formModel = new FormModel();
+        formModel.addApplicationPeriod(applicationPeriod);
         updateIndexAndFormModel(formModel);
     }
 

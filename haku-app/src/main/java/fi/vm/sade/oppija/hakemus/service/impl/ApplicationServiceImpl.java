@@ -208,7 +208,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             this.applicationDAO.update(application1, application);
             return application.getOid();
         } else {
-            throw new IllegalStateException("Could not send the application");
+            throw new IllegalStateException("Could not send the application ");
         }
     }
 

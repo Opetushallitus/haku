@@ -33,7 +33,7 @@ import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.lomake.service.UserPrefillDataService;
+import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.oppija.ui.common.RedirectToFormViewPath;
@@ -67,24 +67,23 @@ public class FormController {
     public static final String FORM_ID_PATH_PARAM = "formId";
     public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
     public static final String THEME_ID_PATH_PARAM = "themeId";
-    public static final String ELEMENT_ID_PATH_PARAM = "elementId";
-    public static final String FORM_ID_STR_PATH_PARAM = "formIdStr";
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
-    private static final String PHASE_ID = "phaseId";
+    private static final String PHASE_ID_PATH_PARAM = "phaseId";
+    public static final String ELEMENT_ID_PATH_PARAM = "elementId";
 
     final FormService formService;
     private final ApplicationService applicationService;
-    private final UserPrefillDataService userPrefillDataService;
+    private final UserHolder userHolder;
     private final AdditionalQuestionService additionalQuestionService;
 
 
     @Autowired
     public FormController(@Qualifier("formServiceImpl") final FormService formService,
-                          final ApplicationService applicationService, final UserPrefillDataService userPrefillDataService,
+                          final ApplicationService applicationService, final UserHolder userHolder,
                           final AdditionalQuestionService additionalQuestionService) {
         this.formService = formService;
         this.applicationService = applicationService;
-        this.userPrefillDataService = userPrefillDataService;
+        this.userHolder = userHolder;
         this.additionalQuestionService = additionalQuestionService;
     }
 
@@ -130,41 +129,52 @@ public class FormController {
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{formIdStr}/esikatselu")
+    @Path("/{applicationPeriodId}/{formId}/{phaseId}/{elementId}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getPreview(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
-                               @PathParam(FORM_ID_STR_PATH_PARAM) final String formIdStr) {
-        return getElement(applicationPeriodId, formIdStr, "esikatselu");
+    public Viewable getPhaseElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                    @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                                    @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                                    @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
+        return getPhase(applicationPeriodId, formId, elementId);
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{formIdStr}/{elementId}")
+    @Path("/{applicationPeriodId}/{formId}/esikatselu")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
-                               @PathParam(FORM_ID_STR_PATH_PARAM) final String formIdStr,
-                               @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
+    public Viewable getPreview(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                               @PathParam(FORM_ID_PATH_PARAM) final String formId) {
+        return getPhase(applicationPeriodId, formId, "esikatselu");
+    }
 
-        LOGGER.debug("getElement {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, elementId});
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
-        Element element = activeForm.getChildById(elementId);
+    @GET
+    @Path("/{applicationPeriodId}/{formId}/{phaseId}")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    public Viewable getPhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                             @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                             @PathParam(PHASE_ID_PATH_PARAM) final String phaseId) {
+
+        LOGGER.debug("getElement {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId});
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        Element element = activeForm.getChildById(phaseId);
         Map<String, Object> model = new HashMap<String, Object>();
-        final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
-        Map<String, String> values = applicationService.getApplication(formId).getVastauksetMerged();
-        values = userPrefillDataService.populateWithPrefillData(values);
+        final FormId formIdentifier = new FormId(applicationPeriodId, activeForm.getId());
+        Map<String, String> values = applicationService.getApplication(formIdentifier).getVastauksetMerged();
+        values = userHolder.populateWithPrefillData(values);
         model.put("categoryData", values);
         model.put("element", element);
         model.put("template", element.getType());
         model.put("form", activeForm);
-        model.put("hakemusId", formId);
+        model.put("hakemusId", formIdentifier);
 
         return new Viewable(ROOT_VIEW, model);
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{formId}/{elementId}/relatedData/{key}")
+    @Path("/{applicationPeriodId}/{formId}/{phaseId}/{elementId}/relatedData/{key}")
     @Produces(MediaType.APPLICATION_JSON)
     public Serializable getElementRelatedData(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                               @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                               @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                               @PathParam("key") final String key) {
         LOGGER.debug("getElementRelatedData {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, elementId, key});
@@ -185,7 +195,7 @@ public class FormController {
                                 @PathParam(FORM_ID_PATH_PARAM) final String formId,
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException {
-        userPrefillDataService.addUserPrefillData(MultivaluedMapUtil.toSingleValueMap(multiValues));
+        userHolder.addPrefillData(MultivaluedMapUtil.toSingleValueMap(multiValues));
 
         return Response.seeOther(new URI(
                 new RedirectToFormViewPath(applicationPeriodId, formId).getPath())).build();
@@ -208,18 +218,15 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML)
     public Response savePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                               @PathParam(FORM_ID_PATH_PARAM) final String formId,
-                              @PathParam(PHASE_ID) final String phaseId,
+                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         boolean skipValidators = skipValidators(multiValues, activeForm, phaseId);
-
         ApplicationState applicationState = applicationService.saveApplicationPhase(
                 new ApplicationPhase(hakuLomakeId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)), skipValidators);
-
         Map<String, Object> model = new HashMap<String, Object>();
-
         model.put("hakemusId", hakuLomakeId);
         if (applicationState.isValid()) {
             return Response.seeOther(new URI(
@@ -238,7 +245,7 @@ public class FormController {
     }
 
     private boolean skipValidators(MultivaluedMap<String, String> multiValues, Form form, String phaseId) {
-        List<String> phaseIdList = multiValues.get(PHASE_ID);
+        List<String> phaseIdList = multiValues.get(PHASE_ID_PATH_PARAM);
         if (phaseIdList == null || phaseIdList.size() == 0) {
             return false;
         }
@@ -247,7 +254,7 @@ public class FormController {
         boolean skipValidators = targetPhaseId.endsWith("-skip-validators");
         if (skipValidators) {
             targetPhaseId = targetPhaseId.substring(0, targetPhaseId.lastIndexOf("-skip-validators"));
-            multiValues.get(PHASE_ID).set(0, targetPhaseId);
+            multiValues.get(PHASE_ID_PATH_PARAM).set(0, targetPhaseId);
         }
 
         for (Element phase : form.getChildren()) {
@@ -309,20 +316,22 @@ public class FormController {
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{formIdStr}/{gradeGridId}/additionalLanguageRow")
+    @Path("/{applicationPeriodId}/{formId}/{phaseId}/{gradeGridId}/additionalLanguageRow")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getAdditionalLanguageRow(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
-                                             @PathParam(FORM_ID_STR_PATH_PARAM) final String formIdStr,
+                                             @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                                             @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                              @PathParam("gradeGridId") final String gradeGridId) {
 
-        LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", new Object[]{applicationPeriodId, formIdStr, gradeGridId});
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
+        LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", new Object[]{applicationPeriodId, formId, gradeGridId});
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        final FormId formIdentifier = new FormId(applicationPeriodId, activeForm.getId());
+        Map<String, String> values = applicationService.getApplication(formIdentifier).getVastauksetMerged();
         Element element = activeForm.getChildById(gradeGridId);
         GradeGrid gradeGrid = (GradeGrid) element;
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("element", gradeGrid);
         model.put("template", "gradegrid/additionalLanguageRow");
-
         return new Viewable(ROOT_VIEW, model);
     }
 
@@ -331,7 +340,7 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable getAdditionalQuestions(@PathParam("applicationPeriodId") final String applicationPeriodId,
                                            @PathParam("formIdStr") final String formIdStr,
-                                           @PathParam(PHASE_ID) final String phaseId,
+                                           @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                            @PathParam("themeId") final String themeId,
                                            @PathParam("aoId") final String aoId,
                                            @QueryParam("preview") final boolean preview) {

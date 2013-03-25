@@ -29,7 +29,6 @@ import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntim
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
-import fi.vm.sade.oppija.lomake.service.impl.UserPrefillDataServiceImpl;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPhaseViewPath;
@@ -70,9 +69,8 @@ public class FormControllerTest {
 
         this.applicationService = mock(ApplicationService.class);
         this.formService = mock(FormService.class);
-        final UserPrefillDataServiceImpl userPrefillDataService = new UserPrefillDataServiceImpl(USER_HOLDER);
         this.additionalQuestionService = mock(AdditionalQuestionService.class);
-        this.formController = new FormController(formService, applicationService, userPrefillDataService, additionalQuestionService);
+        this.formController = new FormController(formService, applicationService, USER_HOLDER, additionalQuestionService);
         this.application = new Application();
         FORM.addChild(PHASE);
         when(applicationService.getApplication(Matchers.<FormId>any())).thenReturn(this.application);
@@ -129,26 +127,26 @@ public class FormControllerTest {
     @SuppressWarnings("rawtypes")
     @Test
     public void testGetCategoryMVCategory() throws Exception {
-        Viewable viewable = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
+        Viewable viewable = formController.getPhase(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
         assertEquals(FIRST_CATEGORY_ID, ((Phase) ((Map) viewable.getModel()).get("element")).getId());
     }
 
     @SuppressWarnings("rawtypes")
     @Test
     public void testGetCategoryModelSize() throws Exception {
-        Viewable viewable = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
+        Viewable viewable = formController.getPhase(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
         assertEquals(5, ((Map) viewable.getModel()).size());
     }
 
     @Test
     public void testGetCategoryView() throws Exception {
-        Viewable viewable = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
+        Viewable viewable = formController.getPhase(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
         assertEquals("/elements/Root", viewable.getTemplateName());
     }
 
     @Test
     public void testGetCategoryWrongView() throws Exception {
-        Viewable viewable = formController.getElement(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
+        Viewable viewable = formController.getPhase(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
         assertNotSame(null, viewable.getTemplateName());
     }
 

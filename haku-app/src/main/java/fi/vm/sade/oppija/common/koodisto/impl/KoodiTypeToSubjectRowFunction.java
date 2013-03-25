@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.common.koodisto.impl;
 import com.google.common.base.Function;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.LanguageRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 
 import java.util.Map;
@@ -31,7 +32,12 @@ public class KoodiTypeToSubjectRowFunction implements Function<KoodiType, Subjec
         String koodiArvo = koodiType.getKoodiArvo();
         boolean language = koodiArvo.startsWith("A1") || koodiArvo.startsWith("A2") ||
                 koodiArvo.startsWith("B1") || koodiArvo.startsWith("B2") || koodiArvo.startsWith("B3"); // TODO koodistosta
-        boolean optionalGrades = true; // TODO koodistosta
-        return new SubjectRow(koodiArvo, optionalGrades, language, new I18nText(koodiArvo, translationsMap));
+        SubjectRow row;
+        if (language) {
+            row = new LanguageRow(koodiArvo, new I18nText(koodiArvo, translationsMap));
+        } else {
+            row = new SubjectRow(koodiArvo, new I18nText(koodiArvo, translationsMap));
+        }
+        return row;
     }
 }

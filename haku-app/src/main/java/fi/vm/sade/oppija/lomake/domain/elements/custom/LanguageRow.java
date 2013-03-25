@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -32,6 +33,12 @@ public class LanguageRow extends SubjectRow {
 
     public LanguageRow(@JsonProperty(value = "id") String id,
                        @JsonProperty(value = "i18nText") I18nText i18nText) {
-        super(id, true, true, i18nText);
+        super(id, i18nText);
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isLanguage() {
+        return true;
     }
 }

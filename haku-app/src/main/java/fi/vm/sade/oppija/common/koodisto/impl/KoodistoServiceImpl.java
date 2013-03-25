@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.common.koodisto.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.koodisto.service.GenericFault;
 import fi.vm.sade.koodisto.service.KoodiService;
 import fi.vm.sade.koodisto.service.types.SearchKoodisByKoodistoCriteriaType;
@@ -43,10 +42,8 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KoodistoServiceImpl.class);
     public static final String CODE_POST = "posti";
-    public static final String CODE_SUBJECT_PRIMARY = "oppiaineet";
-    public static final String CODE_SUBJECT_SECONDARY = "oppiaineet-invalid";
-    public static final String CODE_GRADE_RANGE_PRIMARY = "ARVOSANA-ASTEIKKO";
-    public static final String CODE_GRADE_RANGE_SECONDARY = "ARVOSANA-ASTEIKKO-INVALID";
+    public static final String CODE_SUBJECT = "oppiaineet";
+    public static final String CODE_GRADE_RANGE = "ARVOSANA-ASTEIKKO";
     public static final String CODE_LEARNING_INSTITUTION_TYPES = "Oppilaitostyyppi";
     public static final String CODE_ORGANIZATION_TYPES = "Organisaatiotyyppi";
     public static final String CODE_COUNTRIES = "maat kaksimerkkisellä arvolla";
@@ -70,36 +67,20 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
-    public List<SubjectRow> getSubjectsForPrimary() {
+    public List<SubjectRow> getSubjects() {
         return ImmutableList.copyOf(
                 Lists.transform(
-                        getKoodiTypes(CODE_SUBJECT_PRIMARY),
+                        getKoodiTypes(CODE_SUBJECT),
                         new KoodiTypeToSubjectRowFunction()));
     }
 
-    @Override
-    public List<SubjectRow> getSubjectsForSecondary() {
-        return ImmutableList.copyOf(
-                Lists.transform(
-                        getKoodiTypes(CODE_SUBJECT_SECONDARY),
-                        new KoodiTypeToSubjectRowFunction()));
-    }
 
     @Override
-    public List<Option> getGradeRangesForPrimary() {
+    public List<Option> getGradeRanges() {
         return ImmutableList.copyOf(
                 Lists.reverse(
                         Lists.transform(
-                                getKoodiTypes(CODE_GRADE_RANGE_PRIMARY),
-                                new KoodiTypeToOptionFunction())));
-    }
-
-    @Override
-    public List<Option> getGradeRangesForSecondary() {
-        return ImmutableList.copyOf(
-                Lists.reverse(
-                        Lists.transform(
-                                getKoodiTypes(CODE_GRADE_RANGE_SECONDARY),
+                                getKoodiTypes(CODE_GRADE_RANGE),
                                 new KoodiTypeToOptionFunction())));
     }
 

@@ -16,19 +16,15 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author jukka
- * @version 9/7/1210:25 AM}
- * @since 1.1
- */
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class FormModel implements Serializable {
 
 
@@ -37,16 +33,11 @@ public class FormModel implements Serializable {
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
     final Map<String, ApplicationPeriod> applicationPerioidMap;
 
-    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = ObjectIdSerializer.class)
-    @JsonProperty(value = "_id")
-    @JsonDeserialize(using = ObjectIdDeserializer.class)
-    private org.bson.types.ObjectId id;
-
     public FormModel() {
         this.applicationPerioidMap = new HashMap<String, ApplicationPeriod>();
     }
 
-    public ApplicationPeriod getApplicationPeriodById(String id) {
+    public ApplicationPeriod getApplicationPeriodById(final String id) {
         return applicationPerioidMap.get(id);
     }
 
@@ -57,9 +48,4 @@ public class FormModel implements Serializable {
     public Map<String, ApplicationPeriod> getApplicationPerioidMap() {
         return applicationPerioidMap;
     }
-
-    public org.bson.types.ObjectId getId() {
-        return id;
-    }
-
 }

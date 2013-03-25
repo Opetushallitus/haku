@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.lomake.domain.elements;
 
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Phase extends Titled {
@@ -33,41 +32,6 @@ public class Phase extends Titled {
                  @JsonProperty(value = "preview") final boolean preview) {
         super(id, i18nText);
         this.preview = preview;
-    }
-
-    public void setNext(Phase element) {
-        this.next = element;
-    }
-
-    public void setPrev(Phase prev) {
-        this.prev = prev;
-    }
-
-    public void initChain(Phase prev) {
-        if (prev != null) {
-            setPrev(prev);
-            prev.setNext(this);
-        }
-    }
-
-    @JsonIgnore
-    public boolean isHasNext() {
-        return next != null;
-    }
-
-    @JsonIgnore
-    public boolean isHasPrev() {
-        return prev != null;
-    }
-
-    @JsonIgnore
-    public Phase getNext() {
-        return next;
-    }
-
-    @JsonIgnore
-    public Phase getPrev() {
-        return prev;
     }
 
     public boolean isPreview() {

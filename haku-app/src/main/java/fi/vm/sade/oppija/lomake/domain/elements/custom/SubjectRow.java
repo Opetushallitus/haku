@@ -27,31 +27,14 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class SubjectRow extends Question {
 
     private static final long serialVersionUID = -7775452756396204586L;
-    private final boolean optionalGrades;
-    private final boolean language;
+
+    public SubjectRow(@JsonProperty(value = "id") final String id,
+                      @JsonProperty(value = "i18nText") final I18nText i18nText) {
+        super(id, i18nText);
+    }
 
     @JsonIgnore
-    public SubjectRow(@JsonProperty(value = "id") final String id,
-                      @JsonProperty(value = "i18nText") final I18nText i18nText) {
-        super(id, i18nText);
-        this.language = false;
-        this.optionalGrades = true;
-    }
-
-    public SubjectRow(@JsonProperty(value = "id") final String id,
-                      @JsonProperty(value = "optionalGrades") boolean optionalGrades,
-                      @JsonProperty(value = "language") boolean language,
-                      @JsonProperty(value = "i18nText") final I18nText i18nText) {
-        super(id, i18nText);
-        this.language = language;
-        this.optionalGrades = optionalGrades;
-    }
-
     public boolean isLanguage() {
-        return language;
-    }
-
-    public boolean isOptionalGrades() {
-        return optionalGrades;
+        return false;
     }
 }

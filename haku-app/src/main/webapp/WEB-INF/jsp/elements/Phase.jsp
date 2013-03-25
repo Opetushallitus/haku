@@ -37,12 +37,6 @@
     <script src="${contextPath}/resources/jquery/jquery.ui.datepicker-fi.js"></script>
     <script src="${contextPath}/resources/javascript/rules.js"></script>
     <script src="${contextPath}/resources/javascript/master.js"></script>
-    <script>
-    	function pastPhase(phaseId) {
-    		$('#form-${vaihe.id}').append('<input type="hidden" name="phaseId" value="'+phaseId+'-skip-validators" />');
-    		$('#form-${vaihe.id}').submit();
-    	}
-    </script>
     <title><haku:i18nText value="${form.i18nText}"/> - <haku:i18nText value="${vaihe.i18nText}"/></title>
 </head>
 <body>
@@ -50,10 +44,6 @@
     <div id="overlay">
         <c:choose>
             <c:when test="${preview}">
-                <c:set var="baseUrl"
-                       value="${pageContext.request.contextPath}/lomake/${hakemusId.applicationPeriodId}/${hakemusId.formId}"
-                       scope="request"/>
-
 
                 <div class="popover-wrapper" id="areyousure" style="z-index:1000;display:none;">
                     <span class="popover-close">&#8203;</span>
@@ -65,7 +55,7 @@
                             <fmt:message key="lomake.send.confirm.title"/>
                         </div>
                         <div class="popover-content">
-                            <form method="post" action="${baseUrl}/esikatselu">
+                            <form method="post">
                                 <p><fmt:message key="lomake.send.confirm.message"/></p>
                                 <button name="nav-send" value="true" data-po-hide="areyousure">
 									<span>
@@ -94,25 +84,27 @@
 
                 <h2><haku:i18nText value="${form.i18nText}"/></h2>
                 <ul class="form-steps">
-                	<c:set var="pastPhases" value="true" scope="request" />
+                    <c:set var="pastPhases" value="true" scope="request"/>
                     <c:forEach var="phase" items="${form.children}" varStatus="status">
                         <li>
-                        	<c:if test="${pastPhases}">
-	                            <a id="nav-${phase.id}" href="javascript:pastPhase('${phase.id}')"
-	                               <c:if test="${phase.id eq vaihe.id}">class="current"</c:if>>
-	                                <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
-	                            </a>
+                            <c:if test="${pastPhases}">
+                                <a id="nav-${phase.id}" href="${phase.id}"
+                                   <c:if test="${phase.id eq vaihe.id}">class="current"</c:if>>
+                                    <c:if test="${phase.id eq vaihe.id}"><input type="hidden" name="phaseId"
+                                                                                value="${phase.id} +'-skip-validators'"/></c:if>
+                                    <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
+                                </a>
                             </c:if>
                             <c:if test="${!pastPhases}">
                             	<span>
                             	<span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
                             	</span>
-                            	<%--a id="nav-nav-${phase.id}" href="${phase.id}">
-                            	<span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
-                            	</a --%>
+                                <%--a id="nav-nav-${phase.id}" href="${phase.id}">
+                                <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
+                                </a --%>
                             </c:if>
-                        	<c:if test="${(pastPhases && phase.id eq vaihe.id)}">
-                        		<c:set var="pastPhases" value="false" />
+                            <c:if test="${(pastPhases && phase.id eq vaihe.id)}">
+                                <c:set var="pastPhases" value="false"/>
                             </c:if>
                         </li>
                     </c:forEach>
@@ -130,14 +122,14 @@
                 <c:when test="${preview}">
                     <div class="form">
                         <jsp:include page="../prev_next_buttons_preview.jsp"/>
-                        
+
                         <c:forEach var="child" items="${vaihe.children}">
                             <c:set var="element" value="${child}" scope="request"/>
                             <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
                             <jsp:include page="./${child.type}Preview.jsp"/>
                         </c:forEach>
                         <jsp:include page="../prev_next_buttons_preview.jsp"/>
-                    
+
                     </div>
                 </c:when>
                 <c:otherwise>

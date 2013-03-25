@@ -35,10 +35,6 @@
 </div>
 <script type="text/javascript">
     var postalcode_settings = {
-        applicationPeriodId: "${it.hakemusId.applicationPeriodId}",
-        formId: "${it.hakemusId.formId}",
-        vaiheId: "${it.applicationPhaseId}",
-        teemaId: "${parent.id}",
         contextPath: "${pageContext.request.contextPath}",
         lang: "${sessionScope['javax.servlet.jsp.jstl.fmt.locale.session'].language}"
     }

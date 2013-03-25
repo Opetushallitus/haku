@@ -27,8 +27,7 @@
         var value = this.value, re5digit = /^\d{5}$/, elementId = this.id;
 
         if (value && value.length === 5 && value.search(re5digit) !== -1) {
-            $.getJSON(postalcode_settings.contextPath + "/lomake/" + postalcode_settings.applicationPeriodId + "/" +
-                postalcode_settings.formId + "/" + elementId +
+            $.getJSON(document.URL + "/" + elementId +
                 "/relatedData/" + value,
                 function (data) {
                     if (data && data.postOffice) {

@@ -31,14 +31,18 @@
     <td><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
     <td><fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
     <td><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
-    <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
+    <c:if test="${element.extraOptionalGrades}">
+        <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
+    </c:if>
+
 </tr>
 <!--
 </thead>
 <tbody>
 -->
 <!-- subjects that are listed before languages -->
-<haku:subjectRows subjects="${element.subjectsBeforeLanguages}" element="${element}" data="${categoryData}"/>
+<haku:subjectRows subjects="${element.subjectsBeforeLanguages}"
+                  element="${element}" data="${categoryData}" extraOptionalGrades="${element.extraOptionalGrades}"/>
 
 <%-- languages --%>
 <c:forEach var="language" items="${element.languages}">
@@ -55,10 +59,12 @@
             <haku:gradeSelect id="optional-common-${language.id}" data="${categoryData}"
                               preview="${preview}" options="${element.gradeRange}"/>
         </td>
-        <td>
-            <haku:gradeSelect id="second-optional-common-${language.id}" data="${categoryData}"
-                              preview="${preview}" options="${element.gradeRange}"/>
-        </td>
+        <c:if test="${element.extraOptionalGrades}">
+            <td>
+                <haku:gradeSelect id="second-optional-common-${language.id}" data="${categoryData}"
+                                  preview="${preview}" options="${element.gradeRange}"/>
+            </td>
+        </c:if>
     </tr>
 </c:forEach>
 
@@ -101,22 +107,26 @@
                     </c:if>
                 </c:forEach>
             </td>
-            <td>
-                <c:forEach var="grade" items="${element.gradeRange}">
-                    <c:if test="${(categoryData[customSecondOptionalGradeKey] eq grade.value)}">
-                        <haku:i18nText value="${grade.i18nText}"/>
-                    </c:if>
-                </c:forEach>
-            </td>
+            <c:if test="${element.extraOptionalGrades}">
+                <td>
+                    <c:forEach var="grade" items="${element.gradeRange}">
+                        <c:if test="${(categoryData[customSecondOptionalGradeKey] eq grade.value)}">
+                            <haku:i18nText value="${grade.i18nText}"/>
+                        </c:if>
+                    </c:forEach>
+                </td>
+            </c:if>
         </tr>
     </c:if>
 
 </c:forEach>
 <%-- subjects that are listed after languages --%>
-<haku:subjectRows subjects="${element.subjectsAfterLanguages}" element="${element}" data="${categoryData}"/>
+<haku:subjectRows subjects="${element.subjectsAfterLanguages}"
+                  element="${element}" data="${categoryData}" extraOptionalGrades="${element.extraOptionalGrades}"/>
 
 <%-- subjects that are specific to the education selected by the user --%>
-<haku:subjectRows subjects="${additionalQuestionList}" element="${element}" data="${categoryData}"/>
+<haku:subjectRows subjects="${additionalQuestionList}"
+                  element="${element}" data="${categoryData}" extraOptionalGrades="${element.extraOptionalGrades}"/>
 <!--
 </tbody>
 -->
