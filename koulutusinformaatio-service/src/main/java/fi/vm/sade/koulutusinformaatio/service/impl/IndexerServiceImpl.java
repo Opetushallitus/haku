@@ -1,17 +1,10 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.Source;
-
+import fi.vm.sade.koulutusinformaatio.client.SolrClient;
+import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.tarjonta.publication.types.*;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
@@ -20,19 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.koulutusinformaatio.client.SolrClient;
-import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.tarjonta.publication.types.ApplicationOptionType;
-import fi.vm.sade.tarjonta.publication.types.ApplicationSystemType;
-import fi.vm.sade.tarjonta.publication.types.CodeValueType;
-import fi.vm.sade.tarjonta.publication.types.ExtendedStringType;
-import fi.vm.sade.tarjonta.publication.types.LearningOpportunityDownloadDataType;
-import fi.vm.sade.tarjonta.publication.types.LearningOpportunityInstanceRefType;
-import fi.vm.sade.tarjonta.publication.types.LearningOpportunityInstanceType;
-import fi.vm.sade.tarjonta.publication.types.LearningOpportunityProviderType;
-import fi.vm.sade.tarjonta.publication.types.LearningOpportunitySpecificationType;
-import fi.vm.sade.tarjonta.publication.types.TextType;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Source;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -69,7 +57,7 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void updateIndex(LearningOpportunityData data) {
+    public void updateIndexes(LearningOpportunityData data) {
 
 
 

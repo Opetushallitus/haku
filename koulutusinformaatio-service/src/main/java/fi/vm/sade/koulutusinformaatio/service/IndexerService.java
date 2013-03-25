@@ -18,12 +18,15 @@ package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
 
-import java.net.URI;
-
 public interface IndexerService {
     String update();
 
     boolean drop();
 
-    void updateIndex(LearningOpportunityData data);
+    /**
+     * Updates all required indexes with the given education data.
+     *
+     * @param data Education data.
+     */
+    void updateIndexes(LearningOpportunityData data);
 }

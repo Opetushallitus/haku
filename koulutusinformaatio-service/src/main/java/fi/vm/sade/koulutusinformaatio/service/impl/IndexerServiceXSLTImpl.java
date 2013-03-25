@@ -37,7 +37,6 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URI;
 
 @Service
 @Deprecated
@@ -96,7 +95,7 @@ public class IndexerServiceXSLTImpl implements IndexerService {
     }
 
     @Override
-    public void updateIndex(LearningOpportunityData data) {
+    public void updateIndexes(LearningOpportunityData data) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 

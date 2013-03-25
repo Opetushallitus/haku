@@ -21,8 +21,6 @@ import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.URI;
-
 import static org.junit.Assert.assertEquals;
 
 public class IndexControllerTest {
@@ -46,7 +44,7 @@ public class IndexControllerTest {
             }
 
             @Override
-            public void updateIndex(LearningOpportunityData data) {
+            public void updateIndexes(LearningOpportunityData data) {
                 //To change body of implemented methods use File | Settings | File Templates.
             }
         };
