@@ -25,7 +25,7 @@
             "phaseId": "koulutustausta"
         },
         "koulutustausta": {
-            "millatutkinnolla": "tutkinto1",
+            "millatutkinnolla": "PERUSKOULU",
             "suorittanut6": "true",
             "suorittanut5": "true",
             "paattotodistusvuosi_peruskoulu": "2012",

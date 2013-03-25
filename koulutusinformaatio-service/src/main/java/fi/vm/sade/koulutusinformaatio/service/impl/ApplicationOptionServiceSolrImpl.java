@@ -39,13 +39,14 @@ public class ApplicationOptionServiceSolrImpl implements ApplicationOptionServic
     }
 
     @Override
-    public List<Organization> searchOrganisaatio(final String hakuId, final String term) {
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(2);
+    public List<Organization> searchOrganisaatio(final String hakuId, final String term, final String prerequisite, final String vocational) {
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(3);
         Set<Organization> organizations = new HashSet<Organization>();
         String startswith = term.trim();
         if (!startswith.isEmpty()) {
             parameters.put("LOPInstitutionInfoName", createParameter(term + "*"));
             parameters.put("ASId", createParameter(hakuId));
+            parameters = addPrerequisite(parameters, prerequisite, vocational);
             SearchResult search = service.search(parameters.entrySet());
             List<Map<String, Object>> items = search.getItems();
             for (Map<String, Object> item : items) {
@@ -56,10 +57,11 @@ public class ApplicationOptionServiceSolrImpl implements ApplicationOptionServic
     }
 
     @Override
-    public List<ApplicationOption> searchHakukohde(final String hakuId, final String organisaatioId) {
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(2);
+    public List<ApplicationOption> searchHakukohde(final String hakuId, final String organisaatioId, final String prerequisite, final String vocational) {
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(3);
         parameters.put("ASId", createParameter(hakuId));
         parameters.put("LOPId", createParameter(organisaatioId));
+        parameters = addPrerequisite(parameters, prerequisite, vocational);
         SearchResult search = service.search(parameters.entrySet());
 
         List<ApplicationOption> hakukohteet = new ArrayList<ApplicationOption>(search.getSize());
@@ -68,6 +70,27 @@ public class ApplicationOptionServiceSolrImpl implements ApplicationOptionServic
             hakukohteet.add(new ApplicationOption((String) item.get("AOId"), (String) item.get("AOTitle"), (String) item.get("AOEducationDegree")));
         }
         return hakukohteet;
+    }
+
+    private MultiValueMap<String, String> addPrerequisite(MultiValueMap<String, String> parameters, String prerequisite, String vocational) {
+        String realPrerequisite = prerequisite;
+        if (realPrerequisite.equals("KESKEYTYNYT") || realPrerequisite.equals("ULKOMAINEN_TUTKINTO")) {
+            return parameters; // Ei suodatusta
+        }
+        if (realPrerequisite.equals("YLIOPPILAS")) {
+            parameters.put("LOIPrerequisite", createParameter("(5 OR 9)"));
+        } else if (realPrerequisite.equals("PERUSKOULU")) {
+            parameters.put("LOIPrerequisite", createParameter("(1 OR 2 OR 4 OR 5)"));
+        } else if (realPrerequisite.equals("OSITTAIN_YKSILOLLISTETTY")
+                || realPrerequisite.equals("ERITYISOPETUKSEN_YKSILOLLISTETTY")
+                || realPrerequisite.equals("YKSILOLLISTETTY")) {
+            parameters.put("LOIPrerequisite", createParameter("(1 OR 2 OR 4 OR 5 OR 6)"));
+        }
+        boolean hasVocational = Boolean.parseBoolean(vocational);
+        if (hasVocational) {
+            parameters.put("AOEducationDegree", createParameter("(NOT 32)"));
+        }
+        return parameters;
     }
 
     private List<String> createParameter(String value) {

@@ -32,7 +32,7 @@ public interface ApplicationOptionService {
      * @param term search term
      * @return list of education institutes matching search term
      */
-    List<Organization> searchOrganisaatio(final String hakuId, final String term);
+    List<Organization> searchOrganisaatio(final String hakuId, final String term, final String prerequisite, final String vocational);
 
-    List<ApplicationOption> searchHakukohde(final String hakuId, final String organisaatioId);
+    List<ApplicationOption> searchHakukohde(final String hakuId, final String organisaatioId, final String prerequisite, final String vocational);
 }

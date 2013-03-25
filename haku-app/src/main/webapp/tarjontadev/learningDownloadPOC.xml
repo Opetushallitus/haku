@@ -26,8 +26,8 @@
             <OidRef>1.2.246.562.10.10108401950</OidRef>
         </OrganizationRef>
         <Prerequisite>
-            <Code scheme="Koodisto" version="1" uri="peruskoulu">PERUSKOULU</Code>
-            <Label lang="fi" >Peruskoulu (pk)</Label>
+            <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
+            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
@@ -100,8 +100,8 @@
             <OidRef>1.2.246.562.10.10108401950</OidRef>
         </OrganizationRef>
         <Prerequisite>
-            <Code scheme="Koodisto" version="1" uri="peruskoulu">PERUSKOULU</Code>
-            <Label lang="fi" >Peruskoulu (pk)</Label>
+            <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
+            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
@@ -166,8 +166,8 @@
             <OidRef>1.2.246.562.10.10108401950</OidRef>
         </OrganizationRef>
         <Prerequisite>
-            <Code scheme="Koodisto" version="1" uri="peruskoulu">PERUSKOULU</Code>
-            <Label lang="fi" >Peruskoulu (pk)</Label>
+            <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
+            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
@@ -233,8 +233,8 @@
             <OidRef>1.2.246.562.10.10108401950</OidRef>
         </OrganizationRef>
         <Prerequisite>
-            <Code scheme="Koodisto" version="1" uri="peruskoulu">PERUSKOULU</Code>
-            <Label lang="fi" >Peruskoulu (pk)</Label>
+            <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
+            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
@@ -276,8 +276,8 @@
             <OidRef>1.2.246.562.10.89537774706</OidRef>
         </OrganizationRef>
         <Prerequisite>
-            <Code scheme="Koodisto" version="1" uri="peruskoulu">PERUSKOULU</Code>
-            <Label lang="fi" >Peruskoulu (pk)</Label>
+            <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
+            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
@@ -347,8 +347,8 @@
             <OidRef>1.2.246.562.10.89537774706</OidRef>
         </OrganizationRef>
         <Prerequisite>
-            <Code scheme="Koodisto" version="1" uri="peruskoulu">PERUSKOULU</Code>
-            <Label lang="fi" >Peruskoulu (pk)</Label>
+            <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
+            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
@@ -392,8 +392,8 @@
             <OidRef>1.2.246.562.10.31033524748</OidRef>
         </OrganizationRef>
         <Prerequisite>
-            <Code scheme="Koodisto" version="1" uri="peruskoulu">PERUSKOULU</Code>
-            <Label lang="fi" >Peruskoulu (pk)</Label>
+            <Code scheme="Koodisto" version="1" uri="uri: Lukion suorittanut tai ylioppilas 6265">9</Code>
+            <Label lang="fi" >Lukion suorittanut tai ylioppilas</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
@@ -444,8 +444,8 @@
             <OidRef>1.2.246.562.10.31033524748</OidRef>
         </OrganizationRef>
         <Prerequisite>
-            <Code scheme="Koodisto" version="1" uri="peruskoulu">PERUSKOULU</Code>
-            <Label lang="fi" >Peruskoulu (pk)</Label>
+            <Code scheme="Koodisto" version="1" uri="uri: Lukion suorittanut tai ylioppilas 6265">9</Code>
+            <Label lang="fi" >Lukion suorittanut tai ylioppilas</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
@@ -506,8 +506,8 @@
             <OidRef>1.2.246.562.10.99373462698</OidRef>
         </OrganizationRef>
         <Prerequisite>
-            <Code scheme="Koodisto" version="1" uri="peruskoulu">PERUSKOULU</Code>
-            <Label lang="fi" >Peruskoulu (pk)</Label>
+            <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
+            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
@@ -580,8 +580,8 @@
             <OidRef>1.2.246.562.10.89537774706</OidRef>
         </OrganizationRef>
         <Prerequisite>
-            <Code scheme="Koodisto" version="1" uri="peruskoulu">PERUSKOULU</Code>
-            <Label lang="fi" >Peruskoulu (pk)</Label>
+            <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
+            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
@@ -620,8 +620,8 @@
             <OidRef>1.2.246.562.10.89537774706</OidRef>
         </OrganizationRef>
         <Prerequisite>
-            <Code scheme="Koodisto" version="1" uri="peruskoulu">PERUSKOULU</Code>
-            <Label lang="fi" >Peruskoulu (pk)</Label>
+            <Code scheme="Koodisto" version="1" uri="uri: Lukion suorittanut tai ylioppilas 6265">9</Code>
+            <Label lang="fi" >Lukion suorittanut tai ylioppilas</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
@@ -665,8 +665,8 @@
             <OidRef>1.2.246.562.10.89537774706</OidRef>
         </OrganizationRef>
         <Prerequisite>
-            <Code scheme="Koodisto" version="1" uri="peruskoulu">PERUSKOULU</Code>
-            <Label lang="fi" >Peruskoulu (pk)</Label>
+            <Code scheme="Koodisto" version="1" uri="uri: Lukion suorittanut tai ylioppilas 6265">9</Code>
+            <Label lang="fi" >Lukion suorittanut tai ylioppilas</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>

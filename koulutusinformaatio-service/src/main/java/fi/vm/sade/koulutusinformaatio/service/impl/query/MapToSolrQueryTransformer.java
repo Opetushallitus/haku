@@ -34,6 +34,7 @@ public class MapToSolrQueryTransformer {
         CREATOR_MAP.put("start", new StartParameterAppender());
         CREATOR_MAP.put("rows", new RowsParameterAppender());
         CREATOR_MAP.put("fl", new FieldsParameterAppender());
+        CREATOR_MAP.put("fl", new FieldsParameterAppender());
     }
 
     public SolrQuery transform(final Set<Map.Entry<String, List<String>>> parameters) {

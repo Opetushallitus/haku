@@ -18,7 +18,9 @@
     var preferenceRow = {
         populateSelectInput : function(orgId, selectInputId) {
             $.getJSON(sortabletable_settings.contextPath + "/education/" + sortabletable_settings.applicationPeriodId + "/hakukohde/search", {
-                organisaatioId : orgId
+                organisaatioId : orgId,
+                prerequisite : sortabletable_settings.tutkintoId,
+                vocational : sortabletable_settings.vocational
             }, function(data) {
                 var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
 
@@ -65,7 +67,9 @@
             minLength : 1,
             source : function(request, response) {
                 $.getJSON(sortabletable_settings.contextPath + "/education/" + sortabletable_settings.applicationPeriodId + "/organisaatio/search", {
-                    term : request.term
+                    term : request.term,
+                    prerequisite : sortabletable_settings.tutkintoId,
+                    vocational : sortabletable_settings.vocational
                 }, function(data) {
                     response($.map(data, function(result) {
                         return {

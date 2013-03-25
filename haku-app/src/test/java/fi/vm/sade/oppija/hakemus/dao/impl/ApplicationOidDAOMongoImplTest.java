@@ -60,11 +60,23 @@ public class ApplicationOidDAOMongoImplTest extends AbstractDAOTest {
         // Testiä varten summat laskettu Tuataralla, 
         // http://tarkistusmerkit.teppovuori.fi/tuatara.htm#viite
         ApplicationOidDAOMongoImpl mongoImpl = new ApplicationOidDAOMongoImpl();
-        String formattedOid = mongoImpl.formatOid("1111");
-        assertEquals("00000011112", formattedOid);
-        formattedOid = mongoImpl.formatOid("1313");
-        assertEquals("00000013136", formattedOid);
-        formattedOid = mongoImpl.formatOid("2847535");
+        String formattedOid = mongoImpl.formatOid("2847535");
         assertEquals("00028475358", formattedOid);
+        formattedOid = mongoImpl.formatOid("9837593");
+        assertEquals("00098375938", formattedOid);
+        formattedOid = mongoImpl.formatOid("2845834");
+        assertEquals("00028458346", formattedOid);
+        formattedOid = mongoImpl.formatOid("100000");
+        assertEquals("00001000009", formattedOid);
+        formattedOid = mongoImpl.formatOid("110000");
+        assertEquals("00001100006", formattedOid);
+        formattedOid = mongoImpl.formatOid("101000");
+        assertEquals("00001010002", formattedOid);
+        formattedOid = mongoImpl.formatOid("100100");
+        assertEquals("00001001008", formattedOid);
+        formattedOid = mongoImpl.formatOid("100010");
+        assertEquals("00001000106", formattedOid);
+        formattedOid = mongoImpl.formatOid("100001");
+        assertEquals("00001000012", formattedOid);
     }
 }

@@ -43,6 +43,13 @@ public class Yhteishaku2013 {
     public static final String ASID = "1.2.246.562.5.50476818906";
     public static final String TUTKINTO7_NOTIFICATION_ID = "tutkinto7-notification";
     public static final String TUTKINTO5_NOTIFICATION_ID = "tutkinto5-notification";
+    private static final String PERUSKOULU = "PERUSKOULU";
+    private static final String YLIOPPILAS = "YLIOPPILAS";
+    private static final String OSITTAIN_YKSILOLLISTETTY = "OSITTAIN_YKSILOLLISTETTY";
+    private static final String ERITYISOPETUKSEN_YKSILOLLISTETTY = "ERITYISOPETUKSEN_YKSILOLLISTETTY";
+    private static final String YKSILOLLISTETTY = "YKSILOLLISTETTY";
+    private static final String KESKEYTYNYT = "KESKEYTYNYT";
+    private static final String ULKOMAINEN_TUTKINTO = "ULKOMAINEN_TUTKINTO";
 
     private final ApplicationPeriod applicationPeriod;
     public static String mobilePhonePattern =
@@ -394,12 +401,12 @@ public class Yhteishaku2013 {
 
     private void createArvosanat(Theme arvosanatRyhma) {
         RelatedQuestionRule relatedQuestionPK = new RelatedQuestionRule("rule_grade_pk", "millatutkinnolla",
-                "(tutkinto1|tutkinto2|tutkinto3|tutkinto4)");
+                "("+PERUSKOULU+"|tutkinto2|tutkinto3|tutkinto4)");
         relatedQuestionPK.addChild(createGradeGrid(true));
         arvosanatRyhma.addChild(relatedQuestionPK);
 
         RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", "millatutkinnolla",
-                "(tutkinto6)");
+                "("+YLIOPPILAS+")");
         relatedQuestionLukio.addChild(createGradeGrid(false));
         arvosanatRyhma.addChild(relatedQuestionLukio);
 
@@ -548,12 +555,12 @@ public class Yhteishaku2013 {
     public Radio createKoulutustaustaRadio() { //NOSONAR
         Radio millatutkinnolla = new Radio("millatutkinnolla",
                 createI18NText("Valitse tutkinto, jolla haet koulutukseen"));
-        millatutkinnolla.addOption("tutkinto1", createI18NText("Perusopetuksen oppimäärä"), "tutkinto1",
+        millatutkinnolla.addOption("tutkinto1", createI18NText("Perusopetuksen oppimäärä"), PERUSKOULU,
                 createI18NText("Valitse tämä, jos olet käynyt peruskoulun."));
         millatutkinnolla
                 .addOption("tutkinto2",
                         createI18NText("Perusopetuksen erityisopetuksen osittain yksilöllistetty oppimäärä"),
-                        "tutkinto2",
+                        OSITTAIN_YKSILOLLISTETTY,
                         createI18NText("Valitse tämä, jos olet opiskellut yksilöllistetyn " +
                                 "oppimäärän puolessa tai alle puolessa oppiaineista."));
         millatutkinnolla
@@ -561,29 +568,29 @@ public class Yhteishaku2013 {
                         "tutkinto3",
                         createI18NText("Perusopetuksen erityisopetuksen yksilöllistetty oppimäärä, " +
                                 "opetus järjestetty toiminta-alueittain"),
-                        "tutkinto3",
+                        ERITYISOPETUKSEN_YKSILOLLISTETTY,
                         createI18NText("Valitse tämä, jos olet osallistunut harjaantumisopetukseen."));
         millatutkinnolla
                 .addOption(
                         "tutkinto4",
                         createI18NText("Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä"),
-                        "tutkinto4",
+                        YKSILOLLISTETTY,
                         createI18NText("Valitse tämä, jos olet opiskellut peruskoulun kokonaan yksilöllistetyn " +
                                 "oppimäärän mukaan tai olet opiskellut yli puolet " +
                                 "opinnoistasi yksilöllistetyn opetuksen mukaan."));
         millatutkinnolla.addOption("tutkinto5",
                 createI18NText("Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)"),
-                "tutkinto5",
+                KESKEYTYNYT,
                 createI18NText("Valitse tämä vain, jos sinulla ei ole lainkaan päättötodistusta."));
         millatutkinnolla
                 .addOption(
                         "tutkinto6",
                         createI18NText("Lukion päättötodistus, ylioppilastutkinto tai abiturientti"),
-                        "tutkinto6",
+                        YLIOPPILAS,
                         createI18NText("Valitse tämä, jos olet suorittanut lukion ja sinulla on suomalainen tai " +
                                 "kansainvälinen ylioppilastutkinto, tai olet suorittanut " +
                                 "yhdistelmätutkinnon, johon sisältyy lukion vahimmäisoppimäärää vastaavat opinnot."));
-        millatutkinnolla.addOption("tutkinto7", createI18NText("Ulkomailla suoritettu koulutus"), "tutkinto7",
+        millatutkinnolla.addOption("tutkinto7", createI18NText("Ulkomailla suoritettu koulutus"), ULKOMAINEN_TUTKINTO,
                 createI18NText("Valitse tämä, jos olet suorittanut tutkintosi ulkomailla."));
         millatutkinnolla.setVerboseHelp(getVerboseHelp());
         millatutkinnolla.addAttribute("required", "required");
@@ -604,10 +611,10 @@ public class Yhteishaku2013 {
 
 
         RelatedQuestionRule keskeytynytRule = new RelatedQuestionRule("tutkinto5-rule",
-                millatutkinnolla.getId(), "tutkinto5");
+                millatutkinnolla.getId(), KESKEYTYNYT);
 
         RelatedQuestionRule ulkomaillaSuoritettuTutkintoRule = new RelatedQuestionRule("tutkinto7-rule",
-                millatutkinnolla.getId(), "tutkinto7");
+                millatutkinnolla.getId(), ULKOMAINEN_TUTKINTO);
 
         ulkomaillaSuoritettuTutkintoRule.addChild(tutkinto7Notification);
         keskeytynytRule.addChild(tutkinto5Notification);
@@ -662,11 +669,11 @@ public class Yhteishaku2013 {
          * ); tutkinnonOpetuskieli.setVerboseHelp(getVerboseHelp());
          */
 
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "(" // NOSONAR
-                + millatutkinnolla.getOptions().get(0).getValue() + "|"   // NOSONAR
-                + millatutkinnolla.getOptions().get(1).getValue() + "|"   // NOSONAR
-                + millatutkinnolla.getOptions().get(2).getValue() + "|"   // NOSONAR
-                + millatutkinnolla.getOptions().get(3).getValue() + ")"); // NOSONAR
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "("
+                + PERUSKOULU + "|"
+                + OSITTAIN_YKSILOLLISTETTY + "|"
+                + ERITYISOPETUKSEN_YKSILOLLISTETTY + "|"
+                + YKSILOLLISTETTY + ")");
 
         RelatedQuestionRule paattotodistusvuosiPeruskouluRule = new RelatedQuestionRule("rule8",
                 paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$");
@@ -708,8 +715,7 @@ public class Yhteishaku2013 {
         lukioGroup.addChild(ylioppilastodistuksenVuosi);
         lukioGroup.addChild(ylioppilastutkinto);
 
-        RelatedQuestionRule lukioRule = new RelatedQuestionRule("rule7", millatutkinnolla.getId(), millatutkinnolla
-                .getOptions().get(5).getValue()); // NOSONAR
+        RelatedQuestionRule lukioRule = new RelatedQuestionRule("rule7", millatutkinnolla.getId(), YLIOPPILAS);
         lukioRule.addChild(lukioGroup);
 
         millatutkinnolla.addChild(lukioRule);

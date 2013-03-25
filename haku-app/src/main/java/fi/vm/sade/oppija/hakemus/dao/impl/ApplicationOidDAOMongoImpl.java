@@ -97,7 +97,7 @@ public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
             sum += curr * multipliers[multiplierIndex % 3]; //NOSONAR
             multiplierIndex++;
         }
-        sum = (10 - (sum % 10)) % 10; // Summa vähennetään seuraavasta tasakymmenestä //NOSONAR
+        sum = (10 - (sum % 10)); // Summa vähennetään seuraavasta tasakymmenestä //NOSONAR
         return String.valueOf(sum);
     }
 }

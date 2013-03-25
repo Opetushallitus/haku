@@ -58,7 +58,9 @@
         applicationPeriodId: "${it.hakemusId.applicationPeriodId}",
         formId: "${it.hakemusId.formId}",
         vaiheId: "${vaihe.id}",
-        teemaId: "${parent.id}"
+        teemaId: "${parent.id}",
+        tutkintoId: "${categoryData.millatutkinnolla}",
+        vocational: "${categoryData.ammatillinenTutkintoSuoritettu}"
     }
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencetable.js"></script>

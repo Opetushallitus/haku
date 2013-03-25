@@ -24,6 +24,7 @@ import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.tarjonta.publication.types.ApplicationOptionType;
 import fi.vm.sade.tarjonta.publication.types.ApplicationSystemType;
+import fi.vm.sade.tarjonta.publication.types.CodeValueType;
 import fi.vm.sade.tarjonta.publication.types.ExtendedStringType;
 import fi.vm.sade.tarjonta.publication.types.LearningOpportunityDownloadDataType;
 import fi.vm.sade.tarjonta.publication.types.LearningOpportunityInstanceRefType;
@@ -134,8 +135,10 @@ public class IndexerServiceImpl implements IndexerService {
                 }
             }
 
-                //addLearningOpportunitySpecification(solrDocument, ref1);
-                //addLearningOpportunityInstance(solrDocument, ref);
+            solrDocument.addField("LOIPrerequisite", ref.getPrerequisite().getCode().getValue().trim());
+            
+            //addLearningOpportunitySpecification(solrDocument, ref1);
+            //addLearningOpportunityInstance(solrDocument, ref);
 
 
             // tmp dev fields

@@ -37,6 +37,8 @@ import java.util.List;
 public class EducationResource {
 
     public static final String TERM = "term";
+    public static final String PREREQUISITE = "prerequisite";
+    public static final String VOCATIONAL = "vocational";
     public static final String EDUCATION_CONTROLLER_PATH = "/education";
 
     @Qualifier("applicationOptionServiceSolrImpl")
@@ -47,15 +49,19 @@ public class EducationResource {
     @Path("/{hakuId}/organisaatio/search")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<Organization> searchOrganisaatio(@PathParam("hakuId") final String hakuId,
-                                                 @QueryParam(TERM) final String term) {
-        return applicationOptionService.searchOrganisaatio(hakuId, term);
+                                                 @QueryParam(TERM) final String term,
+                                                 @QueryParam(PREREQUISITE) final String prerequisite,
+                                                 @QueryParam(VOCATIONAL) final String vocational) {
+        return applicationOptionService.searchOrganisaatio(hakuId, term, prerequisite, vocational);
     }
 
     @GET
     @Path("/{hakuId}/hakukohde/search")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<ApplicationOption> searchHakukohde(@PathParam("hakuId") final String hakuId,
-                                                   @QueryParam("organisaatioId") final String organisaatioId) {
-        return applicationOptionService.searchHakukohde(hakuId, organisaatioId);
+                                                   @QueryParam("organisaatioId") final String organisaatioId,
+                                                   @QueryParam(PREREQUISITE) final String prerequisite,
+                                                   @QueryParam(VOCATIONAL) final String vocational) {
+        return applicationOptionService.searchHakukohde(hakuId, organisaatioId, prerequisite, vocational);
     }
 }
