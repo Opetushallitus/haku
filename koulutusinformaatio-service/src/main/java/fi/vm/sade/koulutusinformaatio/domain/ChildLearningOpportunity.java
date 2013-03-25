@@ -26,6 +26,7 @@ public class ChildLearningOpportunity {
 
     private String id;
     private String name;
+    private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
 
     public ChildLearningOpportunity(String id, String name) {
         this.id = id;
@@ -50,6 +51,14 @@ public class ChildLearningOpportunity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
 }

@@ -70,16 +70,26 @@ public class ParserServiceImpl implements ParserService {
         List<ApplicationOptionType> applicationOptionTypes = downloadData.getApplicationOption();
         for (ApplicationOptionType applicationOptionType : applicationOptionTypes) {
             ApplicationOption ao = new ApplicationOption();
-            String aoId = applicationOptionType.getIdentifier().getValue();
-            ao.setId(aoId);
+            ao.setId(applicationOptionType.getIdentifier().getValue());
             ao.setName(resolveFinnishText(applicationOptionType.getTitle().getLabel()));
             ao.setApplicationSystemId(applicationOptionType.getApplicationSystemRef().getOidRef());
 
-            // set application option refs to parent and child learning opportunities
+            // add application option to parent learning opportunities
             LearningOpportunitySpecificationType aoParentLos =
                     (LearningOpportunitySpecificationType)applicationOptionType.getLearningOpportunities().getParentRef().getRef();
             ParentLearningOpportunity parent = parents.get(aoParentLos.getId());
-            parent.getApplicationOptionRefs().add(aoId);
+            parent.getApplicationOptions().add(ao);
+
+            // add application option to child learning opportunities
+            List<LearningOpportunityInstanceRefType> aoChildLosRefs =
+                    applicationOptionType.getLearningOpportunities().getInstanceRef();
+
+            for (LearningOpportunityInstanceRefType aoChildLosRef : aoChildLosRefs) {
+                LearningOpportunityInstanceType loi = (LearningOpportunityInstanceType) aoChildLosRef.getRef();
+                LearningOpportunitySpecificationType los =
+                        (LearningOpportunitySpecificationType) loi.getSpecificationRef().getRef();
+                children.get(los.getId()).getApplicationOptions().add(ao);
+            }
 
             // add education degree info to application option
             ao.setEducationDegree(parent.getEducationDegree());
