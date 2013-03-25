@@ -19,8 +19,10 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,15 +49,19 @@ public class EducationDataServiceImpl implements EducationDataService {
     @Override
     public void save(LearningOpportunityData learningOpportunityData) {
         if (learningOpportunityData != null) {
+            //drop current data
+            applicationOptionDAO.getCollection().drop();
+            parentLearningOpportunityDAO.getCollection().drop();
+
             for (ApplicationOption applicationOption: learningOpportunityData.getApplicationOptions()) {
                 ApplicationOptionEntity applicationOptionEntity = modelMapper.map(applicationOption, ApplicationOptionEntity.class);
                 applicationOptionDAO.save(applicationOptionEntity);
             }
-            /*for (ParentLearningOpportunity parentLearningOpportunity :learningOpportunityData.getParentLearningOpportinities()) {
+            for (ParentLearningOpportunity parentLearningOpportunity :learningOpportunityData.getParentLearningOpportinities()) {
                 ParentLearningOpportunityEntity parentLearningOpportunityEntity =
                         modelMapper.map(parentLearningOpportunity, ParentLearningOpportunityEntity.class);
                 parentLearningOpportunityDAO.save(parentLearningOpportunityEntity);
-            }*/
+            }
         }
     }
 }
