@@ -325,8 +325,6 @@ public class FormController {
 
         LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", new Object[]{applicationPeriodId, formId, gradeGridId});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        final FormId formIdentifier = new FormId(applicationPeriodId, activeForm.getId());
-        Map<String, String> values = applicationService.getApplication(formIdentifier).getVastauksetMerged();
         Element element = activeForm.getChildById(gradeGridId);
         GradeGrid gradeGrid = (GradeGrid) element;
         Map<String, Object> model = new HashMap<String, Object>();
