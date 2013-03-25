@@ -57,7 +57,7 @@
         <constructor-arg>
             <ref bean="morphia"/>
         </constructor-arg>
-        <constructor-arg value="${mongodb.url}"/>
+        <constructor-arg value="${mongo.db.name}"/>
     </bean>
 
     <bean id="applicationOptionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO">
@@ -67,7 +67,7 @@
         <constructor-arg>
             <ref bean="morphia"/>
         </constructor-arg>
-        <constructor-arg value="${mongodb.url}"/>
+        <constructor-arg value="${mongo.db.name}"/>
     </bean>
 
     <bean id="modelMapper" class="org.modelmapper.ModelMapper"/>

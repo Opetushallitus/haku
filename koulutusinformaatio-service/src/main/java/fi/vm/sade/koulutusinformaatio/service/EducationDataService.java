@@ -16,8 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+
 /**
  * @author Hannu Lyytikainen
  */
 public interface EducationDataService {
+
+    void save(final LearningOpportunityData learningOpportunityData);
 }

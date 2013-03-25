@@ -25,12 +25,15 @@ import com.google.code.morphia.annotations.Id;
 @Entity("applicationOptions")
 public class ApplicationOptionEntity {
 
+    @Id
+    private String id;
+    private String name;
+    private String applicationSystemId;
+    private String educationDegree;
+
     public ApplicationOptionEntity() {
 
     }
-
-    @Id
-    private String id;
 
     public String getId() {
         return id;
@@ -38,5 +41,29 @@ public class ApplicationOptionEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getApplicationSystemId() {
+        return applicationSystemId;
+    }
+
+    public void setApplicationSystemId(String applicationSystemId) {
+        this.applicationSystemId = applicationSystemId;
+    }
+
+    public String getEducationDegree() {
+        return educationDegree;
+    }
+
+    public void setEducationDegree(String educationDegree) {
+        this.educationDegree = educationDegree;
     }
 }
