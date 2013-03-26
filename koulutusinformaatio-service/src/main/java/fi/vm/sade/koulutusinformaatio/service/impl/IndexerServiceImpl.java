@@ -69,10 +69,10 @@ public class IndexerServiceImpl implements IndexerService {
         loHttpSolrServer.commit();
         loHttpSolrServer.optimize();
 
-//        Collection<SolrInputDocument> aoDocuments = resolveAODocuments(data.getApplicationOptions());
-//        aoHttpSolrServer.add(aoDocuments);
-//        aoHttpSolrServer.commit();
-//        aoHttpSolrServer.optimize();
+        Collection<SolrInputDocument> aoDocuments = resolveAODocuments(data.getApplicationOptions());
+        aoHttpSolrServer.add(aoDocuments);
+        aoHttpSolrServer.commit();
+        aoHttpSolrServer.optimize();
 
     }
 
@@ -102,6 +102,7 @@ public class IndexerServiceImpl implements IndexerService {
             document.addField("id", applicatOption.getId());
             document.addField("name", applicatOption.getName());
             document.addField("educationDegree", applicatOption.getEducationDegree());
+            solrDocuments.add(document);
         }
 
         return solrDocuments;
