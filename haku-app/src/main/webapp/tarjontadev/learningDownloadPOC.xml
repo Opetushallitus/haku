@@ -6,16 +6,16 @@
         <OrganizationRef></OrganizationRef>
         <Qualification>
             <Code scheme="Koodisto" version="1" uri="tutkintonimikkeet/10118">10118</Code>
-            <Label lang="fi" >Muusikko</Label>
+            <Label lang="fi">Muusikko</Label>
         </Qualification>
         <DegreeTitle>
             <Code scheme="Koodisto" version="1" uri="koulutusohjelmat/1607">1607</Code>
-            <Label lang="fi" >Musiikin koulutusohjelma</Label>
+            <Label lang="fi">Musiikin koulutusohjelma</Label>
         </DegreeTitle>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/321204">321204</Code>
-                <Label lang="fi" >Musiikkialan perustutkinto</Label>
+                <Label lang="fi">Musiikkialan perustutkinto</Label>
             </EducationClassification>
         </Classification>
         <Description></Description>
@@ -27,30 +27,30 @@
         </OrganizationRef>
         <Prerequisite>
             <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
-            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
+            <Label lang="fi">Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="uri: Suomi 5936" value="FI">
-                    <Label lang="fi" >Suomi</Label>
-                    <Label lang="sv" >Finska</Label>
-                    <Label lang="en" >Finnish</Label>
+                    <Label lang="fi">Suomi</Label>
+                    <Label lang="sv">Finska</Label>
+                    <Label lang="en">Finnish</Label>
                 </Code>
             </Codes>
         </LanguagesOfInstruction>
         <FormOfEducation scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="t2_aikuiskoulutus" value="AIKUISKOULUTUS">
-                    <Label lang="fi" >T2 Aikuiskoulutus</Label>
+                    <Label lang="fi">T2 Aikuiskoulutus</Label>
                 </Code>
             </Codes>
         </FormOfEducation>
         <FormsOfTeaching scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="LAHIOPETUS" value="LAHIOPETUS">
-                    <Label lang="fi" >L&#195;&#164;hiopetus</Label>
-                    <Label lang="sv" >N&#195;&#164;rhetstuerna</Label>
-                    <Label lang="en" >Close studies</Label>
+                    <Label lang="fi">Lähiopetus</Label>
+                    <Label lang="sv">Närhetstuerna</Label>
+                    <Label lang="en">Close studies</Label>
                 </Code>
             </Codes>
         </FormsOfTeaching>
@@ -59,8 +59,8 @@
         <Duration>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="KESTO_VUOSI">VUOSI</Code>
-                <Label lang="fi" >vuotta</Label>
-                <Label lang="sv" >years</Label>
+                <Label lang="fi">vuotta</Label>
+                <Label lang="sv">years</Label>
             </Units>
             <Value>3</Value>
         </Duration>
@@ -80,16 +80,16 @@
         <OrganizationRef></OrganizationRef>
         <Qualification>
             <Code scheme="Koodisto" version="1" uri="tutkintonimikkeet/10099">10099</Code>
-            <Label lang="fi" >Pianonviritt&#195;&#164;j&#195;&#164;</Label>
+            <Label lang="fi">Pianonvirittäjä</Label>
         </Qualification>
         <DegreeTitle>
             <Code scheme="Koodisto" version="1" uri="koulutusohjelmat/1642">1642</Code>
-            <Label lang="fi" >Pianonvirityksen koulutusohjelma</Label>
+            <Label lang="fi">Pianonvirityksen koulutusohjelma</Label>
         </DegreeTitle>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/321204">321204</Code>
-                <Label lang="fi" >Musiikkialan perustutkinto</Label>
+                <Label lang="fi">Musiikkialan perustutkinto</Label>
             </EducationClassification>
         </Classification>
         <Description></Description>
@@ -101,30 +101,30 @@
         </OrganizationRef>
         <Prerequisite>
             <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
-            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
+            <Label lang="fi">Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="uri: Suomi 5936" value="FI">
-                    <Label lang="fi" >Suomi</Label>
-                    <Label lang="sv" >Finska</Label>
-                    <Label lang="en" >Finnish</Label>
+                    <Label lang="fi">Suomi</Label>
+                    <Label lang="sv">Finska</Label>
+                    <Label lang="en">Finnish</Label>
                 </Code>
             </Codes>
         </LanguagesOfInstruction>
         <FormOfEducation scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="t2_aikuiskoulutus" value="AIKUISKOULUTUS">
-                    <Label lang="fi" >T2 Aikuiskoulutus</Label>
+                    <Label lang="fi">T2 Aikuiskoulutus</Label>
                 </Code>
             </Codes>
         </FormOfEducation>
         <FormsOfTeaching scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="LAHIOPETUS" value="LAHIOPETUS">
-                    <Label lang="fi" >L&#195;&#164;hiopetus</Label>
-                    <Label lang="sv" >N&#195;&#164;rhetstuerna</Label>
-                    <Label lang="en" >Close studies</Label>
+                    <Label lang="fi">Lähiopetus</Label>
+                    <Label lang="sv">Närhetstuerna</Label>
+                    <Label lang="en">Close studies</Label>
                 </Code>
             </Codes>
         </FormsOfTeaching>
@@ -133,29 +133,29 @@
         <Duration>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="KESTO_VUOSI">VUOSI</Code>
-                <Label lang="fi" >vuotta</Label>
-                <Label lang="sv" >years</Label>
+                <Label lang="fi">vuotta</Label>
+                <Label lang="sv">years</Label>
             </Units>
             <Value>2</Value>
         </Duration>
     </LearningOpportunityInstance>
     <LearningOpportunitySpecification id="1.2.246.562.5.61574645356" status="published" type="DegreeProgramme">
-        <Name lang="fi">K&#228;si- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun ja valmistuksen
+        <Name lang="fi">Käsi- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun ja valmistuksen
             koulutusohjelma
         </Name>
         <OrganizationRef></OrganizationRef>
         <Qualification>
             <Code scheme="Koodisto" version="1" uri="tutkintonimikkeet/10091">10091</Code>
-            <Label lang="fi" >Artesaani</Label>
+            <Label lang="fi">Artesaani</Label>
         </Qualification>
         <DegreeTitle>
             <Code scheme="Koodisto" version="1" uri="koulutusohjelmat/1624">1624</Code>
-            <Label lang="fi" >Tuotteen suunnittelun ja valmistuksen koulutusohjelma</Label>
+            <Label lang="fi">Tuotteen suunnittelun ja valmistuksen koulutusohjelma</Label>
         </DegreeTitle>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/321101">321101</Code>
-                <Label lang="fi" >K&#195;&#164;si- ja taideteollisuusalan perustutkinto</Label>
+                <Label lang="fi">Käsi- ja taideteollisuusalan perustutkinto</Label>
             </EducationClassification>
         </Classification>
         <Description></Description>
@@ -167,30 +167,30 @@
         </OrganizationRef>
         <Prerequisite>
             <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
-            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
+            <Label lang="fi">Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="uri: Suomi 5936" value="FI">
-                    <Label lang="fi" >Suomi</Label>
-                    <Label lang="sv" >Finska</Label>
-                    <Label lang="en" >Finnish</Label>
+                    <Label lang="fi">Suomi</Label>
+                    <Label lang="sv">Finska</Label>
+                    <Label lang="en">Finnish</Label>
                 </Code>
             </Codes>
         </LanguagesOfInstruction>
         <FormOfEducation scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="t2_aikuiskoulutus" value="AIKUISKOULUTUS">
-                    <Label lang="fi" >T2 Aikuiskoulutus</Label>
+                    <Label lang="fi">T2 Aikuiskoulutus</Label>
                 </Code>
             </Codes>
         </FormOfEducation>
         <FormsOfTeaching scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="LAHIOPETUS" value="LAHIOPETUS">
-                    <Label lang="fi" >L&#195;&#164;hiopetus</Label>
-                    <Label lang="sv" >N&#195;&#164;rhetstuerna</Label>
-                    <Label lang="en" >Close studies</Label>
+                    <Label lang="fi">Lähiopetus</Label>
+                    <Label lang="sv">Närhetstuerna</Label>
+                    <Label lang="en">Close studies</Label>
                 </Code>
             </Codes>
         </FormsOfTeaching>
@@ -199,30 +199,30 @@
         <Duration>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="KESTO_VUOSI">VUOSI</Code>
-                <Label lang="fi" >vuotta</Label>
-                <Label lang="sv" >years</Label>
+                <Label lang="fi">vuotta</Label>
+                <Label lang="sv">years</Label>
             </Units>
             <Value>3</Value>
         </Duration>
     </LearningOpportunityInstance>
     <LearningOpportunitySpecification id="1.2.246.562.5.32178851104" status="published" type="DegreeProgramme">
-        <Name lang="fi">K&#228;si- ja taideteollisuusalan perustutkinto, Ymp&#228;rist&#246;n suunnittelun ja
+        <Name lang="fi">Käsi- ja taideteollisuusalan perustutkinto, Ympäristön suunnittelun ja
             rakentamisen koulutusohjelma
         </Name>
         <OrganizationRef></OrganizationRef>
         <Qualification>
             <Code scheme="Koodisto" version="1" uri="tutkintonimikkeet/10091">10091</Code>
-            <Label lang="fi" >Artesaani</Label>
+            <Label lang="fi">Artesaani</Label>
         </Qualification>
         <DegreeTitle>
             <Code scheme="Koodisto" version="1" uri="koulutusohjelmat/1603">1603</Code>
-            <Label lang="fi" >Ymp&#195;&#164;rist&#195;&#182;n suunnittelun ja rakentamisen koulutusohjelma
+            <Label lang="fi">Ympäristän suunnittelun ja rakentamisen koulutusohjelma
             </Label>
         </DegreeTitle>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/321101">321101</Code>
-                <Label lang="fi" >K&#195;&#164;si- ja taideteollisuusalan perustutkinto</Label>
+                <Label lang="fi">Käsi- ja taideteollisuusalan perustutkinto</Label>
             </EducationClassification>
         </Classification>
         <Description></Description>
@@ -234,28 +234,28 @@
         </OrganizationRef>
         <Prerequisite>
             <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
-            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
+            <Label lang="fi">Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="uri: Suomi 5936" value="FI">
-                    <Label lang="fi" >Suomi</Label>
-                    <Label lang="sv" >Finska</Label>
-                    <Label lang="en" >Finnish</Label>
+                    <Label lang="fi">Suomi</Label>
+                    <Label lang="sv">Finska</Label>
+                    <Label lang="en">Finnish</Label>
                 </Code>
             </Codes>
         </LanguagesOfInstruction>
         <FormOfEducation scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="t2_aikuiskoulutus" value="AIKUISKOULUTUS">
-                    <Label lang="fi" >T2 Aikuiskoulutus</Label>
+                    <Label lang="fi">T2 Aikuiskoulutus</Label>
                 </Code>
             </Codes>
         </FormOfEducation>
         <FormsOfTeaching scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="MONIMUOTO_OPETUS" value="MONIMUOTO_OPETUS">
-                    <Label lang="fi" >Monimuoto-opetus</Label>
+                    <Label lang="fi">Monimuoto-opetus</Label>
                 </Code>
             </Codes>
         </FormsOfTeaching>
@@ -264,8 +264,8 @@
         <Duration>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="KESTO_VUOSI">VUOSI</Code>
-                <Label lang="fi" >vuotta</Label>
-                <Label lang="sv" >years</Label>
+                <Label lang="fi">vuotta</Label>
+                <Label lang="sv">years</Label>
             </Units>
             <Value>3</Value>
         </Duration>
@@ -277,28 +277,28 @@
         </OrganizationRef>
         <Prerequisite>
             <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
-            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
+            <Label lang="fi">Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="uri: Suomi 5936" value="FI">
-                    <Label lang="fi" >Suomi</Label>
-                    <Label lang="sv" >Finska</Label>
-                    <Label lang="en" >Finnish</Label>
+                    <Label lang="fi">Suomi</Label>
+                    <Label lang="sv">Finska</Label>
+                    <Label lang="en">Finnish</Label>
                 </Code>
             </Codes>
         </LanguagesOfInstruction>
         <FormOfEducation scheme="Koodisto">
             <Codes>
                 <Code version="3" uri="t2_nuorten-koulutus" value="NUORTEN_KOULUTUS">
-                    <Label lang="fi" >T2 Nuorten koulutus</Label>
+                    <Label lang="fi">T2 Nuorten koulutus</Label>
                 </Code>
             </Codes>
         </FormOfEducation>
         <FormsOfTeaching scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="MONIMUOTO_OPETUS" value="MONIMUOTO_OPETUS">
-                    <Label lang="fi" >Monimuoto-opetus</Label>
+                    <Label lang="fi">Monimuoto-opetus</Label>
                 </Code>
             </Codes>
         </FormsOfTeaching>
@@ -307,8 +307,8 @@
         <Duration>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="KESTO_KUUKAUTTA">KUUKAUTTA</Code>
-                <Label lang="fi" >kuukautta</Label>
-                <Label lang="sv" >months</Label>
+                <Label lang="fi">kuukautta</Label>
+                <Label lang="sv">months</Label>
             </Units>
             <Value>10</Value>
         </Duration>
@@ -327,16 +327,16 @@
         <OrganizationRef></OrganizationRef>
         <Qualification>
             <Code scheme="Koodisto" version="1" uri="tutkintonimikkeet/10098">10098</Code>
-            <Label lang="fi" >Musiikkiteknologi</Label>
+            <Label lang="fi">Musiikkiteknologi</Label>
         </Qualification>
         <DegreeTitle>
             <Code scheme="Koodisto" version="1" uri="koulutusohjelmat/1641">1641</Code>
-            <Label lang="fi" >Musiikkiteknologian koulutusohjelma</Label>
+            <Label lang="fi">Musiikkiteknologian koulutusohjelma</Label>
         </DegreeTitle>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/321204">321204</Code>
-                <Label lang="fi" >Musiikkialan perustutkinto</Label>
+                <Label lang="fi">Musiikkialan perustutkinto</Label>
             </EducationClassification>
         </Classification>
         <Description></Description>
@@ -348,30 +348,30 @@
         </OrganizationRef>
         <Prerequisite>
             <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
-            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
+            <Label lang="fi">Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="uri: Suomi 5936" value="FI">
-                    <Label lang="fi" >Suomi</Label>
-                    <Label lang="sv" >Finska</Label>
-                    <Label lang="en" >Finnish</Label>
+                    <Label lang="fi">Suomi</Label>
+                    <Label lang="sv">Finska</Label>
+                    <Label lang="en">Finnish</Label>
                 </Code>
             </Codes>
         </LanguagesOfInstruction>
         <FormOfEducation scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="t2_aikuiskoulutus" value="AIKUISKOULUTUS">
-                    <Label lang="fi" >T2 Aikuiskoulutus</Label>
+                    <Label lang="fi">T2 Aikuiskoulutus</Label>
                 </Code>
             </Codes>
         </FormOfEducation>
         <FormsOfTeaching scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="LAHIOPETUS" value="LAHIOPETUS">
-                    <Label lang="fi" >L&#195;&#164;hiopetus</Label>
-                    <Label lang="sv" >N&#195;&#164;rhetstuerna</Label>
-                    <Label lang="en" >Close studies</Label>
+                    <Label lang="fi">Lähiopetus</Label>
+                    <Label lang="sv">Närhetstuerna</Label>
+                    <Label lang="en">Close studies</Label>
                 </Code>
             </Codes>
         </FormsOfTeaching>
@@ -380,8 +380,8 @@
         <Duration>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="KESTO_VUOSI">VUOSI</Code>
-                <Label lang="fi" >vuotta</Label>
-                <Label lang="sv" >years</Label>
+                <Label lang="fi">vuotta</Label>
+                <Label lang="sv">years</Label>
             </Units>
             <Value>2</Value>
         </Duration>
@@ -393,28 +393,28 @@
         </OrganizationRef>
         <Prerequisite>
             <Code scheme="Koodisto" version="1" uri="uri: Lukion suorittanut tai ylioppilas 6265">9</Code>
-            <Label lang="fi" >Lukion suorittanut tai ylioppilas</Label>
+            <Label lang="fi">Lukion suorittanut tai ylioppilas</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="uri: Suomi 5936" value="FI">
-                    <Label lang="fi" >Suomi</Label>
-                    <Label lang="sv" >Finska</Label>
-                    <Label lang="en" >Finnish</Label>
+                    <Label lang="fi">Suomi</Label>
+                    <Label lang="sv">Finska</Label>
+                    <Label lang="en">Finnish</Label>
                 </Code>
             </Codes>
         </LanguagesOfInstruction>
         <FormOfEducation scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="t2_nuorten-koulutus" value="T2_NUORTEN_KOULUTUS">
-                    <Label lang="fi" >T2 Nuorten koulutus</Label>
+                    <Label lang="fi">T2 Nuorten koulutus</Label>
                 </Code>
             </Codes>
         </FormOfEducation>
         <FormsOfTeaching scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="MONIMUOTO_OPETUS" value="MONIMUOTO_OPETUS">
-                    <Label lang="fi" >Monimuoto-opetus</Label>
+                    <Label lang="fi">Monimuoto-opetus</Label>
                 </Code>
             </Codes>
         </FormsOfTeaching>
@@ -423,8 +423,8 @@
         <Duration>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="KESTO_VUOSI">VUOSI</Code>
-                <Label lang="fi" >vuotta</Label>
-                <Label lang="sv" >years</Label>
+                <Label lang="fi">vuotta</Label>
+                <Label lang="sv">years</Label>
             </Units>
             <Value>1</Value>
         </Duration>
@@ -445,28 +445,28 @@
         </OrganizationRef>
         <Prerequisite>
             <Code scheme="Koodisto" version="1" uri="uri: Lukion suorittanut tai ylioppilas 6265">9</Code>
-            <Label lang="fi" >Lukion suorittanut tai ylioppilas</Label>
+            <Label lang="fi">Lukion suorittanut tai ylioppilas</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="uri: Suomi 5936" value="FI">
-                    <Label lang="fi" >Suomi</Label>
-                    <Label lang="sv" >Finska</Label>
-                    <Label lang="en" >Finnish</Label>
+                    <Label lang="fi">Suomi</Label>
+                    <Label lang="sv">Finska</Label>
+                    <Label lang="en">Finnish</Label>
                 </Code>
             </Codes>
         </LanguagesOfInstruction>
         <FormOfEducation scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="t2_nuorten-koulutus" value="T2_NUORTEN_KOULUTUS">
-                    <Label lang="fi" >T2 Nuorten koulutus</Label>
+                    <Label lang="fi">T2 Nuorten koulutus</Label>
                 </Code>
             </Codes>
         </FormOfEducation>
         <FormsOfTeaching scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="MONIMUOTO_OPETUS" value="MONIMUOTO_OPETUS">
-                    <Label lang="fi" >Monimuoto-opetus</Label>
+                    <Label lang="fi">Monimuoto-opetus</Label>
                 </Code>
             </Codes>
         </FormsOfTeaching>
@@ -475,8 +475,8 @@
         <Duration>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="KESTO_VUOSI">VUOSI</Code>
-                <Label lang="fi" >vuotta</Label>
-                <Label lang="sv" >years</Label>
+                <Label lang="fi">vuotta</Label>
+                <Label lang="sv">years</Label>
             </Units>
             <Value>3</Value>
         </Duration>
@@ -486,16 +486,16 @@
         <OrganizationRef></OrganizationRef>
         <Qualification>
             <Code scheme="Koodisto" version="1" uri="tutkintonimikkeet/10008">10008</Code>
-            <Label lang="fi" >L&#195;&#164;hihoitaja</Label>
+            <Label lang="fi">Lähihoitaja</Label>
         </Qualification>
         <DegreeTitle>
             <Code scheme="Koodisto" version="1" uri="koulutusohjelmat/1655">1655</Code>
-            <Label lang="fi" >Jalkojenhoidon koulutusohjelma</Label>
+            <Label lang="fi">Jalkojenhoidon koulutusohjelma</Label>
         </DegreeTitle>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/371101">371101</Code>
-                <Label lang="fi" >Sosiaali- ja terveysalan perustutkinto</Label>
+                <Label lang="fi">Sosiaali- ja terveysalan perustutkinto</Label>
             </EducationClassification>
         </Classification>
         <Description></Description>
@@ -507,30 +507,30 @@
         </OrganizationRef>
         <Prerequisite>
             <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
-            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
+            <Label lang="fi">Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="uri: Suomi 5936" value="FI">
-                    <Label lang="fi" >Suomi</Label>
-                    <Label lang="sv" >Finska</Label>
-                    <Label lang="en" >Finnish</Label>
+                    <Label lang="fi">Suomi</Label>
+                    <Label lang="sv">Finska</Label>
+                    <Label lang="en">Finnish</Label>
                 </Code>
             </Codes>
         </LanguagesOfInstruction>
         <FormOfEducation scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="t2_nuorten-koulutus" value="T2_NUORTEN_KOULUTUS">
-                    <Label lang="fi" >T2 Nuorten koulutus</Label>
+                    <Label lang="fi">T2 Nuorten koulutus</Label>
                 </Code>
             </Codes>
         </FormOfEducation>
         <FormsOfTeaching scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="LAHIOPETUS" value="LAHIOPETUS">
-                    <Label lang="fi" >L&#195;&#164;hiopetus</Label>
-                    <Label lang="sv" >N&#195;&#164;rhetstuerna</Label>
-                    <Label lang="en" >Close studies</Label>
+                    <Label lang="fi">Lähiopetus</Label>
+                    <Label lang="sv">Närhetstuerna</Label>
+                    <Label lang="en">Close studies</Label>
                 </Code>
             </Codes>
         </FormsOfTeaching>
@@ -539,8 +539,8 @@
         <Duration>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="KESTO_VUOSI">VUOSI</Code>
-                <Label lang="fi" >vuotta</Label>
-                <Label lang="sv" >years</Label>
+                <Label lang="fi">vuotta</Label>
+                <Label lang="sv">years</Label>
             </Units>
             <Value>2</Value>
         </Duration>
@@ -560,16 +560,16 @@
         <OrganizationRef></OrganizationRef>
         <Qualification>
             <Code scheme="Koodisto" version="1" uri="tutkintonimikkeet/10132">10132</Code>
-            <Label lang="fi" >Kaivosmies</Label>
+            <Label lang="fi">Kaivosmies</Label>
         </Qualification>
         <DegreeTitle>
             <Code scheme="Koodisto" version="1" uri="koulutusohjelmat/1631">1631</Code>
-            <Label lang="fi" >Kaivosalan koulutusohjelma</Label>
+            <Label lang="fi">Kaivosalan koulutusohjelma</Label>
         </DegreeTitle>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/351107">351107</Code>
-                <Label lang="fi" >Kaivosalan perustutkinto</Label>
+                <Label lang="fi">Kaivosalan perustutkinto</Label>
             </EducationClassification>
         </Classification>
         <Description></Description>
@@ -581,20 +581,20 @@
         </OrganizationRef>
         <Prerequisite>
             <Code scheme="Koodisto" version="1" uri="uri: Perusopetus (ammatillinen) 6166">1</Code>
-            <Label lang="fi" >Perusopetus (ammatillinen)</Label>
+            <Label lang="fi">Perusopetus (ammatillinen)</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="uri: Espanja 6222" value="ES">
-                    <Label lang="fi" >Espanja</Label>
-                    <Label lang="sv" >Spanska</Label>
+                    <Label lang="fi">Espanja</Label>
+                    <Label lang="sv">Spanska</Label>
                 </Code>
             </Codes>
         </LanguagesOfInstruction>
         <FormOfEducation scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="t2_aikuiskoulutus" value="AIKUISKOULUTUS">
-                    <Label lang="fi" >T2 Aikuiskoulutus</Label>
+                    <Label lang="fi">T2 Aikuiskoulutus</Label>
                 </Code>
             </Codes>
         </FormOfEducation>
@@ -608,8 +608,8 @@
         <Duration>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="KESTO_KUUKAUTTA">KUUKAUTTA</Code>
-                <Label lang="fi" >kuukautta</Label>
-                <Label lang="sv" >months</Label>
+                <Label lang="fi">kuukautta</Label>
+                <Label lang="sv">months</Label>
             </Units>
             <Value>qweqw</Value>
         </Duration>
@@ -621,30 +621,30 @@
         </OrganizationRef>
         <Prerequisite>
             <Code scheme="Koodisto" version="1" uri="uri: Lukion suorittanut tai ylioppilas 6265">9</Code>
-            <Label lang="fi" >Lukion suorittanut tai ylioppilas</Label>
+            <Label lang="fi">Lukion suorittanut tai ylioppilas</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="uri: Suomi 5936" value="FI">
-                    <Label lang="fi" >Suomi</Label>
-                    <Label lang="sv" >Finska</Label>
-                    <Label lang="en" >Finnish</Label>
+                    <Label lang="fi">Suomi</Label>
+                    <Label lang="sv">Finska</Label>
+                    <Label lang="en">Finnish</Label>
                 </Code>
             </Codes>
         </LanguagesOfInstruction>
         <FormOfEducation scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="t2_aikuiskoulutus" value="AIKUISKOULUTUS">
-                    <Label lang="fi" >T2 Aikuiskoulutus</Label>
+                    <Label lang="fi">T2 Aikuiskoulutus</Label>
                 </Code>
             </Codes>
         </FormOfEducation>
         <FormsOfTeaching scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="LAHIOPETUS" value="LAHIOPETUS">
-                    <Label lang="fi" >L&#195;&#164;hiopetus</Label>
-                    <Label lang="sv" >N&#195;&#164;rhetstuerna</Label>
-                    <Label lang="en" >Close studies</Label>
+                    <Label lang="fi">Lähiopetus</Label>
+                    <Label lang="sv">Närhetstuerna</Label>
+                    <Label lang="en">Close studies</Label>
                 </Code>
             </Codes>
         </FormsOfTeaching>
@@ -653,8 +653,8 @@
         <Duration>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="KESTO_VUOSI">VUOSI</Code>
-                <Label lang="fi" >vuotta</Label>
-                <Label lang="sv" >years</Label>
+                <Label lang="fi">vuotta</Label>
+                <Label lang="sv">years</Label>
             </Units>
             <Value>3</Value>
         </Duration>
@@ -666,21 +666,21 @@
         </OrganizationRef>
         <Prerequisite>
             <Code scheme="Koodisto" version="1" uri="uri: Lukion suorittanut tai ylioppilas 6265">9</Code>
-            <Label lang="fi" >Lukion suorittanut tai ylioppilas</Label>
+            <Label lang="fi">Lukion suorittanut tai ylioppilas</Label>
         </Prerequisite>
         <LanguagesOfInstruction scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="uri: Suomi 5936" value="FI">
-                    <Label lang="fi" >Suomi</Label>
-                    <Label lang="sv" >Finska</Label>
-                    <Label lang="en" >Finnish</Label>
+                    <Label lang="fi">Suomi</Label>
+                    <Label lang="sv">Finska</Label>
+                    <Label lang="en">Finnish</Label>
                 </Code>
             </Codes>
         </LanguagesOfInstruction>
         <FormOfEducation scheme="Koodisto">
             <Codes>
                 <Code version="1" uri="t2_aikuiskoulutus" value="AIKUISKOULUTUS">
-                    <Label lang="fi" >T2 Aikuiskoulutus</Label>
+                    <Label lang="fi">T2 Aikuiskoulutus</Label>
                 </Code>
             </Codes>
         </FormOfEducation>
@@ -694,8 +694,8 @@
         <Duration>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="KESTO_VUOSI">VUOSI</Code>
-                <Label lang="fi" >vuotta</Label>
-                <Label lang="sv" >years</Label>
+                <Label lang="fi">vuotta</Label>
+                <Label lang="sv">years</Label>
             </Units>
             <Value>3</Value>
         </Duration>
@@ -712,31 +712,31 @@
         <Credits>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="opintoviikko">OV</Code>
-                <Label lang="fi" >Opintoviikko</Label>
+                <Label lang="fi">Opintoviikko</Label>
             </Units>
             <Value>
                 <Code scheme="Koodisto" version="1" uri="120">120</Code>
-                <Label lang="fi" >120</Label>
+                <Label lang="fi">120</Label>
             </Value>
         </Credits>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/321204">321204</Code>
-                <Label lang="fi" >Musiikkialan perustutkinto</Label>
+                <Label lang="fi">Musiikkialan perustutkinto</Label>
             </EducationClassification>
             <EducationDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Humanistinen ja taidealan koulutus 20774">2</Code>
-                <Label lang="fi" >Humanistinen ja taidealan koulutus</Label>
-                <Label lang="sv" >Humanistisk utbildning och konstutbildning</Label>
+                <Label lang="fi">Humanistinen ja taidealan koulutus</Label>
+                <Label lang="sv">Humanistisk utbildning och konstutbildning</Label>
             </EducationDomain>
             <EducationDegree>
                 <Code scheme="Koodisto" version="1" uri="ammatillinen-koulutus">32</Code>
-                <Label lang="fi" >Ammatillinen koulutus</Label>
+                <Label lang="fi">Ammatillinen koulutus</Label>
             </EducationDegree>
             <StudyDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Humanistinen ja taidealan koulutus 20774">2</Code>
-                <Label lang="fi" >Humanistinen ja taidealan koulutus</Label>
-                <Label lang="sv" >Humanistisk utbildning och konstutbildning</Label>
+                <Label lang="fi">Humanistinen ja taidealan koulutus</Label>
+                <Label lang="sv">Humanistisk utbildning och konstutbildning</Label>
             </StudyDomain>
         </Classification>
         <Description>
@@ -768,31 +768,31 @@
         <Credits>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="opintoviikko">OV</Code>
-                <Label lang="fi" >Opintoviikko</Label>
+                <Label lang="fi">Opintoviikko</Label>
             </Units>
             <Value>
                 <Code scheme="Koodisto" version="1" uri="120">120</Code>
-                <Label lang="fi" >120</Label>
+                <Label lang="fi">120</Label>
             </Value>
         </Credits>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/321101">321101</Code>
-                <Label lang="fi" >K&#195;&#164;si- ja taideteollisuusalan perustutkinto</Label>
+                <Label lang="fi">Käsi- ja taideteollisuusalan perustutkinto</Label>
             </EducationClassification>
             <EducationDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Humanistinen ja taidealan koulutus 20774">2</Code>
-                <Label lang="fi" >Humanistinen ja taidealan koulutus</Label>
-                <Label lang="sv" >Humanistisk utbildning och konstutbildning</Label>
+                <Label lang="fi">Humanistinen ja taidealan koulutus</Label>
+                <Label lang="sv">Humanistisk utbildning och konstutbildning</Label>
             </EducationDomain>
             <EducationDegree>
                 <Code scheme="Koodisto" version="1" uri="ammatillinen-koulutus">32</Code>
-                <Label lang="fi" >Ammatillinen koulutus</Label>
+                <Label lang="fi">Ammatillinen koulutus</Label>
             </EducationDegree>
             <StudyDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Humanistinen ja taidealan koulutus 20774">2</Code>
-                <Label lang="fi" >Humanistinen ja taidealan koulutus</Label>
-                <Label lang="sv" >Humanistisk utbildning och konstutbildning</Label>
+                <Label lang="fi">Humanistinen ja taidealan koulutus</Label>
+                <Label lang="sv">Humanistisk utbildning och konstutbildning</Label>
             </StudyDomain>
         </Classification>
         <Description>
@@ -835,31 +835,31 @@
         <Credits>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="opintoviikko">OV</Code>
-                <Label lang="fi" >Opintoviikko</Label>
+                <Label lang="fi">Opintoviikko</Label>
             </Units>
             <Value>
                 <Code scheme="Koodisto" version="1" uri="120">120</Code>
-                <Label lang="fi" >120</Label>
+                <Label lang="fi">120</Label>
             </Value>
         </Credits>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/321204">321204</Code>
-                <Label lang="fi" >Musiikkialan perustutkinto</Label>
+                <Label lang="fi">Musiikkialan perustutkinto</Label>
             </EducationClassification>
             <EducationDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Humanistinen ja taidealan koulutus 20774">2</Code>
-                <Label lang="fi" >Humanistinen ja taidealan koulutus</Label>
-                <Label lang="sv" >Humanistisk utbildning och konstutbildning</Label>
+                <Label lang="fi">Humanistinen ja taidealan koulutus</Label>
+                <Label lang="sv">Humanistisk utbildning och konstutbildning</Label>
             </EducationDomain>
             <EducationDegree>
                 <Code scheme="Koodisto" version="1" uri="ammatillinen-koulutus">32</Code>
-                <Label lang="fi" >Ammatillinen koulutus</Label>
+                <Label lang="fi">Ammatillinen koulutus</Label>
             </EducationDegree>
             <StudyDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Humanistinen ja taidealan koulutus 20774">2</Code>
-                <Label lang="fi" >Humanistinen ja taidealan koulutus</Label>
-                <Label lang="sv" >Humanistisk utbildning och konstutbildning</Label>
+                <Label lang="fi">Humanistinen ja taidealan koulutus</Label>
+                <Label lang="sv">Humanistisk utbildning och konstutbildning</Label>
             </StudyDomain>
         </Classification>
         <Description>
@@ -891,31 +891,31 @@
         <Credits>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="opintoviikko">OV</Code>
-                <Label lang="fi" >Opintoviikko</Label>
+                <Label lang="fi">Opintoviikko</Label>
             </Units>
             <Value>
                 <Code scheme="Koodisto" version="1" uri="120">120</Code>
-                <Label lang="fi" >120</Label>
+                <Label lang="fi">120</Label>
             </Value>
         </Credits>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/321204">321204</Code>
-                <Label lang="fi" >Musiikkialan perustutkinto</Label>
+                <Label lang="fi">Musiikkialan perustutkinto</Label>
             </EducationClassification>
             <EducationDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Humanistinen ja taidealan koulutus 20774">2</Code>
-                <Label lang="fi" >Humanistinen ja taidealan koulutus</Label>
-                <Label lang="sv" >Humanistisk utbildning och konstutbildning</Label>
+                <Label lang="fi">Humanistinen ja taidealan koulutus</Label>
+                <Label lang="sv">Humanistisk utbildning och konstutbildning</Label>
             </EducationDomain>
             <EducationDegree>
                 <Code scheme="Koodisto" version="1" uri="ammatillinen-koulutus">32</Code>
-                <Label lang="fi" >Ammatillinen koulutus</Label>
+                <Label lang="fi">Ammatillinen koulutus</Label>
             </EducationDegree>
             <StudyDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Humanistinen ja taidealan koulutus 20774">2</Code>
-                <Label lang="fi" >Humanistinen ja taidealan koulutus</Label>
-                <Label lang="sv" >Humanistisk utbildning och konstutbildning</Label>
+                <Label lang="fi">Humanistinen ja taidealan koulutus</Label>
+                <Label lang="sv">Humanistisk utbildning och konstutbildning</Label>
             </StudyDomain>
         </Classification>
         <Description>
@@ -946,31 +946,31 @@
         <Credits>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="opintoviikko">OV</Code>
-                <Label lang="fi" >Opintoviikko</Label>
+                <Label lang="fi">Opintoviikko</Label>
             </Units>
             <Value>
                 <Code scheme="Koodisto" version="1" uri="120">120</Code>
-                <Label lang="fi" >120</Label>
+                <Label lang="fi">120</Label>
             </Value>
         </Credits>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/371101">371101</Code>
-                <Label lang="fi" >Sosiaali- ja terveysalan perustutkinto</Label>
+                <Label lang="fi">Sosiaali- ja terveysalan perustutkinto</Label>
             </EducationClassification>
             <EducationDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Terveys- ja sosiaalialan koulutus 20776">7</Code>
-                <Label lang="fi" >Terveys- ja sosiaalialan koulutus</Label>
-                <Label lang="sv" >Utbildning inom h&#195;&#164;lso- och socialv&#195;&#165;rd</Label>
+                <Label lang="fi">Terveys- ja sosiaalialan koulutus</Label>
+                <Label lang="sv">Utbildning inom hälso- och socialv&#195;&#165;rd</Label>
             </EducationDomain>
             <EducationDegree>
                 <Code scheme="Koodisto" version="1" uri="ammatillinen-koulutus">32</Code>
-                <Label lang="fi" >Ammatillinen koulutus</Label>
+                <Label lang="fi">Ammatillinen koulutus</Label>
             </EducationDegree>
             <StudyDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Terveys- ja sosiaalialan koulutus 20776">7</Code>
-                <Label lang="fi" >Terveys- ja sosiaalialan koulutus</Label>
-                <Label lang="sv" >Utbildning inom h&#195;&#164;lso- och socialv&#195;&#165;rd</Label>
+                <Label lang="fi">Terveys- ja sosiaalialan koulutus</Label>
+                <Label lang="sv">Utbildning inom hälso- och socialv&#195;&#165;rd</Label>
             </StudyDomain>
         </Classification>
         <Description></Description>
@@ -985,31 +985,31 @@
         <Credits>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="opintoviikko">OV</Code>
-                <Label lang="fi" >Opintoviikko</Label>
+                <Label lang="fi">Opintoviikko</Label>
             </Units>
             <Value>
                 <Code scheme="Koodisto" version="1" uri="120">120</Code>
-                <Label lang="fi" >120</Label>
+                <Label lang="fi">120</Label>
             </Value>
         </Credits>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/351107">351107</Code>
-                <Label lang="fi" >Kaivosalan perustutkinto</Label>
+                <Label lang="fi">Kaivosalan perustutkinto</Label>
             </EducationClassification>
             <EducationDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Tekniikan koulutus 20777">5</Code>
-                <Label lang="fi" >Tekniikan koulutus</Label>
-                <Label lang="sv" >Teknisk utbildning</Label>
+                <Label lang="fi">Tekniikan koulutus</Label>
+                <Label lang="sv">Teknisk utbildning</Label>
             </EducationDomain>
             <EducationDegree>
                 <Code scheme="Koodisto" version="1" uri="ammatillinen-koulutus">32</Code>
-                <Label lang="fi" >Ammatillinen koulutus</Label>
+                <Label lang="fi">Ammatillinen koulutus</Label>
             </EducationDegree>
             <StudyDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Tekniikan koulutus 20777">5</Code>
-                <Label lang="fi" >Tekniikan koulutus</Label>
-                <Label lang="sv" >Teknisk utbildning</Label>
+                <Label lang="fi">Tekniikan koulutus</Label>
+                <Label lang="sv">Teknisk utbildning</Label>
             </StudyDomain>
         </Classification>
         <Description>
@@ -1026,31 +1026,31 @@
         <Credits>
             <Units>
                 <Code scheme="Koodisto" version="1" uri="opintoviikko">OV</Code>
-                <Label lang="fi" >Opintoviikko</Label>
+                <Label lang="fi">Opintoviikko</Label>
             </Units>
             <Value>
                 <Code scheme="Koodisto" version="1" uri="120">120</Code>
-                <Label lang="fi" >120</Label>
+                <Label lang="fi">120</Label>
             </Value>
         </Credits>
         <Classification>
             <EducationClassification>
                 <Code scheme="Koodisto" version="1" uri="Toisen_asteen_tutkinnot/321101">321101</Code>
-                <Label lang="fi" >K&#195;&#164;si- ja taideteollisuusalan perustutkinto</Label>
+                <Label lang="fi">Käsi- ja taideteollisuusalan perustutkinto</Label>
             </EducationClassification>
             <EducationDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Humanistinen ja taidealan koulutus 20774">2</Code>
-                <Label lang="fi" >Humanistinen ja taidealan koulutus</Label>
-                <Label lang="sv" >Humanistisk utbildning och konstutbildning</Label>
+                <Label lang="fi">Humanistinen ja taidealan koulutus</Label>
+                <Label lang="sv">Humanistisk utbildning och konstutbildning</Label>
             </EducationDomain>
             <EducationDegree>
                 <Code scheme="Koodisto" version="1" uri="ammatillinen-koulutus">32</Code>
-                <Label lang="fi" >Ammatillinen koulutus</Label>
+                <Label lang="fi">Ammatillinen koulutus</Label>
             </EducationDegree>
             <StudyDomain>
                 <Code scheme="Koodisto" version="1" uri="uri: Humanistinen ja taidealan koulutus 20774">2</Code>
-                <Label lang="fi" >Humanistinen ja taidealan koulutus</Label>
-                <Label lang="sv" >Humanistisk utbildning och konstutbildning</Label>
+                <Label lang="fi">Humanistinen ja taidealan koulutus</Label>
+                <Label lang="sv">Humanistisk utbildning och konstutbildning</Label>
             </StudyDomain>
         </Classification>
         <Description>
@@ -1084,7 +1084,7 @@
         <Identifier>1.2.246.562.14.673437691210</Identifier>
         <Title>
             <Code scheme="Koodisto" version="1" uri="987 Talonrakennus ja ymp&#228;rist&#246;suunnittelu, yo">987</Code>
-            <Label lang="fi" >Talonrakennus ja ymp&#195;&#164;rist&#195;&#182;suunnittelu, yo</Label>
+            <Label lang="fi">Talonrakennus ja ympäristäsuunnittelu, yo</Label>
         </Title>
         <ApplicationSystemRef>
             <OidRef>1.2.246.562.5.50476818906</OidRef>
@@ -1116,7 +1116,7 @@
             <Code scheme="Koodisto" version="1"
                   uri="492 Musiikkiteknologian koulutusohjelma sek&#228; lukio, pk (Musiikkialan perustutkinto)">492
             </Code>
-            <Label lang="fi" >Musiikkiteknologian koulutusohjelma sek&#195;&#164; lukio, pk (Musiikkialan
+            <Label lang="fi">Musiikkiteknologian koulutusohjelma sekä lukio, pk (Musiikkialan
                 perustutkinto)
             </Label>
         </Title>
@@ -1153,7 +1153,7 @@
                   uri="162 Tuotteen suunnittelun ja valmistuksen koulutusohjelma, er (K&#228;si- ja taideteollisuusalan perustutkinto)">
                 162
             </Code>
-            <Label lang="fi" >Tuotteen suunnittelun ja valmistuksen koulutusohjelma, er (K&#195;&#164;si- ja
+            <Label lang="fi">Tuotteen suunnittelun ja valmistuksen koulutusohjelma, er (Käsi- ja
                 taideteollisuusalan perustutkinto)
             </Label>
         </Title>
@@ -1182,7 +1182,7 @@
             <Code scheme="Koodisto" version="1" uri="460 Musiikin koulutusohjelma, pk (Musiikkialan perustutkinto)">
                 460
             </Code>
-            <Label lang="fi" >Musiikin koulutusohjelma, pk (Musiikkialan perustutkinto)</Label>
+            <Label lang="fi">Musiikin koulutusohjelma, pk (Musiikkialan perustutkinto)</Label>
         </Title>
         <ApplicationSystemRef>
             <OidRef>1.2.246.562.5.50476818906</OidRef>
@@ -1213,7 +1213,7 @@
         <Identifier>1.2.246.562.14.79893512065</Identifier>
         <Title>
             <Code scheme="Koodisto" version="1" uri="101 Kaivosalan perustutkinto, pk">101</Code>
-            <Label lang="fi" >Kaivosalan perustutkinto, pk</Label>
+            <Label lang="fi">Kaivosalan perustutkinto, pk</Label>
         </Title>
         <ApplicationSystemRef>
             <OidRef>1.2.246.562.5.50476818906</OidRef>
@@ -1246,7 +1246,7 @@
             <Code scheme="Koodisto" version="1" uri="462 Musiikin koulutusohjelma, yo (Musiikkialan perustutkinto)">
                 462
             </Code>
-            <Label lang="fi" >Musiikin koulutusohjelma, yo (Musiikkialan perustutkinto)</Label>
+            <Label lang="fi">Musiikin koulutusohjelma, yo (Musiikkialan perustutkinto)</Label>
         </Title>
         <ApplicationSystemRef>
             <OidRef>1.2.246.562.5.50476818906</OidRef>
@@ -1280,7 +1280,7 @@
             <Code scheme="Koodisto" version="1"
                   uri="463 Musiikkiteknologian koulutusohjelma, pk (Musiikkialan perustutkinto)">463
             </Code>
-            <Label lang="fi" >Musiikkiteknologian koulutusohjelma, pk (Musiikkialan perustutkinto)</Label>
+            <Label lang="fi">Musiikkiteknologian koulutusohjelma, pk (Musiikkialan perustutkinto)</Label>
         </Title>
         <ApplicationSystemRef>
             <OidRef>1.2.246.562.5.50476818906</OidRef>
@@ -1312,10 +1312,10 @@
         <Identifier>1.2.246.562.14.71344129359</Identifier>
         <Title>
             <Code scheme="Koodisto" version="1"
-                  uri="157 Tuotteen suunnittelun ja valmistuksen koulutusohjelma, pk (K&#228;si- ja taideteollisuusalan perustutkinto)">
+                  uri="157 Tuotteen suunnittelun ja valmistuksen koulutusohjelma, pk (Käsi- ja taideteollisuusalan perustutkinto)">
                 157
             </Code>
-            <Label lang="fi" >Tuotteen suunnittelun ja valmistuksen koulutusohjelma, pk (K&#195;&#164;si- ja
+            <Label lang="fi">Tuotteen suunnittelun ja valmistuksen koulutusohjelma, pk (Käsi- ja
                 taideteollisuusalan perustutkinto)
             </Label>
         </Title>
@@ -1350,7 +1350,7 @@
             <Code scheme="Koodisto" version="1" uri="259 Sosiaali- ja terveysalan perustutkinto sek&#228; lukio, pk">
                 259
             </Code>
-            <Label lang="fi" >Sosiaali- ja terveysalan perustutkinto sek&#195;&#164; lukio, pk</Label>
+            <Label lang="fi">Sosiaali- ja terveysalan perustutkinto sekä lukio, pk</Label>
         </Title>
         <ApplicationSystemRef>
             <OidRef>1.2.246.562.5.50476818906</OidRef>
@@ -1384,32 +1384,32 @@
         <Name lang="en"></Name>
         <ApplicationType>
             <Code scheme="Koodisto" version="1" uri="uri: Varsinainen haku">1</Code>
-            <Label lang="fi" >Varsinainen haku</Label>
-            <Label lang="sv" >Egentlig ans&#195;&#182;kan</Label>
-            <Label lang="en" >Regular application</Label>
+            <Label lang="fi">Varsinainen haku</Label>
+            <Label lang="sv">Egentlig ansäkan</Label>
+            <Label lang="en">Regular application</Label>
         </ApplicationType>
         <ApplicationMethod>
             <Code scheme="Koodisto" version="1" uri="uri: Yhteishaku">1</Code>
-            <Label lang="fi" >Yhteishaku</Label>
-            <Label lang="sv" >Gemensam ans&#195;&#182;kan</Label>
+            <Label lang="fi">Yhteishaku</Label>
+            <Label lang="sv">Gemensam ansäkan</Label>
         </ApplicationMethod>
         <ApplicationSeason>
             <Code scheme="Koodisto" version="1" uri="uri: Kev&#228;t">K</Code>
-            <Label lang="fi" >Kev&#195;&#164;t</Label>
-            <Label lang="sv" >V&#195;&#165;r</Label>
-            <Label lang="en" >Spring</Label>
+            <Label lang="fi">Kevät</Label>
+            <Label lang="sv">V&#195;&#165;r</Label>
+            <Label lang="en">Spring</Label>
         </ApplicationSeason>
         <ApplicationYear>2013</ApplicationYear>
         <EducationStartSeason>
             <Code scheme="Koodisto" version="1" uri="uri: Syksy">S</Code>
-            <Label lang="fi" >Syksy</Label>
-            <Label lang="sv" >H&#195;&#182;st</Label>
-            <Label lang="en" >Autumn</Label>
+            <Label lang="fi">Syksy</Label>
+            <Label lang="sv">Häst</Label>
+            <Label lang="en">Autumn</Label>
         </EducationStartSeason>
         <EducationStartYear>2013</EducationStartYear>
         <TargetGroup>
             <Code scheme="Koodisto" version="1" uri="Haun kohdejoukko: Ammatillinen koulutus ja lukiokoulutus">2</Code>
-            <Label lang="fi" >Ammatillinen koulutus ja lukiokoulutus</Label>
+            <Label lang="fi">Ammatillinen koulutus ja lukiokoulutus</Label>
         </TargetGroup>
     </ApplicationSystem>
 </LearningOpportunityDownloadData>
