@@ -49,7 +49,7 @@ public class TomcatContainer implements DisposableBean {
      */
     private static final String M_WORKING_DIR = HAKU_APP + "target/it";
     private static final String SOLR_SOLR_HOME = "solr.solr.home";
-    private static final String TARJONTA_INDEX_URL = "sorl.base.url";
+    private static final String TARJONTA_INDEX_URL = "solr.base.url";
     private static final String TARJONTA_DATA_URL = "tarjonta.data.url";
     public static final String MONGO_DB_NAME = "mongo.db.name";
     /**
