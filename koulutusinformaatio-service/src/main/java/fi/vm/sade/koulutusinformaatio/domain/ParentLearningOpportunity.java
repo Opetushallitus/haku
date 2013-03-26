@@ -28,6 +28,7 @@ public class ParentLearningOpportunity {
     private String name;
     private List<ChildLearningOpportunity> children = new ArrayList<ChildLearningOpportunity>();
     private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
+    private LearningOpportunityProvider provider;
 
     public String getEducationDegree() {
         return educationDegree;
@@ -69,5 +70,13 @@ public class ParentLearningOpportunity {
 
     public void setChildren(List<ChildLearningOpportunity> children) {
         this.children = children;
+    }
+
+    public LearningOpportunityProvider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(LearningOpportunityProvider provider) {
+        this.provider = provider;
     }
 }

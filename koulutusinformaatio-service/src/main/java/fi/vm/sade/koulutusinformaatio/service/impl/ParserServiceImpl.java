@@ -16,10 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.ParserService;
 import fi.vm.sade.tarjonta.publication.types.*;
 import org.springframework.stereotype.Service;
@@ -52,21 +49,31 @@ public class ParserServiceImpl implements ParserService {
 
         Map<String, ParentLearningOpportunity> parents = new HashMap<String, ParentLearningOpportunity>();
 
+        Map<String, LearningOpportunityProvider> providers = new HashMap<String, LearningOpportunityProvider>();
+
+        // providers
+        for (LearningOpportunityProviderType lopType : downloadData.getLearningOpportunityProvider()) {
+            LearningOpportunityProvider lop = parseLearningOpportunityProvider(lopType);
+            providers.put(lop.getId(), lop);
+        }
+
+        // child learning opportunities
         for (LearningOpportunityInstanceType loi : loiList) {
             ChildLearningOpportunity newChild = parseLearningOpportunityChild(loi);
             children.put(newChild.getId(), newChild);
         }
 
+        // parent learning opportunities
         List<LearningOpportunitySpecificationType> losList = downloadData.getLearningOpportunitySpecification();
         for (LearningOpportunitySpecificationType los : losList) {
             if (los.getChildLOSRefs() != null && !los.getChildLOSRefs().isEmpty()) {
-                ParentLearningOpportunity parent = parseLearningOpportunityParent(los, children);
+                ParentLearningOpportunity parent = parseLearningOpportunityParent(los, children, providers);
                 parents.put(parent.getId(), parent);
             }
         }
 
+        // application option related
         List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
-
         List<ApplicationOptionType> applicationOptionTypes = downloadData.getApplicationOption();
         for (ApplicationOptionType applicationOptionType : applicationOptionTypes) {
             ApplicationOption ao = new ApplicationOption();
@@ -93,7 +100,6 @@ public class ParserServiceImpl implements ParserService {
 
             // add education degree info to application option
             ao.setEducationDegree(parent.getEducationDegree());
-
             applicationOptions.add(ao);
         }
 
@@ -103,7 +109,9 @@ public class ParserServiceImpl implements ParserService {
         return learningOpportunityData;
     }
 
-    private ParentLearningOpportunity parseLearningOpportunityParent(LearningOpportunitySpecificationType los, Map<String, ChildLearningOpportunity> children) {
+    private ParentLearningOpportunity parseLearningOpportunityParent(LearningOpportunitySpecificationType los,
+                                                                     Map<String, ChildLearningOpportunity> children,
+                                                                     Map<String, LearningOpportunityProvider> providers) {
         ParentLearningOpportunity parent = new ParentLearningOpportunity();
         parent.setId(los.getId());
         parent.setName(resolveFinnishText(los.getName()));
@@ -114,6 +122,10 @@ public class ParserServiceImpl implements ParserService {
             childList.add(children.get(child.getId()));
         }
         parent.setChildren(childList);
+
+        String lopId = los.getOrganizationRef().getOidRef();
+        parent.setProvider(providers.get(lopId));
+
         return parent;
     }
 
@@ -124,6 +136,12 @@ public class ParserServiceImpl implements ParserService {
         ChildLearningOpportunity child = new ChildLearningOpportunity(los.getId(), resolveFinnishText(los.getName()));
 
         return child;
+    }
+
+    private LearningOpportunityProvider parseLearningOpportunityProvider(LearningOpportunityProviderType type) {
+        LearningOpportunityProvider learningOpportunityProvider = new LearningOpportunityProvider(type.getOrganizationRef().getOidRef(),
+                resolveFinnishText(type.getInstitutionInfo().getName()));
+        return learningOpportunityProvider;
     }
 
     private String resolveFinnishText(List<ExtendedStringType> strings) {
