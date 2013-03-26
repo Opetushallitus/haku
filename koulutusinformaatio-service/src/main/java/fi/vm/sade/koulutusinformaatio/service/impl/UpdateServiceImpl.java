@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.ParserService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
@@ -38,13 +39,15 @@ public class UpdateServiceImpl implements UpdateService {
     private TarjontaClient tarjontaClient;
     private ParserService parserService;
     private IndexerService indexerService;
+    private EducationDataService educationDataService;
 
     @Autowired
     public UpdateServiceImpl(TarjontaClient tarjontaClient, ParserService parserService,
-                             IndexerService indexerService) {
+                             IndexerService indexerService, EducationDataService educationDataService) {
         this.tarjontaClient = tarjontaClient;
         this.parserService = parserService;
         this.indexerService = indexerService;
+        this.educationDataService = educationDataService;
     }
 
     @Override
@@ -54,7 +57,7 @@ public class UpdateServiceImpl implements UpdateService {
         try {
             LearningOpportunityData loData = parserService.parse(source);
             this.indexerService.updateIndexes(loData);
-
+            this.educationDataService.save(loData);
         } catch (JAXBException e) {
             e.printStackTrace();
         } catch (SolrServerException e) {
