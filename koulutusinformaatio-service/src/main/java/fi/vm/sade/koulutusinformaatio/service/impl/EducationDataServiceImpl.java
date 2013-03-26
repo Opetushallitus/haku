@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
+import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
@@ -36,13 +37,16 @@ public class EducationDataServiceImpl implements EducationDataService {
 
     private ParentLearningOpportunityDAO parentLearningOpportunityDAO;
     private ApplicationOptionDAO applicationOptionDAO;
+    private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private ModelMapper modelMapper;
 
     @Autowired
     public EducationDataServiceImpl(ParentLearningOpportunityDAO parentLearningOpportunityDAO,
-                                    ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper) {
+                                    ApplicationOptionDAO applicationOptionDAO, LearningOpportunityProviderDAO learningOpportunityProviderDAO,
+            ModelMapper modelMapper) {
         this.parentLearningOpportunityDAO = parentLearningOpportunityDAO;
         this.applicationOptionDAO = applicationOptionDAO;
+        this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.modelMapper = modelMapper;
     }
 
@@ -52,6 +56,7 @@ public class EducationDataServiceImpl implements EducationDataService {
             //drop current data
             applicationOptionDAO.getCollection().drop();
             parentLearningOpportunityDAO.getCollection().drop();
+            learningOpportunityProviderDAO.getCollection().drop();
 
             for (ApplicationOption applicationOption: learningOpportunityData.getApplicationOptions()) {
                 ApplicationOptionEntity applicationOptionEntity = modelMapper.map(applicationOption, ApplicationOptionEntity.class);
@@ -60,6 +65,7 @@ public class EducationDataServiceImpl implements EducationDataService {
             for (ParentLearningOpportunity parentLearningOpportunity :learningOpportunityData.getParentLearningOpportinities()) {
                 ParentLearningOpportunityEntity parentLearningOpportunityEntity =
                         modelMapper.map(parentLearningOpportunity, ParentLearningOpportunityEntity.class);
+                learningOpportunityProviderDAO.save(parentLearningOpportunityEntity.getProvider());
                 parentLearningOpportunityDAO.save(parentLearningOpportunityEntity);
             }
         }

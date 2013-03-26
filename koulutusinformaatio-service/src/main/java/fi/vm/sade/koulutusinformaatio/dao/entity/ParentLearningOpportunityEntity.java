@@ -37,6 +37,8 @@ public class ParentLearningOpportunityEntity {
     private List<ChildLearningOpportunityEntity> children;
     @Reference
     private List<ApplicationOptionEntity> applicationOptions;
+    @Reference
+    private LearningOpportunityProviderEntity provider;
 
     public ParentLearningOpportunityEntity() {
     }
@@ -79,5 +81,13 @@ public class ParentLearningOpportunityEntity {
 
     public void setApplicationOptions(List<ApplicationOptionEntity> applicationOptions) {
         this.applicationOptions = applicationOptions;
+    }
+
+    public LearningOpportunityProviderEntity getProvider() {
+        return provider;
+    }
+
+    public void setProvider(LearningOpportunityProviderEntity provider) {
+        this.provider = provider;
     }
 }
