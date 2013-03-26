@@ -45,7 +45,6 @@ public class IndexControllerTest {
 
             @Override
             public void updateIndexes(LearningOpportunityData data) {
-                //To change body of implemented methods use File | Settings | File Templates.
             }
         };
         indexController = new IndexController();

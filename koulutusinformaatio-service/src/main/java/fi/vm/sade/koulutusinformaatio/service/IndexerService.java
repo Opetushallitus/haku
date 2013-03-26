@@ -17,6 +17,9 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+import org.apache.solr.client.solrj.SolrServerException;
+
+import java.io.IOException;
 
 public interface IndexerService {
     String update();
@@ -28,5 +31,5 @@ public interface IndexerService {
      *
      * @param data Education data.
      */
-    void updateIndexes(LearningOpportunityData data);
+    void updateIndexes(LearningOpportunityData data) throws IOException, SolrServerException;
 }

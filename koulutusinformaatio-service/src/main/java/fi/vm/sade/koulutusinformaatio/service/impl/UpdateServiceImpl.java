@@ -18,13 +18,16 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.ParserService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.Source;
+import java.io.IOException;
 
 /**
  * @author Hannu Lyytikainen
@@ -34,11 +37,14 @@ public class UpdateServiceImpl implements UpdateService {
 
     private TarjontaClient tarjontaClient;
     private ParserService parserService;
+    private IndexerService indexerService;
 
     @Autowired
-    public UpdateServiceImpl(TarjontaClient tarjontaClient, ParserService parserService) {
+    public UpdateServiceImpl(TarjontaClient tarjontaClient, ParserService parserService,
+                             IndexerService indexerService) {
         this.tarjontaClient = tarjontaClient;
         this.parserService = parserService;
+        this.indexerService = indexerService;
     }
 
     @Override
@@ -47,7 +53,13 @@ public class UpdateServiceImpl implements UpdateService {
         Source source = tarjontaClient.retrieveTarjontaAsSource();
         try {
             LearningOpportunityData loData = parserService.parse(source);
+            this.indexerService.updateIndexes(loData);
+
         } catch (JAXBException e) {
+            e.printStackTrace();
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

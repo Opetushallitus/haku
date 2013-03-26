@@ -20,103 +20,17 @@
 
     <fields>
         <!-- in use -->
-        <field name="AOId" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="AOTitle" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="AOEducationDegree" type="text_general" indexed="false" stored="true" multiValued="false"/>
-
-        <field name="LOPId" type="string" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOPOid" type="string" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOPInstitutionInfoName" type="text_general" indexed="true" stored="true" multiValued="true"/>
-
-        <field name="ASId" type="string" indexed="true" stored="true" multiValued="false"/>
-        <field name="ASName" type="string" indexed="true" stored="true" multiValued="false"/>
-
-
-        <!-- new html fields -->
-        <field name="html_searchResult_fi" type="string" indexed="false" stored="true" multiValued="false"/>
-        <field name="html_AOView_fi" type="string" indexed="false" stored="true" multiValued="false"/>
-        <field name="html_EducationBasicData_fi" type="string" indexed="false" stored="true" multiValued="true"/>
-
-        <!--<dynamicField name="*_i"  type="integer"  indexed="true"  stored="true"/>-->
-
-        <field name="AODescription" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="AOLastYearMaxScore" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="AOLastYearMinScore" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="AOLastYearTotalApplicants" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="AOSelectionCriterionDescription" type="text_general" indexed="true" stored="true"
-               multiValued="false"/>
-        <field name="AOStartingQuota" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="AOEligibilityRequirements" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="LOIId" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOIFormOfTeaching" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOIPrerequisite" type="string" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOILanguagesOfInstruction" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOI" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOIWebLinkLabel" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOIWebLinkUri" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOIWebLinkType" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOSId" type="string" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOSName" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOSDegreeTitle" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOSType" type="string" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOSCredits" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOSCreditsUnit" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOSDescriptionAccessToFurtherStudies" type="text_general" indexed="true" stored="true"
-               multiValued="true"/>
-        <field name="LOSDescriptionStructureDiagram" type="text_general" indexed="true" stored="true"
-               multiValued="true"/>
-        <field name="LOSDescriptionEducationAndProfessionalGoals" type="text_general" indexed="true" stored="true"
-               multiValued="true"/>
-        <field name="LOSQualification" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOSEducationClassification" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOSEducationDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOSEducationDegree" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOSStydyDomain" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="LOPInstitutionInfoGeneralDescription" type="text_general" indexed="true" stored="true"
-               multiValued="true"/>
-        <field name="AOAttachmentDescription" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOAttachmentType" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOAttachmentReturnDueDate" type="date" indexed="true" stored="true" multiValued="false"/>
-        <field name="AOAttachmentReturnToEmailAddress" type="text_general" indexed="true" stored="true"
-               multiValued="true"/>
-        <field name="AOAttachmentReturnToPostalAddress" type="text_general" indexed="true" stored="true"
-               multiValued="true"/>
-        <field name="AOExaminationDescription" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOExaminationTitle" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="AOExaminationStart" type="date" indexed="true" stored="true" multiValued="false"/>
-        <field name="AOExaminationEnd" type="date" indexed="true" stored="true" multiValued="false"/>
-        <field name="AOExaminationLocation" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="AOSelectionCriteriaDescription" type="text_general" indexed="true" stored="true"
-               multiValued="true"/>
-        <!-- tmp dev fields -->
-        <field name="tmpLomakeId" type="string" indexed="true" stored="true" multiValued="false"/>
-        <field name="tmpAOApplyAdditionalInfo" type="string" indexed="true" stored="true" multiValued="false"/>
-        <field name="tmpLOSEducationField" type="string" indexed="true" stored="true" multiValued="false"/>
-        <field name="tmpASStart" type="date" indexed="true" stored="true" multiValued="false"/>
-        <field name="tmpASEnd" type="date" indexed="true" stored="true" multiValued="false"/>
-        <field name="tmpAOLastYearQualified" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="id" type="text_general" indexed="true" stored="true" multiValued="false"/>
+        <field name="name" type="text_general" indexed="true" stored="true" multiValued="false"/>
 
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
-        <!--  hakusuodattimet kts. kopiointi alempana -->
-        <field name="pohjakoulutus" type="string" indexed="true" stored="true" multiValued="true"/>
-        <field name="koulutuksenkieli" type="string" indexed="true" stored="true" multiValued="true"/>
-        <field name="opetusmuoto" type="string" indexed="true" stored="true" multiValued="true"/>
-        <field name="tutkintoonjohtava" type="string" indexed="true" stored="true" multiValued="true"/>
     </fields>
 
 
-    <uniqueKey>AOId</uniqueKey>
+    <uniqueKey>id</uniqueKey>
     <defaultSearchField>text</defaultSearchField>
 
-    <copyField source="AOTitle" dest="text"/>
-    <copyField source="LOSName" dest="text"/>
-    <copyField source="LOSDegreeTitle" dest="text"/>
-
-    <!--hakusuodattimet -->
-    <copyField source="LOIPrerequisite" dest="pohjakoulutus"/>
-    <copyField source="LOILanguagesOfInstruction" dest="koulutuksenkieli"/>
-    <copyField source="LOIFormOfTeaching" dest="opetusmuoto"/>
-    <copyField source="LOSType" dest="tutkintoonjohtava"/>
+    <copyField source="name" dest="text"/>
 
     <types>
         <!-- Byte -->

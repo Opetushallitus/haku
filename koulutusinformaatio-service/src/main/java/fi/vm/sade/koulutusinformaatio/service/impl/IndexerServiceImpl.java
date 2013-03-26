@@ -2,9 +2,13 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.client.SolrClient;
 import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.tarjonta.publication.types.*;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
@@ -17,6 +21,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,9 +37,9 @@ public class IndexerServiceImpl implements IndexerService {
 
     private final HttpSolrServer httpSolrServer;
     // solr client for learning opportunity index
-    private final HttpSolrServer LOHttpSolrServer;
+    private final HttpSolrServer loHttpSolrServer;
     // solr client for application option index
-    private final HttpSolrServer AOHttpSolrServer;
+    private final HttpSolrServer aoHttpSolrServer;
 
     private final TarjontaClient tarjontaClient;
 
@@ -46,21 +51,60 @@ public class IndexerServiceImpl implements IndexerService {
 
     @Autowired
     public IndexerServiceImpl(@Qualifier("HttpSolrServer") HttpSolrServer httpSolrServer,
-                              @Qualifier("LOHttpSolrServer") HttpSolrServer LOHttpSolrServer,
-                              @Qualifier("AOHttpSolrServer") HttpSolrServer AOHttpSolrServer,
+                              @Qualifier("loHttpSolrServer") HttpSolrServer loHttpSolrServer,
+                              @Qualifier("aoHttpSolrServer") HttpSolrServer aoHttpSolrServer,
                               TarjontaClient tarjontaClient, SolrClient client) {
         this.httpSolrServer = httpSolrServer;
-        this.LOHttpSolrServer = LOHttpSolrServer;
-        this.AOHttpSolrServer = AOHttpSolrServer;
+        this.loHttpSolrServer = loHttpSolrServer;
+        this.aoHttpSolrServer = aoHttpSolrServer;
         this.tarjontaClient = tarjontaClient;
         this.client = client;
     }
 
     @Override
-    public void updateIndexes(LearningOpportunityData data) {
+    public void updateIndexes(LearningOpportunityData data) throws IOException, SolrServerException {
+        Collection<SolrInputDocument> loDocuments =
+                resolveLODocuments(data.getParentLearningOpportinities());
+        loHttpSolrServer.add(loDocuments);
+        loHttpSolrServer.commit();
+        loHttpSolrServer.optimize();
 
+//        Collection<SolrInputDocument> aoDocuments = resolveAODocuments(data.getApplicationOptions());
+//        aoHttpSolrServer.add(aoDocuments);
+//        aoHttpSolrServer.commit();
+//        aoHttpSolrServer.optimize();
 
+    }
 
+    public Collection<SolrInputDocument> resolveLODocuments(List<ParentLearningOpportunity> parentLosList) {
+        Collection<SolrInputDocument> solrDocuments = new ArrayList<SolrInputDocument>();
+
+        for (ParentLearningOpportunity parentLos : parentLosList) {
+            SolrInputDocument parentDocument = new SolrInputDocument();
+            parentDocument.addField("id", parentLos.getId());
+            parentDocument.addField("name", parentLos.getName());
+            solrDocuments.add(parentDocument);
+
+            for (ChildLearningOpportunity childLos : parentLos.getChildren()) {
+                SolrInputDocument childDocument = new SolrInputDocument();
+                childDocument.addField("id", childLos.getId());
+                childDocument.addField("name", childLos.getName());
+                solrDocuments.add(childDocument);
+            }
+        }
+        return solrDocuments;
+    }
+
+    public Collection<SolrInputDocument> resolveAODocuments(List<ApplicationOption> applicatOptions) {
+        Collection<SolrInputDocument> solrDocuments = new ArrayList<SolrInputDocument>();
+        for (ApplicationOption applicatOption : applicatOptions) {
+            SolrInputDocument document = new SolrInputDocument();
+            document.addField("id", applicatOption.getId());
+            document.addField("name", applicatOption.getName());
+            document.addField("educationDegree", applicatOption.getEducationDegree());
+        }
+
+        return solrDocuments;
     }
 
 

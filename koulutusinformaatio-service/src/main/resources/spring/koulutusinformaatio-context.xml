@@ -1,12 +1,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:property-placeholder
             location="classpath:koulutusinformaatio.properties"
@@ -48,14 +47,14 @@
         </constructor-arg>
     </bean>
 
-    <bean id="LOHttpSolrServer"
+    <bean id="loHttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>
             <value>${sorl.base.url}${sorl.learningopportunity.url}</value>
         </constructor-arg>
     </bean>
 
-    <bean id="AOHttpSolrServer"
+    <bean id="aoHttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>
             <value>${sorl.base.url}${solr.applicationoption.url}</value>
