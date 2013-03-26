@@ -31,6 +31,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Mikko Majapuro
@@ -90,5 +91,22 @@ public class ParentLearningOpportunityDAOTest {
         assertEquals(entity.getApplicationOptions().get(0).getId(), fromDB.getApplicationOptions().get(0).getId());
         assertEquals(entity.getChildren().get(0).getApplicationOptions().get(0).getId(),
                 fromDB.getChildren().get(0).getApplicationOptions().get(0).getId());
+    }
+
+    @Test
+    public void testGetParentLearningOpportunity() {
+        String oid = "1.2.3";
+        ParentLearningOpportunityEntity plo = new ParentLearningOpportunityEntity();
+        plo.setId(oid);
+        parentLearningOpportunityDAO.save(plo);
+        ParentLearningOpportunityEntity fromDB = parentLearningOpportunityDAO.get(oid);
+        assertNotNull(fromDB);
+        assertEquals(oid, fromDB.getId());
+    }
+
+    @Test
+    public void testGetParentLearningOpportunityNotFound() {
+        ParentLearningOpportunityEntity entity = parentLearningOpportunityDAO.get("1.1.1");
+        assertNull(entity);
     }
 }

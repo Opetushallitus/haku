@@ -17,11 +17,24 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
 
 /**
  * @author Hannu Lyytikainen
  */
 public interface EducationDataService {
 
+    /**
+     *  Saves the learning opportunity data.
+     *  Deletes previously stored data.
+     * @param learningOpportunityData
+     */
     void save(final LearningOpportunityData learningOpportunityData);
+
+    /**
+     * Gets the parent learning opportunity by oid
+     * @param oid
+     * @return
+     */
+    ParentLearningOpportunity getParentLearningOpportunity(final String oid);
 }

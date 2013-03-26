@@ -9,6 +9,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,9 @@ import org.modelmapper.ModelMapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
 /**
@@ -34,7 +38,11 @@ public class EducationDataServiceImplTest {
         ModelMapper modelMapper = new ModelMapper();
         parentLearningOpportunityDAO = mock(ParentLearningOpportunityDAO.class);
         ploCollection = mock(DBCollection.class);
+        ParentLearningOpportunityEntity plo = new ParentLearningOpportunityEntity();
+        String ploOid = "1.2.3";
+        plo.setId(ploOid);
         when(parentLearningOpportunityDAO.getCollection()).thenReturn(ploCollection);
+        when(parentLearningOpportunityDAO.get(eq("1.2.3"))).thenReturn(plo);
         applicationOptionDAO = mock(ApplicationOptionDAO.class);
         aoCollection = mock(DBCollection.class);
         when(applicationOptionDAO.getCollection()).thenReturn(aoCollection);
@@ -67,5 +75,18 @@ public class EducationDataServiceImplTest {
         verify(aoCollection, times(1)).drop();
         verify(parentLearningOpportunityDAO, times(1)).save(any(ParentLearningOpportunityEntity.class));
         verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
+    }
+
+    @Test
+    public void testGetParentLearningOpportunity() {
+        ParentLearningOpportunity plo = service.getParentLearningOpportunity("1.2.3");
+        assertNotNull(plo);
+        assertEquals("1.2.3", plo.getId());
+    }
+
+    @Test
+    public void testGetParentLearningOpportunityNotExists() {
+        ParentLearningOpportunity plo = service.getParentLearningOpportunity("1.1.1");
+        assertNull(plo);
     }
 }

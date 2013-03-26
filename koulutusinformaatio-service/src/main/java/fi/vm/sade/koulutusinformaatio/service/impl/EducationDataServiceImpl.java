@@ -64,4 +64,15 @@ public class EducationDataServiceImpl implements EducationDataService {
             }
         }
     }
+
+    @Override
+    public ParentLearningOpportunity getParentLearningOpportunity(String oid) {
+        ParentLearningOpportunityEntity entity = parentLearningOpportunityDAO.get(oid);
+        if (entity != null) {
+            return modelMapper.map(entity, ParentLearningOpportunity.class);
+        } else {
+            //TODO should throw exception?
+            return null;
+        }
+    }
 }
