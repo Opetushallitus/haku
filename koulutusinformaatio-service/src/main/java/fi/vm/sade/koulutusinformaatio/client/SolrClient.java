@@ -29,7 +29,7 @@ import java.util.HashMap;
 @Component
 public class SolrClient {
 
-    @Value("${sorl.base.url}")
+    @Value("${solr.base.url}")
     private String solrUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();

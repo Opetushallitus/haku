@@ -43,21 +43,21 @@
     <bean id="HttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>
-            <value>${sorl.base.url}</value>
+            <value>${solr.base.url}</value>
         </constructor-arg>
     </bean>
 
     <bean id="loHttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>
-            <value>${sorl.base.url}${sorl.learningopportunity.url}</value>
+            <value>${solr.base.url}${solr.learningopportunity.url}</value>
         </constructor-arg>
     </bean>
 
     <bean id="aoHttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>
-            <value>${sorl.base.url}${solr.applicationoption.url}</value>
+            <value>${solr.base.url}${solr.applicationoption.url}</value>
         </constructor-arg>
     </bean>
 

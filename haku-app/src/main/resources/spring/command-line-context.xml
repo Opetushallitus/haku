@@ -30,7 +30,7 @@
     <bean id="HttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>
-            <value>${sorl.base.url}</value>
+            <value>${solr.base.url}</value>
         </constructor-arg>
     </bean>
 

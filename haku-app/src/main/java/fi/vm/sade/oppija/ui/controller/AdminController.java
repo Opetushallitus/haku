@@ -58,7 +58,7 @@ public class AdminController {
     private String mongoDbName;
     @Value("${mongo.test-db.name}")
     private String mongoTestDbName;
-    @Value("${sorl.base.url}")
+    @Value("${solr.base.url}")
     private String tarjontaIndexUrl;
     @Value("${tarjonta.data.url}")
     private String tarjontaDataUrl;
