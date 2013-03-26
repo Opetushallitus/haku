@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.tarjonta.controller;
 
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,6 +29,7 @@ public class IndexControllerTest {
     public static final String EXPECTED_STRING = "done";
     private IndexController indexController;
     private IndexerService indexerService;
+    private UpdateService updateService;
 
     @Before
     public void setUp() throws Exception {
@@ -47,8 +49,15 @@ public class IndexControllerTest {
             public void updateIndexes(LearningOpportunityData data) {
             }
         };
+        updateService = new UpdateService() {
+            @Override
+            public void updateEducationData() {
+            }
+        };
+
         indexController = new IndexController();
         indexController.indexerService = indexerService;
+        indexController.updateService = updateService;
     }
 
     @Test
