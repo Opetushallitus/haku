@@ -83,12 +83,16 @@ public class IndexerServiceImpl implements IndexerService {
             SolrInputDocument parentDocument = new SolrInputDocument();
             parentDocument.addField("id", parentLos.getId());
             parentDocument.addField("name", parentLos.getName());
+            parentDocument.addField("lopId", parentLos.getProvider().getId());
+            parentDocument.addField("lopName", parentLos.getProvider().getName());
             solrDocuments.add(parentDocument);
 
             for (ChildLearningOpportunity childLos : parentLos.getChildren()) {
                 SolrInputDocument childDocument = new SolrInputDocument();
                 childDocument.addField("id", childLos.getId());
                 childDocument.addField("name", childLos.getName());
+                childDocument.addField("lopId", parentLos.getProvider().getId());
+                childDocument.addField("lopName", parentLos.getProvider().getName());
                 solrDocuments.add(childDocument);
             }
         }

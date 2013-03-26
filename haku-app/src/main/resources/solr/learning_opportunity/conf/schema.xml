@@ -22,6 +22,8 @@
         <!-- in use -->
         <field name="id" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="name" type="text_general" indexed="true" stored="true" multiValued="false"/>
+        <field name="lopId" type="text_general" indexed="true" stored="true" multiValued="false"/>
+        <field name="lopName" type="text_general" indexed="true" stored="true" multiValued="false"/>
 
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
     </fields>
@@ -31,6 +33,7 @@
     <defaultSearchField>text</defaultSearchField>
 
     <copyField source="name" dest="text"/>
+    <copyField source="lopName" dest="text"/>
 
     <types>
         <!-- Byte -->

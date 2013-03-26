@@ -52,7 +52,7 @@ public class IndexController {
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable updateIndex() throws URISyntaxException {
         // for testing new implementation
-        //updateService.updateEducationData();
+        updateService.updateEducationData();
         ImmutableMap<String, String> model = ImmutableMap.of("result", indexerService.update());
         return new Viewable(ADMIN_UPDATE_INDEX_VIEW, model);
     }
