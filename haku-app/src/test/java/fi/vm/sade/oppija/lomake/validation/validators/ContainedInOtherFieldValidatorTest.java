@@ -50,6 +50,15 @@ public class ContainedInOtherFieldValidatorTest {
     }
 
     @Test
+    public void testIgnoreCaseMatch() {
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put(thatField, "First-Name");
+        values.put(thisField, "first");
+        ValidationResult result = validator.validate(values);
+        assertFalse(result.hasErrors());
+    }
+
+    @Test
     public void testNoMatch() {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put(thatField, "First-Name");

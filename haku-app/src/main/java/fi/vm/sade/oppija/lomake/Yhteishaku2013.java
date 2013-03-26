@@ -36,6 +36,14 @@ import java.util.Map;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 
+import static fi.vm.sade.oppija.util.OppijaConstants.PERUSKOULU;
+import static fi.vm.sade.oppija.util.OppijaConstants.YLIOPPILAS;
+import static fi.vm.sade.oppija.util.OppijaConstants.KESKEYTYNYT;
+import static fi.vm.sade.oppija.util.OppijaConstants.YKSILOLLISTETTY;
+import static fi.vm.sade.oppija.util.OppijaConstants.OSITTAIN_YKSILOLLISTETTY;
+import static fi.vm.sade.oppija.util.OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY;
+import static fi.vm.sade.oppija.util.OppijaConstants.ULKOMAINEN_TUTKINTO;
+
 @Service
 @SuppressWarnings("all")
 public class Yhteishaku2013 {
@@ -43,13 +51,7 @@ public class Yhteishaku2013 {
     public static final String ASID = "1.2.246.562.5.50476818906";
     public static final String TUTKINTO7_NOTIFICATION_ID = "tutkinto7-notification";
     public static final String TUTKINTO5_NOTIFICATION_ID = "tutkinto5-notification";
-    private static final String PERUSKOULU = "PERUSKOULU";
-    private static final String YLIOPPILAS = "YLIOPPILAS";
-    private static final String OSITTAIN_YKSILOLLISTETTY = "OSITTAIN_YKSILOLLISTETTY";
-    private static final String ERITYISOPETUKSEN_YKSILOLLISTETTY = "ERITYISOPETUKSEN_YKSILOLLISTETTY";
-    private static final String YKSILOLLISTETTY = "YKSILOLLISTETTY";
-    private static final String KESKEYTYNYT = "KESKEYTYNYT";
-    private static final String ULKOMAINEN_TUTKINTO = "ULKOMAINEN_TUTKINTO";
+
 
     private final ApplicationPeriod applicationPeriod;
     public static String mobilePhonePattern =

@@ -55,5 +55,13 @@ public final class OppijaConstants {
     public static final String PREFERENCE_ID = "preference%d-Koulutus-id";
 
     public static final String NATIONALITY_CODE_FI = "fi";
+    
+    public static final String PERUSKOULU = "1";
+    public static final String YLIOPPILAS = "9";
+    public static final String OSITTAIN_YKSILOLLISTETTY = "2";
+    public static final String ERITYISOPETUKSEN_YKSILOLLISTETTY = "3";
+    public static final String YKSILOLLISTETTY = "6";
+    public static final String KESKEYTYNYT = "7";
+    public static final String ULKOMAINEN_TUTKINTO = "0";
 
 }
