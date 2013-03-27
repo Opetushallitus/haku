@@ -16,10 +16,9 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
-<c:set var="value" value="${categoryData[element.id]}"/>
+<c:remove var="value" scope="page"/>
 <c:forEach var="option" items="${element.options}" varStatus="status">
-    <c:if test="${(value eq option.value)}">
+    <c:if test="${(categoryData[element.id] eq option.value)}">
         <c:set var="value" value="${option}" scope="page"/>
     </c:if>
 </c:forEach>
@@ -28,7 +27,9 @@
         <c:when test="${element.inline}">
             <td class="label"><haku:i18nText value="${element.i18nText}"/></td>
             <td>
-                <haku:i18nText value="${value.i18nText}"/>
+                <c:if test="${not empty value}">
+                    <haku:i18nText value="${value.i18nText}"/>
+                </c:if>
             </td>
         </c:when>
         <c:otherwise>
