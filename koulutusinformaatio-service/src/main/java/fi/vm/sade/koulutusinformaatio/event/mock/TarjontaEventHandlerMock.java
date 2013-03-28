@@ -2,12 +2,11 @@ package fi.vm.sade.koulutusinformaatio.event.mock;
 
 import fi.vm.sade.events.Event;
 import fi.vm.sade.events.EventHandler;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Hannu Lyytikainen
  */
-@Component
+//@Component
 public class TarjontaEventHandlerMock implements EventHandler {
     @Override
     public void handleEvent(Event event) {
