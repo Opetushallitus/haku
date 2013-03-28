@@ -12,7 +12,6 @@
     <modules>
         <module>hakemus-api</module>
         <module>haku-app</module>
-        <module>koulutusinformaatio-service</module>
     </modules>
 
     <properties>
