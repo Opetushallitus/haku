@@ -132,7 +132,9 @@
                             <execution>
                                 <id>clover</id>
                                 <goals>
+                                	<!-- 
                                     <goal>setup</goal>
+                                	 -->
                                     <!-- <goal>optimize</goal> -->
                                     <goal>snapshot</goal>
                                 </goals>
