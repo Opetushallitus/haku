@@ -22,6 +22,7 @@ import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -41,6 +42,7 @@ public class LomakeIT extends AbstractSeleniumBase {
     }
 
     @Test
+    @Ignore
     public void submitApplication() throws Exception {
         WebDriver driver = seleniumHelper.getDriver();
         Selenium selenium = seleniumHelper.getSelenium();

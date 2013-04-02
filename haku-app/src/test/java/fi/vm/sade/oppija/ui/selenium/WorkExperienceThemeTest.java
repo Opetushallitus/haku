@@ -43,6 +43,7 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
     }
 
     @Test
+    @Ignore
     public void testWorkExperienceShown() {
         WebDriver driver = gotoHakutoiveet();
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
