@@ -7,7 +7,7 @@ Hakemuksen ja hakulomakkeen käsittely
 
     mvn clean install
     cd haku-app
-    mvn -Dspring.profiles.active=de tomcat:run
+    mvn -Dspring.profiles.active=devtomcat:run
 
 #### Integration tests
     
