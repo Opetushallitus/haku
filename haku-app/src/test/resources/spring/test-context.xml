@@ -32,4 +32,7 @@
         <property name="name" value="${mongo.test-db.name}"/>
     </bean>
 
+    <bean id="searchResourceMock" class="fi.vm.sade.oppija.koulutusinformaatio.resource.SearchResourceMock">
+
+    </bean>
 </beans>

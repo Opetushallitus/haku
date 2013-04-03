@@ -118,7 +118,7 @@ public class TomcatContainer implements DisposableBean {
         System.setProperty(MONGO_DB_NAME, name);
         System.setProperty(SPRING_PROFILES_ACTIVE_KEY, SPRING_PROFILES_ACTIVE_VALUE_DEV);
         prepareSolr();
-        mTomcat.addWebapp(mTomcat.getHost(), "/solr", solr.getAbsolutePath());
+        //mTomcat.addWebapp(mTomcat.getHost(), "/solr", solr.getAbsolutePath());
         mTomcat.addWebapp(mTomcat.getHost(), getContextPath(), webApp.getAbsolutePath());
 
     }

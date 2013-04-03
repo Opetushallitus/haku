@@ -67,7 +67,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
 
-        TextQuestion textQuestion = new TextQuestion("1.2.246.562.14.79893512065_additional_question_1", createI18NText("Lorem ipsum"));
+        TextQuestion textQuestion = new TextQuestion("1_2_246_562_14_79893512065_additional_question_1", createI18NText("Lorem ipsum"));
         List<Question> lisakysymysList = new ArrayList<Question>();
         lisakysymysList.add(textQuestion);
         lisakysymysMap.put("1.2.246.562.14.79893512065", lisakysymysList);
@@ -95,7 +95,6 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
     }
 
     @Test
-    @Ignore
     public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
         final WebDriver driver = seleniumHelper.getDriver();
         seleniumHelper.navigate("/lomake/" + Yhteishaku2013.ASID + "/lomake/hakutoiveet");
