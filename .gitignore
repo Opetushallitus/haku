@@ -1,5 +1,7 @@
 *.iml
+*~
 .idea/
 target/
 .project
 .settings/
+.DS_Store
