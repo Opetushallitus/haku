@@ -60,7 +60,8 @@
         vaiheId: "${vaihe.id}",
         teemaId: "${parent.id}",
         tutkintoId: "${categoryData.millatutkinnolla}",
-        vocational: "${categoryData.ammatillinenTutkintoSuoritettu}"
+        vocational: "${categoryData.ammatillinenTutkintoSuoritettu}",
+        koulutusinformaatioBaseUrl: "${it.koulutusinformaatioBaseUrl}"
     }
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencetable.js"></script>
