@@ -1901,6 +1901,10 @@ label, .label {
 .form .form-item-content {
   padding: 0px 0px 0px 1em; }
 
+.form-item-checkbox {margin: 0.25em 0;}
+.form-item-checkbox .form-item-content {padding: 0}
+
+
 /*** Form item row
 ************************************************/
 .form-item-row .form-item {

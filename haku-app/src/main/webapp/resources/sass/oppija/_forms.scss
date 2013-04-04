@@ -198,6 +198,13 @@ label, .label {
 }
 
 
+.form-item-checkbox {
+    margin: 0.25em 0;
+    .form-item-content {
+        padding: 0;
+    }
+}
+
 
 /*** Form item row
 ************************************************/
