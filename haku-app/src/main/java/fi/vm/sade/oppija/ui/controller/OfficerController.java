@@ -21,10 +21,10 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.oppija.ui.common.UriUtil;
 import fi.vm.sade.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
-import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +69,6 @@ public class OfficerController {
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable search() {
         UIServiceResponse uiServiceResponse = officerUIService.getOrganizationAndLearningInstitutions();
-
         return new Viewable(SEARCH_INDEX_VIEW, uiServiceResponse.getModel());
     }
 
