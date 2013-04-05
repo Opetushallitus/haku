@@ -14,6 +14,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
@@ -123,7 +124,17 @@ public class HakuClient {
                 "http://localhost:8080/haku-app/lomake/",
                 "application.json");
 
-        hakuClient.apply();
+        try {
+            hakuClient.apply();
+        } catch (RuntimeException re) {
+            System.out.println(re.getMessage());
+            List<String> lines = IOUtils.readLines(new StringReader(re.getMessage()));
+            for (String line : lines) {
+                if (line.contains("warning")) {
+                    System.out.println(line);
+                }
+            }
+        }
 
 
     }

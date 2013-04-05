@@ -135,7 +135,7 @@ public class FormControllerTest {
     @Test
     public void testGetCategoryModelSize() throws Exception {
         Viewable viewable = formController.getPhase(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID);
-        assertEquals(5, ((Map) viewable.getModel()).size());
+        assertEquals(6, ((Map) viewable.getModel()).size());
     }
 
     @Test

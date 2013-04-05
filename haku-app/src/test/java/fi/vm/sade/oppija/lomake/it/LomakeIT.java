@@ -42,7 +42,6 @@ public class LomakeIT extends AbstractSeleniumBase {
     }
 
     @Test
-    @Ignore
     public void submitApplication() throws Exception {
         WebDriver driver = seleniumHelper.getDriver();
         Selenium selenium = seleniumHelper.getSelenium();

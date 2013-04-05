@@ -43,6 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -75,7 +76,16 @@ public class FormController {
     private final ApplicationService applicationService;
     private final UserHolder userHolder;
     private final AdditionalQuestionService additionalQuestionService;
+    @Value("${koulutusinformaatio.base.url}")
+    private String koulutusinformaatioBaseUrl;
 
+    public String getKoulutusinformaatioBaseUrl() {
+        return koulutusinformaatioBaseUrl;
+    }
+
+    public void setKoulutusinformaatioBaseUrl(String koulutusinformaatioBaseUrl) {
+        this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
+    }
 
     @Autowired
     public FormController(@Qualifier("formServiceImpl") final FormService formService,
@@ -165,6 +175,7 @@ public class FormController {
         model.put("template", element.getType());
         model.put("form", activeForm);
         model.put("hakemusId", formIdentifier);
+        model.put("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
 
         return new Viewable(ROOT_VIEW, model);
     }

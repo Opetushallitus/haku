@@ -29,7 +29,7 @@
 
     <context:property-placeholder
             location="classpath:haku.properties, file:///${user.home:''}/oph-configuration/haku.properties,
-            file:///${user.home:''}/oph-configuration/common.properties"
+            file:///${user.home:''}/oph-configuration/common.properties, classpath:haku-test.properties"
             ignore-resource-not-found="true" properties-ref="defaultProps"/>
     <beans profile="default">
         <bean id="defaultProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">

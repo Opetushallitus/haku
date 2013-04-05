@@ -35,7 +35,6 @@
 </div>
 <script type="text/javascript">
     var postalcode_settings = {
-        contextPath: "${pageContext.request.contextPath}",
         lang: "${sessionScope['javax.servlet.jsp.jstl.fmt.locale.session'].language}"
     }
 </script>
