@@ -740,10 +740,10 @@
                                     <goal>run</goal>
                                 </goals>
                                 <configuration>
+                                    <task>
+                                        <echo>Clean clover output directory from ${clover.base}.</echo>
+                                    </task>
                                     <tasks>
-                                        <task>
-                                            <echo>Clean clover output directory from ${clover.base}.</echo>
-                                        </task>
                                         <delete includeemptydirs="true" failonerror="false">
                                             <fileset dir="${clover.base}">
                                                 <include name="**/**"/>
@@ -765,10 +765,10 @@
                                     <goal>run</goal>
                                 </goals>
                                 <configuration>
+                                    <task>
+                                        <echo>Clean clover report directory from ${clover.outputDirectory}.</echo>
+                                    </task>
                                     <tasks>
-                                        <task>
-                                            <echo>Clean clover report directory from ${clover.outputDirectory}.</echo>
-                                        </task>
                                         <delete includeemptydirs="true" failonerror="false">
                                             <fileset dir="${clover.outputDirectory}">
                                                 <include name="**/**"/>
