@@ -17,8 +17,7 @@
 (function() {
     var preferenceRow = {
         populateSelectInput : function(orgId, selectInputId) {
-            $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/education/" + sortabletable_settings.applicationPeriodId + "/hakukohde/search", {
-                organisaatioId : orgId,
+            $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationPeriodId + "/" + orgId, {
                 prerequisite : sortabletable_settings.tutkintoId,
                 vocational : sortabletable_settings.vocational
             }, function(data) {
@@ -66,8 +65,8 @@
         $(this).autocomplete({
             minLength : 1,
             source : function(request, response) {
-                $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/education/" + sortabletable_settings.applicationPeriodId + "/organisaatio/search", {
-                    term : request.term,
+                $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + request.term, {
+                    asId : sortabletable_settings.applicationPeriodId,
                     prerequisite : sortabletable_settings.tutkintoId,
                     vocational : sortabletable_settings.vocational
                 }, function(data) {

@@ -17,23 +17,20 @@ package fi.vm.sade.oppija.koulutusinformaatio.resource;
 
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
  * @author Mikko Majapuro
  */
 @Component
-@Path("/education/{applicationPeriodId}")
+@Path("/education/")
 public class SearchResourceMock {
 
     @GET
-    @Path("/organisaatio/search")
+    @Path("/lop/search/{term}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String organizationSearch(@QueryParam("term") final String term) {
+    public String organizationSearch(@PathParam("term") final String term) {
         if (term.equalsIgnoreCase("esp")) {
             return "[{\"id\":\"1.2.246.562.10.89537774706\",\"name\":\"FAKTIA, Espoo op\",\"key\":\"faktia, espoo op\"}," +
                     "{\"id\":\"1.2.246.562.10.10108401950\",\"name\":\"Espoon kaupunki\",\"key\":\"espoon kaupunki\"}]";
@@ -43,10 +40,10 @@ public class SearchResourceMock {
     }
 
     @GET
-    @Path("/hakukohde/search")
+    @Path("/ao/search/{asId}/{lopId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String hakukohdeSearch(@QueryParam("organisaatioId") final String organisaatioId) {
-        if (organisaatioId.equalsIgnoreCase("1.2.246.562.10.89537774706")) {
+    public String hakukohdeSearch(@PathParam("asId") final String asId, @PathParam("lopId") final String lopId) {
+        if (lopId.equalsIgnoreCase("1.2.246.562.10.89537774706")) {
             return "[{\"id\":\"1.2.246.562.14.673437691210\",\"name\":\"Talonrakennus ja ymäristösuunnittelu, yo\"," +
                     "\"educationDegree\":\"32\"},{\"id\":\"1.2.246.562.14.79893512065\",\"name\":\"Kaivosalan perustutkinto, " +
                     "pk\",\"educationDegree\":\"32\"},{\"id\":\"1.2.246.562.14.39251489298\",\"name\":\"Musiikkiteknologian " +
