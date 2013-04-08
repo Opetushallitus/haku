@@ -34,6 +34,7 @@
     <link href="${contextPath}/resources/css/virkailija.css" type="text/css" rel="stylesheet"/>
     <script src="${contextPath}/resources/jquery/jquery.min.js"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
+    <script src="${contextPath}/resources/javascript/site.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
     <haku:ie9StyleFix/>
@@ -42,8 +43,8 @@
 <body>
 <div id="viewport">
     <div id="wrapper">
-        <virkailija:siteHeader/>
-        <virkailija:navigation/>
+        <div id="global_header"></div>
+        <div id="global_menu"></div>
         <virkailija:breadcrumbs/>
         <section class="grid16-16 margin-top-2">
             <form class="form" method="post">
@@ -106,7 +107,7 @@
                 </fieldset>
             </form>
         </section>
-        <virkailija:footer contextPath="${contextPath}"/>
+        <div id="global_footer"></div>
     </div>
 </div>
 </body>

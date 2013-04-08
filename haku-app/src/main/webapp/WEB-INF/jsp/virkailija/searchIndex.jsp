@@ -27,6 +27,7 @@
     <title><fmt:message key="virkailija.haku.hakijatiedot"/></title>
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/site.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
     <link href="${contextPath}/resources/css/virkailija.css" type="text/css" rel="stylesheet"/>
     <haku:ie9StyleFix/>
@@ -40,8 +41,8 @@
 <div id="viewport">
     <div id="overlay" style="display: none;"></div>
     <div id="wrapper">
-        <virkailija:siteHeader/>
-        <virkailija:navigation/>
+        <div id="global_header"></div>
+        <div id="global_menu"></div>
         <virkailija:breadcrumbs/>
 
         <table class="structural-table" style="margin-left: 0.625%;width:99.375%;">
@@ -56,9 +57,8 @@
             </tr>
             </tbody>
         </table>
-        <virkailija:footer contextPath="${contextPath}"/>
 
-        <div class="clear"></div>
+        <div id="global_footer"></div>
     </div>
 </div>
 

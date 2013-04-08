@@ -20,7 +20,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <!DOCTYPE html>
-<fmt:setBundle basename="messages"/>
+
 <c:set var="phase" value="${it.element}" scope="request"/>
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="oid" value="${it.oid}" scope="request"/>
@@ -30,34 +30,47 @@
 <c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
 <html>
 <head>
+
     <haku:meta/>
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
-    <link href="${contextPath}/resources/css/virkailija.css" type="text/css" rel="stylesheet"/>
-    <script src="${contextPath}/resources/jquery/jquery.min.js"></script>
-    <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
-    <script src="${contextPath}/resources/jquery/jquery.ui.datepicker-fi.js"></script>
-    <script src="${contextPath}/resources/javascript/rules.js"></script>
-    <script src="${contextPath}/resources/javascript/master.js"></script>
+    <link href="${contextPath}/resources/css/virkailija.css" type="text/css" rel="stylesheet">
+    <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/jquery/jquery.ui.datepicker-fi.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/rules.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/site.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/phase.js" type="text/javascript"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
 
     <haku:ie9StyleFix/>
-
 </head>
 <body>
 <c:set var="preview" value="${phase.preview}" scope="request"/>
 <div id="wrapper" class="virkailija">
 
-    <virkailija:siteHeader/>
-    <virkailija:navigation/>
+    <div id="global_header"></div>
+    <div id="global_menu"></div>
     <virkailija:breadcrumbs/>
 
     <virkailija:headerButtons oid="${application.oid}" preview="${preview}"/>
 
     <div class="grid16-16">
-        <h3><c:out value="${categoryData['Etunimet']}"/>&nbsp;<c:out value="${categoryData['Sukunimi']}"/></h3>
-        <table class="width-50 margin-top-2">
+        <h3><c:out value="${categoryData['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
+                value="${categoryData['Sukunimi']}" escapeXml="true"/></h3>
+        <table class="margin-top-2">
             <tr>
-                <haku:infoCell key="virkailija.vaihe.hakemuksen.tila" value="${application.state}"/>
+                <haku:infoCell key="virkailija.vaihe.hakemusnumero" value="${application.oid}"/>
+                <c:if test="${application.state eq 'ACTIVE'}">
+                    <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
+                </c:if>
+                <c:if test="${application.state eq 'PASSIVE'}">
+                    <fmt:message key="virkailija.hakemus.tila.peruttu" var="msg"/>
+                </c:if>
+                <c:if test="${application.state eq 'INCOMPLETE'}">
+                    <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="msg"/>
+                </c:if>
+                <haku:infoCell key="virkailija.vaihe.hakemuksen.tila" value='${msg}'/>
                 <haku:infoCell key="virkailija.vaihe.puhelin" value="${categoryData['matkapuhelinnumero']}"/>
             </tr>
             <tr>
@@ -88,7 +101,6 @@
 
                 <c:choose>
                     <c:when test="${preview}">
-
                         <div class="form">
 
                             <c:forEach var="child" items="${phase.children}">
@@ -100,7 +112,6 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-
                         <form id="form-${phase.id}" class="form" method="post">
                             <c:forEach var="child" items="${phase.children}">
                                 <c:set var="element" value="${child}" scope="request"/>
@@ -122,8 +133,7 @@
 
         </div>
     </section>
-    <virkailija:footer contextPath="${contextPath}"/>
-</div>
+    <div id="global_footer"></div>
 </div>
 </body>
 </html>
