@@ -36,13 +36,13 @@ public class OfficerIT extends AbstractSeleniumBase {
         clickSearch();
         WebElement applicationLink = findApplicationLinks().get(0);
         applicationLink.click();
-        checkApplicationState("ACTIVE");
+        checkApplicationState("Voimassa");
         List<WebElement> editLinks = driver.findElements(new By.ByClassName("edit-link"));
         WebElement editLink = editLinks.get(1);
         editLink.click();
         driver.findElement(new By.ById("millatutkinnolla_tutkinto6")).click();
         driver.findElement(new By.ByClassName("save")).click();
-        checkApplicationState("INCOMPLETE");
+        checkApplicationState("Puutteellinen");
     }
 
     @Test
