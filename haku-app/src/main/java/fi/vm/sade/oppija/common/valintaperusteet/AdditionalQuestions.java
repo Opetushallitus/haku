@@ -17,6 +17,7 @@ package fi.vm.sade.oppija.common.valintaperusteet;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.LinkedListMultimap;
 
 import java.util.HashMap;
@@ -39,5 +40,13 @@ public class AdditionalQuestions {
     public List<InputParameter> getQuestistionsForHakukohde(final String oid) {
         Preconditions.checkNotNull(oid, "Oid cannot be null");
         return ImmutableList.copyOf(questions.get(oid));
+    }
+
+    public List<InputParameter> getAllQuestions() {
+        return ImmutableList.copyOf(questionMap.values());
+    }
+
+    public Map<String, InputParameter> getQuestionMap() {
+        return ImmutableMap.copyOf(questionMap);
     }
 }
