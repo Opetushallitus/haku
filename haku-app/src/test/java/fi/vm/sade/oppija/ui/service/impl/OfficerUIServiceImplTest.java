@@ -78,7 +78,7 @@ public class OfficerUIServiceImplTest {
     public void testUpdateApplication() throws Exception {
         UIServiceResponse uiServiceResponse = officerUIService.updateApplication(
                 OID, new ApplicationPhase(application.getFormId(), ID, new HashMap<String, String>()));
-        assertTrue(9 == uiServiceResponse.getModel().size());
+        assertTrue(10 == uiServiceResponse.getModel().size());
     }
 
     @Test

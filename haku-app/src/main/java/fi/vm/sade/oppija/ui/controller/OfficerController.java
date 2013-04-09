@@ -88,6 +88,20 @@ public class OfficerController {
     }
 
     @GET
+    @Path("/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}/{elementId}")
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    public Viewable getPreviewElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                      @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                                      @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                                      @PathParam(OID_PATH_PARAM) final String oid,
+                                      @PathParam("elementId") final String elementId)
+            throws ResourceNotFoundException, IOException {
+        LOGGER.debug("getPreviewElement {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid});
+        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplicationElement(oid, phaseId, elementId);
+        return new Viewable("/elements/Root", uiServiceResponse.getModel()); // TODO remove hardcoded Phase
+    }
+
+    @GET
     @Path("/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Viewable getPreview(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,

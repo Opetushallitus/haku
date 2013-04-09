@@ -17,6 +17,7 @@
   --%>
 
 <!DOCTYPE html>
+<fmt:setBundle basename="messages" scope="session"/>
 <html>
 
 <jsp:include page="../top/head.jsp"/>

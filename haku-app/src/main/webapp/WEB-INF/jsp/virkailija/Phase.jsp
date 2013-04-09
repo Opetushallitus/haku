@@ -20,7 +20,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <!DOCTYPE html>
-
+<fmt:setBundle basename="messages" scope="session"/>
 <c:set var="phase" value="${it.element}" scope="request"/>
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="oid" value="${it.oid}" scope="request"/>
@@ -102,7 +102,6 @@
                 <c:choose>
                     <c:when test="${preview}">
                         <div class="form">
-
                             <c:forEach var="child" items="${phase.children}">
                                 <c:set var="element" value="${child}" scope="request"/>
                                 <c:set var="parentId" value="${form.id}.${phase.id}" scope="request"/>
@@ -122,9 +121,7 @@
                                 <span><span><fmt:message key="lomake.button.save"/></span></span>
                             </button>
                         </form>
-
                     </c:otherwise>
-
                 </c:choose>
 
                 <hr/>

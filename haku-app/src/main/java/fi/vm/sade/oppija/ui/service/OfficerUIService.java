@@ -8,15 +8,21 @@ import java.io.IOException;
 import java.util.Map;
 
 public interface OfficerUIService {
-    UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws IOException, ResourceNotFoundException;
+    UIServiceResponse getValidatedApplicationElement(final String oid, final String phaseId, final String elementId)
+            throws ResourceNotFoundException;
+
+    UIServiceResponse getValidatedApplication(final String oid, final String phaseId)
+            throws IOException, ResourceNotFoundException;
 
     UIServiceResponse getAdditionalInfo(final String oid) throws ResourceNotFoundException, IOException;
 
-    UIServiceResponse updateApplication(final String oid, final ApplicationPhase applicationPhase) throws ResourceNotFoundException;
+    UIServiceResponse updateApplication(final String oid, final ApplicationPhase applicationPhase)
+            throws ResourceNotFoundException;
 
     Application getApplicationWithLastPhase(final String oid) throws ResourceNotFoundException;
 
     UIServiceResponse getOrganizationAndLearningInstitutions();
 
-    void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo) throws ResourceNotFoundException;
+    void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo)
+            throws ResourceNotFoundException;
 }

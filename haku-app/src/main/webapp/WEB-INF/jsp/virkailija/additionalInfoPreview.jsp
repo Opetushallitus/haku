@@ -22,7 +22,7 @@
     <legend class="h3"><fmt:message key="virkailija.lisakysymys.otsikko"/></legend>
     <hr/>
     <form method="get" action="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/additionalInfo">
-        <button class="float-right legend-align edit-link" type="submit">
+        <button class="float-right edit-link" type="submit">
             <span>
                 <span><fmt:message key="virkailija.lisakysymys.muokkaa"/></span>
             </span>

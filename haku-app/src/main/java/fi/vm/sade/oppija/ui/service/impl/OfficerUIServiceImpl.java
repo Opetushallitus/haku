@@ -47,6 +47,24 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
+    public UIServiceResponse getValidatedApplicationElement(
+            final String oid,
+            final String phaseId,
+            final String elementId) throws ResourceNotFoundException {
+        Application application = this.applicationService.getApplication(oid);
+        application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
+        Form activeForm = this.formService.getActiveForm(application.getFormId());
+        Element element = activeForm.getChildById(elementId);
+        ValidationResult validationResult = ElementTreeValidator.validateForm(activeForm, application);
+        OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
+        officerApplicationResponse.setApplication(application);
+        officerApplicationResponse.setElement(element);
+        officerApplicationResponse.setForm(activeForm);
+        officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
+        return officerApplicationResponse;
+    }
+
+    @Override
     public UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws IOException, ResourceNotFoundException {
         Application application = this.applicationService.getApplication(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?

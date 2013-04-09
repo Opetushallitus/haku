@@ -1,5 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="virkailija" tagdir="/WEB-INF/tags/virkailija" %>
 
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -33,17 +35,10 @@
                         </c:when>
                         <c:otherwise>
                             <c:set var="editUrl"
-                                   value="${pageContext.request.contextPath}/virkailija/hakemus/${application.formId.applicationPeriodId}/${application.formId.formId}/${phase.id}/${oid}/"/>
+                                   value="${pageContext.request.contextPath}/virkailija/hakemus/${application.formId.applicationPeriodId}/${application.formId.formId}/${phase.id}/${oid}"/>
                         </c:otherwise>
                     </c:choose>
-                    <form method="get"
-                          action="${editUrl}">
-                        <button class="float-right legend-align edit-link" type="submit">
-                            <span>
-                                <span>Muokkaa</span>
-                            </span>
-                        </button>
-                    </form>
+                    <virkailija:EditButton url="${editUrl}"/>
                 </c:if>
             </c:forEach>
         </c:if>

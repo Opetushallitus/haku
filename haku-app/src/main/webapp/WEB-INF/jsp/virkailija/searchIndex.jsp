@@ -21,6 +21,7 @@
   --%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
 <!doctype html>
+<fmt:setBundle basename="messages" scope="session"/>
 <html>
 <head>
     <haku:meta/>

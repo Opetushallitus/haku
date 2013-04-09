@@ -20,7 +20,7 @@
   --%>
 
 <!DOCTYPE html>
-<fmt:setBundle basename="messages"/>
+<fmt:setBundle basename="messages" scope="session"/>
 <c:set var="vaihe" value="${element}" scope="request"/>
 <c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>

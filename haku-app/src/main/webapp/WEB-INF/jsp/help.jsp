@@ -19,6 +19,7 @@
   --%>
 
 <!DOCTYPE html>
+<fmt:setBundle basename="messages" scope="session"/>
 <html>
 <head>
     <title><haku:i18nText value="${it.theme.i18nText}"/></title>

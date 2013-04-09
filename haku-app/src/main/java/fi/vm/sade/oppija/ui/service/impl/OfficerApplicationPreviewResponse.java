@@ -11,6 +11,7 @@ public class OfficerApplicationPreviewResponse extends UIServiceResponse {
     public static final String FORM = "form";
     public static final String ELEMENT = "element";
     public static final String ADDITIONAL_QUESTIONS = "additionalQuestions";
+    public static final String TEMPLATE = "template";
 
     public void setForm(final Form form) {
         Validate.notNull(form, "Form was null");
@@ -20,6 +21,7 @@ public class OfficerApplicationPreviewResponse extends UIServiceResponse {
     public void setElement(final Element element) {
         Validate.notNull(element, "Element was null");
         this.addObjectToModel(ELEMENT, element);
+        this.addObjectToModel(TEMPLATE, element.getType());
     }
 
     public void setAdditionalQuestions(final AdditionalQuestions additionalQuestions) {
