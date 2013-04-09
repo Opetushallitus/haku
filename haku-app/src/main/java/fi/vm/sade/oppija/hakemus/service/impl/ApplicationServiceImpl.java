@@ -376,7 +376,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
             if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumber(asId, ssn)) {
                 ValidationResult result = new ValidationResult("Henkilotunnus",
-                		ElementUtil.createI18NTextError("henkilotiedot.hetuKaytetty"));
+                        ElementUtil.createI18NTextError("henkilotiedot.hetuKaytetty"));
                 return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
             }
         }

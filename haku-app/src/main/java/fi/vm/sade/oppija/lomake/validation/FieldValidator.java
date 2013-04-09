@@ -16,9 +16,8 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
-import org.apache.commons.lang3.Validate;
-
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import org.apache.commons.lang3.Validate;
 
 public abstract class FieldValidator implements Validator {
     public final String fieldName;
@@ -32,7 +31,7 @@ public abstract class FieldValidator implements Validator {
         this.fieldName = fieldName;
         this.errorMessage = errorMessage;
         validValidationResult = new ValidationResult();
-        invalidValidationResult = new ValidationResult(this.fieldName, 
-        		ElementUtil.createI18NTextError(errorMessage));
+        invalidValidationResult = new ValidationResult(this.fieldName,
+                ElementUtil.createI18NTextError(errorMessage));
     }
 }
