@@ -16,54 +16,49 @@
 
 package fi.vm.sade.oppija.lomake.domain.util;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
-import org.apache.log4j.Logger;
-
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
+import org.apache.log4j.Logger;
+
+import java.util.*;
 
 public final class ElementUtil {
-    
-	private static Logger log = Logger.getLogger(ElementUtil.class);
-	
-	private ElementUtil() {
+
+    private static Logger log = Logger.getLogger(ElementUtil.class);
+
+    private ElementUtil() {
     }
 
     public static I18nText createI18NText(final String text) {
-    	return createI18NText(text, "form_messages", "fi", "en", "sv");
+        return createI18NText(text, "form_messages", "fi", "en", "sv");
     }
 
     public static I18nText createI18NTextError(final String text) {
-    	return createI18NText(text, "form_errors", "fi", "en", "sv");
+        return createI18NText(text, "form_errors", "fi", "en", "sv");
     }
 
     public static I18nText createI18NText(final String text, final String bundleName) {
-    	return createI18NText(text, bundleName, "fi", "en", "sv");
+        return createI18NText(text, bundleName, "fi", "en", "sv");
     }
-    
+
     public static I18nText createI18NText(final String key, final String bundleName, final String... langs) {
-    	Map<String, String> translations = new HashMap<String, String>();
-    	for (String lang : langs) {
-    		ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale(lang));
-    		
-    		String text = null;
-    		try {
-    			text = bundle.getString(key);
-    		} catch (MissingResourceException mre) {
-    			text = key + "[" + lang + "]";
-    			log.warn("No translation found for key '"+key+"' in "+lang);
-    		}
-    		translations.put(lang, text);
-    	}
-    	return new I18nText(key + Long.toString(System.currentTimeMillis()), translations);
+        Map<String, String> translations = new HashMap<String, String>();
+        for (String lang : langs) {
+            ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale(lang));
+
+            String text = null;
+            try {
+                text = bundle.getString(key);
+            } catch (MissingResourceException mre) {
+                text = key + "[" + lang + "]";
+                log.warn("No translation found for key '" + key + "' in " + lang);
+            }
+            translations.put(lang, text);
+        }
+        return new I18nText(key + Long.toString(System.currentTimeMillis()), translations);
     }
-    
+
     public static PreferenceRow createI18NPreferenceRow(final String id, final String title) {
         return new PreferenceRow(id,
                 createI18NText(title),
