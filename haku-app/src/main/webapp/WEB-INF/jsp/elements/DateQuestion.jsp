@@ -33,7 +33,7 @@
     <script>
       $(function() {
         $.datepicker.setDefaults( $.datepicker.regional[ "fi" ] );
-        $( "#" + "${element.id}" ).datepicker({changeMonth: true, changeYear: true, maxDate: new Date(),
+        $( "#" + "${element.id}" ).datepicker({changeMonth: true, changeYear: true, maxDate: new Date(), yearRange: "-50:+0",
                                                 showOn: "both", buttonImage: "${pageContext.request.contextPath}/resources/img/dateEditor_calendar_hover.png",
                                                 buttonImageOnly: false});
       });
