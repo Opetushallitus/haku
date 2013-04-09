@@ -35,14 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-
-import static fi.vm.sade.oppija.util.OppijaConstants.PERUSKOULU;
-import static fi.vm.sade.oppija.util.OppijaConstants.YLIOPPILAS;
-import static fi.vm.sade.oppija.util.OppijaConstants.KESKEYTYNYT;
-import static fi.vm.sade.oppija.util.OppijaConstants.YKSILOLLISTETTY;
-import static fi.vm.sade.oppija.util.OppijaConstants.OSITTAIN_YKSILOLLISTETTY;
-import static fi.vm.sade.oppija.util.OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY;
-import static fi.vm.sade.oppija.util.OppijaConstants.ULKOMAINEN_TUTKINTO;
+import static fi.vm.sade.oppija.util.OppijaConstants.*;
 
 @Service
 public class Yhteishaku2013 {
@@ -95,8 +88,8 @@ public class Yhteishaku2013 {
 
         // Lisätiedot
         Phase lisatiedot = new Phase("lisatiedot", createI18NText("form.lisatiedot.otsikko"), false);
-        WorkExperienceTheme tyokokemusRyhma = new WorkExperienceTheme("tyokokemusGrp", 
-        		createI18NText("form.lisatiedot.tyokokemus"), null, "32");
+        WorkExperienceTheme tyokokemusRyhma = new WorkExperienceTheme("tyokokemusGrp",
+                createI18NText("form.lisatiedot.tyokokemus"), null, "32");
         Theme lupatiedotRyhma = new Theme("lupatiedotGrp", createI18NText("form.lisatiedot.lupatiedot"), null);
         form.addChild(lisatiedot);
         lisatiedot.addChild(tyokokemusRyhma);
@@ -109,25 +102,25 @@ public class Yhteishaku2013 {
         form.addChild(esikatselu);
         Theme yhteenvetoRyhma = new Theme("yhteenvetoGrp", createI18NText("form.esikatselu.yhteenveto"), null);
         esikatselu.addChild(henkilotiedotRyhma).addChild(koulutustaustaRyhma).addChild(hakutoiveetRyhma)
-        .addChild(arvosanatRyhma).addChild(tyokokemusRyhma).addChild(lupatiedotRyhma);
+                .addChild(arvosanatRyhma).addChild(tyokokemusRyhma).addChild(lupatiedotRyhma);
         yhteenvetoRyhma.setHelp(createI18NText("form.esikatselu.help"));
 
     }
 
     private Theme createHenkilotiedotRyhma() {
-    	Theme henkilotiedotRyhma = new Theme("HenkilotiedotGrp", createI18NText("form.henkilotiedot.otsikko"), null);
-    	
-    	// Nimet
+        Theme henkilotiedotRyhma = new Theme("HenkilotiedotGrp", createI18NText("form.henkilotiedot.otsikko"), null);
+
+        // Nimet
         Question sukunimi = createRequiredTextQuestion("Sukunimi", "form.henkilotiedot.sukunimi", "30");
         sukunimi.setInline(true);
         sukunimi.addAttribute("iso8859name", "iso8859name");
         henkilotiedotRyhma.addChild(sukunimi);
-        
+
         Question etunimet = createRequiredTextQuestion("Etunimet", "form.henkilotiedot.etunimet", "30");
         etunimet.setInline(true);
         etunimet.addAttribute("iso8859name", "iso8859name");
         henkilotiedotRyhma.addChild(etunimet);
-        
+
         TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", createI18NText("form.henkilotiedot.kutsumanimi"));
         kutsumanimi.setHelp(createI18NText("form.henkilotiedot.kutsumanimi.help"));
         kutsumanimi.addAttribute("required", "required");
@@ -136,7 +129,7 @@ public class Yhteishaku2013 {
         kutsumanimi.setVerboseHelp(getVerboseHelp());
         kutsumanimi.setInline(true);
         henkilotiedotRyhma.addChild(kutsumanimi);
-        
+
         // Kansalaisuus, hetu ja sukupuoli suomalaisille
         DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", createI18NText("form.henkilotiedot.kansalaisuus"));
         kansalaisuus.addOptions(koodistoService.getNationalities());
@@ -147,7 +140,7 @@ public class Yhteishaku2013 {
         kansalaisuus.setVerboseHelp(getVerboseHelp());
         kansalaisuus.setInline(true);
         henkilotiedotRyhma.addChild(kansalaisuus);
-        
+
         TextQuestion henkilotunnus = new TextQuestion("Henkilotunnus", createI18NText("form.henkilotiedot.henkilotunnus"));
         henkilotunnus.addAttribute("placeholder", "ppkkvv*****");
         henkilotunnus.addAttribute("required", "required");
@@ -163,15 +156,15 @@ public class Yhteishaku2013 {
         sukupuoli.addAttribute("required", "required");
         sukupuoli.setVerboseHelp(getVerboseHelp());
         sukupuoli.setInline(true);
-        
+
         SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NText("form.henkilotiedot.hetu"),
-        		sukupuoli.getI18nText(), sukupuoli.getOptions().get(0),
-        		sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilotunnus);
-        
+                sukupuoli.getI18nText(), sukupuoli.getOptions().get(0),
+                sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilotunnus);
+
         RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FI$");
         hetuRule.addChild(socialSecurityNumber);
         henkilotiedotRyhma.addChild(hetuRule);
-        
+
         // Ulkomaalaisten tunnisteet
         Radio onkoSinullaSuomalainenHetu = new Radio("onkoSinullaSuomalainenHetu",
                 createI18NText("form.henkilotiedot.hetu.onkoSuomalainen"));
@@ -213,12 +206,12 @@ public class Yhteishaku2013 {
         eiSuomalaistaHetuaRule.addChild(passinnumero);
 
         onkoSinullaSuomalainenHetu.addChild(eiSuomalaistaHetuaRule);
-        
+
         RelatedQuestionRule ulkomaalaisenTunnisteetRule = new RelatedQuestionRule("ulkomaalaisenTunnisteetRule",
                 kansalaisuus.getId(), "(?!FI)([A-Z]{2})");
         ulkomaalaisenTunnisteetRule.addChild(onkoSinullaSuomalainenHetu);
         henkilotiedotRyhma.addChild(ulkomaalaisenTunnisteetRule);
-        
+
         // Email
         TextQuestion email = new TextQuestion("Sähköposti", createI18NText("form.henkilotiedot.email"));
         email.addAttribute("size", "50");
@@ -227,7 +220,7 @@ public class Yhteishaku2013 {
         email.setVerboseHelp(getVerboseHelp());
         email.setInline(true);
         henkilotiedotRyhma.addChild(email);
-        
+
         // Matkapuhelinnumerot
         TextQuestion matkapuhelinnumero = new TextQuestion("matkapuhelinnumero", createI18NText("form.henkilotiedot.matkapuhelinnumero"));
         matkapuhelinnumero.setHelp(createI18NText("form.henkilotiedot.matkapuhelinnumero.help"));
@@ -236,19 +229,19 @@ public class Yhteishaku2013 {
         matkapuhelinnumero.setVerboseHelp(getVerboseHelp());
         matkapuhelinnumero.setInline(true);
         henkilotiedotRyhma.addChild(matkapuhelinnumero);
-        
+
         TextQuestion huoltajanPuhelinnumero = new TextQuestion("huoltajanPuhelinnumero",
                 createI18NText("form.henkilotiedot.matkapuhelinnumero.huoltaja"));
         huoltajanPuhelinnumero.setHelp(createI18NText("form.henkilotiedot.matkapuhelinnumero.huoltaja.help"));
         huoltajanPuhelinnumero.addAttribute("size", "20");
         huoltajanPuhelinnumero.setVerboseHelp(getVerboseHelp());
         huoltajanPuhelinnumero.setInline(true);
-        
+
         AddElementRule addHuoltajanPuhelinnumero = new AddElementRule("addHuoltajanPuhelinnumeroRule",
                 huoltajanPuhelinnumero.getId(), createI18NText("form.henkilotiedot.matkapuhelinnumero.huoltaja.lisaa"));
         addHuoltajanPuhelinnumero.addChild(huoltajanPuhelinnumero);
         henkilotiedotRyhma.addChild(addHuoltajanPuhelinnumero);
-        
+
         // Asuinmaa, osoite
         DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", createI18NText("form.henkilotiedot.asuinmaa"));
         asuinmaa.addOptions(koodistoService.getCountries());
@@ -257,12 +250,12 @@ public class Yhteishaku2013 {
         asuinmaa.addAttribute("required", "required");
         asuinmaa.setVerboseHelp(getVerboseHelp());
         asuinmaa.setInline(true);
-        
+
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", asuinmaa.getId(), "FI");
         Question lahiosoite = createRequiredTextQuestion("lahiosoite", "form.henkilotiedot.lahiosoite", "40");
         lahiosoite.setInline(true);
         relatedQuestionRule.addChild(lahiosoite);
-        
+
         Element postinumero = new PostalCode("Postinumero", createI18NText("form.henkilotiedot.postinumero"), createPostOffices());
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
@@ -280,9 +273,9 @@ public class Yhteishaku2013 {
         kotikunta.setInline(true);
         kotikunta.setHelp(createI18NText("form.henkilotiedot.kotikunta.help"));
         relatedQuestionRule.addChild(kotikunta);
-        
+
         CheckBox ensisijainenOsoite = new CheckBox("ensisijainenOsoite1",
-        		createI18NText("form.henkilotiedot.ensisijainenOsoite"));
+                createI18NText("form.henkilotiedot.ensisijainenOsoite"));
         ensisijainenOsoite.setInline(true);
         relatedQuestionRule.addChild(ensisijainenOsoite);
 
@@ -297,11 +290,11 @@ public class Yhteishaku2013 {
         osoite.setVerboseHelp(getVerboseHelp());
         asuinmaa.addChild(relatedQuestionRule2);
         osoite.setInline(true);
-        
+
         asuinmaa.addChild(relatedQuestionRule);
-        
+
         henkilotiedotRyhma.addChild(asuinmaa);
-        
+
         // Äidinkieli
         DropdownSelect aidinkieli = new DropdownSelect("äidinkieli", createI18NText("form.henkilotiedot.aidinkieli"));
         aidinkieli.addOptions(koodistoService.getLanguages());
@@ -311,22 +304,22 @@ public class Yhteishaku2013 {
         aidinkieli.setInline(true);
         aidinkieli.setHelp(createI18NText("form.henkilotiedot.aidinkieli.help"));
         henkilotiedotRyhma.addChild(aidinkieli);
-        
-        return henkilotiedotRyhma;
-	}
 
-	private Theme createArvosanatRyhma() {
+        return henkilotiedotRyhma;
+    }
+
+    private Theme createArvosanatRyhma() {
         Map<String, List<Question>> oppiaineMap = new HashMap<String, List<Question>>();
 
         List<Question> oppiaineList = new ArrayList<Question>();
         oppiaineList.add(new SubjectRow("tietotekniikka", createI18NText("form.oppiaineet.tietotekniikka")));
         oppiaineList.add(new SubjectRow("kansantaloustiede", createI18NText("form.oppiaineet.kansantaloustiede")));
         oppiaineMap.put("1.2.246.562.14.79893512065", oppiaineList);
-        
-    	return new Theme("arvosanatGrp", createI18NText("form.arvosanat.otsikko"), oppiaineMap);
-	}
 
-	private Theme createHakutoiveetRyhma() {
+        return new Theme("arvosanatGrp", createI18NText("form.arvosanat.otsikko"), oppiaineMap);
+    }
+
+    private Theme createHakutoiveetRyhma() {
         final String id = "1.2.246.562.14.79893512065";
         final String elementIdPrefix = id.replace('.', '_');
         Radio radio = new Radio(
@@ -360,11 +353,11 @@ public class Yhteishaku2013 {
 
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
         lisakysymysMap.put(id, lisakysymysList);
-        
-    	return new Theme("hakutoiveetGrp", createI18NText("form.hakutoiveet.otsikko"), lisakysymysMap);
-	}
 
-	public GradeGrid createGradeGrid(final String id, boolean primary) {
+        return new Theme("hakutoiveetGrp", createI18NText("form.hakutoiveet.otsikko"), lisakysymysMap);
+    }
+
+    public GradeGrid createGradeGrid(final String id, boolean primary) {
 
         List<Option> gradeRange = koodistoService.getGradeRanges();
         List<SubjectRow> subjects = koodistoService.getSubjects();
