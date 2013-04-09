@@ -59,8 +59,8 @@ public class PreferenceTableValidator implements Validator {
             String education = values.get(educationInputId);
 
             if (!checkBothNullOrTyped(learningInstitution, education)) {
-                errors.put(education == null || education.isEmpty() ? educationInputId : learningInstitutionInputId, 
-                		ElementUtil.createI18NTextError("yleinen.pakollinen"));
+                errors.put(education == null || education.isEmpty() ? educationInputId : learningInstitutionInputId,
+                        ElementUtil.createI18NTextError("yleinen.pakollinen"));
             }
 
             if (!checkUnique(learningInstitution, education)) {

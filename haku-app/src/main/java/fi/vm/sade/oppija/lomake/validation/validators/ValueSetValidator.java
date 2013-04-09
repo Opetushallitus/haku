@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
