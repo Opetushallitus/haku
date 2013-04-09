@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.ISO88591NameValidator;
@@ -145,7 +146,7 @@ public abstract class Element implements Serializable {
         checkNotNull(value, "Attribute's value cannot be null");
         this.attributes.put(key, new Attribute(key, value));
         if (key.equals("required")) {
-            addValidator(new RequiredFieldFieldValidator(this.id));
+            addValidator(new RequiredFieldFieldValidator(this.id, "yleinen.pakollinen"));
         } else if (key.equals("pattern")) {
             addValidator(new RegexFieldFieldValidator(this.id, value));
         } else if (key.equals("containedInOther")) {

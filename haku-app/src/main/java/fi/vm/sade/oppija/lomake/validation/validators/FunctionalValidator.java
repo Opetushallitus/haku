@@ -17,6 +17,8 @@
 package fi.vm.sade.oppija.lomake.validation.validators;
 
 import com.google.common.base.Predicate;
+
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 
@@ -29,10 +31,10 @@ public class FunctionalValidator implements Validator {
 
     private Predicate<Map<String, String>> predicate;
     private String inputId;
-    private String errorMessage;
+    private I18nText errorMessage;
 
     public FunctionalValidator(Predicate<Map<String, String>> predicate, final String inputId,
-                               final String errorMessage) {
+                               final I18nText errorMessage) {
         this.predicate = predicate;
         this.inputId = inputId;
         this.errorMessage = errorMessage;

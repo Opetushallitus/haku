@@ -19,6 +19,13 @@ package fi.vm.sade.oppija.common.selenium;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.Before;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import fi.vm.sade.oppija.common.it.AdminResourceClient;
 import fi.vm.sade.oppija.common.it.TomcatContainerBase;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
@@ -26,13 +33,6 @@ import fi.vm.sade.oppija.lomake.SeleniumContainer;
 import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.ui.selenium.SeleniumHelper;
-
-import org.apache.commons.io.FileUtils;
-import org.junit.Before;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
@@ -67,14 +67,27 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         adminResourceClient.updateModel(formModel);
     }
     
-    protected void screenshot(WebDriver driver, String filename) {
+    protected void printSource(String fileName) {
     	boolean debug = Boolean.parseBoolean(System.getProperty("debugTests", "false"));
     	if (!debug) {
     		return;
     	}
+    	WebDriver driver = seleniumHelper.getDriver();
+    	try {
+			FileUtils.write(new File("target/"+fileName+".html"), driver.getPageSource());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+    }
+    protected void screenshot(String filename) {
+    	boolean debug = Boolean.parseBoolean(System.getProperty("debugTests", "false"));
+    	if (!debug) {
+    		return;
+    	}
+    	WebDriver driver = seleniumHelper.getDriver();
         File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
         try {
-			FileUtils.copyFile(scrFile, new File("target/"+filename));
+			FileUtils.copyFile(scrFile, new File("target/"+filename+".png"));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

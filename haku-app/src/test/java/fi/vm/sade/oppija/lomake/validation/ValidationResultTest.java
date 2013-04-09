@@ -16,13 +16,18 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+
+import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 
 
 public class ValidationResultTest {
@@ -41,13 +46,13 @@ public class ValidationResultTest {
 
     @Test
     public void testHasErrorsTrue() throws Exception {
-        validationResult = new ValidationResult("key", "error");
+        validationResult = new ValidationResult("key", ElementUtil.createI18NText("error"));
         assertTrue(validationResult.hasErrors());
     }
 
     @Test(expected = NullPointerException.class)
     public void testHasErrorsNullMap() throws Exception {
-        final Map<String, String> errors = null;
+        final Map<String, I18nText> errors = null;
         validationResult = new ValidationResult(errors);
         assertFalse(validationResult.hasErrors());
     }
@@ -61,7 +66,7 @@ public class ValidationResultTest {
 
     @Test
     public void testGetMessages() throws Exception {
-        Map<String, String> errorMessages = validationResult.getErrorMessages();
+        Map<String, I18nText> errorMessages = validationResult.getErrorMessages();
         assertEquals(0, errorMessages.size());
     }
 

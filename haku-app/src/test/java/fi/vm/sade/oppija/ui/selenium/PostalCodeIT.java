@@ -18,14 +18,11 @@ package fi.vm.sade.oppija.ui.selenium;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -96,7 +93,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         postinumero.click();
         s.typeKeys("//input[@id='"+POSTCODE_ID+"']", POSTCODE);
         s.typeKeys("foo", "bar");
-        screenshot(driver, "shot-"+System.currentTimeMillis()+".png");
+        screenshot("shot-"+System.currentTimeMillis()+".png");
         driver.findElement(By.xpath("//*[text()='"+POST_OFFICE+"']"));
     }
 }

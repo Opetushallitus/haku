@@ -20,6 +20,7 @@ import com.google.common.base.Predicate;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.PreferenceTableValidator;
@@ -84,13 +85,12 @@ public class PreferenceTable extends Titled {
 
         listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds));
         Predicate<Map<String, String>> predicate = and(not(and(or(and(validate(new RegexFieldFieldValidator("ammatillinenTutkintoSuoritettu", "^true$")),
-                validate(new RequiredFieldFieldValidator("ammatillinenTutkintoSuoritettu", ""))),
+                validate(new RequiredFieldFieldValidator("ammatillinenTutkintoSuoritettu"))),
                 and(validate(new RegexFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon", "^true$")),
-                        validate(new RequiredFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon", "")))),
+                        validate(new RequiredFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon")))),
                 or(preferencePredicates))));
         FunctionalValidator fv = new FunctionalValidator(predicate, this.getId(),
-                "Et voi hakea ammatillisen koulutuksen tällä hakulomakkeella, koska olet jo suorittanut/suorittamassa ammatilliseen perustutkintoon " +
-                "johtavaa koulutusta tai lukiokoulutusta.");
+                ElementUtil.createI18NTextError("hakutoiveet.ammatillinenSuoritettu"));
         listOfValidators.add(fv);
         return listOfValidators;
     }

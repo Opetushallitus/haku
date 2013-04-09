@@ -16,7 +16,23 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static org.junit.Assert.assertNull;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+
 import com.thoughtworks.selenium.Selenium;
+
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
@@ -30,21 +46,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-import static org.junit.Assert.assertNull;
 
 /**
  * Test for education institute preferences

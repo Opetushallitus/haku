@@ -3,6 +3,8 @@ package fi.vm.sade.oppija.ui.service;
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,7 +45,7 @@ public class UIServiceResponseTest {
 
     @Test
     public void testHasErrorsTrue() throws Exception {
-        uiServiceResponse.setErrorMessages(ImmutableMap.of("error", "message"));
+        uiServiceResponse.setErrorMessages(ImmutableMap.of("error", ElementUtil.createI18NText("")));
         assertTrue(uiServiceResponse.hasErrors());
     }
 

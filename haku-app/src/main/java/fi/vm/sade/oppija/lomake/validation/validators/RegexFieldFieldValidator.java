@@ -16,13 +16,15 @@
 
 package fi.vm.sade.oppija.lomake.validation.validators;
 
-import fi.vm.sade.oppija.lomake.validation.FieldValidator;
-import fi.vm.sade.oppija.lomake.validation.ValidationResult;
-import org.apache.commons.lang3.Validate;
-
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.Validate;
+
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import fi.vm.sade.oppija.lomake.validation.FieldValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 
 public class RegexFieldFieldValidator extends FieldValidator {
 
@@ -46,7 +48,8 @@ public class RegexFieldFieldValidator extends FieldValidator {
             Matcher matcher = pattern.matcher(value);
 
             if (!matcher.matches()) {
-                validationResult = new ValidationResult(fieldName, errorMessage);
+                validationResult = new ValidationResult(fieldName, 
+                		ElementUtil.createI18NTextError(errorMessage));
             }
         }
         return validationResult;

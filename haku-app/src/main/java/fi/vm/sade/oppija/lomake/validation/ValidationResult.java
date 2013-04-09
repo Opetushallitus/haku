@@ -22,11 +22,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ValidationResult {
-    private final Map<String, String> errors;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 
-    public ValidationResult(final Map<String, String> errors) {
-        this.errors = new HashMap<String, String>();
+public class ValidationResult {
+    private final Map<String, I18nText> errors;
+
+    public ValidationResult(final Map<String, I18nText> errors) {
+        this.errors = new HashMap<String, I18nText>();
         this.errors.putAll(errors);
     }
 
@@ -34,13 +36,13 @@ public class ValidationResult {
         this.errors = Collections.emptyMap();
     }
 
-    public ValidationResult(final String key, final String error) {
-        this.errors = new HashMap<String, String>();
+    public ValidationResult(final String key, final I18nText error) {
+        this.errors = new HashMap<String, I18nText>();
         this.errors.put(key, error);
     }
 
     public ValidationResult(final List<ValidationResult> validationResults) {
-        this.errors = new HashMap<String, String>();
+        this.errors = new HashMap<String, I18nText>();
         for (ValidationResult validationResult : validationResults) {
             if (validationResult.hasErrors()) {
                 errors.putAll(validationResult.getErrorMessages());
@@ -52,7 +54,7 @@ public class ValidationResult {
         return !errors.isEmpty();
     }
 
-    public Map<String, String> getErrorMessages() {
+    public Map<String, I18nText> getErrorMessages() {
         return Collections.unmodifiableMap(this.errors);
     }
 

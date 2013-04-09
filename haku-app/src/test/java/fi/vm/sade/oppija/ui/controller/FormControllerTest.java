@@ -16,35 +16,42 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.ws.rs.core.Response;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Matchers;
+
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
+
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPhaseViewPath;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Matchers;
-
-import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.mockito.Mockito.*;
 
 public class FormControllerTest {
 
@@ -161,8 +168,8 @@ public class FormControllerTest {
 
     @Test
     public void testSaveCategoryInvalid() throws Exception {
-        HashMap<String, String> errorMessages = new HashMap<String, String>();
-        errorMessages.put("", "");
+        HashMap<String, I18nText> errorMessages = new HashMap<String, I18nText>();
+        errorMessages.put("", ElementUtil.createI18NText(""));
         applicationState.addError(errorMessages);
         Viewable viewable = (Viewable) formController.savePhase(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID, new MultivaluedMapImpl()).getEntity();
         assertEquals(FormController.ROOT_VIEW, viewable.getTemplateName());

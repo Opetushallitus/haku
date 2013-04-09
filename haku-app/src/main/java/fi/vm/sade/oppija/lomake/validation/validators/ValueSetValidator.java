@@ -18,6 +18,8 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 
@@ -38,7 +40,9 @@ public class ValueSetValidator extends FieldValidator {
         ValidationResult validationResult = new ValidationResult();
         String value = values.get(fieldName);
         if (value != null && !this.validValues.contains(value)) {
-            validationResult = new ValidationResult(fieldName, fieldName + ": " + errorMessage + " | " + value + "(" + joiner.join(this.validValues) + ")");
+            validationResult = new ValidationResult(fieldName, ElementUtil.createI18NText(errorMessage, "form_errors"));
+//            validationResult = new ValidationResult(fieldName, 
+//            		fieldName + ": " + errorMessage + " | " + value + "(" + joiner.join(this.validValues) + ")");
         }
         return validationResult;
     }

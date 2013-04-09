@@ -41,6 +41,6 @@ public class GroupTest {
     @Test
     public void testTitle() throws Exception {
         // TODO group(Titled) paljastaa liikaa sisäistä rakennetta.
-        assertEquals(TITLE, group.getI18nText().getTranslations().get("fi"));
+        assertEquals(TITLE+"[fi]", group.getI18nText().getTranslations().get("fi"));
     }
 }

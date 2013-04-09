@@ -16,6 +16,8 @@
 package fi.vm.sade.oppija.lomake.validation.validators;
 
 import com.google.common.base.Predicate;
+
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.junit.Test;
 
@@ -40,7 +42,7 @@ public class FunctionalValidatorTest {
         Predicate<Map<String, String>> predicate = and(validate(new RegexFieldFieldValidator("a", "foo")),
                 validate(new RegexFieldFieldValidator("b", "bar")));
 
-        FunctionalValidator fv = new FunctionalValidator(predicate, "id", "error");
+        FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NText("error"));
         Map<String, String> values = new HashMap<String, String>();
         values.put("a", "foo");
         values.put("b", "bar");
@@ -54,7 +56,7 @@ public class FunctionalValidatorTest {
         Predicate<Map<String, String>> predicate = and(validate(new RegexFieldFieldValidator("a", "foo")),
                 validate(new RegexFieldFieldValidator("b", "bar")));
 
-        FunctionalValidator fv = new FunctionalValidator(predicate, "id", "error");
+        FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NText("error"));
         Map<String, String> values = new HashMap<String, String>();
         values.put("a", "foo");
         values.put("b", "fail");
@@ -68,7 +70,7 @@ public class FunctionalValidatorTest {
         Predicate<Map<String, String>> predicate = or(and(validate(new RegexFieldFieldValidator("a", "foo")),
                 validate(new RegexFieldFieldValidator("b", "bar"))), validate(new RegexFieldFieldValidator("c", "ok")));
 
-        FunctionalValidator fv = new FunctionalValidator(predicate, "id", "error");
+        FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NText("error"));
         Map<String, String> values = new HashMap<String, String>();
         values.put("a", "foo");
         values.put("b", "fail");
@@ -83,7 +85,7 @@ public class FunctionalValidatorTest {
         Predicate<Map<String, String>> predicate = and(validate(new RegexFieldFieldValidator("a", "foo")),
                 not(validate(new RegexFieldFieldValidator("b", "bar"))));
 
-        FunctionalValidator fv = new FunctionalValidator(predicate, "id", "error");
+        FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NText("error"));
         Map<String, String> values = new HashMap<String, String>();
         values.put("a", "foo");
         values.put("b", "fail");

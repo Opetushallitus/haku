@@ -33,7 +33,10 @@ import static org.junit.Assert.assertTrue;
 
 public class ElementUtilTest {
 
-    public static final String TEST_TEXT = "test";
+    public static final String NO_TRANSLATION = "test";
+    public static final String HAS_TRANSLATION = "translated_key";
+    public static final String TRANSLATED_FI = "suomeksi";
+    public static final String TRANSLATED_EN = "in english";
 
     @Test
     public void testCreateI18NTextSize() throws Exception {
@@ -42,9 +45,16 @@ public class ElementUtilTest {
     }
 
     @Test
-    public void testCreateI18NTextFi() throws Exception {
-        I18nText test = ElementUtil.createI18NText(TEST_TEXT);
-        assertEquals(test.getTranslations().get("fi"), TEST_TEXT);
+    public void testCreateI18NTextNoTranslation() throws Exception {
+        I18nText test = ElementUtil.createI18NText(NO_TRANSLATION);
+        assertEquals(NO_TRANSLATION+"[fi]", test.getTranslations().get("fi"));
+    }
+
+    @Test
+    public void testCreateI18NTextHasTranslation() throws Exception {
+        I18nText test = ElementUtil.createI18NText(HAS_TRANSLATION);
+        assertEquals(TRANSLATED_FI, test.getTranslations().get("fi"));
+        assertEquals(TRANSLATED_EN, test.getTranslations().get("en"));
     }
 
     @Test

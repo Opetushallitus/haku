@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.validation.validators;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.rules.RegexRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
@@ -49,7 +50,7 @@ public class ConditionalFieldValidator extends FieldValidator {
     @Override
     public ValidationResult validate(Map<String, String> values) {
         final String value = values.get(rule.getId());
-        final Map<String, String> errorMessages = new HashMap<String, String>();
+        final Map<String, I18nText> errorMessages = new HashMap<String, I18nText>();
         if (value != null && RegexRule.evaluate(value, rule.getExpression())) {
             for (Validator validator : validators) {
                 final ValidationResult validate = validator.validate(values);

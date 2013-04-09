@@ -54,8 +54,8 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
         henkilötunnus.setInline(true);
 
         Radio sukupuoli = new Radio("Sukupuoli", createI18NText("Sukupuoli"));
-        sukupuoli.addOption("mies", createI18NText("Mies"), "Mies");
-        sukupuoli.addOption("nainen", createI18NText("Nainen"), "Nainen");
+        sukupuoli.addOption("mies", createI18NText("form.henkilotiedot.sukupuoli.mies"), "Mies");
+        sukupuoli.addOption("nainen", createI18NText("form.henkilotiedot.sukupuoli.nainen"), "Nainen");
         sukupuoli.addAttribute("required", "required");
         sukupuoli.setInline(true);
 
@@ -73,6 +73,7 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
         seleniumHelper.getDriver().get(getBaseUrl() + "/" + startUrl);
         seleniumHelper.getSelenium().type("Henkilotunnus", "010101-111X");
 
+        screenshot("mies");
         seleniumHelper.getDriver().findElement(By.xpath("//*[text()='Mies']"));
     }
 
@@ -82,6 +83,7 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
         seleniumHelper.getDriver().get(getBaseUrl() + "/" + startUrl);
         seleniumHelper.getSelenium().type("Henkilotunnus", "010101-112X");
 
+        screenshot("nainen");
         seleniumHelper.getDriver().findElement(By.xpath("//*[text()='Nainen']"));
 
 

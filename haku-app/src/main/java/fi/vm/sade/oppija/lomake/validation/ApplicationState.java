@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.lomake.validation;
 
 
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class ApplicationState {
     private static final String HAKEMUS_KEY = "hakemus";
     private static final String APPLICATION_KEY = "application";
     public static final String VALMIS = "valmis";
-    private final Map<String, String> errors = new HashMap<String, String>();
+    private final Map<String, I18nText> errors = new HashMap<String, I18nText>();
     private final Map<String, Object> modelObjects = new HashMap<String, Object>();
     private final String vaiheId;
 
@@ -48,11 +49,11 @@ public class ApplicationState {
         return errors.isEmpty();
     }
 
-    public void addError(Map<String, String> errorMessages) {
+    public void addError(Map<String, I18nText> errorMessages) {
         this.errors.putAll(errorMessages);
     }
 
-    public Map<String, String> getErrors() {
+    public Map<String, I18nText> getErrors() {
         return this.errors;
     }
 

@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.lomake.validation.validators;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 
@@ -48,7 +50,7 @@ public class PreferenceTableValidator implements Validator {
     public ValidationResult validate(Map<String, String> values) {
         learningInstitutions = new ArrayList<String>();
         educations = new ArrayList<String>();
-        final Map<String, String> errors = new HashMap<String, String>();
+        final Map<String, I18nText> errors = new HashMap<String, I18nText>();
 
         for (int i = 0; i < rowCount; ++i) {
             String learningInstitutionInputId = learningInstitutionInputIds.get(i);
@@ -57,15 +59,16 @@ public class PreferenceTableValidator implements Validator {
             String education = values.get(educationInputId);
 
             if (!checkBothNullOrTyped(learningInstitution, education)) {
-                errors.put(education == null || education.isEmpty() ? educationInputId : learningInstitutionInputId, "Pakollinen tieto.");
+                errors.put(education == null || education.isEmpty() ? educationInputId : learningInstitutionInputId, 
+                		ElementUtil.createI18NTextError("yleinen.pakollinen"));
             }
 
             if (!checkUnique(learningInstitution, education)) {
-                errors.put(educationInputId, "Et voi syöttää samaa hakutoivetta useaan kertaan.");
+                errors.put(educationInputId, ElementUtil.createI18NTextError("hakutoiveet.duplikaatteja"));
             }
 
             if (!checkEmptyRowBeforeGivenPreference(educations, education)) {
-                errors.put(educationInputId, "Hakutoiveiden välillä ei saa olla tyhjiä rivejä.");
+                errors.put(educationInputId, ElementUtil.createI18NTextError("hakutoiveet.tyhjia"));
             }
 
             learningInstitutions.add(learningInstitution);

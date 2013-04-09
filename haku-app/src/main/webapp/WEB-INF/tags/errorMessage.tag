@@ -1,4 +1,4 @@
-<%@ tag description="i18nText" body-content="empty" pageEncoding="UTF-8" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="id" required="true" type="java.lang.String" %>
 <%@ attribute name="additionalClass" required="false" type="java.lang.String" %>
@@ -19,5 +19,5 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:if test="${not empty errorMessages[id]}">
-    <div class="notification warning ${additionalClass}"><c:out value="${errorMessages[id]}"/></div>
+    <div class="notification warning ${additionalClass}"><haku:i18nText value="${errorMessages[id]}" /></div>
 </c:if>

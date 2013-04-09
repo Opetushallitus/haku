@@ -16,22 +16,23 @@
 
 package fi.vm.sade.oppija.lomake.it;
 
-import com.thoughtworks.selenium.Selenium;
-import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.Yhteishaku2013;
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import java.util.List;
+import com.thoughtworks.selenium.Selenium;
 
-import static org.junit.Assert.assertTrue;
+import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
+import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 
 public class LomakeIT extends AbstractSeleniumBase {
 
@@ -61,7 +62,7 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(new By.ByClassName("notification"));
 
         Select select = new Select(driver.findElement(new By.ById("asuinmaa")));
-        select.selectByIndex(1);
+        select.selectByIndex(0);
 
         //Wait
         driver.findElement(new By.ById("Postinumero"));

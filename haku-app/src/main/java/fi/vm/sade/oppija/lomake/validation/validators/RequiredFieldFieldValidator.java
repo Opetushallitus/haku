@@ -16,17 +16,18 @@
 
 package fi.vm.sade.oppija.lomake.validation.validators;
 
-import fi.vm.sade.oppija.lomake.validation.FieldValidator;
-import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Map;
+import fi.vm.sade.oppija.lomake.validation.FieldValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 
 public class RequiredFieldFieldValidator extends FieldValidator {
 
 
     public RequiredFieldFieldValidator(String fieldName) {
-        super(fieldName, fieldName + " on pakollinen kenttä");
+        super(fieldName, "yleinen.pakollinen");
     }
 
     public RequiredFieldFieldValidator(final String fieldName, final String errorMessage) {
