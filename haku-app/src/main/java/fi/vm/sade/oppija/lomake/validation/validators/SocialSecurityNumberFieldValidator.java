@@ -76,8 +76,8 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
         if (socialSecurityNumber != null) {
             Matcher matcher = socialSecurityNumberPattern.matcher(socialSecurityNumber);
             if (!matcher.matches()) {
-                validationResult = new ValidationResult(fieldName, 
-                		ElementUtil.createI18NTextError(GENERIC_ERROR_MESSAGE));
+                validationResult = new ValidationResult(fieldName,
+                        ElementUtil.createI18NTextError(GENERIC_ERROR_MESSAGE));
             }
             if (!validationResult.hasErrors()) {
                 validationResult = checkDOB(socialSecurityNumber);
@@ -101,7 +101,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
         }
         return result;
     }
-    
+
     /**
      * Tarkistaa, että annetussa hetussa on tunnistettava päivämäärä, ja että päivämäärä on menneisyydessä.
      *
