@@ -30,6 +30,7 @@
     <c:set value="${sortableItem.id}-Lisakysymykset" var="additionalQuestionsId" scope="page"/>
     <c:set value="${sortableItem.educationInputId}-id" var="hiddenKoulutusId" scope="page"/>
     <c:set value="${sortableItem.educationInputId}-educationDegree" var="hiddenEducationDegreeId" scope="page"/>
+    <c:set value="${sortableItem.id}-childLONames" var="childLONamesId" scope="page"/>
 
     <div class="form-row">
         <label class="form-row-label ${sortableItem.attributes['required'].value}" for="${textInputId}"><haku:i18nText
@@ -59,7 +60,9 @@
             <div class="field-container-select">
                 <select id="${selectInputId}" name="${selectInputId}"
                         placeholder="${sortableItem.selectEducationPlaceholder}"
-                        data-additionalquestions="${additionalQuestionsId}" ${sortableItem.attributes['required'].value}>
+                        data-additionalquestions="${additionalQuestionsId}"
+                        data-childlonames="${childLONamesId}"
+                        ${sortableItem.attributes['required'].value}>
                 </select>
                 <haku:errorMessage id="${selectInputId}" additionalClass="margin-top-1"/>
                 <input id="${hiddenKoulutusId}" name="${hiddenKoulutusId}" value="${categoryData[hiddenKoulutusId]}"
@@ -70,6 +73,7 @@
         </div>
         <div class="clear"></div>
     </div>
+    <div id="${childLONamesId}" class="notification block light-grey margin-2" style="display: none"></div>
     <div id="${additionalQuestionsId}" class="form-row">
     </div>
 </div>
