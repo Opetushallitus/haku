@@ -36,7 +36,6 @@ import java.io.IOException;
 public class TomcatContainer implements DisposableBean {
 
     public static final String HAKU_APP = "";//"haku-app/";
-    private static final String WEBAPP_SRC = HAKU_APP + "src/main/webapp";
     public static final String SPRING_PROFILES_ACTIVE_KEY = "spring.profiles.active";
     public static final String SPRING_PROFILES_ACTIVE_VALUE_DEV = "dev";
 
