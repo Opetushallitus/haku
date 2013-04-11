@@ -62,9 +62,10 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(new By.ByClassName("notification"));
 
         Select select = new Select(driver.findElement(new By.ById("asuinmaa")));
-        select.selectByIndex(0);
+        select.selectByIndex(1);
 
         //Wait
+        screenshot("postinumero_it");
         driver.findElement(new By.ById("Postinumero"));
         selenium.typeKeys("lahiosoite", "Katu 1");
         selenium.typeKeys("Postinumero", "00100");
