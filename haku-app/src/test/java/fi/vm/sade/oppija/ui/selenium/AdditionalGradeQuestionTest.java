@@ -47,7 +47,6 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
     }
 
     @Test
-    @Ignore
     public void testAdditionalSubjects() {
         final String url = getBaseUrl() + "/lomake/"+ Yhteishaku2013.ASID + "/yhteishaku/koulutustausta";
         final WebDriver driver = seleniumHelper.getDriver();

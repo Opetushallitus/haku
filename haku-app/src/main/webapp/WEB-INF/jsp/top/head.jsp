@@ -16,7 +16,6 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
-
 <head>
 
     <title>Opetushallitus</title>

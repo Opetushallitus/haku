@@ -23,9 +23,6 @@ import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.impl.base.exporter.zip.ZipExporterImpl;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.EffectivePomMavenDependencyResolver;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.springframework.beans.factory.DisposableBean;
 
 import java.io.File;
@@ -40,7 +37,6 @@ public class TomcatContainer implements DisposableBean {
 
     public static final String HAKU_APP = "";//"haku-app/";
     private static final String WEBAPP_SRC = HAKU_APP + "src/main/webapp";
-    private static final String RESOURCES_SRC = HAKU_APP + "src/main/resources";
     public static final String SPRING_PROFILES_ACTIVE_KEY = "spring.profiles.active";
     public static final String SPRING_PROFILES_ACTIVE_VALUE_DEV = "dev";
 
@@ -48,15 +44,12 @@ public class TomcatContainer implements DisposableBean {
      * The temporary directory in which Tomcat and the app are deployed.
      */
     private static final String M_WORKING_DIR = HAKU_APP + "target/it";
-    private static final String SOLR_SOLR_HOME = "solr.solr.home";
-    private static final String TARJONTA_INDEX_URL = "solr.base.url";
-    private static final String TARJONTA_DATA_URL = "tarjonta.data.url";
     public static final String MONGO_DB_NAME = "mongo.db.name";
+    public static final String APPLICATION_ID = "haku-app";
     /**
      * The tomcat instance.
      */
     private Tomcat mTomcat;
-    private static File solr;
     private int port;
 
     private final String name;
@@ -66,28 +59,11 @@ public class TomcatContainer implements DisposableBean {
         createTomcat();
         mTomcat.start();
         port = mTomcat.getConnector().getLocalPort();
-        createWebApp(createPackage());
-    }
-
-    private static WebArchive addWebResourcesTo(WebArchive archive) {
-        final File webAppDirectory = new File(WEBAPP_SRC);
-        for (File file : org.apache.commons.io.FileUtils.listFiles(webAppDirectory, null, true)) {
-            if (isValidFilename(file)) {
-                archive.addAsWebResource(file, file.getPath().substring(WEBAPP_SRC.length()));
-            }
-        }
-        return archive;
-    }
-
-    private static boolean isValidFilename(File file) {
-        return !file.isDirectory() && !file.getName().equals(".svn");
+        createWebApp(new File("target/haku-app.war"));
     }
 
     @Override
     public void destroy() throws Exception {
-        System.clearProperty(SOLR_SOLR_HOME);
-        System.clearProperty(TARJONTA_INDEX_URL);
-        System.clearProperty(TARJONTA_DATA_URL);
         try {
             if (mTomcat.getServer() != null
                     && mTomcat.getServer().getState() != LifecycleState.DESTROYED) {
@@ -106,79 +82,24 @@ public class TomcatContainer implements DisposableBean {
         mTomcat.setPort(0);
         mTomcat.setBaseDir(M_WORKING_DIR);
         mTomcat.getHost().setAppBase(M_WORKING_DIR);
-        mTomcat.getHost().setAutoDeploy(true);
+        mTomcat.getHost().setAutoDeploy(false);
         mTomcat.getHost().setDeployOnStartup(false);
     }
 
 
     private void createWebApp(File webApp) throws IOException {
-        System.setProperty(SOLR_SOLR_HOME, new File(HAKU_APP + "target/resources/solr").getAbsolutePath());
-        System.setProperty(TARJONTA_INDEX_URL, "http://localhost:" + getPort() + "/solr/");
-        System.setProperty(TARJONTA_DATA_URL, "http://localhost:" + getPort() + "/" + getApplicationId() + "/tarjontadev/learningDownloadPOC.xml");
         System.setProperty(MONGO_DB_NAME, name);
         System.setProperty(SPRING_PROFILES_ACTIVE_KEY, SPRING_PROFILES_ACTIVE_VALUE_DEV);
-        prepareSolr();
-        //mTomcat.addWebapp(mTomcat.getHost(), "/solr", solr.getAbsolutePath());
         mTomcat.addWebapp(mTomcat.getHost(), getContextPath(), webApp.getAbsolutePath());
 
     }
 
-
-    private void prepareSolr() throws IOException {
-        final File target = new File(HAKU_APP + "target");
-        org.apache.commons.io.FileUtils.copyDirectoryToDirectory(new File(RESOURCES_SRC), target);
-
-
-        for (File file : org.apache.commons.io.FileUtils.listFiles(target, null, true)) {
-            if (file.getName().equals(".svn")) {
-                file.delete();
-            }
-        }
-    }
-
-    private static File createPackage() throws IOException {
-        final File workDir = new File(M_WORKING_DIR);
-        if (!workDir.exists()) {
-            workDir.mkdirs();
-        }
-        File webApp = new File(M_WORKING_DIR, getApplicationId());
-        File oldWebApp = new File(webApp.getAbsolutePath());
-        FileUtils.deleteDirectory(oldWebApp);
-        new ZipExporterImpl(createWebArchive()).exportTo(new File(M_WORKING_DIR + "/" + packageName()), true);
-        return webApp;
-    }
-
     public String getContextPath() {
-        return "/" + getApplicationId();
-    }
-
-    private static String packageName() {
-        return getApplicationId() + ".war";
-    }
-
-    private static WebArchive createWebArchive() {
-        MavenDependencyResolver resolver = DependencyResolvers.use(MavenDependencyResolver.class);
-        final EffectivePomMavenDependencyResolver effectivePomMavenDependencyResolver = resolver.loadEffectivePom(HAKU_APP + "pom.xml").importAllDependencies();
-        final File[] files1 = effectivePomMavenDependencyResolver.resolveAsFiles();
-
-        for (File file : files1) {
-            final String name = file.getName();
-            if (name.endsWith(".war") && name.contains("solr")) {
-                solr = file;
-            }
-        }
-        return addWebResourcesTo(ShrinkWrap.create(WebArchive.class, packageName()).setWebXML(new File(WEBAPP_SRC, "WEB-INF/web.xml"))
-                .addPackages(true, RootPackageMarker.class.getPackage())).addAsLibraries(files1);
-
-
+        return "/" + APPLICATION_ID;
     }
 
     public String getBaseUrl() {
         return "http://localhost:" + getPort() + getContextPath();
-    }
-
-    public static String getApplicationId() {
-        return "haku-app";
     }
 
     public int getPort() {

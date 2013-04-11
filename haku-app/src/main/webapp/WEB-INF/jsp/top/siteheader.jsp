@@ -20,11 +20,6 @@
 <fmt:setBundle basename="messages" scope="session"/>
 <header id="siteheader">
     <div class="header-container">
-        <div class="sitelogo">
-            <a href="${pageContext.request.contextPath}">Sivuston logo</a>
-            <a href="${contextPath}/test/addPerson">/test/addPerson</a>
-        </div>
-
         <div class="actions">
             <sec:authorize var="loggedIn" access="isAuthenticated()"/>
             <c:choose>
@@ -52,8 +47,6 @@
                 <li><a href="?lang=fi">Suomeksi</a></li>
                 <li><a href="?lang=sv">På svenska</a></li>
                 <li><a href="?lang=en">in English</a></li>
-                <li><a href="#"><fmt:message key="oppija.header.label.mobile"/></a></li>
-                <li><a href="#"><fmt:message key="oppija.header.label.textversion"/></a></li>
             </ul>
             <ul>
                 <sec:authorize access="hasRole('ROLE_ADMIN')">

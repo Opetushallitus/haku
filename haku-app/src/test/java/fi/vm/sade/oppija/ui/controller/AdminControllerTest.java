@@ -57,7 +57,7 @@ public class AdminControllerTest {
     public void testGetIndex() throws Exception {
         Viewable viewable = adminController.getIndex();
         assertEquals("Unexpected template name", AdminController.ADMIN_INDEX_VIEW, viewable.getTemplateName());
-        assertTrue("Unexpected template name", 8 == ((Map) viewable.getModel()).size());
+        assertTrue("Unexpected template name", 6 == ((Map) viewable.getModel()).size());
     }
 
     @Test

@@ -12,7 +12,7 @@
   ~
   ~ This program is distributed in the hope that it will be useful,
   ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   ~ European Union Public Licence for more details.
   --%>
 
@@ -31,17 +31,7 @@
     <li><a href="${contextPath}/admin/upload">Admin - Lataa malli tiedostona</a></li>
     <li><a href="${contextPath}/admin/edit">Admin - Muokkaa mallia</a></li>
     <li><a href="${contextPath}/admin/model">Admin - Tämänhetkinen malli (json)</a></li>
-    <li><a href="${contextPath}/static-html/lomake.html">Staattinen lomake</a></li>
-    <li><a href="${contextPath}/static-html/index.html">Staattinen etusivu</a></li>
-    <li><a href="${contextPath}/static-html/vapaasanahaku.html">Vapaasanahaku staattinen ui</a></li>
-    <li><a href="${contextPath}">Oppijan verkkopalvelu</a></li>
-    <li><a href="${contextPath}/tarjontatiedot">Oppijan verkkopalvelu - Vapaasanahaku</a></li>
-    <li><a href="${contextPath}/static-html/add.html">Oppijan verkkopalvelu - Lataa aineisto</a>
-    </li>
-    <li><a href="${contextPath}/admin/index/update">Oppijan verkkopalvelu - Päivitä hakuindeksi</a>
-    </li>
-    <li><a href="${contextPath}/admin/index/drop">Oppijan verkkopalvelu - Tyhjennä hakuindeksi</a>
-    </li>
+    <li><a href="/">Oppijan verkkopalvelu</a></li>
 </ul>
 
 <h3>Properties:</h3>

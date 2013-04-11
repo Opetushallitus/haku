@@ -15,27 +15,28 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<div id="popup">
+    <div class="popup" id="authentication">
 
-<div class="popup" id="authentication">
-    
-      <h2>Kirjautuminen</h2>
-  
-      <form action="${pageContext.request.contextPath}/j_spring_security_check" method="POST">
+        <h2>Kirjautuminen</h2>
 
-          <legend class="h3">KÄYTTÄJÄTUNNUS</legend>
-          <input name="j_username" type="text"/>
+        <form action="${pageContext.request.contextPath}/j_spring_security_check" method="POST">
 
-          <legend class="h3">SALASANA</legend>
-          <input name="j_password" type="password"/>
+            <legend class="h3">KÄYTTÄJÄTUNNUS</legend>
+            <input name="j_username" type="text"/>
 
-          <div class="margin-top-1">
-              <input name="login" value="Kirjaudu" type="submit"/>
-          </div>
-      </form>
+            <legend class="h3">SALASANA</legend>
+            <input name="j_password" type="password"/>
 
-      <a href="#" class="block margin-vertical-1">Unohtuiko salasana?</a>
-      <a href="#" class="block margin-bottom-1">Rekisteröidy palveluun</a>
-      <a href="#" class="bold" data-popup-action="close">Sulje</a>
-      <a href="#" class="helplink">?</a>
-   
+            <div class="margin-top-1">
+                <input name="login" value="Kirjaudu" type="submit"/>
+            </div>
+        </form>
+
+        <a href="#" class="block margin-vertical-1">Unohtuiko salasana?</a>
+        <a href="#" class="block margin-bottom-1">Rekisteröidy palveluun</a>
+        <a href="#" class="bold" data-popup-action="close">Sulje</a>
+        <a href="#" class="helplink">?</a>
+
+    </div>
 </div>

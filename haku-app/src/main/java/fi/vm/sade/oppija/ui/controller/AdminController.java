@@ -58,10 +58,6 @@ public class AdminController {
     private String mongoDbName;
     @Value("${mongo.test-db.name}")
     private String mongoTestDbName;
-    @Value("${solr.base.url}")
-    private String tarjontaIndexUrl;
-    @Value("${tarjonta.data.url}")
-    private String tarjontaDataUrl;
     @Value("${hakemus.aes.key}")
     private String aesKey;
     @Value("${hakemus.aes.salt}")
@@ -79,8 +75,6 @@ public class AdminController {
         properties.put("mongodb.url", mongoUrl);
         properties.put("mongo.db.name", mongoDbName);
         properties.put("mongo.test-db.name", mongoTestDbName);
-        properties.put("tarjonta.index.url", tarjontaIndexUrl);
-        properties.put("tarjonta.data.url", tarjontaDataUrl);
         properties.put("hakemus.aes.key", aesKey);
         properties.put("hakemus.aes.salt", aesSalt);
         properties.put("hakemus.sha.salt", shaSalt);
