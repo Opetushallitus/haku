@@ -34,7 +34,9 @@ public class FormServiceMockImpl implements FormService {
     private FormModel formModel;
 
     public FormServiceMockImpl() {
-        FormModelHolder formModelHolder = new FormModelHolder(new Yhteishaku2013(new KoodistoServiceMockImpl()));
+        Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl());
+        yhteishaku2013.init();
+        FormModelHolder formModelHolder = new FormModelHolder(yhteishaku2013);
         this.formModel = formModelHolder.getModel();
 
     }

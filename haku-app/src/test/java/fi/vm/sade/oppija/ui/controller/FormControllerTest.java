@@ -77,7 +77,7 @@ public class FormControllerTest {
         this.applicationService = mock(ApplicationService.class);
         this.formService = mock(FormService.class);
         this.additionalQuestionService = mock(AdditionalQuestionService.class);
-        this.formController = new FormController(formService, applicationService, USER_HOLDER, additionalQuestionService);
+        this.formController = new FormController(formService, applicationService, USER_HOLDER, additionalQuestionService, "");
         this.application = new Application();
         FORM.addChild(PHASE);
         when(applicationService.getApplication(Matchers.<FormId>any())).thenReturn(this.application);

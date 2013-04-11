@@ -54,56 +54,63 @@ public class Yhteishaku2013 {
     public Yhteishaku2013(final KoodistoService koodistoService) { // NOSONAR
         this.koodistoService = koodistoService;
         this.applicationPeriod = new ApplicationPeriod(ASID);
+    }
 
-        Form form = new Form("yhteishaku", createI18NText("form.title"));
 
-        applicationPeriod.addForm(form);
+    public void init() { // NOSONAR
+        try {
+            Form form = new Form("yhteishaku", createI18NText("form.title"));
 
-        // Henkilötiedot
-        Phase henkilotiedot = new Phase("henkilotiedot", createI18NText("form.henkilotiedot.otsikko"), false);
-        form.addChild(henkilotiedot);
-        Theme henkilotiedotRyhma = createHenkilotiedotRyhma();
-        henkilotiedot.addChild(henkilotiedotRyhma);
+            applicationPeriod.addForm(form);
 
-        // Koulutustausta
-        Phase koulutustausta = new Phase("koulutustausta", createI18NText("form.koulutustausta.otsikko"), false);
-        form.addChild(koulutustausta);
-        Theme koulutustaustaRyhma = new Theme("KoulutustaustaGrp", createI18NText("form.koulutustausta.otsikko"), null);
-        koulutustausta.addChild(koulutustaustaRyhma);
-        createKoulutustausta(koulutustaustaRyhma);
+            // Henkilötiedot
+            Phase henkilotiedot = new Phase("henkilotiedot", createI18NText("form.henkilotiedot.otsikko"), false);
+            form.addChild(henkilotiedot);
+            Theme henkilotiedotRyhma = createHenkilotiedotRyhma();
+            henkilotiedot.addChild(henkilotiedotRyhma);
 
-        // Hakutoiveet
-        Phase hakutoiveet = new Phase("hakutoiveet", createI18NText("form.hakutoiveet.otsikko"), false);
-        form.addChild(hakutoiveet);
-        Theme hakutoiveetRyhma = createHakutoiveetRyhma();
-        hakutoiveet.addChild(hakutoiveetRyhma);
-        createHakutoiveet(hakutoiveetRyhma);
+            // Koulutustausta
+            Phase koulutustausta = new Phase("koulutustausta", createI18NText("form.koulutustausta.otsikko"), false);
+            form.addChild(koulutustausta);
+            Theme koulutustaustaRyhma = new Theme("KoulutustaustaGrp", createI18NText("form.koulutustausta.otsikko"), null);
+            koulutustausta.addChild(koulutustaustaRyhma);
+            createKoulutustausta(koulutustaustaRyhma);
 
-        // Arvosanat
-        Phase arvosanat = new Phase("arvosanat", createI18NText("form.arvosanat.otsikko"), false);
-        form.addChild(arvosanat);
-        Theme arvosanatRyhma = createArvosanatRyhma();
-        arvosanat.addChild(arvosanatRyhma);
-        createArvosanat(arvosanatRyhma);
+            // Hakutoiveet
+            Phase hakutoiveet = new Phase("hakutoiveet", createI18NText("form.hakutoiveet.otsikko"), false);
+            form.addChild(hakutoiveet);
+            Theme hakutoiveetRyhma = createHakutoiveetRyhma();
+            hakutoiveet.addChild(hakutoiveetRyhma);
+            createHakutoiveet(hakutoiveetRyhma);
 
-        // Lisätiedot
-        Phase lisatiedot = new Phase("lisatiedot", createI18NText("form.lisatiedot.otsikko"), false);
-        WorkExperienceTheme tyokokemusRyhma = new WorkExperienceTheme("tyokokemusGrp",
-                createI18NText("form.lisatiedot.tyokokemus"), null, "32");
-        Theme lupatiedotRyhma = new Theme("lupatiedotGrp", createI18NText("form.lisatiedot.lupatiedot"), null);
-        form.addChild(lisatiedot);
-        lisatiedot.addChild(tyokokemusRyhma);
-        lisatiedot.addChild(lupatiedotRyhma);
-        createTyokokemus(tyokokemusRyhma);
-        createLupatiedot(lupatiedotRyhma);
+            // Arvosanat
+            Phase arvosanat = new Phase("arvosanat", createI18NText("form.arvosanat.otsikko"), false);
+            form.addChild(arvosanat);
+            Theme arvosanatRyhma = createArvosanatRyhma();
+            arvosanat.addChild(arvosanatRyhma);
+            createArvosanat(arvosanatRyhma);
 
-        // Esikatselu
-        Phase esikatselu = new Phase("esikatselu", createI18NText("form.esikatselu.otsikko"), true);
-        form.addChild(esikatselu);
-        Theme yhteenvetoRyhma = new Theme("yhteenvetoGrp", createI18NText("form.esikatselu.yhteenveto"), null);
-        esikatselu.addChild(henkilotiedotRyhma).addChild(koulutustaustaRyhma).addChild(hakutoiveetRyhma)
-                .addChild(arvosanatRyhma).addChild(tyokokemusRyhma).addChild(lupatiedotRyhma);
-        yhteenvetoRyhma.setHelp(createI18NText("form.esikatselu.help"));
+            // Lisätiedot
+            Phase lisatiedot = new Phase("lisatiedot", createI18NText("form.lisatiedot.otsikko"), false);
+            WorkExperienceTheme tyokokemusRyhma = new WorkExperienceTheme("tyokokemusGrp",
+                    createI18NText("form.lisatiedot.tyokokemus"), null, "32");
+            Theme lupatiedotRyhma = new Theme("lupatiedotGrp", createI18NText("form.lisatiedot.lupatiedot"), null);
+            form.addChild(lisatiedot);
+            lisatiedot.addChild(tyokokemusRyhma);
+            lisatiedot.addChild(lupatiedotRyhma);
+            createTyokokemus(tyokokemusRyhma);
+            createLupatiedot(lupatiedotRyhma);
+
+            // Esikatselu
+            Phase esikatselu = new Phase("esikatselu", createI18NText("form.esikatselu.otsikko"), true);
+            form.addChild(esikatselu);
+            Theme yhteenvetoRyhma = new Theme("yhteenvetoGrp", createI18NText("form.esikatselu.yhteenveto"), null);
+            esikatselu.addChild(henkilotiedotRyhma).addChild(koulutustaustaRyhma).addChild(hakutoiveetRyhma)
+                    .addChild(arvosanatRyhma).addChild(tyokokemusRyhma).addChild(lupatiedotRyhma);
+            yhteenvetoRyhma.setHelp(createI18NText("form.esikatselu.help"));
+        } catch (Throwable t) {
+            throw new RuntimeException(Yhteishaku2013.class.getCanonicalName() + " init failed");
+        }
 
     }
 

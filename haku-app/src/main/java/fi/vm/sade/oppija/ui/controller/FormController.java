@@ -76,25 +76,18 @@ public class FormController {
     private final ApplicationService applicationService;
     private final UserHolder userHolder;
     private final AdditionalQuestionService additionalQuestionService;
-    @Value("${koulutusinformaatio.base.url}")
-    private String koulutusinformaatioBaseUrl;
-
-    public String getKoulutusinformaatioBaseUrl() {
-        return koulutusinformaatioBaseUrl;
-    }
-
-    public void setKoulutusinformaatioBaseUrl(String koulutusinformaatioBaseUrl) {
-        this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
-    }
+    private final String koulutusinformaatioBaseUrl;
 
     @Autowired
     public FormController(@Qualifier("formServiceImpl") final FormService formService,
                           final ApplicationService applicationService, final UserHolder userHolder,
-                          final AdditionalQuestionService additionalQuestionService) {
+                          final AdditionalQuestionService additionalQuestionService,
+                          @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUr) {
         this.formService = formService;
         this.applicationService = applicationService;
         this.userHolder = userHolder;
         this.additionalQuestionService = additionalQuestionService;
+        this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUr;
     }
 
     @GET

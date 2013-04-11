@@ -43,11 +43,11 @@ public class GradeGridIT extends AbstractSeleniumBase {
     public void init() {
         super.before();
         ApplicationPeriod applicationPeriod = new ApplicationPeriod(Yhteishaku2013.ASID);
-
         Phase arvosanat = new Phase(PHASE_ID, createI18NText("Arvosanat"), false);
         Form form = new Form(FORM_ID, createI18NText("yhteishaku"));
         form.addChild(arvosanat);
         Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl());
+        yhteishaku2013.init();
         arvosanat.addChild(yhteishaku2013.createGradeGrid("id", true));
         applicationPeriod.addForm(form);
 
