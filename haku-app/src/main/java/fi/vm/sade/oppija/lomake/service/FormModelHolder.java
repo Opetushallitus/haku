@@ -28,6 +28,7 @@ public class FormModelHolder {
 
     @Autowired
     public FormModelHolder(final Yhteishaku2013 yhteishaku2013) {
+        yhteishaku2013.init();
         formModel = new FormModel();
         formModel.addApplicationPeriod(yhteishaku2013.getApplicationPeriod());
     }
