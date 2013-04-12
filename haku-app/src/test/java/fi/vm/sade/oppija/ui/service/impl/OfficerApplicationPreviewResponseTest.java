@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 public class OfficerApplicationPreviewResponseTest {
 
 
-    public static final I18nText TEXT = ElementUtil.createI18NText("text");
+    public static final I18nText TEXT = ElementUtil.createI18NForm("text");
     public static final Form FORM = new Form("id", TEXT);
     private OfficerApplicationPreviewResponse officerApplicationPreviewResponse =
             new OfficerApplicationPreviewResponse();

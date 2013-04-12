@@ -40,19 +40,19 @@ public class ElementUtilTest {
 
     @Test
     public void testCreateI18NTextSize() throws Exception {
-        I18nText test = ElementUtil.createI18NText("test");
+        I18nText test = ElementUtil.createI18NForm("test");
         assertTrue(test.getTranslations().size() == 3);
     }
 
     @Test
     public void testCreateI18NTextNoTranslation() throws Exception {
-        I18nText test = ElementUtil.createI18NText(NO_TRANSLATION);
-        assertEquals(NO_TRANSLATION+"[fi]", test.getTranslations().get("fi"));
+        I18nText test = ElementUtil.createI18NForm(NO_TRANSLATION);
+        assertEquals(NO_TRANSLATION+" [fi]", test.getTranslations().get("fi"));
     }
 
     @Test
     public void testCreateI18NTextHasTranslation() throws Exception {
-        I18nText test = ElementUtil.createI18NText(HAS_TRANSLATION);
+        I18nText test = ElementUtil.createI18NForm(HAS_TRANSLATION);
         assertEquals(TRANSLATED_FI, test.getTranslations().get("fi"));
         assertEquals(TRANSLATED_EN, test.getTranslations().get("en"));
     }

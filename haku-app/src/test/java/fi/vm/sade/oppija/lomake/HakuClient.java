@@ -93,6 +93,7 @@ public class HakuClient {
             cookies = response.getCookies();
             return response;
         } else {
+        	System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
             throw new RuntimeException(IOUtils.toString(response.getEntityInputStream(), "UTF-8"));
         }
     }

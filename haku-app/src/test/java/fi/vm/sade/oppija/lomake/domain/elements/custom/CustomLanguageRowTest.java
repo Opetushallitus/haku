@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -38,18 +38,18 @@ public class CustomLanguageRowTest {
     public void setUp() throws Exception {
 
         SCOPE_OPTIONS.clear();
-        customLanguageRow = new CustomLanguageRow(ROW_ID, createI18NText(TITLE), SCOPE_OPTIONS);
+        customLanguageRow = new CustomLanguageRow(ROW_ID, createI18NForm(TITLE), SCOPE_OPTIONS);
     }
 
     @Test
     public void testAddScopeOption() throws Exception {
-        customLanguageRow.addScopeOption(OPTION_ID, VALUE, createI18NText(TITLE));
+        customLanguageRow.addScopeOption(OPTION_ID, VALUE, createI18NForm(TITLE));
         assertTrue(customLanguageRow.getScopeOptions().size() == 1);
     }
 
     @Test
     public void testGetScopeOptions() throws Exception {
-        customLanguageRow.addScopeOption(OPTION_ID, VALUE, createI18NText(TITLE));
+        customLanguageRow.addScopeOption(OPTION_ID, VALUE, createI18NForm(TITLE));
         assertEquals(ROW_ID + CustomLanguageRow.ID_DELIMITER + OPTION_ID, customLanguageRow.getScopeOptions().get(0).getId());
     }
 }

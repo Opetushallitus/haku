@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -58,17 +58,17 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         ApplicationPeriod applicationPeriod = new ApplicationPeriod("test");
         FormModel formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
-        Phase testivaihe = new Phase("testivaihe", createI18NText("Testivaihe"), false);
-        Form form = new Form("lomake", createI18NText("yhteishaku"));
+        Phase testivaihe = new Phase("testivaihe", createI18NForm("Testivaihe"), false);
+        Form form = new Form("lomake", createI18NForm("yhteishaku"));
         form.addChild(testivaihe);
 
         applicationPeriod.addForm(form);
 
-        Theme testiRyhma = new Theme("testiGrp", createI18NText("TestiGrp"), null);
+        Theme testiRyhma = new Theme("testiGrp", createI18NForm("TestiGrp"), null);
         testivaihe.addChild(testiRyhma);
         Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
-        postOffices.put(POSTCODE, new PostOffice(POSTCODE, ElementUtil.createI18NText(POST_OFFICE)));
-        PostalCode postinumero = new PostalCode(POSTCODE_ID, createI18NText(POSTCODE_ID), postOffices);
+        postOffices.put(POSTCODE, new PostOffice(POSTCODE, ElementUtil.createI18NForm(POST_OFFICE)));
+        PostalCode postinumero = new PostalCode(POSTCODE_ID, createI18NForm(POSTCODE_ID), postOffices);
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
@@ -76,7 +76,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         postinumero.addAttribute("maxlength", "5");
         testiRyhma.addChild(postinumero);
 
-        TextQuestion tq = new TextQuestion("foo", createI18NText("bar"));
+        TextQuestion tq = new TextQuestion("foo", createI18NForm("bar"));
         testiRyhma.addChild(tq);
         updateModel(formModel);
     }

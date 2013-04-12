@@ -29,19 +29,19 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static org.junit.Assert.assertNotNull;
 import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 import static net.sourceforge.jwebunit.junit.JWebUnit.getElementByXPath;
 
 public class GroupIT extends AbstractFormTest {
     public static final String GROUP_ID = "grpid";
-    public static final Text CHILD_ELEMENT = new Text("textId", ElementUtil.createI18NText("text"));
+    public static final Text CHILD_ELEMENT = new Text("textId", ElementUtil.createI18NForm("text"));
     private FormModelHelper formModelHelper;
 
     @Before
     public void init() throws IOException {
-        Group group = new Group(GROUP_ID, createI18NText("foo"));
+        Group group = new Group(GROUP_ID, createI18NForm("foo"));
         group.addChild(CHILD_ELEMENT);
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(group);
         this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);

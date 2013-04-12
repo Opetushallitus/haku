@@ -56,13 +56,18 @@ public class LomakeIT extends AbstractSeleniumBase {
         selenium.typeKeys("Henkilotunnus", "150520-111E");
         selenium.typeKeys("Sähköposti", "aku.ankka@ankkalinna.al");
         selenium.typeKeys("matkapuhelinnumero", "0501000100");
+        Select selectAidinkieli = new Select(driver.findElement(new By.ById("aidinkieli")));
+        selectAidinkieli.selectByIndex(1);
 
         clickNextPhase(driver);
 
         driver.findElement(new By.ByClassName("notification"));
 
-        Select select = new Select(driver.findElement(new By.ById("asuinmaa")));
-        select.selectByIndex(1);
+        Select asuinmaaSelect = new Select(driver.findElement(new By.ById("asuinmaa")));
+        asuinmaaSelect.selectByIndex(1);
+        
+        Select selectKotikunta = new Select(driver.findElement(new By.ById("kotikunta")));
+        selectKotikunta.selectByIndex(1);
 
         //Wait
         screenshot("postinumero_it");
@@ -74,6 +79,7 @@ public class LomakeIT extends AbstractSeleniumBase {
 
         clickNextPhase(driver);
 
+        screenshot("hak123");
         testHAK123AandHAK124(driver);
 
 

@@ -46,7 +46,7 @@ public class ValidationResultTest {
 
     @Test
     public void testHasErrorsTrue() throws Exception {
-        validationResult = new ValidationResult("key", ElementUtil.createI18NText("error"));
+        validationResult = new ValidationResult("key", ElementUtil.createI18NForm("error"));
         assertTrue(validationResult.hasErrors());
     }
 

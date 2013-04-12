@@ -42,7 +42,7 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KoodistoServiceImpl.class);
     public static final String CODE_POST = "posti";
-    public static final String CODE_SUBJECT = "oppiaineet";
+    public static final String CODE_SUBJECT = "oppiaineetyleissivistava";
     public static final String CODE_GRADE_RANGE = "arvosanat";
     public static final String CODE_LEARNING_INSTITUTION_TYPES = "oppilaitostyyppi";
     public static final String CODE_ORGANIZATION_TYPES = "organisaatiotyyppi";

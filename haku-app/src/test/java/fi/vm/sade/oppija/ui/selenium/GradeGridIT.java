@@ -28,7 +28,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -43,8 +43,8 @@ public class GradeGridIT extends AbstractSeleniumBase {
     public void init() {
         super.before();
         ApplicationPeriod applicationPeriod = new ApplicationPeriod(Yhteishaku2013.ASID);
-        Phase arvosanat = new Phase(PHASE_ID, createI18NText("Arvosanat"), false);
-        Form form = new Form(FORM_ID, createI18NText("yhteishaku"));
+        Phase arvosanat = new Phase(PHASE_ID, createI18NForm("Arvosanat"), false);
+        Form form = new Form(FORM_ID, createI18NForm("yhteishaku"));
         form.addChild(arvosanat);
         Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl());
         yhteishaku2013.init();
