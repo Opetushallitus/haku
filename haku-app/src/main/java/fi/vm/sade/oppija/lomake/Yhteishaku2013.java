@@ -251,6 +251,7 @@ public class Yhteishaku2013 {
 
         // Asuinmaa, osoite
         DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", createI18NText("form.henkilotiedot.asuinmaa"));
+        asuinmaa.addOption("eiValittu", ElementUtil.createI18NText("form.yleinen.null"), "");
         asuinmaa.addOptions(koodistoService.getCountries());
 
         asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");

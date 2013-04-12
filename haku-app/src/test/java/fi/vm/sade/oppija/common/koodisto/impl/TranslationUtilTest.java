@@ -43,7 +43,7 @@ public class TranslationUtilTest {
         koodiType.getMetadata().add(koodiMetadataType);
         Map<String, String> translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
         String value = translationsMap.get(KieliType.FI.value().toLowerCase());
-        assertEquals(TestObjectCreator.LYHYT_NIMI, value);
+        assertEquals(TestObjectCreator.NIMI, value);
     }
 
     @Test

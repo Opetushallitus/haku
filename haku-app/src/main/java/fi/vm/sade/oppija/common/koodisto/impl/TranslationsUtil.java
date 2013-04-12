@@ -32,7 +32,7 @@ public final class TranslationsUtil {
         List<KoodiMetadataType> metadata = koodiType.getMetadata();
         Map<String, String> translations = new HashMap<String, String>();
         for (KoodiMetadataType koodiMetadataType : metadata) {
-            translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getLyhytNimi());
+            translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getNimi());
         }
         return ImmutableMap.copyOf(translations);
     }

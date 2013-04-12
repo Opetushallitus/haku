@@ -25,12 +25,14 @@ import java.util.List;
 
 public final class TestObjectCreator {
     public static final String LYHYT_NIMI = "lyhyt nimi";
+    public static final String NIMI = "pitkä nimi";
     public static final String KOODI_KOODI_URI_AND_ARVO = "koodi arvo";
 
     public static KoodiMetadataType createKoodiMetadataType() {
         KoodiMetadataType koodiMetadataType = new KoodiMetadataType();
         koodiMetadataType.setKieli(KieliType.FI);
         koodiMetadataType.setLyhytNimi(LYHYT_NIMI);
+        koodiMetadataType.setNimi(NIMI);
         return koodiMetadataType;
     }
 
