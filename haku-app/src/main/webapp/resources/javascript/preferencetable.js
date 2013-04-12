@@ -11,6 +11,17 @@
                $(this).val($targetClone.val()).empty().append($targetClone.children());
                $target.val($clone.val()).empty().append($clone.children());
             });
+
+            //child lo names
+            var $names = $("#childLONames-" + id),
+                $targetNames = $("#childLONames-" + targetId),
+                nameValue = $names.html(), targetValue = $targetNames.html();
+
+            $targetNames.html(nameValue);
+            $names.html(targetValue);
+            console.log("|"+targetValue+"|");
+            nameValue !== '' ? $("#container-childLONames-" + targetId).show() : $("#container-childLONames-" + targetId).hide();
+            targetValue !== '' ? $("#container-childLONames-" + id).show() : $("#container-childLONames-" + id).hide();
         }
     };
 

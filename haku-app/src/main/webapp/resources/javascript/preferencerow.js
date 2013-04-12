@@ -62,6 +62,7 @@
 
         clearChildLONames : function(childLONamesId) {
             $("#container-" + childLONamesId).hide();
+            $("#" + childLONamesId).html('');
         }
     };
 
