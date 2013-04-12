@@ -357,4 +357,26 @@ public class FormController {
         model.put("categoryData", applicationService.getApplication(formId).getVastauksetMerged());
         return new Viewable(viewName, model);
     }
+
+    @GET
+    @Path("/{asId}/{formId}/{phaseId}/{themeId}/preferenceRowSpecialQuestions")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    public Viewable getPreferenceRowSpecialQuestions(@PathParam("asId") final String asId,
+                                                     @PathParam("formId") final String formId,
+                                                     @PathParam("phaseId") final String phaseId,
+                                                     @PathParam("themeId") final String themeId,
+                                                     @QueryParam("ed") final Integer ed,
+                                                     @QueryParam("sora") final Boolean sora) {
+
+        Form activeForm = formService.getActiveForm(asId, formId);
+        final FormId formIdObj = new FormId(asId, activeForm.getId());
+
+        Set<Question> questions = null;
+        // service call here
+
+        // add questions into model
+
+        return new Viewable(null, null);
+    }
+
 }
