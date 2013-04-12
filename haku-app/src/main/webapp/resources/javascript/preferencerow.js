@@ -23,16 +23,14 @@
                 vocational : sortabletable_settings.vocational
             }, function(data) {
                 var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
-
                 preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
                 $("#" + selectInputId).html("<option></option>");
-
                 $(data).each(function(index, item) {
                     var selected = "";
                     childLONames[item.id] = item.childLONames;
                     if (hakukohdeId == item.id) {
                         selected = 'selected = "selected"';
-                        preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"));
+                        preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"), item.educationDegree, false);
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
                     }
                     $selectInput.append('<option value="' + item.name + '" ' + selected + ' data-id="' + item.id + '" data-educationdegree="' + item.educationDegree + '">' + item.name + '</option>');
@@ -47,13 +45,17 @@
             preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
         },
 
-        searchAdditionalQuestions : function(hakukohdeId, additionalQuestionsId) {
+        searchAdditionalQuestions : function(hakukohdeId, additionalQuestionsId, educationDegree, soraRequired) {
             var url = sortabletable_settings.contextPath + "/lomake/" + sortabletable_settings.applicationPeriodId + "/" +
                 sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
                 sortabletable_settings.teemaId + "/additionalquestions/" + hakukohdeId;
 
-            $.get(url, function(data) {
-                $("#" + additionalQuestionsId).html(data);
+            $.get(url, {
+                    'ed' : educationDegree,
+                    'sora' : soraRequired
+                },
+                function(data) {
+                    $("#" + additionalQuestionsId).html(data);
             });
         },
 
@@ -121,7 +123,7 @@
         $hiddenInput.val(selectedId);
         educationDegree = $("#" + this.id + " option:selected").data("educationdegree");
         $educationDegreeInput.val(educationDegree);
-        preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"));
+        preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"), educationDegree, false);
         preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
     });
 })();

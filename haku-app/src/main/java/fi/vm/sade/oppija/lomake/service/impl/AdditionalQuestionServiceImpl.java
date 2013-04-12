@@ -21,7 +21,12 @@ import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,31 +52,10 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public Set<Question> findAdditionalQuestions(String teemaId, FormId formId, String vaiheId) {
-        Map<String, String> hakemusValues = applicationService.getApplication(formId).getVastauksetMerged();
-        List<String> hakukohdeList = new ArrayList<String>();
-
-        int prefNumber = 1;
-
-        while (hakemusValues.containsKey("preference" + prefNumber + "-Koulutus-id")) {
-            hakukohdeList.add(hakemusValues.get("preference" + prefNumber + "-Koulutus-id"));
-            prefNumber++;
-        }
-
-        return findAdditionalQuestions(teemaId, hakukohdeList, formId, vaiheId);
-    }
-
-    @Override
-    public Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, FormId formId, final String vaiheId) {
-        Theme theme = null;
+    public Set<Question> findAdditionalQuestions(FormId formId, String phaseId, String themeId, String aoId, Integer educationDegree, Boolean sora) {
         Form form = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
-        Element phase = form.getPhase(vaiheId);
-        for (Element e : phase.getChildren()) {
-            if (e.getId().equals(teemaId)) {
-                theme = (Theme) e;
-                break;
-            }
-        }
+
+        Theme theme = findTheme(formId, phaseId, themeId);
 
         Set<Question> additionalQuestions = new LinkedHashSet<Question>();
 
@@ -79,13 +63,59 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
             return additionalQuestions;
         }
 
-        for (String hakukohdeId : hakukohdeIds) {
-            List<Question> questions = theme.getAdditionalQuestions().get(hakukohdeId);
-            if (questions != null && !questions.isEmpty()) {
-                additionalQuestions.addAll(questions);
+        // discretionary and sora questions
+        if (educationDegree != null || sora != null) {
+            // find preference row
+            List<PreferenceTable> prefTables = ElementUtil.findElementsByTypeAsList(theme, PreferenceTable.class);
+            if (prefTables.size() > 0) {
+                PreferenceTable prefTable = prefTables.get(0);
+                if (educationDegree != null && educationDegree.equals(prefTable.getDiscretionaryEducationDegree())) {
+                    additionalQuestions.add(prefTable.buildDiscretionaryQuestion(aoId));
+                }
+                if (sora != null && sora.booleanValue()) {
+                    additionalQuestions.addAll(prefTable.buildSoraQuestions(aoId));
+                }
             }
         }
 
+        List<Question> questions = theme.getAdditionalQuestions().get(aoId);
+        if (questions != null && !questions.isEmpty()) {
+            additionalQuestions.addAll(questions);
+        }
+
+
         return additionalQuestions;
     }
+
+    @Override
+    public Question findDiscretionaryFollowUps(FormId formId, String phaseId, String themeId, String aoId) {
+        Theme theme = findTheme(formId, phaseId, themeId);
+
+        if (theme == null) {
+            return null;
+        }
+
+        List<PreferenceTable> preferenceTables = ElementUtil.findElementsByTypeAsList(theme, PreferenceTable.class);
+        if (preferenceTables.isEmpty()) {
+            return null;
+        }
+
+        return preferenceTables.get(0).buildDiscretionaryFollowUps(aoId);
+    }
+
+    private Theme findTheme(FormId formId, String phaseId, String themeId) {
+        Form form = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
+
+        Theme theme = null;
+
+        Element phase = form.getPhase(phaseId);
+        for (Element e : phase.getChildren()) {
+            if (e.getId().equals(themeId)) {
+                theme = (Theme) e;
+                break;
+            }
+        }
+        return theme;
+    }
+
 }

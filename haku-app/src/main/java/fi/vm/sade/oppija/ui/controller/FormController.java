@@ -340,24 +340,76 @@ public class FormController {
         return new Viewable(ROOT_VIEW, model);
     }
 
+    /**
+     * Searches for additional questions related to an application option
+     * and its education degree and sora requirement.
+     *
+     * @param applicationSystemId application system id
+     * @param formIdStr form that is used
+     * @param phaseId phase id
+     * @param themeId theme id
+     * @param aoId application option id
+     * @param preview is for preview (optional)
+     * @param ed education degree of the application option (optional)
+     * @param sora is sora question required (optional)
+     * @return list of questions
+     */
     @GET
-    @Path("/{applicationPeriodId}/{formIdStr}/{phaseId}/{themeId}/additionalquestions/{aoId}")
+    @Path("/{applicationSystemId}/{formIdStr}/{phaseId}/{themeId}/additionalquestions/{aoId}")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    public Viewable getAdditionalQuestions(@PathParam("applicationPeriodId") final String applicationPeriodId,
+    public Viewable getAdditionalQuestions(@PathParam("applicationSystemId") final String applicationSystemId,
                                            @PathParam("formIdStr") final String formIdStr,
                                            @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                            @PathParam("themeId") final String themeId,
                                            @PathParam("aoId") final String aoId,
-                                           @QueryParam("preview") final boolean preview) {
+                                           @QueryParam("preview") final boolean preview,
+                                           @QueryParam("ed") final Integer ed,
+                                           @QueryParam("sora") final Boolean sora
+                                           ) {
+        LOGGER.debug("getAdditionalQuestions {}, {}, {}, {}, {}, {}", new Object[]{applicationSystemId,
+                formIdStr, phaseId, themeId, aoId, preview});
         String viewName = preview ? "/additionalQuestionsPreview" : "/additionalQuestions";
 
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
-        final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
+        final FormId formId = new FormId(applicationSystemId, formIdStr);
         Set<Question> additionalQuestions = additionalQuestionService.
-                findAdditionalQuestions(themeId, Lists.newArrayList(aoId), formId, phaseId);
+                findAdditionalQuestions(formId, phaseId, themeId, aoId, ed, sora);
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("additionalQuestions", additionalQuestions);
         model.put("categoryData", applicationService.getApplication(formId).getVastauksetMerged());
         return new Viewable(viewName, model);
     }
+
+    /**
+     * Get a application option specific follow up question to a discretionary question asked in
+     * application option view.
+     *
+     * @param asId
+     * @param formIdStr
+     * @param phaseId
+     * @param themeId
+     * @param aoId
+     * @return
+     */
+    @GET
+    @Path("/{asId}/{formIdStr}/{phaseId}/{themeId}/discretionaryFollowUp/{aoId}")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    public Viewable getDiscretionaryFollowUp(@PathParam("asId") final String asId,
+                                             @PathParam("formIdStr") final String formIdStr,
+                                             @PathParam("phaseId") final String phaseId,
+                                             @PathParam("themeId") final String themeId,
+                                             @PathParam("aoId") final String aoId
+                                             ) {
+
+        FormId formId = new FormId(asId, formIdStr);
+
+        Question followUp = additionalQuestionService.findDiscretionaryFollowUps(formId, phaseId, themeId, aoId);
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        model.put("categoryData", applicationService.getApplication(formId).getVastauksetMerged());
+        model.put("element", followUp);
+        model.put("template", followUp.getType());
+
+        return new Viewable(ROOT_VIEW, model);
+    }
+
 }

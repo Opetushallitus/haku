@@ -30,21 +30,16 @@ import java.util.Set;
 public interface AdditionalQuestionService {
 
     /**
-     * Lists questions in a given teema based on current answers.
-     *
-     * @param teemaId teema id
-     * @param formId  hakemus id
-     * @return list of questions
-     */
-    Set<Question> findAdditionalQuestions(String teemaId, FormId formId, String vaiheId);
-
-    /**
      * Lists additional questions in a theme based on a list of education targets.
      *
-     * @param teemaId      teema id
-     * @param hakukohdeIds education targets
-     * @param formId       hakemus id
+     * @param formId    form id
+     * @param phaseId   phase id
+     * @param themeId   theme id
+     * @param aoId      application option id
+
      * @return list of questions
      */
-    Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, FormId formId, String vaiheId);
+    Set<Question> findAdditionalQuestions(FormId formId, String phaseId, String themeId, String aoId, Integer educationDegree, Boolean sora);
+
+    Question findDiscretionaryFollowUps(FormId formId, String phaseId, String themeId, String aoId);
 }

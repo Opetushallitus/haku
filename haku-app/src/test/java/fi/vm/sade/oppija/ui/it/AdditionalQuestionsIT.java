@@ -30,6 +30,8 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  */
 public class AdditionalQuestionsIT extends AbstractFormTest {
 
+    public static final String AO_ID = "1.2.246.562.14.71344129359";
+
     @Before
     public void init() {
         FormServiceMockImpl dummyMem = new FormServiceMockImpl();
@@ -39,19 +41,12 @@ public class AdditionalQuestionsIT extends AbstractFormTest {
 
     @Test
     public void testAdditionalQuestion() {
-        beginAt("lomake/" + Yhteishaku2013.ASID + "/yhteishaku/hakutoiveet/hakutoiveetGrp/additionalquestions/1.2.246.562.14.79893512065");
-        assertFormElementPresent("1_2_246_562_14_79893512065_additional_question_1");
+        beginAt("lomake/" + Yhteishaku2013.ASID + "/yhteishaku/hakutoiveet/hakutoiveetGrp/additionalquestions/" + AO_ID);
+
+        assertFormElementPresent(AO_ID.replace(".", "_") + "_additional_question_1");
         assertElementPresentByXPath("//input[@value='q1_option_1']");
         assertElementPresentByXPath("//input[@value='q1_option_2']");
-
-        assertFormElementPresent("1_2_246_562_14_79893512065_additional_question_2");
-        assertElementPresentByXPath("//input[@value='q2_option_1']");
-        assertElementPresentByXPath("//input[@value='q2_option_2']");
-
-        assertFormElementPresent("1_2_246_562_14_79893512065_additional_question_3");
-        assertElementPresentByXPath("//input[@value='q3_option_1']");
-        assertElementPresentByXPath("//input[@value='q3_option_2']");
-        assertElementPresentByXPath("//input[@value='q3_option_3']");
+        assertElementPresentByXPath("//input[@value='q1_option_3']");
     }
 
     @Test
