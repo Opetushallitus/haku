@@ -46,7 +46,8 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_GRADE_RANGE = "arvosanat";
     public static final String CODE_LEARNING_INSTITUTION_TYPES = "oppilaitostyyppi";
     public static final String CODE_ORGANIZATION_TYPES = "organisaatiotyyppi";
-    public static final String CODE_COUNTRIES = "maatjavaltiot1";
+//    public static final String CODE_COUNTRIES = "maatjavaltiot1";
+    public static final String CODE_COUNTRIES = "maatjavaltiottmp";
     public static final String CODE_NATIONALITIES = CODE_COUNTRIES;
     public static final String CODE_LANGUAGES = "kieli";
     public static final String CODE_MUNICIPALITY = "kunta";
