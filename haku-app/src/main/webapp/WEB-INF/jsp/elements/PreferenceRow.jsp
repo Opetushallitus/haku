@@ -30,7 +30,7 @@
     <c:set value="${sortableItem.id}-Lisakysymykset" var="additionalQuestionsId" scope="page"/>
     <c:set value="${sortableItem.educationInputId}-id" var="hiddenKoulutusId" scope="page"/>
     <c:set value="${sortableItem.educationInputId}-educationDegree" var="hiddenEducationDegreeId" scope="page"/>
-    <c:set value="${sortableItem.id}-childLONames" var="childLONamesId" scope="page"/>
+    <c:set value="childLONames-${sortableItem.id}" var="childLONamesId" scope="page"/>
 
     <div class="form-row">
         <label class="form-row-label ${sortableItem.attributes['required'].value}" for="${textInputId}"><haku:i18nText
