@@ -327,7 +327,7 @@ public class Yhteishaku2013 {
     }
 
     private Theme createHakutoiveetRyhma() {
-        final String id = "1.2.246.562.14.79893512065";
+        final String id = "1.2.246.562.14.71344129359";
         final String elementIdPrefix = id.replace('.', '_');
         Radio radio = new Radio(
                 elementIdPrefix + "_additional_question_1",
