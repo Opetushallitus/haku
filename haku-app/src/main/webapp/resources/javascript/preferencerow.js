@@ -15,6 +15,7 @@
  */
 
 (function() {
+    var childLONames = {};
     var preferenceRow = {
         populateSelectInput : function(orgId, selectInputId) {
             $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationPeriodId + "/" + orgId, {
@@ -23,12 +24,14 @@
             }, function(data) {
                 var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
 
-                $selectInput.html("<option></option>");
+                preferenceRow.clearSelectInput(selectInputId);
                 $(data).each(function(index, item) {
                     var selected = "";
+                    childLONames[item.id] = item.childLONames;
                     if (hakukohdeId == item.id) {
                         selected = 'selected = "selected"';
                         preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"));
+                        preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
                     }
                     $selectInput.append('<option value="' + item.name + '" ' + selected + ' data-id="' + item.id + '" data-educationdegree="' + item.educationDegree + '">' + item.name + '</option>');
                 });
@@ -39,7 +42,7 @@
             $("#" + selectInputId + "-id").val("");
             $("#" + selectInputId + "-educationDegree").val("");
             $("#" + selectInputId).html("<option></option>");
-
+            preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
         },
 
         searchAdditionalQuestions : function(hakukohdeId, additionalQuestionsId) {
@@ -50,6 +53,15 @@
             $.get(url, function(data) {
                 $("#" + additionalQuestionsId).html(data);
             });
+        },
+
+        displayChildLONames : function(hakukohdeId, childLONamesId) {
+            $("#" + childLONamesId).html(childLONames[hakukohdeId]);
+            $("#container-" + childLONamesId).show();
+        },
+
+        clearChildLONames : function(childLONamesId) {
+            $("#container-" + childLONamesId).hide();
         }
     };
 
@@ -106,5 +118,6 @@
         educationDegree = $("#" + this.id + " option:selected").data("educationdegree");
         $educationDegreeInput.val(educationDegree);
         preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"));
+        preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
     });
 })();

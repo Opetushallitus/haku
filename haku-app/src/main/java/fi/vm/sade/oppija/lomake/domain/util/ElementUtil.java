@@ -64,7 +64,9 @@ public final class ElementUtil {
                 createI18NText(title),
                 createI18NText("Tyhjennä"),
                 createI18NText("Koulutus"),
-                createI18NText("Opetuspiste"), "Valitse koulutus");
+                createI18NText("Opetuspiste"),
+                createI18NText("Koulutukseen sisältyvät koulutusohjelmat"),
+                "Valitse koulutus");
     }
 
     public static <E extends Element> Map<String, E> findElementsByType(Element element, Class<E> eClass) {

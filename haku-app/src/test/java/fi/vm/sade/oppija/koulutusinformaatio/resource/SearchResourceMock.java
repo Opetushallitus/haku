@@ -45,11 +45,17 @@ public class SearchResourceMock {
     public String hakukohdeSearch(@PathParam("asId") final String asId, @PathParam("lopId") final String lopId) {
         if (lopId.equalsIgnoreCase("1.2.246.562.10.89537774706")) {
             return "[{\"id\":\"1.2.246.562.14.673437691210\",\"name\":\"Talonrakennus ja ymäristösuunnittelu, yo\"," +
-                    "\"educationDegree\":\"32\"},{\"id\":\"1.2.246.562.14.79893512065\",\"name\":\"Kaivosalan perustutkinto, " +
-                    "pk\",\"educationDegree\":\"32\"},{\"id\":\"1.2.246.562.14.39251489298\",\"name\":\"Musiikkiteknologian " +
-                    "koulutusohjelma, pk (Musiikkialan perustutkinto)\",\"educationDegree\":\"32\"},{\"id\":\"1.2.246.562.14.71344129359\"," +
+                    "\"educationDegree\":\"32\", \"childLONames\":[\"Käsi- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun " +
+                    "ja valmistuksen koulutusohjelma\",\"Käsi- ja taideteollisuusalan perustutkinto, Ympäristön suunnittelun ja rakentamisen koulutusohjelma" +
+                    "\"]},{\"id\":\"1.2.246.562.14.79893512065\",\"name\":\"Kaivosalan perustutkinto, " +
+                    "pk\",\"educationDegree\":\"32\", \"childLONames\":[\"Kaivosalan perustutkinto, Kaivosalan koulutusohjelma\"]}," +
+                    "{\"id\":\"1.2.246.562.14.39251489298\",\"name\":\"Musiikkiteknologian " +
+                    "koulutusohjelma, pk (Musiikkialan perustutkinto)\",\"educationDegree\":\"32\", \"childLONames\":[\"Musiikkialan perustutkinto, " +
+                    "Musiikkiteknologian koulutusohjelma\",\"Musiikkialan perustutkinto, Pianonvirityksen koulutusohjelma\"]}," +
+                    "{\"id\":\"1.2.246.562.14.71344129359\"," +
                     "\"name\":\"Tuotteen suunnittelun ja valmistuksen koulutusohjelma, pk (Käsi- ja taideteollisuusalan perustutkinto)\"" +
-                    ",\"educationDegree\":\"32\"}]";
+                    ",\"educationDegree\":\"32\", \"childLONames\":[\"Käsi- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun ja valmistuksen " +
+                    "koulutusohjelma\"]}]";
         } else {
             return "[]";
         }
