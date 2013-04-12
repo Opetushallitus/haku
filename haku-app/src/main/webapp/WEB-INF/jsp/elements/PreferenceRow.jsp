@@ -73,7 +73,10 @@
         </div>
         <div class="clear"></div>
     </div>
-    <div id="${childLONamesId}" class="notification block light-grey margin-2" style="display: none"></div>
+    <div id="container-${childLONamesId}" class="notification block light-grey margin-2" style="display: none">
+        <span><haku:i18nText value="${sortableItem.childLONameListLabel}"/>:&nbsp;</span>
+        <span id="${childLONamesId}"></span>
+    </div>
     <div id="${additionalQuestionsId}" class="form-row">
     </div>
 </div>

@@ -56,11 +56,12 @@
         },
 
         displayChildLONames : function(hakukohdeId, childLONamesId) {
-            $("#" + childLONamesId).html(childLONames[hakukohdeId]).show();
+            $("#" + childLONamesId).html(childLONames[hakukohdeId]);
+            $("#container-" + childLONamesId).show();
         },
 
         clearChildLONames : function(childLONamesId) {
-            $("#" + childLONamesId).hide();
+            $("#container-" + childLONamesId).hide();
         }
     };
 

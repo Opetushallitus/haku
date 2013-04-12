@@ -104,6 +104,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         s.typeKeys("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
+        s.isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
         driver.findElement(By.xpath("//button[@class='right']")).click();
         //seleniumHelper.navigate("/lomake/Yhteishaku/lomake/lisakysymykset");
         driver.findElement(By.id("lisakysymys"));
@@ -118,6 +119,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         s.typeKeys("preference1-Opetuspiste", "Eso");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
+        s.isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
         driver.findElement(By.xpath("//button[@name='nav-next']")).click();
         assertNull(driver.findElement(By.id("lisakysymys")));
     }
