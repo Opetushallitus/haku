@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static org.junit.Assert.*;
 
 public class ElementTreeValidatorTest {
@@ -36,7 +36,7 @@ public class ElementTreeValidatorTest {
 
     @Before
     public void setUp() throws Exception {
-        textQuestion = new TextQuestion("id", createI18NText("title"));
+        textQuestion = new TextQuestion("id", createI18NForm("title"));
         formModelDummyMemoryDao = new FormServiceMockImpl();
     }
 
@@ -79,18 +79,19 @@ public class ElementTreeValidatorTest {
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", asuinmaa);
         ValidationResult validationResult = ElementTreeValidator.validate(phase, values);
-        assertEquals(validationResult.getErrorMessages().size(), errorCount);
+        assertEquals(errorCount, validationResult.getErrorMessages().size());
     }
 
     private HashMap<String, String> fillFormWithoutAsuinmaa() {
         HashMap<String, String> values = new HashMap<String, String>();
-        values.put("äidinkieli", "FI");
-        values.put("kansalaisuus", "FI");
         values.put("Etunimet", "Mika Ville");
         values.put("Sukunimi", "Rajapaju");
         values.put("Kutsumanimi", "Mika");
-        values.put("Sukupuoli", "n");
+        values.put("kansalaisuus", "FI");
         values.put("Henkilotunnus", "110293-906X");
+        values.put("Sukupuoli", "n");
+        values.put("aidinkieli", "FI");
+        //values.put("kotikunta", "janakkala");
         return values;
     }
 

@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.mockito.Matchers.eq;
@@ -61,8 +61,8 @@ public class FormControllerTest {
     private static final String FORM_ID = "yhteishaku";
     public static final String TEST_PHASE = "test_phase";
     public static final String PHASE_TITLE = "title";
-    public static final Phase PHASE = new Phase(FIRST_CATEGORY_ID, createI18NText(PHASE_TITLE), false);
-    public static final Form FORM = new Form("id", createI18NText("title"));
+    public static final Phase PHASE = new Phase(FIRST_CATEGORY_ID, createI18NForm(PHASE_TITLE), false);
+    public static final Form FORM = new Form("id", createI18NForm("title"));
     private FormController formController;
     public static final UserHolder USER_HOLDER = new UserHolder();
     private ApplicationService applicationService;
@@ -104,7 +104,7 @@ public class FormControllerTest {
     @Test
     public void testGetFormAndRedirectToFirstCategoryNew() throws Exception {
         application.setPhaseId(null);
-        when(formService.getFirstPhase(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(new Phase(FIRST_CATEGORY_ID, createI18NText("title"), false));
+        when(formService.getFirstPhase(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(new Phase(FIRST_CATEGORY_ID, createI18NForm("title"), false));
         String expected = "/lomake/" + APPLICATION_PERIOD_ID + "/" + FORM_ID + "/" + FIRST_CATEGORY_ID;
         Response response = formController.getApplication(APPLICATION_PERIOD_ID, FORM_ID);
         assertEquals(expected, resolveRedirectPath(response));
@@ -169,7 +169,7 @@ public class FormControllerTest {
     @Test
     public void testSaveCategoryInvalid() throws Exception {
         HashMap<String, I18nText> errorMessages = new HashMap<String, I18nText>();
-        errorMessages.put("", ElementUtil.createI18NText(""));
+        errorMessages.put("", ElementUtil.createI18NForm(""));
         applicationState.addError(errorMessages);
         Viewable viewable = (Viewable) formController.savePhase(APPLICATION_PERIOD_ID, FORM_ID, FIRST_CATEGORY_ID, new MultivaluedMapImpl()).getEntity();
         assertEquals(FormController.ROOT_VIEW, viewable.getTemplateName());

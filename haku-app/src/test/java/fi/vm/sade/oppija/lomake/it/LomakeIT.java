@@ -56,13 +56,18 @@ public class LomakeIT extends AbstractSeleniumBase {
         selenium.typeKeys("Henkilotunnus", "150520-111E");
         selenium.typeKeys("Sähköposti", "aku.ankka@ankkalinna.al");
         selenium.typeKeys("matkapuhelinnumero", "0501000100");
+        Select selectAidinkieli = new Select(driver.findElement(new By.ById("aidinkieli")));
+        selectAidinkieli.selectByIndex(1);
 
         clickNextPhase(driver);
 
         driver.findElement(new By.ByClassName("notification"));
 
-        Select select = new Select(driver.findElement(new By.ById("asuinmaa")));
-        select.selectByIndex(1);
+        Select asuinmaaSelect = new Select(driver.findElement(new By.ById("asuinmaa")));
+        asuinmaaSelect.selectByIndex(1);
+        
+        Select selectKotikunta = new Select(driver.findElement(new By.ById("kotikunta")));
+        selectKotikunta.selectByIndex(1);
 
         //Wait
         screenshot("postinumero_it");
@@ -74,6 +79,7 @@ public class LomakeIT extends AbstractSeleniumBase {
 
         clickNextPhase(driver);
 
+        screenshot("hak123");
         testHAK123AandHAK124(driver);
 
 
@@ -101,19 +107,30 @@ public class LomakeIT extends AbstractSeleniumBase {
 
         clickNextPhase(driver);
 
-        selenium.typeKeys("tyokokemuskuukaudet", "1001");
+        // Lisätiedot
         clickAllElements(driver, "//input[@type='checkbox']");
-
         selenium.typeKeys("lupa1_email", "aiti@koti.fi");
-        driver.findElement(new By.ById("asiointikieli_suomi")).click();
 
+        // Ei mene läpi, työkokemus syöttämättä
         clickNextPhase(driver);
+        selenium.typeKeys("tyokokemuskuukaudet", "1001");
 
-        // HAK-20.
+        // Ei mene läpi, työkokemus > 1000 kuukautta
+        clickNextPhase(driver);
         driver.findElement(new By.ById("tyokokemuskuukaudet"));
         selenium.typeKeys("tyokokemuskuukaudet", "\b\b\b\b2"); // \b is backspace
+        
+        // Ei mene läpi, asiointikieli valitsematta
         clickNextPhase(driver);
+        driver.findElement(new By.ById("asiointikieli_suomi")).click();
 
+        screenshot("kokemus");
+        
+        // Menee läpi
+        clickNextPhase(driver);
+        screenshot("kokemus4");
+
+        // Esikatselu
         clickNextPhase(driver);
         driver.findElement(By.id("submit_confirm")).click();
 

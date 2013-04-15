@@ -19,12 +19,12 @@ package fi.vm.sade.oppija.lomake.domain.builders;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import org.junit.Test;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static org.junit.Assert.assertEquals;
 
 public class ElementBuilderTest {
 
-    public static final TextQuestion TEST_ELEMENT = new TextQuestion("1", createI18NText("title"));
+    public static final TextQuestion TEST_ELEMENT = new TextQuestion("1", createI18NForm("title"));
 
     @Test
     public void testBuild() throws Exception {

@@ -29,20 +29,20 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 public class CheckBoxIT extends AbstractFormTest {
     public static final String CHECKBOX_ID = "checkbox";
-    public static final Text TEXT_ELEMENT = new Text("textId", ElementUtil.createI18NText("text"));
+    public static final Text TEXT_ELEMENT = new Text("textId", ElementUtil.createI18NForm("text"));
     private FormModelHelper formModelHelper;
     private CheckBox checkBox;
 
     @Before
     public void init() throws IOException {
-        checkBox = new CheckBox(CHECKBOX_ID, createI18NText("foo"));
+        checkBox = new CheckBox(CHECKBOX_ID, createI18NForm("foo"));
         checkBox.addChild(TEXT_ELEMENT);
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox);
         this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);

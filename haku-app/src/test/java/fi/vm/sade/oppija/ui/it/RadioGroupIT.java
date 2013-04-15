@@ -28,7 +28,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static net.sourceforge.jwebunit.junit.JWebUnit.assertElementPresentByXPath;
 import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 
@@ -44,9 +44,9 @@ public class RadioGroupIT extends AbstractFormTest {
 
     @Before
     public void init() throws IOException {
-        radio = new Radio("radio", createI18NText("foo"));
-        radio.addOption("value1", createI18NText("radio"), "title");
-        radio.addOption("value2", createI18NText("radio2"), "title2");
+        radio = new Radio("radio", createI18NForm("foo"));
+        radio.addOption("value1", createI18NForm("radio"), "title");
+        radio.addOption("value2", createI18NForm("radio2"), "title2");
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(radio);
         this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
     }

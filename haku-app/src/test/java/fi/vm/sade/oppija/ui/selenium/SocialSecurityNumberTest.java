@@ -29,7 +29,7 @@ import org.openqa.selenium.By;
 
 import java.io.IOException;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 
 
 /**
@@ -43,23 +43,23 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
     @Before
     public void init() throws IOException {
 
-        TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", createI18NText("Henkilötunnus"));
+        TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", createI18NForm("Henkilötunnus"));
         henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
         henkilötunnus.addAttribute("title", "ppkkvv*****");
         henkilötunnus.addAttribute("required", "required");
         henkilötunnus.addAttribute("pattern", "[0-9]{6}.[0-9]{4}");
         henkilötunnus.addAttribute("size", "11");
         henkilötunnus.addAttribute("maxlength", "11");
-        henkilötunnus.setHelp(createI18NText("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi"));
+        henkilötunnus.setHelp(createI18NForm("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi"));
         henkilötunnus.setInline(true);
 
-        Radio sukupuoli = new Radio("Sukupuoli", createI18NText("Sukupuoli"));
-        sukupuoli.addOption("mies", createI18NText("form.henkilotiedot.sukupuoli.mies"), "Mies");
-        sukupuoli.addOption("nainen", createI18NText("form.henkilotiedot.sukupuoli.nainen"), "Nainen");
+        Radio sukupuoli = new Radio("Sukupuoli", createI18NForm("Sukupuoli"));
+        sukupuoli.addOption("mies", createI18NForm("form.henkilotiedot.sukupuoli.mies"), "Mies");
+        sukupuoli.addOption("nainen", createI18NForm("form.henkilotiedot.sukupuoli.nainen"), "Nainen");
         sukupuoli.addAttribute("required", "required");
         sukupuoli.setInline(true);
 
-        SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NText("Henkilötunnus"),
+        SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NForm("Henkilötunnus"),
                 sukupuoli.getI18nText(), sukupuoli.getOptions().get(0), sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilötunnus);
 
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(socialSecurityNumber);

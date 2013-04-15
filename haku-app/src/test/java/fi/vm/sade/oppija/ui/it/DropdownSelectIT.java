@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static org.junit.Assert.assertEquals;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
@@ -37,9 +37,9 @@ public class DropdownSelectIT extends AbstractFormTest {
 
     @Before
     public void init() throws IOException {
-        final DropdownSelect select = new DropdownSelect("select", createI18NText("foo"));
-        select.addOption("value1", createI18NText("title"), "select");
-        select.addOption("value2", createI18NText("title2"), "select2");
+        final DropdownSelect select = new DropdownSelect("select", createI18NForm("foo"));
+        select.addOption("value1", createI18NForm("title"), "select");
+        select.addOption("value2", createI18NForm("title2"), "select2");
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(select);
         this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
     }

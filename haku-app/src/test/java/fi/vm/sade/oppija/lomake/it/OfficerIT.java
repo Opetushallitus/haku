@@ -31,6 +31,10 @@ public class OfficerIT extends AbstractSeleniumBase {
     }
 
     @Test
+    public void dummyTest() {
+    }
+    
+    @Test
     public void testSearchAndModify() throws Exception {
 
         clickSearch();

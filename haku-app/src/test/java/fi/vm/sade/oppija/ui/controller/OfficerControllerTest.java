@@ -43,7 +43,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -72,11 +72,11 @@ public class OfficerControllerTest {
         when(applicationService.getApplication(OID)).thenReturn(app);
         when(applicationService.getApplicationPreferenceOids(anyString())).thenReturn(new ArrayList<String>());
 
-        Phase phase = new Phase(PREVIEW_PHASE, createI18NText(PREVIEW_PHASE), true);
+        Phase phase = new Phase(PREVIEW_PHASE, createI18NForm(PREVIEW_PHASE), true);
         when(formService.getLastPhase(Yhteishaku2013.ASID, "yhteishaku")).thenReturn(phase);
 
-        Form form = new Form("yhteishaku", createI18NText("yhteishaku"));
-        form.addChild(new Phase("henkilotiedot", createI18NText("henkilotiedot"), false));
+        Form form = new Form("yhteishaku", createI18NForm("yhteishaku"));
+        form.addChild(new Phase("henkilotiedot", createI18NForm("henkilotiedot"), false));
         form.addChild(phase);
         when(formService.getActiveForm(Yhteishaku2013.ASID, "yhteishaku")).thenReturn(form);
 

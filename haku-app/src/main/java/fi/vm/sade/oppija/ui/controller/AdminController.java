@@ -34,7 +34,7 @@ import java.net.URISyntaxException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static javax.ws.rs.core.Response.created;
 
 
@@ -46,7 +46,7 @@ public class AdminController {
     public static final String ADMIN_UPLOAD_VIEW = "/admin/upload";
     public static final String ADMIN_INDEX_VIEW = "/admin/index";
     public static final String ADMIN_EDIT_VIEW = "/admin/editModel";
-    public static final Attachment ATTACHMENT_MODEL = new Attachment("file", createI18NText("Lataa malli json-objektina"));
+    public static final Attachment ATTACHMENT_MODEL = new Attachment("file", createI18NForm("Lataa malli json-objektina"));
     private static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
     @Autowired

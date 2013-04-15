@@ -27,13 +27,13 @@ import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import org.junit.Before;
 import org.junit.Test;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static org.junit.Assert.assertEquals;
 
 public class FormServiceImplTest {
 
-    public static final Form FORM = new Form("FormId", createI18NText("Form title"));
-    public static final Phase PHASE = new Phase("phaseId", createI18NText("Phase title"), false);
+    public static final Form FORM = new Form("FormId", createI18NForm("Form title"));
+    public static final Phase PHASE = new Phase("phaseId", createI18NForm("Phase title"), false);
     public ApplicationPeriod applicationPeriod;
     private FormServiceImpl formService;
 

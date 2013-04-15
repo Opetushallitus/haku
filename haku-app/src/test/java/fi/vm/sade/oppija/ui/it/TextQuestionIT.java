@@ -24,7 +24,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import org.junit.Before;
 import org.junit.Test;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NText;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 public class TextQuestionIT extends AbstractFormTest {
@@ -33,8 +33,8 @@ public class TextQuestionIT extends AbstractFormTest {
 
     @Before
     public void init() {
-        TextQuestion textQuestion = new TextQuestion("sukunimi", createI18NText("foo"));
-        textQuestion.setHelp(createI18NText("help"));
+        TextQuestion textQuestion = new TextQuestion("sukunimi", createI18NForm("foo"));
+        textQuestion.setHelp(createI18NForm("help"));
         formModel = new FormModelBuilder().buildDefaultFormWithFields(textQuestion);
         this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
     }
