@@ -25,6 +25,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.TextArea;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -71,6 +72,24 @@ public class ElementUtilTest {
         theme.addChild(tq2);
         form.addChild(phase);
         Map<String, TextQuestion> result = ElementUtil.<TextQuestion>findElementsByType(form, TextQuestion.class);
+        assertNotNull(result);
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    public void testFindElementsByTypeAsList() {
+        Form form = new Form("form", new I18nText("form", ImmutableMap.of("fi", "form")));
+        Phase phase = new Phase("phase", new I18nText("phase", ImmutableMap.of("fi", "phase")), false);
+        Theme theme = new Theme("theme", new I18nText("theme", ImmutableMap.of("fi", "theme")), null);
+        phase.addChild(theme);
+        TextQuestion tq1 = new TextQuestion("text1", new I18nText("text1", ImmutableMap.of("fi", "text1")));
+        TextQuestion tq2 = new TextQuestion("text2", new I18nText("text2", ImmutableMap.of("fi", "text2")));
+        TextArea ta = new TextArea("textarea", new I18nText("textarea", ImmutableMap.of("fi", "textarea")));
+        theme.addChild(tq1);
+        theme.addChild(ta);
+        theme.addChild(tq2);
+        form.addChild(phase);
+        List<TextQuestion> result = ElementUtil.findElementsByTypeAsList(form, TextQuestion.class);
         assertNotNull(result);
         assertEquals(2, result.size());
     }

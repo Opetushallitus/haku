@@ -17,11 +17,7 @@
 package fi.vm.sade.oppija.lomake.domain.util;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 
@@ -80,6 +76,21 @@ public final class ElementUtil {
         Map<String, E> elements = new HashMap<String, E>();
         findElementByType(element, elements, eClass);
         return elements;
+    }
+
+    public static <E extends Element> List<E> findElementsByTypeAsList(Element element, Class<E> eClass) {
+        List<E> elements = new ArrayList<E>();
+        findElementByType(element, elements, eClass);
+        return elements;
+    }
+
+    private static <E extends Element> void findElementByType(final Element element, final List<E> elements, Class<E> eClass) {
+        if (element.getClass().isAssignableFrom(eClass)) {
+            elements.add((E) element);
+        }
+        for (Element child : element.getChildren()) {
+            findElementByType(child, elements, eClass);
+        }
     }
 
     private static <E extends Element> void findElementByType(final Element element, final Map<String, E> elements, Class<E> eClass) {
