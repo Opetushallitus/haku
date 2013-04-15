@@ -32,10 +32,12 @@ public interface AdditionalQuestionService {
     /**
      * Lists additional questions in a theme based on a list of education targets.
      *
-     * @param themeId      theme id
-     * @param aoId application option id
-     * @param formId       form id
+     * @param formId    form id
+     * @param phaseId   phase id
+     * @param themeId   theme id
+     * @param aoId      application option id
+
      * @return list of questions
      */
-    Set<Question> findAdditionalQuestions(String themeId, String aoId, FormId formId, String vaiheId);
+    Set<Question> findAdditionalQuestions(FormId formId, String phaseId, String themeId, String aoId, Integer educationDegree, Boolean sora);
 }

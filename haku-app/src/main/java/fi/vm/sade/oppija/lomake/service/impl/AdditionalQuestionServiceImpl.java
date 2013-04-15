@@ -21,6 +21,8 @@ import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
@@ -47,10 +49,10 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public Set<Question> findAdditionalQuestions(String themeId, String aoId, FormId formId, final String vaiheId) {
+    public Set<Question> findAdditionalQuestions(FormId formId, String phaseId, String themeId, String aoId, Integer educationDegree, Boolean sora) {
         Theme theme = null;
         Form form = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
-        Element phase = form.getPhase(vaiheId);
+        Element phase = form.getPhase(phaseId);
         for (Element e : phase.getChildren()) {
             if (e.getId().equals(themeId)) {
                 theme = (Theme) e;
@@ -67,6 +69,30 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
         List<Question> questions = theme.getAdditionalQuestions().get(aoId);
         if (questions != null && !questions.isEmpty()) {
             additionalQuestions.addAll(questions);
+        }
+
+        // discretionary and sora questions
+        if (educationDegree != null || sora != null) {
+            // find preference row
+            PreferenceTable prefTable = null;
+            for (Element child : theme.getChildren()) {
+                if (child instanceof PreferenceRow) {
+                    prefTable = (PreferenceTable) child;
+                    break;
+                }
+            }
+            if (prefTable != null) {
+                if (educationDegree != null) {
+                    // ask discretionary question from pref table
+                }
+                if (sora != null) {
+                    // ask sora question from pref table
+                }
+
+
+            }
+
+
         }
 
         return additionalQuestions;

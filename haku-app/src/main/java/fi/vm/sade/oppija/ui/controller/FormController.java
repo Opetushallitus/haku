@@ -337,6 +337,20 @@ public class FormController {
         return new Viewable(ROOT_VIEW, model);
     }
 
+    /**
+     * Searches for additional questions related to an application option
+     * and its education degree and sora requirement.
+     *
+     * @param applicationSystemId application system id
+     * @param formIdStr form that is used
+     * @param phaseId phase id
+     * @param themeId theme id
+     * @param aoId application option id
+     * @param preview is for preview (optional)
+     * @param ed education degree of the application option (optional)
+     * @param sora is sora question required (optional)
+     * @return list of questions
+     */
     @GET
     @Path("/{applicationSystemId}/{formIdStr}/{phaseId}/{themeId}/additionalquestions/{aoId}")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
@@ -345,40 +359,21 @@ public class FormController {
                                            @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                            @PathParam("themeId") final String themeId,
                                            @PathParam("aoId") final String aoId,
-                                           @QueryParam("preview") final boolean preview) {
+                                           @QueryParam("preview") final boolean preview,
+                                           @QueryParam("ed") final Integer ed,
+                                           @QueryParam("sora") final Boolean sora
+                                           ) {
         LOGGER.debug("getAdditionalQuestions {}, {}, {}, {}, {}, {}", new Object[]{applicationSystemId,
                 formIdStr, phaseId, themeId, aoId, preview});
         String viewName = preview ? "/additionalQuestionsPreview" : "/additionalQuestions";
 
         final FormId formId = new FormId(applicationSystemId, formIdStr);
         Set<Question> additionalQuestions = additionalQuestionService.
-                findAdditionalQuestions(themeId, aoId, formId, phaseId);
+                findAdditionalQuestions(formId, phaseId, themeId, aoId, ed, sora);
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("additionalQuestions", additionalQuestions);
         model.put("categoryData", applicationService.getApplication(formId).getVastauksetMerged());
         return new Viewable(viewName, model);
-    }
-
-    @GET
-    @Path("/{asId}/{formId}/{phaseId}/{themeId}/preferenceRowSpecialQuestions")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    public Viewable getPreferenceRowSpecialQuestions(@PathParam("asId") final String asId,
-                                                     @PathParam("formId") final String formId,
-                                                     @PathParam("phaseId") final String phaseId,
-                                                     @PathParam("themeId") final String themeId,
-                                                     @QueryParam("ed") final Integer ed,
-                                                     @QueryParam("sora") final Boolean sora) {
-
-        Form activeForm = formService.getActiveForm(asId, formId);
-        final FormId formIdObj = new FormId(asId, activeForm.getId());
-
-        Set<Question> questions = null;
-
-        // service call here
-
-        // add questions into model
-
-        return new Viewable(null, null);
     }
 
 }
