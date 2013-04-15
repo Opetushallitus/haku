@@ -24,6 +24,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,10 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
 
     @Override
     public Set<Question> findAdditionalQuestions(FormId formId, String phaseId, String themeId, String aoId, Integer educationDegree, Boolean sora) {
-        Theme theme = null;
         Form form = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
+
+        Theme theme = null;
+
         Element phase = form.getPhase(phaseId);
         for (Element e : phase.getChildren()) {
             if (e.getId().equals(themeId)) {
@@ -66,34 +69,26 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
             return additionalQuestions;
         }
 
+        // discretionary and sora questions
+        if (educationDegree != null || sora != null) {
+            // find preference row
+            List<PreferenceTable> prefTables = ElementUtil.findElementsByTypeAsList(theme, PreferenceTable.class);
+            if (prefTables.size() > 0) {
+                PreferenceTable prefTable = prefTables.get(0);
+                if (educationDegree != null && educationDegree.equals(prefTable.getDiscretionaryEducationDegree())) {
+                    additionalQuestions.add(prefTable.getDiscretionaryQuestion());
+                }
+                if (sora != null && sora.booleanValue()) {
+                    additionalQuestions.add(prefTable.getSoraQuestion());
+                }
+            }
+        }
+
         List<Question> questions = theme.getAdditionalQuestions().get(aoId);
         if (questions != null && !questions.isEmpty()) {
             additionalQuestions.addAll(questions);
         }
 
-        // discretionary and sora questions
-        if (educationDegree != null || sora != null) {
-            // find preference row
-            PreferenceTable prefTable = null;
-            for (Element child : theme.getChildren()) {
-                if (child instanceof PreferenceRow) {
-                    prefTable = (PreferenceTable) child;
-                    break;
-                }
-            }
-            if (prefTable != null) {
-                if (educationDegree != null) {
-                    // ask discretionary question from pref table
-                }
-                if (sora != null) {
-                    // ask sora question from pref table
-                }
-
-
-            }
-
-
-        }
 
         return additionalQuestions;
     }

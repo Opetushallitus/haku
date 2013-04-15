@@ -20,6 +20,7 @@ import com.google.common.base.Predicate;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator;
@@ -50,11 +51,21 @@ public class PreferenceTable extends Titled {
     private String moveUpLabel;
     // label text for down button
     private String moveDownLabel;
+    // the educationDegree that is required from an application option so that the discretionary
+    // question gets asked
+    private int discretionaryEducationDegree;
+    // discretionary question that is asked if selected application option has a specific education degree
+    private Question discretionaryQuestion;
+    // sora question, is presented if
+    private Question soraQuestion;
 
     public PreferenceTable(@JsonProperty(value = "id") final String id,
                            @JsonProperty(value = "i18nText") final I18nText i18nText,
                            @JsonProperty(value = "moveUpLabel") final String moveUpLabel,
-                           @JsonProperty(value = "moveDownLabel") final String moveDownLabel) {
+                           @JsonProperty(value = "moveDownLabel") final String moveDownLabel,
+                           @JsonProperty(value = "discretionaryEducationDegree") final int discretionaryEducationDegree,
+                           @JsonProperty(value = "discretionaryQuestion") Question discretionaryQuestion,
+                           @JsonProperty(value = "soraQuestion") Question soraQuestion) {
         super(id, i18nText);
         this.moveUpLabel = moveUpLabel;
         this.moveDownLabel = moveDownLabel;
@@ -66,6 +77,18 @@ public class PreferenceTable extends Titled {
 
     public String getMoveDownLabel() {
         return moveDownLabel;
+    }
+
+    public int getDiscretionaryEducationDegree() {
+        return discretionaryEducationDegree;
+    }
+
+    public Question getDiscretionaryQuestion() {
+        return discretionaryQuestion;
+    }
+
+    public Question getSoraQuestion() {
+        return soraQuestion;
     }
 
     @Override

@@ -472,7 +472,7 @@ public class Yhteishaku2013 {
         hakutoiveetRyhma
                 .setHelp(createI18NForm("form.hakutoiveet.help"));
         PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NForm("form.hakutoiveet.otsikko"), "Ylös",
-                "Alas");
+                "Alas", 32, null, null);
         PreferenceRow pr1 = ElementUtil.createI18NPreferenceRow("preference1", "1");
         pr1.addAttribute("required", "required");
         PreferenceRow pr2 = ElementUtil.createI18NPreferenceRow("preference2", "2");
