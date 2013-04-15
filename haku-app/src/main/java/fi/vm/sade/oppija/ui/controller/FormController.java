@@ -338,20 +338,21 @@ public class FormController {
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{formIdStr}/{phaseId}/{themeId}/additionalquestions/{aoId}")
+    @Path("/{applicationSystemId}/{formIdStr}/{phaseId}/{themeId}/additionalquestions/{aoId}")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    public Viewable getAdditionalQuestions(@PathParam("applicationPeriodId") final String applicationPeriodId,
+    public Viewable getAdditionalQuestions(@PathParam("applicationSystemId") final String applicationSystemId,
                                            @PathParam("formIdStr") final String formIdStr,
                                            @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                            @PathParam("themeId") final String themeId,
                                            @PathParam("aoId") final String aoId,
                                            @QueryParam("preview") final boolean preview) {
+        LOGGER.debug("getAdditionalQuestions {}, {}, {}, {}, {}, {}", new Object[]{applicationSystemId,
+                formIdStr, phaseId, themeId, aoId, preview});
         String viewName = preview ? "/additionalQuestionsPreview" : "/additionalQuestions";
 
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formIdStr);
-        final FormId formId = new FormId(applicationPeriodId, activeForm.getId());
+        final FormId formId = new FormId(applicationSystemId, formIdStr);
         Set<Question> additionalQuestions = additionalQuestionService.
-                findAdditionalQuestions(themeId, Lists.newArrayList(aoId), formId, phaseId);
+                findAdditionalQuestions(themeId, aoId, formId, phaseId);
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("additionalQuestions", additionalQuestions);
         model.put("categoryData", applicationService.getApplication(formId).getVastauksetMerged());
@@ -372,6 +373,7 @@ public class FormController {
         final FormId formIdObj = new FormId(asId, activeForm.getId());
 
         Set<Question> questions = null;
+
         // service call here
 
         // add questions into model

@@ -47,27 +47,12 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public Set<Question> findAdditionalQuestions(String teemaId, FormId formId, String vaiheId) {
-        Map<String, String> hakemusValues = applicationService.getApplication(formId).getVastauksetMerged();
-        List<String> hakukohdeList = new ArrayList<String>();
-
-        int prefNumber = 1;
-
-        while (hakemusValues.containsKey("preference" + prefNumber + "-Koulutus-id")) {
-            hakukohdeList.add(hakemusValues.get("preference" + prefNumber + "-Koulutus-id"));
-            prefNumber++;
-        }
-
-        return findAdditionalQuestions(teemaId, hakukohdeList, formId, vaiheId);
-    }
-
-    @Override
-    public Set<Question> findAdditionalQuestions(String teemaId, List<String> hakukohdeIds, FormId formId, final String vaiheId) {
+    public Set<Question> findAdditionalQuestions(String themeId, String aoId, FormId formId, final String vaiheId) {
         Theme theme = null;
         Form form = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
         Element phase = form.getPhase(vaiheId);
         for (Element e : phase.getChildren()) {
-            if (e.getId().equals(teemaId)) {
+            if (e.getId().equals(themeId)) {
                 theme = (Theme) e;
                 break;
             }
@@ -79,13 +64,12 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
             return additionalQuestions;
         }
 
-        for (String hakukohdeId : hakukohdeIds) {
-            List<Question> questions = theme.getAdditionalQuestions().get(hakukohdeId);
-            if (questions != null && !questions.isEmpty()) {
-                additionalQuestions.addAll(questions);
-            }
+        List<Question> questions = theme.getAdditionalQuestions().get(aoId);
+        if (questions != null && !questions.isEmpty()) {
+            additionalQuestions.addAll(questions);
         }
 
         return additionalQuestions;
     }
+
 }

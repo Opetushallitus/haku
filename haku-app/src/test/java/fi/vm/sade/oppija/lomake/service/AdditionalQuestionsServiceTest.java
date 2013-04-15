@@ -62,7 +62,7 @@ public class AdditionalQuestionsServiceTest {
     private ApplicationService createHakemusServiceMock() {
         ApplicationService applicationService = mock(ApplicationServiceImpl.class);
         Map<String, String> values = new HashMap<String, String>();
-        values.put("preference1-Koulutus-id", "1.2.246.562.14.79893512065");
+        values.put("preference1-Koulutus-id", "1.2.246.562.14.71344129359");
         Application application = new Application(FORM_ID, TESTUSER);
         application.addVaiheenVastaukset("hakutoiveet", values);
 
@@ -72,18 +72,10 @@ public class AdditionalQuestionsServiceTest {
     }
 
     @Test
-    public void testEducationSpecificQuestions() {
-        String teemaId = "hakutoiveetGrp";
-        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, FORM_ID, "hakutoiveet");
+    public void testAOSpecificQuestions() {
+        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(
+                "hakutoiveetGrp", "1.2.246.562.14.71344129359", FORM_ID, "hakutoiveet");
         assertEquals(3, additionalQuestions.size());
-    }
-
-    @Test
-    public void testEducationSpecificSubjects() {
-        String teemaId = "arvosanatGrp";
-        Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(teemaId, FORM_ID, "arvosanat");
-        assertEquals(2, additionalQuestions.size());
 
     }
-
 }
