@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -73,8 +73,9 @@ public class GradeGridIT extends AbstractSeleniumBase {
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
 
-        driver.findElement(By.id("add_language_button")).click();
+        driver.findElement(By.id("languages")).click();
+        driver.findElement(By.id("nativeLanguage")).click();
 
-        assertNotNull(driver.findElement(By.id("custom-scope_0")));
+        assertNotNull(driver.findElement(By.id("custom-grades-0")));
     }
 }

@@ -41,7 +41,6 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Option> listOfGradeGrades;
     public final List<PostOffice> listOfPostOffices;
     public final List<SubjectRow> listOfSubjects;
-    public final List<SubjectRow> listOfSubjectsRowsSecondary;
     public final List<Option> listOfLearningInstitutionTypes;
     public final List<Option> listOfOrganizationTypes;
     public final List<Option> listOfCountries;
@@ -67,47 +66,29 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 createPostOffice("33100", "Tampere"));
 
         this.listOfSubjects = ImmutableList.of(
-                new SubjectRow("A1", createI18NForm("A1-kieli")),
-                new SubjectRow("A12", createI18NForm("A12-kieli")),
-                new SubjectRow("A2", createI18NForm("A2-kieli")),
-                new SubjectRow("A22", createI18NForm("A22-kieli")),
-                new SubjectRow("AI", createI18NForm("Äidinkieli ja kirjallisuus")),
-                new SubjectRow("B1", createI18NForm("B1-kieli")),
-                new SubjectRow("B2", createI18NForm("B2-kieli")),
-                new SubjectRow("B22", createI18NForm("B22-kieli")),
-                new SubjectRow("B23", createI18NForm("B23-kieli")),
-                new SubjectRow("B3", createI18NForm("B3-kieli")),
-                new SubjectRow("MA", createI18NForm("Matematiikka")),
-                new SubjectRow("BI", createI18NForm("Biologia")),
-                new SubjectRow("GE", createI18NForm("Maantieto")),
-                new SubjectRow("FY", createI18NForm("Fysiikka")),
-                new SubjectRow("KE", createI18NForm("Kemia")),
-                new SubjectRow("TE", createI18NForm("Terveystieto")),
-                new SubjectRow("KT", createI18NForm("Uskonto tai elämänkatsomustieto")),
-                new SubjectRow("HI", createI18NForm("Historia")),
-                new SubjectRow("YH", createI18NForm("Yhteiskuntaoppi")),
-                new SubjectRow("MU", createI18NForm("Musiikki")),
-                new SubjectRow("KU", createI18NForm("Kuvataide")),
-                new SubjectRow("KS", createI18NForm("Käsityö")),
-                new SubjectRow("LI", createI18NForm("Liikunta"))
-        );
-        this.listOfSubjectsRowsSecondary = ImmutableList.of(
-                new SubjectRow("LUK_A1", createI18NForm("A1-kieli")),
-                new SubjectRow("LUK_A12", createI18NForm("A12-kieli")),
-                new SubjectRow("LUK_A2", createI18NForm("A2-kieli")),
-                new SubjectRow("LUK_A22", createI18NForm("A22-kieli")),
-                new SubjectRow("LUK_AI", createI18NForm("Äidinkieli ja kirjallisuus")),
-                new SubjectRow("LUK_B1", createI18NForm("B1-kieli")),
-                new SubjectRow("LUK_B2", createI18NForm("B2-kieli")),
-                new SubjectRow("LUK_B22", createI18NForm("B22-kieli")),
-                new SubjectRow("LUK_B23", createI18NForm("B23-kieli")),
-                new SubjectRow("LUK_B3", createI18NForm("B3-kieli")),
-                new SubjectRow("LUK_HI", createI18NForm("Historia")),
-                new SubjectRow("LUK_YH", createI18NForm("Yhteiskuntaoppi")),
-                new SubjectRow("LUK_MA", createI18NForm("Matematiikka")),
-                new SubjectRow("LUK_FY", createI18NForm("Fysiikka")),
-                new SubjectRow("LUK_KE", createI18NForm("Kemia")),
-                new SubjectRow("LUK_BI", createI18NForm("Biologia"))
+                new SubjectRow("A1", createI18NForm("A1-kieli"), true, true, true, true),
+                new SubjectRow("A12", createI18NForm("A12-kieli"), true, true, true, true),
+                new SubjectRow("A2", createI18NForm("A2-kieli"), true, true, true, true),
+                new SubjectRow("A22", createI18NForm("A22-kieli"), true, true, true, true),
+                new SubjectRow("AI", createI18NForm("Äidinkieli ja kirjallisuus"), true, true, true, false),
+                new SubjectRow("B1", createI18NForm("B1-kieli"), true, true, true, true),
+                new SubjectRow("B2", createI18NForm("B2-kieli"), true, true, true, true),
+                new SubjectRow("B22", createI18NForm("B22-kieli"), true, true, true, true),
+                new SubjectRow("B23", createI18NForm("B23-kieli"), true, true, true, true),
+                new SubjectRow("B3", createI18NForm("B3-kieli"), true, true, true, true),
+                new SubjectRow("MA", createI18NForm("Matematiikka"), true, true, true, false),
+                new SubjectRow("BI", createI18NForm("Biologia"), true, true, true, false),
+                new SubjectRow("GE", createI18NForm("Maantieto"), true, true, true, false),
+                new SubjectRow("FY", createI18NForm("Fysiikka"), true, true, true, false),
+                new SubjectRow("KE", createI18NForm("Kemia"), true, true, true, false),
+                new SubjectRow("TE", createI18NForm("Terveystieto"), true, true, true, false),
+                new SubjectRow("KT", createI18NForm("Uskonto tai elämänkatsomustieto"), true, true, true, false),
+                new SubjectRow("HI", createI18NForm("Historia"), true, true, true, false),
+                new SubjectRow("YH", createI18NForm("Yhteiskuntaoppi"), true, true, true, false),
+                new SubjectRow("MU", createI18NForm("Musiikki"), true, true, true, false),
+                new SubjectRow("KU", createI18NForm("Kuvataide"), true, true, true, false),
+                new SubjectRow("KS", createI18NForm("Käsityö"), true, true, true, false),
+                new SubjectRow("LI", createI18NForm("Liikunta"), true, true, true, false)
         );
 
         this.listOfLearningInstitutionTypes = ImmutableList.of(
@@ -133,7 +114,6 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                                 createI18NForm("Suomi"), SUOMI),
                         new Option(RUOTSI,
                                 createI18NForm("Ruotsi"), RUOTSI));
-
 
         this.listOfMunicipalities = ImmutableList.of(
                 new Option("jalasjarvi",
@@ -163,6 +143,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getGradeRanges() {
         return this.listOfGradeGrades;
+    }
+
+    @Override
+    public List<Option> getSubjectLanguages() {
+        return this.listOfLanguages;
     }
 
 

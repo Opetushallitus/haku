@@ -27,7 +27,6 @@ import java.util.Map;
 
 public class ValueSetValidator extends FieldValidator {
     private final List<String> validValues;
-    Joiner joiner = Joiner.on(", ");
 
     public ValueSetValidator(final String fieldName, final String errorMessage, final List<String> validValues) {
         super(fieldName, errorMessage);
@@ -40,8 +39,6 @@ public class ValueSetValidator extends FieldValidator {
         String value = values.get(fieldName);
         if (value != null && !this.validValues.contains(value)) {
             validationResult = new ValidationResult(fieldName, ElementUtil.createI18NTextError(errorMessage));
-//            validationResult = new ValidationResult(fieldName, 
-//            		fieldName + ": " + errorMessage + " | " + value + "(" + joiner.join(this.validValues) + ")");
         }
         return validationResult;
     }

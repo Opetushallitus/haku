@@ -18,8 +18,8 @@ package fi.vm.sade.oppija.lomake.it;
 
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,7 +62,7 @@ public class LomakeIT extends AbstractSeleniumBase {
         try {
             driver.findElement(By.id("puhelinnumero2"));
             fail();
-        } catch(NoSuchElementException nsee) {
+        } catch (NoSuchElementException nsee) {
             // As expected
         }
 
@@ -76,7 +76,7 @@ public class LomakeIT extends AbstractSeleniumBase {
 
         Select asuinmaaSelect = new Select(driver.findElement(new By.ById("asuinmaa")));
         asuinmaaSelect.selectByIndex(0);
-        
+
         Select selectKotikunta = new Select(driver.findElement(new By.ById("kotikunta")));
         selectKotikunta.selectByIndex(1);
 
@@ -133,13 +133,13 @@ public class LomakeIT extends AbstractSeleniumBase {
         clickNextPhase(driver);
         driver.findElement(new By.ById("tyokokemuskuukaudet"));
         selenium.typeKeys("tyokokemuskuukaudet", "\b\b\b\b2"); // \b is backspace
-        
+
         // Ei mene läpi, asiointikieli valitsematta
         clickNextPhase(driver);
         driver.findElement(new By.ById("asiointikieli_suomi")).click();
 
         screenshot("kokemus");
-        
+
         // Menee läpi
         clickNextPhase(driver);
         screenshot("kokemus4");

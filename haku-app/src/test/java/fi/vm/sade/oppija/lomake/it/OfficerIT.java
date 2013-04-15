@@ -31,12 +31,7 @@ public class OfficerIT extends AbstractSeleniumBase {
     }
 
     @Test
-    public void dummyTest() {
-    }
-    
-    @Test
     public void testSearchAndModify() throws Exception {
-
         clickSearch();
         WebElement applicationLink = findApplicationLinks().get(0);
         applicationLink.click();

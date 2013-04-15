@@ -29,6 +29,8 @@ public interface KoodistoService {
 
     List<Option> getGradeRanges();
 
+    List<Option> getSubjectLanguages();
+
     List<Option> getLearningInstitutionTypes();
 
     List<Option> getOrganizationtypes();

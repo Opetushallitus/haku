@@ -67,7 +67,6 @@ public class AdminController {
 
     public AdminController() {
     }
-
     @GET
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getIndex() {

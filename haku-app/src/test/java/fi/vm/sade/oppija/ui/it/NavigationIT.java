@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.ui.it;
 
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.lomake.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 
 import org.junit.Before;

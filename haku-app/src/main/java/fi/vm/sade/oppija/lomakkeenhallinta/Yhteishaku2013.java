@@ -14,19 +14,27 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake;
+package fi.vm.sade.oppija.lomakkeenhallinta;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.*;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.predicate.ComprehensiveSchools;
+import fi.vm.sade.oppija.lomakkeenhallinta.predicate.HighSchools;
+import fi.vm.sade.oppija.lomakkeenhallinta.predicate.Ids;
+import fi.vm.sade.oppija.lomakkeenhallinta.predicate.Languages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +58,8 @@ public class Yhteishaku2013 {
     private static final String NOT_FI = "^((?!FI)[A-Z]{2})$";
     
     private final KoodistoService koodistoService;
+    private List<SubjectRow> subjects;
+    private List<Option> gradeRanges;
 
     @Autowired // NOSONAR
     public Yhteishaku2013(final KoodistoService koodistoService) { // NOSONAR
@@ -60,6 +70,9 @@ public class Yhteishaku2013 {
 
     public void init() { // NOSONAR
         try {
+
+            this.subjects = koodistoService.getSubjects();
+
             Form form = new Form("yhteishaku", createI18NForm("form.title"));
 
             applicationPeriod.addForm(form);
@@ -113,7 +126,7 @@ public class Yhteishaku2013 {
                     .addChild(arvosanatRyhma).addChild(tyokokemusRyhma).addChild(lupatiedotRyhma);
             yhteenvetoRyhma.setHelp(createI18NForm("form.esikatselu.help"));
         } catch (Throwable t) {
-            throw new RuntimeException(Yhteishaku2013.class.getCanonicalName() + " init failed");
+            throw new RuntimeException(Yhteishaku2013.class.getCanonicalName() + " init failed", t);
         }
 
     }
@@ -337,8 +350,9 @@ public class Yhteishaku2013 {
         Map<String, List<Question>> oppiaineMap = new HashMap<String, List<Question>>();
 
         List<Question> oppiaineList = new ArrayList<Question>();
-        oppiaineList.add(new SubjectRow("tietotekniikka", createI18NForm("form.oppiaineet.tietotekniikka")));
-        oppiaineList.add(new SubjectRow("kansantaloustiede", createI18NForm("form.oppiaineet.kansantaloustiede")));
+
+        oppiaineList.add(new SubjectRow("tietotekniikka", createI18NForm("form.oppiaineet.tietotekniikka"), true, false, false, false));
+        oppiaineList.add(new SubjectRow("kansantaloustiede", createI18NForm("form.oppiaineet.kansantaloustiede"), true, false, false, false));
         oppiaineMap.put("1.2.246.562.14.79893512065", oppiaineList);
 
         return new Theme("arvosanatGrp", createI18NForm("form.arvosanat.otsikko"), oppiaineMap);
@@ -367,54 +381,209 @@ public class Yhteishaku2013 {
         return new Theme("hakutoiveetGrp", createI18NForm("form.hakutoiveet.otsikko"), lisakysymysMap);
     }
 
-    public GradeGrid createGradeGrid(final String id, boolean primary) {
+    public GradeGrid createGradeGrid(final String id, final boolean comprehensiveSchool) {
 
-        List<Option> gradeRange = koodistoService.getGradeRanges();
-        List<SubjectRow> subjects = koodistoService.getSubjects();
-        SubjectRow finnish = new SubjectRow("subject_finnish", createI18NForm("form.arvosanat.aidinkieli"));
-        List<SubjectRow> subjectRowsAfter = new ArrayList<SubjectRow>();
+
         for (SubjectRow subject : subjects) {
-            String subjectId = subject.getId();
-            if (subjectId.endsWith("AI")) {
-                finnish = subject;
-            } else if (!(subjectId.endsWith("A1") || subjectId.endsWith("A12") || subjectId.endsWith("A13")
-                    || subjectId.endsWith("A2") || subjectId.endsWith("A22") || subjectId.endsWith("23")
-                    || subjectId.endsWith("B1") || subjectId.endsWith("B12") || subjectId.endsWith("B13")
-                    || subjectId.endsWith("B2") || subjectId.endsWith("B22") || subjectId.endsWith("B23")
-                    || subjectId.endsWith("B3") || subjectId.endsWith("B32") || subjectId.endsWith("B33"))) {
-                subjectRowsAfter.add(subject);
-            }
-        }
-        List<SubjectRow> subjectRowsBefore = new ArrayList<SubjectRow>();
-        subjectRowsBefore.add(finnish);
+            subject.addAttribute("required", "required");
+                    }
+        List<SubjectRow> filtered;
+        if (comprehensiveSchool) {
+            filtered = ImmutableList.copyOf(Iterables.filter(this.subjects,
+                    new ComprehensiveSchools()));
+        } else {
+            filtered = ImmutableList.copyOf(Iterables.filter(this.subjects,
+                    new HighSchools()));
+                    }
 
-        LanguageRow a1 = new LanguageRow("lang_a1", createI18NForm("form.arvosanat.a1kieli"));
-        LanguageRow b1 = new LanguageRow("lang_b1", createI18NForm("form.arvosanat.b1kieli"));
+        List<SubjectRow> nativeLanguages = ImmutableList.copyOf(Iterables.filter(filtered,
+                new Ids<SubjectRow>("AI")));
+        List<SubjectRow> listOfLanguages = ImmutableList.copyOf(Iterables.filter(filtered, new Languages()));
 
-        List<LanguageRow> languageRows = new ArrayList<LanguageRow>();
-        languageRows.add(a1);
-        languageRows.add(b1);
+        ImmutableList<SubjectRow> defaultLanguages = ImmutableList.copyOf(
+                Iterables.filter(listOfLanguages, new Ids<SubjectRow>("A1", "B1")));
 
-        List<Option> languageOptions = new ArrayList<Option>();
-        languageOptions.add(new Option("langoption_" + "eng", createI18NForm("form.arvosanat.englanti"), "eng"));
-        languageOptions.add(new Option("langoption_" + "swe", createI18NForm("form.arvosanat.ruotsi"), "swe"));
-        languageOptions.add(new Option("langoption_" + "fra", createI18NForm("form.arvosanat.ranska"), "fra"));
-        languageOptions.add(new Option("langoption_" + "ger", createI18NForm("form.arvosanat.saksa"), "ger"));
-        languageOptions.add(new Option("langoption_" + "rus", createI18NForm("form.arvosanat.venaja"), "rus"));
-        languageOptions.add(new Option("langoption_" + "fin", createI18NForm("form.arvosanat.suomi"), "fin"));
+        ImmutableList<SubjectRow> subjectsAfterLanguages = ImmutableList.copyOf(
+                Iterables.filter(Iterables.filter(filtered, Predicates.not(new Languages())),
+                        Predicates.not(new Ids<SubjectRow>("AI"))));
 
-        List<Option> scopeOptions = new ArrayList<Option>();
-        scopeOptions.add(new Option("scopeoption_" + "a1", createI18NForm("form.arvosanat.a1"), "a1"));
-        scopeOptions.add(new Option("scopeoption_" + "a2", createI18NForm("form.arvosanat.a2"), "a2"));
-        scopeOptions.add(new Option("scopeoption_" + "b1", createI18NForm("form.arvosanat.b1"), "b1"));
-        scopeOptions.add(new Option("scopeoption_" + "b2", createI18NForm("form.arvosanat.b2"), "b2"));
-        scopeOptions.add(new Option("scopeoption_" + "b3", createI18NForm("form.arvosanat.b3"), "b3"));
 
-        GradeGrid gradeGrid = new GradeGrid(id, createI18NForm("form.arvosanat.otsikko"), "Kieli", subjectRowsBefore,
-                languageRows, subjectRowsAfter, scopeOptions, languageOptions, gradeRange, primary);
+        GradeGrid gradeGrid = new GradeGrid(id, createI18NForm("form.arvosanat.otsikko"));
         gradeGrid.setVerboseHelp(getVerboseHelp());
 
+        for (SubjectRow nativeLanguage : nativeLanguages) {
+            gradeGrid.addChild(createGradeGridRow(nativeLanguage, true, true));
+            GradeGridRow additionalNativeLanguageRow = createAdditionalNativeLanguageRow(nativeLanguage, 0);
+            additionalNativeLanguageRow.addAttribute("hidden", "hidden");
+            additionalNativeLanguageRow.addAttribute("group", "nativeLanguage");
+            gradeGrid.addChild(additionalNativeLanguageRow);
+        }
+        gradeGrid.addChild(createAddLangRow("nativeLanguage", filtered));
+
+        for (SubjectRow defaultLanguage : defaultLanguages) {
+            gradeGrid.addChild(createGradeGridRow(defaultLanguage, true, false));
+        }
+
+        List<GradeGridRow> additionalLanguages = createAdditionalLanguages(5, filtered);
+        for (GradeGridRow additionalLanguage : additionalLanguages) {
+            additionalLanguage.addAttribute("group", "languages");
+            gradeGrid.addChild(additionalLanguage);
+        }
+        gradeGrid.addChild(createAddLangRow("languages", filtered));
+
+
+        for (SubjectRow subjectsAfterLanguage : subjectsAfterLanguages) {
+            gradeGrid.addChild(createGradeGridRow(subjectsAfterLanguage, false, false));
+        }
         return gradeGrid;
+    }
+
+    private List<GradeGridRow> createAdditionalLanguages(int maxAdditionalLanguages, final List<SubjectRow> subjects) {
+        List<GradeGridRow> rows = new ArrayList<GradeGridRow>();
+        for (int i = 0; i < maxAdditionalLanguages; i++) {
+            rows.add(createAdditionalLanguageRow(i, subjects));
+        }
+        return rows;
+    }
+
+    private GradeGridRow createAdditionalNativeLanguageRow(final SubjectRow subjectRow, int index) {
+
+        Element[] columnsArray = createColumnsArray(index);
+
+        String postfix = subjectRow.getId() + "-" + index;
+        GradeGridOptionQuestion addLangs = new GradeGridOptionQuestion("custom-language-" + postfix, koodistoService.getSubjectLanguages(), false);
+        ElementUtil.setDisabled(addLangs);
+        GradeGridOptionQuestion grades = new GradeGridOptionQuestion("custom-grades-" + postfix, getGradeRanges(false), false);
+        ElementUtil.setDisabled(grades);
+        GradeGridOptionQuestion gradesSelected = new GradeGridOptionQuestion("custom-optional-grades-" + postfix, getGradeRanges(true), true);
+        ElementUtil.setDisabled(gradesSelected);
+        GradeGridOptionQuestion gradesSelected2 = new GradeGridOptionQuestion("second-custom-optional-grades-" + postfix, getGradeRanges(true), true);
+        ElementUtil.setDisabled(gradesSelected2);
+
+        GradeGridTitle title = new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), true);
+
+        columnsArray[0].addChild(title);
+        columnsArray[1].addChild(addLangs);
+        columnsArray[2].addChild(grades);
+        columnsArray[3].addChild(gradesSelected);
+        columnsArray[4].addChild(gradesSelected2);
+
+        GradeGridRow gradeGridRow = ElementUtil.createHiddenGradeGridRowWithId("additionalLanguageNativeRow-" + index);
+        gradeGridRow.addChild(columnsArray);
+        return gradeGridRow;
+    }
+
+    private GradeGridRow createAdditionalLanguageRow(int index, final List<SubjectRow> subjects) {
+        GradeGridRow gradeGridRow = new GradeGridRow("additionalLanguageRow-" + index);
+        gradeGridRow.addAttribute("hidden", "hidden");
+        Element[] columnsArray = createColumnsArray(index);
+
+        List<Option> options = getLanguageSubjects(subjects);
+        GradeGridOptionQuestion addSubs = new GradeGridOptionQuestion("custom-scope-" + index, options, false);
+        ElementUtil.setDisabled(addSubs);
+        GradeGridOptionQuestion addLangs = new GradeGridOptionQuestion("custom-language-" + index, koodistoService.getSubjectLanguages(), false);
+        ElementUtil.setDisabled(addLangs);
+        GradeGridOptionQuestion grades = new GradeGridOptionQuestion("custom-grades-" + index, getGradeRanges(false), false);
+        ElementUtil.setDisabled(grades);
+        GradeGridOptionQuestion gradesSelected = new GradeGridOptionQuestion("custom-optional-grades-" + index, getGradeRanges(true), true);
+        ElementUtil.setDisabled(gradesSelected);
+        GradeGridOptionQuestion gradesSelected2 = new GradeGridOptionQuestion("second-custom-optional-grades-" + index, getGradeRanges(true), true);
+        ElementUtil.setDisabled(gradesSelected2);
+
+        columnsArray[0].addChild(addSubs);
+        columnsArray[1].addChild(addLangs);
+        columnsArray[2].addChild(grades);
+        columnsArray[3].addChild(gradesSelected);
+        columnsArray[4].addChild(gradesSelected2);
+
+        gradeGridRow.addChild(columnsArray);
+        return gradeGridRow;
+    }
+
+    private Element[] createColumnsArray(final int index) {
+
+        return new Element[]{
+                new GradeGridColumn("column1-" + index, true),
+                new GradeGridColumn("column2-" + index, false),
+                new GradeGridColumn("column3-" + index, false),
+                new GradeGridColumn("column4-" + index, false),
+                new GradeGridColumn("column5-" + index, false),
+        };
+    }
+
+    private List<Option> getGradeRanges(boolean setDefault) {
+        this.gradeRanges = koodistoService.getGradeRanges();
+        List<Option> gradeRanges = this.gradeRanges;
+        if (setDefault) {
+            setDefaultOption("Ei arvosanaa", gradeRanges);
+        }
+        return gradeRanges;
+    }
+
+    private List<Option> getLanguageSubjects(final List<SubjectRow> subjects) {
+        List<SubjectRow> listOfLanguages = ImmutableList.copyOf(Iterables.filter(subjects, new Languages()));
+        List<SubjectRow> additionalLanguages = ImmutableList.copyOf(
+                Iterables.filter(listOfLanguages, Predicates.not(new Ids<SubjectRow>("A1", "B1"))));
+        List<Option> options = new ArrayList<Option>();
+        for (SubjectRow additionalLanguage : additionalLanguages) {
+            options.add(new Option("subject-template", additionalLanguage.getI18nText(), additionalLanguage.getId()));
+        }
+        return options;
+    }
+
+    private GradeGridRow createAddLangRow(final String group, List<SubjectRow> subjects) {
+        GradeGridRow gradeGridRow = new GradeGridRow(System.currentTimeMillis() + "");
+        GradeGridColumn column1 = new GradeGridColumn(gradeGridRow.getId() + "-addlang", false);
+        List<Option> subjectOptions = getLanguageSubjects(subjects);
+        GradeGridAddLang child = new GradeGridAddLang(group, subjectOptions, koodistoService.getSubjectLanguages(),
+                koodistoService.getGradeRanges());
+        column1.addChild(child);
+        column1.addAttribute("colspan", "5");
+        gradeGridRow.addChild(column1);
+        return gradeGridRow;
+    }
+
+    private GradeGridRow createGradeGridRow(final SubjectRow subjectRow, boolean language, boolean ai) {
+        GradeGridRow gradeGridRow = new GradeGridRow(subjectRow.getId());
+        GradeGridColumn column1 = new GradeGridColumn("column1", false);
+        column1.addChild(new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), false));
+        GradeGridColumn column2 = new GradeGridColumn("column2", false);
+        GradeGridColumn column3 = new GradeGridColumn("column3", false);
+        GradeGridColumn column4 = new GradeGridColumn("column4", false);
+        GradeGridColumn column5 = new GradeGridColumn("column5", false);
+        List<Option> gradeRanges = koodistoService.getGradeRanges();
+        List<Option> gradeRangesSecond = koodistoService.getGradeRanges();
+        setDefaultOption("Ei arvosanaa", gradeRangesSecond);
+        if (subjectRow.isLanguage() || language) {
+            List<Option> subjectLanguages = koodistoService.getSubjectLanguages();
+            if (ai) {
+                setDefaultOption("FI", subjectLanguages);
+            }
+            GradeGridOptionQuestion child = new GradeGridOptionQuestion(subjectRow.getId() + "", subjectLanguages, false);
+            child.addAttribute("required", "required");
+            column2.addChild(child);
+        } else {
+            column1.addAttribute("colspan", "2");
+        }
+        GradeGridOptionQuestion child1 = new GradeGridOptionQuestion("common-" + subjectRow.getId(), gradeRanges, false);
+        child1.addAttribute("required", "required");
+        column3.addChild(child1);
+        GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion("optional-common-" + subjectRow.getId(), gradeRangesSecond, true);
+        gradeGridOptionQuestion.addAttribute("required", "required");
+        GradeGridOptionQuestion child = gradeGridOptionQuestion;
+        column4.addChild(child);
+        GradeGridOptionQuestion child2 = new GradeGridOptionQuestion("second-optional-common-" + subjectRow.getId(), gradeRangesSecond, true);
+        child2.addAttribute("required", "required");
+        column5.addChild(child2);
+        gradeGridRow.addChild(column1);
+        if (subjectRow.isLanguage() || language) {
+            gradeGridRow.addChild(column2);
+        }
+        gradeGridRow.addChild(column3);
+        gradeGridRow.addChild(column4);
+        gradeGridRow.addChild(column5);
+        return gradeGridRow;
+
     }
 
     private void createArvosanat(Theme arvosanatRyhma) {

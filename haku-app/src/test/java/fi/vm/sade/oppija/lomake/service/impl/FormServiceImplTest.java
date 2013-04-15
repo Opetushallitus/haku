@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.lomake.service.impl;
 
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
-import fi.vm.sade.oppija.lomake.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;

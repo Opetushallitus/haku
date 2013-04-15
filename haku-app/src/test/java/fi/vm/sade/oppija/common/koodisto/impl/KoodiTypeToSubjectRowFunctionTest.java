@@ -31,7 +31,7 @@ public class KoodiTypeToSubjectRowFunctionTest {
 
     @Before
     public void setUp() throws Exception {
-        koodiTypeToSubjectRowFunction = new KoodiTypeToSubjectRowFunction();
+        koodiTypeToSubjectRowFunction = new KoodiTypeToSubjectRowFunction(null);
         this.koodiType = TestObjectCreator.createKoodiType(TestObjectCreator.KOODI_KOODI_URI_AND_ARVO);
 
     }

@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.lomake.service;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.hakemus.service.impl.ApplicationServiceImpl;
-import fi.vm.sade.oppija.lomake.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;

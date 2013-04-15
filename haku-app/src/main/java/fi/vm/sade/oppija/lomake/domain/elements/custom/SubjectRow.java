@@ -21,20 +21,54 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-/**
- * @author Hannu Lyytikainen
- */
 public class SubjectRow extends Question {
 
     private static final long serialVersionUID = -7775452756396204586L;
 
+    private final boolean optional;
+    private final boolean highSchool;
+    private final boolean comprehensiveSchool;
+    private final boolean language;
+
     public SubjectRow(@JsonProperty(value = "id") final String id,
-                      @JsonProperty(value = "i18nText") final I18nText i18nText) {
+                      @JsonProperty(value = "i18nText") final I18nText i18nText,
+                      @JsonProperty(value = "optional") boolean optional,
+                      @JsonProperty(value = "highSchool") boolean highSchool,
+                      @JsonProperty(value = "comprehensiveSchool") boolean comprehensiveSchool,
+                      @JsonProperty(value = "language") boolean language) {
         super(id, i18nText);
+        this.optional = optional;
+        this.highSchool = highSchool;
+        this.comprehensiveSchool = comprehensiveSchool;
+        this.language = language;
     }
 
-    @JsonIgnore
+    public boolean isOptional() {
+        return optional;
+    }
+
+    public boolean isHighSchool() {
+        return highSchool;
+    }
+
+    public boolean isComprehensiveSchool() {
+        return comprehensiveSchool;
+    }
+
     public boolean isLanguage() {
-        return false;
+        return language;
+    }
+    @JsonIgnore
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("SubjectRow");
+        sb.append("{optional=").append(optional);
+        sb.append(", highSchool=").append(highSchool);
+        sb.append(", comprehensiveSchool=").append(comprehensiveSchool);
+        sb.append(", language=").append(language);
+        sb.append("{i18nText=").append(getI18nText());
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -14,31 +14,31 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain.elements.custom;
+package fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid;
 
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomake.validation.Validator;
+import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Renders as a language grade row in grade grid. Title is used to hold the scope
- * of the language studies (A1, B2 etc) and options (defined in OptionQuestion) are used to hold
- * the different languages.
+ * Grid element that is used to gather grade information from user.
  *
  * @author Hannu Lyytikainen
  */
-public class LanguageRow extends SubjectRow {
+public class GradeGrid extends Titled {
 
-    private static final long serialVersionUID = -7948001529240423265L;
+    private static final long serialVersionUID = 7703132498783434771L;
 
-    public LanguageRow(@JsonProperty(value = "id") String id,
-                       @JsonProperty(value = "i18nText") I18nText i18nText) {
+    public GradeGrid(@JsonProperty(value = "id") final String id,
+                     @JsonProperty(value = "i18nText") final I18nText i18nText) {
         super(id, i18nText);
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isLanguage() {
-        return true;
     }
 }

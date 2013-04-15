@@ -16,19 +16,23 @@
 
 package fi.vm.sade.oppija.lomake.domain.util;
 
-import java.text.MessageFormat;
-import java.util.*;
-
-import org.apache.log4j.Logger;
-
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
+import org.apache.log4j.Logger;
+
+import java.text.MessageFormat;
+import java.util.*;
 
 public final class ElementUtil {
 
+    public static final String DISABLED = "disabled";
+    public static final String REQUIRED = "required";
+    public static final String HIDDEN = "hidden";
     private static Logger log = Logger.getLogger(ElementUtil.class);
     private static String[] LANGS = {"fi", "sv", "en"};
+
     private ElementUtil() {
     }
 
@@ -47,12 +51,12 @@ public final class ElementUtil {
 
             String text = "";
             try {
-            	if (key != null) {
-            		text = bundle.getString(key);
-            	} 
-            	if (params != null && params.length > 0) {
-            		text = MessageFormat.format(text, (Object[])params);
-            	}
+                if (key != null) {
+                    text = bundle.getString(key);
+                }
+                if (params != null && params.length > 0) {
+                    text = MessageFormat.format(text, (Object[]) params);
+                }
             } catch (MissingResourceException mre) {
                 text = key + " [" + lang + "]";
                 log.warn("No translation found for key '" + key + "' in " + lang);
@@ -67,9 +71,9 @@ public final class ElementUtil {
                 createI18NForm("form.hakutoiveet.hakutoive", title),
                 createI18NForm("form.yleinen.tyhjenna"),
                 createI18NForm("form.hakutoiveet.koulutus"),
-                createI18NForm("form.hakutoiveet.opetuspiste"), 
+                createI18NForm("form.hakutoiveet.opetuspiste"),
                 createI18NForm("form.hakutoiveet.sisaltyvatKoulutusohjelmat"),
-        		"Valitse koulutus");
+                "Valitse koulutus");
     }
 
     public static <E extends Element> Map<String, E> findElementsByType(Element element, Class<E> eClass) {
@@ -102,4 +106,17 @@ public final class ElementUtil {
         }
     }
 
+    public static void setDisabled(Element element) {
+        element.addAttribute(DISABLED, DISABLED);
+    }
+
+    public static void setRequired(Element element) {
+        element.addAttribute(REQUIRED, REQUIRED);
+    }
+
+    public static GradeGridRow createHiddenGradeGridRowWithId(final String id) {
+        GradeGridRow gradeGridRow = new GradeGridRow(id);
+        gradeGridRow.addAttribute(HIDDEN, HIDDEN);
+        return gradeGridRow;
+    }
 }
