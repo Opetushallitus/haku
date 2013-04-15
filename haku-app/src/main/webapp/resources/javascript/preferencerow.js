@@ -24,7 +24,7 @@
             }, function(data) {
                 var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
 
-                preferenceRow.clearSelectInput(selectInputId);
+                preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
                 $(data).each(function(index, item) {
                     var selected = "";
                     childLONames[item.id] = item.childLONames;
@@ -62,6 +62,7 @@
 
         clearChildLONames : function(childLONamesId) {
             $("#container-" + childLONamesId).hide();
+            $("#" + childLONamesId).html('');
         }
     };
 
