@@ -138,7 +138,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Map<String, String> allAnswers = new HashMap<String, String>();
         // if the current phase has previous phase, get all the answers for
         // validating rules
-        if (activeForm.isFirstChild(phase)) {
+        if (!activeForm.isFirstChild(phase)) {
             Application current = getApplication(applicationState.getHakemus().getFormId());
             allAnswers.putAll(current.getVastauksetMerged());
         }

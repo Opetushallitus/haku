@@ -184,7 +184,9 @@ public class FormController {
         LOGGER.debug("getElementRelatedData {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, elementId, key});
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         try {
-            DataRelatedQuestion<Serializable> element = (DataRelatedQuestion<Serializable>) activeForm.getChildById(elementId);
+            @SuppressWarnings("unchecked")
+			DataRelatedQuestion<Serializable> element = 
+					(DataRelatedQuestion<Serializable>) activeForm.getChildById(elementId);
             return element.getData(key);
         } catch (Exception e) {
             LOGGER.error(e.toString());
