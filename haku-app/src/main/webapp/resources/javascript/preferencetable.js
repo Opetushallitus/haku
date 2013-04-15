@@ -29,5 +29,6 @@
 	    var id = $(this).data('id'),
 	        targetId = $(this).data('target');
 	    sortabletable.moveRow(id, targetId);
+        $(".warning").hide();
 	});
 })();

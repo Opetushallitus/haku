@@ -243,6 +243,7 @@ public class FormController {
             model.put("element", phase);
             model.put("form", activeForm);
             model.put("template", phase.getType());
+            model.put("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, model)).build();
         }
 

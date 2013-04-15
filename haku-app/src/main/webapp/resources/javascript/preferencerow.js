@@ -25,6 +25,8 @@
                 var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
 
                 preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
+                $("#" + selectInputId).html("<option></option>");
+
                 $(data).each(function(index, item) {
                     var selected = "";
                     childLONames[item.id] = item.childLONames;
@@ -70,6 +72,7 @@
         var id = $(this).data('id');
         $('[id|="' + id + '"]').val('').html('');
         preferenceRow.clearSelectInput(id + "-Koulutus");
+        $(this).parent().find(".warning").hide();
     });
 
     $(".field-container-text input:text").each(function(index) {
