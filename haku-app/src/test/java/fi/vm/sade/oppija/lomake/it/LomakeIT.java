@@ -107,19 +107,30 @@ public class LomakeIT extends AbstractSeleniumBase {
 
         clickNextPhase(driver);
 
-        selenium.typeKeys("tyokokemuskuukaudet", "1001");
+        // Lisätiedot
         clickAllElements(driver, "//input[@type='checkbox']");
-
         selenium.typeKeys("lupa1_email", "aiti@koti.fi");
-        driver.findElement(new By.ById("asiointikieli_suomi")).click();
 
+        // Ei mene läpi, työkokemus syöttämättä
         clickNextPhase(driver);
+        selenium.typeKeys("tyokokemuskuukaudet", "1001");
 
-        // HAK-20.
+        // Ei mene läpi, työkokemus > 1000 kuukautta
+        clickNextPhase(driver);
         driver.findElement(new By.ById("tyokokemuskuukaudet"));
         selenium.typeKeys("tyokokemuskuukaudet", "\b\b\b\b2"); // \b is backspace
+        
+        // Ei mene läpi, asiointikieli valitsematta
         clickNextPhase(driver);
+        driver.findElement(new By.ById("asiointikieli_suomi")).click();
 
+        screenshot("kokemus");
+        
+        // Menee läpi
+        clickNextPhase(driver);
+        screenshot("kokemus4");
+
+        // Esikatselu
         clickNextPhase(driver);
         driver.findElement(By.id("submit_confirm")).click();
 
