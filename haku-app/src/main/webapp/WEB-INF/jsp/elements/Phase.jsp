@@ -42,6 +42,17 @@
     		$('#form-${vaihe.id}').append('<input type="hidden" name="phaseId" value="'+phaseId+'-skip-validators" />');
     		$('#form-${vaihe.id}').submit();
     	}
+    	$(document).ready(function() {
+    		$("form input:text").each(function() {
+    			$(this).keypress(function(event) {
+    				if(event.keyCode == 13) {
+    					event.preventDefault();
+    					return false;
+    				}
+    				return true;
+    			})
+    		});
+    	});
     </script>
     <title><haku:i18nText value="${form.i18nText}"/> - <haku:i18nText value="${vaihe.i18nText}"/></title>
 </head>

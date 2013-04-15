@@ -523,7 +523,7 @@ public class Yhteishaku2013 {
         CheckBox permission5 = new CheckBox(
                 "lupa5",
                 createI18NForm("form.lupatiedot.saaLahettaaTekstiviesteja"));
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("lupa1_rule", permission1.getId(), "on");
+        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("lupa1_rule", permission1.getId(), "true");
         relatedQuestionRule.addChild(email);
         permission1.addChild(relatedQuestionRule);
 
