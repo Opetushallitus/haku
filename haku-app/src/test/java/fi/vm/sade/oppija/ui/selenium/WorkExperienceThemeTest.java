@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.Assert.fail;
 
@@ -44,7 +45,7 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
 
     @Test
     public void testWorkExperienceShown() {
-        WebDriver driver = gotoHakutoiveet();
+        WebDriver driver = gotoHakutoiveet("010113-668B");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
 
         driver.findElement(new By.ByClassName("right")).click();
@@ -52,24 +53,11 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
 
         driver.findElement(new By.ById("tyokokemuskuukaudet"));
     }
-
-    private WebDriver gotoHakutoiveet() {
-        final String startUrl = formModelHelper.getFormUrl(formModelHelper.getFirstForm().getPhase("hakutoiveet"));
-
-        Selenium selenium = seleniumHelper.getSelenium();
-
-        WebDriver driver = seleniumHelper.getDriver();
-        driver.get(getBaseUrl() + "/" + startUrl);
-
-        inputOpetuspiste(selenium, driver);
-        return driver;
-    }
-
+    
     @Test
-    @Ignore // no test data for application options without work experience
     public void testWorkExperienceNotShown() {
-        WebDriver driver = gotoHakutoiveet();
-        driver.findElement(By.xpath("//option[@data-id='776']")).click();
+        WebDriver driver = gotoHakutoiveet("010113A668B");
+        driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
 
         driver.findElement(new By.ByClassName("right")).click();
         driver.findElement(new By.ByClassName("right")).click();
@@ -80,6 +68,31 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
         } catch (NoSuchElementException e) {
             // test passed
         }
+    }
+    
+    private WebDriver gotoHakutoiveet(String hetu) {
+        final String henkilotiedot = formModelHelper.getFormUrl(formModelHelper.getFirstForm().getPhase("henkilotiedot"));
+        final String hakutoiveet = formModelHelper.getFormUrl(formModelHelper.getFirstForm().getPhase("hakutoiveet"));
+
+        Selenium selenium = seleniumHelper.getSelenium();
+        WebDriver driver = seleniumHelper.getDriver();
+        driver.get(getBaseUrl() + "/" + henkilotiedot);
+
+        driver.findElement(By.id("Sukunimi")).sendKeys("sukunimi");
+        driver.findElement(By.id("Etunimet")).sendKeys("etunimi");
+        driver.findElement(By.id("Kutsumanimi")).sendKeys("etunimi");
+        driver.findElement(By.id("Henkilotunnus")).sendKeys(hetu);
+        new Select(driver.findElement(By.id("asuinmaa"))).selectByValue("FI");
+        driver.findElement(By.id("lahiosoite")).sendKeys("Testikatu 1");
+        driver.findElement(By.id("Postinumero")).sendKeys("00100");
+        new Select(driver.findElement(By.id("kotikunta"))).selectByIndex(1);
+        new Select(driver.findElement(By.id("aidinkieli"))).selectByIndex(1);
+
+        driver.findElement(new By.ByClassName("right")).click();
+        driver.get(getBaseUrl() + "/" + hakutoiveet);
+        
+        inputOpetuspiste(selenium, driver);
+        return driver;
     }
 
     private void inputOpetuspiste(Selenium selenium, WebDriver driver) {

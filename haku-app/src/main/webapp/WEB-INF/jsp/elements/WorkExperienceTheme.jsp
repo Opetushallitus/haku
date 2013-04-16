@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -17,8 +18,10 @@
   --%>
 
 <c:set var="show" value="false"/>
+<fmt:parseDate var="dob" pattern="dd.MM.yyyy" value="${categoryData['syntymaaika']}" />
+<c:set var="referenceDate" value="${element.referenceDate}" />
 <c:forEach var="key" items="${element.aoEducationDegreeKeys}">
-    <c:if test="${categoryData[key] eq element.requiredEducationDegree}">
+    <c:if test="${(categoryData[key] eq element.requiredEducationDegree) && (dob lt referenceDate)}">
         <c:set var="show" value="true"/>
     </c:if>
 </c:forEach>

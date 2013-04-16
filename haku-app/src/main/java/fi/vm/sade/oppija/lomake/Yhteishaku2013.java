@@ -26,6 +26,8 @@ import static fi.vm.sade.oppija.util.OppijaConstants.YKSILOLLISTETTY;
 import static fi.vm.sade.oppija.util.OppijaConstants.YLIOPPILAS;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,8 +124,11 @@ public class Yhteishaku2013 {
 
             // Lisätiedot
             Phase lisatiedot = new Phase("lisatiedot", createI18NForm("form.lisatiedot.otsikko"), false);
+            Calendar cal = GregorianCalendar.getInstance();
+            cal.setTime(applicationPeriod.getStarts());
+            cal.roll(Calendar.YEAR, -16);
             WorkExperienceTheme tyokokemusRyhma = new WorkExperienceTheme("tyokokemusGrp",
-                    createI18NForm("form.lisatiedot.tyokokemus"), null, "32");
+                    createI18NForm("form.lisatiedot.tyokokemus"), null, "32", cal.getTime());
             Theme lupatiedotRyhma = new Theme("lupatiedotGrp", createI18NForm("form.lisatiedot.lupatiedot"), null);
             form.addChild(lisatiedot);
             lisatiedot.addChild(tyokokemusRyhma);
