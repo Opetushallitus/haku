@@ -23,7 +23,9 @@ import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
@@ -76,10 +78,10 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
             if (prefTables.size() > 0) {
                 PreferenceTable prefTable = prefTables.get(0);
                 if (educationDegree != null && educationDegree.equals(prefTable.getDiscretionaryEducationDegree())) {
-                    additionalQuestions.add(prefTable.getDiscretionaryQuestion());
+                    additionalQuestions.add(prefTable.buildDiscretionaryQuestion(aoId));
                 }
                 if (sora != null && sora.booleanValue()) {
-                    additionalQuestions.addAll(prefTable.getSoraQuestions());
+                    additionalQuestions.addAll(prefTable.buildSoraQuestions(aoId));
                 }
             }
         }

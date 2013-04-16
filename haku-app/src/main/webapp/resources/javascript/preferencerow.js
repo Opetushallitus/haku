@@ -55,7 +55,7 @@
                     'sora' : soraRequired
                 },
                 function(data) {
-                $("#" + additionalQuestionsId).html(data);
+                    $("#" + additionalQuestionsId).html(data);
             });
         },
 

@@ -458,24 +458,23 @@ public class Yhteishaku2013 {
         hakutoiveetRyhma
                 .setHelp(createI18NForm("form.hakutoiveet.help"));
 
-        Radio discretionary = new Radio("discretionary_question", createI18NForm("form.hakutoiveet.harkinnanvarainen"));
-        discretionary.addOption("discretionary_option_1", createI18NForm("form.yleinen.en"), "option_no");
-        discretionary.addOption("discretionary_option_2", createI18NForm("form.yleinen.kylla"), "option_yes");
-
+        Radio discretionary = new Radio("_discretionary_question", createI18NForm("form.hakutoiveet.harkinnanvarainen"));
+        discretionary.addOption("_discretionary_option_1", createI18NForm("form.yleinen.en"), "option_no");
+        discretionary.addOption("_discretionary_option_2", createI18NForm("form.yleinen.kylla"), "option_yes");
 
         Radio radio = new Radio(
-                "sora_question_1",
+                "_sora_question_1",
                 createI18NForm("form.sora.terveys"));
-        radio.addOption("sora_q1_option_1", createI18NForm("form.yleinen.ei"), "q1_option_1");
-        radio.addOption("sora_q1_option_2", createI18NForm("form.sora.kylla"),
+        radio.addOption("_sora_q1_option_1", createI18NForm("form.yleinen.ei"), "q1_option_1");
+        radio.addOption("_sora_q1_option_2", createI18NForm("form.sora.kylla"),
                 "q1_option_2");
         Radio radio2 = new Radio(
-                "sora_additional_question_2",
+                "_sora_additional_question_2",
                 createI18NForm("form.sora.oikeudenMenetys"));
-        radio2.addOption("sora_q2_option_1", createI18NForm("form.yleinen.ei"), "q2_option_1");
-        radio2.addOption("sora_q2_option_2",
+        radio2.addOption("_sora_q2_option_1", createI18NForm("form.yleinen.ei"), "q2_option_1");
+        radio2.addOption("_sora_q2_option_2",
                 createI18NForm("form.sora.kylla"), "q2_option_2");
-        List<Question> soraQuestions = Lists.newArrayList();
+        List<Radio> soraQuestions = Lists.newArrayList();
         soraQuestions.add(radio);
         soraQuestions.add(radio2);
 

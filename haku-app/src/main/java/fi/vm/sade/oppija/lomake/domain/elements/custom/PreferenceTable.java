@@ -17,10 +17,13 @@
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator;
@@ -34,9 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.base.Predicates.and;
-import static com.google.common.base.Predicates.not;
-import static com.google.common.base.Predicates.or;
+import static com.google.common.base.Predicates.*;
 import static fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator.ValidatorPredicate.validate;
 
 /**
@@ -55,17 +56,17 @@ public class PreferenceTable extends Titled {
     // question gets asked
     private int discretionaryEducationDegree;
     // discretionary question that is asked if selected application option has a specific education degree
-    private Question discretionaryQuestion;
+    private Radio discretionaryQuestion;
     // sora question, is presented if
-    private List<Question> soraQuestions;
+    private List<Radio> soraQuestions;
 
     public PreferenceTable(@JsonProperty(value = "id") final String id,
                            @JsonProperty(value = "i18nText") final I18nText i18nText,
                            @JsonProperty(value = "moveUpLabel") final String moveUpLabel,
                            @JsonProperty(value = "moveDownLabel") final String moveDownLabel,
                            @JsonProperty(value = "discretionaryEducationDegree") final int discretionaryEducationDegree,
-                           @JsonProperty(value = "discretionaryQuestion") Question discretionaryQuestion,
-                           @JsonProperty(value = "soraQuestions") List<Question> soraQuestions) {
+                           @JsonProperty(value = "discretionaryQuestion") Radio discretionaryQuestion,
+                           @JsonProperty(value = "soraQuestions") List<Radio> soraQuestions) {
         super(id, i18nText);
         this.moveUpLabel = moveUpLabel;
         this.moveDownLabel = moveDownLabel;
@@ -90,8 +91,30 @@ public class PreferenceTable extends Titled {
         return discretionaryQuestion;
     }
 
-    public List<Question> getSoraQuestions() {
+    public List<Radio> getSoraQuestions() {
         return soraQuestions;
+    }
+
+    @JsonIgnore
+    public Question buildDiscretionaryQuestion(String aoId) {
+        Radio discretionary = new Radio(aoId + this.discretionaryQuestion.getId(), this.discretionaryQuestion.getI18nText());
+        for (Option origOption : this.discretionaryQuestion.getOptions()) {
+            discretionary.addOption(aoId + origOption.getId(), origOption.getI18nText(), origOption.getValue());
+        }
+        return discretionary;
+    }
+
+    @JsonIgnore
+    public List<Question> buildSoraQuestions(String aoId) {
+        List<Question> aoQuestions = Lists.newArrayList();
+        for (Radio sora : this.soraQuestions) {
+            Radio aoQuestion = new Radio(aoId + sora.getId(), sora.getI18nText());
+            for (Option option : sora.getOptions()) {
+                aoQuestion.addOption(aoId + option.getId(), option.getI18nText(), option.getValue());
+            }
+            aoQuestions.add(aoQuestion);
+        }
+        return aoQuestions;
     }
 
     @Override
