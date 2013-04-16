@@ -56,7 +56,7 @@ public class PreferenceTable extends Titled {
     // question gets asked
     private int discretionaryEducationDegree;
     // discretionary question that is asked if selected application option has a specific education degree
-    private Radio discretionaryQuestion;
+    private DiscretionaryQuestion discretionaryQuestion;
     // sora question, is presented if
     private List<Radio> soraQuestions;
 
@@ -65,7 +65,7 @@ public class PreferenceTable extends Titled {
                            @JsonProperty(value = "moveUpLabel") final String moveUpLabel,
                            @JsonProperty(value = "moveDownLabel") final String moveDownLabel,
                            @JsonProperty(value = "discretionaryEducationDegree") final int discretionaryEducationDegree,
-                           @JsonProperty(value = "discretionaryQuestion") Radio discretionaryQuestion,
+                           @JsonProperty(value = "discretionaryQuestion") DiscretionaryQuestion discretionaryQuestion,
                            @JsonProperty(value = "soraQuestions") List<Radio> soraQuestions) {
         super(id, i18nText);
         this.moveUpLabel = moveUpLabel;
@@ -97,7 +97,8 @@ public class PreferenceTable extends Titled {
 
     @JsonIgnore
     public Question buildDiscretionaryQuestion(String aoId) {
-        Radio discretionary = new Radio(aoId + this.discretionaryQuestion.getId(), this.discretionaryQuestion.getI18nText());
+        DiscretionaryQuestion discretionary = new DiscretionaryQuestion(
+                aoId + this.discretionaryQuestion.getId(), this.discretionaryQuestion.getI18nText());
         for (Option origOption : this.discretionaryQuestion.getOptions()) {
             discretionary.addOption(aoId + origOption.getId(), origOption.getI18nText(), origOption.getValue());
         }

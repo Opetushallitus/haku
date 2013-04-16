@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,14 +49,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Text;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.GradeGrid;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.LanguageRow;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.PostalCode;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.WorkExperienceTheme;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DateQuestion;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
@@ -463,7 +456,7 @@ public class Yhteishaku2013 {
         hakutoiveetRyhma
                 .setHelp(createI18NForm("form.hakutoiveet.help"));
 
-        Radio discretionary = new Radio("_discretionary_question", createI18NForm("form.hakutoiveet.harkinnanvarainen"));
+        DiscretionaryQuestion discretionary = new DiscretionaryQuestion("_discretionary_question", createI18NForm("form.hakutoiveet.harkinnanvarainen"));
         discretionary.addOption("_discretionary_option_1", createI18NForm("form.yleinen.en"), "option_no");
         discretionary.addOption("_discretionary_option_2", createI18NForm("form.yleinen.kylla"), "option_yes");
 
