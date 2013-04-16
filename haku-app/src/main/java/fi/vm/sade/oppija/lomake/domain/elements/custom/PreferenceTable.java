@@ -57,7 +57,7 @@ public class PreferenceTable extends Titled {
     // discretionary question that is asked if selected application option has a specific education degree
     private Question discretionaryQuestion;
     // sora question, is presented if
-    private Question soraQuestion;
+    private List<Question> soraQuestions;
 
     public PreferenceTable(@JsonProperty(value = "id") final String id,
                            @JsonProperty(value = "i18nText") final I18nText i18nText,
@@ -65,10 +65,13 @@ public class PreferenceTable extends Titled {
                            @JsonProperty(value = "moveDownLabel") final String moveDownLabel,
                            @JsonProperty(value = "discretionaryEducationDegree") final int discretionaryEducationDegree,
                            @JsonProperty(value = "discretionaryQuestion") Question discretionaryQuestion,
-                           @JsonProperty(value = "soraQuestion") Question soraQuestion) {
+                           @JsonProperty(value = "soraQuestions") List<Question> soraQuestions) {
         super(id, i18nText);
         this.moveUpLabel = moveUpLabel;
         this.moveDownLabel = moveDownLabel;
+        this.discretionaryEducationDegree = discretionaryEducationDegree;
+        this.discretionaryQuestion = discretionaryQuestion;
+        this.soraQuestions = soraQuestions;
     }
 
     public String getMoveUpLabel() {
@@ -87,8 +90,8 @@ public class PreferenceTable extends Titled {
         return discretionaryQuestion;
     }
 
-    public Question getSoraQuestion() {
-        return soraQuestion;
+    public List<Question> getSoraQuestions() {
+        return soraQuestions;
     }
 
     @Override

@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -362,19 +363,6 @@ public class Yhteishaku2013 {
     private Theme createHakutoiveetRyhma() {
         final String id = "1.2.246.562.14.71344129359";
         final String elementIdPrefix = id.replace('.', '_');
-        Radio radio = new Radio(
-                elementIdPrefix + "_additional_question_1",
-                createI18NForm("form.sora.terveys"));
-        radio.addOption(id + "_q1_option_1", createI18NForm("form.yleinen.ei"), "q1_option_1");
-        radio.addOption(id + "_q1_option_2", createI18NForm("form.sora.kylla"),
-                "q1_option_2");
-
-        Radio radio2 = new Radio(
-                elementIdPrefix + "_additional_question_2",
-                createI18NForm("form.sora.oikeudenMenetys"));
-        radio2.addOption(id + "_q2_option_1", createI18NForm("form.yleinen.ei"), "q2_option_1");
-        radio2.addOption(id + "_q2_option_2",
-                createI18NForm("form.sora.kylla"), "q2_option_2");
 
         Radio radio3 = new Radio(
                 elementIdPrefix + "_additional_question_3",
@@ -387,8 +375,6 @@ public class Yhteishaku2013 {
                 createI18NForm("form.hakutoiveet.paasykoe.saaKayttaa"), "q3_option_3");
 
         List<Question> lisakysymysList = new ArrayList<Question>();
-        lisakysymysList.add(radio);
-        lisakysymysList.add(radio2);
         lisakysymysList.add(radio3);
 
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
@@ -471,8 +457,30 @@ public class Yhteishaku2013 {
     private void createHakutoiveet(Theme hakutoiveetRyhma) {
         hakutoiveetRyhma
                 .setHelp(createI18NForm("form.hakutoiveet.help"));
+
+        Radio discretionary = new Radio("discretionary_question", createI18NForm("form.hakutoiveet.harkinnanvarainen"));
+        discretionary.addOption("discretionary_option_1", createI18NForm("form.yleinen.en"), "option_no");
+        discretionary.addOption("discretionary_option_2", createI18NForm("form.yleinen.kylla"), "option_yes");
+
+
+        Radio radio = new Radio(
+                "sora_question_1",
+                createI18NForm("form.sora.terveys"));
+        radio.addOption("sora_q1_option_1", createI18NForm("form.yleinen.ei"), "q1_option_1");
+        radio.addOption("sora_q1_option_2", createI18NForm("form.sora.kylla"),
+                "q1_option_2");
+        Radio radio2 = new Radio(
+                "sora_additional_question_2",
+                createI18NForm("form.sora.oikeudenMenetys"));
+        radio2.addOption("sora_q2_option_1", createI18NForm("form.yleinen.ei"), "q2_option_1");
+        radio2.addOption("sora_q2_option_2",
+                createI18NForm("form.sora.kylla"), "q2_option_2");
+        List<Question> soraQuestions = Lists.newArrayList();
+        soraQuestions.add(radio);
+        soraQuestions.add(radio2);
+
         PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NForm("form.hakutoiveet.otsikko"), "Ylös",
-                "Alas", 32, null, null);
+                "Alas", 32, discretionary, soraQuestions);
         PreferenceRow pr1 = ElementUtil.createI18NPreferenceRow("preference1", "1");
         pr1.addAttribute("required", "required");
         PreferenceRow pr2 = ElementUtil.createI18NPreferenceRow("preference2", "2");
@@ -485,6 +493,12 @@ public class Yhteishaku2013 {
         preferenceTable.addChild(pr4);
         preferenceTable.addChild(pr5);
         preferenceTable.setVerboseHelp(getVerboseHelp());
+
+
+
+
+
+
         hakutoiveetRyhma.addChild(preferenceTable);
     }
 

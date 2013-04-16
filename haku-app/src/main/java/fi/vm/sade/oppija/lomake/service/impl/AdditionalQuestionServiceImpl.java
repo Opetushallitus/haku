@@ -79,7 +79,7 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
                     additionalQuestions.add(prefTable.getDiscretionaryQuestion());
                 }
                 if (sora != null && sora.booleanValue()) {
-                    additionalQuestions.add(prefTable.getSoraQuestion());
+                    additionalQuestions.addAll(prefTable.getSoraQuestions());
                 }
             }
         }
