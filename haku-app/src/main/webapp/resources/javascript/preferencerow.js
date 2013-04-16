@@ -15,6 +15,7 @@
  */
 
 (function() {
+    jQuery.support.cors = true;
     var childLONames = {};
     var preferenceRow = {
         populateSelectInput : function(orgId, selectInputId) {

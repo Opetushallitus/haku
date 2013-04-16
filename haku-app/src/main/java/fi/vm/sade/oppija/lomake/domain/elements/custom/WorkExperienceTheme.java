@@ -21,6 +21,9 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.util.OppijaConstants;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -35,13 +38,17 @@ public class WorkExperienceTheme extends Theme {
     // degree type that needs to be applied to
     // so that this phase is rendered
     private String requiredEducationDegree;
+    
+    // Applicant must be born before this day to get asked about work experience.
+    private Date referenceDate;
 
     public WorkExperienceTheme(@JsonProperty(value = "id") String id, @JsonProperty(value = "i18nText") I18nText i18nText,
                                @JsonProperty(value = "additionalQuestions") Map<String, List<Question>> additionalQuestions,
-                               @JsonProperty(value = "requiredEducationDegree") String requiredEducationDegree) {
-
+                               @JsonProperty(value = "requiredEducationDegree") String requiredEducationDegree,
+                               @JsonProperty(value = "referenceDate") Date referenceDate) {
         super(id, i18nText, additionalQuestions);
         this.requiredEducationDegree = requiredEducationDegree;
+        this.referenceDate = referenceDate;
     }
 
     public String[] getAoEducationDegreeKeys() {
@@ -56,4 +63,7 @@ public class WorkExperienceTheme extends Theme {
         return requiredEducationDegree;
     }
 
+    public Date getReferenceDate() {
+    	return referenceDate;
+    }
 }
