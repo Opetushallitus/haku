@@ -18,9 +18,11 @@ package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
@@ -36,6 +38,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.google.common.base.Predicates.*;
 import static fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator.ValidatorPredicate.validate;
@@ -57,6 +60,8 @@ public class PreferenceTable extends Titled {
     private int discretionaryEducationDegree;
     // discretionary question that is asked if selected application option has a specific education degree
     private DiscretionaryQuestion discretionaryQuestion;
+    // follow up question if user answers yes to the discretionary question
+    private DropdownSelect discretionaryFollowUp;
     // sora question, is presented if
     private List<Radio> soraQuestions;
 
@@ -66,12 +71,14 @@ public class PreferenceTable extends Titled {
                            @JsonProperty(value = "moveDownLabel") final String moveDownLabel,
                            @JsonProperty(value = "discretionaryEducationDegree") final int discretionaryEducationDegree,
                            @JsonProperty(value = "discretionaryQuestion") DiscretionaryQuestion discretionaryQuestion,
+                           @JsonProperty(value = "discretionaryFollowUp") DropdownSelect discretionaryFollowUp,
                            @JsonProperty(value = "soraQuestions") List<Radio> soraQuestions) {
         super(id, i18nText);
         this.moveUpLabel = moveUpLabel;
         this.moveDownLabel = moveDownLabel;
         this.discretionaryEducationDegree = discretionaryEducationDegree;
         this.discretionaryQuestion = discretionaryQuestion;
+        this.discretionaryFollowUp = discretionaryFollowUp;
         this.soraQuestions = soraQuestions;
     }
 
@@ -95,27 +102,45 @@ public class PreferenceTable extends Titled {
         return soraQuestions;
     }
 
+    public DropdownSelect getDiscretionaryFollowUp() {
+        return discretionaryFollowUp;
+    }
+
     @JsonIgnore
     public Question buildDiscretionaryQuestion(String aoId) {
+        String idPrefix = aoId.replace(".", "_");
         DiscretionaryQuestion discretionary = new DiscretionaryQuestion(
-                aoId + this.discretionaryQuestion.getId(), this.discretionaryQuestion.getI18nText());
+                idPrefix + this.discretionaryQuestion.getId(), this.discretionaryQuestion.getI18nText());
         for (Option origOption : this.discretionaryQuestion.getOptions()) {
-            discretionary.addOption(aoId + origOption.getId(), origOption.getI18nText(), origOption.getValue());
+            discretionary.addOption(idPrefix + origOption.getId(), origOption.getI18nText(), origOption.getValue());
         }
+        discretionary.setAoId(aoId);
         return discretionary;
     }
 
     @JsonIgnore
     public List<Question> buildSoraQuestions(String aoId) {
+        String idPrefix = aoId.replace(".", "_");
         List<Question> aoQuestions = Lists.newArrayList();
         for (Radio sora : this.soraQuestions) {
-            Radio aoQuestion = new Radio(aoId + sora.getId(), sora.getI18nText());
+            Radio aoQuestion = new Radio(idPrefix + sora.getId(), sora.getI18nText());
             for (Option option : sora.getOptions()) {
-                aoQuestion.addOption(aoId + option.getId(), option.getI18nText(), option.getValue());
+                aoQuestion.addOption(idPrefix + option.getId(), option.getI18nText(), option.getValue());
             }
             aoQuestions.add(aoQuestion);
         }
         return aoQuestions;
+    }
+
+    @JsonIgnore
+    public Question buildDiscretionaryFollowUps(String aoId) {
+        String idPrefix = aoId.replace(".", "_");
+        DropdownSelect followUp = new DropdownSelect(idPrefix + this.discretionaryFollowUp.getId(),
+                this.discretionaryFollowUp.getI18nText());
+        for (Option option : this.discretionaryFollowUp.getOptions()) {
+            followUp.addOption(idPrefix + option.getId(), option.getI18nText(), option.getValue());
+        }
+        return followUp;
     }
 
     @Override

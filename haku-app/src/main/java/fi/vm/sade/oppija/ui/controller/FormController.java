@@ -379,4 +379,37 @@ public class FormController {
         return new Viewable(viewName, model);
     }
 
+    /**
+     * Get a application option specific follow up question to a discretionary question asked in
+     * application option view.
+     *
+     * @param asId
+     * @param formIdStr
+     * @param phaseId
+     * @param themeId
+     * @param aoId
+     * @return
+     */
+    @GET
+    @Path("/{asId}/{formIdStr}/{phaseId}/{themeId}/discretionaryFollowUp/{aoId}")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    public Viewable getDiscretionaryFollowUp(@PathParam("asId") final String asId,
+                                             @PathParam("formIdStr") final String formIdStr,
+                                             @PathParam("phaseId") final String phaseId,
+                                             @PathParam("themeId") final String themeId,
+                                             @PathParam("aoId") final String aoId
+                                             ) {
+
+        FormId formId = new FormId(asId, formIdStr);
+
+        Question followUp = additionalQuestionService.findDiscretionaryFollowUps(formId, phaseId, themeId, aoId);
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        model.put("categoryData", applicationService.getApplication(formId).getVastauksetMerged());
+        model.put("element", followUp);
+        model.put("template", followUp.getType());
+
+        return new Viewable(ROOT_VIEW, model);
+    }
+
 }

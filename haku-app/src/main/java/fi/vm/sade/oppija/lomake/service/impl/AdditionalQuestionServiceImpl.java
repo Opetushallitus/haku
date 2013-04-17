@@ -55,15 +55,7 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     public Set<Question> findAdditionalQuestions(FormId formId, String phaseId, String themeId, String aoId, Integer educationDegree, Boolean sora) {
         Form form = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
 
-        Theme theme = null;
-
-        Element phase = form.getPhase(phaseId);
-        for (Element e : phase.getChildren()) {
-            if (e.getId().equals(themeId)) {
-                theme = (Theme) e;
-                break;
-            }
-        }
+        Theme theme = findTheme(formId, phaseId, themeId);
 
         Set<Question> additionalQuestions = new LinkedHashSet<Question>();
 
@@ -93,6 +85,37 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
 
 
         return additionalQuestions;
+    }
+
+    @Override
+    public Question findDiscretionaryFollowUps(FormId formId, String phaseId, String themeId, String aoId) {
+        Theme theme = findTheme(formId, phaseId, themeId);
+
+        if (theme == null) {
+            return null;
+        }
+
+        List<PreferenceTable> preferenceTables = ElementUtil.findElementsByTypeAsList(theme, PreferenceTable.class);
+        if (preferenceTables.isEmpty()) {
+            return null;
+        }
+
+        return preferenceTables.get(0).buildDiscretionaryFollowUps(aoId);
+    }
+
+    private Theme findTheme(FormId formId, String phaseId, String themeId) {
+        Form form = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
+
+        Theme theme = null;
+
+        Element phase = form.getPhase(phaseId);
+        for (Element e : phase.getChildren()) {
+            if (e.getId().equals(themeId)) {
+                theme = (Theme) e;
+                break;
+            }
+        }
+        return theme;
     }
 
 }

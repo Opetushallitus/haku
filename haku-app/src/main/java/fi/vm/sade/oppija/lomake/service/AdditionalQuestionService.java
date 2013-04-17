@@ -40,4 +40,6 @@ public interface AdditionalQuestionService {
      * @return list of questions
      */
     Set<Question> findAdditionalQuestions(FormId formId, String phaseId, String themeId, String aoId, Integer educationDegree, Boolean sora);
+
+    Question findDiscretionaryFollowUps(FormId formId, String phaseId, String themeId, String aoId);
 }

@@ -457,8 +457,13 @@ public class Yhteishaku2013 {
                 .setHelp(createI18NForm("form.hakutoiveet.help"));
 
         DiscretionaryQuestion discretionary = new DiscretionaryQuestion("_discretionary_question", createI18NForm("form.hakutoiveet.harkinnanvarainen"));
-        discretionary.addOption("_discretionary_option_1", createI18NForm("form.yleinen.en"), "option_no");
-        discretionary.addOption("_discretionary_option_2", createI18NForm("form.yleinen.kylla"), "option_yes");
+        discretionary.addOption("_discretionary_option_1", createI18NForm("form.yleinen.en"), "false");
+        discretionary.addOption("_discretionary_option_2", createI18NForm("form.yleinen.kylla"), "true");
+        DropdownSelect discretionaryFollowUp = new DropdownSelect("_discfretionary_followup", createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"));
+        discretionaryFollowUp.addOption("_discretionary_followup_option_1",
+                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.oppimisvaikeudet"), "oppimisvaikudet");
+        discretionaryFollowUp.addOption("_discretionary_followup_option_2",
+                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset"), "sosiaalisetsyyt");
 
         Radio radio = new Radio(
                 "_sora_question_1",
@@ -477,7 +482,7 @@ public class Yhteishaku2013 {
         soraQuestions.add(radio2);
 
         PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NForm("form.hakutoiveet.otsikko"), "Ylös",
-                "Alas", 32, discretionary, soraQuestions);
+                "Alas", 32, discretionary, discretionaryFollowUp, soraQuestions);
         PreferenceRow pr1 = ElementUtil.createI18NPreferenceRow("preference1", "1");
         pr1.addAttribute("required", "required");
         PreferenceRow pr2 = ElementUtil.createI18NPreferenceRow("preference2", "2");
