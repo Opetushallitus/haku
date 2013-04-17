@@ -16,50 +16,24 @@
 
 package fi.vm.sade.oppija.lomake;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
-import static fi.vm.sade.oppija.util.OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY;
-import static fi.vm.sade.oppija.util.OppijaConstants.KESKEYTYNYT;
-import static fi.vm.sade.oppija.util.OppijaConstants.OSITTAIN_YKSILOLLISTETTY;
-import static fi.vm.sade.oppija.util.OppijaConstants.PERUSKOULU;
-import static fi.vm.sade.oppija.util.OppijaConstants.ULKOMAINEN_TUTKINTO;
-import static fi.vm.sade.oppija.util.OppijaConstants.YKSILOLLISTETTY;
-import static fi.vm.sade.oppija.util.OppijaConstants.YLIOPPILAS;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.Lists;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.google.common.collect.ImmutableMap;
-
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
-import fi.vm.sade.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Group;
-import fi.vm.sade.oppija.lomake.domain.elements.Notification;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.domain.elements.Text;
-import fi.vm.sade.oppija.lomake.domain.elements.Theme;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.DateQuestion;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.TextArea;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.domain.elements.*;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.util.OppijaConstants.*;
 
 @Service
 public class Yhteishaku2013 {
@@ -273,7 +247,7 @@ public class Yhteishaku2013 {
         AddElementRule prevRule = null;
         for (int i = 2; i <= 5; i++) {
             TextQuestion extranumero = new TextQuestion("matkapuhelinnumero"+i,
-                    createI18NForm("form.yleinen.null"));
+                    createI18NForm("form.henkilotiedot.matkapuhelinnumero"));
             extranumero.addAttribute("size", "30");
             extranumero.addAttribute("pattern", mobilePhonePattern);
             extranumero.setInline(true);
