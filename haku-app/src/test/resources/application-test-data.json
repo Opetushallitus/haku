@@ -92,9 +92,8 @@
 		},
 		"lisatiedot" : {
 			"asiointikieli" : "suomi",
-			"lupa_lupa5" : "lupa5",
+			"lupa_lupaSms" : "lupaSms",
 			"tyokokemuskuukaudet" : "5",
-			"lupa_lupa1" : "lupa1"
 		}
 	},
     "oid" : "1.2.3.4.5.00000010003",
@@ -199,9 +198,8 @@
         },
         "lisatiedot" : {
             "asiointikieli" : "suomi",
-            "lupa_lupa5" : "lupa5",
+            "lupa_lupaSms" : "lupaSms",
             "tyokokemuskuukaudet" : "5",
-            "lupa_lupa1" : "lupa1"
         }
     },
     "oid" : "1.2.3.4.5.00000020006",
@@ -306,9 +304,8 @@
         },
         "lisatiedot" : {
             "asiointikieli" : "suomi",
-            "lupa_lupa5" : "lupa5",
-            "tyokokemuskuukaudet" : "5",
-            "lupa_lupa1" : "lupa1"
+            "lupa_lupaSms" : "lupaSms",
+            "tyokokemuskuukaudet" : "5"
         }
     },
     "oid" : "1.2.3.4.5.00000030009",

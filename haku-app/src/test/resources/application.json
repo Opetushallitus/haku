@@ -118,9 +118,7 @@
         },
         "lisatiedot": {
             "asiointikieli": "suomi",
-            "lupa1": "true",
             "tyokokemuskuukaudet": "10",
-            "lupa1_email": "aiti@holhooja.se",
             "phaseId": "esikatselu"
         }
     }

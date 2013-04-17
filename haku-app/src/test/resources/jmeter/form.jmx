@@ -1375,31 +1375,24 @@
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
-                <elementProp name="lupa_lupa1" elementType="HTTPArgument">
+                <elementProp name="lupa_lupaMarkkinointi" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">lupa_lupa1</stringProp>
-                  <stringProp name="Argument.value">lupa1</stringProp>
+                  <stringProp name="Argument.name">lupa_lupaMarkkinointi</stringProp>
+                  <stringProp name="Argument.value">lupaMarkkinointi</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
-                <elementProp name="lupa_lupa2" elementType="HTTPArgument">
+                <elementProp name="lupa_lupaSahkoisesti" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">lupa_lupa2</stringProp>
-                  <stringProp name="Argument.value">lupa2</stringProp>
+                  <stringProp name="Argument.name">lupa_lupaSahkoisesti</stringProp>
+                  <stringProp name="Argument.value">lupaSahkoisesti</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
-                <elementProp name="lupa_lupa4" elementType="HTTPArgument">
+                <elementProp name="lupa_lupaSms" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">lupa_lupa4</stringProp>
-                  <stringProp name="Argument.value">lupa4</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="lupa_lupa5" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">lupa_lupa5</stringProp>
-                  <stringProp name="Argument.value">lupa5</stringProp>
+                  <stringProp name="Argument.name">lupa_lupaSms</stringProp>
+                  <stringProp name="Argument.value">lupaSms</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
