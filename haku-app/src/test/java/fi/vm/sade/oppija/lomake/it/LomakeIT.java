@@ -16,23 +16,23 @@
 
 package fi.vm.sade.oppija.lomake.it;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
+import com.thoughtworks.selenium.Selenium;
+import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
+import fi.vm.sade.oppija.lomake.Yhteishaku2013;
+import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import com.thoughtworks.selenium.Selenium;
+import java.util.List;
 
-import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.Yhteishaku2013;
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class LomakeIT extends AbstractSeleniumBase {
 
@@ -55,9 +55,20 @@ public class LomakeIT extends AbstractSeleniumBase {
         selenium.typeKeys("Kutsumanimi", "A");
         selenium.typeKeys("Henkilotunnus", "150520-111E");
         selenium.typeKeys("Sähköposti", "aku.ankka@ankkalinna.al");
-        selenium.typeKeys("matkapuhelinnumero", "0501000100");
+        selenium.typeKeys("matkapuhelinnumero1", "0501000100");
         Select selectAidinkieli = new Select(driver.findElement(new By.ById("aidinkieli")));
         selectAidinkieli.selectByIndex(1);
+
+        try {
+            driver.findElement(By.id("puhelinnumero2"));
+            fail();
+        } catch(NoSuchElementException nsee) {
+            // As expected
+        }
+
+        driver.findElement(By.id("addPuhelinnumero2Rule-link")).click();
+        driver.findElement(By.id("matkapuhelinnumero2"));
+        selenium.typeKeys("matkapuhelinnumero2", "0501000100");
 
         clickNextPhase(driver);
 
@@ -109,7 +120,6 @@ public class LomakeIT extends AbstractSeleniumBase {
 
         // Lisätiedot
         clickAllElements(driver, "//input[@type='checkbox']");
-        selenium.typeKeys("lupa1_email", "aiti@koti.fi");
 
         // Ei mene läpi, työkokemus syöttämättä
         clickNextPhase(driver);

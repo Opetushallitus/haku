@@ -258,25 +258,37 @@ public class Yhteishaku2013 {
         henkilotiedotRyhma.addChild(email);
 
         // Matkapuhelinnumerot
-        TextQuestion matkapuhelinnumero = new TextQuestion("matkapuhelinnumero", createI18NForm("form.henkilotiedot.matkapuhelinnumero"));
-        matkapuhelinnumero.setHelp(createI18NForm("form.henkilotiedot.matkapuhelinnumero.help"));
-        matkapuhelinnumero.addAttribute("size", "30");
-        matkapuhelinnumero.addAttribute("pattern", mobilePhonePattern);
-        matkapuhelinnumero.setVerboseHelp(getVerboseHelp());
-        matkapuhelinnumero.setInline(true);
-        henkilotiedotRyhma.addChild(matkapuhelinnumero);
 
-        TextQuestion huoltajanPuhelinnumero = new TextQuestion("huoltajanPuhelinnumero",
-                createI18NForm("form.henkilotiedot.matkapuhelinnumero.huoltaja"));
-        huoltajanPuhelinnumero.setHelp(createI18NForm("form.henkilotiedot.matkapuhelinnumero.huoltaja.help"));
-        huoltajanPuhelinnumero.addAttribute("size", "20");
-        huoltajanPuhelinnumero.setVerboseHelp(getVerboseHelp());
-        huoltajanPuhelinnumero.setInline(true);
+        TextQuestion puhelinnumero1 = new TextQuestion("matkapuhelinnumero1",
+                createI18NForm("form.henkilotiedot.matkapuhelinnumero"));
+        puhelinnumero1.setHelp(createI18NForm("form.henkilotiedot.matkapuhelinnumero.help"));
+        puhelinnumero1.addAttribute("size", "30");
+        puhelinnumero1.addAttribute("pattern", mobilePhonePattern);
+        puhelinnumero1.setVerboseHelp(getVerboseHelp());
+        puhelinnumero1.setInline(true);
+        henkilotiedotRyhma.addChild(puhelinnumero1);
 
-        AddElementRule addHuoltajanPuhelinnumero = new AddElementRule("addHuoltajanPuhelinnumeroRule",
-                huoltajanPuhelinnumero.getId(), createI18NForm("form.henkilotiedot.matkapuhelinnumero.huoltaja.lisaa"));
-        addHuoltajanPuhelinnumero.addChild(huoltajanPuhelinnumero);
-        henkilotiedotRyhma.addChild(addHuoltajanPuhelinnumero);
+        TextQuestion prevNum = puhelinnumero1;
+        AddElementRule prevRule = null;
+        for (int i = 2; i <= 5; i++) {
+            TextQuestion extranumero = new TextQuestion("matkapuhelinnumero"+i,
+                    createI18NForm("form.yleinen.null"));
+            extranumero.addAttribute("size", "30");
+            extranumero.addAttribute("pattern", mobilePhonePattern);
+            extranumero.setInline(true);
+
+            AddElementRule extranumeroRule = new AddElementRule("addPuhelinnumero"+i+"Rule", prevNum.getId(),
+                    createI18NForm("form.henkilotiedot.matkapuhelinnumero.lisaa"));
+            extranumeroRule.addChild(extranumero);
+            if (i == 2) {
+                henkilotiedotRyhma.addChild(extranumeroRule);
+            } else {
+                prevRule.addChild(extranumeroRule);
+            }
+            prevNum = extranumero;
+            prevRule = extranumeroRule;
+        }
+
 
         // Asuinmaa, osoite
         DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", createI18NForm("form.henkilotiedot.asuinmaa"));
@@ -519,38 +531,25 @@ public class Yhteishaku2013 {
     }
 
     private void createLupatiedot(Theme lupatiedot) {
-        TextQuestion email = new TextQuestion("lupa1_email", createI18NForm("form.lupatiedot.email"));
-        email.addAttribute("size", "40");
-        email.addAttribute("required", "required");
-        email.setHelp(createI18NForm("form.lupatiedot.email.help"));
-        email.setVerboseHelp(getVerboseHelp());
-        email.setInline(true);
 
-        CheckBox permission1 = new CheckBox(
-                "lupa1",
-                createI18NForm("form.lupatiedot.vanhemmille"));
-        CheckBox permission2 = new CheckBox(
-                "lupa2",
+        CheckBox lupaMarkkinointi = new CheckBox(
+                "lupaMarkkinointi",
                 createI18NForm("form.lupatiedot.saaMarkkinoida"));
-        CheckBox permission3 = new CheckBox("lupa3",
+        CheckBox lupaJulkaisu = new CheckBox("lupaJulkaisu",
                 createI18NForm("form.lupatiedot.saaJulkaista"));
-        CheckBox permission4 = new CheckBox("lupa4",
+        CheckBox lupaSahkoisesti = new CheckBox("lupaSahkoisesti",
                 createI18NForm("form.lupatiedot.saaLahettaaSahkoisesti"));
-        CheckBox permission5 = new CheckBox(
-                "lupa5",
+        CheckBox lupaSms = new CheckBox(
+                "lupaSms",
                 createI18NForm("form.lupatiedot.saaLahettaaTekstiviesteja"));
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("lupa1_rule", permission1.getId(), "true");
-        relatedQuestionRule.addChild(email);
-        permission1.addChild(relatedQuestionRule);
 
-        Group group = new Group("permissionCheckboxes", createI18NForm("form.lupatiedot.otsikko"));
+        Group lupaGroup = new Group("permissionCheckboxes", createI18NForm("form.lupatiedot.otsikko"));
 
-        group.addChild(permission1);
-        group.addChild(permission2);
-        group.addChild(permission3);
-        group.addChild(permission4);
-        group.addChild(permission5);
-        lupatiedot.addChild(group);
+        lupaGroup.addChild(lupaMarkkinointi);
+        lupaGroup.addChild(lupaJulkaisu);
+        lupaGroup.addChild(lupaSahkoisesti);
+        lupaGroup.addChild(lupaSms);
+        lupatiedot.addChild(lupaGroup);
         lupatiedot.setVerboseHelp(getVerboseHelp());
 
         Radio asiointikieli = new Radio("asiointikieli", createI18NForm("form.asiointikieli.otsikko"));
