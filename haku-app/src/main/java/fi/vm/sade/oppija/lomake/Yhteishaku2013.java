@@ -65,6 +65,7 @@ import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 public class Yhteishaku2013 {
 
     public static final String ASID = "1.2.246.562.5.50476818906";
+    public static final String AOID_ADDITIONAL_QUESTION = "1.2.246.562.14.71344129359";
     public static final String TUTKINTO7_NOTIFICATION_ID = "tutkinto7-notification";
     public static final String TUTKINTO5_NOTIFICATION_ID = "tutkinto5-notification";
 
@@ -371,18 +372,18 @@ public class Yhteishaku2013 {
     }
 
     private Theme createHakutoiveetRyhma() {
-        final String id = "1.2.246.562.14.71344129359";
+        final String id = AOID_ADDITIONAL_QUESTION;
         final String elementIdPrefix = id.replace('.', '_');
 
         Radio radio3 = new Radio(
-                elementIdPrefix + "_additional_question_3",
+                elementIdPrefix + "_additional_question_1",
                 createI18NForm("form.hakutoiveet.paasykoe.tuloksiaSaaKayttaa"));
-        radio3.addOption(elementIdPrefix + "_q3_option_1",
-                createI18NForm("form.hakutoiveet.paasykoe.eiOsallistunut"), "q3_option_1");
-        radio3.addOption(elementIdPrefix + "_q3_option_2",
-                createI18NForm("form.hakutoiveet.paasykoe.eiSaaKayttaa"), "q3_option_2");
-        radio3.addOption(elementIdPrefix + "_q3_option_3",
-                createI18NForm("form.hakutoiveet.paasykoe.saaKayttaa"), "q3_option_3");
+        radio3.addOption(elementIdPrefix + "_q1_option_1",
+                createI18NForm("form.hakutoiveet.paasykoe.eiOsallistunut"), "q1_option_1");
+        radio3.addOption(elementIdPrefix + "_q1_option_2",
+                createI18NForm("form.hakutoiveet.paasykoe.eiSaaKayttaa"), "q1_option_2");
+        radio3.addOption(elementIdPrefix + "_q1_option_3",
+                createI18NForm("form.hakutoiveet.paasykoe.saaKayttaa"), "q1_option_3");
 
         List<Question> lisakysymysList = new ArrayList<Question>();
         lisakysymysList.add(radio3);
