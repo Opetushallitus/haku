@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -61,8 +62,13 @@
         teemaId: "${parent.id}",
         tutkintoId: "${categoryData.millatutkinnolla}",
         vocational: "${categoryData.ammatillinenTutkintoSuoritettu}",
-        koulutusinformaatioBaseUrl: "${it.koulutusinformaatioBaseUrl}"
-    }
+        <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http')}">
+            koulutusinformaatioBaseUrl: "${it.koulutusinformaatioBaseUrl}"
+        </c:if>
+        <c:if test="${not fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http')}">
+            koulutusinformaatioBaseUrl: location.protocol + "//${it.koulutusinformaatioBaseUrl}"
+        </c:if>
+}
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencetable.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencerow.js"></script>
