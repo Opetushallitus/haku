@@ -28,13 +28,16 @@ public class RelatedQuestionRule extends Rule {
     private static final long serialVersionUID = -6030200061901263949L;
     private final String expression;
     private final String relatedElementId;
+    private final boolean showImmediately;
 
     public RelatedQuestionRule(@JsonProperty(value = "id") String id,
                                @JsonProperty(value = "relatedElementId") String relatedElementId,
-                               @JsonProperty(value = "expression") String expression) {
+                               @JsonProperty(value = "expression") String expression,
+                               @JsonProperty(value = "showImmediately") boolean showImmediately) {
         super(id);
         this.relatedElementId = relatedElementId;
         this.expression = expression;
+        this.showImmediately = showImmediately;
     }
 
     public String getExpression() {
@@ -43,6 +46,10 @@ public class RelatedQuestionRule extends Rule {
 
     public String getRelatedElementId() {
         return relatedElementId;
+    }
+
+    public boolean getShowImmediately() {
+        return showImmediately;
     }
 
     @Override

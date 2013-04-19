@@ -49,16 +49,16 @@ public class ShowChildsIT extends AbstractSeleniumBase {
         theme.addChild(new TextQuestion("alikysymys1", createI18NForm("alikysymys1")));
         theme.addChild(new TextQuestion("alikysymys2", createI18NForm("alikysymys2")));
 
-        final RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", checkBox1.getId(), ".*");
+        final RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", checkBox1.getId(), ".*", false);
         relatedQuestionRule.addChild(theme);
         checkBox1.addChild(relatedQuestionRule);
 
-        final RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule2", checkBox2.getId(), ".*");
+        final RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule2", checkBox2.getId(), ".*", false);
         final TextQuestion textQuestion = new TextQuestion("laitakolmenollaa", createI18NForm("Laita kolme nollaa tähän"));
         relatedQuestionRule2.addChild(textQuestion);
         checkBox2.addChild(relatedQuestionRule2);
 
-        final RelatedQuestionRule relatedQuestionRule3 = new RelatedQuestionRule("rule3", textQuestion.getId(), "[0]{3}");
+        final RelatedQuestionRule relatedQuestionRule3 = new RelatedQuestionRule("rule3", textQuestion.getId(), "[0]{3}", false);
         relatedQuestionRule3.addChild(new TextQuestion("tamanakyykolmellanollalla", createI18NForm("tamanakyykolmellanollalla")));
         textQuestion.addChild(relatedQuestionRule3);
 

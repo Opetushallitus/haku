@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 public class ConditionalFieldValidatorTest {
 
     public static final ConditionalFieldValidator CONDITIONAL_FIELD_VALIDATOR =
-            new ConditionalFieldValidator(new RelatedQuestionRule("id", "relatedId", "expr"));
+            new ConditionalFieldValidator(new RelatedQuestionRule("id", "relatedId", "expr", false));
     public static final Validator VALIDATOR = new Validator() {
         @Override
         public ValidationResult validate(Map<String, String> values) {

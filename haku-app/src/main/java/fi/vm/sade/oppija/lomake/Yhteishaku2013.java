@@ -172,7 +172,7 @@ public class Yhteishaku2013 {
                 sukupuoli.getI18nText(), sukupuoli.getOptions().get(0),
                 sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilotunnus);
 
-        RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FI$");
+        RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FI$", false);
         hetuRule.addChild(socialSecurityNumber);
         henkilotiedotRyhma.addChild(hetuRule);
 
@@ -185,12 +185,12 @@ public class Yhteishaku2013 {
         onkoSinullaSuomalainenHetu.setVerboseHelp(getVerboseHelp());
         onkoSinullaSuomalainenHetu.setInline(true);
         RelatedQuestionRule suomalainenHetuRule = new RelatedQuestionRule("suomalainenHetuRule",
-                onkoSinullaSuomalainenHetu.getId(), "^true");
+                onkoSinullaSuomalainenHetu.getId(), "^true", false);
         suomalainenHetuRule.addChild(socialSecurityNumber);
         onkoSinullaSuomalainenHetu.addChild(suomalainenHetuRule);
 
         RelatedQuestionRule eiSuomalaistaHetuaRule = new RelatedQuestionRule("eiSuomalaistaHetuaRule",
-                onkoSinullaSuomalainenHetu.getId(), "^false");
+                onkoSinullaSuomalainenHetu.getId(), "^false", false);
         eiSuomalaistaHetuaRule.addChild(sukupuoli);
 
         DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NForm("form.henkilotiedot.syntymaaika"));
@@ -219,7 +219,7 @@ public class Yhteishaku2013 {
         onkoSinullaSuomalainenHetu.addChild(eiSuomalaistaHetuaRule);
 
         RelatedQuestionRule ulkomaalaisenTunnisteetRule = new RelatedQuestionRule("ulkomaalaisenTunnisteetRule",
-                kansalaisuus.getId(), NOT_FI);
+                kansalaisuus.getId(), NOT_FI, false);
         ulkomaalaisenTunnisteetRule.addChild(onkoSinullaSuomalainenHetu);
         henkilotiedotRyhma.addChild(ulkomaalaisenTunnisteetRule);
 
@@ -267,18 +267,17 @@ public class Yhteishaku2013 {
 
         // Asuinmaa, osoite
         DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", createI18NForm("form.henkilotiedot.asuinmaa"));
-        asuinmaa.addOption("eiValittu", ElementUtil.createI18NForm(null), "");
         asuinmaa.addOptions(koodistoService.getCountries());
-
+        setDefaultOption("FI", asuinmaa.getOptions());
         asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
         asuinmaa.addAttribute("required", "required");
         asuinmaa.setVerboseHelp(getVerboseHelp());
         asuinmaa.setInline(true);
 
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", asuinmaa.getId(), "FI");
+        RelatedQuestionRule asuinmaaFI = new RelatedQuestionRule("rule1", asuinmaa.getId(), "FI", true);
         Question lahiosoite = createRequiredTextQuestion("lahiosoite", "form.henkilotiedot.lahiosoite", "40");
         lahiosoite.setInline(true);
-        relatedQuestionRule.addChild(lahiosoite);
+        asuinmaaFI.addChild(lahiosoite);
 
         Element postinumero = new PostalCode("Postinumero", createI18NForm("form.henkilotiedot.postinumero"), createPostOffices());
         postinumero.addAttribute("size", "5");
@@ -287,7 +286,7 @@ public class Yhteishaku2013 {
         postinumero.addAttribute("placeholder", "#####");
         postinumero.addAttribute("maxlength", "5");
         postinumero.setHelp(createI18NForm("form.henkilotiedot.postinumero.help"));
-        relatedQuestionRule.addChild(postinumero);
+        asuinmaaFI.addChild(postinumero);
 
         DropdownSelect kotikunta = new DropdownSelect("kotikunta", createI18NForm("form.henkilotiedot.kotikunta"));
         kotikunta.addOption("eiValittu", ElementUtil.createI18NForm(null), "");
@@ -297,12 +296,12 @@ public class Yhteishaku2013 {
         kotikunta.setVerboseHelp(getVerboseHelp());
         kotikunta.setInline(true);
         kotikunta.setHelp(createI18NForm("form.henkilotiedot.kotikunta.help"));
-        relatedQuestionRule.addChild(kotikunta);
+        asuinmaaFI.addChild(kotikunta);
 
         CheckBox ensisijainenOsoite = new CheckBox("ensisijainenOsoite1",
                 createI18NForm("form.henkilotiedot.ensisijainenOsoite"));
         ensisijainenOsoite.setInline(true);
-        relatedQuestionRule.addChild(ensisijainenOsoite);
+        asuinmaaFI.addChild(ensisijainenOsoite);
 
         TextArea osoite = new TextArea("osoite", createI18NForm("form.henkilotiedot.osoite"));
         osoite.addAttribute("required", "required");
@@ -310,13 +309,13 @@ public class Yhteishaku2013 {
         osoite.addAttribute("cols", "40");
         osoite.addAttribute("style", "height: 8em");
         RelatedQuestionRule relatedQuestionRule2 =
-                new RelatedQuestionRule("rule2", asuinmaa.getId(), NOT_FI);
+                new RelatedQuestionRule("rule2", asuinmaa.getId(), NOT_FI, false);
         relatedQuestionRule2.addChild(osoite);
         osoite.setVerboseHelp(getVerboseHelp());
         asuinmaa.addChild(relatedQuestionRule2);
         osoite.setInline(true);
 
-        asuinmaa.addChild(relatedQuestionRule);
+        asuinmaa.addChild(asuinmaaFI);
 
         henkilotiedotRyhma.addChild(asuinmaa);
 
@@ -420,17 +419,17 @@ public class Yhteishaku2013 {
 
     private void createArvosanat(Theme arvosanatRyhma) {
         RelatedQuestionRule relatedQuestionPK = new RelatedQuestionRule("rule_grade_pk", "millatutkinnolla",
-                "(" + PERUSKOULU + "|tutkinto2|tutkinto3|tutkinto4)");
+                "(" + PERUSKOULU + "|tutkinto2|tutkinto3|tutkinto4)", false);
         relatedQuestionPK.addChild(createGradeGrid("grid_pk", true));
         arvosanatRyhma.addChild(relatedQuestionPK);
 
         RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", "millatutkinnolla",
-                "(" + YLIOPPILAS + ")");
+                "(" + YLIOPPILAS + ")", false);
         relatedQuestionLukio.addChild(createGradeGrid("grid_yo", false));
         arvosanatRyhma.addChild(relatedQuestionLukio);
 
         RelatedQuestionRule relatedQuestionEiTutkintoa = new RelatedQuestionRule("rule_grade_no", "millatutkinnolla",
-                "(tutkinto5|tutkinto7)");
+                "(tutkinto5|tutkinto7)", false);
         relatedQuestionEiTutkintoa.addChild(new Text("nogradegrid", createI18NForm("form.arvosanat.eiKysyta")));
         arvosanatRyhma.addChild(relatedQuestionEiTutkintoa);
 
@@ -598,10 +597,10 @@ public class Yhteishaku2013 {
 
 
         RelatedQuestionRule keskeytynytRule = new RelatedQuestionRule("tutkinto5-rule",
-                millatutkinnolla.getId(), KESKEYTYNYT);
+                millatutkinnolla.getId(), KESKEYTYNYT, false);
 
         RelatedQuestionRule ulkomaillaSuoritettuTutkintoRule = new RelatedQuestionRule("tutkinto7-rule",
-                millatutkinnolla.getId(), ULKOMAINEN_TUTKINTO);
+                millatutkinnolla.getId(), ULKOMAINEN_TUTKINTO, false);
 
         ulkomaillaSuoritettuTutkintoRule.addChild(tutkinto7Notification);
         keskeytynytRule.addChild(tutkinto5Notification);
@@ -658,10 +657,10 @@ public class Yhteishaku2013 {
                 + PERUSKOULU + "|"
                 + OSITTAIN_YKSILOLLISTETTY + "|"
                 + ERITYISOPETUKSEN_YKSILOLLISTETTY + "|"
-                + YKSILOLLISTETTY + ")");
+                + YKSILOLLISTETTY + ")", false);
 
         RelatedQuestionRule paattotodistusvuosiPeruskouluRule = new RelatedQuestionRule("rule8",
-                paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$");
+                paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$", false);
 
         relatedQuestionRule.addChild(paattotodistusvuosiPeruskoulu);
         // relatedQuestionRule.addChild(tutkinnonOpetuskieli);
@@ -700,7 +699,7 @@ public class Yhteishaku2013 {
         lukioGroup.addChild(ylioppilastodistuksenVuosi);
         lukioGroup.addChild(ylioppilastutkinto);
 
-        RelatedQuestionRule lukioRule = new RelatedQuestionRule("rule7", millatutkinnolla.getId(), YLIOPPILAS);
+        RelatedQuestionRule lukioRule = new RelatedQuestionRule("rule7", millatutkinnolla.getId(), YLIOPPILAS, false);
         lukioRule.addChild(lukioGroup);
 
         millatutkinnolla.addChild(lukioRule);
@@ -726,7 +725,7 @@ public class Yhteishaku2013 {
         paattotodistusvuosiPeruskouluRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
 
         RelatedQuestionRule suorittanutAmmatillisenTutkinnonRule = new RelatedQuestionRule("rule9",
-                suorittanutAmmatillisenTutkinnon.getId(), "^true");
+                suorittanutAmmatillisenTutkinnon.getId(), "^true", false);
         Notification notification1 = new Notification(
                 "notification1",
                 createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka.huom"),
@@ -736,7 +735,7 @@ public class Yhteishaku2013 {
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutAmmatillisenTutkinnonRule);
 
         RelatedQuestionRule koulutuspaikkaAmmatillisenTutkintoonRule = new RelatedQuestionRule("rule10",
-                koulutuspaikkaAmmatillisenTutkintoon.getId(), "^true$");
+                koulutuspaikkaAmmatillisenTutkintoon.getId(), "^true$", false);
         Notification notification2 = new Notification(
                 "notification2",
                 createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka.huom"),
