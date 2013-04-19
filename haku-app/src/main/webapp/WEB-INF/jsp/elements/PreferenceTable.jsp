@@ -62,10 +62,10 @@
         teemaId: "${parent.id}",
         tutkintoId: "${categoryData.millatutkinnolla}",
         vocational: "${categoryData.ammatillinenTutkintoSuoritettu}",
-        <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http')}">
+        <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') or fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
             koulutusinformaatioBaseUrl: "${it.koulutusinformaatioBaseUrl}"
         </c:if>
-        <c:if test="${not fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http')}">
+        <c:if test="${not fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') and not fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
             koulutusinformaatioBaseUrl: location.protocol + "//${it.koulutusinformaatioBaseUrl}"
         </c:if>
 }
