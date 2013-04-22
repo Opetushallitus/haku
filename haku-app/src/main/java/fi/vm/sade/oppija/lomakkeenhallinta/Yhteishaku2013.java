@@ -220,13 +220,11 @@ public class Yhteishaku2013 {
 
         TextQuestion kansallinenIdTunnus = new TextQuestion("kansallinenIdTunnus", createI18NForm("form.henkilotiedot.kansallinenId"));
         kansallinenIdTunnus.addAttribute("size", "30");
-        kansallinenIdTunnus.addAttribute("required", "required");
         kansallinenIdTunnus.setInline(true);
         eiSuomalaistaHetuaRule.addChild(kansallinenIdTunnus);
 
         TextQuestion passinnumero = new TextQuestion("passinnumero", createI18NForm("form.henkilotiedot.passinnumero"));
         passinnumero.addAttribute("size", "30");
-        passinnumero.addAttribute("required", "required");
         passinnumero.setInline(true);
         eiSuomalaistaHetuaRule.addChild(passinnumero);
 
