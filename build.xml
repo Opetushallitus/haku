@@ -21,7 +21,7 @@
             <isset property="integration-test" />
         </condition>
 
-        <condition property="config.target" value="module-install/server-install/config/system-test/liferay.user.home/oph-configuration/common.properties">
+        <condition property="config.target" value="/data00/tomcat/oph-configuration">
             <isset property="system-test" />
         </condition>
 
