@@ -45,17 +45,29 @@
             preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
         },
 
-        searchAdditionalQuestions : function(hakukohdeId, additionalQuestionsId, educationDegree, soraRequired) {
+        searchAdditionalQuestions : function(hakukohdeId, additionalQuestionsId, educationDegree, preferenceRowId, soraRequired) {
             var url = sortabletable_settings.contextPath + "/lomake/" + sortabletable_settings.applicationPeriodId + "/" +
                 sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
                 sortabletable_settings.teemaId + "/additionalquestions/" + hakukohdeId;
 
             $.get(url, {
                     'ed' : educationDegree,
+                    'preferenceRowId': preferenceRowId,
                     'sora' : soraRequired
                 },
                 function(data) {
                     $("#" + additionalQuestionsId).html(data);
+            });
+        },
+
+        searchDiscretionaryFollowUpQuestions : function(followUpId, preferenceRowId) {
+            console.log(followUpId + " - " + preferenceRowId);
+            var url = sortabletable_settings.contextPath + "/lomake/" + sortabletable_settings.applicationPeriodId + "/" +
+                sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
+                sortabletable_settings.teemaId + "/discretionaryFollowUp/" + preferenceRowId;
+
+            $.get(url, function(data) {
+                $("#" + followUpId).html(data);
             });
         },
 
@@ -116,14 +128,23 @@
 
     $(".field-container-select select").change(function(event) {
         var $hiddenInput = $("#" + this.id + "-id"), $educationDegreeInput = $("#" + this.id + "-educationDegree"),
-            selectedId, educationDegree, value = $(this).val();
+            selectedId, educationDegree, value = $(this).val(),
+            preferenceRowId = this.id.split("-")[0];
         $(this).children().removeAttr("selected");
         $(this).children("option[value='" + value + "']").attr("selected", "selected");
         selectedId = $("#" + this.id + " option:selected").data("id");
         $hiddenInput.val(selectedId);
         educationDegree = $("#" + this.id + " option:selected").data("educationdegree");
         $educationDegreeInput.val(educationDegree);
-        preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"), educationDegree, false);
+        preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"), educationDegree, preferenceRowId, false);
         preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
+    });
+
+    $('input[name$="-Harkinnanvarainen"]').live("change", function() {
+        if (this.value == "true") {
+            preferenceRow.searchDiscretionaryFollowUpQuestions($(this).data("followupid"), this.name.split("-")[0]);
+        }
+
+
     });
 })();

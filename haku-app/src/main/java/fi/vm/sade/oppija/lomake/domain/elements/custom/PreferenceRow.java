@@ -17,7 +17,9 @@
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -43,6 +45,10 @@ public class PreferenceRow extends Question {
     private String selectEducationPlaceholder;
     private String learningInstitutionInputId;
     private String educationInputId;
+    // question that is asked when user applies for an application option with a specific education degree
+    private Radio discretionaryQuestion;
+    // follow up for the discretionary question
+    private DropdownSelect discretionaryFollowUp;
 
     public PreferenceRow(@JsonProperty(value = "id") final String id,
                          @JsonProperty(value = "i18nText") final I18nText i18nText,
@@ -50,13 +56,15 @@ public class PreferenceRow extends Question {
                          @JsonProperty(value = "educationLabel") final I18nText educationLabel,
                          @JsonProperty(value = "learningInstitutionLabel") final I18nText learningInstitutionLabel,
                          @JsonProperty(value = "childLONameListLabel") final I18nText childLONameListLabel,
-                         @JsonProperty(value = "selectEducationPlaceholder") final String selectEducationPlaceholder) {
+                         @JsonProperty(value = "selectEducationPlaceholder") final String selectEducationPlaceholder, Radio discretionaryQuestion, DropdownSelect discretionaryFollowUp) {
         super(id, i18nText);
         this.resetLabel = resetLabel;
         this.educationLabel = educationLabel;
         this.learningInstitutionLabel = learningInstitutionLabel;
         this.childLONameListLabel = childLONameListLabel;
         this.selectEducationPlaceholder = selectEducationPlaceholder;
+        this.discretionaryQuestion = discretionaryQuestion;
+        this.discretionaryFollowUp = discretionaryFollowUp;
         this.learningInstitutionInputId = this.id + "-Opetuspiste";
         this.educationInputId = this.id + "-Koulutus";
     }
@@ -87,6 +95,14 @@ public class PreferenceRow extends Question {
 
     public String getEducationInputId() {
         return educationInputId;
+    }
+
+    public Radio getDiscretionaryQuestion() {
+        return discretionaryQuestion;
+    }
+
+    public DropdownSelect getDiscretionaryFollowUp() {
+        return discretionaryFollowUp;
     }
 
     @JsonIgnore

@@ -351,6 +351,7 @@ public class FormController {
      * @param aoId application option id
      * @param preview is for preview (optional)
      * @param ed education degree of the application option (optional)
+     * @param preferenceRowId PreferenceRow element that fired this request (optional)
      * @param sora is sora question required (optional)
      * @return list of questions
      */
@@ -364,6 +365,7 @@ public class FormController {
                                            @PathParam("aoId") final String aoId,
                                            @QueryParam("preview") final boolean preview,
                                            @QueryParam("ed") final Integer ed,
+                                           @QueryParam("preferenceRowId") final String preferenceRowId,
                                            @QueryParam("sora") final Boolean sora
                                            ) {
         LOGGER.debug("getAdditionalQuestions {}, {}, {}, {}, {}, {}", new Object[]{applicationSystemId,
@@ -372,7 +374,7 @@ public class FormController {
 
         final FormId formId = new FormId(applicationSystemId, formIdStr);
         Set<Question> additionalQuestions = additionalQuestionService.
-                findAdditionalQuestions(formId, phaseId, themeId, aoId, ed, sora);
+                findAdditionalQuestions(formId, phaseId, themeId, aoId, ed, preferenceRowId, sora);
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("additionalQuestions", additionalQuestions);
         model.put("categoryData", applicationService.getApplication(formId).getVastauksetMerged());
@@ -387,22 +389,22 @@ public class FormController {
      * @param formIdStr
      * @param phaseId
      * @param themeId
-     * @param aoId
+     * @param preferenceRowId
      * @return
      */
     @GET
-    @Path("/{asId}/{formIdStr}/{phaseId}/{themeId}/discretionaryFollowUp/{aoId}")
+    @Path("/{asId}/{formIdStr}/{phaseId}/{themeId}/discretionaryFollowUp/{preferenceRowId}")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable getDiscretionaryFollowUp(@PathParam("asId") final String asId,
                                              @PathParam("formIdStr") final String formIdStr,
                                              @PathParam("phaseId") final String phaseId,
                                              @PathParam("themeId") final String themeId,
-                                             @PathParam("aoId") final String aoId
+                                             @PathParam("preferenceRowId") final String preferenceRowId
                                              ) {
 
         FormId formId = new FormId(asId, formIdStr);
 
-        Question followUp = additionalQuestionService.findDiscretionaryFollowUps(formId, phaseId, themeId, aoId);
+        Question followUp = additionalQuestionService.findDiscretionaryFollowUps(formId, phaseId, themeId, preferenceRowId);
         Map<String, Object> model = new HashMap<String, Object>();
 
         model.put("categoryData", applicationService.getApplication(formId).getVastauksetMerged());

@@ -14,31 +14,5 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<c:set value="${element.id}-followUp" var="followUpId" scope="page"/>
 <jsp:include page="./Radio.jsp"/>
-<div id="${followUpId}" class="form-row"></div>
-
-<script type="text/javascript">
-    (function() {
-         function updateFollowUp () {
-            var url = sortabletable_settings.contextPath + "/lomake/" + sortabletable_settings.applicationPeriodId + "/" +
-                sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
-                sortabletable_settings.teemaId + "/discretionaryFollowUp/${element.aoId}";
-            $.get(url, function(data){
-                $("#${followUpId}").html(data);
-            });
-        }
-        $('input[name="${element.id}"]').change(function() {
-            if (this.value == "true") {
-                updateFollowUp();
-            }
-            else {
-                $("#${followUpId}").html("");
-            }
-        });
-
-        if ($('[name = "${element.id}"]:checked').attr('value') == "true") {
-            updateFollowUp();
-        }
-    }());
-</script>
+<div id="${element.followUpId}" class="form-row"></div>

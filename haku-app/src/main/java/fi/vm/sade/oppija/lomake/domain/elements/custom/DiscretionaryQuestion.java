@@ -18,27 +18,23 @@ package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * @author Hannu Lyytikainen
  */
 public class DiscretionaryQuestion extends Radio {
-    // can be used to indicate to which application option this question is related to
-    private String aoId;
 
-    public DiscretionaryQuestion(@JsonProperty(value = "id") String id, @JsonProperty(value = "i18nText") I18nText i18nText) {
+    // id for the follow up question container div
+    private String followUpId;
+
+    public DiscretionaryQuestion(@JsonProperty(value = "id") String id, @JsonProperty(value = "i18nText") I18nText i18nText,
+                                 @JsonProperty(value = "followUpId") String followUpId) {
         super(id, i18nText);
+        this.followUpId = followUpId;
     }
 
-    @JsonIgnore
-    public String getAoId() {
-        return aoId;
-    }
-
-    @JsonIgnore
-    public void setAoId(String aoId) {
-        this.aoId = aoId;
+    public String getFollowUpId() {
+        return followUpId;
     }
 }

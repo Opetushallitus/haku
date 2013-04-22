@@ -18,8 +18,11 @@ package fi.vm.sade.oppija.lomake.domain.util;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.DiscretionaryQuestion;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import org.apache.log4j.Logger;
 
 import java.text.MessageFormat;
@@ -78,13 +81,27 @@ public final class ElementUtil {
     }
 
     public static PreferenceRow createI18NPreferenceRow(final String id, final String title) {
+        String followUpId = id + "-followUp";
+        DiscretionaryQuestion discretionary = new DiscretionaryQuestion(id + "-Harkinnanvarainen", createI18NForm("form.hakutoiveet.harkinnanvarainen"), followUpId);
+        Option o1 = discretionary.addOption("discretionary_option_1", createI18NForm("form.yleinen.en"), "false");
+        o1.addAttribute("data-followUpId", id + "-followUp");
+        Option o2 = discretionary.addOption("discretionary_option_2", createI18NForm("form.yleinen.kylla"), "true");
+        o2.addAttribute("data-followUpId", id + "-followUp");
+
+        DropdownSelect discretionaryFollowUp = new DropdownSelect(id + " - harkinnanvarainen_jatko", createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"));
+        discretionaryFollowUp.addOption("harkinnanvarainena_jatko_option_1",
+                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.oppimisvaikeudet"), "oppimisvaikudet");
+        discretionaryFollowUp.addOption("harkinnanvarainena_jatko_option_2",
+                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset"), "sosiaalisetsyyt");
+
         return new PreferenceRow(id,
                 createI18NForm("form.hakutoiveet.hakutoive", title),
                 createI18NForm("form.yleinen.tyhjenna"),
                 createI18NForm("form.hakutoiveet.koulutus"),
                 createI18NForm("form.hakutoiveet.opetuspiste"),
                 createI18NForm("form.hakutoiveet.sisaltyvatKoulutusohjelmat"),
-                "Valitse koulutus");
+                "Valitse koulutus", discretionary, discretionaryFollowUp);
+
     }
 
     public static <E extends Element> Map<String, E> findElementsByType(Element element, Class<E> eClass) {

@@ -52,7 +52,8 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public Set<Question> findAdditionalQuestions(FormId formId, String phaseId, String themeId, String aoId, Integer educationDegree, Boolean sora) {
+    public Set<Question> findAdditionalQuestions(FormId formId, String phaseId, String themeId, String aoId,
+                                                 Integer educationDegree, String preferenceRowId, Boolean sora) {
 
         Theme theme = findTheme(formId, phaseId, themeId);
 
@@ -60,6 +61,14 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
 
         if (theme == null || theme.getAdditionalQuestions() == null) {
             return additionalQuestions;
+        }
+
+        if (preferenceRowId != null) {
+            PreferenceTable table = ElementUtil.findElementsByTypeAsList(theme, PreferenceTable.class).get(0);
+            PreferenceRow row = (PreferenceRow)table.getChildById(preferenceRowId);
+            if (row != null && educationDegree.equals(table.getDiscretionaryEducationDegree())) {
+                additionalQuestions.add(row.getDiscretionaryQuestion());
+            }
         }
 
         List<Question> questions = theme.getAdditionalQuestions().get(aoId);
@@ -71,20 +80,16 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public Question findDiscretionaryFollowUps(FormId formId, String phaseId, String themeId, String aoId) {
+    public Question findDiscretionaryFollowUps(FormId formId, String phaseId, String themeId, String preferendeRowId) {
         Theme theme = findTheme(formId, phaseId, themeId);
 
         if (theme == null) {
             return null;
         }
 
-        List<PreferenceTable> preferenceTables = ElementUtil.findElementsByTypeAsList(theme, PreferenceTable.class);
-        if (preferenceTables.isEmpty()) {
-            return null;
-        }
+        PreferenceRow row = (PreferenceRow)theme.getChildById(preferendeRowId);
 
-        return null;
-        //return preferenceTables.get(0).buildDiscretionaryFollowUps(aoId);
+        return row.getDiscretionaryFollowUp();
     }
 
     private Theme findTheme(FormId formId, String phaseId, String themeId) {

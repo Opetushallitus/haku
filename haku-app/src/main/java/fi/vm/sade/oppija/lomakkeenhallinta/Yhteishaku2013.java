@@ -41,7 +41,6 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
@@ -60,10 +59,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextArea;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.oppija.lomake.domain.elements.*;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.*;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
@@ -71,13 +67,6 @@ import fi.vm.sade.oppija.lomakkeenhallinta.predicate.ComprehensiveSchools;
 import fi.vm.sade.oppija.lomakkeenhallinta.predicate.HighSchools;
 import fi.vm.sade.oppija.lomakkeenhallinta.predicate.Ids;
 import fi.vm.sade.oppija.lomakkeenhallinta.predicate.Languages;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
-
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
-import static fi.vm.sade.oppija.util.OppijaConstants.*;
 
 @Service
 public class Yhteishaku2013 {
@@ -646,15 +635,6 @@ public class Yhteishaku2013 {
     private void createHakutoiveet(Theme hakutoiveetRyhma) {
         hakutoiveetRyhma
                 .setHelp(createI18NForm("form.hakutoiveet.help"));
-
-        DiscretionaryQuestion discretionary = new DiscretionaryQuestion("_discretionary_question", createI18NForm("form.hakutoiveet.harkinnanvarainen"));
-        discretionary.addOption("_discretionary_option_1", createI18NForm("form.yleinen.en"), "false");
-        discretionary.addOption("_discretionary_option_2", createI18NForm("form.yleinen.kylla"), "true");
-        DropdownSelect discretionaryFollowUp = new DropdownSelect("_discfretionary_followup", createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"));
-        discretionaryFollowUp.addOption("_discretionary_followup_option_1",
-                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.oppimisvaikeudet"), "oppimisvaikudet");
-        discretionaryFollowUp.addOption("_discretionary_followup_option_2",
-                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset"), "sosiaalisetsyyt");
 
         Radio radio = new Radio(
                 "_sora_question_1",
