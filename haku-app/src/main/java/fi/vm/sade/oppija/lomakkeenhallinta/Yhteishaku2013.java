@@ -720,8 +720,8 @@ public class Yhteishaku2013 {
 
         Radio osallistunut = new Radio("osallistunut",
                 createI18NForm("form.koulutustausta.osallistunutPaasykokeisiin"));
-        osallistunut.addOption("ei", createI18NForm("form.yleinen.en"), "false");
         osallistunut.addOption("kylla", createI18NForm("form.yleinen.kylla"), "true");
+        osallistunut.addOption("ei", createI18NForm("form.yleinen.en"), "false");
         osallistunut.addAttribute("required", "required");
         osallistunut.setVerboseHelp(getVerboseHelp());
 
@@ -895,7 +895,7 @@ public class Yhteishaku2013 {
                 "koulutuspaikkaAmmatillisenTutkintoon",
                 createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka"));
         koulutuspaikkaAmmatillisenTutkintoon.addOption("kylla", createI18NForm("form.yleinen.kylla"), "true");
-        koulutuspaikkaAmmatillisenTutkintoon.addOption("ei", createI18NForm("form.yleinen.ei"), "false");
+        koulutuspaikkaAmmatillisenTutkintoon.addOption("ei", createI18NForm("form.yleinen.en"), "false");
         koulutuspaikkaAmmatillisenTutkintoon.addAttribute("required", "required");
 
         lukioRule.addChild(suorittanutAmmatillisenTutkinnon);
