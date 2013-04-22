@@ -8,6 +8,23 @@
                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
                 passphrase="" trust="true" failonerror="false" />
         -->
+
+        <condition property="common.properties" value="module-install/server-install/config/integration-test/liferay.user.home/oph-configuration/common.properties">
+            <isset property="integration-test" />
+        </condition>
+
+        <condition property="common.properties" value="module-install/server-install/config/system-test/liferay.user.home/oph-configuration/common.properties">
+            <isset property="system-test" />
+        </condition>
+
+        <condition property="config.target" value="/data00/oph/haku/oph-configuration">
+            <isset property="integration-test" />
+        </condition>
+
+        <condition property="config.target" value="../module-install/server-install/config/system-test/liferay.user.home/oph-configuration/common.properties">
+            <isset property="system-test" />
+        </condition>
+
         <echo>Stop Tomcat</echo>
         <sshexec command="/etc/init.d/tomcat stop"
                  host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
@@ -48,6 +65,12 @@
         rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku-app.war"
                  host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
                  passphrase="" trust="true" failonerror="false" />
+
+        <echo>copy common.properties</echo>
+        <scp file="${common.properties}"
+             todir="${config.target}"
+             keyfile="${user.home}/.ssh/id_rsa"
+             />
 
         <echo>Start Tomcat</echo>
         <sshexec command="/etc/init.d/tomcat start"
