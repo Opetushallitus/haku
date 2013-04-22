@@ -495,7 +495,7 @@ public class Yhteishaku2013 {
         soraQuestions.add(radio2);
 
         PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NForm("form.hakutoiveet.otsikko"), "Ylös",
-                "Alas", 32, discretionary, discretionaryFollowUp, soraQuestions);
+                "Alas", 32);
         PreferenceRow pr1 = ElementUtil.createI18NPreferenceRow("preference1", "1");
         pr1.addAttribute("required", "required");
         PreferenceRow pr2 = ElementUtil.createI18NPreferenceRow("preference2", "2");

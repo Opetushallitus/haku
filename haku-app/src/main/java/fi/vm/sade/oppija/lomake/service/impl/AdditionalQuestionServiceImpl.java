@@ -53,7 +53,6 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
 
     @Override
     public Set<Question> findAdditionalQuestions(FormId formId, String phaseId, String themeId, String aoId, Integer educationDegree, Boolean sora) {
-        Form form = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
 
         Theme theme = findTheme(formId, phaseId, themeId);
 
@@ -63,26 +62,10 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
             return additionalQuestions;
         }
 
-        // discretionary and sora questions
-        if (educationDegree != null || sora != null) {
-            // find preference row
-            List<PreferenceTable> prefTables = ElementUtil.findElementsByTypeAsList(theme, PreferenceTable.class);
-            if (prefTables.size() > 0) {
-                PreferenceTable prefTable = prefTables.get(0);
-                if (educationDegree != null && educationDegree.equals(prefTable.getDiscretionaryEducationDegree())) {
-                    additionalQuestions.add(prefTable.buildDiscretionaryQuestion(aoId));
-                }
-                if (sora != null && sora.booleanValue()) {
-                    additionalQuestions.addAll(prefTable.buildSoraQuestions(aoId));
-                }
-            }
-        }
-
         List<Question> questions = theme.getAdditionalQuestions().get(aoId);
         if (questions != null && !questions.isEmpty()) {
             additionalQuestions.addAll(questions);
         }
-
 
         return additionalQuestions;
     }
@@ -100,7 +83,8 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
             return null;
         }
 
-        return preferenceTables.get(0).buildDiscretionaryFollowUps(aoId);
+        return null;
+        //return preferenceTables.get(0).buildDiscretionaryFollowUps(aoId);
     }
 
     private Theme findTheme(FormId formId, String phaseId, String themeId) {
