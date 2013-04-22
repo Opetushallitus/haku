@@ -21,7 +21,7 @@
             <isset property="integration-test" />
         </condition>
 
-        <condition property="config.target" value="../module-install/server-install/config/system-test/liferay.user.home/oph-configuration/common.properties">
+        <condition property="config.target" value="module-install/server-install/config/system-test/liferay.user.home/oph-configuration/common.properties">
             <isset property="system-test" />
         </condition>
 
@@ -68,7 +68,7 @@
 
         <echo>copy common.properties</echo>
         <scp file="${common.properties}"
-             todir="${config.target}"
+             todir="tomcat@${tomcat-host}:${config.target}"
              keyfile="${user.home}/.ssh/id_rsa"
              />
 
