@@ -17,17 +17,13 @@
 package fi.vm.sade.oppija.ui.it;
 
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.assertLinkNotPresent;
-import static net.sourceforge.jwebunit.junit.JWebUnit.assertLinkPresent;
-import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
-import static net.sourceforge.jwebunit.junit.JWebUnit.gotoPage;
-
+import fi.vm.sade.oppija.common.it.AbstractFormTest;
+import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
+import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.lomake.Yhteishaku2013;
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 /**
  * @author Hannu Lyytikainen

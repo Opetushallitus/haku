@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.lomake.domain.Attribute;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
@@ -69,8 +70,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
                 @JsonSubTypes.Type(value = AddElementRule.class),
                 @JsonSubTypes.Type(value = GradeGrid.class),
                 @JsonSubTypes.Type(value = SubjectRow.class),
-                @JsonSubTypes.Type(value = LanguageRow.class),
-                @JsonSubTypes.Type(value = CustomLanguageRow.class),
+                @JsonSubTypes.Type(value = GradeGridRow.class),
+                @JsonSubTypes.Type(value = GradeGridColumn.class),
+                @JsonSubTypes.Type(value = GradeGridTitle.class),
+                @JsonSubTypes.Type(value = GradeGridOptionQuestion.class),
+                @JsonSubTypes.Type(value = GradeGridAddLang.class),
                 @JsonSubTypes.Type(value = PreferenceTable.class),
                 @JsonSubTypes.Type(value = PreferenceRow.class),
                 @JsonSubTypes.Type(value = PostalCode.class),
@@ -134,9 +138,10 @@ public abstract class Element implements Serializable {
     public void setHelp(final I18nText help) {
         this.help = help;
     }
-
-    public Element addChild(Element child) {
-        this.children.add(child);
+    public Element addChild(Element... children) {
+        for (Element child : children) {
+            this.children.add(child);
+        }
         return this;
     }
 

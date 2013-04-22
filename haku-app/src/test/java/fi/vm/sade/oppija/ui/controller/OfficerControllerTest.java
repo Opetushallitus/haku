@@ -24,7 +24,7 @@ import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
@@ -43,7 +43,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -72,11 +72,11 @@ public class OfficerControllerTest {
         when(applicationService.getApplication(OID)).thenReturn(app);
         when(applicationService.getApplicationPreferenceOids(anyString())).thenReturn(new ArrayList<String>());
 
-        Phase phase = new Phase(PREVIEW_PHASE, createI18NForm(PREVIEW_PHASE), true);
+        Phase phase = new Phase(PREVIEW_PHASE, createI18NAsIs(PREVIEW_PHASE), true);
         when(formService.getLastPhase(Yhteishaku2013.ASID, "yhteishaku")).thenReturn(phase);
 
-        Form form = new Form("yhteishaku", createI18NForm("yhteishaku"));
-        form.addChild(new Phase("henkilotiedot", createI18NForm("henkilotiedot"), false));
+        Form form = new Form("yhteishaku", createI18NAsIs("yhteishaku"));
+        form.addChild(new Phase("henkilotiedot", createI18NAsIs("henkilotiedot"), false));
         form.addChild(phase);
         when(formService.getActiveForm(Yhteishaku2013.ASID, "yhteishaku")).thenReturn(form);
 

@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -28,7 +28,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -43,8 +43,8 @@ public class GradeGridIT extends AbstractSeleniumBase {
     public void init() {
         super.before();
         ApplicationPeriod applicationPeriod = new ApplicationPeriod(Yhteishaku2013.ASID);
-        Phase arvosanat = new Phase(PHASE_ID, createI18NForm("Arvosanat"), false);
-        Form form = new Form(FORM_ID, createI18NForm("yhteishaku"));
+        Phase arvosanat = new Phase(PHASE_ID, createI18NAsIs("Arvosanat"), false);
+        Form form = new Form(FORM_ID, createI18NAsIs("yhteishaku"));
         form.addChild(arvosanat);
         Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl());
         yhteishaku2013.init();
@@ -73,8 +73,9 @@ public class GradeGridIT extends AbstractSeleniumBase {
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
 
-        driver.findElement(By.id("add_language_button")).click();
+        driver.findElement(By.id("languages")).click();
+        driver.findElement(By.id("nativeLanguage")).click();
 
-        assertNotNull(driver.findElement(By.id("custom-scope_0")));
+        assertNotNull(driver.findElement(By.id("custom-grades-0")));
     }
 }

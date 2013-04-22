@@ -26,7 +26,7 @@ import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.GradeGrid;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;

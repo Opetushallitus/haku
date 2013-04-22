@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
 import static net.sourceforge.jwebunit.junit.JWebUnit.assertElementPresent;
 import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 
@@ -41,7 +41,7 @@ public class TextAreaIT extends AbstractFormTest {
 
     @Before
     public void init() throws IOException {
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextArea("vapaa_teksti", createI18NForm("foo")));
+        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextArea("vapaa_teksti", createI18NAsIs("foo")));
         this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
     }
 

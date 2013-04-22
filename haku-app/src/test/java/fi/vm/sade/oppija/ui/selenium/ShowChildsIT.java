@@ -32,7 +32,7 @@ import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertNotNull;
 
 public class ShowChildsIT extends AbstractSeleniumBase {
@@ -42,24 +42,24 @@ public class ShowChildsIT extends AbstractSeleniumBase {
 
     @Before
     public void init() throws IOException {
-        checkBox1 = new CheckBox("value", createI18NForm("title"));
-        final CheckBox checkBox2 = new CheckBox("value2", createI18NForm("title2"));
+        checkBox1 = new CheckBox("value", createI18NAsIs("title"));
+        final CheckBox checkBox2 = new CheckBox("value2", createI18NAsIs("title2"));
 
-        final Theme theme = new Theme("ekaryhma", createI18NForm("ekaryhma"), null);
-        theme.addChild(new TextQuestion("alikysymys1", createI18NForm("alikysymys1")));
-        theme.addChild(new TextQuestion("alikysymys2", createI18NForm("alikysymys2")));
+        final Theme theme = new Theme("ekaryhma", createI18NAsIs("ekaryhma"), null);
+        theme.addChild(new TextQuestion("alikysymys1", createI18NAsIs("alikysymys1")));
+        theme.addChild(new TextQuestion("alikysymys2", createI18NAsIs("alikysymys2")));
 
-        final RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", checkBox1.getId(), ".*");
+        final RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", checkBox1.getId(), ".*", false);
         relatedQuestionRule.addChild(theme);
         checkBox1.addChild(relatedQuestionRule);
 
-        final RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule2", checkBox2.getId(), ".*");
-        final TextQuestion textQuestion = new TextQuestion("laitakolmenollaa", createI18NForm("Laita kolme nollaa tähän"));
+        final RelatedQuestionRule relatedQuestionRule2 = new RelatedQuestionRule("rule2", checkBox2.getId(), ".*", false);
+        final TextQuestion textQuestion = new TextQuestion("laitakolmenollaa", createI18NAsIs("Laita kolme nollaa tähän"));
         relatedQuestionRule2.addChild(textQuestion);
         checkBox2.addChild(relatedQuestionRule2);
 
-        final RelatedQuestionRule relatedQuestionRule3 = new RelatedQuestionRule("rule3", textQuestion.getId(), "[0]{3}");
-        relatedQuestionRule3.addChild(new TextQuestion("tamanakyykolmellanollalla", createI18NForm("tamanakyykolmellanollalla")));
+        final RelatedQuestionRule relatedQuestionRule3 = new RelatedQuestionRule("rule3", textQuestion.getId(), "[0]{3}", false);
+        relatedQuestionRule3.addChild(new TextQuestion("tamanakyykolmellanollalla", createI18NAsIs("tamanakyykolmellanollalla")));
         textQuestion.addChild(relatedQuestionRule3);
 
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox1, checkBox2);

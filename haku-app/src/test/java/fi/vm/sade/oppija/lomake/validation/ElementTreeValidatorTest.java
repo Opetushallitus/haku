@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
-import fi.vm.sade.oppija.lomake.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.*;
 
 public class ElementTreeValidatorTest {
@@ -36,7 +36,7 @@ public class ElementTreeValidatorTest {
 
     @Before
     public void setUp() throws Exception {
-        textQuestion = new TextQuestion("id", createI18NForm("title"));
+        textQuestion = new TextQuestion("id", createI18NAsIs("title"));
         formModelDummyMemoryDao = new FormServiceMockImpl();
     }
 

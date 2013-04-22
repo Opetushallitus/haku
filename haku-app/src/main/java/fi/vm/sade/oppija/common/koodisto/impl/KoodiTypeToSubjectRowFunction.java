@@ -17,27 +17,64 @@
 package fi.vm.sade.oppija.common.koodisto.impl;
 
 import com.google.common.base.Function;
+import fi.vm.sade.koodisto.service.KoodiService;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
+import fi.vm.sade.koodisto.service.types.common.KoodiUriAndVersioType;
+import fi.vm.sade.koodisto.service.types.common.SuhteenTyyppiType;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.LanguageRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 
+import java.util.List;
 import java.util.Map;
 
 public class KoodiTypeToSubjectRowFunction implements Function<KoodiType, SubjectRow> {
+
+    public static final String CODE_OPPIAINEENVALINNAISUUS = "oppiaineenvalinnaisuus";
+    public static final String CODE_ONLUKIONOPPIAINE = "onlukionoppiaine";
+    public static final String CODE_ONPERUSASTEENOPPIAINE = "onperusasteenoppiaine";
+    public static final String CODE_OPPIAINEENKIELISYYS = "oppiaineenkielisyys";
+    public static final String CODE_VALUE_TRUE = "1";
+    private final KoodiService koodiService;
+
+    public KoodiTypeToSubjectRowFunction(KoodiService koodiService) {
+        this.koodiService = koodiService;
+    }
 
     @Override
     public SubjectRow apply(final KoodiType koodiType) {
         Map<String, String> translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
         String koodiArvo = koodiType.getKoodiArvo();
-        boolean language = koodiArvo.startsWith("A1") || koodiArvo.startsWith("A2") ||
-                koodiArvo.startsWith("B1") || koodiArvo.startsWith("B2") || koodiArvo.startsWith("B3"); // TODO koodistosta
-        SubjectRow row;
-        if (language) {
-            row = new LanguageRow(koodiArvo, new I18nText(koodiArvo, translationsMap));
-        } else {
-            row = new SubjectRow(koodiArvo, new I18nText(koodiArvo, translationsMap));
+
+        boolean optional = false;
+        boolean highSchool = false;
+        boolean comprehensiveSchool = false;
+        boolean language = false;
+
+        KoodiUriAndVersioType koodi = new KoodiUriAndVersioType();
+        koodi.setKoodiUri(koodiType.getKoodiUri());
+        koodi.setVersio(koodiType.getVersio());
+        if (koodiService != null) {
+            List<KoodiType> koodiTypes = koodiService.listKoodiByRelation(koodi, false, SuhteenTyyppiType.SISALTYY);
+            for (KoodiType type : koodiTypes) {
+                String koodistoUri = type.getKoodisto().getKoodistoUri();
+                if (CODE_OPPIAINEENVALINNAISUUS.equals(koodistoUri)) {
+                    optional = isTrue(type);
+                } else if (CODE_ONLUKIONOPPIAINE.equals(koodistoUri)) {
+                    comprehensiveSchool = isTrue(type);
+                } else if (CODE_ONPERUSASTEENOPPIAINE.equals(koodistoUri)) {
+                    highSchool = isTrue(type);
+                } else if (CODE_OPPIAINEENKIELISYYS.equals(koodistoUri)) {
+                    language = isTrue(type);
+                }
+            }
         }
-        return row;
+
+        SubjectRow subjectRow = new SubjectRow(koodiArvo, new I18nText(koodiArvo, translationsMap), optional, highSchool, comprehensiveSchool, language);
+        subjectRow.toString();
+        return subjectRow;
+    }
+
+    private boolean isTrue(final KoodiType koodiType) {
+        return CODE_VALUE_TRUE.equals(koodiType.getKoodiArvo());
     }
 }

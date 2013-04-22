@@ -42,7 +42,7 @@ public class FunctionalValidatorTest {
         Predicate<Map<String, String>> predicate = and(validate(new RegexFieldFieldValidator("a", "foo")),
                 validate(new RegexFieldFieldValidator("b", "bar")));
 
-        FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NForm("error"));
+        FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NAsIs("error"));
         Map<String, String> values = new HashMap<String, String>();
         values.put("a", "foo");
         values.put("b", "bar");
@@ -56,7 +56,7 @@ public class FunctionalValidatorTest {
         Predicate<Map<String, String>> predicate = and(validate(new RegexFieldFieldValidator("a", "foo")),
                 validate(new RegexFieldFieldValidator("b", "bar")));
 
-        FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NForm("error"));
+        FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NAsIs("error"));
         Map<String, String> values = new HashMap<String, String>();
         values.put("a", "foo");
         values.put("b", "fail");
@@ -70,7 +70,7 @@ public class FunctionalValidatorTest {
         Predicate<Map<String, String>> predicate = or(and(validate(new RegexFieldFieldValidator("a", "foo")),
                 validate(new RegexFieldFieldValidator("b", "bar"))), validate(new RegexFieldFieldValidator("c", "ok")));
 
-        FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NForm("error"));
+        FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NAsIs("error"));
         Map<String, String> values = new HashMap<String, String>();
         values.put("a", "foo");
         values.put("b", "fail");
@@ -85,7 +85,7 @@ public class FunctionalValidatorTest {
         Predicate<Map<String, String>> predicate = and(validate(new RegexFieldFieldValidator("a", "foo")),
                 not(validate(new RegexFieldFieldValidator("b", "bar"))));
 
-        FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NForm("error"));
+        FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NAsIs("error"));
         Map<String, String> values = new HashMap<String, String>();
         values.put("a", "foo");
         values.put("b", "fail");

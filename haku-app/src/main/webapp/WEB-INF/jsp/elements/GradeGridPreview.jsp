@@ -19,115 +19,22 @@
   --%>
 
 <fmt:setBundle basename="messages"/>
-<!--
-<table id="gradegrid-table" class="applicant-grades">
-<thead>
--->
 <tr>
     <th></th>
     <th colspan="2"><fmt:message key="lomake.component.gradegrid.gradesTitle"/></th>
 </tr>
 <tr>
     <td><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
+    <td></td>
     <td><fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
     <td><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
-    <c:if test="${element.extraOptionalGrades}">
-        <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
-    </c:if>
+    <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
 
 </tr>
-<!--
-</thead>
-<tbody>
--->
-<!-- subjects that are listed before languages -->
-<haku:subjectRows subjects="${element.subjectsBeforeLanguages}"
-                  element="${element}" data="${categoryData}" extraOptionalGrades="${element.extraOptionalGrades}"/>
+<haku:viewChilds element="${element}"/>
 
-<%-- languages --%>
-<c:forEach var="language" items="${element.languages}">
-    <tr class="gradegrid-language-row">
-        <td>
-            <haku:languageSelect language="${language}" data="${categoryData}"
-                                 options="${element.languageOptions}" preview="${preview}"/>
-        </td>
-        <td>
-            <haku:gradeSelect id="common-${language.id}" data="${categoryData}" preview="${preview}"
-                              options="${element.gradeRange}"/>
-        </td>
-        <td>
-            <haku:gradeSelect id="optional-common-${language.id}" data="${categoryData}"
-                              preview="${preview}" options="${element.gradeRange}"/>
-        </td>
-        <c:if test="${element.extraOptionalGrades}">
-            <td>
-                <haku:gradeSelect id="second-optional-common-${language.id}" data="${categoryData}"
-                                  preview="${preview}" options="${element.gradeRange}"/>
-            </td>
-        </c:if>
-    </tr>
-</c:forEach>
-
-<%-- custom selected languages --%>
-<c:forEach var="entry" items="${categoryData}">
-
-    <c:if test="${fn:startsWith(entry.key,'custom-scope')}">
-        <c:set var="customIndex" value="${fn:substringAfter(entry.key, 'custom-scope_')}" scope="page"/>
-
-        <c:set var="customScopeKey" value="custom-scope_${customIndex}" scope="page"/>
-        <c:set var="customLanguageKey" value="custom-language_${customIndex}" scope="page"/>
-        <c:set var="customCommonGradeKey" value="custom-commongrade_${customIndex}" scope="page"/>
-        <c:set var="customOptionalGradeKey" value="custom-optionalgrade_${customIndex}" scope="page"/>
-        <c:set var="customSecondOptionalGradeKey" value="custom-secondoptionalgrade_${customIndex}" scope="page"/>
-
-        <tr class="gradegrid-language-row gradegrid-custom-language-row">
-            <td><c:out value="${element.customLanguageTitle}"/>&nbsp;
-                <c:forEach var="scopeOption" items="${element.scopeOptions}">
-                    <c:if test="${(categoryData[customScopeKey] eq scopeOption.value)}">
-                        <haku:i18nText value="${scopeOption.i18nText}"/>&nbsp;
-                    </c:if>
-                </c:forEach>
-                <c:forEach var="languageOption" items="${element.languageOptions}">
-                    <c:if test="${(categoryData[customLanguageKey] eq languageOption.value)}">
-                        <haku:i18nText value="${languageOption.i18nText}"/>
-                    </c:if>
-                </c:forEach>
-            </td>
-            <td>
-                <c:forEach var="grade" items="${element.gradeRange}">
-                    <c:if test="${(categoryData[customCommonGradeKey] eq grade.value)}">
-                        <haku:i18nText value="${grade.i18nText}"/>
-                    </c:if>
-                </c:forEach>
-            </td>
-            <td>
-                <c:forEach var="grade" items="${element.gradeRange}">
-                    <c:if test="${(categoryData[customOptionalGradeKey] eq grade.value)}">
-                        <haku:i18nText value="${grade.i18nText}"/>
-                    </c:if>
-                </c:forEach>
-            </td>
-            <c:if test="${element.extraOptionalGrades}">
-                <td>
-                    <c:forEach var="grade" items="${element.gradeRange}">
-                        <c:if test="${(categoryData[customSecondOptionalGradeKey] eq grade.value)}">
-                            <haku:i18nText value="${grade.i18nText}"/>
-                        </c:if>
-                    </c:forEach>
-                </td>
-            </c:if>
-        </tr>
-    </c:if>
-
-</c:forEach>
-<%-- subjects that are listed after languages --%>
-<haku:subjectRows subjects="${element.subjectsAfterLanguages}"
-                  element="${element}" data="${categoryData}" extraOptionalGrades="${element.extraOptionalGrades}"/>
-
-<%-- subjects that are specific to the education selected by the user --%>
-<haku:subjectRows subjects="${additionalQuestionList}"
-                  element="${element}" data="${categoryData}" extraOptionalGrades="${element.extraOptionalGrades}"/>
-<!--
-</tbody>
--->
-<!--</table>-->
+<script>
+    $(document).ready(function () {
+        $("tr[hidden]").show();
+    })
+</script>

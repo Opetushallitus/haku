@@ -22,17 +22,18 @@
     <c:set var="key" value="${element.relatedElementId}"/>
     <script type="text/javascript">
         (function () {
+
             $("[name=\"${key}\"]").change(function (event) {
-                var childIds = [<c:forEach var="child" items="${element.children}" varStatus="status">"${child.id}"${not status.last ? ', ' : ''}</c:forEach>], ruleChilds = $("#${element.id} .rule-childs");
+                var childIds = [<c:forEach var="child" items="${element.children}" varStatus="status">"${child.id}"${not status.last ? ', ' : ''}</c:forEach>];
+                var ruleChilds = $("#${element.id} .rule-childs");
                 if (($(this).is(':checkbox') && $(this).is(':checked'))) {
                     if (ruleChilds.html().trim() === "") {
                         ruleData.getRuleChild(childIds, 0, ruleChilds);
                     }
                 }
-                else if (!$(this).is(':checkbox') && $(this).val().search("${element.expression}") !== -1) {
-                    if (ruleChilds.html().trim() === "") {
-                        ruleData.getRuleChild(childIds, 0, ruleChilds);
-                    }
+                else if (!$(this).is(':checkbox') && $(this).val().search("${element.expression}") !== -1
+                        && ruleChilds.html().trim() === "") {
+                    ruleData.getRuleChild(childIds, 0, ruleChilds);
                 } else {
                     ruleChilds.html("");
                 }
@@ -55,7 +56,7 @@
         })();
     </script>
     <div class="rule-childs clear">
-        <c:if test="${fn:evaluate(categoryData[key], element.expression)}">
+        <c:if test="${fn:evaluate(categoryData[key], element.expression) || element.showImmediately}">
             <haku:viewChilds element="${element}"/>
         </c:if>
     </div>

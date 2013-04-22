@@ -18,8 +18,7 @@ package fi.vm.sade.oppija.common.it;
 
 import net.sourceforge.jwebunit.util.TestingEngineRegistry;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.setBaseUrl;
-import static net.sourceforge.jwebunit.junit.JWebUnit.setTestingEngineKey;
+import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 public abstract class AbstractRemoteTest extends TomcatContainerBase {
 

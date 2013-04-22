@@ -53,7 +53,7 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
 
         driver.findElement(new By.ById("tyokokemuskuukaudet"));
     }
-    
+
     @Test
     public void testWorkExperienceNotShown() {
         WebDriver driver = gotoHakutoiveet("010113A668B");
@@ -69,7 +69,7 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
             // test passed
         }
     }
-    
+
     private WebDriver gotoHakutoiveet(String hetu) {
         final String henkilotiedot = formModelHelper.getFormUrl(formModelHelper.getFirstForm().getPhase("henkilotiedot"));
         final String hakutoiveet = formModelHelper.getFormUrl(formModelHelper.getFirstForm().getPhase("hakutoiveet"));
@@ -90,7 +90,7 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
 
         driver.findElement(new By.ByClassName("right")).click();
         driver.get(getBaseUrl() + "/" + hakutoiveet);
-        
+
         inputOpetuspiste(selenium, driver);
         return driver;
     }

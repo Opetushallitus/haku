@@ -46,11 +46,13 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_GRADE_RANGE = "arvosanat";
     public static final String CODE_LEARNING_INSTITUTION_TYPES = "oppilaitostyyppi";
     public static final String CODE_ORGANIZATION_TYPES = "organisaatiotyyppi";
-//    public static final String CODE_COUNTRIES = "maatjavaltiot1";
+    //    public static final String CODE_COUNTRIES = "maatjavaltiot1";
     public static final String CODE_COUNTRIES = "maatjavaltiottmp";
     public static final String CODE_NATIONALITIES = CODE_COUNTRIES;
     public static final String CODE_LANGUAGES = "kieli";
     public static final String CODE_MUNICIPALITY = "kunta";
+    public static final String CODE_SUBJECT_LANGUAGES = "kielivalikoima";
+
 
     private final KoodiService koodiService;
 
@@ -72,9 +74,8 @@ public class KoodistoServiceImpl implements KoodistoService {
         return ImmutableList.copyOf(
                 Lists.transform(
                         getKoodiTypes(CODE_SUBJECT),
-                        new KoodiTypeToSubjectRowFunction()));
+                        new KoodiTypeToSubjectRowFunction(koodiService)));
     }
-
 
     @Override
     public List<Option> getGradeRanges() {
@@ -83,6 +84,11 @@ public class KoodistoServiceImpl implements KoodistoService {
                         Lists.transform(
                                 getKoodiTypes(CODE_GRADE_RANGE),
                                 new KoodiTypeToOptionFunction())));
+    }
+
+    @Override
+    public List<Option> getSubjectLanguages() {
+        return codesToOptions(CODE_SUBJECT_LANGUAGES);
     }
 
     @Override

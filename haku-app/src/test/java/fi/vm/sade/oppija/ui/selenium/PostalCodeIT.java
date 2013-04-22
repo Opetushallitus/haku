@@ -16,22 +16,7 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
 import com.thoughtworks.selenium.Selenium;
-
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
@@ -42,6 +27,19 @@ import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PostalCode;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
 
 /**
  * @author Mikko Majapuro
@@ -58,17 +56,17 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         ApplicationPeriod applicationPeriod = new ApplicationPeriod("test");
         FormModel formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
-        Phase testivaihe = new Phase("testivaihe", createI18NForm("Testivaihe"), false);
-        Form form = new Form("lomake", createI18NForm("yhteishaku"));
+        Phase testivaihe = new Phase("testivaihe", createI18NAsIs("Testivaihe"), false);
+        Form form = new Form("lomake", createI18NAsIs("yhteishaku"));
         form.addChild(testivaihe);
 
         applicationPeriod.addForm(form);
 
-        Theme testiRyhma = new Theme("testiGrp", createI18NForm("TestiGrp"), null);
+        Theme testiRyhma = new Theme("testiGrp", createI18NAsIs("TestiGrp"), null);
         testivaihe.addChild(testiRyhma);
         Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
-        postOffices.put(POSTCODE, new PostOffice(POSTCODE, ElementUtil.createI18NForm(POST_OFFICE)));
-        PostalCode postinumero = new PostalCode(POSTCODE_ID, createI18NForm(POSTCODE_ID), postOffices);
+        postOffices.put(POSTCODE, new PostOffice(POSTCODE, ElementUtil.createI18NAsIs(POST_OFFICE)));
+        PostalCode postinumero = new PostalCode(POSTCODE_ID, createI18NAsIs(POSTCODE_ID), postOffices);
         postinumero.addAttribute("size", "5");
         postinumero.addAttribute("required", "required");
         postinumero.addAttribute("pattern", "[0-9]{5}");
@@ -76,7 +74,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         postinumero.addAttribute("maxlength", "5");
         testiRyhma.addChild(postinumero);
 
-        TextQuestion tq = new TextQuestion("foo", createI18NForm("bar"));
+        TextQuestion tq = new TextQuestion("foo", createI18NAsIs("bar"));
         testiRyhma.addChild(tq);
         updateModel(formModel);
     }
