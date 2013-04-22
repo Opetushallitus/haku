@@ -12,6 +12,6 @@ public class LanguagesTest extends SubjectRowPredicateTest {
     }
 
     SubjectRow getSubjectRow(final boolean language) {
-        return new SubjectRow("id", ElementUtil.createI18NForm("sdf"), true, false, true, language);
+        return new SubjectRow("id", ElementUtil.createI18NAsIs("sdf"), true, false, true, language);
     }
 }

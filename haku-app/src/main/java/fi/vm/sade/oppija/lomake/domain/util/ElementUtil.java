@@ -36,6 +36,17 @@ public final class ElementUtil {
     private ElementUtil() {
     }
 
+    /**
+     * For tests
+     */
+    public static I18nText createI18NAsIs(final String text) {
+        Map<String, String> translations = new HashMap<String, String>();
+        for (String lang : LANGS) {
+            translations.put(lang, text);
+        }
+        return new I18nText(text + Long.toString(System.currentTimeMillis()), translations);
+    }
+
     public static I18nText createI18NForm(final String text, final String... params) {
         return createI18NText(text, "form_messages", params);
     }

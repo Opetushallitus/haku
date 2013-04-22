@@ -23,13 +23,13 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.*;
 
 public class OrganizationTest {
 
     public static final String OID = "oid";
-    public static final I18nText TITLE = createI18NForm("title");
+    public static final I18nText TITLE = createI18NAsIs("title");
     public static final Date DATE = new Date();
     private Organization organization;
 

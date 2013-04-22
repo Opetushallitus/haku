@@ -34,6 +34,6 @@ public class IdsTest {
     }
 
     private SubjectRow getSubjectRow(final String id) {
-        return new SubjectRow(id, ElementUtil.createI18NForm("sdf"), true, true, false, false);
+        return new SubjectRow(id, ElementUtil.createI18NAsIs("sdf"), true, true, false, false);
     }
 }

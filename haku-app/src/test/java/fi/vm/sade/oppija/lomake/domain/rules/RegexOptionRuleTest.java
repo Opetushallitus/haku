@@ -19,13 +19,13 @@ package fi.vm.sade.oppija.lomake.domain.rules;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import org.junit.Test;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertEquals;
 
 public class RegexOptionRuleTest {
 
     public static final String REGEXA = "a";
-    public static final Option OPTION = new Option("id", createI18NForm("title"), "value");
+    public static final Option OPTION = new Option("id", createI18NAsIs("title"), "value");
 
     private RegexOptionRule regexOptionRule = new RegexOptionRule(REGEXA, OPTION);
 
