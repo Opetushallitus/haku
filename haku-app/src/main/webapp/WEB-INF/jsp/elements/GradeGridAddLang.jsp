@@ -15,8 +15,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<button ${element.attributeString} class="link" type="button"><fmt:message
-        key="lomake.component.gradegrid.addLanguageLabel"/></button>
+<button ${element.attributeString} class="link" type="button"><haku:i18nText value="${element.i18nText}"/></button>
 <script>
     $(document).ready(function () {
         $("#${element.id}").on('click', function (event) {

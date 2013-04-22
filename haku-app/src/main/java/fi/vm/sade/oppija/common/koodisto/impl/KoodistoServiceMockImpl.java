@@ -36,8 +36,8 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
     public static final String LEARNING_INSTITUTION_TYPE = "Yliopistot";
     public static final String ORGANIZATION_TYPE = "Toimipiste";
-	private static final String RUOTSI = "SV";
-	private static final String SUOMI = "FI";
+    private static final String RUOTSI = "SV";
+    private static final String SUOMI = "FI";
     public final List<Option> listOfGradeGrades;
     public final List<PostOffice> listOfPostOffices;
     public final List<SubjectRow> listOfSubjects;
@@ -45,6 +45,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Option> listOfOrganizationTypes;
     public final List<Option> listOfCountries;
     public final List<Option> listOfLanguages;
+    public final List<Option> listOfLanguageAndLiterature;
     public final List<Option> listOfNationalities;
     public final List<Option> listOfMunicipalities;
 
@@ -94,6 +95,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
         this.listOfLearningInstitutionTypes = ImmutableList.of(
                 new Option(LEARNING_INSTITUTION_TYPE,
                         createI18NForm(LEARNING_INSTITUTION_TYPE), LEARNING_INSTITUTION_TYPE));
+
         this.listOfOrganizationTypes =
                 ImmutableList.of(
                         new Option(ORGANIZATION_TYPE,
@@ -128,6 +130,18 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                         createI18NForm("Jomala"), "jomala")
         );
 
+        this.listOfLanguageAndLiterature = ImmutableList.of(
+                new Option("FI", createI18NForm("Suomi äidinkielenä"), "FI"),
+                new Option("SV", createI18NForm("Ruotsi äidinkielenä"), "SV"),
+                new Option("SE", createI18NForm("Saame äidinkielenä"), "SE"),
+                new Option("RI", createI18NForm("Romani äidinkielenä"), "RI"),
+                new Option("VK", createI18NForm("Viittomakieli äidinkielenä"), "VK"),
+                new Option("XX", createI18NForm("Muu oppilaan äidinkieli"), "XX"),
+                new Option("FI_2", createI18NForm("Suomi toisena kielenä"), "FI_2"),
+                new Option("SV_2", createI18NForm("Ruotsi toisena kielenä"), "SV_2"),
+                new Option("FI_SE", createI18NForm("Suomi saamenkielisille"), "FI_SE"),
+                new Option("FI_VK", createI18NForm("Suomi viittomakielisille"), "FI_VK"),
+                new Option("SV_VK", createI18NForm("Ruotsi viittomakielisille"), "SV_VK"));
     }
 
     @Override
@@ -174,6 +188,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getLanguages() {
         return this.listOfLanguages;
+    }
+
+    @Override
+    public List<Option> getLanguageAndLiterature() {
+        return this.listOfLanguageAndLiterature;
     }
 
     @Override

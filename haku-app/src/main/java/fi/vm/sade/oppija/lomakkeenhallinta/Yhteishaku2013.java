@@ -23,6 +23,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.*;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
@@ -418,7 +419,7 @@ public class Yhteishaku2013 {
             additionalNativeLanguageRow.addAttribute("group", "nativeLanguage");
             gradeGrid.addChild(additionalNativeLanguageRow);
         }
-        gradeGrid.addChild(createAddLangRow("nativeLanguage", filtered));
+        gradeGrid.addChild(createAddLangRow("nativeLanguage", ElementUtil.createI18NForm("form.add.lang.native"), filtered, true));
 
         for (SubjectRow defaultLanguage : defaultLanguages) {
             gradeGrid.addChild(createGradeGridRow(defaultLanguage, true, false));
@@ -429,7 +430,7 @@ public class Yhteishaku2013 {
             additionalLanguage.addAttribute("group", "languages");
             gradeGrid.addChild(additionalLanguage);
         }
-        gradeGrid.addChild(createAddLangRow("languages", filtered));
+        gradeGrid.addChild(createAddLangRow("languages", ElementUtil.createI18NForm("form.add.lang"), filtered, false));
 
 
         for (SubjectRow subjectsAfterLanguage : subjectsAfterLanguages) {
@@ -531,11 +532,17 @@ public class Yhteishaku2013 {
         return options;
     }
 
-    private GradeGridRow createAddLangRow(final String group, List<SubjectRow> subjects) {
+    private GradeGridRow createAddLangRow(final String group, I18nText i18nText, List<SubjectRow> subjects, boolean literature) {
         GradeGridRow gradeGridRow = new GradeGridRow(System.currentTimeMillis() + "");
         GradeGridColumn column1 = new GradeGridColumn(gradeGridRow.getId() + "-addlang", false);
         List<Option> subjectOptions = getLanguageSubjects(subjects);
-        GradeGridAddLang child = new GradeGridAddLang(group, subjectOptions, koodistoService.getSubjectLanguages(),
+        List<Option> languageOptions;
+        if (literature) {
+            languageOptions = koodistoService.getLanguageAndLiterature();
+        } else {
+            languageOptions = koodistoService.getLanguages();
+        }
+        GradeGridAddLang child = new GradeGridAddLang(group, i18nText, subjectOptions, languageOptions,
                 koodistoService.getGradeRanges());
         column1.addChild(child);
         column1.addAttribute("colspan", "5");
@@ -543,7 +550,7 @@ public class Yhteishaku2013 {
         return gradeGridRow;
     }
 
-    private GradeGridRow createGradeGridRow(final SubjectRow subjectRow, boolean language, boolean ai) {
+    private GradeGridRow createGradeGridRow(final SubjectRow subjectRow, boolean language, boolean literature) {
         GradeGridRow gradeGridRow = new GradeGridRow(subjectRow.getId());
         GradeGridColumn column1 = new GradeGridColumn("column1", false);
         column1.addChild(new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), false));
@@ -555,9 +562,12 @@ public class Yhteishaku2013 {
         List<Option> gradeRangesSecond = koodistoService.getGradeRanges();
         setDefaultOption("Ei arvosanaa", gradeRangesSecond);
         if (subjectRow.isLanguage() || language) {
-            List<Option> subjectLanguages = koodistoService.getSubjectLanguages();
-            if (ai) {
+            List<Option> subjectLanguages;
+            if (literature) {
+                subjectLanguages = koodistoService.getLanguageAndLiterature();
                 setDefaultOption("FI", subjectLanguages);
+            } else {
+                subjectLanguages = koodistoService.getSubjectLanguages();
             }
             GradeGridOptionQuestion child = new GradeGridOptionQuestion(subjectRow.getId() + "", subjectLanguages, false);
             child.addAttribute("required", "required");
