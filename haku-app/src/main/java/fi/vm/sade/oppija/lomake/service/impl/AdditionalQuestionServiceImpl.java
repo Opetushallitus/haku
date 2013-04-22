@@ -63,7 +63,7 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
             return additionalQuestions;
         }
 
-        if (preferenceRowId != null) {
+        if (preferenceRowId != null && !preferenceRowId.isEmpty()) {
             PreferenceTable table = ElementUtil.findElementsByTypeAsList(theme, PreferenceTable.class).get(0);
             PreferenceRow row = (PreferenceRow)table.getChildById(preferenceRowId);
             if (row != null && educationDegree.equals(table.getDiscretionaryEducationDegree())) {

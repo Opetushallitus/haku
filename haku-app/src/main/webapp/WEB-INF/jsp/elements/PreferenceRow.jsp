@@ -78,5 +78,9 @@
         <span id="${childLONamesId}"></span>
     </div>
     <div id="${additionalQuestionsId}" class="form-row">
+        <c:if test="${not empty categoryData[sortableItem.discretionaryQuestion.id]}">
+            <c:set var="element" value="${sortableItem.discretionaryQuestion}" scope="request"/>
+            <jsp:include page="./${element.type}.jsp"/>
+        </c:if>
     </div>
 </div>

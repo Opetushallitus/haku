@@ -14,5 +14,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+
 <jsp:include page="./Radio.jsp"/>
 <div id="${element.followUpId}" class="form-row"></div>

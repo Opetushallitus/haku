@@ -30,7 +30,7 @@
                     childLONames[item.id] = item.childLONames;
                     if (hakukohdeId == item.id) {
                         selected = 'selected = "selected"';
-                        preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"), item.educationDegree, false);
+                        preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"), item.educationDegree, null, false);
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
                     }
                     $selectInput.append('<option value="' + item.name + '" ' + selected + ' data-id="' + item.id + '" data-educationdegree="' + item.educationDegree + '">' + item.name + '</option>');

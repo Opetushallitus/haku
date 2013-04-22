@@ -47,7 +47,9 @@
             <td>
                 <c:set var="index" value="${status.count}" scope="request"/>
                 <c:set var="sortableItem" value="${child}" scope="request"/>
+                <c:set var="preferenceTable" value="${element}" scope="request"/>
                 <jsp:include page="${sortableItem.type}.jsp"/>
+                <c:set var="element" value="${preferenceTable}" scope="request"/>
             </td>
         </tr>
     </c:forEach>
