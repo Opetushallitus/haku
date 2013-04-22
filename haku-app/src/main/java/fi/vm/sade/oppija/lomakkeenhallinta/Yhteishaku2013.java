@@ -57,9 +57,8 @@ public class Yhteishaku2013 {
             "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
 
     private static final String NOT_FI = "^((?!FI)[A-Z]{2})$";
-    
+
     private final KoodistoService koodistoService;
-    private List<SubjectRow> subjects;
     private List<Option> gradeRanges;
 
     @Autowired // NOSONAR
@@ -71,8 +70,6 @@ public class Yhteishaku2013 {
 
     public void init() { // NOSONAR
         try {
-
-            this.subjects = koodistoService.getSubjects();
 
             Form form = new Form("yhteishaku", createI18NForm("form.title"));
 
@@ -258,13 +255,13 @@ public class Yhteishaku2013 {
         TextQuestion prevNum = puhelinnumero1;
         AddElementRule prevRule = null;
         for (int i = 2; i <= 5; i++) {
-            TextQuestion extranumero = new TextQuestion("matkapuhelinnumero"+i,
+            TextQuestion extranumero = new TextQuestion("matkapuhelinnumero" + i,
                     createI18NForm("form.henkilotiedot.matkapuhelinnumero"));
             extranumero.addAttribute("size", "30");
             extranumero.addAttribute("pattern", mobilePhonePattern);
             extranumero.setInline(true);
 
-            AddElementRule extranumeroRule = new AddElementRule("addPuhelinnumero"+i+"Rule", prevNum.getId(),
+            AddElementRule extranumeroRule = new AddElementRule("addPuhelinnumero" + i + "Rule", prevNum.getId(),
                     createI18NForm("form.henkilotiedot.matkapuhelinnumero.lisaa"));
             extranumeroRule.addChild(extranumero);
             if (i == 2) {
@@ -382,18 +379,18 @@ public class Yhteishaku2013 {
 
     public GradeGrid createGradeGrid(final String id, final boolean comprehensiveSchool) {
 
-
+        List<SubjectRow> subjects = koodistoService.getSubjects();
         for (SubjectRow subject : subjects) {
             subject.addAttribute("required", "required");
-                    }
+        }
         List<SubjectRow> filtered;
         if (comprehensiveSchool) {
-            filtered = ImmutableList.copyOf(Iterables.filter(this.subjects,
+            filtered = ImmutableList.copyOf(Iterables.filter(subjects,
                     new ComprehensiveSchools()));
         } else {
-            filtered = ImmutableList.copyOf(Iterables.filter(this.subjects,
+            filtered = ImmutableList.copyOf(Iterables.filter(subjects,
                     new HighSchools()));
-                    }
+        }
 
         List<SubjectRow> nativeLanguages = ImmutableList.copyOf(Iterables.filter(filtered,
                 new Ids<SubjectRow>("AI")));
@@ -407,47 +404,47 @@ public class Yhteishaku2013 {
                         Predicates.not(new Ids<SubjectRow>("AI"))));
 
 
-        GradeGrid gradeGrid = new GradeGrid(id, createI18NForm("form.arvosanat.otsikko"));
+        GradeGrid gradeGrid = new GradeGrid(id, createI18NForm("form.arvosanat.otsikko"), comprehensiveSchool);
         gradeGrid.setVerboseHelp(getVerboseHelp());
 
         for (SubjectRow nativeLanguage : nativeLanguages) {
-            gradeGrid.addChild(createGradeGridRow(nativeLanguage, true, true));
-            GradeGridRow additionalNativeLanguageRow = createAdditionalNativeLanguageRow(nativeLanguage, 0);
+            gradeGrid.addChild(createGradeGridRow(nativeLanguage, true, true, comprehensiveSchool));
+            GradeGridRow additionalNativeLanguageRow = createAdditionalNativeLanguageRow(nativeLanguage, 0, comprehensiveSchool);
             additionalNativeLanguageRow.addAttribute("hidden", "hidden");
             additionalNativeLanguageRow.addAttribute("group", "nativeLanguage");
             gradeGrid.addChild(additionalNativeLanguageRow);
         }
-        gradeGrid.addChild(createAddLangRow("nativeLanguage", ElementUtil.createI18NForm("form.add.lang.native"), filtered, true));
+        gradeGrid.addChild(createAddLangRow("nativeLanguage", ElementUtil.createI18NForm("form.add.lang.native"), filtered, true, comprehensiveSchool));
 
         for (SubjectRow defaultLanguage : defaultLanguages) {
-            gradeGrid.addChild(createGradeGridRow(defaultLanguage, true, false));
+            gradeGrid.addChild(createGradeGridRow(defaultLanguage, true, false, comprehensiveSchool));
         }
 
-        List<GradeGridRow> additionalLanguages = createAdditionalLanguages(5, filtered);
+        List<GradeGridRow> additionalLanguages = createAdditionalLanguages(5, filtered, comprehensiveSchool);
         for (GradeGridRow additionalLanguage : additionalLanguages) {
             additionalLanguage.addAttribute("group", "languages");
             gradeGrid.addChild(additionalLanguage);
         }
-        gradeGrid.addChild(createAddLangRow("languages", ElementUtil.createI18NForm("form.add.lang"), filtered, false));
+        gradeGrid.addChild(createAddLangRow("languages", ElementUtil.createI18NForm("form.add.lang"), filtered, false, comprehensiveSchool));
 
 
         for (SubjectRow subjectsAfterLanguage : subjectsAfterLanguages) {
-            gradeGrid.addChild(createGradeGridRow(subjectsAfterLanguage, false, false));
+            gradeGrid.addChild(createGradeGridRow(subjectsAfterLanguage, false, false, comprehensiveSchool));
         }
         return gradeGrid;
     }
 
-    private List<GradeGridRow> createAdditionalLanguages(int maxAdditionalLanguages, final List<SubjectRow> subjects) {
+    private List<GradeGridRow> createAdditionalLanguages(int maxAdditionalLanguages, final List<SubjectRow> subjects, boolean extraColumn) {
         List<GradeGridRow> rows = new ArrayList<GradeGridRow>();
         for (int i = 0; i < maxAdditionalLanguages; i++) {
-            rows.add(createAdditionalLanguageRow(i, subjects));
+            rows.add(createAdditionalLanguageRow(i, subjects, extraColumn));
         }
         return rows;
     }
 
-    private GradeGridRow createAdditionalNativeLanguageRow(final SubjectRow subjectRow, int index) {
+    private GradeGridRow createAdditionalNativeLanguageRow(final SubjectRow subjectRow, int index, boolean extraColumn) {
 
-        Element[] columnsArray = createColumnsArray(index);
+        Element[] columnsArray = createColumnsArray(index, extraColumn);
 
         String postfix = subjectRow.getId() + "-" + index;
         GradeGridOptionQuestion addLangs = new GradeGridOptionQuestion("custom-language-" + postfix, koodistoService.getSubjectLanguages(), false);
@@ -456,8 +453,11 @@ public class Yhteishaku2013 {
         ElementUtil.setDisabled(grades);
         GradeGridOptionQuestion gradesSelected = new GradeGridOptionQuestion("custom-optional-grades-" + postfix, getGradeRanges(true), true);
         ElementUtil.setDisabled(gradesSelected);
-        GradeGridOptionQuestion gradesSelected2 = new GradeGridOptionQuestion("second-custom-optional-grades-" + postfix, getGradeRanges(true), true);
-        ElementUtil.setDisabled(gradesSelected2);
+        GradeGridOptionQuestion gradesSelected2 = null;
+        if (extraColumn) {
+            gradesSelected2 = new GradeGridOptionQuestion("second-custom-optional-grades-" + postfix, getGradeRanges(true), true);
+            ElementUtil.setDisabled(gradesSelected2);
+        }
 
         GradeGridTitle title = new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), true);
 
@@ -465,17 +465,19 @@ public class Yhteishaku2013 {
         columnsArray[1].addChild(addLangs);
         columnsArray[2].addChild(grades);
         columnsArray[3].addChild(gradesSelected);
-        columnsArray[4].addChild(gradesSelected2);
+        if (gradesSelected2 != null) {
+            columnsArray[4].addChild(gradesSelected2);
+        }
 
         GradeGridRow gradeGridRow = ElementUtil.createHiddenGradeGridRowWithId("additionalLanguageNativeRow-" + index);
         gradeGridRow.addChild(columnsArray);
         return gradeGridRow;
     }
 
-    private GradeGridRow createAdditionalLanguageRow(int index, final List<SubjectRow> subjects) {
+    private GradeGridRow createAdditionalLanguageRow(int index, final List<SubjectRow> subjects, boolean extraColumn) {
         GradeGridRow gradeGridRow = new GradeGridRow("additionalLanguageRow-" + index);
         gradeGridRow.addAttribute("hidden", "hidden");
-        Element[] columnsArray = createColumnsArray(index);
+        Element[] columnsArray = createColumnsArray(index, extraColumn);
 
         List<Option> options = getLanguageSubjects(subjects);
         GradeGridOptionQuestion addSubs = new GradeGridOptionQuestion("custom-scope-" + index, options, false);
@@ -486,28 +488,41 @@ public class Yhteishaku2013 {
         ElementUtil.setDisabled(grades);
         GradeGridOptionQuestion gradesSelected = new GradeGridOptionQuestion("custom-optional-grades-" + index, getGradeRanges(true), true);
         ElementUtil.setDisabled(gradesSelected);
-        GradeGridOptionQuestion gradesSelected2 = new GradeGridOptionQuestion("second-custom-optional-grades-" + index, getGradeRanges(true), true);
-        ElementUtil.setDisabled(gradesSelected2);
+        GradeGridOptionQuestion gradesSelected2 = null;
+        if (extraColumn) {
+            gradesSelected2 = new GradeGridOptionQuestion("second-custom-optional-grades-" + index, getGradeRanges(true), true);
+            ElementUtil.setDisabled(gradesSelected2);
+        }
 
         columnsArray[0].addChild(addSubs);
         columnsArray[1].addChild(addLangs);
         columnsArray[2].addChild(grades);
         columnsArray[3].addChild(gradesSelected);
-        columnsArray[4].addChild(gradesSelected2);
+        if (gradesSelected2 != null) {
+            columnsArray[4].addChild(gradesSelected2);
+        }
 
         gradeGridRow.addChild(columnsArray);
         return gradeGridRow;
     }
 
-    private Element[] createColumnsArray(final int index) {
-
-        return new Element[]{
-                new GradeGridColumn("column1-" + index, true),
-                new GradeGridColumn("column2-" + index, false),
-                new GradeGridColumn("column3-" + index, false),
-                new GradeGridColumn("column4-" + index, false),
-                new GradeGridColumn("column5-" + index, false),
-        };
+    private Element[] createColumnsArray(final int index, boolean extraColumn) {
+        if (extraColumn) {
+            return new Element[]{
+                    new GradeGridColumn("column1-" + index, true),
+                    new GradeGridColumn("column2-" + index, false),
+                    new GradeGridColumn("column3-" + index, false),
+                    new GradeGridColumn("column4-" + index, false),
+                    new GradeGridColumn("column5-" + index, false),
+            };
+        } else {
+            return new Element[]{
+                    new GradeGridColumn("column1-" + index, true),
+                    new GradeGridColumn("column2-" + index, false),
+                    new GradeGridColumn("column3-" + index, false),
+                    new GradeGridColumn("column4-" + index, false),
+            };
+        }
     }
 
     private List<Option> getGradeRanges(boolean setDefault) {
@@ -530,7 +545,8 @@ public class Yhteishaku2013 {
         return options;
     }
 
-    private GradeGridRow createAddLangRow(final String group, I18nText i18nText, List<SubjectRow> subjects, boolean literature) {
+    private GradeGridRow createAddLangRow(final String group, I18nText i18nText, List<SubjectRow> subjects,
+                                          boolean literature, boolean extraColumn) {
         GradeGridRow gradeGridRow = new GradeGridRow(System.currentTimeMillis() + "");
         GradeGridColumn column1 = new GradeGridColumn(gradeGridRow.getId() + "-addlang", false);
         List<Option> subjectOptions = getLanguageSubjects(subjects);
@@ -543,19 +559,23 @@ public class Yhteishaku2013 {
         GradeGridAddLang child = new GradeGridAddLang(group, i18nText, subjectOptions, languageOptions,
                 koodistoService.getGradeRanges());
         column1.addChild(child);
-        column1.addAttribute("colspan", "5");
+        column1.addAttribute("colspan", (extraColumn ? "5" : "4"));
         gradeGridRow.addChild(column1);
         return gradeGridRow;
     }
 
-    private GradeGridRow createGradeGridRow(final SubjectRow subjectRow, boolean language, boolean literature) {
+    private GradeGridRow createGradeGridRow(final SubjectRow subjectRow, boolean language,
+                                            boolean literature, boolean extraColumn) {
         GradeGridRow gradeGridRow = new GradeGridRow(subjectRow.getId());
         GradeGridColumn column1 = new GradeGridColumn("column1", false);
         column1.addChild(new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), false));
         GradeGridColumn column2 = new GradeGridColumn("column2", false);
         GradeGridColumn column3 = new GradeGridColumn("column3", false);
         GradeGridColumn column4 = new GradeGridColumn("column4", false);
-        GradeGridColumn column5 = new GradeGridColumn("column5", false);
+        GradeGridColumn column5 = null;
+        if (extraColumn) {
+            column5 = new GradeGridColumn("column5", false);
+        }
         List<Option> gradeRanges = koodistoService.getGradeRanges();
         List<Option> gradeRangesSecond = koodistoService.getGradeRanges();
         setDefaultOption("Ei arvosanaa", gradeRangesSecond);
@@ -580,16 +600,20 @@ public class Yhteishaku2013 {
         gradeGridOptionQuestion.addAttribute("required", "required");
         GradeGridOptionQuestion child = gradeGridOptionQuestion;
         column4.addChild(child);
-        GradeGridOptionQuestion child2 = new GradeGridOptionQuestion("second-optional-common-" + subjectRow.getId(), gradeRangesSecond, true);
-        child2.addAttribute("required", "required");
-        column5.addChild(child2);
+        if (column5 != null) {
+            GradeGridOptionQuestion child2 = new GradeGridOptionQuestion("second-optional-common-" + subjectRow.getId(), gradeRangesSecond, true);
+            child2.addAttribute("required", "required");
+            column5.addChild(child2);
+        }
         gradeGridRow.addChild(column1);
         if (subjectRow.isLanguage() || language) {
             gradeGridRow.addChild(column2);
         }
         gradeGridRow.addChild(column3);
         gradeGridRow.addChild(column4);
-        gradeGridRow.addChild(column5);
+        if (column5 != null) {
+            gradeGridRow.addChild(column5);
+        }
         return gradeGridRow;
 
     }
@@ -658,10 +682,6 @@ public class Yhteishaku2013 {
         preferenceTable.addChild(pr4);
         preferenceTable.addChild(pr5);
         preferenceTable.setVerboseHelp(getVerboseHelp());
-
-
-
-
 
 
         hakutoiveetRyhma.addChild(preferenceTable);

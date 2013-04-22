@@ -16,17 +16,9 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid;
 
-import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.oppija.lomake.validation.Validator;
-import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Grid element that is used to gather grade information from user.
@@ -36,9 +28,16 @@ import java.util.List;
 public class GradeGrid extends Titled {
 
     private static final long serialVersionUID = 7703132498783434771L;
+    private final boolean extraColumn;
 
     public GradeGrid(@JsonProperty(value = "id") final String id,
-                     @JsonProperty(value = "i18nText") final I18nText i18nText) {
+                     @JsonProperty(value = "i18nText") final I18nText i18nText,
+                     @JsonProperty(value = "extraColumn") final boolean extraColumn) {
         super(id, i18nText);
+        this.extraColumn = extraColumn;
+    }
+
+    public boolean isExtraColumn() {
+        return extraColumn;
     }
 }
