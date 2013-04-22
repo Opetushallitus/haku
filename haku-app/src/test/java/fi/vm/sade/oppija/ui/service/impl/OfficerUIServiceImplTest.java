@@ -36,7 +36,7 @@ public class OfficerUIServiceImplTest {
     private KoodistoService koodistoService;
     private Application application;
     private AdditionalQuestions additionalQuestions = new AdditionalQuestions();
-    private Phase phase = new Phase(ID, ElementUtil.createI18NForm("title"), false);
+    private Phase phase = new Phase(ID, ElementUtil.createI18NAsIs("title"), false);
     private Form form;
 
     @Before
@@ -45,7 +45,7 @@ public class OfficerUIServiceImplTest {
         application.setFormId(new FormId(ID, ID));
         application.setOid(OID);
         application.setPhaseId(ID);
-        form = new Form("form", ElementUtil.createI18NForm(ID));
+        form = new Form("form", ElementUtil.createI18NAsIs(ID));
         applicationService = mock(ApplicationService.class);
         formService = mock(FormService.class);
         valintaperusteetService = mock(ValintaperusteetService.class);

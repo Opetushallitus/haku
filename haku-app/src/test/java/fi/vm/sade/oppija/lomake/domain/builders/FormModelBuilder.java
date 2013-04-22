@@ -24,7 +24,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 
 import java.util.Date;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
 
 public class FormModelBuilder {
 
@@ -37,12 +37,12 @@ public class FormModelBuilder {
     FormModel formModel = new FormModel();
 
     ApplicationPeriodBuilder applicationPeriodBuilder = new ApplicationPeriodBuilder(APPLICATION_PERIOD_ID);
-    private Phase phase = new Phase(VAIHE_ID, createI18NForm(VAIHE_TITLE), false);
-    private Theme theme = new Theme(TEEMA_ID, createI18NForm(TEEMA_TITLE), null);
+    private Phase phase = new Phase(VAIHE_ID, createI18NAsIs(VAIHE_TITLE), false);
+    private Theme theme = new Theme(TEEMA_ID, createI18NAsIs(TEEMA_TITLE), null);
 
     private FormBuilder formBuilder =
             new FormBuilder(FORM_ID,
-                    createI18NForm("Tässä olisi kuvaava otsikko. Tämä on kuitenkin testiformi joka on luotu " + new Date()));
+                    createI18NAsIs("Tässä olisi kuvaava otsikko. Tämä on kuitenkin testiformi joka on luotu " + new Date()));
 
     Form form = (Form) createForm(phase);
 

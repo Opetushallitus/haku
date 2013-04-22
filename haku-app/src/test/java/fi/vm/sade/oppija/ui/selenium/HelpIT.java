@@ -28,7 +28,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertEquals;
 
 public class HelpIT extends AbstractSeleniumBase {
@@ -44,12 +44,12 @@ public class HelpIT extends AbstractSeleniumBase {
 
     @Before
     public void setUp() throws Exception {
-        checkBox = new CheckBox(ID, createI18NForm(TITLE));
+        checkBox = new CheckBox(ID, createI18NAsIs(TITLE));
     }
 
     @Test
     public void testCheckBox() {
-        checkBox.setHelp(createI18NForm(HELP_TEXT));
+        checkBox.setHelp(createI18NAsIs(HELP_TEXT));
         String actualHelpText = initModelAndGetHelpText(checkBox);
         assertEquals(HELP_TEXT, actualHelpText);
     }

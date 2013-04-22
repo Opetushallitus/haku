@@ -13,6 +13,6 @@ public class HighSchoolsTest extends SubjectRowPredicateTest {
 
     @Override
     SubjectRow getSubjectRow(final boolean highSchool) {
-        return new SubjectRow("id", ElementUtil.createI18NForm("sdf"), true, highSchool, true, false);
+        return new SubjectRow("id", ElementUtil.createI18NAsIs("sdf"), true, highSchool, true, false);
     }
 }

@@ -20,14 +20,14 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import org.junit.Test;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertEquals;
 
 public class FormTest {
 
     public static final String ID_TO_GET = "id2";
-    private Form form = new Form("id", createI18NForm("title"));
-    private TextQuestion expectedElement = new TextQuestion(ID_TO_GET, createI18NForm("title2"));
+    private Form form = new Form("id", createI18NAsIs("title"));
+    private TextQuestion expectedElement = new TextQuestion(ID_TO_GET, createI18NAsIs("title2"));
 
     @Test
     public void testGetElementById() throws Exception {

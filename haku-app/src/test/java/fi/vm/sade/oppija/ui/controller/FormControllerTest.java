@@ -16,30 +16,11 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.ws.rs.core.Response;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Matchers;
-
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
-
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -50,8 +31,24 @@ import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPhaseViewPath;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Matchers;
+
+import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class FormControllerTest {
 
@@ -61,8 +58,8 @@ public class FormControllerTest {
     private static final String FORM_ID = "yhteishaku";
     public static final String TEST_PHASE = "test_phase";
     public static final String PHASE_TITLE = "title";
-    public static final Phase PHASE = new Phase(FIRST_CATEGORY_ID, createI18NForm(PHASE_TITLE), false);
-    public static final Form FORM = new Form("id", createI18NForm("title"));
+    public static final Phase PHASE = new Phase(FIRST_CATEGORY_ID, createI18NAsIs(PHASE_TITLE), false);
+    public static final Form FORM = new Form("id", createI18NAsIs("title"));
     private FormController formController;
     public static final UserHolder USER_HOLDER = new UserHolder();
     private ApplicationService applicationService;
@@ -104,7 +101,7 @@ public class FormControllerTest {
     @Test
     public void testGetFormAndRedirectToFirstCategoryNew() throws Exception {
         application.setPhaseId(null);
-        when(formService.getFirstPhase(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(new Phase(FIRST_CATEGORY_ID, createI18NForm("title"), false));
+        when(formService.getFirstPhase(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(new Phase(FIRST_CATEGORY_ID, createI18NAsIs("title"), false));
         String expected = "/lomake/" + APPLICATION_PERIOD_ID + "/" + FORM_ID + "/" + FIRST_CATEGORY_ID;
         Response response = formController.getApplication(APPLICATION_PERIOD_ID, FORM_ID);
         assertEquals(expected, resolveRedirectPath(response));

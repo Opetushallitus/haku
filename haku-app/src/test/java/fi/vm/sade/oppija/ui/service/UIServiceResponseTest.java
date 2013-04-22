@@ -45,7 +45,7 @@ public class UIServiceResponseTest {
 
     @Test
     public void testHasErrorsTrue() throws Exception {
-        uiServiceResponse.setErrorMessages(ImmutableMap.of("error", ElementUtil.createI18NForm("")));
+        uiServiceResponse.setErrorMessages(ImmutableMap.of("error", ElementUtil.createI18NAsIs("")));
         assertTrue(uiServiceResponse.hasErrors());
     }
 

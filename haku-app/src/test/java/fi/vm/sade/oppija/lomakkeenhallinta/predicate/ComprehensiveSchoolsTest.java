@@ -14,6 +14,6 @@ public class ComprehensiveSchoolsTest extends SubjectRowPredicateTest {
 
     @Override
     SubjectRow getSubjectRow(final boolean comprehensiveSchool) {
-        return new SubjectRow("id", ElementUtil.createI18NForm("sdf"), true, true, comprehensiveSchool, false);
+        return new SubjectRow("id", ElementUtil.createI18NAsIs("sdf"), true, true, comprehensiveSchool, false);
     }
 }
