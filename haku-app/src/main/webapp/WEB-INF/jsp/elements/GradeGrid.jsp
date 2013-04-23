@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -26,7 +27,9 @@
         <td colspan="2"><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
         <td><fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
         <td><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
-        <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
+        <c:if test="${element.extraColumn}">
+            <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
+        </c:if>
     </tr>
     </thead>
     <tbody>

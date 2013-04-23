@@ -28,7 +28,9 @@
     <td></td>
     <td><fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
     <td><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
-    <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
+    <c:if test="${element.extraColumn}">
+        <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
+    </c:if>
 
 </tr>
 <haku:viewChilds element="${element}"/>

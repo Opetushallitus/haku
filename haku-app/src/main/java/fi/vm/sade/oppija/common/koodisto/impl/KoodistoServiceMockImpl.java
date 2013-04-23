@@ -36,8 +36,8 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
     public static final String LEARNING_INSTITUTION_TYPE = "Yliopistot";
     public static final String ORGANIZATION_TYPE = "Toimipiste";
-	private static final String RUOTSI = "SV";
-	private static final String SUOMI = "FI";
+    private static final String RUOTSI = "SV";
+    private static final String SUOMI = "FI";
     public final List<Option> listOfGradeGrades;
     public final List<PostOffice> listOfPostOffices;
     public final List<SubjectRow> listOfSubjects;
@@ -45,6 +45,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Option> listOfOrganizationTypes;
     public final List<Option> listOfCountries;
     public final List<Option> listOfLanguages;
+    public final List<Option> listOfLanguageAndLiterature;
     public final List<Option> listOfNationalities;
     public final List<Option> listOfMunicipalities;
 
@@ -128,6 +129,18 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                         createI18NAsIs("Jomala"), "jomala")
         );
 
+        this.listOfLanguageAndLiterature = ImmutableList.of(
+                new Option("FI", createI18NAsIs("Suomi äidinkielenä"), "FI"),
+                new Option("SV", createI18NAsIs("Ruotsi äidinkielenä"), "SV"),
+                new Option("SE", createI18NAsIs("Saame äidinkielenä"), "SE"),
+                new Option("RI", createI18NAsIs("Romani äidinkielenä"), "RI"),
+                new Option("VK", createI18NAsIs("Viittomakieli äidinkielenä"), "VK"),
+                new Option("XX", createI18NAsIs("Muu oppilaan äidinkieli"), "XX"),
+                new Option("FI_2", createI18NAsIs("Suomi toisena kielenä"), "FI_2"),
+                new Option("SV_2", createI18NAsIs("Ruotsi toisena kielenä"), "SV_2"),
+                new Option("FI_SE", createI18NAsIs("Suomi saamenkielisille"), "FI_SE"),
+                new Option("FI_VK", createI18NAsIs("Suomi viittomakielisille"), "FI_VK"),
+                new Option("SV_VK", createI18NAsIs("Ruotsi viittomakielisille"), "SV_VK"));
     }
 
     @Override
@@ -174,6 +187,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getLanguages() {
         return this.listOfLanguages;
+    }
+
+    @Override
+    public List<Option> getLanguageAndLiterature() {
+        return this.listOfLanguageAndLiterature;
     }
 
     @Override

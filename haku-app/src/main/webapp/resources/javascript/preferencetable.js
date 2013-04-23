@@ -22,6 +22,10 @@
             console.log("|"+targetValue+"|");
             nameValue !== '' ? $("#container-childLONames-" + targetId).show() : $("#container-childLONames-" + targetId).hide();
             targetValue !== '' ? $("#container-childLONames-" + id).show() : $("#container-childLONames-" + id).hide();
+
+            $('option[selected="selected"]').each(function(index) {
+                this.selected = true;
+            })
         }
     };
 
