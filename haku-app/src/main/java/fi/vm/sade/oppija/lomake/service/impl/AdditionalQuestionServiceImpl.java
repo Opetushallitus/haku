@@ -89,7 +89,7 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
 
         PreferenceRow row = (PreferenceRow)theme.getChildById(preferendeRowId);
 
-        return row.getDiscretionaryFollowUp();
+        return row.getDiscretionaryQuestion().getFollowUp();
     }
 
     private Theme findTheme(FormId formId, String phaseId, String themeId) {

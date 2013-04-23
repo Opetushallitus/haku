@@ -81,13 +81,6 @@ public final class ElementUtil {
     }
 
     public static PreferenceRow createI18NPreferenceRow(final String id, final String title, final Integer discretionaryEducationDegree) {
-        String followUpId = id + "-followUp";
-        DiscretionaryQuestion discretionary = new DiscretionaryQuestion(id + "-Harkinnanvarainen", createI18NForm("form.hakutoiveet.harkinnanvarainen"), followUpId);
-        Option o1 = discretionary.addOption("discretionary_option_1", createI18NForm("form.yleinen.en"), "false");
-        o1.addAttribute("data-followUpId", id + "-followUp");
-        Option o2 = discretionary.addOption("discretionary_option_2", createI18NForm("form.yleinen.kylla"), "true");
-        o2.addAttribute("data-followUpId", id + "-followUp");
-        discretionary.addAttribute("required", "required");
 
         DropdownSelect discretionaryFollowUp = new DropdownSelect(id + " - harkinnanvarainen_jatko", createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"));
         discretionaryFollowUp.addOption("harkinnanvarainena_jatko_option_1",
@@ -95,13 +88,22 @@ public final class ElementUtil {
         discretionaryFollowUp.addOption("harkinnanvarainena_jatko_option_2",
                 createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset"), "sosiaalisetsyyt");
 
+        String followUpId = id + "-followUp";
+        DiscretionaryQuestion discretionary = new DiscretionaryQuestion(id + "-Harkinnanvarainen",
+                createI18NForm("form.hakutoiveet.harkinnanvarainen"), discretionaryFollowUp, followUpId);
+        Option o1 = discretionary.addOption("discretionary_option_1", createI18NForm("form.yleinen.en"), "false");
+        o1.addAttribute("data-followUpId", followUpId);
+        Option o2 = discretionary.addOption("discretionary_option_2", createI18NForm("form.yleinen.kylla"), "true");
+        o2.addAttribute("data-followUpId", followUpId);
+        discretionary.addAttribute("required", "required");
+
         PreferenceRow pr = new PreferenceRow(id,
                 createI18NForm("form.hakutoiveet.hakutoive", title),
                 createI18NForm("form.yleinen.tyhjenna"),
                 createI18NForm("form.hakutoiveet.koulutus"),
                 createI18NForm("form.hakutoiveet.opetuspiste"),
                 createI18NForm("form.hakutoiveet.sisaltyvatKoulutusohjelmat"),
-                "Valitse koulutus", discretionaryEducationDegree, discretionary, discretionaryFollowUp);
+                "Valitse koulutus", discretionaryEducationDegree, discretionary);
         return pr;
     }
 

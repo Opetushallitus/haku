@@ -55,9 +55,7 @@ public class PreferenceRow extends Question {
     // application option with this education degree leads into a discretionary question
     private Integer discretionaryEducationDegree;
     // question that is asked when user applies for an application option with a specific education degree
-    private Radio discretionaryQuestion;
-    // follow up for the discretionary question
-    private DropdownSelect discretionaryFollowUp;
+    private DiscretionaryQuestion discretionaryQuestion;
 
     public PreferenceRow(@JsonProperty(value = "id") final String id,
                          @JsonProperty(value = "i18nText") final I18nText i18nText,
@@ -67,8 +65,8 @@ public class PreferenceRow extends Question {
                          @JsonProperty(value = "childLONameListLabel") final I18nText childLONameListLabel,
                          @JsonProperty(value = "selectEducationPlaceholder") final String selectEducationPlaceholder,
                          @JsonProperty(value = "discretionaryEducationDegree") final Integer discretionaryEducationDegree,
-                         @JsonProperty(value = "discretionaryQuestion") final Radio discretionaryQuestion,
-                         @JsonProperty(value = "discretionaryFollowUp") final DropdownSelect discretionaryFollowUp) {
+                         @JsonProperty(value = "discretionaryQuestion") final DiscretionaryQuestion discretionaryQuestion
+                         ) {
         super(id, i18nText);
         this.resetLabel = resetLabel;
         this.educationLabel = educationLabel;
@@ -77,7 +75,6 @@ public class PreferenceRow extends Question {
         this.selectEducationPlaceholder = selectEducationPlaceholder;
         this.discretionaryEducationDegree = discretionaryEducationDegree;
         this.discretionaryQuestion = discretionaryQuestion;
-        this.discretionaryFollowUp = discretionaryFollowUp;
         this.learningInstitutionInputId = this.id + "-Opetuspiste";
         this.educationInputId = this.id + "-Koulutus";
         this.educationDegreeId = this.id + "-Koulutus-educationDegree";
@@ -115,12 +112,8 @@ public class PreferenceRow extends Question {
         return educationDegreeId;
     }
 
-    public Radio getDiscretionaryQuestion() {
+    public DiscretionaryQuestion getDiscretionaryQuestion() {
         return discretionaryQuestion;
-    }
-
-    public DropdownSelect getDiscretionaryFollowUp() {
-        return discretionaryFollowUp;
     }
 
     public Integer getDiscretionaryEducationDegree() {

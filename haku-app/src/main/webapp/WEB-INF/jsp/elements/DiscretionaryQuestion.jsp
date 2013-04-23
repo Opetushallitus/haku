@@ -16,4 +16,9 @@
   --%>
 
 <jsp:include page="./Radio.jsp"/>
-<div id="${element.followUpId}" class="form-row"></div>
+<div id="${element.followUpContainerId}" class="form-row">
+    <c:if test="${categoryData[element.id] eq true}">
+        <c:set var="element" value="${element.followUp}" scope="request"/>
+        <jsp:include page="./${element.type}.jsp"/>
+    </c:if>
+</div>

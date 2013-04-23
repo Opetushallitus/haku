@@ -17,6 +17,8 @@
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -26,15 +28,23 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class DiscretionaryQuestion extends Radio {
 
     // id for the follow up question container div
-    private String followUpId;
+    private String followUpContainerId;
+
+    private DropdownSelect followUp;
 
     public DiscretionaryQuestion(@JsonProperty(value = "id") String id, @JsonProperty(value = "i18nText") I18nText i18nText,
-                                 @JsonProperty(value = "followUpId") String followUpId) {
+                                 @JsonProperty(value = "followUpId") final DropdownSelect followUp,
+                                 @JsonProperty(value = "followUpContainerId") final String followUpContainerId) {
         super(id, i18nText);
-        this.followUpId = followUpId;
+        this.followUp = followUp;
+        this.followUpContainerId = followUpContainerId;
     }
 
-    public String getFollowUpId() {
-        return followUpId;
+    public DropdownSelect getFollowUp() {
+        return followUp;
+    }
+
+    public String getFollowUpContainerId() {
+        return followUpContainerId;
     }
 }

@@ -62,7 +62,6 @@
         },
 
         searchDiscretionaryFollowUpQuestions : function(followUpId, preferenceRowId) {
-            /*
             var url = sortabletable_settings.contextPath + "/lomake/" + sortabletable_settings.applicationPeriodId + "/" +
                 sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
                 sortabletable_settings.teemaId + "/discretionaryFollowUp/" + preferenceRowId;
@@ -70,7 +69,6 @@
             $.get(url, function(data) {
                 $("#" + followUpId).html(data);
             });
-            */
         },
 
         displayChildLONames : function(hakukohdeId, childLONamesId) {
