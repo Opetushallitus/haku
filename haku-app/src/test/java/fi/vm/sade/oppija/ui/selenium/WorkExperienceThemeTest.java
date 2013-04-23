@@ -47,6 +47,7 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
     public void testWorkExperienceShown() {
         WebDriver driver = gotoHakutoiveet("010113-668B");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
+        driver.findElements(By.name("preference1-Harkinnanvarainen")).get(1).click();
 
         driver.findElement(new By.ByClassName("right")).click();
         driver.findElement(new By.ByClassName("right")).click();

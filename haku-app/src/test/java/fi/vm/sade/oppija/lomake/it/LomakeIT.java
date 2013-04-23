@@ -112,9 +112,9 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
 
-        driver.findElements(By.name("1_2_246_562_14_79893512065_discretionary_question")).get(1).click();
+        driver.findElements(By.name("preference1-Harkinnanvarainen")).get(1).click();
 
-        Select followUpSelect = new Select(driver.findElement(new By.ById("1_2_246_562_14_79893512065_discfretionary_followup")));
+        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1 - harkinnanvarainen_jatko")));
         followUpSelect.selectByIndex(1);
 
         clickNextPhase(driver);

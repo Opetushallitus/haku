@@ -66,13 +66,14 @@ public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
         // select a LOI
         driver.findElement(By.id("preference1-Opetuspiste"));
 
-
         s.typeKeys("preference1-Opetuspiste", "Esp");
 
         WebElement element = driver.findElement(By.linkText(OPETUSPISTE));
         element.click();
         WebElement option = driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']"));
         option.click();
+        driver.findElements(By.name("preference1-Harkinnanvarainen")).get(1).click();
+
         // navigate to grade phase
         s.click("class=right");
         driver.findElement(By.xpath("//table[@id='gradegrid-table']"));
