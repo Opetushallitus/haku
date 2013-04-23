@@ -75,7 +75,7 @@ public class AdditionalQuestionsServiceTest {
     @Test
     public void testAOSpecificQuestions() {
         Set<Question> additionalQuestions = additionalQuestionService.findAdditionalQuestions(
-                FORM_ID, "hakutoiveet", "hakutoiveetGrp", AO_ID, 32, true);
+                FORM_ID, "hakutoiveet", "hakutoiveetGrp", AO_ID, 32, null, true);
         assertEquals(1, additionalQuestions.size());
 
     }

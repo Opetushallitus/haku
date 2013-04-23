@@ -16,13 +16,19 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
+import fi.vm.sade.oppija.lomake.validation.Validator;
+import fi.vm.sade.oppija.lomake.validation.validators.PreferenceRowValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Renders as a user's application preference row. Title is used to hold the name of the preference row (Hakutoive 1, Hakutoive 2 etc.)
@@ -45,6 +51,9 @@ public class PreferenceRow extends Question {
     private String selectEducationPlaceholder;
     private String learningInstitutionInputId;
     private String educationInputId;
+    private String educationDegreeId;
+    // application option with this education degree leads into a discretionary question
+    private Integer discretionaryEducationDegree;
     // question that is asked when user applies for an application option with a specific education degree
     private Radio discretionaryQuestion;
     // follow up for the discretionary question
@@ -56,17 +65,22 @@ public class PreferenceRow extends Question {
                          @JsonProperty(value = "educationLabel") final I18nText educationLabel,
                          @JsonProperty(value = "learningInstitutionLabel") final I18nText learningInstitutionLabel,
                          @JsonProperty(value = "childLONameListLabel") final I18nText childLONameListLabel,
-                         @JsonProperty(value = "selectEducationPlaceholder") final String selectEducationPlaceholder, Radio discretionaryQuestion, DropdownSelect discretionaryFollowUp) {
+                         @JsonProperty(value = "selectEducationPlaceholder") final String selectEducationPlaceholder,
+                         @JsonProperty(value = "discretionaryEducationDegree") final Integer discretionaryEducationDegree,
+                         @JsonProperty(value = "discretionaryQuestion") final Radio discretionaryQuestion,
+                         @JsonProperty(value = "discretionaryFollowUp") final DropdownSelect discretionaryFollowUp) {
         super(id, i18nText);
         this.resetLabel = resetLabel;
         this.educationLabel = educationLabel;
         this.learningInstitutionLabel = learningInstitutionLabel;
         this.childLONameListLabel = childLONameListLabel;
         this.selectEducationPlaceholder = selectEducationPlaceholder;
+        this.discretionaryEducationDegree = discretionaryEducationDegree;
         this.discretionaryQuestion = discretionaryQuestion;
         this.discretionaryFollowUp = discretionaryFollowUp;
         this.learningInstitutionInputId = this.id + "-Opetuspiste";
         this.educationInputId = this.id + "-Koulutus";
+        this.educationDegreeId = this.id + "-Koulutus-educationDegree";
     }
 
     public I18nText getResetLabel() {
@@ -97,12 +111,20 @@ public class PreferenceRow extends Question {
         return educationInputId;
     }
 
+    public String getEducationDegreeId() {
+        return educationDegreeId;
+    }
+
     public Radio getDiscretionaryQuestion() {
         return discretionaryQuestion;
     }
 
     public DropdownSelect getDiscretionaryFollowUp() {
         return discretionaryFollowUp;
+    }
+
+    public Integer getDiscretionaryEducationDegree() {
+        return discretionaryEducationDegree;
     }
 
     @JsonIgnore
@@ -118,5 +140,14 @@ public class PreferenceRow extends Question {
         } else {
             super.addAttribute(key, value);
         }
+    }
+
+    @Override
+    public List<Validator> getValidators() {
+        List<Validator> validatroList = new ArrayList<Validator>();
+        PreferenceRowValidator validator = new PreferenceRowValidator(this.educationDegreeId,
+                this.discretionaryEducationDegree.toString(), this.discretionaryQuestion.getId());
+        validatroList.add(validator);
+        return validatroList;
     }
 }

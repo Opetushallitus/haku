@@ -17,15 +17,9 @@
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator;
@@ -38,7 +32,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static com.google.common.base.Predicates.*;
 import static fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator.ValidatorPredicate.validate;
@@ -89,21 +82,38 @@ public class PreferenceTable extends Titled {
         List<Validator> listOfValidators = new ArrayList<Validator>();
         List<String> learningInstitutionInputIds = new ArrayList<String>();
         List<String> educationInputIds = new ArrayList<String>();
+        List<String> educationDegreeInputIds = new ArrayList<String>();
         List<Predicate<Map<String, String>>> preferencePredicates = new ArrayList<Predicate<Map<String, String>>>();
+        List<Predicate<Map<String, String>>> discretionaryPredicates = new ArrayList<Predicate<Map<String, String>>>();
 
         for (Element element : this.getChildren()) {
             PreferenceRow pr = (PreferenceRow) element;
             learningInstitutionInputIds.add(pr.getLearningInstitutionInputId());
             educationInputIds.add(pr.getEducationInputId());
+            educationDegreeInputIds.add(pr.getEducationDegreeId());
             preferencePredicates.add(validate(new RegexFieldFieldValidator(pr.getEducationInputId() + "-educationDegree", "^32$")));
         }
 
-        listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds));
-        Predicate<Map<String, String>> predicate = and(not(and(or(and(validate(new RegexFieldFieldValidator("ammatillinenTutkintoSuoritettu", "^true$")),
-                validate(new RequiredFieldFieldValidator("ammatillinenTutkintoSuoritettu"))),
-                and(validate(new RegexFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon", "^true$")),
-                        validate(new RequiredFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon")))),
-                or(preferencePredicates))));
+        listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds, educationDegreeInputIds));
+        Predicate<Map<String, String>> predicate =
+                and(
+                        not(
+                                and(
+                                        or(
+                                                and(
+                                                        validate(new RegexFieldFieldValidator("ammatillinenTutkintoSuoritettu", "^true$")),
+                                                        validate(new RequiredFieldFieldValidator("ammatillinenTutkintoSuoritettu"))
+                                                ),
+                                                and(
+                                                        validate(new RegexFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon", "^true$")),
+                                                        validate(new RequiredFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon"))
+                                                )
+                                        ),
+                                        or(preferencePredicates)
+                                )
+                        )
+                );
+
         FunctionalValidator fv = new FunctionalValidator(predicate, this.getId(),
                 ElementUtil.createI18NTextError("hakutoiveet.ammatillinenSuoritettu"));
         listOfValidators.add(fv);

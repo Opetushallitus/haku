@@ -654,12 +654,12 @@ public class Yhteishaku2013 {
 
         PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NForm("form.hakutoiveet.otsikko"), "Ylös",
                 "Alas", 32);
-        PreferenceRow pr1 = ElementUtil.createI18NPreferenceRow("preference1", "1");
+        PreferenceRow pr1 = ElementUtil.createI18NPreferenceRow("preference1", "1", 32);
         pr1.addAttribute("required", "required");
-        PreferenceRow pr2 = ElementUtil.createI18NPreferenceRow("preference2", "2");
-        PreferenceRow pr3 = ElementUtil.createI18NPreferenceRow("preference3", "3");
-        PreferenceRow pr4 = ElementUtil.createI18NPreferenceRow("preference4", "4");
-        PreferenceRow pr5 = ElementUtil.createI18NPreferenceRow("preference5", "5");
+        PreferenceRow pr2 = ElementUtil.createI18NPreferenceRow("preference2", "2", 32);
+        PreferenceRow pr3 = ElementUtil.createI18NPreferenceRow("preference3", "3", 32);
+        PreferenceRow pr4 = ElementUtil.createI18NPreferenceRow("preference4", "4", 32);
+        PreferenceRow pr5 = ElementUtil.createI18NPreferenceRow("preference5", "5", 32);
         preferenceTable.addChild(pr1);
         preferenceTable.addChild(pr2);
         preferenceTable.addChild(pr3);

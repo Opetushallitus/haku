@@ -30,7 +30,8 @@
                     childLONames[item.id] = item.childLONames;
                     if (hakukohdeId == item.id) {
                         selected = 'selected = "selected"';
-                        preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"), item.educationDegree, null, false);
+                        // overrides additional questions rendered in the backend
+                        //preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"), item.educationDegree, null, false);
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
                     }
                     $selectInput.append('<option value="' + item.name + '" ' + selected + ' data-id="' + item.id + '" data-educationdegree="' + item.educationDegree + '">' + item.name + '</option>');
@@ -61,7 +62,7 @@
         },
 
         searchDiscretionaryFollowUpQuestions : function(followUpId, preferenceRowId) {
-            console.log(followUpId + " - " + preferenceRowId);
+            /*
             var url = sortabletable_settings.contextPath + "/lomake/" + sortabletable_settings.applicationPeriodId + "/" +
                 sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
                 sortabletable_settings.teemaId + "/discretionaryFollowUp/" + preferenceRowId;
@@ -69,6 +70,7 @@
             $.get(url, function(data) {
                 $("#" + followUpId).html(data);
             });
+            */
         },
 
         displayChildLONames : function(hakukohdeId, childLONamesId) {

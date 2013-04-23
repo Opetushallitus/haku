@@ -80,13 +80,14 @@ public final class ElementUtil {
         return new I18nText(key + Long.toString(System.currentTimeMillis()), translations);
     }
 
-    public static PreferenceRow createI18NPreferenceRow(final String id, final String title) {
+    public static PreferenceRow createI18NPreferenceRow(final String id, final String title, final Integer discretionaryEducationDegree) {
         String followUpId = id + "-followUp";
         DiscretionaryQuestion discretionary = new DiscretionaryQuestion(id + "-Harkinnanvarainen", createI18NForm("form.hakutoiveet.harkinnanvarainen"), followUpId);
         Option o1 = discretionary.addOption("discretionary_option_1", createI18NForm("form.yleinen.en"), "false");
         o1.addAttribute("data-followUpId", id + "-followUp");
         Option o2 = discretionary.addOption("discretionary_option_2", createI18NForm("form.yleinen.kylla"), "true");
         o2.addAttribute("data-followUpId", id + "-followUp");
+        discretionary.addAttribute("required", "required");
 
         DropdownSelect discretionaryFollowUp = new DropdownSelect(id + " - harkinnanvarainen_jatko", createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"));
         discretionaryFollowUp.addOption("harkinnanvarainena_jatko_option_1",
@@ -94,14 +95,14 @@ public final class ElementUtil {
         discretionaryFollowUp.addOption("harkinnanvarainena_jatko_option_2",
                 createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset"), "sosiaalisetsyyt");
 
-        return new PreferenceRow(id,
+        PreferenceRow pr = new PreferenceRow(id,
                 createI18NForm("form.hakutoiveet.hakutoive", title),
                 createI18NForm("form.yleinen.tyhjenna"),
                 createI18NForm("form.hakutoiveet.koulutus"),
                 createI18NForm("form.hakutoiveet.opetuspiste"),
                 createI18NForm("form.hakutoiveet.sisaltyvatKoulutusohjelmat"),
-                "Valitse koulutus", discretionary, discretionaryFollowUp);
-
+                "Valitse koulutus", discretionaryEducationDegree, discretionary, discretionaryFollowUp);
+        return pr;
     }
 
     public static <E extends Element> Map<String, E> findElementsByType(Element element, Class<E> eClass) {
