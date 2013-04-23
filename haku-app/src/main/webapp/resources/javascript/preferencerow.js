@@ -144,7 +144,8 @@
         if (this.value == "true") {
             preferenceRow.searchDiscretionaryFollowUpQuestions($(this).data("followupid"), this.name.split("-")[0]);
         }
-
-
+        else {
+            $("#" + $(this).data("followupid")).html("");
+        }
     });
 })();
