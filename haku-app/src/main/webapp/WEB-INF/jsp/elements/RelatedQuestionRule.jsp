@@ -26,13 +26,13 @@
             $("[name=\"${key}\"]").change(function (event) {
                 var childIds = [<c:forEach var="child" items="${element.children}" varStatus="status">"${child.id}"${not status.last ? ', ' : ''}</c:forEach>];
                 var ruleChilds = $("#${element.id} .rule-childs");
-                if (($(this).is(':checkbox') && $(this).is(':checked'))) {
-                    if (ruleChilds.html().trim() === "") {
+                if ($(this).is(':checkbox') && $(this).is(':checked')) {
+                    if ($.trim(ruleChilds.html()) === "") {
                         ruleData.getRuleChild(childIds, 0, ruleChilds);
                     }
                 }
                 else if (!$(this).is(':checkbox') && $(this).val().search("${element.expression}") !== -1
-                        && ruleChilds.html().trim() === "") {
+                        && $.trim(ruleChilds.html()) === "") {
                     ruleData.getRuleChild(childIds, 0, ruleChilds);
                 } else {
                     ruleChilds.html("");
