@@ -19,7 +19,6 @@
 
             $targetNames.html(nameValue);
             $names.html(targetValue);
-            console.log("|"+targetValue+"|");
             nameValue !== '' ? $("#container-childLONames-" + targetId).show() : $("#container-childLONames-" + targetId).hide();
             targetValue !== '' ? $("#container-childLONames-" + id).show() : $("#container-childLONames-" + id).hide();
 

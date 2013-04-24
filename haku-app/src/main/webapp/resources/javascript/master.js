@@ -282,7 +282,6 @@ $(document).ready(function(){
 				}
 				// Determine popover position
 				popover_position = window_top+offset-wrapper_top;
-				// console.log(window_top+"+"+offset+"-"+wrapper_top+"="+popover_position);
 				target.css({'top':popover_position+'px'});
 				
 			},
@@ -305,8 +304,6 @@ $(document).ready(function(){
 				}
 				
 				popover_width = content_width-content_padding;
-				
-				console.log(content_width);
 				
 				$(target).find('.popover-content').css({'width':content_width+'px'});
 				$(target).css({'width':popover_width+'px'});
@@ -495,13 +492,10 @@ $(document).ready(function(){
 				var dispatchers;
 
 				dispatchers = $('body').attr('['+ popupActionAttr + ']');
-				console.log(dispatchers);
 
 				dispatchers.each(function() {
 					var popupElementId = $(this).attr(popupActionAttr, isOpen);
 					
-					console.log(popupElementId);
-
 					// different browsers return 'undefined' or 'false' for empty set
 					if (typeof popupElementId !== 'undefined' && popupElementId !== false) {
 						

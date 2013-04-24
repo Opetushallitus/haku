@@ -9,7 +9,6 @@ $(document).ready(function () {
     $("button[class=link]").each(function(index, element) {
         var group = $(element).attr('id');
         if ($("tr[hidden][group=" + group + "]").length == 0) {
-            console.log(group);
             $("#"+group).closest('tr').hide();
         }
     });

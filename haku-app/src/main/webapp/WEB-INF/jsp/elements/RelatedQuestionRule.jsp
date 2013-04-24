@@ -23,7 +23,7 @@
     <script type="text/javascript">
         (function () {
 
-            $("[name=\"${key}\"]").change(function (event) {console.log("CHANGE");
+            $("[name=\"${key}\"]").change(function (event) {
                 var childIds = [<c:forEach var="child" items="${element.children}" varStatus="status">"${child.id}"${not status.last ? ', ' : ''}</c:forEach>];
                 var ruleChilds = $("#${element.id} .rule-childs");
                 if (($(this).is(':checkbox') && $(this).is(':checked'))) {
