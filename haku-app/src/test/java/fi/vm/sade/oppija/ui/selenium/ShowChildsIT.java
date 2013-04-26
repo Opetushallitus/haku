@@ -39,6 +39,7 @@ public class ShowChildsIT extends AbstractSeleniumBase {
 
     private FormModelHelper formModelHelper;
     private CheckBox checkBox1;
+    private WebDriver driver;
 
     @Before
     public void init() throws IOException {
@@ -64,17 +65,18 @@ public class ShowChildsIT extends AbstractSeleniumBase {
 
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox1, checkBox2);
         this.formModelHelper = updateIndexAndFormModel(formModel);
+        driver = seleniumHelper.getDriver();
     }
 
     @Test
     public void testInputExistsWithNoJavaScript() throws IOException, InterruptedException {
+
         final String startUrl = formModelHelper.getStartUrl();
-        final WebDriver driver = seleniumHelper.getDriver();
-        driver.get(getBaseUrl() + "/" + startUrl);
+        driver.get(getBaseUrl() + startUrl);
         WebElement checkbox = driver.findElement(By.id(checkBox1.getId()));
         checkbox.click();
         final WebElement alikysymys1 = driver.findElement(By.id("alikysymys1"));
-        assertNotNull(alikysymys1);
+        assertNotNull("Checkbox not found", alikysymys1);
     }
 
 }

@@ -82,7 +82,7 @@ public final class ElementUtil {
 
     public static PreferenceRow createI18NPreferenceRow(final String id, final String title, final Integer discretionaryEducationDegree) {
 
-        DropdownSelect discretionaryFollowUp = new DropdownSelect(id + " - harkinnanvarainen_jatko", createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"));
+        DropdownSelect discretionaryFollowUp = new DropdownSelect(id + " - harkinnanvarainen_jatko", createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"), null);
         discretionaryFollowUp.addOption("harkinnanvarainena_jatko_option_1",
                 createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.oppimisvaikeudet"), "oppimisvaikudet");
         discretionaryFollowUp.addOption("harkinnanvarainena_jatko_option_2",

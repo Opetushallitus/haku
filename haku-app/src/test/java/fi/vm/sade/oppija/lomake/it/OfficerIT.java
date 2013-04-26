@@ -22,7 +22,7 @@ public class OfficerIT extends AbstractSeleniumBase {
     public void setUp() throws Exception {
         FormServiceMockImpl formModelDummyMemoryDao = new FormServiceMockImpl();
         updateIndexAndFormModel(formModelDummyMemoryDao.getModel());
-        HakuClient hakuClient = new HakuClient(getBaseUrl() + "/lomake/", "application.json");
+        HakuClient hakuClient = new HakuClient(getBaseUrl() + "lomake/", "application.json");
         hakuClient.apply();
         final LoginPage loginPage = new LoginPage(seleniumHelper.getSelenium());
         loginPage.login("officer");

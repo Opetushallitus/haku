@@ -43,7 +43,7 @@ public class EducationBackgroundTest extends AbstractSeleniumBase {
         final String startUrl = formModelHelper.getFormUrl(formModelHelper.getFirstForm().getPhase("koulutustausta"));
 
         WebDriver driver = seleniumHelper.getDriver();
-        driver.get(getBaseUrl() + "/" + startUrl); //  lomake/Yhteishaku/yhteishaku/henkilotiedot
+        driver.get(getBaseUrl()  + startUrl); //  lomake/Yhteishaku/yhteishaku/henkilotiedot
 
         driver.findElement(new By.ById("millatutkinnolla_tutkinto1")).click();
 

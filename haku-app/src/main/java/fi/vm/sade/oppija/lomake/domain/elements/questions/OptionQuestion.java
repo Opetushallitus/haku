@@ -49,8 +49,8 @@ public abstract class OptionQuestion extends Question {
         return option;
     }
 
-    public final void addOptions(final List<Option> countries) {
-        this.options.addAll(countries);
+    public final void addOptions(final List<Option> options) {
+        this.options.addAll(options);
     }
 
     public List<Option> getOptions() {

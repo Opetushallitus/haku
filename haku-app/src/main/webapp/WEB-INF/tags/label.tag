@@ -19,5 +19,6 @@
   ~ European Union Public Licence for more details.
   --%>
 <label id="label-${element.id}" for="${element.id}"
-       class="${styleBaseClass}-label ${element.attributes['required'].value}"><haku:i18nText
-        value="${element.i18nText}"/></label>
+       class="${styleBaseClass}-label ${element.attributes['required'].value}">
+    <haku:i18nText value="${element.i18nText}"/>
+</label>

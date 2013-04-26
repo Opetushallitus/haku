@@ -46,7 +46,7 @@ public class LomakeIT extends AbstractSeleniumBase {
     public void submitApplication() throws Exception {
         WebDriver driver = seleniumHelper.getDriver();
         Selenium selenium = seleniumHelper.getSelenium();
-        driver.get(getBaseUrl() + "/lomake/");
+        driver.get(getBaseUrl() + "lomake/");
         selenium.setSpeed("3000");
         driver.findElement(new By.ById(Yhteishaku2013.ASID)).click();
         driver.findElement(new By.ById("yhteishaku")).click();
@@ -151,7 +151,7 @@ public class LomakeIT extends AbstractSeleniumBase {
         String oid = driver.findElement(new By.ByClassName("number")).getText();
         assertTrue(oid.startsWith("1.2.3.4.5"));
 
-        driver.get(getBaseUrl() + "/lomake/");
+        driver.get(getBaseUrl() + "lomake/");
         driver.findElement(new By.ById(Yhteishaku2013.ASID)).click();
         driver.findElement(new By.ById("yhteishaku")).click();
         String value = driver.findElement(new By.ById("Sukunimi")).getAttribute("value");

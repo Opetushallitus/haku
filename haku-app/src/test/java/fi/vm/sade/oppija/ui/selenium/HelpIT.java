@@ -59,12 +59,10 @@ public class HelpIT extends AbstractSeleniumBase {
         initModelAndGetHelpText(checkBox);
     }
 
-    private String initModelAndGetHelpText(Element element) {
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(
-                element
-        );
+    private String initModelAndGetHelpText(final Element element) {
+        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(element);
         this.formModelHelper = updateIndexAndFormModel(formModel);
-        this.seleniumHelper.getDriver().get(getBaseUrl() + "/" + formModelHelper.getStartUrl());
+        this.seleniumHelper.getDriver().get(getBaseUrl() + formModelHelper.getStartUrl());
         WebElement helpWebElement = seleniumHelper.getDriver().findElement(By.id(HELP_ID));
         return helpWebElement.getText();
     }

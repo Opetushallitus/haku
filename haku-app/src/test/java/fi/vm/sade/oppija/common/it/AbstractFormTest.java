@@ -23,7 +23,8 @@ public abstract class AbstractFormTest extends AbstractRemoteTest {
 
     protected FormModelHelper updateModelAndCreateFormModelHelper(FormModel formModel) {
         super.initTestEngine();
-        new AdminResourceClient(getBaseUrl()).updateModel(formModel);
+        AdminResourceClient adminResourceClient = new AdminResourceClient(getBaseUrl());
+        adminResourceClient.updateModel(formModel);
         return new FormModelHelper(formModel);
     }
 

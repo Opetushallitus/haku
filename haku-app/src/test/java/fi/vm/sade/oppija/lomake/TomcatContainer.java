@@ -19,10 +19,6 @@ package fi.vm.sade.oppija.lomake;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.startup.Tomcat;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.impl.base.exporter.zip.ZipExporterImpl;
 import org.springframework.beans.factory.DisposableBean;
 
 import java.io.File;
@@ -98,7 +94,7 @@ public class TomcatContainer implements DisposableBean {
     }
 
     public String getBaseUrl() {
-        return "http://localhost:" + getPort() + getContextPath();
+        return "http://localhost:" + getPort() + getContextPath() + "/";
     }
 
     public int getPort() {

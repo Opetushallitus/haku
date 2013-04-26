@@ -65,25 +65,20 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
 
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(socialSecurityNumber);
         this.formModelHelper = updateIndexAndFormModel(formModel);
+        seleniumHelper.getDriver().get(getBaseUrl() + formModelHelper.getStartUrl());
     }
 
 
     @Test
     public void testInputMale() {
-        final String startUrl = formModelHelper.getStartUrl();
-        seleniumHelper.getDriver().get(getBaseUrl() + "/" + startUrl);
         seleniumHelper.getSelenium().type("Henkilotunnus", "010101-111X");
-
         screenshot("mies");
         seleniumHelper.getDriver().findElement(By.xpath("//*[text()='Mies']"));
     }
 
     @Test
     public void testInputFemale() {
-        final String startUrl = formModelHelper.getStartUrl();
-        seleniumHelper.getDriver().get(getBaseUrl() + "/" + startUrl);
         seleniumHelper.getSelenium().type("Henkilotunnus", "010101-112X");
-
         screenshot("nainen");
         seleniumHelper.getDriver().findElement(By.xpath("//*[text()='Nainen']"));
 

@@ -27,8 +27,8 @@ public class FormBuilder extends ElementBuilder {
     }
 
     @Override
-    public FormBuilder withChild(Element... categories) {
-        super.withChild(categories);
+    public FormBuilder withChild(Element... child) {
+        super.withChild(child);
         return this;
     }
 }

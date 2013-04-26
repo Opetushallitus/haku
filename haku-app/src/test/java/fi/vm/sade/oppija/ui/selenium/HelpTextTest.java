@@ -36,7 +36,7 @@ public class HelpTextTest extends AbstractSeleniumBase {
 
     @Test
     public void testQuestionHelp() {
-        final String url = getBaseUrl() + "/" + "lomake/" + Yhteishaku2013.ASID + "/yhteishaku/henkilotiedot";
+        final String url = getBaseUrl() + "lomake/" + Yhteishaku2013.ASID + "/yhteishaku/henkilotiedot";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
         assertNotNull("Could not find question specific help", driver.findElement(By.id("help-Kutsumanimi")));
@@ -44,7 +44,7 @@ public class HelpTextTest extends AbstractSeleniumBase {
 
     @Test
     public void testVerboseHelp() {
-        final String url = getBaseUrl() + "/" + "lomake/" + Yhteishaku2013.ASID + "/yhteishaku/henkilotiedot/HenkilotiedotGrp/help";
+        final String url = getBaseUrl() + "lomake/" + Yhteishaku2013.ASID + "/yhteishaku/henkilotiedot/HenkilotiedotGrp/help";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
         assertNotNull("Could not find verbose help page", driver.findElement(By.id("help-page")));

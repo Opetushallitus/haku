@@ -39,21 +39,21 @@
     <script src="${contextPath}/resources/javascript/rules.js"></script>
     <script src="${contextPath}/resources/javascript/master.js"></script>
     <script>
-    	function pastPhase(phaseId) {
-    		$('#form-${vaihe.id}').append('<input type="hidden" name="phaseId" value="'+phaseId+'-skip-validators" />');
-    		$('#form-${vaihe.id}').submit();
-    	}
-    	$(document).ready(function() {
-    		$("form input:text").each(function() {
-    			$(this).keypress(function(event) {
-    				if(event.keyCode == 13) {
-    					event.preventDefault();
-    					return false;
-    				}
-    				return true;
-    			})
-    		});
-    	});
+        function pastPhase(phaseId) {
+            $('#form-${vaihe.id}').append('<input type="hidden" name="phaseId" value="' + phaseId + '-skip-validators" />');
+            $('#form-${vaihe.id}').submit();
+        }
+        $(document).ready(function () {
+            $("form input:text").each(function () {
+                $(this).keypress(function (event) {
+                    if (event.keyCode == 13) {
+                        event.preventDefault();
+                        return false;
+                    }
+                    return true;
+                })
+            });
+        });
     </script>
     <title><haku:i18nText value="${form.i18nText}"/> - <haku:i18nText value="${vaihe.i18nText}"/></title>
 </head>
@@ -105,11 +105,11 @@
                     <c:set var="pastPhases" value="true" scope="request"/>
                     <c:forEach var="phase" items="${form.children}" varStatus="status">
                         <li>
-                        	<c:if test="${pastPhases}">
-	                            <a id="nav-${phase.id}" href="javascript:pastPhase('${phase.id}')"
-	                               <c:if test="${phase.id eq vaihe.id}">class="current"</c:if>>
-	                                <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
-	                            </a>
+                            <c:if test="${pastPhases}">
+                                <a id="nav-${phase.id}" href="javascript:pastPhase('${phase.id}')"
+                                   <c:if test="${phase.id eq vaihe.id}">class="current"</c:if>>
+                                    <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
+                                </a>
                             </c:if>
                             <c:if test="${!pastPhases}">
                             	<span>

@@ -52,14 +52,7 @@ public class SeleniumHelper {
         return driver;
     }
 
-    public void loginAs(final String username) {
-        getDriver().get(baseUrl + "/user/login");
-        selenium.type("j_username", username);
-        selenium.type("j_password", username);
-        selenium.submit("login");
-    }
-
     public void logout() {
-        getDriver().get(baseUrl + "/user/logout");
+        getDriver().get(baseUrl + "user/logout");
     }
 }

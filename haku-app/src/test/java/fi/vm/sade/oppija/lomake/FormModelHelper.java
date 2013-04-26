@@ -34,7 +34,6 @@ public class FormModelHelper {
         this.formModel = formModel;
 
     }
-
     public String getFormUrl(final Element element) {
         return "lomake/" + getFirstApplicationPerioid().getId() + "/" + getFirstForm().getId() + "/" + element.getId();
     }

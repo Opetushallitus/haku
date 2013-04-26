@@ -23,9 +23,16 @@ public class DropdownSelect extends OptionQuestion {
 
     private static final long serialVersionUID = -4123932313676830396L;
 
+    private final String defaultValueAttribute;
+
     public DropdownSelect(@JsonProperty(value = "id") final String id,
-                          @JsonProperty(value = "i18nText") final I18nText i18nText) {
+                          @JsonProperty(value = "i18nText") final I18nText i18nText,
+                          @JsonProperty(value = "defaultValueAttribute") final String defaultValueAttribute) {
         super(id, i18nText);
+        this.defaultValueAttribute = defaultValueAttribute;
     }
 
+    public String getDefaultValueAttribute() {
+        return defaultValueAttribute;
+    }
 }

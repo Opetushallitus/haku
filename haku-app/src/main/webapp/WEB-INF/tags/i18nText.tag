@@ -18,6 +18,5 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:if test="${not empty value}">
-    <c:set var="language" value="${sessionScope['javax.servlet.jsp.jstl.fmt.locale.session'].language}" scope="page"/>
-    <c:out value="${value.translations[language]}" escapeXml="false" default="???"/>
+    <c:out value="${value.translations[requestScope['fi_vm_sade_oppija_language']]}" escapeXml="false" default="???"/>
 </c:if>

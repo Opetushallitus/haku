@@ -30,8 +30,8 @@ public class ElementBuilder {
         this.element = element;
     }
 
-    public ElementBuilder withChild(Element... categories) {
-        for (Element category : categories) {
+    public ElementBuilder withChild(Element... child) {
+        for (Element category : child) {
             element.addChild(category);
         }
         return this;

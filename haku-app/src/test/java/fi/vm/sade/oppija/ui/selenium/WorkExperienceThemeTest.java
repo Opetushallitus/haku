@@ -77,7 +77,7 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
 
         Selenium selenium = seleniumHelper.getSelenium();
         WebDriver driver = seleniumHelper.getDriver();
-        driver.get(getBaseUrl() + "/" + henkilotiedot);
+        driver.get(getBaseUrl()  + henkilotiedot);
 
         driver.findElement(By.id("Sukunimi")).sendKeys("sukunimi");
         driver.findElement(By.id("Etunimet")).sendKeys("etunimi");
@@ -90,7 +90,7 @@ public class WorkExperienceThemeTest extends AbstractSeleniumBase {
         new Select(driver.findElement(By.id("aidinkieli"))).selectByIndex(1);
 
         driver.findElement(new By.ByClassName("right")).click();
-        driver.get(getBaseUrl() + "/" + hakutoiveet);
+        driver.get(getBaseUrl() + hakutoiveet);
 
         inputOpetuspiste(selenium, driver);
         return driver;

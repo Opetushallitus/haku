@@ -68,12 +68,12 @@ public class AdminResourceClient {
     }
 
     private void updateIndex(DefaultHttpClient httpclient) throws IOException {
-        HttpGet updateGet = new HttpGet(baseUrl + "/admin/index/update");
+        HttpGet updateGet = new HttpGet(baseUrl + "admin/index/update");
         ExecuteAndConsume(httpclient, updateGet);
     }
 
     private void login(final User user, final DefaultHttpClient httpclient) throws IOException {
-        HttpPost loginPost = new HttpPost(baseUrl + "/j_spring_security_check");
+        HttpPost loginPost = new HttpPost(baseUrl + "j_spring_security_check");
         loginPost.setHeader("Content-type", "application/x-www-form-urlencoded");
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("j_username", user.getUsername()));
@@ -83,7 +83,7 @@ public class AdminResourceClient {
     }
 
     private void postModel(final String model, final DefaultHttpClient httpclient) throws IOException {
-        HttpPost httpPost = new HttpPost(baseUrl + "/admin/model");
+        HttpPost httpPost = new HttpPost(baseUrl + "admin/model");
         httpPost.setHeader("Content-type", "application/json;charset=UTF-8");
         httpPost.setEntity(new StringEntity(model, "UTF-8"));
         ExecuteAndConsume(httpclient, httpPost);

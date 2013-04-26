@@ -28,29 +28,24 @@ import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
 
 public class FormModelBuilder {
 
-    public static final String VAIHE_ID = "kategoria";
-    public static final String VAIHE_TITLE = "category1";
-    public static final String TEEMA_ID = "teema";
-    public static final String TEEMA_TITLE = "teema1";
-    public static final String APPLICATION_PERIOD_ID = "yhteishaku";
+    public static final String PHASE_ID = "phase";
+    public static final String THEME_ID = "theme";
+    public static final String APPLICATION_PERIOD_ID = "application_period";
     public static final String FORM_ID = "form";
-    FormModel formModel = new FormModel();
 
+    private FormModel formModel = new FormModel();
     ApplicationPeriodBuilder applicationPeriodBuilder = new ApplicationPeriodBuilder(APPLICATION_PERIOD_ID);
-    private Phase phase = new Phase(VAIHE_ID, createI18NAsIs(VAIHE_TITLE), false);
-    private Theme theme = new Theme(TEEMA_ID, createI18NAsIs(TEEMA_TITLE), null);
+    private Phase phase = new Phase(PHASE_ID, createI18NAsIs(PHASE_ID), false);
+    private Theme theme = new Theme(THEME_ID, createI18NAsIs(THEME_ID), null);
 
     private FormBuilder formBuilder =
             new FormBuilder(FORM_ID,
-                    createI18NAsIs("Tässä olisi kuvaava otsikko. Tämä on kuitenkin testiformi joka on luotu " + new Date()));
+                    createI18NAsIs("Test form created at " + new Date()));
 
     Form form = (Form) createForm(phase);
 
     private Element createForm(Phase phase) {
         return formBuilder.withChild(phase.addChild(theme)).build();
-    }
-
-    public FormModelBuilder() {
     }
 
     public FormModel build() {
