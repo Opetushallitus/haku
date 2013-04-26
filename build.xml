@@ -1,83 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="haku-deploy" basedir="." >
+<!--
+  ~ Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+  ~
+  ~ This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+  ~ soon as they will be approved by the European Commission - subsequent versions
+  ~ of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ European Union Public Licence for more details.
+  -->
+
+<project name="deploy-to-remote-tomcat" basedir="." default="deploy-to-remote-tomcat" >
 
     <target name="deploy-to-remote-tomcat">
-        <!--
-        <echo>Backup old haku.war</echo>
-        <sshexec command="export DATE=`date +%F_%H-%M-%S`; mkdir $DATE ; cp -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT $DATE"
-                host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
-                passphrase="" trust="true" failonerror="false" />
-        -->
-
-        <condition property="common.properties" value="module-install/server-install/config/integration-test/liferay.user.home/oph-configuration/common.properties">
-            <isset property="integration-test" />
-        </condition>
-
-        <condition property="common.properties" value="module-install/server-install/config/system-test/liferay.user.home/oph-configuration/common.properties">
-            <isset property="system-test" />
-        </condition>
-
-        <condition property="config.target" value="/data00/oph/haku/oph-configuration">
-            <isset property="integration-test" />
-        </condition>
-
-        <condition property="config.target" value="/data00/tomcat/oph-configuration">
-            <isset property="system-test" />
-        </condition>
+<!--
+	shell command:
+	#ant -Dtomcat-host=luokka -Dtomcat-port=8306
+-->
+		<property name="oph.name" value="haku"/>
+		<property name="pom.version" value="5.0-SNAPSHOT"/>
+		
+		<property name="maven.repo" value="${user.home}/.m2/repository"/>
+		<property name="tomcat.name" value="tomcat_${oph.name}"/>
+		<property name="tomcat.home" value="/data00/oph/${oph.name}/apache-tomcat-7.0.29"/>
+		<property name="ssh.keyfile" location="${user.home}/.ssh/id_rsa"/>
+		<property name="ssh.keypass" value=""/>
 
         <echo>Stop Tomcat</echo>
-        <sshexec command="/etc/init.d/tomcat stop"
-                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
-                 passphrase="" trust="true" failonerror="false" />
-        <echo>Wait Tomcat to stop...</echo>
+        <sshexec command="/etc/init.d/${tomcat.name} stop"
+                 host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
+                 passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 
+		<echo>Wait Tomcat to stop...</echo>
         <waitfor maxwait="3000" checkevery="500">
             <not>
-                <socket server="${tomcat-host}" port="8282"/>
+                <socket server="${tomcat-host}" port="${tomcat-port}" />
             </not>
         </waitfor>
-
         <echo>Tomcat stopped.</echo>
 
         <echo>Clean Tomcat</echo>
-        <sshexec command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku-app* /data00/tomcat/apache-tomcat-7.0.29/webapps/haku-app /data00/tomcat/apache-tomcat-7.0.29/work/* /data00/tomcat/apache-tomcat-7.0.29/temp/*"
-                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
-                 passphrase="" trust="true" failonerror="false" />
+        <sshexec command="rm -rf ${tomcat.home}/webapps/* ${tomcat.home}/work/* ${tomcat.home}/temp/*"
+                 host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
+                 passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 
-        <echo>Copy new haku-app.war</echo>
-
-    	<available file="haku-app/target/haku-app.war"
-    	           property="haku.war.path"
-    	           value="haku-app/target/haku-app.war" />
-    	<available file="target/haku-app.war"
-    	           property="haku.war.path"
-    	           value="target/haku-app.war" />
-    	
-	   	<scp file="${haku.war.path}"	
-	         todir="tomcat@${tomcat-host}:/data00/tomcat/apache-tomcat-7.0.29/webapps/"
-	         keyfile="${user.home}/.ssh/id_rsa"
-	         />
-
-        <echo>rename haku-app.war as ROOT</echo>
-        <sshexec command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku-app;
-        mkdir /data00/tomcat/apache-tomcat-7.0.29/webapps/haku-app;
-        unzip -qo -d/data00/tomcat/apache-tomcat-7.0.29/webapps/haku-app /data00/tomcat/apache-tomcat-7.0.29/webapps/haku-app.war;
-        rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/haku-app.war"
-                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
-                 passphrase="" trust="true" failonerror="false" />
-
-        <echo>copy common.properties</echo>
-        <scp file="${common.properties}"
-             todir="tomcat@${tomcat-host}:${config.target}"
-             keyfile="${user.home}/.ssh/id_rsa"
-             />
-
+        <echo>Copy files to ${tomcat-host}</echo>
+		<scp todir="tomcat@${tomcat-host}:${tomcat.home}/webapps/"
+               keyfile="${ssh.keyfile}" passphrase="${ssh.keypass}" >
+			 <fileset dir="haku-app/target">
+				<include name="haku-app*.war"/>
+			</fileset>
+		</scp>
+		
+		<!-- eiks haku-service tuotakkaan warria? -->
+		<echo>Unzip files...</echo>
+        <sshexec command="
+				mkdir ${tomcat.home}/webapps/haku-app;
+				unzip -qo -d${tomcat.home}/webapps/haku-app ${tomcat.home}/webapps/haku-app*.war;
+				rm -rf ${tomcat.home}/webapps/*.war;
+				"
+                 host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
+                 passphrase="${ssh.keypass}" trust="true" failonerror="false" />
         <echo>Start Tomcat</echo>
-        <sshexec command="/etc/init.d/tomcat start"
-                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
-                 passphrase="" trust="true" failonerror="false" />
+        <sshexec command="/etc/init.d/${tomcat.name} start"
+                 host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
+                 passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 
-        <echo>Successfully deployed haku-app.war to ${tomcat-host}</echo>
+		<echo>Wait for service http-url</echo>
+		<waitfor maxwait="3000" checkevery="500" >
+			<http url="http://${tomcat-host}:${tomcat-port}/haku-app"/>
+		</waitfor>
+		<fail message="App did not come up.  Check your log files, fix and try again.  Good Luck :-).">     
+			<condition>
+				<not>
+					<http url="http://${tomcat-host}:${tomcat-port}/haku-app" />
+				</not>
+			</condition>
+		</fail>
+		
+        <echo>Successfully deployed to ${tomcat-host}</echo>
     </target>
 
 </project>
