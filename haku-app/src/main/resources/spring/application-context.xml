@@ -25,13 +25,14 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <import resource="security-context-dev.xml"/>
 
-    <context:property-placeholder
-            location="classpath:haku.properties, file:///${user.home:''}/oph-configuration/haku.properties,
-            file:///${user.home:''}/oph-configuration/common.properties, classpath:haku-test.properties"
-            ignore-resource-not-found="true" properties-ref="defaultProps"/>
+
     <beans profile="default">
+        <context:property-placeholder
+                location="file:///${user.home:''}/oph-configuration/haku.properties,
+                    file:///${user.home:''}/oph-configuration/common.properties"
+                ignore-resource-not-found="true" properties-ref="defaultProps"/>
+
         <bean id="defaultProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
             <property name="properties">
                 <util:properties local-override="true">
@@ -43,10 +44,18 @@
             </property>
         </bean>
         <import resource="file:///${user.home:''}/oph-configuration/security-context-backend.xml"/>
+        <import resource="authentication-service-context.xml"/>
     </beans>
+
     <beans profile="dev">
+        <context:property-placeholder
+                location="classpath:haku.properties, file:///${user.home:''}/oph-configuration/haku.properties,
+                    file:///${user.home:''}/oph-configuration/common.properties, classpath:haku-test.properties"
+                    ignore-resource-not-found="true" properties-ref="defaultProps"/>
+        <import resource="security-context-dev.xml"/>
         <bean id="defaultProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
     </beans>
+
 
     <beans>
         <context:annotation-config/>
@@ -70,7 +79,6 @@
         </bean>
 
         <import resource="haku-context.xml"/>
-        <import resource="authentication-service-context.xml"/>
         <import resource="classpath:/META-INF/spring/logger-mock-context.xml"/>
         <import resource="cxf-context.xml" />
     </beans>

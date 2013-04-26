@@ -635,6 +635,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.3</version>
+                <configuration>
+                    <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -884,8 +887,51 @@
         </profile>
 
         <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <springProfileActive>dev</springProfileActive>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>tomcat-maven-plugin</artifactId>
+                        <version>1.1</version>
+                        <configuration>
+                            <charset>UTF-8</charset>
+                            <uriEncoding>UTF-8</uriEncoding>
+                            <addContextWarDependencies>true</addContextWarDependencies>
+                            <systemProperties>
+                                <spring.profiles.active>dev</spring.profiles.active>
+                            </systemProperties>
+                        </configuration>
+                    </plugin>
+                </plugins>
+                <resources>
+                    <resource>
+                        <directory>config/dev</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+
+        <profile>
             <id>integration-test</id>
             <build>
+                <resources>
+                    <resource>
+                        <directory>config/integration-test</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                </resources>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
