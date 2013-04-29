@@ -715,8 +715,8 @@ public class Yhteishaku2013 {
 
         Radio asiointikieli = new Radio("asiointikieli", createI18NForm("form.asiointikieli.otsikko"));
         asiointikieli.setHelp(createI18NForm("form.asiointikieli.help"));
-        asiointikieli.addOption("suomi", createI18NForm("Suomi"), "suomi");
-        asiointikieli.addOption("ruotsi", createI18NForm("Ruotsi"), "ruotsi");
+        asiointikieli.addOption("suomi", createI18NForm("form.asiointikieli.suomi"), "suomi");
+        asiointikieli.addOption("ruotsi", createI18NForm("form.asiointikieli.ruotsi"), "ruotsi");
         asiointikieli.addAttribute("required", "required");
         asiointikieli.setVerboseHelp(getVerboseHelp());
         lupatiedot.addChild(asiointikieli);
