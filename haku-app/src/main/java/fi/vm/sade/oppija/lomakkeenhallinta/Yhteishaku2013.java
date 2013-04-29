@@ -97,12 +97,13 @@ public class Yhteishaku2013 {
             hakutoiveet.addChild(hakutoiveetRyhma);
             createHakutoiveet(hakutoiveetRyhma);
 
-            // Arvosanat
-            Phase arvosanat = new Phase("arvosanat", createI18NForm("form.arvosanat.otsikko"), false);
-            form.addChild(arvosanat);
-            Theme arvosanatRyhma = createArvosanatRyhma();
-            arvosanat.addChild(arvosanatRyhma);
-            createArvosanat(arvosanatRyhma);
+            // Entinen Arvosanat nykyinen Osaaminen
+            Phase osaaminen = new Phase("osaaminenPhase", createI18NForm("form.osaaminen.otsikko"), false);
+            form.addChild(osaaminen);
+            Theme arvosanatTheme = createArvosanatRyhma();
+            createArvosanat(arvosanatTheme);
+            osaaminen.addChild(arvosanatTheme);
+            osaaminen.addChild(createKielitaitokysymyksetTheme());
 
             // Lisätiedot
             Phase lisatiedot = new Phase("lisatiedot", createI18NForm("form.lisatiedot.otsikko"), false);
@@ -123,12 +124,18 @@ public class Yhteishaku2013 {
             form.addChild(esikatselu);
             Theme yhteenvetoRyhma = new Theme("yhteenvetoGrp", createI18NForm("form.esikatselu.yhteenveto"), null);
             esikatselu.addChild(henkilotiedotRyhma).addChild(koulutustaustaRyhma).addChild(hakutoiveetRyhma)
-                    .addChild(arvosanatRyhma).addChild(tyokokemusRyhma).addChild(lupatiedotRyhma);
+                    .addChild(arvosanatTheme).addChild(tyokokemusRyhma).addChild(lupatiedotRyhma);
             yhteenvetoRyhma.setHelp(createI18NForm("form.esikatselu.help"));
         } catch (Throwable t) {
             throw new RuntimeException(Yhteishaku2013.class.getCanonicalName() + " init failed", t);
         }
 
+    }
+
+    private Element createKielitaitokysymyksetTheme() {
+        Theme kielitaitokysymyksetTheme = new Theme("KielitaitokysymyksetTheme", createI18NForm("form.kielitaitokysymykset.otsikko"), null);
+
+        return kielitaitokysymyksetTheme;
     }
 
     private Theme createHenkilotiedotRyhma() {
