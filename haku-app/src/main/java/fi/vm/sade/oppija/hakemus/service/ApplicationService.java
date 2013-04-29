@@ -29,8 +29,6 @@ import java.util.Map;
 
 public interface ApplicationService {
 
-    List<ApplicationInfo> getUserApplicationInfo();
-
     Application getApplication(FormId formId);
 
     /**
@@ -43,23 +41,6 @@ public interface ApplicationService {
     ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, boolean skipValidators);
 
     /**
-     * Save answers of a single form phase. Phase is saved to the currently modified application of the user session.
-     *
-     * @param applicationPhase
-     * @return application state
-     */
-    ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase);
-
-    /**
-     * Save answers of a single form phase. Phase is saved to the application with the parameter oid.
-     *
-     * @param applicationPhase
-     * @param oid
-     * @return application state
-     */
-    ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final String oid);
-
-    /**
      * Save answers of a single form phase. Phase is saved to the application with the parameter oid.
      *
      * @param applicationPhase
@@ -68,15 +49,6 @@ public interface ApplicationService {
      * @return application state
      */
     ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final String oid, final boolean skipValidators);
-
-    /**
-     * Save answers of a single form phase. Phase is saved to the parameter application.
-     *
-     * @param applicationPhase
-     * @param application
-     * @return application state
-     */
-    ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final Application application);
 
     /**
      * Retrieve application by oid.

@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fi.vm.sade.oppija.hakemus.dao.ApplicationStorage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -72,7 +73,7 @@ public class ApplicationServiceImplTest {
         when(applicationDAO.findByOid(eq(SHORT_OID), eq(applicationQueryParameters))).thenReturn(Lists.newArrayList(application));
         when(applicationDAO.find(any(Application.class))).thenReturn(Lists.newArrayList(application));
         when(applicationOidService.getOidPrefix()).thenReturn("1.2.3.4.5");
-        service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, null);
+        service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, null, new ApplicationStorage());
     }
 
     @Test
