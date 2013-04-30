@@ -54,7 +54,7 @@ public class TomcatContainer implements DisposableBean {
         createTomcat();
         mTomcat.start();
         port = mTomcat.getConnector().getLocalPort();
-        createWebApp(new File("target/haku-app.war"));
+        createWebApp(new File("target/haku-app"));
     }
 
     @Override

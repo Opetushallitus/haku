@@ -39,6 +39,4 @@ public abstract class TomcatContainerBase {
     public String getBaseUrl() {
         return container.getBaseUrl();
     }
-
-
 }

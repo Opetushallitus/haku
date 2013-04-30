@@ -893,6 +893,7 @@
             </activation>
             <properties>
                 <springProfileActive>dev</springProfileActive>
+                <log4jConfigLocation>/WEB-INF/classes/log4j.properties</log4jConfigLocation>
             </properties>
             <build>
                 <plugins>
@@ -918,6 +919,7 @@
                         <directory>src/main/resources</directory>
                     </resource>
                 </resources>
+
             </build>
         </profile>
 
@@ -943,6 +945,10 @@
 
         <profile>
             <id>integration-test</id>
+            <properties>
+                <springProfileActive>dev</springProfileActive>
+                <log4jConfigLocation>/WEB-INF/classes/log4j.properties</log4jConfigLocation>
+            </properties>
             <build>
                 <resources>
                     <resource>
@@ -964,6 +970,9 @@
                                 <include>**/selenium/*</include>
                             </includes>
                             <testFailureIgnore>false</testFailureIgnore>
+                            <additionalClasspathElements>
+                                <additionalClasspathElement>/config/dev/log4.properties</additionalClasspathElement>
+                            </additionalClasspathElements>
                             <classpathDependencyExcludes>
                                 <classpathDependencyExcludes>net.sf.saxon:Saxon-HE</classpathDependencyExcludes>
                             </classpathDependencyExcludes>
