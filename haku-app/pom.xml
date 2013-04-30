@@ -925,7 +925,7 @@
             <id>deploy</id>
             <properties>
                 <springProfileActive>default</springProfileActive>
-                <log4jConfigLocation>/data00/oph/haku/oph-configuration/log4j.properties</log4jConfigLocation>
+                <log4jConfigLocation>file:///data00/oph/haku/oph-configuration/log4j.properties</log4jConfigLocation>
             </properties>
             <build>
                 <plugins>

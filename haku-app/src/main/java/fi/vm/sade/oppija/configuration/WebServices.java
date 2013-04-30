@@ -29,12 +29,12 @@ import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
 public class WebServices {
 
     @Bean(name="organisaatioService")
-    public OrganisaatioService getOrganisaatioService(@Value("${organisaatio.service.url}") String url) {
+    public OrganisaatioService getOrganisaatioService(@Value("${organisaatio.webservice.url.backend}") String url) {
         return getProxy(OrganisaatioService.class, url);
     }
 
     @Bean(name="koodiPublicService")
-    public KoodiService getKoodiService(@Value("${koodi.service.url}") String url) {
+    public KoodiService getKoodiService(@Value("${koodi.public.webservice.url.backend}") String url) {
         return getProxy(KoodiService.class, url);
     }
 
