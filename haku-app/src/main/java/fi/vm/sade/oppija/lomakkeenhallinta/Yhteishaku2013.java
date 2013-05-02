@@ -55,6 +55,8 @@ public class Yhteishaku2013 {
     private final ApplicationPeriod applicationPeriod;
     public static String mobilePhonePattern =
             "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
+    public static String phonePattern =
+            "^$|^[0-9\\-\\s]+$";
 
     private static final String NOT_FI = "^((?!FI)[A-Z]{2})$";
 
@@ -256,13 +258,13 @@ public class Yhteishaku2013 {
         AddElementRule prevRule = null;
         for (int i = 2; i <= 5; i++) {
             TextQuestion extranumero = new TextQuestion("matkapuhelinnumero" + i,
-                    createI18NForm("form.henkilotiedot.matkapuhelinnumero"));
+                    createI18NForm("form.henkilotiedot.puhelinnumero"));
             extranumero.addAttribute("size", "30");
-            extranumero.addAttribute("pattern", mobilePhonePattern);
+            extranumero.addAttribute("pattern", phonePattern);
             extranumero.setInline(true);
 
             AddElementRule extranumeroRule = new AddElementRule("addPuhelinnumero" + i + "Rule", prevNum.getId(),
-                    createI18NForm("form.henkilotiedot.matkapuhelinnumero.lisaa"));
+                    createI18NForm("form.henkilotiedot.puhelinnumero.lisaa"));
             extranumeroRule.addChild(extranumero);
             if (i == 2) {
                 henkilotiedotRyhma.addChild(extranumeroRule);

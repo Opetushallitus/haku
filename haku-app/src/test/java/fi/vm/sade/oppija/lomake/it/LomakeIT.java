@@ -68,7 +68,7 @@ public class LomakeIT extends AbstractSeleniumBase {
 
         driver.findElement(By.id("addPuhelinnumero2Rule-link")).click();
         driver.findElement(By.id("matkapuhelinnumero2"));
-        selenium.typeKeys("matkapuhelinnumero2", "0501000100");
+        selenium.typeKeys("matkapuhelinnumero2", "09-123 456");
 
         clickNextPhase(driver);
 
