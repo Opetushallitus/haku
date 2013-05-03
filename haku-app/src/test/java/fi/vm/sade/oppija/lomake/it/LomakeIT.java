@@ -75,7 +75,7 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(new By.ByClassName("notification"));
 
         Select asuinmaaSelect = new Select(driver.findElement(new By.ById("asuinmaa")));
-        asuinmaaSelect.selectByIndex(0);
+        asuinmaaSelect.selectByValue("FI");
 
         Select selectKotikunta = new Select(driver.findElement(new By.ById("kotikunta")));
         selectKotikunta.selectByIndex(1);
