@@ -23,13 +23,13 @@ import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.ValueSetValidator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public abstract class OptionQuestion extends Question {
 
     private static final long serialVersionUID = -2304711424350028559L;
     private final List<Option> options = new ArrayList<Option>();
+    private Map<String, List<Option>> optionsSortedByText;
 
     protected OptionQuestion(@JsonProperty(value = "id") String id,
                              @JsonProperty(value = "i18nText") I18nText i18nText) {
@@ -55,6 +55,40 @@ public abstract class OptionQuestion extends Question {
 
     public List<Option> getOptions() {
         return ImmutableList.copyOf(options);
+    }
+
+    public Map<String, List<Option>> getOptionsSortedByText() {
+        if (optionsSortedByText == null) {
+            initSortedOptions();
+        }
+        return optionsSortedByText;
+    }
+
+    private void initSortedOptions() {
+        optionsSortedByText = new HashMap<String, List<Option>>();
+        for (Option option : options) {
+            Set<String> langs = option.getI18nText().getTranslations().keySet();
+            for (String lang : langs) {
+                List<Option> optionListForLang = optionsSortedByText.get(lang);
+                if (optionListForLang == null) {
+                    optionListForLang = new ArrayList<Option>(options.size());
+                    optionsSortedByText.put(lang, optionListForLang);
+                }
+                optionListForLang.add(option);
+            }
+        }
+        for (Map.Entry<String, List<Option>> entry : optionsSortedByText.entrySet()) {
+            List<Option> optionList = entry.getValue();
+            final String lang = entry.getKey();
+            Collections.sort(optionList, new Comparator<Option>() {
+                @Override
+                public int compare(Option o1, Option o2) {
+                    String o1Trans = o1.getI18nText().getTranslations().get(lang);
+                    String o2Trans = o2.getI18nText().getTranslations().get(lang);
+                    return o1Trans.compareTo(o2Trans);
+                }
+            });
+        }
     }
 
     @Override

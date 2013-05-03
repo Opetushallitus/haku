@@ -908,6 +908,9 @@
                             <systemProperties>
                                 <spring.profiles.active>dev</spring.profiles.active>
                             </systemProperties>
+                            <warSourceDirectory>
+                                ${project.build.directory}/${project.build.finalName}
+                            </warSourceDirectory>
                         </configuration>
                     </plugin>
                 </plugins>

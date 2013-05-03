@@ -36,7 +36,7 @@
                     </c:if>
                 </c:forEach>
             </c:if>
-            <c:forEach var="option" items="${element.options}">
+            <c:forEach var="option" items="${element.optionsSortedByText[requestScope['fi_vm_sade_oppija_language']]}">
                 <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
                 <option name="${element.id}"
                         value="${option.value}" ${tmp_selected_value eq option.value ? "selected=\"selected\" " : " "} ${option.attributeString}>
