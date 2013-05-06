@@ -106,10 +106,19 @@
                     <c:forEach var="phase" items="${form.children}" varStatus="status">
                         <li>
                             <c:if test="${pastPhases}">
-                                <a id="nav-${phase.id}" href="javascript:pastPhase('${phase.id}')"
-                                   <c:if test="${phase.id eq vaihe.id}">class="current"</c:if>>
-                                    <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
-                                </a>
+                                <c:choose>
+                                    <c:when test="${preview}">
+                                        <a id="nav-${phase.id}" href="${phase.id}">
+                                            <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a id="nav-${phase.id}" href="javascript:pastPhase('${phase.id}')"
+                                           <c:if test="${phase.id eq vaihe.id}">class="current"</c:if>>
+                                            <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
                             </c:if>
                             <c:if test="${!pastPhases}">
                             	<span>
