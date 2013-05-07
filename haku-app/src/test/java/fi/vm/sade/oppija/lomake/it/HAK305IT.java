@@ -107,7 +107,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         findByIdAndClick("millatutkinnolla_tutkinto1", "suorittanut1", "osallistunut_ei");
         findById("paattotodistusvuosi_peruskoulu");
         setPerusopetuksenKieli(opetuskieli);
-        selenium.typeKeys("paattotodistusvuosi_peruskoulu", "2012");
+        setValue("paattotodistusvuosi_peruskoulu", "2012");
     }
 
     private void fillInTheHakutoiveetPhase() {
