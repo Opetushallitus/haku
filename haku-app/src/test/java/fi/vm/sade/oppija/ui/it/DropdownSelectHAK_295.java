@@ -49,9 +49,9 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
     @Test
     public void testSelect() throws IOException {
         init(null, false);
-        assertNotSelected(OPTION_1_ID);
+        assertSelected(OPTION_1_ID);
         assertNotSelected(OPTION_2_ID);
-        assertSelected(OPTION_3_ID);
+        assertNotSelected(OPTION_3_ID);
     }
 
     @Test
