@@ -103,7 +103,7 @@ public class Yhteishaku2013 {
             createHakutoiveet(hakutoiveetRyhma);
 
             // Entinen Arvosanat nykyinen Osaaminen
-            Phase osaaminen = new Phase("osaaminenPhase", createI18NForm("form.osaaminen.otsikko"), false);
+            Phase osaaminen = new Phase("osaaminen", createI18NForm("form.osaaminen.otsikko"), false);
             form.addChild(osaaminen);
             Theme arvosanatTheme = createArvosanatRyhma();
             createArvosanat(arvosanatTheme);
