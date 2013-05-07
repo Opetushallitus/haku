@@ -98,7 +98,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         setValue("matkapuhelinnumero1", "0501000100");
         setNativeLanguage(aidinkieli);
         Select asuinmaaSelect = new Select(driver.findElement(new By.ById("asuinmaa")));
-        asuinmaaSelect.selectByIndex(0);
+        asuinmaaSelect.selectByValue("FI");
         Select selectKotikunta = new Select(driver.findElement(new By.ById("kotikunta")));
         selectKotikunta.selectByIndex(1);
         driver.findElement(new By.ById("Postinumero"));
