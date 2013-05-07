@@ -31,6 +31,7 @@
     <c:set value="${sortableItem.educationInputId}-id" var="hiddenKoulutusId" scope="page"/>
     <c:set value="${sortableItem.educationInputId}-educationDegree" var="hiddenEducationDegreeId" scope="page"/>
     <c:set value="childLONames-${sortableItem.id}" var="childLONamesId" scope="page"/>
+    <c:set value="${hiddenKoulutusId}-lang" var="hiddenKoulutusIdLang" scope="page"/>
 
     <div class="form-row">
         <label class="form-row-label ${sortableItem.attributes['required'].value}" for="${textInputId}"><haku:i18nText
@@ -62,13 +63,17 @@
                         placeholder="${sortableItem.selectEducationPlaceholder}"
                         data-additionalquestions="${additionalQuestionsId}"
                         data-childlonames="${childLONamesId}"
-                        ${sortableItem.attributes['required'].value}>
+                ${sortableItem.attributes['required'].value}>
                 </select>
                 <haku:errorMessage id="${selectInputId}" additionalClass="margin-top-1"/>
                 <input id="${hiddenKoulutusId}" name="${hiddenKoulutusId}" value="${categoryData[hiddenKoulutusId]}"
                        type="hidden"/>
-                <input id="${hiddenEducationDegreeId}" name="${hiddenEducationDegreeId}" value="${categoryData[hiddenEducationDegreeId]}"
-                        type="hidden"/>
+                <input id="${hiddenEducationDegreeId}" name="${hiddenEducationDegreeId}"
+                       value="${categoryData[hiddenEducationDegreeId]}"
+                       type="hidden"/>
+                <input id="${hiddenKoulutusIdLang}" name="${hiddenKoulutusIdLang}"
+                       value="${categoryData[hiddenKoulutusIdLang]}"
+                       type="hidden"/>
             </div>
         </div>
         <div class="clear"></div>

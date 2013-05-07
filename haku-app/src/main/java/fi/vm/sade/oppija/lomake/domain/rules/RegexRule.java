@@ -17,26 +17,38 @@
 package fi.vm.sade.oppija.lomake.domain.rules;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
+import java.util.Map;
 
 public final class RegexRule {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(RegexRule.class);
 
     private RegexRule() {
     }
 
     public static boolean evaluate(final String value, final String expression) {
-        if (value != null) {
-            final Pattern compile = Pattern.compile(expression);
-            Matcher matcher = compile.matcher(value);
-            LOGGER.debug("Using regexp: {} for value: {}, matches: {}", new Object[]{expression, value, matcher.matches()});
-            return matcher.matches();
-        }
-        return false;
+        return value != null && value.matches(expression);
+    }
+
+    public static String toNameSelectorString(final Iterable<String> listOfStrings) {
+        Iterable<String> selectors = Iterables.transform(listOfStrings, new Function<String, String>() {
+            @Override
+            public String apply(final String input) {
+                return "[name='" + input + "']";
+            }
+        });
+        return toCommaSeparatedString(selectors);
+    }
+
+    public static String toCommaSeparatedString(final Iterable<String> listOfStrings) {
+        return Joiner.on(',').skipNulls().join(listOfStrings);
+    }
+
+    public static List<Element> getChildren(final Element element, final Map<String, String> data) {
+        return element.getChildren(data);
     }
 }

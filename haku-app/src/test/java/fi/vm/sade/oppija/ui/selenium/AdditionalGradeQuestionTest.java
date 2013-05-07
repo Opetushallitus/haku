@@ -16,66 +16,45 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
+import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.thoughtworks.selenium.Selenium;
-
-import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import static org.junit.Assert.assertTrue;
 
 
 /**
  * @author Hannu Lyytikainen
  */
-public class AdditionalGradeQuestionTest extends AbstractSeleniumBase {
+public class AdditionalGradeQuestionTest extends DummyModelBaseItTest {
 
     public static final String OPETUSPISTE = "FAKTIA, Espoo op";
-
-    @Before
-    public void init() {
-        super.before();
-        FormServiceMockImpl dummyMem = new FormServiceMockImpl();
-        updateIndexAndFormModel(dummyMem.getModel());
-    }
+    public static final String KOULUTUSTAUSTA_PHASE_ID = "koulutustausta";
 
     @Test
     public void testAdditionalSubjects() {
-        final String url = getBaseUrl() + "lomake/"+ Yhteishaku2013.ASID + "/yhteishaku/koulutustausta";
-        final WebDriver driver = seleniumHelper.getDriver();
-        driver.get(url);
-        Selenium s = seleniumHelper.getSelenium();
-        driver.findElement(new By.ById("millatutkinnolla_tutkinto1")).click();
-        driver.findElement(new By.ById("paattotodistusvuosi_peruskoulu"));
-        s.typeKeys("paattotodistusvuosi_peruskoulu", "2013");
-        driver.findElement(new By.ById("suorittanut1")).click();
-        driver.findElement(new By.ById("suorittanut2")).click();
-        driver.findElement(new By.ById("suorittanut3")).click();
-        driver.findElement(new By.ById("suorittanut4")).click();
+        navigateToPhase(KOULUTUSTAUSTA_PHASE_ID);
 
-        driver.findElement(new By.ById("osallistunut_ei")).click();
+        findByIdAndClick("millatutkinnolla_tutkinto1", "paattotodistusvuosi_peruskoulu", "suorittanut1", "suorittanut2", "suorittanut3", "suorittanut4", "osallistunut_ei");
+        setValue("perusopetuksen_kieli", "SV");
+        setValue("paattotodistusvuosi_peruskoulu", "2013");
 
-        driver.findElement(new By.ByClassName("right")).click();
+        nextPhase();
 
         // select a LOI
-        driver.findElement(By.id("preference1-Opetuspiste"));
 
-        s.typeKeys("preference1-Opetuspiste", "Esp");
-
+        findById("preference1-Opetuspiste");
+        setValue("preference1-Opetuspiste", "Esp");
         WebElement element = driver.findElement(By.linkText(OPETUSPISTE));
         element.click();
+
         WebElement option = driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']"));
         option.click();
+
         driver.findElements(By.name("preference1-Harkinnanvarainen")).get(1).click();
 
-        // navigate to grade phase
-        s.click("class=right");
+        nextPhase();
         driver.findElement(By.xpath("//table[@id='gradegrid-table']"));
         assertTrue(driver.findElements(By.xpath("//table[@id='gradegrid-table']/tbody/tr")).size() > 10);
 

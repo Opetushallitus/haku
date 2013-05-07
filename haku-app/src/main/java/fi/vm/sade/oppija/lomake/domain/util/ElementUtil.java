@@ -137,11 +137,11 @@ public final class ElementUtil {
         }
     }
 
-    public static void setDisabled(Element element) {
+    public static void setDisabled(final Element element) {
         element.addAttribute(DISABLED, DISABLED);
     }
 
-    public static void setRequired(Element element) {
+    public static void setRequired(final Element element) {
         element.addAttribute(REQUIRED, REQUIRED);
     }
 

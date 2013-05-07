@@ -16,133 +16,120 @@
 
 package fi.vm.sade.oppija.lomake.it;
 
-import com.thoughtworks.selenium.Selenium;
-import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
+import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import java.util.List;
-
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-public class HAK305IT extends AbstractSeleniumBase {
+public class HAK305IT extends DummyModelBaseItTest {
 
-    private WebDriver driver;
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        FormServiceMockImpl formModelDummyMemoryDao = new FormServiceMockImpl();
-        updateIndexAndFormModel(formModelDummyMemoryDao.getModel());
-        driver = seleniumHelper.getDriver();
-        selenium = seleniumHelper.getSelenium();
-    }
+    public static final String NATIVE_LANGUAGE_FI = "FI";
+    public static final String NATIVE_LANGUAGE_SV = "SV";
 
     @Test
     public void submitApplication() throws Exception {
-
         navigateToFirstPhase();
 
-        selenium.typeKeys("Sukunimi", "Ankka");
-        selenium.typeKeys("Etunimet", "Aku Kalle");
-        selenium.typeKeys("Kutsumanimi", "A");
-        selenium.typeKeys("Henkilotunnus", "150520-111E");
-        selenium.typeKeys("Sähköposti", "aku.ankka@ankkalinna.al");
-        selenium.typeKeys("matkapuhelinnumero1", "0501000100");
-        Select selectAidinkieli = new Select(driver.findElement(new By.ById("aidinkieli")));
-        selectAidinkieli.selectByIndex(1);
-        Select asuinmaaSelect = new Select(driver.findElement(new By.ById("asuinmaa")));
-        asuinmaaSelect.selectByIndex(0);
-        Select selectKotikunta = new Select(driver.findElement(new By.ById("kotikunta")));
-        selectKotikunta.selectByIndex(1);
-        driver.findElement(new By.ById("Postinumero"));
-        selenium.typeKeys("lahiosoite", "Katu 1");
-        selenium.typeKeys("Postinumero", "00100");
-        clickNextPhase(driver);
+        fillInTheHenkilotiedotPhase(NATIVE_LANGUAGE_FI);
 
-        driver.findElement(new By.ById("millatutkinnolla_tutkinto1")).click();
+        nextPhase();
 
-        driver.findElement(new By.ById("paattotodistusvuosi_peruskoulu"));
-        selenium.typeKeys("paattotodistusvuosi_peruskoulu", "2013");
+        fillInTheKoulutustaustaPhase(NATIVE_LANGUAGE_FI);
 
-        driver.findElement(new By.ById("suorittanut1")).click();
-        driver.findElement(new By.ById("suorittanut2")).click();
-        driver.findElement(new By.ById("suorittanut3")).click();
-        driver.findElement(new By.ById("suorittanut4")).click();
+        nextPhase();
 
-        driver.findElement(new By.ById("osallistunut_ei")).click();
+        fillInTheHakutoiveetPhase();
 
-        clickNextPhase(driver);
-        //Skip toimipiste
-        driver.findElement(By.id("preference1-Opetuspiste"));
-        selenium.typeKeys("preference1-Opetuspiste", "Esp");
-        driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
-        driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
+        nextPhase();
 
-        driver.findElements(By.name("preference1-Harkinnanvarainen")).get(1).click();
+        fillInArvosanatTheme();
 
-        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1 - harkinnanvarainen_jatko")));
-        followUpSelect.selectByIndex(1);
+        elementsNotPresentByName("yleinen_kielitutkinto_sv", "valtionhallinnon_kielitutkinto_sv",
+                "yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
 
-        clickNextPhase(driver);
-        select(driver);
+        driver.findElement(new By.ById("nav-henkilotiedot")).click();
+        setNativeLanguage(NATIVE_LANGUAGE_SV);
+        nextPhase(); // Koulutustausta
+        setPerusopetuksenKieli(NATIVE_LANGUAGE_SV);
+        nextPhase();
+        nextPhase(); // Osaaminen
+        elementsPresentByName("yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
+        findByIdAndClick("yleinen_kielitutkinto_fi_true", "valtionhallinnon_kielitutkinto_fi_true");
+        nextPhase();
+        fillInRestOfThePhasesAndCheckTheOID();
+    }
 
-        clickNextPhase(driver);
 
+    private void fillInArvosanatTheme() {
+        driver.findElement(new By.ById("arvosanatTheme"));
+        driver.findElement(new By.ById("KielitaitokysymyksetTheme"));
+        select();
+    }
+
+    private void fillInRestOfThePhasesAndCheckTheOID() {
         // Lisätiedot
-        clickAllElements(driver, "//input[@type='checkbox']");
+        clickAllElementsByXPath("//input[@type='checkbox']");
 
-        // Ei mene läpi, työkokemus > 1000 kuukautta
-        clickNextPhase(driver);
-        driver.findElement(new By.ById("tyokokemuskuukaudet"));
-        selenium.typeKeys("tyokokemuskuukaudet", "\b\b\b\b2"); // \b is backspace
+        nextPhase();
+        setValue("tyokokemuskuukaudet", "2");
+        WebElement asiointikieli_suomi = driver.findElement(new By.ById("asiointikieli_suomi"));
+        asiointikieli_suomi.click();
 
-        driver.findElement(new By.ById("asiointikieli_suomi")).click();
-
-        clickNextPhase(driver);
+        nextPhase();
 
         // Esikatselu
-        clickNextPhase(driver);
+        nextPhase();
         driver.findElement(By.id("submit_confirm")).click();
 
         String oid = driver.findElement(new By.ByClassName("number")).getText();
         assertTrue(oid.startsWith("1.2.3.4.5"));
     }
 
-    private void navigateToFirstPhase() {
-        driver.get(getBaseUrl() + "lomake/");
-        driver.findElement(new By.ById(Yhteishaku2013.ASID)).click();
-        driver.findElement(new By.ById("yhteishaku")).click();
+    private void fillInTheHenkilotiedotPhase(final String aidinkieli) {
+        setValue("Sukunimi", "Ankka");
+        setValue("Etunimet", "Aku Kalle");
+        setValue("Kutsumanimi", "A");
+        setValue("Henkilotunnus", "150520-111E");
+        setValue("Sähköposti", "aku.ankka@ankkalinna.al");
+        setValue("matkapuhelinnumero1", "0501000100");
+        setNativeLanguage(aidinkieli);
+        Select asuinmaaSelect = new Select(driver.findElement(new By.ById("asuinmaa")));
+        asuinmaaSelect.selectByIndex(0);
+        Select selectKotikunta = new Select(driver.findElement(new By.ById("kotikunta")));
+        selectKotikunta.selectByIndex(1);
+        driver.findElement(new By.ById("Postinumero"));
+        setValue("lahiosoite", "Katu 1");
+        setValue("Postinumero", "00100");
     }
 
-    private void clickNextPhase(WebDriver driver) {
-        driver.findElement(new By.ByClassName("right")).click();
+    private void fillInTheKoulutustaustaPhase(final String opetuskieli) {
+        findByIdAndClick("millatutkinnolla_tutkinto1", "suorittanut1", "osallistunut_ei");
+        findById("paattotodistusvuosi_peruskoulu");
+        setPerusopetuksenKieli(opetuskieli);
+        selenium.typeKeys("paattotodistusvuosi_peruskoulu", "2012");
     }
 
-    private void select(final WebDriver driver) {
-        List<WebElement> elements = driver.findElements(new By.ByXPath("//select"));
-        for (WebElement element : elements) {
-            if (element.isDisplayed()) {
-                Select select = new Select(element);
-                select.selectByIndex(2);
-            }
-        }
+    private void fillInTheHakutoiveetPhase() {
+        driver.findElement(By.id("preference1-Opetuspiste"));
+        selenium.typeKeys("preference1-Opetuspiste", "Esp");
+        driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
+        driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
+        driver.findElements(By.name("preference1-Harkinnanvarainen")).get(1).click();
+        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1 - harkinnanvarainen_jatko")));
+        followUpSelect.selectByIndex(0);
     }
 
-    private void clickAllElements(final WebDriver driver, final String xpath) {
-        List<WebElement> elements = driver.findElements(new By.ByXPath(xpath));
-        for (WebElement element : elements) {
-            element.click();
-        }
+
+    private void setPerusopetuksenKieli(final String opetuskieli) {
+        setValue("perusopetuksen_kieli", opetuskieli);
     }
+
+    private void setNativeLanguage(final String aidinkieli) {
+        setValue("aidinkieli", aidinkieli);
+    }
+
 
 }
