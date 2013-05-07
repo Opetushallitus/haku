@@ -16,11 +16,8 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
-import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.PreferenceRowValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
@@ -66,7 +63,7 @@ public class PreferenceRow extends Question {
                          @JsonProperty(value = "selectEducationPlaceholder") final String selectEducationPlaceholder,
                          @JsonProperty(value = "discretionaryEducationDegree") final Integer discretionaryEducationDegree,
                          @JsonProperty(value = "discretionaryQuestion") final DiscretionaryQuestion discretionaryQuestion
-                         ) {
+    ) {
         super(id, i18nText);
         this.resetLabel = resetLabel;
         this.educationLabel = educationLabel;

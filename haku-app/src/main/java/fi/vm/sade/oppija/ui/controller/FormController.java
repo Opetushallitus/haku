@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-import com.google.common.collect.Lists;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
@@ -185,8 +184,8 @@ public class FormController {
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         try {
             @SuppressWarnings("unchecked")
-			DataRelatedQuestion<Serializable> element = 
-					(DataRelatedQuestion<Serializable>) activeForm.getChildById(elementId);
+            DataRelatedQuestion<Serializable> element =
+                    (DataRelatedQuestion<Serializable>) activeForm.getChildById(elementId);
             return element.getData(key);
         } catch (Exception e) {
             LOGGER.error(e.toString());
@@ -345,14 +344,14 @@ public class FormController {
      * and its education degree and sora requirement.
      *
      * @param applicationSystemId application system id
-     * @param formIdStr form that is used
-     * @param phaseId phase id
-     * @param themeId theme id
-     * @param aoId application option id
-     * @param preview is for preview (optional)
-     * @param ed education degree of the application option (optional)
-     * @param preferenceRowId PreferenceRow element that fired this request (optional)
-     * @param sora is sora question required (optional)
+     * @param formIdStr           form that is used
+     * @param phaseId             phase id
+     * @param themeId             theme id
+     * @param aoId                application option id
+     * @param preview             is for preview (optional)
+     * @param ed                  education degree of the application option (optional)
+     * @param preferenceRowId     PreferenceRow element that fired this request (optional)
+     * @param sora                is sora question required (optional)
      * @return list of questions
      */
     @GET
@@ -367,7 +366,7 @@ public class FormController {
                                            @QueryParam("ed") final Integer ed,
                                            @QueryParam("preferenceRowId") final String preferenceRowId,
                                            @QueryParam("sora") final Boolean sora
-                                           ) {
+    ) {
         LOGGER.debug("getAdditionalQuestions {}, {}, {}, {}, {}, {}", new Object[]{applicationSystemId,
                 formIdStr, phaseId, themeId, aoId, preview});
         String viewName = preview ? "/additionalQuestionsPreview" : "/additionalQuestions";
@@ -400,7 +399,7 @@ public class FormController {
                                              @PathParam("phaseId") final String phaseId,
                                              @PathParam("themeId") final String themeId,
                                              @PathParam("preferenceRowId") final String preferenceRowId
-                                             ) {
+    ) {
 
         FormId formId = new FormId(asId, formIdStr);
 
