@@ -19,19 +19,18 @@
   --%>
 
 <div id="${element.id}">
-    <c:set var="key" value="${element.relatedElementId}"/>
     <script type="text/javascript">
         (function () {
-
-            $("[name=\"${key}\"]").change(function (event) {
+            $("${ fn:toNameSelectorString(element.relatedElementId)}").change(function (event) {
                 var childIds = [<c:forEach var="child" items="${element.children}" varStatus="status">"${child.id}"${not status.last ? ', ' : ''}</c:forEach>];
                 var ruleChilds = $("#${element.id} .rule-childs");
-                if ($(this).is(':checkbox') && $(this).is(':checked')) {
+                var $this = $(this);
+                if ($this.is(':checkbox') && $this.is(':checked')) {
                     if ($.trim(ruleChilds.html()) === "") {
                         ruleData.getRuleChild(childIds, 0, ruleChilds);
                     }
                 }
-                else if (!$(this).is(':checkbox') && $(this).val().search("${element.expression}") !== -1
+                else if (!$this.is(':checkbox') && $this.val().search("${element.expression}") !== -1
                         && $.trim(ruleChilds.html()) === "") {
                     ruleData.getRuleChild(childIds, 0, ruleChilds);
                 } else {
@@ -46,9 +45,6 @@
                                 ruleChilds.append(data);
                                 if (childIds.length - 1 > index) {
                                     ruleData.getRuleChild(childIds, ++index, ruleChilds);
-                                } else {
-                                    //replaceCheckboxes();
-                                    //replaceRadios();
                                 }
                             });
                 }
@@ -56,11 +52,6 @@
         })();
     </script>
     <div class="rule-childs clear">
-        <c:if test="${fn:evaluate(categoryData[key], element.expression) || element.showImmediately}">
-            <haku:viewChilds element="${element}"/>
-        </c:if>
+        <haku:viewChilds element="${element}"/>
     </div>
-    <noscript>
-        <input type="submit" id="enabling-submit" name="enabling-submit" value="Ok"/>
-    </noscript>
 </div>

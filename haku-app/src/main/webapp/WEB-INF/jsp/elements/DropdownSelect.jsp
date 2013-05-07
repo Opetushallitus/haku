@@ -26,7 +26,7 @@
     <div class="${styleBaseClass}-content">
         <select ${element.attributeString}>
             <c:set var="tmp_selected_value" value="${categoryData[element.id]}"/>
-            <c:if test="${tmp_selected_value eq null && (not (requestScope[element.defaultValueAttribute] eq null))}">
+            <c:if test="${tmp_selected_value eq null && element.defaultValueAttribute != null && (not (requestScope[element.defaultValueAttribute] eq null))}">
                 <c:set var="tmp_selected_value" value="${fn:toUpperCase(requestScope[element.defaultValueAttribute])}"/>
             </c:if>
             <c:if test="${tmp_selected_value eq null}">

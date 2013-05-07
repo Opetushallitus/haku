@@ -16,16 +16,13 @@
 
 package fi.vm.sade.oppija.lomake.domain.rules;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-/**
- * @author jukka
- * @version 10/3/123:34 PM}
- * @since 1.1
- */
 public class RegexRuleTest {
 
     public static final String PATTERN_MALE = "\\d{6}\\S\\d{2}[13579]\\w";
@@ -43,5 +40,21 @@ public class RegexRuleTest {
     @Test
     public void testNullValue() throws Exception {
         assertFalse(RegexRule.evaluate(null, "\\d{6}\\S\\d{2}[13579]\\w"));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testNullPattern() throws Exception {
+        assertFalse(RegexRule.evaluate(new String(""), null));
+    }
+
+    @Test
+    public void testNullValueAndPattern() throws Exception {
+        assertFalse(RegexRule.evaluate(null, null));
+    }
+
+    @Test
+    public void testJoiner() throws Exception {
+        String s = RegexRule.toNameSelectorString(ImmutableList.of("1", "2"));
+        assertEquals("[name='1'],[name='2']", s);
     }
 }

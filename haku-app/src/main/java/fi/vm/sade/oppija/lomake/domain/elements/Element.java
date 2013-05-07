@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
+import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionNotRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
@@ -67,6 +68,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
                 @JsonSubTypes.Type(value = TextQuestion.class),
                 @JsonSubTypes.Type(value = Phase.class),
                 @JsonSubTypes.Type(value = RelatedQuestionRule.class),
+                @JsonSubTypes.Type(value = RelatedQuestionNotRule.class),
                 @JsonSubTypes.Type(value = AddElementRule.class),
                 @JsonSubTypes.Type(value = GradeGrid.class),
                 @JsonSubTypes.Type(value = SubjectRow.class),
@@ -138,6 +140,7 @@ public abstract class Element implements Serializable {
     public void setHelp(final I18nText help) {
         this.help = help;
     }
+
     public Element addChild(Element... children) {
         for (Element child : children) {
             this.children.add(child);

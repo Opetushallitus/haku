@@ -113,7 +113,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
     public void testEducationPreferenceNoAdditionalQuestion() throws InterruptedException {
         final String url = "lomake/" + Yhteishaku2013.ASID + "/lomake/hakutoiveet";
         final WebDriver driver = seleniumHelper.getDriver();
-        driver.get(getBaseUrl()  + url);
+        driver.get(getBaseUrl() + url);
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Eso");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();

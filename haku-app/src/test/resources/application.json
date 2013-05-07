@@ -34,6 +34,7 @@
             "osallistunut": "false",
             "suorittanut2": "true",
             "suorittanut1": "true",
+            "perusopetuksen_kieli": "FI",
             "phaseId": "hakutoiveet"
         },
         "hakutoiveet": {
@@ -41,7 +42,7 @@
             "preference2-Opetuspiste": "",
             "preference4-Opetuspiste-id": "",
             "preference1-Opetuspiste": "FAKTIA, Espoo op",
-            "preference1-Harkinnanvarainen" : "false",
+            "preference1-Harkinnanvarainen": "false",
             "preference3-Koulutus-educationDegree": "",
             "preference5-Opetuspiste-id": "",
             "preference5-Opetuspiste": "",
@@ -62,9 +63,9 @@
             "preference4-Koulutus-educationDegree": "",
             "1_2_246_562_14_79893512065 _additional_question_2": "q2_option_1",
             "1_2_246_562_14_79893512065 _additional_question_1": "q1_option_1",
-            "phaseId": "arvosanat"
+            "phaseId": "osaaminen"
         },
-        "arvosanat": {
+        "osaaminen": {
             "phaseId": "lisatiedot",
             "AI": "FI",
             "common-AI": "9",
@@ -116,7 +117,8 @@
             "second-optional-common-KS": "0",
             "common-LI": "8",
             "optional-common-LI": "0",
-            "second-optional-common-LI": "0"
+            "second-optional-common-LI": "0",
+            "perusopetuksenKieli": "FI"
         },
         "lisatiedot": {
             "asiointikieli": "suomi",

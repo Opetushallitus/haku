@@ -17,12 +17,13 @@
 package fi.vm.sade.oppija.lomake.domain.rules;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * @author jteuho
  */
-public class AddElementRule extends Rule {
+public class AddElementRule extends Element {
 
     private static final long serialVersionUID = -911312576973189581L;
     private final String relatedElementId;

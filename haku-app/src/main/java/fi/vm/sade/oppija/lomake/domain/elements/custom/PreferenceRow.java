@@ -137,10 +137,10 @@ public class PreferenceRow extends Question {
 
     @Override
     public List<Validator> getValidators() {
-        List<Validator> validatroList = new ArrayList<Validator>();
+        List<Validator> validatorList = new ArrayList<Validator>();
         PreferenceRowValidator validator = new PreferenceRowValidator(this.educationDegreeId,
                 this.discretionaryEducationDegree.toString(), this.discretionaryQuestion.getId());
-        validatroList.add(validator);
-        return validatroList;
+        validatorList.add(validator);
+        return validatorList;
     }
 }

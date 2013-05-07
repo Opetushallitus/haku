@@ -42,7 +42,7 @@ public class HakuClient {
 
     }
 
-    private void getPhase(final ClientResponse previousPhaseResponse) {
+    private void getPhase(final ClientResponse previousPhaseResponse) throws IOException {
         WebResource webResource = client.resource(previousPhaseResponse.getLocation());
         WebResource.Builder builder = webResource.getRequestBuilder();
         for (NewCookie cookie : cookies) {
@@ -53,7 +53,8 @@ public class HakuClient {
             response.close();
             return;
         } else {
-            throw new RuntimeException("get uri failed " + previousPhaseResponse.getLocation());
+            System.out.println(IOUtils.toString(response.getEntityInputStream(), "UTF-8"));
+            throw new RuntimeException("get uri failed (" + response.getStatus() + ") " + previousPhaseResponse.getLocation());
         }
     }
 
@@ -93,7 +94,6 @@ public class HakuClient {
             cookies = response.getCookies();
             return response;
         } else {
-        	System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
             throw new RuntimeException(IOUtils.toString(response.getEntityInputStream(), "UTF-8"));
         }
     }
