@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.lomake.service;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,11 +31,10 @@ public interface AdditionalQuestionService {
     /**
      * Lists additional questions in a theme based on a list of education targets.
      *
-     * @param formId    form id
-     * @param phaseId   phase id
-     * @param themeId   theme id
-     * @param aoId      application option id
-
+     * @param formId  form id
+     * @param phaseId phase id
+     * @param themeId theme id
+     * @param aoId    application option id
      * @return list of questions
      */
     Set<Question> findAdditionalQuestions(FormId formId, String phaseId, String themeId, String aoId,
