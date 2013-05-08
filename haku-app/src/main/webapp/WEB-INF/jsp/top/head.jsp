@@ -19,7 +19,7 @@
 <head>
 
     <title>Opetushallitus</title>
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="${contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet"/>
     <link href="${contextPath}/resources/jquery/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
