@@ -61,7 +61,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     }
 
     protected void select() {
-        List<WebElement> elements = driver.findElements(new By.ByXPath("//select"));
+        List<WebElement> elements = driver.findElements(new By.ByXPath("//select[option[@selected and @disabled and @value='']]"));
         for (WebElement element : elements) {
             if (element.isDisplayed()) {
                 Select select = new Select(element);
@@ -88,6 +88,13 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
             if (!driver.findElements(By.name(name)).isEmpty()) {
                 fail("name " + name + " found");
             }
+        }
+    }
+
+    protected void clickElementsByXPath(final String xpath) {
+        List<WebElement> elements = driver.findElements(new By.ByXPath(xpath));
+        for (WebElement element : elements) {
+            element.click();
         }
     }
 }
