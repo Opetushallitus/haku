@@ -1,6 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
-
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -20,13 +19,12 @@
 <%-- set education specific additional questions for this theme --%>
 <c:set var="additionalQuestionList" value="${additionalQuestions[element.id]}" scope="request"/>
 
-<fieldset>
+<fieldset id="${element.id}">
     <legend class="h3"><haku:i18nText value="${element.i18nText}"/></legend>
     <hr/>
     <div class="theme-help">
         <div class="help-text"><haku:i18nText value="${element.help}"/></div>
         <a href="${vaihe.id}/${element.id}/help" target="_blank" class="helplink">?</a>
     </div>
-
     <haku:viewChilds element="${element}"/>
 </fieldset>

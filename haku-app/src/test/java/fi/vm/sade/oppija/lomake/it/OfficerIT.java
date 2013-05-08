@@ -13,6 +13,9 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class OfficerIT extends AbstractSeleniumBase {
 
     private WebDriver driver;
@@ -57,28 +60,28 @@ public class OfficerIT extends AbstractSeleniumBase {
 
     @Test
     public void testSearchByName() throws Exception {
-        SearchByTerm("Urho");
+        assertFalse("Application not found", SearchByTerm("topi").isEmpty());
     }
 
     @Test
     public void testSearchByNameNotFound() throws Exception {
-        SearchByTerm("Urhoasdf");
+        assertTrue("Application found", SearchByTerm("Notfound").isEmpty());
     }
 
     @Test
     public void testSearchByLastname() throws Exception {
-        SearchByTerm("Kekkonen");
+        assertFalse("Application not found", SearchByTerm("Korhonen").isEmpty());
     }
 
     @Test
     public void testSearchBySsn() throws Exception {
-        SearchByTerm("270802-184A");
+        assertFalse("Application not found", SearchByTerm("270802-184A").isEmpty());
     }
 
-    private void SearchByTerm(final String term) {
+    private List<WebElement> SearchByTerm(final String term) {
         enterSearchTerm(term);
         clickSearch();
-        findApplicationLinks();
+        return findApplicationLinks();
     }
 
     private void enterSearchTerm(final String term) {

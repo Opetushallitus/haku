@@ -30,11 +30,11 @@ import java.util.*;
 
 public final class ElementUtil {
 
+    private static Logger log = Logger.getLogger(ElementUtil.class);
     public static final String DISABLED = "disabled";
     public static final String REQUIRED = "required";
     public static final String HIDDEN = "hidden";
-    private static Logger log = Logger.getLogger(ElementUtil.class);
-    private static String[] LANGS = {"fi", "sv", "en"};
+    private static final String[] LANGS = {"fi", "sv", "en"};
 
     private ElementUtil() {
     }
@@ -80,9 +80,11 @@ public final class ElementUtil {
         return new I18nText(key + Long.toString(System.currentTimeMillis()), translations);
     }
 
-    public static PreferenceRow createI18NPreferenceRow(final String id, final String title, final Integer discretionaryEducationDegree) {
+    public static PreferenceRow createI18NPreferenceRow(final String id, final String title,
+                                                        final Integer discretionaryEducationDegree) {
 
-        DropdownSelect discretionaryFollowUp = new DropdownSelect(id + " - harkinnanvarainen_jatko", createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"), null);
+        DropdownSelect discretionaryFollowUp = new DropdownSelect(id + " - harkinnanvarainen_jatko",
+                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"), null);
         discretionaryFollowUp.addOption("harkinnanvarainena_jatko_option_1",
                 createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.oppimisvaikeudet"), "oppimisvaikudet");
         discretionaryFollowUp.addOption("harkinnanvarainena_jatko_option_2",
@@ -119,7 +121,8 @@ public final class ElementUtil {
         return elements;
     }
 
-    private static <E extends Element> void findElementByType(final Element element, final List<E> elements, Class<E> eClass) {
+    private static <E extends Element> void findElementByType(
+            final Element element, final List<E> elements, Class<E> eClass) {
         if (element.getClass().isAssignableFrom(eClass)) {
             elements.add((E) element);
         }
@@ -128,7 +131,8 @@ public final class ElementUtil {
         }
     }
 
-    private static <E extends Element> void findElementByType(final Element element, final Map<String, E> elements, Class<E> eClass) {
+    private static <E extends Element> void findElementByType(
+            final Element element, final Map<String, E> elements, Class<E> eClass) {
         if (element.getClass().isAssignableFrom(eClass)) {
             elements.put(element.getId(), (E) element);
         }
@@ -137,11 +141,11 @@ public final class ElementUtil {
         }
     }
 
-    public static void setDisabled(Element element) {
+    public static void setDisabled(final Element element) {
         element.addAttribute(DISABLED, DISABLED);
     }
 
-    public static void setRequired(Element element) {
+    public static void setRequired(final Element element) {
         element.addAttribute(REQUIRED, REQUIRED);
     }
 

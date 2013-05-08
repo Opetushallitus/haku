@@ -16,26 +16,39 @@
 
 package fi.vm.sade.oppija.lomake.domain.rules;
 
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class RelatedQuestionRule extends Rule {
+public class RelatedQuestionRule extends Element {
 
     private static final long serialVersionUID = -6030200061901263949L;
     private final String expression;
-    private final String relatedElementId;
+    private final List<String> relatedElementId;
     private final boolean showImmediately;
 
+    public RelatedQuestionRule(@JsonProperty(value = "id") String id,
+                               @JsonProperty(value = "relatedElementId") List<String> relatedElementId,
+                               @JsonProperty(value = "expression") String expression,
+                               @JsonProperty(value = "showImmediately") boolean showImmediately) {
+        super(id);
+        this.relatedElementId = ImmutableList.copyOf(relatedElementId);
+        this.expression = expression;
+        this.showImmediately = showImmediately;
+    }
+
+    @JsonIgnore
     public RelatedQuestionRule(@JsonProperty(value = "id") String id,
                                @JsonProperty(value = "relatedElementId") String relatedElementId,
                                @JsonProperty(value = "expression") String expression,
                                @JsonProperty(value = "showImmediately") boolean showImmediately) {
         super(id);
-        this.relatedElementId = relatedElementId;
+        this.relatedElementId = ImmutableList.of(relatedElementId);
         this.expression = expression;
         this.showImmediately = showImmediately;
     }
@@ -44,9 +57,10 @@ public class RelatedQuestionRule extends Rule {
         return expression;
     }
 
-    public String getRelatedElementId() {
+    public List<String> getRelatedElementId() {
         return relatedElementId;
     }
+
 
     public boolean getShowImmediately() {
         return showImmediately;
@@ -54,9 +68,11 @@ public class RelatedQuestionRule extends Rule {
 
     @Override
     public List<Element> getChildren(final Map<String, String> values) {
-        final String value = values.get(relatedElementId);
-        if (RegexRule.evaluate(value, expression)) {
-            return this.getChildren();
+        for (String relatedElementId_ : relatedElementId) {
+            final String value = values.get(relatedElementId_);
+            if ((value == null && showImmediately) || RegexRule.evaluate(value, expression)) {
+                return this.children;
+            }
         }
         return Collections.emptyList();
     }

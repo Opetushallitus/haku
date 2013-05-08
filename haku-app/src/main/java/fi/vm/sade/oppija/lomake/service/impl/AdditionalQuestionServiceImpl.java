@@ -23,9 +23,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
@@ -33,7 +31,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -65,7 +65,7 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
 
         if (preferenceRowId != null && !preferenceRowId.isEmpty()) {
             PreferenceTable table = ElementUtil.findElementsByTypeAsList(theme, PreferenceTable.class).get(0);
-            PreferenceRow row = (PreferenceRow)table.getChildById(preferenceRowId);
+            PreferenceRow row = (PreferenceRow) table.getChildById(preferenceRowId);
             if (row != null && educationDegree.equals(table.getDiscretionaryEducationDegree())) {
                 additionalQuestions.add(row.getDiscretionaryQuestion());
             }
@@ -87,7 +87,7 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
             return null;
         }
 
-        PreferenceRow row = (PreferenceRow)theme.getChildById(preferendeRowId);
+        PreferenceRow row = (PreferenceRow) theme.getChildById(preferendeRowId);
 
         return row.getDiscretionaryQuestion().getFollowUp();
     }
