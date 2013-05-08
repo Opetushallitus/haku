@@ -38,7 +38,6 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected void setValue(final String id, final String value) {
         WebElement element = driver.findElement(new By.ById(id));
-        System.out.println(id + "=" + element.getTagName());
         if ("select".equals(element.getTagName())) {
             Select followUpSelect = new Select(element);
             followUpSelect.selectByValue(value);
