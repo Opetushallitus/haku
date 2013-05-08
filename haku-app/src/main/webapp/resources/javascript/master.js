@@ -830,9 +830,6 @@ $(document).ready(function(){
                     overlayPopup.popupAction(params, url);
                 }
             });
-            
-            
-
         }
     }
 
