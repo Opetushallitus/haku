@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -18,6 +19,7 @@
   ~ European Union Public Licence for more details.
   --%>
 
+<fmt:setBundle basename="form_messages" scope="session"/>
 <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
 <table id="${element.id}" class="preference-sort">
     <tbody>
@@ -55,6 +57,37 @@
     </c:forEach>
     </tbody>
 </table>
+
+<!-- terveydentilavaatimukset -->
+<div class="popover-wrapper" id="terveydentilavaatimukset-popup">
+    <span class="popover-close">
+        <fmt:message key="form.popup.sulje" />
+    </span>
+    <div class="popover">
+        <span class="popover-close">
+            <fmt:message key="form.popup.sulje" />
+        </span>
+        <div class="popover-header">
+            <h3>
+                <fmt:message key="form.hakutoiveet.terveydentilavaatimukset.otsikko"/>
+            </h3>
+        </div>
+        <div class="popover-content">
+            <fmt:message key="form.hakutoiveet.terveydentilavaatimukset.sisalto"/>
+            <button type="button" class="primary popover-close">
+                <span>
+                    <span>
+                        <fmt:message key="form.popup.sulje" />
+                    </span>
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
+<!--
+<a href="#" data-po-show="terveydentilavaatimukset-popup">open</a>
+-->
+
 <script type="text/javascript">
     var sortabletable_settings = {
         contextPath: "${pageContext.request.contextPath}",

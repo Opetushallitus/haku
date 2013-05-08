@@ -70,7 +70,7 @@
                         <span class="popover-close">&#8203;</span>
 
                         <div class="popover-header">
-                            <fmt:message key="lomake.send.confirm.title"/>
+                            <h3><fmt:message key="lomake.send.confirm.title"/></h3>
                         </div>
                         <div class="popover-content">
                             <form method="post">
