@@ -63,7 +63,7 @@
 
 		<scp todir="tomcat@${tomcat-host}:${tomcat.home}/webapps/"
                keyfile="${ssh.keyfile}" passphrase="${ssh.keypass}" >
-			 <fileset dir="{war.dir}">
+			 <fileset dir="${war.dir}">
 				<include name="haku-app*.war"/>
 			</fileset>
 		</scp>
