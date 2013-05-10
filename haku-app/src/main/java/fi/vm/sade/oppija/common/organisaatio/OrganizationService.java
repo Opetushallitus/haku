@@ -15,7 +15,6 @@
  */
 package fi.vm.sade.oppija.common.organisaatio;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface OrganizationService {

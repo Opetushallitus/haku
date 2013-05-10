@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.hakemus.service;
 
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
@@ -147,9 +146,10 @@ public interface ApplicationService {
 
     /**
      * Puts a additional information key value pair to the application
+     *
      * @param applicationOid application oid
-     * @param key key of the additional information
-     * @param value value of the key
+     * @param key            key of the additional information
+     * @param value          value of the key
      * @throws ResourceNotFoundException
      */
     void putApplicationAdditionalInfoKeyValue(final String applicationOid, final String key, final String value) throws ResourceNotFoundException;
