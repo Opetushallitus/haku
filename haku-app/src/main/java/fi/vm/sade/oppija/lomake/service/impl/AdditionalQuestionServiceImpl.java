@@ -16,6 +16,16 @@
 
 package fi.vm.sade.oppija.lomake.service.impl;
 
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
@@ -27,19 +37,14 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
  */
 @Service("additionalQuestionService")
 public class AdditionalQuestionServiceImpl implements AdditionalQuestionService {
+    
+    public static final Logger LOGGER = LoggerFactory.getLogger(AdditionalQuestionServiceImpl.class);
 
     FormService formService;
     ApplicationService applicationService;
@@ -59,6 +64,8 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
 
         Set<Question> additionalQuestions = new LinkedHashSet<Question>();
 
+        //LOGGER.debug("ADDIOTANL QUESTIONS {}, {}", new Object[]{theme, theme.getAdditionalQuestions()});
+        
         if (theme == null || theme.getAdditionalQuestions() == null) {
             return additionalQuestions;
         }
@@ -68,6 +75,10 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
             PreferenceRow row = (PreferenceRow) table.getChildById(preferenceRowId);
             if (row != null && educationDegree.equals(table.getDiscretionaryEducationDegree())) {
                 additionalQuestions.add(row.getDiscretionaryQuestion());
+            }
+            
+            if (sora) {
+                additionalQuestions.addAll(row.getSoraQuestion().getQuestions());
             }
         }
 

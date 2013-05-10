@@ -693,22 +693,6 @@ public class Yhteishaku2013 {
         hakutoiveetRyhma
                 .setHelp(createI18NForm("form.hakutoiveet.help"));
 
-        Radio radio = new Radio(
-                "_sora_question_1",
-                createI18NForm("form.sora.terveys"));
-        radio.addOption("_sora_q1_option_1", createI18NForm("form.yleinen.ei"), "q1_option_1");
-        radio.addOption("_sora_q1_option_2", createI18NForm("form.sora.kylla"),
-                "q1_option_2");
-        Radio radio2 = new Radio(
-                "_sora_additional_question_2",
-                createI18NForm("form.sora.oikeudenMenetys"));
-        radio2.addOption("_sora_q2_option_1", createI18NForm("form.yleinen.ei"), "q2_option_1");
-        radio2.addOption("_sora_q2_option_2",
-                createI18NForm("form.sora.kylla"), "q2_option_2");
-        List<Radio> soraQuestions = Lists.newArrayList();
-        soraQuestions.add(radio);
-        soraQuestions.add(radio2);
-
         PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NForm("form.hakutoiveet.otsikko"), "Ylös",
                 "Alas", 32);
         PreferenceRow pr1 = ElementUtil.createI18NPreferenceRow("preference1", "1", 32);

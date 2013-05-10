@@ -87,5 +87,11 @@
             <c:set var="element" value="${sortableItem.discretionaryQuestion}" scope="request"/>
             <jsp:include page="./${element.type}.jsp"/>
         </c:if>
+        <c:if test="${sortableItem.soraQuestion.soraRequired}">
+            <c:forEach var="question" items="${sortableItem.soraQuestion.questions}">
+                <c:set var="element" value="${question}" scope="request"/>
+                <jsp:include page="./${element.type}.jsp"/>
+            </c:forEach>
+        </c:if>
     </div>
 </div>

@@ -16,13 +16,15 @@
 
 package fi.vm.sade.oppija.lomake.validation.validators;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.SoraQuestion;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomake.validation.Validator;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -32,12 +34,14 @@ public class PreferenceRowValidator implements Validator {
     private String educationDegreeInputId;
     private String discretionaryEducationDegree;
     private String discretionaryInputId;
+    private SoraQuestion soraQuestion;
 
     public PreferenceRowValidator(String educationDegreeInputId, String discretionaryEducationDegree,
-                                  String discretionaryInputId) {
+                                  String discretionaryInputId, SoraQuestion soraQuestion) {
         this.educationDegreeInputId = educationDegreeInputId;
         this.discretionaryEducationDegree = discretionaryEducationDegree;
         this.discretionaryInputId = discretionaryInputId;
+        this.soraQuestion = soraQuestion;
     }
 
     @Override
@@ -48,6 +52,15 @@ public class PreferenceRowValidator implements Validator {
                 && values.get(discretionaryInputId) == null) {
             errors.put(discretionaryInputId, ElementUtil.createI18NTextError("yleinen.pakollinen"));
         }
+        
+        if (soraQuestion.isSoraRequired()) {
+            for (Radio q : this.soraQuestion.getQuestions()) {
+                if (values.get(q.getId()) == null) {
+                    errors.put(q.getId(), ElementUtil.createI18NTextError("yleinen.pakollinen"));
+                }
+            }
+        }
+        
         return new ValidationResult(errors);
     }
 

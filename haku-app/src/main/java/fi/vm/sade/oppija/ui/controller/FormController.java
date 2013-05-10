@@ -367,8 +367,8 @@ public class FormController {
                                            @QueryParam("preferenceRowId") final String preferenceRowId,
                                            @QueryParam("sora") final Boolean sora
     ) {
-        LOGGER.debug("getAdditionalQuestions {}, {}, {}, {}, {}, {}", new Object[]{applicationSystemId,
-                formIdStr, phaseId, themeId, aoId, preview});
+        LOGGER.debug("getAdditionalQuestions {}, {}, {}, {}, {}, {}, {}, {}, {}", new Object[]{applicationSystemId,
+                formIdStr, phaseId, themeId, aoId, preview, ed, preferenceRowId, sora});
         String viewName = preview ? "/additionalQuestionsPreview" : "/additionalQuestions";
 
         final FormId formId = new FormId(applicationSystemId, formIdStr);
