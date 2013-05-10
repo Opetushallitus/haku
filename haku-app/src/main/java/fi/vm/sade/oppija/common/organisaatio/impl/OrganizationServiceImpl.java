@@ -42,7 +42,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public List<Organization> search(final SearchCriteria criteria) throws IOException {
+    public List<Organization> search(final SearchCriteria criteria) {
 
         final OrganisaatioSearchCriteriaDTO criteriaDTO = new OrganisaatioSearchCriteriaDTO();
         criteriaDTO.setMaxResults(MAX_RESULTS);

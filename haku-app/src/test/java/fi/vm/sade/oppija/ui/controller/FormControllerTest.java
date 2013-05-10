@@ -61,7 +61,6 @@ public class FormControllerTest {
     public static final Phase PHASE = new Phase(FIRST_CATEGORY_ID, createI18NAsIs(PHASE_TITLE), false);
     public static final Form FORM = new Form("id", createI18NAsIs("title"));
     private FormController formController;
-    public static final UserHolder USER_HOLDER = new UserHolder();
     private ApplicationService applicationService;
     private FormService formService;
     private AdditionalQuestionService additionalQuestionService;
@@ -74,12 +73,14 @@ public class FormControllerTest {
         this.applicationService = mock(ApplicationService.class);
         this.formService = mock(FormService.class);
         this.additionalQuestionService = mock(AdditionalQuestionService.class);
-        this.formController = new FormController(formService, applicationService, USER_HOLDER, additionalQuestionService, "");
+        UserHolder userHolder = mock(UserHolder.class);
+        this.formController = new FormController(formService, applicationService, userHolder, additionalQuestionService, "");
         this.application = new Application();
         FORM.addChild(PHASE);
         when(applicationService.getApplication(Matchers.<FormId>any())).thenReturn(this.application);
         when(formService.getFirstPhase(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(PHASE);
         when(formService.getActiveForm(APPLICATION_PERIOD_ID, FORM_ID)).thenReturn(FORM);
+        when(userHolder.getApplication(Matchers.<FormId>any())).thenReturn(this.application);
         applicationState = new ApplicationState(application, FIRST_CATEGORY_ID);
         application.setPhaseId(FIRST_CATEGORY_ID);
         when(applicationService.saveApplicationPhase(Matchers.<ApplicationPhase>any(), eq(false))).thenReturn(applicationState);
@@ -107,11 +108,6 @@ public class FormControllerTest {
         assertEquals(expected, resolveRedirectPath(response));
     }
 
-    @Test(expected = ResourceNotFoundExceptionRuntime.class)
-    public void testGetFormAndRedirectToFirstCategoryNotFound() throws Exception {
-        when(applicationService.getApplication(Matchers.<FormId>any())).thenThrow(new ResourceNotFoundExceptionRuntime(""));
-        formController.getApplication(APPLICATION_PERIOD_ID, "väärä");
-    }
 
     @Test(expected = NullPointerException.class)
     public void testGetFormAndRedirectToFirstCategoryNullFromId() throws Exception {

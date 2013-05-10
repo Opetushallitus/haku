@@ -71,7 +71,7 @@ public class ElementUtilTest {
         theme.addChild(ta);
         theme.addChild(tq2);
         form.addChild(phase);
-        Map<String, TextQuestion> result = ElementUtil.<TextQuestion>findElementsByType(form, TextQuestion.class);
+        Map<String, TextQuestion> result = ElementUtil.findElementsByType(form, TextQuestion.class);
         assertNotNull(result);
         assertEquals(2, result.size());
     }

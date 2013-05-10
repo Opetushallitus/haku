@@ -99,8 +99,7 @@ public abstract class Element implements Serializable {
 
     protected final List<Element> children = new ArrayList<Element>();
 
-
-    protected Map<String, Attribute> attributes = new HashMap<String, Attribute>();
+    protected final Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 
 
     protected Element(@JsonProperty String id) {

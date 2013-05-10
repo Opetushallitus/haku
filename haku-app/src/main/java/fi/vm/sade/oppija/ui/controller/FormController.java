@@ -116,7 +116,7 @@ public class FormController {
     public Response getApplication(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                    @PathParam(FORM_ID_PATH_PARAM) final String formId) throws URISyntaxException {
         LOGGER.debug("RedirectToLastPhase {}, {}", new Object[]{applicationPeriodId, formId});
-        Application application = applicationService.getApplication(new FormId(applicationPeriodId, formId));
+        Application application = userHolder.getApplication(new FormId(applicationPeriodId, formId));
         if (application.isNew()) {
 
             Element firstPhase = formService.getFirstPhase(applicationPeriodId, formId);
@@ -155,7 +155,7 @@ public class FormController {
                              @PathParam(FORM_ID_PATH_PARAM) final String formId,
                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId) {
 
-        LOGGER.debug("getElement {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId});
+        LOGGER.debug("getElement {}, {}, {}", applicationPeriodId, formId, phaseId);
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         Element element = activeForm.getChildById(phaseId);
         Map<String, Object> model = new HashMap<String, Object>();
@@ -180,7 +180,7 @@ public class FormController {
                                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                               @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                               @PathParam("key") final String key) {
-        LOGGER.debug("getElementRelatedData {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, elementId, key});
+        LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationPeriodId, formId, elementId, key);
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         try {
             @SuppressWarnings("unchecked")
@@ -225,7 +225,7 @@ public class FormController {
                               @PathParam(FORM_ID_PATH_PARAM) final String formId,
                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
-        LOGGER.debug("savePhase {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, multiValues});
+        LOGGER.debug("savePhase {}, {}, {}, {}", applicationPeriodId, formId, phaseId, multiValues);
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         boolean skipValidators = skipValidators(multiValues, activeForm, phaseId);
@@ -329,7 +329,7 @@ public class FormController {
                                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                              @PathParam("gradeGridId") final String gradeGridId) {
 
-        LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", new Object[]{applicationPeriodId, formId, gradeGridId});
+        LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", applicationPeriodId, formId, gradeGridId);
         Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
         Element element = activeForm.getChildById(gradeGridId);
         GradeGrid gradeGrid = (GradeGrid) element;
@@ -367,8 +367,8 @@ public class FormController {
                                            @QueryParam("preferenceRowId") final String preferenceRowId,
                                            @QueryParam("sora") final Boolean sora
     ) {
-        LOGGER.debug("getAdditionalQuestions {}, {}, {}, {}, {}, {}", new Object[]{applicationSystemId,
-                formIdStr, phaseId, themeId, aoId, preview});
+        LOGGER.debug("getAdditionalQuestions {}, {}, {}, {}, {}, {}", applicationSystemId,
+                formIdStr, phaseId, themeId, aoId, preview);
         String viewName = preview ? "/additionalQuestionsPreview" : "/additionalQuestions";
 
         final FormId formId = new FormId(applicationSystemId, formIdStr);

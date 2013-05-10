@@ -38,7 +38,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = -989381286044396123L;
 
     private String userName;
-    
+
     public User(@JsonProperty(value = "userName") String userName) {
         this.userName = userName;
     }
@@ -63,11 +63,7 @@ public class User implements Serializable {
 
         User user = (User) o;
 
-        if (userName != null ? !userName.equals(user.userName) : user.userName != null) {
-            return false;
-        }
-
-        return true;
+        return !(userName != null ? !userName.equals(user.userName) : user.userName != null);
     }
 
     @Override

@@ -60,6 +60,11 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
+    public void save(Application application) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public Application findDraftApplication(Application application) {
         return application;
     }

@@ -32,13 +32,13 @@ public class WorkExperienceTheme extends Theme {
 
     private static final long serialVersionUID = -750846124976213900L;
     // Degree types of the requested application options
-    private String[] aoEducationDegreeKeys = OppijaConstants.getAoEducationDegreeKeys();
+    private final String[] aoEducationDegreeKeys = OppijaConstants.getAoEducationDegreeKeys();
     // degree type that needs to be applied to
     // so that this phase is rendered
     private String requiredEducationDegree;
 
     // Applicant must be born before this day to get asked about work experience.
-    private Date referenceDate;
+    private final Date referenceDate;
 
     public WorkExperienceTheme(@JsonProperty(value = "id") String id, @JsonProperty(value = "i18nText") I18nText i18nText,
                                @JsonProperty(value = "additionalQuestions") Map<String, List<Question>> additionalQuestions,

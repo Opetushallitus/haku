@@ -21,7 +21,6 @@ import fi.vm.sade.oppija.common.authentication.Person;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationStorage;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
@@ -76,7 +75,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final Pattern oidPattern;
     private final Pattern shortOidPattern;
     private final AuthenticationService authenticationService;
-    private final ApplicationStorage applicationStorage;
 
     @Autowired
     ValintaperusteetService valintaperusteetService;
@@ -85,8 +83,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
                                   final UserHolder userHolder, @Qualifier("formServiceImpl") final FormService formService,
                                   @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
-                                  AuthenticationService authenticationService,
-                                  ApplicationStorage applicationStorage) {
+                                  AuthenticationService authenticationService) {
 
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
@@ -97,7 +94,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.oidPattern = Pattern.compile(OID_PATTERN);
         this.shortOidPattern = Pattern.compile(SHORT_OID_PATTERN);
         this.applicationOidService = applicationOidService;
-        this.applicationStorage = applicationStorage;
     }
 
 
@@ -126,7 +122,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         // if the current phase has previous phase, get all the answers for
         // validating rules
         if (!activeForm.isFirstChild(phase)) {
-            Application current = getApplication(applicationState.getHakemus().getFormId());
+            Application current = userHolder.getApplication(applicationState.getHakemus().getFormId());
             allAnswers.putAll(current.getVastauksetMerged());
         }
         allAnswers.putAll(vastaukset);
@@ -144,7 +140,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 checkIfExistsBySocialSecurityNumber(applicationPeriodId,
                         vastaukset.get(SocialSecurityNumber.HENKILOTUNNUS));
             }
-            this.applicationStorage.savePhaseAnswers(applicationPhase);
+            this.userHolder.savePhaseAnswers(applicationPhase);
             this.applicationDAO.tallennaVaihe(applicationState);
         }
         // sets all answers merged, needed for re-rendering view if errors
@@ -160,8 +156,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public String submitApplication(final FormId formId) {
         final User user = userHolder.getUser();
-        Application application1 = new Application(formId, user);
-        Application application = applicationDAO.findDraftApplication(application1);
+        Application application = userHolder.getApplication(formId);
+        //Application application = applicationDAO.findDraftApplication(application1);
         Form form = formService.getForm(formId.getApplicationPeriodId(), formId.getFormId());
         Map<String, String> allAnswers = application.getVastauksetMerged();
         ValidationResult validationResult = ElementTreeValidator.validate(form, allAnswers);
@@ -193,7 +189,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             }
             application.activate();
-            this.applicationDAO.update(application1, application);
+            application.resetUser();
+            this.applicationDAO.save(application);
+            this.userHolder.removeApplication(application.getFormId());
             return application.getOid();
         } else {
             throw new IllegalStateException("Could not send the application ");
@@ -224,12 +222,18 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application getApplication(final FormId formId) {
-        Application application = new Application(formId, userHolder.getUser());
-        List<Application> listOfApplications = applicationDAO.find(application);
-        if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
-            return application;
+        User user = userHolder.getUser();
+        if (user.isKnown()) {
+            Application application = new Application(formId, userHolder.getUser());
+            List<Application> listOfApplications = applicationDAO.find(application);
+            if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
+                return application;
+            }
+            return listOfApplications.get(0);
+        } else {
+            return userHolder.getApplication(formId);
+
         }
-        return listOfApplications.get(0);
     }
 
     @Override
@@ -323,12 +327,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private Application getApplication(final Application application) throws ResourceNotFoundException {
-        return applicationStorage.getApplication(application.getFormId());
-//        List<Application> listOfApplications = applicationDAO.find(application);
-//        if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
-//            throw new ResourceNotFoundException("Could not find application " + application.getOid());
-//        }
-//        return listOfApplications.get(0);
+
+        List<Application> listOfApplications = applicationDAO.find(application);
+        if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
+            throw new ResourceNotFoundException("Could not find application " + application.getOid());
+        }
+        return listOfApplications.get(0);
 
     }
 

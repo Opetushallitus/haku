@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="/WEB-INF/tld/functions.tld" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -16,10 +17,11 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
 <c:set var="show" value="false"/>
-<fmt:parseDate var="dob" pattern="dd.MM.yyyy" value="${categoryData['syntymaaika']}" />
-<c:set var="referenceDate" value="${element.referenceDate}" />
+
+<c:set var="dodStr" value="${fn:dod(categoryData)}"/>
+<fmt:parseDate var="dob" pattern="dd.MM.yyyy" value="${dodStr}"/>
+<c:set var="referenceDate" value="${element.referenceDate}"/>
 <c:forEach var="key" items="${element.aoEducationDegreeKeys}">
     <c:if test="${(categoryData[key] eq element.requiredEducationDegree) && (dob lt referenceDate)}">
         <c:set var="show" value="true"/>
@@ -29,3 +31,6 @@
 <c:if test="${show eq 'true'}">
     <jsp:include page="./Theme.jsp"/>
 </c:if>
+<c:remove var="show"/>
+<c:remove var="dodStr"/>
+<c:remove var="dod"/>

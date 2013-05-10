@@ -95,8 +95,8 @@ public class OfficerController {
                                       @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                       @PathParam(OID_PATH_PARAM) final String oid,
                                       @PathParam("elementId") final String elementId)
-            throws ResourceNotFoundException, IOException {
-        LOGGER.debug("getPreviewElement {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid});
+            throws ResourceNotFoundException {
+        LOGGER.debug("getPreviewElement {}, {}, {}, {}", applicationPeriodId, formId, phaseId, oid);
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplicationElement(oid, phaseId, elementId);
         return new Viewable("/elements/Root", uiServiceResponse.getModel()); // TODO remove hardcoded Phase
     }
@@ -110,7 +110,7 @@ public class OfficerController {
                                @PathParam(OID_PATH_PARAM) final String oid)
             throws ResourceNotFoundException, IOException {
 
-        LOGGER.debug("getPreview {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid});
+        LOGGER.debug("getPreview {}, {}, {}, {}", applicationPeriodId, formId, phaseId, oid);
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, phaseId);
         return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel()); // TODO remove hardcoded Phase
     }
@@ -126,7 +126,7 @@ public class OfficerController {
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException, ResourceNotFoundException {
 
-        LOGGER.debug("updatePhase {}, {}, {}, {}, {}", new Object[]{applicationPeriodId, formId, phaseId, oid, multiValues});
+        LOGGER.debug("updatePhase {}, {}, {}, {}, {}", applicationPeriodId, formId, phaseId, oid, multiValues);
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
 
         UIServiceResponse uiServiceResponse = officerUIService.updateApplication(oid,

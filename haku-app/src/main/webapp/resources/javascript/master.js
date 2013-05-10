@@ -857,14 +857,7 @@ $(document).ready(function(){
             $('[data-tags-require-set="'+id+'"]')
             if($('[data-tags-require-set="'+id+'"]'))
             {
-                if($('.tagset[data-tagset-id="'+id+'"]').find('.tag').length)
-                {
-                    hasTags = true;
-                }
-                else
-                {
-                    hasTags = false
-                }
+                hasTags = $('.tagset[data-tagset-id="' + id + '"]').find('.tag').length;
                 
                 $('[data-tags-require-set="'+id+'"]').each(function(){
                     if(hasTags == true)

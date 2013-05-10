@@ -36,7 +36,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("Sukunimi", "Ankka");
         setValue("Etunimet", "Aku Kalle");
         setValue("Kutsumanimi", "A");
-        setValue("Henkilotunnus", "150520-111E");
+        setValue("Henkilotunnus", "010113-668B");
         setValue("Sähköposti", "aku.ankka@ankkalinna.al");
         setValue("matkapuhelinnumero1", "0501000100");
         setValue("aidinkieli", "FI");
@@ -68,7 +68,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         nextPhase();
 
         screenshot("hak123");
-        testHAK123AandHAK124(driver);
+        testHAK123AandHAK124();
 
         findByIdAndClick("millatutkinnolla_tutkinto1");
 
@@ -79,15 +79,10 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         nextPhase();
         //Skip toimipiste
-        findById("preference1-Opetuspiste");
-        selenium.typeKeys("preference1-Opetuspiste", "Esp");
+        setValue("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
-        driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
-
-        driver.findElements(By.name("preference1-Harkinnanvarainen")).get(1).click();
-
-        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1 - harkinnanvarainen_jatko")));
-        followUpSelect.selectByIndex(1);
+        driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
+        driver.findElement(By.xpath("//input[@name='preference1-Harkinnanvarainen' and @value='false']")).click();
 
         nextPhase();
         select();
@@ -98,9 +93,9 @@ public class LomakeIT extends DummyModelBaseItTest {
         clickAllElementsByXPath("//input[@type='checkbox']");
 
         // Ei mene läpi, työkokemus syöttämättä
-        nextPhase();
-        selenium.typeKeys("tyokokemuskuukaudet", "1001");
 
+        selenium.typeKeys("tyokokemuskuukaudet", "1001");
+        nextPhase();
         // Ei mene läpi, työkokemus > 1000 kuukautta
         nextPhase();
         findById("tyokokemuskuukaudet");
@@ -130,7 +125,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         nextPhase();
     }
 
-    private void testHAK123AandHAK124(final WebDriver driver) {
+    private void testHAK123AandHAK124() {
         findByIdAndClick("millatutkinnolla_tutkinto5");
         findById(Yhteishaku2013.TUTKINTO5_NOTIFICATION_ID);
         findByIdAndClick("millatutkinnolla_tutkinto7");

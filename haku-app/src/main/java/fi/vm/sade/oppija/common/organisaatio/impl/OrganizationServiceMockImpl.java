@@ -55,7 +55,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
             final String nameFi = org.getName().getTranslations().get("fi");
             final String nameEn = org.getName().getTranslations().get("en");
             final String nameSv = org.getName().getTranslations().get("sv");
-            return searchString == null ? true : (nameFi != null && nameFi.contains(searchString))
+            return searchString == null || (nameFi != null && nameFi.contains(searchString))
                     || (nameEn != null && nameEn.contains(searchString))
                     || (nameSv != null && nameSv.contains(searchString));
         }
@@ -105,7 +105,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         }
 
         public boolean apply(Organization org) {
-            return type == null ? true : org.getTypes().contains(type);
+            return type == null || org.getTypes().contains(type);
         }
     }
 
@@ -204,7 +204,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
     }
 
     @Override
-    public List<Organization> search(SearchCriteria criteria) throws IOException {
+    public List<Organization> search(SearchCriteria criteria) {
         @SuppressWarnings("unchecked")
         final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchString()),
                 new OrgTypePredicate(criteria.getOrganizationType()),

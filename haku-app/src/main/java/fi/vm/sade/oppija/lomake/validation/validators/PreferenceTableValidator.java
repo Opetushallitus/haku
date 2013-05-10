@@ -89,10 +89,7 @@ public class PreferenceTableValidator implements Validator {
      * @return true if valid, false otherwise
      */
     private boolean checkBothNullOrTyped(final String learningInstitution, final String education) {
-        if ((learningInstitution == null || learningInstitution.isEmpty()) ^ (education == null || education.isEmpty())) {
-            return false;
-        }
-        return true;
+        return !((learningInstitution == null || learningInstitution.isEmpty()) ^ (education == null || education.isEmpty()));
     }
 
     /**
@@ -125,9 +122,6 @@ public class PreferenceTableValidator implements Validator {
      * @return true if valid, false otherwise
      */
     private boolean checkEmptyRowBeforeGivenPreference(final List<String> values, final String value) {
-        if (value != null && !value.isEmpty() && !values.isEmpty() && (values.get(values.size() - 1) == null || values.get(values.size() - 1).isEmpty())) {
-            return false;
-        }
-        return true;
+        return !(value != null && !value.isEmpty() && !values.isEmpty() && (values.get(values.size() - 1) == null || values.get(values.size() - 1).isEmpty()));
     }
 }

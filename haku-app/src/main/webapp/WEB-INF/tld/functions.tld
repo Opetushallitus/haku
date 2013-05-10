@@ -22,6 +22,12 @@
     <function>
         <name>children</name>
         <function-class>fi.vm.sade.oppija.lomake.domain.rules.RegexRule</function-class>
-        <function-signature> java.util.List getChildren(fi.vm.sade.oppija.lomake.domain.elements.Element,java.util.Map)</function-signature>
+        <function-signature>java.util.List getChildren(fi.vm.sade.oppija.lomake.domain.elements.Element,java.util.Map)
+        </function-signature>
+    </function>
+    <function>
+        <name>dod</name>
+        <function-class>fi.vm.sade.oppija.lomake.domain.rules.RegexRule</function-class>
+        <function-signature>java.lang.String getDateOfBirth(java.util.Map)</function-signature>
     </function>
 </taglib>

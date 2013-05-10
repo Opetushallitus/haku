@@ -26,7 +26,6 @@ public interface OrganizationService {
      *
      * @param criteria
      * @return
-     * @throws java.io.IOException
      */
-    List<Organization> search(SearchCriteria criteria) throws IOException;
+    List<Organization> search(SearchCriteria criteria);
 }

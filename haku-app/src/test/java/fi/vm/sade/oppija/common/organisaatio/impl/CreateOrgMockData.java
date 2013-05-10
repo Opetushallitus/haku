@@ -37,7 +37,7 @@ import fi.vm.sade.organisaatio.api.model.types.OrganisaatioSearchCriteriaDTO;
  */
 public class CreateOrgMockData {
 
-    public static void main(String[] args) throws JsonGenerationException, JsonMappingException, IOException {
+    public static void main(String[] args) throws IOException {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring/application-context.xml");
         OrganisaatioService service = (OrganisaatioService) context.getBean("organisaatioService");
 
