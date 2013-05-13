@@ -69,7 +69,7 @@ public class Yhteishaku2013 {
     public static String mobilePhonePattern =
             "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
     public static String phonePattern =
-            "^$|^[0-9\\-\\s]+$";
+            "^$|^\\+?[0-9\\-\\s]+$";
 
     private static final String NOT_FI = "^((?!FI)[A-Z]{2})$";
     private static final String NOT_SV = "^((?!SV)[A-Z]{2})$";
