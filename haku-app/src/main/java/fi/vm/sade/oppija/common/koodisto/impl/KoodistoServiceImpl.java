@@ -32,6 +32,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -80,10 +83,17 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getGradeRanges() {
+        ArrayList<KoodiType> grades = new ArrayList<KoodiType>(getKoodiTypes(CODE_GRADE_RANGE));
+        Collections.sort(grades, new Comparator<KoodiType>() {
+            @Override
+            public int compare(KoodiType o1, KoodiType o2) {
+                return o1.getKoodiArvo().compareTo(o2.getKoodiArvo());
+            }
+        });
         return ImmutableList.copyOf(
                 Lists.reverse(
                         Lists.transform(
-                                getKoodiTypes(CODE_GRADE_RANGE),
+                                grades,
                                 new KoodiTypeToOptionFunction())));
     }
 
