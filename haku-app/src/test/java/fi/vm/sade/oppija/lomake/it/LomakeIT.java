@@ -22,8 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -70,7 +68,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         screenshot("hak123");
         testHAK123AandHAK124();
 
-        findByIdAndClick("millatutkinnolla_tutkinto1");
+        findByIdAndClick("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_PERUSKOULU);
 
         findById("paattotodistusvuosi_peruskoulu");
         selenium.typeKeys("paattotodistusvuosi_peruskoulu", "2013");
@@ -126,9 +124,9 @@ public class LomakeIT extends DummyModelBaseItTest {
     }
 
     private void testHAK123AandHAK124() {
-        findByIdAndClick("millatutkinnolla_tutkinto5");
-        findById(Yhteishaku2013.TUTKINTO5_NOTIFICATION_ID);
-        findByIdAndClick("millatutkinnolla_tutkinto7");
-        findById(Yhteishaku2013.TUTKINTO7_NOTIFICATION_ID);
+        findByIdAndClick("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_KESKEYTYNYT);
+        findById(Yhteishaku2013.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
+        findByIdAndClick("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_ULKOMAINEN_TUTKINTO);
+        findById(Yhteishaku2013.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
     }
 }
