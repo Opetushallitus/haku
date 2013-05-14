@@ -75,9 +75,9 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         hakutoiveet.addChild(hakutoiveetRyhmä);
         hakutoiveetRyhmä.setHelp(createI18NAsIs("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem."));
         PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NAsIs("Hakutoiveet"), "Ylös", "Alas", 32);
-        PreferenceRow pr1 = ElementUtil.createI18NPreferenceRow("preference1", "Hakutoive 1", 32);
-        PreferenceRow pr2 = ElementUtil.createI18NPreferenceRow("preference2", "Hakutoive 2", 32);
-        PreferenceRow pr3 = ElementUtil.createI18NPreferenceRow("preference3", "Hakutoive 3", 32);
+        PreferenceRow pr1 = Yhteishaku2013.createI18NPreferenceRow("preference1", "Hakutoive 1");
+        PreferenceRow pr2 = Yhteishaku2013.createI18NPreferenceRow("preference2", "Hakutoive 2");
+        PreferenceRow pr3 = Yhteishaku2013.createI18NPreferenceRow("preference3", "Hakutoive 3");
         preferenceTable.addChild(pr1);
         preferenceTable.addChild(pr2);
         preferenceTable.addChild(pr3);
@@ -103,7 +103,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
         s.isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
-        driver.findElements(By.name("preference1-Harkinnanvarainen")).get(1).click();
+        findByIdAndClick("preference1-discretionary_false");
         driver.findElement(By.xpath("//button[@class='right']")).click();
         //seleniumHelper.navigate("/lomake/Yhteishaku/lomake/lisakysymykset");
         driver.findElement(By.id("lisakysymys"));

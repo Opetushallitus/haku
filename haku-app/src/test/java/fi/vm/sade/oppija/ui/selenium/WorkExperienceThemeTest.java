@@ -35,7 +35,7 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
     public void testWorkExperienceShown() {
         gotoHakutoiveet("010113-668B");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
-        driver.findElement(By.xpath("//input[@name='preference1-Harkinnanvarainen' and @value='false']")).click();
+        findByIdAndClick("preference1-discretionary_false");
         nextPhase();
         select();
         nextPhase();
@@ -46,7 +46,7 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
     public void testWorkExperienceNotShown() {
         gotoHakutoiveet("010113A668B");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
-        driver.findElement(By.xpath("//input[@name='preference1-Harkinnanvarainen' and @value='false']")).click();
+        findByIdAndClick("preference1-discretionary_true");
         nextPhase();
         select();
         nextPhase();
@@ -71,7 +71,7 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
 
         nextPhase();
 
-        findByIdAndClick("millatutkinnolla_tutkinto1", "suorittanut1", "osallistunut_ei");
+        findByIdAndClick("millatutkinnolla_tutkinto1", "suorittanut1", "osallistunut_false");
         findById("paattotodistusvuosi_peruskoulu");
         setValue("perusopetuksen_kieli", "FI");
         setValue("paattotodistusvuosi_peruskoulu", "2012");

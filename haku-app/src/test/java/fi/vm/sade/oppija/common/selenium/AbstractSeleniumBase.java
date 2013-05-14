@@ -94,6 +94,10 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         }
     }
 
+    protected void findByXPath(final String xpath) {
+        seleniumHelper.getDriver().findElement(By.xpath(xpath));
+    }
+
     protected List<WebElement> findByClassName(final String... classNames) {
         List<WebElement> elements = new ArrayList<WebElement>();
         for (String className : classNames) {

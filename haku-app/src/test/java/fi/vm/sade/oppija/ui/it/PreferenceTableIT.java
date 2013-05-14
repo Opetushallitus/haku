@@ -29,8 +29,8 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
-import static org.junit.Assert.assertEquals;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Preference table integration tests
@@ -46,10 +46,10 @@ public class PreferenceTableIT extends AbstractFormTest {
         final PreferenceTable table = new PreferenceTable("t1", createI18NAsIs("Hakutoiveet"), "Ylös", "Alas", 32);
         final PreferenceRow row = new PreferenceRow("r1", createI18NAsIs("Hakutoive 1"),
                 createI18NAsIs("Tyhjennä"), createI18NAsIs("Koulutus"), createI18NAsIs("Opetuspiste"),
-                createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"), "Valitse koulutus", 32, null);
+                createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"), "Valitse koulutus");
         final PreferenceRow row2 = new PreferenceRow("r2", createI18NAsIs("Hakutoive 2"), createI18NAsIs("Tyhjennä"),
                 createI18NAsIs("Koulutus"), createI18NAsIs("Opetuspiste"),
-                createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"), "Valitse koulutus", 32, null);
+                createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"), "Valitse koulutus");
         table.addChild(row);
         table.addChild(row2);
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(table);

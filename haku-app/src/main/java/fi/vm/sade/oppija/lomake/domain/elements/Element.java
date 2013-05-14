@@ -99,6 +99,8 @@ public abstract class Element implements Serializable {
 
     protected final List<Element> children = new ArrayList<Element>();
 
+    protected Element popup;
+
     protected final Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 
 
@@ -138,6 +140,14 @@ public abstract class Element implements Serializable {
 
     public void setHelp(final I18nText help) {
         this.help = help;
+    }
+
+    public Element getPopup() {
+        return this.popup;
+    }
+
+    public void setPopup(Popup popup) {
+        this.popup = popup;
     }
 
     public Element addChild(Element... children) {

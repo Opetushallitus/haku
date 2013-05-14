@@ -2927,6 +2927,9 @@ button {
   .application-number .number {
     color: #149dca; }
 
+.popup-link {
+  margin: 0 0 0 1em; }
+
 /*** Theme help
 ************************************************/
 .theme-help {

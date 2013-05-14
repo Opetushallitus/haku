@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -73,14 +74,16 @@ public class LomakeIT extends DummyModelBaseItTest {
         findById("paattotodistusvuosi_peruskoulu");
         selenium.typeKeys("paattotodistusvuosi_peruskoulu", "2013");
 
-        findByIdAndClick("suorittanut1", "suorittanut2", "suorittanut3", "suorittanut4", "osallistunut_ei");
+        findByIdAndClick("suorittanut1", "suorittanut2", "suorittanut3", "suorittanut4", "osallistunut_false");
         setValue("perusopetuksen_kieli", "FI");
         nextPhase();
         //Skip toimipiste
         setValue("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
-        driver.findElement(By.xpath("//input[@name='preference1-Harkinnanvarainen' and @value='false']")).click();
+        findByIdAndClick("preference1-discretionary_true");
+        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1-discretionary-follow-up")));
+        followUpSelect.selectByIndex(1);
 
         nextPhase();
         select();

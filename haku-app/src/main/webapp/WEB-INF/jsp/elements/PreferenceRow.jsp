@@ -32,6 +32,7 @@
     <c:set value="${sortableItem.educationInputId}-educationDegree" var="hiddenEducationDegreeId" scope="page"/>
     <c:set value="childLONames-${sortableItem.id}" var="childLONamesId" scope="page"/>
     <c:set value="${hiddenKoulutusId}-lang" var="hiddenKoulutusIdLang" scope="page"/>
+    <c:set value="${hiddenKoulutusId}-sora" var="hiddenKoulutusIdSora" scope="page"/>
 
     <div class="form-row">
         <label class="form-row-label ${sortableItem.attributes['required'].value}" for="${textInputId}"><haku:i18nText
@@ -66,14 +67,10 @@
                 ${sortableItem.attributes['required'].value}>
                 </select>
                 <haku:errorMessage id="${selectInputId}" additionalClass="margin-top-1"/>
-                <input id="${hiddenKoulutusId}" name="${hiddenKoulutusId}" value="${categoryData[hiddenKoulutusId]}"
-                       type="hidden"/>
-                <input id="${hiddenEducationDegreeId}" name="${hiddenEducationDegreeId}"
-                       value="${categoryData[hiddenEducationDegreeId]}"
-                       type="hidden"/>
-                <input id="${hiddenKoulutusIdLang}" name="${hiddenKoulutusIdLang}"
-                       value="${categoryData[hiddenKoulutusIdLang]}"
-                       type="hidden"/>
+                <haku:input-hidden id="${hiddenKoulutusId}" data="${categoryData}"/>
+                <haku:input-hidden id="${hiddenEducationDegreeId}" data="${categoryData}"/>
+                <haku:input-hidden id="${hiddenKoulutusIdLang}" data="${categoryData}"/>
+                <haku:input-hidden id="${hiddenKoulutusIdSora}" data="${categoryData}"/>
             </div>
         </div>
         <div class="clear"></div>
@@ -83,9 +80,16 @@
         <span id="${childLONamesId}"></span>
     </div>
     <div id="${additionalQuestionsId}" class="form-row">
-        <c:if test="${categoryData[sortableItem.educationDegreeId] eq sortableItem.discretionaryEducationDegree}">
-            <c:set var="element" value="${sortableItem.discretionaryQuestion}" scope="request"/>
-            <jsp:include page="./${element.type}.jsp"/>
-        </c:if>
+        <%--<c:if test="${categoryData[sortableItem.educationDegreeId] eq sortableItem.discretionaryEducationDegree}">--%>
+            <%--<c:set var="element" value="${sortableItem.discretionaryQuestion}" scope="request"/>--%>
+            <%--<jsp:include page="./${element.type}.jsp"/>--%>
+        <%--</c:if>--%>
+        <%--<c:if test="${true}">--%>
+        <%--<c:forEach var="question" items="${sortableItem.soraQuestion.questions}">--%>
+        <%--<c:set var="element" value="${question}" scope="request"/>--%>
+        <%--<jsp:include page="./${element.type}.jsp"/>--%>
+        <%--</c:forEach>--%>
+        <%--</c:if>--%>
     </div>
+    <haku:viewChilds element="${sortableItem}"/>
 </div>

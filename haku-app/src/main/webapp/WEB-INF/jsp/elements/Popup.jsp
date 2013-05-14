@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -14,11 +14,5 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<a href="#" data-po-show="${element.popup.id}" class="popup-link"><haku:i18nText value="${element.popup.i18nText}"/></a>
 
-<jsp:include page="./Radio.jsp"/>
-<div id="${element.followUpContainerId}" class="form-row">
-    <c:if test="${categoryData[element.id] eq true}">
-        <c:set var="element" value="${element.followUp}" scope="request"/>
-        <jsp:include page="./${element.type}.jsp"/>
-    </c:if>
-</div>

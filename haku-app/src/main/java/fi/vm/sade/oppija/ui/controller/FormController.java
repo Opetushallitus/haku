@@ -52,7 +52,10 @@ import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 @Path("/lomake")
@@ -348,10 +351,6 @@ public class FormController {
      * @param phaseId             phase id
      * @param themeId             theme id
      * @param aoId                application option id
-     * @param preview             is for preview (optional)
-     * @param ed                  education degree of the application option (optional)
-     * @param preferenceRowId     PreferenceRow element that fired this request (optional)
-     * @param sora                is sora question required (optional)
      * @return list of questions
      */
     @GET
@@ -361,56 +360,18 @@ public class FormController {
                                            @PathParam("formIdStr") final String formIdStr,
                                            @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                            @PathParam("themeId") final String themeId,
-                                           @PathParam("aoId") final String aoId,
-                                           @QueryParam("preview") final boolean preview,
-                                           @QueryParam("ed") final Integer ed,
-                                           @QueryParam("preferenceRowId") final String preferenceRowId,
-                                           @QueryParam("sora") final Boolean sora
+                                           @PathParam("aoId") final String aoId
     ) {
-        LOGGER.debug("getAdditionalQuestions {}, {}, {}, {}, {}, {}", applicationSystemId,
-                formIdStr, phaseId, themeId, aoId, preview);
-        String viewName = preview ? "/additionalQuestionsPreview" : "/additionalQuestions";
+        LOGGER.debug("getAdditionalQuestions {}, {}, {}, {}, {}", applicationSystemId,
+                formIdStr, phaseId, themeId, aoId);
 
         final FormId formId = new FormId(applicationSystemId, formIdStr);
-        Set<Question> additionalQuestions = additionalQuestionService.
-                findAdditionalQuestions(formId, phaseId, themeId, aoId, ed, preferenceRowId, sora);
+        List<Question> additionalQuestions = additionalQuestionService.
+                findAdditionalQuestions(formId, themeId, aoId);
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("additionalQuestions", additionalQuestions);
         model.put("categoryData", applicationService.getApplication(formId).getVastauksetMerged());
-        return new Viewable(viewName, model);
-    }
-
-    /**
-     * Get a application option specific follow up question to a discretionary question asked in
-     * application option view.
-     *
-     * @param asId
-     * @param formIdStr
-     * @param phaseId
-     * @param themeId
-     * @param preferenceRowId
-     * @return
-     */
-    @GET
-    @Path("/{asId}/{formIdStr}/{phaseId}/{themeId}/discretionaryFollowUp/{preferenceRowId}")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    public Viewable getDiscretionaryFollowUp(@PathParam("asId") final String asId,
-                                             @PathParam("formIdStr") final String formIdStr,
-                                             @PathParam("phaseId") final String phaseId,
-                                             @PathParam("themeId") final String themeId,
-                                             @PathParam("preferenceRowId") final String preferenceRowId
-    ) {
-
-        FormId formId = new FormId(asId, formIdStr);
-
-        Question followUp = additionalQuestionService.findDiscretionaryFollowUps(formId, phaseId, themeId, preferenceRowId);
-        Map<String, Object> model = new HashMap<String, Object>();
-
-        model.put("categoryData", applicationService.getApplication(formId).getVastauksetMerged());
-        model.put("element", followUp);
-        model.put("template", followUp.getType());
-
-        return new Viewable(ROOT_VIEW, model);
+        return new Viewable("/additionalQuestions", model);
     }
 
 }

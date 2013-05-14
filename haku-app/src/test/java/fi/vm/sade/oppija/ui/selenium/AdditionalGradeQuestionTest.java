@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.ui.selenium;
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import static org.junit.Assert.assertTrue;
 
@@ -36,7 +35,7 @@ public class AdditionalGradeQuestionTest extends DummyModelBaseItTest {
     public void testAdditionalSubjects() {
         navigateToPhase(KOULUTUSTAUSTA_PHASE_ID);
 
-        findByIdAndClick("millatutkinnolla_tutkinto1", "paattotodistusvuosi_peruskoulu", "suorittanut1", "suorittanut2", "suorittanut3", "suorittanut4", "osallistunut_ei");
+        findByIdAndClick("millatutkinnolla_tutkinto1", "paattotodistusvuosi_peruskoulu", "suorittanut1", "suorittanut2", "suorittanut3", "suorittanut4", "osallistunut_false");
         setValue("perusopetuksen_kieli", "SV");
         setValue("paattotodistusvuosi_peruskoulu", "2013");
 
@@ -44,15 +43,10 @@ public class AdditionalGradeQuestionTest extends DummyModelBaseItTest {
 
         // select a LOI
 
-        findById("preference1-Opetuspiste");
         setValue("preference1-Opetuspiste", "Esp");
-        WebElement element = driver.findElement(By.linkText(OPETUSPISTE));
-        element.click();
-
-        WebElement option = driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']"));
-        option.click();
-
-        driver.findElements(By.name("preference1-Harkinnanvarainen")).get(1).click();
+        driver.findElement(By.linkText(OPETUSPISTE)).click();
+        driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
+        findByIdAndClick("preference1-discretionary_false");
 
         nextPhase();
         driver.findElement(By.xpath("//table[@id='gradegrid-table']"));
