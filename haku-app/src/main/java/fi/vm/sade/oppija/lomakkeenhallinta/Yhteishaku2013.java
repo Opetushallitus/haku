@@ -55,6 +55,7 @@ public class Yhteishaku2013 {
     public static final String AIDINKIELI_ID = "aidinkieli";
     public static final String FORM_ID = "yhteishaku";
     public static final String DISCRETIONARY_EDUCATION_DEGREE = "32";
+    public static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
 
     private final ApplicationPeriod applicationPeriod;
     public static String mobilePhonePattern =
@@ -96,7 +97,7 @@ public class Yhteishaku2013 {
             createKoulutustausta(koulutustaustaRyhma);
 
             // Hakutoiveet
-            Phase hakutoiveet = new Phase("hakutoiveet", createI18NForm("form.hakutoiveet.otsikko"), false);
+            Phase hakutoiveet = new Phase(HAKUTOIVEET_PHASE_ID, createI18NForm("form.hakutoiveet.otsikko"), false);
             form.addChild(hakutoiveet);
             Theme hakutoiveetRyhma = createHakutoiveetRyhma();
             hakutoiveet.addChild(hakutoiveetRyhma);
@@ -725,7 +726,7 @@ public class Yhteishaku2013 {
         addDefaultTrueFalseOptions(discretionary);
         setRequired(discretionary);
 
-        DropdownSelect discretionaryFollowUp = new DropdownSelect(discretionary.getId() + "follow-up",
+        DropdownSelect discretionaryFollowUp = new DropdownSelect(discretionary.getId() + "-follow-up",
                 createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"), null);
         discretionaryFollowUp.addOption(discretionaryFollowUp.getId() + "oppimisvaikudet",
                 createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.oppimisvaikeudet"), "oppimisvaikudet");

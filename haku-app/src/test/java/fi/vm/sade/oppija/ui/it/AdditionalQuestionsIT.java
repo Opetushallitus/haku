@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.ui.it;
 
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.NoSuchElementException;
 
@@ -28,6 +29,7 @@ public class AdditionalQuestionsIT extends DummyModelBaseItTest {
 
     public static final String AO_ID = "1.2.246.562.14.71344129359";
 
+    @Ignore
     @Test
     public void testAdditionalQuestion() {
         navigateToPath(Yhteishaku2013.ASID, "yhteishaku/hakutoiveet/hakutoiveetGrp/additionalquestions", AO_ID);

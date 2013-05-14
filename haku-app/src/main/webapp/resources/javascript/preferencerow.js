@@ -25,19 +25,7 @@
                 var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
                 preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
                 $("#" + selectInputId).html("<option></option>");
-                var data = [];
-                data[0] = {
-                    'childLONames': ['aaa', 'bbb'],
-                    'id': '1234567890',
-                    'name': "name1",
-                    'educationDegree': '32'
-                };
-                data[1] = {
-                    'childLONames': ['ccc', 'ddd'],
-                    'id': '2345678901',
-                    'name': "name2",
-                    'educationDegree': '10'
-                };
+
                 $(data).each(function (index, item) {
                     var selected = "";
                     childLONames[item.id] = item.childLONames;

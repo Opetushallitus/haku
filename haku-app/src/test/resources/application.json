@@ -38,6 +38,7 @@
             "phaseId": "hakutoiveet"
         },
         "hakutoiveet": {
+            "preference1-discretionary" : "false",
             "preference5-Koulutus-id": "",
             "preference2-Opetuspiste": "",
             "preference4-Opetuspiste-id": "",

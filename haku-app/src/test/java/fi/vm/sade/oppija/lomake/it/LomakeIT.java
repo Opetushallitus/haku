@@ -103,7 +103,7 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(new By.ById("suorittanut3")).click();
         driver.findElement(new By.ById("suorittanut4")).click();
 
-        driver.findElement(new By.ById("osallistunut_ei")).click();
+        driver.findElement(new By.ById("osallistunut_false")).click();
 
         clickNextPhase(driver);
         //Skip toimipiste
@@ -112,10 +112,9 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
 
-        driver.findElement(By.xpath("//input[@name='preference1-Harkinnanvarainen' and @value='false']")).click();
-        driver.findElement(By.xpath("//input[@name='preference1-Harkinnanvarainen' and @value='true']")).click();
-        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1-harkinnanvarainen_jatko")));
-        followUpSelect.selectByIndex(0);
+        findByIdAndClick("preference1-discretionary_true");
+        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1-discretionary-follow-up")));
+        followUpSelect.selectByIndex(1);
 
         clickNextPhase(driver);
         select(driver);

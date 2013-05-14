@@ -31,12 +31,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class WorkExperienceThemeTest extends DummyModelBaseItTest {
 
-    @Ignore
     @Test
     public void testWorkExperienceShown() {
-        gotoHakutoiveet();
+        gotoHakutoiveet("010113-668B");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
-        driver.findElement(By.xpath("//input[@name='preference1-Harkinnanvarainen' and @value='false']")).click();
+        findByIdAndClick("preference1-discretionary_false");
         nextPhase();
         select();
         nextPhase();
@@ -44,12 +43,11 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
         driver.findElement(new By.ById("tyokokemuskuukaudet"));
     }
 
-    @Ignore
     @Test
     public void testWorkExperienceNotShown() {
-        gotoHakutoiveet();
+        gotoHakutoiveet("010113A668B");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
-        driver.findElement(By.xpath("//input[@name='preference1-Harkinnanvarainen' and @value='true']")).click();
+        findByIdAndClick("preference1-discretionary_true");
         nextPhase();
         select();
         nextPhase();
@@ -58,12 +56,12 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
         assertTrue("tyokokemuskuukaudet should not be present", tyokokemuskuukaudet.isEmpty());
     }
 
-    private void gotoHakutoiveet() {
+    private void gotoHakutoiveet(final String hetu) {
         navigateToFirstPhase();
         setValue("Sukunimi", "Ankka");
         setValue("Etunimet", "Aku Kalle");
         setValue("Kutsumanimi", "A");
-        setValue("Henkilotunnus", "010113A668B");
+        setValue("Henkilotunnus", hetu);
         setValue("Sähköposti", "aku.ankka@ankkalinna.al");
         setValue("matkapuhelinnumero1", "0501000100");
         setValue("aidinkieli", "FI");
@@ -74,7 +72,7 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
 
         nextPhase();
 
-        findByIdAndClick("millatutkinnolla_tutkinto1", "suorittanut1", "osallistunut_ei");
+        findByIdAndClick("millatutkinnolla_tutkinto1", "suorittanut1", "osallistunut_false");
         findById("paattotodistusvuosi_peruskoulu");
         setValue("perusopetuksen_kieli", "FI");
         setValue("paattotodistusvuosi_peruskoulu", "2012");

@@ -104,7 +104,7 @@ public class HAK305IT extends DummyModelBaseItTest {
     }
 
     private void fillInTheKoulutustaustaPhase(final String opetuskieli) {
-        findByIdAndClick("millatutkinnolla_tutkinto1", "suorittanut1", "osallistunut_ei");
+        findByIdAndClick("millatutkinnolla_tutkinto1", "suorittanut1", "osallistunut_false");
         findById("paattotodistusvuosi_peruskoulu");
         setPerusopetuksenKieli(opetuskieli);
         setValue("paattotodistusvuosi_peruskoulu", "2012");
@@ -115,9 +115,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         selenium.typeKeys("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
-        driver.findElements(By.name("preference1-Harkinnanvarainen")).get(1).click();
-        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1-harkinnanvarainen_jatko")));
-        followUpSelect.selectByIndex(0);
+        findByIdAndClick("preference1-discretionary_true");
     }
 
 

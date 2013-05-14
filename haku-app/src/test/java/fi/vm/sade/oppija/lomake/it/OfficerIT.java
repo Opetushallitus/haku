@@ -55,7 +55,6 @@ public class OfficerIT extends AbstractSeleniumBase {
         selenium.typeKeys("searchString", "Espoo");
         driver.findElement(new By.ById("search-organizations")).click();
         driver.findElement(new By.ById("1.2.246.562.10.10108401950"));
-
     }
 
     @Test
