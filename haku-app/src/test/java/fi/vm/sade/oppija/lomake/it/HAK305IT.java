@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.lomake.it;
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.Assert.assertTrue;
@@ -95,7 +94,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         setValue("Sähköposti", "aku.ankka@ankkalinna.al");
         setValue("matkapuhelinnumero1", "0501000100");
         setNativeLanguage(aidinkieli);
-        setValue("asuinmaa", "FI");
+        setValue("asuinmaa", "FIN");
         setValue("kotikunta", "jalasjarvi");
         setValue("lahiosoite", "Katu 1");
         setValue("Postinumero", "00100");

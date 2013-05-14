@@ -71,8 +71,8 @@ public class Yhteishaku2013 {
     public static String phonePattern =
             "^$|^\\+?[0-9\\-\\s]+$";
 
-    private static final String NOT_FI = "^((?!FI)[A-Z]{2})$";
-    private static final String NOT_SV = "^((?!SV)[A-Z]{2})$";
+    private static final String NOT_FI = "^((?!FIN)[A-Z]{3})$";
+    private static final String NOT_SV = "^((?!SWE)[A-Z]{3})$";
 
     private final KoodistoService koodistoService;
     private List<Option> gradeRanges;
@@ -214,7 +214,7 @@ public class Yhteishaku2013 {
         // Kansalaisuus, hetu ja sukupuoli suomalaisille
         DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", createI18NForm("form.henkilotiedot.kansalaisuus"), null);
         kansalaisuus.addOptions(koodistoService.getNationalities());
-        setDefaultOption("FI", kansalaisuus.getOptions());
+        setDefaultOption("FIN", kansalaisuus.getOptions());
         kansalaisuus.addAttribute("placeholder", "Valitse kansalaisuus");
         kansalaisuus.addAttribute("required", "required");
         kansalaisuus.setHelp(createI18NForm("form.henkilotiedot.kansalaisuus.help"));
@@ -242,7 +242,7 @@ public class Yhteishaku2013 {
                 sukupuoli.getI18nText(), sukupuoli.getOptions().get(0),
                 sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilotunnus);
 
-        RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FI$", true);
+        RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FIN$", true);
         hetuRule.addChild(socialSecurityNumber);
         henkilotiedotRyhma.addChild(hetuRule);
 
@@ -336,13 +336,13 @@ public class Yhteishaku2013 {
         // Asuinmaa, osoite
         DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", createI18NForm("form.henkilotiedot.asuinmaa"), null);
         asuinmaa.addOptions(koodistoService.getCountries());
-        setDefaultOption("FI", asuinmaa.getOptions());
+        setDefaultOption("FIN", asuinmaa.getOptions());
         asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
         asuinmaa.addAttribute("required", "required");
         asuinmaa.setVerboseHelp(getVerboseHelp());
         asuinmaa.setInline(true);
 
-        RelatedQuestionRule asuinmaaFI = new RelatedQuestionRule("rule1", asuinmaa.getId(), "FI", true);
+        RelatedQuestionRule asuinmaaFI = new RelatedQuestionRule("rule1", asuinmaa.getId(), "FIN", true);
         Question lahiosoite = createRequiredTextQuestion("lahiosoite", "form.henkilotiedot.lahiosoite", "40");
         lahiosoite.setInline(true);
         asuinmaaFI.addChild(lahiosoite);

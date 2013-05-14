@@ -49,8 +49,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_GRADE_RANGE = "arvosanat";
     public static final String CODE_LEARNING_INSTITUTION_TYPES = "oppilaitostyyppi";
     public static final String CODE_ORGANIZATION_TYPES = "organisaatiotyyppi";
-    //    public static final String CODE_COUNTRIES = "maatjavaltiot1";
-    public static final String CODE_COUNTRIES = "maatjavaltiottmp";
+    public static final String CODE_COUNTRIES = "maatjavaltiot1";
     public static final String CODE_NATIONALITIES = CODE_COUNTRIES;
     public static final String CODE_LANGUAGES = "kieli";
     public static final String CODE_MUNICIPALITY = "kunta";
@@ -83,11 +82,17 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getGradeRanges() {
-        ArrayList<KoodiType> grades = new ArrayList<KoodiType>(getKoodiTypes(CODE_GRADE_RANGE));
+        // Sorting grades is tricky
+        ArrayList<KoodiType> grades = new ArrayList(getKoodiTypes(CODE_GRADE_RANGE));
         Collections.sort(grades, new Comparator<KoodiType>() {
             @Override
             public int compare(KoodiType o1, KoodiType o2) {
-                return o1.getKoodiArvo().compareTo(o2.getKoodiArvo());
+                String k1 = o1.getKoodiArvo();
+                String k2 = o2.getKoodiArvo();
+                if (k1.length() != k2.length()) {
+                    return k1.length() - k2.length();
+                }
+                return k1.compareTo(k2);
             }
         });
         return ImmutableList.copyOf(

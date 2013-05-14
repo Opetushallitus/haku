@@ -54,7 +54,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         findByClassName("notification");
 
-        setValue("asuinmaa", "FI");
+        setValue("asuinmaa", "FIN");
         setValue("kotikunta", "jalasjarvi");
 
         screenshot("postinumero_it");
@@ -74,7 +74,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         selenium.typeKeys("paattotodistusvuosi_peruskoulu", "2013");
 
         findByIdAndClick("suorittanut1", "suorittanut2", "suorittanut3", "suorittanut4", "osallistunut_ei");
-
+        setValue("perusopetuksen_kieli", "FI");
         nextPhase();
         //Skip toimipiste
         setValue("preference1-Opetuspiste", "Esp");
