@@ -77,27 +77,18 @@ public class LomakeIT extends DummyModelBaseItTest {
         findByIdAndClick("suorittanut1", "suorittanut2", "suorittanut3", "suorittanut4", "osallistunut_false");
         setValue("perusopetuksen_kieli", "FI");
         nextPhase();
-        driver.findElement(new By.ById("suorittanut1")).click();
-        driver.findElement(new By.ById("suorittanut2")).click();
-        driver.findElement(new By.ById("suorittanut3")).click();
-        driver.findElement(new By.ById("suorittanut4")).click();
-
-        driver.findElement(new By.ById("osallistunut_false")).click();
-
-        nextPhase();
         //Skip toimipiste
         setValue("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
-        driver.findElement(By.xpath("//input[@name='preference1-Harkinnanvarainen' and @value='false']")).click();
+        findByIdAndClick("preference1-discretionary_true");
+        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1-discretionary-follow-up")));
+        followUpSelect.selectByIndex(1);
 
         nextPhase();
         select();
 
         nextPhase();
-        findByIdAndClick("preference1-discretionary_true");
-        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1-discretionary-follow-up")));
-        followUpSelect.selectByIndex(1);
 
         // Lisätiedot
         clickAllElementsByXPath("//input[@type='checkbox']");
