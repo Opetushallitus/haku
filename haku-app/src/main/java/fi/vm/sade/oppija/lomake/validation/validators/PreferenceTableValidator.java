@@ -37,12 +37,9 @@ public class PreferenceTableValidator implements Validator {
     private final List<String> learningInstitutionInputIds;
     private final List<String> educationInputIds;
     private List<String> learningInstitutions;
-    private List<String> educationDegreeInputIds;
     private List<String> educations;
 
-    public PreferenceTableValidator(final List<String> learningInstitutionInputIds, final List<String> educationInputIds,
-                                    final List<String> educationDegreeInputIds) {
-        this.educationDegreeInputIds = educationDegreeInputIds;
+    public PreferenceTableValidator(final List<String> learningInstitutionInputIds, final List<String> educationInputIds) {
         assert learningInstitutionInputIds.size() == educationInputIds.size();
         this.learningInstitutionInputIds = learningInstitutionInputIds;
         this.educationInputIds = educationInputIds;

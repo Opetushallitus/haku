@@ -48,7 +48,7 @@ public class PreferenceTableValidatorTest {
         educationInputIds.add("e3");
         educationInputIds.add("e4");
         educationInputIds.add("e5");
-        validator = new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds, null);
+        validator = new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds);
     }
 
 

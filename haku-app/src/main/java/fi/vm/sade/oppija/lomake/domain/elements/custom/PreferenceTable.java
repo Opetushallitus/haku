@@ -82,19 +82,16 @@ public class PreferenceTable extends Titled {
         List<Validator> listOfValidators = new ArrayList<Validator>();
         List<String> learningInstitutionInputIds = new ArrayList<String>();
         List<String> educationInputIds = new ArrayList<String>();
-        List<String> educationDegreeInputIds = new ArrayList<String>();
         List<Predicate<Map<String, String>>> preferencePredicates = new ArrayList<Predicate<Map<String, String>>>();
-        List<Predicate<Map<String, String>>> discretionaryPredicates = new ArrayList<Predicate<Map<String, String>>>();
 
         for (Element element : this.getChildren()) {
             PreferenceRow pr = (PreferenceRow) element;
             learningInstitutionInputIds.add(pr.getLearningInstitutionInputId());
             educationInputIds.add(pr.getEducationInputId());
-            educationDegreeInputIds.add(pr.getEducationDegreeId());
             preferencePredicates.add(validate(new RegexFieldFieldValidator(pr.getEducationInputId() + "-educationDegree", "^32$")));
         }
 
-        listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds, educationDegreeInputIds));
+        listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds));
         Predicate<Map<String, String>> predicate =
                 and(
                         not(
