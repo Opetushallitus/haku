@@ -62,11 +62,8 @@ public class Organization {
 
         Organization that = (Organization) o;
 
-        if (!oid.equals(that.oid)) {
-            return false;
-        }
+        return oid.equals(that.oid);
 
-        return true;
     }
 
     @Override

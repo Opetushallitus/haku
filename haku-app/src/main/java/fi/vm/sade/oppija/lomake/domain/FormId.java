@@ -67,11 +67,9 @@ public class FormId implements Serializable {
         if (applicationPeriodId != null ? !applicationPeriodId.equals(formId.applicationPeriodId) : formId.applicationPeriodId != null) {
             return false;
         }
-        if (this.formId != null ? !this.formId.equals(formId.formId) : formId.formId != null) {
-            return false;
-        }
 
-        return true;
+        return !(this.formId != null ? !this.formId.equals(formId.formId) : formId.formId != null);
+
     }
 
     @Override

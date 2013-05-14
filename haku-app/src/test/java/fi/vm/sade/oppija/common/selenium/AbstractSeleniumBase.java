@@ -25,14 +25,13 @@ import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.ui.selenium.SeleniumHelper;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
@@ -98,5 +97,14 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     protected void findByXPath(final String xpath) {
         seleniumHelper.getDriver().findElement(By.xpath(xpath));
     }
+
+    protected List<WebElement> findByClassName(final String... classNames) {
+        List<WebElement> elements = new ArrayList<WebElement>();
+        for (String className : classNames) {
+            elements.addAll(seleniumHelper.getDriver().findElements(new By.ByClassName(className)));
+        }
+        return elements;
+    }
+
 
 }

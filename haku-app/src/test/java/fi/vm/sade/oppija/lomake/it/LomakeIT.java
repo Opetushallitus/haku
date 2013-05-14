@@ -16,48 +16,28 @@
 
 package fi.vm.sade.oppija.lomake.it;
 
-import com.thoughtworks.selenium.Selenium;
-import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
-
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class LomakeIT extends AbstractSeleniumBase {
-
-    @Before
-    public void setUp() throws Exception {
-        FormServiceMockImpl formModelDummyMemoryDao = new FormServiceMockImpl();
-        updateIndexAndFormModel(formModelDummyMemoryDao.getModel());
-    }
+public class LomakeIT extends DummyModelBaseItTest {
 
     @Test
     public void submitApplication() throws Exception {
-        WebDriver driver = seleniumHelper.getDriver();
-        Selenium selenium = seleniumHelper.getSelenium();
-        driver.get(getBaseUrl() + "lomake/");
-        selenium.setSpeed("3000");
-        driver.findElement(new By.ById(Yhteishaku2013.ASID)).click();
-        driver.findElement(new By.ById("yhteishaku")).click();
-        selenium.typeKeys("Sukunimi", "Ankka");
-        selenium.typeKeys("Etunimet", "Aku Kalle");
-        selenium.typeKeys("Kutsumanimi", "A");
-        selenium.typeKeys("Henkilotunnus", "150520-111E");
-        selenium.typeKeys("Sähköposti", "aku.ankka@ankkalinna.al");
-        selenium.typeKeys("matkapuhelinnumero1", "0501000100");
-        Select selectAidinkieli = new Select(driver.findElement(new By.ById("aidinkieli")));
-        selectAidinkieli.selectByIndex(1);
+        navigateToFirstPhase();
+        setValue("Sukunimi", "Ankka");
+        setValue("Etunimet", "Aku Kalle");
+        setValue("Kutsumanimi", "A");
+        setValue("Henkilotunnus", "010113-668B");
+        setValue("Sähköposti", "aku.ankka@ankkalinna.al");
+        setValue("matkapuhelinnumero1", "0501000100");
+        setValue("aidinkieli", "FI");
 
         try {
             driver.findElement(By.id("puhelinnumero2"));
@@ -70,34 +50,32 @@ public class LomakeIT extends AbstractSeleniumBase {
         driver.findElement(By.id("matkapuhelinnumero2"));
         selenium.typeKeys("matkapuhelinnumero2", "09-123 456");
 
-        clickNextPhase(driver);
+        nextPhase();
 
-        driver.findElement(new By.ByClassName("notification"));
+        findByClassName("notification");
 
-        Select asuinmaaSelect = new Select(driver.findElement(new By.ById("asuinmaa")));
-        asuinmaaSelect.selectByValue("FI");
-
-        Select selectKotikunta = new Select(driver.findElement(new By.ById("kotikunta")));
-        selectKotikunta.selectByIndex(1);
+        setValue("asuinmaa", "FIN");
+        setValue("kotikunta", "jalasjarvi");
 
         screenshot("postinumero_it");
-        driver.findElement(new By.ById("Postinumero"));
+        findById("Postinumero");
         selenium.typeKeys("lahiosoite", "Katu 1");
         selenium.typeKeys("Postinumero", "00100");
 
-        clickNextPhase(driver);
-
-        clickNextPhase(driver);
+        nextPhase();
+        nextPhase();
 
         screenshot("hak123");
-        testHAK123AandHAK124(driver);
+        testHAK123AandHAK124();
 
+        findByIdAndClick("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_PERUSKOULU);
 
-        driver.findElement(new By.ById("millatutkinnolla_tutkinto1")).click();
-
-        driver.findElement(new By.ById("paattotodistusvuosi_peruskoulu"));
+        findById("paattotodistusvuosi_peruskoulu");
         selenium.typeKeys("paattotodistusvuosi_peruskoulu", "2013");
 
+        findByIdAndClick("suorittanut1", "suorittanut2", "suorittanut3", "suorittanut4", "osallistunut_ei");
+        setValue("perusopetuksen_kieli", "FI");
+        nextPhase();
         driver.findElement(new By.ById("suorittanut1")).click();
         driver.findElement(new By.ById("suorittanut2")).click();
         driver.findElement(new By.ById("suorittanut3")).click();
@@ -107,83 +85,59 @@ public class LomakeIT extends AbstractSeleniumBase {
 
         clickNextPhase(driver);
         //Skip toimipiste
-        driver.findElement(By.id("preference1-Opetuspiste"));
-        selenium.typeKeys("preference1-Opetuspiste", "Esp");
+        setValue("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
-        driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
+        driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
+        driver.findElement(By.xpath("//input[@name='preference1-Harkinnanvarainen' and @value='false']")).click();
 
+        nextPhase();
+        select();
+
+        nextPhase();
         findByIdAndClick("preference1-discretionary_true");
         Select followUpSelect = new Select(driver.findElement(new By.ById("preference1-discretionary-follow-up")));
         followUpSelect.selectByIndex(1);
 
-        clickNextPhase(driver);
-        select(driver);
-
-        clickNextPhase(driver);
-
         // Lisätiedot
-        clickAllElements(driver, "//input[@type='checkbox']");
+        clickAllElementsByXPath("//input[@type='checkbox']");
 
         // Ei mene läpi, työkokemus syöttämättä
-        clickNextPhase(driver);
-        selenium.typeKeys("tyokokemuskuukaudet", "1001");
 
+        selenium.typeKeys("tyokokemuskuukaudet", "1001");
+        nextPhase();
         // Ei mene läpi, työkokemus > 1000 kuukautta
-        clickNextPhase(driver);
-        driver.findElement(new By.ById("tyokokemuskuukaudet"));
+        nextPhase();
+        findById("tyokokemuskuukaudet");
         selenium.typeKeys("tyokokemuskuukaudet", "\b\b\b\b2"); // \b is backspace
 
         // Ei mene läpi, asiointikieli valitsematta
-        clickNextPhase(driver);
-        driver.findElement(new By.ById("asiointikieli_suomi")).click();
+        nextPhase();
+        findByIdAndClick("asiointikieli_suomi");
 
         screenshot("kokemus");
 
         // Menee läpi
-        clickNextPhase(driver);
+        nextPhase();
         screenshot("kokemus4");
 
         // Esikatselu
-        clickNextPhase(driver);
-        driver.findElement(By.id("submit_confirm")).click();
+        nextPhase();
+        findByIdAndClick("submit_confirm");
 
         String oid = driver.findElement(new By.ByClassName("number")).getText();
         assertTrue(oid.startsWith("1.2.3.4.5"));
 
-        driver.get(getBaseUrl() + "lomake/");
-        driver.findElement(new By.ById(Yhteishaku2013.ASID)).click();
-        driver.findElement(new By.ById("yhteishaku")).click();
+        navigateToFirstPhase();
+
         String value = driver.findElement(new By.ById("Sukunimi")).getAttribute("value");
         assertTrue(StringUtils.isEmpty(value));
-        clickNextPhase(driver);
+        nextPhase();
     }
 
-    private void testHAK123AandHAK124(final WebDriver driver) {
-        driver.findElement(new By.ById("millatutkinnolla_tutkinto5")).click();
-        driver.findElement(new By.ById(Yhteishaku2013.TUTKINTO5_NOTIFICATION_ID));
-        driver.findElement(new By.ById("millatutkinnolla_tutkinto7")).click();
-        driver.findElement(new By.ById(Yhteishaku2013.TUTKINTO7_NOTIFICATION_ID));
+    private void testHAK123AandHAK124() {
+        findByIdAndClick("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_KESKEYTYNYT);
+        findById(Yhteishaku2013.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
+        findByIdAndClick("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_ULKOMAINEN_TUTKINTO);
+        findById(Yhteishaku2013.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
     }
-
-    private void clickNextPhase(WebDriver driver) {
-        driver.findElement(new By.ByClassName("right")).click();
-    }
-
-    private void select(final WebDriver driver) {
-        List<WebElement> elements = driver.findElements(new By.ByXPath("//select"));
-        for (WebElement element : elements) {
-            if (element.isDisplayed()) {
-                Select select = new Select(element);
-                select.selectByIndex(2);
-            }
-        }
-    }
-
-    private void clickAllElements(final WebDriver driver, final String xpath) {
-        List<WebElement> elements = driver.findElements(new By.ByXPath(xpath));
-        for (WebElement element : elements) {
-            element.click();
-        }
-    }
-
 }

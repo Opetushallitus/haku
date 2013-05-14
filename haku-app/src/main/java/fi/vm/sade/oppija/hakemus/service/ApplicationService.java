@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.hakemus.service;
 
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
@@ -28,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface ApplicationService {
-
-    List<ApplicationInfo> getUserApplicationInfo();
 
     Application getApplication(FormId formId);
 
@@ -43,23 +40,6 @@ public interface ApplicationService {
     ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, boolean skipValidators);
 
     /**
-     * Save answers of a single form phase. Phase is saved to the currently modified application of the user session.
-     *
-     * @param applicationPhase
-     * @return application state
-     */
-    ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase);
-
-    /**
-     * Save answers of a single form phase. Phase is saved to the application with the parameter oid.
-     *
-     * @param applicationPhase
-     * @param oid
-     * @return application state
-     */
-    ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final String oid);
-
-    /**
      * Save answers of a single form phase. Phase is saved to the application with the parameter oid.
      *
      * @param applicationPhase
@@ -68,15 +48,6 @@ public interface ApplicationService {
      * @return application state
      */
     ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final String oid, final boolean skipValidators);
-
-    /**
-     * Save answers of a single form phase. Phase is saved to the parameter application.
-     *
-     * @param applicationPhase
-     * @param application
-     * @return application state
-     */
-    ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final Application application);
 
     /**
      * Retrieve application by oid.
@@ -175,9 +146,10 @@ public interface ApplicationService {
 
     /**
      * Puts a additional information key value pair to the application
+     *
      * @param applicationOid application oid
-     * @param key key of the additional information
-     * @param value value of the key
+     * @param key            key of the additional information
+     * @param value          value of the key
      * @throws ResourceNotFoundException
      */
     void putApplicationAdditionalInfoKeyValue(final String applicationOid, final String key, final String value) throws ResourceNotFoundException;

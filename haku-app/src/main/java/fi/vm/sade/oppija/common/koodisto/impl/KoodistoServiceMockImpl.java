@@ -36,8 +36,8 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
     public static final String LEARNING_INSTITUTION_TYPE = "Yliopistot";
     public static final String ORGANIZATION_TYPE = "Toimipiste";
-    private static final String RUOTSI = "SV";
-    private static final String SUOMI = "FI";
+    private static final String RUOTSI = "SWE";
+    private static final String SUOMI = "FIN";
     public final List<Option> listOfGradeGrades;
     public final List<PostOffice> listOfPostOffices;
     public final List<SubjectRow> listOfSubjects;
@@ -107,7 +107,12 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                         new Option(RUOTSI,
                                 createI18NAsIs("Ruotsi"), RUOTSI));
 
-        this.listOfLanguages = listOfCountries;
+        this.listOfLanguages =
+                ImmutableList.of(
+                        new Option(SUOMI,
+                                createI18NAsIs("Suomi"), "FI"),
+                        new Option(RUOTSI,
+                                createI18NAsIs("Ruotsi"), "SV"));
 
         this.listOfNationalities =
                 ImmutableList.of(

@@ -7,8 +7,8 @@
         "henkilotiedot": {
             "aidinkieli": "FI",
             "Sukupuoli": "m",
-            "kansalaisuus": "FI",
-            "asuinmaa": "FI",
+            "kansalaisuus": "FIN",
+            "asuinmaa": "FIN",
             "Sukunimi": "Korhonen",
             "postitoimipaikka": "Helsinki",
             "Henkilotunnus": "270802-184A",
@@ -20,7 +20,7 @@
             "Etunimet": "pena topi",
             "ensisijainenOsoite1": "true",
             "kotikunta": "janakkala",
-            "syntymaaika": "1966-04-14",
+            "syntymaaika": "27.08.1902",
             "Henkilotunnus_digest": "c565fb509fb88e8abf92f471096207f3aacfe923484309f4378b549ea77c5c0b",
             "phaseId": "koulutustausta"
         },

@@ -59,7 +59,7 @@
 </table>
 
 <!-- terveydentilavaatimukset -->
-<div class="popover-wrapper" id="sora-popup">
+<div class="popover-wrapper" id="terveydentilavaatimukset-popup">
     <span class="popover-close">
         <fmt:message key="form.popup.sulje" />
     </span>

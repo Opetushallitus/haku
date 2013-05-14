@@ -19,7 +19,10 @@ package fi.vm.sade.oppija.common.dao;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.mongodb.*;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import fi.vm.sade.oppija.lomake.dao.DBFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -60,6 +63,11 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
     @Override
     public void delete(T t) {
         getCollection().remove(toDBObject.apply(t));
+    }
+
+    @Override
+    public void save(T t) {
+        getCollection().save(toDBObject.apply(t));
     }
 
     @Override

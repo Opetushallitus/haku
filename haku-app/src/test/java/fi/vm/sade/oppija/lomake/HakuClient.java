@@ -51,7 +51,6 @@ public class HakuClient {
         ClientResponse response = builder.accept(MediaType.TEXT_HTML).get(ClientResponse.class);
         if (response.getStatus() == HttpStatus.SC_OK) {
             response.close();
-            return;
         } else {
             System.out.println(IOUtils.toString(response.getEntityInputStream(), "UTF-8"));
             throw new RuntimeException("get uri failed (" + response.getStatus() + ") " + previousPhaseResponse.getLocation());

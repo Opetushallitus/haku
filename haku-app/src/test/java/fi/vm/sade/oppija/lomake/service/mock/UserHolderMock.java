@@ -24,7 +24,7 @@ import fi.vm.sade.oppija.lomake.service.UserHolder;
 public class UserHolderMock extends UserHolder {
 
 	private static final long serialVersionUID = 1956696173293019715L;
-	private User user;
+	private final User user;
 
     public UserHolderMock(String username) {
         this.user = new User(username);

@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.lomake.domain;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.ObjectCodec;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
@@ -27,15 +26,10 @@ import org.codehaus.jackson.map.JsonDeserializer;
 import java.io.IOException;
 import java.util.Date;
 
-/**
- * @author jukka
- * @version 9/11/1210:15 AM}
- * @since 1.1
- */
 public class ObjectIdDeserializer extends JsonDeserializer<ObjectId> {
 
     @Override
-    public ObjectId deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+    public ObjectId deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         final ObjectCodec codec = jsonParser.getCodec();
         final JsonNode treeNode = codec.readTree(jsonParser);
         final long time = treeNode.get("time").asLong();

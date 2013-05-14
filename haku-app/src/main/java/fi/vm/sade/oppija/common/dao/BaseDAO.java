@@ -24,4 +24,6 @@ public interface BaseDAO<T> {
     void update(T o, T n);
 
     void delete(T t);
+
+    void save(T t);
 }
