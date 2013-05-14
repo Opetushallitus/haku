@@ -91,7 +91,7 @@
             minLength: 1,
             source: function (request, response) {
                 $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + request.term, {
-                    asId: sortabletable_settings.applicationPeriodId,
+                    asId: '*', //sortabletable_settings.applicationPeriodId,
                     prerequisite: sortabletable_settings.tutkintoId,
                     vocational: sortabletable_settings.vocational
                 }, function (data) {
