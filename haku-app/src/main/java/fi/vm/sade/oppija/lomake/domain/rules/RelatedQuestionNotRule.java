@@ -38,8 +38,8 @@ public class RelatedQuestionNotRule extends RelatedQuestionRule {
     @Override
     public List<Element> getChildren(final Map<String, String> values) {
         boolean match = false;
-        for (String relatedElementId_ : getRelatedElementId()) {
-            final String value = values.get(relatedElementId_);
+        for (String relatedId : getRelatedElementId()) {
+            final String value = values.get(relatedId);
             if ((value == null && getShowImmediately()) || RegexRule.evaluate(value, getExpression())) {
                 match = true;
                 break;
