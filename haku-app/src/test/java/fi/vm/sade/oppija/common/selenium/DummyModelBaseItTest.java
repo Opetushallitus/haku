@@ -60,6 +60,11 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         driver.findElement(new By.ById(Yhteishaku2013.FORM_ID)).click();
     }
 
+    protected void navigateToPath(final String... pathSegments) {
+        Joiner joiner = Joiner.on("/").skipNulls();
+        driver.get(joiner.join(StringUtils.removeEnd(getBaseUrl(), "/"), "lomake", pathSegments));
+    }
+
     protected void select() {
         List<WebElement> elements = driver.findElements(new By.ByXPath("//select"));
         for (WebElement element : elements) {

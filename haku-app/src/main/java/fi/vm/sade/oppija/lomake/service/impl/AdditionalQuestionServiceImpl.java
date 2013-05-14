@@ -16,106 +16,40 @@
 
 package fi.vm.sade.oppija.lomake.service.impl;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
+import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
+import fi.vm.sade.oppija.lomake.service.FormService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.domain.FormId;
-import fi.vm.sade.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Theme;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
-import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
-import fi.vm.sade.oppija.lomake.service.FormService;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
  */
 @Service("additionalQuestionService")
 public class AdditionalQuestionServiceImpl implements AdditionalQuestionService {
-    
+
     public static final Logger LOGGER = LoggerFactory.getLogger(AdditionalQuestionServiceImpl.class);
 
     FormService formService;
-    ApplicationService applicationService;
 
     @Autowired
-    public AdditionalQuestionServiceImpl(@Qualifier("formServiceImpl") FormService formService,
-                                         @Qualifier("applicationServiceImpl") ApplicationService applicationService) {
+    public AdditionalQuestionServiceImpl(@Qualifier("formServiceImpl") FormService formService) {
         this.formService = formService;
-        this.applicationService = applicationService;
     }
 
     @Override
-    public Set<Question> findAdditionalQuestions(FormId formId, String phaseId, String themeId, String aoId,
-                                                 Integer educationDegree, String preferenceRowId, Boolean sora) {
-
-        Theme theme = findTheme(formId, phaseId, themeId);
-
-        Set<Question> additionalQuestions = new LinkedHashSet<Question>();
-
-        //LOGGER.debug("ADDIOTANL QUESTIONS {}, {}", new Object[]{theme, theme.getAdditionalQuestions()});
-        
-        if (theme == null || theme.getAdditionalQuestions() == null) {
-            return additionalQuestions;
-        }
-
-        if (preferenceRowId != null && !preferenceRowId.isEmpty()) {
-            PreferenceTable table = ElementUtil.findElementsByTypeAsList(theme, PreferenceTable.class).get(0);
-            PreferenceRow row = (PreferenceRow) table.getChildById(preferenceRowId);
-            if (row != null && educationDegree.equals(table.getDiscretionaryEducationDegree())) {
-                additionalQuestions.add(row.getDiscretionaryQuestion());
-            }
-            
-            if (sora) {
-                additionalQuestions.addAll(row.getSoraQuestion().getQuestions());
-            }
-        }
-
-        List<Question> questions = theme.getAdditionalQuestions().get(aoId);
-        if (questions != null && !questions.isEmpty()) {
-            additionalQuestions.addAll(questions);
-        }
-
-        return additionalQuestions;
-    }
-
-    @Override
-    public Question findDiscretionaryFollowUps(FormId formId, String phaseId, String themeId, String preferendeRowId) {
-        Theme theme = findTheme(formId, phaseId, themeId);
-
-        if (theme == null) {
-            return null;
-        }
-
-        PreferenceRow row = (PreferenceRow) theme.getChildById(preferendeRowId);
-
-        return row.getDiscretionaryQuestion().getFollowUp();
-    }
-
-    private Theme findTheme(FormId formId, String phaseId, String themeId) {
+    public List<Question> findAdditionalQuestions(final FormId formId, final String themeId, final String aoId) {
         Form form = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
+        Theme theme = (Theme) form.getChildById(themeId);
+        return theme.getAdditionalQuestions(aoId);
 
-        Theme theme = null;
-
-        Element phase = form.getPhase(phaseId);
-        for (Element e : phase.getChildren()) {
-            if (e.getId().equals(themeId)) {
-                theme = (Theme) e;
-                break;
-            }
-        }
-        return theme;
     }
-
 }

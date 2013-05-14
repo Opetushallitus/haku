@@ -57,7 +57,7 @@ public class PreferenceTable extends Titled {
                            @JsonProperty(value = "moveUpLabel") final String moveUpLabel,
                            @JsonProperty(value = "moveDownLabel") final String moveDownLabel,
                            @JsonProperty(value = "discretionaryEducationDegree") final int discretionaryEducationDegree
-                           ) {
+    ) {
         super(id, i18nText);
         this.moveUpLabel = moveUpLabel;
         this.moveDownLabel = moveDownLabel;

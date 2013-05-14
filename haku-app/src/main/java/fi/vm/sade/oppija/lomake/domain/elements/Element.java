@@ -98,7 +98,7 @@ public abstract class Element implements Serializable {
     protected final transient List<Validator> validators = new ArrayList<Validator>();
 
     protected final List<Element> children = new ArrayList<Element>();
-    
+
     protected Element popup;
 
 
@@ -142,11 +142,11 @@ public abstract class Element implements Serializable {
     public void setHelp(final I18nText help) {
         this.help = help;
     }
-    
+
     public Element getPopup() {
         return this.popup;
     }
-    
+
     public void setPopup(Popup popup) {
         this.popup = popup;
     }
@@ -156,6 +156,12 @@ public abstract class Element implements Serializable {
             this.children.add(child);
         }
         return this;
+    }
+
+    public void addAttributes(final Map<String, String> attributes) {
+        for (Map.Entry<String, String> attribute : attributes.entrySet()) {
+            addAttribute(attribute.getKey(), attribute.getValue());
+        }
     }
 
     public void addAttribute(final String key, final String value) {

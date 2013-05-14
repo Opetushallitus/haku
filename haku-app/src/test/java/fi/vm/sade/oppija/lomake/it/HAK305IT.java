@@ -116,7 +116,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
         driver.findElements(By.name("preference1-Harkinnanvarainen")).get(1).click();
-        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1 - harkinnanvarainen_jatko")));
+        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1-harkinnanvarainen_jatko")));
         followUpSelect.selectByIndex(0);
     }
 

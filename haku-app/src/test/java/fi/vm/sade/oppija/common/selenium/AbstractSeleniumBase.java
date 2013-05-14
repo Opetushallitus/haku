@@ -67,19 +67,6 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         adminResourceClient.updateModel(formModel);
     }
 
-    protected void printSource(String fileName) {
-        boolean debug = Boolean.parseBoolean(System.getProperty("debugTests", "false"));
-        if (!debug) {
-            return;
-        }
-        WebDriver driver = seleniumHelper.getDriver();
-        try {
-            FileUtils.write(new File("target/" + fileName + ".html"), driver.getPageSource());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     protected void screenshot(String filename) {
         boolean debug = Boolean.parseBoolean(System.getProperty("debugTests", "false"));
         if (!debug) {
@@ -106,6 +93,10 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         for (String id : ids) {
             driver.findElement(new By.ById(id));
         }
+    }
+
+    protected void findByXPath(final String xpath) {
+        seleniumHelper.getDriver().findElement(By.xpath(xpath));
     }
 
 }

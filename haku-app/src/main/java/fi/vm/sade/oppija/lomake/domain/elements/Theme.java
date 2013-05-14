@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
@@ -41,7 +42,13 @@ public class Theme extends Titled {
         }
     }
 
-    public Map<String, List<Question>> getAdditionalQuestions() {
-        return additionalQuestions;
+    public List<Question> getAdditionalQuestions(final String aoId) {
+        List<Question> questions = additionalQuestions.get(aoId);
+        if (questions != null) {
+            return questions;
+        } else {
+            return ImmutableList.of();
+        }
+
     }
 }
