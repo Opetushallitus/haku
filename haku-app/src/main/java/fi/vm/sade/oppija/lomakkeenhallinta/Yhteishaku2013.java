@@ -142,8 +142,8 @@ public class Yhteishaku2013 {
                     .addChild(arvosanatTheme).addChild(kielitaitokysymyksetTheme)
                     .addChild(tyokokemusRyhma).addChild(lupatiedotRyhma);
             yhteenvetoRyhma.setHelp(createI18NForm("form.esikatselu.help"));
-        } catch (Throwable t) {
-            throw new RuntimeException(Yhteishaku2013.class.getCanonicalName() + " init failed", t);
+        } catch (Exception e) {
+            throw new RuntimeException(Yhteishaku2013.class.getCanonicalName() + " init failed", e);
         }
 
     }
@@ -268,8 +268,8 @@ public class Yhteishaku2013 {
 
         SocialSecurityNumber socialSecurityNumber =
                 new SocialSecurityNumber("ssn_question", createI18NForm("form.henkilotiedot.hetu"),
-                sukupuoli.getI18nText(), sukupuoli.getOptions().get(0),
-                sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilotunnus);
+                        sukupuoli.getI18nText(), sukupuoli.getOptions().get(0),
+                        sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilotunnus);
 
         RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FIN$", true);
         hetuRule.addChild(socialSecurityNumber);
