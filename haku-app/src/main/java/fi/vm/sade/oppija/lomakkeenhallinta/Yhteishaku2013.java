@@ -930,14 +930,11 @@ public class Yhteishaku2013 {
                 + OSITTAIN_YKSILOLLISTETTY + "|"
                 + ERITYISOPETUKSEN_YKSILOLLISTETTY + "|"
                 + YKSILOLLISTETTY + ")", false);
-        RelatedQuestionRule lukioKysymyksetRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(),
-                "(" + YLIOPPILAS + ")", false);
 
         RelatedQuestionRule paattotodistusvuosiPeruskouluRule = new RelatedQuestionRule("rule8",
                 paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$", false);
 
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu);
-        // relatedQuestionRule.addChild(tutkinnonOpetuskieli);
         pkKysymyksetRule.addChild(suorittanutGroup);
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskouluRule);
 
