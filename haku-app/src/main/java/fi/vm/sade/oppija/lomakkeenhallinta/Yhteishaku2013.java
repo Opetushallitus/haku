@@ -194,7 +194,7 @@ public class Yhteishaku2013 {
         sora2.setInline(false);
 
         // popup ensimmäistä sora-kysymystä varten
-        sora1.setPopup(new Popup(sora1.getId() + "-popup", createI18NForm("form.hakutoiveet.terveydentilavaatimukset.otsikko")));
+        sora1.setPopup(new Popup("sora-popup", createI18NForm("form.hakutoiveet.terveydentilavaatimukset.otsikko")));
 
         sora1.addAttribute("required", "required");
         sora2.addAttribute("required", "required");
