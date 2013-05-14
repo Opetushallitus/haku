@@ -28,7 +28,7 @@ public abstract class Question extends Titled {
     protected Question(@JsonProperty(value = "id") final String id,
                        @JsonProperty(value = "i18nText") I18nText i18nText) {
         super(id, i18nText);
-        addAttribute("name", id);
+        super.addAttribute("name", id);
     }
 
     public boolean isInline() {

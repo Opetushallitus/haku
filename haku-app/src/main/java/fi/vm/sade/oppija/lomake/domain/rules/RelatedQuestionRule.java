@@ -68,8 +68,8 @@ public class RelatedQuestionRule extends Element {
 
     @Override
     public List<Element> getChildren(final Map<String, String> values) {
-        for (String relatedElementId_ : relatedElementId) {
-            final String value = values.get(relatedElementId_);
+        for (String relatedElemId : relatedElementId) {
+            final String value = values.get(relatedElemId);
             if ((value == null && showImmediately) || RegexRule.evaluate(value, expression)) {
                 return this.children;
             }

@@ -67,9 +67,9 @@ public class Yhteishaku2013 {
     public static final String TUTKINTO_PERUSKOULU = "tutkinto1";
 
     private final ApplicationPeriod applicationPeriod;
-    public static final String mobilePhonePattern =
+    public static final String MOBILE_PHONE_PATTERN =
             "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
-    public static final String phonePattern =
+    public static final String PHONE_PATTERN =
             "^$|^\\+?[0-9\\-\\s]+$";
 
     private static final String NOT_FI = "^((?!FIN)[A-Z]{3})$";
@@ -334,7 +334,7 @@ public class Yhteishaku2013 {
                 createI18NForm("form.henkilotiedot.matkapuhelinnumero"));
         puhelinnumero1.setHelp(createI18NForm("form.henkilotiedot.matkapuhelinnumero.help"));
         puhelinnumero1.addAttribute("size", "30");
-        puhelinnumero1.addAttribute("pattern", mobilePhonePattern);
+        puhelinnumero1.addAttribute("pattern", MOBILE_PHONE_PATTERN);
         puhelinnumero1.setVerboseHelp(getVerboseHelp());
         puhelinnumero1.setInline(true);
         henkilotiedotRyhma.addChild(puhelinnumero1);
@@ -345,7 +345,7 @@ public class Yhteishaku2013 {
             TextQuestion extranumero = new TextQuestion("matkapuhelinnumero" + i,
                     createI18NForm("form.henkilotiedot.puhelinnumero"));
             extranumero.addAttribute("size", "30");
-            extranumero.addAttribute("pattern", phonePattern);
+            extranumero.addAttribute("pattern", PHONE_PATTERN);
             extranumero.setInline(true);
 
             AddElementRule extranumeroRule = new AddElementRule("addPuhelinnumero" + i + "Rule", prevNum.getId(),

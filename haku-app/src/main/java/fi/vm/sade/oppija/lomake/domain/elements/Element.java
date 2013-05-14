@@ -157,12 +157,6 @@ public abstract class Element implements Serializable {
         return this;
     }
 
-    public void addAttributes(final Map<String, String> attributes) {
-        for (Map.Entry<String, String> attribute : attributes.entrySet()) {
-            addAttribute(attribute.getKey(), attribute.getValue());
-        }
-    }
-
     public void addAttribute(final String key, final String value) {
         checkNotNull(key, "Attribute's key cannot be null");
         checkNotNull(value, "Attribute's value cannot be null");
