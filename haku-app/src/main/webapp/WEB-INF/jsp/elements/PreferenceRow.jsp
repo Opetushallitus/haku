@@ -79,17 +79,6 @@
         <span><haku:i18nText value="${sortableItem.childLONameListLabel}"/>:&nbsp;</span>
         <span id="${childLONamesId}"></span>
     </div>
-    <div id="${additionalQuestionsId}" class="form-row">
-        <%--<c:if test="${categoryData[sortableItem.educationDegreeId] eq sortableItem.discretionaryEducationDegree}">--%>
-            <%--<c:set var="element" value="${sortableItem.discretionaryQuestion}" scope="request"/>--%>
-            <%--<jsp:include page="./${element.type}.jsp"/>--%>
-        <%--</c:if>--%>
-        <%--<c:if test="${true}">--%>
-        <%--<c:forEach var="question" items="${sortableItem.soraQuestion.questions}">--%>
-        <%--<c:set var="element" value="${question}" scope="request"/>--%>
-        <%--<jsp:include page="./${element.type}.jsp"/>--%>
-        <%--</c:forEach>--%>
-        <%--</c:if>--%>
-    </div>
+
     <haku:viewChilds element="${sortableItem}"/>
 </div>

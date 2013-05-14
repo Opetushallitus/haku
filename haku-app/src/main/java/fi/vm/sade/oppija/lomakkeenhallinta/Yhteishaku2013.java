@@ -65,6 +65,7 @@ public class Yhteishaku2013 {
     public static final String TUTKINTO_KESKEYTYNYT_RULE = "tutkinto_7_rule";
     public static final String TUTKINTO_ULKOMAILLA_RULE = "tutkinto_0_rule";
     public static final String TUTKINTO_PERUSKOULU = "tutkinto1";
+    public static final int AGE_WORK_EXPERIENCE = 16;
 
     private final ApplicationPeriod applicationPeriod;
     public static final String MOBILE_PHONE_PATTERN =
@@ -75,7 +76,6 @@ public class Yhteishaku2013 {
     private static final String NOT_FI = "^((?!FIN)[A-Z]{3})$";
 
     private final KoodistoService koodistoService;
-    private List<Option> gradeRanges;
 
     @Autowired // NOSONAR
     public Yhteishaku2013(final KoodistoService koodistoService) { // NOSONAR
@@ -124,7 +124,7 @@ public class Yhteishaku2013 {
             Phase lisatiedot = new Phase("lisatiedot", createI18NForm("form.lisatiedot.otsikko"), false);
             Calendar cal = GregorianCalendar.getInstance();
             cal.setTime(applicationPeriod.getStarts());
-            cal.roll(Calendar.YEAR, -16);
+            cal.roll(Calendar.YEAR, -AGE_WORK_EXPERIENCE);
             WorkExperienceTheme tyokokemusRyhma = new WorkExperienceTheme("tyokokemusGrp",
                     createI18NForm("form.lisatiedot.tyokokemus"), null, "32", cal.getTime());
             Theme lupatiedotRyhma = new Theme("lupatiedotGrp", createI18NForm("form.lisatiedot.lupatiedot"), null);
@@ -619,8 +619,7 @@ public class Yhteishaku2013 {
     }
 
     private List<Option> getGradeRanges(boolean setDefault) {
-        this.gradeRanges = koodistoService.getGradeRanges();
-        List<Option> gradeRanges = this.gradeRanges;
+        List<Option> gradeRanges = koodistoService.getGradeRanges();
         if (setDefault) {
             setDefaultOption("Ei arvosanaa", gradeRanges);
         }
@@ -736,7 +735,7 @@ public class Yhteishaku2013 {
                 .setHelp(createI18NForm("form.hakutoiveet.help"));
 
         PreferenceTable preferenceTable =
-                new PreferenceTable("preferencelist", createI18NForm("form.hakutoiveet.otsikko"), "Ylös", "Alas", 32);
+                new PreferenceTable("preferencelist", createI18NForm("form.hakutoiveet.otsikko"), "Ylös", "Alas");
 
         PreferenceRow pr1 = createI18NPreferenceRow("preference1", "1");
         pr1.addAttribute("required", "required");
