@@ -1089,4 +1089,10 @@ public class Yhteishaku2013 {
             }
         }
     }
+
+    private void setRequiredInlineAndVerboseHelp(Question question) {
+        question.addAttribute("required", "required");
+        question.setVerboseHelp(getVerboseHelp());
+        question.setInline(true);
+    }
 }

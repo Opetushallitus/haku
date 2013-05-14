@@ -59,7 +59,7 @@
 </table>
 
 <!-- terveydentilavaatimukset -->
-<div class="popover-wrapper" id="terveydentilavaatimukset-popup">
+<div class="popover-wrapper" id="sora-popup">
     <span class="popover-close">
         <fmt:message key="form.popup.sulje" />
     </span>
@@ -84,9 +84,6 @@
         </div>
     </div>
 </div>
-<!--
-<a href="#" data-po-show="terveydentilavaatimukset-popup">open</a>
--->
 
 <script type="text/javascript">
     var sortabletable_settings = {

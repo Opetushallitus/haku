@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -83,7 +84,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         driver.findElement(new By.ById("osallistunut_false")).click();
 
-        clickNextPhase(driver);
+        nextPhase();
         //Skip toimipiste
         setValue("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
