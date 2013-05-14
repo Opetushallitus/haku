@@ -691,8 +691,7 @@ public class Yhteishaku2013 {
         column3.addChild(child1);
         GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion("optional-common-" + subjectRow.getId(), gradeRangesSecond, true);
         gradeGridOptionQuestion.addAttribute("required", "required");
-        GradeGridOptionQuestion child = gradeGridOptionQuestion;
-        column4.addChild(child);
+        column4.addChild(gradeGridOptionQuestion);
         if (column5 != null) {
             GradeGridOptionQuestion child2 = new GradeGridOptionQuestion("second-optional-common-" + subjectRow.getId(), gradeRangesSecond, true);
             child2.addAttribute("required", "required");
