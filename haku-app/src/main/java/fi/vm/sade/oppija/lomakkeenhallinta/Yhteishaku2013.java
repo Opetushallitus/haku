@@ -191,7 +191,8 @@ public class Yhteishaku2013 {
     public static Element createSoraQuestions(final String index) {
         // sora-kysymykset
 
-        RelatedQuestionRule hasSora = new RelatedQuestionRule(index + "_sora_rule", ImmutableList.of(index + "-Koulutus-id-sora"), Boolean.TRUE.toString(), false);
+        RelatedQuestionRule hasSora = new RelatedQuestionRule(index + "_sora_rule",
+                ImmutableList.of(index + "-Koulutus-id-sora"), Boolean.TRUE.toString().toLowerCase(), false);
 
         Radio sora1 = new Radio(index + "_sora_question_1", createI18NForm("form.sora.terveys"));
         sora1.addOption("_sora_q1_option_1", createI18NForm("form.yleinen.ei"), "q1_option_1");
