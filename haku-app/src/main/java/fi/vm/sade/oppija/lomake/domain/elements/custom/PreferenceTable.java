@@ -48,20 +48,16 @@ public class PreferenceTable extends Titled {
     private String moveUpLabel;
     // label text for down button
     private String moveDownLabel;
-    // the educationDegree that is required from an application option so that the discretionary
-    // question gets asked
-    private int discretionaryEducationDegree;
+
 
     public PreferenceTable(@JsonProperty(value = "id") final String id,
                            @JsonProperty(value = "i18nText") final I18nText i18nText,
                            @JsonProperty(value = "moveUpLabel") final String moveUpLabel,
-                           @JsonProperty(value = "moveDownLabel") final String moveDownLabel,
-                           @JsonProperty(value = "discretionaryEducationDegree") final int discretionaryEducationDegree
+                           @JsonProperty(value = "moveDownLabel") final String moveDownLabel
     ) {
         super(id, i18nText);
         this.moveUpLabel = moveUpLabel;
         this.moveDownLabel = moveDownLabel;
-        this.discretionaryEducationDegree = discretionaryEducationDegree;
     }
 
     public String getMoveUpLabel() {
@@ -70,10 +66,6 @@ public class PreferenceTable extends Titled {
 
     public String getMoveDownLabel() {
         return moveDownLabel;
-    }
-
-    public int getDiscretionaryEducationDegree() {
-        return discretionaryEducationDegree;
     }
 
     @Override
