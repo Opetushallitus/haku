@@ -199,7 +199,7 @@
         "lisatiedot" : {
             "asiointikieli" : "suomi",
             "lupa_lupaSms" : "lupaSms",
-            "tyokokemuskuukaudet" : "5",
+            "tyokokemuskuukaudet" : "5"
         }
     },
     "oid" : "1.2.3.4.5.00000020006",

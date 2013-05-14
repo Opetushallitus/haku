@@ -66,12 +66,12 @@ public class ElementTreeValidatorTest {
 
     @Test
     public void testValidateAsuinmaaSV() throws Exception {
-        testAsuinmaa("SV", 1);
+        testAsuinmaa("SWE", 1);
     }
 
     @Test
     public void testValidateAsuinmaaFI() throws Exception {
-        testAsuinmaa("FI", 3);
+        testAsuinmaa("FIN", 3);
     }
 
     private void testAsuinmaa(final String asuinmaa, final int errorCount) {
@@ -87,7 +87,7 @@ public class ElementTreeValidatorTest {
         values.put("Etunimet", "Mika Ville");
         values.put("Sukunimi", "Rajapaju");
         values.put("Kutsumanimi", "Mika");
-        values.put("kansalaisuus", "FI");
+        values.put("kansalaisuus", "FIN");
         values.put("Henkilotunnus", "110293-906X");
         values.put("Sukupuoli", "n");
         values.put("aidinkieli", "FI");

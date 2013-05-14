@@ -30,7 +30,7 @@ public class ValinaperusteetServiceMockImplTest {
     @Test
     public void testBuildInData() throws IOException {
         ValintaperusteetServiceMockImpl mock = new ValintaperusteetServiceMockImpl();
-        AdditionalQuestions aq = mock.retrieveAdditionalQuestions(Lists.newArrayList(new String[] { "873" }));
+        AdditionalQuestions aq = mock.retrieveAdditionalQuestions(Lists.newArrayList("873"));
         Assert.assertEquals(2, aq.getQuestistionsForHakukohde("873").size());
         Assert.assertEquals(0, aq.getQuestistionsForHakukohde("874").size());
     }

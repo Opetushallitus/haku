@@ -66,19 +66,6 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         adminResourceClient.updateModel(formModel);
     }
 
-    protected void printSource(String fileName) {
-        boolean debug = Boolean.parseBoolean(System.getProperty("debugTests", "false"));
-        if (!debug) {
-            return;
-        }
-        WebDriver driver = seleniumHelper.getDriver();
-        try {
-            FileUtils.write(new File("target/" + fileName + ".html"), driver.getPageSource());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     protected void screenshot(String filename) {
         boolean debug = Boolean.parseBoolean(System.getProperty("debugTests", "false"));
         if (!debug) {

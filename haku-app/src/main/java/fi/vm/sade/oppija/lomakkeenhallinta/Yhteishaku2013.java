@@ -51,19 +51,28 @@ public class Yhteishaku2013 {
 
     public static final String ASID = "1.2.246.562.5.50476818906";
     public static final String AOID_ADDITIONAL_QUESTION = "1.2.246.562.14.71344129359";
-    public static final String TUTKINTO7_NOTIFICATION_ID = "tutkinto7-notification";
-    public static final String TUTKINTO5_NOTIFICATION_ID = "tutkinto5-notification";
+    public static final String TUTKINTO_ULKOMAILLA_NOTIFICATION_ID = "tutkinto7-notification";
+    public static final String TUTKINTO_KESKEYTNYT_NOTIFICATION_ID = "tutkinto5-notification";
     public static final String AIDINKIELI_ID = "aidinkieli";
     public static final String FORM_ID = "yhteishaku";
+    public static final String TUTKINTO_OSITTAIN_YKSILOLLISTETTY = "tutkinto2";
+    public static final String TUTKINTO_ERITYISOPETUKSEN_YKSILOLLISTETTY = "tutkinto3";
+    public static final String TUTKINTO_YKSILOLLISTETTY = "tutkinto6";
+    public static final String TUTKINTO_KESKEYTYNYT = "tutkinto7";
+    public static final String TUTKINTO_YLIOPPILAS = "tutkinto9";
+    public static final String TUTKINTO_ULKOMAINEN_TUTKINTO = "tutkinto0";
+    public static final String TUTKINTO_KESKEYTYNYT_RULE = "tutkinto_7_rule";
+    public static final String TUTKINTO_ULKOMAILLA_RULE = "tutkinto_0_rule";
+    public static final String TUTKINTO_PERUSKOULU = "tutkinto1";
 
     private final ApplicationPeriod applicationPeriod;
     public static String mobilePhonePattern =
             "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
     public static String phonePattern =
-            "^$|^[0-9\\-\\s]+$";
+            "^$|^\\+?[0-9\\-\\s]+$";
 
-    private static final String NOT_FI = "^((?!FI)[A-Z]{2})$";
-    private static final String NOT_SV = "^((?!SV)[A-Z]{2})$";
+    private static final String NOT_FI = "^((?!FIN)[A-Z]{3})$";
+    private static final String NOT_SV = "^((?!SWE)[A-Z]{3})$";
 
     private final KoodistoService koodistoService;
     private List<Option> gradeRanges;
@@ -205,7 +214,7 @@ public class Yhteishaku2013 {
         // Kansalaisuus, hetu ja sukupuoli suomalaisille
         DropdownSelect kansalaisuus = new DropdownSelect("kansalaisuus", createI18NForm("form.henkilotiedot.kansalaisuus"), null);
         kansalaisuus.addOptions(koodistoService.getNationalities());
-        setDefaultOption("FI", kansalaisuus.getOptions());
+        setDefaultOption("FIN", kansalaisuus.getOptions());
         kansalaisuus.addAttribute("placeholder", "Valitse kansalaisuus");
         kansalaisuus.addAttribute("required", "required");
         kansalaisuus.setHelp(createI18NForm("form.henkilotiedot.kansalaisuus.help"));
@@ -233,7 +242,7 @@ public class Yhteishaku2013 {
                 sukupuoli.getI18nText(), sukupuoli.getOptions().get(0),
                 sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilotunnus);
 
-        RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FI$", true);
+        RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FIN$", true);
         hetuRule.addChild(socialSecurityNumber);
         henkilotiedotRyhma.addChild(hetuRule);
 
@@ -327,13 +336,13 @@ public class Yhteishaku2013 {
         // Asuinmaa, osoite
         DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", createI18NForm("form.henkilotiedot.asuinmaa"), null);
         asuinmaa.addOptions(koodistoService.getCountries());
-        setDefaultOption("FI", asuinmaa.getOptions());
+        setDefaultOption("FIN", asuinmaa.getOptions());
         asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
         asuinmaa.addAttribute("required", "required");
         asuinmaa.setVerboseHelp(getVerboseHelp());
         asuinmaa.setInline(true);
 
-        RelatedQuestionRule asuinmaaFI = new RelatedQuestionRule("rule1", asuinmaa.getId(), "FI", true);
+        RelatedQuestionRule asuinmaaFI = new RelatedQuestionRule("rule1", asuinmaa.getId(), "FIN", true);
         Question lahiosoite = createRequiredTextQuestion("lahiosoite", "form.henkilotiedot.lahiosoite", "40");
         lahiosoite.setInline(true);
         asuinmaaFI.addChild(lahiosoite);
@@ -790,57 +799,56 @@ public class Yhteishaku2013 {
     public Radio createKoulutustaustaRadio() { //NOSONAR
         Radio millatutkinnolla = new Radio("millatutkinnolla",
                 createI18NForm("form.koulutustausta.millaTutkinnolla"));
-        millatutkinnolla.addOption("tutkinto1", createI18NForm("form.koulutustausta.peruskoulu"), PERUSKOULU,
+        millatutkinnolla.addOption(TUTKINTO_PERUSKOULU, createI18NForm("form.koulutustausta.peruskoulu"), PERUSKOULU,
                 createI18NForm("form.koulutustausta.peruskoulu.help"));
         millatutkinnolla
-                .addOption("tutkinto2",
+                .addOption(TUTKINTO_OSITTAIN_YKSILOLLISTETTY,
                         createI18NForm("form.koulutustausta.osittainYksilollistetty"),
                         OSITTAIN_YKSILOLLISTETTY,
                         createI18NForm("form.koulutustausta.osittainYksilollistetty.help"));
         millatutkinnolla
                 .addOption(
-                        "tutkinto3",
+                        TUTKINTO_ERITYISOPETUKSEN_YKSILOLLISTETTY,
                         createI18NForm("form.koulutustausta.erityisopetuksenYksilollistetty"),
                         ERITYISOPETUKSEN_YKSILOLLISTETTY,
                         createI18NForm("form.koulutustausta.erityisopetuksenYksilollistetty.help"));
         millatutkinnolla
                 .addOption(
-                        "tutkinto4",
+                        TUTKINTO_YKSILOLLISTETTY,
                         createI18NForm("form.koulutustausta.yksilollistetty"),
                         YKSILOLLISTETTY,
                         createI18NForm("form.koulutustausta.yksilollistetty.help"));
-        millatutkinnolla.addOption("tutkinto5",
+        millatutkinnolla.addOption(TUTKINTO_KESKEYTYNYT,
                 createI18NForm("form.koulutustausta.keskeytynyt"),
                 KESKEYTYNYT,
                 createI18NForm("form.koulutustausta.keskeytynyt"));
         millatutkinnolla
                 .addOption(
-                        "tutkinto6",
+                        TUTKINTO_YLIOPPILAS,
                         createI18NForm("form.koulutustausta.lukio"),
                         YLIOPPILAS,
                         createI18NForm("form.koulutustausta.lukio.help"));
-        millatutkinnolla.addOption("tutkinto7", createI18NForm("form.koulutustausta.ulkomailla"), ULKOMAINEN_TUTKINTO,
+        millatutkinnolla.addOption(TUTKINTO_ULKOMAINEN_TUTKINTO, createI18NForm("form.koulutustausta.ulkomailla"), ULKOMAINEN_TUTKINTO,
                 createI18NForm("form.koulutustausta.ulkomailla.help"));
         millatutkinnolla.setVerboseHelp(getVerboseHelp());
         millatutkinnolla.addAttribute("required", "required");
 
-        Notification tutkinto7Notification = new Notification(TUTKINTO7_NOTIFICATION_ID,
+        Notification tutkintoUlkomaillaNotification = new Notification(TUTKINTO_ULKOMAILLA_NOTIFICATION_ID,
                 createI18NForm("form.koulutustausta.ulkomailla.huom"),
                 Notification.NotificationType.INFO);
 
-        Notification tutkinto5Notification = new Notification(TUTKINTO5_NOTIFICATION_ID,
+        Notification tutkintoKeskeytynytNotification = new Notification(TUTKINTO_KESKEYTNYT_NOTIFICATION_ID,
                 createI18NForm("form.koulutustausta.keskeytynyt.huom"),
                 Notification.NotificationType.INFO);
 
-
-        RelatedQuestionRule keskeytynytRule = new RelatedQuestionRule("tutkinto5-rule",
+        RelatedQuestionRule keskeytynytRule = new RelatedQuestionRule(TUTKINTO_KESKEYTYNYT_RULE,
                 millatutkinnolla.getId(), KESKEYTYNYT, false);
 
-        RelatedQuestionRule ulkomaillaSuoritettuTutkintoRule = new RelatedQuestionRule("tutkinto7-rule",
+        RelatedQuestionRule ulkomaillaSuoritettuTutkintoRule = new RelatedQuestionRule(TUTKINTO_ULKOMAILLA_RULE,
                 millatutkinnolla.getId(), ULKOMAINEN_TUTKINTO, false);
 
-        ulkomaillaSuoritettuTutkintoRule.addChild(tutkinto7Notification);
-        keskeytynytRule.addChild(tutkinto5Notification);
+        ulkomaillaSuoritettuTutkintoRule.addChild(tutkintoUlkomaillaNotification);
+        keskeytynytRule.addChild(tutkintoKeskeytynytNotification);
         millatutkinnolla.addChild(ulkomaillaSuoritettuTutkintoRule);
         millatutkinnolla.addChild(keskeytynytRule);
 
@@ -890,20 +898,21 @@ public class Yhteishaku2013 {
          * ); tutkinnonOpetuskieli.setVerboseHelp(getVerboseHelp());
          */
 
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "("
+        RelatedQuestionRule pkKysymyksetRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "("
                 + PERUSKOULU + "|"
                 + OSITTAIN_YKSILOLLISTETTY + "|"
                 + ERITYISOPETUKSEN_YKSILOLLISTETTY + "|"
-                + YKSILOLLISTETTY + "|"
-                + YLIOPPILAS + ")", false);
+                + YKSILOLLISTETTY + ")", false);
+        RelatedQuestionRule lukioKysymyksetRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(),
+                "(" + YLIOPPILAS + ")", false);
 
         RelatedQuestionRule paattotodistusvuosiPeruskouluRule = new RelatedQuestionRule("rule8",
                 paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$", false);
 
-        relatedQuestionRule.addChild(paattotodistusvuosiPeruskoulu);
+        pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu);
         // relatedQuestionRule.addChild(tutkinnonOpetuskieli);
-        relatedQuestionRule.addChild(suorittanutGroup);
-        relatedQuestionRule.addChild(paattotodistusvuosiPeruskouluRule);
+        pkKysymyksetRule.addChild(suorittanutGroup);
+        pkKysymyksetRule.addChild(paattotodistusvuosiPeruskouluRule);
 
         TextQuestion lukioPaattotodistusVuosi = new TextQuestion("lukioPaattotodistusVuosi",
                 createI18NForm("form.koulutustausta.lukio.paattotodistusvuosi"));
@@ -931,6 +940,7 @@ public class Yhteishaku2013 {
         ylioppilastutkinto.addOption("rp", createI18NForm("form.koulutustausta.lukio.yotutkinto.rp"), "rp");
         ylioppilastutkinto.addAttribute("required", "required");
         ylioppilastutkinto.setInline(true);
+        setDefaultOption("fi", ylioppilastutkinto.getOptions());
 
         Group lukioGroup = new Group("lukioGroup", createI18NForm("form.koulutustausta.lukio.suoritus"));
         lukioGroup.addChild(lukioPaattotodistusVuosi);
@@ -941,7 +951,7 @@ public class Yhteishaku2013 {
         lukioRule.addChild(lukioGroup);
 
         millatutkinnolla.addChild(lukioRule);
-        millatutkinnolla.addChild(relatedQuestionRule);
+        millatutkinnolla.addChild(pkKysymyksetRule);
 
         Radio suorittanutAmmatillisenTutkinnon = new Radio(
                 "ammatillinenTutkintoSuoritettu",
@@ -987,7 +997,7 @@ public class Yhteishaku2013 {
         perusopetuksenKieli.addAttribute("required", "required");
         perusopetuksenKieli.setVerboseHelp(getVerboseHelp());
         perusopetuksenKieli.setHelp(createI18NForm("form.henkilotiedot.aidinkieli.help"));
-        relatedQuestionRule.addChild(perusopetuksenKieli);
+        pkKysymyksetRule.addChild(perusopetuksenKieli);
         return millatutkinnolla;
     }
 

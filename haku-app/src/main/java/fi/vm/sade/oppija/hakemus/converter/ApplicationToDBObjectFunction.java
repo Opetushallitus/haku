@@ -15,15 +15,14 @@
  */
 package fi.vm.sade.oppija.hakemus.converter;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-
+import com.google.common.base.Function;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
+import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
+import fi.vm.sade.oppija.lomake.service.EncrypterService;
+import fi.vm.sade.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.slf4j.Logger;
@@ -32,15 +31,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Function;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
-import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
-import fi.vm.sade.oppija.lomake.service.EncrypterService;
-import fi.vm.sade.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 /**
  * @author jukka
@@ -85,7 +83,7 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
         LOGGER.debug(JSON.serialize(basicDBObject));
         return basicDBObject;
     }
-    
+
     private String ssnToDateOfBirth(String ssn) {
         Pattern ssnPattern = Pattern.compile(SocialSecurityNumberFieldValidator.SOCIAL_SECURITY_NUMBER_PATTERN);
         if (isEmpty(ssn) || !ssnPattern.matcher(ssn).matches()) {
@@ -101,7 +99,7 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
 
         String day = ssn.substring(0, 2); // NOSONAR
         String month = ssn.substring(2, 4); // NOSONAR
-        String year = Integer.toString((centuries.get(ssn.substring(6, 7)) + // NOSONAR 
+        String year = Integer.toString((centuries.get(ssn.substring(6, 7)) + // NOSONAR
                 Integer.valueOf(ssn.substring(4, 6)))); // NOSONAR
         String dob = day + "." + month + "." + year;
         try {

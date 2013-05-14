@@ -1,5 +1,4 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
@@ -18,7 +17,6 @@
   ~ European Union Public Licence for more details.
   --%>
 
-<fmt:setBundle basename="messages"/>
 <tr>
     <th></th>
     <th colspan="2"><fmt:message key="lomake.component.gradegrid.gradesTitle"/></th>

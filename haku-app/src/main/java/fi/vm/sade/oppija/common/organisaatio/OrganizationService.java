@@ -15,7 +15,6 @@
  */
 package fi.vm.sade.oppija.common.organisaatio;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface OrganizationService {
@@ -26,7 +25,6 @@ public interface OrganizationService {
      *
      * @param criteria
      * @return
-     * @throws java.io.IOException
      */
-    List<Organization> search(SearchCriteria criteria) throws IOException;
+    List<Organization> search(SearchCriteria criteria);
 }

@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -42,7 +41,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public List<Organization> search(final SearchCriteria criteria) throws IOException {
+    public List<Organization> search(final SearchCriteria criteria) {
 
         final OrganisaatioSearchCriteriaDTO criteriaDTO = new OrganisaatioSearchCriteriaDTO();
         criteriaDTO.setMaxResults(MAX_RESULTS);

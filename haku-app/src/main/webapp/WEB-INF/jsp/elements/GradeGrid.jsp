@@ -1,6 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -17,7 +16,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<fmt:setBundle basename="messages"/>
 <table id="gradegrid-table" class="applicant-grades">
     <thead>
     <tr>

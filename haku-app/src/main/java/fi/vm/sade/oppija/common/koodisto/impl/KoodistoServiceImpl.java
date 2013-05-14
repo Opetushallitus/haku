@@ -32,6 +32,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -46,8 +49,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_GRADE_RANGE = "arvosanat";
     public static final String CODE_LEARNING_INSTITUTION_TYPES = "oppilaitostyyppi";
     public static final String CODE_ORGANIZATION_TYPES = "organisaatiotyyppi";
-    //    public static final String CODE_COUNTRIES = "maatjavaltiot1";
-    public static final String CODE_COUNTRIES = "maatjavaltiottmp";
+    public static final String CODE_COUNTRIES = "maatjavaltiot1";
     public static final String CODE_NATIONALITIES = CODE_COUNTRIES;
     public static final String CODE_LANGUAGES = "kieli";
     public static final String CODE_MUNICIPALITY = "kunta";
@@ -80,10 +82,23 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getGradeRanges() {
+        // Sorting grades is tricky
+        ArrayList<KoodiType> grades = new ArrayList(getKoodiTypes(CODE_GRADE_RANGE));
+        Collections.sort(grades, new Comparator<KoodiType>() {
+            @Override
+            public int compare(KoodiType o1, KoodiType o2) {
+                String k1 = o1.getKoodiArvo();
+                String k2 = o2.getKoodiArvo();
+                if (k1.length() != k2.length()) {
+                    return k1.length() - k2.length();
+                }
+                return k1.compareTo(k2);
+            }
+        });
         return ImmutableList.copyOf(
                 Lists.reverse(
                         Lists.transform(
-                                getKoodiTypes(CODE_GRADE_RANGE),
+                                grades,
                                 new KoodiTypeToOptionFunction())));
     }
 

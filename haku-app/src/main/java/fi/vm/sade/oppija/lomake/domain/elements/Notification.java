@@ -41,7 +41,7 @@ public class Notification extends Titled {
             return type;
         }
 
-    };
+    }
 
 
     private NotificationType notificationType;

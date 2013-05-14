@@ -101,7 +101,7 @@ public class OrganizationResource {
                                                 final boolean includePassive,
                                                 final boolean includePlanned) throws IOException {
         LOGGER.debug("getOrganizations {} {} {} {}",
-                new Object[]{searchString, organizationType, learningInstitutionType, includePassive, includePlanned});
+                searchString, organizationType, learningInstitutionType, includePassive, includePlanned);
         SearchCriteria criteria = new SearchCriteria();
         criteria.setSearchString(searchString);
         criteria.setOrganizationType(organizationType);

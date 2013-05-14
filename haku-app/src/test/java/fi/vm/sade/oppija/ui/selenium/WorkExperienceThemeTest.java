@@ -64,7 +64,7 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
         setValue("Sähköposti", "aku.ankka@ankkalinna.al");
         setValue("matkapuhelinnumero1", "0501000100");
         setValue("aidinkieli", "FI");
-        setValue("asuinmaa", "FI");
+        setValue("asuinmaa", "FIN");
         setValue("kotikunta", "jalasjarvi");
         setValue("lahiosoite", "Katu 1");
         setValue("Postinumero", "00100");

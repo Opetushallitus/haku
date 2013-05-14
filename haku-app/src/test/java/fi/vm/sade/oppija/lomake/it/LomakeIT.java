@@ -22,8 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -36,7 +34,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("Sukunimi", "Ankka");
         setValue("Etunimet", "Aku Kalle");
         setValue("Kutsumanimi", "A");
-        setValue("Henkilotunnus", "150520-111E");
+        setValue("Henkilotunnus", "010113-668B");
         setValue("Sähköposti", "aku.ankka@ankkalinna.al");
         setValue("matkapuhelinnumero1", "0501000100");
         setValue("aidinkieli", "FI");
@@ -56,7 +54,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         findByClassName("notification");
 
-        setValue("asuinmaa", "FI");
+        setValue("asuinmaa", "FIN");
         setValue("kotikunta", "jalasjarvi");
 
         screenshot("postinumero_it");
@@ -68,26 +66,21 @@ public class LomakeIT extends DummyModelBaseItTest {
         nextPhase();
 
         screenshot("hak123");
-        testHAK123AandHAK124(driver);
+        testHAK123AandHAK124();
 
-        findByIdAndClick("millatutkinnolla_tutkinto1");
+        findByIdAndClick("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_PERUSKOULU);
 
         findById("paattotodistusvuosi_peruskoulu");
         selenium.typeKeys("paattotodistusvuosi_peruskoulu", "2013");
 
         findByIdAndClick("suorittanut1", "suorittanut2", "suorittanut3", "suorittanut4", "osallistunut_ei");
-
+        setValue("perusopetuksen_kieli", "FI");
         nextPhase();
         //Skip toimipiste
-        findById("preference1-Opetuspiste");
-        selenium.typeKeys("preference1-Opetuspiste", "Esp");
+        setValue("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
-        driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
-
-        driver.findElements(By.name("preference1-Harkinnanvarainen")).get(1).click();
-
-        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1 - harkinnanvarainen_jatko")));
-        followUpSelect.selectByIndex(1);
+        driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
+        driver.findElement(By.xpath("//input[@name='preference1-Harkinnanvarainen' and @value='false']")).click();
 
         nextPhase();
         select();
@@ -98,9 +91,9 @@ public class LomakeIT extends DummyModelBaseItTest {
         clickAllElementsByXPath("//input[@type='checkbox']");
 
         // Ei mene läpi, työkokemus syöttämättä
-        nextPhase();
-        selenium.typeKeys("tyokokemuskuukaudet", "1001");
 
+        selenium.typeKeys("tyokokemuskuukaudet", "1001");
+        nextPhase();
         // Ei mene läpi, työkokemus > 1000 kuukautta
         nextPhase();
         findById("tyokokemuskuukaudet");
@@ -130,10 +123,10 @@ public class LomakeIT extends DummyModelBaseItTest {
         nextPhase();
     }
 
-    private void testHAK123AandHAK124(final WebDriver driver) {
-        findByIdAndClick("millatutkinnolla_tutkinto5");
-        findById(Yhteishaku2013.TUTKINTO5_NOTIFICATION_ID);
-        findByIdAndClick("millatutkinnolla_tutkinto7");
-        findById(Yhteishaku2013.TUTKINTO7_NOTIFICATION_ID);
+    private void testHAK123AandHAK124() {
+        findByIdAndClick("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_KESKEYTYNYT);
+        findById(Yhteishaku2013.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
+        findByIdAndClick("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_ULKOMAINEN_TUTKINTO);
+        findById(Yhteishaku2013.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
     }
 }

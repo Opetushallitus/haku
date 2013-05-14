@@ -22,11 +22,9 @@ import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.hakemus.domain.ApplicationInfo;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
@@ -86,6 +84,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   final UserHolder userHolder, @Qualifier("formServiceImpl") final FormService formService,
                                   @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
                                   AuthenticationService authenticationService) {
+
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
         this.formService = formService;
@@ -97,11 +96,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.applicationOidService = applicationOidService;
     }
 
-    @Override
-    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase) {
-        final Application application = new Application(this.userHolder.getUser(), applicationPhase);
-        return saveApplicationPhase(applicationPhase, application);
-    }
 
     @Override
     public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, boolean skipValidators) {
@@ -110,20 +104,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, String oid) {
-        final Application application = new Application(oid, applicationPhase);
-        return saveApplicationPhase(applicationPhase, application);
-    }
-
-    @Override
     public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, String oid, boolean skipValidators) {
         final Application application = new Application(oid, applicationPhase);
         return saveApplicationPhase(applicationPhase, application, skipValidators);
-    }
-
-    @Override
-    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, Application application) {
-        return saveApplicationPhase(applicationPhase, application, false);
     }
 
     private ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, Application application,
@@ -139,7 +122,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         // if the current phase has previous phase, get all the answers for
         // validating rules
         if (!activeForm.isFirstChild(phase)) {
-            Application current = getApplication(applicationState.getHakemus().getFormId());
+            Application current = userHolder.getApplication(applicationState.getHakemus().getFormId());
             allAnswers.putAll(current.getVastauksetMerged());
         }
         allAnswers.putAll(vastaukset);
@@ -157,6 +140,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 checkIfExistsBySocialSecurityNumber(applicationPeriodId,
                         vastaukset.get(SocialSecurityNumber.HENKILOTUNNUS));
             }
+            this.userHolder.savePhaseAnswers(applicationPhase);
             this.applicationDAO.tallennaVaihe(applicationState);
         }
         // sets all answers merged, needed for re-rendering view if errors
@@ -172,8 +156,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public String submitApplication(final FormId formId) {
         final User user = userHolder.getUser();
-        Application application1 = new Application(formId, user);
-        Application application = applicationDAO.findDraftApplication(application1);
+        Application application = userHolder.getApplication(formId);
+        //Application application = applicationDAO.findDraftApplication(application1);
         Form form = formService.getForm(formId.getApplicationPeriodId(), formId.getFormId());
         Map<String, String> allAnswers = application.getVastauksetMerged();
         ValidationResult validationResult = ElementTreeValidator.validate(form, allAnswers);
@@ -205,7 +189,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             }
             application.activate();
-            this.applicationDAO.update(application1, application);
+            application.resetUser();
+            this.applicationDAO.save(application);
+            this.userHolder.removeApplication(application.getFormId());
             return application.getOid();
         } else {
             throw new IllegalStateException("Could not send the application ");
@@ -235,28 +221,19 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<ApplicationInfo> getUserApplicationInfo() {
-        List<ApplicationInfo> listOfApplicationInfos = new ArrayList<ApplicationInfo>();
-        List<Application> listOfUserApplications = applicationDAO.find(new Application(userHolder.getUser()));
-        for (Application application : listOfUserApplications) {
-            final ApplicationPeriod applicationPeriod = formService.getApplicationPeriodById(application.getFormId()
-                    .getApplicationPeriodId());
-            final String id = applicationPeriod.getId();
-            final String formId = application.getFormId().getFormId();
-            final Form form = formService.getForm(id, formId);
-            listOfApplicationInfos.add(new ApplicationInfo(application, form, applicationPeriod));
-        }
-        return listOfApplicationInfos;
-    }
-
-    @Override
     public Application getApplication(final FormId formId) {
-        Application application = new Application(formId, userHolder.getUser());
-        List<Application> listOfApplications = applicationDAO.find(application);
-        if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
-            return application;
+        User user = userHolder.getUser();
+        if (user.isKnown()) {
+            Application application = new Application(formId, userHolder.getUser());
+            List<Application> listOfApplications = applicationDAO.find(application);
+            if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
+                return application;
+            }
+            return listOfApplications.get(0);
+        } else {
+            return userHolder.getApplication(formId);
+
         }
-        return listOfApplications.get(0);
     }
 
     @Override
@@ -350,6 +327,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private Application getApplication(final Application application) throws ResourceNotFoundException {
+
         List<Application> listOfApplications = applicationDAO.find(application);
         if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
             throw new ResourceNotFoundException("Could not find application " + application.getOid());

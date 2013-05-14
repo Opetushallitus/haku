@@ -32,7 +32,7 @@ public class MapToAdditionalQuestionsFunctionTest {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Test
-    public void test() throws JsonParseException, JsonMappingException, IOException {
+    public void test() throws IOException {
         final String simple = "{\"2193293289\": {\"1\": {\"aidinkieli_yo\": \"DESIMAALILUKU\"}}}";
         final ObjectMapper mapper = new ObjectMapper();
         final Map map = mapper.readValue(new ByteArrayInputStream(simple.getBytes(Charsets.UTF_8)), Map.class);

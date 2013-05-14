@@ -82,7 +82,7 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
         assertNotSelected(OPTION_3_ID);
     }
 
-    private void init(final String dropdownAttribute, final boolean setDefault) throws IOException {
+    private void init(final String dropdownAttribute, final boolean setDefault) {
         dropdownSelect = new DropdownSelect(SELECT_ID, createI18NAsIs(SELECT_ID), dropdownAttribute);
         Option option1 = new Option(OPTION_1_ID, createI18NAsIs(OPTION_1_ID), OPTION_1_ID);
         Option option2 = new Option(OPTION_2_ID, createI18NAsIs(OPTION_2_ID), OPTION_2_ID);

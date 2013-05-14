@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.lomake.it;
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.Assert.assertTrue;
@@ -73,16 +72,14 @@ public class HAK305IT extends DummyModelBaseItTest {
         // Lisätiedot
         clickAllElementsByXPath("//input[@type='checkbox']");
 
-        nextPhase();
         setValue("tyokokemuskuukaudet", "2");
-        WebElement asiointikieli_suomi = driver.findElement(new By.ById("asiointikieli_suomi"));
-        asiointikieli_suomi.click();
+        findByIdAndClick("asiointikieli_suomi");
 
         nextPhase();
 
         // Esikatselu
         nextPhase();
-        driver.findElement(By.id("submit_confirm")).click();
+        findByIdAndClick("submit_confirm");
 
         String oid = driver.findElement(new By.ByClassName("number")).getText();
         assertTrue(oid.startsWith("1.2.3.4.5"));
@@ -93,11 +90,11 @@ public class HAK305IT extends DummyModelBaseItTest {
         setValue("Sukunimi", "Ankka");
         setValue("Etunimet", "Aku Kalle");
         setValue("Kutsumanimi", "A");
-        setValue("Henkilotunnus", "150520-111E");
+        setValue("Henkilotunnus", "010113-668B");
         setValue("Sähköposti", "aku.ankka@ankkalinna.al");
         setValue("matkapuhelinnumero1", "0501000100");
         setNativeLanguage(aidinkieli);
-        setValue("asuinmaa", "FI");
+        setValue("asuinmaa", "FIN");
         setValue("kotikunta", "jalasjarvi");
         setValue("lahiosoite", "Katu 1");
         setValue("Postinumero", "00100");
