@@ -40,7 +40,7 @@ public class FormServiceImplTest {
     @Before
     public void setUp() throws Exception {
         this.applicationPeriod = new ApplicationPeriod("ApplicationPeriodId");
-        Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl());
+        Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl(), "dummyAsid", "dummyAoid");
         yhteishaku2013.init();
         FormModelHolder holder = new FormModelHolder(yhteishaku2013);
         FormModel model = new FormModel();

@@ -17,9 +17,7 @@
 package fi.vm.sade.oppija.ui.it;
 
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,34 +29,34 @@ public class NavigationIT extends AbstractFormTest {
 
     @Before
     public void setUp() throws Exception {
-        FormServiceMockImpl dummyMem = new FormServiceMockImpl();
+        FormServiceMockImpl dummyMem = new FormServiceMockImpl(ASID, AOID);
         updateModelAndCreateFormModelHelper(dummyMem.getModel());
     }
 
     @Test
     public void testNavigationExists() throws IOException {
-        beginAt("/lomake/" + Yhteishaku2013.ASID + "/yhteishaku/henkilotiedot");
+        beginAt("/lomake/" + ASID + "/yhteishaku/henkilotiedot");
         assertLinkPresent("nav-henkilotiedot");
         assertElementPresentByXPath("//span[@class='index']");
     }
 
     @Test
     public void testFirstGategoryNavButtons() throws IOException {
-        beginAt("/lomake/" + Yhteishaku2013.ASID + "/yhteishaku/henkilotiedot");
+        beginAt("/lomake/" + ASID + "/yhteishaku/henkilotiedot");
         assertElementPresentByXPath("//button[@class='right']");
         assertElementNotPresentByXPath("//button[@class='left']");
     }
 
     @Test
     public void testMiddleGategoryNavButtons() throws IOException {
-        beginAt("/lomake/" + Yhteishaku2013.ASID + "/yhteishaku/koulutustausta");
+        beginAt("/lomake/" + ASID + "/yhteishaku/koulutustausta");
         assertElementPresentByXPath("//button[@class='right']");
         assertElementPresentByXPath("//button[@class='left']");
     }
 
     @Test
     public void testLastGategoryNavButtons() throws IOException {
-        beginAt("/lomake/" + Yhteishaku2013.ASID + "/yhteishaku/esikatselu");
+        beginAt("/lomake/" + ASID + "/yhteishaku/esikatselu");
         assertElementNotPresentByXPath("//button[@name='nav-next']");
         assertElementPresentByXPath("//button[@class='left']");
         assertElementPresentByXPath("//button[@class='right']");

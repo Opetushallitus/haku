@@ -25,13 +25,11 @@ import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPhaseViewPath;
 import org.junit.Before;
@@ -52,9 +50,10 @@ import static org.mockito.Mockito.when;
 
 public class FormControllerTest {
 
+    public static final String ASID = "dummyAsid";
     public static final String OID = "1.1.1";
     private static final String FIRST_CATEGORY_ID = "henkilotiedot";
-    private static final String APPLICATION_PERIOD_ID = Yhteishaku2013.ASID;
+    private static final String APPLICATION_PERIOD_ID = ASID;
     private static final String FORM_ID = "yhteishaku";
     public static final String TEST_PHASE = "test_phase";
     public static final String PHASE_TITLE = "title";

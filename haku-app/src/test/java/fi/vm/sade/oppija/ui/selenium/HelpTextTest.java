@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,13 +29,13 @@ public class HelpTextTest extends AbstractSeleniumBase {
 
     @Before
     public void init() {
-        FormServiceMockImpl dummyMem = new FormServiceMockImpl();
+        FormServiceMockImpl dummyMem = new FormServiceMockImpl(ASID, AOID);
         updateModel(dummyMem.getModel());
     }
 
     @Test
     public void testQuestionHelp() {
-        final String url = getBaseUrl() + "lomake/" + Yhteishaku2013.ASID + "/yhteishaku/henkilotiedot";
+        final String url = getBaseUrl() + "lomake/" + ASID + "/yhteishaku/henkilotiedot";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
         assertNotNull("Could not find question specific help", driver.findElement(By.id("help-Kutsumanimi")));
@@ -44,7 +43,7 @@ public class HelpTextTest extends AbstractSeleniumBase {
 
     @Test
     public void testVerboseHelp() {
-        final String url = getBaseUrl() + "lomake/" + Yhteishaku2013.ASID + "/yhteishaku/henkilotiedot/HenkilotiedotGrp/help";
+        final String url = getBaseUrl() + "lomake/" + ASID + "/yhteishaku/henkilotiedot/HenkilotiedotGrp/help";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
         assertNotNull("Could not find verbose help page", driver.findElement(By.id("help-page")));

@@ -42,11 +42,11 @@ public class GradeGridIT extends AbstractSeleniumBase {
     @Before
     public void init() {
         super.before();
-        ApplicationPeriod applicationPeriod = new ApplicationPeriod(Yhteishaku2013.ASID);
+        ApplicationPeriod applicationPeriod = new ApplicationPeriod(ASID);
         Phase arvosanat = new Phase(PHASE_ID, createI18NAsIs("Arvosanat"), false);
         Form form = new Form(FORM_ID, createI18NAsIs("yhteishaku"));
         form.addChild(arvosanat);
-        Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl());
+        Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl(), ASID, AOID);
         yhteishaku2013.init();
         arvosanat.addChild(yhteishaku2013.createGradeGrid("id", true));
         applicationPeriod.addForm(form);
@@ -59,7 +59,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
 
     @Test
     public void testTableExists() {
-        final String url = getBaseUrl() + "lomake/" + Yhteishaku2013.ASID + "/lomake/arvosanat";
+        final String url = getBaseUrl() + "lomake/" + ASID + "/lomake/arvosanat";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
 
@@ -69,7 +69,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
 
     @Test
     public void testAddLanguage() {
-        final String url = getBaseUrl() + "lomake/" + Yhteishaku2013.ASID + "/lomake/arvosanat";
+        final String url = getBaseUrl() + "lomake/" + ASID + "/lomake/arvosanat";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
 

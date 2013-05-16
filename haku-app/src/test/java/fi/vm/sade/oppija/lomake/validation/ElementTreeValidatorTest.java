@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
@@ -31,13 +30,15 @@ import static org.junit.Assert.*;
 
 public class ElementTreeValidatorTest {
 
+    private static final String ASID = "dummyAsid";
+    private static final String AOID = "dummyAoid";
     private TextQuestion textQuestion;
     private FormServiceMockImpl formModelDummyMemoryDao;
 
     @Before
     public void setUp() throws Exception {
         textQuestion = new TextQuestion("id", createI18NAsIs("title"));
-        formModelDummyMemoryDao = new FormServiceMockImpl();
+        formModelDummyMemoryDao = new FormServiceMockImpl(ASID, AOID);
     }
 
     @Test(expected = NullPointerException.class)
@@ -75,7 +76,7 @@ public class ElementTreeValidatorTest {
     }
 
     private void testAsuinmaa(final String asuinmaa, final int errorCount) {
-        Element phase = formModelDummyMemoryDao.getFirstPhase(Yhteishaku2013.ASID, "yhteishaku");
+        Element phase = formModelDummyMemoryDao.getFirstPhase(ASID, "yhteishaku");
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", asuinmaa);
         ValidationResult validationResult = ElementTreeValidator.validate(phase, values);
