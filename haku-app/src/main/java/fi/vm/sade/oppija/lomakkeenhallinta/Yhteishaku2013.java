@@ -973,14 +973,6 @@ public class Yhteishaku2013 {
         lukioPaattotodistusVuosi.addAttribute("maxlength", "4");
         lukioPaattotodistusVuosi.setInline(true);
 
-        TextQuestion ylioppilastodistuksenVuosi = new TextQuestion("ylioppilastodistuksenVuosi",
-                createI18NForm("form.koulutustausta.lukio.yotodistusvuosi"));
-        ylioppilastodistuksenVuosi.addAttribute("placeholder", "vvvv");
-        ylioppilastodistuksenVuosi.addAttribute("required", "required");
-        ylioppilastodistuksenVuosi.addAttribute("pattern", "^(19[0-9][0-9]|200[0-9]|201[0-3])$");
-        ylioppilastodistuksenVuosi.addAttribute("size", "4");
-        ylioppilastodistuksenVuosi.addAttribute("maxlength", "4");
-        ylioppilastodistuksenVuosi.setInline(true);
         DropdownSelect ylioppilastutkinto = new DropdownSelect("ylioppilastutkinto",
                 createI18NForm("form.koulutustausta.lukio.yotutkinto"), null);
         ylioppilastutkinto.addOption("fi", createI18NForm("form.koulutustausta.lukio.yotutkinto.fi"), "fi");
@@ -993,7 +985,6 @@ public class Yhteishaku2013 {
 
         Group lukioGroup = new Group("lukioGroup", createI18NForm("form.koulutustausta.lukio.suoritus"));
         lukioGroup.addChild(lukioPaattotodistusVuosi);
-        lukioGroup.addChild(ylioppilastodistuksenVuosi);
         lukioGroup.addChild(ylioppilastutkinto);
 
         RelatedQuestionRule lukioRule = new RelatedQuestionRule("rule7", millatutkinnolla.getId(), YLIOPPILAS, false);
