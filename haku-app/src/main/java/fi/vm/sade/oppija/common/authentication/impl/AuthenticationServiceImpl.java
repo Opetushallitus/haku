@@ -36,10 +36,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public static final long ID_120 = 120L;
     public static final String KIELITYYPPI_SUOMI = "suomi";
     public static final String KIELI_KOODI = "fi";
-    private UserManagementService userManagementService;
+    public static final String MALE = "m";
+    private final UserManagementService userManagementService;
 
     @Autowired
-    public AuthenticationServiceImpl(UserManagementService userManagementService) {
+    public AuthenticationServiceImpl(final UserManagementService userManagementService) {
         this.userManagementService = userManagementService;
     }
 
@@ -59,7 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // TODO: resolve proper language when user management service
         // allows adding people with koodisto languahe codes
         KielisyysType contactLanguageType = new KielisyysType();
-        contactLanguageType.setKieliKoodi("fi");
+        contactLanguageType.setKieliKoodi(KIELI_KOODI);
         contactLanguageType.setId(ID_117);
         contactLanguageType.setKieliTyyppi(KIELITYYPPI_SUOMI);
         addHenkiloDataType.setAsiointiKieli(contactLanguageType);
@@ -80,6 +81,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private SukupuoliType resolveSexType(String sex) {
         //TODO: is there a koodisto for sex?
-        return sex.equals("m") ? SukupuoliType.MIES : SukupuoliType.NAINEN;
+        return MALE.equals(sex) ? SukupuoliType.MIES : SukupuoliType.NAINEN;
     }
 }
