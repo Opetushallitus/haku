@@ -26,14 +26,17 @@ import static com.mongodb.util.MyAsserts.assertTrue;
 public class HAK153IT extends DummyModelBaseItTest {
 
     @Test
-    public void testSora() throws Exception {
+    public void testSoraAndUrheilijanLisakysymys() throws Exception {
         navigateToPhase(Yhteishaku2013.HAKUTOIVEET_PHASE_ID);
         selenium.typeKeys("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@data-sora='true' and @data-id='1.2.246.562.14.673437691210']")).click();
         findByXPath("//a[@href='#' and @data-po-show='sora-popup' and @class='popup-link']");
-        driver.findElement(By.xpath("//option[@data-sora='false' and @data-id='1.2.246.562.14.79893512065']")).click();
+        driver.findElement(By.xpath("//option[@data-sora='false' and @data-id='1.2.246.562.14.71344129359']")).click();
         boolean soraNotFound = driver.findElements(By.xpath("//a[@href='#' and @data-po-show='sora-popup' and @class='popup-link']")).isEmpty();
+        findByXPath("//option[@data-athlete='true' and @data-id='1.2.246.562.14.71344129359']");
+        findById("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true");
+        findById("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_false");
         assertTrue(soraNotFound);
     }
 }

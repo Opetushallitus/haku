@@ -87,6 +87,16 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         }
     }
 
+    protected void findByByAndClick(final By... byes) {
+        WebDriver driver = seleniumHelper.getDriver();
+        for (By by : byes) {
+            List<WebElement> elements = driver.findElements(by);
+            for (WebElement element : elements) {
+                element.click();
+            }
+        }
+    }
+
     protected void findById(final String... ids) {
         WebDriver driver = seleniumHelper.getDriver();
         for (String id : ids) {
