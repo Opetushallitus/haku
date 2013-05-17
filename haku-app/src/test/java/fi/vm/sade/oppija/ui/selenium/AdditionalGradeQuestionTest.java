@@ -47,6 +47,9 @@ public class AdditionalGradeQuestionTest extends DummyModelBaseItTest {
         driver.findElement(By.linkText(OPETUSPISTE)).click();
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
         findByIdAndClick("preference1-discretionary_false");
+        findByIdAndClick("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true");
+        findByIdAndClick("preference1_sora_terveys_false");
+        findByIdAndClick("preference1_sora_oikeudenMenetys_false");
 
         nextPhase();
         driver.findElement(By.xpath("//table[@id='gradegrid-table']"));

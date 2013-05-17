@@ -195,27 +195,41 @@ public class Yhteishaku2013 {
         return radio;
     }
 
+    public static Element createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(final String index) {
+
+        Radio radio = new Radio(index + "_urheilijan_ammatillisen_koulutuksen_lisakysymys",
+                createI18NForm("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys"));
+        addDefaultTrueFalseOptions(radio);
+        setRequired(radio);
+
+        RelatedQuestionRule hasQuestion = new RelatedQuestionRule(radio.getId() + "_related_question_rule",
+                ImmutableList.of(index + "-Koulutus-id-athlete"), ElementUtil.KYLLA, false);
+
+        hasQuestion.addChild(radio);
+
+        return hasQuestion;
+    }
+
     public static Element createSoraQuestions(final String index) {
         // sora-kysymykset
 
         RelatedQuestionRule hasSora = new RelatedQuestionRule(index + "_sora_rule",
                 ImmutableList.of(index + "-Koulutus-id-sora"), Boolean.TRUE.toString().toLowerCase(), false);
 
-        Radio sora1 = new Radio(index + "_sora_question_1", createI18NForm("form.sora.terveys"));
-        sora1.addOption("_sora_q1_option_1", createI18NForm("form.yleinen.ei"), "q1_option_1");
-        sora1.addOption("_sora_q1_option_2", createI18NForm("form.sora.kylla"), "q1_option_2");
-
-        Radio sora2 = new Radio(index + "_sora_additional_question_2", createI18NForm("form.sora.oikeudenMenetys"));
-        sora2.addOption("_sora_q2_option_1", createI18NForm("form.yleinen.ei"), "q2_option_1");
-        sora2.addOption("_sora_q2_option_2", createI18NForm("form.sora.kylla"), "q2_option_2");
+        Radio sora1 = new Radio(index + "_sora_terveys", createI18NForm("form.sora.terveys"));
+        sora1.addOption(Boolean.FALSE.toString().toLowerCase(), createI18NForm("form.yleinen.ei"), Boolean.FALSE.toString().toLowerCase());
+        sora1.addOption(Boolean.TRUE.toString().toLowerCase(), createI18NForm("form.sora.kylla"), Boolean.TRUE.toString().toLowerCase());
         sora1.setInline(false);
-        sora2.setInline(false);
-
-        // popup ensimmäistä sora-kysymystä varten
+        sora1.addAttribute("required", "required");
         sora1.setPopup(new Popup("sora-popup", createI18NForm("form.hakutoiveet.terveydentilavaatimukset.otsikko")));
 
-        sora1.addAttribute("required", "required");
+        Radio sora2 = new Radio(index + "_sora_oikeudenMenetys", createI18NForm("form.sora.oikeudenMenetys"));
+        sora2.addOption(Boolean.FALSE.toString().toLowerCase(), createI18NForm("form.yleinen.ei"), Boolean.FALSE.toString().toLowerCase());
+        sora2.addOption(Boolean.TRUE.toString().toLowerCase(), createI18NForm("form.sora.kylla"), Boolean.TRUE.toString().toLowerCase());
+        sora2.setInline(false);
         sora2.addAttribute("required", "required");
+
+        // popup ensimmäistä sora-kysymystä varten
 
 
         hasSora.addChild(sora1, sora2);
@@ -756,17 +770,6 @@ public class Yhteishaku2013 {
 
     public static PreferenceRow createI18NPreferenceRow(final String id, final String title) {
 
-        Radio discretionary = new Radio(id + "-discretionary", createI18NForm("form.hakutoiveet.harkinnanvarainen"));
-        addDefaultTrueFalseOptions(discretionary);
-        setRequired(discretionary);
-
-        DropdownSelect discretionaryFollowUp = new DropdownSelect(discretionary.getId() + "-follow-up",
-                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"), null);
-        discretionaryFollowUp.addOption(discretionaryFollowUp.getId() + "oppimisvaikudet",
-                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.oppimisvaikeudet"), "oppimisvaikudet");
-        discretionaryFollowUp.addOption(discretionaryFollowUp.getId() + "sosiaalisetsyyt",
-                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset"), "sosiaalisetsyyt");
-
 
         PreferenceRow pr = new PreferenceRow(id,
                 createI18NForm("form.hakutoiveet.hakutoive", title),
@@ -777,17 +780,38 @@ public class Yhteishaku2013 {
                 "Valitse koulutus");
 
 
-        RelatedQuestionRule discretionaryFollowUpRule = new RelatedQuestionRule(id + "_discretionary_follow_up_rule",
+        pr.addChild(
+                Yhteishaku2013.createDiscretionaryQuestionsAndRules(id),
+                Yhteishaku2013.createSoraQuestions(id),
+                Yhteishaku2013.createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id));
+        return pr;
+    }
+
+    private static Element createDiscretionaryQuestionsAndRules(final String index) {
+        Radio discretionary = new Radio(index + "-discretionary", createI18NForm("form.hakutoiveet.harkinnanvarainen"));
+        addDefaultTrueFalseOptions(discretionary);
+        setRequired(discretionary);
+
+        DropdownSelect discretionaryFollowUp = new DropdownSelect(discretionary.getId() + "-follow-up",
+                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"), null);
+        discretionaryFollowUp.addOption(discretionaryFollowUp.getId() + "oppimisvaikudet",
+                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.oppimisvaikeudet"), "oppimisvaikudet");
+        discretionaryFollowUp.addOption(discretionaryFollowUp.getId() + "sosiaalisetsyyt",
+                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset"), "sosiaalisetsyyt");
+
+        RelatedQuestionRule discretionaryFollowUpRule = new RelatedQuestionRule(index + "-discretionary-follow-up-rule",
                 ImmutableList.of(discretionary.getId()), Boolean.TRUE.toString().toLowerCase(), false);
         discretionaryFollowUpRule.addChild(discretionaryFollowUp);
+
+
         discretionary.addChild(discretionaryFollowUpRule);
 
-        RelatedQuestionRule discretionaryRule = new RelatedQuestionRule(id + "_discretionary_rule",
-                ImmutableList.of(id + "-Koulutus-educationDegree"), DISCRETIONARY_EDUCATION_DEGREE, false);
+        RelatedQuestionRule discretionaryRule = new RelatedQuestionRule(index + "-discretionary-rule",
+                ImmutableList.of(index + "-Koulutus-educationDegree"), DISCRETIONARY_EDUCATION_DEGREE, false);
         discretionaryRule.addChild(discretionary);
 
-        pr.addChild(discretionaryRule, Yhteishaku2013.createSoraQuestions(id));
-        return pr;
+        return discretionaryRule;
+
     }
 
     private void createTyokokemus(Theme tyokokemus) {
@@ -803,7 +827,7 @@ public class Yhteishaku2013 {
         tyokokemus.addChild(tyokokemuskuukaudet);
     }
 
-    private void createLupatiedot(Theme lupatiedot) {
+    private void createLupatiedot(final Theme lupatiedot) {
 
         CheckBox lupaMarkkinointi = new CheckBox(
                 "lupaMarkkinointi",
@@ -914,43 +938,15 @@ public class Yhteishaku2013 {
         paattotodistusvuosiPeruskoulu.addAttribute("size", "4");
         paattotodistusvuosiPeruskoulu.addAttribute("maxlength", "4");
 
-        CheckBox suorittanut1 = new CheckBox("suorittanut1",
-                createI18NForm("form.koulutustausta.kymppiluokka"));
-        CheckBox suorittanut2 = new CheckBox("suorittanut2",
-                createI18NForm("form.koulutustausta.vammaistenValmentava"));
-        CheckBox suorittanut3 = new CheckBox("suorittanut3",
-                createI18NForm("form.koulutustausta.maahanmuuttajienValmistava"));
-        CheckBox suorittanut4 = new CheckBox(
-                "suorittanut4",
-                createI18NForm("form.koulutustausta.talouskoulu"));
-        CheckBox suorittanut5 = new CheckBox(
-                "suorittanut5",
-                createI18NForm("form.koulutustausta.ammattistartti"));
-        CheckBox suorittanut6 = new CheckBox("suorittanut6",
-                createI18NForm("form.koulutustausta.kansanopisto"));
-
         Group suorittanutGroup = new Group("suorittanutgroup",
                 createI18NForm("form.koulutustausta.suorittanut"));
-        suorittanutGroup.addChild(suorittanut1);
-        suorittanutGroup.addChild(suorittanut2);
-        suorittanutGroup.addChild(suorittanut3);
-        suorittanutGroup.addChild(suorittanut4);
-        suorittanutGroup.addChild(suorittanut5);
-        suorittanutGroup.addChild(suorittanut6);
-
-        /*
-         * DropdownSelect tutkinnonOpetuskieli = new
-         * DropdownSelect("opetuskieli",
-         * createI18NText("Mikä oli tukintosi opetuskieli"));
-         * tutkinnonOpetuskieli.addOption("suomi", createI18NText("Suomi"),
-         * "Suomi"); tutkinnonOpetuskieli.addOption("ruotsi",
-         * createI18NText("Ruotsi"), "Ruotsi");
-         * tutkinnonOpetuskieli.addAttribute("placeholder",
-         * "Tutkintosi opetuskieli"); tutkinnonOpetuskieli.setHelp(
-         * "Merkitse tähän se kieli, jolla suoritit suurimman osan opinnoistasi.
-         * Jos suoritit opinnot kahdella kielellä tasapuolisesti, valitse toinen niistä"
-         * ); tutkinnonOpetuskieli.setVerboseHelp(getVerboseHelp());
-         */
+        suorittanutGroup.addChild(
+                new CheckBox("suorittanut1", createI18NForm("form.koulutustausta.kymppiluokka")),
+                new CheckBox("suorittanut2", createI18NForm("form.koulutustausta.vammaistenValmentava")),
+                new CheckBox("suorittanut3", createI18NForm("form.koulutustausta.talouskoulu")),
+                new CheckBox("suorittanut4", createI18NForm("form.koulutustausta.ammattistartti")),
+                new CheckBox("suorittanut5", createI18NForm("form.koulutustausta.kansanopisto"))
+        );
 
         RelatedQuestionRule pkKysymyksetRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "("
                 + PERUSKOULU + "|"
