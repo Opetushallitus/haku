@@ -41,10 +41,7 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -151,9 +148,7 @@ public abstract class Element implements Serializable {
     }
 
     public Element addChild(Element... children) {
-        for (Element child : children) {
-            this.children.add(child);
-        }
+        Collections.addAll(this.children, children);
         return this;
     }
 
@@ -245,6 +240,6 @@ public abstract class Element implements Serializable {
     }
 
     public final boolean hasChildren() {
-        return this.children != null && this.children.size() > 0;
+        return this.children.size() > 0;
     }
 }

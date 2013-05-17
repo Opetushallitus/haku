@@ -30,14 +30,10 @@ public final class OppijaConstants {
     names of the fields that hold the information about the education degree
     of a selected application option
     */
-    private static final String[] AO_EDUCATION_DEGREE_KEYS = {"preference1-Koulutus-educationDegree", "preference2-Koulutus-educationDegree",
+    public static final String[] AO_EDUCATION_DEGREE_KEYS = {"preference1-Koulutus-educationDegree", "preference2-Koulutus-educationDegree",
             "preference3-Koulutus-educationDegree", "preference4-Koulutus-educationDegree",
             "preference5-Koulutus-educationDegree"};
 
-    public static String[] getAoEducationDegreeKeys() {
-        return AO_EDUCATION_DEGREE_KEYS.clone();
-    }
-    
     /*
     element ids, can be used to retrieve specific information from an application
     */
