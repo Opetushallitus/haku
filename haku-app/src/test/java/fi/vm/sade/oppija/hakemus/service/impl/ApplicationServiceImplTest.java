@@ -16,31 +16,29 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.google.common.collect.Lists;
-
+import fi.vm.sade.oppija.common.authentication.AuthenticationService;
+import fi.vm.sade.oppija.common.authentication.Person;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
+import fi.vm.sade.oppija.util.OppijaConstants;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 public class ApplicationServiceImplTest {
 
@@ -48,11 +46,14 @@ public class ApplicationServiceImplTest {
     ApplicationOidService applicationOidService;
     Application application;
     FormService formService;
+    AuthenticationService authenticationService;
 
     String SSN = "250584-3847";
     String OID = "1.2.3.4.5.12345678901";
     String SHORT_OID = "12345678901";
+    String PERSON_OID = "9.8.7.6.5";
     String NAME = "Test Example";
+    Map<String, String> answerMap;
     private ApplicationQueryParameters applicationQueryParameters;
     private ApplicationServiceImpl service;
 
@@ -66,13 +67,27 @@ public class ApplicationServiceImplTest {
         applicationDAO = mock(ApplicationDAO.class);
         applicationOidService = mock(ApplicationOidService.class);
         formService = mock(FormService.class);
+        authenticationService = mock(AuthenticationService.class);
+
         when(applicationDAO.findByApplicantSsn(eq(SSN), eq(applicationQueryParameters))).thenReturn(Lists.newArrayList(application));
         when(applicationDAO.findByApplicantName(eq(NAME), eq(applicationQueryParameters))).thenReturn(Lists.newArrayList(application));
         when(applicationDAO.findByApplicationOid(eq(OID), eq(applicationQueryParameters))).thenReturn(Lists.newArrayList(application));
         when(applicationDAO.findByOid(eq(SHORT_OID), eq(applicationQueryParameters))).thenReturn(Lists.newArrayList(application));
         when(applicationDAO.find(any(Application.class))).thenReturn(Lists.newArrayList(application));
         when(applicationOidService.getOidPrefix()).thenReturn("1.2.3.4.5");
-        service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, null);
+        when(authenticationService.addPerson(any(Person.class))).thenReturn(PERSON_OID);
+        service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService);
+
+        answerMap = new HashMap<String, String>();
+        answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_NAMES, "Etunimi");
+        answerMap.put(OppijaConstants.ELEMENT_ID_NICKNAME, "Etunimi");
+        answerMap.put(OppijaConstants.ELEMENT_ID_LAST_NAME, "Sukunimi");
+        answerMap.put(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER, "030506-229W");
+        answerMap.put(OppijaConstants.ELEMENT_ID_SEX, "Mies");
+        answerMap.put(OppijaConstants.ELEMENT_ID_HOME_CITY, "Kaupunki");
+        answerMap.put(OppijaConstants.ELEMENT_ID_LANGUAGE, "fi");
+        answerMap.put(OppijaConstants.ELEMENT_ID_NATIONALITY, OppijaConstants.NATIONALITY_CODE_FI);
+        answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE, "fi");
     }
 
     @Test
@@ -145,5 +160,25 @@ public class ApplicationServiceImplTest {
     @Test(expected = IllegalArgumentException.class)
     public void testPutApplicationAdditionalInfoKeyValueNullValue() throws ResourceNotFoundException {
         service.putApplicationAdditionalInfoKeyValue(OID, "key", null);
+    }
+
+    @Test
+    public void testSetPersonFi() {
+        Application application = new Application();
+
+        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application = service.setPerson(application);
+        assertNotNull("PersonOid should not be null", application.getPersonOid());
+        assertEquals("Wrong person oid", PERSON_OID, application.getPersonOid());
+    }
+
+    @Test
+    public void testSetPersonNotFi() {
+        Application application = new Application();
+        answerMap.remove(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER);
+        answerMap.put(OppijaConstants.ELEMENT_ID_NATIONALITY, "swe");
+        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application = service.setPerson(application);
+        assertNull("PersonOid should be null", application.getPersonOid());
     }
 }

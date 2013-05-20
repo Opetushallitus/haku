@@ -37,6 +37,7 @@ import fi.vm.sade.oppija.lomakkeenhallinta.predicate.ComprehensiveSchools;
 import fi.vm.sade.oppija.lomakkeenhallinta.predicate.HighSchools;
 import fi.vm.sade.oppija.lomakkeenhallinta.predicate.Ids;
 import fi.vm.sade.oppija.lomakkeenhallinta.predicate.Languages;
+import fi.vm.sade.oppija.util.OppijaConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -337,7 +338,7 @@ public class Yhteishaku2013 {
         henkilotiedotRyhma.addChild(ulkomaalaisenTunnisteetRule);
 
         // Email
-        TextQuestion email = new TextQuestion("Sähköposti", createI18NForm("form.henkilotiedot.email"));
+        TextQuestion email = new TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL, createI18NForm("form.henkilotiedot.email"));
         email.addAttribute("size", "50");
         email.addAttribute("pattern", "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$");
         email.setHelp(createI18NForm("form.henkilotiedot.email.help"));
@@ -852,7 +853,7 @@ public class Yhteishaku2013 {
         lupatiedot.addChild(lupaGroup);
         lupatiedot.setVerboseHelp(getVerboseHelp());
 
-        Radio asiointikieli = new Radio("asiointikieli", createI18NForm("form.asiointikieli.otsikko"));
+        Radio asiointikieli = new Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, createI18NForm("form.asiointikieli.otsikko"));
         asiointikieli.setHelp(createI18NForm("form.asiointikieli.help"));
         asiointikieli.addOption("suomi", createI18NForm("form.asiointikieli.suomi"), "suomi");
         asiointikieli.addOption("ruotsi", createI18NForm("form.asiointikieli.ruotsi"), "ruotsi");

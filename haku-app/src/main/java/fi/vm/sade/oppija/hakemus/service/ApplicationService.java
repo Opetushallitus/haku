@@ -154,4 +154,16 @@ public interface ApplicationService {
      */
     void putApplicationAdditionalInfoKeyValue(final String applicationOid, final String key, final String value) throws ResourceNotFoundException;
 
+    /**
+     * Finds next application without user oid. Returns matching application or null, if none found.
+     * @return Application or null
+     */
+    Application getNextWithoutPersonOid();
+
+    /**
+     * Set proper user for this application.
+     * @param application
+     * @return
+     */
+    Application setPerson(Application application);
 }

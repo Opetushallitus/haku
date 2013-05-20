@@ -89,7 +89,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         Application queryApplication = new Application(state.getHakemus().getFormId(), state.getHakemus().getUser(),
                 state.getHakemus().getOid());
-        queryApplication.activate();
         final DBObject query = toDBObject.apply(queryApplication);
 
         DBObject one = getCollection().findOne(query);
@@ -110,6 +109,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     protected String getCollectionName() {
         return "application";
+    }
+
+    @Override
+    public List<Application> find(DBObject query) {
+        return findApplications(query);
     }
 
     @Override

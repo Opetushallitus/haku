@@ -41,7 +41,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     SeleniumContainer container;
 
     @Autowired
-    TestDBFactoryBean dbFactory;
+    protected TestDBFactoryBean dbFactory;
 
     public AbstractSeleniumBase() {
         super();

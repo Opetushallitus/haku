@@ -46,11 +46,16 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_HOME_CITY = "kotikunta";
     public static final String ELEMENT_ID_LANGUAGE = "äidinkieli";
     public static final String ELEMENT_ID_NATIONALITY = "kansalaisuus";
-    public static final String ELEMENT_ID_CONTACT_LANGUAGE = "äidinkieli";
+    public static final String ELEMENT_ID_FIRST_LANGUAGE = "äidinkieli";
+    public static final String ELEMENT_ID_CONTACT_LANGUAGE = "asiointikieli";
+
+    public static final String PHASE_ID_CONTACT = "henkilotiedot";
 
     public static final String PREFERENCE_ID = "preference%d-Koulutus-id";
+    public static final String PREFERENCE_NAME = "preference%d-Koulutus";
+    public static final String PREFERENCE_ORGANIZATION = "preference%d-Opetuspiste";
 
-    public static final String NATIONALITY_CODE_FI = "fi";
+    public static final String NATIONALITY_CODE_FI = "FIN";
     
     public static final String PERUSKOULU = "1";
     public static final String YLIOPPILAS = "9";

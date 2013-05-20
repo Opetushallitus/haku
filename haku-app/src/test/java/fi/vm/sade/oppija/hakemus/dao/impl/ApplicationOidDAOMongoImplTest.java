@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.hakemus.dao.impl;
 
+import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
 import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationOidDAO;
 import org.junit.Test;

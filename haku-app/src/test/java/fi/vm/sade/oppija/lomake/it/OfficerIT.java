@@ -4,6 +4,7 @@ import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.oppija.common.selenium.LoginPage;
 import fi.vm.sade.oppija.lomake.HakuClient;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -25,6 +26,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         loginPage.login("officer");
     }
 
+    @Ignore
     @Test
     public void testSearchAndModify() throws Exception {
         clickSearch();
