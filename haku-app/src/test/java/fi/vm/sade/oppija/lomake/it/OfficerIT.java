@@ -31,7 +31,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
-        checkApplicationState("Voimassa");
+        checkApplicationState("Aktiivinen");
         List<WebElement> editLinks = findByClassName("edit-link");
         WebElement editLink = editLinks.get(1);
         editLink.click();

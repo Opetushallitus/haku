@@ -46,8 +46,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
         Phase arvosanat = new Phase(PHASE_ID, createI18NAsIs("Arvosanat"), false);
         Form form = new Form(FORM_ID, createI18NAsIs("yhteishaku"));
         form.addChild(arvosanat);
-        Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl(), ASID, AOID);
-        yhteishaku2013.init();
+        Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl(),  ASID, AOID);
         arvosanat.addChild(yhteishaku2013.createGradeGrid("id", true));
         applicationPeriod.addForm(form);
 

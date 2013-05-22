@@ -49,7 +49,7 @@ import static fi.vm.sade.oppija.util.OppijaConstants.*;
 @Service
 public class Yhteishaku2013 {
 
-    private String AOID_ADDITIONAL_QUESTION = "1.2.246.562.14.71344129359";
+    public String AOID_ADDITIONAL_QUESTION = "1.2.246.562.14.71344129359";
     public static final String TUTKINTO_ULKOMAILLA_NOTIFICATION_ID = "tutkinto7-notification";
     public static final String TUTKINTO_KESKEYTNYT_NOTIFICATION_ID = "tutkinto5-notification";
     public static final String AIDINKIELI_ID = "aidinkieli";
@@ -78,14 +78,18 @@ public class Yhteishaku2013 {
     private final KoodistoService koodistoService;
 
     @Autowired // NOSONAR
-    public Yhteishaku2013(final KoodistoService koodistoService, @Value("${asid}") String asid, @Value("${aoid}") String aoid) { // NOSONAR
+    public Yhteishaku2013(
+            final KoodistoService koodistoService,
+            @Value("${asid}") String asid,
+            @Value("${aoid}") String aoid) { // NOSONAR
         this.koodistoService = koodistoService;
         this.applicationPeriod = new ApplicationPeriod(asid);
         this.AOID_ADDITIONAL_QUESTION = aoid;
+        createFrom();
     }
 
 
-    public void init() { // NOSONAR
+    public void createFrom() { // NOSONAR
         try {
 
             Form form = new Form(FORM_ID, createI18NForm("form.title"));
