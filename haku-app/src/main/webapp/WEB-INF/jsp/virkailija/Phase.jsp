@@ -42,6 +42,7 @@
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/site.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/phase.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
 
     <haku:ie9StyleFix/>
@@ -50,9 +51,9 @@
 <c:set var="preview" value="${phase.preview}" scope="request"/>
 <div id="wrapper" class="virkailija">
 
-    <div id="global_header"></div>
-    <div id="global_menu"></div>
-    <virkailija:breadcrumbs/>
+    <%--<div id="global_header"></div>--%>
+    <%--<div id="global_menu"></div>--%>
+    <%--<virkailija:breadcrumbs/>--%>
 
     <virkailija:headerButtons oid="${application.oid}" preview="${preview}"/>
 

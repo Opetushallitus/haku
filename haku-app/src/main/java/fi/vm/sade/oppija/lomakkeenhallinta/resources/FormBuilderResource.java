@@ -17,8 +17,6 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.resources;
 
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -27,6 +25,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 
 @Controller
@@ -39,8 +40,12 @@ public class FormBuilderResource {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getIndex() {
-        formModelHolder.generateAndReplace();
-        return "ok";
+    public Response generate() throws URISyntaxException {
+        boolean b = formModelHolder.generateAndReplace();
+        if (b) {
+            return Response.created(new URI("/lomake/")).build();
+        } else {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Lomakkeen luonti epäonnistui (Koodisto ja/tai koulutusinformaatio on rikki)!").build();
+        }
     }
 }

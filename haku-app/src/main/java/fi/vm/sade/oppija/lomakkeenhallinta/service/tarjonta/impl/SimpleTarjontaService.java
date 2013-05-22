@@ -19,7 +19,7 @@ public class SimpleTarjontaService implements TarjontaService {
     private final WebResource webResource;
 
     @Autowired
-    public SimpleTarjontaService(@Value("tarjonta.haku.resource.url") final String tarjontaHakuResourceUrl) {
+    public SimpleTarjontaService(@Value("${tarjonta.haku.resource.url}") final String tarjontaHakuResourceUrl) {
         //this.url = url;
         //"http://reppu.hard.ware.fi:8302/tarjonta-service/rest/haku";
         ClientConfig cc = new DefaultClientConfig();
