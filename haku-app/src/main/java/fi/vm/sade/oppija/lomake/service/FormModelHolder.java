@@ -44,6 +44,7 @@ public class FormModelHolder {
     public FormModelHolder(FormGenerator formGenerator) {
         this.formGenerator = formGenerator;
         formModel = new FormModel();
+        generateAndReplace();
     }
 
     public FormModel getModel() {

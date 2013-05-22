@@ -32,7 +32,6 @@ import java.net.URISyntaxException;
 
 @Controller
 @Path("/lomakkeenhallinta")
-@Secured("ROLE_ADMIN")
 public class FormBuilderResource {
 
     @Autowired
