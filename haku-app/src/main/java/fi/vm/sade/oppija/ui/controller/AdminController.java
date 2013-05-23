@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.ui.controller;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.lomake.converter.FormModelToJsonString;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.lomake.domain.elements.Attachment;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,19 +33,17 @@ import java.net.URISyntaxException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static javax.ws.rs.core.Response.created;
 
 
 @Controller
 @Path("/admin")
-@Secured("ROLE_ADMIN")
+@Secured("ROLE_APP_HAKEMUS_CRUD")
 public class AdminController {
 
     public static final String ADMIN_UPLOAD_VIEW = "/admin/upload";
     public static final String ADMIN_INDEX_VIEW = "/admin/index";
     public static final String ADMIN_EDIT_VIEW = "/admin/editModel";
-    public static final Attachment ATTACHMENT_MODEL = new Attachment("file", createI18NForm("Lataa malli json-objektina"));
     private static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
     @Autowired
@@ -67,6 +64,7 @@ public class AdminController {
 
     public AdminController() {
     }
+
     @GET
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getIndex() {
@@ -79,13 +77,6 @@ public class AdminController {
         properties.put("hakemus.sha.salt", shaSalt);
 
         return new Viewable(ADMIN_INDEX_VIEW, properties);
-    }
-
-    @GET
-    @Path("/upload")
-    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable upload() {
-        return new Viewable(ADMIN_UPLOAD_VIEW, ATTACHMENT_MODEL);
     }
 
     @GET

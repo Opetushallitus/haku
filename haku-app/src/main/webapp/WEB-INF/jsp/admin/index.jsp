@@ -28,10 +28,8 @@
 <body>
 <ul>
     <li><a href="${contextPath}/lomake/">Hakujen selaus</a></li>
-    <li><a href="${contextPath}/admin/upload">Admin - Lataa malli tiedostona</a></li>
-    <li><a href="${contextPath}/admin/edit">Admin - Muokkaa mallia</a></li>
-    <li><a href="${contextPath}/admin/model">Admin - Tämänhetkinen malli (json)</a></li>
-    <li><a href="${contextPath}/lomakkeenhallinta">Admin - Lomakkeenhallinta - generoi lomake</a></li>
+    <li><a href="${contextPath}/admin/model">Admin - Lataa lomakkeet (json)</a></li>
+    <li><a href="${contextPath}/lomakkeenhallinta">Admin - Generoi lomakkeet</a></li>
     <li><a href="/">Oppijan verkkopalvelu</a></li>
 </ul>
 

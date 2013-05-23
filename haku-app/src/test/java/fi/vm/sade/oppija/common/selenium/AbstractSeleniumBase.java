@@ -56,7 +56,6 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected FormModelHelper updateIndexAndFormModel(FormModel formModel) {
         AdminResourceClient adminResourceClient = new AdminResourceClient(getBaseUrl());
-        adminResourceClient.updateIndex();
         adminResourceClient.updateModel(formModel);
         return new FormModelHelper(formModel);
     }

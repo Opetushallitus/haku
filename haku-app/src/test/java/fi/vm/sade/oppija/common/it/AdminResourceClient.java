@@ -48,15 +48,6 @@ public class AdminResourceClient {
         httpclient = new DefaultHttpClient();
     }
 
-    public void updateIndex() {
-        try {
-            login(admin, httpclient);
-            updateIndex(httpclient);
-        } catch (IOException e) {
-            LOGGER.error("Error updating index ", e);
-        }
-    }
-
     public void updateModel(FormModel formModel) {
         try {
             login(admin, httpclient);
@@ -65,11 +56,6 @@ public class AdminResourceClient {
         } catch (IOException e) {
             LOGGER.error("Error posting form ", e);
         }
-    }
-
-    private void updateIndex(DefaultHttpClient httpclient) throws IOException {
-        HttpGet updateGet = new HttpGet(baseUrl + "admin/index/update");
-        ExecuteAndConsume(httpclient, updateGet);
     }
 
     private void login(final User user, final DefaultHttpClient httpclient) throws IOException {

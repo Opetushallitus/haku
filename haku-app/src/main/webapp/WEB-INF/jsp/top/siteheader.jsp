@@ -26,33 +26,20 @@
                 <c:when test="${loggedIn}">
                     <ul>
                         <li><a href="${contextPath}/user/logout">Kirjaudu ulos</a></li>
-                        <li><a href="${contextPath}/j_spring_cas_security_logout">CAS Logout</a></li>
-                        <li><a href="${contextPath}/me"><sec:authentication property="principal.username"/></a></li>
                     </ul>
                 </c:when>
                 <c:otherwise>
                     <ul>
                         <li><a href="#" data-popup-action="open">Kirjaudu sisään</a></li>
-                        <li><a href="${contextPath}/user/postLogin?redirect=${pageContext.request.requestURL}">CAS Login</a></li>
+                        <li><a href="lomake/">Lomakkeet</a></li>
                     </ul>
                 </c:otherwise>
             </c:choose>
             <ul>
-                <li><a href="http://www.sanasto.fi/">Sanasto</a></li>
-                <li><a href="http://google.fi">Kysy neuvoa</a></li>
-                <li><a href="http://www.koulutusnetti.fi/?path=hakuajat">Hakuajat</a></li>
-            </ul>
-
-            <ul>
-                <li><a href="?lang=fi">Suomeksi</a></li>
-                <li><a href="?lang=sv">På svenska</a></li>
-                <li><a href="?lang=en">in English</a></li>
-            </ul>
-            <ul>
-                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <sec:authorize access="hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')">
                     <li><a href="${contextPath}/admin">Admin</a></li>
                 </sec:authorize>
-                <sec:authorize access="hasRole('ROLE_VIRKAILIJA')">
+                <sec:authorize access="hasRole('ROLE_APP_HAKEMUS_CRUD')">
                     <li><a href="${contextPath}/virkailija/hakemus">Hakemusten käsittely</a></li>
                 </sec:authorize>
             </ul>

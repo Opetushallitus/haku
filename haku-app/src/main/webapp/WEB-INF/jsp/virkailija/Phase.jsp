@@ -40,7 +40,6 @@
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
     <script src="${contextPath}/resources/javascript/rules.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
-    <script src="${contextPath}/resources/javascript/site.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/phase.js" type="text/javascript"></script>
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
@@ -50,10 +49,6 @@
 <body>
 <c:set var="preview" value="${phase.preview}" scope="request"/>
 <div id="wrapper" class="virkailija">
-
-    <%--<div id="global_header"></div>--%>
-    <%--<div id="global_menu"></div>--%>
-    <%--<virkailija:breadcrumbs/>--%>
 
     <virkailija:headerButtons oid="${application.oid}" preview="${preview}"/>
 
@@ -99,6 +94,7 @@
         <div class="tabsheets">
             <section id="hakemus" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus"
                      style="display: block">
+
                 <haku:messages messages="${errorMessages}" additionalClass="warming"/>
 
                 <c:choose>
@@ -132,7 +128,6 @@
 
         </div>
     </section>
-    <div id="global_footer"></div>
 </div>
 </body>
 </html>

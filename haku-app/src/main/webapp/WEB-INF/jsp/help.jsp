@@ -34,7 +34,6 @@
             <h1><haku:i18nText value="${it.theme.i18nText}"/></h1>
             <c:forEach var="entry" items="${it.listsOfTitledElements}">
                 <h3><haku:i18nText value="${entry.i18nText}"/></h3>
-
                 <p><c:out value="${entry.verboseHelp}"/></p>
             </c:forEach>
         </section>

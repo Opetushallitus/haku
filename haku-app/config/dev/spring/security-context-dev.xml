@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
                     http://www.springframework.org/schema/security
                     http://www.springframework.org/schema/security/spring-security-3.1.xsd"
-        profile="dev">
+             profile="dev">
 
     <global-method-security secured-annotations="enabled">
     </global-method-security>
@@ -38,14 +38,9 @@
     <authentication-manager>
         <authentication-provider>
             <user-service>
-                <user name="joe" password="bloggs" authorities="ROLE_USER, ROLE_ADMIN"/>
-                <user name="test" password="test" authorities="ROLE_USER"/>
-                <user name="test2" password="test2" authorities="ROLE_USER"/>
-                <user name="test3" password="test3" authorities="ROLE_USER"/>
-                <user name="test4" password="test4" authorities="ROLE_USER"/>
-                <user name="test5" password="test5" authorities="ROLE_USER"/>
-                <user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN"/>
-                <user name="officer" password="officer" authorities="ROLE_USER, ROLE_VIRKAILIJA"/>
+                <user name="nobody" password="nobody" authorities="ROLE_NOBODY"/>
+                <user name="admin" password="admin" authorities="ROLE_APP_HAKEMUS_CRUD"/>
+                <user name="officer" password="officer" authorities="ROLE_APP_HAKEMUS_READ_UPDATE"/>
             </user-service>
         </authentication-provider>
     </authentication-manager>

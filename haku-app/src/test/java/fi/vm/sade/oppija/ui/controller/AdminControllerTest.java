@@ -42,18 +42,6 @@ public class AdminControllerTest {
     }
 
     @Test
-    public void testUploadTemplate() throws Exception {
-        Viewable viewable = adminController.upload();
-        assertEquals("Unexpected template name", AdminController.ADMIN_UPLOAD_VIEW, viewable.getTemplateName());
-    }
-
-    @Test
-    public void testUploadModel() throws Exception {
-        Viewable upload = adminController.upload();
-        assertTrue(upload.getModel() == AdminController.ATTACHMENT_MODEL);
-    }
-
-    @Test
     public void testGetIndex() throws Exception {
         Viewable viewable = adminController.getIndex();
         assertEquals("Unexpected template name", AdminController.ADMIN_INDEX_VIEW, viewable.getTemplateName());

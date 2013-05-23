@@ -32,6 +32,7 @@ import java.net.URISyntaxException;
 
 @Controller
 @Path("/lomakkeenhallinta")
+@Secured("ROLE_APP_HAKEMUS_CRUD")
 public class FormBuilderResource {
 
     @Autowired
@@ -42,9 +43,9 @@ public class FormBuilderResource {
     public Response generate() throws URISyntaxException {
         boolean b = formModelHolder.generateAndReplace();
         if (b) {
-            return Response.created(new URI("/lomake/")).build();
+            return Response.seeOther(new URI("/lomake/")).build();
         } else {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Lomakkeen luonti epäonnistui (Koodisto ja/tai koulutusinformaatio on rikki)!").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Lomakkeen luonti epäonnistui(koodisto)").build();
         }
     }
 }

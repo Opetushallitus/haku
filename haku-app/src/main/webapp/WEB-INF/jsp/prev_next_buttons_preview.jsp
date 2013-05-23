@@ -16,8 +16,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<fmt:setBundle basename="messages"/>
-<fmt:requestEncoding value="utf-8"/>
+<fmt:setBundle basename="messages" scope="session"/>
 
 <c:forEach var="item" items="${form.children}" varStatus="status">
     <c:if test="${(not status.first) and (item eq vaihe)}">
