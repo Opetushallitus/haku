@@ -218,20 +218,18 @@ public class Yhteishaku2013 {
         // sora-kysymykset
 
         RelatedQuestionRule hasSora = new RelatedQuestionRule(index + "_sora_rule",
-                ImmutableList.of(index + "-Koulutus-id-sora"), Boolean.TRUE.toString().toLowerCase(), false);
+                ImmutableList.of(index + "-Koulutus-id-sora"), ElementUtil.KYLLA, false);
 
         Radio sora1 = new Radio(index + "_sora_terveys", createI18NForm("form.sora.terveys"));
-        sora1.addOption(Boolean.FALSE.toString().toLowerCase(), createI18NForm("form.yleinen.ei"), Boolean.FALSE.toString().toLowerCase());
-        sora1.addOption(Boolean.TRUE.toString().toLowerCase(), createI18NForm("form.sora.kylla"), Boolean.TRUE.toString().toLowerCase());
-        sora1.setInline(false);
-        sora1.addAttribute("required", "required");
+        sora1.addOption(ElementUtil.EI, createI18NForm("form.yleinen.ei"), ElementUtil.EI);
+        sora1.addOption(ElementUtil.KYLLA, createI18NForm("form.sora.kylla"), ElementUtil.KYLLA);
+        ElementUtil.setRequired(sora1);
         sora1.setPopup(new Popup("sora-popup", createI18NForm("form.hakutoiveet.terveydentilavaatimukset.otsikko")));
 
         Radio sora2 = new Radio(index + "_sora_oikeudenMenetys", createI18NForm("form.sora.oikeudenMenetys"));
-        sora2.addOption(Boolean.FALSE.toString().toLowerCase(), createI18NForm("form.yleinen.ei"), Boolean.FALSE.toString().toLowerCase());
-        sora2.addOption(Boolean.TRUE.toString().toLowerCase(), createI18NForm("form.sora.kylla"), Boolean.TRUE.toString().toLowerCase());
-        sora2.setInline(false);
-        sora2.addAttribute("required", "required");
+        sora2.addOption(ElementUtil.EI, createI18NForm("form.yleinen.ei"), ElementUtil.EI);
+        sora2.addOption(ElementUtil.KYLLA, createI18NForm("form.sora.kylla"), ElementUtil.KYLLA);
+        ElementUtil.setRequired(sora2);
 
         // popup ensimmäistä sora-kysymystä varten
 
