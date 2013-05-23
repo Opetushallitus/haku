@@ -16,34 +16,57 @@
 
 package fi.vm.sade.oppija.lomake.service;
 
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomakkeenhallinta.FormGenerator;
+import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FormModelHolder {
-
+    private static final Logger LOG = LoggerFactory.getLogger(FormModelHolder.class);
+    private final FormGenerator formGenerator;
     private FormModel formModel;
 
-    @Autowired
     public FormModelHolder(final Yhteishaku2013 yhteishaku2013) {
-        yhteishaku2013.init();
         formModel = new FormModel();
         formModel.addApplicationPeriod(yhteishaku2013.getApplicationPeriod());
+        this.formGenerator = null;
+
+    }
+
+    @Autowired
+    public FormModelHolder(FormGenerator formGenerator) {
+        this.formGenerator = formGenerator;
+        formModel = new FormModel();
+        generateAndReplace();
     }
 
     public FormModel getModel() {
         return formModel;
     }
 
-    /**
-     * this must be triggered when model changes!
-     *
-     * @param model new model
-     */
     public synchronized void updateModel(final FormModel model) {
         this.formModel = model;
+    }
+
+    public synchronized boolean generateAndReplace() {
+        try {
+            formModel = new FormModel();
+            List<ApplicationPeriod> generate = formGenerator.generate();
+            for (ApplicationPeriod applicationPeriod : generate) {
+                formModel.addApplicationPeriod(applicationPeriod);
+            }
+            return true;
+        } catch (Exception e) {
+            LOG.info("Error generating forms", e);
+            return false;
+        }
     }
 
 

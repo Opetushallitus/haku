@@ -28,7 +28,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +55,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
     public void init() throws IOException {
         super.before();
         FormModel formModel = new FormModel();
-        ApplicationPeriod applicationPeriod = new ApplicationPeriod(Yhteishaku2013.ASID);
+        ApplicationPeriod applicationPeriod = new ApplicationPeriod(ASID);
         formModel.addApplicationPeriod(applicationPeriod);
         Form form = new Form("lomake", createI18NAsIs("yhteishaku"));
         Phase hakutoiveet = new Phase("hakutoiveet", createI18NAsIs("Hakutoiveet"), false);
@@ -96,7 +95,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
     @Test
     public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
         final WebDriver driver = seleniumHelper.getDriver();
-        seleniumHelper.navigate("lomake/" + Yhteishaku2013.ASID + "/lomake/hakutoiveet");
+        seleniumHelper.navigate("lomake/" + ASID + "/lomake/hakutoiveet");
         driver.findElement(By.id("preference1-Opetuspiste"));
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Esp");
@@ -104,6 +103,9 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
         s.isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
         findByIdAndClick("preference1-discretionary_false");
+        findByIdAndClick("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true");
+        findByIdAndClick("preference1_sora_terveys_false");
+        findByIdAndClick("preference1_sora_oikeudenMenetys_false");
         driver.findElement(By.xpath("//button[@class='right']")).click();
         //seleniumHelper.navigate("/lomake/Yhteishaku/lomake/lisakysymykset");
         driver.findElement(By.id("lisakysymys"));
@@ -111,7 +113,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
     @Test(expected = NoSuchElementException.class)
     public void testEducationPreferenceNoAdditionalQuestion() throws InterruptedException {
-        final String url = "lomake/" + Yhteishaku2013.ASID + "/lomake/hakutoiveet";
+        final String url = "lomake/" + ASID + "/lomake/hakutoiveet";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + url);
         Selenium s = seleniumHelper.getSelenium();

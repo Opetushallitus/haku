@@ -54,6 +54,7 @@
                     ignore-resource-not-found="true" properties-ref="defaultProps"/>
         <import resource="security-context-dev.xml"/>
         <bean id="defaultProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
+
     </beans>
 
 

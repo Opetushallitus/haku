@@ -56,11 +56,8 @@ public class ValintaperusteetServiceImpl implements ValintaperusteetService {
             try {
                 response = service.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
                         .post(ClientResponse.class, oids);
-
-                Map<String, Map<String, Map<String, String>>> entity = null;
                 if (response.getClientResponseStatus() == ClientResponse.Status.OK) {
-                    entity = response.getEntity(Map.class);
-                    return converter.apply(entity);
+                    return converter.apply(response.getEntity(Map.class));
                 }
             } catch (ClientHandlerException t) {
                 throw new IOException(String.format("Failed to retrieve data, exception: %s", t));

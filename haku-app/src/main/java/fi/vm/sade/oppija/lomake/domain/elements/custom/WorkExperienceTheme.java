@@ -19,6 +19,7 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.util.OppijaConstants;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Date;
@@ -31,8 +32,6 @@ import java.util.Map;
 public class WorkExperienceTheme extends Theme {
 
     private static final long serialVersionUID = -750846124976213900L;
-    // Degree types of the requested application options
-    private final String[] aoEducationDegreeKeys = OppijaConstants.getAoEducationDegreeKeys();
     // degree type that needs to be applied to
     // so that this phase is rendered
     private String requiredEducationDegree;
@@ -49,8 +48,9 @@ public class WorkExperienceTheme extends Theme {
         this.referenceDate = referenceDate;
     }
 
+    @JsonIgnore
     public String[] getAoEducationDegreeKeys() {
-        return aoEducationDegreeKeys.clone();
+        return OppijaConstants.AO_EDUCATION_DEGREE_KEYS;
     }
 
     public void setRequiredEducationDegree(String requiredEducationDegree) {

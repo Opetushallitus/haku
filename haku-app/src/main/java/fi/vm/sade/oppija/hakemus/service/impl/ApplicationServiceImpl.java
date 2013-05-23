@@ -280,7 +280,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         List<String> oids = new ArrayList<String>();
         FormId formId = application.getFormId();
         final Form activeForm = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
-        Map<String, PreferenceRow> preferenceRows = ElementUtil.<PreferenceRow>findElementsByType(activeForm,
+        Map<String, PreferenceRow> preferenceRows = ElementUtil.findElementsByType(activeForm,
                 PreferenceRow.class);
         Map<String, String> answers = application.getVastauksetMerged();
         for (PreferenceRow pr : preferenceRows.values()) {

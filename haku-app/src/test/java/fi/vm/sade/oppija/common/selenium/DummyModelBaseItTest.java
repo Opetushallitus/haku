@@ -22,7 +22,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     @Before
     public void setUp() throws Exception {
-        FormServiceMockImpl formModelDummyMemoryDao = new FormServiceMockImpl();
+        FormServiceMockImpl formModelDummyMemoryDao = new FormServiceMockImpl(ASID, AOID);
         updateIndexAndFormModel(formModelDummyMemoryDao.getModel());
         driver = seleniumHelper.getDriver();
         selenium = seleniumHelper.getSelenium();
@@ -49,14 +49,14 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected void navigateToPhase(final String phaseId) {
         Joiner joiner = Joiner.on("/").skipNulls();
-        String url = joiner.join(StringUtils.removeEnd(getBaseUrl(), "/"), "lomake", Yhteishaku2013.ASID, Yhteishaku2013.FORM_ID, phaseId);
+        String url = joiner.join(StringUtils.removeEnd(getBaseUrl(), "/"), "lomake", ASID, Yhteishaku2013.FORM_ID, phaseId);
         driver.get(url);
     }
 
     protected void navigateToFirstPhase() {
         String url = getBaseUrl() + "lomake/";
         driver.get(url);
-        driver.findElement(new By.ById(Yhteishaku2013.ASID)).click();
+        driver.findElement(new By.ById(ASID)).click();
         driver.findElement(new By.ById(Yhteishaku2013.FORM_ID)).click();
     }
 

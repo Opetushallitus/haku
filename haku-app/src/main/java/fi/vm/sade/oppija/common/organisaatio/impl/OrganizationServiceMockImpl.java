@@ -70,10 +70,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         }
 
         public boolean apply(Organization org) {
-            if (!includePassive && org.getEndDate() != null) {
-                return org.getEndDate().before(new Date());
-            }
-            return true;
+            return !(!includePassive && org.getEndDate() != null) || org.getEndDate().before(new Date());
         }
     }
 

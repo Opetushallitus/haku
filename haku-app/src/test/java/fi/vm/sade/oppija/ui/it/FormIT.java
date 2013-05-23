@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.ui.it;
 
 
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,28 +31,28 @@ public class FormIT extends AbstractFormTest {
 
     @Before
     public void setUp() throws Exception {
-        FormServiceMockImpl dummyMem = new FormServiceMockImpl();
+        FormServiceMockImpl dummyMem = new FormServiceMockImpl(ASID, AOID);
         updateModelAndCreateFormModelHelper(dummyMem.getModel());
     }
 
     @Test
     public void testApplicationPeriod() {
         beginAt("/lomake");
-        assertLinkPresent(Yhteishaku2013.ASID);
+        assertLinkPresent(ASID);
     }
 
     @Test
     public void testForm() throws Exception {
-        beginAt("/lomake/" + Yhteishaku2013.ASID);
+        beginAt("/lomake/" + ASID);
         assertLinkPresent("yhteishaku");
     }
 
     @Test
     public void testCategory() throws Exception {
-        beginAt("/lomake/" + Yhteishaku2013.ASID + "/yhteishaku/henkilotiedot");
+        beginAt("/lomake/" + ASID + "/yhteishaku/henkilotiedot");
         assertLinkPresent("nav-henkilotiedot");
         assertLinkNotPresent("nav-koulutustausta");
-        gotoPage("/lomake/" + Yhteishaku2013.ASID + "/yhteishaku/koulutustausta");
+        gotoPage("/lomake/" + ASID + "/yhteishaku/koulutustausta");
         assertLinkPresent("nav-henkilotiedot");
         assertLinkPresent("nav-koulutustausta");
     }

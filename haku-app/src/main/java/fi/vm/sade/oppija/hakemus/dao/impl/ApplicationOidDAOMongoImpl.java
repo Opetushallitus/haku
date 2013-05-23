@@ -64,7 +64,7 @@ public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
 
         if (seq.getCount(query) == 0) {
             DBObject initialObject = new BasicDBObject();
-            initialObject.put("seq", Integer.valueOf(0));
+            initialObject.put("seq", 0);
             seq.insert(initialObject);
             res = seq.findOne(query);
         } else {

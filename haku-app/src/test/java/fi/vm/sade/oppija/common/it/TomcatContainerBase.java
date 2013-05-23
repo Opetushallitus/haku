@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.common.it;
 import fi.vm.sade.oppija.lomake.TomcatContainer;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -32,6 +33,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration("classpath:spring/tomcat-container-context.xml")
 @ActiveProfiles(profiles = "dev")
 public abstract class TomcatContainerBase {
+
+    @Value("${asid}")
+    protected String ASID;
+    @Value("${aoid}")
+    protected String AOID;
 
     @Autowired
     protected TomcatContainer container;

@@ -43,6 +43,14 @@
         </dependency>
 
         <dependency>
+            <groupId>fi.vm.sade.themes</groupId>
+            <artifactId>virkailija-raamit</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>tomcat</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
             <version>4.2.3</version>
@@ -594,6 +602,7 @@
             <artifactId>cas-client-core</artifactId>
             <version>3.1.10</version>
         </dependency>
+
 
     </dependencies>
 

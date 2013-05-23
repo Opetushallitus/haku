@@ -25,7 +25,24 @@
                 var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
                 preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
                 $("#" + selectInputId).html("<option></option>");
-
+                if (data.length == 0) {
+//                    data[0] = {
+//                        name: 'Harkinnanvarainen, sora, Suomi ja urheilu',
+//                        id: '1.2.3.4',
+//                        educationdegree: "32",
+//                        sora: "true",
+//                        lang: "FI",
+//                        athlete: "true"
+//                    };
+//                    data[1] = {
+//                        name: 'Ruotsi',
+//                        id: '1.2.3.5',
+//                        educationdegree: "30",
+//                        sora: "false",
+//                        lang: "SV",
+//                        athlete: "false"
+//                    };
+                }
                 $(data).each(function (index, item) {
                     var selected = "";
                     childLONames[item.id] = item.childLONames;
@@ -35,18 +52,25 @@
                         //preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"), item.educationDegree, null, false);
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
                     }
-                    item.lang = (index % 2 == 0) ? "SV" : "FI";
-                    item.sora = (index % 2 == 0);
-                    $selectInput.append('<option value="' + item.name + '" ' + selected + ' data-id="' + item.id + '" data-educationdegree="' + item.educationDegree + '" data-lang="' + item.lang + '" data-sora="' + item.sora + '">' + item.name + '</option>');
+//                    item.lang = (index % 2 == 0) ? "SV" : "FI";
+//                    item.sora = (index % 2 == 0);
+//                    item.athlete = (index % 2 != 0);
+                    $selectInput.append('<option value="' + item.name
+                        + '" ' + selected + ' data-id="' + item.id +
+                        '" data-educationdegree="' + item.educationdegree +
+                        '" data-lang="' + item.lang +
+                        '" data-sora="' + item.sora +
+                        '" data-athlete="' + item.athlete + '" >' + item.name + '</option>');
                 });
             });
         },
 
         clearSelectInput: function (selectInputId) {
             $("#" + selectInputId + "-id").val("");
-            $("#" + selectInputId + "-educationDegree").val("");
+            $("#" + selectInputId + "-educationdegree").val("");
             $("#" + selectInputId + "-id-lang").val("");
             $("#" + selectInputId + "-id-sora").val(false);
+            $("#" + selectInputId + "-id-athlete").val(false);
             $("#" + selectInputId).html("<option></option>");
             preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
         },
@@ -95,6 +119,16 @@
                     prerequisite: sortabletable_settings.tutkintoId,
                     vocational: sortabletable_settings.vocational
                 }, function (data) {
+//                    if (data.length == 0) {
+//                        data[0] = {
+//                            name: 'name2',
+//                            id: '1.2.3.4'
+//                        };
+//                        data[1] = {
+//                            name: 'name1',
+//                            id: '1.2.3.5'
+//                        };
+//                    }
                     response($.map(data, function (result) {
                         return {
                             label: result.name,
@@ -124,8 +158,9 @@
     $(".field-container-select select").change(function (event) {
         var $hiddenInput = $("#" + this.id + "-id"),
             $educationDegreeInput = $("#" + this.id + "-educationDegree"),
-            $educationDegreeLangInput = $("#" + this.id + "-id-lang"),
-            $educationDegreeLangSora = $("#" + this.id + "-id-sora"),
+            $educationDegreeLang = $("#" + this.id + "-id-lang"),
+            $educationDegreeSora = $("#" + this.id + "-id-sora"),
+            $educationDegreeAthlete = $("#" + this.id + "-id-athlete"),
             selectedId, educationDegree, value = $(this).val(),
             preferenceRowId = this.id.split("-")[0];
         $(this).children().removeAttr("selected");
@@ -133,10 +168,11 @@
         var selectedOption = $("#" + this.id + " option:selected");
         selectedId = selectedOption.data("id");
         $hiddenInput.val(selectedId);
-        educationDegree = selectedOption.data("educationdegree");
-        $educationDegreeInput.val(educationDegree).trigger('change');
-        $educationDegreeLangInput.val(selectedOption.data("lang")).trigger('change');
-        $educationDegreeLangSora.val(selectedOption.data("sora")).trigger('change');
+        var educationDegree = selectedOption.data("educationdegree");
+        $educationDegreeInput.val(educationDegree).change();
+        $educationDegreeLang.val(selectedOption.data("lang")).change();
+        $educationDegreeSora.val(selectedOption.data("sora")).change();
+        $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
         preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"), educationDegree, preferenceRowId, false);
         preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
     });

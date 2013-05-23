@@ -36,6 +36,9 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
         gotoHakutoiveet("010113-668B");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
         findByIdAndClick("preference1-discretionary_false");
+        findByIdAndClick("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true");
+        findByIdAndClick("preference1_sora_terveys_false");
+        findByIdAndClick("preference1_sora_oikeudenMenetys_false");
         nextPhase();
         select();
         nextPhase();
@@ -46,7 +49,7 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
     public void testWorkExperienceNotShown() {
         gotoHakutoiveet("010113A668B");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
-        findByIdAndClick("preference1-discretionary_true");
+        findByIdAndClick("preference1-discretionary_false");
         nextPhase();
         select();
         nextPhase();
@@ -77,7 +80,6 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
         setValue("paattotodistusvuosi_peruskoulu", "2012");
 
         nextPhase();
-
 
         setValue("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();

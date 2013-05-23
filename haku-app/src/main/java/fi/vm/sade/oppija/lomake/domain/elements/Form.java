@@ -37,10 +37,7 @@ public class Form extends Titled {
 
     @JsonIgnore
     public boolean isFirstChild(final Element phase) {
-        if (hasChildren()) {
-            return this.children.get(0).equals(phase);
-        }
-        return false;
+        return hasChildren() && this.children.get(0).equals(phase);
     }
 
     @JsonIgnore
