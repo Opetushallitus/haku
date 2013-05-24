@@ -25,24 +25,7 @@
                 var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
                 preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
                 $("#" + selectInputId).html("<option></option>");
-                if (data.length == 0) {
-//                    data[0] = {
-//                        name: 'Harkinnanvarainen, sora, Suomi ja urheilu',
-//                        id: '1.2.3.4',
-//                        educationdegree: "32",
-//                        sora: "true",
-//                        lang: "FI",
-//                        athlete: "true"
-//                    };
-//                    data[1] = {
-//                        name: 'Ruotsi',
-//                        id: '1.2.3.5',
-//                        educationdegree: "30",
-//                        sora: "false",
-//                        lang: "SV",
-//                        athlete: "false"
-//                    };
-                }
+
                 $(data).each(function (index, item) {
                     var selected = "";
                     childLONames[item.id] = item.childLONames;
@@ -52,13 +35,10 @@
                         //preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"), item.educationDegree, null, false);
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
                     }
-//                    item.lang = (index % 2 == 0) ? "SV" : "FI";
-//                    item.sora = (index % 2 == 0);
-//                    item.athlete = (index % 2 != 0);
                     $selectInput.append('<option value="' + item.name
                         + '" ' + selected + ' data-id="' + item.id +
-                        '" data-educationdegree="' + item.educationdegree +
-                        '" data-lang="' + item.lang +
+                        '" data-educationdegree="' + item.educationDegree +
+                        '" data-lang="' + item.teachingLanguages[0] +
                         '" data-sora="' + item.sora +
                         '" data-athlete="' + item.athlete + '" >' + item.name + '</option>');
                 });
@@ -119,16 +99,6 @@
                     prerequisite: sortabletable_settings.tutkintoId,
                     vocational: sortabletable_settings.vocational
                 }, function (data) {
-//                    if (data.length == 0) {
-//                        data[0] = {
-//                            name: 'name2',
-//                            id: '1.2.3.4'
-//                        };
-//                        data[1] = {
-//                            name: 'name1',
-//                            id: '1.2.3.5'
-//                        };
-//                    }
                     response($.map(data, function (result) {
                         return {
                             label: result.name,
