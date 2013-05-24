@@ -78,7 +78,7 @@
             <tr>
                 <td></td>
                 <td></td>
-                <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${categoryData['äidinkieli']}"/>
+                <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${categoryData['aidinkieli']}"/>
             </tr>
 
         </table>

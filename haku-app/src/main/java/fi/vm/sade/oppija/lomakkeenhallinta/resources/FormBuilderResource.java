@@ -48,4 +48,5 @@ public class FormBuilderResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Lomakkeen luonti epäonnistui(koodisto)").build();
         }
     }
+
 }
