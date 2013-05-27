@@ -21,8 +21,6 @@
 <div id="${element.id}" class="related-question-rule-class"
      data-selector="${ fn:toNameSelectorString(element.relatedElementId)}">
     <script type="text/javascript">
-
-
         (function () {
             $("${ fn:toNameSelectorString(element.relatedElementId)}").change(function (event) {
                 var childIds = [<c:forEach var="child" items="${element.children}" varStatus="status">"${child.id}"${not status.last ? ', ' : ''}</c:forEach>];
