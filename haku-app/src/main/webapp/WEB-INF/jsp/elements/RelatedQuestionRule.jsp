@@ -18,38 +18,19 @@
   ~ European Union Public Licence for more details.
   --%>
 
-<div id="${element.id}" class="related-question-rule-class" data-selector="${ fn:toNameSelectorString(element.relatedElementId)}">
+<div id="${element.id}" class="related-question-rule-class"
+     data-selector="${ fn:toNameSelectorString(element.relatedElementId)}">
     <script type="text/javascript">
+
 
         (function () {
             $("${ fn:toNameSelectorString(element.relatedElementId)}").change(function (event) {
                 var childIds = [<c:forEach var="child" items="${element.children}" varStatus="status">"${child.id}"${not status.last ? ', ' : ''}</c:forEach>];
-                var ruleChilds = $("#${element.id} .rule-childs");
+                var ruleChildren = $("#${element.id} .rule-childs");
+                var expression = "${element.expression}";
                 var $this = $(this);
-                if ($this.is(':checkbox') && $this.is(':checked')) {
-                    if ($.trim(ruleChilds.html()) === "") {
-                        ruleData.getRuleChild(childIds, 0, ruleChilds);
-                    }
-                }
-                else if (!$this.is(':checkbox') && $this.val().search("${element.expression}") !== -1
-                        && $.trim(ruleChilds.html()) === "") {
-                    ruleData.getRuleChild(childIds, 0, ruleChilds);
-                } else {
-                    ruleChilds.html("");
-                }
+                relatedRule.changeState($this, ruleChildren, childIds, expression);
             });
-
-            var ruleData = {
-                getRuleChild: function (childIds, index, ruleChilds) {
-                    $.get(document.URL + '/' + childIds[index],
-                            function (data) {
-                                ruleChilds.append(data);
-                                if (childIds.length - 1 > index) {
-                                    ruleData.getRuleChild(childIds, ++index, ruleChilds);
-                                }
-                            });
-                }
-            };
         })();
     </script>
     <div class="rule-childs clear">
