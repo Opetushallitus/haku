@@ -35,7 +35,8 @@
             "suorittanut2": "true",
             "suorittanut1": "true",
             "perusopetuksen_kieli": "FI",
-            "phaseId": "hakutoiveet"
+            "phaseId": "hakutoiveet",
+            "koulutuspaikkaAmmatillisenTutkintoon" : "false"
         },
         "hakutoiveet": {
             "preference1-discretionary" : "false",

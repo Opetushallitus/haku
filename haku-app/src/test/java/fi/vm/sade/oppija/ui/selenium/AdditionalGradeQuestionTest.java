@@ -35,7 +35,8 @@ public class AdditionalGradeQuestionTest extends DummyModelBaseItTest {
     public void testAdditionalSubjects() {
         navigateToPhase(KOULUTUSTAUSTA_PHASE_ID);
 
-        findByIdAndClick("millatutkinnolla_tutkinto1", "paattotodistusvuosi_peruskoulu", "suorittanut1", "suorittanut2", "suorittanut3", "suorittanut4", "osallistunut_false");
+        findByIdAndClick("millatutkinnolla_tutkinto1", "paattotodistusvuosi_peruskoulu", "suorittanut1", "suorittanut2",
+                "suorittanut3", "suorittanut4", "osallistunut_false", "koulutuspaikkaAmmatillisenTutkintoon_false");
         setValue("perusopetuksen_kieli", "SV");
         setValue("paattotodistusvuosi_peruskoulu", "2013");
 

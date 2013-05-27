@@ -959,8 +959,15 @@ public class Yhteishaku2013 {
         RelatedQuestionRule paattotodistusvuosiPeruskouluRule = new RelatedQuestionRule("rule8",
                 paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$", false);
 
+        Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio(
+                "koulutuspaikkaAmmatillisenTutkintoon",
+                createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka"));
+        addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon);
+        setRequired(koulutuspaikkaAmmatillisenTutkintoon);
+
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu);
         pkKysymyksetRule.addChild(suorittanutGroup);
+        pkKysymyksetRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskouluRule);
 
         TextQuestion lukioPaattotodistusVuosi = new TextQuestion("lukioPaattotodistusVuosi",
@@ -998,16 +1005,11 @@ public class Yhteishaku2013 {
         addDefaultTrueFalseOptions(suorittanutAmmatillisenTutkinnon);
         setRequired(suorittanutAmmatillisenTutkinnon);
 
-        Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio(
-                "koulutuspaikkaAmmatillisenTutkintoon",
-                createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka"));
-        addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon);
-        setRequired(koulutuspaikkaAmmatillisenTutkintoon);
+
 
         lukioRule.addChild(suorittanutAmmatillisenTutkinnon);
         lukioRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
-        paattotodistusvuosiPeruskouluRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
 
         RelatedQuestionRule suorittanutAmmatillisenTutkinnonRule = new RelatedQuestionRule("rule9",
                 suorittanutAmmatillisenTutkinnon.getId(), "^true", false);
@@ -1018,15 +1020,6 @@ public class Yhteishaku2013 {
 
         suorittanutAmmatillisenTutkinnonRule.addChild(notification1);
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutAmmatillisenTutkinnonRule);
-
-        RelatedQuestionRule koulutuspaikkaAmmatillisenTutkintoonRule = new RelatedQuestionRule("rule10",
-                koulutuspaikkaAmmatillisenTutkintoon.getId(), "^true$", false);
-        Notification notification2 = new Notification(
-                "notification2",
-                createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka.huom"),
-                Notification.NotificationType.INFO);
-        koulutuspaikkaAmmatillisenTutkintoonRule.addChild(notification2);
-        koulutuspaikkaAmmatillisenTutkintoon.addChild(koulutuspaikkaAmmatillisenTutkintoonRule);
 
         DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
                 createI18NForm("Millä opetuskielellä olet suorittanut perusopetuksen?"), null);

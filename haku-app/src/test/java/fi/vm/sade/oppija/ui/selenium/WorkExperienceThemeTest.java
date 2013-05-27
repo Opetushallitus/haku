@@ -74,7 +74,7 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
 
         nextPhase();
 
-        findByIdAndClick("millatutkinnolla_tutkinto1", "suorittanut1", "osallistunut_false");
+        findByIdAndClick("millatutkinnolla_tutkinto1", "suorittanut1", "osallistunut_false", "koulutuspaikkaAmmatillisenTutkintoon_false");
         findById("paattotodistusvuosi_peruskoulu");
         setValue("perusopetuksen_kieli", "FI");
         setValue("paattotodistusvuosi_peruskoulu", "2012");

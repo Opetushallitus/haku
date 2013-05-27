@@ -88,15 +88,9 @@ public class PreferenceTable extends Titled {
                 and(
                         not(
                                 and(
-                                        or(
-                                                and(
-                                                        validate(new RegexFieldFieldValidator("ammatillinenTutkintoSuoritettu", "^true$")),
-                                                        validate(new RequiredFieldFieldValidator("ammatillinenTutkintoSuoritettu"))
-                                                ),
-                                                and(
-                                                        validate(new RegexFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon", "^true$")),
-                                                        validate(new RequiredFieldFieldValidator("koulutuspaikkaAmmatillisenTutkintoon"))
-                                                )
+                                        and(
+                                                validate(new RegexFieldFieldValidator("ammatillinenTutkintoSuoritettu", "^true$")),
+                                                validate(new RequiredFieldFieldValidator("ammatillinenTutkintoSuoritettu"))
                                         ),
                                         or(preferencePredicates)
                                 )

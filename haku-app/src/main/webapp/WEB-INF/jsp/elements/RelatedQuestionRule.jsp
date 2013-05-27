@@ -31,9 +31,10 @@
                         ruleData.getRuleChild(childIds, 0, ruleChilds);
                     }
                 }
-                else if (!$this.is(':checkbox') && $this.val().search("${element.expression}") !== -1
-                        && $.trim(ruleChilds.html()) === "") {
-                    ruleData.getRuleChild(childIds, 0, ruleChilds);
+                else if (!$this.is(':checkbox') && $this.val().search("${element.expression}") !== -1) {
+                    if ($.trim(ruleChilds.html()) === "") {
+                        ruleData.getRuleChild(childIds, 0, ruleChilds);
+                    }
                 } else {
                     ruleChilds.html("");
                 }
