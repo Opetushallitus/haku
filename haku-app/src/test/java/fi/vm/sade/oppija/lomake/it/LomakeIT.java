@@ -71,8 +71,8 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         findByIdAndClick("POHJAKOULUTUS_" + Yhteishaku2013.TUTKINTO_PERUSKOULU);
 
-        findById("paattotodistusvuosi_peruskoulu");
-        selenium.typeKeys("paattotodistusvuosi_peruskoulu", "2013");
+        findById("PK_PAATTOTODISTUSVUOSI");
+        selenium.typeKeys("PK_PAATTOTODISTUSVUOSI", "2013");
 
         findByIdAndClick("LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN", "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI", "osallistunut_false", "koulutuspaikkaAmmatillisenTutkintoon_false");
         setValue("perusopetuksen_kieli", "FI");

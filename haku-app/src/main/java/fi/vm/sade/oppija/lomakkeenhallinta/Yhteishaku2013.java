@@ -931,7 +931,7 @@ public class Yhteishaku2013 {
         millatutkinnolla.addChild(ulkomaillaSuoritettuTutkintoRule);
         millatutkinnolla.addChild(keskeytynytRule);
 
-        TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion("paattotodistusvuosi_peruskoulu",
+        TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion("PK_PAATTOTODISTUSVUOSI",
                 createI18NForm("form.koulutustausta.paattotodistusvuosi"));
         paattotodistusvuosiPeruskoulu.addAttribute("placeholder", "vvvv");
         paattotodistusvuosiPeruskoulu.addAttribute("required", "required");

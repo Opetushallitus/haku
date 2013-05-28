@@ -101,9 +101,9 @@ public class HAK305IT extends DummyModelBaseItTest {
 
     private void fillInTheKoulutustaustaPhase(final String opetuskieli) {
         findByIdAndClick("POHJAKOULUTUS_tutkinto1", "LISAKOULUTUS_KYMPPI", "osallistunut_false", "koulutuspaikkaAmmatillisenTutkintoon_false");
-        findById("paattotodistusvuosi_peruskoulu");
+        findById("PK_PAATTOTODISTUSVUOSI");
         setPerusopetuksenKieli(opetuskieli);
-        setValue("paattotodistusvuosi_peruskoulu", "2012");
+        setValue("PK_PAATTOTODISTUSVUOSI", "2012");
     }
 
     private void fillInTheHakutoiveetPhase() {
