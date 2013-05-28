@@ -962,7 +962,7 @@ public class Yhteishaku2013 {
                 paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$", false);
 
         Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio(
-                "koulutuspaikkaAmmatillisenTutkintoon",
+                "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON",
                 createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka"));
         addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon);
         setRequired(koulutuspaikkaAmmatillisenTutkintoon);

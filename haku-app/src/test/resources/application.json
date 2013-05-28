@@ -36,7 +36,7 @@
             "LISAKOULUTUS_KYMPPI": "true",
             "perusopetuksen_kieli": "FI",
             "phaseId": "hakutoiveet",
-            "koulutuspaikkaAmmatillisenTutkintoon" : "false"
+            "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON" : "false"
         },
         "hakutoiveet": {
             "preference1-discretionary" : "false",
