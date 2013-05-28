@@ -6,7 +6,7 @@
     "answers": {
         "henkilotiedot": {
             "aidinkieli": "FI",
-            "Sukupuoli": "m",
+            "SUKUPUOLI": "m",
             "kansalaisuus": "FIN",
             "asuinmaa": "FIN",
             "Sukunimi": "Korhonen",
@@ -25,15 +25,15 @@
             "phaseId": "koulutustausta"
         },
         "koulutustausta": {
-            "millatutkinnolla": "1",
-            "suorittanut6": "true",
-            "suorittanut5": "true",
-            "paattotodistusvuosi_peruskoulu": "2012",
-            "suorittanut4": "true",
-            "suorittanut3": "true",
+            "POHJAKOULUTUS": "1",
+            "LISAKOULUTUS_MAAHANMUUTTO": "true",
+            "LISAKOULUTUS_KANSANOPISTO": "true",
+            "PK_PAATTOTODISTUSVUOSI": "2012",
+            "LISAKOULUTUS_AMMATTISTARTTI": "true",
+            "LISAKOULUTUS_TALOUS": "true",
             "osallistunut": "false",
-            "suorittanut2": "true",
-            "suorittanut1": "true",
+            "LISAKOULUTUS_VAMMAISTEN": "true",
+            "LISAKOULUTUS_KYMPPI": "true",
             "perusopetuksen_kieli": "FI",
             "phaseId": "hakutoiveet",
             "koulutuspaikkaAmmatillisenTutkintoon" : "false"

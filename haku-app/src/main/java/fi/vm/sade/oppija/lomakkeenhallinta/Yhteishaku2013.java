@@ -278,7 +278,7 @@ public class Yhteishaku2013 {
         henkilotunnus.addAttribute("maxlength", "11");
         setRequiredInlineAndVerboseHelp(henkilotunnus);
 
-        Radio sukupuoli = new Radio("Sukupuoli", createI18NForm("form.henkilotiedot.sukupuoli"));
+        Radio sukupuoli = new Radio("SUKUPUOLI", createI18NForm("form.henkilotiedot.sukupuoli"));
         sukupuoli.addOption("mies", createI18NForm("form.henkilotiedot.sukupuoli.mies"), "m");
         sukupuoli.addOption("nainen", createI18NForm("form.henkilotiedot.sukupuoli.nainen"), "n");
         setRequiredInlineAndVerboseHelp(sukupuoli);
@@ -726,17 +726,17 @@ public class Yhteishaku2013 {
     }
 
     private void createArvosanat(Theme arvosanatRyhma) {
-        RelatedQuestionRule relatedQuestionPK = new RelatedQuestionRule("rule_grade_pk", "millatutkinnolla",
+        RelatedQuestionRule relatedQuestionPK = new RelatedQuestionRule("rule_grade_pk", "POHJAKOULUTUS",
                 "(" + PERUSKOULU + "|tutkinto2|tutkinto3|tutkinto4)", false);
         relatedQuestionPK.addChild(createGradeGrid("grid_pk", true));
         arvosanatRyhma.addChild(relatedQuestionPK);
 
-        RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", "millatutkinnolla",
+        RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", "POHJAKOULUTUS",
                 "(" + YLIOPPILAS + ")", false);
         relatedQuestionLukio.addChild(createGradeGrid("grid_yo", false));
         arvosanatRyhma.addChild(relatedQuestionLukio);
 
-        RelatedQuestionRule relatedQuestionEiTutkintoa = new RelatedQuestionRule("rule_grade_no", "millatutkinnolla",
+        RelatedQuestionRule relatedQuestionEiTutkintoa = new RelatedQuestionRule("rule_grade_no", "POHJAKOULUTUS",
                 "(tutkinto5|tutkinto7)", false);
         relatedQuestionEiTutkintoa.addChild(new Text("nogradegrid", createI18NForm("form.arvosanat.eiKysyta")));
         arvosanatRyhma.addChild(relatedQuestionEiTutkintoa);
@@ -817,7 +817,7 @@ public class Yhteishaku2013 {
 
     private void createTyokokemus(Theme tyokokemus) {
         tyokokemus.setHelp(createI18NForm("form.tyokokemus.help"));
-        TextQuestion tyokokemuskuukaudet = new TextQuestion("tyokokemuskuukaudet",
+        TextQuestion tyokokemuskuukaudet = new TextQuestion("TYOKOKEMUSKUUKAUDET",
                 createI18NForm("form.tyokokemus.kuukausina"));
         tyokokemuskuukaudet
                 .setHelp(createI18NForm("form.tyokokemus.kuukausina.help"));
@@ -875,7 +875,7 @@ public class Yhteishaku2013 {
     }
 
     public Radio createKoulutustaustaRadio() { //NOSONAR
-        Radio millatutkinnolla = new Radio("millatutkinnolla",
+        Radio millatutkinnolla = new Radio("POHJAKOULUTUS",
                 createI18NForm("form.koulutustausta.millaTutkinnolla"));
         millatutkinnolla.addOption(TUTKINTO_PERUSKOULU, createI18NForm("form.koulutustausta.peruskoulu"), PERUSKOULU,
                 createI18NForm("form.koulutustausta.peruskoulu.help"));
@@ -931,7 +931,7 @@ public class Yhteishaku2013 {
         millatutkinnolla.addChild(ulkomaillaSuoritettuTutkintoRule);
         millatutkinnolla.addChild(keskeytynytRule);
 
-        TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion("paattotodistusvuosi_peruskoulu",
+        TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion("PK_PAATTOTODISTUSVUOSI",
                 createI18NForm("form.koulutustausta.paattotodistusvuosi"));
         paattotodistusvuosiPeruskoulu.addAttribute("placeholder", "vvvv");
         paattotodistusvuosiPeruskoulu.addAttribute("required", "required");
@@ -942,11 +942,12 @@ public class Yhteishaku2013 {
         Group suorittanutGroup = new Group("suorittanutgroup",
                 createI18NForm("form.koulutustausta.suorittanut"));
         suorittanutGroup.addChild(
-                new CheckBox("suorittanut1", createI18NForm("form.koulutustausta.kymppiluokka")),
-                new CheckBox("suorittanut2", createI18NForm("form.koulutustausta.vammaistenValmentava")),
-                new CheckBox("suorittanut3", createI18NForm("form.koulutustausta.talouskoulu")),
-                new CheckBox("suorittanut4", createI18NForm("form.koulutustausta.ammattistartti")),
-                new CheckBox("suorittanut5", createI18NForm("form.koulutustausta.kansanopisto"))
+                new CheckBox("LISAKOULUTUS_KYMPPI", createI18NForm("form.koulutustausta.kymppiluokka")),
+                new CheckBox("LISAKOULUTUS_VAMMAISTEN", createI18NForm("form.koulutustausta.vammaistenValmentava")),
+                new CheckBox("LISAKOULUTUS_TALOUS", createI18NForm("form.koulutustausta.talouskoulu")),
+                new CheckBox("LISAKOULUTUS_AMMATTISTARTTI", createI18NForm("form.koulutustausta.ammattistartti")),
+                new CheckBox("LISAKOULUTUS_KANSANOPISTO", createI18NForm("form.koulutustausta.kansanopisto")),
+                new CheckBox("LISAKOULUTUS_MAAHANMUUTTO", createI18NForm("form.koulutustausta.maahanmuuttajienValmistava"))
         );
 
         RelatedQuestionRule pkKysymyksetRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "("

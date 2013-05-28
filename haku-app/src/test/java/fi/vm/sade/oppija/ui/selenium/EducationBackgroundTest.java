@@ -46,11 +46,11 @@ public class EducationBackgroundTest extends AbstractSeleniumBase {
         WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl()  + startUrl); //  lomake/Yhteishaku/yhteishaku/henkilotiedot
 
-        driver.findElement(new By.ById("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_PERUSKOULU)).click();
+        driver.findElement(new By.ById("POHJAKOULUTUS_" + Yhteishaku2013.TUTKINTO_PERUSKOULU)).click();
 
-        driver.findElement(new By.ByName("paattotodistusvuosi_peruskoulu"));
+        driver.findElement(new By.ByName("PK_PAATTOTODISTUSVUOSI"));
 
-        driver.findElement(new By.ById("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_YLIOPPILAS)).click();
+        driver.findElement(new By.ById("POHJAKOULUTUS_" + Yhteishaku2013.TUTKINTO_YLIOPPILAS)).click();
 
         driver.findElement(new By.ByName("lukioPaattotodistusVuosi"));
 

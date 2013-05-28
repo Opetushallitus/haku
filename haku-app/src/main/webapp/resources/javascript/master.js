@@ -1297,9 +1297,10 @@ var relatedRule = {
                 this.getChildrenAndAppendToDom(childIds, ruleChilds);
             }
         }
-        else if (!$this.is(':checkbox') && $this.val().search(expression) !== -1
-            && $.trim(ruleChilds.html()) === "") {
-            this.getChildrenAndAppendToDom(childIds, ruleChilds);
+        else if (!$this.is(':checkbox') && $this.val().search(expression) !== -1) {
+            if ($.trim(ruleChilds.html()) === "") {
+                this.getChildrenAndAppendToDom(childIds, ruleChilds);
+            }
         } else {
             ruleChilds.html("");
         }

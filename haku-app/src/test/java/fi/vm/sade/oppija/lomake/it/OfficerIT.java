@@ -34,7 +34,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         List<WebElement> editLinks = findByClassName("edit-link");
         WebElement editLink = editLinks.get(1);
         editLink.click();
-        findByIdAndClick("millatutkinnolla_tutkinto9");
+        findByIdAndClick("POHJAKOULUTUS_tutkinto9");
         driver.findElement(new By.ByClassName("save")).click();
         checkApplicationState("Puutteellinen");
     }
