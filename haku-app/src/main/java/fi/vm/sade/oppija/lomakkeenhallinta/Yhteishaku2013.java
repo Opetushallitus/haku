@@ -49,7 +49,6 @@ import static fi.vm.sade.oppija.util.OppijaConstants.*;
 @Service
 public class Yhteishaku2013 {
 
-    public String AOID_ADDITIONAL_QUESTION = "1.2.246.562.14.71344129359";
     public static final String TUTKINTO_ULKOMAILLA_NOTIFICATION_ID = "tutkinto7-notification";
     public static final String TUTKINTO_KESKEYTNYT_NOTIFICATION_ID = "tutkinto5-notification";
     public static final String AIDINKIELI_ID = "aidinkieli";
@@ -66,8 +65,9 @@ public class Yhteishaku2013 {
     public static final String TUTKINTO_ULKOMAILLA_RULE = "tutkinto_0_rule";
     public static final String TUTKINTO_PERUSKOULU = "tutkinto1";
     public static final int AGE_WORK_EXPERIENCE = 16;
-
     private final ApplicationPeriod applicationPeriod;
+
+    public String aoidAdditionalQuestion = "1.2.246.562.14.71344129359";
     public static final String MOBILE_PHONE_PATTERN =
             "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
     public static final String PHONE_PATTERN =
@@ -84,7 +84,7 @@ public class Yhteishaku2013 {
             @Value("${aoid}") String aoid) { // NOSONAR
         this.koodistoService = koodistoService;
         this.applicationPeriod = new ApplicationPeriod(asid);
-        this.AOID_ADDITIONAL_QUESTION = aoid;
+        this.aoidAdditionalQuestion = aoid;
         createFrom();
     }
 
@@ -457,8 +457,7 @@ public class Yhteishaku2013 {
     }
 
     private Theme createHakutoiveetRyhma() {
-        final String id = AOID_ADDITIONAL_QUESTION;
-        final String elementIdPrefix = AOID_ADDITIONAL_QUESTION.replace('.', '_');
+        final String elementIdPrefix = aoidAdditionalQuestion.replace('.', '_');
 
         Radio radio3 = new Radio(
                 elementIdPrefix + "_additional_question_1",
@@ -474,7 +473,7 @@ public class Yhteishaku2013 {
         lisakysymysList.add(radio3);
 
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
-        lisakysymysMap.put(id, lisakysymysList);
+        lisakysymysMap.put(aoidAdditionalQuestion, lisakysymysList);
 
         return new Theme("hakutoiveetGrp", createI18NForm("form.hakutoiveet.otsikko"), lisakysymysMap);
     }
@@ -1004,7 +1003,6 @@ public class Yhteishaku2013 {
                 createI18NForm("form.koulutustausta.ammatillinenSuoritettu"));
         addDefaultTrueFalseOptions(suorittanutAmmatillisenTutkinnon);
         setRequired(suorittanutAmmatillisenTutkinnon);
-
 
 
         lukioRule.addChild(suorittanutAmmatillisenTutkinnon);
