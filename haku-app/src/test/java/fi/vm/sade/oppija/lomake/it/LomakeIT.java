@@ -69,12 +69,12 @@ public class LomakeIT extends DummyModelBaseItTest {
         screenshot("hak123");
         testHAK123AandHAK124();
 
-        findByIdAndClick("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_PERUSKOULU);
+        findByIdAndClick("POHJAKOULUTUS_" + Yhteishaku2013.TUTKINTO_PERUSKOULU);
 
         findById("paattotodistusvuosi_peruskoulu");
         selenium.typeKeys("paattotodistusvuosi_peruskoulu", "2013");
 
-        findByIdAndClick("suorittanut1", "suorittanut2", "suorittanut3", "suorittanut4", "osallistunut_false", "koulutuspaikkaAmmatillisenTutkintoon_false");
+        findByIdAndClick("LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN", "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI", "osallistunut_false", "koulutuspaikkaAmmatillisenTutkintoon_false");
         setValue("perusopetuksen_kieli", "FI");
         nextPhase();
         //Skip toimipiste
@@ -130,9 +130,9 @@ public class LomakeIT extends DummyModelBaseItTest {
     }
 
     private void testHAK123AandHAK124() {
-        findByIdAndClick("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_KESKEYTYNYT);
+        findByIdAndClick("POHJAKOULUTUS_" + Yhteishaku2013.TUTKINTO_KESKEYTYNYT);
         findById(Yhteishaku2013.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
-        findByIdAndClick("millatutkinnolla_" + Yhteishaku2013.TUTKINTO_ULKOMAINEN_TUTKINTO);
+        findByIdAndClick("POHJAKOULUTUS_" + Yhteishaku2013.TUTKINTO_ULKOMAINEN_TUTKINTO);
         findById(Yhteishaku2013.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
     }
 }
