@@ -79,7 +79,7 @@ public class LoginControllerTest {
 
     @Test
     public void testPostLoginRedirectLocation() throws Exception {
-        testLocation("admin", "admin");
+        testLocation("admin", "/");
     }
 
     @Test
@@ -89,7 +89,7 @@ public class LoginControllerTest {
 
     @Test
     public void testPostLoginRedirectLocationOma() throws Exception {
-        testLocation("test", "oma");
+        testLocation("test", "/");
     }
 
     private void testLocation(final String name, final String expectedLocation) throws URISyntaxException {

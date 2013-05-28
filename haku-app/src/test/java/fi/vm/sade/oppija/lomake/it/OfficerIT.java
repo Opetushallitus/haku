@@ -21,6 +21,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         HakuClient hakuClient = new HakuClient(getBaseUrl() + "lomake/", "application.json");
         hakuClient.apply();
         final LoginPage loginPage = new LoginPage(seleniumHelper.getSelenium());
+        navigateToPath("user", "login");
         loginPage.login("officer");
     }
 

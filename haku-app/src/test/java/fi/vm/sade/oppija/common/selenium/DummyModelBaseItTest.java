@@ -62,7 +62,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected void navigateToPath(final String... pathSegments) {
         Joiner joiner = Joiner.on("/").skipNulls();
-        driver.get(joiner.join(StringUtils.removeEnd(getBaseUrl(), "/"), "lomake", pathSegments));
+        driver.get(joiner.join(StringUtils.removeEnd(getBaseUrl(), "/"), null, pathSegments));
     }
 
     protected void select() {
