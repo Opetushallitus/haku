@@ -1,13 +1,11 @@
 package fi.vm.sade.oppija.lomake.it;
 
-import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.oppija.common.selenium.LoginPage;
 import fi.vm.sade.oppija.lomake.HakuClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -35,7 +33,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         List<WebElement> editLinks = findByClassName("edit-link");
         WebElement editLink = editLinks.get(1);
         editLink.click();
-        findByIdAndClick("millatutkinnolla_tutkinto6");
+        findByIdAndClick("millatutkinnolla_tutkinto9");
         driver.findElement(new By.ByClassName("save")).click();
         checkApplicationState("Puutteellinen");
     }

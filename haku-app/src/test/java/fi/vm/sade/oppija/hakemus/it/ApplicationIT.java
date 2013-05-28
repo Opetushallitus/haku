@@ -70,29 +70,6 @@ public class ApplicationIT extends AbstractRemoteTest {
     }
 
     @Test
-    public void testFindByApplicationOption() throws IOException {
-        beginAt("applications/process/?aoid=776");
-        String response = getPageSource();
-
-        ObjectMapper mapper = new ObjectMapper();
-        List<ApplicationDTO> applications = mapper.readValue(response, new TypeReference<List<ApplicationDTO>>() {
-        });
-        assertEquals(2, applications.size());
-    }
-
-    @Test
-    public void testFindByInvalidApplicationOption() throws IOException {
-        beginAt("applications/process/?aoid=INVALID");
-        String response = getPageSource();
-
-        ObjectMapper mapper = new ObjectMapper();
-        List<ApplicationDTO> applications = mapper.readValue(response, new TypeReference<List<ApplicationDTO>>() {
-        });
-        assertEquals(0, applications.size());
-    }
-
-
-    @Test
     public void testFindAllApplications() throws IOException {
         beginAt("applications");
         String response = getPageSource();

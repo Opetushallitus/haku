@@ -53,39 +53,6 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("/process/{oid}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public ApplicationDTO getApplication(@PathParam(OID) String oid) {
-
-        try {
-            return new ApplicationDTO(applicationService.getApplication(oid));
-        } catch (ResourceNotFoundException e) {
-            throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application", e);
-
-        }
-
-    }
-
-    @GET
-    @Path("/process")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<ApplicationDTO> getApplicationsByAOId(@QueryParam("aoid") String aoid) {
-        if (aoid != null) {
-            // retrieve applications related to a single application system
-            List<String> aoids = new ArrayList<String>();
-            aoids.add(aoid);
-            List<Application> applications = applicationService.getApplicationsByApplicationOption(aoids);
-            List<ApplicationDTO> applicationDTOs = new ArrayList<ApplicationDTO>();
-            for (Application application : applications) {
-                applicationDTOs.add(new ApplicationDTO(application));
-            }
-            return applicationDTOs;
-        } else {
-            throw new JSONException(Response.Status.BAD_REQUEST, "Invalid application option id argument");
-        }
-    }
-
-    @GET
     @Path("{oid}")
     @Produces(MediaType.APPLICATION_JSON)
     public Application getApplicationByOid(@PathParam(OID) String oid) {

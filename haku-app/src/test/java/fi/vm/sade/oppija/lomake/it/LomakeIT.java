@@ -74,7 +74,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         findById("paattotodistusvuosi_peruskoulu");
         selenium.typeKeys("paattotodistusvuosi_peruskoulu", "2013");
 
-        findByIdAndClick("suorittanut1", "suorittanut2", "suorittanut3", "suorittanut4", "osallistunut_false");
+        findByIdAndClick("suorittanut1", "suorittanut2", "suorittanut3", "suorittanut4", "osallistunut_false", "koulutuspaikkaAmmatillisenTutkintoon_false");
         setValue("perusopetuksen_kieli", "FI");
         nextPhase();
         //Skip toimipiste
