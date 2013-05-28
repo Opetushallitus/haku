@@ -71,7 +71,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         // Lisätiedot
         clickAllElementsByXPath("//input[@type='checkbox']");
 
-        setValue("tyokokemuskuukaudet", "2");
+        setValue("TYOKOKEMUSKUUKAUDET", "2");
         findByIdAndClick("asiointikieli_suomi");
 
         nextPhase();

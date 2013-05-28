@@ -278,7 +278,7 @@ public class Yhteishaku2013 {
         henkilotunnus.addAttribute("maxlength", "11");
         setRequiredInlineAndVerboseHelp(henkilotunnus);
 
-        Radio sukupuoli = new Radio("Sukupuoli", createI18NForm("form.henkilotiedot.sukupuoli"));
+        Radio sukupuoli = new Radio("SUKUPUOLI", createI18NForm("form.henkilotiedot.sukupuoli"));
         sukupuoli.addOption("mies", createI18NForm("form.henkilotiedot.sukupuoli.mies"), "m");
         sukupuoli.addOption("nainen", createI18NForm("form.henkilotiedot.sukupuoli.nainen"), "n");
         setRequiredInlineAndVerboseHelp(sukupuoli);
@@ -817,7 +817,7 @@ public class Yhteishaku2013 {
 
     private void createTyokokemus(Theme tyokokemus) {
         tyokokemus.setHelp(createI18NForm("form.tyokokemus.help"));
-        TextQuestion tyokokemuskuukaudet = new TextQuestion("tyokokemuskuukaudet",
+        TextQuestion tyokokemuskuukaudet = new TextQuestion("TYOKOKEMUSKUUKAUDET",
                 createI18NForm("form.tyokokemus.kuukausina"));
         tyokokemuskuukaudet
                 .setHelp(createI18NForm("form.tyokokemus.kuukausina.help"));

@@ -42,7 +42,7 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
         nextPhase();
         select();
         nextPhase();
-        findById("tyokokemuskuukaudet");
+        findById("TYOKOKEMUSKUUKAUDET");
     }
 
     @Test
@@ -54,7 +54,7 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
         select();
         nextPhase();
 
-        List<WebElement> tyokokemuskuukaudet = driver.findElements(new By.ById("tyokokemuskuukaudet"));
+        List<WebElement> tyokokemuskuukaudet = driver.findElements(new By.ById("TYOKOKEMUSKUUKAUDET"));
         assertTrue("tyokokemuskuukaudet should not be present", tyokokemuskuukaudet.isEmpty());
     }
 
