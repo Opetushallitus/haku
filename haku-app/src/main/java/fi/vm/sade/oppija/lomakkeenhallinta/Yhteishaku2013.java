@@ -16,27 +16,20 @@
 
 package fi.vm.sade.oppija.lomakkeenhallinta;
 
-import com.google.common.base.CaseFormat;
-import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.*;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
-import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionNotRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
-import fi.vm.sade.oppija.lomakkeenhallinta.predicate.ComprehensiveSchools;
-import fi.vm.sade.oppija.lomakkeenhallinta.predicate.HighSchools;
-import fi.vm.sade.oppija.lomakkeenhallinta.predicate.Ids;
-import fi.vm.sade.oppija.lomakkeenhallinta.predicate.Languages;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormConstants;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.ArvosanatTheme;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.KielitaitokysymyksetTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -66,6 +59,8 @@ public class Yhteishaku2013 {
     public static final String TUTKINTO_PERUSKOULU = "tutkinto1";
     public static final int AGE_WORK_EXPERIENCE = 16;
     private final ApplicationPeriod applicationPeriod;
+    private final KielitaitokysymyksetTheme kielitaitokysymyksetTheme = new KielitaitokysymyksetTheme(this);
+
 
     public String aoidAdditionalQuestion = "1.2.246.562.14.71344129359";
     public static final String MOBILE_PHONE_PATTERN =
@@ -116,14 +111,14 @@ public class Yhteishaku2013 {
             hakutoiveet.addChild(hakutoiveetRyhma);
             createHakutoiveet(hakutoiveetRyhma);
 
-            // Entinen Arvosanat nykyinen Osaaminen
+            // Entinen ArvosanatTheme nykyinen Osaaminen
             Phase osaaminen = new Phase("osaaminen", createI18NForm("form.osaaminen.otsikko"), false);
-            form.addChild(osaaminen);
-            Theme arvosanatTheme = createArvosanatRyhma();
-            createArvosanat(arvosanatTheme);
+            Theme arvosanatTheme = ArvosanatTheme.createArvosanatTheme(koodistoService);
+            Element kielitaitokysymyksetTheme = KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme();
+
             osaaminen.addChild(arvosanatTheme);
-            Element kielitaitokysymyksetTheme = createKielitaitokysymyksetTheme();
             osaaminen.addChild(kielitaitokysymyksetTheme);
+            form.addChild(osaaminen);
 
             // Lisätiedot
             Phase lisatiedot = new Phase("lisatiedot", createI18NForm("form.lisatiedot.otsikko"), false);
@@ -153,51 +148,6 @@ public class Yhteishaku2013 {
 
     }
 
-    private Element createKielitaitokysymyksetTheme() {
-        Theme kielitaitokysymyksetTheme =
-                new Theme("KielitaitokysymyksetTheme", createI18NForm("form.kielitaito.otsikko"), null);
-
-        ImmutableList<String> ids = ImmutableList.of(
-                "preference1-Koulutus-id-lang",
-                "preference2-Koulutus-id-lang",
-                "preference3-Koulutus-id-lang",
-                "preference4-Koulutus-id-lang",
-                "preference5-Koulutus-id-lang"
-        );
-        RelatedQuestionRule suomenkielinenHakutoive = new RelatedQuestionRule("preference_fi_rule", ids, "FI", false);
-        RelatedQuestionNotRule aidinkieliTaiPerusopetuksenKieliEiOleSuomi =
-                new RelatedQuestionNotRule("language_sv_rule",
-                        ImmutableList.of("aidinkieli", "perusopetuksen_kieli"), "FI", false);
-
-        suomenkielinenHakutoive.addChild(
-                aidinkieliTaiPerusopetuksenKieliEiOleSuomi.addChild(
-                        createKielitutkinto("yleinen_kielitutkinto_fi"),
-                        createKielitutkinto("valtionhallinnon_kielitutkinto_fi")));
-
-        RelatedQuestionRule ruotsinkielinenHakutoive = new RelatedQuestionRule("preference_sv_rule", ids, "SV", false);
-        RelatedQuestionNotRule aidinkieliTaiPerusopetuksenKieliEiOleRuotsi =
-                new RelatedQuestionNotRule("kielitutkinto_fi_rule",
-                        ImmutableList.of("aidinkieli", "perusopetuksen_kieli"), "SV", false);
-
-        ruotsinkielinenHakutoive.addChild(
-                aidinkieliTaiPerusopetuksenKieliEiOleRuotsi.addChild(
-                        createKielitutkinto("yleinen_kielitutkinto_sv"),
-                        createKielitutkinto("valtionhallinnon_kielitutkinto_sv")));
-
-        kielitaitokysymyksetTheme.addChild(
-                suomenkielinenHakutoive,
-                ruotsinkielinenHakutoive);
-        return kielitaitokysymyksetTheme;
-    }
-
-    private Radio createKielitutkinto(final String id) {
-        Radio radio = new Radio(id,
-                createI18NForm("form.kielitaito." +
-                        CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, id).replace('_', '.')));
-        addDefaultTrueFalseOptions(radio);
-        setRequired(radio);
-        return radio;
-    }
 
     public static Element createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(final String index) {
 
@@ -341,7 +291,7 @@ public class Yhteishaku2013 {
         email.addAttribute("size", "50");
         email.addAttribute("pattern", "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$");
         email.setHelp(createI18NForm("form.henkilotiedot.email.help"));
-        email.setVerboseHelp(getVerboseHelp());
+        email.setVerboseHelp(FormConstants.VERBOSE_HELP);
         email.setInline(true);
         henkilotiedotRyhma.addChild(email);
 
@@ -352,7 +302,7 @@ public class Yhteishaku2013 {
         puhelinnumero1.setHelp(createI18NForm("form.henkilotiedot.matkapuhelinnumero.help"));
         puhelinnumero1.addAttribute("size", "30");
         puhelinnumero1.addAttribute("pattern", MOBILE_PHONE_PATTERN);
-        puhelinnumero1.setVerboseHelp(getVerboseHelp());
+        puhelinnumero1.setVerboseHelp(FormConstants.VERBOSE_HELP);
         puhelinnumero1.setInline(true);
         henkilotiedotRyhma.addChild(puhelinnumero1);
 
@@ -442,20 +392,6 @@ public class Yhteishaku2013 {
         return henkilotiedotRyhma;
     }
 
-    private Theme createArvosanatRyhma() {
-        Map<String, List<Question>> oppiaineMap = new HashMap<String, List<Question>>();
-
-        List<Question> oppiaineList = new ArrayList<Question>();
-
-        oppiaineList.add(new SubjectRow("tietotekniikka",
-                createI18NForm("form.oppiaineet.tietotekniikka"), true, false, false, false));
-        oppiaineList.add(new SubjectRow("kansantaloustiede",
-                createI18NForm("form.oppiaineet.kansantaloustiede"), true, false, false, false));
-        oppiaineMap.put("1.2.246.562.14.79893512065", oppiaineList);
-
-        return new Theme("arvosanatTheme", createI18NForm("form.arvosanat.otsikko"), oppiaineMap);
-    }
-
     private Theme createHakutoiveetRyhma() {
         final String elementIdPrefix = aoidAdditionalQuestion.replace('.', '_');
 
@@ -478,273 +414,9 @@ public class Yhteishaku2013 {
         return new Theme("hakutoiveetGrp", createI18NForm("form.hakutoiveet.otsikko"), lisakysymysMap);
     }
 
-    public GradeGrid createGradeGrid(final String id, final boolean comprehensiveSchool) {
 
-        final String idPrefix = comprehensiveSchool ? "PK_" : "LK_";
+    private void createArsdvosanat(Theme arvosanatRyhma) {
 
-        List<SubjectRow> subjects = koodistoService.getSubjects();
-        for (SubjectRow subject : subjects) {
-            subject.addAttribute("required", "required");
-        }
-        List<SubjectRow> filtered;
-        if (comprehensiveSchool) {
-            filtered = ImmutableList.copyOf(Iterables.filter(subjects,
-                    new ComprehensiveSchools()));
-        } else {
-            filtered = ImmutableList.copyOf(Iterables.filter(subjects,
-                    new HighSchools()));
-        }
-
-        List<SubjectRow> nativeLanguages = ImmutableList.copyOf(Iterables.filter(filtered,
-                new Ids<SubjectRow>("AI")));
-        List<SubjectRow> listOfLanguages = ImmutableList.copyOf(Iterables.filter(filtered, new Languages()));
-
-        ImmutableList<SubjectRow> defaultLanguages = ImmutableList.copyOf(
-                Iterables.filter(listOfLanguages, new Ids<SubjectRow>("A1", "B1")));
-
-        ImmutableList<SubjectRow> subjectsAfterLanguages = ImmutableList.copyOf(
-                Iterables.filter(Iterables.filter(filtered, Predicates.not(new Languages())),
-                        Predicates.not(new Ids<SubjectRow>("AI"))));
-
-
-        GradeGrid gradeGrid = new GradeGrid(id, createI18NForm("form.arvosanat.otsikko"), comprehensiveSchool);
-        gradeGrid.setVerboseHelp(getVerboseHelp());
-
-        for (SubjectRow nativeLanguage : nativeLanguages) {
-            gradeGrid.addChild(createGradeGridRow(nativeLanguage, true, true, comprehensiveSchool, idPrefix, "_1"));
-            GradeGridRow additionalNativeLanguageRow =
-                    createAdditionalNativeLanguageRow(nativeLanguage, 2, comprehensiveSchool, idPrefix);
-            additionalNativeLanguageRow.addAttribute("hidden", "hidden");
-            additionalNativeLanguageRow.addAttribute("group", "nativeLanguage");
-            gradeGrid.addChild(additionalNativeLanguageRow);
-        }
-        gradeGrid.addChild(createAddLangRow("nativeLanguage",
-                ElementUtil.createI18NForm("form.add.lang.native"), nativeLanguages, true, comprehensiveSchool));
-
-        for (SubjectRow defaultLanguage : defaultLanguages) {
-            gradeGrid.addChild(createGradeGridRow(defaultLanguage, true, false, comprehensiveSchool, idPrefix, ""));
-        }
-
-        List<GradeGridRow> additionalLanguages = createAdditionalLanguages(5, filtered, comprehensiveSchool);
-        for (GradeGridRow additionalLanguage : additionalLanguages) {
-            additionalLanguage.addAttribute("group", "languages");
-            gradeGrid.addChild(additionalLanguage);
-        }
-        gradeGrid.addChild(createAddLangRow("languages",
-                ElementUtil.createI18NForm("form.add.lang"), filtered, false, comprehensiveSchool));
-
-
-        for (SubjectRow subjectsAfterLanguage : subjectsAfterLanguages) {
-            gradeGrid.addChild(createGradeGridRow(subjectsAfterLanguage, false, false, comprehensiveSchool, idPrefix, ""));
-        }
-        return gradeGrid;
-    }
-
-    private List<GradeGridRow> createAdditionalLanguages(int maxAdditionalLanguages,
-                                                         final List<SubjectRow> subjects, boolean extraColumn) {
-        List<GradeGridRow> rows = new ArrayList<GradeGridRow>();
-        for (int i = 0; i < maxAdditionalLanguages; i++) {
-            rows.add(createAdditionalLanguageRow(i, subjects, extraColumn));
-        }
-        return rows;
-    }
-
-    private GradeGridRow createAdditionalNativeLanguageRow(final SubjectRow subjectRow, int index, boolean extraColumn, final String idPrefix) {
-
-        Element[] columnsArray = createColumnsArray(index, extraColumn);
-
-        String postfix = idPrefix + subjectRow.getId() + "_" + index;
-        GradeGridOptionQuestion addLangs =
-                new GradeGridOptionQuestion("custom-language-" + postfix, koodistoService.getSubjectLanguages(), false);
-        setDisabled(addLangs);
-        GradeGridOptionQuestion grades =
-                new GradeGridOptionQuestion("custom-grades-" + postfix, getGradeRanges(false), false);
-        setDisabled(grades);
-        GradeGridOptionQuestion gradesSelected =
-                new GradeGridOptionQuestion("custom-optional-grades-" + postfix, getGradeRanges(true), true);
-        setDisabled(gradesSelected);
-        GradeGridOptionQuestion gradesSelected2 = null;
-        if (extraColumn) {
-            gradesSelected2 =
-                    new GradeGridOptionQuestion("second-custom-optional-grades-" + postfix, getGradeRanges(true), true);
-            setDisabled(gradesSelected2);
-        }
-
-        GradeGridTitle title = new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), true);
-
-        columnsArray[0].addChild(title);
-        columnsArray[1].addChild(addLangs);
-        columnsArray[2].addChild(grades);
-        columnsArray[3].addChild(gradesSelected);
-        if (gradesSelected2 != null) {
-            columnsArray[4].addChild(gradesSelected2);
-        }
-
-        GradeGridRow gradeGridRow = ElementUtil.createHiddenGradeGridRowWithId("additionalLanguageNativeRow-" + index);
-        gradeGridRow.addChild(columnsArray);
-        return gradeGridRow;
-    }
-
-    private GradeGridRow createAdditionalLanguageRow(int index, final List<SubjectRow> subjects, boolean extraColumn) {
-        GradeGridRow gradeGridRow = new GradeGridRow("additionalLanguageRow-" + index);
-        gradeGridRow.addAttribute("hidden", "hidden");
-        Element[] columnsArray = createColumnsArray(index, extraColumn);
-
-        List<Option> options = getLanguageSubjects(subjects);
-        GradeGridOptionQuestion addSubs = new GradeGridOptionQuestion("custom-scope-" + index, options, false);
-        setDisabled(addSubs);
-        GradeGridOptionQuestion addLangs = new GradeGridOptionQuestion("custom-language-" + index, koodistoService.getSubjectLanguages(), false);
-        setDisabled(addLangs);
-        GradeGridOptionQuestion grades = new GradeGridOptionQuestion("custom-grades-" + index, getGradeRanges(false), false);
-        setDisabled(grades);
-        GradeGridOptionQuestion gradesSelected = new GradeGridOptionQuestion("custom-optional-grades-" + index, getGradeRanges(true), true);
-        setDisabled(gradesSelected);
-        GradeGridOptionQuestion gradesSelected2 = null;
-        if (extraColumn) {
-            gradesSelected2 = new GradeGridOptionQuestion("second-custom-optional-grades-" + index, getGradeRanges(true), true);
-            setDisabled(gradesSelected2);
-        }
-
-        columnsArray[0].addChild(addSubs);
-        columnsArray[1].addChild(addLangs);
-        columnsArray[2].addChild(grades);
-        columnsArray[3].addChild(gradesSelected);
-        if (gradesSelected2 != null) {
-            columnsArray[4].addChild(gradesSelected2);
-        }
-
-        gradeGridRow.addChild(columnsArray);
-        return gradeGridRow;
-    }
-
-    private Element[] createColumnsArray(final int index, boolean extraColumn) {
-        if (extraColumn) {
-            return new Element[]{
-                    new GradeGridColumn("column1-" + index, true),
-                    new GradeGridColumn("column2-" + index, false),
-                    new GradeGridColumn("column3-" + index, false),
-                    new GradeGridColumn("column4-" + index, false),
-                    new GradeGridColumn("column5-" + index, false),
-            };
-        } else {
-            return new Element[]{
-                    new GradeGridColumn("column1-" + index, true),
-                    new GradeGridColumn("column2-" + index, false),
-                    new GradeGridColumn("column3-" + index, false),
-                    new GradeGridColumn("column4-" + index, false),
-            };
-        }
-    }
-
-    private List<Option> getGradeRanges(boolean setDefault) {
-        List<Option> gradeRanges = koodistoService.getGradeRanges();
-        if (setDefault) {
-            setDefaultOption("Ei arvosanaa", gradeRanges);
-        }
-        return gradeRanges;
-    }
-
-    private List<Option> getLanguageSubjects(final List<SubjectRow> subjects) {
-        List<SubjectRow> listOfLanguages = ImmutableList.copyOf(Iterables.filter(subjects, new Languages()));
-        List<SubjectRow> additionalLanguages = ImmutableList.copyOf(
-                Iterables.filter(listOfLanguages, Predicates.not(new Ids<SubjectRow>("A1", "B1"))));
-        List<Option> options = new ArrayList<Option>();
-        for (SubjectRow additionalLanguage : additionalLanguages) {
-            options.add(new Option("subject-template", additionalLanguage.getI18nText(), additionalLanguage.getId()));
-        }
-        return options;
-    }
-
-    private GradeGridRow createAddLangRow(final String group, I18nText i18nText, List<SubjectRow> subjects,
-                                          boolean literature, boolean extraColumn) {
-        GradeGridRow gradeGridRow = new GradeGridRow(System.currentTimeMillis() + "");
-        GradeGridColumn column1 = new GradeGridColumn(gradeGridRow.getId() + "-addlang", false);
-        List<Option> subjectOptions = getLanguageSubjects(subjects);
-        List<Option> languageOptions;
-        if (literature) {
-            languageOptions = koodistoService.getLanguageAndLiterature();
-        } else {
-            languageOptions = koodistoService.getLanguages();
-        }
-        GradeGridAddLang child = new GradeGridAddLang(group, i18nText, subjectOptions, languageOptions,
-                koodistoService.getGradeRanges());
-        column1.addChild(child);
-        column1.addAttribute("colspan", (extraColumn ? "5" : "4"));
-        gradeGridRow.addChild(column1);
-        return gradeGridRow;
-    }
-
-    private GradeGridRow createGradeGridRow(final SubjectRow subjectRow, boolean language,
-                                            boolean literature, boolean extraColumn, final String idPrefix, final String idSuffix) {
-        GradeGridRow gradeGridRow = new GradeGridRow(subjectRow.getId() + idSuffix);
-        GradeGridColumn column1 = new GradeGridColumn("column1", false);
-        column1.addChild(new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), false));
-        GradeGridColumn column2 = new GradeGridColumn("column2", false);
-        GradeGridColumn column3 = new GradeGridColumn("column3", false);
-        GradeGridColumn column4 = new GradeGridColumn("column4", false);
-        GradeGridColumn column5 = null;
-        if (extraColumn) {
-            column5 = new GradeGridColumn("column5", false);
-        }
-        List<Option> gradeRanges = koodistoService.getGradeRanges();
-        List<Option> gradeRangesSecond = koodistoService.getGradeRanges();
-        setDefaultOption("Ei arvosanaa", gradeRangesSecond);
-        if (subjectRow.isLanguage() || language) {
-            List<Option> subjectLanguages;
-            if (literature) {
-                subjectLanguages = koodistoService.getLanguageAndLiterature();
-                setDefaultOption("FI", subjectLanguages);
-            } else {
-                subjectLanguages = koodistoService.getSubjectLanguages();
-            }
-            GradeGridOptionQuestion child = new GradeGridOptionQuestion(idPrefix + subjectRow.getId() + idSuffix + "_OPPIAINE", subjectLanguages, false);
-            child.addAttribute("required", "required");
-            column2.addChild(child);
-        } else {
-            column1.addAttribute("colspan", "2");
-        }
-        GradeGridOptionQuestion child1 = new GradeGridOptionQuestion(idPrefix + subjectRow.getId() + idSuffix, gradeRanges, false);
-        child1.addAttribute("required", "required");
-        column3.addChild(child1);
-        GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion(idPrefix + subjectRow.getId() + idSuffix + "_VAL1", gradeRangesSecond, true);
-        gradeGridOptionQuestion.addAttribute("required", "required");
-        column4.addChild(gradeGridOptionQuestion);
-        if (column5 != null) {
-            GradeGridOptionQuestion child2 = new GradeGridOptionQuestion(idPrefix + subjectRow.getId() + idSuffix + "_VAL2", gradeRangesSecond, true);
-            child2.addAttribute("required", "required");
-            column5.addChild(child2);
-        }
-        gradeGridRow.addChild(column1);
-        if (subjectRow.isLanguage() || language) {
-            gradeGridRow.addChild(column2);
-        }
-        gradeGridRow.addChild(column3);
-        gradeGridRow.addChild(column4);
-        if (column5 != null) {
-            gradeGridRow.addChild(column5);
-        }
-        return gradeGridRow;
-
-    }
-
-    private void createArvosanat(Theme arvosanatRyhma) {
-        RelatedQuestionRule relatedQuestionPK = new RelatedQuestionRule("rule_grade_pk", "POHJAKOULUTUS",
-                "(" + PERUSKOULU + "|tutkinto2|tutkinto3|tutkinto4)", false);
-        relatedQuestionPK.addChild(createGradeGrid("grid_pk", true));
-        arvosanatRyhma.addChild(relatedQuestionPK);
-
-        RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", "POHJAKOULUTUS",
-                "(" + YLIOPPILAS + ")", false);
-        relatedQuestionLukio.addChild(createGradeGrid("grid_yo", false));
-        arvosanatRyhma.addChild(relatedQuestionLukio);
-
-        RelatedQuestionRule relatedQuestionEiTutkintoa = new RelatedQuestionRule("rule_grade_no", "POHJAKOULUTUS",
-                "(tutkinto5|tutkinto7)", false);
-        relatedQuestionEiTutkintoa.addChild(new Text("nogradegrid", createI18NForm("form.arvosanat.eiKysyta")));
-        arvosanatRyhma.addChild(relatedQuestionEiTutkintoa);
-
-        arvosanatRyhma
-                .setHelp(createI18NForm("form.arvosanat.help"));
 
     }
 
@@ -766,7 +438,7 @@ public class Yhteishaku2013 {
         preferenceTable.addChild(pr3);
         preferenceTable.addChild(pr4);
         preferenceTable.addChild(pr5);
-        preferenceTable.setVerboseHelp(getVerboseHelp());
+        preferenceTable.setVerboseHelp(FormConstants.VERBOSE_HELP);
 
         hakutoiveetRyhma.addChild(preferenceTable);
     }
@@ -826,7 +498,7 @@ public class Yhteishaku2013 {
         tyokokemuskuukaudet.addAttribute("placeholder", "kuukautta");
         tyokokemuskuukaudet.addAttribute("pattern", "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$");
         tyokokemuskuukaudet.addAttribute("size", "8");
-        tyokokemuskuukaudet.setVerboseHelp(getVerboseHelp());
+        tyokokemuskuukaudet.setVerboseHelp(FormConstants.VERBOSE_HELP);
         tyokokemus.addChild(tyokokemuskuukaudet);
     }
 
@@ -850,14 +522,14 @@ public class Yhteishaku2013 {
         lupaGroup.addChild(lupaSahkoisesti);
         lupaGroup.addChild(lupaSms);
         lupatiedot.addChild(lupaGroup);
-        lupatiedot.setVerboseHelp(getVerboseHelp());
+        lupatiedot.setVerboseHelp(FormConstants.VERBOSE_HELP);
 
         Radio asiointikieli = new Radio("asiointikieli", createI18NForm("form.asiointikieli.otsikko"));
         asiointikieli.setHelp(createI18NForm("form.asiointikieli.help"));
         asiointikieli.addOption("suomi", createI18NForm("form.asiointikieli.suomi"), "suomi");
         asiointikieli.addOption("ruotsi", createI18NForm("form.asiointikieli.ruotsi"), "ruotsi");
         asiointikieli.addAttribute("required", "required");
-        asiointikieli.setVerboseHelp(getVerboseHelp());
+        asiointikieli.setVerboseHelp(FormConstants.VERBOSE_HELP);
         lupatiedot.addChild(asiointikieli);
     }
 
@@ -869,7 +541,7 @@ public class Yhteishaku2013 {
                 createI18NForm("form.koulutustausta.osallistunutPaasykokeisiin"));
         addDefaultTrueFalseOptions(osallistunut);
         setRequired(osallistunut);
-        osallistunut.setVerboseHelp(getVerboseHelp());
+        osallistunut.setVerboseHelp(FormConstants.VERBOSE_HELP);
 
         koulutustaustaRyhma.addChild(createKoulutustaustaRadio());
 
@@ -911,7 +583,7 @@ public class Yhteishaku2013 {
         millatutkinnolla.addOption(TUTKINTO_ULKOMAINEN_TUTKINTO, createI18NForm("form.koulutustausta.ulkomailla"),
                 ULKOMAINEN_TUTKINTO,
                 createI18NForm("form.koulutustausta.ulkomailla.help"));
-        millatutkinnolla.setVerboseHelp(getVerboseHelp());
+        millatutkinnolla.setVerboseHelp(FormConstants.VERBOSE_HELP);
         millatutkinnolla.addAttribute("required", "required");
 
         Notification tutkintoUlkomaillaNotification = new Notification(TUTKINTO_ULKOMAILLA_NOTIFICATION_ID,
@@ -1027,48 +699,10 @@ public class Yhteishaku2013 {
         perusopetuksenKieli.addOption("eiValittu", ElementUtil.createI18NForm(null), "");
         perusopetuksenKieli.addOptions(koodistoService.getLanguages());
         perusopetuksenKieli.addAttribute("required", "required");
-        perusopetuksenKieli.setVerboseHelp(getVerboseHelp());
+        perusopetuksenKieli.setVerboseHelp(FormConstants.VERBOSE_HELP);
         perusopetuksenKieli.setHelp(createI18NForm("form.henkilotiedot.aidinkieli.help"));
         pkKysymyksetRule.addChild(perusopetuksenKieli);
         return millatutkinnolla;
-    }
-
-    private String getVerboseHelp() {
-        return " Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-                "Curabitur nec dolor quam. Duis sodales placerat scelerisque. Suspendisse " +
-                "porta mauris eu felis malesuada rutrum. Aliquam varius fringilla mi sed " +
-                "luctus. Nam in enim ipsum. Sed lobortis lorem sit amet justo " +
-                "blandit et tempus ante eleifend. Proin egestas, magna et condimentum egestas, " +
-                "arcu mauris tincidunt augue, eget varius diam massa nec " +
-                "nisi. Proin dolor risus, tincidunt non faucibus imperdiet, fringilla quis massa. " +
-                "Curabitur pharetra posuere est, sit amet pulvinar urna " +
-                "facilisis at. Praesent posuere feugiat elit vel porttitor. Integer venenatis, " +
-                "arcu ac suscipit ornare, augue nibh tempus libero, eget " +
-                "molestie turpis massa quis purus. Suspendisse id libero dolor. Ut eget velit augue, " +
-                "eget fringilla erat. Quisque sed neque non arcu " +
-                "elementum vehicula eget at est. Etiam dictum fringilla mi, sit amet sodales tortor facilisis in.\n"
-                + "\n"
-                + "Nunc nisl felis, placerat non pellentesque non, dapibus non sem. " +
-                "Nunc et consectetur tellus. Class aptent taciti sociosqu ad litora " +
-                "torquent per conubia nostra, per inceptos himenaeos. Nulla facilisi. " +
-                "Nulla facilisi. Etiam lobortis, justo non eleifend rhoncus, eros " +
-                "felis vestibulum metus, ut ullamcorper neque urna et velit. " +
-                "Duis congue tincidunt urna non consectetur. Phasellus quis ligula et libero " +
-                "convallis eleifend non quis velit. Morbi luctus, ligula sed mollis placerat, " +
-                "nunc justo tempor velit, eget dignissim ante ipsum eu elit. " +
-                "Sed interdum urna in justo eleifend id fringilla mi facilisis. " +
-                "Ut id sapien erat. Aenean urna quam, aliquet nec imperdiet quis, suscipit " +
-                "eu nunc. Vestibulum vitae dolor in sapien auctor hendrerit et et turpis. " +
-                "Ut at diam eu sapien blandit blandit at in lorem.\n"
-                + "\n"
-                + "Aenean ornare, mi non rutrum gravida, augue neque pretium leo, " +
-                "in porta justo mauris eget orci. Donec porttitor eleifend aliquam. " +
-                "Cras mattis tincidunt purus, et facilisis risus consequat vitae. " +
-                "Nunc consectetur, odio sit amet rhoncus iaculis, ipsum lectus pharetra " +
-                "lectus, sit amet vestibulum est mi commodo enim. Sed libero sem, " +
-                "iaculis a lobortis non, molestie id arcu. Donec gravida tincidunt ligula " +
-                "quis mattis. Nulla sit amet malesuada sem. " +
-                "Duis porta adipiscing purus iaculis consequat. Aliquam erat volutpat. ";
     }
 
     private Question createRequiredTextQuestion(final String id, final String name, final String size) {
@@ -1101,7 +735,11 @@ public class Yhteishaku2013 {
 
     private void setRequiredInlineAndVerboseHelp(Question question) {
         question.addAttribute("required", "required");
-        question.setVerboseHelp(getVerboseHelp());
+        question.setVerboseHelp(FormConstants.VERBOSE_HELP);
         question.setInline(true);
+    }
+
+    public KoodistoService getKoodistoService() {
+        return koodistoService;
     }
 }

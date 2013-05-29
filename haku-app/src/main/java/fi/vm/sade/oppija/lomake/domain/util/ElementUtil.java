@@ -16,9 +16,11 @@
 
 package fi.vm.sade.oppija.lomake.domain.util;
 
+import com.google.common.base.Joiner;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import org.apache.log4j.Logger;
 
@@ -130,5 +132,15 @@ public final class ElementUtil {
         GradeGridRow gradeGridRow = new GradeGridRow(id);
         gradeGridRow.addAttribute(HIDDEN, HIDDEN);
         return gradeGridRow;
+    }
+
+    public static void setDefaultOption(final String value, final List<Option> options) {
+        for (Option opt : options) {
+            opt.setDefaultOption(opt.getValue().equalsIgnoreCase(value));
+        }
+    }
+
+    public static final String orStr(String... values) {
+        return "(" + Joiner.on('|').skipNulls().join(values) + ")";
     }
 }
