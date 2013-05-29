@@ -58,6 +58,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         velocityEngine.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         velocityEngine.setProperty("class.resource.loader.path", "email");
         velocityEngine.setProperty("class.resource.loader.cache", "true");
+        velocityEngine.setProperty("runtime.log.logsystem.log4j.logger", "velocity");
         velocityEngine.init();
 
         templateMap = new HashMap<String, Template>();
