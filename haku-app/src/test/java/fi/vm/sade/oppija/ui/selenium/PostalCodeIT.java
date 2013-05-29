@@ -62,7 +62,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
 
         applicationPeriod.addForm(form);
 
-        Theme testiRyhma = new Theme("testiGrp", createI18NAsIs("TestiGrp"), null);
+        Theme testiRyhma = new Theme("testiGrp", createI18NAsIs("TestiGrp"), null, true);
         testivaihe.addChild(testiRyhma);
         Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
         postOffices.put(POSTCODE, new PostOffice(POSTCODE, ElementUtil.createI18NAsIs(POST_OFFICE)));

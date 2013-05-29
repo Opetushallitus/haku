@@ -39,11 +39,12 @@ public class WorkExperienceTheme extends Theme {
     // Applicant must be born before this day to get asked about work experience.
     private final Date referenceDate;
 
-    public WorkExperienceTheme(@JsonProperty(value = "id") String id, @JsonProperty(value = "i18nText") I18nText i18nText,
+    public WorkExperienceTheme(@JsonProperty(value = "id") String id,
+                               @JsonProperty(value = "i18nText") I18nText i18nText,
                                @JsonProperty(value = "additionalQuestions") Map<String, List<Question>> additionalQuestions,
                                @JsonProperty(value = "requiredEducationDegree") String requiredEducationDegree,
                                @JsonProperty(value = "referenceDate") Date referenceDate) {
-        super(id, i18nText, additionalQuestions);
+        super(id, i18nText, additionalQuestions, true);
         this.requiredEducationDegree = requiredEducationDegree;
         this.referenceDate = referenceDate;
     }

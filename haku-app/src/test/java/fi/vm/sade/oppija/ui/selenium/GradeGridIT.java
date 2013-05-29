@@ -18,11 +18,11 @@ package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.GradeGridTable;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -46,10 +46,10 @@ public class GradeGridIT extends AbstractSeleniumBase {
         Phase arvosanat = new Phase(PHASE_ID, createI18NAsIs("Arvosanat"), false);
         Form form = new Form(FORM_ID, createI18NAsIs("yhteishaku"));
         form.addChild(arvosanat);
-        Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl(),  ASID, AOID);
-        arvosanat.addChild(yhteishaku2013.createGradeGrid("id", true));
+        KoodistoServiceMockImpl koodistoService = new KoodistoServiceMockImpl();
+        GradeGridTable gradeGridTable = new GradeGridTable(koodistoService);
+        arvosanat.addChild(gradeGridTable.createGradeGrid("id", true));
         applicationPeriod.addForm(form);
-
 
         FormModel formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);

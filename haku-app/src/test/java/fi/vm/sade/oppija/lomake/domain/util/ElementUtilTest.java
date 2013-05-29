@@ -28,9 +28,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ElementUtilTest {
 
@@ -48,7 +46,7 @@ public class ElementUtilTest {
     @Test
     public void testCreateI18NTextNoTranslation() throws Exception {
         I18nText test = ElementUtil.createI18NForm(NO_TRANSLATION);
-        assertEquals(NO_TRANSLATION+" [fi]", test.getTranslations().get("fi"));
+        assertEquals(NO_TRANSLATION + " [fi]", test.getTranslations().get("fi"));
     }
 
     @Test
@@ -59,10 +57,10 @@ public class ElementUtilTest {
     }
 
     @Test
-    public void  testFindElementsByType() {
+    public void testFindElementsByType() {
         Form form = new Form("form", new I18nText("form", ImmutableMap.of("fi", "form")));
         Phase phase = new Phase("phase", new I18nText("phase", ImmutableMap.of("fi", "phase")), false);
-        Theme theme = new Theme("theme", new I18nText("theme", ImmutableMap.of("fi", "theme")), null);
+        Theme theme = new Theme("theme", new I18nText("theme", ImmutableMap.of("fi", "theme")), null, true);
         phase.addChild(theme);
         TextQuestion tq1 = new TextQuestion("text1", new I18nText("text1", ImmutableMap.of("fi", "text1")));
         TextQuestion tq2 = new TextQuestion("text2", new I18nText("text2", ImmutableMap.of("fi", "text2")));
@@ -80,7 +78,7 @@ public class ElementUtilTest {
     public void testFindElementsByTypeAsList() {
         Form form = new Form("form", new I18nText("form", ImmutableMap.of("fi", "form")));
         Phase phase = new Phase("phase", new I18nText("phase", ImmutableMap.of("fi", "phase")), false);
-        Theme theme = new Theme("theme", new I18nText("theme", ImmutableMap.of("fi", "theme")), null);
+        Theme theme = new Theme("theme", new I18nText("theme", ImmutableMap.of("fi", "theme")), null, true);
         phase.addChild(theme);
         TextQuestion tq1 = new TextQuestion("text1", new I18nText("text1", ImmutableMap.of("fi", "text1")));
         TextQuestion tq2 = new TextQuestion("text2", new I18nText("text2", ImmutableMap.of("fi", "text2")));

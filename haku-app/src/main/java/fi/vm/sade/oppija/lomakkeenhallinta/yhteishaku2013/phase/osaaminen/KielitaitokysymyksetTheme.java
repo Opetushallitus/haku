@@ -10,11 +10,11 @@ import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 
 import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.*;
 
-public class KielitaitokysymyksetTheme {
+public final class KielitaitokysymyksetTheme {
 
     public static Theme createKielitaitokysymyksetTheme() {
         Theme kielitaitokysymyksetTheme =
-                new Theme("KielitaitokysymyksetTheme", ElementUtil.createI18NForm("form.kielitaito.otsikko"), null);
+                new Theme("KielitaitokysymyksetTheme", ElementUtil.createI18NForm("form.kielitaito.otsikko"), null, true);
 
         ImmutableList<String> ids = ImmutableList.of(
                 "preference1-Koulutus-id-lang",

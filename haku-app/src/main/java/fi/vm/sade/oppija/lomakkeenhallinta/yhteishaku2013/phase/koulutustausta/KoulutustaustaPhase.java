@@ -1,0 +1,214 @@
+package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta;
+
+import fi.vm.sade.oppija.common.koodisto.KoodistoService;
+import fi.vm.sade.oppija.lomake.domain.elements.Group;
+import fi.vm.sade.oppija.lomake.domain.elements.Notification;
+import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormConstants;
+
+import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.*;
+import static fi.vm.sade.oppija.util.OppijaConstants.*;
+
+public class KoulutustaustaPhase {
+    public static final String TUTKINTO_ULKOMAILLA_NOTIFICATION_ID = "tutkinto7-notification";
+    public static final String TUTKINTO_KESKEYTNYT_NOTIFICATION_ID = "tutkinto5-notification";
+    public static final String TUTKINTO_OSITTAIN_YKSILOLLISTETTY = "tutkinto2";
+    public static final String TUTKINTO_ERITYISOPETUKSEN_YKSILOLLISTETTY = "tutkinto3";
+    public static final String TUTKINTO_YKSILOLLISTETTY = "tutkinto6";
+    public static final String TUTKINTO_KESKEYTYNYT = "tutkinto7";
+    public static final String TUTKINTO_YLIOPPILAS = "tutkinto9";
+    public static final String TUTKINTO_ULKOMAINEN_TUTKINTO = "tutkinto0";
+    public static final String TUTKINTO_KESKEYTYNYT_RULE = "tutkinto_7_rule";
+    public static final String TUTKINTO_ULKOMAILLA_RULE = "tutkinto_0_rule";
+    public static final String TUTKINTO_PERUSKOULU = "tutkinto1";
+    private final Phase koulutustausta;
+    private final Theme koulutustaustaRyhma;
+
+    public KoulutustaustaPhase(final KoodistoService koodistoService) {
+        koulutustausta = new Phase("koulutustausta", createI18NForm("form.koulutustausta.otsikko"), false);
+        koulutustaustaRyhma = new Theme("KoulutustaustaGrp", createI18NForm("form.koulutustausta.otsikko"), null, true);
+        koulutustausta.addChild(koulutustaustaRyhma);
+        koulutustaustaRyhma.setHelp(createI18NForm("form.koulutustausta.help"));
+        koulutustaustaRyhma.addChild(createKoulutustaustaRadio(koodistoService));
+
+        Radio osallistunut = new Radio("osallistunut", createI18NForm("form.koulutustausta.osallistunutPaasykokeisiin"));
+        addDefaultTrueFalseOptions(osallistunut);
+        setRequired(osallistunut);
+        osallistunut.setVerboseHelp(FormConstants.VERBOSE_HELP);
+
+
+        koulutustaustaRyhma.addChild(osallistunut);
+    }
+
+    public static final Radio createKoulutustaustaRadio(final KoodistoService koodistoService) {
+        Radio millatutkinnolla = new Radio("POHJAKOULUTUS",
+                createI18NForm("form.koulutustausta.millaTutkinnolla"));
+        millatutkinnolla.addOption(TUTKINTO_PERUSKOULU, createI18NForm("form.koulutustausta.peruskoulu"), PERUSKOULU,
+                createI18NForm("form.koulutustausta.peruskoulu.help"));
+        millatutkinnolla
+                .addOption(TUTKINTO_OSITTAIN_YKSILOLLISTETTY,
+                        createI18NForm("form.koulutustausta.osittainYksilollistetty"),
+                        OSITTAIN_YKSILOLLISTETTY,
+                        createI18NForm("form.koulutustausta.osittainYksilollistetty.help"));
+        millatutkinnolla
+                .addOption(
+                        TUTKINTO_ERITYISOPETUKSEN_YKSILOLLISTETTY,
+                        createI18NForm("form.koulutustausta.erityisopetuksenYksilollistetty"),
+                        ERITYISOPETUKSEN_YKSILOLLISTETTY,
+                        createI18NForm("form.koulutustausta.erityisopetuksenYksilollistetty.help"));
+        millatutkinnolla
+                .addOption(
+                        TUTKINTO_YKSILOLLISTETTY,
+                        createI18NForm("form.koulutustausta.yksilollistetty"),
+                        YKSILOLLISTETTY,
+                        createI18NForm("form.koulutustausta.yksilollistetty.help"));
+        millatutkinnolla.addOption(TUTKINTO_KESKEYTYNYT,
+                createI18NForm("form.koulutustausta.keskeytynyt"),
+                KESKEYTYNYT,
+                createI18NForm("form.koulutustausta.keskeytynyt"));
+        millatutkinnolla
+                .addOption(
+                        TUTKINTO_YLIOPPILAS,
+                        createI18NForm("form.koulutustausta.lukio"),
+                        YLIOPPILAS,
+                        createI18NForm("form.koulutustausta.lukio.help"));
+        millatutkinnolla.addOption(TUTKINTO_ULKOMAINEN_TUTKINTO, createI18NForm("form.koulutustausta.ulkomailla"),
+                ULKOMAINEN_TUTKINTO,
+                createI18NForm("form.koulutustausta.ulkomailla.help"));
+        millatutkinnolla.setVerboseHelp(FormConstants.VERBOSE_HELP);
+        millatutkinnolla.addAttribute("required", "required");
+
+        Notification tutkintoUlkomaillaNotification = new Notification(TUTKINTO_ULKOMAILLA_NOTIFICATION_ID,
+                createI18NForm("form.koulutustausta.ulkomailla.huom"),
+                Notification.NotificationType.INFO);
+
+        Notification tutkintoKeskeytynytNotification = new Notification(TUTKINTO_KESKEYTNYT_NOTIFICATION_ID,
+                createI18NForm("form.koulutustausta.keskeytynyt.huom"),
+                Notification.NotificationType.INFO);
+
+        RelatedQuestionRule keskeytynytRule = new RelatedQuestionRule(TUTKINTO_KESKEYTYNYT_RULE,
+                millatutkinnolla.getId(), KESKEYTYNYT, false);
+
+        RelatedQuestionRule ulkomaillaSuoritettuTutkintoRule = new RelatedQuestionRule(TUTKINTO_ULKOMAILLA_RULE,
+                millatutkinnolla.getId(), ULKOMAINEN_TUTKINTO, false);
+
+        ulkomaillaSuoritettuTutkintoRule.addChild(tutkintoUlkomaillaNotification);
+        keskeytynytRule.addChild(tutkintoKeskeytynytNotification);
+        millatutkinnolla.addChild(ulkomaillaSuoritettuTutkintoRule);
+        millatutkinnolla.addChild(keskeytynytRule);
+
+        TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion("PK_PAATTOTODISTUSVUOSI",
+                createI18NForm("form.koulutustausta.paattotodistusvuosi"));
+        paattotodistusvuosiPeruskoulu.addAttribute("placeholder", "vvvv");
+        paattotodistusvuosiPeruskoulu.addAttribute("required", "required");
+        paattotodistusvuosiPeruskoulu.addAttribute("pattern", "^(19[0-9][0-9]|200[0-9]|201[0-3])$");
+        paattotodistusvuosiPeruskoulu.addAttribute("size", "4");
+        paattotodistusvuosiPeruskoulu.addAttribute("maxlength", "4");
+
+        Group suorittanutGroup = new Group("suorittanutgroup",
+                createI18NForm("form.koulutustausta.suorittanut"));
+        suorittanutGroup.addChild(
+                new CheckBox("LISAKOULUTUS_KYMPPI", createI18NForm("form.koulutustausta.kymppiluokka")),
+                new CheckBox("LISAKOULUTUS_VAMMAISTEN", createI18NForm("form.koulutustausta.vammaistenValmentava")),
+                new CheckBox("LISAKOULUTUS_TALOUS", createI18NForm("form.koulutustausta.talouskoulu")),
+                new CheckBox("LISAKOULUTUS_AMMATTISTARTTI", createI18NForm("form.koulutustausta.ammattistartti")),
+                new CheckBox("LISAKOULUTUS_KANSANOPISTO", createI18NForm("form.koulutustausta.kansanopisto")),
+                new CheckBox("LISAKOULUTUS_MAAHANMUUTTO", createI18NForm("form.koulutustausta.maahanmuuttajienValmistava"))
+        );
+
+        RelatedQuestionRule pkKysymyksetRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "("
+                + PERUSKOULU + "|"
+                + OSITTAIN_YKSILOLLISTETTY + "|"
+                + ERITYISOPETUKSEN_YKSILOLLISTETTY + "|"
+                + YKSILOLLISTETTY + ")", false);
+
+        RelatedQuestionRule paattotodistusvuosiPeruskouluRule = new RelatedQuestionRule("rule8",
+                paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$", false);
+
+        Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio(
+                "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON",
+                createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka"));
+        addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon);
+        setRequired(koulutuspaikkaAmmatillisenTutkintoon);
+
+        pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu);
+        pkKysymyksetRule.addChild(suorittanutGroup);
+        pkKysymyksetRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
+        pkKysymyksetRule.addChild(paattotodistusvuosiPeruskouluRule);
+
+        TextQuestion lukioPaattotodistusVuosi = new TextQuestion("lukioPaattotodistusVuosi",
+                createI18NForm("form.koulutustausta.lukio.paattotodistusvuosi"));
+        lukioPaattotodistusVuosi.addAttribute("placeholder", "vvvv");
+        lukioPaattotodistusVuosi.addAttribute("required", "required");
+        lukioPaattotodistusVuosi.addAttribute("pattern", "^(19[0-9][0-9]|200[0-9]|201[0-3])$");
+        lukioPaattotodistusVuosi.addAttribute("size", "4");
+        lukioPaattotodistusVuosi.addAttribute("maxlength", "4");
+        lukioPaattotodistusVuosi.setInline(true);
+
+        DropdownSelect ylioppilastutkinto = new DropdownSelect("ylioppilastutkinto",
+                createI18NForm("form.koulutustausta.lukio.yotutkinto"), null);
+        ylioppilastutkinto.addOption("fi", createI18NForm("form.koulutustausta.lukio.yotutkinto.fi"), "fi");
+        ylioppilastutkinto.addOption("ib", createI18NForm("form.koulutustausta.lukio.yotutkinto.ib"), "ib");
+        ylioppilastutkinto.addOption("eb", createI18NForm("form.koulutustausta.lukio.yotutkinto.eb"), "eb");
+        ylioppilastutkinto.addOption("rp", createI18NForm("form.koulutustausta.lukio.yotutkinto.rp"), "rp");
+        ylioppilastutkinto.addAttribute("required", "required");
+        ylioppilastutkinto.setInline(true);
+        setDefaultOption("fi", ylioppilastutkinto.getOptions());
+
+        Group lukioGroup = new Group("lukioGroup", createI18NForm("form.koulutustausta.lukio.suoritus"));
+        lukioGroup.addChild(lukioPaattotodistusVuosi);
+        lukioGroup.addChild(ylioppilastutkinto);
+
+        RelatedQuestionRule lukioRule = new RelatedQuestionRule("rule7", millatutkinnolla.getId(), YLIOPPILAS, false);
+        lukioRule.addChild(lukioGroup);
+
+        millatutkinnolla.addChild(lukioRule);
+        millatutkinnolla.addChild(pkKysymyksetRule);
+
+        Radio suorittanutAmmatillisenTutkinnon = new Radio(
+                "ammatillinenTutkintoSuoritettu",
+                createI18NForm("form.koulutustausta.ammatillinenSuoritettu"));
+        addDefaultTrueFalseOptions(suorittanutAmmatillisenTutkinnon);
+        setRequired(suorittanutAmmatillisenTutkinnon);
+
+
+        lukioRule.addChild(suorittanutAmmatillisenTutkinnon);
+        lukioRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
+        paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
+
+        RelatedQuestionRule suorittanutAmmatillisenTutkinnonRule = new RelatedQuestionRule("rule9",
+                suorittanutAmmatillisenTutkinnon.getId(), "^true", false);
+        Notification notification1 = new Notification(
+                "notification1",
+                createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka.huom"),
+                Notification.NotificationType.INFO);
+
+        suorittanutAmmatillisenTutkinnonRule.addChild(notification1);
+        suorittanutAmmatillisenTutkinnon.addChild(suorittanutAmmatillisenTutkinnonRule);
+
+        DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
+                createI18NForm("Millä opetuskielellä olet suorittanut perusopetuksen?"), null);
+        perusopetuksenKieli.addOption("eiValittu", ElementUtil.createI18NForm(null), "");
+        perusopetuksenKieli.addOptions(koodistoService.getLanguages());
+        perusopetuksenKieli.addAttribute("required", "required");
+        perusopetuksenKieli.setVerboseHelp(FormConstants.VERBOSE_HELP);
+        perusopetuksenKieli.setHelp(createI18NForm("form.henkilotiedot.aidinkieli.help"));
+        pkKysymyksetRule.addChild(perusopetuksenKieli);
+        return millatutkinnolla;
+    }
+
+    public Phase getKoulutustausta() {
+        return koulutustausta;
+    }
+
+    public Theme getKoulutustaustaRyhma() {
+        return koulutustaustaRyhma;
+    }
+}

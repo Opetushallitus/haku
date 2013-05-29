@@ -46,7 +46,7 @@ public class ShowChildsIT extends AbstractSeleniumBase {
         checkBox1 = new CheckBox("value", createI18NAsIs("title"));
         final CheckBox checkBox2 = new CheckBox("value2", createI18NAsIs("title2"));
 
-        final Theme theme = new Theme("ekaryhma", createI18NAsIs("ekaryhma"), null);
+        final Theme theme = new Theme("ekaryhma", createI18NAsIs("ekaryhma"), null, true);
         theme.addChild(new TextQuestion("alikysymys1", createI18NAsIs("alikysymys1")));
         theme.addChild(new TextQuestion("alikysymys2", createI18NAsIs("alikysymys2")));
 

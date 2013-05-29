@@ -28,7 +28,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.hakutoiveet.HakutoiveetPhase;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -70,20 +70,20 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         lisakysymysList.add(textQuestion);
         lisakysymysMap.put("1.2.246.562.14.79893512065", lisakysymysList);
 
-        Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", createI18NAsIs("Hakutoiveet"), lisakysymysMap);
+        Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", createI18NAsIs("Hakutoiveet"), lisakysymysMap, true);
         hakutoiveet.addChild(hakutoiveetRyhmä);
         hakutoiveetRyhmä.setHelp(createI18NAsIs("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem."));
         PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NAsIs("Hakutoiveet"), "Ylös", "Alas");
-        PreferenceRow pr1 = Yhteishaku2013.createI18NPreferenceRow("preference1", "Hakutoive 1");
-        PreferenceRow pr2 = Yhteishaku2013.createI18NPreferenceRow("preference2", "Hakutoive 2");
-        PreferenceRow pr3 = Yhteishaku2013.createI18NPreferenceRow("preference3", "Hakutoive 3");
+        PreferenceRow pr1 = HakutoiveetPhase.createI18NPreferenceRow("preference1", "Hakutoive 1");
+        PreferenceRow pr2 = HakutoiveetPhase.createI18NPreferenceRow("preference2", "Hakutoive 2");
+        PreferenceRow pr3 = HakutoiveetPhase.createI18NPreferenceRow("preference3", "Hakutoive 3");
         preferenceTable.addChild(pr1);
         preferenceTable.addChild(pr2);
         preferenceTable.addChild(pr3);
         hakutoiveetRyhmä.addChild(preferenceTable);
 
         TextQuestion lisakysymys = new TextQuestion("lisakysymys", createI18NAsIs("Lisäkysymys"));
-        Theme lisakysymyksetRyhma = new Theme("lisakysymyksetGrp", createI18NAsIs("Lisäkysymykset"), null);
+        Theme lisakysymyksetRyhma = new Theme("lisakysymyksetGrp", createI18NAsIs("Lisäkysymykset"), null, true);
         lisakysymykset.addChild(lisakysymyksetRyhma);
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", "preference1-Koulutus-id", "1.2.246.562.14.79893512065", false);
         relatedQuestionRule.addChild(lisakysymys);

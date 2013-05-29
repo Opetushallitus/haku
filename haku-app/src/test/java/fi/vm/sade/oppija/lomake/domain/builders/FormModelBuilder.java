@@ -36,7 +36,7 @@ public class FormModelBuilder {
     private FormModel formModel = new FormModel();
     ApplicationPeriodBuilder applicationPeriodBuilder = new ApplicationPeriodBuilder(APPLICATION_PERIOD_ID);
     private Phase phase = new Phase(PHASE_ID, createI18NAsIs(PHASE_ID), false);
-    private Theme theme = new Theme(THEME_ID, createI18NAsIs(THEME_ID), null);
+    private Theme theme = new Theme(THEME_ID, createI18NAsIs(THEME_ID), null, true);
 
     private FormBuilder formBuilder =
             new FormBuilder(FORM_ID,
