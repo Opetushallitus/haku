@@ -8,7 +8,7 @@
 	"answers" : {
 		"henkilotiedot" : {
 			"Sukupuoli" : "Mies",
-			"kansalaisuus" : "fi",
+			"kansalaisuus" : "fin",
 			"asuinmaa" : "fi",
 			"Sukunimi" : "Huippu",
 			"postitoimipaikka" : "Helsinki",
@@ -97,6 +97,7 @@
 		}
 	},
     "oid" : "1.2.3.4.5.00000010003",
+    "personOid" : "9.8.7.6.5.1234567890",
 	"state" : "ACTIVE",
 	"formId" : {
 		"type" : "FormId",

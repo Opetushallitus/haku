@@ -32,7 +32,7 @@ public class AdditionalQuestionsIT extends DummyModelBaseItTest {
     @Ignore
     @Test
     public void testAdditionalQuestion() {
-        navigateToPath(ASID, "yhteishaku/hakutoiveet/hakutoiveetGrp/additionalquestions", AO_ID);
+        navigateToPath("lomake", ASID, "yhteishaku/hakutoiveet/hakutoiveetGrp/additionalquestions", AO_ID);
         findById(AO_ID.replace(".", "_") + "_additional_question_1");
         findByXPath("//input[@value='q1_option_1']");
         findByXPath("//input[@value='q1_option_2']");
@@ -42,7 +42,7 @@ public class AdditionalQuestionsIT extends DummyModelBaseItTest {
 
     @Test(expected = NoSuchElementException.class)
     public void testNoAdditionalQuestion() {
-        navigateToPath(ASID, "yhteishaku/hakutoiveet/hakutoiveetGrp/additionalquestions", "6_1");
+        navigateToPath("lomake", ASID, "yhteishaku/hakutoiveet/hakutoiveetGrp/additionalquestions", "6_1");
         findById("6_1_additional_question_1");
     }
 }

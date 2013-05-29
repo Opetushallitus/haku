@@ -1,0 +1,17 @@
+
+På svenska
+
+Sähköposti sisältää tiedon siitä, että hakemus on virallisesti vireillä vasta kun virkailija on käsitellyt hakemuksen ja yksilöinyt hakijan.
+
+Hakulomake: $formId
+Hakija: $applicant
+Hakemusnumero: $applicationId
+Lomakkeen päivämäärä ja tallennusaika: $applicationDate
+
+Hakulomakkeesi hakukohteet ovat:
+
+#foreach ($preference in $preferences)
+$preference
+#end
+
+Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän.

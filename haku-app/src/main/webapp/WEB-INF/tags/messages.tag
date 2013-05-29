@@ -1,5 +1,6 @@
 <%@ tag description="i18nText" body-content="empty" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ attribute name="messages" required="true" type="java.util.Map" %>
 <%@ attribute name="additionalClass" required="true" type="java.lang.String" %>
 <%@ tag trimDirectiveWhitespaces="true" %>
@@ -19,6 +20,6 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:forEach var="message" items="${messages}">
-    <div class="notification ${additionalClass}"><c:out value="${message.value}" escapeXml="true"/></div>
+    <div class="notification ${additionalClass}"><haku:i18nText value="${message.value}"/></div>
 </c:forEach>
 

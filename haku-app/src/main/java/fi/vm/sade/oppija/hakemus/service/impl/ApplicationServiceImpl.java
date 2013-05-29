@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
+import com.mongodb.BasicDBObject;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
@@ -170,25 +171,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                 application.removeUser();
             }
 
-            // create student id for finnish applicants
-            if (allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY).equals(OppijaConstants.NATIONALITY_CODE_FI)) {
-
-                // invoke authentication service to obtain oid
-                Person person = new Person(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES),
-                        allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME),
-                        allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME),
-                        allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER), false,
-                        allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL),
-                        allAnswers.get(OppijaConstants.ELEMENT_ID_SEX),
-                        allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY), false,
-                        allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE),
-                        allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY),
-                        allAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE));
-
-                application.setPersonOid(this.authenticationService.addPerson(person));
-
-            }
-            application.activate();
             application.resetUser();
             this.applicationDAO.save(application);
             this.userHolder.removeApplication(application.getFormId());
@@ -199,10 +181,37 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public Application setPerson(Application application) {
+        Map<String, String> allAnswers = application.getVastauksetMerged();
+        // create student id for finnish applicants
+        if (allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER) != null) {
+
+            // invoke authentication service to obtain oid
+            Person person = new Person(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES),
+                    allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME),
+                    allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME),
+                    allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER), false,
+                    allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL),
+                    allAnswers.get(OppijaConstants.ELEMENT_ID_SEX),
+                    allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY), false,
+                    allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE),
+                    allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY),
+                    allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE));
+
+            application.setPersonOid(this.authenticationService.addPerson(person));
+            application.activate();
+
+        } else {
+            application.setState(Application.State.INCOMPLETE);
+        }
+
+        this.applicationDAO.save(application);
+        return application;
+    }
+    @Override
     public Application getPendingApplication(FormId formId, String oid) throws ResourceNotFoundException {
         final User user = userHolder.getUser();
-        Application application = new Application(formId, user);
-        application.setOid(oid);
+        Application application = new Application(formId, user, oid);
         if (!user.isKnown()) {
             application.removeUser();
         }
@@ -324,6 +333,19 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.getAdditionalInfo().put(key, value);
             applicationDAO.update(query, application);
         }
+    }
+
+    @Override
+    public Application getNextWithoutPersonOid() {
+        BasicDBObject query = new BasicDBObject();
+        query.put("personOid", new BasicDBObject("$exists", false));
+        query.put("oid", new BasicDBObject("$exists", true));
+        query.put("state", new BasicDBObject("$exists", false));
+        List<Application> apps = applicationDAO.find(query);
+        if (apps.size() > 0) {
+            return apps.get(0);
+        }
+        return null;
     }
 
     private Application getApplication(final Application application) throws ResourceNotFoundException {

@@ -18,12 +18,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
        xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 
 
@@ -54,14 +56,11 @@
                     ignore-resource-not-found="true" properties-ref="defaultProps"/>
         <import resource="security-context-dev.xml"/>
         <bean id="defaultProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
-
     </beans>
-
 
     <beans>
         <context:annotation-config/>
         <context:component-scan base-package="fi.vm.sade.oppija"/>
-
         <aop:aspectj-autoproxy/>
 
         <!-- Configure the multipart resolver -->
@@ -78,6 +77,16 @@
                 </list>
             </property>
         </bean>
+
+        <bean id="yksilointiScheduler" class="fi.vm.sade.oppija.yksilointi.Scheduler">
+            <property name="run" value="${scheduler.run}" />
+            <property name="sendMail" value="${scheduler.sendMail}" />
+        </bean>
+        <task:scheduled-tasks scheduler="scheduler">
+            <task:scheduled ref="yksilointiScheduler" method="runIdentification" fixed-delay="${scheduler.delay}"/>
+        </task:scheduled-tasks>
+
+        <task:scheduler id="scheduler" pool-size="1"/>
 
         <import resource="haku-context.xml"/>
         <import resource="classpath:/META-INF/spring/logger-mock-context.xml"/>

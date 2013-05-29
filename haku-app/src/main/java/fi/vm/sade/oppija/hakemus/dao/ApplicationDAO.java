@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
+import com.mongodb.DBObject;
 import fi.vm.sade.oppija.common.dao.BaseDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -39,6 +40,14 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @return
      */
     List<Application> find(Application application);
+
+    /**
+     * Return list of applications that match given query
+     *
+     * @param query
+     * @return
+     */
+    List<Application> find(DBObject query);
 
     /**
      * Returns Applications that are included in specified application system.

@@ -71,7 +71,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         // Lisätiedot
         clickAllElementsByXPath("//input[@type='checkbox']");
 
-        setValue("tyokokemuskuukaudet", "2");
+        setValue("TYOKOKEMUSKUUKAUDET", "2");
         findByIdAndClick("asiointikieli_suomi");
 
         nextPhase();
@@ -100,10 +100,10 @@ public class HAK305IT extends DummyModelBaseItTest {
     }
 
     private void fillInTheKoulutustaustaPhase(final String opetuskieli) {
-        findByIdAndClick("millatutkinnolla_tutkinto1", "suorittanut1", "osallistunut_false");
-        findById("paattotodistusvuosi_peruskoulu");
+        findByIdAndClick("POHJAKOULUTUS_tutkinto1", "LISAKOULUTUS_KYMPPI", "osallistunut_false", "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON_false");
+        findById("PK_PAATTOTODISTUSVUOSI");
         setPerusopetuksenKieli(opetuskieli);
-        setValue("paattotodistusvuosi_peruskoulu", "2012");
+        setValue("PK_PAATTOTODISTUSVUOSI", "2012");
     }
 
     private void fillInTheHakutoiveetPhase() {

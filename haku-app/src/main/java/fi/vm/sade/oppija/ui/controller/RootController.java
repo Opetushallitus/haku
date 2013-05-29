@@ -28,12 +28,12 @@ import javax.ws.rs.core.MediaType;
 @Controller
 public class RootController {
 
+    private static final String CHARSET_UTF_8 = ";charset=UTF-8";
     public static final String INDEX_VIEW = "/index";
 
     @GET
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getFrontPage() {
         return new Viewable(INDEX_VIEW);
     }
-
 }

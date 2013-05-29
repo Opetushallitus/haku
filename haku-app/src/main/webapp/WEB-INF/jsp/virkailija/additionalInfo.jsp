@@ -107,7 +107,6 @@
                 </fieldset>
             </form>
         </section>
-        <div id="global_footer"></div>
     </div>
 </div>
 </body>

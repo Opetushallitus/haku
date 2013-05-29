@@ -53,14 +53,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = Attachment.class),
                 @JsonSubTypes.Type(value = CheckBox.class),
                 @JsonSubTypes.Type(value = Group.class),
                 @JsonSubTypes.Type(value = DropdownSelect.class),
                 @JsonSubTypes.Type(value = Option.class),
                 @JsonSubTypes.Type(value = Radio.class),
                 @JsonSubTypes.Type(value = TextArea.class),
-                @JsonSubTypes.Type(value = Attachment.class),
                 @JsonSubTypes.Type(value = Theme.class),
                 @JsonSubTypes.Type(value = TextQuestion.class),
                 @JsonSubTypes.Type(value = Phase.class),

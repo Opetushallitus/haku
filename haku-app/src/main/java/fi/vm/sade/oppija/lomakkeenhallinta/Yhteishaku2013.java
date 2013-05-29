@@ -37,6 +37,7 @@ import fi.vm.sade.oppija.lomakkeenhallinta.predicate.ComprehensiveSchools;
 import fi.vm.sade.oppija.lomakkeenhallinta.predicate.HighSchools;
 import fi.vm.sade.oppija.lomakkeenhallinta.predicate.Ids;
 import fi.vm.sade.oppija.lomakkeenhallinta.predicate.Languages;
+import fi.vm.sade.oppija.util.OppijaConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,6 @@ import static fi.vm.sade.oppija.util.OppijaConstants.*;
 @Service
 public class Yhteishaku2013 {
 
-    public String AOID_ADDITIONAL_QUESTION = "1.2.246.562.14.71344129359";
     public static final String TUTKINTO_ULKOMAILLA_NOTIFICATION_ID = "tutkinto7-notification";
     public static final String TUTKINTO_KESKEYTNYT_NOTIFICATION_ID = "tutkinto5-notification";
     public static final String AIDINKIELI_ID = "aidinkieli";
@@ -66,8 +66,9 @@ public class Yhteishaku2013 {
     public static final String TUTKINTO_ULKOMAILLA_RULE = "tutkinto_0_rule";
     public static final String TUTKINTO_PERUSKOULU = "tutkinto1";
     public static final int AGE_WORK_EXPERIENCE = 16;
-
     private final ApplicationPeriod applicationPeriod;
+
+    public String aoidAdditionalQuestion = "1.2.246.562.14.71344129359";
     public static final String MOBILE_PHONE_PATTERN =
             "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
     public static final String PHONE_PATTERN =
@@ -84,7 +85,7 @@ public class Yhteishaku2013 {
             @Value("${aoid}") String aoid) { // NOSONAR
         this.koodistoService = koodistoService;
         this.applicationPeriod = new ApplicationPeriod(asid);
-        this.AOID_ADDITIONAL_QUESTION = aoid;
+        this.aoidAdditionalQuestion = aoid;
         createFrom();
     }
 
@@ -218,20 +219,18 @@ public class Yhteishaku2013 {
         // sora-kysymykset
 
         RelatedQuestionRule hasSora = new RelatedQuestionRule(index + "_sora_rule",
-                ImmutableList.of(index + "-Koulutus-id-sora"), Boolean.TRUE.toString().toLowerCase(), false);
+                ImmutableList.of(index + "-Koulutus-id-sora"), ElementUtil.KYLLA, false);
 
         Radio sora1 = new Radio(index + "_sora_terveys", createI18NForm("form.sora.terveys"));
-        sora1.addOption(Boolean.FALSE.toString().toLowerCase(), createI18NForm("form.yleinen.ei"), Boolean.FALSE.toString().toLowerCase());
-        sora1.addOption(Boolean.TRUE.toString().toLowerCase(), createI18NForm("form.sora.kylla"), Boolean.TRUE.toString().toLowerCase());
-        sora1.setInline(false);
-        sora1.addAttribute("required", "required");
+        sora1.addOption(ElementUtil.EI, createI18NForm("form.yleinen.ei"), ElementUtil.EI);
+        sora1.addOption(ElementUtil.KYLLA, createI18NForm("form.sora.kylla"), ElementUtil.KYLLA);
+        ElementUtil.setRequired(sora1);
         sora1.setPopup(new Popup("sora-popup", createI18NForm("form.hakutoiveet.terveydentilavaatimukset.otsikko")));
 
         Radio sora2 = new Radio(index + "_sora_oikeudenMenetys", createI18NForm("form.sora.oikeudenMenetys"));
-        sora2.addOption(Boolean.FALSE.toString().toLowerCase(), createI18NForm("form.yleinen.ei"), Boolean.FALSE.toString().toLowerCase());
-        sora2.addOption(Boolean.TRUE.toString().toLowerCase(), createI18NForm("form.sora.kylla"), Boolean.TRUE.toString().toLowerCase());
-        sora2.setInline(false);
-        sora2.addAttribute("required", "required");
+        sora2.addOption(ElementUtil.EI, createI18NForm("form.yleinen.ei"), ElementUtil.EI);
+        sora2.addOption(ElementUtil.KYLLA, createI18NForm("form.sora.kylla"), ElementUtil.KYLLA);
+        ElementUtil.setRequired(sora2);
 
         // popup ensimmäistä sora-kysymystä varten
 
@@ -280,7 +279,7 @@ public class Yhteishaku2013 {
         henkilotunnus.addAttribute("maxlength", "11");
         setRequiredInlineAndVerboseHelp(henkilotunnus);
 
-        Radio sukupuoli = new Radio("Sukupuoli", createI18NForm("form.henkilotiedot.sukupuoli"));
+        Radio sukupuoli = new Radio("SUKUPUOLI", createI18NForm("form.henkilotiedot.sukupuoli"));
         sukupuoli.addOption("mies", createI18NForm("form.henkilotiedot.sukupuoli.mies"), "m");
         sukupuoli.addOption("nainen", createI18NForm("form.henkilotiedot.sukupuoli.nainen"), "n");
         setRequiredInlineAndVerboseHelp(sukupuoli);
@@ -339,7 +338,7 @@ public class Yhteishaku2013 {
         henkilotiedotRyhma.addChild(ulkomaalaisenTunnisteetRule);
 
         // Email
-        TextQuestion email = new TextQuestion("Sähköposti", createI18NForm("form.henkilotiedot.email"));
+        TextQuestion email = new TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL, createI18NForm("form.henkilotiedot.email"));
         email.addAttribute("size", "50");
         email.addAttribute("pattern", "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$");
         email.setHelp(createI18NForm("form.henkilotiedot.email.help"));
@@ -459,8 +458,7 @@ public class Yhteishaku2013 {
     }
 
     private Theme createHakutoiveetRyhma() {
-        final String id = AOID_ADDITIONAL_QUESTION;
-        final String elementIdPrefix = AOID_ADDITIONAL_QUESTION.replace('.', '_');
+        final String elementIdPrefix = aoidAdditionalQuestion.replace('.', '_');
 
         Radio radio3 = new Radio(
                 elementIdPrefix + "_additional_question_1",
@@ -476,12 +474,14 @@ public class Yhteishaku2013 {
         lisakysymysList.add(radio3);
 
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
-        lisakysymysMap.put(id, lisakysymysList);
+        lisakysymysMap.put(aoidAdditionalQuestion, lisakysymysList);
 
         return new Theme("hakutoiveetGrp", createI18NForm("form.hakutoiveet.otsikko"), lisakysymysMap);
     }
 
     public GradeGrid createGradeGrid(final String id, final boolean comprehensiveSchool) {
+
+        final String idPrefix = comprehensiveSchool ? "PK_" : "LK_";
 
         List<SubjectRow> subjects = koodistoService.getSubjects();
         for (SubjectRow subject : subjects) {
@@ -512,9 +512,9 @@ public class Yhteishaku2013 {
         gradeGrid.setVerboseHelp(getVerboseHelp());
 
         for (SubjectRow nativeLanguage : nativeLanguages) {
-            gradeGrid.addChild(createGradeGridRow(nativeLanguage, true, true, comprehensiveSchool));
+            gradeGrid.addChild(createGradeGridRow(nativeLanguage, true, true, comprehensiveSchool, idPrefix, "_1"));
             GradeGridRow additionalNativeLanguageRow =
-                    createAdditionalNativeLanguageRow(nativeLanguage, 0, comprehensiveSchool);
+                    createAdditionalNativeLanguageRow(nativeLanguage, 2, comprehensiveSchool, idPrefix);
             additionalNativeLanguageRow.addAttribute("hidden", "hidden");
             additionalNativeLanguageRow.addAttribute("group", "nativeLanguage");
             gradeGrid.addChild(additionalNativeLanguageRow);
@@ -523,7 +523,7 @@ public class Yhteishaku2013 {
                 ElementUtil.createI18NForm("form.add.lang.native"), nativeLanguages, true, comprehensiveSchool));
 
         for (SubjectRow defaultLanguage : defaultLanguages) {
-            gradeGrid.addChild(createGradeGridRow(defaultLanguage, true, false, comprehensiveSchool));
+            gradeGrid.addChild(createGradeGridRow(defaultLanguage, true, false, comprehensiveSchool, idPrefix, ""));
         }
 
         List<GradeGridRow> additionalLanguages = createAdditionalLanguages(5, filtered, comprehensiveSchool);
@@ -536,7 +536,7 @@ public class Yhteishaku2013 {
 
 
         for (SubjectRow subjectsAfterLanguage : subjectsAfterLanguages) {
-            gradeGrid.addChild(createGradeGridRow(subjectsAfterLanguage, false, false, comprehensiveSchool));
+            gradeGrid.addChild(createGradeGridRow(subjectsAfterLanguage, false, false, comprehensiveSchool, idPrefix, ""));
         }
         return gradeGrid;
     }
@@ -550,11 +550,11 @@ public class Yhteishaku2013 {
         return rows;
     }
 
-    private GradeGridRow createAdditionalNativeLanguageRow(final SubjectRow subjectRow, int index, boolean extraColumn) {
+    private GradeGridRow createAdditionalNativeLanguageRow(final SubjectRow subjectRow, int index, boolean extraColumn, final String idPrefix) {
 
         Element[] columnsArray = createColumnsArray(index, extraColumn);
 
-        String postfix = subjectRow.getId() + "-" + index;
+        String postfix = idPrefix + subjectRow.getId() + "_" + index;
         GradeGridOptionQuestion addLangs =
                 new GradeGridOptionQuestion("custom-language-" + postfix, koodistoService.getSubjectLanguages(), false);
         setDisabled(addLangs);
@@ -676,8 +676,8 @@ public class Yhteishaku2013 {
     }
 
     private GradeGridRow createGradeGridRow(final SubjectRow subjectRow, boolean language,
-                                            boolean literature, boolean extraColumn) {
-        GradeGridRow gradeGridRow = new GradeGridRow(subjectRow.getId());
+                                            boolean literature, boolean extraColumn, final String idPrefix, final String idSuffix) {
+        GradeGridRow gradeGridRow = new GradeGridRow(subjectRow.getId() + idSuffix);
         GradeGridColumn column1 = new GradeGridColumn("column1", false);
         column1.addChild(new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), false));
         GradeGridColumn column2 = new GradeGridColumn("column2", false);
@@ -698,20 +698,20 @@ public class Yhteishaku2013 {
             } else {
                 subjectLanguages = koodistoService.getSubjectLanguages();
             }
-            GradeGridOptionQuestion child = new GradeGridOptionQuestion(subjectRow.getId() + "", subjectLanguages, false);
+            GradeGridOptionQuestion child = new GradeGridOptionQuestion(idPrefix + subjectRow.getId() + idSuffix + "_OPPIAINE", subjectLanguages, false);
             child.addAttribute("required", "required");
             column2.addChild(child);
         } else {
             column1.addAttribute("colspan", "2");
         }
-        GradeGridOptionQuestion child1 = new GradeGridOptionQuestion("common-" + subjectRow.getId(), gradeRanges, false);
+        GradeGridOptionQuestion child1 = new GradeGridOptionQuestion(idPrefix + subjectRow.getId() + idSuffix, gradeRanges, false);
         child1.addAttribute("required", "required");
         column3.addChild(child1);
-        GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion("optional-common-" + subjectRow.getId(), gradeRangesSecond, true);
+        GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion(idPrefix + subjectRow.getId() + idSuffix + "_VAL1", gradeRangesSecond, true);
         gradeGridOptionQuestion.addAttribute("required", "required");
         column4.addChild(gradeGridOptionQuestion);
         if (column5 != null) {
-            GradeGridOptionQuestion child2 = new GradeGridOptionQuestion("second-optional-common-" + subjectRow.getId(), gradeRangesSecond, true);
+            GradeGridOptionQuestion child2 = new GradeGridOptionQuestion(idPrefix + subjectRow.getId() + idSuffix + "_VAL2", gradeRangesSecond, true);
             child2.addAttribute("required", "required");
             column5.addChild(child2);
         }
@@ -729,17 +729,17 @@ public class Yhteishaku2013 {
     }
 
     private void createArvosanat(Theme arvosanatRyhma) {
-        RelatedQuestionRule relatedQuestionPK = new RelatedQuestionRule("rule_grade_pk", "millatutkinnolla",
+        RelatedQuestionRule relatedQuestionPK = new RelatedQuestionRule("rule_grade_pk", "POHJAKOULUTUS",
                 "(" + PERUSKOULU + "|tutkinto2|tutkinto3|tutkinto4)", false);
         relatedQuestionPK.addChild(createGradeGrid("grid_pk", true));
         arvosanatRyhma.addChild(relatedQuestionPK);
 
-        RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", "millatutkinnolla",
+        RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", "POHJAKOULUTUS",
                 "(" + YLIOPPILAS + ")", false);
         relatedQuestionLukio.addChild(createGradeGrid("grid_yo", false));
         arvosanatRyhma.addChild(relatedQuestionLukio);
 
-        RelatedQuestionRule relatedQuestionEiTutkintoa = new RelatedQuestionRule("rule_grade_no", "millatutkinnolla",
+        RelatedQuestionRule relatedQuestionEiTutkintoa = new RelatedQuestionRule("rule_grade_no", "POHJAKOULUTUS",
                 "(tutkinto5|tutkinto7)", false);
         relatedQuestionEiTutkintoa.addChild(new Text("nogradegrid", createI18NForm("form.arvosanat.eiKysyta")));
         arvosanatRyhma.addChild(relatedQuestionEiTutkintoa);
@@ -820,7 +820,7 @@ public class Yhteishaku2013 {
 
     private void createTyokokemus(Theme tyokokemus) {
         tyokokemus.setHelp(createI18NForm("form.tyokokemus.help"));
-        TextQuestion tyokokemuskuukaudet = new TextQuestion("tyokokemuskuukaudet",
+        TextQuestion tyokokemuskuukaudet = new TextQuestion("TYOKOKEMUSKUUKAUDET",
                 createI18NForm("form.tyokokemus.kuukausina"));
         tyokokemuskuukaudet
                 .setHelp(createI18NForm("form.tyokokemus.kuukausina.help"));
@@ -853,7 +853,7 @@ public class Yhteishaku2013 {
         lupatiedot.addChild(lupaGroup);
         lupatiedot.setVerboseHelp(getVerboseHelp());
 
-        Radio asiointikieli = new Radio("asiointikieli", createI18NForm("form.asiointikieli.otsikko"));
+        Radio asiointikieli = new Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, createI18NForm("form.asiointikieli.otsikko"));
         asiointikieli.setHelp(createI18NForm("form.asiointikieli.help"));
         asiointikieli.addOption("suomi", createI18NForm("form.asiointikieli.suomi"), "suomi");
         asiointikieli.addOption("ruotsi", createI18NForm("form.asiointikieli.ruotsi"), "ruotsi");
@@ -878,7 +878,7 @@ public class Yhteishaku2013 {
     }
 
     public Radio createKoulutustaustaRadio() { //NOSONAR
-        Radio millatutkinnolla = new Radio("millatutkinnolla",
+        Radio millatutkinnolla = new Radio("POHJAKOULUTUS",
                 createI18NForm("form.koulutustausta.millaTutkinnolla"));
         millatutkinnolla.addOption(TUTKINTO_PERUSKOULU, createI18NForm("form.koulutustausta.peruskoulu"), PERUSKOULU,
                 createI18NForm("form.koulutustausta.peruskoulu.help"));
@@ -934,7 +934,7 @@ public class Yhteishaku2013 {
         millatutkinnolla.addChild(ulkomaillaSuoritettuTutkintoRule);
         millatutkinnolla.addChild(keskeytynytRule);
 
-        TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion("paattotodistusvuosi_peruskoulu",
+        TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion("PK_PAATTOTODISTUSVUOSI",
                 createI18NForm("form.koulutustausta.paattotodistusvuosi"));
         paattotodistusvuosiPeruskoulu.addAttribute("placeholder", "vvvv");
         paattotodistusvuosiPeruskoulu.addAttribute("required", "required");
@@ -945,11 +945,12 @@ public class Yhteishaku2013 {
         Group suorittanutGroup = new Group("suorittanutgroup",
                 createI18NForm("form.koulutustausta.suorittanut"));
         suorittanutGroup.addChild(
-                new CheckBox("suorittanut1", createI18NForm("form.koulutustausta.kymppiluokka")),
-                new CheckBox("suorittanut2", createI18NForm("form.koulutustausta.vammaistenValmentava")),
-                new CheckBox("suorittanut3", createI18NForm("form.koulutustausta.talouskoulu")),
-                new CheckBox("suorittanut4", createI18NForm("form.koulutustausta.ammattistartti")),
-                new CheckBox("suorittanut5", createI18NForm("form.koulutustausta.kansanopisto"))
+                new CheckBox("LISAKOULUTUS_KYMPPI", createI18NForm("form.koulutustausta.kymppiluokka")),
+                new CheckBox("LISAKOULUTUS_VAMMAISTEN", createI18NForm("form.koulutustausta.vammaistenValmentava")),
+                new CheckBox("LISAKOULUTUS_TALOUS", createI18NForm("form.koulutustausta.talouskoulu")),
+                new CheckBox("LISAKOULUTUS_AMMATTISTARTTI", createI18NForm("form.koulutustausta.ammattistartti")),
+                new CheckBox("LISAKOULUTUS_KANSANOPISTO", createI18NForm("form.koulutustausta.kansanopisto")),
+                new CheckBox("LISAKOULUTUS_MAAHANMUUTTO", createI18NForm("form.koulutustausta.maahanmuuttajienValmistava"))
         );
 
         RelatedQuestionRule pkKysymyksetRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "("
@@ -961,8 +962,15 @@ public class Yhteishaku2013 {
         RelatedQuestionRule paattotodistusvuosiPeruskouluRule = new RelatedQuestionRule("rule8",
                 paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$", false);
 
+        Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio(
+                "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON",
+                createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka"));
+        addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon);
+        setRequired(koulutuspaikkaAmmatillisenTutkintoon);
+
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu);
         pkKysymyksetRule.addChild(suorittanutGroup);
+        pkKysymyksetRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskouluRule);
 
         TextQuestion lukioPaattotodistusVuosi = new TextQuestion("lukioPaattotodistusVuosi",
@@ -1000,16 +1008,10 @@ public class Yhteishaku2013 {
         addDefaultTrueFalseOptions(suorittanutAmmatillisenTutkinnon);
         setRequired(suorittanutAmmatillisenTutkinnon);
 
-        Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio(
-                "koulutuspaikkaAmmatillisenTutkintoon",
-                createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka"));
-        addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon);
-        setRequired(koulutuspaikkaAmmatillisenTutkintoon);
 
         lukioRule.addChild(suorittanutAmmatillisenTutkinnon);
         lukioRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
-        paattotodistusvuosiPeruskouluRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
 
         RelatedQuestionRule suorittanutAmmatillisenTutkinnonRule = new RelatedQuestionRule("rule9",
                 suorittanutAmmatillisenTutkinnon.getId(), "^true", false);
@@ -1020,15 +1022,6 @@ public class Yhteishaku2013 {
 
         suorittanutAmmatillisenTutkinnonRule.addChild(notification1);
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutAmmatillisenTutkinnonRule);
-
-        RelatedQuestionRule koulutuspaikkaAmmatillisenTutkintoonRule = new RelatedQuestionRule("rule10",
-                koulutuspaikkaAmmatillisenTutkintoon.getId(), "^true$", false);
-        Notification notification2 = new Notification(
-                "notification2",
-                createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka.huom"),
-                Notification.NotificationType.INFO);
-        koulutuspaikkaAmmatillisenTutkintoonRule.addChild(notification2);
-        koulutuspaikkaAmmatillisenTutkintoon.addChild(koulutuspaikkaAmmatillisenTutkintoonRule);
 
         DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
                 createI18NForm("Millä opetuskielellä olet suorittanut perusopetuksen?"), null);

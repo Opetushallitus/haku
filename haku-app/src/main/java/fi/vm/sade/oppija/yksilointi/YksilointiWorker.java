@@ -13,18 +13,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
+package fi.vm.sade.oppija.yksilointi;
 
-package fi.vm.sade.oppija.lomake.domain.elements;
+public interface YksilointiWorker {
 
-import fi.vm.sade.oppija.lomake.domain.I18nText;
-import org.codehaus.jackson.annotate.JsonProperty;
+    void processApplications(int limit, boolean sendMail);
 
-public class Attachment extends Titled {
-
-    private static final long serialVersionUID = -2015627840867960871L;
-
-    public Attachment(@JsonProperty(value = "id") final String id,
-                      @JsonProperty(value = "i18nText") final I18nText i18nText) {
-        super(id, i18nText);
-    }
 }

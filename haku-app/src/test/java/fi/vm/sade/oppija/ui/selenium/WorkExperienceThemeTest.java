@@ -42,7 +42,7 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
         nextPhase();
         select();
         nextPhase();
-        findById("tyokokemuskuukaudet");
+        findById("TYOKOKEMUSKUUKAUDET");
     }
 
     @Test
@@ -54,7 +54,7 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
         select();
         nextPhase();
 
-        List<WebElement> tyokokemuskuukaudet = driver.findElements(new By.ById("tyokokemuskuukaudet"));
+        List<WebElement> tyokokemuskuukaudet = driver.findElements(new By.ById("TYOKOKEMUSKUUKAUDET"));
         assertTrue("tyokokemuskuukaudet should not be present", tyokokemuskuukaudet.isEmpty());
     }
 
@@ -74,10 +74,10 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
 
         nextPhase();
 
-        findByIdAndClick("millatutkinnolla_tutkinto1", "suorittanut1", "osallistunut_false");
-        findById("paattotodistusvuosi_peruskoulu");
+        findByIdAndClick("POHJAKOULUTUS_tutkinto1", "LISAKOULUTUS_KYMPPI", "osallistunut_false", "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON_false");
+        findById("PK_PAATTOTODISTUSVUOSI");
         setValue("perusopetuksen_kieli", "FI");
-        setValue("paattotodistusvuosi_peruskoulu", "2012");
+        setValue("PK_PAATTOTODISTUSVUOSI", "2012");
 
         nextPhase();
 

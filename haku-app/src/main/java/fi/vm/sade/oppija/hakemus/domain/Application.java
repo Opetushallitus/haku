@@ -137,7 +137,7 @@ public class Application implements Serializable {
 
     @JsonIgnore
     public boolean isActive() {
-        return state.equals(State.ACTIVE);
+        return state != null && state.equals(State.ACTIVE);
     }
 
     @JsonIgnore

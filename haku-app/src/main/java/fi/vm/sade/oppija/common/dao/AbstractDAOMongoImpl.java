@@ -74,4 +74,8 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
     public void update(T o, T n) {
         getCollection().update(toDBObject.apply(o), toDBObject.apply(n));
     }
+
+    public void setDb(DB db) {
+        this.db = db;
+    }
 }

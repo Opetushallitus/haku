@@ -16,10 +16,7 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.oppija.lomake.converter.FormModelToJsonString;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.lomake.domain.elements.Attachment;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,22 +28,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
 import static javax.ws.rs.core.Response.created;
 
 
 @Controller
 @Path("/admin")
-@Secured("ROLE_ADMIN")
+@Secured("ROLE_APP_HAKEMUS_CRUD")
 public class AdminController {
 
-    public static final String ADMIN_UPLOAD_VIEW = "/admin/upload";
-    public static final String ADMIN_INDEX_VIEW = "/admin/index";
-    public static final String ADMIN_EDIT_VIEW = "/admin/editModel";
-    public static final Attachment ATTACHMENT_MODEL = new Attachment("file", createI18NForm("Lataa malli json-objektina"));
     private static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
     @Autowired
@@ -65,29 +55,6 @@ public class AdminController {
     @Value("${hakemus.sha.salt}")
     private String shaSalt;
 
-    public AdminController() {
-    }
-    @GET
-    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getIndex() {
-        Map<String, Object> properties = new LinkedHashMap<String, Object>();
-        properties.put("mongodb.url", mongoUrl);
-        properties.put("mongo.db.name", mongoDbName);
-        properties.put("mongo.test-db.name", mongoTestDbName);
-        properties.put("hakemus.aes.key", aesKey);
-        properties.put("hakemus.aes.salt", aesSalt);
-        properties.put("hakemus.sha.salt", shaSalt);
-
-        return new Viewable(ADMIN_INDEX_VIEW, properties);
-    }
-
-    @GET
-    @Path("/upload")
-    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable upload() {
-        return new Viewable(ADMIN_UPLOAD_VIEW, ATTACHMENT_MODEL);
-    }
-
     @GET
     @Path("/model")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
@@ -99,17 +66,8 @@ public class AdminController {
     @Path("/model")
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public Response doActualEdit(final FormModel formModel) throws URISyntaxException {
+    public Response replaceModel(final FormModel formModel) throws URISyntaxException {
         formModelHolder.updateModel(formModel);
         return created(new URI("/lomake/")).build();
     }
-
-    @GET
-    @Path("/edit")
-    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable editModel() {
-        final String convert = new FormModelToJsonString().apply(formModelHolder.getModel());
-        return new Viewable(ADMIN_EDIT_VIEW, convert);
-    }
-
 }

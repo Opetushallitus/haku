@@ -15,7 +15,6 @@
  */
 
 $(document).ready(function () {
-    site($, '/haku-app/resources/site/');
 // Organisation search
 // Handle presentation of organisation search form and results
 

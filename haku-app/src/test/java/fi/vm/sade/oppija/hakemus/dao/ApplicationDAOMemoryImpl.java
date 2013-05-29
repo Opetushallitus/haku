@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.hakemus.dao;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.mongodb.DBObject;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.springframework.stereotype.Component;
@@ -47,6 +48,11 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
             }
         });
         return Lists.newArrayList(applications);
+    }
+
+    @Override
+    public List<Application> find(DBObject query) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

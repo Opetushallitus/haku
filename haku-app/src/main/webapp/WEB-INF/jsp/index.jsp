@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -20,15 +21,36 @@
 <html>
 <fmt:setBundle basename="messages" scope="session"/>
 <jsp:include page="top/head.jsp"/>
-    <body>
-        <div id="viewport">
-            <div id="overlay">
-                <a href="#" class="close"></a>
-                <jsp:include page="top/login.jsp"/>
-            </div>
-            <div id="site">
-                <jsp:include page="top/siteheader.jsp"/>
-            </div>
+<body>
+<div>
+    <div>
+        <sec:authorize var="loggedIn" access="isAuthenticated()"/>
+        <c:choose>
+            <c:when test="${loggedIn}">
+                <ul>
+                    <li><a href="${contextPath}/user/logout">Kirjaudu ulos</a></li>
+                </ul>
+            </c:when>
+            <c:otherwise>
+                <ul>
+                    <li><a href="${contextPath}/user/login">Kirjaudu sisään</a></li>
+                </ul>
+            </c:otherwise>
+        </c:choose>
+        <div>
+            <ul>
+                <li><a href="lomake/">Lomakkeet</a></li>
+                <sec:authorize access="hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')">
+                    <li><a href="${contextPath}/virkailija/hakemus">Hakemusten käsittely</a></li>
+                </sec:authorize>
+                <sec:authorize access="hasRole('ROLE_APP_HAKEMUS_CRUD')">
+                    <li><a href="${contextPath}/admin/model">Admin - Lataa lomakkeet (json)</a></li>
+                    <li><a href="${contextPath}/lomakkeenhallinta">Admin - Generoi lomakkeet</a></li>
+                    <li><a href="/">Oppijan verkkopalvelu</a></li>
+                </sec:authorize>
+            </ul>
         </div>
-    </body>
+    </div>
+</div>
+</body>
 </html>

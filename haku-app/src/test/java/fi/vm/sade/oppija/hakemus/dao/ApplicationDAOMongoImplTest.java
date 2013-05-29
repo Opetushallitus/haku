@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
@@ -86,6 +87,19 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         final Application application1 = new Application(TEST_USER, new ApplicationPhase(formId, TEST_PHASE, vaiheenVastaukset));
         final ApplicationState application = applicationDAO.tallennaVaihe(new ApplicationState(application1, TEST_PHASE));
         assertEquals(ARVO, application.getHakemus().getVastauksetMerged().get("avain"));
+    }
+
+    @Test
+    public void testFindPersonOidExists() {
+        BasicDBObject query = new BasicDBObject();
+        query.put("personOid", new BasicDBObject("$exists", false));
+        List<Application> notExists = applicationDAO.find(query);
+        assertEquals(2, notExists.size());
+
+        query = new BasicDBObject();
+        query.put("personOid", new BasicDBObject("$exists", true));
+        List<Application> exists = applicationDAO.find(query);
+        assertEquals(1, exists.size());
     }
 
     @Test
