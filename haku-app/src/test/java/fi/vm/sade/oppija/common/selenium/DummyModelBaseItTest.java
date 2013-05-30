@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.openqa.selenium.By;
@@ -58,7 +59,8 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected void navigateToPath(final String... pathSegments) {
         Joiner joiner = Joiner.on("/").skipNulls();
-        driver.get(joiner.join(StringUtils.removeEnd(getBaseUrl(), "/"), null, pathSegments));
+        String[] baseUrl = {StringUtils.removeEnd(getBaseUrl(), "/")};
+        driver.get(joiner.join(ArrayUtils.addAll(baseUrl, pathSegments)));
     }
 
     protected void select() {
@@ -89,13 +91,6 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
             if (!driver.findElements(By.name(name)).isEmpty()) {
                 fail("name " + name + " found");
             }
-        }
-    }
-
-    protected void clickElementsByXPath(final String xpath) {
-        List<WebElement> elements = driver.findElements(new By.ByXPath(xpath));
-        for (WebElement element : elements) {
-            element.click();
         }
     }
 }
