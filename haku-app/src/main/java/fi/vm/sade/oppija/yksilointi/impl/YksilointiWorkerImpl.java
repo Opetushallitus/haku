@@ -19,7 +19,7 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.util.OppijaConstants;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.oppija.yksilointi.YksilointiWorker;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
@@ -80,6 +80,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     /**
      * Post-process applications.
+     *
      * @param limit
      * @param sendMail
      */

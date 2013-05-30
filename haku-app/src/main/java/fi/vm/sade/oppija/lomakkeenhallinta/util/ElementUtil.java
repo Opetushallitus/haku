@@ -14,12 +14,17 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain.util;
+package fi.vm.sade.oppija.lomakkeenhallinta.util;
 
+import com.google.common.base.Joiner;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import org.apache.log4j.Logger;
 
 import java.text.MessageFormat;
@@ -130,5 +135,33 @@ public final class ElementUtil {
         GradeGridRow gradeGridRow = new GradeGridRow(id);
         gradeGridRow.addAttribute(HIDDEN, HIDDEN);
         return gradeGridRow;
+    }
+
+    public static void setDefaultOption(final String value, final List<Option> options) {
+        for (Option opt : options) {
+            opt.setDefaultOption(opt.getValue().equalsIgnoreCase(value));
+        }
+    }
+
+    public static final String orStr(String... values) {
+        return "(" + Joiner.on('|').skipNulls().join(values) + ")";
+    }
+
+    public static Question createRequiredTextQuestion(final String id, final String name, final String size) {
+        TextQuestion textQuestion = new TextQuestion(id, createI18NForm(name));
+        setRequired(textQuestion);
+        textQuestion.addAttribute("size", size);
+        return textQuestion;
+    }
+
+    public static void setRequiredInlineAndVerboseHelp(final Question question) {
+        setRequired(question);
+        setVerboseHelp(question);
+        question.setInline(true);
+    }
+
+    public static void setVerboseHelp(final Titled titled) {
+        titled.setVerboseHelp(OppijaConstants.VERBOSE_HELP);
+
     }
 }

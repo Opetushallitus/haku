@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.lomake.it;
 
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import org.junit.Test;
 import org.openqa.selenium.By;
 

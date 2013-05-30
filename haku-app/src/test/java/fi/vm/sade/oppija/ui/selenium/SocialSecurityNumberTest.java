@@ -29,8 +29,8 @@ import org.openqa.selenium.By;
 
 import java.io.IOException;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NForm;
 
 
 /**

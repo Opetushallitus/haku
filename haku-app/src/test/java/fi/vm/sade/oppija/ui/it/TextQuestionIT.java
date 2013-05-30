@@ -24,7 +24,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import org.junit.Before;
 import org.junit.Test;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 public class TextQuestionIT extends AbstractFormTest {

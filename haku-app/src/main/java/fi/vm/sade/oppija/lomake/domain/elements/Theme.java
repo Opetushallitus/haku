@@ -30,16 +30,20 @@ public class Theme extends Titled {
 
     private static final long serialVersionUID = -1394712276903310469L;
     final Map<String, List<Question>> additionalQuestions;
+    final boolean previewable;
 
     public Theme(@JsonProperty(value = "id") final String id,
                  @JsonProperty(value = "i18nText") final I18nText i18nText,
-                 @JsonProperty(value = "additionalQuestions") final Map<String, List<Question>> additionalQuestions) {
+                 @JsonProperty(value = "additionalQuestions") final Map<String, List<Question>> additionalQuestions,
+                 @JsonProperty(value = "previewable") final boolean previewable
+    ) {
         super(id, i18nText);
         if (additionalQuestions == null) {
             this.additionalQuestions = ImmutableMap.copyOf(new HashMap<String, List<Question>>(0));
         } else {
             this.additionalQuestions = ImmutableMap.copyOf(additionalQuestions);
         }
+        this.previewable = previewable;
     }
 
     public List<Question> getAdditionalQuestions(final String aoId) {
@@ -50,5 +54,9 @@ public class Theme extends Titled {
             return ImmutableList.of();
         }
 
+    }
+
+    public boolean isPreviewable() {
+        return previewable;
     }
 }

@@ -3,7 +3,7 @@ package fi.vm.sade.oppija.ui.service.impl;
 import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.lomake.service;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomakkeenhallinta.FormGenerator;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

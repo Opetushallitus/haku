@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.lomake.service.impl;
 
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -27,7 +27,7 @@ import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import org.junit.Before;
 import org.junit.Test;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertEquals;
 
 public class FormServiceImplTest {
