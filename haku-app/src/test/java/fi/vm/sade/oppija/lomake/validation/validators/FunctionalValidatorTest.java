@@ -17,7 +17,7 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 
 import com.google.common.base.Predicate;
 
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.junit.Test;
 

@@ -31,7 +31,7 @@
     <script src="${contextPath}/resources/javascript/site.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
     <link href="${contextPath}/resources/css/virkailija.css" type="text/css" rel="stylesheet"/>
-    <script type="text/javascript" src="https://itest-virkailija.oph.ware.fi/virkailija-raamit/apply-raamit.js"></script>
+    <script type="text/javascript" defer src="https://itest-virkailija.oph.ware.fi/virkailija-raamit/apply-raamit.js"></script>
     <haku:ie9StyleFix/>
 </head>
 <body>

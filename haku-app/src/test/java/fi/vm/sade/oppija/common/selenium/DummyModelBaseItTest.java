@@ -3,7 +3,7 @@ package fi.vm.sade.oppija.common.selenium;
 import com.google.common.base.Joiner;
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.openqa.selenium.By;
@@ -30,10 +30,6 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected void nextPhase() {
         driver.findElement(new By.ByClassName("right")).click();
-    }
-
-    protected void prevPhase() {
-        driver.findElement(new By.ByClassName("left")).click();
     }
 
     protected void setValue(final String id, final String value) {

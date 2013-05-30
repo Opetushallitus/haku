@@ -1,7 +1,7 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.predicate;
 
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

@@ -32,7 +32,7 @@ import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertNotNull;
 
 public class ShowChildsIT extends AbstractSeleniumBase {
@@ -46,7 +46,7 @@ public class ShowChildsIT extends AbstractSeleniumBase {
         checkBox1 = new CheckBox("value", createI18NAsIs("title"));
         final CheckBox checkBox2 = new CheckBox("value2", createI18NAsIs("title2"));
 
-        final Theme theme = new Theme("ekaryhma", createI18NAsIs("ekaryhma"), null);
+        final Theme theme = new Theme("ekaryhma", createI18NAsIs("ekaryhma"), null, true);
         theme.addChild(new TextQuestion("alikysymys1", createI18NAsIs("alikysymys1")));
         theme.addChild(new TextQuestion("alikysymys2", createI18NAsIs("alikysymys2")));
 

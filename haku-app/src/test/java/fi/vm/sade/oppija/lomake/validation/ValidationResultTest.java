@@ -27,7 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 
 public class ValidationResultTest {
