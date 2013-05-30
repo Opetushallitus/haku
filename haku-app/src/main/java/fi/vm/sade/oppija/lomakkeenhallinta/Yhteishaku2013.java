@@ -1025,7 +1025,7 @@ public class Yhteishaku2013 {
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutAmmatillisenTutkinnonRule);
 
         DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
-                createI18NForm("Millä opetuskielellä olet suorittanut perusopetuksen?"), null);
+                createI18NForm("form.koulutustausta.perusopetuksenKieli"), null);
         perusopetuksenKieli.addOption("eiValittu", ElementUtil.createI18NForm(null), "");
         perusopetuksenKieli.addOptions(koodistoService.getLanguages());
         perusopetuksenKieli.addAttribute("required", "required");
