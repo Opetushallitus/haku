@@ -167,7 +167,7 @@ public class ApplicationServiceImplTest {
         Application application = new Application();
 
         application.addVaiheenVastaukset("henkilotiedot", answerMap);
-        application = service.setPerson(application);
+        application = service.addPersonAndAuthenticate(application);
         assertNotNull("PersonOid should not be null", application.getPersonOid());
         assertEquals("Wrong person oid", PERSON_OID, application.getPersonOid());
     }
@@ -178,7 +178,7 @@ public class ApplicationServiceImplTest {
         answerMap.remove(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER);
         answerMap.put(OppijaConstants.ELEMENT_ID_NATIONALITY, "swe");
         application.addVaiheenVastaukset("henkilotiedot", answerMap);
-        application = service.setPerson(application);
+        application = service.addPersonAndAuthenticate(application);
         assertNull("PersonOid should be null", application.getPersonOid());
     }
 }

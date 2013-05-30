@@ -29,6 +29,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.StringWriter;
@@ -49,6 +50,16 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private VelocityEngine velocityEngine;
     private Map<String, Template> templateMap;
 
+    @Value("${email.smtp.debug:false}")
+    private boolean smtpDebug;
+
+    @Value("${email.smtp.host}")
+    private String smtpHost;
+    @Value("${email.smtp.port}")
+    private Integer smtpPort;
+    @Value("${email.replyTo}")
+    private String replyTo;
+
     @Autowired
     public YksilointiWorkerImpl(ApplicationService applicationService, FormService formService) {
         this.applicationService = applicationService;
@@ -67,12 +78,17 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_fi.vm"));
     }
 
+    /**
+     * Post-process applications.
+     * @param limit
+     * @param sendMail
+     */
     public void processApplications(int limit, boolean sendMail) {
         Application application = applicationService.getNextWithoutPersonOid();
 
         long endTime = System.currentTimeMillis() + (limit * 1000);
         while (application != null && endTime > System.currentTimeMillis()) {
-            applicationService.setPerson(application);
+            applicationService.addPersonAndAuthenticate(application);
             if (sendMail) {
                 try {
                     sendMail(application);
@@ -103,6 +119,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
         String subject = messages.getString("email.application.received.title");
         Email email = basicEmail(emailAddress, subject);
+        email.setDebug(smtpDebug);
         StringWriter sw = new StringWriter();
         Context ctx = new VelocityContext();
         ctx.put("formId", getFormName(application));
@@ -149,11 +166,11 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     private Email basicEmail(String toAddress, String subject) throws EmailException {
         Email email = new SimpleEmail();
-        email.setHostName("oph-mailtester.hard.ware.fi");
-        email.setSmtpPort(25);
+        email.setHostName(smtpHost);
+        email.setSmtpPort(smtpPort);
         //email.setAuthenticator(new DefaultAuthenticator("username", "password"));
         //email.setSSLOnConnect(true);
-        email.setFrom("noreply@opintopolku.fi");
+        email.setFrom(replyTo);
         email.setSubject(subject);
         email.addTo(toAddress);
         return email;

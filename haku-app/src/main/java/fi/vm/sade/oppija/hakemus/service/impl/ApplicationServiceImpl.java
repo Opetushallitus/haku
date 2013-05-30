@@ -182,7 +182,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application setPerson(Application application) {
+    public Application addPersonAndAuthenticate(Application application) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
         // create student id for finnish applicants
         if (allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER) != null) {
