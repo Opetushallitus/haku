@@ -844,7 +844,7 @@ public class Yhteishaku2013 {
                 "lupaSms",
                 createI18NForm("form.lupatiedot.saaLahettaaTekstiviesteja"));
 
-        Group lupaGroup = new Group("permissionCheckboxes", createI18NForm("form.lupatiedot.otsikko"));
+        Group lupaGroup = new Group("permissionCheckboxes", createI18NForm(null));
 
         lupaGroup.addChild(lupaMarkkinointi);
         lupaGroup.addChild(lupaJulkaisu);
@@ -860,6 +860,7 @@ public class Yhteishaku2013 {
         asiointikieli.addAttribute("required", "required");
         asiointikieli.setVerboseHelp(getVerboseHelp());
         lupatiedot.addChild(asiointikieli);
+        lupatiedot.setHelp(createI18NForm("form.lupatiedot.help"));
     }
 
     private void createKoulutustausta(Theme koulutustaustaRyhma) {
