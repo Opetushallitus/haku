@@ -34,6 +34,8 @@ public class RegexFieldValidatorTest {
     public static final String PATTERN = "[A-Za-z]{3}";
     public static final String PATTERN_WORK_EXPERIENCE = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$"; // 0-1000
     public static final String TEST_VALUE = "ABC";
+    public static final String MOBILE_PHONE_PATTERN =
+               "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
 
     private Map<String, String> values;
 
@@ -75,7 +77,7 @@ public class RegexFieldValidatorTest {
     @Test
     public void testMobilePhoneValid() {
         values.put(FIELD_NAME, "+358404683775");
-        RegexFieldFieldValidator validator = createValidator(Yhteishaku2013.MOBILE_PHONE_PATTERN);
+        RegexFieldFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
         ValidationResult validationResult = validator.validate(values);
         assertFalse(validationResult.hasErrors());
     }
@@ -83,7 +85,7 @@ public class RegexFieldValidatorTest {
     @Test
     public void testMobilePhoneValid2() {
         values.put(FIELD_NAME, "+358-40-468 4229");
-        RegexFieldFieldValidator validator = createValidator(Yhteishaku2013.MOBILE_PHONE_PATTERN);
+        RegexFieldFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
         ValidationResult validationResult = validator.validate(values);
         assertFalse(validationResult.hasErrors());
     }
@@ -91,7 +93,7 @@ public class RegexFieldValidatorTest {
     @Test
     public void testMobilePhoneValid3() {
         values.put(FIELD_NAME, "050 445 3668");
-        RegexFieldFieldValidator validator = createValidator(Yhteishaku2013.MOBILE_PHONE_PATTERN);
+        RegexFieldFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
         ValidationResult validationResult = validator.validate(values);
         assertFalse(validationResult.hasErrors());
     }
@@ -99,7 +101,7 @@ public class RegexFieldValidatorTest {
     @Test
     public void testMobilePhoneValid4() {
         values.put(FIELD_NAME, "+556 4534534 34345");
-        RegexFieldFieldValidator validator = createValidator(Yhteishaku2013.MOBILE_PHONE_PATTERN);
+        RegexFieldFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
         ValidationResult validationResult = validator.validate(values);
         assertFalse(validationResult.hasErrors());
     }
@@ -107,7 +109,7 @@ public class RegexFieldValidatorTest {
     @Test
     public void testMobilePhoneValid5() {
         values.put(FIELD_NAME, "345345345345345");
-        RegexFieldFieldValidator validator = createValidator(Yhteishaku2013.MOBILE_PHONE_PATTERN);
+        RegexFieldFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
         ValidationResult validationResult = validator.validate(values);
         assertFalse(validationResult.hasErrors());
     }
@@ -115,7 +117,7 @@ public class RegexFieldValidatorTest {
     @Test
     public void testMobilePhoneValid6() {
         values.put(FIELD_NAME, "041 445 3668");
-        RegexFieldFieldValidator validator = createValidator(Yhteishaku2013.MOBILE_PHONE_PATTERN);
+        RegexFieldFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
         ValidationResult validationResult = validator.validate(values);
         assertFalse(validationResult.hasErrors());
     }
@@ -123,7 +125,7 @@ public class RegexFieldValidatorTest {
     @Test
     public void testMobilePhoneValid7() {
         values.put(FIELD_NAME, "042-445-3668");
-        RegexFieldFieldValidator validator = createValidator(Yhteishaku2013.MOBILE_PHONE_PATTERN);
+        RegexFieldFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
         ValidationResult validationResult = validator.validate(values);
         assertFalse(validationResult.hasErrors());
     }
@@ -131,7 +133,7 @@ public class RegexFieldValidatorTest {
     @Test
     public void testMobilePhoneValid8() {
         values.put(FIELD_NAME, "043 445 3668");
-        RegexFieldFieldValidator validator = createValidator(Yhteishaku2013.MOBILE_PHONE_PATTERN);
+        RegexFieldFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
         ValidationResult validationResult = validator.validate(values);
         assertFalse(validationResult.hasErrors());
     }
@@ -139,7 +141,7 @@ public class RegexFieldValidatorTest {
     @Test
     public void testMobilePhoneInvalid() {
         values.put(FIELD_NAME, "+358904534534534");
-        RegexFieldFieldValidator validator = createValidator(Yhteishaku2013.MOBILE_PHONE_PATTERN);
+        RegexFieldFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
         ValidationResult validationResult = validator.validate(values);
         assertTrue(validationResult.hasErrors());
     }
@@ -147,7 +149,7 @@ public class RegexFieldValidatorTest {
     @Test
     public void testMobilePhoneInvalid2() {
         values.put(FIELD_NAME, "0933243432432");
-        RegexFieldFieldValidator validator = createValidator(Yhteishaku2013.MOBILE_PHONE_PATTERN);
+        RegexFieldFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
         ValidationResult validationResult = validator.validate(values);
         assertTrue(validationResult.hasErrors());
     }
@@ -155,7 +157,7 @@ public class RegexFieldValidatorTest {
     @Test
     public void testMobilePhoneInvalid3() {
         values.put(FIELD_NAME, "sfgdrgergergerg");
-        RegexFieldFieldValidator validator = createValidator(Yhteishaku2013.MOBILE_PHONE_PATTERN);
+        RegexFieldFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
         ValidationResult validationResult = validator.validate(values);
         assertTrue(validationResult.hasErrors());
     }
@@ -163,7 +165,7 @@ public class RegexFieldValidatorTest {
     @Test
     public void testMobilePhoneInvalid4() {
         values.put(FIELD_NAME, "047 343 4666");
-        RegexFieldFieldValidator validator = createValidator(Yhteishaku2013.MOBILE_PHONE_PATTERN);
+        RegexFieldFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
         ValidationResult validationResult = validator.validate(values);
         assertTrue(validationResult.hasErrors());
     }
@@ -171,7 +173,7 @@ public class RegexFieldValidatorTest {
     @Test
     public void testMobilePhoneInvalid5() {
         values.put(FIELD_NAME, "+358 33 556 6777");
-        RegexFieldFieldValidator validator = createValidator(Yhteishaku2013.MOBILE_PHONE_PATTERN);
+        RegexFieldFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
         ValidationResult validationResult = validator.validate(values);
         assertTrue(validationResult.hasErrors());
     }

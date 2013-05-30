@@ -20,6 +20,7 @@ import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta.KoulutustaustaPhase;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -46,11 +47,11 @@ public class EducationBackgroundTest extends AbstractSeleniumBase {
         WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl()  + startUrl); //  lomake/Yhteishaku/yhteishaku/henkilotiedot
 
-        driver.findElement(new By.ById("POHJAKOULUTUS_" + Yhteishaku2013.TUTKINTO_PERUSKOULU)).click();
+        driver.findElement(new By.ById("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_PERUSKOULU)).click();
 
         driver.findElement(new By.ByName("PK_PAATTOTODISTUSVUOSI"));
 
-        driver.findElement(new By.ById("POHJAKOULUTUS_" + Yhteishaku2013.TUTKINTO_YLIOPPILAS)).click();
+        driver.findElement(new By.ById("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_YLIOPPILAS)).click();
 
         driver.findElement(new By.ByName("lukioPaattotodistusVuosi"));
 
