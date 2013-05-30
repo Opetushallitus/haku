@@ -10,11 +10,10 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormConstants;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.*;
-import static fi.vm.sade.oppija.util.OppijaConstants.*;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants.*;
 
 public class KoulutustaustaPhase {
     public static final String TUTKINTO_ULKOMAILLA_NOTIFICATION_ID = "tutkinto7-notification";
@@ -28,12 +27,10 @@ public class KoulutustaustaPhase {
     public static final String TUTKINTO_KESKEYTYNYT_RULE = "tutkinto_7_rule";
     public static final String TUTKINTO_ULKOMAILLA_RULE = "tutkinto_0_rule";
     public static final String TUTKINTO_PERUSKOULU = "tutkinto1";
-    private final Phase koulutustausta;
-    private final Theme koulutustaustaRyhma;
 
-    public KoulutustaustaPhase(final KoodistoService koodistoService) {
-        koulutustausta = new Phase("koulutustausta", createI18NForm("form.koulutustausta.otsikko"), false);
-        koulutustaustaRyhma = new Theme("KoulutustaustaGrp", createI18NForm("form.koulutustausta.otsikko"), null, true);
+    public static Phase create(final KoodistoService koodistoService) {
+        Phase koulutustausta = new Phase("koulutustausta", createI18NForm("form.koulutustausta.otsikko"), false);
+        Theme koulutustaustaRyhma = new Theme("KoulutustaustaGrp", createI18NForm("form.koulutustausta.otsikko"), null, true);
         koulutustausta.addChild(koulutustaustaRyhma);
         koulutustaustaRyhma.setHelp(createI18NForm("form.koulutustausta.help"));
         koulutustaustaRyhma.addChild(createKoulutustaustaRadio(koodistoService));
@@ -41,10 +38,10 @@ public class KoulutustaustaPhase {
         Radio osallistunut = new Radio("osallistunut", createI18NForm("form.koulutustausta.osallistunutPaasykokeisiin"));
         addDefaultTrueFalseOptions(osallistunut);
         setRequired(osallistunut);
-        osallistunut.setVerboseHelp(FormConstants.VERBOSE_HELP);
-
+        setVerboseHelp(osallistunut);
 
         koulutustaustaRyhma.addChild(osallistunut);
+        return koulutustausta;
     }
 
     public static final Radio createKoulutustaustaRadio(final KoodistoService koodistoService) {
@@ -82,7 +79,7 @@ public class KoulutustaustaPhase {
         millatutkinnolla.addOption(TUTKINTO_ULKOMAINEN_TUTKINTO, createI18NForm("form.koulutustausta.ulkomailla"),
                 ULKOMAINEN_TUTKINTO,
                 createI18NForm("form.koulutustausta.ulkomailla.help"));
-        millatutkinnolla.setVerboseHelp(FormConstants.VERBOSE_HELP);
+        ElementUtil.setVerboseHelp(millatutkinnolla);
         millatutkinnolla.addAttribute("required", "required");
 
         Notification tutkintoUlkomaillaNotification = new Notification(TUTKINTO_ULKOMAILLA_NOTIFICATION_ID,
@@ -197,18 +194,10 @@ public class KoulutustaustaPhase {
                 createI18NForm("Millä opetuskielellä olet suorittanut perusopetuksen?"), null);
         perusopetuksenKieli.addOption("eiValittu", ElementUtil.createI18NForm(null), "");
         perusopetuksenKieli.addOptions(koodistoService.getLanguages());
-        perusopetuksenKieli.addAttribute("required", "required");
-        perusopetuksenKieli.setVerboseHelp(FormConstants.VERBOSE_HELP);
+        setRequired(perusopetuksenKieli);
+        setVerboseHelp(perusopetuksenKieli);
         perusopetuksenKieli.setHelp(createI18NForm("form.henkilotiedot.aidinkieli.help"));
         pkKysymyksetRule.addChild(perusopetuksenKieli);
         return millatutkinnolla;
-    }
-
-    public Phase getKoulutustausta() {
-        return koulutustausta;
-    }
-
-    public Theme getKoulutustaustaRyhma() {
-        return koulutustaustaRyhma;
     }
 }

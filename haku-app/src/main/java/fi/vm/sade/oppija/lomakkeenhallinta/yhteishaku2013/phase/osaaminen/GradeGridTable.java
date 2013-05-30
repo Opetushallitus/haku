@@ -9,29 +9,36 @@ import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.predicate.ComprehensiveSchools;
 import fi.vm.sade.oppija.lomakkeenhallinta.predicate.HighSchools;
 import fi.vm.sade.oppija.lomakkeenhallinta.predicate.Ids;
 import fi.vm.sade.oppija.lomakkeenhallinta.predicate.Languages;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormConstants;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GradeGridTable {
 
-    private final KoodistoService koodistoService;
+    private final List<SubjectRow> subjects;
+    private final List<Option> subjectLanguages;
+    private final List<Option> gradeRanges;
+    private final List<Option> languageAndLiterature;
+    private final List<Option> languages;
 
     public GradeGridTable(final KoodistoService koodistoService) {
-        this.koodistoService = koodistoService;
+        subjects = koodistoService.getSubjects();
+        subjectLanguages = koodistoService.getSubjectLanguages();
+        gradeRanges = koodistoService.getGradeRanges();
+        languageAndLiterature = koodistoService.getLanguageAndLiterature();
+        languages = koodistoService.getLanguages();
     }
 
     public GradeGrid createGradeGrid(final String id, final boolean comprehensiveSchool) {
 
         final String idPrefix = comprehensiveSchool ? "PK_" : "LK_";
 
-        List<SubjectRow> subjects = koodistoService.getSubjects();
+        List<SubjectRow> subjects = this.subjects;
         for (SubjectRow subject : subjects) {
             subject.addAttribute("required", "required");
         }
@@ -57,7 +64,7 @@ public class GradeGridTable {
 
 
         GradeGrid gradeGrid = new GradeGrid(id, ElementUtil.createI18NForm("form.arvosanat.otsikko"), comprehensiveSchool);
-        gradeGrid.setVerboseHelp(FormConstants.VERBOSE_HELP);
+        ElementUtil.setVerboseHelp(gradeGrid);
 
         for (SubjectRow nativeLanguage : nativeLanguages) {
             gradeGrid.addChild(createGradeGridRow(nativeLanguage, true, true, comprehensiveSchool, idPrefix, "_1"));
@@ -104,7 +111,7 @@ public class GradeGridTable {
 
         String postfix = idPrefix + subjectRow.getId() + "_" + index;
         GradeGridOptionQuestion addLangs =
-                new GradeGridOptionQuestion("custom-language-" + postfix, koodistoService.getSubjectLanguages(), false);
+                new GradeGridOptionQuestion("custom-language-" + postfix, this.subjectLanguages, false);
         ElementUtil.setDisabled(addLangs);
         GradeGridOptionQuestion grades =
                 new GradeGridOptionQuestion("custom-grades-" + postfix, getGradeRanges(false), false);
@@ -142,7 +149,7 @@ public class GradeGridTable {
         List<Option> options = getLanguageSubjects(subjects);
         GradeGridOptionQuestion addSubs = new GradeGridOptionQuestion("custom-scope-" + index, options, false);
         ElementUtil.setDisabled(addSubs);
-        GradeGridOptionQuestion addLangs = new GradeGridOptionQuestion("custom-language-" + index, koodistoService.getSubjectLanguages(), false);
+        GradeGridOptionQuestion addLangs = new GradeGridOptionQuestion("custom-language-" + index, this.subjectLanguages, false);
         ElementUtil.setDisabled(addLangs);
         GradeGridOptionQuestion grades = new GradeGridOptionQuestion("custom-grades-" + index, getGradeRanges(false), false);
         ElementUtil.setDisabled(grades);
@@ -186,7 +193,7 @@ public class GradeGridTable {
     }
 
     List<Option> getGradeRanges(boolean setDefault) {
-        List<Option> gradeRanges = koodistoService.getGradeRanges();
+        List<Option> gradeRanges = this.gradeRanges;
         if (setDefault) {
             ElementUtil.setDefaultOption("Ei arvosanaa", gradeRanges);
         }
@@ -211,12 +218,12 @@ public class GradeGridTable {
         List<Option> subjectOptions = getLanguageSubjects(subjects);
         List<Option> languageOptions;
         if (literature) {
-            languageOptions = koodistoService.getLanguageAndLiterature();
+            languageOptions = this.languageAndLiterature;
         } else {
-            languageOptions = koodistoService.getLanguages();
+            languageOptions = this.languages;
         }
         GradeGridAddLang child = new GradeGridAddLang(group, i18nText, subjectOptions, languageOptions,
-                koodistoService.getGradeRanges());
+                this.gradeRanges);
         column1.addChild(child);
         column1.addAttribute("colspan", (extraColumn ? "5" : "4"));
         gradeGridRow.addChild(column1);
@@ -235,16 +242,16 @@ public class GradeGridTable {
         if (extraColumn) {
             column5 = new GradeGridColumn("column5", false);
         }
-        List<Option> gradeRanges = koodistoService.getGradeRanges();
-        List<Option> gradeRangesSecond = koodistoService.getGradeRanges();
+        List<Option> gradeRanges = this.gradeRanges;
+        List<Option> gradeRangesSecond = this.gradeRanges;
         ElementUtil.setDefaultOption("Ei arvosanaa", gradeRangesSecond);
         if (subjectRow.isLanguage() || language) {
             List<Option> subjectLanguages;
             if (literature) {
-                subjectLanguages = koodistoService.getLanguageAndLiterature();
+                subjectLanguages = this.languageAndLiterature;
                 ElementUtil.setDefaultOption("FI", subjectLanguages);
             } else {
-                subjectLanguages = koodistoService.getSubjectLanguages();
+                subjectLanguages = this.subjectLanguages;
             }
             GradeGridOptionQuestion child = new GradeGridOptionQuestion(idPrefix + subjectRow.getId() + idSuffix + "_OPPIAINE", subjectLanguages, false);
             child.addAttribute("required", "required");

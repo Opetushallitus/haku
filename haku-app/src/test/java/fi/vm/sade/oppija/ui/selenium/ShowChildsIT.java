@@ -32,7 +32,7 @@ import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertNotNull;
 
 public class ShowChildsIT extends AbstractSeleniumBase {

@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.lang3.Validate;
 
 public abstract class FieldValidator implements Validator {

@@ -1,36 +1,26 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.esikatselu;
 
-import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 
 import java.util.List;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.findElementsByTypeAsList;
 
 public class EsikatseluPhase {
 
-    private final Phase esikatselu;
+    public static Phase create(final Form form) {
+        Phase esikatselu = new Phase("esikatselu", createI18NForm("form.esikatselu.otsikko"), true);
 
-    public EsikatseluPhase(final Form form) {
-        esikatselu = new Phase("esikatselu", createI18NForm("form.esikatselu.otsikko"), true);
+        List<Theme> themes = findElementsByTypeAsList(form, Theme.class);
 
-        List<Element> phases = form.getChildren();
-        for (Element phase : phases) {
-            List<Element> children = phase.getChildren();
-            for (Element child : children) {
-                if (child instanceof Theme) {
-                    if (((Theme) child).isPreviewable()) {
-                        esikatselu.addChild(child);
-                    }
-                }
+        for (Theme theme : themes) {
+            if (theme.isPreviewable()) {
+                esikatselu.addChild(theme);
             }
         }
-    }
-
-    public Phase getEsikatselu() {
         return esikatselu;
     }
-
 }

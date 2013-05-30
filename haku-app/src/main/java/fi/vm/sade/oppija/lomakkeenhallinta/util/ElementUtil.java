@@ -14,17 +14,17 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain.util;
+package fi.vm.sade.oppija.lomakkeenhallinta.util;
 
 import com.google.common.base.Joiner;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormConstants;
 import org.apache.log4j.Logger;
 
 import java.text.MessageFormat;
@@ -156,7 +156,12 @@ public final class ElementUtil {
 
     public static void setRequiredInlineAndVerboseHelp(final Question question) {
         setRequired(question);
-        question.setVerboseHelp(FormConstants.VERBOSE_HELP);
+        setVerboseHelp(question);
         question.setInline(true);
+    }
+
+    public static void setVerboseHelp(final Titled titled) {
+        titled.setVerboseHelp(OppijaConstants.VERBOSE_HELP);
+
     }
 }

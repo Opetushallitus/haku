@@ -1,7 +1,7 @@
 package fi.vm.sade.oppija.hakemus.converter;
 
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.util.OppijaConstants;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.service.hakemus.schema.HakukohdeTyyppi;
 import org.springframework.core.convert.converter.Converter;
 

@@ -24,7 +24,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 
 import java.util.Date;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 
 public class FormModelBuilder {
 

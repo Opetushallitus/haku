@@ -7,26 +7,21 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.WorkExperienceTheme;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormConstants;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
 public class LisatiedotPhase {
     public static final int AGE_WORK_EXPERIENCE = 16;
-    private final Phase lisatiedot;
-    private final Theme lupatiedot;
-    private final WorkExperienceTheme tyokokemus;
 
-    public LisatiedotPhase(final Date start) {
-        lisatiedot = new Phase("lisatiedot", createI18NForm("form.lisatiedot.otsikko"), false);
-        tyokokemus = createTyokokemus(start);
-        lupatiedot = createLupatiedot();
-        lisatiedot.addChild(tyokokemus);
-        lisatiedot.addChild(lupatiedot);
+    public static Phase create(final Date start) {
+        Phase lisatiedot = new Phase("lisatiedot", createI18NForm("form.lisatiedot.otsikko"), false);
+        lisatiedot.addChild(createTyokokemus(start));
+        lisatiedot.addChild(createLupatiedot());
+        return lisatiedot;
     }
 
     private static WorkExperienceTheme createTyokokemus(final Date start) {
@@ -43,12 +38,12 @@ public class LisatiedotPhase {
         tyokokemuskuukaudet.addAttribute("placeholder", "kuukautta");
         tyokokemuskuukaudet.addAttribute("pattern", "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$");
         tyokokemuskuukaudet.addAttribute("size", "8");
-        tyokokemuskuukaudet.setVerboseHelp(FormConstants.VERBOSE_HELP);
+        setVerboseHelp(tyokokemuskuukaudet);
         workExperienceTheme.addChild(tyokokemuskuukaudet);
         return workExperienceTheme;
     }
 
-    private Theme createLupatiedot() {
+    private static Theme createLupatiedot() {
         Theme lupatiedotTheme = new Theme("lupatiedotGrp", createI18NForm("form.lisatiedot.lupatiedot"), null, true);
         CheckBox lupaMarkkinointi = new CheckBox(
                 "lupaMarkkinointi",
@@ -68,27 +63,15 @@ public class LisatiedotPhase {
         lupaGroup.addChild(lupaSahkoisesti);
         lupaGroup.addChild(lupaSms);
         lupatiedotTheme.addChild(lupaGroup);
-        lupatiedotTheme.setVerboseHelp(FormConstants.VERBOSE_HELP);
+        setVerboseHelp(lupatiedotTheme);
 
         Radio asiointikieli = new Radio("asiointikieli", createI18NForm("form.asiointikieli.otsikko"));
         asiointikieli.setHelp(createI18NForm("form.asiointikieli.help"));
         asiointikieli.addOption("suomi", createI18NForm("form.asiointikieli.suomi"), "suomi");
         asiointikieli.addOption("ruotsi", createI18NForm("form.asiointikieli.ruotsi"), "ruotsi");
-        asiointikieli.addAttribute("required", "required");
-        asiointikieli.setVerboseHelp(FormConstants.VERBOSE_HELP);
+        setRequired(asiointikieli);
+        setVerboseHelp(asiointikieli);
         lupatiedotTheme.addChild(asiointikieli);
         return lupatiedotTheme;
-    }
-
-    public Phase getLisatiedot() {
-        return lisatiedot;
-    }
-
-    public Theme getLupatiedot() {
-        return lupatiedot;
-    }
-
-    public WorkExperienceTheme getTyokokemus() {
-        return tyokokemus;
     }
 }

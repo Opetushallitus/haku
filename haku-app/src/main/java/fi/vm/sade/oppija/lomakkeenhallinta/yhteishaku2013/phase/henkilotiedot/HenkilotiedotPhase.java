@@ -11,14 +11,13 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormConstants;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.*;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
 public class HenkilotiedotPhase {
 
@@ -27,16 +26,14 @@ public class HenkilotiedotPhase {
     public static final String PHONE_PATTERN = "^$|^\\+?[0-9\\-\\s]+$";
     private static final String NOT_FI = "^((?!FIN)[A-Z]{3})$";
     public static final String AIDINKIELI_ID = "aidinkieli";
-    private final Theme henkilotiedotRyhma;
-    private final Phase henkilotiedot;
 
-    public HenkilotiedotPhase(final KoodistoService koodistoService) {
+    public static Phase create(final KoodistoService koodistoService) {
 
         // Henkilötiedot
-        henkilotiedot = new Phase("henkilotiedot", createI18NForm("form.henkilotiedot.otsikko"), false);
+        Phase henkilotiedot = new Phase("henkilotiedot", createI18NForm("form.henkilotiedot.otsikko"), false);
 
 
-        henkilotiedotRyhma = new Theme("HenkilotiedotGrp", createI18NForm("form.henkilotiedot.otsikko"), null, true);
+        Theme henkilotiedotRyhma = new Theme("HenkilotiedotGrp", createI18NForm("form.henkilotiedot.otsikko"), null, true);
 
         // Nimet
         Question sukunimi = createRequiredTextQuestion("Sukunimi", "form.henkilotiedot.sukunimi", "30");
@@ -138,7 +135,7 @@ public class HenkilotiedotPhase {
         email.addAttribute("size", "50");
         email.addAttribute("pattern", "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$");
         email.setHelp(createI18NForm("form.henkilotiedot.email.help"));
-        email.setVerboseHelp(FormConstants.VERBOSE_HELP);
+        ElementUtil.setVerboseHelp(email);
         email.setInline(true);
         henkilotiedotRyhma.addChild(email);
 
@@ -149,7 +146,7 @@ public class HenkilotiedotPhase {
         puhelinnumero1.setHelp(createI18NForm("form.henkilotiedot.matkapuhelinnumero.help"));
         puhelinnumero1.addAttribute("size", "30");
         puhelinnumero1.addAttribute("pattern", MOBILE_PHONE_PATTERN);
-        puhelinnumero1.setVerboseHelp(FormConstants.VERBOSE_HELP);
+        ElementUtil.setVerboseHelp(puhelinnumero1);
         puhelinnumero1.setInline(true);
         henkilotiedotRyhma.addChild(puhelinnumero1);
 
@@ -237,6 +234,7 @@ public class HenkilotiedotPhase {
         henkilotiedotRyhma.addChild(aidinkieli);
 
         henkilotiedot.addChild(henkilotiedotRyhma);
+        return henkilotiedot;
     }
 
     private static final Map<String, PostOffice> createPostOffices(final KoodistoService koodistoService) {
@@ -246,14 +244,5 @@ public class HenkilotiedotPhase {
             postOfficeMap.put(postOffice.getPostcode(), postOffice);
         }
         return ImmutableMap.copyOf(postOfficeMap);
-    }
-
-
-    public Theme getHenkilotiedotRyhma() {
-        return henkilotiedotRyhma;
-    }
-
-    public Phase getHenkilotiedot() {
-        return henkilotiedot;
     }
 }

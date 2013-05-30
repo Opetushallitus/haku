@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.lomake.domain.elements.custom;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
-import fi.vm.sade.oppija.util.OppijaConstants;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 

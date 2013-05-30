@@ -11,33 +11,29 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormConstants;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.*;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
 public class HakutoiveetPhase {
     public static final String DISCRETIONARY_EDUCATION_DEGREE = "32";
     public static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
-    private final Phase hakutoiveet;
-    private final Theme hakutoiveetRyhma;
 
-    public HakutoiveetPhase(final String aoidAdditionalQuestion) {
+    public static Phase create(final String aoidAdditionalQuestion) {
 
         // Hakutoiveet
-        hakutoiveet = new Phase(HAKUTOIVEET_PHASE_ID, createI18NForm("form.hakutoiveet.otsikko"), false);
+        Phase hakutoiveet = new Phase(HAKUTOIVEET_PHASE_ID, createI18NForm("form.hakutoiveet.otsikko"), false);
 
-        hakutoiveetRyhma = createHakutoiveetRyhma(aoidAdditionalQuestion);
-        hakutoiveet.addChild(hakutoiveetRyhma);
-        createHakutoiveet(hakutoiveetRyhma);
+        hakutoiveet.addChild(createHakutoiveetTheme(aoidAdditionalQuestion));
+        return hakutoiveet;
     }
 
-    private static Theme createHakutoiveetRyhma(final String aoidAdditionalQuestion) {
+    private static Theme createHakutoiveetTheme(final String aoidAdditionalQuestion) {
         final String elementIdPrefix = aoidAdditionalQuestion.replace('.', '_');
 
         Radio radio3 = new Radio(
@@ -56,13 +52,8 @@ public class HakutoiveetPhase {
         Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
         lisakysymysMap.put(aoidAdditionalQuestion, lisakysymysList);
 
-        return new Theme("hakutoiveetGrp", createI18NForm("form.hakutoiveet.otsikko"), lisakysymysMap, true);
-    }
-
-    private static void createHakutoiveet(Theme hakutoiveetRyhma) {
-        hakutoiveetRyhma
-                .setHelp(createI18NForm("form.hakutoiveet.help"));
-
+        Theme hakutoiveetTheme = new Theme("hakutoiveetGrp", createI18NForm("form.hakutoiveet.otsikko"), lisakysymysMap, true);
+        hakutoiveetTheme.setHelp(createI18NForm("form.hakutoiveet.help"));
         PreferenceTable preferenceTable =
                 new PreferenceTable("preferencelist", createI18NForm("form.hakutoiveet.otsikko"), "Ylös", "Alas");
 
@@ -77,9 +68,9 @@ public class HakutoiveetPhase {
         preferenceTable.addChild(pr3);
         preferenceTable.addChild(pr4);
         preferenceTable.addChild(pr5);
-        preferenceTable.setVerboseHelp(FormConstants.VERBOSE_HELP);
-
-        hakutoiveetRyhma.addChild(preferenceTable);
+        ElementUtil.setVerboseHelp(preferenceTable);
+        hakutoiveetTheme.addChild(preferenceTable);
+        return hakutoiveetTheme;
     }
 
     public static PreferenceRow createI18NPreferenceRow(final String id, final String title) {
@@ -151,17 +142,11 @@ public class HakutoiveetPhase {
                 createI18NForm("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys"));
         addDefaultTrueFalseOptions(radio);
         setRequired(radio);
-
         RelatedQuestionRule hasQuestion = new RelatedQuestionRule(radio.getId() + "_related_question_rule",
                 ImmutableList.of(index + "-Koulutus-id-athlete"), ElementUtil.KYLLA, false);
 
         hasQuestion.addChild(radio);
-
         return hasQuestion;
-    }
-
-    public Phase getHakutoiveet() {
-        return hakutoiveet;
     }
 
 }

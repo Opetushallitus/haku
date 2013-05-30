@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomakkeenhallinta;
+package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013;
 
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NForm;
 
 @Service
 public class Yhteishaku2013 {
@@ -61,39 +61,25 @@ public class Yhteishaku2013 {
         this.koodistoService = koodistoService;
         this.applicationPeriod = new ApplicationPeriod(asid);
         this.aoidAdditionalQuestion = aoid;
-        createFrom();
+        create();
     }
 
 
-    public void createFrom() { // NOSONAR
+    public void create() { // NOSONAR
         try {
-
             Form form = new Form(FORM_ID, createI18NForm("form.title"));
 
+            form.addChild(HenkilotiedotPhase.create(koodistoService));
+            form.addChild(KoulutustaustaPhase.create(koodistoService));
+            form.addChild(HakutoiveetPhase.create(aoidAdditionalQuestion));
+            form.addChild(OsaaminenPhase.create(koodistoService));
+            form.addChild(LisatiedotPhase.create(getApplicationPeriod().getStarts()));
+            form.addChild(EsikatseluPhase.create(form));
+
             applicationPeriod.addForm(form);
-
-            HenkilotiedotPhase henkilotiedotPhase = new HenkilotiedotPhase(koodistoService);
-            form.addChild(henkilotiedotPhase.getHenkilotiedot());
-
-            KoulutustaustaPhase koulutustaustaPhase = new KoulutustaustaPhase(koodistoService);
-            form.addChild(koulutustaustaPhase.getKoulutustausta());
-
-            HakutoiveetPhase hakutoiveetPhase = new HakutoiveetPhase(aoidAdditionalQuestion);
-            form.addChild(hakutoiveetPhase.getHakutoiveet());
-
-            OsaaminenPhase osaaminenPhase = new OsaaminenPhase(koodistoService);
-            form.addChild(osaaminenPhase.getOsaaminen());
-
-            LisatiedotPhase lisatiedotPhase = new LisatiedotPhase(applicationPeriod.getStarts());
-            form.addChild(lisatiedotPhase.getLisatiedot());
-
-            EsikatseluPhase esikatseluPhase = new EsikatseluPhase(form);
-            form.addChild(esikatseluPhase.getEsikatselu());
-
         } catch (Exception e) {
             throw new RuntimeException(Yhteishaku2013.class.getCanonicalName() + " init failed", e);
         }
-
     }
 
     public ApplicationPeriod getApplicationPeriod() {
