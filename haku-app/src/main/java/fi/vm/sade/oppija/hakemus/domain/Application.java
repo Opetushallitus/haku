@@ -30,6 +30,7 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,6 +56,7 @@ public class Application implements Serializable {
     private User user;
     private String phaseId;
     private String personOid;
+    private Date received;
 
     private Map<String, Map<String, String>> answers = new HashMap<String, Map<String, String>>();
     private Map<String, String> meta = new HashMap<String, String>();
@@ -248,5 +250,13 @@ public class Application implements Serializable {
 
     public void setPersonOid(String personOid) {
         this.personOid = personOid;
+    }
+
+    public void setReceived(Date received) {
+        this.received = received;
+    }
+
+    public Date getReceived() {
+        return received;
     }
 }

@@ -32,10 +32,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
@@ -44,6 +43,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     private ApplicationService applicationService;
     private FormService formService;
+
+    private static DateFormat dateFmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     private VelocityEngine velocityEngine;
     private Map<String, Template> templateMap;
@@ -69,7 +70,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public void processApplications(int limit, boolean sendMail) {
         Application application = applicationService.getNextWithoutPersonOid();
 
-        while (application != null && limit-- > 0) {
+        long endTime = System.currentTimeMillis() + (limit * 1000);
+        while (application != null && endTime > System.currentTimeMillis()) {
             applicationService.setPerson(application);
             if (sendMail) {
                 try {
@@ -86,35 +88,32 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Map<String, String> answers = application.getVastauksetMerged();
         String email = answers.get(OppijaConstants.ELEMENT_ID_EMAIL);
         if (!isEmpty(email)) {
-            if (application.isActive()) {
-                sendConfirmationMail();
-            } else {
-                sendTentativeMail(application);
-            }
+            sendConfirmationMail(application);
         }
     }
 
-    private void sendConfirmationMail() throws EmailException {
-        // NOP for now
-    }
-
-    private void sendTentativeMail(Application application) throws EmailException {
+    private void sendConfirmationMail(Application application) throws EmailException {
         Map<String, String> answers = application.getVastauksetMerged();
         String emailAddress = answers.get(OppijaConstants.ELEMENT_ID_EMAIL);
         String lang = answers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
         Template tmpl = templateMap.get(lang);
 
-        Email email = basicEmail(emailAddress, "Hakulomakkeesi on vastaanotettu");
+        Locale locale = new Locale("ruotsi".equals(lang) ? "sv" : "fi");
+        ResourceBundle messages = ResourceBundle.getBundle("messages", locale);
+
+        String subject = messages.getString("email.application.received.title");
+        Email email = basicEmail(emailAddress, subject);
         StringWriter sw = new StringWriter();
         Context ctx = new VelocityContext();
         ctx.put("formId", getFormName(application));
         ctx.put("applicant", getApplicantName(application));
         ctx.put("applicationId", application.getOid());
-        ctx.put("applicationDate", "NOT IMPLEMENTED");
+        ctx.put("applicationDate", dateFmt.format(application.getReceived()));
         ctx.put("preferences", getPreferences(application));
         tmpl.merge(ctx, sw);
         email.setMsg(sw.toString());
         email.send();
+
     }
 
     private Object getPreferences(Application application) {
@@ -123,10 +122,9 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         for (int i = 1; i <= 5; i++) {
             String koulutus = answers.get(String.format(OppijaConstants.PREFERENCE_NAME, i));
             String koulu = answers.get(String.format(OppijaConstants.PREFERENCE_ORGANIZATION, i));
-
-            if (!isEmpty(koulu) && !isEmpty(koulutus)) {
-                preferences.add(koulutus + ", " + koulu);
-            }
+            koulutus = isEmpty(koulutus) ? "" : koulutus;
+            koulu = isEmpty(koulu) ? "" : koulu;
+            preferences.add(i + ". " + koulu + "\n   " + koulutus);
         }
         return preferences;
     }

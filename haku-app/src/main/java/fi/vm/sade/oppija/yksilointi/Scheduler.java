@@ -23,6 +23,7 @@ public class Scheduler {
 
     private boolean run;
     private boolean sendMail;
+    private int interval;
 
     private fi.vm.sade.oppija.yksilointi.YksilointiWorker worker;
 
@@ -34,7 +35,7 @@ public class Scheduler {
     public void runIdentification() {
         if (run) {
             try {
-                worker.processApplications(100, sendMail);
+                worker.processApplications(interval - 500, sendMail);
             } catch (Exception e) {
                 e.printStackTrace();
                 run = false;
@@ -48,6 +49,10 @@ public class Scheduler {
 
     public void setSendMail(boolean sendMail) {
         this.sendMail = sendMail;
+    }
+
+    public void setInterval(int interval) {
+        this.interval = interval;
     }
 
 }
