@@ -1,11 +1,11 @@
 package fi.vm.sade.oppija.lomake.it;
 
+import fi.vm.sade.oppija.common.it.OfficerClient;
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.oppija.common.selenium.LoginPage;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.HakuClient;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -24,14 +24,18 @@ public class OfficerIT extends DummyModelBaseItTest {
         HakuClient hakuClient = new HakuClient(getBaseUrl() + "lomake/", "application.json");
         hakuClient.apply();
         final LoginPage loginPage = new LoginPage(seleniumHelper.getSelenium());
+        OfficerClient officerClient = new OfficerClient(getBaseUrl() + "virkailija/");
+        officerClient.addPersonAndAuthenticate("1.2.3.4.5.999");
+        Thread.sleep(5000);
         navigateToPath("user", "login");
         loginPage.login("officer");
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void testSearchAndModify() throws Exception {
         clickSearch();
+
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
         checkApplicationState("Aktiivinen");
@@ -55,42 +59,50 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testSearchByName() throws Exception {
-        assertTrue("Application not found", SearchByTerm("topi").isEmpty());
+        assertFalse("Application not found", SearchByTerm("topi").isEmpty());
         clearSearch();
         assertFalse("Application not found", SearchByTermAndState("topi", null).isEmpty());
+        clearSearch();
+        assertTrue("Application found", SearchByTermAndState("topi", Application.State.PASSIVE).isEmpty());
     }
 
     @Test
     public void testSearchByNameNotFound() throws Exception {
-        clearSearch();
         assertTrue("Application found", SearchByTerm("Notfound").isEmpty());
+        clearSearch();
         assertTrue("Application found", SearchByTermAndState("Notfound", null).isEmpty());
+        clearSearch();
+        assertTrue("Application found", SearchByTermAndState("Notfound", Application.State.PASSIVE).isEmpty());
     }
 
     @Test
     public void testSearchByLastname() throws Exception {
-        assertTrue("Application found", SearchByTerm("Korhonen").isEmpty());
+        assertFalse("Application not found", SearchByTerm("Korhonen").isEmpty());
         clearSearch();
         assertFalse("Application not found", SearchByTermAndState("Korhonen", null).isEmpty());
+        clearSearch();
+        assertTrue("Application not found", SearchByTermAndState("Korhonen", Application.State.PASSIVE).isEmpty());
     }
 
     @Test
     public void testSearchBySsn() throws Exception {
-        assertTrue("Application not found", SearchByTerm("270802-184A").isEmpty());
+        assertFalse("Application not found", SearchByTerm("270802-184A").isEmpty());
         clearSearch();
         assertFalse("Application not found", SearchByTermAndState("270802-184A", null).isEmpty());
+        clearSearch();
+        assertTrue("Application not found", SearchByTermAndState("270802-184A", Application.State.PASSIVE).isEmpty());
     }
 
     @Test
     public void testSearchByDob() throws Exception {
-        assertTrue("Application not found", SearchByTerm("120100").isEmpty());
+        assertTrue("Application not", SearchByTerm("120100").isEmpty());
         clearSearch();
         assertTrue("Application not found", SearchByTermAndState("120100", Application.State.PASSIVE).isEmpty());
     }
 
     @Test
     public void testSearchByDobDots() throws Exception {
-        assertTrue("Application not found", SearchByTerm("12.01.2000").isEmpty());
+        assertTrue("Application not", SearchByTerm("12.01.2000").isEmpty());
         clearSearch();
         assertTrue("Application not found", SearchByTermAndState("12.01.2000", Application.State.PASSIVE).isEmpty());
     }
@@ -103,7 +115,6 @@ public class OfficerIT extends DummyModelBaseItTest {
     private List<WebElement> SearchByTerm(final String term) {
         enterSearchTerm(term);
         clickSearch();
-        screenshot(term + System.currentTimeMillis());
         return findByClassName("application-link");
     }
 
@@ -111,7 +122,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         enterSearchTerm(term);
         selectState(state);
         clickSearch();
-        screenshot(term + System.currentTimeMillis());
         return findByClassName("application-link");
     }
 
