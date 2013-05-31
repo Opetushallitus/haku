@@ -85,7 +85,7 @@ $(document).ready(function () {
     var applicationSearch = (function () {
         var oid = $('#oid');
         var self = this, $q = $('#entry'), $appState = $('#application-state'),
-            $fetchPassive = $('#fetch-passive'), $appPreference = $('#application-preference'),
+            $appPreference = $('#application-preference'),
             $tbody = $('#application-table tbody:first'), $resultcount = $('#resultcount'),
             $applicationTabLabel = $('#application-tab-label');
 
@@ -95,7 +95,6 @@ $(document).ready(function () {
                 q: $q.val(),
                 oid: oid.val(),
                 appState: $appState.val(),
-                fetchPassive: $fetchPassive.prop("checked"),
                 appPreference: $appPreference.val(),
                 lopOid: $('#lopOid').val()
             }, function (data) {
@@ -121,7 +120,6 @@ $(document).ready(function () {
                 $tbody.empty();
                 $q.val('');
                 $appState.val('');
-                $fetchPassive.prop("checked", false);
                 $appPreference.val('');
             }
         return this;

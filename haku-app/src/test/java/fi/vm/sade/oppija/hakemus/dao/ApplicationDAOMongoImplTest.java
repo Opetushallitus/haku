@@ -131,25 +131,14 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     @Test
     public void testFindByHetuActive() {
         List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M",
-                new ApplicationQueryParameters(Application.State.ACTIVE.toString(), false));
+                new ApplicationQueryParameters(Application.State.ACTIVE.toString()));
         assertEquals(2, applications.size());
-    }
-
-    @Test
-    public void testFindByHetuAlsoPassive() {
-        List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M",
-                new ApplicationQueryParameters(Application.State.ACTIVE.toString(), true));
-        assertEquals(3, applications.size());
     }
 
     @Test
     public void testFindByHetuPassive() {
         List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M",
-                new ApplicationQueryParameters(Application.State.PASSIVE.toString(), false));
-        assertEquals(1, applications.size());
-        // Shouldn't matter, if querying for "passive, and also passive"
-        applications = applicationDAO.findByApplicantSsn("050998-957M",
-                new ApplicationQueryParameters(Application.State.PASSIVE.toString(), true));
+                new ApplicationQueryParameters(Application.State.PASSIVE.toString()));
         assertEquals(1, applications.size());
     }
 
@@ -165,7 +154,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         applications = applicationDAO.findByApplicantName("he", new ApplicationQueryParameters());
         assertEquals(3, applications.size());
         // Hessu, active
-        ApplicationQueryParameters activeParameters = new ApplicationQueryParameters(Application.State.ACTIVE.toString(), false);
+        ApplicationQueryParameters activeParameters = new ApplicationQueryParameters(Application.State.ACTIVE.toString());
         applications = applicationDAO.findByApplicantName("Hessu", activeParameters);
         assertEquals(1, applications.size());
     }

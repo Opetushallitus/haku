@@ -67,12 +67,11 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Application> findApplications(@DefaultValue("") @QueryParam("q") String query,
                                               @DefaultValue("") @QueryParam("appState") String appState,
-                                              @DefaultValue("false") @QueryParam("fetchPassive") boolean fetchPassive,
                                               @DefaultValue("") @QueryParam("appPreference") String appPreference,
                                               @DefaultValue("") @QueryParam("lopOid") String lopOid) {
-        LOGGER.debug("Finding applications q:{}, appState:{}, fetchPassive:{}, appPreference:{}", query, appState, fetchPassive, appPreference);
+        LOGGER.debug("Finding applications q:{}, appState:{}, appPreference:{}", query, appState, appPreference);
         List<Application> result = new ArrayList<Application>();
-        result.addAll(applicationService.findApplications(query, new ApplicationQueryParameters(appState, fetchPassive, appPreference, lopOid)));
+        result.addAll(applicationService.findApplications(query, new ApplicationQueryParameters(appState, appPreference, lopOid)));
         return result;
     }
 

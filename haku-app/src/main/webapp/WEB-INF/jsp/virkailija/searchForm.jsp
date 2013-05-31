@@ -39,15 +39,11 @@
                         <div class="field-select-containerbox">
                             <select class="width-50" id="application-state" ng-model="applicationState">
                                 <option value=""><fmt:message key="virkailija.hakemus.tila.kaikki"/></option>
-                                <option value="ACTIVE"><fmt:message key="virkailija.hakemus.tila.voimassa"/></option>
+                                <option selected="selected" value="ACTIVE"><fmt:message key="virkailija.hakemus.tila.voimassa"/></option>
                                 <option value="PASSIVE"><fmt:message key="virkailija.hakemus.tila.peruttu"/></option>
                                 <option value="INCOMPLETE"><fmt:message
                                         key="virkailija.hakemus.tila.puutteellinen"/></option>
                             </select>
-                        </div>
-                        <div class="field-container-checkbox">
-                            <input type="checkbox" value="fetch-passive" id="fetch-passive"/>
-                            <label for="fetch-passive"><fmt:message key="virkailija.hakemus.hae.passiiviset"/></label>
                         </div>
                     </td>
                 </tr>

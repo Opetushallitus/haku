@@ -23,36 +23,29 @@ import java.util.List;
 
 public class ApplicationQueryParameters {
     private final String state;
-    private final boolean fetchPassive;
     private final List<String> preferences = new ArrayList<String>();
     private final String lopOid;
 
     public ApplicationQueryParameters() {
-        this(null, false, null);
+        this(null, null);
     }
 
-    public ApplicationQueryParameters(final String state, final boolean fetchPassive) {
-        this(state, fetchPassive, null);
+    public ApplicationQueryParameters(final String state) {
+        this(state, null);
     }
 
-    public ApplicationQueryParameters(final String state, final boolean fetchPassive, final String lopOid) {
+    public ApplicationQueryParameters(final String state, final String lopOid) {
         this.state = state;
-        this.fetchPassive = fetchPassive;
         this.lopOid = lopOid;
     }
 
-    public ApplicationQueryParameters(final String state, final boolean fetchPassive,
-                                      final String preference, final String lopOid) {
-        this(state, fetchPassive, lopOid);
+    public ApplicationQueryParameters(final String state, final String preference, final String lopOid) {
+        this(state, lopOid);
         this.preferences.add(preference);
     }
 
     public String getState() {
         return state;
-    }
-
-    public boolean isFetchPassive() {
-        return fetchPassive;
     }
 
     public List<String> getPreferences() {

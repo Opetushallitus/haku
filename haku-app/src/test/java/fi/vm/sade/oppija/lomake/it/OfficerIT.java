@@ -2,12 +2,14 @@ package fi.vm.sade.oppija.lomake.it;
 
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.oppija.common.selenium.LoginPage;
+import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.HakuClient;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
@@ -53,32 +55,44 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testSearchByName() throws Exception {
-        assertFalse("Application not found", SearchByTerm("topi").isEmpty());
+        assertTrue("Application not found", SearchByTerm("topi").isEmpty());
+        clearSearch();
+        assertFalse("Application not found", SearchByTermAndState("topi", null).isEmpty());
     }
 
     @Test
     public void testSearchByNameNotFound() throws Exception {
+        clearSearch();
         assertTrue("Application found", SearchByTerm("Notfound").isEmpty());
+        assertTrue("Application found", SearchByTermAndState("Notfound", null).isEmpty());
     }
 
     @Test
     public void testSearchByLastname() throws Exception {
-        assertFalse("Application not found", SearchByTerm("Korhonen").isEmpty());
+        assertTrue("Application found", SearchByTerm("Korhonen").isEmpty());
+        clearSearch();
+        assertFalse("Application not found", SearchByTermAndState("Korhonen", null).isEmpty());
     }
 
     @Test
     public void testSearchBySsn() throws Exception {
-        assertFalse("Application not found", SearchByTerm("270802-184A").isEmpty());
+        assertTrue("Application not found", SearchByTerm("270802-184A").isEmpty());
+        clearSearch();
+        assertFalse("Application not found", SearchByTermAndState("270802-184A", null).isEmpty());
     }
 
     @Test
-    public void testSearchByDod() throws Exception {
+    public void testSearchByDob() throws Exception {
         assertTrue("Application not found", SearchByTerm("120100").isEmpty());
+        clearSearch();
+        assertTrue("Application not found", SearchByTermAndState("120100", Application.State.PASSIVE).isEmpty());
     }
 
     @Test
-    public void testSearchByDodDots() throws Exception {
+    public void testSearchByDobDots() throws Exception {
         assertTrue("Application not found", SearchByTerm("12.01.2000").isEmpty());
+        clearSearch();
+        assertTrue("Application not found", SearchByTermAndState("12.01.2000", Application.State.PASSIVE).isEmpty());
     }
 
     @Test
@@ -89,6 +103,15 @@ public class OfficerIT extends DummyModelBaseItTest {
     private List<WebElement> SearchByTerm(final String term) {
         enterSearchTerm(term);
         clickSearch();
+        screenshot(term + System.currentTimeMillis());
+        return findByClassName("application-link");
+    }
+
+    private List<WebElement> SearchByTermAndState(final String term, Application.State state) {
+        enterSearchTerm(term);
+        selectState(state);
+        clickSearch();
+        screenshot(term + System.currentTimeMillis());
         return findByClassName("application-link");
     }
 
@@ -96,10 +119,18 @@ public class OfficerIT extends DummyModelBaseItTest {
         setValue("entry", term);
     }
 
+    private void selectState(Application.State state) {
+        Select stateSelect = new Select(driver.findElement(By.id("application-state")));
+        stateSelect.selectByValue(state == null ? "" : state.toString());
+    }
+
     private void checkApplicationState(String applicationState) {
         driver.findElement(By.xpath("//*[contains(.,'" + applicationState + "')]"));
     }
 
+    private void clearSearch() {
+        findByIdAndClick("reset-search");
+    }
 
     private void clickSearch() {
         findByIdAndClick("search-applications");
