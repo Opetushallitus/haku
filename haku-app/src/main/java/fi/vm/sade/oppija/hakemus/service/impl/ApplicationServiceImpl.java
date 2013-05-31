@@ -17,12 +17,15 @@
 package fi.vm.sade.oppija.hakemus.service.impl;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
@@ -33,12 +36,12 @@ import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -209,6 +212,29 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.applicationDAO.save(application);
         return application;
     }
+    @Override
+    public Application addPersonAndAuthenticate(String applicationOid) {
+        DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
+        List<Application> applications = applicationDAO.find(query);
+        return addPersonAndAuthenticate(applications.get(0));
+    }
+
+    @Override
+    public Application passivateApplication(String applicationOid) {
+        DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
+        List<Application> applications = applicationDAO.find(query);
+        Application application = applications.get(0);
+        application.passivate();
+        applicationDAO.save(application);
+        return application;
+    }
+
+    @Override
+    public void addNote(Application application, String noteText, User user) {
+        application.addNote(new ApplicationNote(noteText, new Date(), user));
+        applicationDAO.save(application);
+    }
+
     @Override
     public Application getPendingApplication(FormId formId, String oid) throws ResourceNotFoundException {
         final User user = userHolder.getUser();

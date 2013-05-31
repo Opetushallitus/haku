@@ -127,5 +127,6 @@
             "tyokokemuskuukaudet": "10",
             "phaseId": "esikatselu"
         }
-    }
+    },
+    "oid" : "1.2.3.4.5.999"
 }

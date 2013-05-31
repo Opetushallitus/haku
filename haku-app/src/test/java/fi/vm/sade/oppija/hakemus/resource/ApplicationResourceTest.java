@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.hakemus.resource;
 
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
 import fi.vm.sade.oppija.lomake.domain.FormId;
@@ -91,13 +90,13 @@ public class ApplicationResourceTest {
 
     @Test
     public void testFindApplications() {
-        List<Application> applications = this.applicationResource.findApplications(OID, "", false, "", null);
+        List<Application> applications = this.applicationResource.findApplications(OID, "", "", null);
         assertEquals(1, applications.size());
     }
 
     @Test
     public void testFindApplicationsNoMatch() {
-        List<Application> applications = this.applicationResource.findApplications(INVALID_OID, "", false, "", null);
+        List<Application> applications = this.applicationResource.findApplications(INVALID_OID, "",  "", null);
         assertEquals(0, applications.size());
     }
 

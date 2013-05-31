@@ -17,5 +17,19 @@
     </c:choose>
     <a href="#" class="button small disabled"><fmt:message key="virkailija.hakemus.vrk"/></a>
     <a href="#" class="button small disabled"><fmt:message key="virkailija.hakemus.tor"/></a>
-    <a href="#" class="button small disabled"><fmt:message key="virkailija.hakemus.passivoi.hakemus"/></a>
+    <c:choose>
+        <c:when test="${!application.passive}">
+            <a href="#" id="passivateApplication" data-po-show="confirmPassivation" class="button small "><fmt:message key="virkailija.hakemus.passivoi.hakemus"/></a>
+            <!--
+                            <button class="right" name="nav-send" data-po-show="confirmPassivation" value="true">
+                                <span>
+                                    <span><fmt:message key="virkailija.hakemus.passivoi.hakemus"/></span>
+                                </span>
+                            </button>
+            -->
+        </c:when>
+        <c:otherwise>
+            <a href="#" class="button small disabled"><fmt:message key="virkailija.hakemus.passivoi.hakemus"/></a>
+        </c:otherwise>
+    </c:choose>
 </div>

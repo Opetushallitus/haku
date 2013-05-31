@@ -20,6 +20,7 @@ import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 
@@ -164,11 +165,23 @@ public interface ApplicationService {
 
     /**
      * Set proper user for this application. If user can be authenticated, activate application. Otherwise, set
-     * application as inpomplete.
+     * application as incomplete.
      *
      * @param application to process
      * @return processed application
      */
     Application addPersonAndAuthenticate(Application application);
 
+    /**
+     * Set proper user for this application. If user can be authenticated, activate application. Otherwise, set
+     * application as incomplete.
+     *
+     * @param oid of application to process
+     * @return processed application
+     */
+    Application addPersonAndAuthenticate(String oid);
+
+    Application passivateApplication(String oid);
+
+    void addNote(Application application, String s, User user);
 }
