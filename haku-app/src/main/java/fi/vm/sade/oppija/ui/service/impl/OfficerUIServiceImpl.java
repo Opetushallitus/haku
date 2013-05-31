@@ -137,6 +137,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         applicationService.saveApplicationAdditionalInfo(oid, additionalInfo);
     }
 
+    @Override
+    public void addPersonAndAuthenticate(String oid) throws ResourceNotFoundException {
+        applicationService.addPersonAndAuthenticate(oid);
+    }
+
     private AdditionalQuestions getAdditionalQuestions(final Application application) throws IOException {
         List<String> applicationPreferenceOids = this.applicationService.getApplicationPreferenceOids(application);
         return this.valintaperusteetService.retrieveAdditionalQuestions(applicationPreferenceOids);

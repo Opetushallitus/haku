@@ -162,10 +162,19 @@ public interface ApplicationService {
 
     /**
      * Set proper user for this application. If user can be authenticated, activate application. Otherwise, set
-     * application as inpomplete.
+     * application as incomplete.
      *
      * @param application to process
      * @return processed application
      */
     Application addPersonAndAuthenticate(Application application);
+
+    /**
+     * Set proper user for this application. If user can be authenticated, activate application. Otherwise, set
+     * application as incomplete.
+     *
+     * @param oid of application to process
+     * @return processed application
+     */
+    Application addPersonAndAuthenticate(String oid);
 }

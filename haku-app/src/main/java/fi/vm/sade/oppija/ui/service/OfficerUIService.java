@@ -25,4 +25,7 @@ public interface OfficerUIService {
 
     void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo)
             throws ResourceNotFoundException;
+
+    void addPersonAndAuthenticate(final String oid)
+            throws ResourceNotFoundException;
 }
