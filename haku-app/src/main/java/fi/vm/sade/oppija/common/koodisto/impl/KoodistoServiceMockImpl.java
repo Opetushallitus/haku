@@ -72,7 +72,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 new SubjectRow("A2", createI18NAsIs("A2-kieli"), true, true, true, true),
                 new SubjectRow("A22", createI18NAsIs("A22-kieli"), true, true, true, true),
                 new SubjectRow("AI1", createI18NAsIs("Äidinkieli ja kirjallisuus"), true, true, true, false),
-                new SubjectRow("AI2", createI18NAsIs("Valinnaninen Äidinkieli ja kirjallisuus"), true, true, true, false),
+                new SubjectRow("AI2", createI18NAsIs("Valinnainen Äidinkieli ja kirjallisuus"), true, true, true, false),
                 new SubjectRow("B1", createI18NAsIs("B1-kieli"), true, true, true, true),
                 new SubjectRow("B2", createI18NAsIs("B2-kieli"), true, true, true, true),
                 new SubjectRow("B22", createI18NAsIs("B22-kieli"), true, true, true, true),

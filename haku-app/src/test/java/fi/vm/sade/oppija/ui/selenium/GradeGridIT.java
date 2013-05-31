@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.GradeGridTable;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.GradesTable;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -47,8 +47,8 @@ public class GradeGridIT extends AbstractSeleniumBase {
         Form form = new Form(FORM_ID, createI18NAsIs("yhteishaku"));
         form.addChild(arvosanat);
         KoodistoServiceMockImpl koodistoService = new KoodistoServiceMockImpl();
-        GradeGridTable gradeGridTable = new GradeGridTable(koodistoService, true);
-        arvosanat.addChild(gradeGridTable.createGradeGrid("id"));
+        GradesTable gradesTable = new GradesTable(koodistoService, true);
+        arvosanat.addChild(gradesTable.createGradeGrid("id"));
         applicationPeriod.addForm(form);
 
         FormModel formModel = new FormModel();

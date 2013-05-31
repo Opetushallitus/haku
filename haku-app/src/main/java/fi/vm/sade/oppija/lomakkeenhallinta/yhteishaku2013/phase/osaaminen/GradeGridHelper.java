@@ -25,6 +25,7 @@ public class GradeGridHelper {
     private final List<SubjectRow> nativeLanguages;
     private final boolean comprehensiveSchool;
     private final List<Option> gradeRangesWithDefault;
+    private List<SubjectRow> additionalNativeLanguages;
 
     public GradeGridHelper(final KoodistoService koodistoService, final boolean comprehensiveSchool) {
         this.comprehensiveSchool = comprehensiveSchool;
@@ -38,7 +39,8 @@ public class GradeGridHelper {
         ElementUtil.setDefaultOption("Ei arvosanaa", gradeRangesWithDefault); // TODOO kielistys
         languageAndLiterature = koodistoService.getLanguageAndLiterature();
         languages = koodistoService.getLanguages();
-        nativeLanguages = ImmutableList.copyOf(Iterables.filter(subjects, new Ids<SubjectRow>("AI1", "AI2")));
+        nativeLanguages = ImmutableList.copyOf(Iterables.filter(subjects, new Ids<SubjectRow>("AI1")));
+        additionalNativeLanguages = ImmutableList.copyOf(Iterables.filter(subjects, new Ids<SubjectRow>("AI2")));
         listOfLanguages = ImmutableList.copyOf(Iterables.filter(subjects, new Languages()));
     }
 
@@ -54,16 +56,23 @@ public class GradeGridHelper {
         return filtered;
     }
 
-    public List<SubjectRow> getListOfLanguages() {
-        return listOfLanguages;
-    }
-
     public List<SubjectRow> getNativeLanguages() {
         return nativeLanguages;
     }
 
+    public List<SubjectRow> getAdditionalNativeLanguages() {
+        return additionalNativeLanguages;
+    }
+
     public List<SubjectRow> getDefaultLanguages() {
         return ImmutableList.copyOf(Iterables.filter(subjects, new Ids<SubjectRow>("A1", "B1")));
+    }
+
+    public List<SubjectRow> getAdditionalLanguages() {
+        return ImmutableList.copyOf(
+                Iterables.filter(
+                        Iterables.filter(subjects, new Languages()),
+                        Predicates.not(new Ids<SubjectRow>("A1", "B1"))));
     }
 
     public List<SubjectRow> getNotLanguageSubjects() {

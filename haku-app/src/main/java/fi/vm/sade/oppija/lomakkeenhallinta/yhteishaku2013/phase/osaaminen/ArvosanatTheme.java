@@ -22,21 +22,21 @@ public final class ArvosanatTheme {
                 null,
                 true);
 
-        GradeGridTable gradeGridTablePK = new GradeGridTable(koodistoService, true);
-        GradeGridTable gradeGridTableYO = new GradeGridTable(koodistoService, false);
+        GradesTable gradesTablePK = new GradesTable(koodistoService, true);
+        GradesTable gradesTableYO = new GradesTable(koodistoService, false);
 
         String pkAnwers = orStr(OppijaConstants.PERUSKOULU, OppijaConstants.OSITTAIN_YKSILOLLISTETTY,
                 OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY, OppijaConstants.YKSILOLLISTETTY
         );
         RelatedQuestionRule relatedQuestionPK = new RelatedQuestionRule("rule_grade_pk", RELATED_ELEMENT_ID,
                 pkAnwers, false);
-        relatedQuestionPK.addChild(gradeGridTablePK.createGradeGrid("grid_pk"));
+        relatedQuestionPK.addChild(gradesTablePK.createGradeGrid("grid_pk"));
         arvosanatTheme.addChild(relatedQuestionPK);
 
         String yoAnwers = orStr(OppijaConstants.YLIOPPILAS);
         RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", RELATED_ELEMENT_ID,
                 yoAnwers, false);
-        relatedQuestionLukio.addChild(gradeGridTableYO.createGradeGrid("grid_yo"));
+        relatedQuestionLukio.addChild(gradesTableYO.createGradeGrid("grid_yo"));
         arvosanatTheme.addChild(relatedQuestionLukio);
 
         RelatedQuestionRule relatedQuestionEiTutkintoa = new RelatedQuestionRule("rule_grade_no", RELATED_ELEMENT_ID,
