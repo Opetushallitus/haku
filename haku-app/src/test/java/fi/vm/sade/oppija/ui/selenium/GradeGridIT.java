@@ -47,8 +47,8 @@ public class GradeGridIT extends AbstractSeleniumBase {
         Form form = new Form(FORM_ID, createI18NAsIs("yhteishaku"));
         form.addChild(arvosanat);
         KoodistoServiceMockImpl koodistoService = new KoodistoServiceMockImpl();
-        GradeGridTable gradeGridTable = new GradeGridTable(koodistoService);
-        arvosanat.addChild(gradeGridTable.createGradeGrid("id", true));
+        GradeGridTable gradeGridTable = new GradeGridTable(koodistoService, true);
+        arvosanat.addChild(gradeGridTable.createGradeGrid("id"));
         applicationPeriod.addForm(form);
 
         FormModel formModel = new FormModel();

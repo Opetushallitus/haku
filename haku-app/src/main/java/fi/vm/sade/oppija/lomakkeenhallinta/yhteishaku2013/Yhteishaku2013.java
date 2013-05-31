@@ -45,11 +45,12 @@ public class Yhteishaku2013 {
             @Value("${asid}") String asid,
             @Value("${aoid}") String aoid) { // NOSONAR
         this.applicationPeriod = new ApplicationPeriod(asid);
-        applicationPeriod.addForm(createForm(koodistoService, aoid, applicationPeriod.getStarts()));
+        Form form = createForm(koodistoService, aoid, applicationPeriod.getStarts());
+        applicationPeriod.addForm(form);
     }
 
 
-    public Form createForm(final KoodistoService koodistoService, final String aoidAdditionalQuestion, final Date start) {
+    private Form createForm(final KoodistoService koodistoService, final String aoidAdditionalQuestion, final Date start) {
         try {
             Form form = new Form(FORM_ID, createI18NForm("form.title"));
             form.addChild(HenkilotiedotPhase.create(koodistoService));
