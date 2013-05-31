@@ -38,7 +38,7 @@
                                    value="${pageContext.request.contextPath}/virkailija/hakemus/${application.formId.applicationPeriodId}/${application.formId.formId}/${phase.id}/${oid}"/>
                         </c:otherwise>
                     </c:choose>
-                    <virkailija:EditButton url="${editUrl}"/>
+                    <virkailija:EditButton url="${editUrl}" application="${application}"/>
                 </c:if>
             </c:forEach>
         </c:if>

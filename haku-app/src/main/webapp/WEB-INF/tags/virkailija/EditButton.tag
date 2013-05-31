@@ -1,9 +1,13 @@
 <%@ tag description="Theme's edit button" body-content="empty" pageEncoding="UTF-8" %>
 <%@ tag trimDirectiveWhitespaces="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ attribute name="url" required="true" type="java.lang.String" %>
-<a href="${url}">
-    <button class="float-right edit-link">
-        <span><span><fmt:message key="virkailija.lisakysymys.muokkaa"/></span></span>
-    </button>
-</a>
+<%@ attribute name="application" required="true" type="fi.vm.sade.oppija.hakemus.domain.Application" %>
+<c:if test="${application.state eq 'ACTIVE' or application.state eq 'INCOMPLETE'}">
+    <a href="${url}">
+        <button class="float-right edit-link">
+            <span><span><fmt:message key="virkailija.lisakysymys.muokkaa"/></span></span>
+        </button>
+    </a>
+</c:if>
