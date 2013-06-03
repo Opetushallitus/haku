@@ -1,3 +1,3 @@
 $(document).ready(function () {
-    site($, '/haku-app/resources/site/');
+    //site($, '/haku-app/resources/site/');
 });

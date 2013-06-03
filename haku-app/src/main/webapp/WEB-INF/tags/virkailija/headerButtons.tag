@@ -17,5 +17,31 @@
     </c:choose>
     <a href="#" class="button small disabled"><fmt:message key="virkailija.hakemus.vrk"/></a>
     <a href="#" class="button small disabled"><fmt:message key="virkailija.hakemus.tor"/></a>
-    <a href="#" class="button small disabled"><fmt:message key="virkailija.hakemus.passivoi.hakemus"/></a>
+    <c:choose>
+        <c:when test="${!application.passive}">
+            <!--
+            <a href="${contextPath}/virkailija/hakemus/${application.oid}/passivate" class="button small "><fmt:message key="virkailija.hakemus.passivoi.hakemus"/></a>
+            -->
+            <a href="#" id="passivateApplication" class="button small "><fmt:message key="virkailija.hakemus.passivoi.hakemus"/></a>
+        </c:when>
+        <c:otherwise>
+            <a href="#" class="button small disabled"><fmt:message key="virkailija.hakemus.passivoi.hakemus"/></a>
+        </c:otherwise>
+    </c:choose>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#passivateApplication').click(function() {
+            if (confirm("Ootko nyt ihan varma?")) {
+               var form = document.createElement("form");
+               form.setAttribute("method", "post");
+               form.setAttribute("action", "${contextPath}/virkailija/hakemus/${application.oid}/passivate");
+
+               document.body.appendChild(form);
+               form.submit();
+            }
+        });
+    });
+
+</script>
 </div>

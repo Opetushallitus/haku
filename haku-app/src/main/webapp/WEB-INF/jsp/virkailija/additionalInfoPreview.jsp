@@ -22,7 +22,7 @@
 <fieldset>
     <legend class="h3"><fmt:message key="virkailija.lisakysymys.otsikko"/></legend>
     <hr/>
-    <virkailija:EditButton url="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/additionalInfo"/>
+    <virkailija:EditButton url="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/additionalInfo" application="${it.application}"/>
     <table class="form-summary-table width-50">
         <tbody>
         <c:forEach var="question" items="${additionalQuestions.allQuestions}">

@@ -93,6 +93,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         Application queryApplication = new Application(oid);
         Application application = this.applicationService.getApplication(oid);
+        Application.State state = application.getState();
+        if (state != null && state.equals(Application.State.PASSIVE)) {
+            throw new ResourceNotFoundException("Passive application");
+        }
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
         final Form activeForm = formService.getForm(application.getFormId());
         ValidationResult formValidationResult = ElementTreeValidator.validateForm(activeForm, application);
@@ -140,6 +144,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public void addPersonAndAuthenticate(String oid) throws ResourceNotFoundException {
         applicationService.addPersonAndAuthenticate(oid);
+    }
+
+    @Override
+    public Application passivateApplication(String oid) {
+        return applicationService.passivateApplication(oid);
     }
 
     private AdditionalQuestions getAdditionalQuestions(final Application application) throws IOException {

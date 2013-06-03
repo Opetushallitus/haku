@@ -50,7 +50,7 @@
 <c:set var="preview" value="${phase.preview}" scope="request"/>
 <div id="wrapper" class="virkailija">
 
-    <virkailija:headerButtons oid="${application.oid}" preview="${preview}"/>
+    <virkailija:headerButtons oid="${application.oid}" preview="${preview}" />
 
     <div class="grid16-16">
         <h3><c:out value="${categoryData['Etunimet']}" escapeXml="true"/>&nbsp;<c:out

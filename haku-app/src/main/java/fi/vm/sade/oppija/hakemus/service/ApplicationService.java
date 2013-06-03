@@ -177,4 +177,6 @@ public interface ApplicationService {
      * @return processed application
      */
     Application addPersonAndAuthenticate(String oid);
+
+    Application passivateApplication(String oid);
 }

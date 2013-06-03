@@ -28,4 +28,6 @@ public interface OfficerUIService {
 
     void addPersonAndAuthenticate(final String oid)
             throws ResourceNotFoundException;
+
+    Application passivateApplication(String oid);
 }

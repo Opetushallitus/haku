@@ -219,6 +219,16 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public Application passivateApplication(String applicationOid) {
+        DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
+        List<Application> applications = applicationDAO.find(query);
+        Application application = applications.get(0);
+        application.passivate();
+        applicationDAO.save(application);
+        return application;
+    }
+
+    @Override
     public Application getPendingApplication(FormId formId, String oid) throws ResourceNotFoundException {
         final User user = userHolder.getUser();
         Application application = new Application(formId, user, oid);
