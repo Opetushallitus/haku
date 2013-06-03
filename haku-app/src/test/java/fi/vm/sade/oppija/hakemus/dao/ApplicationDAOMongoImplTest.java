@@ -178,6 +178,13 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("Yhteishaku", null));
     }
 
+    @Test
+    public void testFindByApplicationSystemAndApplicationOption() {
+        List<Application> applications = applicationDAO.findByApplicationSystemAndApplicationOption("Yhteishaku", "776");
+        assertNotNull(applications);
+        assertEquals(2, applications.size());
+    }
+
     @Override
     protected String getCollectionName() {
         return "application";
