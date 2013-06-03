@@ -41,12 +41,14 @@ public class FormBuilderResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response generate() throws URISyntaxException {
-        boolean b = formModelHolder.generateAndReplace();
-        if (b) {
+        if (formModelHolder.generateAndReplace()) {
             return Response.seeOther(new URI("/lomake/")).build();
         } else {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Lomakkeen luonti epäonnistui(koodisto)").build();
         }
     }
 
+    public void setFormModelHolder(final FormModelHolder formModelHolder) {
+        this.formModelHolder = formModelHolder;
+    }
 }

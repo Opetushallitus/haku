@@ -164,4 +164,8 @@ public final class ElementUtil {
         titled.setVerboseHelp(OppijaConstants.VERBOSE_HELP);
 
     }
+
+    public static String randomId() {
+        return UUID.randomUUID().toString().replace('.', '_');
+    }
 }

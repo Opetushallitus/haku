@@ -71,10 +71,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
         final String url = getBaseUrl() + "lomake/" + ASID + "/lomake/arvosanat";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
-
-        driver.findElement(By.id("languages")).click();
         driver.findElement(By.id("nativeLanguage")).click();
-
-        assertNotNull(driver.findElement(By.id("custom-grades-0")));
+        driver.findElement(By.id("additionalLanguages")).click();
     }
 }

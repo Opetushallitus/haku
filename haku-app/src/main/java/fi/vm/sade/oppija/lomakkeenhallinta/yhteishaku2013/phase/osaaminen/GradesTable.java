@@ -9,10 +9,11 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.List;
-import java.util.UUID;
 
 public class GradesTable {
 
+    public static final String ADDITIONAL_LANGUAGES_GROUP = "additionalLanguages";
+    public static final String NATIVE_LANGUAGE_GROUP = "nativeLanguage";
     private GradeGridHelper gradeGridHelper;
 
     public GradesTable(final KoodistoService koodistoService, final boolean comprehensiveSchool) {
@@ -20,51 +21,49 @@ public class GradesTable {
     }
 
     public GradeGrid createGradeGrid(final String id) {
-        boolean comprehensiveSchool = gradeGridHelper.isComprehensiveSchool();
-        GradeGrid gradeGrid = new GradeGrid(id, ElementUtil.createI18NForm("form.arvosanat.otsikko"), comprehensiveSchool);
+        GradeGrid gradeGrid = new GradeGrid(id,
+                ElementUtil.createI18NForm("form.arvosanat.otsikko"),
+                gradeGridHelper.isComprehensiveSchool());
+
         ElementUtil.setVerboseHelp(gradeGrid);
-        final String idPrefix = gradeGridHelper.getIdPrefix();
 
         for (SubjectRow nativeLanguage : gradeGridHelper.getNativeLanguages()) {
-            gradeGrid.addChild(createGradeGridRow(nativeLanguage, true, true, comprehensiveSchool, idPrefix));
+            gradeGrid.addChild(createGradeGridRow(nativeLanguage, true, true));
         }
+
         for (SubjectRow nativeLanguage : gradeGridHelper.getAdditionalNativeLanguages()) {
-            GradeGridRow additionalLanguageRow = createAdditionalLanguageRow(nativeLanguage, gradeGridHelper.getLanguageAndLiterature());
-            additionalLanguageRow.addAttribute("group", "nativeLanguage");
-            additionalLanguageRow.addAttribute("hidden", "hidden");
-            gradeGrid.addChild(additionalLanguageRow);
+            gradeGrid.addChild(
+                    createAdditionalLanguageRow(NATIVE_LANGUAGE_GROUP,
+                            nativeLanguage, gradeGridHelper.getLanguageAndLiterature()));
         }
-
-
         I18nText addNativeLangText = ElementUtil.createI18NForm("form.add.lang.native");
-        gradeGrid.addChild(createAddLangRow("nativeLanguage",
-                addNativeLangText, gradeGridHelper.getAdditionalNativeLanguages(), true, comprehensiveSchool));
+        gradeGrid.addChild(createAddLangRow(NATIVE_LANGUAGE_GROUP, addNativeLangText));
 
         for (SubjectRow defaultLanguage : gradeGridHelper.getDefaultLanguages()) {
-            gradeGrid.addChild(createGradeGridRow(defaultLanguage, true, false, comprehensiveSchool, idPrefix));
+            gradeGrid.addChild(createGradeGridRow(defaultLanguage, true, false));
         }
 
         for (SubjectRow additionalLanguages : gradeGridHelper.getAdditionalLanguages()) {
-            GradeGridRow additionalLanguageRow = createAdditionalLanguageRow(additionalLanguages, gradeGridHelper.getLanguages());
-            additionalLanguageRow.addAttribute("group", "languages2");
-            additionalLanguageRow.addAttribute("hidden", "hidden");
-            gradeGrid.addChild(additionalLanguageRow);
+            gradeGrid.addChild(
+                    createAdditionalLanguageRow(ADDITIONAL_LANGUAGES_GROUP,
+                            additionalLanguages,
+                            gradeGridHelper.getLanguages()));
         }
-
-        gradeGrid.addChild(createAddLangRow("languages2",
-                ElementUtil.createI18NForm("form.add.lang"), gradeGridHelper.getAdditionalNativeLanguages(), true, comprehensiveSchool));
+        I18nText addAdditionalLnaguages = ElementUtil.createI18NForm("form.add.lang");
+        gradeGrid.addChild(createAddLangRow(ADDITIONAL_LANGUAGES_GROUP, addAdditionalLnaguages));
 
 
         for (SubjectRow subjectsAfterLanguage : gradeGridHelper.getNotLanguageSubjects()) {
-            gradeGrid.addChild(createGradeGridRow(subjectsAfterLanguage, false, false, comprehensiveSchool, idPrefix));
+            gradeGrid.addChild(createGradeGridRow(subjectsAfterLanguage, false, false));
         }
         return gradeGrid;
     }
 
-    GradeGridRow createAdditionalLanguageRow(final SubjectRow subjectRow, final List<Option> languages) {
+    GradeGridRow createAdditionalLanguageRow(final String group,
+                                             final SubjectRow subjectRow, final List<Option> languages) {
 
         List<Option> gradeRangesWithDefault = gradeGridHelper.getGradeRangesWithDefault();
-        Element[] columnsArray = createColumnsArray(gradeGridHelper.isComprehensiveSchool());
+        Element[] columnsArray = createColumnsArray(true);
         String id = gradeGridHelper.getIdPrefix() + subjectRow.getId();
 
         GradeGridOptionQuestion addLangs =
@@ -87,7 +86,7 @@ public class GradesTable {
             ElementUtil.setDisabled(gradesSelected2);
         }
 
-        GradeGridTitle title = new GradeGridTitle(UUID.randomUUID().toString().replace('.', '_'), subjectRow.getI18nText(), true);
+        GradeGridTitle title = new GradeGridTitle(ElementUtil.randomId(), subjectRow.getI18nText(), true);
 
         columnsArray[0].addChild(title);
         columnsArray[1].addChild(addLangs);
@@ -99,14 +98,17 @@ public class GradesTable {
 
         GradeGridRow gradeGridRow = ElementUtil.createHiddenGradeGridRowWithId("additionalRow-" + subjectRow.getId());
         gradeGridRow.addChild(columnsArray);
+        gradeGridRow.addAttribute("hidden", "hidden");
+        gradeGridRow.addAttribute("group", group);
+
         return gradeGridRow;
     }
 
 
-    Element[] createColumnsArray(boolean extraColumn) {
-        if (extraColumn) {
+    Element[] createColumnsArray(boolean removable) {
+        if (gradeGridHelper.isComprehensiveSchool()) {
             return new Element[]{
-                    new GradeGridColumn("column1", true),
+                    new GradeGridColumn("column1", removable),
                     new GradeGridColumn("column2", false),
                     new GradeGridColumn("column3", false),
                     new GradeGridColumn("column4", false),
@@ -114,7 +116,7 @@ public class GradesTable {
             };
         } else {
             return new Element[]{
-                    new GradeGridColumn("column1", true),
+                    new GradeGridColumn("column1", removable),
                     new GradeGridColumn("column2", false),
                     new GradeGridColumn("column3", false),
                     new GradeGridColumn("column4", false),
@@ -122,29 +124,31 @@ public class GradesTable {
         }
     }
 
-    GradeGridRow createAddLangRow(final String group, I18nText i18nText, List<SubjectRow> subjects,
-                                  boolean literature, boolean extraColumn) {
-        GradeGridRow gradeGridRow = new GradeGridRow(System.currentTimeMillis() + "");
+    GradeGridRow createAddLangRow(final String group, final I18nText i18nText) {
+        GradeGridRow gradeGridRow = new GradeGridRow(ElementUtil.randomId());
         GradeGridColumn column1 = new GradeGridColumn(gradeGridRow.getId() + "-addlang", false);
         GradeGridAddLang child = new GradeGridAddLang(group, i18nText);
         column1.addChild(child);
-        column1.addAttribute("colspan", (extraColumn ? "5" : "4"));
+        column1.addAttribute("colspan", (gradeGridHelper.isComprehensiveSchool() ? "5" : "4"));
         gradeGridRow.addChild(column1);
         return gradeGridRow;
     }
 
-    GradeGridRow createGradeGridRow(final SubjectRow subjectRow, boolean language,
-                                    boolean literature, boolean extraColumn, final String idPrefix) {
+    GradeGridRow createGradeGridRow(final SubjectRow subjectRow, boolean language, boolean literature) {
+
         GradeGridRow gradeGridRow = new GradeGridRow(subjectRow.getId());
+
         GradeGridColumn column1 = new GradeGridColumn("column1", false);
-        column1.addChild(new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), false));
         GradeGridColumn column2 = new GradeGridColumn("column2", false);
         GradeGridColumn column3 = new GradeGridColumn("column3", false);
         GradeGridColumn column4 = new GradeGridColumn("column4", false);
         GradeGridColumn column5 = null;
-        if (extraColumn) {
+        if (gradeGridHelper.isComprehensiveSchool()) {
             column5 = new GradeGridColumn("column5", false);
         }
+
+        column1.addChild(new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), false));
+        String id = gradeGridHelper.getIdPrefix() + subjectRow.getId();
         List<Option> gradeRanges = gradeGridHelper.getGradeRanges();
         ElementUtil.setDefaultOption("Ei arvosanaa", gradeRanges);
         if (subjectRow.isLanguage() || language) {
@@ -155,21 +159,21 @@ public class GradesTable {
             } else {
                 subjectLanguages = gradeGridHelper.getSubjectLanguages();
             }
-            GradeGridOptionQuestion child = new GradeGridOptionQuestion(idPrefix + subjectRow.getId() + "_OPPIAINE", subjectLanguages, false);
-            child.addAttribute("required", "required");
+            GradeGridOptionQuestion child = new GradeGridOptionQuestion(id + "_OPPIAINE", subjectLanguages, false);
+            ElementUtil.setRequired(child);
             column2.addChild(child);
         } else {
             column1.addAttribute("colspan", "2");
         }
-        GradeGridOptionQuestion child1 = new GradeGridOptionQuestion(idPrefix + subjectRow.getId(), gradeRanges, false);
-        child1.addAttribute("required", "required");
+        GradeGridOptionQuestion child1 = new GradeGridOptionQuestion(id, gradeRanges, false);
+        ElementUtil.setRequired(child1);
         column3.addChild(child1);
-        GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion(idPrefix + subjectRow.getId() + "_VAL1", gradeRanges, true);
-        gradeGridOptionQuestion.addAttribute("required", "required");
+        GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion(id + "_VAL1", gradeRanges, true);
+        ElementUtil.setRequired(gradeGridOptionQuestion);
         column4.addChild(gradeGridOptionQuestion);
         if (column5 != null) {
-            GradeGridOptionQuestion child2 = new GradeGridOptionQuestion(idPrefix + subjectRow.getId() + "_VAL2", gradeRanges, true);
-            child2.addAttribute("required", "required");
+            GradeGridOptionQuestion child2 = new GradeGridOptionQuestion(id + "_VAL2", gradeRanges, true);
+            ElementUtil.setRequired(child2);
             column5.addChild(child2);
         }
         gradeGridRow.addChild(column1);
