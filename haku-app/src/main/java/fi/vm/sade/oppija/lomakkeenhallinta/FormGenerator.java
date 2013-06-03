@@ -28,9 +28,8 @@ public class FormGenerator {
     }
 
     public List<ApplicationPeriod> generate() {
-        List<String> applicationSystemOids = tarjontaService.getApplicationSystemOids();
-        List<ApplicationPeriod> forms = new ArrayList<ApplicationPeriod>(applicationSystemOids.size());
-        for (String applicationSystemOid : applicationSystemOids) {
+        List<ApplicationPeriod> forms = new ArrayList<ApplicationPeriod>();
+        for (String applicationSystemOid : tarjontaService.getApplicationSystemOids()) {
             Yhteishaku2013 e = new Yhteishaku2013(koodistoService, applicationSystemOid, aoid);
             forms.add(e.getApplicationPeriod());
         }
