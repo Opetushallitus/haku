@@ -19,7 +19,9 @@ public class FormGenerator {
     private final String aoid;
 
     @Autowired
-    public FormGenerator(final TarjontaService tarjontaService, final KoodistoService koodistoService, @Value("${aoid}") String aoid) {
+    public FormGenerator(final TarjontaService tarjontaService,
+                         final KoodistoService koodistoService,
+                         @Value("${aoid}") String aoid) {
         this.tarjontaService = tarjontaService;
         this.koodistoService = koodistoService;
         this.aoid = aoid;
