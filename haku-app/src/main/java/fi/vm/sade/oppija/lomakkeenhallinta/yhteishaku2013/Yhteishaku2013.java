@@ -29,54 +29,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NForm;
 
 @Service
 public class Yhteishaku2013 {
 
-    public static final String TUTKINTO_ULKOMAILLA_NOTIFICATION_ID = "tutkinto7-notification";
-    public static final String TUTKINTO_KESKEYTNYT_NOTIFICATION_ID = "tutkinto5-notification";
     public static final String FORM_ID = "yhteishaku";
-
-    public static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
-    public static final String TUTKINTO_KESKEYTYNYT = "tutkinto7";
-    public static final String TUTKINTO_YLIOPPILAS = "tutkinto9";
-    public static final String TUTKINTO_ULKOMAINEN_TUTKINTO = "tutkinto0";
-    public static final String TUTKINTO_PERUSKOULU = "tutkinto1";
-
     private final ApplicationPeriod applicationPeriod;
 
-
-    public String aoidAdditionalQuestion = "1.2.246.562.14.71344129359";
-    public static final String MOBILE_PHONE_PATTERN =
-            "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
-
-    private final KoodistoService koodistoService;
-
-    @Autowired // NOSONAR
+    @Autowired
     public Yhteishaku2013(
             final KoodistoService koodistoService,
             @Value("${asid}") String asid,
             @Value("${aoid}") String aoid) { // NOSONAR
-        this.koodistoService = koodistoService;
         this.applicationPeriod = new ApplicationPeriod(asid);
-        this.aoidAdditionalQuestion = aoid;
-        create();
+        Form form = createForm(koodistoService, aoid, applicationPeriod.getStarts());
+        applicationPeriod.addForm(form);
     }
 
 
-    public void create() { // NOSONAR
+    private Form createForm(final KoodistoService koodistoService, final String aoidAdditionalQuestion, final Date start) {
         try {
             Form form = new Form(FORM_ID, createI18NForm("form.title"));
-
             form.addChild(HenkilotiedotPhase.create(koodistoService));
             form.addChild(KoulutustaustaPhase.create(koodistoService));
             form.addChild(HakutoiveetPhase.create(aoidAdditionalQuestion));
             form.addChild(OsaaminenPhase.create(koodistoService));
-            form.addChild(LisatiedotPhase.create(getApplicationPeriod().getStarts()));
+            form.addChild(LisatiedotPhase.create(start));
             form.addChild(EsikatseluPhase.create(form));
-
-            applicationPeriod.addForm(form);
+            return form;
         } catch (Exception e) {
             throw new RuntimeException(Yhteishaku2013.class.getCanonicalName() + " init failed", e);
         }

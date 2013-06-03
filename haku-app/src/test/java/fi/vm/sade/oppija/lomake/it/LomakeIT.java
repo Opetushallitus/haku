@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.lomake.it;
 
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta.KoulutustaustaPhase;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -69,7 +69,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         screenshot("hak123");
         testHAK123AandHAK124();
 
-        findByIdAndClick("POHJAKOULUTUS_" + Yhteishaku2013.TUTKINTO_PERUSKOULU);
+        findByIdAndClick("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_PERUSKOULU);
 
         findById("PK_PAATTOTODISTUSVUOSI");
         selenium.typeKeys("PK_PAATTOTODISTUSVUOSI", "2013");
@@ -130,9 +130,9 @@ public class LomakeIT extends DummyModelBaseItTest {
     }
 
     private void testHAK123AandHAK124() {
-        findByIdAndClick("POHJAKOULUTUS_" + Yhteishaku2013.TUTKINTO_KESKEYTYNYT);
-        findById(Yhteishaku2013.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
-        findByIdAndClick("POHJAKOULUTUS_" + Yhteishaku2013.TUTKINTO_ULKOMAINEN_TUTKINTO);
-        findById(Yhteishaku2013.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
+        findByIdAndClick("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_KESKEYTYNYT);
+        findById(KoulutustaustaPhase.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
+        findByIdAndClick("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_ULKOMAINEN_TUTKINTO);
+        findById(KoulutustaustaPhase.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
     }
 }

@@ -5,11 +5,23 @@ $(document).ready(function () {
         $("#" + row.attr('group')).closest('tr').show();
         row.hide();
         row.find('*').attr("disabled", true);
+        $("option[value=" + row.attr('id') + "]").show();
+        var select = $("#" + row.attr('group') + "-add-lang-select");
+        select.children().remove();
+        $("tr[group='" + row.attr('group') + "']:hidden").each(
+            function (index, item) {
+                var option = $('<option></option>');
+                option.html($(item).children('#column1').text());
+                option.val($(item).attr('id'));
+                select.append(option);
+            }
+        )
+
     });
-    $("button[class=link]").each(function(index, element) {
+    $("button[class=link]").each(function (index, element) {
         var group = $(element).attr('id');
         if ($("tr[hidden][group=" + group + "]").length == 0) {
-            $("#"+group).closest('tr').hide();
+            $("#" + group).closest('tr').hide();
         }
     });
 })
