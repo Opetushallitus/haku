@@ -83,6 +83,8 @@ public interface ApplicationService {
      */
     List<Application> getApplicationsByApplicationSystem(String applicationSystemId);
 
+    List<Application> getApplicationsByApplicationSystemAndApplicationOption(String asId, String aoId);
+
     /**
      * Returns all applications where one of the selected application options is the
      * one given as parameter.
@@ -168,4 +170,5 @@ public interface ApplicationService {
      * @return processed application
      */
     Application addPersonAndAuthenticate(Application application);
+
 }

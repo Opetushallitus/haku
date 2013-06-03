@@ -74,6 +74,7 @@
                 <list>
                     <bean class="fi.vm.sade.oppija.hakemus.converter.ApplicationToHakemusTyyppi" />
                     <bean class="fi.vm.sade.oppija.hakemus.converter.ApplicationToHakutoiveTyyppi" />
+                    <bean class="fi.vm.sade.oppija.hakemus.converter.ApplicationToApplicantConverter"/>
                 </list>
             </property>
         </bean>
