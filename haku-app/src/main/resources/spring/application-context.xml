@@ -81,6 +81,7 @@
         <bean id="yksilointiScheduler" class="fi.vm.sade.oppija.yksilointi.Scheduler">
             <property name="run" value="${scheduler.run}" />
             <property name="sendMail" value="${scheduler.sendMail}" />
+            <property name="interval" value="${scheduler.delay}" />
         </bean>
         <task:scheduled-tasks scheduler="scheduler">
             <task:scheduled ref="yksilointiScheduler" method="runIdentification" fixed-delay="${scheduler.delay}"/>

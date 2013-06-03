@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.lomake.dao.impl;
 
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
@@ -26,6 +25,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import fi.vm.sade.oppija.lomake.service.FormService;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 
 import java.util.Map;
 
@@ -33,7 +33,7 @@ public class FormServiceMockImpl implements FormService {
 
     private FormModel formModel;
 
-    public FormServiceMockImpl(String asid, String aoid) {
+    public FormServiceMockImpl(final String asid, final String aoid) {
         Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl(), asid, aoid);
         FormModelHolder formModelHolder = new FormModelHolder(yhteishaku2013);
         this.formModel = formModelHolder.getModel();
@@ -41,7 +41,7 @@ public class FormServiceMockImpl implements FormService {
     }
 
     @Override
-    public Form getActiveForm(String applicationPeriodId, String formId) {
+    public Form getActiveForm(final String applicationPeriodId, final String formId) {
         try {
             return formModel.getApplicationPeriodById(applicationPeriodId).getFormById(formId);
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public class FormServiceMockImpl implements FormService {
     }
 
     @Override
-    public Element getFirstPhase(String applicationPeriodId, String formId) {
+    public Element getFirstPhase(final String applicationPeriodId, final String formId) {
         try {
             return this.getActiveForm(applicationPeriodId, formId).getFirstChild();
         } catch (Exception e) {
@@ -59,7 +59,7 @@ public class FormServiceMockImpl implements FormService {
     }
 
     @Override
-    public Element getLastPhase(String applicationPeriodId, String formId) {
+    public Element getLastPhase(final String applicationPeriodId, final String formId) {
         try {
             return this.getActiveForm(applicationPeriodId, formId).getLastPhase();
         } catch (Exception e) {

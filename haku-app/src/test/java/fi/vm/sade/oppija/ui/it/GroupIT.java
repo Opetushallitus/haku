@@ -22,14 +22,14 @@ import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.Group;
 import fi.vm.sade.oppija.lomake.domain.elements.Text;
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import net.sourceforge.jwebunit.api.IElement;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertNotNull;
 import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 import static net.sourceforge.jwebunit.junit.JWebUnit.getElementByXPath;

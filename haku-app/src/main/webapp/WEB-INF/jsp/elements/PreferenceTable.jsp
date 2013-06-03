@@ -59,22 +59,22 @@
 </table>
 
 <!-- terveydentilavaatimukset -->
-<div class="popover-wrapper" id="sora-popup">
-    <span class="popover-close">
+<div class="popup-dialog-wrapper" id="sora-popup">
+    <span class="popup-dialog-close">
         <fmt:message key="form.popup.sulje" />
     </span>
-    <div class="popover">
-        <span class="popover-close">
+    <div class="popup-dialog">
+        <span class="popup-dialog-close">
             <fmt:message key="form.popup.sulje" />
         </span>
-        <div class="popover-header">
+        <div class="popup-dialog-header">
             <h3>
                 <fmt:message key="form.hakutoiveet.terveydentilavaatimukset.otsikko"/>
             </h3>
         </div>
-        <div class="popover-content">
+        <div class="popup-dialog-content">
             <fmt:message key="form.hakutoiveet.terveydentilavaatimukset.sisalto"/>
-            <button type="button" class="primary popover-close">
+            <button type="button" class="primary popup-dialog-close">
                 <span>
                     <span>
                         <fmt:message key="form.popup.sulje" />

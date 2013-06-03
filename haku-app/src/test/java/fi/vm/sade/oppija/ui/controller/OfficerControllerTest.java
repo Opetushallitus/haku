@@ -42,7 +42,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;

@@ -1,17 +1,14 @@
+Ansökan: $formId
+Sökande: $applicant
+Ansökans nummer: $applicationId
+Ansökans datum och lagringstid: $applicationDate
 
-På svenska
-
-Sähköposti sisältää tiedon siitä, että hakemus on virallisesti vireillä vasta kun virkailija on käsitellyt hakemuksen ja yksilöinyt hakijan.
-
-Hakulomake: $formId
-Hakija: $applicant
-Hakemusnumero: $applicationId
-Lomakkeen päivämäärä ja tallennusaika: $applicationDate
-
-Hakulomakkeesi hakukohteet ovat:
+Dina ansökningsönskemål:
 
 #foreach ($preference in $preferences)
 $preference
 #end
 
-Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän.
+Detta är ett automatiskt meddelande. Svara inte på detta meddelande. Om du vill
+ändra på dina ansökningsönskemål, kontakta Studieinfos ansökningsrådgivning
+under ansökningstiden (info@studieinfo.fi).

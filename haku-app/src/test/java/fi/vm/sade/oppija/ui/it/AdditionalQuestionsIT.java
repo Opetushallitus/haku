@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.ui.it;
 
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
-import fi.vm.sade.oppija.lomakkeenhallinta.Yhteishaku2013;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.NoSuchElementException;

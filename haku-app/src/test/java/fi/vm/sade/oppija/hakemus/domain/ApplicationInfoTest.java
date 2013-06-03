@@ -21,7 +21,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import org.junit.Before;
 import org.junit.Test;
 
-import static fi.vm.sade.oppija.lomake.domain.util.ElementUtil.createI18NAsIs;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.*;
 
 public class ApplicationInfoTest {

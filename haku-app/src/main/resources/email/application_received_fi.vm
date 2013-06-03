@@ -1,14 +1,14 @@
-Sähköposti sisältää tiedon siitä, että hakemus on virallisesti vireillä vasta kun virkailija on käsitellyt hakemuksen ja yksilöinyt hakijan.
-
-Hakulomake: $formId
+Haku: $formId
 Hakija: $applicant
 Hakemusnumero: $applicationId
-Lomakkeen päivämäärä ja tallennusaika: $applicationDate
+Hakemuksen päivämäärä ja tallennusaika: $applicationDate
 
-Hakulomakkeesi hakukohteet ovat:
+Hakutoiveesi:
 
 #foreach ($preference in $preferences)
 $preference
 #end
 
-Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän.
+Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän. Jos haluat muuttaa
+hakutoiveitasi, ole yhteydessä Opintopolun hakuneuvontaan hakuaikana
+(hakija@opintopolku.fi).

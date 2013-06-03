@@ -33,13 +33,13 @@ import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
-import fi.vm.sade.oppija.util.OppijaConstants;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -172,6 +172,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
 
             application.resetUser();
+            application.setReceived(new Date());
             this.applicationDAO.save(application);
             this.userHolder.removeApplication(application.getFormId());
             return application.getOid();
@@ -181,7 +182,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application setPerson(Application application) {
+    public Application addPersonAndAuthenticate(Application application) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
         // create student id for finnish applicants
         if (allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER) != null) {

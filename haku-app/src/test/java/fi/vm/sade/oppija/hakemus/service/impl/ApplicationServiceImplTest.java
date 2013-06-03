@@ -25,7 +25,7 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.util.OppijaConstants;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,9 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -167,7 +165,7 @@ public class ApplicationServiceImplTest {
         Application application = new Application();
 
         application.addVaiheenVastaukset("henkilotiedot", answerMap);
-        application = service.setPerson(application);
+        application = service.addPersonAndAuthenticate(application);
         assertNotNull("PersonOid should not be null", application.getPersonOid());
         assertEquals("Wrong person oid", PERSON_OID, application.getPersonOid());
     }
@@ -178,7 +176,7 @@ public class ApplicationServiceImplTest {
         answerMap.remove(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER);
         answerMap.put(OppijaConstants.ELEMENT_ID_NATIONALITY, "swe");
         application.addVaiheenVastaukset("henkilotiedot", answerMap);
-        application = service.setPerson(application);
+        application = service.addPersonAndAuthenticate(application);
         assertNull("PersonOid should be null", application.getPersonOid());
     }
 }

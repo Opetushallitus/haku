@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements;
 
-import fi.vm.sade.oppija.lomake.domain.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
 import org.junit.Test;
 

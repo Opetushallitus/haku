@@ -43,7 +43,7 @@ public abstract class Titled extends Element {
         return verboseHelp;
     }
 
-    public void setVerboseHelp(String verboseHelp) {
+    public void setVerboseHelp(final String verboseHelp) {
         this.verboseHelp = verboseHelp;
     }
 

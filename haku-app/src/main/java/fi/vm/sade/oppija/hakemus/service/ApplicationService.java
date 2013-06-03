@@ -161,9 +161,11 @@ public interface ApplicationService {
     Application getNextWithoutPersonOid();
 
     /**
-     * Set proper user for this application.
-     * @param application
-     * @return
+     * Set proper user for this application. If user can be authenticated, activate application. Otherwise, set
+     * application as inpomplete.
+     *
+     * @param application to process
+     * @return processed application
      */
-    Application setPerson(Application application);
+    Application addPersonAndAuthenticate(Application application);
 }
