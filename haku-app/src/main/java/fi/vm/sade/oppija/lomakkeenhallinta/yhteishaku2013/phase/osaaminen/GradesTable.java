@@ -47,10 +47,10 @@ public class GradesTable {
             gradeGrid.addChild(
                     createAdditionalLanguageRow(ADDITIONAL_LANGUAGES_GROUP,
                             additionalLanguages,
-                            gradeGridHelper.getLanguages()));
+                            gradeGridHelper.getSubjectLanguages()));
         }
-        I18nText addAdditionalLnaguages = ElementUtil.createI18NForm("form.add.lang");
-        gradeGrid.addChild(createAddLangRow(ADDITIONAL_LANGUAGES_GROUP, addAdditionalLnaguages));
+        I18nText addAdditionalanguages = ElementUtil.createI18NForm("form.add.lang");
+        gradeGrid.addChild(createAddLangRow(ADDITIONAL_LANGUAGES_GROUP, addAdditionalanguages));
 
 
         for (SubjectRow subjectsAfterLanguage : gradeGridHelper.getNotLanguageSubjects()) {
