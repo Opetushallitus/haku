@@ -64,6 +64,11 @@ public class OfficerIT extends DummyModelBaseItTest {
         List<WebElement> editLinks = findByClassName("edit-link");
         assertFalse("Edit links not found", editLinks.isEmpty());
         activate();
+        editLinks = findByClassName("edit-link");
+        assertFalse("Edit links not found", editLinks.isEmpty());
+        findByIdAndClick("passivateApplication");
+        editLinks = findByClassName("edit-link");
+        assertTrue("Edit links found", editLinks.isEmpty());
     }
 
 

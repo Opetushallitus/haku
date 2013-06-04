@@ -188,9 +188,14 @@ public class OfficerController {
     @POST
     @Path("/hakemus/{oid}/passivate")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    public Viewable passivate(@PathParam(OID_PATH_PARAM) final String oid) throws IOException, ResourceNotFoundException {
-        officerUIService.passivateApplication(oid);
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Viewable passivate(@PathParam(OID_PATH_PARAM) final String oid,
+                              final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
+        for (String key : multiValues.keySet()) {
+            LOGGER.debug("passivation "+key+" -> "+multiValues.get(key));
+        }
+//        officerUIService.passivateApplication(oid);
+                UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
         return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel());
     }
 }
