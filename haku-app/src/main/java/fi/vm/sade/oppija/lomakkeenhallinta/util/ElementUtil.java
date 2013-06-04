@@ -143,7 +143,7 @@ public final class ElementUtil {
         }
     }
 
-    public static final String orStr(String... values) {
+    public static String orStr(String... values) {
         return "(" + Joiner.on('|').skipNulls().join(values) + ")";
     }
 

@@ -1,8 +1,8 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.lisatiedot;
 
-import fi.vm.sade.oppija.lomake.domain.elements.Group;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.WorkExperienceTheme;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
@@ -36,7 +36,6 @@ public class LisatiedotPhase {
                 createI18NForm("form.tyokokemus.kuukausina"));
         tyokokemuskuukaudet
                 .setHelp(createI18NForm("form.tyokokemus.kuukausina.help"));
-        tyokokemuskuukaudet.addAttribute("placeholder", "kuukautta");
         tyokokemuskuukaudet.addAttribute("pattern", "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$");
         tyokokemuskuukaudet.addAttribute("size", "8");
         setVerboseHelp(tyokokemuskuukaudet);
@@ -57,7 +56,7 @@ public class LisatiedotPhase {
                 "lupaSms",
                 createI18NForm("form.lupatiedot.saaLahettaaTekstiviesteja"));
 
-        Group lupaGroup = new Group("permissionCheckboxes", createI18NForm("form.lupatiedot.otsikko"));
+        TitledGroup lupaGroup = new TitledGroup("permissionCheckboxes", createI18NForm("form.lupatiedot.otsikko"));
 
         lupaGroup.addChild(lupaMarkkinointi);
         lupaGroup.addChild(lupaJulkaisu);

@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.lomake.domain.rules;
 
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.Group;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -75,5 +76,14 @@ public class RelatedQuestionRule extends Element {
             }
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public Element addChild(Element... children) {
+        if (this.children.isEmpty()) {
+            this.children.add(new Group(this.id + "Group"));
+        }
+        this.children.get(0).addChild(children);
+        return this;
     }
 }

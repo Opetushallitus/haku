@@ -137,17 +137,9 @@ public class GradesTable {
     GradeGridRow createGradeGridRow(final SubjectRow subjectRow, boolean language, boolean literature) {
 
         GradeGridRow gradeGridRow = new GradeGridRow(subjectRow.getId());
+        Element[] columns = createColumnsArray(false);
 
-        GradeGridColumn column1 = new GradeGridColumn("column1", false);
-        GradeGridColumn column2 = new GradeGridColumn("column2", false);
-        GradeGridColumn column3 = new GradeGridColumn("column3", false);
-        GradeGridColumn column4 = new GradeGridColumn("column4", false);
-        GradeGridColumn column5 = null;
-        if (gradeGridHelper.isComprehensiveSchool()) {
-            column5 = new GradeGridColumn("column5", false);
-        }
-
-        column1.addChild(new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), false));
+        columns[0].addChild(new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), false));
         String id = gradeGridHelper.getIdPrefix() + subjectRow.getId();
         List<Option> gradeRanges = gradeGridHelper.getGradeRanges();
         ElementUtil.setDefaultOption("Ei arvosanaa", gradeRanges);
@@ -161,29 +153,28 @@ public class GradesTable {
             }
             GradeGridOptionQuestion child = new GradeGridOptionQuestion(id + "_OPPIAINE", subjectLanguages, false);
             ElementUtil.setRequired(child);
-            column2.addChild(child);
+            columns[1].addChild(child);
         } else {
-            column1.addAttribute("colspan", "2");
+            columns[0].addAttribute("colspan", "2");
         }
         GradeGridOptionQuestion child1 = new GradeGridOptionQuestion(id, gradeRanges, false);
         ElementUtil.setRequired(child1);
-        column3.addChild(child1);
+        columns[2].addChild(child1);
         GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion(id + "_VAL1", gradeRanges, true);
         ElementUtil.setRequired(gradeGridOptionQuestion);
-        column4.addChild(gradeGridOptionQuestion);
-        if (column5 != null) {
+        columns[3].addChild(gradeGridOptionQuestion);
+
+        gradeGridRow.addChild(columns[0]);
+        if (subjectRow.isLanguage() || language) {
+            gradeGridRow.addChild(columns[1]);
+        }
+        gradeGridRow.addChild(columns[2]);
+        gradeGridRow.addChild(columns[3]);
+        if (gradeGridHelper.isComprehensiveSchool()) {
             GradeGridOptionQuestion child2 = new GradeGridOptionQuestion(id + "_VAL2", gradeRanges, true);
             ElementUtil.setRequired(child2);
-            column5.addChild(child2);
-        }
-        gradeGridRow.addChild(column1);
-        if (subjectRow.isLanguage() || language) {
-            gradeGridRow.addChild(column2);
-        }
-        gradeGridRow.addChild(column3);
-        gradeGridRow.addChild(column4);
-        if (column5 != null) {
-            gradeGridRow.addChild(column5);
+            columns[4].addChild(child2);
+            gradeGridRow.addChild(columns[4]);
         }
         return gradeGridRow;
 

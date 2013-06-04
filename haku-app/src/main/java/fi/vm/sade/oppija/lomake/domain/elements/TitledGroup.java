@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -16,14 +16,16 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-/**
- * @author Mikko Majapuro
- */
-public class Group extends Element {
+public class TitledGroup extends Titled {
 
-    public Group(@JsonProperty(value = "id") String id) {
-        super(id);
+    private static final long serialVersionUID = -2019606546368821081L;
+
+    public TitledGroup(@JsonProperty(value = "id") final String id,
+                       @JsonProperty(value = "i18nText") final I18nText i18nText) {
+        super(id, i18nText);
     }
+
 }

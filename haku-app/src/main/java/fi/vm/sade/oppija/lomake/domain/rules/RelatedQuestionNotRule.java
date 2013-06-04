@@ -29,24 +29,18 @@ public class RelatedQuestionNotRule extends RelatedQuestionRule {
 
     public RelatedQuestionNotRule(@JsonProperty(value = "id") String id,
                                   @JsonProperty(value = "relatedElementId") List<String> relatedElementId,
-                                  @JsonProperty(value = "expression") String expression,
-                                  @JsonProperty(value = "showImmediately") boolean showImmediately) {
-        super(id, relatedElementId, expression, showImmediately);
+                                  @JsonProperty(value = "expression") String expression) {
+        super(id, relatedElementId, expression, false);
         this.type = RelatedQuestionRule.class.getSimpleName();
     }
 
     @Override
     public List<Element> getChildren(final Map<String, String> values) {
-        boolean match = false;
         for (String relatedId : getRelatedElementId()) {
             final String value = values.get(relatedId);
-            if ((value == null && getShowImmediately()) || RegexRule.evaluate(value, getExpression())) {
-                match = true;
-                break;
+            if (!RegexRule.evaluate(value, getExpression())) {
+                return Collections.emptyList();
             }
-        }
-        if (match) {
-            return Collections.emptyList();
         }
         return this.getChildren();
     }
