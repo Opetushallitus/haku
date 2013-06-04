@@ -27,7 +27,6 @@ import org.apache.commons.mail.SimpleEmail;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.context.Context;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -122,16 +121,27 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Email email = basicEmail(emailAddress, subject);
         email.setDebug(smtpDebug);
         StringWriter sw = new StringWriter();
-        Context ctx = new VelocityContext();
-        ctx.put("formId", getFormName(application));
-        ctx.put("applicant", getApplicantName(application));
-        ctx.put("applicationId", application.getOid());
-        ctx.put("applicationDate", dateFmt.format(application.getReceived()));
-        ctx.put("preferences", getPreferences(application));
+        VelocityContext ctx = buildContext(application);
         tmpl.merge(ctx, sw);
         email.setMsg(sw.toString());
         email.send();
 
+    }
+
+    private VelocityContext buildContext(Application application) {
+        VelocityContext ctx = new VelocityContext();
+
+        String applicationDate = dateFmt.format(application.getReceived());
+        String applicationId = application.getOid();
+        applicationId = applicationId.substring(applicationId.lastIndexOf('.') + 1);
+
+        ctx.put("formId", getFormName(application));
+        ctx.put("applicant", getApplicantName(application));
+        ctx.put("applicationId", applicationId);
+        ctx.put("applicationDate", applicationDate);
+        ctx.put("preferences", getPreferences(application));
+
+        return ctx;
     }
 
     private Object getPreferences(Application application) {
