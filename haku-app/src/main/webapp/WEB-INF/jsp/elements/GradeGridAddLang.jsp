@@ -15,18 +15,33 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+
+<select id="${element.id}-add-lang-select"></select>
 <button ${element.attributeString} class="link" type="button"><haku:i18nText value="${element.i18nText}"/></button>
 <script>
     $(document).ready(function () {
+
         $("#${element.id}").on('click', function (event) {
-            var hiddenRows = $("tr[group=${element.id}]:hidden");
-            var first = $(hiddenRows.first());
-            first.show();
-            first.find('*:disabled').attr("disabled", false);
-            if (hiddenRows.length < 2) {
+            var select = $("#${element.id}-add-lang-select");
+            var selectedOption = select.children(":selected");
+            var tr = $("#" + selectedOption.val());
+            tr.show();
+            tr.find('*:disabled').attr("disabled", false);
+            selectedOption.remove();
+            if (select.children().length == 0) {
                 $(this).closest('tr').hide();
             }
         });
+
+        var select = $("#${element.id}-add-lang-select");
+        $("tr[group=${element.id}]:hidden").each(
+                function (index, item) {
+                    var option = $('<option></option>');
+                    option.html($(item).children('#column1').text());
+                    option.val($(item).attr('id'));
+                    select.append(option);
+                }
+        )
     })
 </script>
 

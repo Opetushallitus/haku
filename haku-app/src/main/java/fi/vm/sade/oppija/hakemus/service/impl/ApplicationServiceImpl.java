@@ -245,6 +245,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public List<Application> getApplicationsByApplicationSystemAndApplicationOption(String asId, String aoId) {
+        return applicationDAO.findByApplicationSystemAndApplicationOption(asId, aoId);
+    }
+
+    @Override
     public List<Application> getApplicationsByApplicationOption(List<String> applicationOptionIds) {
         return applicationDAO.findByApplicationOption(applicationOptionIds);
     }

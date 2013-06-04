@@ -16,13 +16,17 @@
 
 package fi.vm.sade.oppija.hakemus.resource;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicantDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -43,12 +47,14 @@ import java.util.Map;
 public class ApplicationResource {
 
     private ApplicationService applicationService;
+    private ConversionService conversionService;
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
     private static final String OID = "oid";
 
     @Autowired
-    public ApplicationResource(ApplicationService applicationService) {
+    public ApplicationResource(ApplicationService applicationService, ConversionService conversionService) {
         this.applicationService = applicationService;
+        this.conversionService = conversionService;
     }
 
     @GET
@@ -105,4 +111,19 @@ public class ApplicationResource {
             throw new JSONException(Response.Status.BAD_REQUEST, e.getMessage(), e);
         }
     }
+
+    @GET
+    @Path("applicant/{asId}/{aoId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ApplicantDTO> findApplicants(@PathParam("asId") String asId, @PathParam("aoId") String aoId) {
+        LOGGER.debug("Finding applicants asId:{}, aoID:{}", asId, aoId);
+        List<Application> applications = applicationService.getApplicationsByApplicationSystemAndApplicationOption(asId, aoId);
+        return Lists.transform(applications, new Function<Application, ApplicantDTO>() {
+            @Override
+            public ApplicantDTO apply(Application application) {
+                return conversionService.convert(application, ApplicantDTO.class);
+            }
+        });
+    }
+
 }

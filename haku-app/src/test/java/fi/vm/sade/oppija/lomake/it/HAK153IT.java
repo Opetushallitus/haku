@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.lomake.it;
 
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.hakutoiveet.HakutoiveetPhase;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -27,7 +27,7 @@ public class HAK153IT extends DummyModelBaseItTest {
 
     @Test
     public void testSoraAndUrheilijanLisakysymys() throws Exception {
-        navigateToPhase(Yhteishaku2013.HAKUTOIVEET_PHASE_ID);
+        navigateToPhase(HakutoiveetPhase.HAKUTOIVEET_PHASE_ID);
         selenium.typeKeys("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@data-sora='true' and @data-id='1.2.246.562.14.673437691210']")).click();

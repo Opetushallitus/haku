@@ -130,6 +130,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return findApplications(dbObject);
     }
 
+    @Override
+    public List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId) {
+        DBObject dbObject = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
+                new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true)),
+                new BasicDBObject("formId.applicationPeriodId", asId),
+                QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.ACTIVE.toString()).get()).get();
+        return findApplications(dbObject);
+    }
+
     public List<Application> findByApplicationOption(List<String> aoIds) {
         DBObject query = queryByPreference(aoIds).get();
         query.put(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));

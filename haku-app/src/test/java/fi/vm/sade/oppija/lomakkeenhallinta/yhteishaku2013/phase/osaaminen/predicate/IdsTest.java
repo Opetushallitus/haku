@@ -1,4 +1,4 @@
-package fi.vm.sade.oppija.lomakkeenhallinta.predicate;
+package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.predicate;
 
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
