@@ -57,7 +57,7 @@
                 value="${categoryData['Sukunimi']}" escapeXml="true"/></h3>
         <table class="margin-top-2">
             <tr>
-                <haku:infoCell key="virkailija.vaihe.hakemusnro" value="${application.oid}"/>
+                <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}"/>
                 <c:if test="${application.state eq 'ACTIVE'}">
                     <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
                 </c:if>
