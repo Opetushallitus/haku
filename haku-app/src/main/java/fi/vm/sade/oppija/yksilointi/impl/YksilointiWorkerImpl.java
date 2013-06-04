@@ -74,7 +74,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
         templateMap = new HashMap<String, Template>();
         templateMap.put("suomi", velocityEngine.getTemplate("email/application_received_fi.vm"));
-        templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_fi.vm"));
+        templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_sv.vm"));
     }
 
     /**
@@ -86,7 +86,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public void processApplications(int limit, boolean sendMail) {
         Application application = applicationService.getNextWithoutPersonOid();
 
-        long endTime = System.currentTimeMillis() + (limit * 1000);
+        long endTime = System.currentTimeMillis() + (limit - 500);
         while (application != null && endTime > System.currentTimeMillis()) {
             applicationService.addPersonAndAuthenticate(application);
             if (sendMail) {
@@ -150,6 +150,9 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         for (int i = 1; i <= 5; i++) {
             String koulutus = answers.get(String.format(OppijaConstants.PREFERENCE_NAME, i));
             String koulu = answers.get(String.format(OppijaConstants.PREFERENCE_ORGANIZATION, i));
+            if (isEmpty(koulutus) && isEmpty(koulu)) {
+                break;
+            }
             koulutus = isEmpty(koulutus) ? "" : koulutus;
             koulu = isEmpty(koulu) ? "" : koulu;
             preferences.add(i + ". " + koulu + "\n   " + koulutus);
