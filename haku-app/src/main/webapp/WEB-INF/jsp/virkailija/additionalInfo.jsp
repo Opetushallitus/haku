@@ -41,73 +41,68 @@
 
 </head>
 <body>
-<div id="viewport">
-    <div id="wrapper">
-        <div id="global_header"></div>
-        <div id="global_menu"></div>
-        <virkailija:breadcrumbs/>
-        <section class="grid16-16 margin-top-2">
-            <form class="form" method="post">
-                <fieldset>
-                    <button class="save" type="submit"><span><span><fmt:message key="lomake.button.save"/></span></span>
-                    </button>
-                    <legend class="h3">Syötettävät tiedot</legend>
-                    <hr/>
-                    <div id="questions">
-                        <c:forEach var="question" items="${additionalQuestions.allQuestions}">
-                            <div class="form-row">
-                                <label id="label-${question.key}" for="${question.key}" class="form-row-label"><c:out
-                                        value='${question.key}'/></label>
+<div id="wrapper" class="virkailija">
+    <section class="grid16-16 margin-top-2">
+        <form class="form" method="post">
+            <fieldset>
+                <button class="save" type="submit"><span><span><fmt:message key="lomake.button.save"/></span></span>
+                </button>
+                <legend class="h3">Syötettävät tiedot</legend>
+                <hr/>
+                <div id="questions">
+                    <c:forEach var="question" items="${additionalQuestions.allQuestions}">
+                        <div class="form-row">
+                            <label id="label-${question.key}" for="${question.key}" class="form-row-label"><c:out
+                                    value='${question.key}'/></label>
 
-                                <div class="form-row-content">
-                                    <c:choose>
-                                        <c:when test="${question.type eq 'DESIMAALILUKU'}">
-                                            <input type="text" name="${question.key}"
-                                                   value="<c:out value='${additionalInfo[question.key]}'/>"
-                                                   pattern="^\d+\.?\d*$"/>
-                                        </c:when>
-                                        <c:when test="${question.type eq 'KOKONAISLUKU'}">
-                                            <input type="text" name="${question.key}"
-                                                   value="<c:out value='${additionalInfo[question.key]}'/>"
-                                                   pattern="^\d+$"/>
-                                        </c:when>
-                                        <c:when test="${question.type eq 'MERKKIJONO'}">
-                                            <input type="text" name="${question.key}"
-                                                   value="<c:out value='${additionalInfo[question.key]}'/>"/>
-                                        </c:when>
-                                        <c:when test="${question.type eq 'TOTUUSARVO'}">
-                                            <input type="radio" name="${question.key}" id="${question.key}-true"
-                                                   value="true" ${(additionalInfo[question.key] eq 'true') ? "checked=\"checked\" " : " "} />
-                                            <label for="${question.key}-true">Kyllä</label>
-                                            <input type="radio" name="${question.key}" id="${question.key}-false"
-                                                   value="false" ${(additionalInfo[question.key] eq 'false') ? "checked=\"checked\" " : " "} />
-                                            <label for="${question.key}-false">Ei</label>
-                                        </c:when>
-                                    </c:choose>
-                                </div>
-                                <div class="clear"></div>
+                            <div class="form-row-content">
+                                <c:choose>
+                                    <c:when test="${question.type eq 'DESIMAALILUKU'}">
+                                        <input type="text" name="${question.key}"
+                                               value="<c:out value='${additionalInfo[question.key]}'/>"
+                                               pattern="^\d+\.?\d*$"/>
+                                    </c:when>
+                                    <c:when test="${question.type eq 'KOKONAISLUKU'}">
+                                        <input type="text" name="${question.key}"
+                                               value="<c:out value='${additionalInfo[question.key]}'/>"
+                                               pattern="^\d+$"/>
+                                    </c:when>
+                                    <c:when test="${question.type eq 'MERKKIJONO'}">
+                                        <input type="text" name="${question.key}"
+                                               value="<c:out value='${additionalInfo[question.key]}'/>"/>
+                                    </c:when>
+                                    <c:when test="${question.type eq 'TOTUUSARVO'}">
+                                        <input type="radio" name="${question.key}" id="${question.key}-true"
+                                               value="true" ${(additionalInfo[question.key] eq 'true') ? "checked=\"checked\" " : " "} />
+                                        <label for="${question.key}-true">Kyllä</label>
+                                        <input type="radio" name="${question.key}" id="${question.key}-false"
+                                               value="false" ${(additionalInfo[question.key] eq 'false') ? "checked=\"checked\" " : " "} />
+                                        <label for="${question.key}-false">Ei</label>
+                                    </c:when>
+                                </c:choose>
                             </div>
-                        </c:forEach>
-                    </div>
-                    <div id="extra-data">
-                        <c:forEach var="data" items="${additionalInfo}">
-                            <c:if test="${additionalQuestions.questionMap[data.key] eq null}">
-                                <div class="form-row">
-                                    <input type="text" placeholder="Avain" value="${data.key}" class="extra-key-input"/>
-                                    <input type="text" placeholder="Arvo" name="${data.key}" value="${data.value}"
-                                           class="margin-horizontal-4"/>
-                                    <button class="remove_key_value_button remove" type="button"><span>Poista</span>
-                                    </button>
-                                </div>
-                            </c:if>
-                        </c:forEach>
-                    </div>
-                    <div class="clear"></div>
-                    <button id="add_key_value_button" class="blueplus" type="button"><span>Lisää tieto</span></button>
-                </fieldset>
-            </form>
-        </section>
-    </div>
+                            <div class="clear"></div>
+                        </div>
+                    </c:forEach>
+                </div>
+                <div id="extra-data">
+                    <c:forEach var="data" items="${additionalInfo}">
+                        <c:if test="${additionalQuestions.questionMap[data.key] eq null}">
+                            <div class="form-row">
+                                <input type="text" placeholder="Avain" value="${data.key}" class="extra-key-input"/>
+                                <input type="text" placeholder="Arvo" name="${data.key}" value="${data.value}"
+                                       class="margin-horizontal-4"/>
+                                <button class="remove_key_value_button remove" type="button"><span>Poista</span>
+                                </button>
+                            </div>
+                        </c:if>
+                    </c:forEach>
+                </div>
+                <div class="clear"></div>
+                <button id="add_key_value_button" class="blueplus" type="button"><span>Lisää tieto</span></button>
+            </fieldset>
+        </form>
+    </section>
 </div>
 </body>
 </html>
