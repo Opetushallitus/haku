@@ -32,22 +32,4 @@
             <a href="#" class="button small disabled"><fmt:message key="virkailija.hakemus.passivoi.hakemus"/></a>
         </c:otherwise>
     </c:choose>
-<script type="text/javascript">
-
-    $(document).ready(function () {
-    /*
-        $('#passivateApplication').click(function() {
-            //if (confirm("Ootko nyt ihan varma?")) {
-               var form = document.createElement("form");
-               form.setAttribute("method", "post");
-               form.setAttribute("action", "${contextPath}/virkailija/hakemus/${application.oid}/passivate");
-
-               document.body.appendChild(form);
-               form.submit();
-            //}
-        });
-        */
-    });
-
-</script>
 </div>

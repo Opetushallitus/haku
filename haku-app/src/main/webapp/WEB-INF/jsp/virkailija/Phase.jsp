@@ -33,6 +33,7 @@
 
     <haku:meta/>
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
+    <link href="${contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet">
     <link href="${contextPath}/resources/css/virkailija.css" type="text/css" rel="stylesheet">
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
@@ -48,24 +49,27 @@
 </head>
 <body>
 <c:set var="preview" value="${phase.preview}" scope="request"/>
+
+
 <div id="viewport">
     <div id="overlay">
         <c:choose>
             <c:when test="${preview}">
 
-                <div class="popup-dialog-wrapper" id="areyousure" style="z-index:1000;display:none;">
+                <div class="popup-dialog-wrapper" id="confirmPassivation" style="z-index:1000;display:none;">
                     <span class="popup-dialog-close">&#8203;</span>
 
                     <div class="popup-dialog">
                         <span class="popup-dialog-close">&#8203;</span>
 
                         <div class="popup-dialog-header">
-                            <h3><fmt:message key="lomake.send.confirm.title"/></h3>
+                            <h3><fmt:message key="virkailija.hakemus.passivoi.hakemus.varmistus"/></h3>
                         </div>
                         <div class="popup-dialog-content">
-                            <form method="post">
-                                <p><fmt:message key="lomake.send.confirm.message"/></p>
-                                <button name="nav-send" value="true" data-po-hide="areyousure">
+                            <form method="post" action="${contextPath}/virkailija/hakemus/${application.oid}/passivate">
+                                <p><fmt:message key="virkailija.hakemus.passivoi.hakemus.viesti"/></p>
+                                <textarea name="passivation-reason" ></textarea>
+                                <button name="nav-send" value="true" data-po-hide="confirmPassivation">
 									<span>
 										<span><fmt:message key="lomake.send.confirm.no"/></span>
 									</span>
@@ -85,6 +89,7 @@
         </c:choose>
 
     </div>
+</div>
 <div id="wrapper" class="virkailija">
 
     <virkailija:headerButtons oid="${application.oid}" preview="${preview}" />

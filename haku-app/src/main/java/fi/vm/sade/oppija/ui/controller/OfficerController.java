@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.oppija.ui.common.UriUtil;
 import fi.vm.sade.oppija.ui.service.OfficerUIService;
@@ -63,6 +64,9 @@ public class OfficerController {
 
     @Autowired
     OfficerUIService officerUIService;
+
+    @Autowired
+    UserHolder userHolder;
 
     @GET
     @Path("/hakemus/")
@@ -194,8 +198,13 @@ public class OfficerController {
         for (String key : multiValues.keySet()) {
             LOGGER.debug("passivation "+key+" -> "+multiValues.get(key));
         }
-//        officerUIService.passivateApplication(oid);
-                UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
+        StringBuilder reasonBuilder = new StringBuilder();
+        for (String reasonPart : multiValues.get("passivation-reason")) {
+            reasonBuilder.append(reasonPart);
+        }
+
+        officerUIService.passivateApplication(oid, reasonBuilder.toString(), userHolder.getUser());
+        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
         return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel());
     }
 }

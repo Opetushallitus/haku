@@ -63,19 +63,18 @@
         <c:choose>
             <c:when test="${preview}">
 
-                <div class="popup-dialog-wrapper" id="confirmPassivation" style="z-index:1000;display:none;">
+                <div class="popup-dialog-wrapper" id="areyousure" style="z-index:1000;display:none;">
                     <span class="popup-dialog-close">&#8203;</span>
 
                     <div class="popup-dialog">
                         <span class="popup-dialog-close">&#8203;</span>
 
                         <div class="popup-dialog-header">
-                            <h3><fmt:message key="virkailija.hakemus.passivoi.hakemus.varmistus"/></h3>
+                            <h3><fmt:message key="lomake.send.confirm.title"/></h3>
                         </div>
                         <div class="popup-dialog-content">
-                            <form method="${contextPath}/virkailija/hakemus/${application.oid}/passivate">
-                                <p><fmt:message key="virkailija.hakemus.passivoi.hakemus.viesti"/></p>
-                                <textarea name="confirmatio-reason">
+                            <form method="post">
+                                <p><fmt:message key="lomake.send.confirm.message"/></p>
                                 <button name="nav-send" value="true" data-po-hide="areyousure">
 									<span>
 										<span><fmt:message key="lomake.send.confirm.no"/></span>

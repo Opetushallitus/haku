@@ -25,6 +25,7 @@ import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
@@ -226,6 +227,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.passivate();
         applicationDAO.save(application);
         return application;
+    }
+
+    @Override
+    public void addNote(Application application, String noteText, User user) {
+        application.addNote(new ApplicationNote(noteText, new Date(), user));
+        applicationDAO.save(application);
     }
 
     @Override

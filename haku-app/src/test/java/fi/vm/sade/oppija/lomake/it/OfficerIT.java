@@ -50,6 +50,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
         List<WebElement> editLinks = findByClassName("edit-link");
+        screenshot("controlsPassive");
         assertFalse("Edit links not found", editLinks.isEmpty());
         activate();
         assertFalse("Edit links not found", editLinks.isEmpty());
@@ -66,7 +67,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         activate();
         editLinks = findByClassName("edit-link");
         assertFalse("Edit links not found", editLinks.isEmpty());
-        findByIdAndClick("passivateApplication");
+        passivate();
         editLinks = findByClassName("edit-link");
         assertTrue("Edit links found", editLinks.isEmpty());
     }
@@ -183,5 +184,12 @@ public class OfficerIT extends DummyModelBaseItTest {
         OfficerClient officerClient = new OfficerClient(getBaseUrl() + "virkailija/");
         officerClient.addPersonAndAuthenticate("1.2.3.4.5.999");
         Thread.sleep(5000);
+    }
+
+    private void passivate() {
+        findByIdAndClick("passivateApplication");
+        selenium.typeKeys("passivation-reason", "reason");
+        screenshot("passivation");
+        findByIdAndClick("submit_confirm");
     }
 }
