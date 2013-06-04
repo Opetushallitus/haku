@@ -36,7 +36,6 @@ public class LisatiedotPhase {
                 createI18NForm("form.tyokokemus.kuukausina"));
         tyokokemuskuukaudet
                 .setHelp(createI18NForm("form.tyokokemus.kuukausina.help"));
-        tyokokemuskuukaudet.addAttribute("placeholder", "kuukautta");
         tyokokemuskuukaudet.addAttribute("pattern", "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$");
         tyokokemuskuukaudet.addAttribute("size", "8");
         setVerboseHelp(tyokokemuskuukaudet);
