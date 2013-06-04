@@ -29,7 +29,7 @@ public final class KielitaitokysymyksetTheme {
         RelatedQuestionNotRule aidinkieliTaiPerusopetuksenKieliEiOleSuomi =
                 new RelatedQuestionNotRule("kielitutkinto_fi_rule",
                         ImmutableList.of("aidinkieli", "perusopetuksen_kieli"), NOT_FI);
-        RelatedQuestionRule oppiaineEioleSuomi = new RelatedQuestionRule("oppiaine_fi_rule", ImmutableList.of("PK_AI1_OPPIAINE"), NOT_FI, false);
+        RelatedQuestionRule oppiaineEioleSuomi = new RelatedQuestionRule("oppiaine_fi_rule", ImmutableList.of("PK_AI_OPPIAINE"), NOT_FI, false);
 
         suomenkielinenHakutoive.addChild(
                 aidinkieliTaiPerusopetuksenKieliEiOleSuomi.addChild(
@@ -41,7 +41,7 @@ public final class KielitaitokysymyksetTheme {
         RelatedQuestionNotRule aidinkieliTaiPerusopetuksenKieliEiOleRuotsi =
                 new RelatedQuestionNotRule("kielitutkinto_sv_rule",
                         ImmutableList.of("aidinkieli", "perusopetuksen_kieli"), NOT_SV);
-        RelatedQuestionRule oppiaineEioleRuotsi = new RelatedQuestionRule("oppiaine_sv_rule", ImmutableList.of("PK_AI1_OPPIAINE"), NOT_SV, false);
+        RelatedQuestionRule oppiaineEioleRuotsi = new RelatedQuestionRule("oppiaine_sv_rule", ImmutableList.of("PK_AI_OPPIAINE"), NOT_SV, false);
         ruotsinkielinenHakutoive.addChild(
                 aidinkieliTaiPerusopetuksenKieliEiOleRuotsi.addChild(
                         oppiaineEioleRuotsi.addChild(

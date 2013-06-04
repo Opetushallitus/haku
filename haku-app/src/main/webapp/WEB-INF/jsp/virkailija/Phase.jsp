@@ -41,7 +41,6 @@
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
     <script src="${contextPath}/resources/javascript/rules.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
-    <script src="${contextPath}/resources/javascript/phase.js" type="text/javascript"></script>
     <script type="text/javascript" defer src="/virkailija-raamit/apply-raamit.js"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
 
@@ -99,7 +98,7 @@
                 value="${categoryData['Sukunimi']}" escapeXml="true"/></h3>
         <table class="margin-top-2">
             <tr>
-                <haku:infoCell key="virkailija.vaihe.hakemusnro" value="${application.oid}"/>
+                <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}"/>
                 <c:if test="${application.state eq 'ACTIVE'}">
                     <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
                 </c:if>

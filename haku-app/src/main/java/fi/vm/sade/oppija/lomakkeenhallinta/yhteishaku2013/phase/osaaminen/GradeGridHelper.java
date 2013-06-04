@@ -20,8 +20,6 @@ public class GradeGridHelper {
     private final List<Option> subjectLanguages;
     private final List<Option> gradeRanges;
     private final List<Option> languageAndLiterature;
-    private final List<Option> languages;
-    private final List<SubjectRow> listOfLanguages;
     private final List<SubjectRow> nativeLanguages;
     private final boolean comprehensiveSchool;
     private final List<Option> gradeRangesWithDefault;
@@ -38,10 +36,8 @@ public class GradeGridHelper {
         gradeRangesWithDefault = koodistoService.getGradeRanges();
         ElementUtil.setDefaultOption("Ei arvosanaa", gradeRangesWithDefault); // TODOO kielistys
         languageAndLiterature = koodistoService.getLanguageAndLiterature();
-        languages = koodistoService.getLanguages();
-        nativeLanguages = ImmutableList.copyOf(Iterables.filter(subjects, new Ids<SubjectRow>("AI1")));
+        nativeLanguages = ImmutableList.copyOf(Iterables.filter(subjects, new Ids<SubjectRow>("AI")));
         additionalNativeLanguages = ImmutableList.copyOf(Iterables.filter(subjects, new Ids<SubjectRow>("AI2")));
-        listOfLanguages = ImmutableList.copyOf(Iterables.filter(subjects, new Languages()));
     }
 
     private List<SubjectRow> getHighOrComprehensiveSchoolSubjectRows(boolean comprehensiveSchool, List<SubjectRow> subjects) {
@@ -78,12 +74,8 @@ public class GradeGridHelper {
     public List<SubjectRow> getNotLanguageSubjects() {
         return ImmutableList.copyOf(
                 Iterables.filter(Iterables.filter(subjects, Predicates.not(new Languages())),
-                        Predicates.not(new Ids<SubjectRow>("AI1", "AI2"))));
+                        Predicates.not(new Ids<SubjectRow>("AI", "AI2"))));
 
-    }
-
-    public List<SubjectRow> getSubjects() {
-        return subjects;
     }
 
     public String getIdPrefix() {
@@ -108,9 +100,5 @@ public class GradeGridHelper {
 
     public List<Option> getLanguageAndLiterature() {
         return languageAndLiterature;
-    }
-
-    public List<Option> getLanguages() {
-        return languages;
     }
 }
