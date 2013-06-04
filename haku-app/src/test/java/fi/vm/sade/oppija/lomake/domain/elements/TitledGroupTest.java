@@ -22,25 +22,25 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class GroupTest {
+public class TitledGroupTest {
 
     public static final String ID = "ID";
     public static final String TITLE = "title";
-    private Group group;
+    private TitledGroup titledGroup;
 
     @Before
     public void setUp() throws Exception {
-        group = new Group(ID, ElementUtil.createI18NForm(TITLE));
+        titledGroup = new TitledGroup(ID, ElementUtil.createI18NForm(TITLE));
     }
 
     @Test
     public void testId() throws Exception {
-        assertEquals(ID, group.getId());
+        assertEquals(ID, titledGroup.getId());
     }
 
     @Test
     public void testTitle() throws Exception {
-        // TODO group(Titled) paljastaa liikaa sisäistä rakennetta.
-        assertEquals(TITLE+" [fi]", group.getI18nText().getTranslations().get("fi"));
+        // TODO titledGroup(Titled) paljastaa liikaa sisäistä rakennetta.
+        assertEquals(TITLE+" [fi]", titledGroup.getI18nText().getTranslations().get("fi"));
     }
 }

@@ -54,7 +54,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = CheckBox.class),
-                @JsonSubTypes.Type(value = Group.class),
+                @JsonSubTypes.Type(value = TitledGroup.class),
                 @JsonSubTypes.Type(value = DropdownSelect.class),
                 @JsonSubTypes.Type(value = Option.class),
                 @JsonSubTypes.Type(value = Radio.class),
@@ -79,7 +79,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
                 @JsonSubTypes.Type(value = Text.class),
                 @JsonSubTypes.Type(value = WorkExperienceTheme.class),
                 @JsonSubTypes.Type(value = Notification.class),
-                @JsonSubTypes.Type(value = DateQuestion.class)
+                @JsonSubTypes.Type(value = DateQuestion.class),
+                @JsonSubTypes.Type(value = Group.class)
         }
 )
 public abstract class Element implements Serializable {
