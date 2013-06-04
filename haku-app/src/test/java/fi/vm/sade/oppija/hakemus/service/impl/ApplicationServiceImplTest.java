@@ -51,6 +51,8 @@ public class ApplicationServiceImplTest {
     String SHORT_OID = "12345678901";
     String PERSON_OID = "9.8.7.6.5";
     String NAME = "Test Example";
+    String AS_ID = "1.2.246.562.5.741585101110";
+    String AO_ID = "1.2.246.562.14.299022856910";
     Map<String, String> answerMap;
     private ApplicationQueryParameters applicationQueryParameters;
     private ApplicationServiceImpl service;
@@ -74,6 +76,7 @@ public class ApplicationServiceImplTest {
         when(applicationDAO.find(any(Application.class))).thenReturn(Lists.newArrayList(application));
         when(applicationOidService.getOidPrefix()).thenReturn("1.2.3.4.5");
         when(authenticationService.addPerson(any(Person.class))).thenReturn(PERSON_OID);
+        when(applicationDAO.findByApplicationSystemAndApplicationOption(eq(AS_ID), eq(AO_ID))).thenReturn(Lists.newArrayList(application));
         service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService);
 
         answerMap = new HashMap<String, String>();
@@ -178,5 +181,12 @@ public class ApplicationServiceImplTest {
         application.addVaiheenVastaukset("henkilotiedot", answerMap);
         application = service.addPersonAndAuthenticate(application);
         assertNull("PersonOid should be null", application.getPersonOid());
+    }
+
+    @Test
+    public void testGetApplicationsByApplicationSystemAndApplicationOption() {
+        List<Application> results = service.getApplicationsByApplicationSystemAndApplicationOption(AS_ID, AO_ID);
+        assertNotNull(results);
+        assertEquals(1, results.size());
     }
 }

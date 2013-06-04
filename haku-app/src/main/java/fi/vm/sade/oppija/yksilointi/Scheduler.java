@@ -38,7 +38,7 @@ public class Scheduler {
                 worker.processApplications(interval - 500, sendMail);
             } catch (Exception e) {
                 e.printStackTrace();
-                run = false;
+                //run = false;
             }
         }
     }

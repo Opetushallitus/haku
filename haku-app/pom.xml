@@ -694,7 +694,6 @@
                 <configuration>
                     <charset>UTF-8</charset>
                     <uriEncoding>UTF-8</uriEncoding>
-                    <addContextWarDependencies>true</addContextWarDependencies>
                 </configuration>
 
             </plugin>

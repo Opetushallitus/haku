@@ -27,7 +27,6 @@ import org.apache.commons.mail.SimpleEmail;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.context.Context;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -75,7 +74,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
         templateMap = new HashMap<String, Template>();
         templateMap.put("suomi", velocityEngine.getTemplate("email/application_received_fi.vm"));
-        templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_fi.vm"));
+        templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_sv.vm"));
     }
 
     /**
@@ -87,7 +86,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public void processApplications(int limit, boolean sendMail) {
         Application application = applicationService.getNextWithoutPersonOid();
 
-        long endTime = System.currentTimeMillis() + (limit * 1000);
+        long endTime = System.currentTimeMillis() + (limit - 500);
         while (application != null && endTime > System.currentTimeMillis()) {
             applicationService.addPersonAndAuthenticate(application);
             if (sendMail) {
@@ -122,16 +121,27 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Email email = basicEmail(emailAddress, subject);
         email.setDebug(smtpDebug);
         StringWriter sw = new StringWriter();
-        Context ctx = new VelocityContext();
-        ctx.put("formId", getFormName(application));
-        ctx.put("applicant", getApplicantName(application));
-        ctx.put("applicationId", application.getOid());
-        ctx.put("applicationDate", dateFmt.format(application.getReceived()));
-        ctx.put("preferences", getPreferences(application));
+        VelocityContext ctx = buildContext(application);
         tmpl.merge(ctx, sw);
         email.setMsg(sw.toString());
         email.send();
 
+    }
+
+    private VelocityContext buildContext(Application application) {
+        VelocityContext ctx = new VelocityContext();
+
+        String applicationDate = dateFmt.format(application.getReceived());
+        String applicationId = application.getOid();
+        applicationId = applicationId.substring(applicationId.lastIndexOf('.') + 1);
+
+        ctx.put("formId", getFormName(application));
+        ctx.put("applicant", getApplicantName(application));
+        ctx.put("applicationId", applicationId);
+        ctx.put("applicationDate", applicationDate);
+        ctx.put("preferences", getPreferences(application));
+
+        return ctx;
     }
 
     private Object getPreferences(Application application) {
@@ -140,6 +150,9 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         for (int i = 1; i <= 5; i++) {
             String koulutus = answers.get(String.format(OppijaConstants.PREFERENCE_NAME, i));
             String koulu = answers.get(String.format(OppijaConstants.PREFERENCE_ORGANIZATION, i));
+            if (isEmpty(koulutus) && isEmpty(koulu)) {
+                break;
+            }
             koulutus = isEmpty(koulutus) ? "" : koulutus;
             koulu = isEmpty(koulu) ? "" : koulu;
             preferences.add(i + ". " + koulu + "\n   " + koulutus);

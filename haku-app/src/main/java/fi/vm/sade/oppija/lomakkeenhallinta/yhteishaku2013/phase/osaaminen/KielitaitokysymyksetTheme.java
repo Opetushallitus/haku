@@ -11,6 +11,8 @@ import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
 public final class KielitaitokysymyksetTheme {
+    private static final String NOT_FI = "^((?!FI)[A-Z]{2})$";
+    private static final String NOT_SV = "^((?!SV)[A-Z]{2})$";
 
     public static Theme createKielitaitokysymyksetTheme() {
         Theme kielitaitokysymyksetTheme =
@@ -25,23 +27,26 @@ public final class KielitaitokysymyksetTheme {
         );
         RelatedQuestionRule suomenkielinenHakutoive = new RelatedQuestionRule("preference_fi_rule", ids, "FI", false);
         RelatedQuestionNotRule aidinkieliTaiPerusopetuksenKieliEiOleSuomi =
-                new RelatedQuestionNotRule("language_sv_rule",
-                        ImmutableList.of("aidinkieli", "perusopetuksen_kieli"), "FI", false);
+                new RelatedQuestionNotRule("kielitutkinto_fi_rule",
+                        ImmutableList.of("aidinkieli", "perusopetuksen_kieli"), NOT_FI);
+        RelatedQuestionRule oppiaineEioleSuomi = new RelatedQuestionRule("oppiaine_fi_rule", ImmutableList.of("PK_AI1_OPPIAINE"), NOT_FI, false);
 
         suomenkielinenHakutoive.addChild(
                 aidinkieliTaiPerusopetuksenKieliEiOleSuomi.addChild(
-                        createKielitutkinto("yleinen_kielitutkinto_fi"),
-                        createKielitutkinto("valtionhallinnon_kielitutkinto_fi")));
+                        oppiaineEioleSuomi.addChild(
+                                createKielitutkinto("yleinen_kielitutkinto_fi"),
+                                createKielitutkinto("valtionhallinnon_kielitutkinto_fi"))));
 
         RelatedQuestionRule ruotsinkielinenHakutoive = new RelatedQuestionRule("preference_sv_rule", ids, "SV", false);
         RelatedQuestionNotRule aidinkieliTaiPerusopetuksenKieliEiOleRuotsi =
-                new RelatedQuestionNotRule("kielitutkinto_fi_rule",
-                        ImmutableList.of("aidinkieli", "perusopetuksen_kieli"), "SV", false);
-
+                new RelatedQuestionNotRule("kielitutkinto_sv_rule",
+                        ImmutableList.of("aidinkieli", "perusopetuksen_kieli"), NOT_SV);
+        RelatedQuestionRule oppiaineEioleRuotsi = new RelatedQuestionRule("oppiaine_sv_rule", ImmutableList.of("PK_AI1_OPPIAINE"), NOT_SV, false);
         ruotsinkielinenHakutoive.addChild(
                 aidinkieliTaiPerusopetuksenKieliEiOleRuotsi.addChild(
-                        createKielitutkinto("yleinen_kielitutkinto_sv"),
-                        createKielitutkinto("valtionhallinnon_kielitutkinto_sv")));
+                        oppiaineEioleRuotsi.addChild(
+                                createKielitutkinto("yleinen_kielitutkinto_sv"),
+                                createKielitutkinto("valtionhallinnon_kielitutkinto_sv"))));
 
         kielitaitokysymyksetTheme.addChild(
                 suomenkielinenHakutoive,

@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.GradeGridTable;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.GradesTable;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -47,8 +47,8 @@ public class GradeGridIT extends AbstractSeleniumBase {
         Form form = new Form(FORM_ID, createI18NAsIs("yhteishaku"));
         form.addChild(arvosanat);
         KoodistoServiceMockImpl koodistoService = new KoodistoServiceMockImpl();
-        GradeGridTable gradeGridTable = new GradeGridTable(koodistoService);
-        arvosanat.addChild(gradeGridTable.createGradeGrid("id", true));
+        GradesTable gradesTable = new GradesTable(koodistoService, true);
+        arvosanat.addChild(gradesTable.createGradeGrid("id"));
         applicationPeriod.addForm(form);
 
         FormModel formModel = new FormModel();
@@ -71,10 +71,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
         final String url = getBaseUrl() + "lomake/" + ASID + "/lomake/arvosanat";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
-
-        driver.findElement(By.id("languages")).click();
         driver.findElement(By.id("nativeLanguage")).click();
-
-        assertNotNull(driver.findElement(By.id("custom-grades-0")));
+        driver.findElement(By.id("additionalLanguages")).click();
     }
 }

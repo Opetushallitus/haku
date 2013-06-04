@@ -25,6 +25,7 @@ import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.convert.ConversionService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +48,7 @@ public class ApplicationResourceTest {
     private ApplicationService applicationService;
     private ApplicationResource applicationResource;
     private Application application;
+    private ConversionService conversionService;
 
     private final String OID = "1.2.3.4.5.100";
     private final String INVALID_OID = "1.2.3.4.5.999";
@@ -56,6 +58,7 @@ public class ApplicationResourceTest {
     @Before
     public void setUp() {
         this.applicationService = mock(ApplicationService.class);
+        this.conversionService = mock(ConversionService.class);
 
         FormId formId = new FormId(ASID, "fi");
 
@@ -83,7 +86,7 @@ public class ApplicationResourceTest {
         applications.add(this.application);
         when(applicationService.getApplicationsByApplicationOption(anyList())).thenReturn(applications);
         when(applicationService.findApplications(eq(OID), any(ApplicationQueryParameters.class))).thenReturn(applications);
-        this.applicationResource = new ApplicationResource(this.applicationService);
+        this.applicationResource = new ApplicationResource(this.applicationService, this.conversionService);
     }
 
     @Test

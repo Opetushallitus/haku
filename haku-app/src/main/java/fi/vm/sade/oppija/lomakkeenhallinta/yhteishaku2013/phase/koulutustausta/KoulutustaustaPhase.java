@@ -1,10 +1,10 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta;
 
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
-import fi.vm.sade.oppija.lomake.domain.elements.Group;
 import fi.vm.sade.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
@@ -109,7 +109,7 @@ public class KoulutustaustaPhase {
         paattotodistusvuosiPeruskoulu.addAttribute("size", "4");
         paattotodistusvuosiPeruskoulu.addAttribute("maxlength", "4");
 
-        Group suorittanutGroup = new Group("suorittanutgroup",
+        TitledGroup suorittanutGroup = new TitledGroup("suorittanutgroup",
                 createI18NForm("form.koulutustausta.suorittanut"));
         suorittanutGroup.addChild(
                 new CheckBox("LISAKOULUTUS_KYMPPI", createI18NForm("form.koulutustausta.kymppiluokka")),
@@ -159,7 +159,7 @@ public class KoulutustaustaPhase {
         ylioppilastutkinto.setInline(true);
         setDefaultOption("fi", ylioppilastutkinto.getOptions());
 
-        Group lukioGroup = new Group("lukioGroup", createI18NForm("form.koulutustausta.lukio.suoritus"));
+        TitledGroup lukioGroup = new TitledGroup("lukioGroup", createI18NForm("form.koulutustausta.lukio.suoritus"));
         lukioGroup.addChild(lukioPaattotodistusVuosi);
         lukioGroup.addChild(ylioppilastutkinto);
 
@@ -189,14 +189,14 @@ public class KoulutustaustaPhase {
 
         suorittanutAmmatillisenTutkinnonRule.addChild(notification1);
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutAmmatillisenTutkinnonRule);
-
+// Millä opetuskielellä olet suorittanut perusopetuksen?
         DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
-                createI18NForm("Millä opetuskielellä olet suorittanut perusopetuksen?"), null);
-        perusopetuksenKieli.addOption("eiValittu", ElementUtil.createI18NForm(null), "");
+                createI18NForm("form.koulutustausta.perusopetuksenKieli"), null);
+        perusopetuksenKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NForm(null), "");
         perusopetuksenKieli.addOptions(koodistoService.getLanguages());
         setRequired(perusopetuksenKieli);
         setVerboseHelp(perusopetuksenKieli);
-        perusopetuksenKieli.setHelp(createI18NForm("form.henkilotiedot.aidinkieli.help"));
+        perusopetuksenKieli.setHelp(createI18NForm("form.koulutustausta.opetuskieli.help"));
         pkKysymyksetRule.addChild(perusopetuksenKieli);
         return millatutkinnolla;
     }

@@ -20,7 +20,7 @@ import fi.vm.sade.oppija.common.it.AbstractFormTest;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
-import fi.vm.sade.oppija.lomake.domain.elements.Group;
+import fi.vm.sade.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.oppija.lomake.domain.elements.Text;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import net.sourceforge.jwebunit.api.IElement;
@@ -41,9 +41,9 @@ public class GroupIT extends AbstractFormTest {
 
     @Before
     public void init() throws IOException {
-        Group group = new Group(GROUP_ID, createI18NAsIs("foo"));
-        group.addChild(CHILD_ELEMENT);
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(group);
+        TitledGroup titledGroup = new TitledGroup(GROUP_ID, createI18NAsIs("foo"));
+        titledGroup.addChild(CHILD_ELEMENT);
+        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(titledGroup);
         this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
         final String startUrl = formModelHelper.getStartUrl();
         beginAt(startUrl);

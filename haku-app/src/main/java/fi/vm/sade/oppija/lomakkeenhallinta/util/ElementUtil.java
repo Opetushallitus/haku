@@ -143,7 +143,7 @@ public final class ElementUtil {
         }
     }
 
-    public static final String orStr(String... values) {
+    public static String orStr(String... values) {
         return "(" + Joiner.on('|').skipNulls().join(values) + ")";
     }
 
@@ -163,5 +163,9 @@ public final class ElementUtil {
     public static void setVerboseHelp(final Titled titled) {
         titled.setVerboseHelp(OppijaConstants.VERBOSE_HELP);
 
+    }
+
+    public static String randomId() {
+        return UUID.randomUUID().toString().replace('.', '_');
     }
 }
