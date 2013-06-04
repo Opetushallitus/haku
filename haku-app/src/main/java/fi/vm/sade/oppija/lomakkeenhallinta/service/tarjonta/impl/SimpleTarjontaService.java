@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SimpleTarjontaService implements TarjontaService {
@@ -30,7 +32,13 @@ public class SimpleTarjontaService implements TarjontaService {
 
     @Override
     public List<String> getApplicationSystemOids() {
-        return webResource.get(new GenericType<List<String>>() {
+        List<Map<String, String>> maps = webResource.get(new GenericType<List<Map<String, String>>>() {
         });
+
+        List<String> oids = new ArrayList<String>();
+        for (Map<String, String> map : maps) {
+            oids.add(map.get("oid"));
+        }
+        return oids;
     }
 }
