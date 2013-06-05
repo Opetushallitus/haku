@@ -1,13 +1,15 @@
 package fi.vm.sade.oppija.lomake.it;
 
+import fi.vm.sade.oppija.common.it.OfficerClient;
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.oppija.common.selenium.LoginPage;
+import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.HakuClient;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
@@ -26,9 +28,9 @@ public class OfficerIT extends DummyModelBaseItTest {
         loginPage.login("officer");
     }
 
-    @Ignore
     @Test
     public void testSearchAndModify() throws Exception {
+        activate();
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
@@ -42,7 +44,38 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     @Test
+    public void testEditControlsPassive() throws InterruptedException {
+        clickSearch();
+        SearchByTermAndState("", null);
+        WebElement applicationLink = findByClassName("application-link").get(0);
+        applicationLink.click();
+        List<WebElement> editLinks = findByClassName("edit-link");
+        screenshot("controlsPassive");
+        assertFalse("Edit links not found", editLinks.isEmpty());
+        activate();
+        assertFalse("Edit links not found", editLinks.isEmpty());
+    }
+
+    @Test
+    public void testEditControlsActive() throws InterruptedException {
+        activate();
+        clickSearch();
+        WebElement applicationLink = findByClassName("application-link").get(0);
+        applicationLink.click();
+        List<WebElement> editLinks = findByClassName("edit-link");
+        assertFalse("Edit links not found", editLinks.isEmpty());
+        activate();
+        editLinks = findByClassName("edit-link");
+        assertFalse("Edit links not found", editLinks.isEmpty());
+        passivate();
+        editLinks = findByClassName("edit-link");
+        assertTrue("Edit links found", editLinks.isEmpty());
+    }
+
+
+    @Test
     public void testOrganization() throws Exception {
+        activate();
         driver.findElement(new By.ByClassName("label")).click();
         selenium.typeKeys("searchString", "Espoo");
         driver.findElement(new By.ById("search-organizations")).click();
@@ -53,36 +86,63 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testSearchByName() throws Exception {
+        activate();
         assertFalse("Application not found", SearchByTerm("topi").isEmpty());
+        clearSearch();
+        assertFalse("Application not found", SearchByTermAndState("topi", null).isEmpty());
+        clearSearch();
+        assertTrue("Application found", SearchByTermAndState("topi", Application.State.PASSIVE).isEmpty());
     }
 
     @Test
     public void testSearchByNameNotFound() throws Exception {
+        activate();
         assertTrue("Application found", SearchByTerm("Notfound").isEmpty());
+        clearSearch();
+        assertTrue("Application found", SearchByTermAndState("Notfound", null).isEmpty());
+        clearSearch();
+        assertTrue("Application found", SearchByTermAndState("Notfound", Application.State.PASSIVE).isEmpty());
     }
 
     @Test
     public void testSearchByLastname() throws Exception {
+        activate();
         assertFalse("Application not found", SearchByTerm("Korhonen").isEmpty());
+        clearSearch();
+        assertFalse("Application not found", SearchByTermAndState("Korhonen", null).isEmpty());
+        clearSearch();
+        assertTrue("Application not found", SearchByTermAndState("Korhonen", Application.State.PASSIVE).isEmpty());
     }
 
     @Test
     public void testSearchBySsn() throws Exception {
+        activate();
         assertFalse("Application not found", SearchByTerm("270802-184A").isEmpty());
+        clearSearch();
+        assertFalse("Application not found", SearchByTermAndState("270802-184A", null).isEmpty());
+        clearSearch();
+        assertTrue("Application not found", SearchByTermAndState("270802-184A", Application.State.PASSIVE).isEmpty());
     }
 
     @Test
-    public void testSearchByDod() throws Exception {
-        assertTrue("Application not found", SearchByTerm("120100").isEmpty());
+    public void testSearchByDob() throws Exception {
+        activate();
+        assertTrue("Application not", SearchByTerm("120100").isEmpty());
+        clearSearch();
+        assertTrue("Application not found", SearchByTermAndState("120100", Application.State.PASSIVE).isEmpty());
     }
 
     @Test
-    public void testSearchByDodDots() throws Exception {
-        assertTrue("Application not found", SearchByTerm("12.01.2000").isEmpty());
+    public void testSearchByDobDots() throws Exception {
+        activate();
+        assertTrue("Application not", SearchByTerm("12.01.2000").isEmpty());
+        clearSearch();
+        assertTrue("Application not found", SearchByTermAndState("12.01.2000", Application.State.PASSIVE).isEmpty());
     }
 
     @Test
     public void testSearchByOid() throws Exception {
+        activate();
         assertTrue("Application not found", SearchByTerm(" 1.2.246.562.10.10108401950").isEmpty());
     }
 
@@ -92,16 +152,44 @@ public class OfficerIT extends DummyModelBaseItTest {
         return findByClassName("application-link");
     }
 
+    private List<WebElement> SearchByTermAndState(final String term, Application.State state) {
+        enterSearchTerm(term);
+        selectState(state);
+        clickSearch();
+        return findByClassName("application-link");
+    }
+
     private void enterSearchTerm(final String term) {
         setValue("entry", term);
+    }
+
+    private void selectState(Application.State state) {
+        Select stateSelect = new Select(driver.findElement(By.id("application-state")));
+        stateSelect.selectByValue(state == null ? "" : state.toString());
     }
 
     private void checkApplicationState(String applicationState) {
         driver.findElement(By.xpath("//*[contains(.,'" + applicationState + "')]"));
     }
 
+    private void clearSearch() {
+        findByIdAndClick("reset-search");
+    }
 
     private void clickSearch() {
         findByIdAndClick("search-applications");
+    }
+
+    private void activate() throws InterruptedException {
+        OfficerClient officerClient = new OfficerClient(getBaseUrl() + "virkailija/");
+        officerClient.addPersonAndAuthenticate("1.2.3.4.5.999");
+        Thread.sleep(5000);
+    }
+
+    private void passivate() {
+        findByIdAndClick("passivateApplication");
+        selenium.typeKeys("passivation-reason", "reason");
+        screenshot("passivation");
+        findByIdAndClick("submit_confirm");
     }
 }

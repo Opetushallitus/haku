@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.oppija.ui.common.UriUtil;
 import fi.vm.sade.oppija.ui.service.OfficerUIService;
@@ -63,6 +64,9 @@ public class OfficerController {
 
     @Autowired
     OfficerUIService officerUIService;
+
+    @Autowired
+    UserHolder userHolder;
 
     @GET
     @Path("/hakemus/")
@@ -160,5 +164,47 @@ public class OfficerController {
         LOGGER.debug("getAdditionalInfo  {}, {}", new Object[]{oid});
         UIServiceResponse uiServiceResponse = officerUIService.getAdditionalInfo(oid);
         return new Viewable(ADDITIONAL_INFO_VIEW, uiServiceResponse.getModel());
+    }
+
+    @POST
+    @Path("/hakemus/{oid}/addPersonAndAuthenticate")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    public Response addPersonAndAuthenticate(@PathParam(OID_PATH_PARAM) final String oid,
+                                             final MultivaluedMap<String, String> multiValues)
+            throws URISyntaxException, ResourceNotFoundException {
+        LOGGER.debug("Activate application {}, {}", new Object[]{oid, multiValues});
+        officerUIService.addPersonAndAuthenticate(oid);
+        return seeOther(UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, oid, "")).build();
+    }
+
+//    @GET
+//    @Path("/hakemus/{oid}/passivate")
+//    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+//    public Response passivate(@PathParam(OID_PATH_PARAM) final String oid,
+//                              final MultivaluedMap<String, String> multiValues)
+//            throws URISyntaxException, ResourceNotFoundException, IOException {
+//        LOGGER.debug("Passivate application {}, {}", new Object[]{oid, multiValues});
+//        officerUIService.passivateApplication(oid);
+//        return redirectToLastPhase(oid);
+//    }
+
+    @POST
+    @Path("/hakemus/{oid}/passivate")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Viewable passivate(@PathParam(OID_PATH_PARAM) final String oid,
+                              final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
+        for (String key : multiValues.keySet()) {
+            LOGGER.debug("passivation "+key+" -> "+multiValues.get(key));
+        }
+        StringBuilder reasonBuilder = new StringBuilder();
+        for (String reasonPart : multiValues.get("passivation-reason")) {
+            reasonBuilder.append(reasonPart);
+        }
+
+        officerUIService.passivateApplication(oid, reasonBuilder.toString(), userHolder.getUser());
+        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
+        return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel());
     }
 }

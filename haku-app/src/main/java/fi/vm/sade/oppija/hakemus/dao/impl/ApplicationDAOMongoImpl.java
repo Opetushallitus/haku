@@ -288,14 +288,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (!isEmpty(state)) {
             for (Application.State s : Application.State.values()) {
                 if (Application.State.valueOf(state).equals(s)) {
-                    if (applicationQueryParameters.isFetchPassive() && !s.equals(Application.State.PASSIVE)) {
-                        stateQuery = QueryBuilder
-                                .start().or(QueryBuilder.start(FIELD_APPLICATION_STATE).is(s.toString()).get(),
-                                        QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.PASSIVE.toString()).get()).get();
-
-                    } else {
-                        stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).is(state).get();
-                    }
+                    stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).is(state).get();
                     break;
                 }
             }

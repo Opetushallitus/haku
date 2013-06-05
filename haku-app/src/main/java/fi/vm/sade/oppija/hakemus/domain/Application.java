@@ -30,9 +30,7 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -61,6 +59,7 @@ public class Application implements Serializable {
     private Map<String, Map<String, String>> answers = new HashMap<String, Map<String, String>>();
     private Map<String, String> meta = new HashMap<String, String>();
     private Map<String, String> additionalInfo = new HashMap<String, String>();
+    private List<ApplicationNote> notes;
 
     @JsonCreator
     public Application(@JsonProperty(value = "formId") final FormId formId,
@@ -258,5 +257,17 @@ public class Application implements Serializable {
 
     public Date getReceived() {
         return received;
+    }
+
+    public synchronized List<ApplicationNote> getNotes() {
+        if (notes == null) {
+            notes = new ArrayList<ApplicationNote>();
+        }
+        return notes;
+    }
+
+    public void addNote(ApplicationNote note) {
+        List<ApplicationNote> notes = getNotes();
+        notes.add(note);
     }
 }

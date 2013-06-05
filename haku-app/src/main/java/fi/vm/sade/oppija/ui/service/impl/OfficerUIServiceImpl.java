@@ -7,6 +7,7 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
@@ -93,6 +94,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         Application queryApplication = new Application(oid);
         Application application = this.applicationService.getApplication(oid);
+        Application.State state = application.getState();
+        if (state != null && state.equals(Application.State.PASSIVE)) {
+            throw new ResourceNotFoundException("Passive application");
+        }
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
         final Form activeForm = formService.getForm(application.getFormId());
         ValidationResult formValidationResult = ElementTreeValidator.validateForm(activeForm, application);
@@ -135,6 +140,24 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo) throws ResourceNotFoundException {
         applicationService.saveApplicationAdditionalInfo(oid, additionalInfo);
+    }
+
+    @Override
+    public void addPersonAndAuthenticate(String oid) throws ResourceNotFoundException {
+        applicationService.addPersonAndAuthenticate(oid);
+    }
+
+    @Override
+    public Application passivateApplication(String oid, String reason, User user) throws ResourceNotFoundException {
+        reason = "Hakemus passivoitu: " + reason;
+        Application application = applicationService.getApplication(oid);
+        addNote(application, reason, user);
+        return applicationService.passivateApplication(oid);
+    }
+
+    @Override
+    public void addNote(Application application, String note, User user) {
+        applicationService.addNote(application, note, user);
     }
 
     private AdditionalQuestions getAdditionalQuestions(final Application application) throws IOException {

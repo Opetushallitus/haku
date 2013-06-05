@@ -2,6 +2,7 @@ package fi.vm.sade.oppija.ui.service;
 
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 
 import java.io.IOException;
@@ -25,4 +26,11 @@ public interface OfficerUIService {
 
     void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo)
             throws ResourceNotFoundException;
+
+    void addPersonAndAuthenticate(final String oid)
+            throws ResourceNotFoundException;
+
+    Application passivateApplication(String oid, String reason, User user) throws ResourceNotFoundException;
+
+    void addNote(Application application, String note, User user);
 }
