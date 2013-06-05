@@ -196,7 +196,6 @@ public class KoulutustaustaPhase {
         perusopetuksenKieli.addOptions(koodistoService.getLanguages());
         setRequired(perusopetuksenKieli);
         setVerboseHelp(perusopetuksenKieli);
-        perusopetuksenKieli.setHelp(createI18NForm("form.koulutustausta.opetuskieli.help"));
         pkKysymyksetRule.addChild(perusopetuksenKieli);
         return millatutkinnolla;
     }
