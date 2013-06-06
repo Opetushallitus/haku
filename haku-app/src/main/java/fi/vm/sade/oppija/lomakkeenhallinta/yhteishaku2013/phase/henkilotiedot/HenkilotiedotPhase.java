@@ -72,9 +72,8 @@ public class HenkilotiedotPhase {
         henkilotunnus.addAttribute("maxlength", "11");
         setRequiredInlineAndVerboseHelp(henkilotunnus);
 
-        Radio sukupuoli = new Radio("SUKUPUOLI", createI18NForm("form.henkilotiedot.sukupuoli"));
-        sukupuoli.addOption("mies", createI18NForm("form.henkilotiedot.sukupuoli.mies"), "m");
-        sukupuoli.addOption("nainen", createI18NForm("form.henkilotiedot.sukupuoli.nainen"), "n");
+        Radio sukupuoli = new Radio("sukupuoli", createI18NForm("form.henkilotiedot.sukupuoli"));
+        sukupuoli.addOptions(koodistoService.getGenders());
         setRequiredInlineAndVerboseHelp(sukupuoli);
 
         SocialSecurityNumber socialSecurityNumber =

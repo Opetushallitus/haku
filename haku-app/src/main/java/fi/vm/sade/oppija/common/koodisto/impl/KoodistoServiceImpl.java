@@ -55,6 +55,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_MUNICIPALITY = "kunta";
     public static final String CODE_SUBJECT_LANGUAGES = "kielivalikoima";
     public static final String CODE_AIDINKIELI_JA_KIRJALLISUUS = "aidinkielijakirjallisuus";
+    public static final String CODE_GENDER = "sukupuoli";
 
 
     private final KoodiService koodiService;
@@ -140,6 +141,11 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Option> getLanguageAndLiterature() {
         return codesToOptions(CODE_AIDINKIELI_JA_KIRJALLISUUS);
+    }
+
+    @Override
+    public List<Option> getGenders() {
+        return codesToOptions(CODE_GENDER);
     }
 
     private List<Option> codesToOptions(final String codeName) {

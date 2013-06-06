@@ -44,4 +44,6 @@ public interface KoodistoService {
     List<Option> getMunicipalities();
 
     List<Option> getLanguageAndLiterature();
+
+    List<Option> getGenders();
 }

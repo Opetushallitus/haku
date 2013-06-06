@@ -6,7 +6,7 @@
     "answers": {
         "henkilotiedot": {
             "aidinkieli": "FI",
-            "SUKUPUOLI": "m",
+            "sukupuoli": "1",
             "kansalaisuus": "FIN",
             "asuinmaa": "FIN",
             "Sukunimi": "Korhonen",
