@@ -143,12 +143,12 @@ public class Application implements Serializable {
 
     @JsonIgnore
     public boolean isPassive() {
-        return state.equals(State.PASSIVE);
+        return state != null && state.equals(State.PASSIVE);
     }
 
     @JsonIgnore
     public boolean isIncomplete() {
-        return state.equals(State.INCOMPLETE);
+        return state != null && state.equals(State.INCOMPLETE);
     }
 
     // final, koska kutsutaan konstruktorista

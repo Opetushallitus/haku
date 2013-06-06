@@ -36,15 +36,15 @@ import java.util.List;
 
 public class AdminResourceClient {
     public static final Logger LOGGER = LoggerFactory.getLogger(AdminResourceClient.class);
-    private final String baseUrl;
-    private final User admin;
-    private final DefaultHttpClient httpclient;
 
+    private String baseUrl;
+    private User admin;
+    private DefaultHttpClient httpclient;
 
     public AdminResourceClient(final String baseUrl) {
         this.baseUrl = baseUrl;
         this.admin = new User("admin");
-        httpclient = new DefaultHttpClient();
+        this.httpclient = new DefaultHttpClient();
     }
 
     public void updateModel(FormModel formModel) {

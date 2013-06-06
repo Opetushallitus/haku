@@ -97,26 +97,6 @@ public final class ElementUtil {
         return elements;
     }
 
-    private static <E extends Element> void findElementByType(
-            final Element element, final List<E> elements, Class<E> eClass) {
-        if (element.getClass().isAssignableFrom(eClass)) {
-            elements.add((E) element);
-        }
-        for (Element child : element.getChildren()) {
-            findElementByType(child, elements, eClass);
-        }
-    }
-
-    private static <E extends Element> void findElementByType(
-            final Element element, final Map<String, E> elements, Class<E> eClass) {
-        if (element.getClass().isAssignableFrom(eClass)) {
-            elements.put(element.getId(), (E) element);
-        }
-        for (Element child : element.getChildren()) {
-            findElementByType(child, elements, eClass);
-        }
-    }
-
     public static void setDisabled(final Element element) {
         element.addAttribute(DISABLED, DISABLED);
     }
@@ -130,12 +110,12 @@ public final class ElementUtil {
         radio.addOption(EI, createI18NForm("form.yleinen.ei"), EI);
     }
 
-
     public static GradeGridRow createHiddenGradeGridRowWithId(final String id) {
         GradeGridRow gradeGridRow = new GradeGridRow(id);
         gradeGridRow.addAttribute(HIDDEN, HIDDEN);
         return gradeGridRow;
     }
+
 
     public static void setDefaultOption(final String value, final List<Option> options) {
         for (Option opt : options) {
@@ -167,5 +147,25 @@ public final class ElementUtil {
 
     public static String randomId() {
         return UUID.randomUUID().toString().replace('.', '_');
+    }
+
+    private static <E extends Element> void findElementByType(
+            final Element element, final List<E> elements, Class<E> eClass) {
+        if (eClass.isAssignableFrom(element.getClass())) {
+            elements.add((E) element);
+        }
+        for (Element child : element.getChildren()) {
+            findElementByType(child, elements, eClass);
+        }
+    }
+
+    private static <E extends Element> void findElementByType(
+            final Element element, final Map<String, E> elements, Class<E> eClass) {
+        if (eClass.isAssignableFrom(element.getClass())) {
+            elements.put(element.getId(), (E) element);
+        }
+        for (Element child : element.getChildren()) {
+            findElementByType(child, elements, eClass);
+        }
     }
 }
