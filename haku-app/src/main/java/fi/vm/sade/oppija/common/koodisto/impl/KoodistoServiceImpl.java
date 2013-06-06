@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.common.koodisto.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import fi.vm.sade.koodisto.service.GenericFault;
 import fi.vm.sade.koodisto.service.KoodiService;
 import fi.vm.sade.koodisto.service.types.SearchKoodisByKoodistoCriteriaType;
@@ -32,10 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -153,6 +152,8 @@ public class KoodistoServiceImpl implements KoodistoService {
     private List<KoodiType> getKoodiTypes(final String koodistoUri) {
         SearchKoodisByKoodistoCriteriaType searchKoodisByKoodistoCriteriaType = new SearchKoodisByKoodistoCriteriaType();
         searchKoodisByKoodistoCriteriaType.setKoodistoUri(koodistoUri);
+        XMLGregorianCalendar calendar = new XMLGregorianCalendarImpl(new GregorianCalendar());
+        searchKoodisByKoodistoCriteriaType.setValidAt(calendar);
         List<KoodiType> koodiTypes = newArrayList();
         try {
             koodiTypes = koodiService.searchKoodisByKoodisto(searchKoodisByKoodistoCriteriaType);
