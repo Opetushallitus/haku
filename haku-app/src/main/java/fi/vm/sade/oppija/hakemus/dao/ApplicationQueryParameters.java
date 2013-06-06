@@ -21,6 +21,8 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 public class ApplicationQueryParameters {
     private final String state;
     private final List<String> preferences = new ArrayList<String>();
@@ -35,13 +37,15 @@ public class ApplicationQueryParameters {
     }
 
     public ApplicationQueryParameters(final String state, final String lopOid) {
-        this.state = state;
-        this.lopOid = lopOid;
+        this.state = isEmpty(state) ? null : state;
+        this.lopOid = isEmpty(lopOid) ? null : lopOid;
     }
 
     public ApplicationQueryParameters(final String state, final String preference, final String lopOid) {
         this(state, lopOid);
-        this.preferences.add(preference);
+        if (!isEmpty(preference)) {
+            this.preferences.add(preference);
+        }
     }
 
     public String getState() {
