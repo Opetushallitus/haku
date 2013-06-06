@@ -141,6 +141,7 @@ public class GradesTable {
 
         columns[0].addChild(new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), false));
         String id = gradeGridHelper.getIdPrefix() + subjectRow.getId();
+
         if (subjectRow.isLanguage() || language) {
             List<Option> subjectLanguages;
             if (literature) {

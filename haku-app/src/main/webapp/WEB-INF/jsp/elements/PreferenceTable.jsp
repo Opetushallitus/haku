@@ -60,9 +60,7 @@
 
 <!-- terveydentilavaatimukset -->
 <div class="popup-dialog-wrapper" id="sora-popup">
-    <span class="popup-dialog-close">
-        <fmt:message key="form.popup.sulje" />
-    </span>
+    <span class="popup-dialog-close"></span>
     <div class="popup-dialog">
         <span class="popup-dialog-close">
             <fmt:message key="form.popup.sulje" />
