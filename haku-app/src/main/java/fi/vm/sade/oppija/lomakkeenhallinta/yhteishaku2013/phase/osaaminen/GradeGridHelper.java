@@ -34,7 +34,6 @@ public class GradeGridHelper {
         subjectLanguages = koodistoService.getSubjectLanguages();
         gradeRanges = koodistoService.getGradeRanges();
         gradeRangesWithDefault = koodistoService.getGradeRanges();
-        ElementUtil.setDefaultOption("Ei arvosanaa", gradeRangesWithDefault); // TODOO kielistys
         languageAndLiterature = koodistoService.getLanguageAndLiterature();
         nativeLanguages = ImmutableList.copyOf(Iterables.filter(subjects, new Ids<SubjectRow>("AI")));
         additionalNativeLanguages = ImmutableList.copyOf(Iterables.filter(subjects, new Ids<SubjectRow>("AI2")));
