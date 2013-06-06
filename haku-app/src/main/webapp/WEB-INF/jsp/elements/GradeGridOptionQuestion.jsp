@@ -21,23 +21,19 @@
     </c:if>
     <c:forEach var="option" items="${element.options}">
         <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
-        <option
-                value="${option.value}" ${(categoryData[element.id] eq option.value or (categoryData[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "} ${option.attributeString}>
-            <haku:i18nText value="${option.i18nText}"/></option>
+        <option value="${option.value}" ${(categoryData[element.id] eq option.value or (categoryData[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "} ${option.attributeString}><haku:i18nText value="${option.i18nText}"/></option>
     </c:forEach>
 </select>
-<c:if test="${true}">
-    <script>
-        $(document).ready(function () {
-            if (${not (categoryData[element.id] eq null)}) {
-                var element = $("#${element.id}");
-                var row = element.closest('tr');
-                row.removeAttr('hidden');
-                row.find('*:disabled').attr("disabled", false);
-                var group = element.closest('tr').attr('group');
-            }
-        })
-    </script>
-</c:if>
+<script>
+    $(document).ready(function () {
+        if (${not (categoryData[element.id] eq null)}) {
+            var element = $("#${element.id}");
+            var row = element.closest('tr');
+            row.removeAttr('hidden');
+            row.find('*:disabled').attr("disabled", false);
+            var group = element.closest('tr').attr('group');
+        }
+    })
+</script>
 <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
 <haku:help element="${element}"/>
