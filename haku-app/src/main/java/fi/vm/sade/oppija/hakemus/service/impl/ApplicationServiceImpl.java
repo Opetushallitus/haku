@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.hakemus.service.impl;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
+import fi.vm.sade.authentication.service.GenericFault;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
@@ -188,6 +189,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application addPersonAndAuthenticate(Application application) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
         // create student id for finnish applicants
+
         if (allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER) != null) {
 
             // invoke authentication service to obtain oid
@@ -202,9 +204,13 @@ public class ApplicationServiceImpl implements ApplicationService {
                     allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY),
                     allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE));
 
-            application.setPersonOid(this.authenticationService.addPerson(person));
-            application.activate();
-
+            try {
+                application.setPersonOid(this.authenticationService.addPerson(person));
+                application.activate();
+            } catch (GenericFault fail) {
+                LOGGER.info(fail.getMessage());
+                application.setState(Application.State.INCOMPLETE);
+            }
         } else {
             application.setState(Application.State.INCOMPLETE);
         }
