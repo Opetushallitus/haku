@@ -19,12 +19,14 @@ package fi.vm.sade.oppija.lomakkeenhallinta.util;
 import com.google.common.base.Joiner;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import org.apache.log4j.Logger;
 
 import java.text.MessageFormat;
@@ -167,5 +169,18 @@ public final class ElementUtil {
         for (Element child : element.getChildren()) {
             findElementByType(child, elements, eClass);
         }
+    }
+
+    public static Element notificationWhenTrue(final String id, final String messageKey) {
+        RelatedQuestionRule rule = new RelatedQuestionRule(ElementUtil.randomId(),
+                id, "^true", false);
+
+        Notification notification = new Notification(
+                ElementUtil.randomId(),
+                createI18NForm(messageKey),
+                Notification.NotificationType.INFO);
+        rule.addChild(notification);
+
+        return rule;
     }
 }
