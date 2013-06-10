@@ -19,6 +19,7 @@ import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -34,17 +35,19 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final FormService formService;
     private final ValintaperusteetService valintaperusteetService;
     private final KoodistoService koodistoService;
+    private final String koulutusinformaatioBaseUrl;
 
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
                                 final FormService formService,
                                 final ValintaperusteetService valintaperusteetService,
-                                final KoodistoService koodistoService) {
+                                final KoodistoService koodistoService,
+                                @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl) {
         this.applicationService = applicationService;
         this.formService = formService;
         this.valintaperusteetService = valintaperusteetService;
         this.koodistoService = koodistoService;
-
+        this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
     }
 
     @Override
@@ -62,6 +65,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         officerApplicationResponse.setElement(element);
         officerApplicationResponse.setForm(activeForm);
         officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
+        officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return officerApplicationResponse;
     }
 
@@ -77,6 +81,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         officerApplicationResponse.setForm(activeForm);
         officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
         officerApplicationResponse.setAdditionalQuestions(getAdditionalQuestions(application));
+        officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return officerApplicationResponse;
     }
 
@@ -116,7 +121,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         officerApplicationResponse.setElement(phase);
         officerApplicationResponse.setForm(activeForm);
         officerApplicationResponse.setErrorMessages(phaseValidationResult.getErrorMessages());
-
+        officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return officerApplicationResponse;
     }
 

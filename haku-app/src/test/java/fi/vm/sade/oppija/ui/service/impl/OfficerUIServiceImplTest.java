@@ -51,7 +51,7 @@ public class OfficerUIServiceImplTest {
         valintaperusteetService = mock(ValintaperusteetService.class);
         koodistoService = mock(KoodistoService.class);
         officerUIService = new OfficerUIServiceImpl(
-                applicationService, formService, valintaperusteetService, koodistoService);
+                applicationService, formService, valintaperusteetService, koodistoService, "");
         form.addChild(phase);
         when(applicationService.getApplicationPreferenceOids(application)).thenReturn(OIDS);
         when(applicationService.getApplication(OID)).thenReturn(application);
@@ -78,7 +78,7 @@ public class OfficerUIServiceImplTest {
     public void testUpdateApplication() throws Exception {
         UIServiceResponse uiServiceResponse = officerUIService.updateApplication(
                 OID, new ApplicationPhase(application.getFormId(), ID, new HashMap<String, String>()));
-        assertTrue(10 == uiServiceResponse.getModel().size());
+        assertTrue(11 == uiServiceResponse.getModel().size());
     }
 
     @Test
