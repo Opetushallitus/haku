@@ -135,11 +135,6 @@ public class KoulutustaustaPhase {
         addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon);
         setRequired(koulutuspaikkaAmmatillisenTutkintoon);
 
-        koulutuspaikkaAmmatillisenTutkintoon.addChild(
-                notificationWhenTrue(
-                        koulutuspaikkaAmmatillisenTutkintoon.getId(),
-                        "form.koulutustausta.ammatillinenKoulutuspaikka.huom"));
-
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu);
         pkKysymyksetRule.addChild(suorittanutGroup);
         pkKysymyksetRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
