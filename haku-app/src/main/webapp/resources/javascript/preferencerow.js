@@ -23,6 +23,7 @@
                 vocational: sortabletable_settings.vocational
             }, function (data) {
                 var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
+
                 preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
                 $("#" + selectInputId).html("<option></option>");
 
@@ -47,10 +48,10 @@
 
         clearSelectInput: function (selectInputId) {
             $("#" + selectInputId + "-id").val("");
-            $("#" + selectInputId + "-educationdegree").val("");
-            $("#" + selectInputId + "-id-lang").val("");
-            $("#" + selectInputId + "-id-sora").val(false);
-            $("#" + selectInputId + "-id-athlete").val(false);
+            $("#" + selectInputId + "-educationDegree").val("").change();
+            $("#" + selectInputId + "-id-lang").val("").change();
+            $("#" + selectInputId + "-id-sora").val(false).change();
+            $("#" + selectInputId + "-id-athlete").val(false).change();
             $("#" + selectInputId).html("<option></option>");
             preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
         },
@@ -83,7 +84,8 @@
 
     $('button.reset').click(function (event) {
         var id = $(this).data('id');
-        $('[id|="' + id + '"]').val('').html('');
+
+        $('[id|="' + id + '"]').val('');
         preferenceRow.clearSelectInput(id + "-Koulutus");
         $(this).parent().find(".warning").hide();
     });
@@ -110,6 +112,7 @@
             },
             select: function (event, ui) {
                 $hiddenInput.val(ui.item.dataId);
+                preferenceRow.clearSelectInput(selectInputId);
                 preferenceRow.populateSelectInput(ui.item.dataId, selectInputId);
             },
             change: function (ev, ui) {
