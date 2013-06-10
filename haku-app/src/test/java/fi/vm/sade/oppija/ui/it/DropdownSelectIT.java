@@ -88,7 +88,6 @@ public class DropdownSelectIT extends AbstractSeleniumBase {
     public void testLabelLangXx() throws IOException {
         driver.get(getBaseUrl()  + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstCategory()) + "?lang=xx");
         WebElement label = driver.findElement(new By.ByTagName("label"));
-        System.out.println(selenium.getHtmlSource());
         assertEquals("Invalid label id", "???", label.getText());
     }
 }

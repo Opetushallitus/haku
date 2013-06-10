@@ -10,6 +10,8 @@ import com.sun.jersey.client.apache.ApacheHttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
@@ -22,6 +24,7 @@ import java.util.Map;
 
 public class HakuClient {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HakuClient.class);
     public final String formUrl;
 
     private final Map<String, Map<String, String>> applicationData;
@@ -52,7 +55,7 @@ public class HakuClient {
         if (response.getStatus() == HttpStatus.SC_OK) {
             response.close();
         } else {
-            System.out.println(IOUtils.toString(response.getEntityInputStream(), "UTF-8"));
+            LOGGER.debug(IOUtils.toString(response.getEntityInputStream(), "UTF-8"));
             throw new RuntimeException("get uri failed (" + response.getStatus() + ") " + previousPhaseResponse.getLocation());
         }
     }
@@ -127,11 +130,11 @@ public class HakuClient {
         try {
             hakuClient.apply();
         } catch (RuntimeException re) {
-            System.out.println(re.getMessage());
+            LOGGER.debug(re.getMessage());
             List<String> lines = IOUtils.readLines(new StringReader(re.getMessage()));
             for (String line : lines) {
                 if (line.contains("warning")) {
-                    System.out.println(line);
+                    LOGGER.debug(line);
                 }
             }
         }
