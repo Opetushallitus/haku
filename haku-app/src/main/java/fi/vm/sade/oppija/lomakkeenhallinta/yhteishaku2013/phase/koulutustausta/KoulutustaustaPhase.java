@@ -135,6 +135,11 @@ public class KoulutustaustaPhase {
         addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon);
         setRequired(koulutuspaikkaAmmatillisenTutkintoon);
 
+        koulutuspaikkaAmmatillisenTutkintoon.addChild(
+                notificationWhenTrue(
+                        koulutuspaikkaAmmatillisenTutkintoon.getId(),
+                        "form.koulutustausta.ammatillinenKoulutuspaikka.huom"));
+
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu);
         pkKysymyksetRule.addChild(suorittanutGroup);
         pkKysymyksetRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
@@ -180,16 +185,12 @@ public class KoulutustaustaPhase {
         lukioRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
 
-        RelatedQuestionRule suorittanutAmmatillisenTutkinnonRule = new RelatedQuestionRule("rule9",
-                suorittanutAmmatillisenTutkinnon.getId(), "^true", false);
-        Notification notification1 = new Notification(
-                "notification1",
-                createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka.huom"),
-                Notification.NotificationType.INFO);
 
-        suorittanutAmmatillisenTutkinnonRule.addChild(notification1);
-        suorittanutAmmatillisenTutkinnon.addChild(suorittanutAmmatillisenTutkinnonRule);
-// Millä opetuskielellä olet suorittanut perusopetuksen?
+        suorittanutAmmatillisenTutkinnon.addChild(
+                notificationWhenTrue(
+                        suorittanutAmmatillisenTutkinnon.getId(),
+                        "form.koulutustausta.ammatillinenSuoritettu.huom"));
+
         DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
                 createI18NForm("form.koulutustausta.perusopetuksenKieli"), null);
         perusopetuksenKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NForm(null), "");
