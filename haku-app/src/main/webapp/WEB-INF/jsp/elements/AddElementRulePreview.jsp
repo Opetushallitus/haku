@@ -1,5 +1,4 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fn" uri="/WEB-INF/tld/functions.tld" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <div class="container_${element.id}">
     <c:choose>

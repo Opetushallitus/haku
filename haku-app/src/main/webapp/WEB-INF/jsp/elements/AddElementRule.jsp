@@ -45,7 +45,7 @@
                     });
                     var ruleData = {
                         getRuleChild: function (childIds, index, ruleChilds) {
-                            $.get(document.URL + '/' + childIds[index],
+                            $.get(document.URL.split("?")[0] + '/' + childIds[index],
                                     function (data) {
                                         ruleChilds.append(data);
                                         if (childIds.length - 1 > index) {

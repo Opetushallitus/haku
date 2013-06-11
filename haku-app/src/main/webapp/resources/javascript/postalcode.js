@@ -27,7 +27,7 @@
         var value = this.value, re5digit = /^\d{5}$/, elementId = this.id;
 
         if (value && value.length === 5 && value.search(re5digit) !== -1) {
-            $.getJSON(document.URL + "/" + elementId +
+            $.getJSON(document.URL.split("?")[0] + "/" + elementId +
                 "/relatedData/" + value,
                 function (data) {
                     if (data && data.postOffice) {
