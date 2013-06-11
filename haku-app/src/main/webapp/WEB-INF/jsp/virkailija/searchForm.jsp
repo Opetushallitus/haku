@@ -78,7 +78,6 @@
     <div class="tabsheets">
         <section id="hakemukset" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemukset"
                  style="display: block">
-            <a href="#" class="button small"><fmt:message key="virkailija.hakemus.avaa"/></a>
 
             <div class="clear"></div>
 
