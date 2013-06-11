@@ -54,6 +54,7 @@ public final class OppijaConstants {
     public static final String PREFERENCE_ID = "preference%d-Koulutus-id";
     public static final String PREFERENCE_NAME = "preference%d-Koulutus";
     public static final String PREFERENCE_ORGANIZATION = "preference%d-Opetuspiste";
+    public static final String PREFERENCE_DISCRETIONARY = "preference%d-discretionary";
 
     public static final String NATIONALITY_CODE_FI = "FIN";
 

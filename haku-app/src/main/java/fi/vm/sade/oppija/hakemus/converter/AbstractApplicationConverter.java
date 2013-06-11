@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.hakemus.converter;
 
+import com.google.common.base.Strings;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.service.hakemus.schema.HakukohdeTyyppi;
@@ -26,6 +27,7 @@ public abstract class AbstractApplicationConverter<T> implements Converter<Appli
                     HakukohdeTyyppi preference = new HakukohdeTyyppi();
                     preference.setHakukohdeOid(value);
                     preference.setPrioriteetti(i);
+                    preference.setHarkinnanvaraisuus(isDiscretionary(keyValues, i));
                     preferences.add(preference);
                     ++i;
                 } else {
@@ -44,5 +46,16 @@ public abstract class AbstractApplicationConverter<T> implements Converter<Appli
 
     protected String getLastName(Map<String, String> keyValues) {
         return keyValues.get(OppijaConstants.ELEMENT_ID_LAST_NAME);
+    }
+
+    protected boolean isDiscretionary(Map<String, String> keyValues, int index) {
+        String key = String.format(OppijaConstants.PREFERENCE_DISCRETIONARY, index);
+        if (keyValues.containsKey(key)) {
+            String value = keyValues.get(key);
+            if (!Strings.isNullOrEmpty(value)) {
+                return Boolean.parseBoolean(value);
+            }
+        }
+        return false;
     }
 }

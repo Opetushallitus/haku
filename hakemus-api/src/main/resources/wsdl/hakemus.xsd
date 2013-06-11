@@ -27,6 +27,7 @@
     <xs:complexType name="HakukohdeTyyppi">
         <xs:attribute name="hakukohdeOid" type="xs:string" use="required" />
         <xs:attribute name="prioriteetti" type="xs:int"  use="required" />
+        <xs:attribute name="harkinnanvaraisuus" type="xs:boolean" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="AvainArvoTyyppi">
