@@ -102,7 +102,7 @@ $(document).ready(function () {
                 self.updateCounters(data.length);
                 $(data).each(function (index, item) {
                     var henkilotiedot = item.answers.henkilotiedot;
-                    $tbody.append('<tr><td><input type="checkbox"/></td><td>' +
+                    $tbody.append('<tr><td>' +
                         henkilotiedot.Sukunimi + '</td><td>' +
                         henkilotiedot.Etunimet + '</td><td>' +
                         henkilotiedot.Henkilotunnus + '</td><td><a class="application-link" href="' +

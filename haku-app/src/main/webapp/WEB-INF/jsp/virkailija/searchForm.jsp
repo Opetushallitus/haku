@@ -39,7 +39,8 @@
                         <div class="field-select-containerbox">
                             <select class="width-50" id="application-state" ng-model="applicationState">
                                 <option value=""><fmt:message key="virkailija.hakemus.tila.kaikki"/></option>
-                                <option selected="selected" value="ACTIVE"><fmt:message key="virkailija.hakemus.tila.voimassa"/></option>
+                                <option selected="selected" value="ACTIVE"><fmt:message
+                                        key="virkailija.hakemus.tila.voimassa"/></option>
                                 <option value="PASSIVE"><fmt:message key="virkailija.hakemus.tila.peruttu"/></option>
                                 <option value="INCOMPLETE"><fmt:message
                                         key="virkailija.hakemus.tila.puutteellinen"/></option>
@@ -87,7 +88,6 @@
             <table id="application-table" class="virkailija-table-1">
                 <thead>
                 <tr>
-                    <td></td>
                     <td><fmt:message key="virkailija.hakemus.sukunimi"/></td>
                     <td><fmt:message key="virkailija.hakemus.etunimi"/></td>
                     <td><fmt:message key="virkailija.hakemus.henkilotunnus"/></td>
