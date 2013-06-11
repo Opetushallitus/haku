@@ -48,6 +48,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Option> listOfLanguageAndLiterature;
     public final List<Option> listOfNationalities;
     public final List<Option> listOfMunicipalities;
+    public final List<Option> listOfGenders;
 
     public KoodistoServiceMockImpl() {
         List<Option> listOfGradeGrades = new ArrayList<Option>();
@@ -147,6 +148,14 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 new Option("FI_SE", createI18NAsIs("Suomi saamenkielisille"), "FI_SE"),
                 new Option("FI_VK", createI18NAsIs("Suomi viittomakielisille"), "FI_VK"),
                 new Option("SV_VK", createI18NAsIs("Ruotsi viittomakielisille"), "SV_VK"));
+
+        this.listOfGenders =
+                ImmutableList.of(
+                        new Option("1",
+                                createI18NAsIs("Mies"), "1"),
+                        new Option("2",
+                                createI18NAsIs("Nainen"), "2"));
+
     }
 
     @Override
@@ -203,6 +212,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getMunicipalities() {
         return this.listOfMunicipalities;
+    }
+
+    @Override
+    public List<Option> getGenders() {
+        return listOfGenders;
     }
 
     private static PostOffice createPostOffice(final String postCode, final String text) {

@@ -90,7 +90,7 @@ public class ElementTreeValidatorTest {
         values.put("Kutsumanimi", "Mika");
         values.put("kansalaisuus", "FIN");
         values.put("Henkilotunnus", "110293-906X");
-        values.put("Sukupuoli", "n");
+        values.put("sukupuoli", "2");
         values.put("aidinkieli", "FI");
         //values.put("kotikunta", "janakkala");
         return values;
