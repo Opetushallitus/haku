@@ -155,13 +155,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public Application passivateApplication(String oid, String reason, User user) throws ResourceNotFoundException {
         reason = "Hakemus passivoitu: " + reason;
-        Application application = applicationService.getApplication(oid);
-        addNote(application, reason, user);
+        addNote(oid, reason, user);
         return applicationService.passivateApplication(oid);
     }
 
     @Override
-    public void addNote(Application application, String note, User user) {
+    public void addNote(String applicationOid, String note, User user) throws ResourceNotFoundException {
+        Application application = applicationService.getApplication(applicationOid);
         applicationService.addNote(application, note, user);
     }
 

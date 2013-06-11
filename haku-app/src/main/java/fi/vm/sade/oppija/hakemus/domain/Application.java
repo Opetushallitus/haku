@@ -59,7 +59,7 @@ public class Application implements Serializable {
     private Map<String, Map<String, String>> answers = new HashMap<String, Map<String, String>>();
     private Map<String, String> meta = new HashMap<String, String>();
     private Map<String, String> additionalInfo = new HashMap<String, String>();
-    private List<ApplicationNote> notes;
+    private LinkedList<ApplicationNote> notes = new LinkedList<ApplicationNote>();
 
     @JsonCreator
     public Application(@JsonProperty(value = "formId") final FormId formId,
@@ -259,15 +259,11 @@ public class Application implements Serializable {
         return received;
     }
 
-    public synchronized List<ApplicationNote> getNotes() {
-        if (notes == null) {
-            notes = new ArrayList<ApplicationNote>();
-        }
+    public List<ApplicationNote> getNotes() {
         return notes;
     }
 
     public void addNote(ApplicationNote note) {
-        List<ApplicationNote> notes = getNotes();
-        notes.add(note);
+        notes.add(0, note);
     }
 }

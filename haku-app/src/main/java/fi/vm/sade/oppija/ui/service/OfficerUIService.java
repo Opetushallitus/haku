@@ -32,5 +32,5 @@ public interface OfficerUIService {
 
     Application passivateApplication(String oid, String reason, User user) throws ResourceNotFoundException;
 
-    void addNote(Application application, String note, User user);
+    void addNote(String applicationOid, String note, User user) throws ResourceNotFoundException;
 }

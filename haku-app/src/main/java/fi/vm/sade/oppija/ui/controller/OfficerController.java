@@ -205,4 +205,23 @@ public class OfficerController {
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
         return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel());
     }
+
+    @POST
+    @Path("/hakemus/{oid}/addNote")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Viewable addNote(@PathParam(OID_PATH_PARAM) final String oid,
+                              final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
+        for (String key : multiValues.keySet()) {
+            LOGGER.debug("passivation "+key+" -> "+multiValues.get(key));
+        }
+        StringBuilder noteBuilder = new StringBuilder();
+        for (String notePart : multiValues.get("note-text")) {
+            noteBuilder.append(notePart);
+        }
+
+        officerUIService.addNote(oid, noteBuilder.toString(), userHolder.getUser());
+        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
+        return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel());
+    }
 }

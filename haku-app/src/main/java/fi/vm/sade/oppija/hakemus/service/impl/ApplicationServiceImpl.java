@@ -177,6 +177,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             application.resetUser();
             application.setReceived(new Date());
+            application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), user));
             this.applicationDAO.save(application);
             this.userHolder.removeApplication(application.getFormId());
             return application.getOid();
