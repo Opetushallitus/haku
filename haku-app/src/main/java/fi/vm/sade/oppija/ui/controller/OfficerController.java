@@ -134,7 +134,8 @@ public class OfficerController {
         final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
 
         UIServiceResponse uiServiceResponse = officerUIService.updateApplication(oid,
-                new ApplicationPhase(hakuLomakeId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)));
+                new ApplicationPhase(hakuLomakeId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)),
+                userHolder.getUser());
 
         if (uiServiceResponse.hasErrors()) {
             return ok(new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel())).build();
@@ -175,17 +176,6 @@ public class OfficerController {
         officerUIService.addPersonAndAuthenticate(oid);
         return seeOther(UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, oid, "")).build();
     }
-
-//    @GET
-//    @Path("/hakemus/{oid}/passivate")
-//    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-//    public Response passivate(@PathParam(OID_PATH_PARAM) final String oid,
-//                              final MultivaluedMap<String, String> multiValues)
-//            throws URISyntaxException, ResourceNotFoundException, IOException {
-//        LOGGER.debug("Passivate application {}, {}", new Object[]{oid, multiValues});
-//        officerUIService.passivateApplication(oid);
-//        return redirectToLastPhase(oid);
-//    }
 
     @POST
     @Path("/hakemus/{oid}/passivate")

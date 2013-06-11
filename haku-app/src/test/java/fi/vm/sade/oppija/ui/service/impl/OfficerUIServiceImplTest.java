@@ -7,6 +7,7 @@ import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
@@ -77,7 +78,7 @@ public class OfficerUIServiceImplTest {
     @Test
     public void testUpdateApplication() throws Exception {
         UIServiceResponse uiServiceResponse = officerUIService.updateApplication(
-                OID, new ApplicationPhase(application.getFormId(), ID, new HashMap<String, String>()));
+                OID, new ApplicationPhase(application.getFormId(), ID, new HashMap<String, String>()), new AnonymousUser());
         assertTrue(11 == uiServiceResponse.getModel().size());
     }
 

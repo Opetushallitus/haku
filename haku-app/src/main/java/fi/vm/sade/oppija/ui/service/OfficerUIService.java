@@ -17,7 +17,7 @@ public interface OfficerUIService {
 
     UIServiceResponse getAdditionalInfo(final String oid) throws ResourceNotFoundException, IOException;
 
-    UIServiceResponse updateApplication(final String oid, final ApplicationPhase applicationPhase)
+    UIServiceResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user)
             throws ResourceNotFoundException;
 
     Application getApplicationWithLastPhase(final String oid) throws ResourceNotFoundException;

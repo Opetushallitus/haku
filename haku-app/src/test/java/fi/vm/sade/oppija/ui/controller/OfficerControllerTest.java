@@ -25,10 +25,12 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
+import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
@@ -62,6 +64,8 @@ public class OfficerControllerTest {
     @Before
     public void setUp() throws Exception {
         officerController = new OfficerController();
+        officerController.userHolder =new UserHolder();
+
         ApplicationService applicationService = mock(ApplicationService.class);
         FormService formService = mock(FormService.class);
         ValintaperusteetService valintaperusteetService = mock(ValintaperusteetService.class);
@@ -91,7 +95,7 @@ public class OfficerControllerTest {
         UIServiceResponse uiServiceResponse = new UIServiceResponse();
         when(officerApplicationService.getValidatedApplication(OID, PREVIEW_PHASE)).thenReturn(uiServiceResponse);
         when(officerApplicationService.getAdditionalInfo(OID)).thenReturn(uiServiceResponse);
-        when(officerApplicationService.updateApplication(eq(OID), any(ApplicationPhase.class))).thenReturn(uiServiceResponse);
+        when(officerApplicationService.updateApplication(eq(OID), any(ApplicationPhase.class), any(User.class))).thenReturn(uiServiceResponse);
         when(officerApplicationService.getApplicationWithLastPhase(eq(OID))).thenReturn(app);
         officerController.officerUIService = officerApplicationService;
     }

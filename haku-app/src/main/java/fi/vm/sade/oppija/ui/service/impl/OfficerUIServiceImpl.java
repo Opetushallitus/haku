@@ -4,6 +4,7 @@ import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.FormId;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -95,7 +97,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public UIServiceResponse updateApplication(final String oid, final ApplicationPhase applicationPhase) throws ResourceNotFoundException {
+    public UIServiceResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user)
+            throws ResourceNotFoundException {
 
         Application queryApplication = new Application(oid);
         Application application = this.applicationService.getApplication(oid);
@@ -113,6 +116,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         Element phase = activeForm.getPhase(applicationPhase.getPhaseId());
         ValidationResult phaseValidationResult = ElementTreeValidator.validate(phase, applicationPhase.getAnswers());
+
+        String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
+        application.addNote(new ApplicationNote(noteText, new Date(), user));
 
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());

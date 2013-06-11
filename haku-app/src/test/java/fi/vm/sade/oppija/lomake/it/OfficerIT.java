@@ -57,6 +57,36 @@ public class OfficerIT extends DummyModelBaseItTest {
         assertTrue("Edit links found", editLinks.isEmpty());
     }
 
+    @Test
+    public void testComments() {
+        clickSearch();
+        WebElement applicationLink = findByClassName("application-link").get(0);
+        applicationLink.click();
+        List<WebElement> editLinks = findByClassName("edit-link");
+        WebElement editLink = editLinks.get(5);
+        editLink.click();
+        findByIdAndClick("lupaMarkkinointi");
+        driver.findElement(new By.ByClassName("save")).click();
+        selenium.typeKeys("note-text", "Uusi kommentti");
+        findByIdAndClick("note-create");
+        passivate();
+
+        boolean received = false;
+        boolean lisatiedot = false;
+        boolean added = false;
+        boolean passive = false;
+        screenshot("comments");
+        for (WebElement element : findByClassName("note-content")) {
+            received = received || element.getText().contains("Hakemus vastaanotettu");
+            lisatiedot = lisatiedot || element.getText().contains("Päivitetty vaihetta 'lisatiedot'");
+            added = added || element.getText().contains("Uusi kommentti");
+            passive = passive || element.getText().contains("Hakemus passivoitu: reason");
+        }
+        assertTrue(received);
+        assertTrue(lisatiedot);
+        assertTrue(added);
+        assertTrue(passive);
+    }
 
     @Test
     public void testOrganization() throws Exception {

@@ -27,10 +27,10 @@
     </form>
 
     <c:forEach var="note" items="${application.notes}">
-        <div id="note-content">
-            <span id="note-date"><fmt:formatDate value="${note.added}" pattern="dd.MM.yyyy HH:mm:ss" /></span>
-            <span id="note-text"><c:out value="${note.noteText}" /></span>
-            <span id="note-user"><c:out value="${note.user.userName}" /></span>
+        <div class="note-content">
+            <span class="note-date"><fmt:formatDate value="${note.added}" pattern="dd.MM.yyyy HH:mm:ss" /></span>
+            <span class="note-text"><c:out value="${note.noteText}" /></span>
+            <span class="note-user"><c:out value="${note.user.userName}" /></span>
         </div>
     </c:forEach>
 </fieldset>
