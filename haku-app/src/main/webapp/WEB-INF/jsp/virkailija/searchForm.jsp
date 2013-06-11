@@ -84,13 +84,6 @@
             <span><fmt:message key="virkailija.hakemus.hakutulos"/><span id="resultcount">0</span> <fmt:message
                     key="virkailija.hakemus.hakutulos.osumaa"/></span>
 
-            <div class="margin-top-2 margin-bottom-1">
-                <div class="field-container-checkbox inline-block">
-                    <input type="checkbox" name="Kentta" value="Arvo" id="KenttaId"/>
-                    <label for="KenttaId"><fmt:message key="virkailija.hakemus.valitse.kaikki"/></label>
-                </div>
-            </div>
-
             <table id="application-table" class="virkailija-table-1">
                 <thead>
                 <tr>
