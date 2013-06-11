@@ -32,7 +32,6 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,11 +73,11 @@ public class ApplicationResource {
     public List<Application> findApplications(@DefaultValue("") @QueryParam("q") String query,
                                               @DefaultValue("") @QueryParam("appState") String appState,
                                               @DefaultValue("") @QueryParam("appPreference") String appPreference,
-                                              @DefaultValue("") @QueryParam("lopOid") String lopOid) {
-        LOGGER.debug("Finding applications q:{}, appState:{}, appPreference:{}", query, appState, appPreference);
-        List<Application> result = new ArrayList<Application>();
-        result.addAll(applicationService.findApplications(query, new ApplicationQueryParameters(appState, appPreference, lopOid)));
-        return result;
+                                              @DefaultValue("") @QueryParam("lopoid") String lopoid) {
+        LOGGER.debug("Finding applications q:{}, appState:{}, appPreference:{}, lopoid:{}",
+                query, appState, appPreference, lopoid);
+        return applicationService.findApplications(
+                query, new ApplicationQueryParameters(appState, appPreference, lopoid));
     }
 
     @GET

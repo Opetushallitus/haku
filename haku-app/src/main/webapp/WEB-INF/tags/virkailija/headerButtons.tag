@@ -12,14 +12,13 @@
             <a href="${contextPath}/virkailija/hakemus" class="button small back"></a>
         </c:when>
         <c:otherwise>
-            <a href="${contextPath}/virkailija/hakemus/${application.oid}/" class="button small back"></a>
+            <a href="${contextPath}/virkailija/hakemus/${oid}/" class="button small back"></a>
         </c:otherwise>
     </c:choose>
-    <a href="#" class="button small disabled"><fmt:message key="virkailija.hakemus.vrk"/></a>
-    <a href="#" class="button small disabled"><fmt:message key="virkailija.hakemus.tor"/></a>
     <c:choose>
         <c:when test="${!application.passive}">
-            <a href="#" id="passivateApplication" data-po-show="confirmPassivation" class="button small "><fmt:message key="virkailija.hakemus.passivoi.hakemus"/></a>
+            <a href="#" id="passivateApplication" data-po-show="confirmPassivation" class="button small "><fmt:message
+                    key="virkailija.hakemus.passivoi.hakemus"/></a>
         </c:when>
         <c:otherwise>
             <a href="#" class="button small disabled"><fmt:message key="virkailija.hakemus.passivoi.hakemus"/></a>

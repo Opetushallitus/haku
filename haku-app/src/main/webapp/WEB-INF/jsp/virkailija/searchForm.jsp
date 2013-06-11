@@ -19,7 +19,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <section id="searchSection">
     <form id="searchform">
-        <input type="hidden" id="lopOid" name="lopoid">
+        <input type="hidden" id="lopoid" name="lopoid">
 
         <div class="grid16-16">
             <table class="form-layout-table width-100">
