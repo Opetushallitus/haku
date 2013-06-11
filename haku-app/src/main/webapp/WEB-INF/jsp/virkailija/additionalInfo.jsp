@@ -35,7 +35,7 @@
     <script src="${contextPath}/resources/jquery/jquery.min.js"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
     <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
-    <script type="text/javascript" src="https://itest-virkailija.oph.ware.fi/virkailija-raamit/apply-raamit.js"></script>
+    <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
     <haku:ie9StyleFix/>
 
