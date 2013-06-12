@@ -26,7 +26,7 @@
 <c:set var="oid" value="${it.oid}" scope="request"/>
 <c:set var="application" value="${it.application}" scope="request"/>
 <c:set var="categoryData" value="${it.application.vastauksetMerged}" scope="request"/>
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
 <html>
 <head>
@@ -136,7 +136,7 @@
             <section id="hakemus" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus"
                      style="display: block">
 
-                <haku:messages messages="${errorMessages}" additionalClass="warming"/>
+                <haku:messages messages="${errorMessages}" additionalClass="warning"/>
 
                 <c:choose>
                     <c:when test="${preview}">
@@ -147,6 +147,7 @@
                                 <jsp:include page="../elements/${child.type}Preview.jsp"/>
                             </c:forEach>
                             <jsp:include page="./additionalInfoPreview.jsp"/>
+                            <jsp:include page="./notes.jsp"/>
                         </div>
                     </c:when>
                     <c:otherwise>
