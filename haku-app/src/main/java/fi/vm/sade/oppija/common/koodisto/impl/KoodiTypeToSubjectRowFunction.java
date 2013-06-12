@@ -60,9 +60,9 @@ public class KoodiTypeToSubjectRowFunction implements Function<KoodiType, Subjec
                 if (CODE_OPPIAINEENVALINNAISUUS.equals(koodistoUri)) {
                     optional = isTrue(type);
                 } else if (CODE_ONLUKIONOPPIAINE.equals(koodistoUri)) {
-                    comprehensiveSchool = isTrue(type);
-                } else if (CODE_ONPERUSASTEENOPPIAINE.equals(koodistoUri)) {
                     highSchool = isTrue(type);
+                } else if (CODE_ONPERUSASTEENOPPIAINE.equals(koodistoUri)) {
+                    comprehensiveSchool = isTrue(type);
                 } else if (CODE_OPPIAINEENKIELISYYS.equals(koodistoUri)) {
                     language = isTrue(type);
                 }
