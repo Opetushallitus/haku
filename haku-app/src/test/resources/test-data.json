@@ -32,9 +32,9 @@
               "i18nText": {
                 "id": "text_1360327506986",
                 "translations": {
-                  "fi": "Henkilštiedot",
-                  "sv": "Henkilštiedot_sv",
-                  "en": "Henkilštiedot_en"
+                  "fi": "Henkilï¿½tiedot",
+                  "sv": "Henkilï¿½tiedot_sv",
+                  "en": "Henkilï¿½tiedot_en"
                 }
               },
               "preview": false,
@@ -54,9 +54,9 @@
                   "i18nText": {
                     "id": "text_1360327507004",
                     "translations": {
-                      "fi": "Henkilštiedot",
-                      "sv": "Henkilštiedot_sv",
-                      "en": "Henkilštiedot_en"
+                      "fi": "Henkilï¿½tiedot",
+                      "sv": "Henkilï¿½tiedot_sv",
+                      "en": "Henkilï¿½tiedot_en"
                     }
                   },
                   "additionalQuestions": {},
@@ -191,13 +191,13 @@
                           "en": "Kutsumanimi_en"
                         }
                       },
-                      "help": "Valitse kutsumanimeksi jokin virallisista etunimistŠsi",
+                      "help": "Valitse kutsumanimeksi jokin virallisista etunimistï¿½si",
                       "ihelp": {
                         "id": "Kutsumanimi_help",
                         "translations": {
-                          "fi": "Valitse kutsumanimeksi jokin virallisista etunimistŠsi",
-                          "sv": "Valitse kutsumanimeksi jokin virallisista etunimistŠsi_sv",
-                          "en": "Valitse kutsumanimeksi jokin virallisista etunimistŠsi_en"
+                          "fi": "Valitse kutsumanimeksi jokin virallisista etunimistï¿½si",
+                          "sv": "Valitse kutsumanimeksi jokin virallisista etunimistï¿½si_sv",
+                          "en": "Valitse kutsumanimeksi jokin virallisista etunimistï¿½si_en"
                         }
                       },
                       "children": [],
@@ -247,13 +247,13 @@
                           "en": "Kansalaisuus_en"
                         }
                       },
-                      "help": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistŠ",
+                      "help": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistï¿½",
                       "ihelp": {
                         "id": "kansalaisuus_help",
                         "translations": {
-                          "fi": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistŠ",
-                          "sv": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistŠ_sv",
-                          "en": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistŠ_en"
+                          "fi": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistï¿½",
+                          "sv": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistï¿½_sv",
+                          "en": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistï¿½_en"
                         }
                       },
                       "children": [],
@@ -350,9 +350,9 @@
                       "i18nText": {
                         "id": "text_1360327507006",
                         "translations": {
-                          "fi": "Henkilštunnus",
-                          "sv": "Henkilštunnus_sv",
-                          "en": "Henkilštunnus_en"
+                          "fi": "Henkilï¿½tunnus",
+                          "sv": "Henkilï¿½tunnus_sv",
+                          "en": "Henkilï¿½tunnus_en"
                         }
                       },
                       "help": "",
@@ -384,18 +384,18 @@
                         "i18nText": {
                           "id": "text_1360327507006",
                           "translations": {
-                            "fi": "Henkilštunnus",
-                            "sv": "Henkilštunnus_sv",
-                            "en": "Henkilštunnus_en"
+                            "fi": "Henkilï¿½tunnus",
+                            "sv": "Henkilï¿½tunnus_sv",
+                            "en": "Henkilï¿½tunnus_en"
                           }
                         },
-                        "help": "Jos sinulla ei ole suomalaista henkilštunnusta, tŠytŠ tŠhŠn syntymŠaikasi",
+                        "help": "Jos sinulla ei ole suomalaista henkilï¿½tunnusta, tï¿½ytï¿½ tï¿½hï¿½n syntymï¿½aikasi",
                         "ihelp": {
                           "id": "Henkilotunnus_help",
                           "translations": {
-                            "fi": "Jos sinulla ei ole suomalaista henkilštunnusta, tŠytŠ tŠhŠn syntymŠaikasi",
-                            "sv": "Jos sinulla ei ole suomalaista henkilštunnusta, tŠytŠ tŠhŠn syntymŠaikasi_sv",
-                            "en": "Jos sinulla ei ole suomalaista henkilštunnusta, tŠytŠ tŠhŠn syntymŠaikasi_en"
+                            "fi": "Jos sinulla ei ole suomalaista henkilï¿½tunnusta, tï¿½ytï¿½ tï¿½hï¿½n syntymï¿½aikasi",
+                            "sv": "Jos sinulla ei ole suomalaista henkilï¿½tunnusta, tï¿½ytï¿½ tï¿½hï¿½n syntymï¿½aikasi_sv",
+                            "en": "Jos sinulla ei ole suomalaista henkilï¿½tunnusta, tï¿½ytï¿½ tï¿½hï¿½n syntymï¿½aikasi_en"
                           }
                         },
                         "children": [],
@@ -553,22 +553,22 @@
                     },
                     {
                       "type": "TextQuestion",
-                      "id": "SŠhkšposti",
+                      "id": "Sï¿½hkï¿½posti",
                       "i18nText": {
                         "id": "text_1360327507006",
                         "translations": {
-                          "fi": "SŠhkšpostiosoite",
-                          "sv": "SŠhkšpostiosoite_sv",
-                          "en": "SŠhkšpostiosoite_en"
+                          "fi": "Sï¿½hkï¿½postiosoite",
+                          "sv": "Sï¿½hkï¿½postiosoite_sv",
+                          "en": "Sï¿½hkï¿½postiosoite_en"
                         }
                       },
-                      "help": "Kirjoita tŠhŠn sŠhkšpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja ja jota kŠytŠt sŠŠnnšllisesti. Saat vahvistuksen hakemuksen perille menosta tŠhŠn sŠhkšpostiosoitteeseen.",
+                      "help": "Kirjoita tï¿½hï¿½n sï¿½hkï¿½postiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja ja jota kï¿½ytï¿½t sï¿½ï¿½nnï¿½llisesti. Saat vahvistuksen hakemuksen perille menosta tï¿½hï¿½n sï¿½hkï¿½postiosoitteeseen.",
                       "ihelp": {
-                        "id": "SŠhkšposti_help",
+                        "id": "Sï¿½hkï¿½posti_help",
                         "translations": {
-                          "fi": "Kirjoita tŠhŠn sŠhkšpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja ja jota kŠytŠt sŠŠnnšllisesti. Saat vahvistuksen hakemuksen perille menosta tŠhŠn sŠhkšpostiosoitteeseen.",
-                          "sv": "Kirjoita tŠhŠn sŠhkšpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja ja jota kŠytŠt sŠŠnnšllisesti. Saat vahvistuksen hakemuksen perille menosta tŠhŠn sŠhkšpostiosoitteeseen._sv",
-                          "en": "Kirjoita tŠhŠn sŠhkšpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja ja jota kŠytŠt sŠŠnnšllisesti. Saat vahvistuksen hakemuksen perille menosta tŠhŠn sŠhkšpostiosoitteeseen._en"
+                          "fi": "Kirjoita tï¿½hï¿½n sï¿½hkï¿½postiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja ja jota kï¿½ytï¿½t sï¿½ï¿½nnï¿½llisesti. Saat vahvistuksen hakemuksen perille menosta tï¿½hï¿½n sï¿½hkï¿½postiosoitteeseen.",
+                          "sv": "Kirjoita tï¿½hï¿½n sï¿½hkï¿½postiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja ja jota kï¿½ytï¿½t sï¿½ï¿½nnï¿½llisesti. Saat vahvistuksen hakemuksen perille menosta tï¿½hï¿½n sï¿½hkï¿½postiosoitteeseen._sv",
+                          "en": "Kirjoita tï¿½hï¿½n sï¿½hkï¿½postiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja ja jota kï¿½ytï¿½t sï¿½ï¿½nnï¿½llisesti. Saat vahvistuksen hakemuksen perille menosta tï¿½hï¿½n sï¿½hkï¿½postiosoitteeseen._en"
                         }
                       },
                       "children": [],
@@ -576,17 +576,17 @@
                         "id": {
                           "type": "Attribute",
                           "key": "id",
-                          "value": "SŠhkšposti"
+                          "value": "Sï¿½hkï¿½posti"
                         },
                         "pattern": {
                           "type": "Attribute",
                           "key": "pattern",
-                          "value": "^[a-zA-Z0-9.!#$%\u0026Õ*+/\u003d?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$"
+                          "value": "^[a-zA-Z0-9.!#$%\u0026ï¿½*+/\u003d?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$"
                         },
                         "name": {
                           "type": "Attribute",
                           "key": "name",
-                          "value": "SŠhkšposti"
+                          "value": "Sï¿½hkï¿½posti"
                         },
                         "type": {
                           "type": "Attribute",
@@ -613,13 +613,13 @@
                           "en": "Matkapuhelinnumero_en"
                         }
                       },
-                      "help": "Kirjoita tŠhŠn matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.",
+                      "help": "Kirjoita tï¿½hï¿½n matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.",
                       "ihelp": {
                         "id": "matkapuhelinnumero_help",
                         "translations": {
-                          "fi": "Kirjoita tŠhŠn matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.",
-                          "sv": "Kirjoita tŠhŠn matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden._sv",
-                          "en": "Kirjoita tŠhŠn matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden._en"
+                          "fi": "Kirjoita tï¿½hï¿½n matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.",
+                          "sv": "Kirjoita tï¿½hï¿½n matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden._sv",
+                          "en": "Kirjoita tï¿½hï¿½n matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden._en"
                         }
                       },
                       "children": [],
@@ -657,7 +657,7 @@
                       "type": "AddElementRule",
                       "id": "addHuoltajanPuhelinnumeroRule",
                       "relatedElementId": "huoltajanPuhelinnumero",
-                      "text": "LisŠŠ huoltajan puhelinnumero",
+                      "text": "Lisï¿½ï¿½ huoltajan puhelinnumero",
                       "help": "",
                       "ihelp": {
                         "id": "addHuoltajanPuhelinnumeroRule_help",
@@ -679,13 +679,13 @@
                               "en": "Huoltajan puhelinnumero_en"
                             }
                           },
-                          "help": "Kirjoita tŠhŠn huoltajan puhelinnumero.",
+                          "help": "Kirjoita tï¿½hï¿½n huoltajan puhelinnumero.",
                           "ihelp": {
                             "id": "huoltajanPuhelinnumero_help",
                             "translations": {
-                              "fi": "Kirjoita tŠhŠn huoltajan puhelinnumero.",
-                              "sv": "Kirjoita tŠhŠn huoltajan puhelinnumero._sv",
-                              "en": "Kirjoita tŠhŠn huoltajan puhelinnumero._en"
+                              "fi": "Kirjoita tï¿½hï¿½n huoltajan puhelinnumero.",
+                              "sv": "Kirjoita tï¿½hï¿½n huoltajan puhelinnumero._sv",
+                              "en": "Kirjoita tï¿½hï¿½n huoltajan puhelinnumero._en"
                             }
                           },
                           "children": [],
@@ -766,9 +766,9 @@
                               "i18nText": {
                                 "id": "text_1360327507013",
                                 "translations": {
-                                  "fi": "LŠhiosoite",
-                                  "sv": "LŠhiosoite_sv",
-                                  "en": "LŠhiosoite_en"
+                                  "fi": "Lï¿½hiosoite",
+                                  "sv": "Lï¿½hiosoite_sv",
+                                  "en": "Lï¿½hiosoite_en"
                                 }
                               },
                               "help": "",
@@ -898,13 +898,13 @@
                                   "name": "Helsinki"
                                 }
                               },
-                              "help": "Kirjoita tŠhŠn osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvŠŠ postia, kuten kutsun valintakokeeseen tai valintapŠŠtšksen.",
+                              "help": "Kirjoita tï¿½hï¿½n osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvï¿½ï¿½ postia, kuten kutsun valintakokeeseen tai valintapï¿½ï¿½tï¿½ksen.",
                               "ihelp": {
                                 "id": "Postinumero_help",
                                 "translations": {
-                                  "fi": "Kirjoita tŠhŠn osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvŠŠ postia, kuten kutsun valintakokeeseen tai valintapŠŠtšksen.",
-                                  "sv": "Kirjoita tŠhŠn osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvŠŠ postia, kuten kutsun valintakokeeseen tai valintapŠŠtšksen._sv",
-                                  "en": "Kirjoita tŠhŠn osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvŠŠ postia, kuten kutsun valintakokeeseen tai valintapŠŠtšksen._en"
+                                  "fi": "Kirjoita tï¿½hï¿½n osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvï¿½ï¿½ postia, kuten kutsun valintakokeeseen tai valintapï¿½ï¿½tï¿½ksen.",
+                                  "sv": "Kirjoita tï¿½hï¿½n osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvï¿½ï¿½ postia, kuten kutsun valintakokeeseen tai valintapï¿½ï¿½tï¿½ksen._sv",
+                                  "en": "Kirjoita tï¿½hï¿½n osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvï¿½ï¿½ postia, kuten kutsun valintakokeeseen tai valintapï¿½ï¿½tï¿½ksen._en"
                                 }
                               },
                               "children": [],
@@ -999,12 +999,12 @@
                                   "i18nText": {
                                     "id": "text_1360327507006",
                                     "translations": {
-                                      "fi": "JalasjŠrvi",
-                                      "sv": "JalasjŠrvi_sv",
-                                      "en": "JalasjŠrvi_en"
+                                      "fi": "Jalasjï¿½rvi",
+                                      "sv": "Jalasjï¿½rvi_sv",
+                                      "en": "Jalasjï¿½rvi_en"
                                     }
                                   },
-                                  "value": "JalasjŠrvi",
+                                  "value": "Jalasjï¿½rvi",
                                   "help": "",
                                   "ihelp": {
                                     "id": "kotikunta_jalasjarvi, _help",
@@ -1151,9 +1151,9 @@
                               "i18nText": {
                                 "id": "text_1360327507013",
                                 "translations": {
-                                  "fi": "TŠmŠ on ensisijainen osoitteeni",
-                                  "sv": "TŠmŠ on ensisijainen osoitteeni_sv",
-                                  "en": "TŠmŠ on ensisijainen osoitteeni_en"
+                                  "fi": "Tï¿½mï¿½ on ensisijainen osoitteeni",
+                                  "sv": "Tï¿½mï¿½ on ensisijainen osoitteeni_sv",
+                                  "en": "Tï¿½mï¿½ on ensisijainen osoitteeni_en"
                                 }
                               },
                               "help": "",
@@ -1383,22 +1383,22 @@
                     },
                     {
                       "type": "DropdownSelect",
-                      "id": "Šidinkieli",
+                      "id": "ï¿½idinkieli",
                       "i18nText": {
                         "id": "text_1360327507006",
                         "translations": {
-                          "fi": "€idinkieli",
-                          "sv": "€idinkieli_sv",
-                          "en": "€idinkieli_en"
+                          "fi": "ï¿½idinkieli",
+                          "sv": "ï¿½idinkieli_sv",
+                          "en": "ï¿½idinkieli_en"
                         }
                       },
-                      "help": "Jos omaa ŠidinkieltŠsi ei lšydy valintalistasta, valitse Šidinkieleksesi.",
+                      "help": "Jos omaa ï¿½idinkieltï¿½si ei lï¿½ydy valintalistasta, valitse ï¿½idinkieleksesi.",
                       "ihelp": {
-                        "id": "Šidinkieli_help",
+                        "id": "ï¿½idinkieli_help",
                         "translations": {
-                          "fi": "Jos omaa ŠidinkieltŠsi ei lšydy valintalistasta, valitse Šidinkieleksesi.",
-                          "sv": "Jos omaa ŠidinkieltŠsi ei lšydy valintalistasta, valitse Šidinkieleksesi._sv",
-                          "en": "Jos omaa ŠidinkieltŠsi ei lšydy valintalistasta, valitse Šidinkieleksesi._en"
+                          "fi": "Jos omaa ï¿½idinkieltï¿½si ei lï¿½ydy valintalistasta, valitse ï¿½idinkieleksesi.",
+                          "sv": "Jos omaa ï¿½idinkieltï¿½si ei lï¿½ydy valintalistasta, valitse ï¿½idinkieleksesi._sv",
+                          "en": "Jos omaa ï¿½idinkieltï¿½si ei lï¿½ydy valintalistasta, valitse ï¿½idinkieleksesi._en"
                         }
                       },
                       "children": [],
@@ -1406,17 +1406,17 @@
                         "id": {
                           "type": "Attribute",
                           "key": "id",
-                          "value": "Šidinkieli"
+                          "value": "ï¿½idinkieli"
                         },
                         "placeholder": {
                           "type": "Attribute",
                           "key": "placeholder",
-                          "value": "Valitse €idinkieli"
+                          "value": "Valitse ï¿½idinkieli"
                         },
                         "name": {
                           "type": "Attribute",
                           "key": "name",
-                          "value": "Šidinkieli"
+                          "value": "ï¿½idinkieli"
                         },
                         "required": {
                           "type": "Attribute",
@@ -1429,7 +1429,7 @@
                       "options": [
                         {
                           "type": "Option",
-                          "id": "Šidinkieli_suomi",
+                          "id": "ï¿½idinkieli_suomi",
                           "i18nText": {
                             "id": "text_1360327507006",
                             "translations": {
@@ -1441,7 +1441,7 @@
                           "value": "Suomi",
                           "help": "",
                           "ihelp": {
-                            "id": "Šidinkieli_suomi_help",
+                            "id": "ï¿½idinkieli_suomi_help",
                             "translations": {
                               "fi": "",
                               "sv": "_sv",
@@ -1453,13 +1453,13 @@
                             "id": {
                               "type": "Attribute",
                               "key": "id",
-                              "value": "Šidinkieli_suomi"
+                              "value": "ï¿½idinkieli_suomi"
                             }
                           }
                         },
                         {
                           "type": "Option",
-                          "id": "Šidinkieli_ruotsi",
+                          "id": "ï¿½idinkieli_ruotsi",
                           "i18nText": {
                             "id": "text_1360327507006",
                             "translations": {
@@ -1471,7 +1471,7 @@
                           "value": "Ruotsi",
                           "help": "",
                           "ihelp": {
-                            "id": "Šidinkieli_ruotsi_help",
+                            "id": "ï¿½idinkieli_ruotsi_help",
                             "translations": {
                               "fi": "",
                               "sv": "_sv",
@@ -1483,7 +1483,7 @@
                             "id": {
                               "type": "Attribute",
                               "key": "id",
-                              "value": "Šidinkieli_ruotsi"
+                              "value": "ï¿½idinkieli_ruotsi"
                             }
                           }
                         }
@@ -1541,13 +1541,13 @@
                     }
                   },
                   "additionalQuestions": {},
-                  "help": "Merkitse tŠlle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitŠ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimŠŠrŠ. Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet eivŠt voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta.",
+                  "help": "Merkitse tï¿½lle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitï¿½ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimï¿½ï¿½rï¿½. Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet eivï¿½t voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta.",
                   "ihelp": {
                     "id": "KoulutustaustaGrp_help",
                     "translations": {
-                      "fi": "Merkitse tŠlle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitŠ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimŠŠrŠ. Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet eivŠt voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta.",
-                      "sv": "Merkitse tŠlle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitŠ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimŠŠrŠ. Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet eivŠt voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta._sv",
-                      "en": "Merkitse tŠlle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitŠ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimŠŠrŠ. Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet eivŠt voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta._en"
+                      "fi": "Merkitse tï¿½lle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitï¿½ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimï¿½ï¿½rï¿½. Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet eivï¿½t voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta.",
+                      "sv": "Merkitse tï¿½lle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitï¿½ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimï¿½ï¿½rï¿½. Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet eivï¿½t voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta._sv",
+                      "en": "Merkitse tï¿½lle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitï¿½ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimï¿½ï¿½rï¿½. Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet eivï¿½t voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta._en"
                     }
                   },
                   "children": [
@@ -1593,9 +1593,9 @@
                               "i18nText": {
                                 "id": "text_1360327507014",
                                 "translations": {
-                                  "fi": "MinŠ vuonna olet saanut lukiotodistuksen?",
-                                  "sv": "MinŠ vuonna olet saanut lukiotodistuksen?_sv",
-                                  "en": "MinŠ vuonna olet saanut lukiotodistuksen?_en"
+                                  "fi": "Minï¿½ vuonna olet saanut lukiotodistuksen?",
+                                  "sv": "Minï¿½ vuonna olet saanut lukiotodistuksen?_sv",
+                                  "en": "Minï¿½ vuonna olet saanut lukiotodistuksen?_en"
                                 }
                               },
                               "help": "",
@@ -1683,9 +1683,9 @@
                               "i18nText": {
                                 "id": "text_1360327507014",
                                 "translations": {
-                                  "fi": "Saatko peruskoulun pŠŠttštodistuksen hakukevŠŠnŠ 2012?",
-                                  "sv": "Saatko peruskoulun pŠŠttštodistuksen hakukevŠŠnŠ 2012?_sv",
-                                  "en": "Saatko peruskoulun pŠŠttštodistuksen hakukevŠŠnŠ 2012?_en"
+                                  "fi": "Saatko peruskoulun pï¿½ï¿½ttï¿½todistuksen hakukevï¿½ï¿½nï¿½ 2012?",
+                                  "sv": "Saatko peruskoulun pï¿½ï¿½ttï¿½todistuksen hakukevï¿½ï¿½nï¿½ 2012?_sv",
+                                  "en": "Saatko peruskoulun pï¿½ï¿½ttï¿½todistuksen hakukevï¿½ï¿½nï¿½ 2012?_en"
                                 }
                               },
                               "help": "",
@@ -1719,9 +1719,9 @@
                                       "i18nText": {
                                         "id": "text_1360327507014",
                                         "translations": {
-                                          "fi": "Olen saanut pŠŠttštodistuksen jo aiemmin, vuonna",
-                                          "sv": "Olen saanut pŠŠttštodistuksen jo aiemmin, vuonna_sv",
-                                          "en": "Olen saanut pŠŠttštodistuksen jo aiemmin, vuonna_en"
+                                          "fi": "Olen saanut pï¿½ï¿½ttï¿½todistuksen jo aiemmin, vuonna",
+                                          "sv": "Olen saanut pï¿½ï¿½ttï¿½todistuksen jo aiemmin, vuonna_sv",
+                                          "en": "Olen saanut pï¿½ï¿½ttï¿½todistuksen jo aiemmin, vuonna_en"
                                         }
                                       },
                                       "help": "",
@@ -1815,12 +1815,12 @@
                                   "i18nText": {
                                     "id": "text_1360327507014",
                                     "translations": {
-                                      "fi": "KyllŠ",
-                                      "sv": "KyllŠ_sv",
-                                      "en": "KyllŠ_en"
+                                      "fi": "Kyllï¿½",
+                                      "sv": "Kyllï¿½_sv",
+                                      "en": "Kyllï¿½_en"
                                     }
                                   },
-                                  "value": "kyllŠ",
+                                  "value": "kyllï¿½",
                                   "help": "",
                                   "ihelp": {
                                     "id": "peruskoulu2012_kylla_help",
@@ -1877,18 +1877,18 @@
                               "i18nText": {
                                 "id": "text_1360327507014",
                                 "translations": {
-                                  "fi": "MikŠ oli tukintosi opetuskieli",
-                                  "sv": "MikŠ oli tukintosi opetuskieli_sv",
-                                  "en": "MikŠ oli tukintosi opetuskieli_en"
+                                  "fi": "Mikï¿½ oli tukintosi opetuskieli",
+                                  "sv": "Mikï¿½ oli tukintosi opetuskieli_sv",
+                                  "en": "Mikï¿½ oli tukintosi opetuskieli_en"
                                 }
                               },
-                              "help": "Merkitse tŠhŠn se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellŠ tasapuolisesti, valitse toinen niistŠ",
+                              "help": "Merkitse tï¿½hï¿½n se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellï¿½ tasapuolisesti, valitse toinen niistï¿½",
                               "ihelp": {
                                 "id": "opetuskieli_help",
                                 "translations": {
-                                  "fi": "Merkitse tŠhŠn se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellŠ tasapuolisesti, valitse toinen niistŠ",
-                                  "sv": "Merkitse tŠhŠn se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellŠ tasapuolisesti, valitse toinen niistŠ_sv",
-                                  "en": "Merkitse tŠhŠn se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellŠ tasapuolisesti, valitse toinen niistŠ_en"
+                                  "fi": "Merkitse tï¿½hï¿½n se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellï¿½ tasapuolisesti, valitse toinen niistï¿½",
+                                  "sv": "Merkitse tï¿½hï¿½n se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellï¿½ tasapuolisesti, valitse toinen niistï¿½_sv",
+                                  "en": "Merkitse tï¿½hï¿½n se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellï¿½ tasapuolisesti, valitse toinen niistï¿½_en"
                                 }
                               },
                               "children": [],
@@ -1980,9 +1980,9 @@
                               "i18nText": {
                                 "id": "text_1360327507014",
                                 "translations": {
-                                  "fi": "Kymppiluokka (perusopetuksen lisŠopetuksen oppimŠŠrŠ, vŠhintŠŠn 1100 tuntia)",
-                                  "sv": "Kymppiluokka (perusopetuksen lisŠopetuksen oppimŠŠrŠ, vŠhintŠŠn 1100 tuntia)_sv",
-                                  "en": "Kymppiluokka (perusopetuksen lisŠopetuksen oppimŠŠrŠ, vŠhintŠŠn 1100 tuntia)_en"
+                                  "fi": "Kymppiluokka (perusopetuksen lisï¿½opetuksen oppimï¿½ï¿½rï¿½, vï¿½hintï¿½ï¿½n 1100 tuntia)",
+                                  "sv": "Kymppiluokka (perusopetuksen lisï¿½opetuksen oppimï¿½ï¿½rï¿½, vï¿½hintï¿½ï¿½n 1100 tuntia)_sv",
+                                  "en": "Kymppiluokka (perusopetuksen lisï¿½opetuksen oppimï¿½ï¿½rï¿½, vï¿½hintï¿½ï¿½n 1100 tuntia)_en"
                                 }
                               },
                               "help": "",
@@ -2085,9 +2085,9 @@
                               "i18nText": {
                                 "id": "text_1360327507014",
                                 "translations": {
-                                  "fi": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena jŠrjestettŠvŠ kotitalousopetus)",
-                                  "sv": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena jŠrjestettŠvŠ kotitalousopetus)_sv",
-                                  "en": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena jŠrjestettŠvŠ kotitalousopetus)_en"
+                                  "fi": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena jï¿½rjestettï¿½vï¿½ kotitalousopetus)",
+                                  "sv": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena jï¿½rjestettï¿½vï¿½ kotitalousopetus)_sv",
+                                  "en": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena jï¿½rjestettï¿½vï¿½ kotitalousopetus)_en"
                                 }
                               },
                               "help": "",
@@ -2120,9 +2120,9 @@
                               "i18nText": {
                                 "id": "text_1360327507014",
                                 "translations": {
-                                  "fi": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vŠhintŠŠn 20 tuntia)",
-                                  "sv": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vŠhintŠŠn 20 tuntia)_sv",
-                                  "en": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vŠhintŠŠn 20 tuntia)_en"
+                                  "fi": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vï¿½hintï¿½ï¿½n 20 tuntia)",
+                                  "sv": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vï¿½hintï¿½ï¿½n 20 tuntia)_sv",
+                                  "en": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vï¿½hintï¿½ï¿½n 20 tuntia)_en"
                                 }
                               },
                               "help": "",
@@ -2221,19 +2221,19 @@
                           "i18nText": {
                             "id": "text_1360327507013",
                             "translations": {
-                              "fi": "Perusopetuksen oppimŠŠrŠ",
-                              "sv": "Perusopetuksen oppimŠŠrŠ_sv",
-                              "en": "Perusopetuksen oppimŠŠrŠ_en"
+                              "fi": "Perusopetuksen oppimï¿½ï¿½rï¿½",
+                              "sv": "Perusopetuksen oppimï¿½ï¿½rï¿½_sv",
+                              "en": "Perusopetuksen oppimï¿½ï¿½rï¿½_en"
                             }
                           },
                           "value": "tutkinto1",
-                          "help": "Valitse tŠmŠ, jos olet kŠynyt peruskoulun.",
+                          "help": "Valitse tï¿½mï¿½, jos olet kï¿½ynyt peruskoulun.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto1_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ, jos olet kŠynyt peruskoulun.",
-                              "sv": "Valitse tŠmŠ, jos olet kŠynyt peruskoulun._sv",
-                              "en": "Valitse tŠmŠ, jos olet kŠynyt peruskoulun._en"
+                              "fi": "Valitse tï¿½mï¿½, jos olet kï¿½ynyt peruskoulun.",
+                              "sv": "Valitse tï¿½mï¿½, jos olet kï¿½ynyt peruskoulun._sv",
+                              "en": "Valitse tï¿½mï¿½, jos olet kï¿½ynyt peruskoulun._en"
                             }
                           },
                           "children": [],
@@ -2251,19 +2251,19 @@
                           "i18nText": {
                             "id": "text_1360327507013",
                             "translations": {
-                              "fi": "Perusopetuksen erityisopetuksen osittain yksilšllistetty oppimŠŠrŠ",
-                              "sv": "Perusopetuksen erityisopetuksen osittain yksilšllistetty oppimŠŠrŠ_sv",
-                              "en": "Perusopetuksen erityisopetuksen osittain yksilšllistetty oppimŠŠrŠ_en"
+                              "fi": "Perusopetuksen erityisopetuksen osittain yksilï¿½llistetty oppimï¿½ï¿½rï¿½",
+                              "sv": "Perusopetuksen erityisopetuksen osittain yksilï¿½llistetty oppimï¿½ï¿½rï¿½_sv",
+                              "en": "Perusopetuksen erityisopetuksen osittain yksilï¿½llistetty oppimï¿½ï¿½rï¿½_en"
                             }
                           },
                           "value": "tutkinto2",
-                          "help": "Valitse tŠmŠ, jos olet opiskellut yksilšllistetyn oppimŠŠrŠn puolessa tai alle puolessa oppiaineista.",
+                          "help": "Valitse tï¿½mï¿½, jos olet opiskellut yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n puolessa tai alle puolessa oppiaineista.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto2_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ, jos olet opiskellut yksilšllistetyn oppimŠŠrŠn puolessa tai alle puolessa oppiaineista.",
-                              "sv": "Valitse tŠmŠ, jos olet opiskellut yksilšllistetyn oppimŠŠrŠn puolessa tai alle puolessa oppiaineista._sv",
-                              "en": "Valitse tŠmŠ, jos olet opiskellut yksilšllistetyn oppimŠŠrŠn puolessa tai alle puolessa oppiaineista._en"
+                              "fi": "Valitse tï¿½mï¿½, jos olet opiskellut yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n puolessa tai alle puolessa oppiaineista.",
+                              "sv": "Valitse tï¿½mï¿½, jos olet opiskellut yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n puolessa tai alle puolessa oppiaineista._sv",
+                              "en": "Valitse tï¿½mï¿½, jos olet opiskellut yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n puolessa tai alle puolessa oppiaineista._en"
                             }
                           },
                           "children": [],
@@ -2281,19 +2281,19 @@
                           "i18nText": {
                             "id": "text_1360327507013",
                             "translations": {
-                              "fi": "Perusopetuksen erityisopetuksen yksilšllistetty oppimŠŠrŠ, opetus jŠrjestetty toiminta-alueittain",
-                              "sv": "Perusopetuksen erityisopetuksen yksilšllistetty oppimŠŠrŠ, opetus jŠrjestetty toiminta-alueittain_sv",
-                              "en": "Perusopetuksen erityisopetuksen yksilšllistetty oppimŠŠrŠ, opetus jŠrjestetty toiminta-alueittain_en"
+                              "fi": "Perusopetuksen erityisopetuksen yksilï¿½llistetty oppimï¿½ï¿½rï¿½, opetus jï¿½rjestetty toiminta-alueittain",
+                              "sv": "Perusopetuksen erityisopetuksen yksilï¿½llistetty oppimï¿½ï¿½rï¿½, opetus jï¿½rjestetty toiminta-alueittain_sv",
+                              "en": "Perusopetuksen erityisopetuksen yksilï¿½llistetty oppimï¿½ï¿½rï¿½, opetus jï¿½rjestetty toiminta-alueittain_en"
                             }
                           },
                           "value": "tutkinto3",
-                          "help": "Valitse tŠmŠ, jos olet osallistunut harjaantumisopetukseen.",
+                          "help": "Valitse tï¿½mï¿½, jos olet osallistunut harjaantumisopetukseen.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto3_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ, jos olet osallistunut harjaantumisopetukseen.",
-                              "sv": "Valitse tŠmŠ, jos olet osallistunut harjaantumisopetukseen._sv",
-                              "en": "Valitse tŠmŠ, jos olet osallistunut harjaantumisopetukseen._en"
+                              "fi": "Valitse tï¿½mï¿½, jos olet osallistunut harjaantumisopetukseen.",
+                              "sv": "Valitse tï¿½mï¿½, jos olet osallistunut harjaantumisopetukseen._sv",
+                              "en": "Valitse tï¿½mï¿½, jos olet osallistunut harjaantumisopetukseen._en"
                             }
                           },
                           "children": [],
@@ -2311,19 +2311,19 @@
                           "i18nText": {
                             "id": "text_1360327507013",
                             "translations": {
-                              "fi": "Perusopetuksen pŠŠosin tai kokonaan yksilšllistetty oppimŠŠrŠ",
-                              "sv": "Perusopetuksen pŠŠosin tai kokonaan yksilšllistetty oppimŠŠrŠ_sv",
-                              "en": "Perusopetuksen pŠŠosin tai kokonaan yksilšllistetty oppimŠŠrŠ_en"
+                              "fi": "Perusopetuksen pï¿½ï¿½osin tai kokonaan yksilï¿½llistetty oppimï¿½ï¿½rï¿½",
+                              "sv": "Perusopetuksen pï¿½ï¿½osin tai kokonaan yksilï¿½llistetty oppimï¿½ï¿½rï¿½_sv",
+                              "en": "Perusopetuksen pï¿½ï¿½osin tai kokonaan yksilï¿½llistetty oppimï¿½ï¿½rï¿½_en"
                             }
                           },
                           "value": "tutkinto4",
-                          "help": "Valitse tŠmŠ, jos olet opiskellut peruskoulun kokonaan yksilšllistetyn oppimŠŠrŠn mukaan tai olet opiskellut yli puolet opinnoistasi yksilšllistetyn opetuksen mukaan.",
+                          "help": "Valitse tï¿½mï¿½, jos olet opiskellut peruskoulun kokonaan yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n mukaan tai olet opiskellut yli puolet opinnoistasi yksilï¿½llistetyn opetuksen mukaan.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto4_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ, jos olet opiskellut peruskoulun kokonaan yksilšllistetyn oppimŠŠrŠn mukaan tai olet opiskellut yli puolet opinnoistasi yksilšllistetyn opetuksen mukaan.",
-                              "sv": "Valitse tŠmŠ, jos olet opiskellut peruskoulun kokonaan yksilšllistetyn oppimŠŠrŠn mukaan tai olet opiskellut yli puolet opinnoistasi yksilšllistetyn opetuksen mukaan._sv",
-                              "en": "Valitse tŠmŠ, jos olet opiskellut peruskoulun kokonaan yksilšllistetyn oppimŠŠrŠn mukaan tai olet opiskellut yli puolet opinnoistasi yksilšllistetyn opetuksen mukaan._en"
+                              "fi": "Valitse tï¿½mï¿½, jos olet opiskellut peruskoulun kokonaan yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n mukaan tai olet opiskellut yli puolet opinnoistasi yksilï¿½llistetyn opetuksen mukaan.",
+                              "sv": "Valitse tï¿½mï¿½, jos olet opiskellut peruskoulun kokonaan yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n mukaan tai olet opiskellut yli puolet opinnoistasi yksilï¿½llistetyn opetuksen mukaan._sv",
+                              "en": "Valitse tï¿½mï¿½, jos olet opiskellut peruskoulun kokonaan yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n mukaan tai olet opiskellut yli puolet opinnoistasi yksilï¿½llistetyn opetuksen mukaan._en"
                             }
                           },
                           "children": [],
@@ -2341,19 +2341,19 @@
                           "i18nText": {
                             "id": "text_1360327507013",
                             "translations": {
-                              "fi": "Oppivelvollisuuden suorittaminen keskeytynyt (ei pŠŠttštodistusta)",
-                              "sv": "Oppivelvollisuuden suorittaminen keskeytynyt (ei pŠŠttštodistusta)_sv",
-                              "en": "Oppivelvollisuuden suorittaminen keskeytynyt (ei pŠŠttštodistusta)_en"
+                              "fi": "Oppivelvollisuuden suorittaminen keskeytynyt (ei pï¿½ï¿½ttï¿½todistusta)",
+                              "sv": "Oppivelvollisuuden suorittaminen keskeytynyt (ei pï¿½ï¿½ttï¿½todistusta)_sv",
+                              "en": "Oppivelvollisuuden suorittaminen keskeytynyt (ei pï¿½ï¿½ttï¿½todistusta)_en"
                             }
                           },
                           "value": "tutkinto5",
-                          "help": "Valitse tŠmŠ vain, jos sinulla ei ole lainkaan pŠŠttštodistusta.",
+                          "help": "Valitse tï¿½mï¿½ vain, jos sinulla ei ole lainkaan pï¿½ï¿½ttï¿½todistusta.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto5_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ vain, jos sinulla ei ole lainkaan pŠŠttštodistusta.",
-                              "sv": "Valitse tŠmŠ vain, jos sinulla ei ole lainkaan pŠŠttštodistusta._sv",
-                              "en": "Valitse tŠmŠ vain, jos sinulla ei ole lainkaan pŠŠttštodistusta._en"
+                              "fi": "Valitse tï¿½mï¿½ vain, jos sinulla ei ole lainkaan pï¿½ï¿½ttï¿½todistusta.",
+                              "sv": "Valitse tï¿½mï¿½ vain, jos sinulla ei ole lainkaan pï¿½ï¿½ttï¿½todistusta._sv",
+                              "en": "Valitse tï¿½mï¿½ vain, jos sinulla ei ole lainkaan pï¿½ï¿½ttï¿½todistusta._en"
                             }
                           },
                           "children": [],
@@ -2371,19 +2371,19 @@
                           "i18nText": {
                             "id": "text_1360327507014",
                             "translations": {
-                              "fi": "Lukion pŠŠttštodistus, ylioppilastutkinto tai abiturientti",
-                              "sv": "Lukion pŠŠttštodistus, ylioppilastutkinto tai abiturientti_sv",
-                              "en": "Lukion pŠŠttštodistus, ylioppilastutkinto tai abiturientti_en"
+                              "fi": "Lukion pï¿½ï¿½ttï¿½todistus, ylioppilastutkinto tai abiturientti",
+                              "sv": "Lukion pï¿½ï¿½ttï¿½todistus, ylioppilastutkinto tai abiturientti_sv",
+                              "en": "Lukion pï¿½ï¿½ttï¿½todistus, ylioppilastutkinto tai abiturientti_en"
                             }
                           },
                           "value": "tutkinto6",
-                          "help": "Valitse tŠmŠ, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvŠlinen ylioppilastutkinto, tai olet suorittanut yhdistelmŠtutkinnon, johon sisŠltyy lukion vahimmŠisoppimŠŠrŠŠ vastaavat opinnot.",
+                          "help": "Valitse tï¿½mï¿½, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvï¿½linen ylioppilastutkinto, tai olet suorittanut yhdistelmï¿½tutkinnon, johon sisï¿½ltyy lukion vahimmï¿½isoppimï¿½ï¿½rï¿½ï¿½ vastaavat opinnot.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto6_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvŠlinen ylioppilastutkinto, tai olet suorittanut yhdistelmŠtutkinnon, johon sisŠltyy lukion vahimmŠisoppimŠŠrŠŠ vastaavat opinnot.",
-                              "sv": "Valitse tŠmŠ, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvŠlinen ylioppilastutkinto, tai olet suorittanut yhdistelmŠtutkinnon, johon sisŠltyy lukion vahimmŠisoppimŠŠrŠŠ vastaavat opinnot._sv",
-                              "en": "Valitse tŠmŠ, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvŠlinen ylioppilastutkinto, tai olet suorittanut yhdistelmŠtutkinnon, johon sisŠltyy lukion vahimmŠisoppimŠŠrŠŠ vastaavat opinnot._en"
+                              "fi": "Valitse tï¿½mï¿½, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvï¿½linen ylioppilastutkinto, tai olet suorittanut yhdistelmï¿½tutkinnon, johon sisï¿½ltyy lukion vahimmï¿½isoppimï¿½ï¿½rï¿½ï¿½ vastaavat opinnot.",
+                              "sv": "Valitse tï¿½mï¿½, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvï¿½linen ylioppilastutkinto, tai olet suorittanut yhdistelmï¿½tutkinnon, johon sisï¿½ltyy lukion vahimmï¿½isoppimï¿½ï¿½rï¿½ï¿½ vastaavat opinnot._sv",
+                              "en": "Valitse tï¿½mï¿½, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvï¿½linen ylioppilastutkinto, tai olet suorittanut yhdistelmï¿½tutkinnon, johon sisï¿½ltyy lukion vahimmï¿½isoppimï¿½ï¿½rï¿½ï¿½ vastaavat opinnot._en"
                             }
                           },
                           "children": [],
@@ -2407,13 +2407,13 @@
                             }
                           },
                           "value": "tutkinto7",
-                          "help": "Valitse tŠmŠ, jos olet suorittanut tutkintosi ulkomailla.",
+                          "help": "Valitse tï¿½mï¿½, jos olet suorittanut tutkintosi ulkomailla.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto7_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ, jos olet suorittanut tutkintosi ulkomailla.",
-                              "sv": "Valitse tŠmŠ, jos olet suorittanut tutkintosi ulkomailla._sv",
-                              "en": "Valitse tŠmŠ, jos olet suorittanut tutkintosi ulkomailla._en"
+                              "fi": "Valitse tï¿½mï¿½, jos olet suorittanut tutkintosi ulkomailla.",
+                              "sv": "Valitse tï¿½mï¿½, jos olet suorittanut tutkintosi ulkomailla._sv",
+                              "en": "Valitse tï¿½mï¿½, jos olet suorittanut tutkintosi ulkomailla._en"
                             }
                           },
                           "children": [],
@@ -2433,9 +2433,9 @@
                       "i18nText": {
                         "id": "text_1360327507013",
                         "translations": {
-                          "fi": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pŠŠsykokeisiin?",
-                          "sv": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pŠŠsykokeisiin?_sv",
-                          "en": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pŠŠsykokeisiin?_en"
+                          "fi": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pï¿½ï¿½sykokeisiin?",
+                          "sv": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pï¿½ï¿½sykokeisiin?_sv",
+                          "en": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pï¿½ï¿½sykokeisiin?_en"
                         }
                       },
                       "help": "",
@@ -2504,12 +2504,12 @@
                           "i18nText": {
                             "id": "text_1360327507013",
                             "translations": {
-                              "fi": "KyllŠ",
-                              "sv": "KyllŠ_sv",
-                              "en": "KyllŠ_en"
+                              "fi": "Kyllï¿½",
+                              "sv": "Kyllï¿½_sv",
+                              "en": "Kyllï¿½_en"
                             }
                           },
-                          "value": "KyllŠ",
+                          "value": "Kyllï¿½",
                           "help": "",
                           "ihelp": {
                             "id": "osallistunut_kylla_help",
@@ -2589,9 +2589,9 @@
                         "i18nText": {
                           "id": "text_1360327507003",
                           "translations": {
-                            "fi": "TŠllŠ alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenŠ. Onko sinulla terveydellisiŠ tekijšitŠ, jotka voivat olla opiskelijatksi ottamisen esteenŠ?",
-                            "sv": "TŠllŠ alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenŠ. Onko sinulla terveydellisiŠ tekijšitŠ, jotka voivat olla opiskelijatksi ottamisen esteenŠ?_sv",
-                            "en": "TŠllŠ alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenŠ. Onko sinulla terveydellisiŠ tekijšitŠ, jotka voivat olla opiskelijatksi ottamisen esteenŠ?_en"
+                            "fi": "Tï¿½llï¿½ alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenï¿½. Onko sinulla terveydellisiï¿½ tekijï¿½itï¿½, jotka voivat olla opiskelijatksi ottamisen esteenï¿½?",
+                            "sv": "Tï¿½llï¿½ alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenï¿½. Onko sinulla terveydellisiï¿½ tekijï¿½itï¿½, jotka voivat olla opiskelijatksi ottamisen esteenï¿½?_sv",
+                            "en": "Tï¿½llï¿½ alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenï¿½. Onko sinulla terveydellisiï¿½ tekijï¿½itï¿½, jotka voivat olla opiskelijatksi ottamisen esteenï¿½?_en"
                           }
                         },
                         "help": "",
@@ -2654,9 +2654,9 @@
                             "i18nText": {
                               "id": "text_1360327507004",
                               "translations": {
-                                "fi": "KyllŠ. YmmŠrrŠ, etten tŠstŠ johtuen ehkŠ tule valituksi",
-                                "sv": "KyllŠ. YmmŠrrŠ, etten tŠstŠ johtuen ehkŠ tule valituksi_sv",
-                                "en": "KyllŠ. YmmŠrrŠ, etten tŠstŠ johtuen ehkŠ tule valituksi_en"
+                                "fi": "Kyllï¿½. Ymmï¿½rrï¿½, etten tï¿½stï¿½ johtuen ehkï¿½ tule valituksi",
+                                "sv": "Kyllï¿½. Ymmï¿½rrï¿½, etten tï¿½stï¿½ johtuen ehkï¿½ tule valituksi_sv",
+                                "en": "Kyllï¿½. Ymmï¿½rrï¿½, etten tï¿½stï¿½ johtuen ehkï¿½ tule valituksi_en"
                               }
                             },
                             "value": "q1_option_2",
@@ -2686,9 +2686,9 @@
                         "i18nText": {
                           "id": "text_1360327507004",
                           "translations": {
-                            "fi": "TŠssŠ koulutuksessa opiskelijaksi ottamisen esteenŠ voi olla eiempi pŠŠtšs opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilšiden turvallisuuden vaarantamisen takia?",
-                            "sv": "TŠssŠ koulutuksessa opiskelijaksi ottamisen esteenŠ voi olla eiempi pŠŠtšs opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilšiden turvallisuuden vaarantamisen takia?_sv",
-                            "en": "TŠssŠ koulutuksessa opiskelijaksi ottamisen esteenŠ voi olla eiempi pŠŠtšs opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilšiden turvallisuuden vaarantamisen takia?_en"
+                            "fi": "Tï¿½ssï¿½ koulutuksessa opiskelijaksi ottamisen esteenï¿½ voi olla aiempi pï¿½ï¿½tï¿½s opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilï¿½iden turvallisuuden vaarantamisen takia?",
+                            "sv": "Tï¿½ssï¿½ koulutuksessa opiskelijaksi ottamisen esteenï¿½ voi olla aiempi pï¿½ï¿½tï¿½s opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilï¿½iden turvallisuuden vaarantamisen takia?_sv",
+                            "en": "Tï¿½ssï¿½ koulutuksessa opiskelijaksi ottamisen esteenï¿½ voi olla aiempi pï¿½ï¿½tï¿½s opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilï¿½iden turvallisuuden vaarantamisen takia?_en"
                           }
                         },
                         "help": "",
@@ -2751,9 +2751,9 @@
                             "i18nText": {
                               "id": "text_1360327507004",
                               "translations": {
-                                "fi": "KyllŠ. YmmŠrrŠ, etten tŠstŠ johtuen ehkŠ tule valituksi",
-                                "sv": "KyllŠ. YmmŠrrŠ, etten tŠstŠ johtuen ehkŠ tule valituksi_sv",
-                                "en": "KyllŠ. YmmŠrrŠ, etten tŠstŠ johtuen ehkŠ tule valituksi_en"
+                                "fi": "Kyllï¿½. Ymmï¿½rrï¿½, etten tï¿½stï¿½ johtuen ehkï¿½ tule valituksi",
+                                "sv": "Kyllï¿½. Ymmï¿½rrï¿½, etten tï¿½stï¿½ johtuen ehkï¿½ tule valituksi_sv",
+                                "en": "Kyllï¿½. Ymmï¿½rrï¿½, etten tï¿½stï¿½ johtuen ehkï¿½ tule valituksi_en"
                               }
                             },
                             "value": "q2_option_2",
@@ -2783,9 +2783,9 @@
                         "i18nText": {
                           "id": "text_1360327507004",
                           "translations": {
-                            "fi": "Jos olet osallistunut saman alan pŠŠsykokeeseen, niin haluatko kŠyttŠŠ hyvŠksyttyjŠ koetuloksiasi?",
-                            "sv": "Jos olet osallistunut saman alan pŠŠsykokeeseen, niin haluatko kŠyttŠŠ hyvŠksyttyjŠ koetuloksiasi?_sv",
-                            "en": "Jos olet osallistunut saman alan pŠŠsykokeeseen, niin haluatko kŠyttŠŠ hyvŠksyttyjŠ koetuloksiasi?_en"
+                            "fi": "Jos olet osallistunut saman alan pï¿½ï¿½sykokeeseen, niin haluatko kï¿½yttï¿½ï¿½ hyvï¿½ksyttyjï¿½ koetuloksiasi?",
+                            "sv": "Jos olet osallistunut saman alan pï¿½ï¿½sykokeeseen, niin haluatko kï¿½yttï¿½ï¿½ hyvï¿½ksyttyjï¿½ koetuloksiasi?_sv",
+                            "en": "Jos olet osallistunut saman alan pï¿½ï¿½sykokeeseen, niin haluatko kï¿½yttï¿½ï¿½ hyvï¿½ksyttyjï¿½ koetuloksiasi?_en"
                           }
                         },
                         "help": "",
@@ -2818,9 +2818,9 @@
                             "i18nText": {
                               "id": "text_1360327507004",
                               "translations": {
-                                "fi": "En, en ole osallistunut pŠŠsykokeeseen",
-                                "sv": "En, en ole osallistunut pŠŠsykokeeseen_sv",
-                                "en": "En, en ole osallistunut pŠŠsykokeeseen_en"
+                                "fi": "En, en ole osallistunut pï¿½ï¿½sykokeeseen",
+                                "sv": "En, en ole osallistunut pï¿½ï¿½sykokeeseen_sv",
+                                "en": "En, en ole osallistunut pï¿½ï¿½sykokeeseen_en"
                               }
                             },
                             "value": "q3_option_1",
@@ -2848,9 +2848,9 @@
                             "i18nText": {
                               "id": "text_1360327507004",
                               "translations": {
-                                "fi": "Ei, en halua kŠyttŠŠ tuloksia",
-                                "sv": "Ei, en halua kŠyttŠŠ tuloksia_sv",
-                                "en": "Ei, en halua kŠyttŠŠ tuloksia_en"
+                                "fi": "Ei, en halua kï¿½yttï¿½ï¿½ tuloksia",
+                                "sv": "Ei, en halua kï¿½yttï¿½ï¿½ tuloksia_sv",
+                                "en": "Ei, en halua kï¿½yttï¿½ï¿½ tuloksia_en"
                               }
                             },
                             "value": "q3_option_2",
@@ -2878,9 +2878,9 @@
                             "i18nText": {
                               "id": "text_1360327507004",
                               "translations": {
-                                "fi": "KyllŠ, haluan kŠyttŠŠ pŠŠsykoetuloksia",
-                                "sv": "KyllŠ, haluan kŠyttŠŠ pŠŠsykoetuloksia_sv",
-                                "en": "KyllŠ, haluan kŠyttŠŠ pŠŠsykoetuloksia_en"
+                                "fi": "Kyllï¿½, haluan kï¿½yttï¿½ï¿½ pï¿½ï¿½sykoetuloksia",
+                                "sv": "Kyllï¿½, haluan kï¿½yttï¿½ï¿½ pï¿½ï¿½sykoetuloksia_sv",
+                                "en": "Kyllï¿½, haluan kï¿½yttï¿½ï¿½ pï¿½ï¿½sykoetuloksia_en"
                               }
                             },
                             "value": "q3_option_3",
@@ -2906,13 +2906,13 @@
                       }
                     ]
                   },
-                  "help": "Merkitse tŠlle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinŠ jŠrjestyksessŠ, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttŠŠ ne hakutoivelistalle. Voit halutessasi etsiŠ koulutuksia koulutuskorin kautta. harkitse hakutoivejŠrjestystŠ tarkoin, sillŠ se on sitova, etkŠ voi muuttaa sitŠ enŠŠ hakuajan jŠlkeen. Jos et pŠŠse koulutukseen, jonka olet merkinnyt ensimmŠiselle sijalle, tarkistetaan riittŠvŠtkš pisteesi toiselle sijalle merkitsemŠŠsi hakutoiveeseen jne. Jos pŠŠset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkŠ voi enŠŠ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielŠ pŠŠstŠ. HUOM! Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).",
+                  "help": "Merkitse tï¿½lle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinï¿½ jï¿½rjestyksessï¿½, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttï¿½ï¿½ ne hakutoivelistalle. Voit halutessasi etsiï¿½ koulutuksia koulutuskorin kautta. harkitse hakutoivejï¿½rjestystï¿½ tarkoin, sillï¿½ se on sitova, etkï¿½ voi muuttaa sitï¿½ enï¿½ï¿½ hakuajan jï¿½lkeen. Jos et pï¿½ï¿½se koulutukseen, jonka olet merkinnyt ensimmï¿½iselle sijalle, tarkistetaan riittï¿½vï¿½tkï¿½ pisteesi toiselle sijalle merkitsemï¿½ï¿½si hakutoiveeseen jne. Jos pï¿½ï¿½set esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkï¿½ voi enï¿½ï¿½ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielï¿½ pï¿½ï¿½stï¿½. HUOM! Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).",
                   "ihelp": {
                     "id": "hakutoiveetGrp_help",
                     "translations": {
-                      "fi": "Merkitse tŠlle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinŠ jŠrjestyksessŠ, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttŠŠ ne hakutoivelistalle. Voit halutessasi etsiŠ koulutuksia koulutuskorin kautta. harkitse hakutoivejŠrjestystŠ tarkoin, sillŠ se on sitova, etkŠ voi muuttaa sitŠ enŠŠ hakuajan jŠlkeen. Jos et pŠŠse koulutukseen, jonka olet merkinnyt ensimmŠiselle sijalle, tarkistetaan riittŠvŠtkš pisteesi toiselle sijalle merkitsemŠŠsi hakutoiveeseen jne. Jos pŠŠset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkŠ voi enŠŠ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielŠ pŠŠstŠ. HUOM! Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).",
-                      "sv": "Merkitse tŠlle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinŠ jŠrjestyksessŠ, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttŠŠ ne hakutoivelistalle. Voit halutessasi etsiŠ koulutuksia koulutuskorin kautta. harkitse hakutoivejŠrjestystŠ tarkoin, sillŠ se on sitova, etkŠ voi muuttaa sitŠ enŠŠ hakuajan jŠlkeen. Jos et pŠŠse koulutukseen, jonka olet merkinnyt ensimmŠiselle sijalle, tarkistetaan riittŠvŠtkš pisteesi toiselle sijalle merkitsemŠŠsi hakutoiveeseen jne. Jos pŠŠset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkŠ voi enŠŠ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielŠ pŠŠstŠ. HUOM! Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo)._sv",
-                      "en": "Merkitse tŠlle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinŠ jŠrjestyksessŠ, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttŠŠ ne hakutoivelistalle. Voit halutessasi etsiŠ koulutuksia koulutuskorin kautta. harkitse hakutoivejŠrjestystŠ tarkoin, sillŠ se on sitova, etkŠ voi muuttaa sitŠ enŠŠ hakuajan jŠlkeen. Jos et pŠŠse koulutukseen, jonka olet merkinnyt ensimmŠiselle sijalle, tarkistetaan riittŠvŠtkš pisteesi toiselle sijalle merkitsemŠŠsi hakutoiveeseen jne. Jos pŠŠset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkŠ voi enŠŠ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielŠ pŠŠstŠ. HUOM! Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo)._en"
+                      "fi": "Merkitse tï¿½lle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinï¿½ jï¿½rjestyksessï¿½, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttï¿½ï¿½ ne hakutoivelistalle. Voit halutessasi etsiï¿½ koulutuksia koulutuskorin kautta. harkitse hakutoivejï¿½rjestystï¿½ tarkoin, sillï¿½ se on sitova, etkï¿½ voi muuttaa sitï¿½ enï¿½ï¿½ hakuajan jï¿½lkeen. Jos et pï¿½ï¿½se koulutukseen, jonka olet merkinnyt ensimmï¿½iselle sijalle, tarkistetaan riittï¿½vï¿½tkï¿½ pisteesi toiselle sijalle merkitsemï¿½ï¿½si hakutoiveeseen jne. Jos pï¿½ï¿½set esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkï¿½ voi enï¿½ï¿½ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielï¿½ pï¿½ï¿½stï¿½. HUOM! Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).",
+                      "sv": "Merkitse tï¿½lle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinï¿½ jï¿½rjestyksessï¿½, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttï¿½ï¿½ ne hakutoivelistalle. Voit halutessasi etsiï¿½ koulutuksia koulutuskorin kautta. harkitse hakutoivejï¿½rjestystï¿½ tarkoin, sillï¿½ se on sitova, etkï¿½ voi muuttaa sitï¿½ enï¿½ï¿½ hakuajan jï¿½lkeen. Jos et pï¿½ï¿½se koulutukseen, jonka olet merkinnyt ensimmï¿½iselle sijalle, tarkistetaan riittï¿½vï¿½tkï¿½ pisteesi toiselle sijalle merkitsemï¿½ï¿½si hakutoiveeseen jne. Jos pï¿½ï¿½set esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkï¿½ voi enï¿½ï¿½ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielï¿½ pï¿½ï¿½stï¿½. HUOM! Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo)._sv",
+                      "en": "Merkitse tï¿½lle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinï¿½ jï¿½rjestyksessï¿½, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttï¿½ï¿½ ne hakutoivelistalle. Voit halutessasi etsiï¿½ koulutuksia koulutuskorin kautta. harkitse hakutoivejï¿½rjestystï¿½ tarkoin, sillï¿½ se on sitova, etkï¿½ voi muuttaa sitï¿½ enï¿½ï¿½ hakuajan jï¿½lkeen. Jos et pï¿½ï¿½se koulutukseen, jonka olet merkinnyt ensimmï¿½iselle sijalle, tarkistetaan riittï¿½vï¿½tkï¿½ pisteesi toiselle sijalle merkitsemï¿½ï¿½si hakutoiveeseen jne. Jos pï¿½ï¿½set esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkï¿½ voi enï¿½ï¿½ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielï¿½ pï¿½ï¿½stï¿½. HUOM! Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo)._en"
                     }
                   },
                   "children": [
@@ -2927,7 +2927,7 @@
                           "en": "Hakutoiveet_en"
                         }
                       },
-                      "moveUpLabel": "Ylšs",
+                      "moveUpLabel": "Ylï¿½s",
                       "moveDownLabel": "Alas",
                       "help": "",
                       "ihelp": {
@@ -2953,9 +2953,9 @@
                           "resetLabel": {
                             "id": "text_1360327507014",
                             "translations": {
-                              "fi": "TyhjennŠ",
-                              "sv": "TyhjennŠ_sv",
-                              "en": "TyhjennŠ_en"
+                              "fi": "Tyhjennï¿½",
+                              "sv": "Tyhjennï¿½_sv",
+                              "en": "Tyhjennï¿½_en"
                             }
                           },
                           "educationLabel": {
@@ -3020,9 +3020,9 @@
                           "resetLabel": {
                             "id": "text_1360327507014",
                             "translations": {
-                              "fi": "TyhjennŠ",
-                              "sv": "TyhjennŠ_sv",
-                              "en": "TyhjennŠ_en"
+                              "fi": "Tyhjennï¿½",
+                              "sv": "Tyhjennï¿½_sv",
+                              "en": "Tyhjennï¿½_en"
                             }
                           },
                           "educationLabel": {
@@ -3082,9 +3082,9 @@
                           "resetLabel": {
                             "id": "text_1360327507014",
                             "translations": {
-                              "fi": "TyhjennŠ",
-                              "sv": "TyhjennŠ_sv",
-                              "en": "TyhjennŠ_en"
+                              "fi": "Tyhjennï¿½",
+                              "sv": "Tyhjennï¿½_sv",
+                              "en": "Tyhjennï¿½_en"
                             }
                           },
                           "educationLabel": {
@@ -3144,9 +3144,9 @@
                           "resetLabel": {
                             "id": "text_1360327507015",
                             "translations": {
-                              "fi": "TyhjennŠ",
-                              "sv": "TyhjennŠ_sv",
-                              "en": "TyhjennŠ_en"
+                              "fi": "Tyhjennï¿½",
+                              "sv": "Tyhjennï¿½_sv",
+                              "en": "Tyhjennï¿½_en"
                             }
                           },
                           "educationLabel": {
@@ -3206,9 +3206,9 @@
                           "resetLabel": {
                             "id": "text_1360327507015",
                             "translations": {
-                              "fi": "TyhjennŠ",
-                              "sv": "TyhjennŠ_sv",
-                              "en": "TyhjennŠ_en"
+                              "fi": "Tyhjennï¿½",
+                              "sv": "Tyhjennï¿½_sv",
+                              "en": "Tyhjennï¿½_en"
                             }
                           },
                           "educationLabel": {
@@ -3389,13 +3389,13 @@
                       }
                     ]
                   },
-                  "help": "Merkitse arvosanat siitŠ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitŠ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitŠ, mikŠli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta. 1. Tarkista ja tŠydennŠ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitŠytetyistŠ. Huom! Valinnaisaineiden arvosanat merkitŠŠn vain mikŠli niiden laajuus on vŠhintŠŠn kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilšllistettyjŠ arvosanoja, valitse listasta arvosana, jossa on tŠhti.",
+                  "help": "Merkitse arvosanat siitï¿½ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitï¿½ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitï¿½, mikï¿½li olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta. 1. Tarkista ja tï¿½ydennï¿½ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitï¿½ytetyistï¿½. Huom! Valinnaisaineiden arvosanat merkitï¿½ï¿½n vain mikï¿½li niiden laajuus on vï¿½hintï¿½ï¿½n kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilï¿½llistettyjï¿½ arvosanoja, valitse listasta arvosana, jossa on tï¿½hti.",
                   "ihelp": {
                     "id": "arvosanatGrp_help",
                     "translations": {
-                      "fi": "Merkitse arvosanat siitŠ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitŠ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitŠ, mikŠli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta. 1. Tarkista ja tŠydennŠ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitŠytetyistŠ. Huom! Valinnaisaineiden arvosanat merkitŠŠn vain mikŠli niiden laajuus on vŠhintŠŠn kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilšllistettyjŠ arvosanoja, valitse listasta arvosana, jossa on tŠhti.",
-                      "sv": "Merkitse arvosanat siitŠ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitŠ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitŠ, mikŠli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta. 1. Tarkista ja tŠydennŠ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitŠytetyistŠ. Huom! Valinnaisaineiden arvosanat merkitŠŠn vain mikŠli niiden laajuus on vŠhintŠŠn kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilšllistettyjŠ arvosanoja, valitse listasta arvosana, jossa on tŠhti._sv",
-                      "en": "Merkitse arvosanat siitŠ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitŠ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitŠ, mikŠli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta. 1. Tarkista ja tŠydennŠ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitŠytetyistŠ. Huom! Valinnaisaineiden arvosanat merkitŠŠn vain mikŠli niiden laajuus on vŠhintŠŠn kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilšllistettyjŠ arvosanoja, valitse listasta arvosana, jossa on tŠhti._en"
+                      "fi": "Merkitse arvosanat siitï¿½ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitï¿½ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitï¿½, mikï¿½li olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta. 1. Tarkista ja tï¿½ydennï¿½ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitï¿½ytetyistï¿½. Huom! Valinnaisaineiden arvosanat merkitï¿½ï¿½n vain mikï¿½li niiden laajuus on vï¿½hintï¿½ï¿½n kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilï¿½llistettyjï¿½ arvosanoja, valitse listasta arvosana, jossa on tï¿½hti.",
+                      "sv": "Merkitse arvosanat siitï¿½ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitï¿½ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitï¿½, mikï¿½li olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta. 1. Tarkista ja tï¿½ydennï¿½ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitï¿½ytetyistï¿½. Huom! Valinnaisaineiden arvosanat merkitï¿½ï¿½n vain mikï¿½li niiden laajuus on vï¿½hintï¿½ï¿½n kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilï¿½llistettyjï¿½ arvosanoja, valitse listasta arvosana, jossa on tï¿½hti._sv",
+                      "en": "Merkitse arvosanat siitï¿½ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitï¿½ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitï¿½, mikï¿½li olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta. 1. Tarkista ja tï¿½ydennï¿½ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitï¿½ytetyistï¿½. Huom! Valinnaisaineiden arvosanat merkitï¿½ï¿½n vain mikï¿½li niiden laajuus on vï¿½hintï¿½ï¿½n kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilï¿½llistettyjï¿½ arvosanoja, valitse listasta arvosana, jossa on tï¿½hti._en"
                     }
                   },
                   "children": [
@@ -3433,9 +3433,9 @@
                               "i18nText": {
                                 "id": "text_1360327507015",
                                 "translations": {
-                                  "fi": "€idinkieli ja kirjallisuus",
-                                  "sv": "€idinkieli ja kirjallisuus_sv",
-                                  "en": "€idinkieli ja kirjallisuus_en"
+                                  "fi": "ï¿½idinkieli ja kirjallisuus",
+                                  "sv": "ï¿½idinkieli ja kirjallisuus_sv",
+                                  "en": "ï¿½idinkieli ja kirjallisuus_en"
                                 }
                               },
                               "help": "",
@@ -3752,9 +3752,9 @@
                               "i18nText": {
                                 "id": "text_1360327507016",
                                 "translations": {
-                                  "fi": "Uskonto tai elŠmŠnkatsomustieto",
-                                  "sv": "Uskonto tai elŠmŠnkatsomustieto_sv",
-                                  "en": "Uskonto tai elŠmŠnkatsomustieto_en"
+                                  "fi": "Uskonto tai elï¿½mï¿½nkatsomustieto",
+                                  "sv": "Uskonto tai elï¿½mï¿½nkatsomustieto_sv",
+                                  "en": "Uskonto tai elï¿½mï¿½nkatsomustieto_en"
                                 }
                               },
                               "help": "",
@@ -3927,9 +3927,9 @@
                               "i18nText": {
                                 "id": "text_1360327507016",
                                 "translations": {
-                                  "fi": "KŠsityš",
-                                  "sv": "KŠsityš_sv",
-                                  "en": "KŠsityš_en"
+                                  "fi": "Kï¿½sityï¿½",
+                                  "sv": "Kï¿½sityï¿½_sv",
+                                  "en": "Kï¿½sityï¿½_en"
                                 }
                               },
                               "help": "",
@@ -4306,9 +4306,9 @@
                               "i18nText": {
                                 "id": "text_1360327507017",
                                 "translations": {
-                                  "fi": "venŠjŠ",
-                                  "sv": "venŠjŠ_sv",
-                                  "en": "venŠjŠ_en"
+                                  "fi": "venï¿½jï¿½",
+                                  "sv": "venï¿½jï¿½_sv",
+                                  "en": "venï¿½jï¿½_en"
                                 }
                               },
                               "value": "rus",
@@ -4653,9 +4653,9 @@
                           "i18nText": {
                             "id": "text_1360327507017",
                             "translations": {
-                              "fi": "Sinulta ei kysytŠ arvosanoja.",
-                              "sv": "Sinulta ei kysytŠ arvosanoja._sv",
-                              "en": "Sinulta ei kysytŠ arvosanoja._en"
+                              "fi": "Sinulta ei kysytï¿½ arvosanoja.",
+                              "sv": "Sinulta ei kysytï¿½ arvosanoja._sv",
+                              "en": "Sinulta ei kysytï¿½ arvosanoja._en"
                             }
                           },
                           "help": "",
@@ -4710,9 +4710,9 @@
               "i18nText": {
                 "id": "text_1360327507001",
                 "translations": {
-                  "fi": "LisŠtiedot",
-                  "sv": "LisŠtiedot_sv",
-                  "en": "LisŠtiedot_en"
+                  "fi": "Lisï¿½tiedot",
+                  "sv": "Lisï¿½tiedot_sv",
+                  "en": "Lisï¿½tiedot_en"
                 }
               },
               "preview": false,
@@ -4732,20 +4732,20 @@
                   "i18nText": {
                     "id": "text_1360327507005",
                     "translations": {
-                      "fi": "Tyškokemus",
-                      "sv": "Tyškokemus_sv",
-                      "en": "Tyškokemus_en"
+                      "fi": "Tyï¿½kokemus",
+                      "sv": "Tyï¿½kokemus_sv",
+                      "en": "Tyï¿½kokemus_en"
                     }
                   },
                   "additionalQuestions": {},
                   "requiredEducationDegree": "32",
-                  "help": "Tyškokemukseksi lasketaan tyš, josta sinulla on tyštodistus. Tyšhšn rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vŠhintŠŠn kolmen kuukauden pituinen tyšpajatoimintaan osallistuminen tai tyšharjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyštodistukset ennen lopullista valintaa.",
+                  "help": "Tyï¿½kokemukseksi lasketaan tyï¿½, josta sinulla on tyï¿½todistus. Tyï¿½hï¿½n rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vï¿½hintï¿½ï¿½n kolmen kuukauden pituinen tyï¿½pajatoimintaan osallistuminen tai tyï¿½harjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyï¿½todistukset ennen lopullista valintaa.",
                   "ihelp": {
                     "id": "tyokokemusGrp_help",
                     "translations": {
-                      "fi": "Tyškokemukseksi lasketaan tyš, josta sinulla on tyštodistus. Tyšhšn rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vŠhintŠŠn kolmen kuukauden pituinen tyšpajatoimintaan osallistuminen tai tyšharjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyštodistukset ennen lopullista valintaa.",
-                      "sv": "Tyškokemukseksi lasketaan tyš, josta sinulla on tyštodistus. Tyšhšn rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vŠhintŠŠn kolmen kuukauden pituinen tyšpajatoimintaan osallistuminen tai tyšharjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyštodistukset ennen lopullista valintaa._sv",
-                      "en": "Tyškokemukseksi lasketaan tyš, josta sinulla on tyštodistus. Tyšhšn rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vŠhintŠŠn kolmen kuukauden pituinen tyšpajatoimintaan osallistuminen tai tyšharjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyštodistukset ennen lopullista valintaa._en"
+                      "fi": "Tyï¿½kokemukseksi lasketaan tyï¿½, josta sinulla on tyï¿½todistus. Tyï¿½hï¿½n rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vï¿½hintï¿½ï¿½n kolmen kuukauden pituinen tyï¿½pajatoimintaan osallistuminen tai tyï¿½harjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyï¿½todistukset ennen lopullista valintaa.",
+                      "sv": "Tyï¿½kokemukseksi lasketaan tyï¿½, josta sinulla on tyï¿½todistus. Tyï¿½hï¿½n rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vï¿½hintï¿½ï¿½n kolmen kuukauden pituinen tyï¿½pajatoimintaan osallistuminen tai tyï¿½harjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyï¿½todistukset ennen lopullista valintaa._sv",
+                      "en": "Tyï¿½kokemukseksi lasketaan tyï¿½, josta sinulla on tyï¿½todistus. Tyï¿½hï¿½n rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vï¿½hintï¿½ï¿½n kolmen kuukauden pituinen tyï¿½pajatoimintaan osallistuminen tai tyï¿½harjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyï¿½todistukset ennen lopullista valintaa._en"
                     }
                   },
                   "children": [
@@ -4755,18 +4755,18 @@
                       "i18nText": {
                         "id": "text_1360327507017",
                         "translations": {
-                          "fi": "Tyškokemus kuukausina",
-                          "sv": "Tyškokemus kuukausina_sv",
-                          "en": "Tyškokemus kuukausina_en"
+                          "fi": "Tyï¿½kokemus kuukausina",
+                          "sv": "Tyï¿½kokemus kuukausina_sv",
+                          "en": "Tyï¿½kokemus kuukausina_en"
                         }
                       },
-                      "help": "Merkitse kenttŠŠn hakuajan pŠŠttymiseen mennessŠ kertynyt tyškokemuksesi. Voit kŠyttŠŠ laskemiseen apuna laskuria.",
+                      "help": "Merkitse kenttï¿½ï¿½n hakuajan pï¿½ï¿½ttymiseen mennessï¿½ kertynyt tyï¿½kokemuksesi. Voit kï¿½yttï¿½ï¿½ laskemiseen apuna laskuria.",
                       "ihelp": {
                         "id": "tyokokemuskuukaudet_help",
                         "translations": {
-                          "fi": "Merkitse kenttŠŠn hakuajan pŠŠttymiseen mennessŠ kertynyt tyškokemuksesi. Voit kŠyttŠŠ laskemiseen apuna laskuria.",
-                          "sv": "Merkitse kenttŠŠn hakuajan pŠŠttymiseen mennessŠ kertynyt tyškokemuksesi. Voit kŠyttŠŠ laskemiseen apuna laskuria._sv",
-                          "en": "Merkitse kenttŠŠn hakuajan pŠŠttymiseen mennessŠ kertynyt tyškokemuksesi. Voit kŠyttŠŠ laskemiseen apuna laskuria._en"
+                          "fi": "Merkitse kenttï¿½ï¿½n hakuajan pï¿½ï¿½ttymiseen mennessï¿½ kertynyt tyï¿½kokemuksesi. Voit kï¿½yttï¿½ï¿½ laskemiseen apuna laskuria.",
+                          "sv": "Merkitse kenttï¿½ï¿½n hakuajan pï¿½ï¿½ttymiseen mennessï¿½ kertynyt tyï¿½kokemuksesi. Voit kï¿½yttï¿½ï¿½ laskemiseen apuna laskuria._sv",
+                          "en": "Merkitse kenttï¿½ï¿½n hakuajan pï¿½ï¿½ttymiseen mennessï¿½ kertynyt tyï¿½kokemuksesi. Voit kï¿½yttï¿½ï¿½ laskemiseen apuna laskuria._en"
                         }
                       },
                       "children": [],
@@ -4849,9 +4849,9 @@
                       "i18nText": {
                         "id": "text_1360327507017",
                         "translations": {
-                          "fi": "RyhmŠn otsikkotai ohjeteksti",
-                          "sv": "RyhmŠn otsikkotai ohjeteksti_sv",
-                          "en": "RyhmŠn otsikkotai ohjeteksti_en"
+                          "fi": "Ryhmï¿½n otsikkotai ohjeteksti",
+                          "sv": "Ryhmï¿½n otsikkotai ohjeteksti_sv",
+                          "en": "Ryhmï¿½n otsikkotai ohjeteksti_en"
                         }
                       },
                       "help": "",
@@ -4870,9 +4870,9 @@
                           "i18nText": {
                             "id": "text_1360327507017",
                             "translations": {
-                              "fi": "Haluan, ettŠ huoltajalleni lŠhetetŠŠn tieto sŠhkšpostilla hakulomakkeen tŠyttŠmisestŠ.",
-                              "sv": "Haluan, ettŠ huoltajalleni lŠhetetŠŠn tieto sŠhkšpostilla hakulomakkeen tŠyttŠmisestŠ._sv",
-                              "en": "Haluan, ettŠ huoltajalleni lŠhetetŠŠn tieto sŠhkšpostilla hakulomakkeen tŠyttŠmisestŠ._en"
+                              "fi": "Haluan, ettï¿½ huoltajalleni lï¿½hetetï¿½ï¿½n tieto sï¿½hkï¿½postilla hakulomakkeen tï¿½yttï¿½misestï¿½.",
+                              "sv": "Haluan, ettï¿½ huoltajalleni lï¿½hetetï¿½ï¿½n tieto sï¿½hkï¿½postilla hakulomakkeen tï¿½yttï¿½misestï¿½._sv",
+                              "en": "Haluan, ettï¿½ huoltajalleni lï¿½hetetï¿½ï¿½n tieto sï¿½hkï¿½postilla hakulomakkeen tï¿½yttï¿½misestï¿½._en"
                             }
                           },
                           "help": "",
@@ -4906,18 +4906,18 @@
                                   "i18nText": {
                                     "id": "text_1360327507017",
                                     "translations": {
-                                      "fi": "SŠhkšpostiosoite",
-                                      "sv": "SŠhkšpostiosoite_sv",
-                                      "en": "SŠhkšpostiosoite_en"
+                                      "fi": "Sï¿½hkï¿½postiosoite",
+                                      "sv": "Sï¿½hkï¿½postiosoite_sv",
+                                      "en": "Sï¿½hkï¿½postiosoite_en"
                                     }
                                   },
-                                  "help": "Kirjoita tŠhŠn huoltajan sŠhkšpostiosoite",
+                                  "help": "Kirjoita tï¿½hï¿½n huoltajan sï¿½hkï¿½postiosoite",
                                   "ihelp": {
                                     "id": "lupa1_email_help",
                                     "translations": {
-                                      "fi": "Kirjoita tŠhŠn huoltajan sŠhkšpostiosoite",
-                                      "sv": "Kirjoita tŠhŠn huoltajan sŠhkšpostiosoite_sv",
-                                      "en": "Kirjoita tŠhŠn huoltajan sŠhkšpostiosoite_en"
+                                      "fi": "Kirjoita tï¿½hï¿½n huoltajan sï¿½hkï¿½postiosoite",
+                                      "sv": "Kirjoita tï¿½hï¿½n huoltajan sï¿½hkï¿½postiosoite_sv",
+                                      "en": "Kirjoita tï¿½hï¿½n huoltajan sï¿½hkï¿½postiosoite_en"
                                     }
                                   },
                                   "children": [],
@@ -4982,9 +4982,9 @@
                           "i18nText": {
                             "id": "text_1360327507017",
                             "translations": {
-                              "fi": "Minulle saa lŠhettŠŠ postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia.",
-                              "sv": "Minulle saa lŠhettŠŠ postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia._sv",
-                              "en": "Minulle saa lŠhettŠŠ postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia._en"
+                              "fi": "Minulle saa lï¿½hettï¿½ï¿½ postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia.",
+                              "sv": "Minulle saa lï¿½hettï¿½ï¿½ postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia._sv",
+                              "en": "Minulle saa lï¿½hettï¿½ï¿½ postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia._en"
                             }
                           },
                           "help": "",
@@ -5017,9 +5017,9 @@
                           "i18nText": {
                             "id": "text_1360327507017",
                             "translations": {
-                              "fi": "Tietoni opiskeluvalinnan tuloksista saa julkaista InternetissŠ.",
-                              "sv": "Tietoni opiskeluvalinnan tuloksista saa julkaista InternetissŠ._sv",
-                              "en": "Tietoni opiskeluvalinnan tuloksista saa julkaista InternetissŠ._en"
+                              "fi": "Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissï¿½.",
+                              "sv": "Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissï¿½._sv",
+                              "en": "Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissï¿½._en"
                             }
                           },
                           "help": "",
@@ -5052,9 +5052,9 @@
                           "i18nText": {
                             "id": "text_1360327507017",
                             "translations": {
-                              "fi": "Valintaani koskevat tiedot saa lŠhettŠŠ minulle sŠhkšisesti.",
-                              "sv": "Valintaani koskevat tiedot saa lŠhettŠŠ minulle sŠhkšisesti._sv",
-                              "en": "Valintaani koskevat tiedot saa lŠhettŠŠ minulle sŠhkšisesti._en"
+                              "fi": "Valintaani koskevat tiedot saa lï¿½hettï¿½ï¿½ minulle sï¿½hkï¿½isesti.",
+                              "sv": "Valintaani koskevat tiedot saa lï¿½hettï¿½ï¿½ minulle sï¿½hkï¿½isesti._sv",
+                              "en": "Valintaani koskevat tiedot saa lï¿½hettï¿½ï¿½ minulle sï¿½hkï¿½isesti._en"
                             }
                           },
                           "help": "",
@@ -5087,9 +5087,9 @@
                           "i18nText": {
                             "id": "text_1360327507017",
                             "translations": {
-                              "fi": "Minulle saa lŠhettŠŠ tietoa opiskelijavalinnan etenemisestŠ ja tuloksista tekstiviestillŠ.",
-                              "sv": "Minulle saa lŠhettŠŠ tietoa opiskelijavalinnan etenemisestŠ ja tuloksista tekstiviestillŠ._sv",
-                              "en": "Minulle saa lŠhettŠŠ tietoa opiskelijavalinnan etenemisestŠ ja tuloksista tekstiviestillŠ._en"
+                              "fi": "Minulle saa lï¿½hettï¿½ï¿½ tietoa opiskelijavalinnan etenemisestï¿½ ja tuloksista tekstiviestillï¿½.",
+                              "sv": "Minulle saa lï¿½hettï¿½ï¿½ tietoa opiskelijavalinnan etenemisestï¿½ ja tuloksista tekstiviestillï¿½._sv",
+                              "en": "Minulle saa lï¿½hettï¿½ï¿½ tietoa opiskelijavalinnan etenemisestï¿½ ja tuloksista tekstiviestillï¿½._en"
                             }
                           },
                           "help": "",
@@ -5136,13 +5136,13 @@
                           "en": "Asiointikieli_en"
                         }
                       },
-                      "help": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja",
+                      "help": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja",
                       "ihelp": {
                         "id": "asiointikieli_help",
                         "translations": {
-                          "fi": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja",
-                          "sv": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja_sv",
-                          "en": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja_en"
+                          "fi": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja",
+                          "sv": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja_sv",
+                          "en": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja_en"
                         }
                       },
                       "children": [],
@@ -5275,9 +5275,9 @@
                   "i18nText": {
                     "id": "text_1360327507004",
                     "translations": {
-                      "fi": "Henkilštiedot",
-                      "sv": "Henkilštiedot_sv",
-                      "en": "Henkilštiedot_en"
+                      "fi": "Henkilï¿½tiedot",
+                      "sv": "Henkilï¿½tiedot_sv",
+                      "en": "Henkilï¿½tiedot_en"
                     }
                   },
                   "additionalQuestions": {},
@@ -5412,13 +5412,13 @@
                           "en": "Kutsumanimi_en"
                         }
                       },
-                      "help": "Valitse kutsumanimeksi jokin virallisista etunimistŠsi",
+                      "help": "Valitse kutsumanimeksi jokin virallisista etunimistï¿½si",
                       "ihelp": {
                         "id": "Kutsumanimi_help",
                         "translations": {
-                          "fi": "Valitse kutsumanimeksi jokin virallisista etunimistŠsi",
-                          "sv": "Valitse kutsumanimeksi jokin virallisista etunimistŠsi_sv",
-                          "en": "Valitse kutsumanimeksi jokin virallisista etunimistŠsi_en"
+                          "fi": "Valitse kutsumanimeksi jokin virallisista etunimistï¿½si",
+                          "sv": "Valitse kutsumanimeksi jokin virallisista etunimistï¿½si_sv",
+                          "en": "Valitse kutsumanimeksi jokin virallisista etunimistï¿½si_en"
                         }
                       },
                       "children": [],
@@ -5468,13 +5468,13 @@
                           "en": "Kansalaisuus_en"
                         }
                       },
-                      "help": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistŠ",
+                      "help": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistï¿½",
                       "ihelp": {
                         "id": "kansalaisuus_help",
                         "translations": {
-                          "fi": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistŠ",
-                          "sv": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistŠ_sv",
-                          "en": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistŠ_en"
+                          "fi": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistï¿½",
+                          "sv": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistï¿½_sv",
+                          "en": "Jos sinulla on kaksoiskansalaisuus, valitse toinen niistï¿½_en"
                         }
                       },
                       "children": [],
@@ -5571,9 +5571,9 @@
                       "i18nText": {
                         "id": "text_1360327507006",
                         "translations": {
-                          "fi": "Henkilštunnus",
-                          "sv": "Henkilštunnus_sv",
-                          "en": "Henkilštunnus_en"
+                          "fi": "Henkilï¿½tunnus",
+                          "sv": "Henkilï¿½tunnus_sv",
+                          "en": "Henkilï¿½tunnus_en"
                         }
                       },
                       "help": "",
@@ -5605,18 +5605,18 @@
                         "i18nText": {
                           "id": "text_1360327507006",
                           "translations": {
-                            "fi": "Henkilštunnus",
-                            "sv": "Henkilštunnus_sv",
-                            "en": "Henkilštunnus_en"
+                            "fi": "Henkilï¿½tunnus",
+                            "sv": "Henkilï¿½tunnus_sv",
+                            "en": "Henkilï¿½tunnus_en"
                           }
                         },
-                        "help": "Jos sinulla ei ole suomalaista henkilštunnusta, tŠytŠ tŠhŠn syntymŠaikasi",
+                        "help": "Jos sinulla ei ole suomalaista henkilï¿½tunnusta, tï¿½ytï¿½ tï¿½hï¿½n syntymï¿½aikasi",
                         "ihelp": {
                           "id": "Henkilotunnus_help",
                           "translations": {
-                            "fi": "Jos sinulla ei ole suomalaista henkilštunnusta, tŠytŠ tŠhŠn syntymŠaikasi",
-                            "sv": "Jos sinulla ei ole suomalaista henkilštunnusta, tŠytŠ tŠhŠn syntymŠaikasi_sv",
-                            "en": "Jos sinulla ei ole suomalaista henkilštunnusta, tŠytŠ tŠhŠn syntymŠaikasi_en"
+                            "fi": "Jos sinulla ei ole suomalaista henkilï¿½tunnusta, tï¿½ytï¿½ tï¿½hï¿½n syntymï¿½aikasi",
+                            "sv": "Jos sinulla ei ole suomalaista henkilï¿½tunnusta, tï¿½ytï¿½ tï¿½hï¿½n syntymï¿½aikasi_sv",
+                            "en": "Jos sinulla ei ole suomalaista henkilï¿½tunnusta, tï¿½ytï¿½ tï¿½hï¿½n syntymï¿½aikasi_en"
                           }
                         },
                         "children": [],
@@ -5774,22 +5774,22 @@
                     },
                     {
                       "type": "TextQuestion",
-                      "id": "SŠhkšposti",
+                      "id": "Sï¿½hkï¿½posti",
                       "i18nText": {
                         "id": "text_1360327507006",
                         "translations": {
-                          "fi": "SŠhkšpostiosoite",
-                          "sv": "SŠhkšpostiosoite_sv",
-                          "en": "SŠhkšpostiosoite_en"
+                          "fi": "Sï¿½hkï¿½postiosoite",
+                          "sv": "Sï¿½hkï¿½postiosoite_sv",
+                          "en": "Sï¿½hkï¿½postiosoite_en"
                         }
                       },
-                      "help": "Kirjoita tŠhŠn sŠhkšpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja ja jota kŠytŠt sŠŠnnšllisesti. Saat vahvistuksen hakemuksen perille menosta tŠhŠn sŠhkšpostiosoitteeseen.",
+                      "help": "Kirjoita tï¿½hï¿½n sï¿½hkï¿½postiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja ja jota kï¿½ytï¿½t sï¿½ï¿½nnï¿½llisesti. Saat vahvistuksen hakemuksen perille menosta tï¿½hï¿½n sï¿½hkï¿½postiosoitteeseen.",
                       "ihelp": {
-                        "id": "SŠhkšposti_help",
+                        "id": "Sï¿½hkï¿½posti_help",
                         "translations": {
-                          "fi": "Kirjoita tŠhŠn sŠhkšpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja ja jota kŠytŠt sŠŠnnšllisesti. Saat vahvistuksen hakemuksen perille menosta tŠhŠn sŠhkšpostiosoitteeseen.",
-                          "sv": "Kirjoita tŠhŠn sŠhkšpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja ja jota kŠytŠt sŠŠnnšllisesti. Saat vahvistuksen hakemuksen perille menosta tŠhŠn sŠhkšpostiosoitteeseen._sv",
-                          "en": "Kirjoita tŠhŠn sŠhkšpostiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja ja jota kŠytŠt sŠŠnnšllisesti. Saat vahvistuksen hakemuksen perille menosta tŠhŠn sŠhkšpostiosoitteeseen._en"
+                          "fi": "Kirjoita tï¿½hï¿½n sï¿½hkï¿½postiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja ja jota kï¿½ytï¿½t sï¿½ï¿½nnï¿½llisesti. Saat vahvistuksen hakemuksen perille menosta tï¿½hï¿½n sï¿½hkï¿½postiosoitteeseen.",
+                          "sv": "Kirjoita tï¿½hï¿½n sï¿½hkï¿½postiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja ja jota kï¿½ytï¿½t sï¿½ï¿½nnï¿½llisesti. Saat vahvistuksen hakemuksen perille menosta tï¿½hï¿½n sï¿½hkï¿½postiosoitteeseen._sv",
+                          "en": "Kirjoita tï¿½hï¿½n sï¿½hkï¿½postiosoite, johon haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja ja jota kï¿½ytï¿½t sï¿½ï¿½nnï¿½llisesti. Saat vahvistuksen hakemuksen perille menosta tï¿½hï¿½n sï¿½hkï¿½postiosoitteeseen._en"
                         }
                       },
                       "children": [],
@@ -5797,17 +5797,17 @@
                         "id": {
                           "type": "Attribute",
                           "key": "id",
-                          "value": "SŠhkšposti"
+                          "value": "Sï¿½hkï¿½posti"
                         },
                         "pattern": {
                           "type": "Attribute",
                           "key": "pattern",
-                          "value": "^[a-zA-Z0-9.!#$%\u0026Õ*+/\u003d?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$"
+                          "value": "^[a-zA-Z0-9.!#$%\u0026ï¿½*+/\u003d?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$"
                         },
                         "name": {
                           "type": "Attribute",
                           "key": "name",
-                          "value": "SŠhkšposti"
+                          "value": "Sï¿½hkï¿½posti"
                         },
                         "type": {
                           "type": "Attribute",
@@ -5834,13 +5834,13 @@
                           "en": "Matkapuhelinnumero_en"
                         }
                       },
-                      "help": "Kirjoita tŠhŠn matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.",
+                      "help": "Kirjoita tï¿½hï¿½n matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.",
                       "ihelp": {
                         "id": "matkapuhelinnumero_help",
                         "translations": {
-                          "fi": "Kirjoita tŠhŠn matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.",
-                          "sv": "Kirjoita tŠhŠn matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden._sv",
-                          "en": "Kirjoita tŠhŠn matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden._en"
+                          "fi": "Kirjoita tï¿½hï¿½n matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden.",
+                          "sv": "Kirjoita tï¿½hï¿½n matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden._sv",
+                          "en": "Kirjoita tï¿½hï¿½n matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteyden._en"
                         }
                       },
                       "children": [],
@@ -5878,7 +5878,7 @@
                       "type": "AddElementRule",
                       "id": "addHuoltajanPuhelinnumeroRule",
                       "relatedElementId": "huoltajanPuhelinnumero",
-                      "text": "LisŠŠ huoltajan puhelinnumero",
+                      "text": "Lisï¿½ï¿½ huoltajan puhelinnumero",
                       "help": "",
                       "ihelp": {
                         "id": "addHuoltajanPuhelinnumeroRule_help",
@@ -5900,13 +5900,13 @@
                               "en": "Huoltajan puhelinnumero_en"
                             }
                           },
-                          "help": "Kirjoita tŠhŠn huoltajan puhelinnumero.",
+                          "help": "Kirjoita tï¿½hï¿½n huoltajan puhelinnumero.",
                           "ihelp": {
                             "id": "huoltajanPuhelinnumero_help",
                             "translations": {
-                              "fi": "Kirjoita tŠhŠn huoltajan puhelinnumero.",
-                              "sv": "Kirjoita tŠhŠn huoltajan puhelinnumero._sv",
-                              "en": "Kirjoita tŠhŠn huoltajan puhelinnumero._en"
+                              "fi": "Kirjoita tï¿½hï¿½n huoltajan puhelinnumero.",
+                              "sv": "Kirjoita tï¿½hï¿½n huoltajan puhelinnumero._sv",
+                              "en": "Kirjoita tï¿½hï¿½n huoltajan puhelinnumero._en"
                             }
                           },
                           "children": [],
@@ -5987,9 +5987,9 @@
                               "i18nText": {
                                 "id": "text_1360327507013",
                                 "translations": {
-                                  "fi": "LŠhiosoite",
-                                  "sv": "LŠhiosoite_sv",
-                                  "en": "LŠhiosoite_en"
+                                  "fi": "Lï¿½hiosoite",
+                                  "sv": "Lï¿½hiosoite_sv",
+                                  "en": "Lï¿½hiosoite_en"
                                 }
                               },
                               "help": "",
@@ -6119,13 +6119,13 @@
                                   "name": "Helsinki"
                                 }
                               },
-                              "help": "Kirjoita tŠhŠn osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvŠŠ postia, kuten kutsun valintakokeeseen tai valintapŠŠtšksen.",
+                              "help": "Kirjoita tï¿½hï¿½n osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvï¿½ï¿½ postia, kuten kutsun valintakokeeseen tai valintapï¿½ï¿½tï¿½ksen.",
                               "ihelp": {
                                 "id": "Postinumero_help",
                                 "translations": {
-                                  "fi": "Kirjoita tŠhŠn osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvŠŠ postia, kuten kutsun valintakokeeseen tai valintapŠŠtšksen.",
-                                  "sv": "Kirjoita tŠhŠn osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvŠŠ postia, kuten kutsun valintakokeeseen tai valintapŠŠtšksen._sv",
-                                  "en": "Kirjoita tŠhŠn osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvŠŠ postia, kuten kutsun valintakokeeseen tai valintapŠŠtšksen._en"
+                                  "fi": "Kirjoita tï¿½hï¿½n osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvï¿½ï¿½ postia, kuten kutsun valintakokeeseen tai valintapï¿½ï¿½tï¿½ksen.",
+                                  "sv": "Kirjoita tï¿½hï¿½n osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvï¿½ï¿½ postia, kuten kutsun valintakokeeseen tai valintapï¿½ï¿½tï¿½ksen._sv",
+                                  "en": "Kirjoita tï¿½hï¿½n osoite, johon haluat vastaanottaan opiskelijavalintaan liittyvï¿½ï¿½ postia, kuten kutsun valintakokeeseen tai valintapï¿½ï¿½tï¿½ksen._en"
                                 }
                               },
                               "children": [],
@@ -6220,12 +6220,12 @@
                                   "i18nText": {
                                     "id": "text_1360327507006",
                                     "translations": {
-                                      "fi": "JalasjŠrvi",
-                                      "sv": "JalasjŠrvi_sv",
-                                      "en": "JalasjŠrvi_en"
+                                      "fi": "Jalasjï¿½rvi",
+                                      "sv": "Jalasjï¿½rvi_sv",
+                                      "en": "Jalasjï¿½rvi_en"
                                     }
                                   },
-                                  "value": "JalasjŠrvi",
+                                  "value": "Jalasjï¿½rvi",
                                   "help": "",
                                   "ihelp": {
                                     "id": "kotikunta_jalasjarvi, _help",
@@ -6372,9 +6372,9 @@
                               "i18nText": {
                                 "id": "text_1360327507013",
                                 "translations": {
-                                  "fi": "TŠmŠ on ensisijainen osoitteeni",
-                                  "sv": "TŠmŠ on ensisijainen osoitteeni_sv",
-                                  "en": "TŠmŠ on ensisijainen osoitteeni_en"
+                                  "fi": "Tï¿½mï¿½ on ensisijainen osoitteeni",
+                                  "sv": "Tï¿½mï¿½ on ensisijainen osoitteeni_sv",
+                                  "en": "Tï¿½mï¿½ on ensisijainen osoitteeni_en"
                                 }
                               },
                               "help": "",
@@ -6604,22 +6604,22 @@
                     },
                     {
                       "type": "DropdownSelect",
-                      "id": "Šidinkieli",
+                      "id": "ï¿½idinkieli",
                       "i18nText": {
                         "id": "text_1360327507006",
                         "translations": {
-                          "fi": "€idinkieli",
-                          "sv": "€idinkieli_sv",
-                          "en": "€idinkieli_en"
+                          "fi": "ï¿½idinkieli",
+                          "sv": "ï¿½idinkieli_sv",
+                          "en": "ï¿½idinkieli_en"
                         }
                       },
-                      "help": "Jos omaa ŠidinkieltŠsi ei lšydy valintalistasta, valitse Šidinkieleksesi.",
+                      "help": "Jos omaa ï¿½idinkieltï¿½si ei lï¿½ydy valintalistasta, valitse ï¿½idinkieleksesi.",
                       "ihelp": {
-                        "id": "Šidinkieli_help",
+                        "id": "ï¿½idinkieli_help",
                         "translations": {
-                          "fi": "Jos omaa ŠidinkieltŠsi ei lšydy valintalistasta, valitse Šidinkieleksesi.",
-                          "sv": "Jos omaa ŠidinkieltŠsi ei lšydy valintalistasta, valitse Šidinkieleksesi._sv",
-                          "en": "Jos omaa ŠidinkieltŠsi ei lšydy valintalistasta, valitse Šidinkieleksesi._en"
+                          "fi": "Jos omaa ï¿½idinkieltï¿½si ei lï¿½ydy valintalistasta, valitse ï¿½idinkieleksesi.",
+                          "sv": "Jos omaa ï¿½idinkieltï¿½si ei lï¿½ydy valintalistasta, valitse ï¿½idinkieleksesi._sv",
+                          "en": "Jos omaa ï¿½idinkieltï¿½si ei lï¿½ydy valintalistasta, valitse ï¿½idinkieleksesi._en"
                         }
                       },
                       "children": [],
@@ -6627,17 +6627,17 @@
                         "id": {
                           "type": "Attribute",
                           "key": "id",
-                          "value": "Šidinkieli"
+                          "value": "ï¿½idinkieli"
                         },
                         "placeholder": {
                           "type": "Attribute",
                           "key": "placeholder",
-                          "value": "Valitse €idinkieli"
+                          "value": "Valitse ï¿½idinkieli"
                         },
                         "name": {
                           "type": "Attribute",
                           "key": "name",
-                          "value": "Šidinkieli"
+                          "value": "ï¿½idinkieli"
                         },
                         "required": {
                           "type": "Attribute",
@@ -6650,7 +6650,7 @@
                       "options": [
                         {
                           "type": "Option",
-                          "id": "Šidinkieli_suomi",
+                          "id": "ï¿½idinkieli_suomi",
                           "i18nText": {
                             "id": "text_1360327507006",
                             "translations": {
@@ -6662,7 +6662,7 @@
                           "value": "Suomi",
                           "help": "",
                           "ihelp": {
-                            "id": "Šidinkieli_suomi_help",
+                            "id": "ï¿½idinkieli_suomi_help",
                             "translations": {
                               "fi": "",
                               "sv": "_sv",
@@ -6674,13 +6674,13 @@
                             "id": {
                               "type": "Attribute",
                               "key": "id",
-                              "value": "Šidinkieli_suomi"
+                              "value": "ï¿½idinkieli_suomi"
                             }
                           }
                         },
                         {
                           "type": "Option",
-                          "id": "Šidinkieli_ruotsi",
+                          "id": "ï¿½idinkieli_ruotsi",
                           "i18nText": {
                             "id": "text_1360327507006",
                             "translations": {
@@ -6692,7 +6692,7 @@
                           "value": "Ruotsi",
                           "help": "",
                           "ihelp": {
-                            "id": "Šidinkieli_ruotsi_help",
+                            "id": "ï¿½idinkieli_ruotsi_help",
                             "translations": {
                               "fi": "",
                               "sv": "_sv",
@@ -6704,7 +6704,7 @@
                             "id": {
                               "type": "Attribute",
                               "key": "id",
-                              "value": "Šidinkieli_ruotsi"
+                              "value": "ï¿½idinkieli_ruotsi"
                             }
                           }
                         }
@@ -6731,13 +6731,13 @@
                     }
                   },
                   "additionalQuestions": {},
-                  "help": "Merkitse tŠlle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitŠ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimŠŠrŠ. Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet eivŠt voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta.",
+                  "help": "Merkitse tï¿½lle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitï¿½ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimï¿½ï¿½rï¿½. Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet eivï¿½t voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta.",
                   "ihelp": {
                     "id": "KoulutustaustaGrp_help",
                     "translations": {
-                      "fi": "Merkitse tŠlle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitŠ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimŠŠrŠ. Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet eivŠt voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta.",
-                      "sv": "Merkitse tŠlle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitŠ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimŠŠrŠ. Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet eivŠt voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta._sv",
-                      "en": "Merkitse tŠlle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitŠ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimŠŠrŠ. Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet eivŠt voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta._en"
+                      "fi": "Merkitse tï¿½lle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitï¿½ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimï¿½ï¿½rï¿½. Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet eivï¿½t voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta.",
+                      "sv": "Merkitse tï¿½lle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitï¿½ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimï¿½ï¿½rï¿½. Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet eivï¿½t voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta._sv",
+                      "en": "Merkitse tï¿½lle sivulle pohjakoulutuksesi. Valitse pohjakoulutus, jonka perusteella haet. Voit merkitï¿½ vain yhden kohdan. HUOM! Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi valita kohtaa Perusopetuksen oppimï¿½ï¿½rï¿½. Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet eivï¿½t voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkintotodistuksella et voi hakea ammatillisen koulutuksen ja lukiokoulutuksen yhteishaussa. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta._en"
                     }
                   },
                   "children": [
@@ -6783,9 +6783,9 @@
                               "i18nText": {
                                 "id": "text_1360327507014",
                                 "translations": {
-                                  "fi": "MinŠ vuonna olet saanut lukiotodistuksen?",
-                                  "sv": "MinŠ vuonna olet saanut lukiotodistuksen?_sv",
-                                  "en": "MinŠ vuonna olet saanut lukiotodistuksen?_en"
+                                  "fi": "Minï¿½ vuonna olet saanut lukiotodistuksen?",
+                                  "sv": "Minï¿½ vuonna olet saanut lukiotodistuksen?_sv",
+                                  "en": "Minï¿½ vuonna olet saanut lukiotodistuksen?_en"
                                 }
                               },
                               "help": "",
@@ -6873,9 +6873,9 @@
                               "i18nText": {
                                 "id": "text_1360327507014",
                                 "translations": {
-                                  "fi": "Saatko peruskoulun pŠŠttštodistuksen hakukevŠŠnŠ 2012?",
-                                  "sv": "Saatko peruskoulun pŠŠttštodistuksen hakukevŠŠnŠ 2012?_sv",
-                                  "en": "Saatko peruskoulun pŠŠttštodistuksen hakukevŠŠnŠ 2012?_en"
+                                  "fi": "Saatko peruskoulun pï¿½ï¿½ttï¿½todistuksen hakukevï¿½ï¿½nï¿½ 2012?",
+                                  "sv": "Saatko peruskoulun pï¿½ï¿½ttï¿½todistuksen hakukevï¿½ï¿½nï¿½ 2012?_sv",
+                                  "en": "Saatko peruskoulun pï¿½ï¿½ttï¿½todistuksen hakukevï¿½ï¿½nï¿½ 2012?_en"
                                 }
                               },
                               "help": "",
@@ -6909,9 +6909,9 @@
                                       "i18nText": {
                                         "id": "text_1360327507014",
                                         "translations": {
-                                          "fi": "Olen saanut pŠŠttštodistuksen jo aiemmin, vuonna",
-                                          "sv": "Olen saanut pŠŠttštodistuksen jo aiemmin, vuonna_sv",
-                                          "en": "Olen saanut pŠŠttštodistuksen jo aiemmin, vuonna_en"
+                                          "fi": "Olen saanut pï¿½ï¿½ttï¿½todistuksen jo aiemmin, vuonna",
+                                          "sv": "Olen saanut pï¿½ï¿½ttï¿½todistuksen jo aiemmin, vuonna_sv",
+                                          "en": "Olen saanut pï¿½ï¿½ttï¿½todistuksen jo aiemmin, vuonna_en"
                                         }
                                       },
                                       "help": "",
@@ -7005,12 +7005,12 @@
                                   "i18nText": {
                                     "id": "text_1360327507014",
                                     "translations": {
-                                      "fi": "KyllŠ",
-                                      "sv": "KyllŠ_sv",
-                                      "en": "KyllŠ_en"
+                                      "fi": "Kyllï¿½",
+                                      "sv": "Kyllï¿½_sv",
+                                      "en": "Kyllï¿½_en"
                                     }
                                   },
-                                  "value": "kyllŠ",
+                                  "value": "kyllï¿½",
                                   "help": "",
                                   "ihelp": {
                                     "id": "peruskoulu2012_kylla_help",
@@ -7067,18 +7067,18 @@
                               "i18nText": {
                                 "id": "text_1360327507014",
                                 "translations": {
-                                  "fi": "MikŠ oli tukintosi opetuskieli",
-                                  "sv": "MikŠ oli tukintosi opetuskieli_sv",
-                                  "en": "MikŠ oli tukintosi opetuskieli_en"
+                                  "fi": "Mikï¿½ oli tukintosi opetuskieli",
+                                  "sv": "Mikï¿½ oli tukintosi opetuskieli_sv",
+                                  "en": "Mikï¿½ oli tukintosi opetuskieli_en"
                                 }
                               },
-                              "help": "Merkitse tŠhŠn se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellŠ tasapuolisesti, valitse toinen niistŠ",
+                              "help": "Merkitse tï¿½hï¿½n se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellï¿½ tasapuolisesti, valitse toinen niistï¿½",
                               "ihelp": {
                                 "id": "opetuskieli_help",
                                 "translations": {
-                                  "fi": "Merkitse tŠhŠn se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellŠ tasapuolisesti, valitse toinen niistŠ",
-                                  "sv": "Merkitse tŠhŠn se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellŠ tasapuolisesti, valitse toinen niistŠ_sv",
-                                  "en": "Merkitse tŠhŠn se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellŠ tasapuolisesti, valitse toinen niistŠ_en"
+                                  "fi": "Merkitse tï¿½hï¿½n se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellï¿½ tasapuolisesti, valitse toinen niistï¿½",
+                                  "sv": "Merkitse tï¿½hï¿½n se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellï¿½ tasapuolisesti, valitse toinen niistï¿½_sv",
+                                  "en": "Merkitse tï¿½hï¿½n se kieli, jolla suoritit suurimman osan opinnoistasi. Jos suoritit opinnot kahdella kielellï¿½ tasapuolisesti, valitse toinen niistï¿½_en"
                                 }
                               },
                               "children": [],
@@ -7170,9 +7170,9 @@
                               "i18nText": {
                                 "id": "text_1360327507014",
                                 "translations": {
-                                  "fi": "Kymppiluokka (perusopetuksen lisŠopetuksen oppimŠŠrŠ, vŠhintŠŠn 1100 tuntia)",
-                                  "sv": "Kymppiluokka (perusopetuksen lisŠopetuksen oppimŠŠrŠ, vŠhintŠŠn 1100 tuntia)_sv",
-                                  "en": "Kymppiluokka (perusopetuksen lisŠopetuksen oppimŠŠrŠ, vŠhintŠŠn 1100 tuntia)_en"
+                                  "fi": "Kymppiluokka (perusopetuksen lisï¿½opetuksen oppimï¿½ï¿½rï¿½, vï¿½hintï¿½ï¿½n 1100 tuntia)",
+                                  "sv": "Kymppiluokka (perusopetuksen lisï¿½opetuksen oppimï¿½ï¿½rï¿½, vï¿½hintï¿½ï¿½n 1100 tuntia)_sv",
+                                  "en": "Kymppiluokka (perusopetuksen lisï¿½opetuksen oppimï¿½ï¿½rï¿½, vï¿½hintï¿½ï¿½n 1100 tuntia)_en"
                                 }
                               },
                               "help": "",
@@ -7275,9 +7275,9 @@
                               "i18nText": {
                                 "id": "text_1360327507014",
                                 "translations": {
-                                  "fi": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena jŠrjestettŠvŠ kotitalousopetus)",
-                                  "sv": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena jŠrjestettŠvŠ kotitalousopetus)_sv",
-                                  "en": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena jŠrjestettŠvŠ kotitalousopetus)_en"
+                                  "fi": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena jï¿½rjestettï¿½vï¿½ kotitalousopetus)",
+                                  "sv": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena jï¿½rjestettï¿½vï¿½ kotitalousopetus)_sv",
+                                  "en": "Talouskoulu (muuna kuin ammatillisena peruskoulutuksena jï¿½rjestettï¿½vï¿½ kotitalousopetus)_en"
                                 }
                               },
                               "help": "",
@@ -7310,9 +7310,9 @@
                               "i18nText": {
                                 "id": "text_1360327507014",
                                 "translations": {
-                                  "fi": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vŠhintŠŠn 20 tuntia)",
-                                  "sv": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vŠhintŠŠn 20 tuntia)_sv",
-                                  "en": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vŠhintŠŠn 20 tuntia)_en"
+                                  "fi": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vï¿½hintï¿½ï¿½n 20 tuntia)",
+                                  "sv": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vï¿½hintï¿½ï¿½n 20 tuntia)_sv",
+                                  "en": "Ammattistartti (ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus, vï¿½hintï¿½ï¿½n 20 tuntia)_en"
                                 }
                               },
                               "help": "",
@@ -7411,19 +7411,19 @@
                           "i18nText": {
                             "id": "text_1360327507013",
                             "translations": {
-                              "fi": "Perusopetuksen oppimŠŠrŠ",
-                              "sv": "Perusopetuksen oppimŠŠrŠ_sv",
-                              "en": "Perusopetuksen oppimŠŠrŠ_en"
+                              "fi": "Perusopetuksen oppimï¿½ï¿½rï¿½",
+                              "sv": "Perusopetuksen oppimï¿½ï¿½rï¿½_sv",
+                              "en": "Perusopetuksen oppimï¿½ï¿½rï¿½_en"
                             }
                           },
                           "value": "tutkinto1",
-                          "help": "Valitse tŠmŠ, jos olet kŠynyt peruskoulun.",
+                          "help": "Valitse tï¿½mï¿½, jos olet kï¿½ynyt peruskoulun.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto1_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ, jos olet kŠynyt peruskoulun.",
-                              "sv": "Valitse tŠmŠ, jos olet kŠynyt peruskoulun._sv",
-                              "en": "Valitse tŠmŠ, jos olet kŠynyt peruskoulun._en"
+                              "fi": "Valitse tï¿½mï¿½, jos olet kï¿½ynyt peruskoulun.",
+                              "sv": "Valitse tï¿½mï¿½, jos olet kï¿½ynyt peruskoulun._sv",
+                              "en": "Valitse tï¿½mï¿½, jos olet kï¿½ynyt peruskoulun._en"
                             }
                           },
                           "children": [],
@@ -7441,19 +7441,19 @@
                           "i18nText": {
                             "id": "text_1360327507013",
                             "translations": {
-                              "fi": "Perusopetuksen erityisopetuksen osittain yksilšllistetty oppimŠŠrŠ",
-                              "sv": "Perusopetuksen erityisopetuksen osittain yksilšllistetty oppimŠŠrŠ_sv",
-                              "en": "Perusopetuksen erityisopetuksen osittain yksilšllistetty oppimŠŠrŠ_en"
+                              "fi": "Perusopetuksen erityisopetuksen osittain yksilï¿½llistetty oppimï¿½ï¿½rï¿½",
+                              "sv": "Perusopetuksen erityisopetuksen osittain yksilï¿½llistetty oppimï¿½ï¿½rï¿½_sv",
+                              "en": "Perusopetuksen erityisopetuksen osittain yksilï¿½llistetty oppimï¿½ï¿½rï¿½_en"
                             }
                           },
                           "value": "tutkinto2",
-                          "help": "Valitse tŠmŠ, jos olet opiskellut yksilšllistetyn oppimŠŠrŠn puolessa tai alle puolessa oppiaineista.",
+                          "help": "Valitse tï¿½mï¿½, jos olet opiskellut yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n puolessa tai alle puolessa oppiaineista.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto2_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ, jos olet opiskellut yksilšllistetyn oppimŠŠrŠn puolessa tai alle puolessa oppiaineista.",
-                              "sv": "Valitse tŠmŠ, jos olet opiskellut yksilšllistetyn oppimŠŠrŠn puolessa tai alle puolessa oppiaineista._sv",
-                              "en": "Valitse tŠmŠ, jos olet opiskellut yksilšllistetyn oppimŠŠrŠn puolessa tai alle puolessa oppiaineista._en"
+                              "fi": "Valitse tï¿½mï¿½, jos olet opiskellut yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n puolessa tai alle puolessa oppiaineista.",
+                              "sv": "Valitse tï¿½mï¿½, jos olet opiskellut yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n puolessa tai alle puolessa oppiaineista._sv",
+                              "en": "Valitse tï¿½mï¿½, jos olet opiskellut yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n puolessa tai alle puolessa oppiaineista._en"
                             }
                           },
                           "children": [],
@@ -7471,19 +7471,19 @@
                           "i18nText": {
                             "id": "text_1360327507013",
                             "translations": {
-                              "fi": "Perusopetuksen erityisopetuksen yksilšllistetty oppimŠŠrŠ, opetus jŠrjestetty toiminta-alueittain",
-                              "sv": "Perusopetuksen erityisopetuksen yksilšllistetty oppimŠŠrŠ, opetus jŠrjestetty toiminta-alueittain_sv",
-                              "en": "Perusopetuksen erityisopetuksen yksilšllistetty oppimŠŠrŠ, opetus jŠrjestetty toiminta-alueittain_en"
+                              "fi": "Perusopetuksen erityisopetuksen yksilï¿½llistetty oppimï¿½ï¿½rï¿½, opetus jï¿½rjestetty toiminta-alueittain",
+                              "sv": "Perusopetuksen erityisopetuksen yksilï¿½llistetty oppimï¿½ï¿½rï¿½, opetus jï¿½rjestetty toiminta-alueittain_sv",
+                              "en": "Perusopetuksen erityisopetuksen yksilï¿½llistetty oppimï¿½ï¿½rï¿½, opetus jï¿½rjestetty toiminta-alueittain_en"
                             }
                           },
                           "value": "tutkinto3",
-                          "help": "Valitse tŠmŠ, jos olet osallistunut harjaantumisopetukseen.",
+                          "help": "Valitse tï¿½mï¿½, jos olet osallistunut harjaantumisopetukseen.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto3_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ, jos olet osallistunut harjaantumisopetukseen.",
-                              "sv": "Valitse tŠmŠ, jos olet osallistunut harjaantumisopetukseen._sv",
-                              "en": "Valitse tŠmŠ, jos olet osallistunut harjaantumisopetukseen._en"
+                              "fi": "Valitse tï¿½mï¿½, jos olet osallistunut harjaantumisopetukseen.",
+                              "sv": "Valitse tï¿½mï¿½, jos olet osallistunut harjaantumisopetukseen._sv",
+                              "en": "Valitse tï¿½mï¿½, jos olet osallistunut harjaantumisopetukseen._en"
                             }
                           },
                           "children": [],
@@ -7501,19 +7501,19 @@
                           "i18nText": {
                             "id": "text_1360327507013",
                             "translations": {
-                              "fi": "Perusopetuksen pŠŠosin tai kokonaan yksilšllistetty oppimŠŠrŠ",
-                              "sv": "Perusopetuksen pŠŠosin tai kokonaan yksilšllistetty oppimŠŠrŠ_sv",
-                              "en": "Perusopetuksen pŠŠosin tai kokonaan yksilšllistetty oppimŠŠrŠ_en"
+                              "fi": "Perusopetuksen pï¿½ï¿½osin tai kokonaan yksilï¿½llistetty oppimï¿½ï¿½rï¿½",
+                              "sv": "Perusopetuksen pï¿½ï¿½osin tai kokonaan yksilï¿½llistetty oppimï¿½ï¿½rï¿½_sv",
+                              "en": "Perusopetuksen pï¿½ï¿½osin tai kokonaan yksilï¿½llistetty oppimï¿½ï¿½rï¿½_en"
                             }
                           },
                           "value": "tutkinto4",
-                          "help": "Valitse tŠmŠ, jos olet opiskellut peruskoulun kokonaan yksilšllistetyn oppimŠŠrŠn mukaan tai olet opiskellut yli puolet opinnoistasi yksilšllistetyn opetuksen mukaan.",
+                          "help": "Valitse tï¿½mï¿½, jos olet opiskellut peruskoulun kokonaan yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n mukaan tai olet opiskellut yli puolet opinnoistasi yksilï¿½llistetyn opetuksen mukaan.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto4_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ, jos olet opiskellut peruskoulun kokonaan yksilšllistetyn oppimŠŠrŠn mukaan tai olet opiskellut yli puolet opinnoistasi yksilšllistetyn opetuksen mukaan.",
-                              "sv": "Valitse tŠmŠ, jos olet opiskellut peruskoulun kokonaan yksilšllistetyn oppimŠŠrŠn mukaan tai olet opiskellut yli puolet opinnoistasi yksilšllistetyn opetuksen mukaan._sv",
-                              "en": "Valitse tŠmŠ, jos olet opiskellut peruskoulun kokonaan yksilšllistetyn oppimŠŠrŠn mukaan tai olet opiskellut yli puolet opinnoistasi yksilšllistetyn opetuksen mukaan._en"
+                              "fi": "Valitse tï¿½mï¿½, jos olet opiskellut peruskoulun kokonaan yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n mukaan tai olet opiskellut yli puolet opinnoistasi yksilï¿½llistetyn opetuksen mukaan.",
+                              "sv": "Valitse tï¿½mï¿½, jos olet opiskellut peruskoulun kokonaan yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n mukaan tai olet opiskellut yli puolet opinnoistasi yksilï¿½llistetyn opetuksen mukaan._sv",
+                              "en": "Valitse tï¿½mï¿½, jos olet opiskellut peruskoulun kokonaan yksilï¿½llistetyn oppimï¿½ï¿½rï¿½n mukaan tai olet opiskellut yli puolet opinnoistasi yksilï¿½llistetyn opetuksen mukaan._en"
                             }
                           },
                           "children": [],
@@ -7531,19 +7531,19 @@
                           "i18nText": {
                             "id": "text_1360327507013",
                             "translations": {
-                              "fi": "Oppivelvollisuuden suorittaminen keskeytynyt (ei pŠŠttštodistusta)",
-                              "sv": "Oppivelvollisuuden suorittaminen keskeytynyt (ei pŠŠttštodistusta)_sv",
-                              "en": "Oppivelvollisuuden suorittaminen keskeytynyt (ei pŠŠttštodistusta)_en"
+                              "fi": "Oppivelvollisuuden suorittaminen keskeytynyt (ei pï¿½ï¿½ttï¿½todistusta)",
+                              "sv": "Oppivelvollisuuden suorittaminen keskeytynyt (ei pï¿½ï¿½ttï¿½todistusta)_sv",
+                              "en": "Oppivelvollisuuden suorittaminen keskeytynyt (ei pï¿½ï¿½ttï¿½todistusta)_en"
                             }
                           },
                           "value": "tutkinto5",
-                          "help": "Valitse tŠmŠ vain, jos sinulla ei ole lainkaan pŠŠttštodistusta.",
+                          "help": "Valitse tï¿½mï¿½ vain, jos sinulla ei ole lainkaan pï¿½ï¿½ttï¿½todistusta.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto5_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ vain, jos sinulla ei ole lainkaan pŠŠttštodistusta.",
-                              "sv": "Valitse tŠmŠ vain, jos sinulla ei ole lainkaan pŠŠttštodistusta._sv",
-                              "en": "Valitse tŠmŠ vain, jos sinulla ei ole lainkaan pŠŠttštodistusta._en"
+                              "fi": "Valitse tï¿½mï¿½ vain, jos sinulla ei ole lainkaan pï¿½ï¿½ttï¿½todistusta.",
+                              "sv": "Valitse tï¿½mï¿½ vain, jos sinulla ei ole lainkaan pï¿½ï¿½ttï¿½todistusta._sv",
+                              "en": "Valitse tï¿½mï¿½ vain, jos sinulla ei ole lainkaan pï¿½ï¿½ttï¿½todistusta._en"
                             }
                           },
                           "children": [],
@@ -7561,19 +7561,19 @@
                           "i18nText": {
                             "id": "text_1360327507014",
                             "translations": {
-                              "fi": "Lukion pŠŠttštodistus, ylioppilastutkinto tai abiturientti",
-                              "sv": "Lukion pŠŠttštodistus, ylioppilastutkinto tai abiturientti_sv",
-                              "en": "Lukion pŠŠttštodistus, ylioppilastutkinto tai abiturientti_en"
+                              "fi": "Lukion pï¿½ï¿½ttï¿½todistus, ylioppilastutkinto tai abiturientti",
+                              "sv": "Lukion pï¿½ï¿½ttï¿½todistus, ylioppilastutkinto tai abiturientti_sv",
+                              "en": "Lukion pï¿½ï¿½ttï¿½todistus, ylioppilastutkinto tai abiturientti_en"
                             }
                           },
                           "value": "tutkinto6",
-                          "help": "Valitse tŠmŠ, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvŠlinen ylioppilastutkinto, tai olet suorittanut yhdistelmŠtutkinnon, johon sisŠltyy lukion vahimmŠisoppimŠŠrŠŠ vastaavat opinnot.",
+                          "help": "Valitse tï¿½mï¿½, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvï¿½linen ylioppilastutkinto, tai olet suorittanut yhdistelmï¿½tutkinnon, johon sisï¿½ltyy lukion vahimmï¿½isoppimï¿½ï¿½rï¿½ï¿½ vastaavat opinnot.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto6_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvŠlinen ylioppilastutkinto, tai olet suorittanut yhdistelmŠtutkinnon, johon sisŠltyy lukion vahimmŠisoppimŠŠrŠŠ vastaavat opinnot.",
-                              "sv": "Valitse tŠmŠ, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvŠlinen ylioppilastutkinto, tai olet suorittanut yhdistelmŠtutkinnon, johon sisŠltyy lukion vahimmŠisoppimŠŠrŠŠ vastaavat opinnot._sv",
-                              "en": "Valitse tŠmŠ, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvŠlinen ylioppilastutkinto, tai olet suorittanut yhdistelmŠtutkinnon, johon sisŠltyy lukion vahimmŠisoppimŠŠrŠŠ vastaavat opinnot._en"
+                              "fi": "Valitse tï¿½mï¿½, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvï¿½linen ylioppilastutkinto, tai olet suorittanut yhdistelmï¿½tutkinnon, johon sisï¿½ltyy lukion vahimmï¿½isoppimï¿½ï¿½rï¿½ï¿½ vastaavat opinnot.",
+                              "sv": "Valitse tï¿½mï¿½, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvï¿½linen ylioppilastutkinto, tai olet suorittanut yhdistelmï¿½tutkinnon, johon sisï¿½ltyy lukion vahimmï¿½isoppimï¿½ï¿½rï¿½ï¿½ vastaavat opinnot._sv",
+                              "en": "Valitse tï¿½mï¿½, jos olet suorittanut lukion ja sinulla on suomalainen tai kansainvï¿½linen ylioppilastutkinto, tai olet suorittanut yhdistelmï¿½tutkinnon, johon sisï¿½ltyy lukion vahimmï¿½isoppimï¿½ï¿½rï¿½ï¿½ vastaavat opinnot._en"
                             }
                           },
                           "children": [],
@@ -7597,13 +7597,13 @@
                             }
                           },
                           "value": "tutkinto7",
-                          "help": "Valitse tŠmŠ, jos olet suorittanut tutkintosi ulkomailla.",
+                          "help": "Valitse tï¿½mï¿½, jos olet suorittanut tutkintosi ulkomailla.",
                           "ihelp": {
                             "id": "millatutkinnolla_tutkinto7_help",
                             "translations": {
-                              "fi": "Valitse tŠmŠ, jos olet suorittanut tutkintosi ulkomailla.",
-                              "sv": "Valitse tŠmŠ, jos olet suorittanut tutkintosi ulkomailla._sv",
-                              "en": "Valitse tŠmŠ, jos olet suorittanut tutkintosi ulkomailla._en"
+                              "fi": "Valitse tï¿½mï¿½, jos olet suorittanut tutkintosi ulkomailla.",
+                              "sv": "Valitse tï¿½mï¿½, jos olet suorittanut tutkintosi ulkomailla._sv",
+                              "en": "Valitse tï¿½mï¿½, jos olet suorittanut tutkintosi ulkomailla._en"
                             }
                           },
                           "children": [],
@@ -7623,9 +7623,9 @@
                       "i18nText": {
                         "id": "text_1360327507013",
                         "translations": {
-                          "fi": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pŠŠsykokeisiin?",
-                          "sv": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pŠŠsykokeisiin?_sv",
-                          "en": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pŠŠsykokeisiin?_en"
+                          "fi": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pï¿½ï¿½sykokeisiin?",
+                          "sv": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pï¿½ï¿½sykokeisiin?_sv",
+                          "en": "Oletko osallistunut viimeisen vuoden aikana jonkun hakukohteen alan pï¿½ï¿½sykokeisiin?_en"
                         }
                       },
                       "help": "",
@@ -7694,12 +7694,12 @@
                           "i18nText": {
                             "id": "text_1360327507013",
                             "translations": {
-                              "fi": "KyllŠ",
-                              "sv": "KyllŠ_sv",
-                              "en": "KyllŠ_en"
+                              "fi": "Kyllï¿½",
+                              "sv": "Kyllï¿½_sv",
+                              "en": "Kyllï¿½_en"
                             }
                           },
-                          "value": "KyllŠ",
+                          "value": "Kyllï¿½",
                           "help": "",
                           "ihelp": {
                             "id": "osallistunut_kylla_help",
@@ -7748,9 +7748,9 @@
                         "i18nText": {
                           "id": "text_1360327507003",
                           "translations": {
-                            "fi": "TŠllŠ alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenŠ. Onko sinulla terveydellisiŠ tekijšitŠ, jotka voivat olla opiskelijatksi ottamisen esteenŠ?",
-                            "sv": "TŠllŠ alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenŠ. Onko sinulla terveydellisiŠ tekijšitŠ, jotka voivat olla opiskelijatksi ottamisen esteenŠ?_sv",
-                            "en": "TŠllŠ alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenŠ. Onko sinulla terveydellisiŠ tekijšitŠ, jotka voivat olla opiskelijatksi ottamisen esteenŠ?_en"
+                            "fi": "Tï¿½llï¿½ alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenï¿½. Onko sinulla terveydellisiï¿½ tekijï¿½itï¿½, jotka voivat olla opiskelijatksi ottamisen esteenï¿½?",
+                            "sv": "Tï¿½llï¿½ alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenï¿½. Onko sinulla terveydellisiï¿½ tekijï¿½itï¿½, jotka voivat olla opiskelijatksi ottamisen esteenï¿½?_sv",
+                            "en": "Tï¿½llï¿½ alalla on terveydentilavaatimuksia, jotka voivat olla opiskelijan ottamisen esteenï¿½. Onko sinulla terveydellisiï¿½ tekijï¿½itï¿½, jotka voivat olla opiskelijatksi ottamisen esteenï¿½?_en"
                           }
                         },
                         "help": "",
@@ -7813,9 +7813,9 @@
                             "i18nText": {
                               "id": "text_1360327507004",
                               "translations": {
-                                "fi": "KyllŠ. YmmŠrrŠ, etten tŠstŠ johtuen ehkŠ tule valituksi",
-                                "sv": "KyllŠ. YmmŠrrŠ, etten tŠstŠ johtuen ehkŠ tule valituksi_sv",
-                                "en": "KyllŠ. YmmŠrrŠ, etten tŠstŠ johtuen ehkŠ tule valituksi_en"
+                                "fi": "Kyllï¿½. Ymmï¿½rrï¿½, etten tï¿½stï¿½ johtuen ehkï¿½ tule valituksi",
+                                "sv": "Kyllï¿½. Ymmï¿½rrï¿½, etten tï¿½stï¿½ johtuen ehkï¿½ tule valituksi_sv",
+                                "en": "Kyllï¿½. Ymmï¿½rrï¿½, etten tï¿½stï¿½ johtuen ehkï¿½ tule valituksi_en"
                               }
                             },
                             "value": "q1_option_2",
@@ -7845,9 +7845,9 @@
                         "i18nText": {
                           "id": "text_1360327507004",
                           "translations": {
-                            "fi": "TŠssŠ koulutuksessa opiskelijaksi ottamisen esteenŠ voi olla eiempi pŠŠtšs opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilšiden turvallisuuden vaarantamisen takia?",
-                            "sv": "TŠssŠ koulutuksessa opiskelijaksi ottamisen esteenŠ voi olla eiempi pŠŠtšs opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilšiden turvallisuuden vaarantamisen takia?_sv",
-                            "en": "TŠssŠ koulutuksessa opiskelijaksi ottamisen esteenŠ voi olla eiempi pŠŠtšs opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilšiden turvallisuuden vaarantamisen takia?_en"
+                            "fi": "Tï¿½ssï¿½ koulutuksessa opiskelijaksi ottamisen esteenï¿½ voi olla aiempi pï¿½ï¿½tï¿½s opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilï¿½iden turvallisuuden vaarantamisen takia?",
+                            "sv": "Tï¿½ssï¿½ koulutuksessa opiskelijaksi ottamisen esteenï¿½ voi olla aiempi pï¿½ï¿½tï¿½s opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilï¿½iden turvallisuuden vaarantamisen takia?_sv",
+                            "en": "Tï¿½ssï¿½ koulutuksessa opiskelijaksi ottamisen esteenï¿½ voi olla aiempi pï¿½ï¿½tï¿½s opiskeluoikeuden peruuttamisessa. Onko opiskeluoikeutesi aiemmin peruutettu terveydentilasi tai muiden henkilï¿½iden turvallisuuden vaarantamisen takia?_en"
                           }
                         },
                         "help": "",
@@ -7910,9 +7910,9 @@
                             "i18nText": {
                               "id": "text_1360327507004",
                               "translations": {
-                                "fi": "KyllŠ. YmmŠrrŠ, etten tŠstŠ johtuen ehkŠ tule valituksi",
-                                "sv": "KyllŠ. YmmŠrrŠ, etten tŠstŠ johtuen ehkŠ tule valituksi_sv",
-                                "en": "KyllŠ. YmmŠrrŠ, etten tŠstŠ johtuen ehkŠ tule valituksi_en"
+                                "fi": "Kyllï¿½. Ymmï¿½rrï¿½, etten tï¿½stï¿½ johtuen ehkï¿½ tule valituksi",
+                                "sv": "Kyllï¿½. Ymmï¿½rrï¿½, etten tï¿½stï¿½ johtuen ehkï¿½ tule valituksi_sv",
+                                "en": "Kyllï¿½. Ymmï¿½rrï¿½, etten tï¿½stï¿½ johtuen ehkï¿½ tule valituksi_en"
                               }
                             },
                             "value": "q2_option_2",
@@ -7942,9 +7942,9 @@
                         "i18nText": {
                           "id": "text_1360327507004",
                           "translations": {
-                            "fi": "Jos olet osallistunut saman alan pŠŠsykokeeseen, niin haluatko kŠyttŠŠ hyvŠksyttyjŠ koetuloksiasi?",
-                            "sv": "Jos olet osallistunut saman alan pŠŠsykokeeseen, niin haluatko kŠyttŠŠ hyvŠksyttyjŠ koetuloksiasi?_sv",
-                            "en": "Jos olet osallistunut saman alan pŠŠsykokeeseen, niin haluatko kŠyttŠŠ hyvŠksyttyjŠ koetuloksiasi?_en"
+                            "fi": "Jos olet osallistunut saman alan pï¿½ï¿½sykokeeseen, niin haluatko kï¿½yttï¿½ï¿½ hyvï¿½ksyttyjï¿½ koetuloksiasi?",
+                            "sv": "Jos olet osallistunut saman alan pï¿½ï¿½sykokeeseen, niin haluatko kï¿½yttï¿½ï¿½ hyvï¿½ksyttyjï¿½ koetuloksiasi?_sv",
+                            "en": "Jos olet osallistunut saman alan pï¿½ï¿½sykokeeseen, niin haluatko kï¿½yttï¿½ï¿½ hyvï¿½ksyttyjï¿½ koetuloksiasi?_en"
                           }
                         },
                         "help": "",
@@ -7977,9 +7977,9 @@
                             "i18nText": {
                               "id": "text_1360327507004",
                               "translations": {
-                                "fi": "En, en ole osallistunut pŠŠsykokeeseen",
-                                "sv": "En, en ole osallistunut pŠŠsykokeeseen_sv",
-                                "en": "En, en ole osallistunut pŠŠsykokeeseen_en"
+                                "fi": "En, en ole osallistunut pï¿½ï¿½sykokeeseen",
+                                "sv": "En, en ole osallistunut pï¿½ï¿½sykokeeseen_sv",
+                                "en": "En, en ole osallistunut pï¿½ï¿½sykokeeseen_en"
                               }
                             },
                             "value": "q3_option_1",
@@ -8007,9 +8007,9 @@
                             "i18nText": {
                               "id": "text_1360327507004",
                               "translations": {
-                                "fi": "Ei, en halua kŠyttŠŠ tuloksia",
-                                "sv": "Ei, en halua kŠyttŠŠ tuloksia_sv",
-                                "en": "Ei, en halua kŠyttŠŠ tuloksia_en"
+                                "fi": "Ei, en halua kï¿½yttï¿½ï¿½ tuloksia",
+                                "sv": "Ei, en halua kï¿½yttï¿½ï¿½ tuloksia_sv",
+                                "en": "Ei, en halua kï¿½yttï¿½ï¿½ tuloksia_en"
                               }
                             },
                             "value": "q3_option_2",
@@ -8037,9 +8037,9 @@
                             "i18nText": {
                               "id": "text_1360327507004",
                               "translations": {
-                                "fi": "KyllŠ, haluan kŠyttŠŠ pŠŠsykoetuloksia",
-                                "sv": "KyllŠ, haluan kŠyttŠŠ pŠŠsykoetuloksia_sv",
-                                "en": "KyllŠ, haluan kŠyttŠŠ pŠŠsykoetuloksia_en"
+                                "fi": "Kyllï¿½, haluan kï¿½yttï¿½ï¿½ pï¿½ï¿½sykoetuloksia",
+                                "sv": "Kyllï¿½, haluan kï¿½yttï¿½ï¿½ pï¿½ï¿½sykoetuloksia_sv",
+                                "en": "Kyllï¿½, haluan kï¿½yttï¿½ï¿½ pï¿½ï¿½sykoetuloksia_en"
                               }
                             },
                             "value": "q3_option_3",
@@ -8065,13 +8065,13 @@
                       }
                     ]
                   },
-                  "help": "Merkitse tŠlle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinŠ jŠrjestyksessŠ, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttŠŠ ne hakutoivelistalle. Voit halutessasi etsiŠ koulutuksia koulutuskorin kautta. harkitse hakutoivejŠrjestystŠ tarkoin, sillŠ se on sitova, etkŠ voi muuttaa sitŠ enŠŠ hakuajan jŠlkeen. Jos et pŠŠse koulutukseen, jonka olet merkinnyt ensimmŠiselle sijalle, tarkistetaan riittŠvŠtkš pisteesi toiselle sijalle merkitsemŠŠsi hakutoiveeseen jne. Jos pŠŠset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkŠ voi enŠŠ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielŠ pŠŠstŠ. HUOM! Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).",
+                  "help": "Merkitse tï¿½lle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinï¿½ jï¿½rjestyksessï¿½, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttï¿½ï¿½ ne hakutoivelistalle. Voit halutessasi etsiï¿½ koulutuksia koulutuskorin kautta. harkitse hakutoivejï¿½rjestystï¿½ tarkoin, sillï¿½ se on sitova, etkï¿½ voi muuttaa sitï¿½ enï¿½ï¿½ hakuajan jï¿½lkeen. Jos et pï¿½ï¿½se koulutukseen, jonka olet merkinnyt ensimmï¿½iselle sijalle, tarkistetaan riittï¿½vï¿½tkï¿½ pisteesi toiselle sijalle merkitsemï¿½ï¿½si hakutoiveeseen jne. Jos pï¿½ï¿½set esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkï¿½ voi enï¿½ï¿½ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielï¿½ pï¿½ï¿½stï¿½. HUOM! Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).",
                   "ihelp": {
                     "id": "hakutoiveetGrp_help",
                     "translations": {
-                      "fi": "Merkitse tŠlle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinŠ jŠrjestyksessŠ, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttŠŠ ne hakutoivelistalle. Voit halutessasi etsiŠ koulutuksia koulutuskorin kautta. harkitse hakutoivejŠrjestystŠ tarkoin, sillŠ se on sitova, etkŠ voi muuttaa sitŠ enŠŠ hakuajan jŠlkeen. Jos et pŠŠse koulutukseen, jonka olet merkinnyt ensimmŠiselle sijalle, tarkistetaan riittŠvŠtkš pisteesi toiselle sijalle merkitsemŠŠsi hakutoiveeseen jne. Jos pŠŠset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkŠ voi enŠŠ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielŠ pŠŠstŠ. HUOM! Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).",
-                      "sv": "Merkitse tŠlle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinŠ jŠrjestyksessŠ, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttŠŠ ne hakutoivelistalle. Voit halutessasi etsiŠ koulutuksia koulutuskorin kautta. harkitse hakutoivejŠrjestystŠ tarkoin, sillŠ se on sitova, etkŠ voi muuttaa sitŠ enŠŠ hakuajan jŠlkeen. Jos et pŠŠse koulutukseen, jonka olet merkinnyt ensimmŠiselle sijalle, tarkistetaan riittŠvŠtkš pisteesi toiselle sijalle merkitsemŠŠsi hakutoiveeseen jne. Jos pŠŠset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkŠ voi enŠŠ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielŠ pŠŠstŠ. HUOM! Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo)._sv",
-                      "en": "Merkitse tŠlle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinŠ jŠrjestyksessŠ, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttŠŠ ne hakutoivelistalle. Voit halutessasi etsiŠ koulutuksia koulutuskorin kautta. harkitse hakutoivejŠrjestystŠ tarkoin, sillŠ se on sitova, etkŠ voi muuttaa sitŠ enŠŠ hakuajan jŠlkeen. Jos et pŠŠse koulutukseen, jonka olet merkinnyt ensimmŠiselle sijalle, tarkistetaan riittŠvŠtkš pisteesi toiselle sijalle merkitsemŠŠsi hakutoiveeseen jne. Jos pŠŠset esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkŠ voi enŠŠ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielŠ pŠŠstŠ. HUOM! Lukion oppimŠŠrŠn tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo)._en"
+                      "fi": "Merkitse tï¿½lle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinï¿½ jï¿½rjestyksessï¿½, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttï¿½ï¿½ ne hakutoivelistalle. Voit halutessasi etsiï¿½ koulutuksia koulutuskorin kautta. harkitse hakutoivejï¿½rjestystï¿½ tarkoin, sillï¿½ se on sitova, etkï¿½ voi muuttaa sitï¿½ enï¿½ï¿½ hakuajan jï¿½lkeen. Jos et pï¿½ï¿½se koulutukseen, jonka olet merkinnyt ensimmï¿½iselle sijalle, tarkistetaan riittï¿½vï¿½tkï¿½ pisteesi toiselle sijalle merkitsemï¿½ï¿½si hakutoiveeseen jne. Jos pï¿½ï¿½set esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkï¿½ voi enï¿½ï¿½ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielï¿½ pï¿½ï¿½stï¿½. HUOM! Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo).",
+                      "sv": "Merkitse tï¿½lle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinï¿½ jï¿½rjestyksessï¿½, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttï¿½ï¿½ ne hakutoivelistalle. Voit halutessasi etsiï¿½ koulutuksia koulutuskorin kautta. harkitse hakutoivejï¿½rjestystï¿½ tarkoin, sillï¿½ se on sitova, etkï¿½ voi muuttaa sitï¿½ enï¿½ï¿½ hakuajan jï¿½lkeen. Jos et pï¿½ï¿½se koulutukseen, jonka olet merkinnyt ensimmï¿½iselle sijalle, tarkistetaan riittï¿½vï¿½tkï¿½ pisteesi toiselle sijalle merkitsemï¿½ï¿½si hakutoiveeseen jne. Jos pï¿½ï¿½set esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkï¿½ voi enï¿½ï¿½ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielï¿½ pï¿½ï¿½stï¿½. HUOM! Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo)._sv",
+                      "en": "Merkitse tï¿½lle sivulle koulutukset, joihin haluat hakea. Merkitse hakutoiveesi siinï¿½ jï¿½rjestyksessï¿½, kun toivot tulevasi niihin valituksi. Jos olet valinnut korissa koulutuksia, voit siirttï¿½ï¿½ ne hakutoivelistalle. Voit halutessasi etsiï¿½ koulutuksia koulutuskorin kautta. harkitse hakutoivejï¿½rjestystï¿½ tarkoin, sillï¿½ se on sitova, etkï¿½ voi muuttaa sitï¿½ enï¿½ï¿½ hakuajan jï¿½lkeen. Jos et pï¿½ï¿½se koulutukseen, jonka olet merkinnyt ensimmï¿½iselle sijalle, tarkistetaan riittï¿½vï¿½tkï¿½ pisteesi toiselle sijalle merkitsemï¿½ï¿½si hakutoiveeseen jne. Jos pï¿½ï¿½set esimerkiksi toisena toiveena olevaan koulutukseen, alemmat hakutoiveet peruuntuvat automaattisesti, etkï¿½ voi enï¿½ï¿½ tulla valituksi niihin. Ylempiin hakutoiveisiin voit vielï¿½ pï¿½ï¿½stï¿½. HUOM! Lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon suorittaneet voivat hakea vain heille varatuille aloituspaikoille (yo)._en"
                     }
                   },
                   "children": [
@@ -8086,7 +8086,7 @@
                           "en": "Hakutoiveet_en"
                         }
                       },
-                      "moveUpLabel": "Ylšs",
+                      "moveUpLabel": "Ylï¿½s",
                       "moveDownLabel": "Alas",
                       "help": "",
                       "ihelp": {
@@ -8112,9 +8112,9 @@
                           "resetLabel": {
                             "id": "text_1360327507014",
                             "translations": {
-                              "fi": "TyhjennŠ",
-                              "sv": "TyhjennŠ_sv",
-                              "en": "TyhjennŠ_en"
+                              "fi": "Tyhjennï¿½",
+                              "sv": "Tyhjennï¿½_sv",
+                              "en": "Tyhjennï¿½_en"
                             }
                           },
                           "educationLabel": {
@@ -8179,9 +8179,9 @@
                           "resetLabel": {
                             "id": "text_1360327507014",
                             "translations": {
-                              "fi": "TyhjennŠ",
-                              "sv": "TyhjennŠ_sv",
-                              "en": "TyhjennŠ_en"
+                              "fi": "Tyhjennï¿½",
+                              "sv": "Tyhjennï¿½_sv",
+                              "en": "Tyhjennï¿½_en"
                             }
                           },
                           "educationLabel": {
@@ -8241,9 +8241,9 @@
                           "resetLabel": {
                             "id": "text_1360327507014",
                             "translations": {
-                              "fi": "TyhjennŠ",
-                              "sv": "TyhjennŠ_sv",
-                              "en": "TyhjennŠ_en"
+                              "fi": "Tyhjennï¿½",
+                              "sv": "Tyhjennï¿½_sv",
+                              "en": "Tyhjennï¿½_en"
                             }
                           },
                           "educationLabel": {
@@ -8303,9 +8303,9 @@
                           "resetLabel": {
                             "id": "text_1360327507015",
                             "translations": {
-                              "fi": "TyhjennŠ",
-                              "sv": "TyhjennŠ_sv",
-                              "en": "TyhjennŠ_en"
+                              "fi": "Tyhjennï¿½",
+                              "sv": "Tyhjennï¿½_sv",
+                              "en": "Tyhjennï¿½_en"
                             }
                           },
                           "educationLabel": {
@@ -8365,9 +8365,9 @@
                           "resetLabel": {
                             "id": "text_1360327507015",
                             "translations": {
-                              "fi": "TyhjennŠ",
-                              "sv": "TyhjennŠ_sv",
-                              "en": "TyhjennŠ_en"
+                              "fi": "Tyhjennï¿½",
+                              "sv": "Tyhjennï¿½_sv",
+                              "en": "Tyhjennï¿½_en"
                             }
                           },
                           "educationLabel": {
@@ -8517,13 +8517,13 @@
                       }
                     ]
                   },
-                  "help": "Merkitse arvosanat siitŠ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitŠ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitŠ, mikŠli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta. 1. Tarkista ja tŠydennŠ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitŠytetyistŠ. Huom! Valinnaisaineiden arvosanat merkitŠŠn vain mikŠli niiden laajuus on vŠhintŠŠn kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilšllistettyjŠ arvosanoja, valitse listasta arvosana, jossa on tŠhti.",
+                  "help": "Merkitse arvosanat siitï¿½ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitï¿½ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitï¿½, mikï¿½li olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta. 1. Tarkista ja tï¿½ydennï¿½ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitï¿½ytetyistï¿½. Huom! Valinnaisaineiden arvosanat merkitï¿½ï¿½n vain mikï¿½li niiden laajuus on vï¿½hintï¿½ï¿½n kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilï¿½llistettyjï¿½ arvosanoja, valitse listasta arvosana, jossa on tï¿½hti.",
                   "ihelp": {
                     "id": "arvosanatGrp_help",
                     "translations": {
-                      "fi": "Merkitse arvosanat siitŠ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitŠ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitŠ, mikŠli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta. 1. Tarkista ja tŠydennŠ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitŠytetyistŠ. Huom! Valinnaisaineiden arvosanat merkitŠŠn vain mikŠli niiden laajuus on vŠhintŠŠn kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilšllistettyjŠ arvosanoja, valitse listasta arvosana, jossa on tŠhti.",
-                      "sv": "Merkitse arvosanat siitŠ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitŠ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitŠ, mikŠli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta. 1. Tarkista ja tŠydennŠ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitŠytetyistŠ. Huom! Valinnaisaineiden arvosanat merkitŠŠn vain mikŠli niiden laajuus on vŠhintŠŠn kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilšllistettyjŠ arvosanoja, valitse listasta arvosana, jossa on tŠhti._sv",
-                      "en": "Merkitse arvosanat siitŠ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitŠ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitŠ, mikŠli olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimŠŠrŠn tai ylioppilastutkinnon, et voi hakea perusopetuksen pŠŠttštodistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvŠksytyiksi tulleilta hakijoilta. 1. Tarkista ja tŠydennŠ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitŠytetyistŠ. Huom! Valinnaisaineiden arvosanat merkitŠŠn vain mikŠli niiden laajuus on vŠhintŠŠn kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilšllistettyjŠ arvosanoja, valitse listasta arvosana, jossa on tŠhti._en"
+                      "fi": "Merkitse arvosanat siitï¿½ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitï¿½ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitï¿½, mikï¿½li olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta. 1. Tarkista ja tï¿½ydennï¿½ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitï¿½ytetyistï¿½. Huom! Valinnaisaineiden arvosanat merkitï¿½ï¿½n vain mikï¿½li niiden laajuus on vï¿½hintï¿½ï¿½n kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilï¿½llistettyjï¿½ arvosanoja, valitse listasta arvosana, jossa on tï¿½hti.",
+                      "sv": "Merkitse arvosanat siitï¿½ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitï¿½ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitï¿½, mikï¿½li olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta. 1. Tarkista ja tï¿½ydennï¿½ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitï¿½ytetyistï¿½. Huom! Valinnaisaineiden arvosanat merkitï¿½ï¿½n vain mikï¿½li niiden laajuus on vï¿½hintï¿½ï¿½n kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilï¿½llistettyjï¿½ arvosanoja, valitse listasta arvosana, jossa on tï¿½hti._sv",
+                      "en": "Merkitse arvosanat siitï¿½ todistuksesta, jolla haet koulutukseen (perusopetus,tai sitï¿½ vastaavat opinnot, lukiokoulutus). Korotetut arvosanat voit merkitï¿½, mikï¿½li olet saanut korotuksista virallisen todistuksen. Huomio. Jos olet suorittanut lukion oppimï¿½ï¿½rï¿½n tai ylioppilastutkinnon, et voi hakea perusopetuksen pï¿½ï¿½ttï¿½todistuksella. Ammatillisella perustutkinnolla et voi hakea. Oppilaitokset tarkistavat todistukset hyvï¿½ksytyiksi tulleilta hakijoilta. 1. Tarkista ja tï¿½ydennï¿½ taulukkoon todistuksen oppiaineet ja arvosanat, jotka poikkeavat esitï¿½ytetyistï¿½. Huom! Valinnaisaineiden arvosanat merkitï¿½ï¿½n vain mikï¿½li niiden laajuus on vï¿½hintï¿½ï¿½n kaksi vuosiviikkotuntia perusopetuksen vuosiluokkien 7-9 aikana. Jos sinulla on yksilï¿½llistettyjï¿½ arvosanoja, valitse listasta arvosana, jossa on tï¿½hti._en"
                     }
                   },
                   "children": [
@@ -8561,9 +8561,9 @@
                               "i18nText": {
                                 "id": "text_1360327507015",
                                 "translations": {
-                                  "fi": "€idinkieli ja kirjallisuus",
-                                  "sv": "€idinkieli ja kirjallisuus_sv",
-                                  "en": "€idinkieli ja kirjallisuus_en"
+                                  "fi": "ï¿½idinkieli ja kirjallisuus",
+                                  "sv": "ï¿½idinkieli ja kirjallisuus_sv",
+                                  "en": "ï¿½idinkieli ja kirjallisuus_en"
                                 }
                               },
                               "help": "",
@@ -8880,9 +8880,9 @@
                               "i18nText": {
                                 "id": "text_1360327507016",
                                 "translations": {
-                                  "fi": "Uskonto tai elŠmŠnkatsomustieto",
-                                  "sv": "Uskonto tai elŠmŠnkatsomustieto_sv",
-                                  "en": "Uskonto tai elŠmŠnkatsomustieto_en"
+                                  "fi": "Uskonto tai elï¿½mï¿½nkatsomustieto",
+                                  "sv": "Uskonto tai elï¿½mï¿½nkatsomustieto_sv",
+                                  "en": "Uskonto tai elï¿½mï¿½nkatsomustieto_en"
                                 }
                               },
                               "help": "",
@@ -9055,9 +9055,9 @@
                               "i18nText": {
                                 "id": "text_1360327507016",
                                 "translations": {
-                                  "fi": "KŠsityš",
-                                  "sv": "KŠsityš_sv",
-                                  "en": "KŠsityš_en"
+                                  "fi": "Kï¿½sityï¿½",
+                                  "sv": "Kï¿½sityï¿½_sv",
+                                  "en": "Kï¿½sityï¿½_en"
                                 }
                               },
                               "help": "",
@@ -9434,9 +9434,9 @@
                               "i18nText": {
                                 "id": "text_1360327507017",
                                 "translations": {
-                                  "fi": "venŠjŠ",
-                                  "sv": "venŠjŠ_sv",
-                                  "en": "venŠjŠ_en"
+                                  "fi": "venï¿½jï¿½",
+                                  "sv": "venï¿½jï¿½_sv",
+                                  "en": "venï¿½jï¿½_en"
                                 }
                               },
                               "value": "rus",
@@ -9781,9 +9781,9 @@
                           "i18nText": {
                             "id": "text_1360327507017",
                             "translations": {
-                              "fi": "Sinulta ei kysytŠ arvosanoja.",
-                              "sv": "Sinulta ei kysytŠ arvosanoja._sv",
-                              "en": "Sinulta ei kysytŠ arvosanoja._en"
+                              "fi": "Sinulta ei kysytï¿½ arvosanoja.",
+                              "sv": "Sinulta ei kysytï¿½ arvosanoja._sv",
+                              "en": "Sinulta ei kysytï¿½ arvosanoja._en"
                             }
                           },
                           "help": "",
@@ -9829,20 +9829,20 @@
                   "i18nText": {
                     "id": "text_1360327507005",
                     "translations": {
-                      "fi": "Tyškokemus",
-                      "sv": "Tyškokemus_sv",
-                      "en": "Tyškokemus_en"
+                      "fi": "Tyï¿½kokemus",
+                      "sv": "Tyï¿½kokemus_sv",
+                      "en": "Tyï¿½kokemus_en"
                     }
                   },
                   "additionalQuestions": {},
                   "requiredEducationDegree": "32",
-                  "help": "Tyškokemukseksi lasketaan tyš, josta sinulla on tyštodistus. Tyšhšn rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vŠhintŠŠn kolmen kuukauden pituinen tyšpajatoimintaan osallistuminen tai tyšharjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyštodistukset ennen lopullista valintaa.",
+                  "help": "Tyï¿½kokemukseksi lasketaan tyï¿½, josta sinulla on tyï¿½todistus. Tyï¿½hï¿½n rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vï¿½hintï¿½ï¿½n kolmen kuukauden pituinen tyï¿½pajatoimintaan osallistuminen tai tyï¿½harjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyï¿½todistukset ennen lopullista valintaa.",
                   "ihelp": {
                     "id": "tyokokemusGrp_help",
                     "translations": {
-                      "fi": "Tyškokemukseksi lasketaan tyš, josta sinulla on tyštodistus. Tyšhšn rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vŠhintŠŠn kolmen kuukauden pituinen tyšpajatoimintaan osallistuminen tai tyšharjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyštodistukset ennen lopullista valintaa.",
-                      "sv": "Tyškokemukseksi lasketaan tyš, josta sinulla on tyštodistus. Tyšhšn rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vŠhintŠŠn kolmen kuukauden pituinen tyšpajatoimintaan osallistuminen tai tyšharjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyštodistukset ennen lopullista valintaa._sv",
-                      "en": "Tyškokemukseksi lasketaan tyš, josta sinulla on tyštodistus. Tyšhšn rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vŠhintŠŠn kolmen kuukauden pituinen tyšpajatoimintaan osallistuminen tai tyšharjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyštodistukset ennen lopullista valintaa._en"
+                      "fi": "Tyï¿½kokemukseksi lasketaan tyï¿½, josta sinulla on tyï¿½todistus. Tyï¿½hï¿½n rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vï¿½hintï¿½ï¿½n kolmen kuukauden pituinen tyï¿½pajatoimintaan osallistuminen tai tyï¿½harjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyï¿½todistukset ennen lopullista valintaa.",
+                      "sv": "Tyï¿½kokemukseksi lasketaan tyï¿½, josta sinulla on tyï¿½todistus. Tyï¿½hï¿½n rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vï¿½hintï¿½ï¿½n kolmen kuukauden pituinen tyï¿½pajatoimintaan osallistuminen tai tyï¿½harjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyï¿½todistukset ennen lopullista valintaa._sv",
+                      "en": "Tyï¿½kokemukseksi lasketaan tyï¿½, josta sinulla on tyï¿½todistus. Tyï¿½hï¿½n rinnastettavaksi toiminnaksi lasketaan varusmiespalvelu, siviilipalvelus, vï¿½hintï¿½ï¿½n kolmen kuukauden pituinen tyï¿½pajatoimintaan osallistuminen tai tyï¿½harjoitteluun osallistuminen, oppisopimuskoulutus. Oppilaitos tarkistaa tyï¿½todistukset ennen lopullista valintaa._en"
                     }
                   },
                   "children": [
@@ -9852,18 +9852,18 @@
                       "i18nText": {
                         "id": "text_1360327507017",
                         "translations": {
-                          "fi": "Tyškokemus kuukausina",
-                          "sv": "Tyškokemus kuukausina_sv",
-                          "en": "Tyškokemus kuukausina_en"
+                          "fi": "Tyï¿½kokemus kuukausina",
+                          "sv": "Tyï¿½kokemus kuukausina_sv",
+                          "en": "Tyï¿½kokemus kuukausina_en"
                         }
                       },
-                      "help": "Merkitse kenttŠŠn hakuajan pŠŠttymiseen mennessŠ kertynyt tyškokemuksesi. Voit kŠyttŠŠ laskemiseen apuna laskuria.",
+                      "help": "Merkitse kenttï¿½ï¿½n hakuajan pï¿½ï¿½ttymiseen mennessï¿½ kertynyt tyï¿½kokemuksesi. Voit kï¿½yttï¿½ï¿½ laskemiseen apuna laskuria.",
                       "ihelp": {
                         "id": "tyokokemuskuukaudet_help",
                         "translations": {
-                          "fi": "Merkitse kenttŠŠn hakuajan pŠŠttymiseen mennessŠ kertynyt tyškokemuksesi. Voit kŠyttŠŠ laskemiseen apuna laskuria.",
-                          "sv": "Merkitse kenttŠŠn hakuajan pŠŠttymiseen mennessŠ kertynyt tyškokemuksesi. Voit kŠyttŠŠ laskemiseen apuna laskuria._sv",
-                          "en": "Merkitse kenttŠŠn hakuajan pŠŠttymiseen mennessŠ kertynyt tyškokemuksesi. Voit kŠyttŠŠ laskemiseen apuna laskuria._en"
+                          "fi": "Merkitse kenttï¿½ï¿½n hakuajan pï¿½ï¿½ttymiseen mennessï¿½ kertynyt tyï¿½kokemuksesi. Voit kï¿½yttï¿½ï¿½ laskemiseen apuna laskuria.",
+                          "sv": "Merkitse kenttï¿½ï¿½n hakuajan pï¿½ï¿½ttymiseen mennessï¿½ kertynyt tyï¿½kokemuksesi. Voit kï¿½yttï¿½ï¿½ laskemiseen apuna laskuria._sv",
+                          "en": "Merkitse kenttï¿½ï¿½n hakuajan pï¿½ï¿½ttymiseen mennessï¿½ kertynyt tyï¿½kokemuksesi. Voit kï¿½yttï¿½ï¿½ laskemiseen apuna laskuria._en"
                         }
                       },
                       "children": [],
@@ -9946,9 +9946,9 @@
                       "i18nText": {
                         "id": "text_1360327507017",
                         "translations": {
-                          "fi": "RyhmŠn otsikkotai ohjeteksti",
-                          "sv": "RyhmŠn otsikkotai ohjeteksti_sv",
-                          "en": "RyhmŠn otsikkotai ohjeteksti_en"
+                          "fi": "Ryhmï¿½n otsikkotai ohjeteksti",
+                          "sv": "Ryhmï¿½n otsikkotai ohjeteksti_sv",
+                          "en": "Ryhmï¿½n otsikkotai ohjeteksti_en"
                         }
                       },
                       "help": "",
@@ -9967,9 +9967,9 @@
                           "i18nText": {
                             "id": "text_1360327507017",
                             "translations": {
-                              "fi": "Haluan, ettŠ huoltajalleni lŠhetetŠŠn tieto sŠhkšpostilla hakulomakkeen tŠyttŠmisestŠ.",
-                              "sv": "Haluan, ettŠ huoltajalleni lŠhetetŠŠn tieto sŠhkšpostilla hakulomakkeen tŠyttŠmisestŠ._sv",
-                              "en": "Haluan, ettŠ huoltajalleni lŠhetetŠŠn tieto sŠhkšpostilla hakulomakkeen tŠyttŠmisestŠ._en"
+                              "fi": "Haluan, ettï¿½ huoltajalleni lï¿½hetetï¿½ï¿½n tieto sï¿½hkï¿½postilla hakulomakkeen tï¿½yttï¿½misestï¿½.",
+                              "sv": "Haluan, ettï¿½ huoltajalleni lï¿½hetetï¿½ï¿½n tieto sï¿½hkï¿½postilla hakulomakkeen tï¿½yttï¿½misestï¿½._sv",
+                              "en": "Haluan, ettï¿½ huoltajalleni lï¿½hetetï¿½ï¿½n tieto sï¿½hkï¿½postilla hakulomakkeen tï¿½yttï¿½misestï¿½._en"
                             }
                           },
                           "help": "",
@@ -10003,18 +10003,18 @@
                                   "i18nText": {
                                     "id": "text_1360327507017",
                                     "translations": {
-                                      "fi": "SŠhkšpostiosoite",
-                                      "sv": "SŠhkšpostiosoite_sv",
-                                      "en": "SŠhkšpostiosoite_en"
+                                      "fi": "Sï¿½hkï¿½postiosoite",
+                                      "sv": "Sï¿½hkï¿½postiosoite_sv",
+                                      "en": "Sï¿½hkï¿½postiosoite_en"
                                     }
                                   },
-                                  "help": "Kirjoita tŠhŠn huoltajan sŠhkšpostiosoite",
+                                  "help": "Kirjoita tï¿½hï¿½n huoltajan sï¿½hkï¿½postiosoite",
                                   "ihelp": {
                                     "id": "lupa1_email_help",
                                     "translations": {
-                                      "fi": "Kirjoita tŠhŠn huoltajan sŠhkšpostiosoite",
-                                      "sv": "Kirjoita tŠhŠn huoltajan sŠhkšpostiosoite_sv",
-                                      "en": "Kirjoita tŠhŠn huoltajan sŠhkšpostiosoite_en"
+                                      "fi": "Kirjoita tï¿½hï¿½n huoltajan sï¿½hkï¿½postiosoite",
+                                      "sv": "Kirjoita tï¿½hï¿½n huoltajan sï¿½hkï¿½postiosoite_sv",
+                                      "en": "Kirjoita tï¿½hï¿½n huoltajan sï¿½hkï¿½postiosoite_en"
                                     }
                                   },
                                   "children": [],
@@ -10079,9 +10079,9 @@
                           "i18nText": {
                             "id": "text_1360327507017",
                             "translations": {
-                              "fi": "Minulle saa lŠhettŠŠ postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia.",
-                              "sv": "Minulle saa lŠhettŠŠ postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia._sv",
-                              "en": "Minulle saa lŠhettŠŠ postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia._en"
+                              "fi": "Minulle saa lï¿½hettï¿½ï¿½ postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia.",
+                              "sv": "Minulle saa lï¿½hettï¿½ï¿½ postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia._sv",
+                              "en": "Minulle saa lï¿½hettï¿½ï¿½ postia vapaista opiskelupaikoista ja muuta koulutusmarkkinointia._en"
                             }
                           },
                           "help": "",
@@ -10114,9 +10114,9 @@
                           "i18nText": {
                             "id": "text_1360327507017",
                             "translations": {
-                              "fi": "Tietoni opiskeluvalinnan tuloksista saa julkaista InternetissŠ.",
-                              "sv": "Tietoni opiskeluvalinnan tuloksista saa julkaista InternetissŠ._sv",
-                              "en": "Tietoni opiskeluvalinnan tuloksista saa julkaista InternetissŠ._en"
+                              "fi": "Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissï¿½.",
+                              "sv": "Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissï¿½._sv",
+                              "en": "Tietoni opiskeluvalinnan tuloksista saa julkaista Internetissï¿½._en"
                             }
                           },
                           "help": "",
@@ -10149,9 +10149,9 @@
                           "i18nText": {
                             "id": "text_1360327507017",
                             "translations": {
-                              "fi": "Valintaani koskevat tiedot saa lŠhettŠŠ minulle sŠhkšisesti.",
-                              "sv": "Valintaani koskevat tiedot saa lŠhettŠŠ minulle sŠhkšisesti._sv",
-                              "en": "Valintaani koskevat tiedot saa lŠhettŠŠ minulle sŠhkšisesti._en"
+                              "fi": "Valintaani koskevat tiedot saa lï¿½hettï¿½ï¿½ minulle sï¿½hkï¿½isesti.",
+                              "sv": "Valintaani koskevat tiedot saa lï¿½hettï¿½ï¿½ minulle sï¿½hkï¿½isesti._sv",
+                              "en": "Valintaani koskevat tiedot saa lï¿½hettï¿½ï¿½ minulle sï¿½hkï¿½isesti._en"
                             }
                           },
                           "help": "",
@@ -10184,9 +10184,9 @@
                           "i18nText": {
                             "id": "text_1360327507017",
                             "translations": {
-                              "fi": "Minulle saa lŠhettŠŠ tietoa opiskelijavalinnan etenemisestŠ ja tuloksista tekstiviestillŠ.",
-                              "sv": "Minulle saa lŠhettŠŠ tietoa opiskelijavalinnan etenemisestŠ ja tuloksista tekstiviestillŠ._sv",
-                              "en": "Minulle saa lŠhettŠŠ tietoa opiskelijavalinnan etenemisestŠ ja tuloksista tekstiviestillŠ._en"
+                              "fi": "Minulle saa lï¿½hettï¿½ï¿½ tietoa opiskelijavalinnan etenemisestï¿½ ja tuloksista tekstiviestillï¿½.",
+                              "sv": "Minulle saa lï¿½hettï¿½ï¿½ tietoa opiskelijavalinnan etenemisestï¿½ ja tuloksista tekstiviestillï¿½._sv",
+                              "en": "Minulle saa lï¿½hettï¿½ï¿½ tietoa opiskelijavalinnan etenemisestï¿½ ja tuloksista tekstiviestillï¿½._en"
                             }
                           },
                           "help": "",
@@ -10233,13 +10233,13 @@
                           "en": "Asiointikieli_en"
                         }
                       },
-                      "help": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja",
+                      "help": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja",
                       "ihelp": {
                         "id": "asiointikieli_help",
                         "translations": {
-                          "fi": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja",
-                          "sv": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja_sv",
-                          "en": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviŠ tietoja_en"
+                          "fi": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja",
+                          "sv": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja_sv",
+                          "en": "Valitse kieli, jolla haluat vastaanottaa opiskelijavalintaan liittyviï¿½ tietoja_en"
                         }
                       },
                       "children": [],
