@@ -28,14 +28,8 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="${contextPath}/resources/css/oppija.css" type="text/css">
-    <link rel="stylesheet"
-          href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
-          type="text/css">
+    <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
     <title><haku:i18nText value="${form.i18nText}"/></title>
-    <script src="${contextPath}/resources/jquery/jquery.min.js"></script>
-    <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
-    <script src="${contextPath}/resources/javascript/rules.js"></script>
-    <script src="${contextPath}/resources/javascript/master.js"></script>
 </head>
 <body>
 <div id="viewport">
@@ -75,8 +69,7 @@
                 <div class="clear"></div>
 
                 <div class="form" data-form-step-id="7">
-                    <img src="${contextPath}/static-html/content/Valmis-Kuva1.jpg" title="" alt=""
-                         class="set-right"/>
+                    <img src="${contextPath}/resources/img/valmis/Valmis-Kuva1.jpg" title="" alt="" class="set-right"/>
 
                     <h3 class="h2"><fmt:message key="lomake.valmis.hakemuksesionvastaanotettu"/></h3>
 
@@ -107,8 +100,7 @@
                     <div class="clear"></div>
                     <hr/>
 
-                    <img src="${contextPath}/static-html/content/Valmis-Kuva2.jpg" title="" alt=""
-                         class="set-left"/>
+                    <img src="${contextPath}/resources/img/valmis/Valmis-Kuva2.jpg" title="" alt="" class="set-left"/>
 
                     <h3>Muutoksen tekeminen</h3>
 
@@ -127,7 +119,7 @@
                     <div class="clear"></div>
                     <hr/>
 
-                    <img src="${contextPath}/static-html/content/Valmis-Kuva3.jpg" title="" alt=""
+                    <img src="${contextPath}/resources/img/valmis/Valmis-Kuva3.jpg" title="" alt=""
                          class="set-right"/>
 
                     <h3>Palautekysely</h3>
