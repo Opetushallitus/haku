@@ -5,10 +5,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.TitledGroup;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
@@ -100,6 +97,20 @@ public class KoulutustaustaPhase {
         keskeytynytRule.addChild(tutkintoKeskeytynytNotification);
         millatutkinnolla.addChild(ulkomaillaSuoritettuTutkintoRule);
         millatutkinnolla.addChild(keskeytynytRule);
+
+        HiddenInput pohjakoulutusPK = new HiddenInput(POHJAKOULUTUSVAATIMUS_ID, POHJAKOULUTUSVAATIMUS_PERUSOPETUS);
+        RelatedQuestionRule pohjakoulutusvaatimusPKRule = new RelatedQuestionRule("pohjakoulutusvaatimus_pk_rule",
+                millatutkinnolla.getId(), "("
+                + PERUSKOULU + "|"
+                + OSITTAIN_YKSILOLLISTETTY + "|"
+                + ERITYISOPETUKSEN_YKSILOLLISTETTY + "|"
+                + YKSILOLLISTETTY + ")", false);
+        pohjakoulutusvaatimusPKRule.addChild(pohjakoulutusPK);
+        HiddenInput pohjakoulutusYO = new HiddenInput(POHJAKOULUTUSVAATIMUS_ID, POHJAKOULUTUSVAATIMUS_YLIOPPILAS);
+        RelatedQuestionRule pohjakoulutusvaatimusYORule = new RelatedQuestionRule("pohjakoulutusvaatimus_yo_rule",
+                millatutkinnolla.getId(), YLIOPPILAS, false);
+        pohjakoulutusvaatimusYORule.addChild(pohjakoulutusYO);
+        millatutkinnolla.addChild(pohjakoulutusvaatimusPKRule, pohjakoulutusvaatimusYORule);
 
         TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion("PK_PAATTOTODISTUSVUOSI",
                 createI18NForm("form.koulutustausta.paattotodistusvuosi"));

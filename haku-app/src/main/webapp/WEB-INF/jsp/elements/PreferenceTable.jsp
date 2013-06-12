@@ -90,7 +90,7 @@
         formId: "${it.hakemusId.formId}",
         vaiheId: "${vaihe.id}",
         teemaId: "${parent.id}",
-        tutkintoId: "${categoryData.millatutkinnolla}",
+        tutkintoId: "${categoryData.pohjakoulutusvaatimus}",
         vocational: "${categoryData.ammatillinenTutkintoSuoritettu}",
         <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') or fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
             koulutusinformaatioBaseUrl: "${it.koulutusinformaatioBaseUrl}"

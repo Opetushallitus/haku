@@ -66,6 +66,10 @@ public final class OppijaConstants {
     public static final String KESKEYTYNYT = "7";
     public static final String ULKOMAINEN_TUTKINTO = "0";
 
+    public static final String POHJAKOULUTUSVAATIMUS_ID = "pohjakoulutusvaatimus";
+    public static final String POHJAKOULUTUSVAATIMUS_PERUSOPETUS = "PK";
+    public static final String POHJAKOULUTUSVAATIMUS_YLIOPPILAS = "YO";
+
     public static final String VERBOSE_HELP = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
             "Curabitur nec dolor quam. Duis sodales placerat scelerisque. Suspendisse " +
             "porta mauris eu felis malesuada rutrum. Aliquam varius fringilla mi sed " +
