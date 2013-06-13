@@ -84,13 +84,16 @@
 </div>
 
 <script type="text/javascript">
+    var prerequisiteStr = "${categoryData.pohjakoulutusvaatimus}";
+    var prerequisiteArray = prerequisiteStr.split(',');
+
     var sortabletable_settings = {
         contextPath: "${pageContext.request.contextPath}",
         applicationPeriodId: "${it.hakemusId.applicationPeriodId}",
         formId: "${it.hakemusId.formId}",
         vaiheId: "${vaihe.id}",
         teemaId: "${parent.id}",
-        tutkintoId: "${categoryData.pohjakoulutusvaatimus}",
+        prerequisite: prerequisiteArray,
         vocational: "${categoryData.ammatillinenTutkintoSuoritettu}",
         <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') or fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
             koulutusinformaatioBaseUrl: "${it.koulutusinformaatioBaseUrl}"

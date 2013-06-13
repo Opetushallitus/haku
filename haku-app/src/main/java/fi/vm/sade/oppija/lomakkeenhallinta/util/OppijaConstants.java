@@ -68,6 +68,7 @@ public final class OppijaConstants {
 
     public static final String POHJAKOULUTUSVAATIMUS_ID = "pohjakoulutusvaatimus";
     public static final String POHJAKOULUTUSVAATIMUS_PERUSOPETUS = "PK";
+    public static final String POHJAKOULUTUSVAATIMUS_YKSILOLLISTETTY = "ER";
     public static final String POHJAKOULUTUSVAATIMUS_YLIOPPILAS = "YO";
 
     public static final String VERBOSE_HELP = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +

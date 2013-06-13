@@ -98,7 +98,7 @@ public class KoulutustaustaPhase {
         millatutkinnolla.addChild(ulkomaillaSuoritettuTutkintoRule);
         millatutkinnolla.addChild(keskeytynytRule);
 
-        HiddenInput pohjakoulutusPK = new HiddenInput(POHJAKOULUTUSVAATIMUS_ID, POHJAKOULUTUSVAATIMUS_PERUSOPETUS);
+        HiddenInput pohjakoulutusPK = new HiddenInput(POHJAKOULUTUSVAATIMUS_ID, POHJAKOULUTUSVAATIMUS_PERUSOPETUS + "," + POHJAKOULUTUSVAATIMUS_YKSILOLLISTETTY);
         RelatedQuestionRule pohjakoulutusvaatimusPKRule = new RelatedQuestionRule("pohjakoulutusvaatimus_pk_rule",
                 millatutkinnolla.getId(), "("
                 + PERUSKOULU + "|"
