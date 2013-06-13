@@ -79,9 +79,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
                 @JsonSubTypes.Type(value = WorkExperienceTheme.class),
                 @JsonSubTypes.Type(value = Notification.class),
                 @JsonSubTypes.Type(value = DateQuestion.class),
-                @JsonSubTypes.Type(value = Group.class),
-                @JsonSubTypes.Type(value = HiddenInput.class)
-
+                @JsonSubTypes.Type(value = Group.class)
         }
 )
 public abstract class Element implements Serializable {

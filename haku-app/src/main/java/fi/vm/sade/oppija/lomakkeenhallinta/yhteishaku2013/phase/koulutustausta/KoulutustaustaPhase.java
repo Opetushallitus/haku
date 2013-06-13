@@ -98,20 +98,6 @@ public class KoulutustaustaPhase {
         millatutkinnolla.addChild(ulkomaillaSuoritettuTutkintoRule);
         millatutkinnolla.addChild(keskeytynytRule);
 
-        HiddenInput pohjakoulutusPK = new HiddenInput(POHJAKOULUTUSVAATIMUS_ID, POHJAKOULUTUSVAATIMUS_PERUSOPETUS + "," + POHJAKOULUTUSVAATIMUS_YKSILOLLISTETTY);
-        RelatedQuestionRule pohjakoulutusvaatimusPKRule = new RelatedQuestionRule("pohjakoulutusvaatimus_pk_rule",
-                millatutkinnolla.getId(), "("
-                + PERUSKOULU + "|"
-                + OSITTAIN_YKSILOLLISTETTY + "|"
-                + ERITYISOPETUKSEN_YKSILOLLISTETTY + "|"
-                + YKSILOLLISTETTY + ")", false);
-        pohjakoulutusvaatimusPKRule.addChild(pohjakoulutusPK);
-        HiddenInput pohjakoulutusYO = new HiddenInput(POHJAKOULUTUSVAATIMUS_ID, POHJAKOULUTUSVAATIMUS_YLIOPPILAS);
-        RelatedQuestionRule pohjakoulutusvaatimusYORule = new RelatedQuestionRule("pohjakoulutusvaatimus_yo_rule",
-                millatutkinnolla.getId(), YLIOPPILAS, false);
-        pohjakoulutusvaatimusYORule.addChild(pohjakoulutusYO);
-        millatutkinnolla.addChild(pohjakoulutusvaatimusPKRule, pohjakoulutusvaatimusYORule);
-
         TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion("PK_PAATTOTODISTUSVUOSI",
                 createI18NForm("form.koulutustausta.paattotodistusvuosi"));
         paattotodistusvuosiPeruskoulu.addAttribute("placeholder", "vvvv");

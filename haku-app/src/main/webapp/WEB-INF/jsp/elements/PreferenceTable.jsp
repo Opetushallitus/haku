@@ -93,7 +93,7 @@
         formId: "${it.hakemusId.formId}",
         vaiheId: "${vaihe.id}",
         teemaId: "${parent.id}",
-        prerequisite: prerequisiteArray,
+        baseEducation: "${categoryData.POHJAKOULUTUS}",
         vocational: "${categoryData.ammatillinenTutkintoSuoritettu}",
         <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') or fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
             koulutusinformaatioBaseUrl: "${it.koulutusinformaatioBaseUrl}"

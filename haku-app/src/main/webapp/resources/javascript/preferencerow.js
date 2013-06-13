@@ -18,15 +18,12 @@
     var childLONames = {};
     var preferenceRow = {
         populateSelectInput: function (orgId, selectInputId) {
-            $.ajax(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationPeriodId + "/" + orgId,
-                {
-                    'data': {
-                        'prerequisite': sortabletable_settings.prerequisite,
+            $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationPeriodId + "/" + orgId,
+                    {
+                        'baseEducation': sortabletable_settings.baseEducation,
                         'vocational': sortabletable_settings.vocational
                     },
-                    'dataType': 'json',
-                    'traditional': true,
-                    'success': function (data) {
+                    function (data) {
                         var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
 
                         preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
@@ -59,7 +56,6 @@
                         '" data-athlete="' + item.athlete + '" >' + item.name + '</option>');
                 });
             });
-
         },
 
         clearSelectInput: function (selectInputId) {
@@ -115,7 +111,7 @@
             source: function (request, response) {
                 $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + request.term, {
                     asId: sortabletable_settings.applicationPeriodId,
-                    prerequisite: "PK",
+                    baseEducation: sortabletable_settings.baseEducation,
                     vocational: sortabletable_settings.vocational
                 }, function (data) {
                     response($.map(data, function (result) {
