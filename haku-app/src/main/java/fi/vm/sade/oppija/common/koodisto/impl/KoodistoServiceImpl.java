@@ -25,6 +25,7 @@ import fi.vm.sade.koodisto.service.types.KoodiBaseSearchCriteriaType;
 import fi.vm.sade.koodisto.service.types.SearchKoodisByKoodistoCriteriaType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
+import fi.vm.sade.oppija.common.koodisto.domain.Code;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
@@ -144,6 +145,11 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Option> getGenders() {
         return codesToOptions(CODE_GENDER);
+    }
+
+    @Override
+    public List<Code> getCodes(String koodistoUrl, int version) {
+        return null;
     }
 
     private List<Option> codesToOptions(final String codeName) {

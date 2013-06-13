@@ -1,6 +1,10 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
+import fi.vm.sade.oppija.common.koodisto.domain.Code;
 import fi.vm.sade.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
@@ -8,6 +12,9 @@ import fi.vm.sade.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+
+import java.util.List;
+import java.util.Map;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants.*;
@@ -42,14 +49,24 @@ public class KoulutustaustaPhase {
     }
 
     public static final Radio createKoulutustaustaRadio(final KoodistoService koodistoService) {
+        List<Code> baseEducationCodes = koodistoService.getCodes("pohjakoulutustoinenaste", 1);
+
+        Map<String, Code> educationMap = Maps.uniqueIndex(baseEducationCodes, new Function<Code, String>() {
+            @Override
+            public String apply(fi.vm.sade.oppija.common.koodisto.domain.Code input) {
+                return input.getValue();
+            }
+        });
+
         Radio millatutkinnolla = new Radio("POHJAKOULUTUS",
                 createI18NForm("form.koulutustausta.millaTutkinnolla"));
-        millatutkinnolla.addOption(TUTKINTO_PERUSKOULU, createI18NForm("form.koulutustausta.peruskoulu"), PERUSKOULU,
+        millatutkinnolla.addOption(TUTKINTO_PERUSKOULU, createI18NForm("form.koulutustausta.peruskoulu"),
+                educationMap.get(PERUSKOULU).getValue(),
                 createI18NForm("form.koulutustausta.peruskoulu.help"));
         millatutkinnolla
                 .addOption(TUTKINTO_OSITTAIN_YKSILOLLISTETTY,
                         createI18NForm("form.koulutustausta.osittainYksilollistetty"),
-                        OSITTAIN_YKSILOLLISTETTY,
+                        educationMap.get(OSITTAIN_YKSILOLLISTETTY).getValue(),
                         createI18NForm("form.koulutustausta.osittainYksilollistetty.help"));
         millatutkinnolla
                 .addOption(
@@ -61,20 +78,20 @@ public class KoulutustaustaPhase {
                 .addOption(
                         TUTKINTO_YKSILOLLISTETTY,
                         createI18NForm("form.koulutustausta.yksilollistetty"),
-                        YKSILOLLISTETTY,
+                        educationMap.get(YKSILOLLISTETTY).getValue(),
                         createI18NForm("form.koulutustausta.yksilollistetty.help"));
         millatutkinnolla.addOption(TUTKINTO_KESKEYTYNYT,
                 createI18NForm("form.koulutustausta.keskeytynyt"),
-                KESKEYTYNYT,
+                educationMap.get(KESKEYTYNYT).getValue(),
                 createI18NForm("form.koulutustausta.keskeytynyt"));
         millatutkinnolla
                 .addOption(
                         TUTKINTO_YLIOPPILAS,
                         createI18NForm("form.koulutustausta.lukio"),
-                        YLIOPPILAS,
+                        educationMap.get(YLIOPPILAS).getValue(),
                         createI18NForm("form.koulutustausta.lukio.help"));
         millatutkinnolla.addOption(TUTKINTO_ULKOMAINEN_TUTKINTO, createI18NForm("form.koulutustausta.ulkomailla"),
-                ULKOMAINEN_TUTKINTO,
+                educationMap.get(ULKOMAINEN_TUTKINTO).getValue(),
                 createI18NForm("form.koulutustausta.ulkomailla.help"));
         ElementUtil.setVerboseHelp(millatutkinnolla);
         millatutkinnolla.addAttribute("required", "required");

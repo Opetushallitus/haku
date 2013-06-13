@@ -17,7 +17,9 @@
 package fi.vm.sade.oppija.common.koodisto.impl;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
+import fi.vm.sade.oppija.common.koodisto.domain.Code;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
@@ -27,8 +29,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants.*;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
 @Service
 @Profile("dev")
@@ -49,6 +53,9 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Option> listOfNationalities;
     public final List<Option> listOfMunicipalities;
     public final List<Option> listOfGenders;
+    public final List<Code> listOfBaseEducationCodes;
+    // koodisto uri -> codes
+    public Map<String, List<Code>> codes = Maps.newHashMap();
 
     public KoodistoServiceMockImpl() {
         List<Option> listOfGradeGrades = new ArrayList<Option>();
@@ -160,6 +167,18 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                         new Option("2",
                                 createI18NAsIs("Nainen"), "2"));
 
+        this.listOfBaseEducationCodes = ImmutableList.of(
+                new Code(ULKOMAINEN_TUTKINTO, createI18NAsIs("Ulkomailla suoritettu koulutus")),
+                new Code(PERUSKOULU, createI18NAsIs("Perusopetuksen oppimäärä")),
+                new Code(OSITTAIN_YKSILOLLISTETTY, createI18NAsIs("Perusopetuksen osittain yksilöllistetty oppimäärä")),
+                new Code(ERITYISOPETUKSEN_YKSILOLLISTETTY, createI18NAsIs("Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain")),
+                new Code(YKSILOLLISTETTY, createI18NAsIs("Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä")),
+                new Code(KESKEYTYNYT, createI18NAsIs("Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)")),
+                new Code("8", createI18NAsIs("Ammatillinen tutkinto")),
+                new Code(YLIOPPILAS, createI18NAsIs("Lukion päättötodistus, ylioppilastutkinto tai abiturientti"))
+        );
+
+        this.codes.put("pohjakoulutustoinenaste", this.listOfBaseEducationCodes);
     }
 
     @Override
@@ -211,6 +230,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getLanguageAndLiterature() {
         return this.listOfLanguageAndLiterature;
+    }
+
+    @Override
+    public List<Code> getCodes(String koodistoUrl, int version) {
+        return this.codes.get(koodistoUrl);
     }
 
     @Override

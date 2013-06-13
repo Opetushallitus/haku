@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.common.koodisto;
 
+import fi.vm.sade.oppija.common.koodisto.domain.Code;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
@@ -46,4 +47,6 @@ public interface KoodistoService {
     List<Option> getLanguageAndLiterature();
 
     List<Option> getGenders();
+
+    List<Code> getCodes(String koodistoUrl, int version);
 }
