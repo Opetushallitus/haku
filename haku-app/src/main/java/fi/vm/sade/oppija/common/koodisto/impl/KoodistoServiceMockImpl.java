@@ -56,6 +56,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Code> listOfBaseEducationCodes;
     // koodisto uri -> codes
     public Map<String, List<Code>> codes = Maps.newHashMap();
+    public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
 
     public KoodistoServiceMockImpl() {
         List<Option> listOfGradeGrades = new ArrayList<Option>();
@@ -178,7 +179,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 new Code(YLIOPPILAS, createI18NAsIs("Lukion päättötodistus, ylioppilastutkinto tai abiturientti"))
         );
 
-        this.codes.put("pohjakoulutustoinenaste", this.listOfBaseEducationCodes);
+        this.codes.put(BASE_EDUCATION_KOODISTO_URI, this.listOfBaseEducationCodes);
     }
 
     @Override

@@ -47,12 +47,18 @@ public class KoodistoServiceMockImplTest {
 
     @Test
     public void testGetOrganizationTypes() throws Exception {
-        assertEquals(koodistoServiceMock.getOrganizationtypes(), koodistoServiceMock.getOrganizationtypes());
+        assertEquals(koodistoServiceMock.listOfOrganizationTypes, koodistoServiceMock.getOrganizationtypes());
     }
 
     @Test
     public void testGetLearningInstitutionTypes() throws Exception {
-        assertEquals(koodistoServiceMock.getLearningInstitutionTypes(),
+        assertEquals(koodistoServiceMock.listOfLearningInstitutionTypes,
                 koodistoServiceMock.getLearningInstitutionTypes());
+    }
+
+    @Test
+    public void testGetBaseEductionCodes() {
+        assertEquals(koodistoServiceMock.listOfBaseEducationCodes,
+                koodistoServiceMock.getCodes(KoodistoServiceMockImpl.BASE_EDUCATION_KOODISTO_URI, 1));
     }
 }

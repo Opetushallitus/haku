@@ -149,7 +149,7 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Code> getCodes(String koodistoUrl, int version) {
-        return null;
+        return Lists.transform(getKoodiTypes(koodistoUrl, version), new KoodiTypeToCodeFunction());
     }
 
     private List<Option> codesToOptions(final String codeName) {
@@ -161,15 +161,16 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     private List<KoodiType> getKoodiTypes(final String koodistoUri) {
+        return getKoodiTypes(koodistoUri, null);
+    }
+
+    private List<KoodiType> getKoodiTypes(final String koodistoUri, final Integer version) {
         SearchKoodisByKoodistoCriteriaType koodistoCriteria = new SearchKoodisByKoodistoCriteriaType();
         koodistoCriteria.setKoodistoUri(koodistoUri);
-
+        koodistoCriteria.setKoodistoVersio(version);
         KoodiBaseSearchCriteriaType koodiCriteria = new KoodiBaseSearchCriteriaType();
-        koodiCriteria.setValidAt(new XMLGregorianCalendarImpl((GregorianCalendar) GregorianCalendar.getInstance()));
         koodistoCriteria.setKoodiSearchCriteria(koodiCriteria);
-
-        XMLGregorianCalendar calendar = new XMLGregorianCalendarImpl(new GregorianCalendar());
-        koodistoCriteria.setValidAt(calendar);
+        koodiCriteria.setValidAt(new XMLGregorianCalendarImpl((GregorianCalendar) GregorianCalendar.getInstance()));
 
         List<KoodiType> koodiTypes = new ArrayList<KoodiType>();
         try {
