@@ -21,7 +21,7 @@
 
 
     <display-name>Haku</display-name>
-
+    <!--
     <context-param>
         <param-name>log4jConfigLocation</param-name>
         <param-value>${log4jConfigLocation}</param-value>
@@ -29,6 +29,7 @@
     <listener>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
     </listener>
+    -->
     <listener>
         <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
     </listener>
