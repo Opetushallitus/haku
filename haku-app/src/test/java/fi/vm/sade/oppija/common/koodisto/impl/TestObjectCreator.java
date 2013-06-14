@@ -40,12 +40,11 @@ public final class TestObjectCreator {
         KoodiType koodiType = new KoodiType();
         koodiType.setKoodiUri(koodiArvo);
         koodiType.setKoodiArvo(koodiArvo);
+        koodiType.getMetadata().add(createKoodiMetadataType());
         return koodiType;
     }
 
     public static List<KoodiType> createKoodiTypeList() {
-        KoodiType koodiType = createKoodiType(KOODI_KOODI_URI_AND_ARVO);
-        koodiType.getMetadata().add(createKoodiMetadataType());
-        return Lists.newArrayList(koodiType);
+        return Lists.newArrayList(createKoodiType(KOODI_KOODI_URI_AND_ARVO));
     }
 }
