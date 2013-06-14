@@ -27,10 +27,11 @@ public final class TestObjectCreator {
     public static final String LYHYT_NIMI = "lyhyt nimi";
     public static final String NIMI = "pitkä nimi";
     public static final String KOODI_KOODI_URI_AND_ARVO = "koodi arvo";
+    public static final KieliType LANG = KieliType.FI;
 
     public static KoodiMetadataType createKoodiMetadataType() {
         KoodiMetadataType koodiMetadataType = new KoodiMetadataType();
-        koodiMetadataType.setKieli(KieliType.FI);
+        koodiMetadataType.setKieli(LANG);
         koodiMetadataType.setLyhytNimi(LYHYT_NIMI);
         koodiMetadataType.setNimi(NIMI);
         return koodiMetadataType;
