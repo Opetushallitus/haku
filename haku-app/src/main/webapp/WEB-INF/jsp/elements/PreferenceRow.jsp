@@ -33,6 +33,7 @@
     <c:set value="childLONames-${sortableItem.id}" var="childLONamesId" scope="page"/>
     <c:set value="${hiddenKoulutusId}-lang" var="hiddenKoulutusIdLang" scope="page"/>
     <c:set value="${hiddenKoulutusId}-sora" var="hiddenKoulutusIdSora" scope="page"/>
+    <c:set value="${hiddenKoulutusId}-aoIdentifier" var="hiddenKoulutusIdAoIdentifier" scope="page"/>
     <c:set value="${hiddenKoulutusId}-athlete" var="hiddenKoulutusIdAthlete" scope="page"/>
 
     <div class="form-row">
@@ -72,6 +73,7 @@
                 <haku:input-hidden id="${hiddenEducationDegreeId}" data="${categoryData}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdLang}" data="${categoryData}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdSora}" data="${categoryData}"/>
+                <haku:input-hidden id="${hiddenKoulutusIdAoIdentifier}" data="${categoryData}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdAthlete}" data="${categoryData}"/>
             </div>
         </div>

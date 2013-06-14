@@ -140,6 +140,7 @@
 
                 <c:choose>
                     <c:when test="${preview}">
+                        <c:set var="virkailijaPreview" value="true" scope="request" />
                         <div class="form">
                             <c:forEach var="child" items="${phase.children}">
                                 <c:set var="element" value="${child}" scope="request"/>

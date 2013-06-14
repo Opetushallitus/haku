@@ -41,6 +41,7 @@
                         '" data-educationdegree="' + item.educationDegree +
                         '" data-lang="' + item.teachingLanguages[0] +
                         '" data-sora="' + item.sora +
+                        '" data-aoidentifier="' + item.aoIdentifier +
                         '" data-athlete="' + item.athlete + '" >' + item.name + '</option>');
                 });
             });
@@ -51,6 +52,7 @@
             $("#" + selectInputId + "-educationDegree").val("").change();
             $("#" + selectInputId + "-id-lang").val("").change();
             $("#" + selectInputId + "-id-sora").val(false).change();
+            $("#" + selectInputId + "-id-aoIdentifier").val("").change();
             $("#" + selectInputId + "-id-athlete").val(false).change();
             $("#" + selectInputId).html("<option></option>");
             preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
@@ -133,6 +135,7 @@
             $educationDegreeInput = $("#" + this.id + "-educationDegree"),
             $educationDegreeLang = $("#" + this.id + "-id-lang"),
             $educationDegreeSora = $("#" + this.id + "-id-sora"),
+            $educationDegreeAoIdentifier = $("#" + this.id + "-id-aoIdentifier"),
             $educationDegreeAthlete = $("#" + this.id + "-id-athlete"),
             selectedId, educationDegree, value = $(this).val(),
             preferenceRowId = this.id.split("-")[0];
@@ -145,6 +148,7 @@
         $educationDegreeInput.val(educationDegree).change();
         $educationDegreeLang.val(selectedOption.data("lang")).change();
         $educationDegreeSora.val(selectedOption.data("sora")).change();
+        $educationDegreeAoIdentifier.val(selectedOption.data("aoidentifier")).change();
         $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
         preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"), educationDegree, preferenceRowId, false);
         preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));

@@ -20,6 +20,7 @@
 <c:set value="${element.id}-Opetuspiste" var="textInputId" scope="page"/>
 <c:set value="${element.id}-Koulutus" var="selectInputId" scope="page"/>
 <c:set value="${element.id}-Koulutus-id" var="selectHiddenInputId" scope="page"/>
+<c:set value="${element.id}-Koulutus-id-aoIdentifier" var="aoIdentifier" scope="page"/>
 <c:if test="${not empty categoryData[selectHiddenInputId]}">
     <tr id="${element.id}-Opetuspiste">
         <td class="label"><haku:i18nText value="${element.i18nText}"/></td>
@@ -29,6 +30,10 @@
     <tr id="${element.id}-Koulutus">
         <td class="label"></td>
         <td class="sublabel"><haku:i18nText value="${sortableItem.educationLabel}"/></td>
-        <td><c:out value="${categoryData[selectInputId]}"/></td>
+        <td><c:out value="${categoryData[selectInputId]}"/>
+        <c:if test="${virkailijaPreview}">
+            &nbsp;[<c:out value="${categoryData[aoIdentifier]}" />]
+        </c:if>
+        </td>
     </tr>
 </c:if>
