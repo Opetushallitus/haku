@@ -29,7 +29,6 @@ public final class ElementTreeValidator {
     }
 
     public static ValidationResult validate(final Element element, final Map<String, String> values) {
-        System.out.println("validate: " + element.getId());
         List<ValidationResult> listOfValidationResult = new ArrayList<ValidationResult>();
         for (Validator validator : element.getValidators()) {
             listOfValidationResult.add(validator.validate(values));
