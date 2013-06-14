@@ -30,7 +30,6 @@ import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionNotRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
-import fi.vm.sade.oppija.lomake.validation.validators.ISO88591NameValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldFieldValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -154,15 +153,13 @@ public abstract class Element implements Serializable {
     public void addAttribute(final String key, final String value) {
         checkNotNull(key, "Attribute's key cannot be null");
         checkNotNull(value, "Attribute's value cannot be null");
-        this.attributes.put(key, new Attribute(key, value));
+            this.attributes.put(key, new Attribute(key, value));
         if (key.equals("required")) {
             addValidator(new RequiredFieldFieldValidator(this.id, "yleinen.pakollinen"));
         } else if (key.equals("pattern")) {
             addValidator(new RegexFieldFieldValidator(this.id, value));
         } else if (key.equals("containedInOther")) {
             addValidator(new ContainedInOtherFieldValidator(this.id, value));
-        } else if (key.equals("iso8859name")) {
-            addValidator(new ISO88591NameValidator(this.id));
         }
     }
 

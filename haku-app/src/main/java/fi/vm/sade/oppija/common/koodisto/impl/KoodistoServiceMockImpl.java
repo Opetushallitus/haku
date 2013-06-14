@@ -113,8 +113,12 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 ImmutableList.of(
                         new Option(SUOMI,
                                 createI18NAsIs("Suomi"), "FI"),
+                        new Option(SUOMI,
+                                createI18NAsIs("Ruotsi"), "SV"),
+                        new Option(SUOMI,
+                                createI18NAsIs("Saame"), "SE"),
                         new Option(RUOTSI,
-                                createI18NAsIs("Ruotsi"), "SV"));
+                                createI18NAsIs("Englanti"), "EN"));
 
         this.listOfNationalities =
                 ImmutableList.of(

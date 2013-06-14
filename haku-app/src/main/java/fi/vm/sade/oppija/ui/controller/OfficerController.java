@@ -39,6 +39,8 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Map;
 
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.seeOther;
@@ -60,7 +62,6 @@ public class OfficerController {
     public static final String SEARCH_INDEX_VIEW = "/virkailija/searchIndex";
     public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + ";charset=UTF-8";
     public static final String VIRKAILIJA_PHASE_VIEW = "/virkailija/Phase";
-
 
     @Autowired
     OfficerUIService officerUIService;
@@ -194,7 +195,7 @@ public class OfficerController {
     public Viewable passivate(@PathParam(OID_PATH_PARAM) final String oid,
                               final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
         for (String key : multiValues.keySet()) {
-            LOGGER.debug("passivation "+key+" -> "+multiValues.get(key));
+            LOGGER.debug("passivation " + key + " -> " + multiValues.get(key));
         }
         StringBuilder reasonBuilder = new StringBuilder();
         for (String reasonPart : multiValues.get("passivation-reason")) {
@@ -211,9 +212,9 @@ public class OfficerController {
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Viewable addNote(@PathParam(OID_PATH_PARAM) final String oid,
-                              final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
-        for (String key : multiValues.keySet()) {
-            LOGGER.debug("passivation "+key+" -> "+multiValues.get(key));
+                            final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
+        for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
+            LOGGER.debug("passivation " + entry.getKey() + " -> " + entry.getValue());
         }
         StringBuilder noteBuilder = new StringBuilder();
         for (String notePart : multiValues.get("note-text")) {

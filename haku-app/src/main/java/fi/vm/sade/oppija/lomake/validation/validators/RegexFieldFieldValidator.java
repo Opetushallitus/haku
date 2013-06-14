@@ -30,7 +30,7 @@ public class RegexFieldFieldValidator extends FieldValidator {
     final Pattern pattern;
 
     public RegexFieldFieldValidator(final String fieldName, final String pattern) {
-        this(fieldName, "Virheellinen syöte " + pattern, pattern);
+        this(fieldName, "yleinen.virheellinenArvo", pattern);
     }
 
     public RegexFieldFieldValidator(final String fieldName, final String errorMessage, final String pattern) {

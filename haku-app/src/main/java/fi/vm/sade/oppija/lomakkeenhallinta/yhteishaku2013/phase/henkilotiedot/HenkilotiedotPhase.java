@@ -32,24 +32,24 @@ public class HenkilotiedotPhase {
         // Henkilötiedot
         Phase henkilotiedot = new Phase("henkilotiedot", createI18NForm("form.henkilotiedot.otsikko"), false);
 
-
         Theme henkilotiedotRyhma = new Theme("HenkilotiedotGrp", createI18NForm("form.henkilotiedot.otsikko"), null, true);
 
         // Nimet
         Question sukunimi = createRequiredTextQuestion("Sukunimi", "form.henkilotiedot.sukunimi", "30");
         sukunimi.setInline(true);
-        sukunimi.addAttribute("iso8859name", "iso8859name");
+        sukunimi.addAttribute("pattern", ElementUtil.ISO88591_NAME_REGEX);
         henkilotiedotRyhma.addChild(sukunimi);
 
         Question etunimet = createRequiredTextQuestion("Etunimet", "form.henkilotiedot.etunimet", "30");
         etunimet.setInline(true);
-        etunimet.addAttribute("iso8859name", "iso8859name");
+        sukunimi.addAttribute("pattern", ElementUtil.ISO88591_NAME_REGEX);
         henkilotiedotRyhma.addChild(etunimet);
 
         TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", createI18NForm("form.henkilotiedot.kutsumanimi"));
         kutsumanimi.setHelp(createI18NForm("form.henkilotiedot.kutsumanimi.help"));
         kutsumanimi.addAttribute("size", "20");
         kutsumanimi.addAttribute("containedInOther", "Etunimet");
+        kutsumanimi.addAttribute("pattern", ElementUtil.ISO88591_NAME_REGEX);
         setRequiredInlineAndVerboseHelp(kutsumanimi);
 
         henkilotiedotRyhma.addChild(kutsumanimi);

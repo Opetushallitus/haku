@@ -4,8 +4,8 @@ import com.google.common.base.Predicate;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import org.junit.Test;
 
-import static com.mongodb.util.MyAsserts.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public abstract class SubjectRowPredicateTest {
 

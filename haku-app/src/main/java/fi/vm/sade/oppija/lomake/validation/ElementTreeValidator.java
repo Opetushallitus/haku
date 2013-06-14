@@ -29,13 +29,12 @@ public final class ElementTreeValidator {
     }
 
     public static ValidationResult validate(final Element element, final Map<String, String> values) {
-        List<Validator> validators = element.getValidators();
+        System.out.println("validate: " + element.getId());
         List<ValidationResult> listOfValidationResult = new ArrayList<ValidationResult>();
-        for (Validator validator : validators) {
+        for (Validator validator : element.getValidators()) {
             listOfValidationResult.add(validator.validate(values));
         }
-        List<Element> children = element.getChildren(values);
-        for (Element child : children) {
+        for (Element child : element.getChildren(values)) {
             listOfValidationResult.add(validate(child, values));
         }
         return new ValidationResult(listOfValidationResult);
