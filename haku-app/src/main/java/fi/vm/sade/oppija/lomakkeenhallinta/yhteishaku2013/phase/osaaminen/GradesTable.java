@@ -1,12 +1,16 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomake.validation.validators.UniqValuesValidator;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.function.ElementToId;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.predicate.IdEndsWith;
 
 import java.util.List;
 
@@ -14,6 +18,7 @@ public class GradesTable {
 
     public static final String ADDITIONAL_LANGUAGES_GROUP = "additionalLanguages";
     public static final String NATIVE_LANGUAGE_GROUP = "nativeLanguage";
+    public static final String OPPIAINE_SUFFIX = "_OPPIAINE";
     private GradeGridHelper gradeGridHelper;
 
     public GradesTable(final KoodistoService koodistoService, final boolean comprehensiveSchool) {
@@ -56,6 +61,10 @@ public class GradesTable {
         for (SubjectRow subjectsAfterLanguage : gradeGridHelper.getNotLanguageSubjects()) {
             gradeGrid.addChild(createGradeGridRow(subjectsAfterLanguage, false, false));
         }
+        List<String> uniqLanguagesIds = Lists.transform(
+                ElementUtil.filterElements(gradeGrid, new IdEndsWith(OPPIAINE_SUFFIX)),
+                new ElementToId());
+        gradeGrid.addValidator(new UniqValuesValidator(gradeGrid.getId(), uniqLanguagesIds, "yleinen.kielet.samoja"));
         return gradeGrid;
     }
 
@@ -67,7 +76,7 @@ public class GradesTable {
         String id = gradeGridHelper.getIdPrefix() + subjectRow.getId();
 
         GradeGridOptionQuestion addLangs =
-                new GradeGridOptionQuestion(id + "_OPPIAINE", languages, false);
+                new GradeGridOptionQuestion(id + OPPIAINE_SUFFIX, languages, false);
         ElementUtil.setDisabled(addLangs);
 
         GradeGridOptionQuestion grades =

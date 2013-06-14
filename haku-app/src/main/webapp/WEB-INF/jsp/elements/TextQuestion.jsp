@@ -17,17 +17,13 @@
   --%>
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <div class="${styleBaseClass}">
-
     <haku:label element="${element}" styleBaseClass="${styleBaseClass}"/>
-
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
             <input ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"/>
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
-
         <haku:help element="${element}"/>
-
     </div>
     <div class="clear"></div>
     <haku:viewChilds element="${element}"/>

@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.util;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Notification;
@@ -27,12 +28,15 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldFieldValidator;
 import org.apache.log4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.*;
 
 public final class ElementUtil {
+
+    public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ][a-zA-ZÀ-ÖØ-öø-ÿ ,-]*(?:[a-zA-ZÀ-ÖØ-öø-ÿ]+$)$";
 
     public static final String KYLLA = Boolean.TRUE.toString().toLowerCase();
     public static final String EI = Boolean.FALSE.toString().toLowerCase();
@@ -86,6 +90,11 @@ public final class ElementUtil {
         return new I18nText(key + Long.toString(System.currentTimeMillis()), translations);
     }
 
+    public static List<Element> filterElements(final Element element, final Predicate<Element> predicate) {
+        List<Element> elements = new ArrayList<Element>();
+        filterElements(element, elements, predicate);
+        return elements;
+    }
 
     public static <E extends Element> Map<String, E> findElementsByType(Element element, Class<E> eClass) {
         Map<String, E> elements = new HashMap<String, E>();
@@ -149,6 +158,16 @@ public final class ElementUtil {
 
     public static String randomId() {
         return UUID.randomUUID().toString().replace('.', '_');
+    }
+
+    private static void filterElements(
+            final Element element, final List<Element> elements, final Predicate<Element> predicate) {
+        if (predicate.apply(element)) {
+            elements.add(element);
+        }
+        for (Element child : element.getChildren()) {
+            filterElements(child, elements, predicate);
+        }
     }
 
     private static <E extends Element> void findElementByType(

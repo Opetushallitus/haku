@@ -16,6 +16,8 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
+<haku:help element="${element}"/>
 <table id="gradegrid-table" class="applicant-grades">
     <thead>
     <tr>

@@ -21,7 +21,8 @@ import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.hakutoiveet.Haku
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-import static com.mongodb.util.MyAsserts.assertTrue;
+import static org.junit.Assert.assertTrue;
+
 
 public class HAK153IT extends DummyModelBaseItTest {
 

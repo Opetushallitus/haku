@@ -5802,7 +5802,7 @@
                         "pattern": {
                           "type": "Attribute",
                           "key": "pattern",
-                          "value": "^[a-zA-Z0-9.!#$%\u0026�*+/\u003d?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$"
+                          "value": "^[a-zA-Z0-9.!#$%\u0026�*+/\u003d?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\\\.[a-zA-Z0-9-]+)*$"
                         },
                         "name": {
                           "type": "Attribute",
