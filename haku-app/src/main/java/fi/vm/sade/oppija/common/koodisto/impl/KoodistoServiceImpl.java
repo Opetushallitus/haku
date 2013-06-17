@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import fi.vm.sade.koodisto.service.GenericFault;
 import fi.vm.sade.koodisto.service.KoodiService;
+import fi.vm.sade.koodisto.service.types.KoodiBaseSearchCriteriaType;
 import fi.vm.sade.koodisto.service.types.SearchKoodisByKoodistoCriteriaType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
@@ -35,8 +36,6 @@ import org.springframework.stereotype.Service;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.*;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 @Service
 @Profile("default")
@@ -156,13 +155,19 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     private List<KoodiType> getKoodiTypes(final String koodistoUri) {
-        SearchKoodisByKoodistoCriteriaType searchKoodisByKoodistoCriteriaType = new SearchKoodisByKoodistoCriteriaType();
-        searchKoodisByKoodistoCriteriaType.setKoodistoUri(koodistoUri);
+        SearchKoodisByKoodistoCriteriaType koodistoCriteria = new SearchKoodisByKoodistoCriteriaType();
+        koodistoCriteria.setKoodistoUri(koodistoUri);
+
+        KoodiBaseSearchCriteriaType koodiCriteria = new KoodiBaseSearchCriteriaType();
+        koodiCriteria.setValidAt(new XMLGregorianCalendarImpl((GregorianCalendar) GregorianCalendar.getInstance()));
+        koodistoCriteria.setKoodiSearchCriteria(koodiCriteria);
+
         XMLGregorianCalendar calendar = new XMLGregorianCalendarImpl(new GregorianCalendar());
-        searchKoodisByKoodistoCriteriaType.setValidAt(calendar);
-        List<KoodiType> koodiTypes = newArrayList();
+        koodistoCriteria.setValidAt(calendar);
+
+        List<KoodiType> koodiTypes = new ArrayList<KoodiType>();
         try {
-            koodiTypes = koodiService.searchKoodisByKoodisto(searchKoodisByKoodistoCriteriaType);
+            koodiTypes = koodiService.searchKoodisByKoodisto(koodistoCriteria);
         } catch (GenericFault t) {
             LOGGER.warn("Error calling koodisto", t);
         }
