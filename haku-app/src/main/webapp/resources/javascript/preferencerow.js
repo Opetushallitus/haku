@@ -19,43 +19,34 @@
     var preferenceRow = {
         populateSelectInput: function (orgId, selectInputId) {
             $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationPeriodId + "/" + orgId,
-                    {
-                        'baseEducation': sortabletable_settings.baseEducation,
-                        'vocational': sortabletable_settings.vocational
-                    },
-                    function (data) {
-                        var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
+                {
+                    'baseEducation': sortabletable_settings.baseEducation,
+                    'vocational': sortabletable_settings.vocational
+                },
+                function (data) {
+                    var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
 
-                        preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
-                        $("#" + selectInputId).html("<option></option>");
+                    preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
+                    $("#" + selectInputId).html("<option></option>");
 
-                        $(data).each(function (index, item) {
-                            var selected = "";
-                            childLONames[item.id] = item.childLONames;
-                            if (hakukohdeId == item.id) {
-                                selected = 'selected = "selected"';
-                                // overrides additional questions rendered in the backend
-                                //preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"), item.educationDegree, null, false);
-                                preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
-                            }
-                            $selectInput.append('<option value="' + item.name
-                                + '" ' + selected + ' data-id="' + item.id +
-                                '" data-educationdegree="' + item.educationDegree +
-                                '" data-lang="' + item.teachingLanguages[0] +
-                                '" data-sora="' + item.sora +
-                                '" data-athlete="' + item.athlete + '" >' + item.name + '</option>');
-                        });
-                    }
-
-                    $selectInput.append('<option value="' + item.name
-                        + '" ' + selected + ' data-id="' + item.id +
-                        '" data-educationdegree="' + item.educationDegree +
-                        '" data-lang="' + item.teachingLanguages[0] +
-                        '" data-sora="' + item.sora +
-                        '" data-aoidentifier="' + item.aoIdentifier +
-                        '" data-athlete="' + item.athlete + '" >' + item.name + '</option>');
+                    $(data).each(function (index, item) {
+                        var selected = "";
+                        childLONames[item.id] = item.childLONames;
+                        if (hakukohdeId == item.id) {
+                            selected = 'selected = "selected"';
+                            // overrides additional questions rendered in the backend
+                            //preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"), item.educationDegree, null, false);
+                            preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
+                        }
+                        $selectInput.append('<option value="' + item.name
+                            + '" ' + selected + ' data-id="' + item.id +
+                            '" data-educationdegree="' + item.educationDegree +
+                            '" data-lang="' + item.teachingLanguages[0] +
+                            '" data-sora="' + item.sora +
+                            '" data-aoidentifier="' + item.aoIdentifier +
+                            '" data-athlete="' + item.athlete + '" >' + item.name + '</option>');
+                    });
                 });
-            });
         },
 
         clearSelectInput: function (selectInputId) {
