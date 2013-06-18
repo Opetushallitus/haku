@@ -15,14 +15,13 @@
  */
 package fi.vm.sade.oppija.configuration;
 
+import fi.vm.sade.koodisto.util.CachingKoodistoClient;
+import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
-import fi.vm.sade.koodisto.service.KoodiService;
-import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
 
 @Configuration
 @Profile("default")
@@ -33,9 +32,9 @@ public class WebServices {
         return getProxy(OrganisaatioService.class, url);
     }
 
-    @Bean(name="koodiPublicService")
-    public KoodiService getKoodiService(@Value("${koodi.public.webservice.url.backend}") String url) {
-        return getProxy(KoodiService.class, url);
+    @Bean(name="cachingKoodistoClient")
+    public CachingKoodistoClient getCachingKoodistoClient() {
+        return new CachingKoodistoClient();
     }
 
     @SuppressWarnings("unchecked")

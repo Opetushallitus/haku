@@ -16,13 +16,12 @@
 
 package fi.vm.sade.oppija.common.koodisto.impl;
 
-import fi.vm.sade.koodisto.service.KoodiService;
-import fi.vm.sade.koodisto.service.types.SearchKoodisByKoodistoCriteriaType;
+import fi.vm.sade.koodisto.util.CachingKoodistoClient;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -32,8 +31,8 @@ public class KoodistoServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
-        KoodiService koodiService = mock(KoodiService.class);
-        when(koodiService.searchKoodisByKoodisto(any(SearchKoodisByKoodistoCriteriaType.class))).thenReturn(TestObjectCreator.createKoodiTypeList());
+        CachingKoodistoClient koodiService = mock(CachingKoodistoClient.class);
+        when(koodiService.getKoodisForKoodisto(anyString(), anyInt(), anyBoolean())).thenReturn(TestObjectCreator.createKoodiTypeList());
         koodistoService = new KoodistoServiceImpl(koodiService);
     }
 

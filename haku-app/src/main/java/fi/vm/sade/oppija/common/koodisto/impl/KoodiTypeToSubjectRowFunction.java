@@ -17,10 +17,9 @@
 package fi.vm.sade.oppija.common.koodisto.impl;
 
 import com.google.common.base.Function;
-import fi.vm.sade.koodisto.service.KoodiService;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.koodisto.service.types.common.KoodiUriAndVersioType;
-import fi.vm.sade.koodisto.service.types.common.SuhteenTyyppiType;
+import fi.vm.sade.koodisto.util.CachingKoodistoClient;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 
@@ -34,9 +33,9 @@ public class KoodiTypeToSubjectRowFunction implements Function<KoodiType, Subjec
     public static final String CODE_ONPERUSASTEENOPPIAINE = "onperusasteenoppiaine";
     public static final String CODE_OPPIAINEENKIELISYYS = "oppiaineenkielisyys";
     public static final String CODE_VALUE_TRUE = "1";
-    private final KoodiService koodiService;
+    private final CachingKoodistoClient koodiService;
 
-    public KoodiTypeToSubjectRowFunction(KoodiService koodiService) {
+    public KoodiTypeToSubjectRowFunction(CachingKoodistoClient koodiService) {
         this.koodiService = koodiService;
     }
 
@@ -54,7 +53,7 @@ public class KoodiTypeToSubjectRowFunction implements Function<KoodiType, Subjec
         koodi.setKoodiUri(koodiType.getKoodiUri());
         koodi.setVersio(koodiType.getVersio());
         if (koodiService != null) {
-            List<KoodiType> koodiTypes = koodiService.listKoodiByRelation(koodi, false, SuhteenTyyppiType.SISALTYY);
+            List<KoodiType> koodiTypes = koodiService.getYlakoodis(koodi.getKoodiUri());
             for (KoodiType type : koodiTypes) {
                 String koodistoUri = type.getKoodisto().getKoodistoUri();
                 if (CODE_OPPIAINEENVALINNAISUUS.equals(koodistoUri)) {

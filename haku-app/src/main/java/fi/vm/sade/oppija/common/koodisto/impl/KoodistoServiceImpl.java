@@ -18,12 +18,8 @@ package fi.vm.sade.oppija.common.koodisto.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
-import fi.vm.sade.koodisto.service.GenericFault;
-import fi.vm.sade.koodisto.service.KoodiService;
-import fi.vm.sade.koodisto.service.types.KoodiBaseSearchCriteriaType;
-import fi.vm.sade.koodisto.service.types.SearchKoodisByKoodistoCriteriaType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
+import fi.vm.sade.koodisto.util.CachingKoodistoClient;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.common.koodisto.domain.Code;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
@@ -35,7 +31,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 @Profile("default")
@@ -56,10 +55,10 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_GENDER = "sukupuoli";
 
 
-    private final KoodiService koodiService;
+    private final CachingKoodistoClient koodiService;
 
     @Autowired
-    public KoodistoServiceImpl(final KoodiService koodiService) {
+    public KoodistoServiceImpl(final CachingKoodistoClient koodiService) {
         this.koodiService = koodiService;
     }
 
@@ -164,17 +163,10 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     private List<KoodiType> getKoodiTypes(final String koodistoUri, final Integer version) {
-        SearchKoodisByKoodistoCriteriaType koodistoCriteria = new SearchKoodisByKoodistoCriteriaType();
-        koodistoCriteria.setKoodistoUri(koodistoUri);
-        koodistoCriteria.setKoodistoVersio(version);
-        KoodiBaseSearchCriteriaType koodiCriteria = new KoodiBaseSearchCriteriaType();
-        koodistoCriteria.setKoodiSearchCriteria(koodiCriteria);
-        koodiCriteria.setValidAt(new XMLGregorianCalendarImpl((GregorianCalendar) GregorianCalendar.getInstance()));
-
         List<KoodiType> koodiTypes = new ArrayList<KoodiType>();
         try {
-            koodiTypes = koodiService.searchKoodisByKoodisto(koodistoCriteria);
-        } catch (GenericFault t) {
+            koodiTypes = koodiService.getKoodisForKoodisto(koodistoUri, version, true);
+        } catch (Exception t) {
             LOGGER.warn("Error calling koodisto", t);
         }
         return ImmutableList.copyOf(koodiTypes);

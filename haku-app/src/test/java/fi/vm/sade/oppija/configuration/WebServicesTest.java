@@ -16,11 +16,11 @@ public class WebServicesTest {
 
     @Test
     public void testGetOrganisaatioService() throws Exception {
-        assertNotNull(webServices.getKoodiService(""));
+        assertNotNull(webServices.getOrganisaatioService(""));
     }
 
     @Test
-    public void testGetKoodiService() throws Exception {
-        assertNotNull(webServices.getOrganisaatioService(""));
+    public void testGetCachingKoodistoClient() throws Exception {
+        assertNotNull(webServices.getCachingKoodistoClient());
     }
 }
