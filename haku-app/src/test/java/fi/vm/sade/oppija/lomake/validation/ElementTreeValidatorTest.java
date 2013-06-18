@@ -67,7 +67,7 @@ public class ElementTreeValidatorTest {
 
     @Test
     public void testValidateAsuinmaaSV() throws Exception {
-        testAsuinmaa("SWE", 1);
+        testAsuinmaa("SWE", 3);
     }
 
     @Test

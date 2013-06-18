@@ -207,15 +207,20 @@ public class HenkilotiedotPhase {
         ensisijainenOsoite.setInline(true);
         asuinmaaFI.addChild(ensisijainenOsoite);
 
-        TextArea osoite = new TextArea("osoite", createI18NForm("form.henkilotiedot.osoite"));
-        osoite.addAttribute("rows", "6");
-        osoite.addAttribute("cols", "40");
-        osoite.addAttribute("style", "height: 8em");
         RelatedQuestionRule relatedQuestionRule2 =
                 new RelatedQuestionRule("rule2", asuinmaa.getId(), NOT_FI, false);
-        relatedQuestionRule2.addChild(osoite);
+        Question osoiteUlkomaa = createRequiredTextQuestion("osoiteUlkomaa", "form.henkilotiedot.osoite", "40");
+        osoiteUlkomaa.setInline(true);
+        relatedQuestionRule2.addChild(osoiteUlkomaa);
+        Question postinumeroUlkomaa = createRequiredTextQuestion("postinumeroUlkomaa", "form.henkilotiedot.postinumero", "12");
+        postinumeroUlkomaa.setInline(true);
+        relatedQuestionRule2.addChild(postinumeroUlkomaa);
+        Question kaupunkiUlkomaa = createRequiredTextQuestion("kaupunkiUlkomaa", "form.henkilotiedot.kaupunki", "25");
+        kaupunkiUlkomaa.setInline(true);
+        relatedQuestionRule2.addChild(kaupunkiUlkomaa);
+
+
         asuinmaa.addChild(relatedQuestionRule2);
-        setRequiredInlineAndVerboseHelp(osoite);
 
         asuinmaa.addChild(asuinmaaFI);
 
