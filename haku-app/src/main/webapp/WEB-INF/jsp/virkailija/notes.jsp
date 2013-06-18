@@ -17,20 +17,20 @@
   ~ European Union Public Licence for more details.
   --%>
 
-<div id="notes">
-    <legend class="h3"><fmt:message key="virkailija.hakemus.kommentit" /></legend>
+<fieldset id="notes">
+    <legend class="h3"><fmt:message key="virkailija.hakemus.kommentit"/></legend>
 
     <form action="${contextPath}/virkailija/hakemus/${application.oid}/addNote" method="post">
-        <textarea name="note-text" id="note-text" ></textarea>
+        <textarea name="note-text" id="note-text"></textarea>
         <input id="note-create" class="button primary small" type="submit"
-                value="<fmt:message key="virkailija.hakemus.kommentit.uusi"/>" />
+               value="<fmt:message key="virkailija.hakemus.kommentit.uusi"/>"/>
     </form>
 
     <c:forEach var="note" items="${application.notes}">
         <div class="note-content">
-            <span class="note-date"><fmt:formatDate value="${note.added}" pattern="dd.MM.yyyy HH:mm:ss" /></span>
-            <span class="note-text"><c:out value="${note.noteText}" /></span>
-            <span class="note-user"><c:out value="${note.user.userName}" /></span>
+            <span class="note-date"><fmt:formatDate value="${note.added}" pattern="dd.MM.yyyy HH:mm:ss"/></span>
+            <span class="note-text"><c:out value="${note.noteText}"/></span>
+            <span class="note-user"><c:out value="${note.user.userName}"/></span>
         </div>
     </c:forEach>
 </fieldset>

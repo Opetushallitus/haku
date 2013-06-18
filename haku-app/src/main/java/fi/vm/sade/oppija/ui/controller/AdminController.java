@@ -42,19 +42,6 @@ public class AdminController {
     @Autowired
     public FormModelHolder formModelHolder;
 
-    @Value("${mongodb.url}")
-    private String mongoUrl;
-    @Value("${mongo.db.name}")
-    private String mongoDbName;
-    @Value("${mongo.test-db.name}")
-    private String mongoTestDbName;
-    @Value("${hakemus.aes.key}")
-    private String aesKey;
-    @Value("${hakemus.aes.salt}")
-    private String aesSalt;
-    @Value("${hakemus.sha.salt}")
-    private String shaSalt;
-
     @GET
     @Path("/model")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
