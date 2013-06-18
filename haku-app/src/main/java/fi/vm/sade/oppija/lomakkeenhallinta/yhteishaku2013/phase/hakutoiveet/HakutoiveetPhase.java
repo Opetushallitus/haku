@@ -2,6 +2,7 @@ package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.hakutoiveet;
 
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.elements.HiddenValue;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.Popup;
@@ -12,6 +13,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,13 +84,13 @@ public class HakutoiveetPhase {
                 createI18NForm("form.hakutoiveet.sisaltyvatKoulutusohjelmat"),
                 "Valitse koulutus");
 
-        pr.addChild(createDiscretionaryQuestionsAndRules(id),
-                createSoraQuestions(id),
-                createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id));
+        pr.addChild(createDiscretionaryQuestionsAndRules(id));
+        pr.addChild(createSoraQuestions(id),
+                    createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id));
         return pr;
     }
 
-    private static Element createDiscretionaryQuestionsAndRules(final String index) {
+    private static Element[] createDiscretionaryQuestionsAndRules(final String index) {
         Radio discretionary = new Radio(index + "-discretionary", createI18NForm("form.hakutoiveet.harkinnanvarainen"));
         addDefaultTrueFalseOptions(discretionary);
         setRequired(discretionary);
@@ -109,9 +111,19 @@ public class HakutoiveetPhase {
 
         RelatedQuestionRule discretionaryRule = new RelatedQuestionRule(index + "-discretionary-rule",
                 ImmutableList.of(index + "-Koulutus-educationDegree"), DISCRETIONARY_EDUCATION_DEGREE, false);
+        RelatedQuestionRule discretionaryRule2 = new RelatedQuestionRule(index + "-discretionary-rule2",
+                ImmutableList.of("POHJAKOULUTUS"), "(" + OppijaConstants.PERUSKOULU + "|" + OppijaConstants.YLIOPPILAS + "|" +
+                OppijaConstants.OSITTAIN_YKSILOLLISTETTY + "|" + OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY +
+                "|" + OppijaConstants.YKSILOLLISTETTY + ")", false);
         discretionaryRule.addChild(discretionary);
+        discretionaryRule2.addChild(discretionaryRule);
 
-        return discretionaryRule;
+        RelatedQuestionRule discretionaryRule3 = new RelatedQuestionRule(index + "-discretionary-rule3",
+                ImmutableList.of("POHJAKOULUTUS"), "(" + OppijaConstants.KESKEYTYNYT + "|" + OppijaConstants.ULKOMAINEN_TUTKINTO + ")", false);
+        discretionaryRule3.addChild(new HiddenValue(discretionary.getId(), ElementUtil.KYLLA));
+
+        Element[] discretionaryRules = {discretionaryRule2, discretionaryRule3};
+        return discretionaryRules;
 
     }
 
