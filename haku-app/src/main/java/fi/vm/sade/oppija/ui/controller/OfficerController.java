@@ -184,8 +184,8 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Viewable passivate(@PathParam(OID_PATH_PARAM) final String oid,
                               final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
-        for (String key : multiValues.keySet()) {
-            LOGGER.debug("passivation " + key + " -> " + multiValues.get(key));
+        for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
+            LOGGER.debug("passivation " + entry.getKey() + " -> " + entry.getValue());
         }
         StringBuilder reasonBuilder = new StringBuilder();
         for (String reasonPart : multiValues.get("passivation-reason")) {
