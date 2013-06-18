@@ -28,7 +28,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldFieldValidator;
 import org.apache.log4j.Logger;
 
 import java.text.MessageFormat;
