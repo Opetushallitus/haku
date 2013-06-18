@@ -1,7 +1,6 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta;
 
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.common.koodisto.domain.Code;
@@ -9,7 +8,10 @@ import fi.vm.sade.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.TitledGroup;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
