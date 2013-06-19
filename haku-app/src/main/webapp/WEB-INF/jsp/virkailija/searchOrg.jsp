@@ -70,7 +70,7 @@
                 </div>
 
                 <div class="buttons">
-                    <button d="reset-organizations" class="button small" type="reset"><fmt:message
+                    <button id="reset-organizations" class="button small" type="reset"><fmt:message
                             key="virkailija.org.tyhjenna"/></button>
                     <button id="search-organizations" class="button primary small"><fmt:message
                             key="virkailija.org.hae"/></button>

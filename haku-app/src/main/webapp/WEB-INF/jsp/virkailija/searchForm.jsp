@@ -21,6 +21,7 @@
     <form id="searchform">
         <input type="hidden" id="lopoid" name="lopoid">
 
+        <h3 id="lop-title"></h3>
         <div class="grid16-16">
             <table class="form-layout-table width-100">
                 <tr>

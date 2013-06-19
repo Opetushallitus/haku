@@ -96,7 +96,7 @@ $(document).ready(function () {
                 oid: oid.val(),
                 appState: $appState.val(),
                 appPreference: $appPreference.val(),
-                lopOid: $('#lopoid').val()
+                lopoid: $('#lopoid').val()
             }, function (data) {
                 $tbody.empty();
                 self.updateCounters(data.length);
@@ -185,6 +185,7 @@ $(document).ready(function () {
     var orgSearch = (function () {
         $('#reset-organizations').click(function (event) {
             $('#lopoid').val('');
+            $('#lop-title').empty();
 
         });
         $('#search-organizations').click(function (event) {
@@ -232,6 +233,7 @@ $(document).ready(function () {
             }
             label.click(function (e) {
                 $('#lopoid').val($(this).attr('id'));
+                $('#lop-title').text($(this).html());
                 e.preventDefault();
             });
 
