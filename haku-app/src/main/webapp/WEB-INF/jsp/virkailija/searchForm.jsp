@@ -45,6 +45,8 @@
                                 <option value="PASSIVE"><fmt:message key="virkailija.hakemus.tila.peruttu"/></option>
                                 <option value="INCOMPLETE"><fmt:message
                                         key="virkailija.hakemus.tila.puutteellinen"/></option>
+                                <option value="NOT_IDENTIFIED"><fmt:message
+                                        key="virkailija.hakemus.tila.yksiloimatta"/></option>
                             </select>
                         </div>
                     </td>

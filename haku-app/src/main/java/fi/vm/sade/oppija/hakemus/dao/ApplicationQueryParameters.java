@@ -37,8 +37,8 @@ public class ApplicationQueryParameters {
     }
 
     public ApplicationQueryParameters(final String state, final String lopOid) {
-        this.state = isEmpty(state) ? null : state;
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
+        this.state = isEmpty(state) ? null : state;
     }
 
     public ApplicationQueryParameters(final String state, final String preference, final String lopOid) {

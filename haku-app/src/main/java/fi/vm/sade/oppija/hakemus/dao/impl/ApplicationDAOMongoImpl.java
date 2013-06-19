@@ -289,10 +289,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         String state = applicationQueryParameters.getState();
         if (!isEmpty(state)) {
             for (Application.State s : Application.State.values()) {
-                if (Application.State.valueOf(state).equals(s)) {
+                if (s.toString().equals(state)) {
                     stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).is(state).get();
                     break;
                 }
+            }
+            if (stateQuery == null && "NOT_IDENTIFIED".equals(state)) {
+                stateQuery = new BasicDBObject();
+                stateQuery.put("personOid", new BasicDBObject("$exists", false));
             }
         }
 
