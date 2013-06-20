@@ -16,16 +16,11 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
-import com.google.common.collect.ImmutableList;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class ApplicationQueryParameters {
     private final String state;
-    private final List<String> preferences = new ArrayList<String>();
+    private final String preference;
     private final String lopOid;
 
     public ApplicationQueryParameters() {
@@ -37,23 +32,21 @@ public class ApplicationQueryParameters {
     }
 
     public ApplicationQueryParameters(final String state, final String lopOid) {
-        this.lopOid = isEmpty(lopOid) ? null : lopOid;
-        this.state = isEmpty(state) ? null : state;
+        this(state, null, lopOid);
     }
 
     public ApplicationQueryParameters(final String state, final String preference, final String lopOid) {
-        this(state, lopOid);
-        if (!isEmpty(preference)) {
-            this.preferences.add(preference);
-        }
+        this.lopOid = isEmpty(lopOid) ? null : lopOid;
+        this.state = isEmpty(state) ? null : state;
+        this.preference = isEmpty(preference) ? null : preference;
     }
 
     public String getState() {
         return state;
     }
 
-    public List<String> getPreferences() {
-        return ImmutableList.copyOf(preferences);
+    public String getPreference() {
+        return preference;
     }
 
     public String getLopOid() {
