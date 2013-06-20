@@ -311,7 +311,6 @@ $(document).ready(function () {
                 $('body').on('click', '[data-po-add]', function(event){
                     event.preventDefault();
                     popover.add();
-
                 });
                 
                 // Show already existing popover with id
@@ -449,98 +448,6 @@ $(document).ready(function () {
             });
         }
     }
-    /*
-     var popups = {
-     build: function () {
-     popups.setTriggers();
-     },
-     setTriggers: function() {
-     var fadeTime = 400;
-     var overlay = $('#overlay');
-
-     var popupActionOpen = 'data-open-popup';
-     var popupActionClose = 'data-close-popup';
-
-     popupActions(popupActionOpen, true);
-     popupActions(popupActionClose, false);
-
-     //
-     function popupActions(popupActionAttr, isOpen) {
-     var dispatchers;
-
-     dispatchers = $('body').attr('['+ popupActionAttr + ']');
-
-     dispatchers.each(function() {
-     var popupElementId = $(this).attr(popupActionAttr, isOpen);
-
-     // different browsers return 'undefined' or 'false' for empty set
-     if (typeof popupElementId !== 'undefined' && popupElementId !== false) {
-
-     var popupElement = $('#' + popupElementId);
-     popupElement.center();
-
-     //fadein popupelement and overlay if isOpen is true, else fadeOut
-     $(this).on('click', function() {
-     if (isOpen) { popupElement.fadeIn(fadeTime); }
-     else { popupElement.fadeOut(fadeTime); }
-     });
-     }
-     });
-
-
-     overlay.on('click', function() {
-     if(!isOpen) { overlay.fadeOut(fadeTime); }
-     $('.popup').fadeOut(fadeTime);
-     });
-     }
-
-     }
-     }
-     /*
-     var popup = {
-     build: function(){
-     // All popups should be declared here
-     popup.setTrigger("#login-popup",".open-login-popup",".close-login-popup");
-     popup.setTrigger("#add-rule-popup", "#add-rule",".close-login-popup");
-     },
-
-     // element = container for popup
-     // showPopupDispatcher = clickeventlistener for open popup
-     // hidePopupDispatcher = clickeventlistener for hide popup
-     setTrigger: function(element, showPopupDispatcher, hidePopupDispatcher) {
-     //clicking overlay-div hides all popups by default
-     var overlay = $('#overlay');
-     var jElement = $(element);
-
-
-     jElement.center();
-
-     $(showPopupDispatcher).on('click', showPopup);
-     overlay.on('click', hidePopup);
-     $(element + " .close").on('click', hidePopup);
-
-
-     if( hidePopupDispatcher != null && hidePopupDispatcher !== "") {
-     $(hidePopupDispatcher).on('click', hidePopup);
-     }
-
-     //show popup
-     function showPopup(event) {
-     jElement.center();
-     overlay.fadeIn(400);
-     jElement.fadeIn(400);
-     }
-
-     //hide popup
-     function hidePopup(event) {
-     jElement.center();
-     jElement.fadeOut(400);
-     overlay.fadeOut(400);
-     }
-     }
-
-     }
-     */
 
     var dropDownMenu = {
         // initiate dropDownMenus

@@ -21,7 +21,8 @@
                     key="virkailija.hakemus.passivoi.hakemus"/></a>
         </c:when>
         <c:otherwise>
-            <a href="#" class="button small disabled"><fmt:message key="virkailija.hakemus.passivoi.hakemus"/></a>
+            <a href="#" id="activateApplication" data-po-show="confirmActivation" class="button small "><fmt:message
+                    key="virkailija.hakemus.aktivoi.hakemus"/></a>
         </c:otherwise>
     </c:choose>
 </div>
