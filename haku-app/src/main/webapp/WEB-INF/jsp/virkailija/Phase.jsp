@@ -30,7 +30,6 @@
 <c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
 <html>
 <head>
-
     <haku:meta/>
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
     <link href="${contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet">

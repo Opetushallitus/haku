@@ -132,7 +132,7 @@ public class HenkilotiedotPhase {
         // Email
         TextQuestion email = new TextQuestion("Sähköposti", createI18NForm("form.henkilotiedot.email"));
         email.addAttribute("size", "50");
-        email.addAttribute("pattern", "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$");
+        email.addAttribute("pattern", EMAIL_REGEX);
         email.setHelp(createI18NForm("form.henkilotiedot.email.help"));
         ElementUtil.setVerboseHelp(email);
         email.setInline(true);

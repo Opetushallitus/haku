@@ -36,6 +36,7 @@ import java.util.*;
 public final class ElementUtil {
 
     public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ][a-zA-ZÀ-ÖØ-öø-ÿ ,-]*(?:[a-zA-ZÀ-ÖØ-öø-ÿ]+$)$";
+    public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$";
 
     public static final String KYLLA = Boolean.TRUE.toString().toLowerCase();
     public static final String EI = Boolean.FALSE.toString().toLowerCase();
@@ -66,7 +67,6 @@ public final class ElementUtil {
     public static I18nText createI18NTextError(final String text, final String... params) {
         return createI18NText(text, "form_errors", params);
     }
-
     private static I18nText createI18NText(final String key, final String bundleName, final String... params) {
         Map<String, String> translations = new HashMap<String, String>();
         for (String lang : LANGS) {
@@ -152,7 +152,6 @@ public final class ElementUtil {
 
     public static void setVerboseHelp(final Titled titled) {
         titled.setVerboseHelp(OppijaConstants.VERBOSE_HELP);
-
     }
 
     public static String randomId() {
