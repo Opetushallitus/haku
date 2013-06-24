@@ -73,7 +73,7 @@ public class ApplicationResource {
     public List<Application> findApplications(@DefaultValue("") @QueryParam("q") String query,
                                               @DefaultValue("") @QueryParam("appState") String appState,
                                               @DefaultValue("") @QueryParam("appPreference") String appPreference,
-                                              @DefaultValue("") @QueryParam("lopOid") String lopoid) {
+                                              @DefaultValue("") @QueryParam("lopoid") String lopoid) {
         LOGGER.debug("Finding applications q:{}, appState:{}, appPreference:{}, lopoid:{}",
                 query, appState, appPreference, lopoid);
         return applicationService.findApplications(
