@@ -49,7 +49,6 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     private static DateFormat dateFmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
-    private VelocityEngine velocityEngine;
     private Map<String, Template> templateMap;
 
     @Value("${email.smtp.debug:false}")
@@ -67,7 +66,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         this.applicationService = applicationService;
         this.formService = formService;
 
-        velocityEngine = new VelocityEngine();
+        VelocityEngine velocityEngine = new VelocityEngine();
         velocityEngine.setProperty("resource.loader", "class");
         velocityEngine.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         velocityEngine.setProperty("class.resource.loader.path", "email");
