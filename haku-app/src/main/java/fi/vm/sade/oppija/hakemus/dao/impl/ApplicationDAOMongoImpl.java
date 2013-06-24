@@ -60,6 +60,18 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_AO_4 = "answers.hakutoiveet.preference4-Koulutus-id";
     private static final String FIELD_AO_5 = "answers.hakutoiveet.preference5-Koulutus-id";
 
+    private static final String FIELD_AO_KOULUTUS_ID_1 = "answers.hakutoiveet.preference1-Koulutus-id-aoIdentifier";
+    private static final String FIELD_AO_KOULUTUS_ID_2 = "answers.hakutoiveet.preference2-Koulutus-id-aoIdentifier";
+    private static final String FIELD_AO_KOULUTUS_ID_3 = "answers.hakutoiveet.preference3-Koulutus-id-aoIdentifier";
+    private static final String FIELD_AO_KOULUTUS_ID_4 = "answers.hakutoiveet.preference4-Koulutus-id-aoIdentifier";
+    private static final String FIELD_AO_KOULUTUS_ID_5 = "answers.hakutoiveet.preference5-Koulutus-id-aoIdentifier";
+
+    private static final String FIELD_AO_KOULUTUS_1 = "answers.hakutoiveet.preference1-Koulutus";
+    private static final String FIELD_AO_KOULUTUS_2 = "answers.hakutoiveet.preference2-Koulutus";
+    private static final String FIELD_AO_KOULUTUS_3 = "answers.hakutoiveet.preference3-Koulutus";
+    private static final String FIELD_AO_KOULUTUS_4 = "answers.hakutoiveet.preference4-Koulutus";
+    private static final String FIELD_AO_KOULUTUS_5 = "answers.hakutoiveet.preference5-Koulutus";
+
     private static final String FIELD_LOP_1 = "answers.hakutoiveet.preference1-Opetuspiste-id";
     private static final String FIELD_LOP_2 = "answers.hakutoiveet.preference2-Opetuspiste-id";
     private static final String FIELD_LOP_3 = "answers.hakutoiveet.preference3-Opetuspiste-id";
@@ -177,6 +189,26 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         );
     }
 
+    private QueryBuilder queryByPreference(String preference) {
+        QueryBuilder aoCode = new QueryBuilder().start().or(
+                QueryBuilder.start(FIELD_AO_KOULUTUS_ID_1).is(preference).get(),
+                QueryBuilder.start(FIELD_AO_KOULUTUS_ID_2).is(preference).get(),
+                QueryBuilder.start(FIELD_AO_KOULUTUS_ID_3).is(preference).get(),
+                QueryBuilder.start(FIELD_AO_KOULUTUS_ID_4).is(preference).get(),
+                QueryBuilder.start(FIELD_AO_KOULUTUS_ID_5).is(preference).get()
+        );
+        Pattern preferencePattern = Pattern.compile(preference, Pattern.CASE_INSENSITIVE);
+        QueryBuilder aoName = new QueryBuilder().start().or(
+                QueryBuilder.start(FIELD_AO_KOULUTUS_1).regex(preferencePattern).get(),
+                QueryBuilder.start(FIELD_AO_KOULUTUS_2).regex(preferencePattern).get(),
+                QueryBuilder.start(FIELD_AO_KOULUTUS_3).regex(preferencePattern).get(),
+                QueryBuilder.start(FIELD_AO_KOULUTUS_4).regex(preferencePattern).get(),
+                QueryBuilder.start(FIELD_AO_KOULUTUS_5).regex(preferencePattern).get()
+        );
+
+        return new QueryBuilder().start().or(aoCode.get(), aoName.get());
+    }
+
     private QueryBuilder queryByLearningOpportunityProviderOid(String lopOid) {
         return QueryBuilder.start().or(
                 QueryBuilder.start(FIELD_LOP_1).is(lopOid).get(),
@@ -289,10 +321,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         String state = applicationQueryParameters.getState();
         if (!isEmpty(state)) {
             for (Application.State s : Application.State.values()) {
-                if (Application.State.valueOf(state).equals(s)) {
+                if (s.toString().equals(state)) {
                     stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).is(state).get();
                     break;
                 }
+            }
+            if (stateQuery == null && "NOT_IDENTIFIED".equals(state)) {
+                stateQuery = new BasicDBObject();
+                stateQuery.put("personOid", new BasicDBObject("$exists", false));
             }
         }
 
@@ -300,9 +336,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             filters.add(stateQuery);
         }
 
-        List<String> preferences = applicationQueryParameters.getPreferences();
-        if (!preferences.isEmpty()) {
-            filters.add(queryByPreference(preferences).get());
+        String preference = applicationQueryParameters.getPreference();
+        if (!isEmpty(preference)) {
+            filters.add(queryByPreference(preference).get());
         }
         String lopOid = applicationQueryParameters.getLopOid();
         if (!isEmpty(lopOid)) {

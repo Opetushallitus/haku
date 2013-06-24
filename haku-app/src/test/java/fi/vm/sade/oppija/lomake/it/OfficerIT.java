@@ -44,6 +44,33 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     @Test
+    public void testSearchByPreference() {
+        List<WebElement> applicationLinks = findByClassName("application-link");
+        assertTrue("Applications found", applicationLinks.isEmpty());
+
+        selenium.typeKeys("application-preference", "vosala"); // Kaivosalan
+        selectState(null);
+        clickSearch();
+        applicationLinks = findByClassName("application-link");
+        assertFalse("Applications not found", applicationLinks.isEmpty());
+
+        clearSearch();
+        selenium.typeKeys("application-preference", "123");
+        selectState(null);
+        clickSearch();
+        applicationLinks = findByClassName("application-link");
+        assertFalse("Applications not found", applicationLinks.isEmpty());
+
+        clearSearch();
+        selenium.typeKeys("application-preference", "notfound");
+        selectState(null);
+        clickSearch();
+        applicationLinks = findByClassName("application-link");
+        assertTrue("Applications found", applicationLinks.isEmpty());
+
+    }
+
+    @Test
     public void testEditControls() throws InterruptedException {
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
@@ -159,7 +186,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     private List<WebElement> SearchByTerm(final String term) {
         enterSearchTerm(term);
         clickSearch();
-        selenium.waitForCondition("selenium.browserbot.getCurrentWindow().document.getElementsByClassName('application-link')", "6000");
+        selenium.waitForCondition("selenium.browserbot.getCurrentWindow().document.getElementsByClassName('application-link')", "1000");
         return findByClassName("application-link");
     }
 
@@ -167,7 +194,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         enterSearchTerm(term);
         selectState(state);
         clickSearch();
-        selenium.waitForCondition("selenium.browserbot.getCurrentWindow().document.getElementsByClassName('application-link')", "6000");
+        selenium.waitForCondition("selenium.browserbot.getCurrentWindow().document.getElementsByClassName('application-link')", "1000");
         return findByClassName("application-link");
     }
 

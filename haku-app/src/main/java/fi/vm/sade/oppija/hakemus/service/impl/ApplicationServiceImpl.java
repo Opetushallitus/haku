@@ -207,15 +207,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             try {
                 application.setPersonOid(this.authenticationService.addPerson(person));
-                application.activate();
             } catch (GenericFault fail) {
                 LOGGER.info(fail.getMessage());
-                application.setState(Application.State.INCOMPLETE);
             }
-        } else {
-            application.setState(Application.State.INCOMPLETE);
         }
 
+        application.activate();
         this.applicationDAO.save(application);
         return application;
     }

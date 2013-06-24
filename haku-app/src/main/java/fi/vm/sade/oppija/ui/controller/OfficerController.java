@@ -173,9 +173,24 @@ public class OfficerController {
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Response addPersonAndAuthenticate(@PathParam(OID_PATH_PARAM) final String oid)
             throws URISyntaxException, ResourceNotFoundException {
-//        LOGGER.debug("Activate application {}, {}", new Object[]{oid, multiValues});
         officerUIService.addPersonAndAuthenticate(oid);
         return seeOther(UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, oid, "")).build();
+    }
+
+    @POST
+    @Path("/hakemus/{oid}/addPersonAndAuthenticate")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Viewable addPersonAndAuthenticate(@PathParam(OID_PATH_PARAM) final String oid,
+                                             final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
+        StringBuilder reasonBuilder = new StringBuilder();
+        for (String reasonPart : multiValues.get("activation-reason")) {
+            reasonBuilder.append(reasonPart);
+        }
+        officerUIService.addPersonAndAuthenticate(oid);
+        officerUIService.addNote(oid, reasonBuilder.toString(), userHolder.getUser());
+        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
+        return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel());
     }
 
     @POST
