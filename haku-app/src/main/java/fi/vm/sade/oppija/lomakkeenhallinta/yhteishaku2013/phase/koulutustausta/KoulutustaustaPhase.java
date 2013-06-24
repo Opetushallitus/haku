@@ -4,15 +4,13 @@ import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.common.koodisto.domain.Code;
-import fi.vm.sade.oppija.lomake.domain.elements.Notification;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.domain.elements.Theme;
-import fi.vm.sade.oppija.lomake.domain.elements.TitledGroup;
+import fi.vm.sade.oppija.lomake.domain.elements.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomake.validation.validators.AlwaysFailsValidator;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.List;
@@ -197,10 +195,16 @@ public class KoulutustaustaPhase {
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
 
 
-        suorittanutAmmatillisenTutkinnon.addChild(
-                notificationWhenTrue(
-                        suorittanutAmmatillisenTutkinnon.getId(),
-                        "form.koulutustausta.ammatillinenSuoritettu.huom"));
+        RelatedQuestionRule suorittanutTutkinnonRule = new RelatedQuestionRule(ElementUtil.randomId(),
+                suorittanutAmmatillisenTutkinnon.getId(), "^true", false);
+        Notification warning = new Notification(
+                ElementUtil.randomId(),
+                createI18NForm("form.koulutustausta.ammatillinenSuoritettu.huom"),
+                Notification.NotificationType.WARNING);
+        suorittanutTutkinnonRule.addChild(warning);
+        warning.addValidator(new AlwaysFailsValidator(warning.getId(), "form.koulutustausta.ammatillinenSuoritettu.huom"));
+
+        suorittanutAmmatillisenTutkinnon.addChild(suorittanutTutkinnonRule);
 
         DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
                 createI18NForm("form.koulutustausta.perusopetuksenKieli"), null);
