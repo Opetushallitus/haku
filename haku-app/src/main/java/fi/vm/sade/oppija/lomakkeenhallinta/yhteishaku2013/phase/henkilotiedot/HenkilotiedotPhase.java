@@ -241,7 +241,7 @@ public class HenkilotiedotPhase {
         return henkilotiedot;
     }
 
-    private static final Map<String, PostOffice> createPostOffices(final KoodistoService koodistoService) {
+    private static Map<String, PostOffice> createPostOffices(final KoodistoService koodistoService) {
         List<PostOffice> listOfPostOffices = koodistoService.getPostOffices();
         Map<String, PostOffice> postOfficeMap = new HashMap<String, PostOffice>(listOfPostOffices.size());
         for (PostOffice postOffice : listOfPostOffices) {
