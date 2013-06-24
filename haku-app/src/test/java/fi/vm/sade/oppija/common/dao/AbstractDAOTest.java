@@ -18,6 +18,8 @@ package fi.vm.sade.oppija.common.dao;
 
 import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
 import org.junit.After;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -29,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public abstract class AbstractDAOTest {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(AbstractDAOTest.class);
     @Autowired
     TestDBFactoryBean dbFactory;
 
@@ -37,7 +40,7 @@ public abstract class AbstractDAOTest {
         try {
             dbFactory.getObject().getCollection(getCollectionName()).drop();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error removing test data", e);
         }
 
     }

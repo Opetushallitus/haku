@@ -16,35 +16,35 @@
 
 package fi.vm.sade.oppija.hakemus.it;
 
-import static java.lang.ClassLoader.getSystemResourceAsStream;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
-import static net.sourceforge.jwebunit.junit.JWebUnit.getPageSource;
-
-import java.io.IOException;
-import java.util.List;
-
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
+import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
+import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
+import java.io.IOException;
+import java.util.List;
 
-import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
-import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationDTO;
-import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
+import static java.lang.ClassLoader.getSystemResourceAsStream;
+import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
+import static net.sourceforge.jwebunit.junit.JWebUnit.getPageSource;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Hannu Lyytikainen
  */
 public class ApplicationIT extends AbstractRemoteTest {
+    public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationIT.class);
 
     @Autowired
     TestDBFactoryBean dbFactory;
@@ -65,7 +65,7 @@ public class ApplicationIT extends AbstractRemoteTest {
             dbFactory.getObject().getCollection("application").drop();
             dbFactory.getObject().getCollection("application").insert(applicationTestDataObject);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error set up test", e);
         }
     }
 

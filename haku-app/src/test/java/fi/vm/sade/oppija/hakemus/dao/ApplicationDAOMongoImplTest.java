@@ -31,6 +31,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ActiveProfiles;
@@ -50,6 +52,7 @@ import static org.junit.Assert.*;
 @ActiveProfiles(profiles = "dev")
 public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationDAOMongoImplTest.class);
     public static final User TEST_USER = new User("test");
     public static final String ARVO = "arvo";
     public static final String TEST_PHASE = "vaihe1";
@@ -73,7 +76,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         try {
             getDbFactory().getObject().getCollection(getCollectionName()).insert(applicationTestDataObject);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error set up test", e);
         }
 
         final String id = String.valueOf(System.currentTimeMillis());

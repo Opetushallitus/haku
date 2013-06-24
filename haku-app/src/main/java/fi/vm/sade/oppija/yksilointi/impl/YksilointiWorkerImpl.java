@@ -27,6 +27,8 @@ import org.apache.commons.mail.SimpleEmail;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 @Service
 public class YksilointiWorkerImpl implements YksilointiWorker {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(YksilointiWorkerImpl.class);
     private ApplicationService applicationService;
     private FormService formService;
 
@@ -93,7 +96,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 try {
                     sendMail(application);
                 } catch (EmailException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    LOGGER.info("Error process applications", e);
                 }
             }
             application = applicationService.getNextWithoutPersonOid();

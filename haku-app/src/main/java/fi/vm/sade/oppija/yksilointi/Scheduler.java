@@ -15,12 +15,15 @@
  */
 package fi.vm.sade.oppija.yksilointi;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Scheduler {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
     private boolean run;
     private boolean sendMail;
     private int interval;
@@ -37,7 +40,7 @@ public class Scheduler {
             try {
                 worker.processApplications(interval - 500, sendMail);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error("Error processing applications", e);
                 //run = false;
             }
         }

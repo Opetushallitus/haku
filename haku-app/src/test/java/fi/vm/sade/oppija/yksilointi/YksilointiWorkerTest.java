@@ -20,6 +20,8 @@ import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +29,8 @@ import java.util.List;
 import static java.lang.ClassLoader.getSystemResourceAsStream;
 
 public class YksilointiWorkerTest extends AbstractDAOTest {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(YksilointiWorkerTest.class);
 
     //@Autowired
     //@Qualifier("applicationDAOMongoImpl")
@@ -46,7 +50,7 @@ public class YksilointiWorkerTest extends AbstractDAOTest {
         try {
             getDbFactory().getObject().getCollection(getCollectionName()).insert(applicationTestDataObject);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error set up test", e);
         }
     }
 
