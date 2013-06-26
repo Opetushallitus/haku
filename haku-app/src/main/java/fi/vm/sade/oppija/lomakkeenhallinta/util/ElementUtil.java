@@ -206,14 +206,14 @@ public final class ElementUtil {
         }
     }
 
-    public static Element notificationWhenTrue(final String id, final String messageKey) {
+    public static Element notificationWhenTrue(final String id, final String messageKey, final Notification.NotificationType type) {
         RelatedQuestionRule rule = new RelatedQuestionRule(ElementUtil.randomId(),
                 id, "^true$", false);
 
         Notification notification = new Notification(
                 ElementUtil.randomId(),
                 createI18NForm(messageKey),
-                Notification.NotificationType.INFO);
+                type);
         rule.addChild(notification);
 
         return rule;

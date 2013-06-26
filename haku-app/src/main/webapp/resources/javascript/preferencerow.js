@@ -44,7 +44,7 @@
                             '" data-lang="' + item.teachingLanguages[0] +
                             '" data-sora="' + item.sora +
                             '" data-aoidentifier="' + item.aoIdentifier +
-                            '" data-athlete="' + item.athlete + '" >' + item.name + '</option>');
+                            '" data-athlete="' + item.athleteEducation + '" >' + item.name + '</option>');
                     });
                 });
         },
