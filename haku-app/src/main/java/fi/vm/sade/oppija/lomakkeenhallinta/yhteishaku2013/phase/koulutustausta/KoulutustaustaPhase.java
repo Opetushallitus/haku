@@ -4,7 +4,10 @@ import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.common.koodisto.domain.Code;
-import fi.vm.sade.oppija.lomake.domain.elements.*;
+import fi.vm.sade.oppija.lomake.domain.elements.Notification;
+import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
@@ -204,7 +207,7 @@ public class KoulutustaustaPhase {
                 createI18NForm("form.koulutustausta.ammatillinenSuoritettu.huom"),
                 Notification.NotificationType.WARNING);
         suorittanutTutkinnonRule.addChild(warning);
-        warning.addValidator(new AlwaysFailsValidator(warning.getId(), "form.koulutustausta.ammatillinenSuoritettu.huom"));
+        warning.setValidator(new AlwaysFailsValidator(warning.getId(), createI18NTextError("form.koulutustausta.ammatillinenSuoritettu.huom")));
 
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutTutkinnonRule);
 

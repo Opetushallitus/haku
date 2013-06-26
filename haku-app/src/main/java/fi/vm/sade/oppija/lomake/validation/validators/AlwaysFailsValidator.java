@@ -25,8 +25,8 @@ import java.util.Map;
 
 public class AlwaysFailsValidator extends FieldValidator {
 
-    protected AlwaysFailsValidator(@JsonProperty(value = "fieldName") final String fieldName,
-                                   @JsonProperty(value = "errorMessage") final I18nText errorMessage) {
+    public AlwaysFailsValidator(@JsonProperty(value = "fieldName") final String fieldName,
+                                @JsonProperty(value = "errorMessage") final I18nText errorMessage) {
         super(fieldName, errorMessage);
     }
 
