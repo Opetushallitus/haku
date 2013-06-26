@@ -31,7 +31,9 @@ import java.util.Map;
         @JsonSubTypes.Type(value = RequiredFieldValidator.class),
         @JsonSubTypes.Type(value = SocialSecurityNumberFieldValidator.class),
         @JsonSubTypes.Type(value = UniqValuesValidator.class),
-        @JsonSubTypes.Type(value = ValueSetValidator.class)
+        @JsonSubTypes.Type(value = ValueSetValidator.class),
+        @JsonSubTypes.Type(value = ValueSetValidator.class),
+        @JsonSubTypes.Type(value = AlwaysFailsValidator.class)
 }
 )
 public interface Validator {
