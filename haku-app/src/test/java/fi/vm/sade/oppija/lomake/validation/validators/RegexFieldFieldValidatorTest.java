@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Map;
 
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NTextError;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -17,7 +18,8 @@ public class RegexFieldFieldValidatorTest {
 
     private static final String FIELD_NAME = "name";
 
-    private final RegexFieldFieldValidator regexFieldFieldValidator = new RegexFieldFieldValidator(FIELD_NAME, ElementUtil.ISO88591_NAME_REGEX);
+    private final RegexFieldValidator regexFieldFieldValidator = new RegexFieldValidator(FIELD_NAME,
+            createI18NTextError("yleinen.virheellinenArvo"), ElementUtil.ISO88591_NAME_REGEX);
 
     private final List<String> listOfValidNames = ImmutableList.of(
             "",
@@ -46,7 +48,7 @@ public class RegexFieldFieldValidatorTest {
     @Test
     public void validateValid() throws Exception {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, "test");
-        RegexFieldFieldValidator test = new RegexFieldFieldValidator(FIELD_NAME, "test");
+        RegexFieldValidator test = new RegexFieldValidator(FIELD_NAME, ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "test");
         ValidationResult validationResult = test.validate(values);
         assertFalse(validationResult.hasErrors());
     }
@@ -54,7 +56,7 @@ public class RegexFieldFieldValidatorTest {
     @Test
     public void validateInvalid() throws Exception {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, "test2");
-        RegexFieldFieldValidator test = new RegexFieldFieldValidator(FIELD_NAME, "test");
+        RegexFieldValidator test = new RegexFieldValidator(FIELD_NAME, ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "test");
         ValidationResult validationResult = test.validate(values);
         assertTrue(validationResult.hasErrors());
     }

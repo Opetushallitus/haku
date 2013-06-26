@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NTextError;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -29,7 +30,7 @@ public class ContainedInOtherFieldValidatorTest {
 
     String thisField = "thisField";
     String thatField = "thatField";
-    FieldValidator validator = new ContainedInOtherFieldValidator(thisField, thatField);
+    FieldValidator validator = new ContainedInOtherFieldValidator(thisField, thatField, createI18NTextError("error"));
 
     @Test
     public void testExactMatch() {

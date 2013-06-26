@@ -57,7 +57,7 @@ public class HakutoiveetPhase {
         Theme hakutoiveetTheme = new Theme("hakutoiveetGrp", createI18NForm("form.hakutoiveet.otsikko"), lisakysymysMap, true);
         hakutoiveetTheme.setHelp(createI18NForm("form.hakutoiveet.help"));
         PreferenceTable preferenceTable =
-                new PreferenceTable("preferencelist", createI18NForm("form.hakutoiveet.otsikko"), "Ylös", "Alas");
+                new PreferenceTable("preferencelist", createI18NForm("form.hakutoiveet.otsikko"));
 
         PreferenceRow pr1 = createI18NPreferenceRow("preference1", "1");
         pr1.addAttribute("required", "required");
@@ -93,7 +93,7 @@ public class HakutoiveetPhase {
     private static Element[] createDiscretionaryQuestionsAndRules(final String index) {
         Radio discretionary = new Radio(index + "-discretionary", createI18NForm("form.hakutoiveet.harkinnanvarainen"));
         addDefaultTrueFalseOptions(discretionary);
-        setRequired(discretionary);
+        addRequiredValidator(discretionary);
 
         DropdownSelect discretionaryFollowUp = new DropdownSelect(discretionary.getId() + "-follow-up",
                 createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"), null);
@@ -136,13 +136,13 @@ public class HakutoiveetPhase {
         Radio sora1 = new Radio(index + "_sora_terveys", createI18NForm("form.sora.terveys"));
         sora1.addOption(ElementUtil.EI, createI18NForm("form.yleinen.ei"), ElementUtil.EI);
         sora1.addOption(ElementUtil.KYLLA, createI18NForm("form.sora.kylla"), ElementUtil.KYLLA);
-        ElementUtil.setRequired(sora1);
+        addRequiredValidator(sora1);
         sora1.setPopup(new Popup("sora-popup", createI18NForm("form.hakutoiveet.terveydentilavaatimukset.otsikko")));
 
         Radio sora2 = new Radio(index + "_sora_oikeudenMenetys", createI18NForm("form.sora.oikeudenMenetys"));
         sora2.addOption(ElementUtil.EI, createI18NForm("form.yleinen.ei"), ElementUtil.EI);
         sora2.addOption(ElementUtil.KYLLA, createI18NForm("form.sora.kylla"), ElementUtil.KYLLA);
-        ElementUtil.setRequired(sora2);
+        addRequiredValidator(sora2);
 
         hasSora.addChild(sora1, sora2);
         return hasSora;
@@ -153,7 +153,7 @@ public class HakutoiveetPhase {
         Radio radio = new Radio(index + "_urheilijan_ammatillisen_koulutuksen_lisakysymys",
                 createI18NForm("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys"));
         addDefaultTrueFalseOptions(radio);
-        setRequired(radio);
+        addRequiredValidator(radio);
         RelatedQuestionRule hasQuestion = new RelatedQuestionRule(radio.getId() + "_related_question_rule",
                 ImmutableList.of(index + "-Koulutus-id-athlete"), ElementUtil.KYLLA, false);
 

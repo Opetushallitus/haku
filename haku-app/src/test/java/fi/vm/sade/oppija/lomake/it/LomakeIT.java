@@ -89,10 +89,14 @@ public class LomakeIT extends DummyModelBaseItTest {
         followUpSelect.selectByIndex(1);
 
         nextPhase();
+
         select();
+        selectByValue("PK_A1_OPPIAINE", "EN");
+        selectByValue("PK_B1_OPPIAINE", "SE");
 
         nextPhase();
 
+        nextPhase();
         // Lisätiedot
         clickAllElementsByXPath("//input[@type='checkbox']");
 

@@ -16,41 +16,38 @@
 
 package fi.vm.sade.oppija.lomake.validation.validators;
 
-import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.Validate;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class RegexFieldFieldValidator extends FieldValidator {
+public class EqualsValidator extends FieldValidator {
 
-    final Pattern pattern;
+    private final String validValue;
 
-    public RegexFieldFieldValidator(final String fieldName, final String pattern) {
-        this(fieldName, "yleinen.virheellinenArvo", pattern);
+    public EqualsValidator(@JsonProperty(value = "fieldName") final String fieldName,
+                           @JsonProperty(value = "errorMessage") final I18nText errorMessage,
+                           @JsonProperty(value = "validValue") final String validValue) {
+        super(fieldName, errorMessage);
+        Validate.notNull(validValue, "Valid value can't be null");
+        this.validValue = validValue;
     }
 
-    public RegexFieldFieldValidator(final String fieldName, final String errorMessage, final String pattern) {
-        super(fieldName, errorMessage);
-        Validate.notNull(pattern, "Pattern can't be null");
-        this.pattern = Pattern.compile(pattern);
+    public String getValidValue() {
+        return validValue;
     }
 
     @Override
     public ValidationResult validate(Map<String, String> values) {
         String value = values.get(fieldName);
-        ValidationResult validationResult = new ValidationResult();
         if (value != null) {
-            Matcher matcher = pattern.matcher(value);
-
-            if (!matcher.matches()) {
-                validationResult = new ValidationResult(fieldName,
-                        ElementUtil.createI18NTextError(errorMessage));
+            if (validValue.equals(value)) {
+                return validValidationResult;
             }
         }
-        return validationResult;
+        return invalidValidationResult;
     }
 }

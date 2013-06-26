@@ -25,7 +25,7 @@ public class KoodiTypeToPostOfficeFunction implements Function<KoodiType, PostOf
 
     @Override
     public PostOffice apply(final KoodiType koodiType) {
-        return new PostOffice(koodiType.getKoodiArvo(), new I18nText(koodiType.getKoodiArvo(), TranslationsUtil.createTranslationsMap(koodiType)));
+        return new PostOffice(koodiType.getKoodiArvo(), new I18nText(TranslationsUtil.createTranslationsMap(koodiType)));
     }
 
 }

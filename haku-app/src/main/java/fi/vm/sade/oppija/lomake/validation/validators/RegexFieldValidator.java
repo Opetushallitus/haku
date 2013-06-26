@@ -19,32 +19,38 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import org.apache.commons.lang3.Validate;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
-public class ContainedInOtherFieldValidator extends FieldValidator {
+public class RegexFieldValidator extends FieldValidator {
 
-    private final String otherFieldName;
+    private final String pattern;
+    private final Pattern compiledPattern;
 
-    public ContainedInOtherFieldValidator(@JsonProperty(value = "fieldName") final String fieldName,
-                                          @JsonProperty(value = "otherFieldName") final String otherFieldName,
-                                          @JsonProperty(value = "errorMessage") final I18nText errorMessage) {
+    public RegexFieldValidator(@JsonProperty(value = "fieldName") final String fieldName,
+                               @JsonProperty(value = "errorMessage") final I18nText errorMessage,
+                               @JsonProperty(value = "pattern") final String pattern) {
         super(fieldName, errorMessage);
-        this.otherFieldName = otherFieldName;
+        Validate.notNull(pattern, "Pattern can't be null");
+        this.pattern = pattern;
+        this.compiledPattern = Pattern.compile(this.pattern);
     }
 
     @Override
     public ValidationResult validate(Map<String, String> values) {
-        String otherValue = values.get(otherFieldName);
-        String thisValue = values.get(fieldName);
-        if (otherValue == null || thisValue == null || !otherValue.toLowerCase().contains(thisValue.toLowerCase())) {
-            return invalidValidationResult;
+        String value = values.get(fieldName);
+        if (value != null) {
+            if (!compiledPattern.matcher(value).matches()) {
+                return invalidValidationResult;
+            }
         }
         return validValidationResult;
     }
 
-    public String getOtherFieldName() {
-        return otherFieldName;
+    public String getPattern() {
+        return pattern;
     }
 }

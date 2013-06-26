@@ -16,27 +16,23 @@
 
 package fi.vm.sade.oppija.lomake.validation.validators;
 
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.annotate.JsonProperty;
 
-public class RequiredFieldFieldValidator extends FieldValidator {
+import java.util.Map;
 
-
-    public RequiredFieldFieldValidator(String fieldName) {
-        super(fieldName, "yleinen.pakollinen");
-    }
-
-    public RequiredFieldFieldValidator(final String fieldName, final String errorMessage) {
+public class RequiredFieldValidator extends FieldValidator {
+    public RequiredFieldValidator(@JsonProperty(value = "fieldName") final String fieldName,
+                                  @JsonProperty(value = "errorMessage") final I18nText errorMessage) {
         super(fieldName, errorMessage);
     }
 
     @Override
     public ValidationResult validate(final Map<String, String> values) {
-        if (values == null || StringUtils.isBlank(values.get(fieldName))) {
+        if (values == null || StringUtils.isBlank(values.get(getFieldName()))) {
             return invalidValidationResult;
         }
         return validValidationResult;

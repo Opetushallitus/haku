@@ -1,6 +1,7 @@
 package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -14,7 +15,7 @@ public class DateQuestion extends Question {
     public DateQuestion(@JsonProperty(value = "id") String id, @JsonProperty(value = "i18nText") I18nText i18nText) {
         super(id, i18nText);
         addAttribute("type", "text");
-        addAttribute("pattern", DATE_PATTERN);
+        setValidator(ElementUtil.createRegexValidator(id, DATE_PATTERN));
         addAttribute("placeholder", "pp.kk.vvvv");
     }
 }

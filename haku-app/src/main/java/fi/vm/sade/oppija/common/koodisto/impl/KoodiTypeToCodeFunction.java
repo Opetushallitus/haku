@@ -27,7 +27,6 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 public class KoodiTypeToCodeFunction implements Function<KoodiType, Code> {
     @Override
     public Code apply(fi.vm.sade.koodisto.service.types.common.KoodiType input) {
-        return new Code(input.getKoodiArvo(), new I18nText(input.getKoodiArvo(),
-                TranslationsUtil.createTranslationsMap(input)));
+        return new Code(input.getKoodiArvo(), new I18nText(TranslationsUtil.createTranslationsMap(input)));
     }
 }

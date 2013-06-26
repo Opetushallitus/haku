@@ -17,42 +17,34 @@
 package fi.vm.sade.oppija.lomake.validation.validators;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomake.validation.Validator;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import org.apache.commons.lang.Validate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Preference table validator
- *
- * @author Mikko Majapuro
- */
 public class PreferenceTableValidator implements Validator {
 
-    private final int rowCount;
-    private final List<String> learningInstitutionInputIds;
-    private final List<String> educationInputIds;
-    private List<String> learningInstitutions;
-    private List<String> educations;
+    public final List<String> learningInstitutionInputIds = new ArrayList<String>();
+    public final List<String> educationInputIds = new ArrayList<String>();
 
     public PreferenceTableValidator(final List<String> learningInstitutionInputIds, final List<String> educationInputIds) {
-        assert learningInstitutionInputIds.size() == educationInputIds.size();
-        this.learningInstitutionInputIds = learningInstitutionInputIds;
-        this.educationInputIds = educationInputIds;
-        this.rowCount = learningInstitutionInputIds.size();
+        Validate.isTrue(learningInstitutionInputIds.size() == educationInputIds.size());
+        this.learningInstitutionInputIds.addAll(learningInstitutionInputIds);
+        this.educationInputIds.addAll(educationInputIds);
     }
 
     @Override
     public ValidationResult validate(Map<String, String> values) {
-        learningInstitutions = new ArrayList<String>();
-        educations = new ArrayList<String>();
+        List<String> learningInstitutions = new ArrayList<String>();
+        List<String> educations = new ArrayList<String>();
         final Map<String, I18nText> errors = new HashMap<String, I18nText>();
 
-        for (int i = 0; i < rowCount; ++i) {
+        for (int i = 0; i < this.learningInstitutionInputIds.size(); ++i) {
             String learningInstitutionInputId = learningInstitutionInputIds.get(i);
             String educationInputId = educationInputIds.get(i);
             String learningInstitution = values.get(learningInstitutionInputId);
@@ -63,7 +55,7 @@ public class PreferenceTableValidator implements Validator {
                         ElementUtil.createI18NTextError("yleinen.pakollinen"));
             }
 
-            if (!checkUnique(learningInstitution, education)) {
+            if (!checkUnique(learningInstitutions, educations, learningInstitution, education)) {
                 errors.put(educationInputId, ElementUtil.createI18NTextError("hakutoiveet.duplikaatteja"));
             }
 
@@ -92,12 +84,13 @@ public class PreferenceTableValidator implements Validator {
     /**
      * Checks that the given preference is unique in a preference table
      *
-     * @param learningInstitution learning institute input value
-     * @param education           education input value
-     * @return true if valid, false otherwise
+     * @param learningInstitutions
+     * @param educations
+     * @param learningInstitution  learning institute input value
+     * @param education            education input value   @return true if valid, false otherwise
      */
-    private boolean checkUnique(final String learningInstitution, final String education) {
-        assert learningInstitutions.size() == educations.size();
+    private boolean checkUnique(List<String> learningInstitutions, List<String> educations,
+                                final String learningInstitution, final String education) {
 
         if (learningInstitution != null && !learningInstitution.isEmpty() && education != null &&
                 !education.isEmpty()) {

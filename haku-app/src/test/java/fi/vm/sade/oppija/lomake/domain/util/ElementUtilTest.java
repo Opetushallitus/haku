@@ -59,13 +59,13 @@ public class ElementUtilTest {
 
     @Test
     public void testFindElementsByType() {
-        Form form = new Form("form", new I18nText("form", ImmutableMap.of("fi", "form")));
-        Phase phase = new Phase("phase", new I18nText("phase", ImmutableMap.of("fi", "phase")), false);
-        Theme theme = new Theme("theme", new I18nText("theme", ImmutableMap.of("fi", "theme")), null, true);
+        Form form = new Form("form", new I18nText(ImmutableMap.of("fi", "form")));
+        Phase phase = new Phase("phase", new I18nText(ImmutableMap.of("fi", "phase")), false);
+        Theme theme = new Theme("theme", new I18nText(ImmutableMap.of("fi", "theme")), null, true);
         phase.addChild(theme);
-        TextQuestion tq1 = new TextQuestion("text1", new I18nText("text1", ImmutableMap.of("fi", "text1")));
-        TextQuestion tq2 = new TextQuestion("text2", new I18nText("text2", ImmutableMap.of("fi", "text2")));
-        TextArea ta = new TextArea("textarea", new I18nText("textarea", ImmutableMap.of("fi", "textarea")));
+        TextQuestion tq1 = new TextQuestion("text1", new I18nText(ImmutableMap.of("fi", "text1")));
+        TextQuestion tq2 = new TextQuestion("text2", new I18nText(ImmutableMap.of("fi", "text2")));
+        TextArea ta = new TextArea("textarea", new I18nText(ImmutableMap.of("fi", "textarea")));
         theme.addChild(tq1);
         theme.addChild(ta);
         theme.addChild(tq2);
@@ -77,13 +77,13 @@ public class ElementUtilTest {
 
     @Test
     public void testFindElementsByTypeAsList() {
-        Form form = new Form("form", new I18nText("form", ImmutableMap.of("fi", "form")));
-        Phase phase = new Phase("phase", new I18nText("phase", ImmutableMap.of("fi", "phase")), false);
-        Theme theme = new Theme("theme", new I18nText("theme", ImmutableMap.of("fi", "theme")), null, true);
+        Form form = new Form("form", new I18nText(ImmutableMap.of("fi", "form")));
+        Phase phase = new Phase("phase", new I18nText(ImmutableMap.of("fi", "phase")), false);
+        Theme theme = new Theme("theme", new I18nText(ImmutableMap.of("fi", "theme")), null, true);
         phase.addChild(theme);
-        TextQuestion tq1 = new TextQuestion("text1", new I18nText("text1", ImmutableMap.of("fi", "text1")));
-        TextQuestion tq2 = new TextQuestion("text2", new I18nText("text2", ImmutableMap.of("fi", "text2")));
-        TextArea ta = new TextArea("textarea", new I18nText("textarea", ImmutableMap.of("fi", "textarea")));
+        TextQuestion tq1 = new TextQuestion("text1", new I18nText(ImmutableMap.of("fi", "text1")));
+        TextQuestion tq2 = new TextQuestion("text2", new I18nText(ImmutableMap.of("fi", "text2")));
+        TextArea ta = new TextArea("textarea", new I18nText(ImmutableMap.of("fi", "textarea")));
         theme.addChild(tq1);
         theme.addChild(ta);
         theme.addChild(tq2);

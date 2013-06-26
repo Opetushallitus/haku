@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.ValueSetValidator;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.*;
@@ -109,7 +110,8 @@ public abstract class OptionQuestion extends Question {
         for (Option option : options) {
             values.add(option.getValue());
         }
-        listOfValidator.add(new ValueSetValidator(this.getId(), "Virheellinen arvo", values));
+
+        listOfValidator.add(new ValueSetValidator(this.getId(), ElementUtil.createI18NTextError("Virheellinen arvo"), values));
         return listOfValidator;
     }
 }

@@ -11,6 +11,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.HashMap;
@@ -26,6 +27,8 @@ public class HenkilotiedotPhase {
     public static final String PHONE_PATTERN = "^$|^\\+?[0-9\\-\\s]+$";
     private static final String NOT_FI = "^((?!FIN)[A-Z]{3})$";
     public static final String AIDINKIELI_ID = "aidinkieli";
+    private static final String HETU_PATTERN = "^([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))$";
+    private static final String POSTINUMERO_PATTERN = "[0-9]{5}";
 
     public static Phase create(final KoodistoService koodistoService) {
 
@@ -37,19 +40,23 @@ public class HenkilotiedotPhase {
         // Nimet
         Question sukunimi = createRequiredTextQuestion("Sukunimi", "form.henkilotiedot.sukunimi", "30");
         sukunimi.setInline(true);
-        sukunimi.addAttribute("pattern", ElementUtil.ISO88591_NAME_REGEX);
+        sukunimi.setValidator(createRegexValidator(sukunimi.getId(), ElementUtil.ISO88591_NAME_REGEX));
         henkilotiedotRyhma.addChild(sukunimi);
 
         Question etunimet = createRequiredTextQuestion("Etunimet", "form.henkilotiedot.etunimet", "30");
         etunimet.setInline(true);
-        sukunimi.addAttribute("pattern", ElementUtil.ISO88591_NAME_REGEX);
+        etunimet.setValidator(createRegexValidator(etunimet.getId(), ElementUtil.ISO88591_NAME_REGEX));
         henkilotiedotRyhma.addChild(etunimet);
 
         TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", createI18NForm("form.henkilotiedot.kutsumanimi"));
         kutsumanimi.setHelp(createI18NForm("form.henkilotiedot.kutsumanimi.help"));
         kutsumanimi.addAttribute("size", "20");
-        kutsumanimi.addAttribute("containedInOther", "Etunimet");
-        kutsumanimi.addAttribute("pattern", ElementUtil.ISO88591_NAME_REGEX);
+        kutsumanimi.setValidator(
+                new ContainedInOtherFieldValidator(kutsumanimi.getId(),
+                        etunimet.getId(),
+                        ElementUtil.createI18NTextError("Virheellinen syöte")));
+        kutsumanimi.setValidator(
+                createRegexValidator(kutsumanimi.getId(), ISO88591_NAME_REGEX));
         setRequiredInlineAndVerboseHelp(kutsumanimi);
 
         henkilotiedotRyhma.addChild(kutsumanimi);
@@ -67,9 +74,9 @@ public class HenkilotiedotPhase {
         TextQuestion henkilotunnus =
                 new TextQuestion("Henkilotunnus", createI18NForm("form.henkilotiedot.henkilotunnus"));
         henkilotunnus.addAttribute("placeholder", "ppkkvv*****");
-        henkilotunnus.addAttribute("pattern", "^([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))$");
         henkilotunnus.addAttribute("size", "11");
         henkilotunnus.addAttribute("maxlength", "11");
+        henkilotunnus.setValidator(createRegexValidator(henkilotunnus.getId(), HETU_PATTERN));
         setRequiredInlineAndVerboseHelp(henkilotunnus);
 
         Radio sukupuoli = new Radio("sukupuoli", createI18NForm("form.henkilotiedot.sukupuoli"));
@@ -91,23 +98,23 @@ public class HenkilotiedotPhase {
         addDefaultTrueFalseOptions(onkoSinullaSuomalainenHetu);
         setRequiredInlineAndVerboseHelp(onkoSinullaSuomalainenHetu);
         RelatedQuestionRule suomalainenHetuRule = new RelatedQuestionRule("suomalainenHetuRule",
-                onkoSinullaSuomalainenHetu.getId(), "^true", false);
+                onkoSinullaSuomalainenHetu.getId(), "^true$", false);
         suomalainenHetuRule.addChild(socialSecurityNumber);
         onkoSinullaSuomalainenHetu.addChild(suomalainenHetuRule);
 
         RelatedQuestionRule eiSuomalaistaHetuaRule = new RelatedQuestionRule("eiSuomalaistaHetuaRule",
-                onkoSinullaSuomalainenHetu.getId(), "^false", false);
+                onkoSinullaSuomalainenHetu.getId(), "^false$", false);
         eiSuomalaistaHetuaRule.addChild(sukupuoli);
 
         DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NForm("form.henkilotiedot.syntymaaika"));
-        syntymaaika.addAttribute("required", "required");
+        addRequiredValidator(syntymaaika);
         syntymaaika.setInline(true);
         eiSuomalaistaHetuaRule.addChild(syntymaaika);
 
         TextQuestion syntymapaikka =
                 new TextQuestion("syntymapaikka", createI18NForm("form.henkilotiedot.syntymapaikka"));
         syntymapaikka.addAttribute("size", "30");
-        syntymapaikka.addAttribute("required", "required");
+        addRequiredValidator(syntymapaikka);
         syntymapaikka.setInline(true);
         eiSuomalaistaHetuaRule.addChild(syntymapaikka);
 
@@ -132,7 +139,7 @@ public class HenkilotiedotPhase {
         // Email
         TextQuestion email = new TextQuestion("Sähköposti", createI18NForm("form.henkilotiedot.email"));
         email.addAttribute("size", "50");
-        email.addAttribute("pattern", EMAIL_REGEX);
+        email.setValidator(createRegexValidator(email.getId(), EMAIL_REGEX));
         email.setHelp(createI18NForm("form.henkilotiedot.email.help"));
         ElementUtil.setVerboseHelp(email);
         email.setInline(true);
@@ -144,7 +151,7 @@ public class HenkilotiedotPhase {
                 createI18NForm("form.henkilotiedot.matkapuhelinnumero"));
         puhelinnumero1.setHelp(createI18NForm("form.henkilotiedot.matkapuhelinnumero.help"));
         puhelinnumero1.addAttribute("size", "30");
-        puhelinnumero1.addAttribute("pattern", MOBILE_PHONE_PATTERN);
+        puhelinnumero1.setValidator(createRegexValidator(puhelinnumero1.getId(), MOBILE_PHONE_PATTERN));
         ElementUtil.setVerboseHelp(puhelinnumero1);
         puhelinnumero1.setInline(true);
         henkilotiedotRyhma.addChild(puhelinnumero1);
@@ -155,7 +162,7 @@ public class HenkilotiedotPhase {
             TextQuestion extranumero = new TextQuestion("matkapuhelinnumero" + i,
                     createI18NForm("form.henkilotiedot.puhelinnumero"));
             extranumero.addAttribute("size", "30");
-            extranumero.addAttribute("pattern", PHONE_PATTERN);
+            extranumero.setValidator(createRegexValidator(extranumero.getId(), PHONE_PATTERN));
             extranumero.setInline(true);
 
             AddElementRule extranumeroRule = new AddElementRule("addPuhelinnumero" + i + "Rule", prevNum.getId(),
@@ -186,16 +193,16 @@ public class HenkilotiedotPhase {
         Element postinumero = new PostalCode("Postinumero", createI18NForm("form.henkilotiedot.postinumero"),
                 createPostOffices(koodistoService));
         postinumero.addAttribute("size", "5");
-        postinumero.addAttribute("required", "required");
-        postinumero.addAttribute("pattern", "[0-9]{5}");
-        postinumero.addAttribute("placeholder", "#####");
         postinumero.addAttribute("maxlength", "5");
+        addRequiredValidator(postinumero);
+        postinumero.addAttribute("placeholder", "#####");
+        postinumero.setValidator(createRegexValidator(postinumero.getId(), POSTINUMERO_PATTERN));
         postinumero.setHelp(createI18NForm("form.henkilotiedot.postinumero.help"));
         asuinmaaFI.addChild(postinumero);
 
         DropdownSelect kotikunta =
                 new DropdownSelect("kotikunta", createI18NForm("form.henkilotiedot.kotikunta"), null);
-        kotikunta.addOption("eiValittu", ElementUtil.createI18NForm(null), "");
+        kotikunta.addOption("eiValittu", ElementUtil.createI18NForm(""), "");
         kotikunta.addOptions(koodistoService.getMunicipalities());
         kotikunta.addAttribute("placeholder", "Valitse kotikunta");
         setRequiredInlineAndVerboseHelp(kotikunta);
@@ -230,7 +237,7 @@ public class HenkilotiedotPhase {
         DropdownSelect aidinkieli =
                 new DropdownSelect(AIDINKIELI_ID, createI18NForm("form.henkilotiedot.aidinkieli"),
                         "fi_vm_sade_oppija_language");
-        aidinkieli.addOption("eiValittu", ElementUtil.createI18NForm(null), "");
+        aidinkieli.addOption("eiValittu", ElementUtil.createI18NForm(""), "");
         aidinkieli.addOptions(koodistoService.getLanguages());
         aidinkieli.addAttribute("placeholder", "Valitse Äidinkieli");
         setRequiredInlineAndVerboseHelp(aidinkieli);

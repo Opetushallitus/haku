@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -40,7 +39,11 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
         findByIdAndClick("preference1_sora_terveys_false");
         findByIdAndClick("preference1_sora_oikeudenMenetys_false");
         nextPhase();
+
         select();
+        selectByValue("PK_A1_OPPIAINE", "EN");
+        selectByValue("PK_B1_OPPIAINE", "SE");
+
         nextPhase();
         findById("TYOKOKEMUSKUUKAUDET");
     }

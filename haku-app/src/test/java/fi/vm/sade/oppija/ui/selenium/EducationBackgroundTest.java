@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.ui.selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta.KoulutustaustaPhase;
 import org.junit.Before;
 import org.junit.Test;

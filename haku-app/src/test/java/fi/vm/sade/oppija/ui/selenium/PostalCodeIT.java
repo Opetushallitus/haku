@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.addRequiredValidator;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 
 /**
@@ -68,7 +69,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         postOffices.put(POSTCODE, new PostOffice(POSTCODE, ElementUtil.createI18NAsIs(POST_OFFICE)));
         PostalCode postinumero = new PostalCode(POSTCODE_ID, createI18NAsIs(POSTCODE_ID), postOffices);
         postinumero.addAttribute("size", "5");
-        postinumero.addAttribute("required", "required");
+        addRequiredValidator(postinumero);
         postinumero.addAttribute("pattern", "[0-9]{5}");
         postinumero.addAttribute("title", "#####");
         postinumero.addAttribute("maxlength", "5");

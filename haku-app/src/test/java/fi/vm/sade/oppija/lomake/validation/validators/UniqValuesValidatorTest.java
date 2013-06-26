@@ -2,7 +2,9 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 public class UniqValuesValidatorTest {
 
     public static final String ID = "id";
-    public static final String MSG_KEY = "msg.key";
+    public static final I18nText MSG_KEY = ElementUtil.createI18NTextError("msg.key");
     private UniqValuesValidator uniqValuesValidator;
 
     @Before

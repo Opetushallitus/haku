@@ -74,8 +74,8 @@ public class OrganizationServiceMockImplTest {
 
     @Test
     public void testPredicates() {
-        assertEquals(1, filter(new OrgNamePredicate("nimi2_fi")).size());
-        assertEquals(1, filter(new OrgNamePredicate("nimi2_sv")).size());
+        assertEquals(1, filter(new OrgNamePredicate("nimi2")).size());
+        assertEquals(1, filter(new OrgNamePredicate("nimi2")).size());
         assertEquals(5, filter(new OrgNamePredicate("nimi")).size());
         assertEquals(5, filter(new OrgNamePredicate(null)).size());
 

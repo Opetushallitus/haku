@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants.*;
-import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
 @Service
 @Profile("dev")
@@ -119,13 +119,13 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
         this.listOfLanguages =
                 ImmutableList.of(
-                        new Option(SUOMI,
+                        new Option(ElementUtil.randomId(),
                                 createI18NAsIs("Suomi"), "FI"),
-                        new Option(SUOMI,
+                        new Option(ElementUtil.randomId(),
                                 createI18NAsIs("Ruotsi"), "SV"),
-                        new Option(SUOMI,
+                        new Option(ElementUtil.randomId(),
                                 createI18NAsIs("Saame"), "SE"),
-                        new Option(RUOTSI,
+                        new Option(ElementUtil.randomId(),
                                 createI18NAsIs("Englanti"), "EN"));
 
         this.listOfNationalities =

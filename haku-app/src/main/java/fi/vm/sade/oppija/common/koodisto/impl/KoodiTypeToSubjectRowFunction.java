@@ -68,7 +68,7 @@ public class KoodiTypeToSubjectRowFunction implements Function<KoodiType, Subjec
             }
         }
 
-        SubjectRow subjectRow = new SubjectRow(koodiArvo, new I18nText(koodiArvo, translationsMap), optional, highSchool, comprehensiveSchool, language);
+        SubjectRow subjectRow = new SubjectRow(koodiArvo, new I18nText(translationsMap), optional, highSchool, comprehensiveSchool, language);
         subjectRow.toString();
         return subjectRow;
     }

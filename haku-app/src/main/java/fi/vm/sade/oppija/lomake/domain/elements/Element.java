@@ -29,9 +29,6 @@ import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionNotRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.Validator;
-import fi.vm.sade.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
-import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldFieldValidator;
-import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonSubTypes;
@@ -44,11 +41,6 @@ import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * @author jukka
- * @version 9/7/1210:29 AM}
- * @since 1.1
- */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes(
         {
@@ -91,13 +83,16 @@ public abstract class Element implements Serializable {
 
     protected I18nText help;
 
-    protected final transient List<Validator> validators = new ArrayList<Validator>();
+    protected final List<Validator> validators = new ArrayList<Validator>();
 
     protected final List<Element> children = new ArrayList<Element>();
 
+    protected final Map<String, Attribute> attributes = new HashMap<String, Attribute>();
+
     protected Element popup;
 
-    protected final Map<String, Attribute> attributes = new HashMap<String, Attribute>();
+
+    private transient StringBuilder attributeString = new StringBuilder();
 
 
     protected Element(@JsonProperty String id) {
@@ -154,25 +149,16 @@ public abstract class Element implements Serializable {
     public void addAttribute(final String key, final String value) {
         checkNotNull(key, "Attribute's key cannot be null");
         checkNotNull(value, "Attribute's value cannot be null");
-            this.attributes.put(key, new Attribute(key, value));
-        if (key.equals("required")) {
-            addValidator(new RequiredFieldFieldValidator(this.id, "yleinen.pakollinen"));
-        } else if (key.equals("pattern")) {
-            addValidator(new RegexFieldFieldValidator(this.id, value));
-        } else if (key.equals("containedInOther")) {
-            addValidator(new ContainedInOtherFieldValidator(this.id, value));
+        Attribute attribute = new Attribute(key, value);
+        this.attributes.put(key, attribute);
+        if (!"required".equals(key)) {
+            attributeString.append(attribute.getAsString());
         }
     }
 
     @JsonIgnore
-    public String getAttributeString() {
-        StringBuilder attrStr = new StringBuilder();
-        for (Attribute attribute : attributes.values()) {
-            if (!"required".equals(attribute.getKey())) {
-                attrStr.append(attribute.getAsString());
-            }
-        }
-        return attrStr.toString();
+    public final String getAttributeString() {
+        return attributeString.toString();
     }
 
     @Override
@@ -194,12 +180,15 @@ public abstract class Element implements Serializable {
         return Objects.hashCode(id);
     }
 
-    @JsonIgnore
     public List<Validator> getValidators() {
         return ImmutableList.copyOf(validators);
     }
 
-    public void addValidator(final Validator validator) {
+    public void setValidators(final List<Validator> validators) {
+        this.validators.addAll(validators);
+    }
+
+    public void setValidator(final Validator validator) {
         this.validators.add(validator);
     }
 

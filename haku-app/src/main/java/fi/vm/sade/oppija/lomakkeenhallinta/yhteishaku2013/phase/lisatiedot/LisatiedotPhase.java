@@ -22,6 +22,7 @@ import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
 public class LisatiedotPhase {
     public static final int AGE_WORK_EXPERIENCE = 16;
+    public static final String TYOKOKEMUS_PATTERN = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$";
 
     public static Phase create(final Date start) {
         Phase lisatiedot = new Phase("lisatiedot", createI18NForm("form.lisatiedot.otsikko"), false);
@@ -42,7 +43,7 @@ public class LisatiedotPhase {
                 createI18NForm("form.tyokokemus.kuukausina"));
         tyokokemuskuukaudet
                 .setHelp(createI18NForm("form.tyokokemus.kuukausina.help"));
-        tyokokemuskuukaudet.addAttribute("pattern", "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$");
+        tyokokemuskuukaudet.setValidator(createRegexValidator(tyokokemuskuukaudet.getId(), TYOKOKEMUS_PATTERN));
         tyokokemuskuukaudet.addAttribute("size", "8");
         setVerboseHelp(tyokokemuskuukaudet);
         workExperienceTheme.addChild(tyokokemuskuukaudet);
@@ -75,7 +76,7 @@ public class LisatiedotPhase {
         asiointikieli.setHelp(createI18NForm("form.asiointikieli.help"));
         asiointikieli.addOption("suomi", createI18NForm("form.asiointikieli.suomi"), "suomi");
         asiointikieli.addOption("ruotsi", createI18NForm("form.asiointikieli.ruotsi"), "ruotsi");
-        setRequired(asiointikieli);
+        addRequiredValidator(asiointikieli);
         setVerboseHelp(asiointikieli);
         lupatiedotTheme.addChild(asiointikieli);
         return lupatiedotTheme;
@@ -129,7 +130,7 @@ public class LisatiedotPhase {
         valmentajaGroup.addChild(valmentajanPuhelinnumero);
         TextQuestion email = new TextQuestion("valmentajan-sähköpostiosoite", createI18NForm("form.lisatiedot.urheilija.valmentajan.yhteystiedot.sahkopostiosoite"));
         email.addAttribute("size", "50");
-        email.addAttribute("pattern", EMAIL_REGEX);
+        email.setValidator(createRegexValidator(email.getId(), EMAIL_REGEX));
         email.setInline(true);
         valmentajaGroup.addChild(email);
 

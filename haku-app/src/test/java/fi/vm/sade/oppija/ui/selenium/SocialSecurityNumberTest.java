@@ -29,8 +29,7 @@ import org.openqa.selenium.By;
 
 import java.io.IOException;
 
-import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
-import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NForm;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
 
 /**
@@ -47,8 +46,8 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
         TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", createI18NAsIs("Henkilotunnus"));
         henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
         henkilötunnus.addAttribute("title", "ppkkvv*****");
-        henkilötunnus.addAttribute("required", "required");
-        henkilötunnus.addAttribute("pattern", "[0-9]{6}.[0-9]{4}");
+        addRequiredValidator(henkilötunnus);
+        henkilötunnus.setValidator(createRegexValidator(henkilötunnus.getId(), "[0-9]{6}.[0-9]{4}"));
         henkilötunnus.addAttribute("size", "11");
         henkilötunnus.addAttribute("maxlength", "11");
         henkilötunnus.setHelp(createI18NAsIs("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi"));
@@ -57,7 +56,7 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
         Radio sukupuoli = new Radio("Sukupuoli", createI18NAsIs("Sukupuoli"));
         sukupuoli.addOption("1", createI18NForm("form.henkilotiedot.sukupuoli.mies"), "1");
         sukupuoli.addOption("2", createI18NForm("form.henkilotiedot.sukupuoli.nainen"), "2");
-        sukupuoli.addAttribute("required", "required");
+        addRequiredValidator(sukupuoli);
         sukupuoli.setInline(true);
 
         SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NAsIs("Henkilötunnus"),

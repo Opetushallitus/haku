@@ -14,19 +14,19 @@
 			"postitoimipaikka" : "Helsinki",
             "Henkilotunnus" : "pjNZ8of2CryfXkLnJgWM9eYYSWv/VAx1XA2EQgRGP1k=",
 			"matkapuhelinnumero" : "0304484857",
-			"√§idinkieli" : "Suomi",
+			"äidinkieli" : "Suomi",
 			"Postinumero" : "00100",
 			"lahiosoite" : "koulukuja 3",
-			"S√§hk√∂posti" : "mail.address@happi.de",
+			"Sähköposti" : "mail.address@happi.de",
 			"Kutsumanimi" : "Heikki",
 			"Etunimet" : "Heikki Happi",
-			"kotikunta" : "Jalasj√§rvi",
+			"kotikunta" : "Jalasjärvi",
             "syntymaaika" : "1998-09-05",
             "Henkilotunnus_digest" : "6c7a90ff7012fc8048c75b9c624582c34f0620d80b3bc3af379c322a76137ca0"
 		},
 		"koulutustausta" : {
 			"millatutkinnolla" : "tutkinto1",
-			"peruskoulu2012" : "Kyll√§",
+			"peruskoulu2012" : "Kyllä",
 			"osallistunut" : "Ei",
 			"opetuskieli" : "Suomi"
 		},
@@ -93,7 +93,7 @@
 		"lisatiedot" : {
 			"asiointikieli" : "suomi",
 			"lupa_lupaSms" : "lupaSms",
-			"tyokokemuskuukaudet" : "5",
+			"tyokokemuskuukaudet" : "5"
 		}
 	},
     "oid" : "1.2.3.4.5.00000010003",
@@ -121,19 +121,19 @@
             "postitoimipaikka" : "Helsinki",
             "Henkilotunnus" : "pjNZ8of2CryfXkLnJgWM9eYYSWv/VAx1XA2EQgRGP1k=",
             "matkapuhelinnumero" : "0304484857",
-            "√§idinkieli" : "Suomi",
+            "äidinkieli" : "Suomi",
             "Postinumero" : "00100",
             "lahiosoite" : "koulukuja 3",
-            "S√§hk√∂posti" : "mail.address@happi.de",
+            "Sähköposti" : "mail.address@happi.de",
             "Kutsumanimi" : "Hessu",
             "Etunimet" : "Hessu Huima",
-            "kotikunta" : "Jalasj√§rvi",
+            "kotikunta" : "Jalasjärvi",
             "syntymaaika" : "1998-09-05",
             "Henkilotunnus_digest" : "6c7a90ff7012fc8048c75b9c624582c34f0620d80b3bc3af379c322a76137ca0"
         },
         "koulutustausta" : {
             "millatutkinnolla" : "tutkinto1",
-            "peruskoulu2012" : "Kyll√§",
+            "peruskoulu2012" : "Kyllä",
             "osallistunut" : "Ei",
             "opetuskieli" : "Suomi"
         },
@@ -227,19 +227,19 @@
             "postitoimipaikka" : "Helsinki",
             "Henkilotunnus" : "pjNZ8of2CryfXkLnJgWM9eYYSWv/VAx1XA2EQgRGP1k=",
             "matkapuhelinnumero" : "0304484857",
-            "√§idinkieli" : "Suomi",
+            "äidinkieli" : "Suomi",
             "Postinumero" : "00100",
             "lahiosoite" : "koulukuja 3",
-            "S√§hk√∂posti" : "mail.address@happi.de",
+            "Sähköposti" : "mail.address@happi.de",
             "Kutsumanimi" : "Hessu",
             "Etunimet" : "Hessu Huima",
-            "kotikunta" : "Jalasj√§rvi",
+            "kotikunta" : "Jalasjärvi",
             "syntymaaika" : "1998-09-05",
             "Henkilotunnus_digest" : "6c7a90ff7012fc8048c75b9c624582c34f0620d80b3bc3af379c322a76137ca0"
         },
         "koulutustausta" : {
             "millatutkinnolla" : "tutkinto1",
-            "peruskoulu2012" : "Kyll√§",
+            "peruskoulu2012" : "Kyllä",
             "osallistunut" : "Ei",
             "opetuskieli" : "Suomi"
         },

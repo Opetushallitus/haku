@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.lang.NotImplementedException;
 import org.junit.Test;
 
@@ -26,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 public class fieldValidatorTest {
 
     public static final String FIELD_NAME = "field_name";
-    public static final String ERROR_MESSAGE = "error_message";
+    public static final I18nText ERROR_MESSAGE = ElementUtil.createI18NTextError("error_message");
 
     @Test
     public void testFieldNameConstructor() throws Exception {
@@ -37,7 +39,7 @@ public class fieldValidatorTest {
     @Test
     public void testErrorMessageConstructor() throws Exception {
         FieldValidator validator = createValidator(FIELD_NAME, ERROR_MESSAGE);
-        assertEquals(ERROR_MESSAGE, validator.errorMessage);
+        assertEquals(ERROR_MESSAGE, validator.getErrorMessage());
     }
 
     @Test
@@ -47,7 +49,7 @@ public class fieldValidatorTest {
 
     @Test(expected = NullPointerException.class)
     public void testNullField() throws Exception {
-        createValidator(null, "");
+        createValidator(null, ERROR_MESSAGE);
     }
 
     @Test(expected = NullPointerException.class)
@@ -60,7 +62,7 @@ public class fieldValidatorTest {
         createValidator(null, null);
     }
 
-    private FieldValidator createValidator(String fieldName, String errorMessage) {
+    private FieldValidator createValidator(String fieldName, I18nText errorMessage) {
         return new FieldValidator(fieldName, errorMessage) {
             @Override
             public ValidationResult validate(Map<String, String> values) {

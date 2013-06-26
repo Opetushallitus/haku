@@ -27,7 +27,12 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomake.validation.Validator;
+import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
+import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
 
 import java.text.MessageFormat;
@@ -42,7 +47,6 @@ public final class ElementUtil {
     public static final String EI = Boolean.FALSE.toString().toLowerCase();
     private static Logger log = Logger.getLogger(ElementUtil.class);
     public static final String DISABLED = "disabled";
-    public static final String REQUIRED = "required";
     public static final String HIDDEN = "hidden";
     private static final String[] LANGS = {"fi", "sv", "en"};
 
@@ -57,7 +61,7 @@ public final class ElementUtil {
         for (String lang : LANGS) {
             translations.put(lang, text);
         }
-        return new I18nText(text + Long.toString(System.currentTimeMillis()), translations);
+        return new I18nText(translations);
     }
 
     public static I18nText createI18NForm(final String text, final String... params) {
@@ -67,7 +71,11 @@ public final class ElementUtil {
     public static I18nText createI18NTextError(final String text, final String... params) {
         return createI18NText(text, "form_errors", params);
     }
+
     private static I18nText createI18NText(final String key, final String bundleName, final String... params) {
+        Validate.notNull(key, "key can't be null");
+        Validate.notNull(bundleName, "bundleName can't be null");
+
         Map<String, String> translations = new HashMap<String, String>();
         for (String lang : LANGS) {
             ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale(lang));
@@ -86,7 +94,7 @@ public final class ElementUtil {
             }
             translations.put(lang, text);
         }
-        return new I18nText(key + Long.toString(System.currentTimeMillis()), translations);
+        return new I18nText(translations);
     }
 
     public static List<Element> filterElements(final Element element, final Predicate<Element> predicate) {
@@ -109,10 +117,6 @@ public final class ElementUtil {
 
     public static void setDisabled(final Element element) {
         element.addAttribute(DISABLED, DISABLED);
-    }
-
-    public static void setRequired(final Element element) {
-        element.addAttribute(REQUIRED, REQUIRED);
     }
 
     public static void addDefaultTrueFalseOptions(final Radio radio) {
@@ -139,13 +143,27 @@ public final class ElementUtil {
 
     public static Question createRequiredTextQuestion(final String id, final String name, final String size) {
         TextQuestion textQuestion = new TextQuestion(id, createI18NForm(name));
-        setRequired(textQuestion);
+        addRequiredValidator(textQuestion);
         textQuestion.addAttribute("size", size);
         return textQuestion;
     }
 
+    public static Validator createRegexValidator(final String id, final String pattern) {
+        return new RegexFieldValidator(id,
+                ElementUtil.createI18NTextError("yleinen.virheellinenArvo"),
+                pattern);
+    }
+
+    public static void addRequiredValidator(final Element element) {
+        element.addAttribute("required", "required");
+        element.setValidator(
+                new RequiredFieldValidator(
+                        element.getId(),
+                        ElementUtil.createI18NTextError("yleinen.pakollinen")));
+    }
+
     public static void setRequiredInlineAndVerboseHelp(final Question question) {
-        setRequired(question);
+        addRequiredValidator(question);
         setVerboseHelp(question);
         question.setInline(true);
     }
@@ -190,7 +208,7 @@ public final class ElementUtil {
 
     public static Element notificationWhenTrue(final String id, final String messageKey) {
         RelatedQuestionRule rule = new RelatedQuestionRule(ElementUtil.randomId(),
-                id, "^true", false);
+                id, "^true$", false);
 
         Notification notification = new Notification(
                 ElementUtil.randomId(),

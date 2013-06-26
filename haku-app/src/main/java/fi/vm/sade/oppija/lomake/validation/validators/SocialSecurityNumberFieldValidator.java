@@ -15,9 +15,9 @@
  */
 package fi.vm.sade.oppija.lomake.validation.validators;
 
-import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,23 +28,18 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Validoi suomalaiset henkilötunnukset.
- *
- * @author Mikko Majapuro
- * @author jteuho
- */
+
 public class SocialSecurityNumberFieldValidator extends FieldValidator {
 
     // Sonarin mukaan tässä luokassa on isosti taikanumeroita. Niin on.
     // Hetussa on määrättyjä asioita tarkoittavia numeroita määrätyillä
     // paikoilla, enkä ala tehdä niitä varten erityisjärjestelyjä.
 
-    private final Pattern socialSecurityNumberPattern;
     public static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}[aA+-][0-9]{3}([0-9]|[a-z]|[A-Z]))";
+    public static final String GENERIC_ERROR_MESSAGE = "henkilotiedot.hetu.virhe";
+    private final Pattern socialSecurityNumberPattern;
     private static final String NOT_A_DATE_ERROR = "henkilotiedot.hetu.eiPvm";
     private static final String DOB_IN_FUTURE = "henkilotiedot.hetu.tulevaisuudessa";
-    private static final String GENERIC_ERROR_MESSAGE = "henkilotiedot.hetu.virhe";
     private static Map<String, Integer> centuries = new HashMap<String, Integer>();
     private DateFormat fmt;
     private static String[] checks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C",
@@ -58,13 +53,8 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     }
 
     public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId) {
-        this(socialSecurityNumberId, GENERIC_ERROR_MESSAGE, SOCIAL_SECURITY_NUMBER_PATTERN);
-    }
-
-    public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId,
-                                              final String errorMessage, final String socialSecurityNumberPattern) {
-        super(socialSecurityNumberId, errorMessage);
-        this.socialSecurityNumberPattern = Pattern.compile(socialSecurityNumberPattern);
+        super(socialSecurityNumberId, ElementUtil.createI18NTextError(GENERIC_ERROR_MESSAGE));
+        this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
         fmt = new SimpleDateFormat("ddMMyyyy");
         fmt.setLenient(false);
     }
@@ -97,7 +87,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
         int ssnNumber = Integer.valueOf(dob + id);
         String myCheck = checks[ssnNumber % 31]; // NOSONAR
         if (!check.equalsIgnoreCase(myCheck)) {
-            result = new ValidationResult(fieldName, ElementUtil.createI18NTextError(GENERIC_ERROR_MESSAGE));
+            result = new ValidationResult(getFieldName(), ElementUtil.createI18NTextError(GENERIC_ERROR_MESSAGE));
         }
         return result;
     }

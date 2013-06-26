@@ -64,7 +64,10 @@ public class GradesTable {
         List<String> uniqLanguagesIds = Lists.transform(
                 ElementUtil.filterElements(gradeGrid, new IdEndsWith(OPPIAINE_SUFFIX)),
                 new ElementToId());
-        gradeGrid.addValidator(new UniqValuesValidator(gradeGrid.getId(), uniqLanguagesIds, "yleinen.kielet.samoja"));
+        gradeGrid.setValidator(
+                new UniqValuesValidator(
+                        gradeGrid.getId(), uniqLanguagesIds,
+                        ElementUtil.createI18NTextError("yleinen.kielet.samoja")));
         return gradeGrid;
     }
 
@@ -160,16 +163,16 @@ public class GradesTable {
                 subjectLanguages = gradeGridHelper.getSubjectLanguages();
             }
             GradeGridOptionQuestion child = new GradeGridOptionQuestion(id + "_OPPIAINE", subjectLanguages, false);
-            ElementUtil.setRequired(child);
+            ElementUtil.addRequiredValidator(child);
             columns[1].addChild(child);
         } else {
             columns[0].addAttribute("colspan", "2");
         }
         GradeGridOptionQuestion child1 = new GradeGridOptionQuestion(id, gradeGridHelper.getGradeRanges(), false);
-        ElementUtil.setRequired(child1);
+        ElementUtil.addRequiredValidator(child1);
         columns[2].addChild(child1);
         GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion(id + "_VAL1", gradeGridHelper.getGradeRangesWithDefault(), true);
-        ElementUtil.setRequired(gradeGridOptionQuestion);
+        ElementUtil.addRequiredValidator(gradeGridOptionQuestion);
         columns[3].addChild(gradeGridOptionQuestion);
 
         gradeGridRow.addChild(columns[0]);
@@ -180,7 +183,7 @@ public class GradesTable {
         gradeGridRow.addChild(columns[3]);
         if (gradeGridHelper.isComprehensiveSchool()) {
             GradeGridOptionQuestion child2 = new GradeGridOptionQuestion(id + "_VAL2", gradeGridHelper.getGradeRangesWithDefault(), true);
-            ElementUtil.setRequired(child2);
+            ElementUtil.addRequiredValidator(child2);
             columns[4].addChild(child2);
             gradeGridRow.addChild(columns[4]);
         }

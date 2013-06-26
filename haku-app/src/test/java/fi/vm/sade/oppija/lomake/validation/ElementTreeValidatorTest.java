@@ -19,13 +19,14 @@ package fi.vm.sade.oppija.lomake.validation;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NTextError;
 import static org.junit.Assert.*;
 
 public class ElementTreeValidatorTest {
@@ -59,8 +60,8 @@ public class ElementTreeValidatorTest {
 
     @Test()
     public void testValidateRequiredElement() throws Exception {
-        textQuestion.addValidator
-                (new RequiredFieldFieldValidator("id", "Error message"));
+        textQuestion.setValidator
+                (new RequiredFieldValidator("id", createI18NTextError("Error message")));
         ValidationResult validationResult = ElementTreeValidator.validate(textQuestion, new HashMap<String, String>());
         assertTrue(validationResult.hasErrors());
     }

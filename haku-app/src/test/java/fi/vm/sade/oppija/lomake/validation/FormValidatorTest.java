@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
-import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,13 +25,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NTextError;
 import static org.junit.Assert.*;
 
 
 public class FormValidatorTest {
 
-    RequiredFieldFieldValidator EtunimiRequiredFieldValidator;
-    RequiredFieldFieldValidator sukunimiRequiredFieldValidator;
+    RequiredFieldValidator EtunimiRequiredFieldValidator;
+    RequiredFieldValidator sukunimiRequiredFieldValidator;
     private Map<String, String> values;
     private List<Validator> validators;
 
@@ -39,8 +40,8 @@ public class FormValidatorTest {
     public void setUp() throws Exception {
         values = new HashMap<String, String>();
         validators = new ArrayList<Validator>();
-        EtunimiRequiredFieldValidator = new RequiredFieldFieldValidator("etunimi", "Etunimi on pakollinen kenttä");
-        sukunimiRequiredFieldValidator = new RequiredFieldFieldValidator("sukunimi", "Sukunimi on pakollinen tieto");
+        EtunimiRequiredFieldValidator = new RequiredFieldValidator("etunimi", createI18NTextError("Etunimi on pakollinen kenttä"));
+        sukunimiRequiredFieldValidator = new RequiredFieldValidator("sukunimi", createI18NTextError("Sukunimi on pakollinen tieto"));
     }
 
     @Test
@@ -90,7 +91,6 @@ public class FormValidatorTest {
         validators.add(EtunimiRequiredFieldValidator);
         ValidationResult validationResult = FormValidator.validate(validators, values);
         assertTrue(validationResult.hasErrors());
-
     }
 
 }

@@ -31,18 +31,12 @@
                 <c:if test="${not status.first}">
                     <button class="up sort" data-id="${child.id}" data-target="${element.children[status.index - 1].id}"
                             type="button">
-                            <span>
-                                <span><c:out value="${element.moveUpLabel}"/></span>
-                            </span>
                     </button>
                     <br/>
                 </c:if>
                 <c:if test="${not status.last}">
                     <button class="down sort" data-id="${child.id}"
                             data-target="${element.children[status.index + 1].id}" type="button">
-                            <span>
-                                <span><c:out value="${element.moveDownLabel}"/></span>
-                            </span>
                     </button>
                 </c:if>
             </td>

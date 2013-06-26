@@ -17,16 +17,12 @@
 package fi.vm.sade.oppija.lomake.validation.validators;
 
 import com.google.common.base.Predicate;
-
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 
 import java.util.Map;
 
-/**
- * @author Mikko Majapuro
- */
 public class FunctionalValidator implements Validator {
 
     private Predicate<Map<String, String>> predicate;

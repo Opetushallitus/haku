@@ -33,6 +33,7 @@ public class KoulutustaustaPhase {
     public static final String TUTKINTO_KESKEYTYNYT_RULE = "tutkinto_7_rule";
     public static final String TUTKINTO_ULKOMAILLA_RULE = "tutkinto_0_rule";
     public static final String TUTKINTO_PERUSKOULU = "tutkinto1";
+    public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-3])$";
 
     public static Phase create(final KoodistoService koodistoService) {
         Phase koulutustausta = new Phase("koulutustausta", createI18NForm("form.koulutustausta.otsikko"), false);
@@ -43,7 +44,7 @@ public class KoulutustaustaPhase {
 
         Radio osallistunut = new Radio("osallistunut", createI18NForm("form.koulutustausta.osallistunutPaasykokeisiin"));
         addDefaultTrueFalseOptions(osallistunut);
-        setRequired(osallistunut);
+        addRequiredValidator(osallistunut);
         setVerboseHelp(osallistunut);
 
         koulutustaustaRyhma.addChild(osallistunut);
@@ -96,7 +97,7 @@ public class KoulutustaustaPhase {
                 educationMap.get(ULKOMAINEN_TUTKINTO).getValue(),
                 createI18NForm("form.koulutustausta.ulkomailla.help"));
         ElementUtil.setVerboseHelp(millatutkinnolla);
-        millatutkinnolla.addAttribute("required", "required");
+        addRequiredValidator(millatutkinnolla);
 
         Notification tutkintoUlkomaillaNotification = new Notification(TUTKINTO_ULKOMAILLA_NOTIFICATION_ID,
                 createI18NForm("form.koulutustausta.ulkomailla.huom"),
@@ -120,8 +121,9 @@ public class KoulutustaustaPhase {
         TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion("PK_PAATTOTODISTUSVUOSI",
                 createI18NForm("form.koulutustausta.paattotodistusvuosi"));
         paattotodistusvuosiPeruskoulu.addAttribute("placeholder", "vvvv");
-        paattotodistusvuosiPeruskoulu.addAttribute("required", "required");
-        paattotodistusvuosiPeruskoulu.addAttribute("pattern", "^(19[0-9][0-9]|200[0-9]|201[0-3])$");
+        addRequiredValidator(paattotodistusvuosiPeruskoulu);
+        paattotodistusvuosiPeruskoulu.setValidator(
+                createRegexValidator(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN));
         paattotodistusvuosiPeruskoulu.addAttribute("size", "4");
         paattotodistusvuosiPeruskoulu.addAttribute("maxlength", "4");
 
@@ -149,7 +151,7 @@ public class KoulutustaustaPhase {
                 "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON",
                 createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka"));
         addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon);
-        setRequired(koulutuspaikkaAmmatillisenTutkintoon);
+        addRequiredValidator(koulutuspaikkaAmmatillisenTutkintoon);
 
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu);
         pkKysymyksetRule.addChild(suorittanutGroup);
@@ -159,8 +161,8 @@ public class KoulutustaustaPhase {
         TextQuestion lukioPaattotodistusVuosi = new TextQuestion("lukioPaattotodistusVuosi",
                 createI18NForm("form.koulutustausta.lukio.paattotodistusvuosi"));
         lukioPaattotodistusVuosi.addAttribute("placeholder", "vvvv");
-        lukioPaattotodistusVuosi.addAttribute("required", "required");
-        lukioPaattotodistusVuosi.addAttribute("pattern", "^(19[0-9][0-9]|200[0-9]|201[0-3])$");
+        addRequiredValidator(lukioPaattotodistusVuosi);
+        lukioPaattotodistusVuosi.setValidator(createRegexValidator(lukioPaattotodistusVuosi.getId(), PAATTOTODISTUSVUOSI_PATTERN));
         lukioPaattotodistusVuosi.addAttribute("size", "4");
         lukioPaattotodistusVuosi.addAttribute("maxlength", "4");
         lukioPaattotodistusVuosi.setInline(true);
@@ -171,7 +173,7 @@ public class KoulutustaustaPhase {
         ylioppilastutkinto.addOption("ib", createI18NForm("form.koulutustausta.lukio.yotutkinto.ib"), "ib");
         ylioppilastutkinto.addOption("eb", createI18NForm("form.koulutustausta.lukio.yotutkinto.eb"), "eb");
         ylioppilastutkinto.addOption("rp", createI18NForm("form.koulutustausta.lukio.yotutkinto.rp"), "rp");
-        ylioppilastutkinto.addAttribute("required", "required");
+        addRequiredValidator(ylioppilastutkinto);
         ylioppilastutkinto.setInline(true);
         setDefaultOption("fi", ylioppilastutkinto.getOptions());
 
@@ -189,7 +191,7 @@ public class KoulutustaustaPhase {
                 "ammatillinenTutkintoSuoritettu",
                 createI18NForm("form.koulutustausta.ammatillinenSuoritettu"));
         addDefaultTrueFalseOptions(suorittanutAmmatillisenTutkinnon);
-        setRequired(suorittanutAmmatillisenTutkinnon);
+        addRequiredValidator(suorittanutAmmatillisenTutkinnon);
 
 
         lukioRule.addChild(suorittanutAmmatillisenTutkinnon);
@@ -204,9 +206,9 @@ public class KoulutustaustaPhase {
 
         DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
                 createI18NForm("form.koulutustausta.perusopetuksenKieli"), null);
-        perusopetuksenKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NForm(null), "");
+        perusopetuksenKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NForm(""), "");
         perusopetuksenKieli.addOptions(koodistoService.getLanguages());
-        setRequired(perusopetuksenKieli);
+        addRequiredValidator(perusopetuksenKieli);
         setVerboseHelp(perusopetuksenKieli);
         pkKysymyksetRule.addChild(perusopetuksenKieli);
         return millatutkinnolla;

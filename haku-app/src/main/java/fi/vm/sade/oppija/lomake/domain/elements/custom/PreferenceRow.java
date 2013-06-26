@@ -18,7 +18,8 @@ package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
-import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -104,8 +105,8 @@ public class PreferenceRow extends Question {
     @Override
     public void addAttribute(final String key, final String value) {
         if ("required".equals(key)) {
-            addValidator(new RequiredFieldFieldValidator(learningInstitutionInputId));
-            addValidator(new RequiredFieldFieldValidator(educationInputId));
+            setValidator(new RequiredFieldValidator(learningInstitutionInputId, ElementUtil.createI18NTextError("yleinen.pakollinen")));
+            setValidator(new RequiredFieldValidator(educationInputId, ElementUtil.createI18NTextError("yleinen.pakollinen")));
         } else {
             super.addAttribute(key, value);
         }

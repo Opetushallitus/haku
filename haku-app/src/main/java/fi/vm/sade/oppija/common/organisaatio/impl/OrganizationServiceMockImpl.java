@@ -24,6 +24,7 @@ import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.exception.ConfigurationException;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.Profile;
@@ -188,16 +189,16 @@ public class OrganizationServiceMockImpl implements OrganizationService {
 
     protected Organization getOrganization(final String name, final String oid, final String parentOid,
                                            Date startDate, Date endDate, String... types) {
-        final I18nText orgName = getI18nText("nimi", "fi", name + "_fi", "en", name + "_en", "sv", name + "_sv");
+        final I18nText orgName = ElementUtil.createI18NAsIs(name);
         return new Organization(orgName, oid, parentOid, Arrays.asList(types), startDate, endDate);
     }
 
-    private I18nText getI18nText(String id, String... kv) {
+    private I18nText getI18nText(String... kv) {
         final HashMap<String, String> translations = Maps.newHashMap();
         for (int i = 0; i < kv.length / 2; i++) {
             translations.put(kv[i * 2], kv[i * 2 + 1]);
         }
-        return new I18nText(id, translations);
+        return new I18nText(translations);
     }
 
     @Override

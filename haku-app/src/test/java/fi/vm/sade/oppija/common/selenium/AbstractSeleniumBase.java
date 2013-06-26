@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.ui.selenium.SeleniumHelper;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -84,6 +85,11 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         for (String id : ids) {
             driver.findElement(new By.ById(id)).click();
         }
+    }
+
+    protected void selectByValue(final String id, final String value) {
+        Select select = new Select(seleniumHelper.getDriver().findElement(new By.ById(id)));
+        select.selectByValue(value);
     }
 
     protected void findById(final String... ids) {

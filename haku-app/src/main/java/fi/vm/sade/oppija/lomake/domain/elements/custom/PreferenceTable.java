@@ -20,12 +20,9 @@ import com.google.common.base.Predicate;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
-import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.validation.Validator;
-import fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator;
-import fi.vm.sade.oppija.lomake.validation.validators.PreferenceTableValidator;
-import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldFieldValidator;
-import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.*;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -44,28 +41,11 @@ import static fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator
 public class PreferenceTable extends Titled {
 
     private static final long serialVersionUID = 1289678491786047575L;
-    // label text for up button
-    private String moveUpLabel;
-    // label text for down button
-    private String moveDownLabel;
-
 
     public PreferenceTable(@JsonProperty(value = "id") final String id,
-                           @JsonProperty(value = "i18nText") final I18nText i18nText,
-                           @JsonProperty(value = "moveUpLabel") final String moveUpLabel,
-                           @JsonProperty(value = "moveDownLabel") final String moveDownLabel
+                           @JsonProperty(value = "i18nText") final I18nText i18nText
     ) {
         super(id, i18nText);
-        this.moveUpLabel = moveUpLabel;
-        this.moveDownLabel = moveDownLabel;
-    }
-
-    public String getMoveUpLabel() {
-        return moveUpLabel;
-    }
-
-    public String getMoveDownLabel() {
-        return moveDownLabel;
     }
 
     @Override
@@ -80,7 +60,10 @@ public class PreferenceTable extends Titled {
             PreferenceRow pr = (PreferenceRow) element;
             learningInstitutionInputIds.add(pr.getLearningInstitutionInputId());
             educationInputIds.add(pr.getEducationInputId());
-            preferencePredicates.add(validate(new RegexFieldFieldValidator(pr.getEducationInputId() + "-educationDegree", "^32$")));
+            preferencePredicates.add(
+                    validate(
+                            new EqualsValidator(pr.getEducationInputId() + "-educationDegree",
+                                    ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "32")));
         }
 
         listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds));
@@ -89,8 +72,10 @@ public class PreferenceTable extends Titled {
                         not(
                                 and(
                                         and(
-                                                validate(new RegexFieldFieldValidator("ammatillinenTutkintoSuoritettu", "^true$")),
-                                                validate(new RequiredFieldFieldValidator("ammatillinenTutkintoSuoritettu"))
+                                                validate(new EqualsValidator("ammatillinenTutkintoSuoritettu",
+                                                        ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "true")),
+                                                validate(new RequiredFieldValidator("ammatillinenTutkintoSuoritettu",
+                                                        ElementUtil.createI18NTextError("yleinen.pakollinen")))
                                         ),
                                         or(preferencePredicates)
                                 )

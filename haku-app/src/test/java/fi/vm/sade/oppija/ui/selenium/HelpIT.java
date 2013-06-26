@@ -20,6 +20,7 @@ package fi.vm.sade.oppija.ui.selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
@@ -37,7 +38,7 @@ public class HelpIT extends AbstractSeleniumBase {
     public static final String HELP_DIV_PREFIX = "help-";
     public static final String HELP_ID = HELP_DIV_PREFIX + ID;
     public static final String TITLE = "TITLE";
-    public static final String HELP_TEXT = "Apuva";
+    public static final I18nText HELP_TEXT = createI18NAsIs("Apuva");
 
     private FormModelHelper formModelHelper;
     private CheckBox checkBox;
@@ -49,9 +50,10 @@ public class HelpIT extends AbstractSeleniumBase {
 
     @Test
     public void testCheckBox() {
-        checkBox.setHelp(createI18NAsIs(HELP_TEXT));
+        checkBox.setHelp(HELP_TEXT);
         String actualHelpText = initModelAndGetHelpText(checkBox);
-        assertEquals(HELP_TEXT, actualHelpText);
+        System.out.println(this.seleniumHelper.getSelenium().getHtmlSource());
+        assertEquals(HELP_TEXT.getTranslations().get("fi"), actualHelpText);
     }
 
     @Test(expected = org.openqa.selenium.NoSuchElementException.class)

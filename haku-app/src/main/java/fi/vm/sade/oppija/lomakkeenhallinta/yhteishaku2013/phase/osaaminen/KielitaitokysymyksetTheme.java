@@ -59,7 +59,7 @@ public final class KielitaitokysymyksetTheme {
                 createI18NForm("form.kielitaito." +
                         CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, id).replace('_', '.')));
         addDefaultTrueFalseOptions(radio);
-        setRequired(radio);
+        addRequiredValidator(radio);
         return radio;
     }
 }

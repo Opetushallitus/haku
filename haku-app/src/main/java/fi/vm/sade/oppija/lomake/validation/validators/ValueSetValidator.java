@@ -17,17 +17,21 @@
 package fi.vm.sade.oppija.lomake.validation.validators;
 
 import com.google.common.collect.ImmutableList;
-import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
 
 public class ValueSetValidator extends FieldValidator {
+
     private final List<String> validValues;
 
-    public ValueSetValidator(final String fieldName, final String errorMessage, final List<String> validValues) {
+    public ValueSetValidator(@JsonProperty(value = "fieldName") final String fieldName,
+                             @JsonProperty(value = "errorMessage") final I18nText errorMessage,
+                             @JsonProperty(value = "validValues") final List<String> validValues) {
         super(fieldName, errorMessage);
         this.validValues = ImmutableList.copyOf(validValues);
     }
@@ -37,8 +41,12 @@ public class ValueSetValidator extends FieldValidator {
         ValidationResult validationResult = new ValidationResult();
         String value = values.get(fieldName);
         if (value != null && !this.validValues.contains(value)) {
-            validationResult = new ValidationResult(fieldName, ElementUtil.createI18NTextError(errorMessage));
+            validationResult = new ValidationResult(fieldName, getErrorMessage());
         }
         return validationResult;
+    }
+
+    public List<String> getValidValues() {
+        return validValues;
     }
 }

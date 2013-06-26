@@ -45,6 +45,7 @@ public class HAK305IT extends DummyModelBaseItTest {
 
         fillInArvosanatTheme();
 
+
         elementsNotPresentByName("yleinen_kielitutkinto_sv", "valtionhallinnon_kielitutkinto_sv",
                 "yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
 
@@ -65,6 +66,8 @@ public class HAK305IT extends DummyModelBaseItTest {
         driver.findElement(new By.ById("arvosanatTheme"));
         driver.findElement(new By.ById("KielitaitokysymyksetTheme"));
         select();
+        selectByValue("PK_A1_OPPIAINE", "EN");
+        selectByValue("PK_B1_OPPIAINE", "SE");
     }
 
     private void fillInRestOfThePhasesAndCheckTheOID() {

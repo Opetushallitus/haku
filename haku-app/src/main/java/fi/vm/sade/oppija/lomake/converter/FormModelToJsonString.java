@@ -21,11 +21,6 @@ import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import org.springframework.stereotype.Component;
 
-/**
- * @author jukka
- * @version 9/14/123:44 PM}
- * @since 1.1
- */
 @Component
 public class FormModelToJsonString implements Function<FormModel, String> {
     @Override

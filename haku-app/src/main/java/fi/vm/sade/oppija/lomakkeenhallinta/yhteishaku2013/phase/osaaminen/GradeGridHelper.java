@@ -6,13 +6,14 @@ import com.google.common.collect.Iterables;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.predicate.ComprehensiveSchools;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.predicate.HighSchools;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.predicate.Ids;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.predicate.Languages;
 
 import java.util.List;
+
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.addRequiredValidator;
 
 public class GradeGridHelper {
 
@@ -29,7 +30,7 @@ public class GradeGridHelper {
         this.comprehensiveSchool = comprehensiveSchool;
         subjects = getHighOrComprehensiveSchoolSubjectRows(comprehensiveSchool, koodistoService.getSubjects());
         for (SubjectRow subject : subjects) {
-            ElementUtil.setRequired(subject);
+            addRequiredValidator(subject);
         }
         subjectLanguages = koodistoService.getSubjectLanguages();
         gradeRanges = koodistoService.getGradeRanges();

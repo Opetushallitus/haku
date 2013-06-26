@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -80,7 +81,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         }
 
         final String id = String.valueOf(System.currentTimeMillis());
-        this.formId = new FormId(id, id);
+        this.formId = new FormId(ElementUtil.randomId(), id);
     }
 
     @Test

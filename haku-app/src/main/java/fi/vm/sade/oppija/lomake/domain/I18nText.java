@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.lomake.domain;
 import com.google.common.collect.ImmutableMap;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -26,17 +27,11 @@ import java.util.Map;
 public class I18nText implements Serializable {
 
     private static final long serialVersionUID = 3485756393751579235L;
-    private final String id;
     private final Map<String, String> translations;
 
     @JsonCreator
-    public I18nText(@JsonProperty(value = "id") final String id, @JsonProperty(value = "translations") final Map<String, String> translations) {
-        this.id = id;
+    public I18nText(@JsonProperty(value = "translations") final Map<String, String> translations) {
         this.translations = ImmutableMap.copyOf(translations);
-    }
-
-    public String getId() {
-        return id;
     }
 
     public Map<String, String> getTranslations() {

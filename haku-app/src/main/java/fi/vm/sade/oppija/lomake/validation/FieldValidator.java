@@ -16,22 +16,30 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
-import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import org.apache.commons.lang3.Validate;
 
 public abstract class FieldValidator implements Validator {
-    public final String fieldName;
-    public final String errorMessage;
+    protected final String fieldName;
+    protected final I18nText errorMessage;
     protected ValidationResult validValidationResult;
     protected ValidationResult invalidValidationResult;
 
-    protected FieldValidator(final String fieldName, final String errorMessage) {
+    protected FieldValidator(final String fieldName, final I18nText errorMessage) {
         Validate.notNull(fieldName, "FieldName can't be null");
         Validate.notNull(errorMessage, "ErrorMessage can't be null");
         this.fieldName = fieldName;
         this.errorMessage = errorMessage;
         validValidationResult = new ValidationResult();
         invalidValidationResult = new ValidationResult(this.fieldName,
-                ElementUtil.createI18NTextError(errorMessage));
+                errorMessage);
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public I18nText getErrorMessage() {
+        return errorMessage;
     }
 }
