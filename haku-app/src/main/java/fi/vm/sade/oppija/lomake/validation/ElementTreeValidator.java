@@ -30,11 +30,13 @@ public final class ElementTreeValidator {
 
     public static ValidationResult validate(final Element element, final Map<String, String> values) {
         List<ValidationResult> listOfValidationResult = new ArrayList<ValidationResult>();
-        for (Validator validator : element.getValidators()) {
-            listOfValidationResult.add(validator.validate(values));
-        }
-        for (Element child : element.getChildren(values)) {
-            listOfValidationResult.add(validate(child, values));
+        if (!element.getId().equals("esikatselu")) { // TODO Refactor preview and remove this!
+            for (Validator validator : element.getValidators()) {
+                listOfValidationResult.add(validator.validate(values));
+            }
+            for (Element child : element.getChildren(values)) {
+                listOfValidationResult.add(validate(child, values));
+            }
         }
         return new ValidationResult(listOfValidationResult);
     }
