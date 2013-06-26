@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.lomake.validation.validators;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,25 +31,27 @@ public class RequiredFieldValidatorTest {
     public static final I18nText ERROR_MESSAGE = createI18NTextError("kenttä on virheellinen");
     public static final String FIELD_NAME = "kenttä";
     private Map<String, String> values;
+    private RequiredFieldValidator requiredFieldValidator;
 
     @Before
     public void setUp() throws Exception {
         values = new HashMap<String, String>();
+        requiredFieldValidator = new RequiredFieldValidator(FIELD_NAME, ERROR_MESSAGE);
     }
 
     @Test
     public void testValidateValid() throws Exception {
         values.put(FIELD_NAME, "1");
-        RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator(FIELD_NAME, ERROR_MESSAGE);
-        ValidationResult validationResult = requiredFieldValidator.validate(values);
-        assertFalse(validationResult.hasErrors());
+        assertFalse(isValid());
     }
 
     @Test
     public void testValidateInvalid() throws Exception {
-        RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator(FIELD_NAME, ERROR_MESSAGE);
-        ValidationResult validationResult = requiredFieldValidator.validate(values);
-        assertTrue(validationResult.hasErrors());
+        assertTrue(isValid());
+    }
+
+    private boolean isValid() {
+        return requiredFieldValidator.validate(values).hasErrors();
     }
 
 }
