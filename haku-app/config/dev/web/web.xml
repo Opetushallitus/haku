@@ -87,11 +87,15 @@
 
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/admin</url-pattern>
+        <url-pattern>/virkailija</url-pattern>
+        <url-pattern>/lomakkeenhallinta</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>jersey</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/admin</url-pattern>
+        <url-pattern>/virkailija</url-pattern>
+        <url-pattern>/lomakkeenhallinta</url-pattern>
     </filter-mapping>
     <jsp-config>
         <taglib>
