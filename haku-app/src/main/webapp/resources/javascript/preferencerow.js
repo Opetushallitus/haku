@@ -14,56 +14,55 @@
  * European Union Public Licence for more details.
  */
 
-(function () {
-    var childLONames = {};
-    var preferenceRow = {
-        populateSelectInput: function (orgId, selectInputId) {
-            $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationPeriodId + "/" + orgId,
-                {
-                    'baseEducation': sortabletable_settings.baseEducation,
-                    'vocational': sortabletable_settings.vocational
-                },
-                function (data) {
-                    var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
+var childLONames = {};
+var preferenceRow = {
+    populateSelectInput: function (orgId, selectInputId) {
+        $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationPeriodId + "/" + orgId,
+            {
+                'baseEducation': sortabletable_settings.baseEducation,
+                'vocational': sortabletable_settings.vocational
+            },
+            function (data) {
+                var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
 
-                    preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
-                    $("#" + selectInputId).html("<option></option>");
+                preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
+                $("#" + selectInputId).html("<option></option>");
 
-                    $(data).each(function (index, item) {
-                        var selected = "";
-                        childLONames[item.id] = item.childLONames;
-                        if (hakukohdeId == item.id) {
-                            selected = 'selected = "selected"';
-                            // overrides additional questions rendered in the backend
-                            //preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"), item.educationDegree, null, false);
-                            preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
-                        }
-                        $selectInput.append('<option value="' + item.name
-                            + '" ' + selected + ' data-id="' + item.id +
-                            '" data-educationdegree="' + item.educationDegree +
-                            '" data-lang="' + item.teachingLanguages[0] +
-                            '" data-sora="' + item.sora +
-                            '" data-aoidentifier="' + item.aoIdentifier +
-                            '" data-athlete="' + item.athleteEducation + '" >' + item.name + '</option>');
-                    });
+                $(data).each(function (index, item) {
+                    var selected = "";
+                    childLONames[item.id] = item.childLONames;
+                    if (hakukohdeId == item.id) {
+                        selected = 'selected = "selected"';
+                        // overrides additional questions rendered in the backend
+                        //preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"), item.educationDegree, null, false);
+                        preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
+                    }
+                    $selectInput.append('<option value="' + item.name
+                        + '" ' + selected + ' data-id="' + item.id +
+                        '" data-educationdegree="' + item.educationDegree +
+                        '" data-lang="' + item.teachingLanguages[0] +
+                        '" data-sora="' + item.sora +
+                        '" data-aoidentifier="' + item.aoIdentifier +
+                        '" data-athlete="' + item.athleteEducation + '" >' + item.name + '</option>');
                 });
-        },
+            });
+    },
 
-        clearSelectInput: function (selectInputId) {
-            $("#" + selectInputId + "-id").val("");
-            $("#" + selectInputId + "-educationDegree").val("").change();
-            $("#" + selectInputId + "-id-lang").val("").change();
-            $("#" + selectInputId + "-id-sora").val(false).change();
-            $("#" + selectInputId + "-id-aoIdentifier").val("").change();
-            $("#" + selectInputId + "-id-athlete").val(false).change();
-            $("#" + selectInputId).html("<option></option>");
-            preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
-        },
+    clearSelectInput: function (selectInputId) {
+        $("#" + selectInputId + "-id").val("");
+        $("#" + selectInputId + "-educationDegree").val("").change();
+        $("#" + selectInputId + "-id-lang").val("").change();
+        $("#" + selectInputId + "-id-sora").val(false).change();
+        $("#" + selectInputId + "-id-aoIdentifier").val("").change();
+        $("#" + selectInputId + "-id-athlete").val(false).change();
+        $("#" + selectInputId).html("<option></option>");
+        preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
+    },
 
-        searchAdditionalQuestions: function (hakukohdeId, additionalQuestionsId, educationDegree, preferenceRowId, soraRequired) {
-            var url = sortabletable_settings.contextPath + "/lomake/" + sortabletable_settings.applicationPeriodId + "/" +
-                sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
-                sortabletable_settings.teemaId + "/additionalquestions/" + hakukohdeId;
+    searchAdditionalQuestions: function (hakukohdeId, additionalQuestionsId, educationDegree, preferenceRowId, soraRequired) {
+        var url = sortabletable_settings.contextPath + "/lomake/" + sortabletable_settings.applicationPeriodId + "/" +
+            sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
+            sortabletable_settings.teemaId + "/additionalquestions/" + hakukohdeId;
 
 //            $.get(url, {
 //                    'ed': educationDegree,
@@ -73,84 +72,89 @@
 //                function (data) {
 //                    $("#" + additionalQuestionsId).html(data);
 //                });
-        },
+    },
 
-        displayChildLONames: function (hakukohdeId, childLONamesId) {
-            $("#" + childLONamesId).html(childLONames[hakukohdeId]);
-            $("#container-" + childLONamesId).show();
-        },
+    displayChildLONames: function (hakukohdeId, childLONamesId) {
+        $("#" + childLONamesId).html(childLONames[hakukohdeId]);
+        $("#container-" + childLONamesId).show();
+    },
 
-        clearChildLONames: function (childLONamesId) {
-            $("#container-" + childLONamesId).hide();
-            $("#" + childLONamesId).html('');
-        }
-    };
+    clearChildLONames: function (childLONamesId) {
+        $("#container-" + childLONamesId).hide();
+        $("#" + childLONamesId).html('');
+    },
 
-    $('button.reset').click(function (event) {
-        var id = $(this).data('id');
+    init : function () {
+        $('button.reset').unbind();
+        $('button.reset').click(function (event) {
+            var id = $(this).data('id');
 
-        $('[id|="' + id + '"]').val('');
-        preferenceRow.clearSelectInput(id + "-Koulutus");
-        $(this).parent().find(".warning").hide();
-    });
+            $('[id|="' + id + '"]').val('');
+            preferenceRow.clearSelectInput(id + "-Koulutus");
+            $(this).parent().find(".warning").hide();
+        });
 
-    $(".field-container-text input:text").each(function (index) {
-        var selectInputId = $(this).data('selectinputid');
-        var $hiddenInput = $("#" + this.id + "-id");
-        $(this).autocomplete({
-            minLength: 1,
-            source: function (request, response) {
-                $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + request.term, {
-                    asId: sortabletable_settings.applicationPeriodId
-                }, function (data) {
-                    response($.map(data, function (result) {
-                        return {
-                            label: result.name,
-                            value: result.name,
-                            dataId: result.id
-                        }
-                    }));
-                });
-            },
-            select: function (event, ui) {
-                $hiddenInput.val(ui.item.dataId);
-                preferenceRow.clearSelectInput(selectInputId);
-                preferenceRow.populateSelectInput(ui.item.dataId, selectInputId);
-            },
-            change: function (ev, ui) {
-                if (!ui.item) {
-                    $(this).val("");
-                    $hiddenInput.val("");
+        $(".field-container-text input:text").each(function (index) {
+            var selectInputId = $(this).data('selectinputid');
+            var $hiddenInput = $("#" + this.id + "-id");
+            //$(this).autocomplete = null;
+            //$(this).unbind();
+            $(this).autocomplete({
+                minLength: 1,
+                source: function (request, response) {
+                    $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + request.term, {
+                        asId: sortabletable_settings.applicationPeriodId
+                    }, function (data) {
+                        response($.map(data, function (result) {
+                            return {
+                                label: result.name,
+                                value: result.name,
+                                dataId: result.id
+                            }
+                        }));
+                    });
+                },
+                select: function (event, ui) {
+                    $hiddenInput.val(ui.item.dataId);
                     preferenceRow.clearSelectInput(selectInputId);
+                    preferenceRow.populateSelectInput(ui.item.dataId, selectInputId);
+                },
+                change: function (ev, ui) {
+                    if (!ui.item) {
+                        $(this).val("");
+                        $hiddenInput.val("");
+                        preferenceRow.clearSelectInput(selectInputId);
+                    }
                 }
+            });
+            if ($hiddenInput.val() !== '') {
+                preferenceRow.populateSelectInput($hiddenInput.val(), selectInputId);
             }
         });
-        if ($hiddenInput.val() !== '') {
-            preferenceRow.populateSelectInput($hiddenInput.val(), selectInputId);
-        }
-    });
-
-    $(".field-container-select select").change(function (event) {
-        var $hiddenInput = $("#" + this.id + "-id"),
-            $educationDegreeInput = $("#" + this.id + "-educationDegree"),
-            $educationDegreeLang = $("#" + this.id + "-id-lang"),
-            $educationDegreeSora = $("#" + this.id + "-id-sora"),
-            $educationDegreeAoIdentifier = $("#" + this.id + "-id-aoIdentifier"),
-            $educationDegreeAthlete = $("#" + this.id + "-id-athlete"),
-            selectedId, educationDegree, value = $(this).val(),
-            preferenceRowId = this.id.split("-")[0];
-        $(this).children().removeAttr("selected");
-        $(this).children("option[value='" + value + "']").attr("selected", "selected");
-        var selectedOption = $("#" + this.id + " option:selected");
-        selectedId = selectedOption.data("id");
-        $hiddenInput.val(selectedId);
-        var educationDegree = selectedOption.data("educationdegree");
-        $educationDegreeInput.val(educationDegree).change();
-        $educationDegreeLang.val(selectedOption.data("lang")).change();
-        $educationDegreeSora.val(selectedOption.data("sora")).change();
-        $educationDegreeAoIdentifier.val(selectedOption.data("aoidentifier")).change();
-        $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
-        preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"), educationDegree, preferenceRowId, false);
-        preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
-    });
-})();
+        $(".field-container-select select").unbind();
+        $(".field-container-select select").change(function (event) {
+            var $hiddenInput = $("#" + this.id + "-id"),
+                $educationDegreeInput = $("#" + this.id + "-educationDegree"),
+                $educationDegreeLang = $("#" + this.id + "-id-lang"),
+                $educationDegreeSora = $("#" + this.id + "-id-sora"),
+                $educationDegreeAoIdentifier = $("#" + this.id + "-id-aoIdentifier"),
+                $educationDegreeAthlete = $("#" + this.id + "-id-athlete"),
+                selectedId, educationDegree, value = $(this).val(),
+                preferenceRowId = this.id.split("-")[0];
+            $(this).children().removeAttr("selected");
+            $(this).children("option[value='" + value + "']").attr("selected", "selected");
+            var selectedOption = $("#" + this.id + " option:selected");
+            selectedId = selectedOption.data("id");
+            $hiddenInput.val(selectedId);
+            var educationDegree = selectedOption.data("educationdegree");
+            $educationDegreeInput.val(educationDegree).change();
+            $educationDegreeLang.val(selectedOption.data("lang")).change();
+            $educationDegreeSora.val(selectedOption.data("sora")).change();
+            $educationDegreeAoIdentifier.val(selectedOption.data("aoidentifier")).change();
+            $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
+            preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"), educationDegree, preferenceRowId, false);
+            preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
+        });
+    }
+};
+preferenceRow.init();

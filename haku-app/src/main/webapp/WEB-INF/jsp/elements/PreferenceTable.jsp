@@ -31,12 +31,18 @@
                 <c:if test="${not status.first}">
                     <button class="up sort" data-id="${child.id}" data-target="${element.children[status.index - 1].id}"
                             type="button">
+                        <span>
+                            <span>^</span>
+                        </span>
                     </button>
                     <br/>
                 </c:if>
                 <c:if test="${not status.last}">
                     <button class="down sort" data-id="${child.id}"
                             data-target="${element.children[status.index + 1].id}" type="button">
+                        <span>
+                            <span>v</span>
+                        </span>
                     </button>
                 </c:if>
             </td>
@@ -97,5 +103,6 @@
         </c:if>
 }
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencetable.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencerow.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencetable.js"></script>
+
