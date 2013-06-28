@@ -30,7 +30,6 @@
     <artifactId>hakemus-api</artifactId>
     <name>Hakemus :: API</name>
 
-
     <build>
         <plugins>
             <plugin>
