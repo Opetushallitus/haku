@@ -75,7 +75,13 @@ var preferenceRow = {
     },
 
     displayChildLONames: function (hakukohdeId, childLONamesId) {
-        $("#" + childLONamesId).html(childLONames[hakukohdeId]);
+        var $names =  $("#" + childLONamesId), data = '<ol class="list-style-none">', loNames = childLONames[hakukohdeId];
+
+        for (var index in loNames) {
+            data = data.concat("<li><small>", loNames[index], "</small></li>");
+        }
+        data = data.concat("</ol>");
+        $names.html(data);
         $("#container-" + childLONamesId).show();
     },
 
