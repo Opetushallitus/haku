@@ -33,7 +33,7 @@
         <dependency>
             <groupId>fi.vm.sade.haku</groupId>
             <artifactId>hakemus-api</artifactId>
-            <version>${project.version}</version>
+	    <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -556,6 +556,10 @@
                 <exclusion>
                     <artifactId>cxf-rt-frontend-jaxrs</artifactId>
                     <groupId>org.apache.cxf</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.ws.rs</groupId>
+                    <artifactId>jsr311-api</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
