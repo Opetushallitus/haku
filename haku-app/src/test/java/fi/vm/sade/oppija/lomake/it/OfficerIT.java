@@ -32,6 +32,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     @Test
     public void testSearchAndModify() throws Exception {
         clickSearch();
+        screenshot("seekAndDestroy");
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
         checkApplicationState("Aktiivinen");
@@ -128,7 +129,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testSearchByName() throws Exception {
-        assertFalse("Application not found", SearchByTerm("topi").isEmpty());
+        assertFalse("Application not found", SearchByTermAndState("topi", null).isEmpty());
         clearSearch();
         assertFalse("Application not found", SearchByTermAndState("topi", null).isEmpty());
         clearSearch();
@@ -139,7 +140,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testSearchByNameNotFound() throws Exception {
-        assertTrue("Application found", SearchByTerm("Notfound").isEmpty());
+        assertTrue("Application found", SearchByTermAndState("Notfound", null).isEmpty());
         clearSearch();
         assertTrue("Application found", SearchByTermAndState("Notfound", Application.State.ACTIVE).isEmpty());
         clearSearch();
@@ -148,7 +149,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testSearchByLastname() throws Exception {
-        assertFalse("Application not found", SearchByTerm("Korhonen").isEmpty());
+        assertFalse("Application not found", SearchByTermAndState("Korhonen", null).isEmpty());
         clearSearch();
         assertFalse("Application not found", SearchByTermAndState("Korhonen", Application.State.ACTIVE).isEmpty());
         clearSearch();
@@ -157,7 +158,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testSearchBySsn() throws Exception {
-        assertFalse("Application not found", SearchByTerm("270802-184A").isEmpty());
+        assertFalse("Application not found", SearchByTermAndState("270802-184A", null).isEmpty());
         clearSearch();
         assertFalse("Application not found", SearchByTermAndState("270802-184A", Application.State.ACTIVE).isEmpty());
         clearSearch();
