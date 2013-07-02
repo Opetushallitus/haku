@@ -69,8 +69,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String serviceTicket = CasClient.getTicket(realCasUrl, clientAppUser, clientAppPass, targetService + "/j_spring_cas_security_check");
 
         HttpClient client = new HttpClient();
-        log.info("Getting person from " + hetuResource);
-        GetMethod get = new GetMethod(hetuResource + "/" + person.getSocialSecurityNumber() + "?ticket=" + serviceTicket);
+        String realHetuUrl = hetuResource + "/" + person.getSocialSecurityNumber() + "?ticket=" + serviceTicket;
+        log.info("Getting person from " + realHetuUrl);
+        GetMethod get = new GetMethod(realHetuUrl);
         try {
             client.executeMethod(get);
         } catch (IOException e) {
@@ -89,6 +90,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } else if (status >= 500) {
             log.error("Checking hetu failed due to: " + get.getStatusCode() + get.getStatusText());
             return null;
+        } else if (status == 200) {
+            try {
+                responseString = get.getResponseBodyAsString();
+            } catch (IOException e) {
+                // It's because I'm lazy
+                throw new RuntimeException(e);
+            }
         }
 
         JsonObject henkiloJson = new JsonParser().parse(responseString).getAsJsonObject();

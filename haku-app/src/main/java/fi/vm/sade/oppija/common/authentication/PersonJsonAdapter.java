@@ -53,8 +53,12 @@ public class PersonJsonAdapter implements JsonSerializer<Person> {
             personJson.add("sukupuoli", new JsonPrimitive(sex.equals(SukupuoliType.MIES.value()) ? "MIES" : "NAINEN"));
         }
         personJson.add("turvakielto", new JsonPrimitive(person.isSecurityOrder()));
-        personJson.add("henkiloTyyppi", new JsonPrimitive("OPPIJA"));
         personJson.add("eiSuomalaistaHetua", new JsonPrimitive(person.isNoSocialSecurityNumber()));
+
+        personJson.add("henkiloTyyppi", new JsonPrimitive("OPPIJA"));
+        personJson.add("yksiloity", new JsonPrimitive(false));
+        personJson.add("passivoitu", new JsonPrimitive(false));
+        personJson.add("kayttajatunnus", new JsonPrimitive(person.getSocialSecurityNumber()));
 
         return personJson;
     }
