@@ -29,6 +29,8 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,8 @@ import java.io.UnsupportedEncodingException;
 @Service
 @Profile("default")
 public class AuthenticationServiceImpl implements AuthenticationService {
+
+    final Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
     @Value("${cas.service.authentication-service}")
     private String targetService;
@@ -60,14 +64,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public String addPerson(Person person) {
 
-        String serviceTicket = CasClient.getTicket(casUrl + "/v1/tickets", clientAppUser, clientAppPass, targetService + "/j_spring_cas_security_check");
+        String realCasUrl = casUrl + "/v1/tickets";
+        log.info("Getting CAS ticket from " + realCasUrl + " for " + targetService);
+        String serviceTicket = CasClient.getTicket(realCasUrl, clientAppUser, clientAppPass, targetService + "/j_spring_cas_security_check");
 
         HttpClient client = new HttpClient();
+        log.info("Getting person from " + hetuResource);
         GetMethod get = new GetMethod(hetuResource + "/" + person.getSocialSecurityNumber() + "?ticket=" + serviceTicket);
         try {
             client.executeMethod(get);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Checking hetu failed due to: " + e.toString());
+            return null;
         }
 
         int status = get.getStatusCode();
@@ -79,10 +87,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (status == 404) {
             responseString = createHenkilo(client, person);
         } else if (status >= 500) {
-            throw new RuntimeException("Server made a boo-boo: " + get.getStatusText());
+            log.error("Checking hetu failed due to: " + get.getStatusCode() + get.getStatusText());
+            return null;
         }
 
-        System.out.println(responseString);
         JsonObject henkiloJson = new JsonParser().parse(responseString).getAsJsonObject();
         String oid = henkiloJson.get("oidHenkilo").getAsString();
         return oid;
@@ -92,16 +100,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private String createHenkilo(HttpClient client, Person person) {
 
         String responseString = null;
-        PostMethod post = new PostMethod(hetuResource);
+        PostMethod post = new PostMethod(henkiloResource);
         try {
             RequestEntity entity = new StringRequestEntity(gson.toJson(person, Person.class), MediaType.APPLICATION_JSON, "UTF-8");
             post.setRequestEntity(entity);
             client.executeMethod(post);
             responseString = post.getResponseBodyAsString();
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            log.error("Creating person failed due to: " + e.toString());
         }
         return responseString;
     }
