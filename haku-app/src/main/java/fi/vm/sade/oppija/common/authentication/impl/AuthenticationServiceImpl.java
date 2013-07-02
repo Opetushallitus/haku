@@ -50,8 +50,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Value("${cas.service.authentication-service}")
     private String targetService;
-    private String hetuResource = targetService + "/resources/byHetu";
-    private String henkiloResource = targetService + "/resources/henkilo";
 
     @Value("${web.url.cas}")
     private String casUrl;
@@ -63,6 +61,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private Gson gson;
 
     public String addPerson(Person person) {
+
+        String hetuResource = targetService + "/resources/byHetu";
 
         String realCasUrl = casUrl + "/v1/tickets";
         log.info("Getting CAS ticket from " + realCasUrl + " for " + targetService);
@@ -99,6 +99,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private String createHenkilo(HttpClient client, Person person) {
 
+        String henkiloResource = targetService + "/resources/henkilo";
+        
         String responseString = null;
         PostMethod post = new PostMethod(henkiloResource);
         try {
