@@ -55,7 +55,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private String casUrl;
     @Value("${haku.app.username.to.usermanagement}")
     private String clientAppUser;
-    @Value("${haku.app.username.to.usermanagement}")
+    @Value("${haku.app.password.to.usermanagement}")
     private String clientAppPass;
 
     private Gson gson;
@@ -100,7 +100,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private String createHenkilo(HttpClient client, Person person) {
 
         String henkiloResource = targetService + "/resources/henkilo";
-        
+
         String responseString = null;
         PostMethod post = new PostMethod(henkiloResource);
         try {
