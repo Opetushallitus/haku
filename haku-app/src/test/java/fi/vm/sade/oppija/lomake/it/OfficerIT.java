@@ -25,14 +25,13 @@ public class OfficerIT extends DummyModelBaseItTest {
         final LoginPage loginPage = new LoginPage(seleniumHelper.getSelenium());
         navigateToPath("user", "login");
         loginPage.login("officer");
-        activate("1.2.3.4.5.00000000010");
+        activate("1.2.3.4.5.00000000000");
         navigateToPath("virkailija", "hakemus");
     }
 
     @Test
     public void testSearchAndModify() throws Exception {
         clickSearch();
-        screenshot("seekAndDestroy");
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
         checkApplicationState("Aktiivinen");
@@ -103,7 +102,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         boolean lisatiedot = false;
         boolean added = false;
         boolean passive = false;
-        screenshot("comments");
         for (WebElement element : findByClassName("note-content")) {
             received = received || element.getText().contains("Hakemus vastaanotettu");
             lisatiedot = lisatiedot || element.getText().contains("Päivitetty vaihetta 'lisatiedot'");
@@ -119,7 +117,6 @@ public class OfficerIT extends DummyModelBaseItTest {
     @Test
     public void testOrganization() throws Exception {
         driver.findElement(new By.ByClassName("label")).click();
-        screenshot("organization");
         selenium.typeKeys("searchString", "Espoo");
         driver.findElement(new By.ById("search-organizations")).click();
         driver.findElement(new By.ById("1.2.246.562.10.10108401950"));

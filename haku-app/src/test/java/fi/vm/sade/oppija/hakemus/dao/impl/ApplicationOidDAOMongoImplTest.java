@@ -16,8 +16,6 @@
 
 package fi.vm.sade.oppija.hakemus.dao.impl;
 
-import com.mongodb.DBObject;
-import com.mongodb.QueryBuilder;
 import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationOidDAO;
 import org.junit.Test;
@@ -62,7 +60,11 @@ public class ApplicationOidDAOMongoImplTest extends AbstractDAOTest {
         // Testiä varten summat laskettu Tuataralla, 
         // http://tarkistusmerkit.teppovuori.fi/tuatara.htm#viite
         ApplicationOidDAOMongoImpl mongoImpl = new ApplicationOidDAOMongoImpl();
-        String formattedOid = mongoImpl.formatOid("2847535");
+        String formattedOid = mongoImpl.formatOid("0");
+        assertEquals("00000000000", formattedOid);
+        formattedOid = mongoImpl.formatOid("1");
+        assertEquals("00000000013", formattedOid);
+        formattedOid = mongoImpl.formatOid("2847535");
         assertEquals("00028475358", formattedOid);
         formattedOid = mongoImpl.formatOid("9837593");
         assertEquals("00098375938", formattedOid);
