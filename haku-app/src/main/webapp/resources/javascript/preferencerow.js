@@ -108,7 +108,7 @@ var preferenceRow = {
             $(this).autocomplete({
                 minLength: 1,
                 source: function (request, response) {
-                    $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + request.term, {
+                    $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + encodeURI(request.term), {
                         asId: sortabletable_settings.applicationPeriodId
                     }, function (data) {
                         response($.map(data, function (result) {
