@@ -23,14 +23,14 @@
         <span><haku:i18nText value="${sortableItem.resetLabel}"/></span>
     </span>
 </button>
-<div class="preference-fields">
+<div id="${sortableItem.id}-row-content" class="preference-fields">
     <c:set value="${sortableItem.learningInstitutionInputId}" var="textInputId" scope="page"/>
     <c:set value="${sortableItem.learningInstitutionInputId}-id" var="hiddenInputId" scope="page"/>
     <c:set value="${sortableItem.educationInputId}" var="selectInputId" scope="page"/>
     <c:set value="${sortableItem.id}-Lisakysymykset" var="additionalQuestionsId" scope="page"/>
     <c:set value="${sortableItem.educationInputId}-id" var="hiddenKoulutusId" scope="page"/>
     <c:set value="${sortableItem.educationInputId}-educationDegree" var="hiddenEducationDegreeId" scope="page"/>
-    <c:set value="childLONames-${sortableItem.id}" var="childLONamesId" scope="page"/>
+    <c:set value="${sortableItem.id}-childLONames" var="childLONamesId" scope="page"/>
     <c:set value="${hiddenKoulutusId}-lang" var="hiddenKoulutusIdLang" scope="page"/>
     <c:set value="${hiddenKoulutusId}-sora" var="hiddenKoulutusIdSora" scope="page"/>
     <c:set value="${hiddenKoulutusId}-aoIdentifier" var="hiddenKoulutusIdAoIdentifier" scope="page"/>

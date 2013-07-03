@@ -23,13 +23,12 @@
     <parent>
         <artifactId>haku</artifactId>
         <groupId>fi.vm.sade.haku</groupId>
-        <version>5.0</version>
+        <version>5.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>hakemus-api</artifactId>
     <name>Hakemus :: API</name>
-
 
     <build>
         <plugins>

@@ -16,14 +16,28 @@
 
 package fi.vm.sade.oppija.common.authentication.impl;
 
-import fi.vm.sade.authentication.service.UserManagementService;
-import fi.vm.sade.authentication.service.types.AddHenkiloDataType;
-import fi.vm.sade.authentication.service.types.dto.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import fi.vm.sade.authentication.cas.CasClient;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
-import org.springframework.beans.factory.annotation.Autowired;
+import fi.vm.sade.oppija.common.authentication.PersonJsonAdapter;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.RequestEntity;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @author Hannu Lyytikainen
@@ -32,55 +46,82 @@ import org.springframework.stereotype.Service;
 @Profile("default")
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    public static final long ID_117 = 117L;
-    public static final long ID_120 = 120L;
-    public static final String KIELITYYPPI_SUOMI = "suomi";
-    public static final String KIELI_KOODI = "fi";
-    public static final String MALE = "m";
-    private final UserManagementService userManagementService;
+    final Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
-    @Autowired
-    public AuthenticationServiceImpl(final UserManagementService userManagementService) {
-        this.userManagementService = userManagementService;
-    }
+    @Value("${cas.service.authentication-service}")
+    private String targetService;
+
+    @Value("${web.url.cas}")
+    private String casUrl;
+    @Value("${haku.app.username.to.usermanagement}")
+    private String clientAppUser;
+    @Value("${haku.app.password.to.usermanagement}")
+    private String clientAppPass;
+
+    private Gson gson;
 
     public String addPerson(Person person) {
-        AddHenkiloDataType addHenkiloDataType = new AddHenkiloDataType();
-        addHenkiloDataType.setEiSuomalaistaHetua(Boolean.FALSE);
-        addHenkiloDataType.setEtunimet(person.getFirstNames());
-        addHenkiloDataType.setHenkiloTyyppi(HenkiloTyyppiType.OPPIJA);
-        addHenkiloDataType.setHetu(person.getSocialSecurityNumber());
-        addHenkiloDataType.setKayttajatunnus(person.getEmail());
-        addHenkiloDataType.setKotikunta(person.getHomeCity());
-        addHenkiloDataType.setKutsumanimi(person.getNickName());
-        addHenkiloDataType.setSukunimi(person.getLastName());
-        addHenkiloDataType.setSukupuoli(resolveSexType(person.getSex()));
-        addHenkiloDataType.setTurvakielto(person.isSecurityOrder());
 
-        // TODO: resolve proper language when user management service
-        // allows adding people with koodisto languahe codes
-        KielisyysType contactLanguageType = new KielisyysType();
-        contactLanguageType.setKieliKoodi(KIELI_KOODI);
-        contactLanguageType.setId(ID_117);
-        contactLanguageType.setKieliTyyppi(KIELITYYPPI_SUOMI);
-        addHenkiloDataType.setAsiointiKieli(contactLanguageType);
-        KielisyysType lang = new KielisyysType();
-        lang.setId(ID_117);
-        lang.setKieliKoodi(KIELI_KOODI);
-        lang.setKieliTyyppi(KIELITYYPPI_SUOMI);
-        KansalaisuusType nat = new KansalaisuusType();
-        nat.setId(ID_120);
-        nat.setKansalaisuusKoodi(KIELI_KOODI);
-        addHenkiloDataType.getKielisyys().add(lang);
-        addHenkiloDataType.getKansalaisuus().add(nat);
+        String hetuResource = targetService + "/resources/henkilo/byHetu";
 
-        HenkiloType henkiloType = userManagementService.addHenkilo(addHenkiloDataType);
+        String realCasUrl = casUrl + "/v1/tickets";
+        log.info("Getting CAS ticket from " + realCasUrl + " for " + targetService);
+        String serviceTicket = CasClient.getTicket(realCasUrl, clientAppUser, clientAppPass, targetService + "/j_spring_cas_security_check");
 
-        return henkiloType.getOidHenkilo();
+        HttpClient client = new HttpClient();
+        String realHetuUrl = hetuResource + "/" + person.getSocialSecurityNumber() + "?ticket=" + serviceTicket;
+        log.info("Getting person from " + realHetuUrl);
+        GetMethod get = new GetMethod(realHetuUrl);
+        try {
+            client.executeMethod(get);
+        } catch (IOException e) {
+            log.error("Checking hetu failed due to: " + e.toString());
+            return null;
+        }
+
+        int status = get.getStatusCode();
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
+        gson = gsonBuilder.create();
+        String responseString = null;
+        if (status == 404) {
+            responseString = createHenkilo(client, person);
+        } else if (status >= 500) {
+            log.error("Checking hetu failed due to: " + get.getStatusCode() + get.getStatusText());
+            return null;
+        } else if (status == 200) {
+            try {
+                responseString = get.getResponseBodyAsString();
+            } catch (IOException e) {
+                // It's because I'm lazy
+                throw new RuntimeException(e);
+            }
+        }
+
+        JsonObject henkiloJson = new JsonParser().parse(responseString).getAsJsonObject();
+        String oid = henkiloJson.get("oidHenkilo").getAsString();
+        return oid;
+
     }
 
-    private SukupuoliType resolveSexType(String sex) {
-        //TODO: is there a koodisto for sex?
-        return MALE.equals(sex) ? SukupuoliType.MIES : SukupuoliType.NAINEN;
+    private String createHenkilo(HttpClient client, Person person) {
+
+        String henkiloResource = targetService + "/resources/henkilo";
+
+        String responseString = null;
+        PostMethod post = new PostMethod(henkiloResource);
+        try {
+            RequestEntity entity = new StringRequestEntity(gson.toJson(person, Person.class), MediaType.APPLICATION_JSON, "UTF-8");
+            post.setRequestEntity(entity);
+            client.executeMethod(post);
+            responseString = post.getResponseBodyAsString();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            log.error("Creating person failed due to: " + e.toString());
+        }
+        return responseString;
     }
+
 }

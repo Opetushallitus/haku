@@ -53,7 +53,7 @@ public class KoodiTypeToSubjectRowFunction implements Function<KoodiType, Subjec
         koodi.setKoodiUri(koodiType.getKoodiUri());
         koodi.setVersio(koodiType.getVersio());
         if (koodiService != null) {
-            List<KoodiType> koodiTypes = koodiService.getYlakoodis(koodi.getKoodiUri());
+            List<KoodiType> koodiTypes = koodiService.getAlakoodis(koodi.getKoodiUri());
             for (KoodiType type : koodiTypes) {
                 String koodistoUri = type.getKoodisto().getKoodistoUri();
                 if (CODE_OPPIAINEENVALINNAISUUS.equals(koodistoUri)) {

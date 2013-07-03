@@ -1,6 +1,7 @@
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="fn" uri="/WEB-INF/tld/functions.tld" %>
+<%@ taglib prefix="f" uri="/WEB-INF/tld/functions.tld" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -19,16 +20,21 @@
   --%>
 
 <div id="${element.id}" class="related-question-rule-class"
-     data-selector="${ fn:toNameSelectorString(element.relatedElementId)}">
+     data-selector="${ f:toNameSelectorString(element.relatedElementId)}">
     <script type="text/javascript">
+        var ${fn:replace(element.id, '-', '_')} = {
+            childIds : [<c:forEach var="child" items="${element.children}" varStatus="status">"${child.id}"${not status.last ? ', ' : ''}</c:forEach>],
+            ruleChildSelector : "#${element.id} .rule-childs",
+            expression : "${element.expression}",
+            relatedSelector : "${ f:toNameSelectorString(element.relatedElementId)}"
+        };
+        var ${fn:replace(element.id, '-', '_')}_func = function (event) {
+            var $this = $(this);
+            var settings = ${fn:replace(element.id, '-', '_')};
+            relatedRule.changeState($this, $(settings.ruleChildSelector), settings.childIds, settings.expression);
+        };
         (function () {
-            $("${ fn:toNameSelectorString(element.relatedElementId)}").change(function (event) {
-                var childIds = [<c:forEach var="child" items="${element.children}" varStatus="status">"${child.id}"${not status.last ? ', ' : ''}</c:forEach>];
-                var ruleChildren = $("#${element.id} .rule-childs");
-                var expression = "${element.expression}";
-                var $this = $(this);
-                relatedRule.changeState($this, ruleChildren, childIds, expression);
-            });
+            $("${ f:toNameSelectorString(element.relatedElementId)}").change(${fn:replace(element.id, '-', '_')}_func);
         })();
     </script>
     <div class="rule-childs clear">
