@@ -62,7 +62,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public String addPerson(Person person) {
 
-        String hetuResource = targetService + "/resources/byHetu";
+        String hetuResource = targetService + "/resources/henkilo/byHetu";
 
         String realCasUrl = casUrl + "/v1/tickets";
         log.info("Getting CAS ticket from " + realCasUrl + " for " + targetService);
