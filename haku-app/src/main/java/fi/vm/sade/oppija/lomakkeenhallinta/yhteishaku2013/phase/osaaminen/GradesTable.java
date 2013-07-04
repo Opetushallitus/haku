@@ -94,7 +94,7 @@ public class GradesTable {
         GradeGridOptionQuestion gradesSelected2 = null;
         if (gradeGridHelper.isComprehensiveSchool()) {
             gradesSelected2 =
-                    new GradeGridOptionQuestion(id + "_VAL1", gradeRangesWithDefault, true);
+                    new GradeGridOptionQuestion(id + "_VAL2", gradeRangesWithDefault, true);
             ElementUtil.setDisabled(gradesSelected2);
         }
 
