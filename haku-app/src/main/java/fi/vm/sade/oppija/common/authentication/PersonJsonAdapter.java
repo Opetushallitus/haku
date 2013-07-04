@@ -44,15 +44,13 @@ public class PersonJsonAdapter implements JsonSerializer<Person> {
     public JsonElement serialize(Person person, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject personJson = new JsonObject();
         personJson.add("etunimet", new JsonPrimitive(person.getFirstNames()));
-        personJson.add("hetu", new JsonPrimitive(person.getSocialSecurityNumber()));
-        personJson.add("kotikunta", new JsonPrimitive(person.getHomeCity()));
         personJson.add("kutsumanimi", new JsonPrimitive(person.getNickName()));
         personJson.add("sukunimi", new JsonPrimitive(person.getLastName()));
+        personJson.add("hetu", new JsonPrimitive(person.getSocialSecurityNumber()));
         String sex = person.getSex();
         if (!isEmpty(sex)) {
             personJson.add("sukupuoli", new JsonPrimitive(sex.equals(SukupuoliType.MIES.value()) ? "MIES" : "NAINEN"));
         }
-        personJson.add("turvakielto", new JsonPrimitive(person.isSecurityOrder()));
         personJson.add("eiSuomalaistaHetua", new JsonPrimitive(person.isNoSocialSecurityNumber()));
 
         personJson.add("henkiloTyyppi", new JsonPrimitive("OPPIJA"));
