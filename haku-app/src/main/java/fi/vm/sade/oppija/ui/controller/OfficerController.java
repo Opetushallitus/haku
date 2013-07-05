@@ -62,6 +62,7 @@ public class OfficerController {
     public static final String SEARCH_INDEX_VIEW = "/virkailija/searchIndex";
     public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + ";charset=UTF-8";
     public static final String VIRKAILIJA_PHASE_VIEW = "/virkailija/Phase";
+    public static final String APPLICATION_PRINT_VIEW = "/print/print";
 
     @Autowired
     OfficerUIService officerUIService;
@@ -230,4 +231,13 @@ public class OfficerController {
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
         return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel());
     }
+
+    @GET
+    @Path("/hakemus/{oid}/print")
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    public Viewable applicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException {
+        UIServiceResponse uiServiceResponse = officerUIService.getApplicationPrint(oid);
+        return new Viewable(APPLICATION_PRINT_VIEW, uiServiceResponse.getModel());
+    }
+
 }

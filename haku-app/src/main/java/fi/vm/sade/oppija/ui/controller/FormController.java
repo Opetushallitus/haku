@@ -66,6 +66,7 @@ public class FormController {
     public static final String VERBOSE_HELP_VIEW = "/help";
     public static final String LINK_LIST_VIEW = "/linkList";
     public static final String VALMIS_VIEW = "/valmis";
+    public static final String PRINT_VIEW = "/print/print";
 
     public static final String FORM_ID_PATH_PARAM = "formId";
     public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
@@ -300,6 +301,29 @@ public class FormController {
         model.put("hakemusId", hakuLomakeId);
         model.put("applicationNumber", application.getOid());
         return new Viewable(VALMIS_VIEW, model);
+    }
+
+    @GET
+    @Path("/{applicationPeriodId}/{formId}/tulostus/{oid}")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    public Viewable getPrint(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                             @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                             @PathParam("oid") final String oid) {
+        LOGGER.debug("getPrint {}, {}, {}", new Object[]{applicationPeriodId, formId, oid});
+        Map<String, Object> model = new HashMap<String, Object>();
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        model.put("form", activeForm);
+        final FormId hakuLomakeId = new FormId(applicationPeriodId, activeForm.getId());
+
+        final Application application;
+        try {
+            application = applicationService.getPendingApplication(hakuLomakeId, oid);
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundExceptionRuntime("Could not find pending application", e);
+        }
+
+        model.put("application", application);
+        return new Viewable(PRINT_VIEW, model);
     }
 
     @GET

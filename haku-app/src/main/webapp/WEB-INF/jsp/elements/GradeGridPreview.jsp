@@ -16,11 +16,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
-<tr>
-    <th></th>
-    <th colspan="2"><fmt:message key="lomake.component.gradegrid.gradesTitle"/></th>
-</tr>
 <tr>
     <td><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
     <td></td>
@@ -35,6 +30,11 @@
 
 <script>
     $(document).ready(function () {
-        $("tr[hidden]").show();
-    })
+        $("tr[id|='additionalRow']").each(function() {
+            if($(this).find("td").filter( function() {
+                return $.trim($(this).text()) === '';
+            }).length === 0) {
+        $(this).show();
+    }
+    })});
 </script>

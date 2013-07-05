@@ -171,6 +171,16 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         applicationService.addNote(application, note, user);
     }
 
+    @Override
+    public UIServiceResponse getApplicationPrint(String oid) throws ResourceNotFoundException {
+        Application application = applicationService.getApplication(oid);
+        final Form activeForm = formService.getForm(application.getFormId());
+        ApplicationPrintViewResponse response = new ApplicationPrintViewResponse();
+        response.setApplication(application);
+        response.setForm(activeForm);
+        return response;
+    }
+
     private AdditionalQuestions getAdditionalQuestions(final Application application) throws IOException {
         List<String> applicationPreferenceOids = this.applicationService.getApplicationPreferenceOids(application);
         return this.valintaperusteetService.retrieveAdditionalQuestions(applicationPreferenceOids);
