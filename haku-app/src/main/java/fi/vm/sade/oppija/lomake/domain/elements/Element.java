@@ -200,6 +200,20 @@ public abstract class Element implements Serializable {
         return ImmutableList.copyOf(children);
     }
 
+    public static List<Element> getAllChildren(Element element) {
+        return element.getAllChildren();
+    }
+
+    private List<Element> getAllChildren() {
+        ArrayList<Element> allChildren = new ArrayList<Element>();
+        for (Element child : children) {
+            allChildren.add(child);
+            allChildren.addAll(child.getAllChildren());
+        }
+        return allChildren;
+    }
+
+
     @JsonIgnore
     public Element getChildById(final String id) {
         Element element = getChildById(this, id);

@@ -26,6 +26,11 @@
         </function-signature>
     </function>
     <function>
+        <name>allChildren</name>
+        <function-class>fi.vm.sade.oppija.lomake.domain.elements.Element</function-class>
+        <function-signature>java.util.List getAllChildren(fi.vm.sade.oppija.lomake.domain.elements.Element)</function-signature>
+    </function>
+    <function>
         <name>dod</name>
         <function-class>fi.vm.sade.oppija.lomake.domain.rules.RegexRule</function-class>
         <function-signature>java.lang.String getDateOfBirth(java.util.Map)</function-signature>
