@@ -22,7 +22,7 @@
     <parent>
         <artifactId>haku</artifactId>
         <groupId>fi.vm.sade.haku</groupId>
-        <version>5.0</version>
+        <version>5.0.1</version>
     </parent>
     <artifactId>haku-app</artifactId>
     <packaging>war</packaging>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>fi.vm.sade.koodisto</groupId>
             <artifactId>koodisto-api</artifactId>
-            <version>${project.version}</version>
+            <version>5.0</version>
         </dependency>
 
         <dependency>
@@ -502,7 +502,7 @@
         <dependency>
             <groupId>fi.vm.sade.log</groupId>
             <artifactId>log-client</artifactId>
-            <version>${project.version}</version>
+            <version>5.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -545,13 +545,13 @@
         <dependency>
             <groupId>fi.vm.sade.generic</groupId>
             <artifactId>generic-common</artifactId>
-            <version>${project.version}</version>
+	    <version>5.0</version>
         </dependency>
 
         <dependency>
             <groupId>fi.vm.sade.organisaatio</groupId>
             <artifactId>organisaatio-api</artifactId>
-            <version>${project.version}</version>
+	    <version>5.0</version>
             <exclusions>
                 <exclusion>
                     <artifactId>cxf-rt-frontend-jaxrs</artifactId>
@@ -562,7 +562,7 @@
         <dependency>
             <groupId>fi.vm.sade.auth</groupId>
             <artifactId>authentication-api</artifactId>
-            <version>${project.version}</version>
+	    <version>5.0</version>
         </dependency>
 
         <!-- CXF dependencies -->
