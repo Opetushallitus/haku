@@ -11,6 +11,7 @@
 <c:set var="phase" value="${it.form.lastPhase}" scope="request"/>
 <c:set var="print" value="true" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+<c:set var="discretionaryAttachmentAOIds" value="${it.discretionaryAttachmentAOIds}" scope="request"/>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -22,7 +23,7 @@
         <header>
             <h1><haku:i18nText value="${form.i18nText}"/></h1>
             <h2><c:out value="${categoryData['Etunimet']}" escapeXml="true"/>&nbsp;<c:out value="${categoryData['Sukunimi']}" escapeXml="true"/></h2>
-            <p><fmt:message key="lomake.tulostus.vastaanotettu"/>&nbsp;<time><c:out value="${application.received}"/></time></p>
+            <p><fmt:message key="lomake.tulostus.vastaanotettu"/>&nbsp;<time><fmt:formatDate value="${application.received}" pattern="yyyy-MM-dd HH:mm:ss" /></time></p>
             <div class="application-number"><fmt:message key="virkailija.hakemus.hakemusnro"/>&nbsp;<c:out value="${application.oid}" escapeXml="true"/></div>
         </header>
         <c:forEach var="child" items="${phase.children}">
@@ -30,6 +31,7 @@
             <c:set var="parentId" value="${form.id}.${phase.id}" scope="request"/>
             <jsp:include page="../print/${child.type}Print.jsp"/>
         </c:forEach>
+        <jsp:include page="../print/discretionaryAttachments.jsp"/>
         <footer>
         </footer>
     </body>

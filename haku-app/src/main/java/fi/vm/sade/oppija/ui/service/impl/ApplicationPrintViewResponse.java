@@ -20,12 +20,15 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 
+import java.util.List;
+
 /**
  * @author Mikko Majapuro
  */
 public class ApplicationPrintViewResponse extends UIServiceResponse {
 
     public static final String FORM = "form";
+    public static final String DISCRETIONARY_ATTACHMENT_AO_IDS = "discretionaryAttachmentAOIds";
 
     @Override
     public void setApplication(final Application application) {
@@ -34,5 +37,9 @@ public class ApplicationPrintViewResponse extends UIServiceResponse {
 
     public void setForm(final Form form) {
         this.addObjectToModel(FORM, form);
+    }
+
+    public void setDiscretionaryAttachmentAOIds(final List<String> discretionaryAttachmentAOIds) {
+       this.addObjectToModel(DISCRETIONARY_ATTACHMENT_AO_IDS, discretionaryAttachmentAOIds);
     }
 }

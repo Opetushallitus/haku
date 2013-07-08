@@ -1,5 +1,7 @@
 package fi.vm.sade.oppija.ui.service.impl;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
@@ -15,6 +17,7 @@ import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.slf4j.Logger;
@@ -178,6 +181,28 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         ApplicationPrintViewResponse response = new ApplicationPrintViewResponse();
         response.setApplication(application);
         response.setForm(activeForm);
+        //AOs requiring attachments
+        List<String> discretionaryAttachmentAOs = Lists.newArrayList();
+        Map<String, String> answers = application.getVastauksetMerged();
+        int i = 1;
+        while(true) {
+            String key = String.format(OppijaConstants.PREFERENCE_ID, i);
+            if (answers.containsKey(key)) {
+                String aoId = answers.get(key);
+                String discretionaryKey = String.format(OppijaConstants.PREFERENCE_DISCRETIONARY, i);
+                if (!Strings.isNullOrEmpty(aoId) && answers.containsKey(discretionaryKey)) {
+                    String discretionaryValue = answers.get(discretionaryKey);
+                    if (!Strings.isNullOrEmpty(discretionaryValue) && Boolean.parseBoolean(discretionaryValue)) {
+                        discretionaryAttachmentAOs.add(aoId);
+                    }
+                }
+            } else {
+                break;
+            }
+            ++i;
+        }
+        response.setDiscretionaryAttachmentAOIds(discretionaryAttachmentAOs);
+        response.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return response;
     }
 

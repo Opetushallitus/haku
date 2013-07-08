@@ -18,7 +18,7 @@
     <c:choose>
         <c:when test="${print}">
             <tr>
-                <td><h4><haku:i18nText value="${element.i18nText}"/></h4></td>
+                <td colspan="2"><h4><haku:i18nText value="${element.i18nText}"/></h4></td>
             </tr>
             <haku:viewChilds element="${element}"/>
         </c:when>

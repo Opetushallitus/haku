@@ -149,10 +149,12 @@ public abstract class Element implements Serializable {
     public void addAttribute(final String key, final String value) {
         checkNotNull(key, "Attribute's key cannot be null");
         checkNotNull(value, "Attribute's value cannot be null");
-        Attribute attribute = new Attribute(key, value);
-        this.attributes.put(key, attribute);
-        if (!"required".equals(key)) {
-            attributeString.append(attribute.getAsString());
+        if (!attributes.containsKey(key)) {
+            Attribute attribute = new Attribute(key, value);
+            this.attributes.put(key, attribute);
+            if (!"required".equals(key)) {
+                attributeString.append(attribute.getAsString());
+            }
         }
     }
 

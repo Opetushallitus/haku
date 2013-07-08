@@ -25,6 +25,6 @@
                     key="virkailija.hakemus.aktivoi.hakemus"/></a>
         </c:otherwise>
     </c:choose>
-    <a href="${contextPath}/virkailija/hakemus/${oid}/print" class="button small print"><fmt:message
+    <a href="${contextPath}/virkailija/hakemus/${oid}/print" class="button small print" target="_blank"><fmt:message
     key="lomake.valmis.button.tulosta"/></a>
 </div>
