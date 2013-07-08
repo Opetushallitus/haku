@@ -32,7 +32,14 @@
             <jsp:include page="../print/${child.type}Print.jsp"/>
         </c:forEach>
         <jsp:include page="../print/discretionaryAttachments.jsp"/>
+        <hr>
         <footer>
+            <address>
+                <fmt:message key="lomake.tulostus.alatunniste.rivi1"/><br>
+                <fmt:message key="lomake.tulostus.alatunniste.rivi2"/><br>
+                <fmt:message key="lomake.tulostus.alatunniste.rivi3"/><br>
+                <fmt:message key="lomake.tulostus.alatunniste.rivi4"/>
+            </address>
         </footer>
     </body>
 </html>

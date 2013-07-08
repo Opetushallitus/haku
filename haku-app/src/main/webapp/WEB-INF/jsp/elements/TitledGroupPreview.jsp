@@ -21,6 +21,7 @@
                 <td colspan="2"><h4><haku:i18nText value="${element.i18nText}"/></h4></td>
             </tr>
             <haku:viewChilds element="${element}"/>
+            <tr><td colspan="2">&nbsp;</td></tr>
         </c:when>
         <c:otherwise>
             <tr>
