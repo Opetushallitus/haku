@@ -194,11 +194,9 @@ public class KoulutustaustaPhase {
         addDefaultTrueFalseOptions(suorittanutAmmatillisenTutkinnon);
         addRequiredValidator(suorittanutAmmatillisenTutkinnon);
 
-
         lukioRule.addChild(suorittanutAmmatillisenTutkinnon);
         lukioRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
-
 
         RelatedQuestionRule suorittanutTutkinnonRule = new RelatedQuestionRule(ElementUtil.randomId(),
                 suorittanutAmmatillisenTutkinnon.getId(), "^true", false);
@@ -218,6 +216,15 @@ public class KoulutustaustaPhase {
         addRequiredValidator(perusopetuksenKieli);
         setVerboseHelp(perusopetuksenKieli);
         pkKysymyksetRule.addChild(perusopetuksenKieli);
+
+        DropdownSelect lukionKieli = new DropdownSelect("lukion_kieli",
+                createI18NForm("form.koulutustausta.lukionKieli"), null);
+        lukionKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NAsIs(""), "");
+        lukionKieli.addOptions(koodistoService.getLanguages());
+        addRequiredValidator(lukionKieli);
+        setVerboseHelp(lukionKieli);
+        lukioRule.addChild(lukionKieli);
+
         return millatutkinnolla;
     }
 }
