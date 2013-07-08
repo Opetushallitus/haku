@@ -213,7 +213,7 @@ public class KoulutustaustaPhase {
 
         DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
                 createI18NForm("form.koulutustausta.perusopetuksenKieli"), null);
-        perusopetuksenKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NForm(""), "");
+        perusopetuksenKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NAsIs(""), "");
         perusopetuksenKieli.addOptions(koodistoService.getLanguages());
         addRequiredValidator(perusopetuksenKieli);
         setVerboseHelp(perusopetuksenKieli);

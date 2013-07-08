@@ -202,7 +202,7 @@ public class HenkilotiedotPhase {
 
         DropdownSelect kotikunta =
                 new DropdownSelect("kotikunta", createI18NForm("form.henkilotiedot.kotikunta"), null);
-        kotikunta.addOption("eiValittu", ElementUtil.createI18NForm(""), "");
+        kotikunta.addOption("eiValittu", ElementUtil.createI18NAsIs(""), "");
         kotikunta.addOptions(koodistoService.getMunicipalities());
         kotikunta.addAttribute("placeholder", "Valitse kotikunta");
         setRequiredInlineAndVerboseHelp(kotikunta);
@@ -237,7 +237,7 @@ public class HenkilotiedotPhase {
         DropdownSelect aidinkieli =
                 new DropdownSelect(AIDINKIELI_ID, createI18NForm("form.henkilotiedot.aidinkieli"),
                         "fi_vm_sade_oppija_language");
-        aidinkieli.addOption("eiValittu", ElementUtil.createI18NForm(""), "");
+        aidinkieli.addOption("eiValittu", ElementUtil.createI18NAsIs(""), "");
         aidinkieli.addOptions(koodistoService.getLanguages());
         aidinkieli.addAttribute("placeholder", "Valitse Äidinkieli");
         setRequiredInlineAndVerboseHelp(aidinkieli);
