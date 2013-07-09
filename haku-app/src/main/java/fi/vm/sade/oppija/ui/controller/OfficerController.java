@@ -25,6 +25,7 @@ import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.oppija.ui.common.UriUtil;
 import fi.vm.sade.oppija.ui.service.OfficerUIService;
+import fi.vm.sade.oppija.ui.service.UIService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +67,8 @@ public class OfficerController {
 
     @Autowired
     OfficerUIService officerUIService;
+    @Autowired
+    UIService uiService;
 
     @Autowired
     UserHolder userHolder;
@@ -236,7 +239,7 @@ public class OfficerController {
     @Path("/hakemus/{oid}/print")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Viewable applicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException {
-        UIServiceResponse uiServiceResponse = officerUIService.getApplicationPrint(oid);
+        UIServiceResponse uiServiceResponse = uiService.getApplicationPrint(oid);
         return new Viewable(APPLICATION_PRINT_VIEW, uiServiceResponse.getModel());
     }
 

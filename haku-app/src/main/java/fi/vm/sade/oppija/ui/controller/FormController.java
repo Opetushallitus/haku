@@ -38,6 +38,8 @@ import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.oppija.ui.common.RedirectToFormViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPhaseViewPath;
+import fi.vm.sade.oppija.ui.service.UIService;
+import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,17 +82,20 @@ public class FormController {
     private final UserHolder userHolder;
     private final AdditionalQuestionService additionalQuestionService;
     private final String koulutusinformaatioBaseUrl;
+    private final UIService uiService;
 
     @Autowired
     public FormController(@Qualifier("formServiceImpl") final FormService formService,
                           final ApplicationService applicationService, final UserHolder userHolder,
                           final AdditionalQuestionService additionalQuestionService,
-                          @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUr) {
+                          @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
+                          final UIService uiService) {
         this.formService = formService;
         this.applicationService = applicationService;
         this.userHolder = userHolder;
         this.additionalQuestionService = additionalQuestionService;
-        this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUr;
+        this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
+        this.uiService = uiService;
     }
 
     @GET
@@ -308,22 +313,10 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getPrint(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                              @PathParam(FORM_ID_PATH_PARAM) final String formId,
-                             @PathParam("oid") final String oid) {
+                             @PathParam("oid") final String oid) throws ResourceNotFoundException {
         LOGGER.debug("getPrint {}, {}, {}", new Object[]{applicationPeriodId, formId, oid});
-        Map<String, Object> model = new HashMap<String, Object>();
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        model.put("form", activeForm);
-        final FormId hakuLomakeId = new FormId(applicationPeriodId, activeForm.getId());
-
-        final Application application;
-        try {
-            application = applicationService.getPendingApplication(hakuLomakeId, oid);
-        } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundExceptionRuntime("Could not find pending application", e);
-        }
-
-        model.put("application", application);
-        return new Viewable(PRINT_VIEW, model);
+        UIServiceResponse uiServiceResponse = uiService.getApplicationPrint(applicationPeriodId, formId, oid);
+        return new Viewable(PRINT_VIEW, uiServiceResponse.getModel());
     }
 
     @GET

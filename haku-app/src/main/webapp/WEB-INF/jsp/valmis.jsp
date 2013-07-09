@@ -91,11 +91,8 @@
                         justo, sed consectetur enim. Curabitur nisl erat, egestas ut facilisis vel, interdum ac risus.
                     </p>
 
-                    <button class="print"><span><span><fmt:message key="lomake.valmis.button.tulosta"/></span></span>
-                    </button>
-                    <button class="pdf"><span><span><fmt:message key="lomake.valmis.button.tallennapdf"/></span></span>
-                    </button>
-
+                    <a href="${contextPath}/lomake/${it.hakemusId.applicationPeriodId}/${it.hakemusId.formId}/tulostus/${it.applicationNumber}" class="button small print" target="_blank"><fmt:message
+                    key="lomake.valmis.button.tulosta"/></a>
 
                     <div class="clear"></div>
                     <hr/>
