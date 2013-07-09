@@ -82,6 +82,19 @@ public class UIServiceImpl implements UIService {
         return response;
     }
 
+    @Override
+    public UIServiceResponse getApplicationComplete(String applicationPeriodId, String formId, String oid) throws ResourceNotFoundException {
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        final FormId hakuLomakeId = new FormId(applicationPeriodId, activeForm.getId());
+        Application application = applicationService.getPendingApplication(hakuLomakeId, oid);
+        ApplicationCompleteResponse response = new ApplicationCompleteResponse();
+        response.setApplication(application);
+        response.setForm(activeForm);
+        response.setDiscretionaryAttachmentAOIds(getDiscretionaryAttachmentAOIds(application));
+        response.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
+        return response;
+    }
+
     private List<String> getDiscretionaryAttachmentAOIds(final Application application) {
         //AOs requiring attachments
         List<String> discretionaryAttachmentAOs = Lists.newArrayList();

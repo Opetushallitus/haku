@@ -41,4 +41,6 @@ public interface UIService {
      * @throws ResourceNotFoundException
      */
     UIServiceResponse getApplicationPrint(final String applicationPeriodId, final String formId, final String oid) throws ResourceNotFoundException;
+
+    UIServiceResponse getApplicationComplete(final String applicationPeriodId, final String formId, final String oid) throws ResourceNotFoundException;
 }

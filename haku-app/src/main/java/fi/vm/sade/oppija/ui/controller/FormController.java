@@ -287,25 +287,11 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getComplete(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                 @PathParam(FORM_ID_PATH_PARAM) final String formId,
-                                @PathParam("oid") final String oid) {
+                                @PathParam("oid") final String oid) throws ResourceNotFoundException {
 
         LOGGER.debug("getComplete {}, {}", new Object[]{applicationPeriodId, formId});
-        Map<String, Object> model = new HashMap<String, Object>();
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        model.put("form", activeForm);
-        final FormId hakuLomakeId = new FormId(applicationPeriodId, activeForm.getId());
-
-        final Application application;
-        try {
-            application = applicationService.getPendingApplication(hakuLomakeId, oid);
-        } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundExceptionRuntime("Could not find pending application", e);
-        }
-
-        model.put("categoryData", application.getAnswers());
-        model.put("hakemusId", hakuLomakeId);
-        model.put("applicationNumber", application.getOid());
-        return new Viewable(VALMIS_VIEW, model);
+        UIServiceResponse response = uiService.getApplicationComplete(applicationPeriodId, formId, oid);
+        return new Viewable(VALMIS_VIEW, response.getModel());
     }
 
     @GET

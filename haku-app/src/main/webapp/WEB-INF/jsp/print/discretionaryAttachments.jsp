@@ -5,6 +5,7 @@
 
  <c:if test="${not empty discretionaryAttachmentAOIds}">
     <section id="discretionaryAttachments">
+        <hr>
         <h3><fmt:message key="lomake.tulostus.liitteet"/></h3>
         <p><fmt:message key="lomake.tulostus.liitteet.harkinnanvaraisuus"/></p>
     </section>
