@@ -20,7 +20,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <!DOCTYPE html>
-<fmt:setBundle basename="messages" scope="session"/>
+<fmt:setBundle basename="messages" scope="session" var="msgs"/>
 <c:set var="phase" value="${it.element}" scope="request"/>
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="oid" value="${it.oid}" scope="request"/>
@@ -77,13 +77,13 @@
             <tr>
                 <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}"/>
                 <c:if test="${application.state eq 'ACTIVE'}">
-                    <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
+                    <fmt:message key="virkailija.hakemus.tila.voimassa" bundle="${msgs}" var="msg"/>
                 </c:if>
                 <c:if test="${application.state eq 'PASSIVE'}">
-                    <fmt:message key="virkailija.hakemus.tila.peruttu" var="msg"/>
+                    <fmt:message key="virkailija.hakemus.tila.peruttu" bundle="${msgs}" var="msg"/>
                 </c:if>
                 <c:if test="${application.state eq 'INCOMPLETE'}">
-                    <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="msg"/>
+                    <fmt:message key="virkailija.hakemus.tila.puutteellinen" bundle="${msgs}" var="msg"/>
                 </c:if>
                 <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${msg}'/>
                 <haku:infoCell key="virkailija.hakemus.puhelin" value="${categoryData['matkapuhelinnumero']}"/>
@@ -136,7 +136,7 @@
                                 <jsp:include page="../elements/${child.type}.jsp"/>
                             </c:forEach>
                             <button class="save" name="vaiheId" type="submit" value="${phase.id}">
-                                <span><span><fmt:message key="lomake.button.save"/></span></span>
+                                <span><span><fmt:message bundle="${msgs}" key="lomake.button.save"/></span></span>
                             </button>
                         </form>
                     </c:otherwise>
