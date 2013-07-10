@@ -8,6 +8,7 @@
         <hr>
         <h3><fmt:message key="lomake.tulostus.liitteet"/></h3>
         <p><fmt:message key="lomake.tulostus.liitteet.harkinnanvaraisuus"/></p>
+        <div id="discretionaryAttachmentAddresses"></div>
     </section>
     <script type="text/javascript">
         var discretionaryAttachmentAOIds = [<c:forEach var="aoId" items="${discretionaryAttachmentAOIds}" varStatus="status">"${aoId}"${not status.last ? ', ' : ''}</c:forEach>];
@@ -19,7 +20,7 @@
         </c:if>
         var deliveryDeadlineLabel = '<fmt:message key="lomake.tulostus.liitteet.deadline"/>';
         $(document).ready(function () {
-            var $discretionaryAttachments = $("#discretionaryAttachments");
+            var $discretionaryAttachments = $("#discretionaryAttachmentAddresses");
             for (var i in discretionaryAttachmentAOIds) {
                 $.getJSON(koulutusinformaatioBaseUrl + '/ao/' + discretionaryAttachmentAOIds[i], function(data) {
                     if (data.attachmentDeliveryAddress) {

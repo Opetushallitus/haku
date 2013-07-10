@@ -17,6 +17,7 @@
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
         <meta charset="utf-8"/>
         <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
+        <script src="${contextPath}/resources/jquery/xdr.js"></script>
         <title><haku:i18nText value="${form.i18nText}"/></title>
     </head>
     <body>
