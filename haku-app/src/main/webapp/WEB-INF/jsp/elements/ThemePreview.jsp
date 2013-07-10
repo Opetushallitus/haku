@@ -53,7 +53,7 @@
             </c:forEach>
         </c:if>
     </c:forEach>
-    <table class="form-summary-table width-50">
+    <table class="form-summary-table width-80">
         <tbody>
         <haku:viewChilds element="${element}"/>
         </tbody>

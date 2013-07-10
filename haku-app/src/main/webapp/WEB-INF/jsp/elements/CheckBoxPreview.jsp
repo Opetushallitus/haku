@@ -36,13 +36,9 @@
         <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
         <tr>
             <td>
-                <fieldset class="${styleBaseClass}">
-                    <div class="field-container-checkbox">
-                        <input type="checkbox" name="${element.id}"
-                               disabled="true" ${(categoryData[element.id] eq element.value) ? "checked=\"checked\"" : ""} value="${element.value}"/>
-                        <label for="${element.id}"><haku:i18nText value="${element.i18nText}"/></label>
-                    </div>
-                </fieldset>
+                <input type="checkbox" name="${element.id}"
+                       disabled="true" ${(categoryData[element.id] eq element.value) ? "checked=\"checked\"" : ""} value="${element.value}"/>
+                <label for="${element.id}"><haku:i18nText value="${element.i18nText}"/></label>
             </td>
         </tr>
     </c:otherwise>

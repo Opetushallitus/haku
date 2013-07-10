@@ -35,6 +35,8 @@
                 return $.trim($(this).text()) === '';
             }).length === 0) {
         $(this).show();
+    } else {
+        $(this).hide();
     }
     })});
 </script>
