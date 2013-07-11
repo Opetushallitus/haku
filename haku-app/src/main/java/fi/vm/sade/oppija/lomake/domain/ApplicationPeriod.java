@@ -34,6 +34,7 @@ public class ApplicationPeriod implements Serializable {
     private String id;
     private Date starts;
     private Date end;
+    private I18nText name;
 
     final Map<String, Form> forms = new HashMap<String, Form>();
 
@@ -96,5 +97,13 @@ public class ApplicationPeriod implements Serializable {
 
     public void setEnd(final Date end) {
         this.end = new Date(end.getTime());
+    }
+
+    public I18nText getName() {
+        return name;
+    }
+
+    public void setName(I18nText name) {
+        this.name = name;
     }
 }

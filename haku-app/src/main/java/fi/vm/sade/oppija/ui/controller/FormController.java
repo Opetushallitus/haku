@@ -67,6 +67,7 @@ public class FormController {
     public static final String ROOT_VIEW = "/elements/Root";
     public static final String VERBOSE_HELP_VIEW = "/help";
     public static final String LINK_LIST_VIEW = "/linkList";
+    public static final String APPLICATION_PERIOD_LIST_VIEW = "/applicationPeriodList";
     public static final String VALMIS_VIEW = "/valmis";
     public static final String PRINT_VIEW = "/print/print";
 
@@ -104,8 +105,8 @@ public class FormController {
         LOGGER.debug("listApplicationPeriods");
         Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("linkList", applicationPerioidMap.keySet());
-        return new Viewable(LINK_LIST_VIEW, model);
+        model.put("applicationPeriods", applicationPerioidMap);
+        return new Viewable(APPLICATION_PERIOD_LIST_VIEW, model);
     }
 
     @GET

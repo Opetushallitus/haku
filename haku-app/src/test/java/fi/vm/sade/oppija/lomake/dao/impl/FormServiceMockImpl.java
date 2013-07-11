@@ -16,10 +16,12 @@
 
 package fi.vm.sade.oppija.lomake.dao.impl;
 
+import com.google.common.collect.Maps;
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
@@ -37,7 +39,13 @@ public class FormServiceMockImpl implements FormService {
         Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl(), asid, aoid);
         FormModelHolder formModelHolder = new FormModelHolder(yhteishaku2013);
         this.formModel = formModelHolder.getModel();
-
+        for (ApplicationPeriod ap : formModel.getApplicationPerioidMap().values()) {
+            Map<String, String> translations = Maps.newHashMap();
+            translations.put("fi", ap.getId());
+            translations.put("sv", ap.getId());
+            translations.put("en", ap.getId());
+            ap.setName(new I18nText(translations));
+        }
     }
 
     @Override
