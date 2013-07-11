@@ -30,6 +30,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/jquery/xdr.js"></script>
     <link rel="stylesheet" href="${contextPath}/resources/css/oppija.css" type="text/css">
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
     <title><haku:i18nText value="${form.i18nText}"/></title>
