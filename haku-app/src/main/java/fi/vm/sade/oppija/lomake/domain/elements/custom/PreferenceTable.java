@@ -54,37 +54,14 @@ public class PreferenceTable extends Titled {
         List<Validator> listOfValidators = new ArrayList<Validator>();
         List<String> learningInstitutionInputIds = new ArrayList<String>();
         List<String> educationInputIds = new ArrayList<String>();
-        List<Predicate<Map<String, String>>> preferencePredicates = new ArrayList<Predicate<Map<String, String>>>();
 
         for (Element element : this.getChildren()) {
             PreferenceRow pr = (PreferenceRow) element;
             learningInstitutionInputIds.add(pr.getLearningInstitutionInputId());
             educationInputIds.add(pr.getEducationInputId());
-            preferencePredicates.add(
-                    validate(
-                            new EqualsValidator(pr.getEducationInputId() + "-educationDegree",
-                                    ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "32")));
         }
 
         listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds));
-        Predicate<Map<String, String>> predicate =
-                and(
-                        not(
-                                and(
-                                        and(
-                                                validate(new EqualsValidator("ammatillinenTutkintoSuoritettu",
-                                                        ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "true")),
-                                                validate(new RequiredFieldValidator("ammatillinenTutkintoSuoritettu",
-                                                        ElementUtil.createI18NTextError("yleinen.pakollinen")))
-                                        ),
-                                        or(preferencePredicates)
-                                )
-                        )
-                );
-
-        FunctionalValidator fv = new FunctionalValidator(predicate, this.getId(),
-                ElementUtil.createI18NTextError("hakutoiveet.ammatillinenSuoritettu"));
-        listOfValidators.add(fv);
         return listOfValidators;
     }
 }
