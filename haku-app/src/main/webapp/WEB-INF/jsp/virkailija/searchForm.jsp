@@ -70,6 +70,11 @@
                                value="<fmt:message key="virkailija.hakemus.hae"/>" style="margin-bottom:1px;"/>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <a href="#" id="create-application" data-po-show="createApplication" class="button secondary small"><fmt:message key="virkailija.hakemus.syota"/></a>
+                    </td>
+                </tr>
             </table>
         </div>
     </form>

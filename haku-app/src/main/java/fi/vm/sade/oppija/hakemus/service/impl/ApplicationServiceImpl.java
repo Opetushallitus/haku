@@ -30,6 +30,7 @@ import fi.vm.sade.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
@@ -382,6 +383,21 @@ public class ApplicationServiceImpl implements ApplicationService {
             return apps.get(0);
         }
         return null;
+    }
+
+    @Override
+    public Application officerCreateNewApplication(String asId) {
+        ApplicationPeriod as = formService.getApplicationPeriodById(asId);
+        FormId formId = new FormId(asId, as.getFormIds().iterator().next());
+        Application application = new Application();
+        application.setFormId(formId);
+        application.setReceived(new Date());
+        application.setState(Application.State.INCOMPLETE);
+        final User user = userHolder.getUser();
+        application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), user));
+        application.setOid(applicationOidService.generateNewOid());
+        this.applicationDAO.save(application);
+        return application;
     }
 
     private Application getApplication(final Application application) throws ResourceNotFoundException {

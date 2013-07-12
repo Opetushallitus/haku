@@ -20,7 +20,10 @@ import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.FormId;
+import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.oppija.ui.common.UriUtil;
@@ -38,6 +41,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -58,6 +62,7 @@ public class OfficerController {
     public static final String OID_PATH_PARAM = "oid";
     public static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String FORM_ID_PATH_PARAM = "formId";
+    public static final String ELEMENT_ID_PATH_PARAM = "elementId";
     public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
     public static final String ADDITIONAL_INFO_VIEW = "/virkailija/additionalInfo";
     public static final String SEARCH_INDEX_VIEW = "/virkailija/searchIndex";
@@ -69,6 +74,8 @@ public class OfficerController {
     OfficerUIService officerUIService;
     @Autowired
     UIService uiService;
+    @Autowired
+    FormService formService;
 
     @Autowired
     UserHolder userHolder;
@@ -79,6 +86,17 @@ public class OfficerController {
     public Viewable search() {
         UIServiceResponse uiServiceResponse = officerUIService.getOrganizationAndLearningInstitutions();
         return new Viewable(SEARCH_INDEX_VIEW, uiServiceResponse.getModel());
+    }
+
+    @POST
+    @Path("/hakemus/new")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    public Response newApplication(final MultivaluedMap<String, String> multiValues) throws URISyntaxException, ResourceNotFoundException {
+        LOGGER.debug("newApplication");
+        final String asId = multiValues.getFirst("asId");
+        Application application = officerUIService.createApplication(asId);
+        return redirectToLastPhase(application.getOid());
     }
 
     @GET
@@ -243,4 +261,25 @@ public class OfficerController {
         return new Viewable(APPLICATION_PRINT_VIEW, uiServiceResponse.getModel());
     }
 
+    @GET
+    @Path("/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}/{elementId}/relatedData/{key}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Serializable getElementRelatedData(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                              @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                                              @PathParam(OID_PATH_PARAM) final String oid,
+                                              @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
+                                              @PathParam("key") final String key) {
+        LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationPeriodId, formId, elementId, key);
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        try {
+            @SuppressWarnings("unchecked")
+            DataRelatedQuestion<Serializable> element =
+                    (DataRelatedQuestion<Serializable>) activeForm.getChildById(elementId);
+            return element.getData(key);
+        } catch (Exception e) {
+            LOGGER.error(e.toString());
+            return null;
+        }
+    }
 }

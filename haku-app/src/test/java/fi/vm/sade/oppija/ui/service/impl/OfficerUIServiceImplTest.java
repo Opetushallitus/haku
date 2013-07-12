@@ -92,7 +92,7 @@ public class OfficerUIServiceImplTest {
     @Test
     public void testGetOrganizationAndLearningInstitutions() throws Exception {
         UIServiceResponse uiServiceResponse = officerUIService.getOrganizationAndLearningInstitutions();
-        assertTrue(3 == uiServiceResponse.getModel().size());
+        assertTrue(4 == uiServiceResponse.getModel().size());
     }
 
     @Test

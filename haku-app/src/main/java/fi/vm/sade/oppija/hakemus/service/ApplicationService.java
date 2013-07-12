@@ -184,4 +184,11 @@ public interface ApplicationService {
     Application passivateApplication(String oid);
 
     void addNote(Application application, String s, User user);
+
+    /**
+     * Creates a new empty application to specified application system.
+     * @param asId application system id
+     * @return created application
+     */
+    Application officerCreateNewApplication(final String asId);
 }

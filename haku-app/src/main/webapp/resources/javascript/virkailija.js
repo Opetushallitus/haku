@@ -101,13 +101,19 @@ $(document).ready(function () {
                 $tbody.empty();
                 self.updateCounters(data.length);
                 $(data).each(function (index, item) {
-                    var henkilotiedot = item.answers.henkilotiedot;
-                    $tbody.append('<tr><td>' +
-                        henkilotiedot.Sukunimi + '</td><td>' +
-                        henkilotiedot.Etunimet + '</td><td>' +
-                        henkilotiedot.Henkilotunnus + '</td><td><a class="application-link" href="' +
-                        page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
-                        item.oid + '</a></td><td>' + item.state + '</td></tr>');
+                    if (item.answers && item.answers.henkilotiedot) {
+                        var henkilotiedot = item.answers.henkilotiedot;
+                        $tbody.append('<tr><td>' +
+                            henkilotiedot.Sukunimi + '</td><td>' +
+                            henkilotiedot.Etunimet + '</td><td>' +
+                            henkilotiedot.Henkilotunnus + '</td><td><a class="application-link" href="' +
+                            page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
+                            item.oid + '</a></td><td>' + item.state + '</td></tr>');
+                    } else {
+                        $tbody.append('<tr><td></td><td></td><td></td><td><a class="application-link" href="' +
+                            page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
+                            item.oid + '</a></td><td>' + item.state + '</td></tr>');
+                    }
                 });
             });
         },
