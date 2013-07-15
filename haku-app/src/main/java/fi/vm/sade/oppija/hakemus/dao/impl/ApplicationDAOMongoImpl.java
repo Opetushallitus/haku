@@ -25,9 +25,11 @@ import com.mongodb.QueryBuilder;
 import fi.vm.sade.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.oppija.hakemus.converter.DBObjectToApplicationFunction;
+import fi.vm.sade.oppija.hakemus.converter.DBObjectToSearchResultItem;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.EncrypterService;
@@ -53,6 +55,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     public static final int HUNDRED = 100;
     private final EncrypterService shaEncrypter;
+    private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
 
     private static final String FIELD_AO_1 = "answers.hakutoiveet.preference1-Koulutus-id";
     private static final String FIELD_AO_2 = "answers.hakutoiveet.preference2-Koulutus-id";
@@ -91,9 +94,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Autowired
     public ApplicationDAOMongoImpl(DBObjectToApplicationFunction dbObjectToHakemusConverter,
                                    ApplicationToDBObjectFunction hakemusToBasicDBObjectConverter,
-                                   @Qualifier("shaEncrypter") EncrypterService shaEncrypter) {
+                                   @Qualifier("shaEncrypter") EncrypterService shaEncrypter,
+                                   DBObjectToSearchResultItem dbObjectToSearchResultItem) {
         super(dbObjectToHakemusConverter, hakemusToBasicDBObjectConverter);
         this.shaEncrypter = shaEncrypter;
+        this.dbObjectToSearchResultItem = dbObjectToSearchResultItem;
     }
 
     @Override
@@ -171,12 +176,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<Application> findAllFiltered(ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findAllFiltered(ApplicationQueryParameters applicationQueryParameters) {
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         QueryBuilder baseQuery = QueryBuilder.start();
         DBObject query;
         query = newQueryBuilderWithFilters(filters, baseQuery);
-        return findApplications(query);
+        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
     }
 
     private QueryBuilder queryByPreference(final List<String> aoIds) {
@@ -220,13 +225,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     private Application findOneApplication(DBObject query) {
-        List<Application> listOfApplications = findApplications(query);
-        if (listOfApplications.size() == 1) {
-            return listOfApplications.get(0);
-        } else if (listOfApplications.size() > 1) {
-            throw new IllegalArgumentException("footos"); // ResourceNotFoundExceptionRuntime("Found two or more applications found " + query);
+        DBObject result = getCollection().findOne(query);
+        if (result != null) {
+            return fromDBObject.apply(result);
+        } else {
+            throw new ResourceNotFoundExceptionRuntime("Application not found " + query);
         }
-        throw new ResourceNotFoundExceptionRuntime("Application not found " + query);
     }
 
     private List<Application> findApplications(DBObject dbObject) {
@@ -234,19 +238,24 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
     }
 
+    private ApplicationSearchResultDTO searchApplications(DBObject query, int start, int rows) {
+        final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject("_id", 1)).skip(start).limit(rows);
+        return new ApplicationSearchResultDTO(dbCursor.count(), Lists.newArrayList(Iterables.transform(dbCursor, dbObjectToSearchResultItem)));
+    }
+
     @Override
-    public List<Application> findByApplicantName(String term, ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findByApplicantName(String term, ApplicationQueryParameters applicationQueryParameters) {
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         Pattern namePattern = Pattern.compile(term, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
         QueryBuilder baseQuery = QueryBuilder.start().or(
                 QueryBuilder.start("answers.henkilotiedot.Etunimet").regex(namePattern).get(),
                 QueryBuilder.start("answers.henkilotiedot.Sukunimi").regex(namePattern).get());
         DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return findApplications(query);
+        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
     }
 
     @Override
-    public List<Application> findByOid(String term, ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findByOid(String term, ApplicationQueryParameters applicationQueryParameters) {
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         QueryBuilder baseQuery;
         if (term.startsWith(applicationOidPrefix)) {
@@ -259,41 +268,41 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     QueryBuilder.start(FIELD_PERSON_OID).is(userOidPrefix + "." + term).get());
         }
         DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return findApplications(query);
+        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
     }
 
     @Override
-    public List<Application> findByApplicationOid(String term, ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findByApplicationOid(String term, ApplicationQueryParameters applicationQueryParameters) {
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         QueryBuilder baseQuery = QueryBuilder.start(FIELD_APPLICATION_OID).is(term);
         DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return findApplications(query);
+        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
     }
 
     @Override
-    public List<Application> findByUserOid(String term, ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findByUserOid(String term, ApplicationQueryParameters applicationQueryParameters) {
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         QueryBuilder baseQuery = QueryBuilder.start(FIELD_PERSON_OID).is(term);
         DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return findApplications(query);
+        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
     }
 
     @Override
-    public List<Application> findByApplicantSsn(String term, ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findByApplicantSsn(String term, ApplicationQueryParameters applicationQueryParameters) {
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         QueryBuilder baseQuery = QueryBuilder.start("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH)
                 .is(shaEncrypter.encrypt(term));
         DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return findApplications(query);
+        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
     }
 
     @Override
-    public List<Application> findByApplicantDob(final String term, final ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findByApplicantDob(final String term, final ApplicationQueryParameters applicationQueryParameters) {
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         String dob = hetuDobToIsoDate(term);
         QueryBuilder baseQuery = QueryBuilder.start("answers.henkilotiedot.syntymaaika").is(dob);
         DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return findApplications(query);
+        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
     }
 
     private String hetuDobToIsoDate(final String term) {

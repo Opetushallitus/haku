@@ -22,8 +22,10 @@ public class ApplicationQueryParameters {
     private final String state;
     private final String preference;
     private final String lopOid;
+    private final int start;
+    private final int rows;
 
-    public ApplicationQueryParameters() {
+    /*public ApplicationQueryParameters() {
         this(null, null);
     }
 
@@ -33,12 +35,14 @@ public class ApplicationQueryParameters {
 
     public ApplicationQueryParameters(final String state, final String lopOid) {
         this(state, null, lopOid);
-    }
+    } */
 
-    public ApplicationQueryParameters(final String state, final String preference, final String lopOid) {
+    public ApplicationQueryParameters(final String state, final String preference, final String lopOid, final int start, final int rows) {
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
         this.state = isEmpty(state) ? null : state;
         this.preference = isEmpty(preference) ? null : preference;
+        this.start = start;
+        this.rows = rows;
     }
 
     public String getState() {
@@ -55,5 +59,13 @@ public class ApplicationQueryParameters {
 
     public boolean isFetchSubmittedOnly() {
         return true;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public int getRows() {
+        return rows;
     }
 }

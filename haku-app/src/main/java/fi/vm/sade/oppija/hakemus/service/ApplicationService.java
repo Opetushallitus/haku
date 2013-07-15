@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.hakemus.service;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
@@ -106,7 +107,7 @@ public interface ApplicationService {
      * @param term
      * @return
      */
-    List<Application> findApplications(final String term, final ApplicationQueryParameters applicationQueryParameters);
+    ApplicationSearchResultDTO findApplications(final String term, final ApplicationQueryParameters applicationQueryParameters);
 
 
     /**

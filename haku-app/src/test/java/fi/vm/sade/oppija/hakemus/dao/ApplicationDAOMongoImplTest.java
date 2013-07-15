@@ -22,6 +22,7 @@ import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
@@ -134,33 +135,38 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
 
     @Test
     public void testFindByHetuActive() {
-        List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M",
-                new ApplicationQueryParameters(Application.State.ACTIVE.toString()));
-        assertEquals(2, applications.size());
+        ApplicationSearchResultDTO applications = applicationDAO.findByApplicantSsn("050998-957M",
+                new ApplicationQueryParameters(Application.State.ACTIVE.toString(), null, null, 0, Integer.MAX_VALUE));
+        assertEquals(2, applications.getResults().size());
+        assertEquals(2, applications.getTotalCount());
     }
 
     @Test
     public void testFindByHetuPassive() {
-        List<Application> applications = applicationDAO.findByApplicantSsn("050998-957M",
-                new ApplicationQueryParameters(Application.State.PASSIVE.toString()));
-        assertEquals(1, applications.size());
+        ApplicationSearchResultDTO applications = applicationDAO.findByApplicantSsn("050998-957M",
+                new ApplicationQueryParameters(Application.State.PASSIVE.toString(), null, null, 0, Integer.MAX_VALUE));
+        assertEquals(1, applications.getResults().size());
     }
 
     @Test
     public void testFindByName() {
         // Heikki
-        List<Application> applications = applicationDAO.findByApplicantName("Heikki", new ApplicationQueryParameters());
-        assertEquals(1, applications.size());
+        ApplicationSearchResultDTO applications = applicationDAO.findByApplicantName("Heikki", new ApplicationQueryParameters(
+                null, null, null, 0, Integer.MAX_VALUE));
+        assertEquals(1, applications.getResults().size());
         // Hessu * 2
-        applications = applicationDAO.findByApplicantName("Hessu", new ApplicationQueryParameters());
-        assertEquals(2, applications.size());
+        applications = applicationDAO.findByApplicantName("Hessu", new ApplicationQueryParameters(null, null, null, 0,
+                Integer.MAX_VALUE));
+        assertEquals(2, applications.getResults().size());
         // Hessut ja Heikki
-        applications = applicationDAO.findByApplicantName("he", new ApplicationQueryParameters());
-        assertEquals(3, applications.size());
+        applications = applicationDAO.findByApplicantName("he", new ApplicationQueryParameters(null, null, null, 0,
+                Integer.MAX_VALUE));
+        assertEquals(3, applications.getResults().size());
         // Hessu, active
-        ApplicationQueryParameters activeParameters = new ApplicationQueryParameters(Application.State.ACTIVE.toString());
+        ApplicationQueryParameters activeParameters = new ApplicationQueryParameters(Application.State.ACTIVE.toString(),
+                null, null, 0, Integer.MAX_VALUE);
         applications = applicationDAO.findByApplicantName("Hessu", activeParameters);
-        assertEquals(1, applications.size());
+        assertEquals(1, applications.getResults().size());
     }
 
     @Test

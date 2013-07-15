@@ -43,7 +43,7 @@ public class HakemusServiceImplTest {
         app.addVaiheenVastaukset("hakutoiveet", answers);
         List<Application> applications = new ArrayList<Application>();
         applications.add(app);
-        when(applicationService.findApplications(eq(""), any(ApplicationQueryParameters.class))).thenReturn(applications);
+        //when(applicationService.findApplications(eq(""), any(ApplicationQueryParameters.class))).thenReturn(applications);
         when(applicationService.getApplicationsByApplicationOption(anyList())).thenReturn(applications);
         when(applicationService.getApplicationsByApplicationSystem(eq(APP_SYSTEM_OID))).thenReturn(applications);
         conversionService = mock(ConversionService.class);

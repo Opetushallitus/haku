@@ -99,22 +99,17 @@ $(document).ready(function () {
                 lopoid: $('#lopoid').val()
             }, function (data) {
                 $tbody.empty();
-                self.updateCounters(data.length);
-                $(data).each(function (index, item) {
-                    if (item.answers && item.answers.henkilotiedot) {
-                        var henkilotiedot = item.answers.henkilotiedot;
+                self.updateCounters(data.totalCount);
+                if (data.totalCount > 0) {
+                    $(data.results).each(function (index, item) {
                         $tbody.append('<tr><td>' +
-                            henkilotiedot.Sukunimi + '</td><td>' +
-                            henkilotiedot.Etunimet + '</td><td>' +
-                            henkilotiedot.Henkilotunnus + '</td><td><a class="application-link" href="' +
+                            (item.lastName ? item.lastName : '') + '</td><td>' +
+                            (item.firstNames ? item.firstNames : '') + '</td><td>' +
+                            (item.ssn ? item.ssn : '') + '</td><td><a class="application-link" href="' +
                             page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
-                            item.oid + '</a></td><td>' + item.state + '</td></tr>');
-                    } else {
-                        $tbody.append('<tr><td></td><td></td><td></td><td><a class="application-link" href="' +
-                            page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
-                            item.oid + '</a></td><td>' + item.state + '</td></tr>');
-                    }
-                });
+                            item.oid + '</a></td><td>' + (item.state ? item.state : '') + '</td></tr>');
+                    });
+                }
             });
         },
             this.updateCounters = function (count) {

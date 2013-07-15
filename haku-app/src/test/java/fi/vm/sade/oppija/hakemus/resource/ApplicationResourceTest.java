@@ -16,8 +16,11 @@
 
 package fi.vm.sade.oppija.hakemus.resource;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
 import fi.vm.sade.oppija.lomake.domain.FormId;
@@ -83,21 +86,24 @@ public class ApplicationResourceTest {
 
         ArrayList<Application> applications = new ArrayList<Application>();
         applications.add(this.application);
+        ApplicationSearchResultDTO searchResultDTO = new ApplicationSearchResultDTO(1, Lists.newArrayList(new ApplicationSearchResultItemDTO()));
+        ApplicationSearchResultDTO emptySearchResultDTO = new ApplicationSearchResultDTO(0, null);
         when(applicationService.getApplicationsByApplicationOption(anyList())).thenReturn(applications);
-        when(applicationService.findApplications(eq(OID), any(ApplicationQueryParameters.class))).thenReturn(applications);
+        when(applicationService.findApplications(eq(OID), any(ApplicationQueryParameters.class))).thenReturn(searchResultDTO);
+        when(applicationService.findApplications(eq(INVALID_OID), any(ApplicationQueryParameters.class))).thenReturn(emptySearchResultDTO);
         this.applicationResource = new ApplicationResource(this.applicationService, this.conversionService);
     }
 
     @Test
     public void testFindApplications() {
-        List<Application> applications = this.applicationResource.findApplications(OID, "", "", null);
-        assertEquals(1, applications.size());
+        ApplicationSearchResultDTO applications = this.applicationResource.findApplications(OID, "", "", null, 0, Integer.MAX_VALUE);
+        assertEquals(1, applications.getResults().size());
     }
 
     @Test
     public void testFindApplicationsNoMatch() {
-        List<Application> applications = this.applicationResource.findApplications(INVALID_OID, "",  "", null);
-        assertEquals(0, applications.size());
+        ApplicationSearchResultDTO applications = this.applicationResource.findApplications(INVALID_OID, "",  "", null, 0, Integer.MAX_VALUE);
+        assertEquals(0, applications.getTotalCount());
     }
 
     @Test

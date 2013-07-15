@@ -20,6 +20,7 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -75,9 +76,10 @@ public class ApplicationIT extends AbstractRemoteTest {
         String response = getPageSource();
 
         ObjectMapper mapper = new ObjectMapper();
-        List<Application> applications = mapper.readValue(response, new TypeReference<List<Application>>() {
+        ApplicationSearchResultDTO applications = mapper.readValue(response, new TypeReference<ApplicationSearchResultDTO>() {
         });
-        assertEquals(3, applications.size());
+        assertEquals(3, applications.getResults().size());
+        assertEquals(3, applications.getTotalCount());
     }
 
     @Test
@@ -86,9 +88,10 @@ public class ApplicationIT extends AbstractRemoteTest {
         String response = getPageSource();
 
         ObjectMapper mapper = new ObjectMapper();
-        List<Application> applications = mapper.readValue(response, new TypeReference<List<Application>>() {
+        ApplicationSearchResultDTO applications = mapper.readValue(response, new TypeReference<ApplicationSearchResultDTO>() {
         });
-        assertEquals(1, applications.size());
+        assertEquals(1, applications.getResults().size());
+        assertEquals(1, applications.getTotalCount());
     }
 
     @Test
@@ -97,9 +100,9 @@ public class ApplicationIT extends AbstractRemoteTest {
         String response = getPageSource();
 
         ObjectMapper mapper = new ObjectMapper();
-        List<Application> applications = mapper.readValue(response, new TypeReference<List<Application>>() {
+        ApplicationSearchResultDTO applications = mapper.readValue(response, new TypeReference<ApplicationSearchResultDTO>() {
         });
-        assertEquals(0, applications.size());
+        assertEquals(0, applications.getTotalCount());
     }
 
     @Test
