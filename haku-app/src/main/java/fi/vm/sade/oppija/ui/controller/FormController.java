@@ -29,7 +29,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.domain.rules.LanguageTestRule;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
@@ -141,16 +141,6 @@ public class FormController {
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{formId}/{phaseId}/{elementId}")
-    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getPhaseElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
-                                    @PathParam(FORM_ID_PATH_PARAM) final String formId,
-                                    @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                                    @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
-        return getPhase(applicationPeriodId, formId, elementId);
-    }
-
-    @GET
     @Path("/{applicationPeriodId}/{formId}/esikatselu")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getPreview(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
@@ -180,6 +170,35 @@ public class FormController {
         model.put("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
 
         return new Viewable(ROOT_VIEW, model);
+    }
+
+    @GET
+    @Path("/{applicationPeriodId}/{formId}/{phaseId}/{elementId}")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    public Viewable getPhaseElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                    @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                                    @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                                    @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
+        return getPhase(applicationPeriodId, formId, elementId);
+    }
+
+    @GET
+    @Path("/{applicationPeriodId}/{formId}/{phaseId}/{elementId}/languageTest")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Serializable getLanguageTestChildren(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                                @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
+                                                @QueryParam("ai") final String aidinkieli,
+                                                @QueryParam("a1") final String a1Kieli,
+                                                @QueryParam("a2") final String a2Kieli,
+                                                @QueryParam("a1Grade") final String a1Grade,
+                                                @QueryParam("a2Grade") final String a2Grade) {
+        LOGGER.debug("getLanguageTest {}, {}, {}, {}", applicationPeriodId, formId, phaseId, elementId);
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        LanguageTestRule rule = (LanguageTestRule) activeForm.getChildById(elementId);
+        return rule.getTests(aidinkieli, a1Kieli, a2Kieli, a1Grade, a2Grade);
     }
 
     @GET

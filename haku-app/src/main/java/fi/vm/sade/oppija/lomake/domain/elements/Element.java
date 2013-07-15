@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
+import fi.vm.sade.oppija.lomake.domain.rules.LanguageTestRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionNotRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.Validator;
@@ -72,7 +73,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
                 @JsonSubTypes.Type(value = Notification.class),
                 @JsonSubTypes.Type(value = DateQuestion.class),
                 @JsonSubTypes.Type(value = Group.class),
-                @JsonSubTypes.Type(value = HiddenValue.class)
+                @JsonSubTypes.Type(value = HiddenValue.class),
+                @JsonSubTypes.Type(value = LanguageTestRule.class)
         }
 )
 public abstract class Element implements Serializable {

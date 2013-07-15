@@ -111,7 +111,7 @@ public abstract class OptionQuestion extends Question {
             values.add(option.getValue());
         }
 
-        listOfValidator.add(new ValueSetValidator(this.getId(), ElementUtil.createI18NTextError("Virheellinen arvo"), values));
+        listOfValidator.add(new ValueSetValidator(this.getId(), ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), values));
         return listOfValidator;
     }
 }

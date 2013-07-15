@@ -45,7 +45,7 @@ public class HAK305IT extends DummyModelBaseItTest {
 
         fillInArvosanatTheme();
 
-
+        // Native lang == FI, no lang test
         elementsNotPresentByName("yleinen_kielitutkinto_sv", "valtionhallinnon_kielitutkinto_sv",
                 "yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
 
@@ -55,7 +55,28 @@ public class HAK305IT extends DummyModelBaseItTest {
         setPerusopetuksenKieli(NATIVE_LANGUAGE_SV);
         nextPhase();
         nextPhase(); // Osaaminen
+
+        // Native & school lang == FI, lang test
         elementsPresentByName("yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
+
+        // School lang == FI, no lang test
+        selectByValue("PK_AI_OPPIAINE", "FI");
+        elementsNotPresentByName("yleinen_kielitutkinto_sv", "valtionhallinnon_kielitutkinto_sv",
+                "yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
+
+        // School lang == SV, lang test
+        selectByValue("PK_AI_OPPIAINE", "SV");
+        elementsPresentByName("yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
+
+        // First foreign lang == FI, grade 10, no lang test
+        selectByValue("PK_A1_OPPIAINE", "FI");
+        elementsNotPresentByName("yleinen_kielitutkinto_sv", "valtionhallinnon_kielitutkinto_sv",
+                "yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
+
+        // First foreign lang == FI, grade 6, lang test
+        selectByValue("PK_A1", "6");
+        elementsPresentByName("yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
+
         findByIdAndClick("yleinen_kielitutkinto_fi_true", "valtionhallinnon_kielitutkinto_fi_true");
         nextPhase();
         fillInRestOfThePhasesAndCheckTheOID();
