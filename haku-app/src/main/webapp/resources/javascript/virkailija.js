@@ -87,16 +87,19 @@ $(document).ready(function () {
         var self = this, $q = $('#entry'), $appState = $('#application-state'),
             $appPreference = $('#application-preference'),
             $tbody = $('#application-table tbody:first'), $resultcount = $('#resultcount'),
-            $applicationTabLabel = $('#application-tab-label');
+            $applicationTabLabel = $('#application-tab-label'),
+            maxRows = 50;
 
-        this.search = function () {
+        this.search = function (start) {
 
             $.getJSON(page_settings.contextPath + "/applications", {
                 q: $q.val(),
                 oid: oid.val(),
                 appState: $appState.val(),
                 appPreference: $appPreference.val(),
-                lopoid: $('#lopoid').val()
+                lopoid: $('#lopoid').val(),
+                start: start,
+                rows: maxRows
             }, function (data) {
                 $tbody.empty();
                 self.updateCounters(data.totalCount);
@@ -109,6 +112,16 @@ $(document).ready(function () {
                             page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
                             item.oid + '</a></td><td>' + (item.state ? item.state : '') + '</td></tr>');
                     });
+                    var options = {
+                        currentPage: Math.ceil(start / maxRows) + 1,
+                        totalPages: Math.ceil(data.totalCount / maxRows),
+                        onPageClicked: function(e,originalEvent,type,page){
+                            applicationSearch.search((page -1) * maxRows);
+                        }
+                    }
+                    $('#pagination').bootstrapPaginator(options);
+                } else {
+                    $('#pagination').empty();
                 }
             });
         },
@@ -122,13 +135,14 @@ $(document).ready(function () {
                 $q.val('');
                 $appState.val('');
                 $appPreference.val('');
+                $('#pagination').empty();
             }
         return this;
     })();
 
 
     $('#search-applications').click(function (event) {
-        applicationSearch.search();
+        applicationSearch.search(0);
         return false;
     });
 

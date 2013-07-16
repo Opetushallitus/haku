@@ -63,11 +63,11 @@
                         </div>
                     </td>
 
-                    <td style="vertical-align:bottom;">
+                    <td class="padding-top-4">
                         <input id="reset-search" class="button secondary small" type="button"
-                               value="<fmt:message key="virkailija.hakemus.tyhjenna"/>" style="margin-bottom:1px;"/>
+                               value="<fmt:message key="virkailija.hakemus.tyhjenna"/>"/>
                         <input id="search-applications" class="button primary small" type="submit"
-                               value="<fmt:message key="virkailija.hakemus.hae"/>" style="margin-bottom:1px;"/>
+                               value="<fmt:message key="virkailija.hakemus.hae"/>"/>
                     </td>
                 </tr>
                 <tr>
@@ -107,6 +107,7 @@
                 </tbody>
             </table>
             <div class="clear"></div>
+            <div id="pagination"/>
         </section>
     </div>
 </section>
