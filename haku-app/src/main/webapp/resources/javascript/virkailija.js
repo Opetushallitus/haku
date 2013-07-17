@@ -110,7 +110,7 @@ $(document).ready(function () {
                             (item.firstNames ? item.firstNames : '') + '</td><td>' +
                             (item.ssn ? item.ssn : '') + '</td><td><a class="application-link" href="' +
                             page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
-                            item.oid + '</a></td><td>' + (item.state ? item.state : '') + '</td></tr>');
+                            item.oid + '</a></td><td>' + (item.state ? page_settings[item.state] : '') + '</td></tr>');
                     });
                     var options = {
                         currentPage: Math.ceil(start / maxRows) + 1,
