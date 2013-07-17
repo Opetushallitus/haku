@@ -124,6 +124,11 @@ public final class ElementUtil {
         radio.addOption(EI, createI18NForm("form.yleinen.ei"), EI);
     }
 
+    public static void addYesAndIDontOptions(final Radio radio) {
+        radio.addOption(KYLLA, createI18NForm("form.yleinen.kylla"), KYLLA);
+        radio.addOption(EI, createI18NForm("form.yleinen.en"), EI);
+    }
+
     public static GradeGridRow createHiddenGradeGridRowWithId(final String id) {
         GradeGridRow gradeGridRow = new GradeGridRow(id);
         gradeGridRow.addAttribute(HIDDEN, HIDDEN);

@@ -44,7 +44,7 @@ public class KoulutustaustaPhase {
         koulutustaustaRyhma.addChild(createKoulutustaustaRadio(koodistoService));
 
         Radio osallistunut = new Radio("osallistunut", createI18NForm("form.koulutustausta.osallistunutPaasykokeisiin"));
-        addDefaultTrueFalseOptions(osallistunut);
+        addYesAndIDontOptions(osallistunut);
         addRequiredValidator(osallistunut);
         setVerboseHelp(osallistunut);
 
@@ -151,7 +151,7 @@ public class KoulutustaustaPhase {
         Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio(
                 "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON",
                 createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka"));
-        addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon);
+        addYesAndIDontOptions(koulutuspaikkaAmmatillisenTutkintoon);
         addRequiredValidator(koulutuspaikkaAmmatillisenTutkintoon);
 
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu);
@@ -191,7 +191,7 @@ public class KoulutustaustaPhase {
         Radio suorittanutAmmatillisenTutkinnon = new Radio(
                 "ammatillinenTutkintoSuoritettu",
                 createI18NForm("form.koulutustausta.ammatillinenSuoritettu"));
-        addDefaultTrueFalseOptions(suorittanutAmmatillisenTutkinnon);
+        addYesAndIDontOptions(suorittanutAmmatillisenTutkinnon);
         addRequiredValidator(suorittanutAmmatillisenTutkinnon);
 
         lukioRule.addChild(suorittanutAmmatillisenTutkinnon);
