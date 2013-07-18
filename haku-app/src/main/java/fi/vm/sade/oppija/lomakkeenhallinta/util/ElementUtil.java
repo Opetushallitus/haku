@@ -178,7 +178,8 @@ public final class ElementUtil {
     }
 
     public static String randomId() {
-        return UUID.randomUUID().toString().replace('.', '_');
+        //starting random id with a letter preventing some javascript errors
+        return 'a' + UUID.randomUUID().toString().replace('.', '_');
     }
 
     private static void filterElements(
