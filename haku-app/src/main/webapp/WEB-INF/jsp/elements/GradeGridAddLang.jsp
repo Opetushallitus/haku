@@ -37,7 +37,7 @@
         $("tr[group=${element.id}]:hidden").each(
                 function (index, item) {
                     var option = $('<option></option>');
-                    option.html($(item).children('#column1').text());
+                    option.html($(item).children('td:first').text());
                     option.val($(item).attr('id'));
                     select.append(option);
                 }
