@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
+import fi.vm.sade.oppija.lomake.domain.rules.LanguageTestRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionNotRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.Validator;
@@ -72,7 +73,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
                 @JsonSubTypes.Type(value = Notification.class),
                 @JsonSubTypes.Type(value = DateQuestion.class),
                 @JsonSubTypes.Type(value = Group.class),
-                @JsonSubTypes.Type(value = HiddenValue.class)
+                @JsonSubTypes.Type(value = HiddenValue.class),
+                @JsonSubTypes.Type(value = LanguageTestRule.class)
         }
 )
 public abstract class Element implements Serializable {
@@ -149,10 +151,12 @@ public abstract class Element implements Serializable {
     public void addAttribute(final String key, final String value) {
         checkNotNull(key, "Attribute's key cannot be null");
         checkNotNull(value, "Attribute's value cannot be null");
-        Attribute attribute = new Attribute(key, value);
-        this.attributes.put(key, attribute);
-        if (!"required".equals(key)) {
-            attributeString.append(attribute.getAsString());
+        if (!attributes.containsKey(key)) {
+            Attribute attribute = new Attribute(key, value);
+            this.attributes.put(key, attribute);
+            if (!"required".equals(key)) {
+                attributeString.append(attribute.getAsString());
+            }
         }
     }
 
@@ -199,6 +203,20 @@ public abstract class Element implements Serializable {
     public List<Element> getChildren() {
         return ImmutableList.copyOf(children);
     }
+
+    public static List<Element> getAllChildren(Element element) {
+        return element.getAllChildren();
+    }
+
+    private List<Element> getAllChildren() {
+        ArrayList<Element> allChildren = new ArrayList<Element>();
+        for (Element child : children) {
+            allChildren.add(child);
+            allChildren.addAll(child.getAllChildren());
+        }
+        return allChildren;
+    }
+
 
     @JsonIgnore
     public Element getChildById(final String id) {

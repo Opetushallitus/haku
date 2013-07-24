@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="/WEB-INF/tld/functions.tld" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -22,18 +23,31 @@
 <c:set value="${element.id}-Koulutus-id" var="selectHiddenInputId" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-aoIdentifier" var="aoIdentifier" scope="page"/>
 <c:if test="${not empty categoryData[selectHiddenInputId]}">
-    <tr id="${element.id}-Opetuspiste">
-        <td class="label"><haku:i18nText value="${element.i18nText}"/></td>
-        <td class="sublabel"><haku:i18nText value="${sortableItem.learningInstitutionLabel}"/></td>
-        <td><c:out value="${categoryData[textInputId]}"/></td>
+    <tr>
+        <td class="padding-top-3"><span class="margin-right-5 bold"><c:out value="${index}"/></span></td>
+        <td class="sublabel padding-top-3"><haku:i18nText value="${element.learningInstitutionLabel}"/></td>
+        <td class="bold padding-top-3"><c:out value="${categoryData[textInputId]}"/></td>
     </tr>
-    <tr id="${element.id}-Koulutus">
-        <td class="label"></td>
-        <td class="sublabel"><haku:i18nText value="${sortableItem.educationLabel}"/></td>
-        <td><c:out value="${categoryData[selectInputId]}"/>
+    <tr>
+        <td></td>
+        <td class="sublabel"><haku:i18nText value="${element.educationLabel}"/></td>
+        <td class="bold"><c:out value="${categoryData[selectInputId]}"/>
         <c:if test="${virkailijaPreview}">
             &nbsp;[<c:out value="${categoryData[aoIdentifier]}" />]
         </c:if>
         </td>
     </tr>
+    <c:if test="${not empty fn:children(element, categoryData)}">
+        <tr>
+            <td></td>
+            <td>Kysymykset</td>
+            <td>
+                <table>
+                    <tbody>
+                        <haku:viewChilds element="${element}"/>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </c:if>
 </c:if>

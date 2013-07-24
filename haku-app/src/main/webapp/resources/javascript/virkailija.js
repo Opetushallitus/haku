@@ -87,28 +87,42 @@ $(document).ready(function () {
         var self = this, $q = $('#entry'), $appState = $('#application-state'),
             $appPreference = $('#application-preference'),
             $tbody = $('#application-table tbody:first'), $resultcount = $('#resultcount'),
-            $applicationTabLabel = $('#application-tab-label');
+            $applicationTabLabel = $('#application-tab-label'),
+            maxRows = 50;
 
-        this.search = function () {
+        this.search = function (start) {
 
             $.getJSON(page_settings.contextPath + "/applications", {
                 q: $q.val(),
                 oid: oid.val(),
                 appState: $appState.val(),
                 appPreference: $appPreference.val(),
-                lopoid: $('#lopoid').val()
+                lopoid: $('#lopoid').val(),
+                start: start,
+                rows: maxRows
             }, function (data) {
                 $tbody.empty();
-                self.updateCounters(data.length);
-                $(data).each(function (index, item) {
-                    var henkilotiedot = item.answers.henkilotiedot;
-                    $tbody.append('<tr><td>' +
-                        henkilotiedot.Sukunimi + '</td><td>' +
-                        henkilotiedot.Etunimet + '</td><td>' +
-                        henkilotiedot.Henkilotunnus + '</td><td><a class="application-link" href="' +
-                        page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
-                        item.oid + '</a></td><td>' + item.state + '</td></tr>');
-                });
+                self.updateCounters(data.totalCount);
+                if (data.totalCount > 0) {
+                    $(data.results).each(function (index, item) {
+                        $tbody.append('<tr><td>' +
+                            (item.lastName ? item.lastName : '') + '</td><td>' +
+                            (item.firstNames ? item.firstNames : '') + '</td><td>' +
+                            (item.ssn ? item.ssn : '') + '</td><td><a class="application-link" href="' +
+                            page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
+                            item.oid + '</a></td><td>' + (item.state ? page_settings[item.state] : '') + '</td></tr>');
+                    });
+                    var options = {
+                        currentPage: Math.ceil(start / maxRows) + 1,
+                        totalPages: Math.ceil(data.totalCount / maxRows),
+                        onPageClicked: function(e,originalEvent,type,page){
+                            applicationSearch.search((page -1) * maxRows);
+                        }
+                    }
+                    $('#pagination').bootstrapPaginator(options);
+                } else {
+                    $('#pagination').empty();
+                }
             });
         },
             this.updateCounters = function (count) {
@@ -121,13 +135,14 @@ $(document).ready(function () {
                 $q.val('');
                 $appState.val('');
                 $appPreference.val('');
+                $('#pagination').empty();
             }
         return this;
     })();
 
 
     $('#search-applications').click(function (event) {
-        applicationSearch.search();
+        applicationSearch.search(0);
         return false;
     });
 

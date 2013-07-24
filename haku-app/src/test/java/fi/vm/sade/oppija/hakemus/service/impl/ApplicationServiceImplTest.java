@@ -22,6 +22,8 @@ import fi.vm.sade.oppija.common.authentication.Person;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
@@ -59,7 +61,7 @@ public class ApplicationServiceImplTest {
 
     @Before
     public void setUp() {
-        applicationQueryParameters = new ApplicationQueryParameters("", "", "");
+        applicationQueryParameters = new ApplicationQueryParameters("", "", "", 0, Integer.MAX_VALUE);
         application = new Application();
         Map<String, String> answers = new HashMap<String, String>();
         answers.put("avain", "arvo");
@@ -69,10 +71,11 @@ public class ApplicationServiceImplTest {
         formService = mock(FormService.class);
         authenticationService = mock(AuthenticationService.class);
 
-        when(applicationDAO.findByApplicantSsn(eq(SSN), eq(applicationQueryParameters))).thenReturn(Lists.newArrayList(application));
-        when(applicationDAO.findByApplicantName(eq(NAME), eq(applicationQueryParameters))).thenReturn(Lists.newArrayList(application));
-        when(applicationDAO.findByApplicationOid(eq(OID), eq(applicationQueryParameters))).thenReturn(Lists.newArrayList(application));
-        when(applicationDAO.findByOid(eq(SHORT_OID), eq(applicationQueryParameters))).thenReturn(Lists.newArrayList(application));
+        ApplicationSearchResultDTO searchResultDTO = new ApplicationSearchResultDTO(1, Lists.newArrayList(new ApplicationSearchResultItemDTO()));
+        when(applicationDAO.findByApplicantSsn(eq(SSN), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findByApplicantName(eq(NAME), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findByApplicationOid(eq(OID), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findByOid(eq(SHORT_OID), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
         when(applicationDAO.find(any(Application.class))).thenReturn(Lists.newArrayList(application));
         when(applicationOidService.getOidPrefix()).thenReturn("1.2.3.4.5");
         when(authenticationService.addPerson(any(Person.class))).thenReturn(PERSON_OID);
@@ -93,35 +96,35 @@ public class ApplicationServiceImplTest {
 
     @Test
     public void testFindApplicationBySsn() {
-        List<Application> results = service.findApplications(SSN, applicationQueryParameters);
+        ApplicationSearchResultDTO results = service.findApplications(SSN, applicationQueryParameters);
         assertNotNull(results);
-        assertEquals(1, results.size());
+        assertEquals(1, results.getResults().size());
         verify(applicationDAO, only()).findByApplicantSsn(eq(SSN), eq(applicationQueryParameters));
     }
 
     @Test
     public void testFindApplicationByName() {
-        List<Application> results = service.findApplications(NAME, applicationQueryParameters);
+        ApplicationSearchResultDTO results = service.findApplications(NAME, applicationQueryParameters);
         assertNotNull(results);
-        assertEquals(1, results.size());
+        assertEquals(1, results.getResults().size());
         verify(applicationDAO, only()).findByApplicantName(eq(NAME), eq(applicationQueryParameters));
     }
 
     @Test
     public void testFindApplicationByOid() {
         application.setOid(OID);
-        List<Application> results = service.findApplications(OID, applicationQueryParameters);
+        ApplicationSearchResultDTO results = service.findApplications(OID, applicationQueryParameters);
         assertNotNull(results);
-        assertEquals(1, results.size());
+        assertEquals(1, results.getResults().size());
         verify(applicationDAO, only()).findByApplicationOid(eq(OID), eq(applicationQueryParameters));
     }
 
     @Test
     public void testFindApplicationByShortOid() {
         application.setOid(OID);
-        List<Application> results = service.findApplications(SHORT_OID, applicationQueryParameters);
+        ApplicationSearchResultDTO results = service.findApplications(SHORT_OID, applicationQueryParameters);
         assertNotNull(results);
-        assertEquals(1, results.size());
+        assertEquals(1, results.getResults().size());
         verify(applicationDAO, only()).findByOid(eq(SHORT_OID), eq(applicationQueryParameters));
     }
 

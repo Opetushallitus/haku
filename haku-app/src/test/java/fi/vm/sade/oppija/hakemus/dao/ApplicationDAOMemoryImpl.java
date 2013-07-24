@@ -21,6 +21,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import org.springframework.stereotype.Component;
 
@@ -95,32 +96,32 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public List<Application> findByApplicantName(String term, ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findByApplicantName(String term, ApplicationQueryParameters applicationQueryParameters) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public List<Application> findByApplicantSsn(String term, ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findByApplicantSsn(String term, ApplicationQueryParameters applicationQueryParameters) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public List<Application> findByOid(String term, ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findByOid(String term, ApplicationQueryParameters applicationQueryParameters) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public List<Application> findByApplicationOid(String term, ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findByApplicationOid(String term, ApplicationQueryParameters applicationQueryParameters) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public List<Application> findByUserOid(String term, ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findByUserOid(String term, ApplicationQueryParameters applicationQueryParameters) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public List<Application> findAllFiltered(ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findAllFiltered(ApplicationQueryParameters applicationQueryParameters) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -133,7 +134,7 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public List<Application> findByApplicantDob(String term, ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findByApplicantDob(String term, ApplicationQueryParameters applicationQueryParameters) {
         // TODO Auto-generated method stub
         return null;
     }

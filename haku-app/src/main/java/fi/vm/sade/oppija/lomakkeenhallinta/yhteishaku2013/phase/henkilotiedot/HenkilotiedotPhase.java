@@ -83,10 +83,13 @@ public class HenkilotiedotPhase {
         sukupuoli.addOptions(koodistoService.getGenders());
         setRequiredInlineAndVerboseHelp(sukupuoli);
 
+        Option male =  sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
+                sukupuoli.getOptions().get(0) : sukupuoli.getOptions().get(1);
+        Option female =  sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Nainen") ?
+                sukupuoli.getOptions().get(0) : sukupuoli.getOptions().get(1);
         SocialSecurityNumber socialSecurityNumber =
                 new SocialSecurityNumber("ssn_question", createI18NForm("form.henkilotiedot.hetu"),
-                        sukupuoli.getI18nText(), sukupuoli.getOptions().get(0),
-                        sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilotunnus);
+                        sukupuoli.getI18nText(), male, female, sukupuoli.getId(), henkilotunnus);
 
         RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FIN$", true);
         hetuRule.addChild(socialSecurityNumber);
@@ -202,7 +205,7 @@ public class HenkilotiedotPhase {
 
         DropdownSelect kotikunta =
                 new DropdownSelect("kotikunta", createI18NForm("form.henkilotiedot.kotikunta"), null);
-        kotikunta.addOption("eiValittu", ElementUtil.createI18NForm(""), "");
+        kotikunta.addOption("eiValittu", ElementUtil.createI18NAsIs(""), "");
         kotikunta.addOptions(koodistoService.getMunicipalities());
         kotikunta.addAttribute("placeholder", "Valitse kotikunta");
         setRequiredInlineAndVerboseHelp(kotikunta);
@@ -237,7 +240,7 @@ public class HenkilotiedotPhase {
         DropdownSelect aidinkieli =
                 new DropdownSelect(AIDINKIELI_ID, createI18NForm("form.henkilotiedot.aidinkieli"),
                         "fi_vm_sade_oppija_language");
-        aidinkieli.addOption("eiValittu", ElementUtil.createI18NForm(""), "");
+        aidinkieli.addOption("eiValittu", ElementUtil.createI18NAsIs(""), "");
         aidinkieli.addOptions(koodistoService.getLanguages());
         aidinkieli.addAttribute("placeholder", "Valitse Äidinkieli");
         setRequiredInlineAndVerboseHelp(aidinkieli);

@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -15,16 +16,31 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
-<tr>
-    <td>
-        <fieldset class="${styleBaseClass}">
-            <div class="field-container-checkbox">
+<c:choose>
+    <c:when test="${print}">
+        <tr>
+            <td><haku:i18nText value="${element.i18nText}"/></td>
+            <td>
+                <c:choose>
+                    <c:when test="${(categoryData[element.id] eq element.value)}">
+                        <fmt:message key="lomake.tulostus.kylla"/>
+                    </c:when>
+                    <c:otherwise>
+                        <fmt:message key="lomake.tulostus.ei"/>
+                    </c:otherwise>
+                </c:choose>
+            </td>
+        </tr>
+    </c:when>
+    <c:otherwise>
+        <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
+        <tr>
+            <td>
                 <input type="checkbox" name="${element.id}"
                        disabled="true" ${(categoryData[element.id] eq element.value) ? "checked=\"checked\"" : ""} value="${element.value}"/>
                 <label for="${element.id}"><haku:i18nText value="${element.i18nText}"/></label>
-            </div>
-        </fieldset>
-    </td>
-</tr>
+            </td>
+        </tr>
+    </c:otherwise>
+</c:choose>
 <haku:viewChilds element="${element}"/>

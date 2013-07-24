@@ -19,7 +19,8 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+<c:set var="applicationPeriods" value="${it.applicationPeriods}" scope="request"/>
 <!doctype html>
 <fmt:setBundle basename="messages" scope="session"/>
 <html>
@@ -29,18 +30,29 @@
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+    <script src="${contextPath}/resources/javascript/bootstrap-paginator.min.js"></script>
+    <link href="${contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet">
     <link href="${contextPath}/resources/css/virkailija.css" type="text/css" rel="stylesheet"/>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
     <haku:ie9StyleFix/>
 </head>
 <body>
 <script type="text/javascript">
     var page_settings = {
-        contextPath: "${pageContext.request.contextPath}"
+        contextPath: "${pageContext.request.contextPath}",
+        ACTIVE : '<fmt:message key="virkailija.hakemus.tila.voimassa"/>',
+        PASSIVE : '<fmt:message key="virkailija.hakemus.tila.peruttu"/>',
+        INCOMPLETE : '<fmt:message key="virkailija.hakemus.tila.puutteellinen"/>',
+        NOT_IDENTIFIED : '<fmt:message key="virkailija.hakemus.tila.yksiloimatta"/>'
     }
 </script>
 <div id="viewport">
-    <div id="overlay" style="display: none;"></div>
+    <div id="overlay">
+        <jsp:include page="createApplication.jsp"/>
+    </div>
     <div id="wrapper">
 
         <table class="structural-table" style="margin-left: 0.625%;width:99.375%;">

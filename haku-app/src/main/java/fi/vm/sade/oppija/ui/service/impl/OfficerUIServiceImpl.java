@@ -7,6 +7,7 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
@@ -145,6 +146,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         UIServiceResponse uiServiceResponse = new UIServiceResponse();
         uiServiceResponse.addObjectToModel("organizationTypes", koodistoService.getOrganizationtypes());
         uiServiceResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
+        Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
+        uiServiceResponse.addObjectToModel("applicationPeriods", applicationPerioidMap);
         return uiServiceResponse;
     }
 
@@ -174,5 +177,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private AdditionalQuestions getAdditionalQuestions(final Application application) throws IOException {
         List<String> applicationPreferenceOids = this.applicationService.getApplicationPreferenceOids(application);
         return this.valintaperusteetService.retrieveAdditionalQuestions(applicationPreferenceOids);
+    }
+
+    @Override
+    public Application createApplication(final String asId) {
+        return applicationService.officerCreateNewApplication(asId);
     }
 }

@@ -32,6 +32,7 @@ import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPhaseViewPath;
+import fi.vm.sade.oppija.ui.service.UIService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -73,7 +74,8 @@ public class FormControllerTest {
         this.formService = mock(FormService.class);
         this.additionalQuestionService = mock(AdditionalQuestionService.class);
         UserHolder userHolder = mock(UserHolder.class);
-        this.formController = new FormController(formService, applicationService, userHolder, additionalQuestionService, "");
+        UIService uiService = mock(UIService.class);
+        this.formController = new FormController(formService, applicationService, userHolder, additionalQuestionService, "", uiService);
         this.application = new Application();
         FORM.addChild(PHASE);
         when(applicationService.getApplication(Matchers.<FormId>any())).thenReturn(this.application);

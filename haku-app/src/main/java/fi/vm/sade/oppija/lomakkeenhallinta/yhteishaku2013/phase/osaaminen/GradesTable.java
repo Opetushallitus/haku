@@ -75,8 +75,9 @@ public class GradesTable {
                                              final SubjectRow subjectRow, final List<Option> languages) {
 
         List<Option> gradeRangesWithDefault = gradeGridHelper.getGradeRangesWithDefault();
-        Element[] columnsArray = createColumnsArray(true);
         String id = gradeGridHelper.getIdPrefix() + subjectRow.getId();
+        Element[] columnsArray = createColumnsArray(true, id);
+
 
         GradeGridOptionQuestion addLangs =
                 new GradeGridOptionQuestion(id + OPPIAINE_SUFFIX, languages, false);
@@ -117,21 +118,21 @@ public class GradesTable {
     }
 
 
-    Element[] createColumnsArray(boolean removable) {
+    Element[] createColumnsArray(boolean removable, final String idPrefix) {
         if (gradeGridHelper.isComprehensiveSchool()) {
             return new Element[]{
-                    new GradeGridColumn("column1", removable),
-                    new GradeGridColumn("column2", false),
-                    new GradeGridColumn("column3", false),
-                    new GradeGridColumn("column4", false),
-                    new GradeGridColumn("column5", false),
+                    new GradeGridColumn(idPrefix + "_column1", removable),
+                    new GradeGridColumn(idPrefix + "_column2", false),
+                    new GradeGridColumn(idPrefix + "_column3", false),
+                    new GradeGridColumn(idPrefix + "_column4", false),
+                    new GradeGridColumn(idPrefix + "_column5", false),
             };
         } else {
             return new Element[]{
-                    new GradeGridColumn("column1", removable),
-                    new GradeGridColumn("column2", false),
-                    new GradeGridColumn("column3", false),
-                    new GradeGridColumn("column4", false),
+                    new GradeGridColumn(idPrefix + "_column1", removable),
+                    new GradeGridColumn(idPrefix + "_column2", false),
+                    new GradeGridColumn(idPrefix + "_column3", false),
+                    new GradeGridColumn(idPrefix + "_column4", false),
             };
         }
     }
@@ -149,10 +150,11 @@ public class GradesTable {
     GradeGridRow createGradeGridRow(final SubjectRow subjectRow, boolean language, boolean literature) {
 
         GradeGridRow gradeGridRow = new GradeGridRow(subjectRow.getId());
-        Element[] columns = createColumnsArray(false);
+        String id = gradeGridHelper.getIdPrefix() + subjectRow.getId();
+        Element[] columns = createColumnsArray(false, id);
 
         columns[0].addChild(new GradeGridTitle(System.currentTimeMillis() + "", subjectRow.getI18nText(), false));
-        String id = gradeGridHelper.getIdPrefix() + subjectRow.getId();
+
 
         if (subjectRow.isLanguage() || language) {
             List<Option> subjectLanguages;

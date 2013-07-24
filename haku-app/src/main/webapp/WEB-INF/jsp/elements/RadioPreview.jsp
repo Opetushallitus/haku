@@ -24,7 +24,7 @@
 </c:forEach>
 <tr>
     <c:choose>
-        <c:when test="${element.inline}">
+        <c:when test="${element.inline or print}">
             <td class="label"><haku:i18nText value="${element.i18nText}"/></td>
             <td>
                 <c:if test="${not empty value}">

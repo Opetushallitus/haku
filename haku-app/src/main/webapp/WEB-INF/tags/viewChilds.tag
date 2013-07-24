@@ -7,7 +7,7 @@
     <c:set var="parent" value="${element}" scope="request"/>
     <c:set var="element" value="${child}" scope="request"/>
     <c:choose>
-        <c:when test="${preview}">
+        <c:when test="${preview or print}">
             <jsp:include page="/WEB-INF/jsp/elements/${child.type}Preview.jsp"/>
         </c:when>
         <c:otherwise>

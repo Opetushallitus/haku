@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicantDTO;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
@@ -70,14 +71,16 @@ public class ApplicationResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Application> findApplications(@DefaultValue("") @QueryParam("q") String query,
+    public ApplicationSearchResultDTO findApplications(@DefaultValue("") @QueryParam("q") String query,
                                               @DefaultValue("") @QueryParam("appState") String appState,
                                               @DefaultValue("") @QueryParam("appPreference") String appPreference,
-                                              @DefaultValue("") @QueryParam("lopoid") String lopoid) {
+                                              @DefaultValue("") @QueryParam("lopoid") String lopoid,
+                                              @DefaultValue(value = "0") @QueryParam("start") int start,
+                                              @DefaultValue(value = "100") @QueryParam("rows") int rows) {
         LOGGER.debug("Finding applications q:{}, appState:{}, appPreference:{}, lopoid:{}",
                 query, appState, appPreference, lopoid);
         return applicationService.findApplications(
-                query, new ApplicationQueryParameters(appState, appPreference, lopoid));
+                query, new ApplicationQueryParameters(appState, appPreference, lopoid, start, rows));
     }
 
     @GET

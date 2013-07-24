@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.hakemus.dao;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.common.dao.BaseDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 
 import java.util.List;
@@ -94,7 +95,7 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @param term
      * @return
      */
-    List<Application> findByApplicantName(String term, ApplicationQueryParameters applicationQueryParameters);
+    ApplicationSearchResultDTO findByApplicantName(String term, ApplicationQueryParameters applicationQueryParameters);
 
     /**
      * Return all applications where applicants ssn matches given term.
@@ -102,7 +103,7 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @param term
      * @return
      */
-    List<Application> findByApplicantSsn(String term, ApplicationQueryParameters applicationQueryParameters);
+    ApplicationSearchResultDTO findByApplicantSsn(String term, ApplicationQueryParameters applicationQueryParameters);
 
     /**
      * Return applications which oid or applicants' oid matches given term.
@@ -111,14 +112,14 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @param term
      * @return
      */
-    List<Application> findByOid(String term, ApplicationQueryParameters applicationQueryParameters);
+    ApplicationSearchResultDTO findByOid(String term, ApplicationQueryParameters applicationQueryParameters);
 
-    List<Application> findByApplicationOid(String term, ApplicationQueryParameters applicationQueryParameters);
+    ApplicationSearchResultDTO findByApplicationOid(String term, ApplicationQueryParameters applicationQueryParameters);
 
-    List<Application> findByUserOid(String term, ApplicationQueryParameters applicationQueryParameters);
+    ApplicationSearchResultDTO findByUserOid(String term, ApplicationQueryParameters applicationQueryParameters);
 
-    List<Application> findAllFiltered(ApplicationQueryParameters applicationQueryParameters);
+    ApplicationSearchResultDTO findAllFiltered(ApplicationQueryParameters applicationQueryParameters);
 
-    List<Application> findByApplicantDob(String term, ApplicationQueryParameters applicationQueryParameters);
+    ApplicationSearchResultDTO findByApplicantDob(String term, ApplicationQueryParameters applicationQueryParameters);
 
 }

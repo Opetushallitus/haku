@@ -44,7 +44,7 @@ public class KoulutustaustaPhase {
         koulutustaustaRyhma.addChild(createKoulutustaustaRadio(koodistoService));
 
         Radio osallistunut = new Radio("osallistunut", createI18NForm("form.koulutustausta.osallistunutPaasykokeisiin"));
-        addDefaultTrueFalseOptions(osallistunut);
+        addYesAndIDontOptions(osallistunut);
         addRequiredValidator(osallistunut);
         setVerboseHelp(osallistunut);
 
@@ -151,7 +151,7 @@ public class KoulutustaustaPhase {
         Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio(
                 "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON",
                 createI18NForm("form.koulutustausta.ammatillinenKoulutuspaikka"));
-        addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon);
+        addYesAndIDontOptions(koulutuspaikkaAmmatillisenTutkintoon);
         addRequiredValidator(koulutuspaikkaAmmatillisenTutkintoon);
 
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu);
@@ -191,14 +191,12 @@ public class KoulutustaustaPhase {
         Radio suorittanutAmmatillisenTutkinnon = new Radio(
                 "ammatillinenTutkintoSuoritettu",
                 createI18NForm("form.koulutustausta.ammatillinenSuoritettu"));
-        addDefaultTrueFalseOptions(suorittanutAmmatillisenTutkinnon);
+        addYesAndIDontOptions(suorittanutAmmatillisenTutkinnon);
         addRequiredValidator(suorittanutAmmatillisenTutkinnon);
-
 
         lukioRule.addChild(suorittanutAmmatillisenTutkinnon);
         lukioRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
-
 
         RelatedQuestionRule suorittanutTutkinnonRule = new RelatedQuestionRule(ElementUtil.randomId(),
                 suorittanutAmmatillisenTutkinnon.getId(), "^true", false);
@@ -213,11 +211,20 @@ public class KoulutustaustaPhase {
 
         DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
                 createI18NForm("form.koulutustausta.perusopetuksenKieli"), null);
-        perusopetuksenKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NForm(""), "");
+        perusopetuksenKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NAsIs(""), "");
         perusopetuksenKieli.addOptions(koodistoService.getLanguages());
         addRequiredValidator(perusopetuksenKieli);
         setVerboseHelp(perusopetuksenKieli);
         pkKysymyksetRule.addChild(perusopetuksenKieli);
+
+        DropdownSelect lukionKieli = new DropdownSelect("lukion_kieli",
+                createI18NForm("form.koulutustausta.lukionKieli"), null);
+        lukionKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NAsIs(""), "");
+        lukionKieli.addOptions(koodistoService.getLanguages());
+        addRequiredValidator(lukionKieli);
+        setVerboseHelp(lukionKieli);
+        lukioRule.addChild(lukionKieli);
+
         return millatutkinnolla;
     }
 }

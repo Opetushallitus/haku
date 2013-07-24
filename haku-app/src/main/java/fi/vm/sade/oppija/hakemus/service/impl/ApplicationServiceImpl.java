@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
+import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
@@ -28,8 +29,10 @@ import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
@@ -56,6 +59,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.remove;
 
 /**
  * @author jukka
@@ -282,27 +286,26 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> findApplications(final String term,
+    public ApplicationSearchResultDTO findApplications(final String term,
                                               final ApplicationQueryParameters applicationQueryParameters) {
-        List<Application> applications = new LinkedList<Application>();
         if (shortOidPattern.matcher(term).matches()) {
-            applications.addAll(applicationDAO.findByOid(term, applicationQueryParameters));
+            return applicationDAO.findByOid(term, applicationQueryParameters);
         } else if (oidPattern.matcher(term).matches()) {
             if (term.startsWith(applicationOidService.getOidPrefix())) {
-                applications.addAll(applicationDAO.findByApplicationOid(term, applicationQueryParameters));
+                return applicationDAO.findByApplicationOid(term, applicationQueryParameters);
             } else {
-                applications.addAll(applicationDAO.findByUserOid(term, applicationQueryParameters));
+                return applicationDAO.findByUserOid(term, applicationQueryParameters);
             }
         } else if (socialSecurityNumberPattern.matcher(term).matches()) {
-            applications.addAll(applicationDAO.findByApplicantSsn(term, applicationQueryParameters));
+            return applicationDAO.findByApplicantSsn(term, applicationQueryParameters);
         } else if (dobPattern.matcher(term).matches()) {
-            applications.addAll(applicationDAO.findByApplicantDob(term, applicationQueryParameters));
+            return applicationDAO.findByApplicantDob(term, applicationQueryParameters);
         } else if (!StringUtils.isEmpty(term)) {
-            applications.addAll(applicationDAO.findByApplicantName(term, applicationQueryParameters));
+            return applicationDAO.findByApplicantName(term, applicationQueryParameters);
         } else if (isEmpty(term)) {
-            applications.addAll(applicationDAO.findAllFiltered(applicationQueryParameters));
+            return applicationDAO.findAllFiltered(applicationQueryParameters);
         }
-        return applications;
+        return new ApplicationSearchResultDTO(0, null);
     }
 
     @Override
@@ -382,6 +385,21 @@ public class ApplicationServiceImpl implements ApplicationService {
             return apps.get(0);
         }
         return null;
+    }
+
+    @Override
+    public Application officerCreateNewApplication(String asId) {
+        ApplicationPeriod as = formService.getApplicationPeriodById(asId);
+        FormId formId = new FormId(asId, as.getFormIds().iterator().next());
+        Application application = new Application();
+        application.setFormId(formId);
+        application.setReceived(new Date());
+        application.setState(Application.State.INCOMPLETE);
+        final User user = userHolder.getUser();
+        application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), user));
+        application.setOid(applicationOidService.generateNewOid());
+        this.applicationDAO.save(application);
+        return application;
     }
 
     private Application getApplication(final Application application) throws ResourceNotFoundException {

@@ -20,13 +20,17 @@
   --%>
 <fmt:setBundle basename="messages" scope="session"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
-<c:set var="categoryData" value="${it.categoryData}" scope="request"/>
+<c:set var="categoryData" value="${it.application.vastauksetMerged}" scope="request"/>
 <c:set var="form" value="${it.form}" scope="request"/>
+<c:set var="application" value="${it.application}" scope="request"/>
+<c:set var="discretionaryAttachmentAOIds" value="${it.discretionaryAttachmentAOIds}" scope="request"/>
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
+    <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/jquery/xdr.js"></script>
     <link rel="stylesheet" href="${contextPath}/resources/css/oppija.css" type="text/css">
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
     <title><haku:i18nText value="${form.i18nText}"/></title>
@@ -75,7 +79,7 @@
 
                     <p class="application-number">
                         <fmt:message key="lomake.valmis.hakulomakenumerosi"/>: <span class="number"><c:out
-                            value="${it.applicationNumber}"/></span>
+                            value="${application.oid}"/></span>
                     </p>
 
                     <c:if test="${(not empty categoryData['Sähköposti'])}">
@@ -91,14 +95,14 @@
                         justo, sed consectetur enim. Curabitur nisl erat, egestas ut facilisis vel, interdum ac risus.
                     </p>
 
-                    <button class="print"><span><span><fmt:message key="lomake.valmis.button.tulosta"/></span></span>
-                    </button>
-                    <button class="pdf"><span><span><fmt:message key="lomake.valmis.button.tallennapdf"/></span></span>
-                    </button>
-
+                    <a href="${contextPath}/lomake/${application.formId.applicationPeriodId}/${application.formId.formId}/tulostus/${application.oid}" class="button small print" target="_blank"><fmt:message
+                    key="lomake.valmis.button.tulosta"/></a>
 
                     <div class="clear"></div>
+                    <jsp:include page="./print/discretionaryAttachments.jsp"/>
                     <hr/>
+
+
 
                     <img src="${contextPath}/resources/img/valmis/Valmis-Kuva2.jpg" title="" alt="" class="set-left"/>
 

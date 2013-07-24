@@ -29,7 +29,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.domain.rules.LanguageTestRule;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
@@ -38,6 +38,8 @@ import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.oppija.ui.common.RedirectToFormViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPhaseViewPath;
+import fi.vm.sade.oppija.ui.service.UIService;
+import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +67,9 @@ public class FormController {
     public static final String ROOT_VIEW = "/elements/Root";
     public static final String VERBOSE_HELP_VIEW = "/help";
     public static final String LINK_LIST_VIEW = "/linkList";
+    public static final String APPLICATION_PERIOD_LIST_VIEW = "/applicationPeriodList";
     public static final String VALMIS_VIEW = "/valmis";
+    public static final String PRINT_VIEW = "/print/print";
 
     public static final String FORM_ID_PATH_PARAM = "formId";
     public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
@@ -79,17 +83,20 @@ public class FormController {
     private final UserHolder userHolder;
     private final AdditionalQuestionService additionalQuestionService;
     private final String koulutusinformaatioBaseUrl;
+    private final UIService uiService;
 
     @Autowired
     public FormController(@Qualifier("formServiceImpl") final FormService formService,
                           final ApplicationService applicationService, final UserHolder userHolder,
                           final AdditionalQuestionService additionalQuestionService,
-                          @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUr) {
+                          @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
+                          final UIService uiService) {
         this.formService = formService;
         this.applicationService = applicationService;
         this.userHolder = userHolder;
         this.additionalQuestionService = additionalQuestionService;
-        this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUr;
+        this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
+        this.uiService = uiService;
     }
 
     @GET
@@ -98,8 +105,8 @@ public class FormController {
         LOGGER.debug("listApplicationPeriods");
         Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("linkList", applicationPerioidMap.keySet());
-        return new Viewable(LINK_LIST_VIEW, model);
+        model.put("applicationPeriods", applicationPerioidMap);
+        return new Viewable(APPLICATION_PERIOD_LIST_VIEW, model);
     }
 
     @GET
@@ -134,16 +141,6 @@ public class FormController {
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{formId}/{phaseId}/{elementId}")
-    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getPhaseElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
-                                    @PathParam(FORM_ID_PATH_PARAM) final String formId,
-                                    @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                                    @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
-        return getPhase(applicationPeriodId, formId, elementId);
-    }
-
-    @GET
     @Path("/{applicationPeriodId}/{formId}/esikatselu")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getPreview(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
@@ -173,6 +170,35 @@ public class FormController {
         model.put("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
 
         return new Viewable(ROOT_VIEW, model);
+    }
+
+    @GET
+    @Path("/{applicationPeriodId}/{formId}/{phaseId}/{elementId}")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    public Viewable getPhaseElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                    @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                                    @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                                    @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
+        return getPhase(applicationPeriodId, formId, elementId);
+    }
+
+    @GET
+    @Path("/{applicationPeriodId}/{formId}/{phaseId}/{elementId}/languageTest")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Serializable getLanguageTestChildren(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                                                @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
+                                                @QueryParam("ai") final String aidinkieli,
+                                                @QueryParam("a1") final String a1Kieli,
+                                                @QueryParam("a2") final String a2Kieli,
+                                                @QueryParam("a1Grade") final String a1Grade,
+                                                @QueryParam("a2Grade") final String a2Grade) {
+        LOGGER.debug("getLanguageTest {}, {}, {}, {}", applicationPeriodId, formId, phaseId, elementId);
+        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        LanguageTestRule rule = (LanguageTestRule) activeForm.getChildById(elementId);
+        return rule.getTests(aidinkieli, a1Kieli, a2Kieli, a1Grade, a2Grade);
     }
 
     @GET
@@ -281,25 +307,22 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getComplete(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                 @PathParam(FORM_ID_PATH_PARAM) final String formId,
-                                @PathParam("oid") final String oid) {
+                                @PathParam("oid") final String oid) throws ResourceNotFoundException {
 
         LOGGER.debug("getComplete {}, {}", new Object[]{applicationPeriodId, formId});
-        Map<String, Object> model = new HashMap<String, Object>();
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        model.put("form", activeForm);
-        final FormId hakuLomakeId = new FormId(applicationPeriodId, activeForm.getId());
+        UIServiceResponse response = uiService.getApplicationComplete(applicationPeriodId, formId, oid);
+        return new Viewable(VALMIS_VIEW, response.getModel());
+    }
 
-        final Application application;
-        try {
-            application = applicationService.getPendingApplication(hakuLomakeId, oid);
-        } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundExceptionRuntime("Could not find pending application", e);
-        }
-
-        model.put("categoryData", application.getAnswers());
-        model.put("hakemusId", hakuLomakeId);
-        model.put("applicationNumber", application.getOid());
-        return new Viewable(VALMIS_VIEW, model);
+    @GET
+    @Path("/{applicationPeriodId}/{formId}/tulostus/{oid}")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    public Viewable getPrint(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+                             @PathParam(FORM_ID_PATH_PARAM) final String formId,
+                             @PathParam("oid") final String oid) throws ResourceNotFoundException {
+        LOGGER.debug("getPrint {}, {}, {}", new Object[]{applicationPeriodId, formId, oid});
+        UIServiceResponse uiServiceResponse = uiService.getApplicationPrint(applicationPeriodId, formId, oid);
+        return new Viewable(PRINT_VIEW, uiServiceResponse.getModel());
     }
 
     @GET

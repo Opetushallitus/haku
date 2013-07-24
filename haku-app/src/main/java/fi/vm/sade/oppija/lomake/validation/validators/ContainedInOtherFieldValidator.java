@@ -38,7 +38,7 @@ public class ContainedInOtherFieldValidator extends FieldValidator {
     public ValidationResult validate(Map<String, String> values) {
         String otherValue = values.get(otherFieldName);
         String thisValue = values.get(fieldName);
-        if (otherValue == null || thisValue == null || !otherValue.toLowerCase().contains(thisValue.toLowerCase())) {
+        if (otherValue == null || thisValue == null || !otherValue.trim().toLowerCase().contains(thisValue.trim().toLowerCase())) {
             return invalidValidationResult;
         }
         return validValidationResult;

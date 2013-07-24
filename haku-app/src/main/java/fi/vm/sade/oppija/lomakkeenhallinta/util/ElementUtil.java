@@ -124,6 +124,11 @@ public final class ElementUtil {
         radio.addOption(EI, createI18NForm("form.yleinen.ei"), EI);
     }
 
+    public static void addYesAndIDontOptions(final Radio radio) {
+        radio.addOption(KYLLA, createI18NForm("form.yleinen.kylla"), KYLLA);
+        radio.addOption(EI, createI18NForm("form.yleinen.en"), EI);
+    }
+
     public static GradeGridRow createHiddenGradeGridRowWithId(final String id) {
         GradeGridRow gradeGridRow = new GradeGridRow(id);
         gradeGridRow.addAttribute(HIDDEN, HIDDEN);
@@ -173,7 +178,8 @@ public final class ElementUtil {
     }
 
     public static String randomId() {
-        return UUID.randomUUID().toString().replace('.', '_');
+        //starting random id with a letter preventing some javascript errors
+        return 'a' + UUID.randomUUID().toString().replace('.', '_');
     }
 
     private static void filterElements(

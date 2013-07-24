@@ -12,6 +12,7 @@ public class OfficerAdditionalInfoResponse extends UIServiceResponse {
         this.addObjectToModel(ADDITIONAL_QUESTIONS, object);
     }
 
+    @Override
     public void setApplication(final Application application) {
         this.addObjectToModel(APPLICATION, application);
     }
