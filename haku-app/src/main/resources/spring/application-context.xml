@@ -40,7 +40,7 @@
                 <util:properties local-override="true">
                     <prop key="cas_mode">front</prop>
                     <prop key="cas_key">haku</prop>
-                    <prop key="cas_service">${cas.service.haku-service}</prop>
+                    <prop key="cas_service">${cas.service.haku}</prop>
                     <prop key="spring_security_default_access">permitAll</prop>
                 </util:properties>
             </property>
