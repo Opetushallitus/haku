@@ -16,6 +16,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
         <meta charset="utf-8"/>
+        <link href="${contextPath}/resources/css/hakemus-print.css" type="text/css" rel="stylesheet" />
         <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
         <script src="${contextPath}/resources/jquery/xdr.js"></script>
         <title><haku:i18nText value="${form.i18nText}"/></title>
