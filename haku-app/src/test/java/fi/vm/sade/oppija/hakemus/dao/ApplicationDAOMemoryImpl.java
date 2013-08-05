@@ -45,7 +45,7 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
         Collection<Application> applications = Collections2.filter(hakemukset, new Predicate<Application>() {
             @Override
             public boolean apply(final Application hakemus) {
-                return hakemus.getUser().equals(application.getUser()) && hakemus.getFormId().equals(application.getFormId());
+                return hakemus.getUser().equals(application.getUser()) && hakemus.getApplicationPeriodId().equals(application.getApplicationPeriodId());
             }
         });
         return Lists.newArrayList(applications);
@@ -127,8 +127,8 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
 
     @Override
     public ApplicationState tallennaVaihe(final ApplicationState state) {
-        Application application = find(new Application(state.getHakemus().getFormId(), state.getHakemus().getUser())).get(0);
-        application.addVaiheenVastaukset(state.getVaiheId(), state.getHakemus().getVastauksetMerged());
+        Application application = find(new Application(state.getApplication().getApplicationPeriodId(), state.getApplication().getUser())).get(0);
+        application.addVaiheenVastaukset(state.getPhaseId(), state.getApplication().getVastauksetMerged());
         hakemukset.add(application);
         return state;
     }

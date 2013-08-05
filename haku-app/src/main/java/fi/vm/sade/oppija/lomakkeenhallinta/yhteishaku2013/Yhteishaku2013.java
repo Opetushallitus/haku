@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.esikatselu.EsikatseluPhase;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.henkilotiedot.HenkilotiedotPhase;
@@ -29,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NForm;
@@ -36,23 +38,30 @@ import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NFor
 @Service
 public class Yhteishaku2013 {
 
-    public static final String FORM_ID = "yhteishaku";
     private final ApplicationPeriod applicationPeriod;
 
     @Autowired
     public Yhteishaku2013(
             final KoodistoService koodistoService,
-            @Value("${asid}") String asid,
-            @Value("${aoid}") String aoid) { // NOSONAR
-        this.applicationPeriod = new ApplicationPeriod(asid);
-        Form form = createForm(koodistoService, aoid, applicationPeriod.getStarts());
-        applicationPeriod.addForm(form);
+            final @Value("${asid}") String asid,
+            final @Value("${aoid}") String aoid) { // NOSONAR
+
+        Date start = new Date();
+        final Calendar instance = Calendar.getInstance();
+        instance.roll(Calendar.YEAR, 1);
+        Date end = new Date(instance.getTimeInMillis());
+
+        Form form = createForm(asid, koodistoService, aoid, start);
+        this.applicationPeriod = new ApplicationPeriod(asid, form, start, end, ElementUtil.createI18NAsIs(asid));
     }
 
 
-    private Form createForm(final KoodistoService koodistoService, final String aoidAdditionalQuestion, final Date start) {
+    private Form createForm(final String asid,
+                            final KoodistoService koodistoService,
+                            final String aoidAdditionalQuestion,
+                            final Date start) {
         try {
-            Form form = new Form(FORM_ID, createI18NForm("form.title"));
+            Form form = new Form(asid, createI18NForm("form.title"));
             form.addChild(HenkilotiedotPhase.create(koodistoService));
             form.addChild(KoulutustaustaPhase.create(koodistoService));
             form.addChild(HakutoiveetPhase.create(aoidAdditionalQuestion));

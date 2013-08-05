@@ -16,8 +16,11 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
+import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Test;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.Assert.assertFalse;
@@ -28,13 +31,17 @@ public class ApplicationPeriodTest {
     @Test
     public void testIsActiveSame() throws Exception {
         Date now = new Date();
-        ApplicationPeriod applicationPeriod = new ApplicationPeriod("1", now, now);
+        ApplicationPeriod applicationPeriod = new ApplicationPeriod("1", new Form("", ElementUtil.createI18NAsIs("")), now, now, ElementUtil.createI18NAsIs(""));
         assertFalse(applicationPeriod.isActive());
     }
 
     @Test
     public void testIsActiveEnd() throws Exception {
-        ApplicationPeriod applicationPeriod = new ApplicationPeriod("1");
+        Date start = new Date();
+        final Calendar instance = Calendar.getInstance();
+        instance.roll(Calendar.YEAR, 1);
+        Date end = new Date(instance.getTimeInMillis());
+        ApplicationPeriod applicationPeriod = new ApplicationPeriod("1", new Form("", ElementUtil.createI18NAsIs("")), start, end, ElementUtil.createI18NAsIs(""));
         assertTrue(applicationPeriod.isActive());
     }
 }

@@ -8,11 +8,10 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomake.service.FormService;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +42,7 @@ public class OfficerUIServiceImplTest {
     @Before
     public void setUp() throws Exception {
         application = new Application();
-        application.setFormId(new FormId(ID, ID));
+        application.setApplicationPeriodId("asid");
         application.setOid(OID);
         application.setPhaseId(ID);
         form = new Form("form", ElementUtil.createI18NAsIs(ID));
@@ -56,10 +55,11 @@ public class OfficerUIServiceImplTest {
         form.addChild(phase);
         when(applicationService.getApplicationPreferenceOids(application)).thenReturn(OIDS);
         when(applicationService.getApplication(OID)).thenReturn(application);
+        when(applicationService.getApplicationByOid(OID)).thenReturn(application);
         when(valintaperusteetService.retrieveAdditionalQuestions(OIDS)).thenReturn(additionalQuestions);
-        when(formService.getForm(any(FormId.class))).thenReturn(form);
-        when(formService.getActiveForm(any(FormId.class))).thenReturn(form);
-        when(formService.getLastPhase(any(String.class), any(String.class))).thenReturn(phase);
+        when(formService.getForm(any(String.class))).thenReturn(form);
+        when(formService.getActiveForm(any(String.class))).thenReturn(form);
+        when(formService.getLastPhase(any(String.class))).thenReturn(phase);
     }
 
     @Test
@@ -78,8 +78,8 @@ public class OfficerUIServiceImplTest {
     @Test
     public void testUpdateApplication() throws Exception {
         UIServiceResponse uiServiceResponse = officerUIService.updateApplication(
-                OID, new ApplicationPhase(application.getFormId(), ID, new HashMap<String, String>()), new AnonymousUser());
-        assertTrue(11 == uiServiceResponse.getModel().size());
+                OID, new ApplicationPhase(application.getApplicationPeriodId(), ID, new HashMap<String, String>()), new AnonymousUser());
+        assertTrue(10 == uiServiceResponse.getModel().size());
     }
 
     @Test

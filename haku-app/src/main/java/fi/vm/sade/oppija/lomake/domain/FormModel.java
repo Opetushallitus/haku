@@ -27,7 +27,6 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class FormModel implements Serializable {
 
-
     private static final long serialVersionUID = -530066716898062722L;
 
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)

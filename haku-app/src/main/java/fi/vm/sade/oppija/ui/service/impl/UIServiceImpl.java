@@ -20,7 +20,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
@@ -60,7 +59,7 @@ public class UIServiceImpl implements UIService {
     @Override
     public UIServiceResponse getApplicationPrint(String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplication(oid);
-        final Form activeForm = formService.getForm(application.getFormId());
+        final Form activeForm = formService.getForm(application.getApplicationPeriodId());
         ApplicationPrintViewResponse response = new ApplicationPrintViewResponse();
         response.setApplication(application);
         response.setForm(activeForm);
@@ -70,10 +69,9 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public UIServiceResponse getApplicationPrint(String applicationPeriodId, String formId, String oid) throws ResourceNotFoundException {
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        final FormId hakuLomakeId = new FormId(applicationPeriodId, activeForm.getId());
-        Application application = applicationService.getPendingApplication(hakuLomakeId, oid);
+    public UIServiceResponse getApplicationPrint(String applicationPeriodId, String oid) throws ResourceNotFoundException {
+        Form activeForm = formService.getActiveForm(applicationPeriodId);
+        Application application = applicationService.getPendingApplication(applicationPeriodId, oid);
         ApplicationPrintViewResponse response = new ApplicationPrintViewResponse();
         response.setApplication(application);
         response.setForm(activeForm);
@@ -83,10 +81,9 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public UIServiceResponse getApplicationComplete(String applicationPeriodId, String formId, String oid) throws ResourceNotFoundException {
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        final FormId hakuLomakeId = new FormId(applicationPeriodId, activeForm.getId());
-        Application application = applicationService.getPendingApplication(hakuLomakeId, oid);
+    public UIServiceResponse getApplicationComplete(String applicationPeriodId, String oid) throws ResourceNotFoundException {
+        Form activeForm = formService.getActiveForm(applicationPeriodId);
+        Application application = applicationService.getPendingApplication(applicationPeriodId, oid);
         ApplicationCompleteResponse response = new ApplicationCompleteResponse();
         response.setApplication(application);
         response.setForm(activeForm);
@@ -100,7 +97,7 @@ public class UIServiceImpl implements UIService {
         List<String> discretionaryAttachmentAOs = Lists.newArrayList();
         Map<String, String> answers = application.getVastauksetMerged();
         int i = 1;
-        while(true) {
+        while (true) {
             String key = String.format(OppijaConstants.PREFERENCE_ID, i);
             if (answers.containsKey(key)) {
                 String aoId = answers.get(key);

@@ -36,12 +36,11 @@ public class HakuClient {
         final ObjectMapper mapper = new ObjectMapper();
         Map data = mapper.readValue(url, Map.class);
         this.client = ApacheHttpClient.create();
-        Map<String, String> formId = (Map<String, String>) data.get("formId");
         this.client.setFollowRedirects(false);
         this.applicationData = (Map<String, Map<String, String>>) data.get("answers");
         this.applicationData.put("esikatselu", new ImmutableMap.Builder<String, String>()
                 .put("nav-send", "true").build());
-        this.formUrl = baseUrl + formId.get("applicationPeriodId") + '/' + formId.get("formId");
+        this.formUrl = baseUrl + data.get("applicationPeriodId");
 
     }
 

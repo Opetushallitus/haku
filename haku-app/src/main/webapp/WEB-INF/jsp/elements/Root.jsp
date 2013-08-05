@@ -18,5 +18,5 @@
 <c:set var="element" value="${it.element}" scope="request"/>
 <c:set var="categoryData" value="${it.categoryData}" scope="request"/>
 <c:set var="form" value="${it.form}" scope="request"/>
-<c:set var="hakemusId" value="${it.hakemusId}" scope="request"/>
+<c:set var="applicationPeriodId" value="${it.applicationPeriodId}" scope="request"/>
 <jsp:include page="./${it.template}.jsp"/>

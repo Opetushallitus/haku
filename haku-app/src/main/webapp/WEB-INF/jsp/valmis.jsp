@@ -95,7 +95,7 @@
                         justo, sed consectetur enim. Curabitur nisl erat, egestas ut facilisis vel, interdum ac risus.
                     </p>
 
-                    <a href="${contextPath}/lomake/${application.formId.applicationPeriodId}/${application.formId.formId}/tulostus/${application.oid}" class="button small print" target="_blank"><fmt:message
+                    <a href="${contextPath}/lomake/${application.applicationPeriodId}/tulostus/${application.oid}" class="button small print" target="_blank"><fmt:message
                     key="lomake.valmis.button.tulosta"/></a>
 
                     <div class="clear"></div>

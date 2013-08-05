@@ -35,28 +35,28 @@ public class NavigationIT extends AbstractFormTest {
 
     @Test
     public void testNavigationExists() throws IOException {
-        beginAt("/lomake/" + ASID + "/yhteishaku/henkilotiedot");
+        beginAt("/lomake/" + ASID + "/henkilotiedot");
         assertLinkPresent("nav-henkilotiedot");
         assertElementPresentByXPath("//span[@class='index']");
     }
 
     @Test
     public void testFirstGategoryNavButtons() throws IOException {
-        beginAt("/lomake/" + ASID + "/yhteishaku/henkilotiedot");
+        beginAt("/lomake/" + ASID + "/henkilotiedot");
         assertElementPresentByXPath("//button[@class='right']");
         assertElementNotPresentByXPath("//button[@class='left']");
     }
 
     @Test
     public void testMiddleGategoryNavButtons() throws IOException {
-        beginAt("/lomake/" + ASID + "/yhteishaku/koulutustausta");
+        beginAt("/lomake/" + ASID + "/koulutustausta");
         assertElementPresentByXPath("//button[@class='right']");
         assertElementPresentByXPath("//button[@class='left']");
     }
 
     @Test
     public void testLastGategoryNavButtons() throws IOException {
-        beginAt("/lomake/" + ASID + "/yhteishaku/esikatselu");
+        beginAt("/lomake/" + ASID + "/esikatselu");
         assertElementNotPresentByXPath("//button[@name='nav-next']");
         assertElementPresentByXPath("//button[@class='left']");
         assertElementPresentByXPath("//button[@class='right']");

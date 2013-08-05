@@ -1,8 +1,5 @@
-{"formId": {
-    "type": "FormId",
+{
     "applicationPeriodId": "1.2.246.562.5.50476818906",
-    "formId": "yhteishaku"
-},
     "answers": {
         "henkilotiedot": {
             "aidinkieli": "FI",
@@ -14,9 +11,9 @@
             "Henkilotunnus": "270802-184A",
             "matkapuhelinnumero": "0401000202",
             "Postinumero": "00100",
-            "lahiosoite": "Veitsitie 16 a 4",
+            "lahiosoite": "Kaatopaikka 1 a 2",
             "Kutsumanimi": "topi",
-            "Sähköposti": "ville@rajapaju.com",
+            "Sähköposti": "topi@korhonen.se",
             "Etunimet": "pena topi",
             "ensisijainenOsoite1": "true",
             "kotikunta": "janakkala",

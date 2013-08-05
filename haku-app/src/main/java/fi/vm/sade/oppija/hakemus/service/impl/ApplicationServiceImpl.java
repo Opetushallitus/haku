@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
-import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
@@ -33,7 +32,6 @@ import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -59,13 +57,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.remove;
 
-/**
- * @author jukka
- * @version 9/26/122:43 PM}
- * @since 1.1
- */
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
 
@@ -118,20 +110,20 @@ public class ApplicationServiceImpl implements ApplicationService {
         return saveApplicationPhase(applicationPhase, application, skipValidators);
     }
 
-    private ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, Application application,
-                                                  boolean skipValidators) {
+    private ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase,
+                                                  final Application application,
+                                                  final boolean skipValidators) {
         final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
-        final String applicationPeriodId = applicationState.getHakemus().getFormId().getApplicationPeriodId();
-        final String formId = applicationState.getHakemus().getFormId().getFormId();
-        final Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
-        final Element phase = activeForm.getPhase(applicationPhase.getPhaseId());
+        final String applicationPeriodId = applicationState.getApplication().getApplicationPeriodId();
+        final Form activeForm = formService.getActiveForm(applicationPeriodId);
+        final Element phase = activeForm.getChildById(applicationPhase.getPhaseId());
         final Map<String, String> vastaukset = applicationPhase.getAnswers();
 
         Map<String, String> allAnswers = new HashMap<String, String>();
         // if the current phase has previous phase, get all the answers for
         // validating rules
         if (!activeForm.isFirstChild(phase)) {
-            Application current = userHolder.getApplication(applicationState.getHakemus().getFormId());
+            Application current = userHolder.getApplication(applicationPeriodId);
             allAnswers.putAll(current.getVastauksetMerged());
         }
         allAnswers.putAll(vastaukset);
@@ -158,19 +150,14 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getApplication(String oid) throws ResourceNotFoundException {
-        return getApplication(new Application(oid));
-    }
-
-    @Override
-    public String submitApplication(final FormId formId) {
+    public String submitApplication(final String ApplicationPeriodId) {
         final User user = userHolder.getUser();
-        Application application = userHolder.getApplication(formId);
+        Application application = userHolder.getApplication(ApplicationPeriodId);
         //Application application = applicationDAO.findDraftApplication(application1);
-        Form form = formService.getForm(formId.getApplicationPeriodId(), formId.getFormId());
+        Form form = formService.getForm(ApplicationPeriodId);
         Map<String, String> allAnswers = application.getVastauksetMerged();
         ValidationResult validationResult = ElementTreeValidator.validate(form, allAnswers);
-        validationResult = checkIfExistsBySocialSecurityNumber(formId.getApplicationPeriodId(),
+        validationResult = checkIfExistsBySocialSecurityNumber(ApplicationPeriodId,
                 allAnswers.get(SocialSecurityNumber.HENKILOTUNNUS), validationResult);
         if (!validationResult.hasErrors()) {
 
@@ -183,7 +170,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.setReceived(new Date());
             application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), user));
             this.applicationDAO.save(application);
-            this.userHolder.removeApplication(application.getFormId());
+            this.userHolder.removeApplication(application.getApplicationPeriodId());
             return application.getOid();
         } else {
             throw new IllegalStateException("Could not send the application ");
@@ -220,6 +207,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.applicationDAO.save(application);
         return application;
     }
+
     @Override
     public Application addPersonAndAuthenticate(String applicationOid) {
         DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
@@ -244,9 +232,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getPendingApplication(FormId formId, String oid) throws ResourceNotFoundException {
+    public Application getPendingApplication(String applicationPeriodId, String oid) throws ResourceNotFoundException {
         final User user = userHolder.getUser();
-        Application application = new Application(formId, user, oid);
+        Application application = new Application(applicationPeriodId, user, oid);
         if (!user.isKnown()) {
             application.removeUser();
         }
@@ -270,24 +258,29 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getApplication(final FormId formId) {
+    public Application getApplication(final String applicationPeriodId) {
         User user = userHolder.getUser();
         if (user.isKnown()) {
-            Application application = new Application(formId, userHolder.getUser());
+            Application application = new Application(applicationPeriodId, userHolder.getUser());
             List<Application> listOfApplications = applicationDAO.find(application);
             if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
                 return application;
             }
             return listOfApplications.get(0);
         } else {
-            return userHolder.getApplication(formId);
+            return userHolder.getApplication(applicationPeriodId);
 
         }
     }
 
     @Override
+    public Application getApplicationByOid(String oid) throws ResourceNotFoundException {
+        return getApplication(new Application(oid));
+    }
+
+    @Override
     public ApplicationSearchResultDTO findApplications(final String term,
-                                              final ApplicationQueryParameters applicationQueryParameters) {
+                                                       final ApplicationQueryParameters applicationQueryParameters) {
         if (shortOidPattern.matcher(term).matches()) {
             return applicationDAO.findByOid(term, applicationQueryParameters);
         } else if (oidPattern.matcher(term).matches()) {
@@ -326,8 +319,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public List<String> getApplicationPreferenceOids(Application application) {
         List<String> oids = new ArrayList<String>();
-        FormId formId = application.getFormId();
-        final Form activeForm = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
+        final Form activeForm = formService.getActiveForm(application.getApplicationPeriodId());
         Map<String, PreferenceRow> preferenceRows = ElementUtil.findElementsByType(activeForm,
                 PreferenceRow.class);
         Map<String, String> answers = application.getVastauksetMerged();
@@ -347,7 +339,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public String getApplicationKeyValue(String applicationOid, String key) throws ResourceNotFoundException {
-        Application application = getApplication(applicationOid);
+        Application application = getApplication(new Application(applicationOid));
         if (application.getAdditionalInfo().containsKey(key)) {
             return application.getAdditionalInfo().get(key);
         } else if (application.getVastauksetMerged().containsKey(key)) {
@@ -389,10 +381,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application officerCreateNewApplication(String asId) {
-        ApplicationPeriod as = formService.getApplicationPeriodById(asId);
-        FormId formId = new FormId(asId, as.getFormIds().iterator().next());
+        ApplicationPeriod as = formService.getApplicationPeriod(asId);
         Application application = new Application();
-        application.setFormId(formId);
+        application.setApplicationPeriodId(asId);
         application.setReceived(new Date());
         application.setState(Application.State.INCOMPLETE);
         final User user = userHolder.getUser();

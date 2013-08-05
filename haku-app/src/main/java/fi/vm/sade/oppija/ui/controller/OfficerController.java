@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.ui.controller;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
@@ -61,7 +60,6 @@ public class OfficerController {
     public static final String DEFAULT_VIEW = "/virkailija/Phase";
     public static final String OID_PATH_PARAM = "oid";
     public static final String PHASE_ID_PATH_PARAM = "phaseId";
-    public static final String FORM_ID_PATH_PARAM = "formId";
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
     public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
     public static final String ADDITIONAL_INFO_VIEW = "/virkailija/additionalInfo";
@@ -105,65 +103,59 @@ public class OfficerController {
             throws ResourceNotFoundException, URISyntaxException {
         LOGGER.debug("redirectToLastPhase {}", new Object[]{oid});
         Application application = officerUIService.getApplicationWithLastPhase(oid);
-        FormId formId = application.getFormId();
         URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW,
-                formId.getApplicationPeriodId(),
-                formId.getFormId(),
+                application.getApplicationPeriodId(),
                 application.getPhaseId(),
                 application.getOid());
         return seeOther(path).build();
     }
 
     @GET
-    @Path("/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}/{elementId}")
+    @Path("/hakemus/{applicationPeriodId}/{phaseId}/{oid}/{elementId}")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Viewable getPreviewElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
-                                      @PathParam(FORM_ID_PATH_PARAM) final String formId,
                                       @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                       @PathParam(OID_PATH_PARAM) final String oid,
                                       @PathParam("elementId") final String elementId)
             throws ResourceNotFoundException {
-        LOGGER.debug("getPreviewElement {}, {}, {}, {}", applicationPeriodId, formId, phaseId, oid);
+        LOGGER.debug("getPreviewElement {}, {}, {}", applicationPeriodId, phaseId, oid);
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplicationElement(oid, phaseId, elementId);
         return new Viewable("/elements/Root", uiServiceResponse.getModel()); // TODO remove hardcoded Phase
     }
 
     @GET
-    @Path("/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}")
+    @Path("/hakemus/{applicationPeriodId}/{phaseId}/{oid}")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Viewable getPreview(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
-                               @PathParam(FORM_ID_PATH_PARAM) final String formId,
                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                @PathParam(OID_PATH_PARAM) final String oid)
             throws ResourceNotFoundException, IOException {
 
-        LOGGER.debug("getPreview {}, {}, {}, {}", applicationPeriodId, formId, phaseId, oid);
+        LOGGER.debug("getPreview {}, {}, {}", applicationPeriodId, phaseId, oid);
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, phaseId);
         return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel()); // TODO remove hardcoded Phase
     }
 
     @POST
-    @Path("/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}")
+    @Path("/hakemus/{applicationPeriodId}/{phaseId}/{oid}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Response updatePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
-                                @PathParam("formId") final String formId,
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(OID_PATH_PARAM) final String oid,
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException, ResourceNotFoundException {
 
-        LOGGER.debug("updatePhase {}, {}, {}, {}, {}", applicationPeriodId, formId, phaseId, oid, multiValues);
-        final FormId hakuLomakeId = new FormId(applicationPeriodId, formId);
+        LOGGER.debug("updatePhase {}, {}, {}, {}", applicationPeriodId, phaseId, oid, multiValues);
 
         UIServiceResponse uiServiceResponse = officerUIService.updateApplication(oid,
-                new ApplicationPhase(hakuLomakeId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)),
+                new ApplicationPhase(applicationPeriodId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)),
                 userHolder.getUser());
 
         if (uiServiceResponse.hasErrors()) {
             return ok(new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel())).build();
         } else {
-            URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, applicationPeriodId, formId, "esikatselu", oid);
+            URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, applicationPeriodId, "esikatselu", oid);
             return seeOther(path).build();
         }
     }
@@ -262,16 +254,15 @@ public class OfficerController {
     }
 
     @GET
-    @Path("/hakemus/{applicationPeriodId}/{formId}/{phaseId}/{oid}/{elementId}/relatedData/{key}")
+    @Path("/hakemus/{applicationPeriodId}/{phaseId}/{oid}/{elementId}/relatedData/{key}")
     @Produces(MediaType.APPLICATION_JSON)
     public Serializable getElementRelatedData(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
-                                              @PathParam(FORM_ID_PATH_PARAM) final String formId,
                                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                               @PathParam(OID_PATH_PARAM) final String oid,
                                               @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                               @PathParam("key") final String key) {
-        LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationPeriodId, formId, elementId, key);
-        Form activeForm = formService.getActiveForm(applicationPeriodId, formId);
+        LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationPeriodId, elementId, key);
+        Form activeForm = formService.getActiveForm(applicationPeriodId);
         try {
             @SuppressWarnings("unchecked")
             DataRelatedQuestion<Serializable> element =

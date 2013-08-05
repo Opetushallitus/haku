@@ -25,18 +25,12 @@ public class RedirectToFormViewPathTest extends ViewPathTest {
     @Test
     public void testGetPath() throws Exception {
         RedirectToFormViewPath redirectToFormViewPath =
-                new RedirectToFormViewPath(APPLICATION_PERIOD_ID, FORM_ID);
+                new RedirectToFormViewPath(APPLICATION_PERIOD_ID);
         assertEquals(REDIRECT_TO_FORM_PREFIX, redirectToFormViewPath.getPath());
     }
 
     @Test(expected = NullPointerException.class)
     public void testGetPathNullApid() throws Exception {
-        new RedirectToFormViewPath(null, FORM_ID);
+        new RedirectToFormViewPath(null);
     }
-
-    @Test(expected = NullPointerException.class)
-    public void testGetPathNullFid() throws Exception {
-        new RedirectToFormViewPath(APPLICATION_PERIOD_ID, null);
-    }
-
 }

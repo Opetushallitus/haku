@@ -54,14 +54,12 @@ public class PostalCodeIT extends AbstractSeleniumBase {
 
     @Before
     public void init() throws IOException {
-        ApplicationPeriod applicationPeriod = new ApplicationPeriod("test");
+        Form form = new Form("lomake", createI18NAsIs("yhteishaku"));
+        ApplicationPeriod applicationPeriod = ElementUtil.createActiveApplicationPeriod("test", form);
         FormModel formModel = new FormModel();
         formModel.addApplicationPeriod(applicationPeriod);
         Phase testivaihe = new Phase("testivaihe", createI18NAsIs("Testivaihe"), false);
-        Form form = new Form("lomake", createI18NAsIs("yhteishaku"));
         form.addChild(testivaihe);
-
-        applicationPeriod.addForm(form);
 
         Theme testiRyhma = new Theme("testiGrp", createI18NAsIs("TestiGrp"), null, true);
         testivaihe.addChild(testiRyhma);
@@ -88,11 +86,11 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         driver.get(getBaseUrl() + url);
         Selenium s = seleniumHelper.getSelenium();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        WebElement postinumero = driver.findElement(By.xpath("//input[@id='"+POSTCODE_ID+"']"));
+        WebElement postinumero = driver.findElement(By.xpath("//input[@id='" + POSTCODE_ID + "']"));
         postinumero.click();
-        s.typeKeys("//input[@id='"+POSTCODE_ID+"']", POSTCODE);
+        s.typeKeys("//input[@id='" + POSTCODE_ID + "']", POSTCODE);
         s.typeKeys("foo", "bar");
-        screenshot("shot-"+System.currentTimeMillis()+".png");
-        driver.findElement(By.xpath("//*[text()='"+POST_OFFICE+"']"));
+        screenshot("shot-" + System.currentTimeMillis() + ".png");
+        driver.findElement(By.xpath("//*[text()='" + POST_OFFICE + "']"));
     }
 }

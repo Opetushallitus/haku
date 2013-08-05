@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.hakemus.aspect;
 
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import org.junit.Test;
 
@@ -26,7 +25,7 @@ public class LoggerAspectTest {
 
     @Test
     public void testLogSavePhase() throws Exception {
-        LOGGER_ASPECT.logSavePhase(new FormId("aid", "fid"), new User("test"), "oid");
+        LOGGER_ASPECT.logSavePhase("aid", new User("test"), "oid");
     }
 
     @Test

@@ -224,12 +224,11 @@ public abstract class Element implements Serializable {
         if (element == null) {
             throw new ResourceNotFoundExceptionRuntime("Could not find element " + id);
         }
-
         return element;
     }
 
     @JsonIgnore
-    protected Element getChildById(final Element element, final String id) {
+    private Element getChildById(final Element element, final String id) {
         if (element.getId().equals(id)) {
             return element;
         }

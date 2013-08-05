@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.hakemus.domain;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,8 +34,8 @@ public class ApplicationInfoTest {
 
     @Before
     public void setUp() throws Exception {
-        applicationPeriod = new ApplicationPeriod();
         form = new Form("id", createI18NAsIs("title"));
+        this.applicationPeriod = ElementUtil.createActiveApplicationPeriod("ASID", form);
         application = new Application();
         applicationInfo = new ApplicationInfo(application, form, applicationPeriod);
     }

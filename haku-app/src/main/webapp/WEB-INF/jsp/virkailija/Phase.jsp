@@ -105,12 +105,12 @@
     <section class="grid16-16 margin-top-2">
 
         <div class="tabs">
-            <a href="#" data-tabs-group="applicationtabs" data-tabs-id="hakemus"
+            <a href="#" data-tabs-group="applicationtabs" data-tabs-id="application"
                class="tab current"><span>Hakemus</span></a>
         </div>
 
         <div class="tabsheets">
-            <section id="hakemus" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="hakemus"
+            <section id="application" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="application"
                      style="display: block">
 
                 <haku:messages messages="${errorMessages}" additionalClass="warning"/>

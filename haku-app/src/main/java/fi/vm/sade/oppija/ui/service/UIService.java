@@ -26,21 +26,22 @@ public interface UIService {
     /**
      * OFFICER USE ONLY
      * Builds the model of the officer application print view.
+     *
      * @param oid application oid
-     * @return  ui service response containing model data
+     * @return ui service response containing model data
      * @throws ResourceNotFoundException
      */
     UIServiceResponse getApplicationPrint(final String oid) throws ResourceNotFoundException;
 
     /**
      * Can be used to build the model of the user application sent/complete print view
+     *
      * @param applicationPeriodId
-     * @param formId
      * @param oid
      * @return
      * @throws ResourceNotFoundException
      */
-    UIServiceResponse getApplicationPrint(final String applicationPeriodId, final String formId, final String oid) throws ResourceNotFoundException;
+    UIServiceResponse getApplicationPrint(final String applicationPeriodId, final String oid) throws ResourceNotFoundException;
 
-    UIServiceResponse getApplicationComplete(final String applicationPeriodId, final String formId, final String oid) throws ResourceNotFoundException;
+    UIServiceResponse getApplicationComplete(final String applicationPeriodId, final String oid) throws ResourceNotFoundException;
 }

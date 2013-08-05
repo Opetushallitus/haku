@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.hakemus.aspect;
 
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -51,12 +50,12 @@ public class LoggerAspect {
      * Logs event when a form phase is successfully saved
      * as application data in data store.
      */
-    @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.hakemus.service.ApplicationService.submitApplication()) && args(lomakeId,user,..)",
+    @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.hakemus.service.ApplicationService.submitApplication()) && args(applicationPeriodId,user,..)",
             returning = "oid")
-    public void logSavePhase(FormId lomakeId, User user, String oid) {
+    public void logSavePhase(String applicationPeriodId, User user, String oid) {
         try {
             Tapahtuma t = new Tapahtuma();
-            t.setMuutoksenKohde("Haku: " + lomakeId.getApplicationPeriodId()
+            t.setMuutoksenKohde("Haku: " + applicationPeriodId
                     + ", käyttäjä: " + user.getUserName() + ", hakemus oid: " + oid);
             t.setAikaleima(new Date());
             t.setKenenTietoja("" + user.getUserName());

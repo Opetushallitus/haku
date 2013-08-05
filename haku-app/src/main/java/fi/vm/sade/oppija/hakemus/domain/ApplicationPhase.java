@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.hakemus.domain;
 
 import com.google.common.collect.ImmutableMap;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import org.apache.commons.lang.Validate;
 
 import java.util.HashMap;
@@ -25,21 +24,21 @@ import java.util.Map;
 
 public class ApplicationPhase {
 
-    private final FormId formId;
+    private final String applicationPeriodId;
     private final String phaseId;
     private final Map<String, String> answers = new HashMap<String, String>();
 
-    public ApplicationPhase(final FormId formId, final String phaseId, final Map<String, String> answers) {
-        Validate.notNull(formId, "formId is null");
+    public ApplicationPhase(final String applicationPeriodId, final String phaseId, final Map<String, String> answers) {
+        Validate.notNull(applicationPeriodId, "applicationPeriodId is null");
         Validate.notNull(phaseId, "phaseId is null");
         Validate.notNull(answers, "answers is null");
-        this.formId = formId;
+        this.applicationPeriodId = applicationPeriodId;
         this.phaseId = phaseId;
         this.answers.putAll(answers);
     }
 
-    public FormId getFormId() {
-        return formId;
+    public String getApplicationPeriodId() {
+        return applicationPeriodId;
     }
 
     public String getPhaseId() {

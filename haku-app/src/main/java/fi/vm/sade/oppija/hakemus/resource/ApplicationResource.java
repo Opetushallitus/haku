@@ -63,7 +63,7 @@ public class ApplicationResource {
     public Application getApplicationByOid(@PathParam(OID) String oid) {
         LOGGER.debug("Getting application by oid : {}", oid);
         try {
-            return applicationService.getApplication(oid);
+            return applicationService.getApplicationByOid(oid);
         } catch (ResourceNotFoundException e) {
             throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application", e);
         }
@@ -72,11 +72,11 @@ public class ApplicationResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ApplicationSearchResultDTO findApplications(@DefaultValue("") @QueryParam("q") String query,
-                                              @DefaultValue("") @QueryParam("appState") String appState,
-                                              @DefaultValue("") @QueryParam("appPreference") String appPreference,
-                                              @DefaultValue("") @QueryParam("lopoid") String lopoid,
-                                              @DefaultValue(value = "0") @QueryParam("start") int start,
-                                              @DefaultValue(value = "100") @QueryParam("rows") int rows) {
+                                                       @DefaultValue("") @QueryParam("appState") String appState,
+                                                       @DefaultValue("") @QueryParam("appPreference") String appPreference,
+                                                       @DefaultValue("") @QueryParam("lopoid") String lopoid,
+                                                       @DefaultValue(value = "0") @QueryParam("start") int start,
+                                                       @DefaultValue(value = "100") @QueryParam("rows") int rows) {
         LOGGER.debug("Finding applications q:{}, appState:{}, appPreference:{}, lopoid:{}",
                 query, appState, appPreference, lopoid);
         return applicationService.findApplications(

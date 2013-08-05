@@ -18,17 +18,16 @@ package fi.vm.sade.oppija.lomakkeenhallinta.util;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.oppija.lomake.domain.elements.Notification;
+import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
-import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
@@ -212,16 +211,35 @@ public final class ElementUtil {
         }
     }
 
-    public static Element notificationWhenTrue(final String id, final String messageKey, final Notification.NotificationType type) {
-        RelatedQuestionRule rule = new RelatedQuestionRule(ElementUtil.randomId(),
-                id, "^true$", false);
+    public static ApplicationPeriod createActiveApplicationPeriod(final String id, Form form) {
+        Date start = new Date();
+        final Calendar instance = Calendar.getInstance();
+        instance.roll(Calendar.YEAR, 1);
+        Date end = new Date(instance.getTimeInMillis());
+        return new ApplicationPeriod(id, form, start, end, ElementUtil.createI18NAsIs("test application period"));
+    }
 
-        Notification notification = new Notification(
-                ElementUtil.randomId(),
-                createI18NForm(messageKey),
-                type);
-        rule.addChild(notification);
+    public static String getPath(final ApplicationPeriod applicationPeriod, final String id) {
+        List<String> paths = paths(applicationPeriod.getForm(), id);
+        paths.remove(0);
+        paths.add(0, applicationPeriod.getId());
+        return Joiner.on("/").skipNulls().join(paths);
+    }
 
-        return rule;
+    private static List<String> paths(final Element from, final String id) {
+        List<String> result = new ArrayList<String>();
+        if (from.getId().equals(id)) {
+            result.add(id);
+        } else {
+            List<Element> children = from.getChildren();
+            for (Element child : children) {
+                List<String> paths = paths(child, id);
+                if (!paths.isEmpty()) {
+                    result.add(from.getId());
+                    result.addAll(paths);
+                }
+            }
+        }
+        return result;
     }
 }

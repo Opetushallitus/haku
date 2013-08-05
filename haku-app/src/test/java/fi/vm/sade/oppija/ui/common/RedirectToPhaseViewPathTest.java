@@ -26,22 +26,17 @@ public class RedirectToPhaseViewPathTest extends ViewPathTest {
 
     @Test
     public void testGetPath() throws Exception {
-        RedirectToPhaseViewPath redirectToPhaseViewPath = new RedirectToPhaseViewPath(APPLICATION_PERIOD_ID, FORM_ID, PHASE_ID);
+        RedirectToPhaseViewPath redirectToPhaseViewPath = new RedirectToPhaseViewPath(APPLICATION_PERIOD_ID, PHASE_ID);
         assertEquals(REDIRECT_TO_FORM_PREFIX + "/" + PHASE_ID, redirectToPhaseViewPath.getPath());
     }
 
     @Test(expected = NullPointerException.class)
     public void testGetPathNullApid() throws Exception {
-        new RedirectToPhaseViewPath(null, FORM_ID, PHASE_ID);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testGetPathNullFormId() throws Exception {
-        new RedirectToPhaseViewPath(APPLICATION_PERIOD_ID, null, PHASE_ID);
+        new RedirectToPhaseViewPath(null, PHASE_ID);
     }
 
     @Test(expected = NullPointerException.class)
     public void testGetPathNullPhaseId() throws Exception {
-        new RedirectToPhaseViewPath(APPLICATION_PERIOD_ID, FORM_ID, null);
+        new RedirectToPhaseViewPath(APPLICATION_PERIOD_ID, null);
     }
 }

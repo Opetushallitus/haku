@@ -56,32 +56,33 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public static final int HUNDRED = 100;
     private final EncrypterService shaEncrypter;
     private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
-
     private static final String FIELD_AO_1 = "answers.hakutoiveet.preference1-Koulutus-id";
+
     private static final String FIELD_AO_2 = "answers.hakutoiveet.preference2-Koulutus-id";
     private static final String FIELD_AO_3 = "answers.hakutoiveet.preference3-Koulutus-id";
     private static final String FIELD_AO_4 = "answers.hakutoiveet.preference4-Koulutus-id";
     private static final String FIELD_AO_5 = "answers.hakutoiveet.preference5-Koulutus-id";
-
     private static final String FIELD_AO_KOULUTUS_ID_1 = "answers.hakutoiveet.preference1-Koulutus-id-aoIdentifier";
+
     private static final String FIELD_AO_KOULUTUS_ID_2 = "answers.hakutoiveet.preference2-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_ID_3 = "answers.hakutoiveet.preference3-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_ID_4 = "answers.hakutoiveet.preference4-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_ID_5 = "answers.hakutoiveet.preference5-Koulutus-id-aoIdentifier";
-
     private static final String FIELD_AO_KOULUTUS_1 = "answers.hakutoiveet.preference1-Koulutus";
+
     private static final String FIELD_AO_KOULUTUS_2 = "answers.hakutoiveet.preference2-Koulutus";
     private static final String FIELD_AO_KOULUTUS_3 = "answers.hakutoiveet.preference3-Koulutus";
     private static final String FIELD_AO_KOULUTUS_4 = "answers.hakutoiveet.preference4-Koulutus";
     private static final String FIELD_AO_KOULUTUS_5 = "answers.hakutoiveet.preference5-Koulutus";
-
     private static final String FIELD_LOP_1 = "answers.hakutoiveet.preference1-Opetuspiste-id";
+
     private static final String FIELD_LOP_2 = "answers.hakutoiveet.preference2-Opetuspiste-id";
     private static final String FIELD_LOP_3 = "answers.hakutoiveet.preference3-Opetuspiste-id";
     private static final String FIELD_LOP_4 = "answers.hakutoiveet.preference4-Opetuspiste-id";
     private static final String FIELD_LOP_5 = "answers.hakutoiveet.preference5-Opetuspiste-id";
-
     private static final String FIELD_APPLICATION_OID = "oid";
+
+    private static final String FIELD_APPLICATION_PERIOD_ID = "applicationPeriodId";
     private static final String FIELD_PERSON_OID = "personOid";
     private static final String FIELD_APPLICATION_STATE = "state";
     private static final String EXISTS = "$exists";
@@ -104,17 +105,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public ApplicationState tallennaVaihe(ApplicationState state) {
 
-        Application queryApplication = new Application(state.getHakemus().getFormId(), state.getHakemus().getUser(),
-                state.getHakemus().getOid());
+        Application queryApplication = new Application(state.getApplication().getApplicationPeriodId(), state.getApplication().getUser(),
+                state.getApplication().getOid());
         final DBObject query = toDBObject.apply(queryApplication);
 
         DBObject one = getCollection().findOne(query);
         if (one != null) {
             queryApplication = fromDBObject.apply(one);
         }
-        Application uusiApplication = state.getHakemus();
+        Application uusiApplication = state.getApplication();
         Map<String, String> answersMerged = uusiApplication.getVastauksetMerged();
-        queryApplication.addVaiheenVastaukset(state.getVaiheId(), answersMerged);
+        queryApplication.addVaiheenVastaukset(state.getPhaseId(), answersMerged);
         queryApplication.setPhaseId(uusiApplication.getPhaseId());
 
         one = toDBObject.apply(queryApplication);
@@ -142,7 +143,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public List<Application> findByApplicationSystem(String asId) {
-        DBObject dbObject = QueryBuilder.start().and(QueryBuilder.start("formId.applicationPeriodId").is(asId).get(),
+        DBObject dbObject = QueryBuilder.start().and(QueryBuilder.start(FIELD_APPLICATION_PERIOD_ID).is(asId).get(),
                 new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true))).get();
         return findApplications(dbObject);
     }
@@ -151,15 +152,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId) {
         DBObject dbObject = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
                 new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true)),
-                new BasicDBObject("formId.applicationPeriodId", asId),
+                new BasicDBObject(FIELD_APPLICATION_PERIOD_ID, asId),
                 QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.ACTIVE.toString()).get()).get();
         return findApplications(dbObject);
     }
 
     public List<Application> findByApplicationOption(List<String> aoIds) {
         DBObject query = QueryBuilder.start().and(queryByPreference(aoIds).get(),
-            new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true)),
-            QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.ACTIVE.toString()).get()).get();
+                new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true)),
+                QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.ACTIVE.toString()).get()).get();
 
         return findApplications(query);
     }
@@ -167,7 +168,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
         if (ssn != null) {
-            final DBObject query = new BasicDBObject("formId.applicationPeriodId", asId)
+            final DBObject query = new BasicDBObject(FIELD_APPLICATION_PERIOD_ID, asId)
                     .append("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH, shaEncrypter.encrypt(ssn))
                     .append(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
             return getCollection().count(query) > 0;

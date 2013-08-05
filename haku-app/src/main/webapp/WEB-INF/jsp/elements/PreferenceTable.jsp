@@ -89,8 +89,7 @@
 
     var sortabletable_settings = {
         contextPath: "${pageContext.request.contextPath}",
-        applicationPeriodId: "${it.hakemusId.applicationPeriodId}",
-        formId: "${it.hakemusId.formId}",
+        applicationPeriodId: "${it.applicationPeriodId}",
         vaiheId: "${vaihe.id}",
         teemaId: "${parent.id}",
         baseEducation: "${categoryData.POHJAKOULUTUS}",

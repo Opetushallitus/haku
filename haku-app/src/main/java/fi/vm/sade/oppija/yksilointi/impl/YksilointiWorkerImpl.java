@@ -137,7 +137,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         String applicationId = application.getOid();
         applicationId = applicationId.substring(applicationId.lastIndexOf('.') + 1);
 
-        ctx.put("formId", getFormName(application));
+        ctx.put("applicationPeriodId", getFormName(application));
         ctx.put("applicant", getApplicantName(application));
         ctx.put("applicationId", applicationId);
         ctx.put("applicationDate", applicationDate);
@@ -169,7 +169,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     }
 
     private String getFormName(Application application) {
-        Form form = formService.getForm(application.getFormId());
+        Form form = formService.getForm(application.getApplicationPeriodId());
         Map<String, String> translations = form.getI18nText().getTranslations();
         String lang = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
         String realLang = "suomi".equals(lang) ? "fi" : "sv";

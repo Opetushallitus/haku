@@ -28,6 +28,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.hakutoiveet.HakutoiveetPhase;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createActiveApplicationPeriod;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertNull;
 
@@ -51,13 +53,15 @@ import static org.junit.Assert.assertNull;
  */
 public class HakutoiveetTest extends AbstractSeleniumBase {
 
+    private ApplicationPeriod activeApplicationPeriod;
+
     @Before
     public void init() throws IOException {
         super.before();
         FormModel formModel = new FormModel();
-        ApplicationPeriod applicationPeriod = new ApplicationPeriod(ASID);
-        formModel.addApplicationPeriod(applicationPeriod);
         Form form = new Form("lomake", createI18NAsIs("yhteishaku"));
+        activeApplicationPeriod = createActiveApplicationPeriod(ASID, form);
+        formModel.addApplicationPeriod(activeApplicationPeriod);
         Phase hakutoiveet = new Phase("hakutoiveet", createI18NAsIs("Hakutoiveet"), false);
         Phase lisakysymykset = new Phase("lisakysymykset", createI18NAsIs("Lisäkysymykset"), false);
         form.addChild(hakutoiveet);
@@ -88,14 +92,13 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", "preference1-Koulutus-id", "1.2.246.562.14.79893512065", false);
         relatedQuestionRule.addChild(lisakysymys);
         lisakysymyksetRyhma.addChild(relatedQuestionRule);
-        applicationPeriod.addForm(form);
         updateIndexAndFormModel(formModel);
     }
 
     @Test
     public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
         final WebDriver driver = seleniumHelper.getDriver();
-        seleniumHelper.navigate("lomake/" + ASID + "/lomake/hakutoiveet");
+        seleniumHelper.navigate(getHakutoiveetPath());
         driver.findElement(By.id("preference1-Opetuspiste"));
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Esp");
@@ -112,9 +115,8 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
     @Test(expected = NoSuchElementException.class)
     public void testEducationPreferenceNoAdditionalQuestion() throws InterruptedException {
-        final String url = "lomake/" + ASID + "/lomake/hakutoiveet";
         final WebDriver driver = seleniumHelper.getDriver();
-        driver.get(getBaseUrl() + url);
+        seleniumHelper.navigate(getHakutoiveetPath());
         Selenium s = seleniumHelper.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Eso");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
@@ -122,5 +124,10 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         s.isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
         driver.findElement(By.xpath("//button[@name='nav-next']")).click();
         assertNull(driver.findElement(By.id("lisakysymys")));
+    }
+
+    private String getHakutoiveetPath() {
+        String hakutoiveet = ElementUtil.getPath(this.activeApplicationPeriod, "hakutoiveet");
+        return "lomake/" + hakutoiveet;
     }
 }

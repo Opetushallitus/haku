@@ -23,7 +23,6 @@ import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -62,7 +61,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     @Qualifier("applicationDAOMongoImpl")
     private ApplicationDAO applicationDAO;
 
-    private FormId formId;
+    private String applicationSystemId;
 
     protected static List<DBObject> applicationTestDataObject;
 
@@ -81,17 +80,16 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
             LOGGER.error("Error set up test", e);
         }
 
-        final String id = String.valueOf(System.currentTimeMillis());
-        this.formId = new FormId(ElementUtil.randomId(), id);
+        this.applicationSystemId = ElementUtil.randomId();
     }
 
     @Test
     public void testTallennaVaihe() {
         final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>();
         vaiheenVastaukset.put("avain", ARVO);
-        final Application application1 = new Application(TEST_USER, new ApplicationPhase(formId, TEST_PHASE, vaiheenVastaukset));
+        final Application application1 = new Application(TEST_USER, new ApplicationPhase(applicationSystemId, TEST_PHASE, vaiheenVastaukset));
         final ApplicationState application = applicationDAO.tallennaVaihe(new ApplicationState(application1, TEST_PHASE));
-        assertEquals(ARVO, application.getHakemus().getVastauksetMerged().get("avain"));
+        assertEquals(ARVO, application.getApplication().getVastauksetMerged().get("avain"));
     }
 
     @Test
@@ -110,19 +108,19 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     @Test
     public void testFindAll() throws Exception {
         testTallennaVaihe();
-        List<Application> listOfApplications = applicationDAO.find(new Application(formId, TEST_USER));
+        List<Application> listOfApplications = applicationDAO.find(new Application(applicationSystemId, TEST_USER));
         assertEquals(1, listOfApplications.size());
     }
 
     @Test
     public void testFindAllNotFound() throws Exception {
-        List<Application> applications = applicationDAO.find(new Application(formId, TEST_USER));
+        List<Application> applications = applicationDAO.find(new Application(applicationSystemId, TEST_USER));
         assertTrue(applications.isEmpty());
     }
 
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testFindPendingApplicationNotFound() throws Exception {
-        applicationDAO.findDraftApplication(new Application(formId, TEST_USER));
+        applicationDAO.findDraftApplication(new Application(applicationSystemId, TEST_USER));
     }
 
     @Test

@@ -16,94 +16,63 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
+import com.google.common.base.Preconditions;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
 
-/**
- * @author jukka
- * @version 9/7/1210:26 AM}
- * @since 1.1
- */
 public class ApplicationPeriod implements Serializable {
 
     private static final long serialVersionUID = 709005625385191180L;
 
-    private String id;
-    private Date starts;
-    private Date end;
-    private I18nText name;
+    private final String id;
+    private final Form form;
+    private final Date start;
+    private final Date end;
+    private final I18nText name;
 
-    final Map<String, Form> forms = new HashMap<String, Form>();
 
-    public ApplicationPeriod() {
-        this.starts = new Date();
-        final Calendar instance = Calendar.getInstance();
-        instance.roll(Calendar.YEAR, 1);
-        end = new Date(instance.getTimeInMillis());
-    }
-
-    public ApplicationPeriod(String id) {
-        this();
+    public ApplicationPeriod(@JsonProperty(value = "id") final String id,
+                             @JsonProperty(value = "form") final Form form,
+                             @JsonProperty(value = "start") final Date start,
+                             @JsonProperty(value = "end") final Date end,
+                             @JsonProperty(value = "name") final I18nText name) {
+        Preconditions.checkNotNull(id);
+        Preconditions.checkNotNull(form);
+        Preconditions.checkNotNull(name);
         this.id = id;
-    }
-
-    public ApplicationPeriod(final String id, final Date starts, final Date end) {
-        this.id = id;
-        this.starts = new Date(starts.getTime());
+        this.form = form;
+        this.start = new Date(start.getTime());
         this.end = new Date(end.getTime());
+        this.name = name;
     }
 
     @JsonIgnore
     public boolean isActive() {
         final long now = new Date().getTime();
-        return starts.getTime() <= now && end.getTime() > now;
-    }
-
-    @JsonIgnore
-    public Set<String> getFormIds() {
-        return this.forms.keySet();
-    }
-
-    public void addForm(final Form form) {
-        this.forms.put(form.getId(), form);
-    }
-
-    public Form getFormById(final String id) {
-        return forms.get(id);
+        return start.getTime() <= now && end.getTime() > now;
     }
 
     public String getId() {
         return id;
     }
 
-    public Map<String, Form> getForms() {
-        return forms;
+    public Form getForm() {
+        return form;
     }
 
-    public Date getStarts() {
-        return new Date(starts.getTime());
-    }
-
-    public void setStarts(final Date starts) {
-        this.starts = new Date(starts.getTime());
+    public Date getStart() {
+        return start;
     }
 
     public Date getEnd() {
-        return new Date(end.getTime());
-    }
-
-    public void setEnd(final Date end) {
-        this.end = new Date(end.getTime());
+        return end;
     }
 
     public I18nText getName() {
         return name;
-    }
-
-    public void setName(I18nText name) {
-        this.name = name;
     }
 }

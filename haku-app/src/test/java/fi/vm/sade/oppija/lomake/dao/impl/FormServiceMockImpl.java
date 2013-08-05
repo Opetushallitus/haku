@@ -16,14 +16,13 @@
 
 package fi.vm.sade.oppija.lomake.dao.impl;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Iterables;
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import fi.vm.sade.oppija.lomake.service.FormService;
@@ -39,40 +38,35 @@ public class FormServiceMockImpl implements FormService {
         Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl(), asid, aoid);
         FormModelHolder formModelHolder = new FormModelHolder(yhteishaku2013);
         this.formModel = formModelHolder.getModel();
-        for (ApplicationPeriod ap : formModel.getApplicationPerioidMap().values()) {
-            Map<String, String> translations = Maps.newHashMap();
-            translations.put("fi", ap.getId());
-            translations.put("sv", ap.getId());
-            translations.put("en", ap.getId());
-            ap.setName(new I18nText(translations));
-        }
     }
 
     @Override
-    public Form getActiveForm(final String applicationPeriodId, final String formId) {
+    public Form getActiveForm(final String applicationPeriodId) {
         try {
-            return formModel.getApplicationPeriodById(applicationPeriodId).getFormById(formId);
+            return formModel.getApplicationPeriodById(applicationPeriodId).getForm();
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRuntime("Not found", e);
         }
     }
 
     @Override
-    public Element getFirstPhase(final String applicationPeriodId, final String formId) {
-        try {
-            return this.getActiveForm(applicationPeriodId, formId).getFirstChild();
-        } catch (Exception e) {
-            throw new ResourceNotFoundExceptionRuntime("Not found");
+    public Element getFirstPhase(final String applicationPeriodId) {
+        Form activeForm = getActiveForm(applicationPeriodId);
+        Element firstPhase = Iterables.getFirst(activeForm.getChildren(), null);
+        if (firstPhase instanceof Phase) {
+            return firstPhase;
         }
+        throw new ResourceNotFoundExceptionRuntime("Last phase not found");
     }
 
     @Override
-    public Element getLastPhase(final String applicationPeriodId, final String formId) {
-        try {
-            return this.getActiveForm(applicationPeriodId, formId).getLastPhase();
-        } catch (Exception e) {
-            throw new ResourceNotFoundExceptionRuntime("Not found");
+    public Element getLastPhase(String applicationPeriodId) {
+        Form activeForm = getActiveForm(applicationPeriodId);
+        Element lastPhase = Iterables.getLast(activeForm.getChildren(), null);
+        if (lastPhase instanceof Phase) {
+            return lastPhase;
         }
+        throw new ResourceNotFoundExceptionRuntime("Last phase not found");
     }
 
     @Override
@@ -81,24 +75,13 @@ public class FormServiceMockImpl implements FormService {
     }
 
     @Override
-    public ApplicationPeriod getApplicationPeriodById(final String applicationPeriodId) {
+    public ApplicationPeriod getApplicationPeriod(final String applicationPeriodId) {
         return this.formModel.getApplicationPeriodById(applicationPeriodId);
     }
 
     @Override
-    public Form getForm(final String applicationPeriodId, final String formId) {
-        ApplicationPeriod applicationPeriod = getApplicationPeriodById(applicationPeriodId);
-        return applicationPeriod.getFormById(formId);
-    }
-
-    @Override
-    public Form getActiveForm(final FormId formId) {
-        return this.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
-    }
-
-    @Override
-    public Form getForm(final FormId formId) {
-        return this.getForm(formId.getApplicationPeriodId(), formId.getFormId());
+    public Form getForm(final String applicationPeriodId) {
+        return getApplicationPeriod(applicationPeriodId).getForm();
     }
 
     public FormModel getModel() {

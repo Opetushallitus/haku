@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.lomake.service;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 
@@ -25,20 +24,17 @@ import java.util.Map;
 
 public interface FormService {
 
-    Element getFirstPhase(final String applicationPeriodId, final String formId);
+    Element getFirstPhase(final String applicationPeriodId);
 
-    Element getLastPhase(final String applicationPeriodId, final String formId);
+    Element getLastPhase(final String applicationPeriodId);
+
+    ApplicationPeriod getApplicationPeriod(final String applicationPeriodId);
+
+    Form getForm(final String applicationPeriodId);
+
+    Form getActiveForm(final String applicationPeriodId);
 
     Map<String, ApplicationPeriod> getApplicationPerioidMap();
 
-    ApplicationPeriod getApplicationPeriodById(final String applicationPeriodId);
-
-    Form getForm(String applicationPeriodId, String formId);
-
-    Form getForm(final FormId formId);
-
-    Form getActiveForm(final String applicationPeriodId, final String formId);
-
-    Form getActiveForm(final FormId formId);
 
 }

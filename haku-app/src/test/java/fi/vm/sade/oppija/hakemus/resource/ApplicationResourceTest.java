@@ -23,15 +23,14 @@ import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.convert.ConversionService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -62,19 +61,18 @@ public class ApplicationResourceTest {
         this.applicationService = mock(ApplicationService.class);
         this.conversionService = mock(ConversionService.class);
 
-        FormId formId = new FormId(ASID, "fi");
 
         Map<String, String> phase1 = new HashMap<String, String>();
         phase1.put("nimi", "Alan Turing");
         Map<String, Map<String, String>> phases = new HashMap<String, Map<String, String>>();
         phases.put("henkilotiedot", phase1);
 
-        this.application = new Application(formId, new AnonymousUser(), phases, null);
+        this.application = new Application(ASID, new AnonymousUser(), phases, null);
         this.application.setOid(OID);
 
         try {
-            when(applicationService.getApplication(OID)).thenReturn(this.application);
-            when(applicationService.getApplication(INVALID_OID)).thenThrow(new ResourceNotFoundException("Application Not Found"));
+            when(applicationService.getApplicationByOid(OID)).thenReturn(this.application);
+            when(applicationService.getApplicationByOid(INVALID_OID)).thenThrow(new ResourceNotFoundException("Application Not Found"));
             when(applicationService.getApplicationKeyValue(eq(OID), eq("key"))).thenReturn("value");
             when(applicationService.getApplicationKeyValue(eq(INVALID_OID), eq("key"))).thenThrow(new ResourceNotFoundException("Application Not Found"));
             when(applicationService.getApplicationKeyValue(eq(OID), eq("nonExistingKey"))).thenThrow(new ResourceNotFoundException("Key of the application Not Found"));
@@ -102,7 +100,7 @@ public class ApplicationResourceTest {
 
     @Test
     public void testFindApplicationsNoMatch() {
-        ApplicationSearchResultDTO applications = this.applicationResource.findApplications(INVALID_OID, "",  "", null, 0, Integer.MAX_VALUE);
+        ApplicationSearchResultDTO applications = this.applicationResource.findApplications(INVALID_OID, "", "", null, 0, Integer.MAX_VALUE);
         assertEquals(0, applications.getTotalCount());
     }
 

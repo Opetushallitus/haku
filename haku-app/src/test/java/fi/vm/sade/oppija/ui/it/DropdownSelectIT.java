@@ -51,7 +51,7 @@ public class DropdownSelectIT extends AbstractSeleniumBase {
         this.formModelHelper = updateIndexAndFormModel(formModel);
         driver = seleniumHelper.getDriver();
         selenium = seleniumHelper.getSelenium();
-        driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstCategory()));
+        driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstPhase().getId()));
     }
 
     @Test
@@ -79,14 +79,14 @@ public class DropdownSelectIT extends AbstractSeleniumBase {
 
     @Test
     public void testLabelLangSv() throws IOException {
-        driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstCategory()) + "?lang=sv");
+        driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstPhase().getId()) + "?lang=sv");
         WebElement label = driver.findElement(new By.ByTagName("label"));
         assertEquals("Invalid label id", dropdownSelect.getI18nText().getTranslations().get("sv"), label.getText());
     }
 
     @Test
     public void testLabelLangXx() throws IOException {
-        driver.get(getBaseUrl()  + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstCategory()) + "?lang=xx");
+        driver.get(getBaseUrl()  + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstPhase().getId()) + "?lang=xx");
         WebElement label = driver.findElement(new By.ByTagName("label"));
         assertEquals("Invalid label id", "???", label.getText());
     }

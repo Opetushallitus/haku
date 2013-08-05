@@ -77,7 +77,7 @@ public class ElementTreeValidatorTest {
     }
 
     private void testAsuinmaa(final String asuinmaa, final int errorCount) {
-        Element phase = formModelDummyMemoryDao.getFirstPhase(ASID, "yhteishaku");
+        Element phase = formModelDummyMemoryDao.getFirstPhase(ASID);
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", asuinmaa);
         ValidationResult validationResult = ElementTreeValidator.validate(phase, values);

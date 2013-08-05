@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.lomake.service;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +41,7 @@ public class UserHolder implements Serializable {
     private static final long serialVersionUID = 8093993846121110534L;
     public static final Logger LOGGER = LoggerFactory.getLogger(UserHolder.class);
 
-    private final Map<FormId, Application> applications = new HashMap<FormId, Application>();
+    private final Map<String, Application> applications = new HashMap<String, Application>();
     private User user = new AnonymousUser();
     private final Map<String, String> userPrefillData = new HashMap<String, String>();
 
@@ -67,24 +66,24 @@ public class UserHolder implements Serializable {
         return populated;
     }
 
-    public Application getApplication(final FormId formId) {
-        if (applications.containsKey(formId)) {
-            return applications.get(formId);
+    public Application getApplication(final String applicationPeriodId) {
+        if (applications.containsKey(applicationPeriodId)) {
+            return applications.get(applicationPeriodId);
         } else {
-            Application application = new Application(formId, user);
-            this.applications.put(formId, application);
+            Application application = new Application(applicationPeriodId, user);
+            this.applications.put(applicationPeriodId, application);
             return application;
         }
 
     }
 
     public Application savePhaseAnswers(ApplicationPhase applicationPhase) {
-        Application application = this.getApplication(applicationPhase.getFormId());
+        Application application = this.getApplication(applicationPhase.getApplicationPeriodId());
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
         return application;
     }
 
-    public void removeApplication(final FormId formId) {
-        this.applications.remove(formId);
+    public void removeApplication(final String applicationPeriodId) {
+        this.applications.remove(applicationPeriodId);
     }
 }

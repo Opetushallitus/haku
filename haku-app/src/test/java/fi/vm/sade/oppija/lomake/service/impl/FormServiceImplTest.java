@@ -17,13 +17,14 @@
 package fi.vm.sade.oppija.lomake.service.impl;
 
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,18 +33,17 @@ import static org.junit.Assert.assertEquals;
 
 public class FormServiceImplTest {
 
-    public static final Form FORM = new Form("FormId", createI18NAsIs("Form title"));
-    public static final Phase PHASE = new Phase("phaseId", createI18NAsIs("Phase title"), false);
+    public static final Form FORM = new Form(ElementUtil.randomId(), createI18NAsIs("Form title"));
+    public static final Phase PHASE = new Phase(ElementUtil.randomId(), createI18NAsIs("Phase title"), false);
     public ApplicationPeriod applicationPeriod;
     private FormServiceImpl formService;
 
     @Before
     public void setUp() throws Exception {
-        this.applicationPeriod = new ApplicationPeriod("ApplicationPeriodId");
+        this.applicationPeriod = ElementUtil.createActiveApplicationPeriod("ASID", FORM);
         Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl(), "dummyAsid", "dummyAoid");
         FormModelHolder holder = new FormModelHolder(yhteishaku2013);
         FormModel model = new FormModel();
-        applicationPeriod.addForm(FORM);
         FORM.addChild(PHASE);
         model.addApplicationPeriod(applicationPeriod);
         holder.updateModel(model);
@@ -51,18 +51,18 @@ public class FormServiceImplTest {
     }
 
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
-    public void testGetFirstCategoryNotFound() throws Exception {
-        formService.getFirstPhase(null, null);
+    public void testGetFirstPhaseNotFound() throws Exception {
+        formService.getFirstPhase(null);
     }
 
     @Test
     public void testGetApplicationPeriodById() throws Exception {
-        ApplicationPeriod applicationPeriodById = formService.getApplicationPeriodById(applicationPeriod.getId());
+        ApplicationPeriod applicationPeriodById = formService.getApplicationPeriod(applicationPeriod.getId());
         assertEquals(applicationPeriod, applicationPeriodById);
     }
 
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testGetApplicationPeriodByIdNotFound() throws Exception {
-        formService.getApplicationPeriodById("lskdjflsdk");
+        formService.getApplicationPeriod("lskdjflsdk");
     }
 }
