@@ -35,14 +35,13 @@
                     <haku:i18nText value="${ssnElement.femaleOption.i18nText}"/>
                 </c:if>
             </span>
-            <input id="${ssnElement.sexId}" name="${ssnElement.sexId}" value="${categoryData[ssnElement.sexId]}" type="hidden"/>
+            <input id="${ssnElement.sexId}" name="${ssnElement.sexId}" value="<c:out value='${categoryData[ssnElement.sexId]}' />" type="hidden"/>
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
         <haku:help element="${element}"/>
     </div>
     <div class="clear"></div>
 </div>
-
 
 
 <script>
