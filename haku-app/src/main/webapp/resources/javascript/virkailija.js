@@ -84,46 +84,59 @@ $(document).ready(function () {
 
     var applicationSearch = (function () {
         var oid = $('#oid');
-        var self = this, $q = $('#entry'), $appState = $('#application-state'),
-            $appPreference = $('#application-preference'),
-            $tbody = $('#application-table tbody:first'), $resultcount = $('#resultcount'),
+        var self = this,
+            $tbody = $('#application-table tbody:first'),
+            $resultcount = $('#resultcount'),
             $applicationTabLabel = $('#application-tab-label'),
             maxRows = 50;
 
-        this.search = function (start) {
+        function createQueryParameters(start) {
+            var obj = {};
+            addParameter(obj, 'q', '#entry');
+            addParameter(obj, 'oid', '#oid');
+            addParameter(obj, 'appState', '#application-state');
+            addParameter(obj, 'aoid', '#application-preference');
+            addParameter(obj, 'lopoid', '#lopoid');
+            obj['start'] = start;
+            obj['rows'] = maxRows;
+            return obj;
+        }
 
-            $.getJSON(page_settings.contextPath + "/applications", {
-                q: $q.val(),
-                oid: oid.val(),
-                appState: $appState.val(),
-                appPreference: $appPreference.val(),
-                lopoid: $('#lopoid').val(),
-                start: start,
-                rows: maxRows
-            }, function (data) {
-                $tbody.empty();
-                self.updateCounters(data.totalCount);
-                if (data.totalCount > 0) {
-                    $(data.results).each(function (index, item) {
-                        $tbody.append('<tr><td>' +
-                            (item.lastName ? item.lastName : '') + '</td><td>' +
-                            (item.firstNames ? item.firstNames : '') + '</td><td>' +
-                            (item.ssn ? item.ssn : '') + '</td><td><a class="application-link" href="' +
-                            page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
-                            item.oid + '</a></td><td>' + (item.state ? page_settings[item.state] : '') + '</td></tr>');
-                    });
-                    var options = {
-                        currentPage: Math.ceil(start / maxRows) + 1,
-                        totalPages: Math.ceil(data.totalCount / maxRows),
-                        onPageClicked: function(e,originalEvent,type,page){
-                            applicationSearch.search((page -1) * maxRows);
+        function addParameter(obj, queryParameterName, selector) {
+            var val = $(selector).val();
+            if (val) {
+                obj[queryParameterName] = val;
+            }
+        }
+
+        this.search = function (start) {
+            var queryParameters = createQueryParameters(start);
+            $.getJSON(page_settings.contextPath + "/applications",
+                queryParameters,
+                function (data) {
+                    $tbody.empty();
+                    self.updateCounters(data.totalCount);
+                    if (data.totalCount > 0) {
+                        $(data.results).each(function (index, item) {
+                            $tbody.append('<tr><td>' +
+                                (item.lastName ? item.lastName : '') + '</td><td>' +
+                                (item.firstNames ? item.firstNames : '') + '</td><td>' +
+                                (item.ssn ? item.ssn : '') + '</td><td><a class="application-link" href="' +
+                                page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
+                                item.oid + '</a></td><td>' + (item.state ? page_settings[item.state] : '') + '</td></tr>');
+                        });
+                        var options = {
+                            currentPage: Math.ceil(start / maxRows) + 1,
+                            totalPages: Math.ceil(data.totalCount / maxRows),
+                            onPageClicked: function (e, originalEvent, type, page) {
+                                applicationSearch.search((page - 1) * maxRows);
+                            }
                         }
+                        $('#pagination').bootstrapPaginator(options);
+                    } else {
+                        $('#pagination').empty();
                     }
-                    $('#pagination').bootstrapPaginator(options);
-                } else {
-                    $('#pagination').empty();
-                }
-            });
+                });
         },
             this.updateCounters = function (count) {
                 $resultcount.empty().append(count);
@@ -132,9 +145,9 @@ $(document).ready(function () {
             this.reset = function () {
                 self.updateCounters(0);
                 $tbody.empty();
-                $q.val('');
-                $appState.val('');
-                $appPreference.val('');
+                $('#entry').val('');
+                $('#application-state').val('');
+                $('#application-preference').val('');
                 $('#pagination').empty();
             }
         return this;

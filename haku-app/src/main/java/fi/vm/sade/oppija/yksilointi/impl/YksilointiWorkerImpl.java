@@ -47,8 +47,6 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private ApplicationService applicationService;
     private FormService formService;
 
-    private static DateFormat dateFmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-
     private Map<String, Template> templateMap;
 
     @Value("${email.smtp.debug:false}")
@@ -132,7 +130,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     private VelocityContext buildContext(Application application) {
         VelocityContext ctx = new VelocityContext();
-
+        DateFormat dateFmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         String applicationDate = dateFmt.format(application.getReceived());
         String applicationId = application.getOid();
         applicationId = applicationId.substring(applicationId.lastIndexOf('.') + 1);

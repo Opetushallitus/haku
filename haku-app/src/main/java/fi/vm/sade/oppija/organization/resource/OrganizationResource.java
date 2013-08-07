@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -37,16 +38,14 @@ import java.util.Map;
 
 @Component
 @Path("/organization")
+@Secured("ROLE_APP_HAKEMUS_READ_UPDATE")
 public class OrganizationResource {
     public static final Logger LOGGER = LoggerFactory.getLogger(OrganizationResource.class);
 
     public static final String ORGANIZATION_ROOT_ID = "1.2.246.562.10.00000000001";
-    private final OrganizationService organizationService;
 
     @Autowired
-    public OrganizationResource(final OrganizationService organizationService) {
-        this.organizationService = organizationService;
-    }
+    private OrganizationService organizationService;
 
     @GET
     @Path("/hakemus/")

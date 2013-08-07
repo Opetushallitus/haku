@@ -31,7 +31,6 @@ import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -381,13 +380,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application officerCreateNewApplication(String asId) {
-        ApplicationPeriod as = formService.getApplicationPeriod(asId);
         Application application = new Application();
         application.setApplicationPeriodId(asId);
         application.setReceived(new Date());
         application.setState(Application.State.INCOMPLETE);
-        final User user = userHolder.getUser();
-        application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), user));
+        application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), userHolder.getUser()));
         application.setOid(applicationOidService.generateNewOid());
         this.applicationDAO.save(application);
         return application;

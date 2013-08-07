@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements;
 
-import com.google.common.collect.Iterables;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;

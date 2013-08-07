@@ -144,14 +144,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public List<Application> findByApplicationSystem(String asId) {
         DBObject dbObject = QueryBuilder.start().and(QueryBuilder.start(FIELD_APPLICATION_PERIOD_ID).is(asId).get(),
-                new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true))).get();
+                newOIdExistDBObject()).get();
         return findApplications(dbObject);
     }
 
     @Override
     public List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId) {
         DBObject dbObject = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
-                new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true)),
+                newOIdExistDBObject(),
                 new BasicDBObject(FIELD_APPLICATION_PERIOD_ID, asId),
                 QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.ACTIVE.toString()).get()).get();
         return findApplications(dbObject);
@@ -159,7 +159,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     public List<Application> findByApplicationOption(List<String> aoIds) {
         DBObject query = QueryBuilder.start().and(queryByPreference(aoIds).get(),
-                new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true)),
+                newOIdExistDBObject(),
                 QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.ACTIVE.toString()).get()).get();
 
         return findApplications(query);
@@ -180,8 +180,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public ApplicationSearchResultDTO findAllFiltered(ApplicationQueryParameters applicationQueryParameters) {
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         QueryBuilder baseQuery = QueryBuilder.start();
-        DBObject query;
-        query = newQueryBuilderWithFilters(filters, baseQuery);
+        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
         return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
     }
 
@@ -330,15 +329,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         String state = applicationQueryParameters.getState();
         if (!isEmpty(state)) {
-            for (Application.State s : Application.State.values()) {
-                if (s.toString().equals(state)) {
-                    stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).is(state).get();
-                    break;
-                }
-            }
-            if (stateQuery == null && "NOT_IDENTIFIED".equals(state)) {
+            if ("NOT_IDENTIFIED".equals(state)) {
                 stateQuery = new BasicDBObject();
-                stateQuery.put("personOid", new BasicDBObject("$exists", false));
+                stateQuery.put(FIELD_PERSON_OID, new BasicDBObject(EXISTS, false));
+            } else {
+                stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).is(state).get();
             }
         }
 
@@ -346,7 +341,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             filters.add(stateQuery);
         }
 
-        String preference = applicationQueryParameters.getPreference();
+        String preference = applicationQueryParameters.getAoId();
         if (!isEmpty(preference)) {
             filters.add(queryByPreference(preference).get());
         }
@@ -355,10 +350,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
         }
 
-        if (applicationQueryParameters.isFetchSubmittedOnly()) {
-            DBObject f = new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
-            filters.add(f);
-        }
+        filters.add(newOIdExistDBObject());
 
         return filters.toArray(new DBObject[filters.size()]);
     }
@@ -371,5 +363,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             query = baseQuery.get();
         }
         return query;
+    }
+
+    private BasicDBObject newOIdExistDBObject() {
+        return new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
     }
 }

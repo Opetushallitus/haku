@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -44,15 +45,20 @@ import java.util.Map;
  */
 @Component
 @Path("/applications")
+@Secured("ROLE_APP_HAKEMUS_READ_UPDATE")
 public class ApplicationResource {
 
+    @Autowired
     private ApplicationService applicationService;
+    @Autowired
     private ConversionService conversionService;
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
     private static final String OID = "oid";
 
-    @Autowired
-    public ApplicationResource(ApplicationService applicationService, ConversionService conversionService) {
+    public ApplicationResource() {
+    }
+
+    public ApplicationResource(final ApplicationService applicationService, final ConversionService conversionService) {
         this.applicationService = applicationService;
         this.conversionService = conversionService;
     }
@@ -71,16 +77,16 @@ public class ApplicationResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ApplicationSearchResultDTO findApplications(@DefaultValue("") @QueryParam("q") String query,
-                                                       @DefaultValue("") @QueryParam("appState") String appState,
-                                                       @DefaultValue("") @QueryParam("appPreference") String appPreference,
-                                                       @DefaultValue("") @QueryParam("lopoid") String lopoid,
+    public ApplicationSearchResultDTO findApplications(@DefaultValue(value = "") @QueryParam("q") String query,
+                                                       @QueryParam("appState") String state,
+                                                       @QueryParam("aoid") String aoid,
+                                                       @QueryParam("lopoid") String lopoid,
                                                        @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @DefaultValue(value = "100") @QueryParam("rows") int rows) {
-        LOGGER.debug("Finding applications q:{}, appState:{}, appPreference:{}, lopoid:{}",
-                query, appState, appPreference, lopoid);
+        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{} start:{}, rows: {}",
+                query, state, aoid, lopoid, start, rows);
         return applicationService.findApplications(
-                query, new ApplicationQueryParameters(appState, appPreference, lopoid, start, rows));
+                query, new ApplicationQueryParameters(state, aoid, lopoid, start, rows));
     }
 
     @GET
@@ -101,7 +107,8 @@ public class ApplicationResource {
     @PUT
     @Path("{oid}/{key}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void putApplicationAdditionalInfoKeyValue(@PathParam(OID) String oid, @PathParam("key") String key,
+    public void putApplicationAdditionalInfoKeyValue(@PathParam(OID) String oid,
+                                                     @PathParam("key") String key,
                                                      @QueryParam("value") String value) {
         try {
             applicationService.putApplicationAdditionalInfoKeyValue(oid, key, value);
