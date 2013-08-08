@@ -112,7 +112,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String responseString = null;
         PostMethod post = new PostMethod(henkiloResource);
         try {
-            RequestEntity entity = new StringRequestEntity(gson.toJson(person, Person.class), MediaType.APPLICATION_JSON, "UTF-8");
+            RequestEntity entity = new StringRequestEntity(gson.toJson(person, Person.class), MediaType.APPLICATION_JSON + ";charset=UTF-8", "UTF-8");
             post.setRequestEntity(entity);
             client.executeMethod(post);
             responseString = post.getResponseBodyAsString();

@@ -68,7 +68,7 @@
 </div>
 <div id="wrapper" class="virkailija">
 
-    <virkailija:headerButtons oid="${application.oid}" preview="${preview}" />
+    <virkailija:headerButtons oid="${application.oid}" preview="${preview}"/>
 
     <div class="grid16-16">
         <h3><c:out value="${categoryData['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
@@ -117,7 +117,7 @@
 
                 <c:choose>
                     <c:when test="${preview}">
-                        <c:set var="virkailijaPreview" value="true" scope="request" />
+                        <c:set var="virkailijaPreview" value="true" scope="request"/>
                         <div class="form">
                             <c:forEach var="child" items="${phase.children}">
                                 <c:set var="element" value="${child}" scope="request"/>

@@ -13,7 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class SimpleTarjontaService implements TarjontaService {
@@ -22,8 +26,6 @@ public class SimpleTarjontaService implements TarjontaService {
 
     @Autowired
     public SimpleTarjontaService(@Value("${tarjonta.haku.resource.url}") final String tarjontaHakuResourceUrl) {
-        //this.url = url;
-        //"http://reppu.hard.ware.fi:8302/tarjonta-service/rest/haku";
         ClientConfig cc = new DefaultClientConfig();
         cc.getClasses().add(JacksonJsonProvider.class);
         Client clientWithJacksonSerializer = Client.create(cc);
@@ -34,12 +36,14 @@ public class SimpleTarjontaService implements TarjontaService {
     public Map<String, Map<String, String>> getApplicationSystemOidsAndNames() {
         Map<String, Map<String, String>> oidsAndNames = new HashMap<String, Map<String, String>>();
 
-        List<Map<String, String>> oids = webResource.get(new GenericType<List<Map<String, String>>>() {});
+        List<Map<String, String>> oids = webResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<List<Map<String, String>>>() {
+        });
 
         for (Map<String, String> map : oids) {
             String oid = map.get("oid");
             WebResource asWebResource = webResource.path(oid);
-            Map<String, Object> as = asWebResource.get(new GenericType<Map<String, Object>>() {});
+            Map<String, Object> as = asWebResource.get(new GenericType<Map<String, Object>>() {
+            });
             Map<String, String> names = (Map<String, String>) as.get("nimi");
             Map<String, String> namesTransformed = Maps.newHashMap();
             Iterator<Map.Entry<String, String>> i = names.entrySet().iterator();

@@ -35,5 +35,8 @@ public class Form extends Titled {
         return hasChildren() && this.children.get(0).equals(phase);
     }
 
-
+    @JsonIgnore
+    public Element getPreviewPhase() {
+        return super.getChildById("esikatselu");
+    }
 }
