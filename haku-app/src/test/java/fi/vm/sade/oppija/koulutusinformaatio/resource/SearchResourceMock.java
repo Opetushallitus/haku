@@ -17,7 +17,10 @@ package fi.vm.sade.oppija.koulutusinformaatio.resource;
 
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -29,7 +32,7 @@ public class SearchResourceMock {
 
     @GET
     @Path("/lop/search/{term}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public String organizationSearch(@PathParam("term") final String term) {
         if (term.equalsIgnoreCase("esp")) {
             return "[{\"id\":\"1.2.246.562.10.89537774706\",\"name\":\"FAKTIA, Espoo op\",\"key\":\"faktia, espoo op\"}," +
@@ -41,7 +44,7 @@ public class SearchResourceMock {
 
     @GET
     @Path("/ao/search/{asId}/{lopId}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public String hakukohdeSearch(@PathParam("asId") final String asId, @PathParam("lopId") final String lopId) {
         if (lopId.equalsIgnoreCase("1.2.246.562.10.89537774706")) {
             return "[{\"id\":\"1.2.246.562.14.673437691210\"," +
@@ -50,8 +53,8 @@ public class SearchResourceMock {
                     "\"sora\": true, " +
                     "\"teachingLanguages\":[\"FI\"], " +
                     "\"childLONames\":[" +
-                        "\"Käsi- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun ja valmistuksen koulutusohjelma\"," +
-                        "\"Käsi- ja taideteollisuusalan perustutkinto, Ympäristön suunnittelun ja rakentamisen koulutusohjelma" +
+                    "\"Käsi- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun ja valmistuksen koulutusohjelma\"," +
+                    "\"Käsi- ja taideteollisuusalan perustutkinto, Ympäristön suunnittelun ja rakentamisen koulutusohjelma" +
                     "\"]}," +
                     "{\"id\":\"1.2.246.562.14.79893512065\"," +
                     "\"name\":\"Kaivosalan perustutkinto, pk\"," +
@@ -60,14 +63,14 @@ public class SearchResourceMock {
                     "\"teachingLanguages\":[\"FI\"]," +
                     "\"athleteEducation\":true, " +
                     "\"childLONames\":[" +
-                        "\"Kaivosalan perustutkinto, Kaivosalan koulutusohjelma\"]}," +
+                    "\"Kaivosalan perustutkinto, Kaivosalan koulutusohjelma\"]}," +
                     "{\"id\":\"1.2.246.562.14.39251489298\"," +
                     "\"name\":\"Musiikkiteknologian koulutusohjelma, pk (Musiikkialan perustutkinto)\"," +
                     "\"educationDegree\":\"32\", " +
                     "\"teachingLanguages\":[\"FI\"], " +
                     "\"childLONames\":[" +
-                        "\"Musiikkialan perustutkinto, Musiikkiteknologian koulutusohjelma\"," +
-                        "\"Musiikkialan perustutkinto, Pianonvirityksen koulutusohjelma\"]}," +
+                    "\"Musiikkialan perustutkinto, Musiikkiteknologian koulutusohjelma\"," +
+                    "\"Musiikkialan perustutkinto, Pianonvirityksen koulutusohjelma\"]}," +
                     "{\"id\":\"1.2.246.562.14.71344129359\"," +
                     "\"name\":\"Tuotteen suunnittelun ja valmistuksen koulutusohjelma, pk (Käsi- ja taideteollisuusalan perustutkinto)\", " +
                     "\"educationDegree\":\"30\", " +
@@ -75,7 +78,7 @@ public class SearchResourceMock {
                     "\"sora\": false, " +
                     "\"teachingLanguages\":[\"SV\"], " +
                     "\"childLONames\":[" +
-                        "\"Käsi- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun ja valmistuksen koulutusohjelma\"]}]";
+                    "\"Käsi- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun ja valmistuksen koulutusohjelma\"]}]";
         } else {
             return "[]";
         }

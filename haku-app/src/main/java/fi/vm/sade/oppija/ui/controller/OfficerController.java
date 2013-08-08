@@ -88,7 +88,7 @@ public class OfficerController {
 
     @POST
     @Path("/hakemus/new")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Response newApplication(final MultivaluedMap<String, String> multiValues) throws URISyntaxException, ResourceNotFoundException {
         LOGGER.debug("newApplication");
@@ -162,7 +162,7 @@ public class OfficerController {
 
     @POST
     @Path("/hakemus/{oid}/additionalInfo")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Response saveAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid,
                                        final MultivaluedMap<String, String> multiValues)
@@ -194,7 +194,7 @@ public class OfficerController {
     @POST
     @Path("/hakemus/{oid}/addPersonAndAuthenticate")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     public Viewable addPersonAndAuthenticate(@PathParam(OID_PATH_PARAM) final String oid,
                                              final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
         StringBuilder reasonBuilder = new StringBuilder();
@@ -210,7 +210,7 @@ public class OfficerController {
     @POST
     @Path("/hakemus/{oid}/passivate")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     public Viewable passivate(@PathParam(OID_PATH_PARAM) final String oid,
                               final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
         for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
@@ -229,7 +229,7 @@ public class OfficerController {
     @POST
     @Path("/hakemus/{oid}/addNote")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     public Viewable addNote(@PathParam(OID_PATH_PARAM) final String oid,
                             final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
         for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
@@ -255,7 +255,7 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/{applicationPeriodId}/{phaseId}/{oid}/{elementId}/relatedData/{key}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Serializable getElementRelatedData(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                               @PathParam(OID_PATH_PARAM) final String oid,
