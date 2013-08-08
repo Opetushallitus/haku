@@ -48,6 +48,8 @@ import java.util.Map;
 @Secured("ROLE_APP_HAKEMUS_READ_UPDATE")
 public class ApplicationResource {
 
+    public static final String CHARSET_UTF_8 = ";charset=UTF-8";
+
     @Autowired
     private ApplicationService applicationService;
     @Autowired
@@ -65,7 +67,7 @@ public class ApplicationResource {
 
     @GET
     @Path("{oid}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public Application getApplicationByOid(@PathParam(OID) String oid) {
         LOGGER.debug("Getting application by oid : {}", oid);
         try {
@@ -76,7 +78,7 @@ public class ApplicationResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public ApplicationSearchResultDTO findApplications(@DefaultValue(value = "") @QueryParam("q") String query,
                                                        @QueryParam("appState") String state,
                                                        @QueryParam("aoid") String aoid,
@@ -91,7 +93,7 @@ public class ApplicationResource {
 
     @GET
     @Path("{oid}/{key}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public Map<String, String> getApplicationKeyValue(@PathParam(OID) String oid, @PathParam("key") String key) {
         Map<String, String> keyValue = new HashMap<String, String>();
 
@@ -106,7 +108,8 @@ public class ApplicationResource {
 
     @PUT
     @Path("{oid}/{key}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public void putApplicationAdditionalInfoKeyValue(@PathParam(OID) String oid,
                                                      @PathParam("key") String key,
                                                      @QueryParam("value") String value) {
@@ -123,7 +126,7 @@ public class ApplicationResource {
 
     @GET
     @Path("applicant/{asId}/{aoId}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public List<ApplicantDTO> findApplicants(@PathParam("asId") String asId, @PathParam("aoId") String aoId) {
         LOGGER.debug("Finding applicants asId:{}, aoID:{}", asId, aoId);
         List<Application> applications = applicationService.getApplicationsByApplicationSystemAndApplicationOption(asId, aoId);

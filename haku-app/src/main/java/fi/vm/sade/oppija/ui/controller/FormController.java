@@ -164,8 +164,8 @@ public class FormController {
 
     @GET
     @Path("/{applicationPeriodId}/{phaseId}/{elementId}/languageTest")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.TEXT_PLAIN + CHARSET_UTF_8)
     public Serializable getLanguageTestChildren(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                                 @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
@@ -182,7 +182,7 @@ public class FormController {
 
     @GET
     @Path("/{applicationPeriodId}/{phaseId}/{elementId}/relatedData/{key}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public Serializable getElementRelatedData(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                               @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
@@ -202,7 +202,7 @@ public class FormController {
 
     @POST
     @Path("/{applicationPeriodId}")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     public Response prefillForm(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException {
@@ -214,7 +214,7 @@ public class FormController {
 
     @POST
     @Path("/{applicationPeriodId}/esikatselu")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     public Response submitApplication(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId) throws URISyntaxException {
         LOGGER.debug("submitApplication {}", new Object[]{applicationPeriodId});
         String oid = applicationService.submitApplication(applicationPeriodId);
@@ -224,8 +224,8 @@ public class FormController {
 
     @POST
     @Path("/{applicationPeriodId}/{phaseId}")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_HTML)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Response savePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
@@ -325,7 +325,7 @@ public class FormController {
      */
     @GET
     @Path("/{applicationSystemId}/{phaseId}/{themeId}/additionalquestions/{aoId}")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getAdditionalQuestions(@PathParam("applicationSystemId") final String applicationSystemId,
                                            @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                            @PathParam("themeId") final String themeId,
