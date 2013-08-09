@@ -45,7 +45,7 @@ import java.util.Map;
  */
 @Component
 @Path("/applications")
-@Secured("ROLE_APP_HAKEMUS_READ_UPDATE")
+@Secured({"ROLE_APP_HAKEMUS_READ_UPDATE", "ROLE_APP_HAKEMUS_CRUD"})
 public class ApplicationResource {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
