@@ -168,9 +168,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
         if (ssn != null) {
-            final DBObject query = new BasicDBObject(FIELD_APPLICATION_PERIOD_ID, asId)
-                    .append("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH, shaEncrypter.encrypt(ssn))
-                    .append(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
+            String encryptedSsn = shaEncrypter.encrypt(ssn);
+            DBObject query = QueryBuilder.start(FIELD_APPLICATION_PERIOD_ID).is(asId)
+                    .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
+                    .and(FIELD_APPLICATION_OID).exists(true)
+                    .get();
             return getCollection().count(query) > 0;
         }
         return false;
@@ -330,8 +332,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         String state = applicationQueryParameters.getState();
         if (!isEmpty(state)) {
             if ("NOT_IDENTIFIED".equals(state)) {
-                stateQuery = new BasicDBObject();
-                stateQuery.put(FIELD_PERSON_OID, new BasicDBObject(EXISTS, false));
+                stateQuery = QueryBuilder.start(FIELD_PERSON_OID).exists(false).get();
             } else {
                 stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).is(state).get();
             }
@@ -365,7 +366,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return query;
     }
 
-    private BasicDBObject newOIdExistDBObject() {
-        return new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
+    private DBObject newOIdExistDBObject() {
+        return QueryBuilder.start(FIELD_APPLICATION_OID).exists(true).get();
     }
 }

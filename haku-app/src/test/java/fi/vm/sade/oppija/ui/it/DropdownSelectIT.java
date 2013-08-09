@@ -39,7 +39,6 @@ public class DropdownSelectIT extends AbstractSeleniumBase {
     public static final String SELECT_ID = "select_id";
     private FormModelHelper formModelHelper;
     private WebDriver driver;
-    private Selenium selenium;
     private DropdownSelect dropdownSelect;
 
     @Before
@@ -50,7 +49,6 @@ public class DropdownSelectIT extends AbstractSeleniumBase {
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
         this.formModelHelper = updateIndexAndFormModel(formModel);
         driver = seleniumHelper.getDriver();
-        selenium = seleniumHelper.getSelenium();
         driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstPhase().getId()));
     }
 

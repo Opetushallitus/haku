@@ -28,7 +28,6 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 
-
     <beans profile="default">
         <context:property-placeholder
                 location="file:///${user.home:''}/oph-configuration/haku.properties,

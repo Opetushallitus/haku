@@ -16,23 +16,18 @@
 
 package fi.vm.sade.oppija.hakemus.it;
 
-import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.oppija.common.selenium.LoginPage;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,10 +37,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ApplicationIT extends DummyModelBaseItTest {
-    public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationIT.class);
-
-    @Autowired
-    TestDBFactoryBean dbFactory;
 
     protected static List<DBObject> applicationTestDataObject;
 
@@ -59,13 +50,8 @@ public class ApplicationIT extends DummyModelBaseItTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        try {
-            DBCollection application = dbFactory.getObject().getCollection("application");
-            application.drop();
-            application.insert(applicationTestDataObject);
-        } catch (Exception e) {
-            LOGGER.error("Error set up test", e);
-        }
+        mongoWrapper.dropCollection("application");
+        mongoWrapper.getCollection("application").insert(applicationTestDataObject);
         final LoginPage loginPage = new LoginPage(seleniumHelper.getSelenium());
         navigateToPath("user", "login");
         loginPage.login("officer");

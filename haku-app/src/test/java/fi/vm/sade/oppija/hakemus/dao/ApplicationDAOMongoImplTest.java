@@ -75,7 +75,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     @Before
     public void setUp() throws Exception {
         try {
-            getDbFactory().getObject().getCollection(getCollectionName()).insert(applicationTestDataObject);
+            mongoWrapper.getCollection(getCollectionName()).insert(applicationTestDataObject);
         } catch (Exception e) {
             LOGGER.error("Error set up test", e);
         }

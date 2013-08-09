@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.common.dao;
 
-import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
+import fi.vm.sade.oppija.common.MongoWrapper;
 import org.junit.After;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,23 +32,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class AbstractDAOTest {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(AbstractDAOTest.class);
+
     @Autowired
-    TestDBFactoryBean dbFactory;
+    protected MongoWrapper mongoWrapper;
 
     @After
     public void removeTestData() {
         try {
-            dbFactory.getObject().getCollection(getCollectionName()).drop();
+            mongoWrapper.getCollection(getCollectionName()).drop();
         } catch (Exception e) {
             LOGGER.error("Error removing test data", e);
         }
 
     }
-
-    public TestDBFactoryBean getDbFactory() {
-        return this.dbFactory;
-    }
-
 
     protected abstract String getCollectionName();
 }

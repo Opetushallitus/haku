@@ -52,8 +52,10 @@ public class ApplicationResource {
 
     @Autowired
     private ApplicationService applicationService;
+
     @Autowired
     private ConversionService conversionService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
     private static final String OID = "oid";
 

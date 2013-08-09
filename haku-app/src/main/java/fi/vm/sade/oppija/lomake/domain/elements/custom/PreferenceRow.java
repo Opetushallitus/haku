@@ -34,7 +34,7 @@ public class PreferenceRow extends Question {
     private static final long serialVersionUID = 5149303147942411002L;
     // label text for reset button
     private I18nText resetLabel;
-    // label text for education drop down select
+    // label text for education dropDatabase down select
     private I18nText educationLabel;
     // label text for learning institution input (Opetuspiste)
     private I18nText learningInstitutionLabel;
