@@ -23,6 +23,7 @@ import com.mongodb.DBObject;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.ui.HakuPermissionService;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -40,6 +41,8 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
 
     private static final long serialVersionUID = -3751714345380438532L;
     public final List<Application> hakemukset = new ArrayList<Application>();
+
+    private HakuPermissionService hakuPermissionService;
 
     public List<Application> find(final Application application) {
         Collection<Application> applications = Collections2.filter(hakemukset, new Predicate<Application>() {
@@ -132,6 +135,11 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     public ApplicationSearchResultDTO findByApplicantDob(String term, ApplicationQueryParameters applicationQueryParameters) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public void setHakuPermissionService(HakuPermissionService hakuPermissionService) {
+        this.hakuPermissionService = hakuPermissionService;
     }
 
 }

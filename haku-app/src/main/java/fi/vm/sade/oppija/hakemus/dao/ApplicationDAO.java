@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.common.dao.BaseDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.ui.HakuPermissionService;
 
 import java.util.List;
 
@@ -121,5 +122,7 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     ApplicationSearchResultDTO findAllFiltered(ApplicationQueryParameters applicationQueryParameters);
 
     ApplicationSearchResultDTO findByApplicantDob(String term, ApplicationQueryParameters applicationQueryParameters);
+
+    public void setHakuPermissionService(HakuPermissionService hakuPermissionService);
 
 }

@@ -32,7 +32,7 @@ import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
@@ -52,7 +52,7 @@ import static javax.ws.rs.core.Response.seeOther;
 
 @Path("virkailija")
 @Controller
-@Secured("ROLE_APP_HAKEMUS_READ_UPDATE")
+@PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
 public class OfficerController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(OfficerController.class);
@@ -90,6 +90,7 @@ public class OfficerController {
     @Path("/hakemus/new")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Response newApplication(final MultivaluedMap<String, String> multiValues) throws URISyntaxException, ResourceNotFoundException {
         LOGGER.debug("newApplication");
         final String asId = multiValues.getFirst("asId");
@@ -140,6 +141,7 @@ public class OfficerController {
     @Path("/hakemus/{applicationPeriodId}/{phaseId}/{oid}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Response updatePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(OID_PATH_PARAM) final String oid,
@@ -164,6 +166,7 @@ public class OfficerController {
     @Path("/hakemus/{oid}/additionalInfo")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Response saveAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid,
                                        final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException, ResourceNotFoundException {
@@ -185,6 +188,7 @@ public class OfficerController {
     @GET
     @Path("/hakemus/{oid}/addPersonAndAuthenticate")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Response addPersonAndAuthenticate(@PathParam(OID_PATH_PARAM) final String oid)
             throws URISyntaxException, ResourceNotFoundException {
         officerUIService.addPersonAndAuthenticate(oid);
@@ -195,6 +199,7 @@ public class OfficerController {
     @Path("/hakemus/{oid}/addPersonAndAuthenticate")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Viewable addPersonAndAuthenticate(@PathParam(OID_PATH_PARAM) final String oid,
                                              final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
         StringBuilder reasonBuilder = new StringBuilder();
@@ -211,6 +216,7 @@ public class OfficerController {
     @Path("/hakemus/{oid}/passivate")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_CRUD')")
     public Viewable passivate(@PathParam(OID_PATH_PARAM) final String oid,
                               final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
         for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {

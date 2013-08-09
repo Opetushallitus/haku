@@ -15,6 +15,8 @@
  */
 package fi.vm.sade.oppija.configuration;
 
+import fi.vm.sade.authentication.service.AuthenticationService;
+import fi.vm.sade.authentication.service.PersonalInformationService;
 import fi.vm.sade.koodisto.util.CachingKoodistoClient;
 import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -30,6 +32,16 @@ public class WebServices {
     @Bean(name="organisaatioService")
     public OrganisaatioService getOrganisaatioService(@Value("${organisaatio.webservice.url.backend}") String url) {
         return getProxy(OrganisaatioService.class, url);
+    }
+
+    @Bean(name="personalInformationService")
+    public PersonalInformationService getPersonalInformationService(@Value("${personalInformation.webservice.url.backend}") String url) {
+        return getProxy(PersonalInformationService.class, url);
+    }
+
+    @Bean(name="authenticationService")
+    public AuthenticationService getAuthenticationService(@Value("${authentication.webservice.url.backend}") String url) {
+        return getProxy(AuthenticationService.class, url);
     }
 
     @Bean(name="cachingKoodistoClient")

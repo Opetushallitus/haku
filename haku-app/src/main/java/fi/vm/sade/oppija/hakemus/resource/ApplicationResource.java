@@ -18,17 +18,20 @@ package fi.vm.sade.oppija.hakemus.resource;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import fi.vm.sade.authentication.service.PersonalInformationService;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicantDTO;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.ui.HakuPermissionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -45,10 +48,13 @@ import java.util.Map;
  */
 @Component
 @Path("/applications")
-@Secured({"ROLE_APP_HAKEMUS_READ_UPDATE", "ROLE_APP_HAKEMUS_CRUD"})
+@PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
 public class ApplicationResource {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
+
+    @Autowired
+    private PersonalInformationService personalInformationService;
 
     @Autowired
     private ApplicationService applicationService;
@@ -60,9 +66,11 @@ public class ApplicationResource {
     private static final String OID = "oid";
 
     public ApplicationResource() {
+        super();
     }
 
-    public ApplicationResource(final ApplicationService applicationService, final ConversionService conversionService) {
+    @Autowired
+    public ApplicationResource(ApplicationService applicationService, ConversionService conversionService) {
         this.applicationService = applicationService;
         this.conversionService = conversionService;
     }
@@ -81,6 +89,7 @@ public class ApplicationResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
     public ApplicationSearchResultDTO findApplications(@DefaultValue(value = "") @QueryParam("q") String query,
                                                        @QueryParam("appState") String state,
                                                        @QueryParam("aoid") String aoid,
@@ -89,6 +98,7 @@ public class ApplicationResource {
                                                        @DefaultValue(value = "100") @QueryParam("rows") int rows) {
         LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{} start:{}, rows: {}",
                 query, state, aoid, lopoid, start, rows);
+
         return applicationService.findApplications(
                 query, new ApplicationQueryParameters(state, aoid, lopoid, start, rows));
     }
@@ -112,6 +122,7 @@ public class ApplicationResource {
     @Path("{oid}/{key}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public void putApplicationAdditionalInfoKeyValue(@PathParam(OID) String oid,
                                                      @PathParam("key") String key,
                                                      @QueryParam("value") String value) {
@@ -138,6 +149,14 @@ public class ApplicationResource {
                 return conversionService.convert(application, ApplicantDTO.class);
             }
         });
+    }
+
+    public void setApplicationService(ApplicationService applicationService) {
+        this.applicationService = applicationService;
+    }
+
+    public void setConversionService(ConversionService conversionService) {
+        this.conversionService = conversionService;
     }
 
 }

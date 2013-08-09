@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
+import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
@@ -27,6 +28,7 @@ import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.ui.HakuPermissionService;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -47,6 +49,7 @@ import java.util.List;
 
 import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
@@ -80,6 +83,12 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
             LOGGER.error("Error set up test", e);
         }
 
+        this.applicationSystemId = ElementUtil.randomId();
+        HakuPermissionService hakuPermissionService = mock(HakuPermissionService.class);
+        when(hakuPermissionService.userCanReadApplications(anyList())).thenReturn(Lists.newArrayList("1.2.246.562.10.84682192491"));
+        applicationDAO.setHakuPermissionService(hakuPermissionService);
+
+        final String id = String.valueOf(System.currentTimeMillis());
         this.applicationSystemId = ElementUtil.randomId();
     }
 

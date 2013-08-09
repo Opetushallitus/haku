@@ -16,10 +16,7 @@
 
 package fi.vm.sade.oppija.common.authentication.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import fi.vm.sade.authentication.cas.CasClient;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
@@ -33,11 +30,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -63,10 +64,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public String addPerson(Person person) {
 
         String hetuResource = targetService + "/resources/henkilo/byHetu";
-
-        String realCasUrl = casUrl + "/v1/tickets";
-        log.info("Getting CAS ticket from " + realCasUrl + " for " + targetService);
-        String serviceTicket = CasClient.getTicket(realCasUrl, clientAppUser, clientAppPass, targetService + "/j_spring_cas_security_check");
+        String serviceTicket = getServiceticket();
 
         HttpClient client = new HttpClient();
         String realHetuUrl = hetuResource + "/" + person.getSocialSecurityNumber() + "?ticket=" + serviceTicket;
@@ -105,6 +103,48 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     }
 
+    @Override
+    public List<String> getOrganisaatioHenkilo() {
+
+        List<String> orgs = new ArrayList<String>();
+        String personOid = SecurityContextHolder.getContext().getAuthentication().getName();
+        String resource = targetService + "/resources/henkilo/" + personOid + "/organisaatiohenkilo";
+        String serviceTicket = getServiceticket();
+        String url = resource + "?ticket=" + serviceTicket;
+        HttpClient client = new HttpClient();
+        log.info("Getting organisaatiohenkilos for " + personOid);
+        GetMethod get = new GetMethod(url);
+        try {
+            client.executeMethod(get);
+        } catch (IOException e) {
+            log.error("Getting organisaatiohenkilos failed due to: " + e.toString());
+            return orgs;
+        }
+
+        int status = get.getStatusCode();
+        if (status == 200) {
+            String responseString = null;
+            try {
+                responseString = get.getResponseBodyAsString();
+                JsonArray orgJson = new JsonParser().parse(responseString).getAsJsonArray();
+                Iterator<JsonElement> elems = orgJson.iterator();
+                while (elems.hasNext()) {
+                    JsonObject orgObj = elems.next().getAsJsonObject();
+                    orgs.add(orgObj.get("organisaatioOid").getAsString());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
+        return orgs;
+    }
+
+    private String getServiceticket() {
+        String realCasUrl = casUrl + "/v1/tickets";
+        log.info("Getting CAS ticket from " + realCasUrl + " for " + targetService);
+        return CasClient.getTicket(realCasUrl, clientAppUser, clientAppPass, targetService + "/j_spring_cas_security_check");
+    }
+
     private String createHenkilo(HttpClient client, Person person) {
 
         String henkiloResource = targetService + "/resources/henkilo";
@@ -123,5 +163,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         return responseString;
     }
+
+
 
 }

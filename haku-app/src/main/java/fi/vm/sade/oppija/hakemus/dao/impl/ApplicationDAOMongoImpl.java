@@ -22,6 +22,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
+import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.oppija.hakemus.converter.DBObjectToApplicationFunction;
@@ -34,6 +35,9 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.ui.HakuPermissionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +47,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -52,6 +57,8 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
  */
 @Service("applicationDAOMongoImpl")
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> implements ApplicationDAO {
+
+    private static final Logger log = LoggerFactory.getLogger(ApplicationDAOMongoImpl.class);
 
     public static final int HUNDRED = 100;
     private final EncrypterService shaEncrypter;
@@ -80,6 +87,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_LOP_3 = "answers.hakutoiveet.preference3-Opetuspiste-id";
     private static final String FIELD_LOP_4 = "answers.hakutoiveet.preference4-Opetuspiste-id";
     private static final String FIELD_LOP_5 = "answers.hakutoiveet.preference5-Opetuspiste-id";
+
+    private static final String FIELD_LOP_PARENTS_1 = "answers.hakutoiveet.preference1-Opetuspiste-id-parents";
+    private static final String FIELD_LOP_PARENTS_2 = "answers.hakutoiveet.preference2-Opetuspiste-id-parents";
+    private static final String FIELD_LOP_PARENTS_3 = "answers.hakutoiveet.preference3-Opetuspiste-id-parents";
+    private static final String FIELD_LOP_PARENTS_4 = "answers.hakutoiveet.preference4-Opetuspiste-id-parents";
+    private static final String FIELD_LOP_PARENTS_5 = "answers.hakutoiveet.preference5-Opetuspiste-id-parents";
+
     private static final String FIELD_APPLICATION_OID = "oid";
 
     private static final String FIELD_APPLICATION_PERIOD_ID = "applicationPeriodId";
@@ -92,14 +106,24 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Value("${user.oid.prefix}")
     private String userOidPrefix;
 
+    private AuthenticationService authenticationService;
+    private HakuPermissionService hakuPermissionService;
+
     @Autowired
     public ApplicationDAOMongoImpl(DBObjectToApplicationFunction dbObjectToHakemusConverter,
                                    ApplicationToDBObjectFunction hakemusToBasicDBObjectConverter,
                                    @Qualifier("shaEncrypter") EncrypterService shaEncrypter,
-                                   DBObjectToSearchResultItem dbObjectToSearchResultItem) {
+                                   DBObjectToSearchResultItem dbObjectToSearchResultItem,
+                                   AuthenticationService authenticationService,
+                                   HakuPermissionService hakuPermissionService) {
         super(dbObjectToHakemusConverter, hakemusToBasicDBObjectConverter);
         this.shaEncrypter = shaEncrypter;
         this.dbObjectToSearchResultItem = dbObjectToSearchResultItem;
+        this.authenticationService = authenticationService;
+        this.hakuPermissionService = hakuPermissionService;
+
+        java.util.logging.Logger mongoLogger = java.util.logging.Logger.getLogger("com.mongodb");
+        mongoLogger.setLevel(Level.SEVERE);
     }
 
     @Override
@@ -346,6 +370,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (!isEmpty(preference)) {
             filters.add(queryByPreference(preference).get());
         }
+
         String lopOid = applicationQueryParameters.getLopOid();
         if (!isEmpty(lopOid)) {
             filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
@@ -356,17 +381,78 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return filters.toArray(new DBObject[filters.size()]);
     }
 
+    private ArrayList<DBObject> filterByOrganization() {
+
+        List<String> orgs = authenticationService.getOrganisaatioHenkilo();
+        log.debug("OrganisaatioHenkilo.count() == {} ", orgs.size());
+        if (log.isDebugEnabled()) {
+            for (String org : orgs) {
+                log.debug("Organization: {}", org);
+            }
+        }
+        orgs = hakuPermissionService.userCanReadApplications(orgs);
+        if (log.isDebugEnabled()) {
+            for (String org : orgs) {
+                log.debug("Organization: {}", org);
+            }
+        }
+        log.debug("OrganisaatioHenkilo.canRead().count() == {} ", orgs.size());
+        ArrayList<DBObject> queries = new ArrayList<DBObject>(orgs.size());
+
+        for (String org : orgs) {
+            log.info("filterByOrganization, org: "+org);
+            Pattern orgPattern = Pattern.compile(org);
+            queries.add(QueryBuilder.start().or(
+                    QueryBuilder.start(FIELD_LOP_PARENTS_1).regex(orgPattern).get(),
+                    QueryBuilder.start(FIELD_LOP_PARENTS_2).regex(orgPattern).get(),
+                    QueryBuilder.start(FIELD_LOP_PARENTS_3).regex(orgPattern).get(),
+                    QueryBuilder.start(FIELD_LOP_PARENTS_4).regex(orgPattern).get(),
+                    QueryBuilder.start(FIELD_LOP_PARENTS_5).regex(orgPattern).get())
+                    .get());
+        }
+
+        log.debug("queries: {}", queries.size());
+
+        return queries;
+    }
+
     private DBObject newQueryBuilderWithFilters(final DBObject[] filters, final QueryBuilder baseQuery) {
         DBObject query;
+        ArrayList<DBObject> orgFilter = filterByOrganization();
         if (filters.length > 0) {
-            query = QueryBuilder.start().and(baseQuery.get(), QueryBuilder.start().and(filters).get()).get();
+            if (orgFilter.size() > 0) {
+                query = QueryBuilder.start()
+                    .and(baseQuery.get(),
+                        QueryBuilder.start().and(filters).get(),
+                        QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
+                    .get();
+            } else {
+                query = QueryBuilder.start()
+                        .and(baseQuery.get(),
+                                QueryBuilder.start().and(filters).get())
+                        .get();
+            }
         } else {
-            query = baseQuery.get();
+            if (orgFilter.size() > 0) {
+                query = QueryBuilder.start()
+                    .and(baseQuery.get(),
+                            QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
+                    .get();
+            } else {
+                query = QueryBuilder.start()
+                   .and(baseQuery.get())
+                    .get();
+            }
         }
         return query;
     }
 
     private DBObject newOIdExistDBObject() {
         return QueryBuilder.start(FIELD_APPLICATION_OID).exists(true).get();
+    }
+
+    @Override
+    public void setHakuPermissionService(HakuPermissionService hakuPermissionService) {
+        this.hakuPermissionService = hakuPermissionService;
     }
 }

@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 /**
  * Mock that returns test data.
  */
@@ -104,6 +106,19 @@ public class OrganizationServiceMockImpl implements OrganizationService {
 
         public boolean apply(Organization org) {
             return type == null || org.getTypes().contains(type);
+        }
+    }
+
+    static class OrgOidPredicate implements Predicate<Organization> {
+
+        private final String oid;
+
+        public OrgOidPredicate(String oid) {
+            this.oid = oid;
+        }
+
+        public boolean apply(Organization org) {
+            return org.getOid().equals(this.oid);
         }
     }
 
@@ -209,5 +224,26 @@ public class OrganizationServiceMockImpl implements OrganizationService {
                 new OrgIncludePassivePredicate(criteria.isIncludePassive()),
                 new OrgIncludePlannedPredicate(criteria.isIncludePlanned()));
         return Lists.newArrayList(Iterables.filter(orgs, predicate));
+    }
+
+    @Override
+    public List<String> findParentOids(String organizationOid) {
+        List<String> oids = new ArrayList<String>();
+        return findParentOids(oids, organizationOid);
+    }
+
+    private List<String> findParentOids(List<String> oids, String organizationOid) {
+        List<Organization> maybeOrg = Lists.newArrayList(Iterables.filter(orgs, new OrgOidPredicate(organizationOid)));
+        if (maybeOrg == null || maybeOrg.isEmpty()) {
+            return oids;
+        }
+        Organization org = maybeOrg.get(0);
+        String parentOid = org.getParentOid();
+        if (isNotEmpty(parentOid)) {
+            oids.add(parentOid);
+            return findParentOids(oids, parentOid);
+        }
+        return oids;
+
     }
 }

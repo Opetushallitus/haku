@@ -59,7 +59,7 @@
 
     <beans>
         <context:annotation-config/>
-        <context:component-scan base-package="fi.vm.sade.oppija"/>
+        <context:component-scan base-package="fi.vm.sade.oppija,fi.vm.sade.security"/>
         <aop:aspectj-autoproxy/>
 
         <!-- Configure the multipart resolver -->

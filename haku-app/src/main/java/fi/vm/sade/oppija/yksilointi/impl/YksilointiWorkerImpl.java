@@ -89,6 +89,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         long endTime = System.currentTimeMillis() + (limit - 500);
         while (application != null && endTime > System.currentTimeMillis()) {
             applicationService.addPersonAndAuthenticate(application);
+            applicationService.fillLOPChain(application);
             if (sendMail) {
                 try {
                     sendMail(application);

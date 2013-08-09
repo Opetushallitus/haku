@@ -22,7 +22,7 @@ import com.mongodb.QueryBuilder;
 import fi.vm.sade.authentication.service.GenericFault;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
-import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
+import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
@@ -44,6 +44,7 @@ import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.oppija.ui.HakuPermissionService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,12 +57,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.join;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationServiceImpl.class);
 
+    private static final String OPH_ORGANIZATION = "1.2.246.562.10.00000000001";
     private final ApplicationDAO applicationDAO;
     private final ApplicationOidService applicationOidService;
     private final UserHolder userHolder;
@@ -75,25 +78,30 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final Pattern oidPattern;
     private final Pattern shortOidPattern;
     private final AuthenticationService authenticationService;
-
-    @Autowired
-    ValintaperusteetService valintaperusteetService;
+    private final OrganizationService organizationService;
+    private final HakuPermissionService hakuPermissionService;
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
-                                  final UserHolder userHolder, @Qualifier("formServiceImpl") final FormService formService,
+                                  final UserHolder userHolder,
+                                  @Qualifier("formServiceImpl") final FormService formService,
                                   @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
-                                  AuthenticationService authenticationService) {
+                                  AuthenticationService authenticationService,
+                                  OrganizationService organizationService,
+                                  HakuPermissionService hakuPermissionService) {
 
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
         this.formService = formService;
+        this.applicationOidService = applicationOidService;
         this.authenticationService = authenticationService;
+        this.organizationService = organizationService;
+        this.hakuPermissionService = hakuPermissionService;
+
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
         this.dobPattern = Pattern.compile(DATE_OF_BIRTH_PATTERN);
         this.oidPattern = Pattern.compile(OID_PATTERN);
         this.shortOidPattern = Pattern.compile(SHORT_OID_PATTERN);
-        this.applicationOidService = applicationOidService;
     }
 
 
@@ -295,7 +303,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         } else if (!StringUtils.isEmpty(term)) {
             return applicationDAO.findByApplicantName(term, applicationQueryParameters);
         } else if (isEmpty(term)) {
-            return applicationDAO.findAllFiltered(applicationQueryParameters);
+            LOGGER.debug("Find all applications, empty term");
+            ApplicationSearchResultDTO ret = applicationDAO.findAllFiltered(applicationQueryParameters);
+            LOGGER.debug("Found {} results", ret.getResults().size());
+            return ret;
         }
         return new ApplicationSearchResultDTO(0, null);
     }
@@ -390,13 +401,44 @@ public class ApplicationServiceImpl implements ApplicationService {
         return application;
     }
 
-    private Application getApplication(final Application application) throws ResourceNotFoundException {
+    @Override
+    public Application fillLOPChain(Application application) {
+        String[] ids = new String[] {
+                "preference1-Opetuspiste-id",
+                "preference2-Opetuspiste-id",
+                "preference3-Opetuspiste-id",
+                "preference4-Opetuspiste-id",
+                "preference5-Opetuspiste-id"};
 
-        List<Application> listOfApplications = applicationDAO.find(application);
-        if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
-            throw new ResourceNotFoundException("Could not find application " + application.getOid());
+        Map<String, String> answers = application.getAnswers().get("hakutoiveet");
+        for (String id : ids) {
+            String opetuspiste = answers.get(id);
+            if (!isEmpty(opetuspiste)) {
+                List<String> parentOids = organizationService.findParentOids(opetuspiste);
+                // OPH-guys have access to all organizations
+                parentOids.add(OPH_ORGANIZATION);
+                answers.put(id+"-parents", join(parentOids, ","));
+            }
         }
-        return listOfApplications.get(0);
+        application.addVaiheenVastaukset("hakutoiveet", answers);
+        this.applicationDAO.save(application);
+        return application;
+    }
+
+    private Application getApplication(final Application queryApplication) throws ResourceNotFoundException {
+
+        List<Application> listOfApplications = applicationDAO.find(queryApplication);
+        if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
+            throw new ResourceNotFoundException("Could not find application " + queryApplication.getOid());
+        }
+
+
+        Application application = listOfApplications.get(0);
+        if (!hakuPermissionService.userCanReadApplication(application)) {
+            throw new ResourceNotFoundException("User is not allowed to read application " + application.getOid());
+        }
+
+        return application;
 
     }
 

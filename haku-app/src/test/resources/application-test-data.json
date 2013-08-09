@@ -19,7 +19,7 @@
                 "lahiosoite": "koulukuja 3",
                 "Sähköposti": "mail.address@happi.de",
                 "Kutsumanimi": "Heikki",
-                "Etunimet": "Heikki Happi äö",
+                "Etunimet": "Heikki Happi",
                 "kotikunta": "Jalasjärvi",
                 "syntymaaika": "1998-09-05",
                 "Henkilotunnus_digest": "6c7a90ff7012fc8048c75b9c624582c34f0620d80b3bc3af379c322a76137ca0"
@@ -36,6 +36,7 @@
                 "preference5-Koulutus-id": "",
                 "preference2-Opetuspiste": "",
                 "preference1-Opetuspiste-id": "P1",
+			    "preference1-Opetuspiste-id-parents" : "1.2.246.562.10.84682192491",
                 "preference4-Opetuspiste-id": "",
                 "preference1-Opetuspiste": "Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö",
                 "preference4-Koulutus-id": "",
@@ -139,6 +140,7 @@
                 "preference5-Koulutus-id": "",
                 "preference2-Opetuspiste": "Some random school",
                 "preference1-Opetuspiste-id": "P1",
+			    "preference1-Opetuspiste-id-parents" : "1.2.246.562.10.84682192491",
                 "preference4-Opetuspiste-id": "",
                 "preference1-Opetuspiste": "Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö",
                 "preference4-Koulutus-id": "",
@@ -149,6 +151,7 @@
                 "preference3-Opetuspiste-id": "",
                 "preference2-Koulutus-id": "873",
                 "preference2-Opetuspiste-id": "P2",
+			    "preference2-Opetuspiste-id-parents" : "1.2.246.562.10.84682192491",
                 "preference3-Opetuspiste": ""
             },
             "arvosanat": {
@@ -241,6 +244,7 @@
                 "preference5-Koulutus-id": "",
                 "preference2-Opetuspiste": "Some random school",
                 "preference1-Opetuspiste-id": "P1",
+			    "preference1-Opetuspiste-id-parents" : "1.2.246.562.10.84682192491",
                 "preference4-Opetuspiste-id": "",
                 "preference1-Opetuspiste": "Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö",
                 "preference4-Koulutus-id": "",
@@ -251,6 +255,7 @@
                 "preference3-Opetuspiste-id": "",
                 "preference2-Koulutus-id": "873",
                 "preference2-Opetuspiste-id": "P2",
+			    "preference2-Opetuspiste-id-parents" : "1.2.246.562.10.84682192491",
                 "preference3-Opetuspiste": ""
             },
             "arvosanat": {
