@@ -59,7 +59,6 @@ public class ApplicationIT extends DummyModelBaseItTest {
 
     @Test
     public void testFindAllApplications() throws IOException {
-
         navigateToPath("applications");
         ApplicationSearchResultDTO applications = responseToSearchResult();
         assertEquals(3, applications.getResults().size());
@@ -99,4 +98,5 @@ public class ApplicationIT extends DummyModelBaseItTest {
         return mapper.readValue(response, new TypeReference<ApplicationSearchResultDTO>() {
         });
     }
+
 }

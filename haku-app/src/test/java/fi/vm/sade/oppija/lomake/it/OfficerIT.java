@@ -119,6 +119,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         driver.findElement(new By.ByClassName("label")).click();
         selenium.typeKeys("searchString", "Espoo");
         driver.findElement(new By.ById("search-organizations")).click();
+        screenshot("organizations");
         driver.findElement(new By.ById("1.2.246.562.10.10108401950"));
         findByIdAndClick("search-organizations");
         findById("1.2.246.562.10.10108401950");

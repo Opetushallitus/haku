@@ -26,7 +26,7 @@ import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -38,7 +38,7 @@ import java.util.Map;
 
 @Component
 @Path("/organization")
-@Secured("ROLE_APP_HAKEMUS_READ_UPDATE")
+@PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
 public class OrganizationResource {
     public static final Logger LOGGER = LoggerFactory.getLogger(OrganizationResource.class);
 
