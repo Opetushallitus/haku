@@ -45,7 +45,6 @@ import java.util.Map;
  */
 @Component
 @Path("/applications")
-@PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
 public class ApplicationResource {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
@@ -101,6 +100,7 @@ public class ApplicationResource {
     @GET
     @Path("{oid}/{key}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public Map<String, String> getApplicationKeyValue(@PathParam(OID) String oid, @PathParam("key") String key) {
         Map<String, String> keyValue = new HashMap<String, String>();
 
