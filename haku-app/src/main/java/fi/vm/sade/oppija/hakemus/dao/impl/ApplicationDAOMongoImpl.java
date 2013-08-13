@@ -197,6 +197,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             DBObject query = QueryBuilder.start(FIELD_APPLICATION_PERIOD_ID).is(asId)
                     .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
                     .and(FIELD_APPLICATION_OID).exists(true)
+                    .and(FIELD_APPLICATION_STATE).in(
+                            Lists.newArrayList(Application.State.ACTIVE.toString(),
+                                    Application.State.INCOMPLETE.toString()))
                     .get();
             return getCollection().count(query) > 0;
         }
