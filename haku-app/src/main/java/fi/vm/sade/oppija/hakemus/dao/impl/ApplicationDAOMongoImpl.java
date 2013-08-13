@@ -177,7 +177,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject dbObject = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
                 newOIdExistDBObject(),
                 new BasicDBObject(FIELD_APPLICATION_PERIOD_ID, asId),
-                QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.ACTIVE.toString()).get()).get();
+                QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
+                        Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get()).get();
         return findApplications(dbObject);
     }
 
