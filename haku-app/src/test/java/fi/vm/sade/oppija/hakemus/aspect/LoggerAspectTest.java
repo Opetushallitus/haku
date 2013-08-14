@@ -16,20 +16,28 @@
 
 package fi.vm.sade.oppija.hakemus.aspect;
 
+import fi.vm.sade.log.client.Logger;
+import fi.vm.sade.log.model.Tapahtuma;
 import fi.vm.sade.oppija.lomake.domain.User;
+import fi.vm.sade.oppija.lomake.service.mock.UserHolderMock;
 import org.junit.Test;
 
 public class LoggerAspectTest {
 
-    public static final LoggerAspect LOGGER_ASPECT = new LoggerAspect();
+    public static final LoggerAspect LOGGER_ASPECT = new LoggerAspect(new Logger() {
+        @Override
+        public void log(Tapahtuma tapahtuma) throws Exception {
+
+        }
+    }, new UserHolderMock("test"));
 
     @Test
-    public void testLogSavePhase() throws Exception {
-        LOGGER_ASPECT.logSavePhase("aid", new User("test"), "oid");
+    public void testlogSubmitApplication() throws Exception {
+        LOGGER_ASPECT.logSubmitApplication("aid", "oid");
     }
 
     @Test
     public void testLogSavePhaseNulls() throws Exception {
-        LOGGER_ASPECT.logSavePhase(null, null, null);
+        LOGGER_ASPECT.logSubmitApplication(null, null);
     }
 }

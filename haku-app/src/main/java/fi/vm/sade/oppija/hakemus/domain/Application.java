@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.hakemus.domain;
 
 import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fi.vm.sade.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.oppija.lomake.domain.ObjectIdSerializer;
@@ -187,6 +188,10 @@ public class Application implements Serializable {
             this.setMeta(meta);
             this.user = null;
         }
+    }
+
+    public Map<String, String> getPhaseAnswers(final String phaseId) {
+        return ImmutableMap.copyOf(this.answers.get(phaseId));
     }
 
     @JsonIgnore

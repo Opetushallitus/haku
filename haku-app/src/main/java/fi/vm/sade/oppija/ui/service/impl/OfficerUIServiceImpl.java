@@ -3,6 +3,7 @@ package fi.vm.sade.oppija.ui.service.impl;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
+import fi.vm.sade.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
@@ -38,17 +39,23 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final ValintaperusteetService valintaperusteetService;
     private final KoodistoService koodistoService;
     private final String koulutusinformaatioBaseUrl;
+    private final LoggerAspect loggerAspect;
 
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
                                 final FormService formService,
                                 final ValintaperusteetService valintaperusteetService,
                                 final KoodistoService koodistoService,
-                                @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl) {
+                                final LoggerAspect loggerAspect,
+                                @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl
+    )
+
+    {
         this.applicationService = applicationService;
         this.formService = formService;
         this.valintaperusteetService = valintaperusteetService;
         this.koodistoService = koodistoService;
+        this.loggerAspect = loggerAspect;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
     }
 
@@ -106,6 +113,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         if (state != null && state.equals(Application.State.PASSIVE)) {
             throw new ResourceNotFoundException("Passive application");
         }
+
+        loggerAspect.logUpdateApplication(application, applicationPhase);
+
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
         final Form activeForm = formService.getForm(application.getApplicationPeriodId());
         ValidationResult formValidationResult = ElementTreeValidator.validateForm(activeForm, application);
@@ -119,6 +129,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
         application.addNote(new ApplicationNote(noteText, new Date(), user));
+
 
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
