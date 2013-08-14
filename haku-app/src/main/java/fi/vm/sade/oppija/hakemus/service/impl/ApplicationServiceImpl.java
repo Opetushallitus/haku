@@ -149,7 +149,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                         vastaukset.get(SocialSecurityNumber.HENKILOTUNNUS));
             }
             this.userHolder.savePhaseAnswers(applicationPhase);
-            this.applicationDAO.tallennaVaihe(applicationState);
         }
         // sets all answers merged, needed for re-rendering view if errors
         applicationState.setAnswersMerged(allAnswers);
@@ -160,7 +159,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     public String submitApplication(final String ApplicationPeriodId) {
         final User user = userHolder.getUser();
         Application application = userHolder.getApplication(ApplicationPeriodId);
-        //Application application = applicationDAO.findDraftApplication(application1);
         Form form = formService.getForm(ApplicationPeriodId);
         Map<String, String> allAnswers = application.getVastauksetMerged();
         ValidationResult validationResult = ElementTreeValidator.validate(form, allAnswers);
