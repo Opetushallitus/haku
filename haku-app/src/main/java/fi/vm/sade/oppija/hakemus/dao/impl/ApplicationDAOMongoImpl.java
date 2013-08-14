@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.hakemus.dao.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
@@ -192,14 +193,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
-        if (ssn != null) {
-            String encryptedSsn = shaEncrypter.encrypt(ssn);
+        if (!Strings.isNullOrEmpty(ssn)) {
+            String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
             DBObject query = QueryBuilder.start(FIELD_APPLICATION_PERIOD_ID).is(asId)
                     .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
                     .and(FIELD_APPLICATION_OID).exists(true)
-                    .and(FIELD_APPLICATION_STATE).in(
-                            Lists.newArrayList(Application.State.ACTIVE.toString(),
-                                    Application.State.INCOMPLETE.toString()))
+                    .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
                     .get();
             return getCollection().count(query) > 0;
         }
