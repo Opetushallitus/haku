@@ -195,7 +195,6 @@ public class KoulutustaustaPhase {
         addRequiredValidator(suorittanutAmmatillisenTutkinnon);
 
         lukioRule.addChild(suorittanutAmmatillisenTutkinnon);
-        lukioRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
 
         RelatedQuestionRule suorittanutTutkinnonRule = new RelatedQuestionRule(ElementUtil.randomId(),
