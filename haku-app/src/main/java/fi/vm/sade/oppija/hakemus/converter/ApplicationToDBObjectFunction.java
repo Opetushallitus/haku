@@ -85,7 +85,7 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
             }
         }
         final BasicDBObject basicDBObject = new BasicDBObject(m);
-        LOGGER.debug(JSON.serialize(basicDBObject));
+        //LOGGER.debug(JSON.serialize(basicDBObject));
         return basicDBObject;
     }
 
