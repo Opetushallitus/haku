@@ -73,8 +73,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         velocityEngine.init();
 
         templateMap = new HashMap<String, Template>();
-        templateMap.put("suomi", velocityEngine.getTemplate("email/application_received_fi.vm"));
-        templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_sv.vm"));
+        templateMap.put("suomi", velocityEngine.getTemplate("email/application_received_fi.vm", "UTF-8"));
+        templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_sv.vm", "UTF-8"));
     }
 
     /**

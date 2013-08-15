@@ -26,7 +26,7 @@
             var selectedOption = select.children(":selected");
             var tr = $("#" + selectedOption.val());
             tr.show();
-            tr.find('*:disabled').attr("disabled", false);
+            tr.find('*').removeAttr("disabled");
             selectedOption.remove();
             if (select.children().length == 0) {
                 $(this).closest('tr').hide();

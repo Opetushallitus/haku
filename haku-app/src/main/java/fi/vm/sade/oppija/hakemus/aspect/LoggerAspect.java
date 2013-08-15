@@ -17,9 +17,15 @@
 package fi.vm.sade.oppija.hakemus.aspect;
 
 
+import com.google.common.collect.MapDifference;
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
-import fi.vm.sade.oppija.lomake.domain.User;
+import fi.vm.sade.oppija.common.diff.AnswersDifference;
+import fi.vm.sade.oppija.common.diff.Difference;
+import fi.vm.sade.oppija.hakemus.domain.Application;
+import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.oppija.lomake.service.UserHolder;
+import fi.vm.sade.oppija.ui.service.impl.ApplicationUtil;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.LoggerFactory;
@@ -27,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * An aspect that handel different logging operations.
@@ -43,29 +50,64 @@ public class LoggerAspect {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(LoggerAspect.class);
 
+    private final Logger logger;
+    private final UserHolder userHolder;
+
     @Autowired
-    private Logger logger;
+    public LoggerAspect(final Logger logger, final UserHolder userHolder) {
+        this.logger = logger;
+        this.userHolder = userHolder;
+    }
+
 
     /**
      * Logs event when a form phase is successfully saved
      * as application data in data store.
      */
-    @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.hakemus.service.ApplicationService.submitApplication()) && args(applicationPeriodId,user,..)",
+    @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.hakemus.service.ApplicationService.submitApplication(..)) && args(applicationPeriodId,..)",
             returning = "oid")
-    public void logSavePhase(String applicationPeriodId, User user, String oid) {
+    public void logSubmitApplication(final String applicationPeriodId, final String oid) {
         try {
             Tapahtuma t = new Tapahtuma();
             t.setMuutoksenKohde("Haku: " + applicationPeriodId
-                    + ", käyttäjä: " + user.getUserName() + ", hakemus oid: " + oid);
+                    + ", käyttäjä: " + userHolder.getUser().getUserName() + ", hakemus oid: " + oid);
             t.setAikaleima(new Date());
-            t.setKenenTietoja("" + user.getUserName());
+            t.setKenenTietoja("" + userHolder.getUser().getUserName());
             t.setTapahtumatyyppi("Hakemus lähetetty");
             t.setTekija("Hakemus Service");
             t.setUusiArvo("SUBMITTED");
             t.setVanhaArvo("DRAFT");
+            LOGGER.debug(t.toString());
             logger.log(t);
         } catch (Exception e) {
             LOGGER.warn("Could not log laitaVireille event");
+        }
+    }
+
+    public void logUpdateApplication(final Application application, final ApplicationPhase applicationPhase) {
+        try {
+
+            MapDifference<String, String> diffAnswers = ApplicationUtil.diffAnswers(application, applicationPhase);
+            AnswersDifference answersDifference = new AnswersDifference(diffAnswers);
+            List<Difference> differences = answersDifference.getDifferences();
+            Tapahtuma tapahtuma;
+            for (Difference difference : differences) {
+                tapahtuma = new Tapahtuma();
+                tapahtuma.setMuutoksenKohde("hakemus: " + application.getOid() +
+                        ", vaihe: " + applicationPhase.getPhaseId() +
+                        ", kysymys: " + difference.getKey());
+                tapahtuma.setAikaleima(new Date());
+                tapahtuma.setKenenTietoja(userHolder.getUser().getUserName());
+                tapahtuma.setTapahtumatyyppi("Hakemuksen muokkaus");
+                tapahtuma.setTekija(userHolder.getUser().getUserName());
+                tapahtuma.setUusiArvo(difference.getNewValue());
+                tapahtuma.setVanhaArvo(difference.getOldValue());
+                LOGGER.debug(tapahtuma.toString());
+                logger.log(tapahtuma);
+            }
+
+        } catch (Exception e) {
+            LOGGER.warn("Could not log update application event");
         }
     }
 

@@ -87,7 +87,6 @@ public class ApplicationIT extends DummyModelBaseItTest {
         ObjectMapper mapper = new ObjectMapper();
         Application application = mapper.readValue(response, new TypeReference<Application>() {
         });
-        System.out.println(application.getAnswers().get("henkilotiedot").get("Etunimet"));
         assertNotNull(application);
         assertEquals("1.2.3.4.5.00000010003", application.getOid());
     }

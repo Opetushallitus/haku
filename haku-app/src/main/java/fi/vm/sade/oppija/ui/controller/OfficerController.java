@@ -148,7 +148,7 @@ public class OfficerController {
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException, ResourceNotFoundException {
 
-        LOGGER.debug("updatePhase {}, {}, {}, {}", applicationPeriodId, phaseId, oid, multiValues);
+        LOGGER.debug("updatePhase {}, {}, {}", applicationPeriodId, phaseId, oid);
 
         UIServiceResponse uiServiceResponse = officerUIService.updateApplication(oid,
                 new ApplicationPhase(applicationPeriodId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)),
