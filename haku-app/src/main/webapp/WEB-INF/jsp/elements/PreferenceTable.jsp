@@ -1,5 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -88,19 +88,19 @@
     var prerequisiteArray = prerequisiteStr.split(',');
 
     var sortabletable_settings = {
-        contextPath: "${pageContext.request.contextPath}",
-        applicationPeriodId: "${it.applicationPeriodId}",
-        vaiheId: "${vaihe.id}",
-        teemaId: "${parent.id}",
-        baseEducation: "${categoryData.POHJAKOULUTUS}",
-        vocational: "${categoryData.ammatillinenTutkintoSuoritettu}",
+        contextPath: '<c:out value="${pageContext.request.contextPath}"/>',
+        applicationPeriodId: '<c:out value="${it.applicationPeriodId}"/>',
+        vaiheId: '<c:out value="${vaihe.id}"/>',
+        teemaId: '<c:out value="${parent.id}"/>',
+        baseEducation: '<c:out value="${categoryData.POHJAKOULUTUS}"/>',
+        vocational: '<c:out value="${categoryData.ammatillinenTutkintoSuoritettu}"/>',
         <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') or fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
-            koulutusinformaatioBaseUrl: "${it.koulutusinformaatioBaseUrl}"
+            koulutusinformaatioBaseUrl: '<c:out value="${it.koulutusinformaatioBaseUrl}"/>'
         </c:if>
         <c:if test="${not fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') and not fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
-            koulutusinformaatioBaseUrl: location.protocol + "//${it.koulutusinformaatioBaseUrl}"
+            koulutusinformaatioBaseUrl: location.protocol + "//'<c:out value="${it.koulutusinformaatioBaseUrl}"/>'
         </c:if>
-}
+    }
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencerow.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencetable.js"></script>
