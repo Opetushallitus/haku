@@ -361,16 +361,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public void putApplicationAdditionalInfoKeyValue(String applicationOid, String key, String value)
             throws ResourceNotFoundException {
-        Application query = new Application(applicationOid);
-        Application application = getApplication(query);
         if (value == null) {
             throw new IllegalArgumentException("Value can't be null");
-        } else if (application.getVastauksetMerged().containsKey(key)) {
-            throw new IllegalStateException(String.format(
-                    "Key of the given additional information is found on the application form : key %s", key));
         } else {
-            application.getAdditionalInfo().put(key, value);
-            applicationDAO.update(query, application);
+            applicationDAO.updateKeyValue(applicationOid, "additionalInfo." + key, value);
         }
     }
 

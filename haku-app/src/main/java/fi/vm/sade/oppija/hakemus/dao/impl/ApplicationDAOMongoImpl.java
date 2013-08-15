@@ -19,10 +19,7 @@ package fi.vm.sade.oppija.hakemus.dao.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.QueryBuilder;
+import com.mongodb.*;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
@@ -457,5 +454,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public void setHakuPermissionService(HakuPermissionService hakuPermissionService) {
         this.hakuPermissionService = hakuPermissionService;
+    }
+
+    @Override
+    public void updateKeyValue(String oid, String key, String value) {
+        DBObject query = new BasicDBObject("oid", oid);
+        DBObject update = new BasicDBObject("$set", new BasicDBObject(key, value));
+        getCollection().update(query, update);
     }
 }

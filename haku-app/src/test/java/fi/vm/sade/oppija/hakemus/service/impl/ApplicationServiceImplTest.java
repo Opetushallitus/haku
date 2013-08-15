@@ -159,14 +159,13 @@ public class ApplicationServiceImplTest {
     @Test
     public void testPutApplicationAdditionalInfoKeyValue() throws ResourceNotFoundException {
         service.putApplicationAdditionalInfoKeyValue(OID, "key", "value");
-        verify(applicationDAO, times(1)).find(any(Application.class));
-        verify(applicationDAO, times(1)).update(any(Application.class), any(Application.class));
+        verify(applicationDAO, times(1)).updateKeyValue(eq(OID), eq("additionalInfo.key"), eq("value"));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testPutApplicationAdditionalInfoKeyValueIllegalKey() throws ResourceNotFoundException {
         service.putApplicationAdditionalInfoKeyValue(OID, "avain", "value");
-        verify(applicationDAO, times(1)).find(any(Application.class));
+        verify(applicationDAO, times(1)).updateKeyValue(eq(OID), eq("additionalInfo.avain"), eq("value"));
     }
 
     @Test(expected = IllegalArgumentException.class)
