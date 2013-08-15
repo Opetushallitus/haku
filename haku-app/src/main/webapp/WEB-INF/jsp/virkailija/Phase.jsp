@@ -129,6 +129,7 @@
                         </div>
                     </c:when>
                     <c:otherwise>
+                        <c:set var="virkailijaEdit" value="true" scope="request" />
                         <form id="form-${phase.id}" class="form" method="post">
                             <c:forEach var="child" items="${phase.children}">
                                 <c:set var="element" value="${child}" scope="request"/>
