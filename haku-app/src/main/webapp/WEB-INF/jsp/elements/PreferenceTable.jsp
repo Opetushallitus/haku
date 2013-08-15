@@ -98,7 +98,7 @@
             koulutusinformaatioBaseUrl: '<c:out value="${it.koulutusinformaatioBaseUrl}"/>'
         </c:if>
         <c:if test="${not fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') and not fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
-            koulutusinformaatioBaseUrl: location.protocol + "//'<c:out value="${it.koulutusinformaatioBaseUrl}"/>'
+            koulutusinformaatioBaseUrl: location.protocol + '//<c:out value="${it.koulutusinformaatioBaseUrl}"/>'
         </c:if>
     }
 </script>
