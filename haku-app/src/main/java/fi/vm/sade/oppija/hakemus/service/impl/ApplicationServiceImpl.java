@@ -243,7 +243,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (!user.isKnown()) {
             application.removeUser();
         }
-        return getApplication(application);
+
+        List<Application> listOfApplications = applicationDAO.find(application);
+        return listOfApplications.get(0);
     }
 
     @Override
@@ -423,7 +425,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
             throw new ResourceNotFoundException("Could not find application " + queryApplication.getOid());
         }
-
 
         Application application = listOfApplications.get(0);
         if (!hakuPermissionService.userCanReadApplication(application)) {
