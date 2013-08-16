@@ -26,7 +26,14 @@
     <haku:label element="${element}" styleBaseClass="${styleBaseClass}"/>
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
-            <input ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"/>
+            <c:choose>
+                <c:when test="${virkailijaEdit}">
+                    <input ${element.attributeString} disabled="disabled" value="<c:out value='${categoryData[element.id]}'/>"/>
+                </c:when>
+                <c:otherwise>
+                    <input ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"/>
+                </c:otherwise>
+            </c:choose>
             <span id="sex">
                 <c:if test="${categoryData[ssnElement.sexId] eq ssnElement.maleOption.value}">
                     <haku:i18nText value="${ssnElement.maleOption.i18nText}"/>

@@ -243,7 +243,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (!user.isKnown()) {
             application.removeUser();
         }
-        return getApplication(application);
+
+        List<Application> listOfApplications = applicationDAO.find(application);
+        return listOfApplications.get(0);
     }
 
     @Override
@@ -361,16 +363,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public void putApplicationAdditionalInfoKeyValue(String applicationOid, String key, String value)
             throws ResourceNotFoundException {
-        Application query = new Application(applicationOid);
-        Application application = getApplication(query);
         if (value == null) {
             throw new IllegalArgumentException("Value can't be null");
-        } else if (application.getVastauksetMerged().containsKey(key)) {
-            throw new IllegalStateException(String.format(
-                    "Key of the given additional information is found on the application form : key %s", key));
         } else {
-            application.getAdditionalInfo().put(key, value);
-            applicationDAO.update(query, application);
+            applicationDAO.updateKeyValue(applicationOid, "additionalInfo." + key, value);
         }
     }
 
@@ -429,7 +425,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
             throw new ResourceNotFoundException("Could not find application " + queryApplication.getOid());
         }
-
 
         Application application = listOfApplications.get(0);
         if (!hakuPermissionService.userCanReadApplication(application)) {

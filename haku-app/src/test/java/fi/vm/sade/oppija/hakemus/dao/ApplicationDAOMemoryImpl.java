@@ -142,4 +142,8 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
         this.hakuPermissionService = hakuPermissionService;
     }
 
+    @Override
+    public void updateKeyValue(String oid, String key, String value) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }
