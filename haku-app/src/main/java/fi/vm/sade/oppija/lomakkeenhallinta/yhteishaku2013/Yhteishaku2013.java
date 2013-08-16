@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013;
 
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.esikatselu.EsikatseluPhase;
@@ -46,13 +47,22 @@ public class Yhteishaku2013 {
             final @Value("${asid}") String asid,
             final @Value("${aoid}") String aoid) { // NOSONAR
 
+        this(koodistoService, asid, aoid, ElementUtil.createI18NAsIs(asid));
+    }
+
+    public Yhteishaku2013(
+            final KoodistoService koodistoService,
+            final String asid,
+            final String aoid,
+            final I18nText name) { // NOSONAR
+
         Date start = new Date();
         final Calendar instance = Calendar.getInstance();
         instance.roll(Calendar.YEAR, 1);
         Date end = new Date(instance.getTimeInMillis());
 
         Form form = createForm(asid, koodistoService, aoid, start);
-        this.applicationPeriod = new ApplicationPeriod(asid, form, start, end, ElementUtil.createI18NAsIs(asid));
+        this.applicationPeriod = new ApplicationPeriod(asid, form, start, end, name);
     }
 
 
