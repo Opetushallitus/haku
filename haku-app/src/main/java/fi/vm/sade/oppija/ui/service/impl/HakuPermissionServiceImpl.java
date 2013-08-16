@@ -58,11 +58,15 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         for (int i = 1; i <= 5; i++) {
             String id = "preference"+i+"-Opetuspiste-id";
             String parents = "preference"+i+"-Opetuspiste-id-parents";
-            if (checkAccess(answers.get(id), getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+            String organization = answers.get(id);
+            if (checkAccess(organization, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+                log.debug("User can read application, org: {}", organization);
                 return true;
             }
             for (String parent : parents.split(",")) {
-                if (checkAccess(answers.get(parent), getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+                organization = answers.get(parent);
+                if (checkAccess(organization, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+                    log.debug("User can read application, parent org: {}", organization);
                     return true;
                 }
             }
