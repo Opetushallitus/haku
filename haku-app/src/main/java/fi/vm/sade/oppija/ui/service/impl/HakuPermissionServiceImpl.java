@@ -5,6 +5,7 @@ import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
 import fi.vm.sade.security.OrganisationHierarchyAuthorizer;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,13 +60,15 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
             String id = "preference"+i+"-Opetuspiste-id";
             String parents = "preference"+i+"-Opetuspiste-id-parents";
             String organization = answers.get(id);
-            if (checkAccess(organization, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+            if (StringUtils.isNotEmpty(organization) &&
+                    checkAccess(organization, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
                 log.debug("User can read application, org: {}", organization);
                 return true;
             }
             for (String parent : parents.split(",")) {
                 organization = answers.get(parent);
-                if (checkAccess(organization, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+                if (StringUtils.isNotEmpty(organization) &&
+                        checkAccess(organization, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
                     log.debug("User can read application, parent org: {}", organization);
                     return true;
                 }
