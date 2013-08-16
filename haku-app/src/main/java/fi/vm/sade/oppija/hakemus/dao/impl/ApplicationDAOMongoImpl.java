@@ -16,12 +16,10 @@
 
 package fi.vm.sade.oppija.hakemus.dao.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.QueryBuilder;
+import com.mongodb.*;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
@@ -177,7 +175,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject dbObject = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
                 newOIdExistDBObject(),
                 new BasicDBObject(FIELD_APPLICATION_PERIOD_ID, asId),
-                QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.ACTIVE.toString()).get()).get();
+                QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
+                        Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get()).get();
         return findApplications(dbObject);
     }
 
@@ -191,11 +190,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
-        if (ssn != null) {
-            String encryptedSsn = shaEncrypter.encrypt(ssn);
+        if (!Strings.isNullOrEmpty(ssn)) {
+            String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
             DBObject query = QueryBuilder.start(FIELD_APPLICATION_PERIOD_ID).is(asId)
                     .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
                     .and(FIELD_APPLICATION_OID).exists(true)
+                    .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
                     .get();
             return getCollection().count(query) > 0;
         }
@@ -454,5 +454,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public void setHakuPermissionService(HakuPermissionService hakuPermissionService) {
         this.hakuPermissionService = hakuPermissionService;
+    }
+
+    @Override
+    public void updateKeyValue(String oid, String key, String value) {
+        DBObject query = new BasicDBObject("oid", oid);
+        DBObject update = new BasicDBObject("$set", new BasicDBObject(key, value));
+        getCollection().update(query, update);
     }
 }

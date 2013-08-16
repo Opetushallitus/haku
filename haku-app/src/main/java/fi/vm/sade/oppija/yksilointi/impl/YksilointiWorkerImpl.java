@@ -65,6 +65,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         this.formService = formService;
 
         VelocityEngine velocityEngine = new VelocityEngine();
+        velocityEngine.setProperty(VelocityEngine.ENCODING_DEFAULT, "UTF-8");
         velocityEngine.setProperty("resource.loader", "class");
         velocityEngine.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         velocityEngine.setProperty("class.resource.loader.path", "email");

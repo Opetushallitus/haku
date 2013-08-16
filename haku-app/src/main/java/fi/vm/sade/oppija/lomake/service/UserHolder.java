@@ -49,10 +49,7 @@ public class UserHolder implements Serializable {
         return user;
     }
 
-    public void login(User user) {
-        if (user.isKnown()) {
-            userPrefillData.put("Sähköposti", "esitaytetty_email@autofill.com"); // TODO remove
-        }
+    public void login(final User user) {
         this.user = user;
     }
 

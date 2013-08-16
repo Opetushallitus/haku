@@ -149,7 +149,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                         vastaukset.get(SocialSecurityNumber.HENKILOTUNNUS));
             }
             this.userHolder.savePhaseAnswers(applicationPhase);
-            this.applicationDAO.tallennaVaihe(applicationState);
         }
         // sets all answers merged, needed for re-rendering view if errors
         applicationState.setAnswersMerged(allAnswers);
@@ -160,7 +159,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     public String submitApplication(final String ApplicationPeriodId) {
         final User user = userHolder.getUser();
         Application application = userHolder.getApplication(ApplicationPeriodId);
-        //Application application = applicationDAO.findDraftApplication(application1);
         Form form = formService.getForm(ApplicationPeriodId);
         Map<String, String> allAnswers = application.getVastauksetMerged();
         ValidationResult validationResult = ElementTreeValidator.validate(form, allAnswers);
@@ -245,7 +243,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (!user.isKnown()) {
             application.removeUser();
         }
-        return getApplication(application);
+
+        List<Application> listOfApplications = applicationDAO.find(application);
+        return listOfApplications.get(0);
     }
 
     @Override
@@ -363,16 +363,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public void putApplicationAdditionalInfoKeyValue(String applicationOid, String key, String value)
             throws ResourceNotFoundException {
-        Application query = new Application(applicationOid);
-        Application application = getApplication(query);
         if (value == null) {
             throw new IllegalArgumentException("Value can't be null");
-        } else if (application.getVastauksetMerged().containsKey(key)) {
-            throw new IllegalStateException(String.format(
-                    "Key of the given additional information is found on the application form : key %s", key));
         } else {
-            application.getAdditionalInfo().put(key, value);
-            applicationDAO.update(query, application);
+            applicationDAO.updateKeyValue(applicationOid, "additionalInfo." + key, value);
         }
     }
 
@@ -431,7 +425,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
             throw new ResourceNotFoundException("Could not find application " + queryApplication.getOid());
         }
-
 
         Application application = listOfApplications.get(0);
         if (!hakuPermissionService.userCanReadApplication(application)) {

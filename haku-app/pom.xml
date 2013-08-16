@@ -55,13 +55,13 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>2.32.0</version>
+            <version>2.34.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-firefox-driver</artifactId>
-            <version>2.32.0</version>
+            <version>2.34.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -714,6 +714,35 @@
                                     </includes>
                                 </resource>
                             </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>write buildversion.txt</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="writing target/${project.build.finalName}/buildversion.txt" />
+                                <echo file="target/${project.build.finalName}/buildversion.txt">
+                                    <![CDATA[artifactId=${artifactId}
+version=${project.version}
+buildNumber=${build}
+branchName=${branch}
+vcsRevision=${revision}
+buildTtime=${maven.build.timestamp}
+]]>
+                                </echo>
+                                <loadfile property="buildversiontxt" srcFile="target/${project.build.finalName}/buildversion.txt" />
+                                <echo message="${buildversiontxt}" />
+                                <echo file="target/mavenversion.txt">${project.version}</echo>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>

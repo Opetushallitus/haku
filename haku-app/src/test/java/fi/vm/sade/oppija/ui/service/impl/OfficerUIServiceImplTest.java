@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
+import fi.vm.sade.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
@@ -29,14 +30,18 @@ public class OfficerUIServiceImplTest {
     private static final String OID = "1.2.3.4.5";
     private static final List<String> OIDS = ImmutableList.of("1", "2");
     public static final String ID = "id";
+
     private OfficerUIServiceImpl officerUIService;
     private ApplicationService applicationService;
     private FormService formService;
     private ValintaperusteetService valintaperusteetService;
     private KoodistoService koodistoService;
+    private LoggerAspect loggerAspect;
+
     private Application application;
     private AdditionalQuestions additionalQuestions = new AdditionalQuestions();
     private Phase phase = new Phase(ID, ElementUtil.createI18NAsIs("title"), false);
+
     private Form form;
 
     @Before
@@ -50,8 +55,9 @@ public class OfficerUIServiceImplTest {
         formService = mock(FormService.class);
         valintaperusteetService = mock(ValintaperusteetService.class);
         koodistoService = mock(KoodistoService.class);
+        loggerAspect = mock(LoggerAspect.class);
         officerUIService = new OfficerUIServiceImpl(
-                applicationService, formService, valintaperusteetService, koodistoService, "");
+                applicationService, formService, valintaperusteetService, koodistoService, loggerAspect, "");
         form.addChild(phase);
         when(applicationService.getApplicationPreferenceOids(application)).thenReturn(OIDS);
         when(applicationService.getApplication(OID)).thenReturn(application);
@@ -86,7 +92,6 @@ public class OfficerUIServiceImplTest {
     public void testGetApplicationWithLastPhase() throws Exception {
         Application expectedApplication = officerUIService.getApplicationWithLastPhase(OID);
         assertEquals(ID, expectedApplication.getPhaseId());
-
     }
 
     @Test

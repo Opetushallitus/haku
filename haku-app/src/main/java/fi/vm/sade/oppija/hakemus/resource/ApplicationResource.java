@@ -135,6 +135,7 @@ public class ApplicationResource {
     @GET
     @Path("applicant/{asId}/{aoId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public List<ApplicantDTO> findApplicants(@PathParam("asId") String asId, @PathParam("aoId") String aoId) {
         LOGGER.debug("Finding applicants asId:{}, aoID:{}", asId, aoId);
         List<Application> applications = applicationService.getApplicationsByApplicationSystemAndApplicationOption(asId, aoId);
