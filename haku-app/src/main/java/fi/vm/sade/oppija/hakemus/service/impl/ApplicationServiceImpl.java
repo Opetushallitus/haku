@@ -421,12 +421,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     private Application getApplication(final Application queryApplication) throws ResourceNotFoundException {
 
+        LOGGER.debug("Entering ApplicationServiceImpl.getApplication()");
         List<Application> listOfApplications = applicationDAO.find(queryApplication);
         if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
             throw new ResourceNotFoundException("Could not find application " + queryApplication.getOid());
         }
 
         Application application = listOfApplications.get(0);
+
         if (!hakuPermissionService.userCanReadApplication(application)) {
             throw new ResourceNotFoundException("User is not allowed to read application " + application.getOid());
         }
