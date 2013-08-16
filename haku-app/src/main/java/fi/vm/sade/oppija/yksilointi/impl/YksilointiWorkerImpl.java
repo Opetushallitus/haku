@@ -189,6 +189,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         email.setFrom(replyTo);
         email.setSubject(subject);
         email.addTo(toAddress);
+        email.setCharset("utf-8");
         return email;
     }
 }
