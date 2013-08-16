@@ -65,17 +65,17 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         this.formService = formService;
 
         VelocityEngine velocityEngine = new VelocityEngine();
-        velocityEngine.setProperty(VelocityEngine.ENCODING_DEFAULT, "UTF-8");
+        velocityEngine.setProperty(VelocityEngine.INPUT_ENCODING, "UTF-8");
+        velocityEngine.setProperty(VelocityEngine.OUTPUT_ENCODING, "UTF-8");
         velocityEngine.setProperty("resource.loader", "class");
         velocityEngine.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         velocityEngine.setProperty("class.resource.loader.path", "email");
         velocityEngine.setProperty("class.resource.loader.cache", "true");
         velocityEngine.setProperty("runtime.log.logsystem.log4j.logger", "velocity");
         velocityEngine.init();
-
         templateMap = new HashMap<String, Template>();
-        templateMap.put("suomi", velocityEngine.getTemplate("email/application_received_fi.vm"));
-        templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_sv.vm"));
+        templateMap.put("suomi", velocityEngine.getTemplate("email/application_received_fi.vm", "UTF-8"));
+        templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_sv.vm", "UTF-8"));
     }
 
     /**
