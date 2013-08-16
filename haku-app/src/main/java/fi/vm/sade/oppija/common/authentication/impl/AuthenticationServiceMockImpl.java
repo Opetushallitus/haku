@@ -15,10 +15,13 @@
  */
 package fi.vm.sade.oppija.common.authentication.impl;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -32,5 +35,10 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
 
     public String addPerson(Person person) {
         return OID_PREFIX + String.format("%011d", Math.round(Math.random() * RANGE_SIZE));
+    }
+
+    @Override
+    public List<String> getOrganisaatioHenkilo() {
+        return Lists.newArrayList("1.2.246.562.10.84682192491", "1.2.246.562.10.00000000001", "1.2.246.562.10.94550468022");
     }
 }

@@ -25,14 +25,14 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class ApplicationPhaseTest {
+    private final static String AS_ID = "AS_ID";
     private final static String ID = "ID";
-    private final FormId formId = new FormId(ID, ID);
     private final Map<String, String> answers = new HashMap<String, String>();
-    private final ApplicationPhase applicationPhase = new ApplicationPhase(formId, ID, answers);
+    private final ApplicationPhase applicationPhase = new ApplicationPhase(AS_ID, ID, answers);
 
     @Test
-    public void testGetHakemusId() throws Exception {
-        assertEquals(formId, applicationPhase.getFormId());
+    public void testGetApplicationPeriodId() throws Exception {
+        assertEquals(AS_ID, applicationPhase.getApplicationPeriodId());
     }
 
     @Test
@@ -51,17 +51,17 @@ public class ApplicationPhaseTest {
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)
-    public void testConstructNullFormId() throws Exception {
+    public void testConstructNullApplicationPeriodId() throws Exception {
         new ApplicationPhase(null, ID, answers);
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)
     public void testConstructNullPhaseId() throws Exception {
-        new ApplicationPhase(formId, null, answers);
+        new ApplicationPhase(AS_ID, null, answers);
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)
     public void testConstructNullAnswers() throws Exception {
-        new ApplicationPhase(formId, ID, null);
+        new ApplicationPhase(AS_ID, ID, null);
     }
 }

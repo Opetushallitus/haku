@@ -24,6 +24,8 @@ import java.util.Map;
 
 public class HakuClient {
 
+    public static final String CHARSET_UTF_8 = ";charset=UTF-8";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(HakuClient.class);
     public final String formUrl;
 
@@ -36,12 +38,11 @@ public class HakuClient {
         final ObjectMapper mapper = new ObjectMapper();
         Map data = mapper.readValue(url, Map.class);
         this.client = ApacheHttpClient.create();
-        Map<String, String> formId = (Map<String, String>) data.get("formId");
         this.client.setFollowRedirects(false);
         this.applicationData = (Map<String, Map<String, String>>) data.get("answers");
         this.applicationData.put("esikatselu", new ImmutableMap.Builder<String, String>()
                 .put("nav-send", "true").build());
-        this.formUrl = baseUrl + formId.get("applicationPeriodId") + '/' + formId.get("formId");
+        this.formUrl = baseUrl + data.get("applicationPeriodId");
 
     }
 
@@ -51,7 +52,7 @@ public class HakuClient {
         for (NewCookie cookie : cookies) {
             builder.cookie(cookie);
         }
-        ClientResponse response = builder.accept(MediaType.TEXT_HTML).get(ClientResponse.class);
+        ClientResponse response = builder.accept(MediaType.TEXT_HTML + CHARSET_UTF_8).get(ClientResponse.class);
         if (response.getStatus() == HttpStatus.SC_OK) {
             response.close();
         } else {
@@ -70,7 +71,7 @@ public class HakuClient {
                 builder.cookie(cookie);
             }
             getPhase(previousPhaseResponse);
-            ClientResponse response = builder.type(MediaType.APPLICATION_FORM_URLENCODED_TYPE).accept(MediaType.TEXT_HTML).post(ClientResponse.class, form);
+            ClientResponse response = builder.type(MediaType.APPLICATION_FORM_URLENCODED_TYPE + CHARSET_UTF_8).accept(MediaType.TEXT_HTML + CHARSET_UTF_8).post(ClientResponse.class, form);
 
             if (response.getStatus() == HttpStatus.SC_SEE_OTHER) {
                 response.close();
@@ -90,7 +91,7 @@ public class HakuClient {
 
     private ClientResponse getFirstPhaseLocation() throws IOException {
         WebResource r = client.resource(formUrl);
-        ClientResponse response = r.accept(MediaType.TEXT_HTML).get(ClientResponse.class);
+        ClientResponse response = r.accept(MediaType.TEXT_HTML + CHARSET_UTF_8).get(ClientResponse.class);
         if (response.getStatus() == HttpStatus.SC_SEE_OTHER) {
             response.close();
             cookies = response.getCookies();

@@ -24,7 +24,6 @@ import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
@@ -64,25 +63,24 @@ public class OfficerControllerTest {
     @Before
     public void setUp() throws Exception {
         officerController = new OfficerController();
-        officerController.userHolder =new UserHolder();
+        officerController.userHolder = new UserHolder();
 
         ApplicationService applicationService = mock(ApplicationService.class);
         FormService formService = mock(FormService.class);
         ValintaperusteetService valintaperusteetService = mock(ValintaperusteetService.class);
 
-        FormId formId = new FormId(ASID, "yhteishaku");
-        Application app = new Application(formId, OID);
+        Application app = new Application(ASID, OID);
         app.setPhaseId("valmis");
         when(applicationService.getApplication(OID)).thenReturn(app);
         when(applicationService.getApplicationPreferenceOids(anyString())).thenReturn(new ArrayList<String>());
 
         Phase phase = new Phase(PREVIEW_PHASE, createI18NAsIs(PREVIEW_PHASE), true);
-        when(formService.getLastPhase(ASID, "yhteishaku")).thenReturn(phase);
+        when(formService.getLastPhase(ASID)).thenReturn(phase);
 
         Form form = new Form("yhteishaku", createI18NAsIs("yhteishaku"));
         form.addChild(new Phase("henkilotiedot", createI18NAsIs("henkilotiedot"), false));
         form.addChild(phase);
-        when(formService.getActiveForm(ASID, "yhteishaku")).thenReturn(form);
+        when(formService.getActiveForm(ASID)).thenReturn(form);
 
         ApplicationState applicationState = new ApplicationState(app, "henkilotiedot");
         when(applicationService.saveApplicationPhase(any(ApplicationPhase.class), eq(OID), eq(false))).thenReturn(applicationState);
@@ -103,18 +101,18 @@ public class OfficerControllerTest {
     @Test
     public void testGetApplication() throws Exception {
         Response response = officerController.redirectToLastPhase(OID);
-        assertEquals("/virkailija/hakemus/" + ASID + "/yhteishaku/valmis/" + OID, getLocationHeader(response));
+        assertEquals("/virkailija/hakemus/" + ASID + "/valmis/" + OID, getLocationHeader(response));
     }
 
     @Test
     public void testGetPhase() throws Exception {
-        Viewable viewable = officerController.getPreview(ASID, "yhteishaku", PREVIEW_PHASE, OID);
+        Viewable viewable = officerController.getPreview(ASID, PREVIEW_PHASE, OID);
         assertEquals(OfficerController.VIRKAILIJA_PHASE_VIEW, viewable.getTemplateName());
     }
 
     @Test
     public void testSavePhase() throws URISyntaxException, ResourceNotFoundException {
-        Response response = officerController.updatePhase(ASID, "yhteishaku", "henkilotiedot", OID, new MultivaluedMapImpl());
+        Response response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 

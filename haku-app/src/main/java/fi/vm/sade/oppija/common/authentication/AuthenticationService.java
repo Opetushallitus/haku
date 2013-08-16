@@ -16,6 +16,8 @@
 
 package fi.vm.sade.oppija.common.authentication;
 
+import java.util.List;
+
 /**
  * @author Hannu Lyytikainen
  */
@@ -23,4 +25,5 @@ public interface AuthenticationService {
 
     String addPerson(Person person);
 
+    List<String> getOrganisaatioHenkilo();
 }

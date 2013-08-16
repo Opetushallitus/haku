@@ -24,9 +24,5 @@
 </head>
 <body>
 Pyytämääsi resurssia ei löytynyt!
-<fieldset>
-    <legend><c:out value="${it.message}"/></legend>
-    <pre id="stacktrace"><c:out value="${it.stackTrace}"/></pre>
-</fieldset>
 </body>
 </html>

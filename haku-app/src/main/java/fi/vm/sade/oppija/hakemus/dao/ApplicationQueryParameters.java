@@ -20,27 +20,15 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class ApplicationQueryParameters {
     private final String state;
-    private final String preference;
+    private final String aoId;
     private final String lopOid;
     private final int start;
     private final int rows;
 
-    /*public ApplicationQueryParameters() {
-        this(null, null);
-    }
-
-    public ApplicationQueryParameters(final String state) {
-        this(state, null);
-    }
-
-    public ApplicationQueryParameters(final String state, final String lopOid) {
-        this(state, null, lopOid);
-    } */
-
-    public ApplicationQueryParameters(final String state, final String preference, final String lopOid, final int start, final int rows) {
+    public ApplicationQueryParameters(final String state, final String aoId, final String lopOid, final int start, final int rows) {
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
         this.state = isEmpty(state) ? null : state;
-        this.preference = isEmpty(preference) ? null : preference;
+        this.aoId = isEmpty(aoId) ? null : aoId;
         this.start = start;
         this.rows = rows;
     }
@@ -49,16 +37,12 @@ public class ApplicationQueryParameters {
         return state;
     }
 
-    public String getPreference() {
-        return preference;
+    public String getAoId() {
+        return aoId;
     }
 
     public String getLopOid() {
         return lopOid;
-    }
-
-    public boolean isFetchSubmittedOnly() {
-        return true;
     }
 
     public int getStart() {

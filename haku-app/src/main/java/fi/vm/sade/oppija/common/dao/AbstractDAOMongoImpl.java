@@ -19,21 +19,18 @@ package fi.vm.sade.oppija.common.dao;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import fi.vm.sade.oppija.lomake.dao.DBFactoryBean;
+import fi.vm.sade.oppija.common.MongoWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
 
     @Autowired
-    protected DBFactoryBean factoryBean;
-    protected DB db;
+    protected MongoWrapper factoryBean;
 
     protected final Function<T, DBObject> toDBObject;
     protected final Function<DBObject, T> fromDBObject;
@@ -43,26 +40,16 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
         this.toDBObject = toDBObject;
     }
 
-    @PostConstruct
-    protected void init() {
-        this.db = factoryBean.getObject();
-    }
-
     protected abstract String getCollectionName();
 
     protected DBCollection getCollection() {
-        return db.getCollection(getCollectionName());
+        return factoryBean.getCollection(getCollectionName());
     }
 
     @Override
     public List<T> find(T t) {
         final DBCursor dbCursor = getCollection().find(toDBObject.apply(t));
         return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
-    }
-
-    @Override
-    public void delete(T t) {
-        getCollection().remove(toDBObject.apply(t));
     }
 
     @Override
@@ -73,9 +60,5 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
     @Override
     public void update(T o, T n) {
         getCollection().update(toDBObject.apply(o), toDBObject.apply(n));
-    }
-
-    public void setDb(DB db) {
-        this.db = db;
     }
 }

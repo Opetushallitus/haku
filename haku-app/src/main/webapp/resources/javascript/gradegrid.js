@@ -16,7 +16,7 @@ $(document).ready(function () {
                 select.append(option);
             }
         )
-
+        return false;
     });
     $("button[class=link]").each(function (index, element) {
         var group = $(element).attr('id');

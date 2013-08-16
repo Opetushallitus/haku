@@ -23,8 +23,7 @@
                     http://www.springframework.org/schema/security/spring-security-3.1.xsd"
         profile="dev">
 
-    <global-method-security secured-annotations="enabled">
-    </global-method-security>
+    <global-method-security secured-annotations="enabled" pre-post-annotations="enabled"/>
 
     <http use-expressions="true">
         <intercept-url pattern="/**" access="permitAll"/>
@@ -40,7 +39,7 @@
             <user-service>
                 <user name="nobody" password="nobody" authorities="ROLE_NOBODY"/>
                 <user name="admin" password="admin" authorities="ROLE_APP_HAKEMUS_CRUD"/>
-                <user name="officer" password="officer" authorities="ROLE_APP_HAKEMUS_READ_UPDATE"/>
+                <user name="officer" password="officer" authorities="ROLE_APP_HAKEMUS_CRUD"/>
             </user-service>
         </authentication-provider>
     </authentication-manager>

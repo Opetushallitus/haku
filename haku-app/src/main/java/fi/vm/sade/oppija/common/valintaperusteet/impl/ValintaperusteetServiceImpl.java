@@ -54,7 +54,8 @@ public class ValintaperusteetServiceImpl implements ValintaperusteetService {
             ClientResponse response = null;
 
             try {
-                response = service.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
+                response = service.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+                        .type(MediaType.APPLICATION_JSON + ";charset=UTF-8")
                         .post(ClientResponse.class, oids);
                 if (response.getClientResponseStatus() == ClientResponse.Status.OK) {
                     return converter.apply(response.getEntity(Map.class));

@@ -16,14 +16,15 @@
 
 package fi.vm.sade.oppija.common.selenium;
 
+import fi.vm.sade.oppija.common.MongoWrapper;
 import fi.vm.sade.oppija.common.it.AdminResourceClient;
 import fi.vm.sade.oppija.common.it.TomcatContainerBase;
 import fi.vm.sade.oppija.lomake.FormModelHelper;
 import fi.vm.sade.oppija.lomake.SeleniumContainer;
-import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.ui.selenium.SeleniumHelper;
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
@@ -42,7 +43,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     SeleniumContainer container;
 
     @Autowired
-    protected TestDBFactoryBean dbFactory;
+    protected MongoWrapper mongoWrapper;
 
     public AbstractSeleniumBase() {
         super();
@@ -50,7 +51,14 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     @Before
     public void before() {
-        dbFactory.drop();
+        mongoWrapper.dropDatabase();
+        seleniumHelper = container.getSeleniumHelper();
+        seleniumHelper.logout();
+    }
+
+    @After
+    public void after() {
+        mongoWrapper.dropDatabase();
         seleniumHelper = container.getSeleniumHelper();
         seleniumHelper.logout();
     }

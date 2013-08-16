@@ -24,6 +24,9 @@
             $target = $('#' + targetId + "-row-content");
             $targetClone = $target.clone();
 
+            var checkedTargetIds = sortabletable.getChecked($source, id, targetId);
+            var checkedSourceIds = sortabletable.getChecked($target, targetId, id);
+
             $source.empty().append($targetClone.children());
             $target.empty().append($clone.children());
 
@@ -32,6 +35,9 @@
 
             sortabletable.replaceRuleSettings($source, targetId, id);
             sortabletable.replaceRuleSettings($target, id, targetId);
+
+            sortabletable.updateChecked(checkedTargetIds);
+            sortabletable.updateChecked(checkedSourceIds);
 
             preferenceRow.init();
         },
@@ -76,8 +82,23 @@
                 $(settings.relatedSelector).unbind();
                 $(settings.relatedSelector).change(window[ruleId.replace(new RegExp('-', 'g'), '_') + "_func"]);
             });
-        }
+        },
 
+        getChecked : function($elem, findIdString, replaceIdWith) {
+            var cc  = new Array();
+            $elem.find("input:checked").each(function(i) {
+                cc[i] = this.id.replace(new RegExp(findIdString, 'g'), replaceIdWith);
+            });
+            return cc;
+        },
+
+        updateChecked: function(checkedElemIds) {
+            if (checkedElemIds) {
+                $.each(checkedElemIds, function(index, value) {
+                    $("#" + value).prop("checked", true);
+                });
+            }
+        }
     };
 
 

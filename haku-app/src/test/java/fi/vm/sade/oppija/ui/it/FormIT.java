@@ -42,17 +42,11 @@ public class FormIT extends AbstractFormTest {
     }
 
     @Test
-    public void testForm() throws Exception {
-        beginAt("/lomake/" + ASID);
-        assertLinkPresent("yhteishaku");
-    }
-
-    @Test
-    public void testCategory() throws Exception {
-        beginAt("/lomake/" + ASID + "/yhteishaku/henkilotiedot");
+    public void testPhase() throws Exception {
+        beginAt("/lomake/" + ASID + "/henkilotiedot");
         assertLinkPresent("nav-henkilotiedot");
         assertLinkNotPresent("nav-koulutustausta");
-        gotoPage("/lomake/" + ASID + "/yhteishaku/koulutustausta");
+        gotoPage("/lomake/" + ASID + "/koulutustausta");
         assertLinkPresent("nav-henkilotiedot");
         assertLinkPresent("nav-koulutustausta");
     }

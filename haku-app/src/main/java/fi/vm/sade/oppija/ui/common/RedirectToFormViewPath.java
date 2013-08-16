@@ -23,11 +23,10 @@ public class RedirectToFormViewPath implements ViewPath {
 
     private final String path;
 
-    public RedirectToFormViewPath(final String applicationPeriodId, final String formId) {
+    public RedirectToFormViewPath(final String applicationPeriodId) {
         Preconditions.checkNotNull(applicationPeriodId);
-        Preconditions.checkNotNull(formId);
         Joiner joiner = Joiner.on("/").skipNulls();
-        this.path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId);
+        this.path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId);
     }
 
     public String getPath() {

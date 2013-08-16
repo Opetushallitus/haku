@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -30,10 +29,6 @@ public class Form extends Titled {
         super(id, i18nText);
     }
 
-    @JsonIgnore
-    public Element getPhase(final String elementId) {
-        return getChildById(this, elementId);
-    }
 
     @JsonIgnore
     public boolean isFirstChild(final Element phase) {
@@ -41,26 +36,7 @@ public class Form extends Titled {
     }
 
     @JsonIgnore
-    public boolean isLastChild(final Element phase) {
-        if (hasChildren()) {
-            return this.children.get(this.children.size() - 1).equals(phase);
-        }
-        return false;
-    }
-
-    @JsonIgnore
-    public Element getFirstChild() {
-        if (!hasChildren()) {
-            throw new ResourceNotFoundExceptionRuntime("Could not find first child");
-        }
-        return this.getChildren().get(0);
-    }
-
-    @JsonIgnore
-    public Element getLastPhase() {
-        if (!hasChildren()) {
-            throw new ResourceNotFoundExceptionRuntime("Could not find first child");
-        }
-        return this.children.get(this.children.size() - 1);
+    public Element getPreviewPhase() {
+        return super.getChildById("esikatselu");
     }
 }

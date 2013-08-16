@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.GET;
@@ -26,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/")
 @Controller
+@Secured({"ROLE_APP_HAKEMUS_READ_UPDATE", "ROLE_APP_HAKEMUS_CRUD"})
 public class RootController {
 
     private static final String CHARSET_UTF_8 = ";charset=UTF-8";

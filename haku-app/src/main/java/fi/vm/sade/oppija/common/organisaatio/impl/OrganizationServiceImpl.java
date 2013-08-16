@@ -20,12 +20,14 @@ import fi.vm.sade.oppija.common.organisaatio.Organization;
 import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
+import fi.vm.sade.organisaatio.api.model.types.OrganisaatioDTO;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioSearchCriteriaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,6 +54,16 @@ public class OrganizationServiceImpl implements OrganizationService {
         criteriaDTO.setOppilaitosTyyppi(criteria.getLearningInstitutionType());
         final List<OrganisaatioPerustietoType> result = service.searchBasicOrganisaatios(criteriaDTO);
         return Lists.newArrayList(Lists.transform(result, new OrganisaatioPerustietoTypeToOrganizationFunction()));
+    }
+
+    @Override
+    public List<String> findParentOids(final String organizationOid) {
+        List<OrganisaatioDTO> parents = service.findParentsTo(organizationOid);
+        List<String> parentOids = new ArrayList<String>(parents.size());
+        for (OrganisaatioDTO org : parents) {
+            parentOids.add(org.getOid());
+        }
+        return parentOids;
     }
 
 }

@@ -23,7 +23,7 @@
         <div class="field-container-text">
             <input type="text" ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"
                    class="postal-code"/>
-            <input type="hidden" value="<c:out value='${postOffice}'/>" name="postitoimipaikka"
+                <input type="hidden" value="<c:out value='${postOffice}' />" name="postitoimipaikka"
                    class="post-office"/>
             <span class="post-office"><c:out value="${postOffice}"/></span>
         </div>

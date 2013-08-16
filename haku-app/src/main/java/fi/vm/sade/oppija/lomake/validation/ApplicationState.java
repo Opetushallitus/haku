@@ -25,20 +25,18 @@ import java.util.Map;
 
 public class ApplicationState {
 
-    private static final String HAKEMUS_KEY = "hakemus";
     private static final String APPLICATION_KEY = "application";
     public static final String VALMIS = "valmis";
     private final Map<String, I18nText> errors = new HashMap<String, I18nText>();
     private final Map<String, Object> modelObjects = new HashMap<String, Object>();
-    private final String vaiheId;
+    private final String phaseId;
 
-    public ApplicationState(final Application application, final String vaiheId) {
-        modelObjects.put(HAKEMUS_KEY, application);
+    public ApplicationState(final Application application, final String phaseId) {
         modelObjects.put(APPLICATION_KEY, application);
         modelObjects.put("categoryData", application.getVastauksetMerged());
         modelObjects.put("errorMessages", errors);
         modelObjects.put("applicationPhaseId", application.getPhaseId());
-        this.vaiheId = vaiheId;
+        this.phaseId = phaseId;
     }
 
     public void addModelObject(final String key, final Object object) {
@@ -61,20 +59,16 @@ public class ApplicationState {
         return modelObjects;
     }
 
-    public Application getHakemus() {
-        return (Application) modelObjects.get(HAKEMUS_KEY);
+    public Application getApplication() {
+        return (Application) modelObjects.get(APPLICATION_KEY);
     }
 
-    public void setHakemus(final Application application) {
-        modelObjects.put(HAKEMUS_KEY, application);
-    }
-
-    public String getVaiheId() {
-        return vaiheId;
+    public String getPhaseId() {
+        return phaseId;
     }
 
     public boolean isFinalStage() {
-        return VALMIS.equals(vaiheId);
+        return VALMIS.equals(phaseId);
     }
 
     public void setAnswersMerged(Map<String, String> answersMerged) {

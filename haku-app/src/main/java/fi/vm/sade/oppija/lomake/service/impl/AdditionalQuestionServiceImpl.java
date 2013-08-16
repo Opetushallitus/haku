@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.lomake.service.impl;
 
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
@@ -46,8 +45,8 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public List<Question> findAdditionalQuestions(final FormId formId, final String themeId, final String aoId) {
-        Form form = formService.getActiveForm(formId.getApplicationPeriodId(), formId.getFormId());
+    public List<Question> findAdditionalQuestions(final String applicationPeriodId, final String themeId, final String aoId) {
+        Form form = formService.getActiveForm(applicationPeriodId);
         Theme theme = (Theme) form.getChildById(themeId);
         return theme.getAdditionalQuestions(aoId);
 

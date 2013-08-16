@@ -17,8 +17,8 @@
 package fi.vm.sade.oppija.hakemus.domain;
 
 import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.oppija.lomake.domain.ObjectIdSerializer;
 import fi.vm.sade.oppija.lomake.domain.User;
@@ -50,7 +50,7 @@ public class Application implements Serializable {
 
     private String oid;
     private State state;
-    private FormId formId;
+    private String applicationPeriodId;
     private User user;
     private String phaseId;
     private String personOid;
@@ -62,11 +62,11 @@ public class Application implements Serializable {
     private LinkedList<ApplicationNote> notes = new LinkedList<ApplicationNote>();
 
     @JsonCreator
-    public Application(@JsonProperty(value = "formId") final FormId formId,
+    public Application(@JsonProperty(value = "applicationPeriodId") final String applicationPeriodId,
                        @JsonProperty(value = "user") final User user,
                        @JsonProperty(value = "answers") Map<String, Map<String, String>> answers,
                        @JsonProperty(value = "additionalInfo") Map<String, String> additionalInfo) {
-        this(formId, user);
+        this(applicationPeriodId, user);
         if (answers != null) {
             this.answers = answers;
         }
@@ -91,33 +91,33 @@ public class Application implements Serializable {
 
 
     @JsonIgnore
-    public Application(@JsonProperty(value = "formId") final FormId formId,
+    public Application(@JsonProperty(value = "applicationPeriodId") final String applicationPeriodId,
                        @JsonProperty(value = "user") final User user) {
-        this.formId = formId;
+        this.applicationPeriodId = applicationPeriodId;
         this.user = user;
     }
 
     @JsonIgnore
-    public Application(@JsonProperty(value = "formId") final FormId formId,
+    public Application(@JsonProperty(value = "applicationPeriodId") final String applicationPeriodId,
                        @JsonProperty(value = "user") final User user,
                        final String oid) {
-        this.formId = formId;
+        this.applicationPeriodId = applicationPeriodId;
         this.user = user;
         this.oid = oid;
     }
 
-    public Application(User user, ApplicationPhase phase) {
-        this(phase.getFormId(), user);
+    public Application(final User user, final ApplicationPhase phase) {
+        this(phase.getApplicationPeriodId(), user);
         addVaiheenVastaukset(phase.getPhaseId(), phase.getAnswers());
     }
 
-    public Application(String oid, ApplicationPhase phase) {
-        this(phase.getFormId(), oid);
+    public Application(final String oid, final ApplicationPhase phase) {
+        this(phase.getApplicationPeriodId(), oid);
         addVaiheenVastaukset(phase.getPhaseId(), phase.getAnswers());
     }
 
-    public Application(final FormId formId, final String oid) {
-        this.formId = formId;
+    public Application(final String applicationPeriodId, final String oid) {
+        this.applicationPeriodId = applicationPeriodId;
         this.oid = oid;
     }
 
@@ -167,8 +167,8 @@ public class Application implements Serializable {
         this.user = null;
     }
 
-    public FormId getFormId() {
-        return formId;
+    public String getApplicationPeriodId() {
+        return applicationPeriodId;
     }
 
     @JsonIgnore
@@ -188,6 +188,10 @@ public class Application implements Serializable {
             this.setMeta(meta);
             this.user = null;
         }
+    }
+
+    public Map<String, String> getPhaseAnswers(final String phaseId) {
+        return ImmutableMap.copyOf(this.answers.get(phaseId));
     }
 
     @JsonIgnore
@@ -239,8 +243,8 @@ public class Application implements Serializable {
         this.meta = meta;
     }
 
-    public void setFormId(FormId formId) {
-        this.formId = formId;
+    public void setApplicationPeriodId(String applicationPeriodId) {
+        this.applicationPeriodId = applicationPeriodId;
     }
 
     public String getPersonOid() {

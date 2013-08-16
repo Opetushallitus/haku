@@ -26,7 +26,14 @@
     <haku:label element="${element}" styleBaseClass="${styleBaseClass}"/>
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
-            <input ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"/>
+            <c:choose>
+                <c:when test="${virkailijaEdit}">
+                    <input ${element.attributeString} disabled="disabled" value="<c:out value='${categoryData[element.id]}'/>"/>
+                </c:when>
+                <c:otherwise>
+                    <input ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"/>
+                </c:otherwise>
+            </c:choose>
             <span id="sex">
                 <c:if test="${categoryData[ssnElement.sexId] eq ssnElement.maleOption.value}">
                     <haku:i18nText value="${ssnElement.maleOption.i18nText}"/>
@@ -35,14 +42,13 @@
                     <haku:i18nText value="${ssnElement.femaleOption.i18nText}"/>
                 </c:if>
             </span>
-            <input id="${ssnElement.sexId}" name="${ssnElement.sexId}" value="${categoryData[ssnElement.sexId]}" type="hidden"/>
+            <input id="${ssnElement.sexId}" name="${ssnElement.sexId}" value="<c:out value='${categoryData[ssnElement.sexId]}' />" type="hidden"/>
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
         <haku:help element="${element}"/>
     </div>
     <div class="clear"></div>
 </div>
-
 
 
 <script>

@@ -68,7 +68,7 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
         assertNotSelected(OPTION_2_ID);
         assertNotSelected(OPTION_3_ID);
         assertSelected(OPTION_1_ID);
-        driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstCategory()) + "?lang=sv");
+        driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstPhase().getId()) + "?lang=sv");
         assertNotSelected(OPTION_1_ID);
         assertNotSelected(OPTION_3_ID);
         assertSelected(OPTION_2_ID);
@@ -95,7 +95,7 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
         FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
         this.formModelHelper = updateIndexAndFormModel(formModel);
         driver = seleniumHelper.getDriver();
-        driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstCategory()));
+        driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstPhase().getId()));
     }
 
     private void assertNotSelected(final String id) {

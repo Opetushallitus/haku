@@ -48,7 +48,7 @@ public class YksilointiWorkerTest extends AbstractDAOTest {
     //@Before
     public void setUp() {
         try {
-            getDbFactory().getObject().getCollection(getCollectionName()).insert(applicationTestDataObject);
+            mongoWrapper.getCollection(getCollectionName()).insert(applicationTestDataObject);
         } catch (Exception e) {
             LOGGER.error("Error set up test", e);
         }

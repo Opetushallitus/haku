@@ -47,8 +47,6 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private ApplicationService applicationService;
     private FormService formService;
 
-    private static DateFormat dateFmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-
     private Map<String, Template> templateMap;
 
     @Value("${email.smtp.debug:false}")
@@ -67,6 +65,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         this.formService = formService;
 
         VelocityEngine velocityEngine = new VelocityEngine();
+        velocityEngine.setProperty(VelocityEngine.ENCODING_DEFAULT, "UTF-8");
         velocityEngine.setProperty("resource.loader", "class");
         velocityEngine.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         velocityEngine.setProperty("class.resource.loader.path", "email");
@@ -91,6 +90,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         long endTime = System.currentTimeMillis() + (limit - 500);
         while (application != null && endTime > System.currentTimeMillis()) {
             applicationService.addPersonAndAuthenticate(application);
+            applicationService.fillLOPChain(application);
             if (sendMail) {
                 try {
                     sendMail(application);
@@ -132,12 +132,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     private VelocityContext buildContext(Application application) {
         VelocityContext ctx = new VelocityContext();
-
+        DateFormat dateFmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         String applicationDate = dateFmt.format(application.getReceived());
         String applicationId = application.getOid();
         applicationId = applicationId.substring(applicationId.lastIndexOf('.') + 1);
 
-        ctx.put("formId", getFormName(application));
+        ctx.put("applicationPeriodId", getFormName(application));
         ctx.put("applicant", getApplicantName(application));
         ctx.put("applicationId", applicationId);
         ctx.put("applicationDate", applicationDate);
@@ -169,7 +169,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     }
 
     private String getFormName(Application application) {
-        Form form = formService.getForm(application.getFormId());
+        Form form = formService.getForm(application.getApplicationPeriodId());
         Map<String, String> translations = form.getI18nText().getTranslations();
         String lang = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
         String realLang = "suomi".equals(lang) ? "fi" : "sv";

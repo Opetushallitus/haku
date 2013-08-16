@@ -27,15 +27,17 @@ import static org.junit.Assert.assertNotNull;
 
 public class HelpTextTest extends AbstractSeleniumBase {
 
+    private FormServiceMockImpl dummyMem;
+
     @Before
     public void init() {
-        FormServiceMockImpl dummyMem = new FormServiceMockImpl(ASID, AOID);
+        dummyMem = new FormServiceMockImpl(ASID, AOID);
         updateModel(dummyMem.getModel());
     }
 
     @Test
     public void testQuestionHelp() {
-        final String url = getBaseUrl() + "lomake/" + ASID + "/yhteishaku/henkilotiedot";
+        final String url = getBaseUrl() + "lomake/" + ASID + "/henkilotiedot";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
         assertNotNull("Could not find question specific help", driver.findElement(By.id("help-Kutsumanimi")));
@@ -43,7 +45,7 @@ public class HelpTextTest extends AbstractSeleniumBase {
 
     @Test
     public void testVerboseHelp() {
-        final String url = getBaseUrl() + "lomake/" + ASID + "/yhteishaku/henkilotiedot/HenkilotiedotGrp/help";
+        final String url = getBaseUrl() + "lomake/" + ASID + "/henkilotiedot/HenkilotiedotGrp/help";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
         assertNotNull("Could not find verbose help page", driver.findElement(By.id("help-page")));

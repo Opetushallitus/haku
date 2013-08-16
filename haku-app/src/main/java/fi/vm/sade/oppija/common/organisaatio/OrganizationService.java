@@ -27,4 +27,7 @@ public interface OrganizationService {
      * @return
      */
     List<Organization> search(SearchCriteria criteria);
+
+    List<String> findParentOids(String organizationOid);
+
 }

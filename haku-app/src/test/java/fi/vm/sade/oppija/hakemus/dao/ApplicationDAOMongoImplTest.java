@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
+import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
@@ -23,11 +24,11 @@ import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.ui.HakuPermissionService;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -48,6 +49,7 @@ import java.util.List;
 
 import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
@@ -62,7 +64,7 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     @Qualifier("applicationDAOMongoImpl")
     private ApplicationDAO applicationDAO;
 
-    private FormId formId;
+    private String applicationSystemId;
 
     protected static List<DBObject> applicationTestDataObject;
 
@@ -76,22 +78,27 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     @Before
     public void setUp() throws Exception {
         try {
-            getDbFactory().getObject().getCollection(getCollectionName()).insert(applicationTestDataObject);
+            mongoWrapper.getCollection(getCollectionName()).insert(applicationTestDataObject);
         } catch (Exception e) {
             LOGGER.error("Error set up test", e);
         }
 
+        this.applicationSystemId = ElementUtil.randomId();
+        HakuPermissionService hakuPermissionService = mock(HakuPermissionService.class);
+        when(hakuPermissionService.userCanReadApplications(anyList())).thenReturn(Lists.newArrayList("1.2.246.562.10.84682192491"));
+        applicationDAO.setHakuPermissionService(hakuPermissionService);
+
         final String id = String.valueOf(System.currentTimeMillis());
-        this.formId = new FormId(ElementUtil.randomId(), id);
+        this.applicationSystemId = ElementUtil.randomId();
     }
 
     @Test
     public void testTallennaVaihe() {
         final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>();
         vaiheenVastaukset.put("avain", ARVO);
-        final Application application1 = new Application(TEST_USER, new ApplicationPhase(formId, TEST_PHASE, vaiheenVastaukset));
+        final Application application1 = new Application(TEST_USER, new ApplicationPhase(applicationSystemId, TEST_PHASE, vaiheenVastaukset));
         final ApplicationState application = applicationDAO.tallennaVaihe(new ApplicationState(application1, TEST_PHASE));
-        assertEquals(ARVO, application.getHakemus().getVastauksetMerged().get("avain"));
+        assertEquals(ARVO, application.getApplication().getVastauksetMerged().get("avain"));
     }
 
     @Test
@@ -110,19 +117,19 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     @Test
     public void testFindAll() throws Exception {
         testTallennaVaihe();
-        List<Application> listOfApplications = applicationDAO.find(new Application(formId, TEST_USER));
+        List<Application> listOfApplications = applicationDAO.find(new Application(applicationSystemId, TEST_USER));
         assertEquals(1, listOfApplications.size());
     }
 
     @Test
     public void testFindAllNotFound() throws Exception {
-        List<Application> applications = applicationDAO.find(new Application(formId, TEST_USER));
+        List<Application> applications = applicationDAO.find(new Application(applicationSystemId, TEST_USER));
         assertTrue(applications.isEmpty());
     }
 
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testFindPendingApplicationNotFound() throws Exception {
-        applicationDAO.findDraftApplication(new Application(formId, TEST_USER));
+        applicationDAO.findDraftApplication(new Application(applicationSystemId, TEST_USER));
     }
 
     @Test

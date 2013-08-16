@@ -87,13 +87,13 @@ public class GradesTable {
                 new GradeGridOptionQuestion(id, gradeGridHelper.getGradeRanges(), false);
         ElementUtil.setDisabled(grades);
 
-        GradeGridOptionQuestion gradesSelected =
-                new GradeGridOptionQuestion(id + "_VAL1", gradeRangesWithDefault, true);
-        ElementUtil.setDisabled(gradesSelected);
-
-
+        GradeGridOptionQuestion gradesSelected = null;
         GradeGridOptionQuestion gradesSelected2 = null;
         if (gradeGridHelper.isComprehensiveSchool()) {
+            gradesSelected =
+                    new GradeGridOptionQuestion(id + "_VAL1", gradeRangesWithDefault, true);
+            ElementUtil.setDisabled(gradesSelected);
+
             gradesSelected2 =
                     new GradeGridOptionQuestion(id + "_VAL2", gradeRangesWithDefault, true);
             ElementUtil.setDisabled(gradesSelected2);
@@ -104,8 +104,8 @@ public class GradesTable {
         columnsArray[0].addChild(title);
         columnsArray[1].addChild(addLangs);
         columnsArray[2].addChild(grades);
-        columnsArray[3].addChild(gradesSelected);
-        if (gradesSelected2 != null) {
+        if (gradesSelected2 != null && gradesSelected != null) {
+            columnsArray[3].addChild(gradesSelected);
             columnsArray[4].addChild(gradesSelected2);
         }
 
@@ -131,8 +131,7 @@ public class GradesTable {
             return new Element[]{
                     new GradeGridColumn(idPrefix + "_column1", removable),
                     new GradeGridColumn(idPrefix + "_column2", false),
-                    new GradeGridColumn(idPrefix + "_column3", false),
-                    new GradeGridColumn(idPrefix + "_column4", false),
+                    new GradeGridColumn(idPrefix + "_column3", false)
             };
         }
     }
@@ -173,20 +172,22 @@ public class GradesTable {
         GradeGridOptionQuestion child1 = new GradeGridOptionQuestion(id, gradeGridHelper.getGradeRanges(), false);
         ElementUtil.addRequiredValidator(child1);
         columns[2].addChild(child1);
-        GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion(id + "_VAL1", gradeGridHelper.getGradeRangesWithDefault(), true);
-        ElementUtil.addRequiredValidator(gradeGridOptionQuestion);
-        columns[3].addChild(gradeGridOptionQuestion);
 
         gradeGridRow.addChild(columns[0]);
         if (subjectRow.isLanguage() || language) {
             gradeGridRow.addChild(columns[1]);
         }
         gradeGridRow.addChild(columns[2]);
-        gradeGridRow.addChild(columns[3]);
         if (gradeGridHelper.isComprehensiveSchool()) {
+            GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion(id + "_VAL1", gradeGridHelper.getGradeRangesWithDefault(), true);
+            ElementUtil.addRequiredValidator(gradeGridOptionQuestion);
+            columns[3].addChild(gradeGridOptionQuestion);
+
             GradeGridOptionQuestion child2 = new GradeGridOptionQuestion(id + "_VAL2", gradeGridHelper.getGradeRangesWithDefault(), true);
             ElementUtil.addRequiredValidator(child2);
             columns[4].addChild(child2);
+
+            gradeGridRow.addChild(columns[3]);
             gradeGridRow.addChild(columns[4]);
         }
         return gradeGridRow;

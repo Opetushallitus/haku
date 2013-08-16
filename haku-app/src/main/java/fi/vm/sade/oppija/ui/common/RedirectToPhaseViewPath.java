@@ -23,12 +23,11 @@ public class RedirectToPhaseViewPath implements ViewPath {
 
     private final String path;
 
-    public RedirectToPhaseViewPath(final String applicationPeriodId, final String formId, final String phaseId) {
-        Preconditions.checkNotNull(applicationPeriodId, formId, phaseId);
-        Preconditions.checkNotNull(formId);
+    public RedirectToPhaseViewPath(final String applicationPeriodId, final String phaseId) {
+        Preconditions.checkNotNull(applicationPeriodId);
         Preconditions.checkNotNull(phaseId);
         Joiner joiner = Joiner.on("/").skipNulls();
-        this.path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, formId, phaseId);
+        this.path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, phaseId);
     }
 
     @Override

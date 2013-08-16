@@ -2,9 +2,7 @@ package fi.vm.sade.oppija.ui.service;
 
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,9 +36,9 @@ public class UIServiceResponseTest {
 
     @Test
     public void testSetApplication() throws Exception {
-        application.setFormId(new FormId("", ""));
+        application.setApplicationPeriodId("");
         uiServiceResponse.setApplication(application);
-        assertEquals(7, uiServiceResponse.getModel().size());
+        assertEquals(6, uiServiceResponse.getModel().size());
     }
 
     @Test

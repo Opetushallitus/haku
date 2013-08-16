@@ -61,7 +61,7 @@ var preferenceRow = {
 
     searchAdditionalQuestions: function (hakukohdeId, additionalQuestionsId, educationDegree, preferenceRowId, soraRequired) {
         var url = sortabletable_settings.contextPath + "/lomake/" + sortabletable_settings.applicationPeriodId + "/" +
-            sortabletable_settings.formId + "/" + sortabletable_settings.vaiheId + "/" +
+            "/" + sortabletable_settings.vaiheId + "/" +
             sortabletable_settings.teemaId + "/additionalquestions/" + hakukohdeId;
 
 //            $.get(url, {

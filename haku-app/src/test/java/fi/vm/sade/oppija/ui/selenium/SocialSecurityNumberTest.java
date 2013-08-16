@@ -71,14 +71,12 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
     @Test
     public void testInputMale() {
         seleniumHelper.getSelenium().type("Henkilotunnus", "010101-111X");
-        screenshot("mies");
         seleniumHelper.getDriver().findElement(By.xpath("//*[text()='Mies']"));
     }
 
     @Test
     public void testInputFemale() {
         seleniumHelper.getSelenium().type("Henkilotunnus", "010101-112X");
-        screenshot("nainen");
         seleniumHelper.getDriver().findElement(By.xpath("//*[text()='Nainen']"));
 
 

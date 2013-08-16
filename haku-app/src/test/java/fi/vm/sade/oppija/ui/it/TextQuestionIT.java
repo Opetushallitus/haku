@@ -41,9 +41,9 @@ public class TextQuestionIT extends AbstractFormTest {
 
     @Test
     public void testFormExists() {
-        beginAt(formModelHelper.getStartUrl());
-        final String formId = formModelHelper.getFirstCategoryFormId();
-        assertFormPresent(formId);
+        String startUrl = formModelHelper.getStartUrl();
+        beginAt(startUrl);
+        assertFormPresent("form-" + formModelHelper.getFirstPhase().getId()); //check phase.jsp html form id
     }
 
     @Test

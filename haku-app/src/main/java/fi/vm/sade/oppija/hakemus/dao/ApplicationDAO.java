@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.common.dao.BaseDAO;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.ui.HakuPermissionService;
 
 import java.util.List;
 
@@ -122,4 +123,13 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     ApplicationSearchResultDTO findByApplicantDob(String term, ApplicationQueryParameters applicationQueryParameters);
 
+    public void setHakuPermissionService(HakuPermissionService hakuPermissionService);
+
+    /**
+     * Updates key/value of the application by oid
+     * @param oid application oid
+     * @param key key to be updated, including full hierarchy of the key "additionalInfo.foo"
+     * @param value value of the given key
+     */
+    void updateKeyValue(final String oid, final String key, final String value);
 }

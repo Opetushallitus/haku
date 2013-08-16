@@ -19,14 +19,9 @@ package fi.vm.sade.oppija.lomake;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 
-/**
- * @author jukka
- * @version 9/17/122:20 PM}
- * @since 1.1
- */
 public class FormModelHelper {
     private final FormModel formModel;
 
@@ -34,27 +29,20 @@ public class FormModelHelper {
         this.formModel = formModel;
 
     }
-    public String getFormUrl(final Element element) {
-        return "lomake/" + getFirstApplicationPerioid().getId() + "/" + getFirstForm().getId() + "/" + element.getId();
-    }
 
-    public String getFirstCategoryFormId() {
-        return "form-" + getFirstCategory().getId();
-    }
-
-    public Form getFirstForm() {
-        return getFirstApplicationPerioid().getForms().values().iterator().next();
+    public String getFormUrl(final String id) {
+        return "lomake/" + ElementUtil.getPath(getFirstApplicationPerioid(), id);
     }
 
     public ApplicationPeriod getFirstApplicationPerioid() {
         return formModel.getApplicationPerioidMap().entrySet().iterator().next().getValue();
     }
 
-    public Element getFirstCategory() {
-        return getFirstForm().getFirstChild();
+    public Element getFirstPhase() {
+        return getFirstApplicationPerioid().getForm().getChildren().iterator().next();
     }
 
     public String getStartUrl() {
-        return getFormUrl(getFirstCategory());
+        return getFormUrl(getFirstPhase().getId());
     }
 }

@@ -17,16 +17,13 @@
 package fi.vm.sade.oppija.hakemus.dao.impl;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationOidDAO;
-import fi.vm.sade.oppija.lomake.dao.DBFactoryBean;
+import fi.vm.sade.oppija.common.MongoWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Mongodb implementation of ApplicationOidDAO
@@ -40,16 +37,11 @@ public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
     private static final String SEQUENCE_NAME = "applicationsequence";
 
     @Autowired
-    protected DBFactoryBean factoryBean;
-    protected DB db;
+    protected MongoWrapper factoryBean;
 
     @Value("${application.oid.prefix}")
     private String oidPrefix;
 
-    @PostConstruct
-    protected void init() {
-        this.db = factoryBean.getObject();
-    }
 
     @Override
     public String generateNewOid() {
@@ -80,7 +72,7 @@ public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
     }
 
     protected DBCollection getSequence() {
-        return db.getCollection(SEQUENCE_NAME);
+        return factoryBean.getCollection(SEQUENCE_NAME);
     }
 
     String formatOid(String oid) {

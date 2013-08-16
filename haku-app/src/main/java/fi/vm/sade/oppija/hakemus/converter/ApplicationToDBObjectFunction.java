@@ -16,6 +16,7 @@
 package fi.vm.sade.oppija.hakemus.converter;
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
@@ -73,18 +74,22 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
         if (answers != null) {
             final Map<String, String> henkilotiedot = answers.get("henkilotiedot");
             if (henkilotiedot != null && henkilotiedot.containsKey(SocialSecurityNumber.HENKILOTUNNUS)) {
-                final String hetu = henkilotiedot.get(SocialSecurityNumber.HENKILOTUNNUS);
+                String hetu = henkilotiedot.get(SocialSecurityNumber.HENKILOTUNNUS);
+                if (!Strings.isNullOrEmpty(hetu)) {
+                    hetu = hetu.toUpperCase();
+                    henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS, hetu);
+                }
                 henkilotiedot.put("syntymaaika", ssnToDateOfBirth(hetu));
                 henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS, aesEncypter.encrypt(hetu));
                 henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS_HASH, shaEncrypter.encrypt(hetu));
             }
         }
         final BasicDBObject basicDBObject = new BasicDBObject(m);
-        LOGGER.debug(JSON.serialize(basicDBObject));
+        //LOGGER.debug(JSON.serialize(basicDBObject));
         return basicDBObject;
     }
 
-    private String ssnToDateOfBirth(String ssn) {
+    private String ssnToDateOfBirth(final String ssn) {
         Pattern ssnPattern = Pattern.compile(SocialSecurityNumberFieldValidator.SOCIAL_SECURITY_NUMBER_PATTERN);
         if (isEmpty(ssn) || !ssnPattern.matcher(ssn).matches()) {
             return "";

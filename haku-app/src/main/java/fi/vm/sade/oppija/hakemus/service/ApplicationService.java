@@ -20,7 +20,6 @@ import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.oppija.lomake.domain.FormId;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -30,7 +29,9 @@ import java.util.Map;
 
 public interface ApplicationService {
 
-    Application getApplication(FormId formId);
+    Application getApplication(final String applicationPeriodId);
+
+    Application getApplicationByOid(final String oid) throws ResourceNotFoundException;
 
     /**
      * Save answers of a single form phase. Phase is saved to the currently modified application of the user session.
@@ -52,30 +53,19 @@ public interface ApplicationService {
     ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final String oid, final boolean skipValidators);
 
     /**
-     * Retrieve application by oid.
-     *
-     * @param oid
-     * @return application
-     * @throws ResourceNotFoundException thrown when an application is not found
-     *                                   with the given oid
-     */
-    Application getApplication(String oid) throws ResourceNotFoundException;
-
-    /**
      * Submits an application based on current user and form.
      *
-     * @param formId
      * @return
      */
-    String submitApplication(final FormId formId);
+    String submitApplication(final String applicationPeriodId);
 
     /**
-     * @param hakuLomakeId
+     * @param applicationPeriodId
      * @param oid
      * @return
      * @throws ResourceNotFoundException if an application is not found with the oid
      */
-    Application getPendingApplication(final FormId hakuLomakeId, final String oid) throws ResourceNotFoundException;
+    Application getPendingApplication(final String applicationPeriodId, final String oid) throws ResourceNotFoundException;
 
     /**
      * Retrieves all submitted applications related to specified application system
@@ -160,6 +150,7 @@ public interface ApplicationService {
 
     /**
      * Finds next application without user oid. Returns matching application or null, if none found.
+     *
      * @return Application or null
      */
     Application getNextWithoutPersonOid();
@@ -188,8 +179,17 @@ public interface ApplicationService {
 
     /**
      * Creates a new empty application to specified application system.
+     *
      * @param asId application system id
      * @return created application
      */
     Application officerCreateNewApplication(final String asId);
+
+    /**
+     * Add organizations from the organization hierarchy root to every provider.
+     *
+     * @param application to handle
+     * @return application with added organizations
+     */
+    Application fillLOPChain(Application application);
 }

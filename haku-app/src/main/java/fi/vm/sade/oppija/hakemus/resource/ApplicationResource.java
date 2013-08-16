@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -46,10 +47,20 @@ import java.util.Map;
 @Path("/applications")
 public class ApplicationResource {
 
+    public static final String CHARSET_UTF_8 = ";charset=UTF-8";
+
+    @Autowired
     private ApplicationService applicationService;
+
+    @Autowired
     private ConversionService conversionService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
     private static final String OID = "oid";
+
+    public ApplicationResource() {
+        super();
+    }
 
     @Autowired
     public ApplicationResource(ApplicationService applicationService, ConversionService conversionService) {
@@ -59,33 +70,37 @@ public class ApplicationResource {
 
     @GET
     @Path("{oid}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public Application getApplicationByOid(@PathParam(OID) String oid) {
         LOGGER.debug("Getting application by oid : {}", oid);
         try {
-            return applicationService.getApplication(oid);
+            return applicationService.getApplicationByOid(oid);
         } catch (ResourceNotFoundException e) {
             throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application", e);
         }
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public ApplicationSearchResultDTO findApplications(@DefaultValue("") @QueryParam("q") String query,
-                                              @DefaultValue("") @QueryParam("appState") String appState,
-                                              @DefaultValue("") @QueryParam("appPreference") String appPreference,
-                                              @DefaultValue("") @QueryParam("lopoid") String lopoid,
-                                              @DefaultValue(value = "0") @QueryParam("start") int start,
-                                              @DefaultValue(value = "100") @QueryParam("rows") int rows) {
-        LOGGER.debug("Finding applications q:{}, appState:{}, appPreference:{}, lopoid:{}",
-                query, appState, appPreference, lopoid);
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
+    public ApplicationSearchResultDTO findApplications(@DefaultValue(value = "") @QueryParam("q") String query,
+                                                       @QueryParam("appState") String state,
+                                                       @QueryParam("aoid") String aoid,
+                                                       @QueryParam("lopoid") String lopoid,
+                                                       @DefaultValue(value = "0") @QueryParam("start") int start,
+                                                       @DefaultValue(value = "100") @QueryParam("rows") int rows) {
+        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{} start:{}, rows: {}",
+                query, state, aoid, lopoid, start, rows);
+
         return applicationService.findApplications(
-                query, new ApplicationQueryParameters(appState, appPreference, lopoid, start, rows));
+                query, new ApplicationQueryParameters(state, aoid, lopoid, start, rows));
     }
 
     @GET
     @Path("{oid}/{key}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public Map<String, String> getApplicationKeyValue(@PathParam(OID) String oid, @PathParam("key") String key) {
         Map<String, String> keyValue = new HashMap<String, String>();
 
@@ -100,8 +115,11 @@ public class ApplicationResource {
 
     @PUT
     @Path("{oid}/{key}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public void putApplicationAdditionalInfoKeyValue(@PathParam(OID) String oid, @PathParam("key") String key,
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
+    public void putApplicationAdditionalInfoKeyValue(@PathParam(OID) String oid,
+                                                     @PathParam("key") String key,
                                                      @QueryParam("value") String value) {
         try {
             applicationService.putApplicationAdditionalInfoKeyValue(oid, key, value);
@@ -116,7 +134,8 @@ public class ApplicationResource {
 
     @GET
     @Path("applicant/{asId}/{aoId}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public List<ApplicantDTO> findApplicants(@PathParam("asId") String asId, @PathParam("aoId") String aoId) {
         LOGGER.debug("Finding applicants asId:{}, aoID:{}", asId, aoId);
         List<Application> applications = applicationService.getApplicationsByApplicationSystemAndApplicationOption(asId, aoId);
@@ -126,6 +145,14 @@ public class ApplicationResource {
                 return conversionService.convert(application, ApplicantDTO.class);
             }
         });
+    }
+
+    public void setApplicationService(ApplicationService applicationService) {
+        this.applicationService = applicationService;
+    }
+
+    public void setConversionService(ConversionService conversionService) {
+        this.conversionService = conversionService;
     }
 
 }

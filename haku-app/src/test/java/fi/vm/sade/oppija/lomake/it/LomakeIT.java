@@ -58,7 +58,6 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("asuinmaa", "FIN");
         setValue("kotikunta", "jalasjarvi");
 
-        screenshot("postinumero_it");
         findById("Postinumero");
         selenium.typeKeys("lahiosoite", "Katu 1");
         selenium.typeKeys("Postinumero", "00100");
@@ -66,7 +65,6 @@ public class LomakeIT extends DummyModelBaseItTest {
         nextPhase();
         nextPhase();
 
-        screenshot("hak123");
         testHAK123AandHAK124();
 
         findByIdAndClick("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_PERUSKOULU);
@@ -113,11 +111,8 @@ public class LomakeIT extends DummyModelBaseItTest {
         nextPhase();
         findByIdAndClick("asiointikieli_suomi");
 
-        screenshot("kokemus");
-
         // Menee läpi
         nextPhase();
-        screenshot("kokemus4");
 
         // Esikatselu
         nextPhase();

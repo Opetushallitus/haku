@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.hakemus.service.impl;
 import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
+import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
@@ -28,6 +29,7 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.oppija.ui.HakuPermissionService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,6 +49,8 @@ public class ApplicationServiceImplTest {
     Application application;
     FormService formService;
     AuthenticationService authenticationService;
+    OrganizationService organizationService;
+    HakuPermissionService hakuPermissionService;
 
     String SSN = "250584-3847";
     String OID = "1.2.3.4.5.12345678901";
@@ -70,6 +74,8 @@ public class ApplicationServiceImplTest {
         applicationOidService = mock(ApplicationOidService.class);
         formService = mock(FormService.class);
         authenticationService = mock(AuthenticationService.class);
+        organizationService = mock(OrganizationService.class);
+        hakuPermissionService = mock(HakuPermissionService.class);
 
         ApplicationSearchResultDTO searchResultDTO = new ApplicationSearchResultDTO(1, Lists.newArrayList(new ApplicationSearchResultItemDTO()));
         when(applicationDAO.findByApplicantSsn(eq(SSN), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
@@ -80,7 +86,9 @@ public class ApplicationServiceImplTest {
         when(applicationOidService.getOidPrefix()).thenReturn("1.2.3.4.5");
         when(authenticationService.addPerson(any(Person.class))).thenReturn(PERSON_OID);
         when(applicationDAO.findByApplicationSystemAndApplicationOption(eq(AS_ID), eq(AO_ID))).thenReturn(Lists.newArrayList(application));
-        service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService);
+        when(hakuPermissionService.userCanReadApplication(any(Application.class))).thenReturn(true);
+        service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService, organizationService,
+                hakuPermissionService);
 
         answerMap = new HashMap<String, String>();
         answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_NAMES, "Etunimi");
@@ -151,14 +159,13 @@ public class ApplicationServiceImplTest {
     @Test
     public void testPutApplicationAdditionalInfoKeyValue() throws ResourceNotFoundException {
         service.putApplicationAdditionalInfoKeyValue(OID, "key", "value");
-        verify(applicationDAO, times(1)).find(any(Application.class));
-        verify(applicationDAO, times(1)).update(any(Application.class), any(Application.class));
+        verify(applicationDAO, times(1)).updateKeyValue(eq(OID), eq("additionalInfo.key"), eq("value"));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testPutApplicationAdditionalInfoKeyValueIllegalKey() throws ResourceNotFoundException {
         service.putApplicationAdditionalInfoKeyValue(OID, "avain", "value");
-        verify(applicationDAO, times(1)).find(any(Application.class));
+        verify(applicationDAO, times(1)).updateKeyValue(eq(OID), eq("additionalInfo.avain"), eq("value"));
     }
 
     @Test(expected = IllegalArgumentException.class)

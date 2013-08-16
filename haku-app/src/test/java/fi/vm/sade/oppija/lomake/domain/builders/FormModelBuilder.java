@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.Date;
 
@@ -30,11 +31,10 @@ public class FormModelBuilder {
 
     public static final String PHASE_ID = "phase";
     public static final String THEME_ID = "theme";
-    public static final String APPLICATION_PERIOD_ID = "application_period";
+    public static final String APPLICATION_PERIOD_ID = "applicationPeriodId";
     public static final String FORM_ID = "form";
 
     private FormModel formModel = new FormModel();
-    ApplicationPeriodBuilder applicationPeriodBuilder = new ApplicationPeriodBuilder(APPLICATION_PERIOD_ID);
     private Phase phase = new Phase(PHASE_ID, createI18NAsIs(PHASE_ID), false);
     private Theme theme = new Theme(THEME_ID, createI18NAsIs(THEME_ID), null, true);
 
@@ -53,7 +53,7 @@ public class FormModelBuilder {
     }
 
     public FormModelBuilder withDefaults() {
-        this.formModel.addApplicationPeriod(applicationPeriodBuilder.withForm(form).build());
+        this.formModel.addApplicationPeriod(ElementUtil.createActiveApplicationPeriod(APPLICATION_PERIOD_ID, form));
         return this;
     }
 

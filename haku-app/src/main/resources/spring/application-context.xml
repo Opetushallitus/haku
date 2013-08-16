@@ -19,14 +19,14 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:task="http://www.springframework.org/schema/task"
-       xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
-
 
 
     <beans profile="default">
@@ -47,20 +47,22 @@
         </bean>
         <import resource="file:///${user.home:''}/oph-configuration/security-context-backend.xml"/>
         <import resource="authentication-service-context.xml"/>
+        <import resource="classpath:/META-INF/spring/logger-context.xml"/>
     </beans>
 
     <beans profile="dev">
         <context:property-placeholder
                 location="classpath:haku.properties, file:///${user.home:''}/oph-configuration/haku.properties,
                     file:///${user.home:''}/oph-configuration/common.properties, classpath:haku-test.properties"
-                    ignore-resource-not-found="true" properties-ref="defaultProps"/>
+                ignore-resource-not-found="true" properties-ref="defaultProps"/>
         <import resource="security-context-dev.xml"/>
         <bean id="defaultProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
+        <import resource="classpath:/META-INF/spring/logger-mock-context.xml"/>
     </beans>
 
     <beans>
         <context:annotation-config/>
-        <context:component-scan base-package="fi.vm.sade.oppija"/>
+        <context:component-scan base-package="fi.vm.sade.oppija,fi.vm.sade.security"/>
         <aop:aspectj-autoproxy/>
 
         <!-- Configure the multipart resolver -->
@@ -72,17 +74,17 @@
         <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
             <property name="converters">
                 <list>
-                    <bean class="fi.vm.sade.oppija.hakemus.converter.ApplicationToHakemusTyyppi" />
-                    <bean class="fi.vm.sade.oppija.hakemus.converter.ApplicationToHakutoiveTyyppi" />
+                    <bean class="fi.vm.sade.oppija.hakemus.converter.ApplicationToHakemusTyyppi"/>
+                    <bean class="fi.vm.sade.oppija.hakemus.converter.ApplicationToHakutoiveTyyppi"/>
                     <bean class="fi.vm.sade.oppija.hakemus.converter.ApplicationToApplicantConverter"/>
                 </list>
             </property>
         </bean>
 
         <bean id="yksilointiScheduler" class="fi.vm.sade.oppija.yksilointi.Scheduler">
-            <property name="run" value="${scheduler.run}" />
-            <property name="sendMail" value="${scheduler.sendMail}" />
-            <property name="interval" value="${scheduler.delay}" />
+            <property name="run" value="${scheduler.run}"/>
+            <property name="sendMail" value="${scheduler.sendMail}"/>
+            <property name="interval" value="${scheduler.delay}"/>
         </bean>
         <task:scheduled-tasks scheduler="scheduler">
             <task:scheduled ref="yksilointiScheduler" method="runIdentification" fixed-delay="${scheduler.delay}"/>
@@ -91,8 +93,7 @@
         <task:scheduler id="scheduler" pool-size="1"/>
 
         <import resource="haku-context.xml"/>
-        <import resource="classpath:/META-INF/spring/logger-mock-context.xml"/>
-        <import resource="cxf-context.xml" />
+        <import resource="cxf-context.xml"/>
     </beans>
 
 </beans>

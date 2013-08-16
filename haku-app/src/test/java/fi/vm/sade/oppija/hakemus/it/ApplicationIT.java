@@ -18,37 +18,25 @@ package fi.vm.sade.oppija.hakemus.it;
 
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
-import fi.vm.sade.oppija.common.it.AbstractRemoteTest;
+import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
+import fi.vm.sade.oppija.common.selenium.LoginPage;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.oppija.lomake.dao.TestDBFactoryBean;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.List;
 
 import static java.lang.ClassLoader.getSystemResourceAsStream;
-import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
-import static net.sourceforge.jwebunit.junit.JWebUnit.getPageSource;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-/**
- * @author Hannu Lyytikainen
- */
-public class ApplicationIT extends AbstractRemoteTest {
-    public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationIT.class);
-
-    @Autowired
-    TestDBFactoryBean dbFactory;
+public class ApplicationIT extends DummyModelBaseItTest {
 
     protected static List<DBObject> applicationTestDataObject;
 
@@ -61,59 +49,53 @@ public class ApplicationIT extends AbstractRemoteTest {
 
     @Before
     public void setUp() throws Exception {
-        super.initTestEngine();
-        try {
-            dbFactory.getObject().getCollection("application").drop();
-            dbFactory.getObject().getCollection("application").insert(applicationTestDataObject);
-        } catch (Exception e) {
-            LOGGER.error("Error set up test", e);
-        }
+        super.setUp();
+        mongoWrapper.dropCollection("application");
+        mongoWrapper.getCollection("application").insert(applicationTestDataObject);
+        final LoginPage loginPage = new LoginPage(seleniumHelper.getSelenium());
+        navigateToPath("user", "login");
+        loginPage.login("officer");
     }
 
     @Test
     public void testFindAllApplications() throws IOException {
-        beginAt("applications");
-        String response = getPageSource();
-
-        ObjectMapper mapper = new ObjectMapper();
-        ApplicationSearchResultDTO applications = mapper.readValue(response, new TypeReference<ApplicationSearchResultDTO>() {
-        });
+        navigateToPath("applications");
+        ApplicationSearchResultDTO applications = responseToSearchResult();
         assertEquals(3, applications.getResults().size());
         assertEquals(3, applications.getTotalCount());
     }
 
     @Test
     public void testFindApplications() throws IOException {
-        beginAt("applications?q=1.2.3.4.5.00000010003");
-        String response = getPageSource();
-
-        ObjectMapper mapper = new ObjectMapper();
-        ApplicationSearchResultDTO applications = mapper.readValue(response, new TypeReference<ApplicationSearchResultDTO>() {
-        });
+        navigateToPath("applications?q=1.2.3.4.5.00000010003");
+        ApplicationSearchResultDTO applications = responseToSearchResult();
         assertEquals(1, applications.getResults().size());
         assertEquals(1, applications.getTotalCount());
     }
 
     @Test
     public void testFindApplicationsNoMatch() throws IOException {
-        beginAt("applications?q=nomatch");
-        String response = getPageSource();
-
-        ObjectMapper mapper = new ObjectMapper();
-        ApplicationSearchResultDTO applications = mapper.readValue(response, new TypeReference<ApplicationSearchResultDTO>() {
-        });
+        navigateToPath("applications?q=nomatch");
+        ApplicationSearchResultDTO applications = responseToSearchResult();
         assertEquals(0, applications.getTotalCount());
     }
 
     @Test
     public void testGetApplication() throws IOException {
-        beginAt("applications/1.2.3.4.5.00000010003/");
-        String response = getPageSource();
-
+        navigateToPath("applications/1.2.3.4.5.00000010003/");
+        String response = selenium.getBodyText();
         ObjectMapper mapper = new ObjectMapper();
         Application application = mapper.readValue(response, new TypeReference<Application>() {
         });
         assertNotNull(application);
         assertEquals("1.2.3.4.5.00000010003", application.getOid());
     }
+
+    private ApplicationSearchResultDTO responseToSearchResult() throws IOException {
+        String response = selenium.getBodyText();
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(response, new TypeReference<ApplicationSearchResultDTO>() {
+        });
+    }
+
 }
