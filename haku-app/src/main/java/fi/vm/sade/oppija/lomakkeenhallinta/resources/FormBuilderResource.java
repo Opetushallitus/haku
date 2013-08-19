@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.lomakkeenhallinta.resources;
 
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.GET;
@@ -32,7 +31,7 @@ import java.net.URISyntaxException;
 
 @Controller
 @Path("/lomakkeenhallinta")
-@Secured("ROLE_APP_HAKEMUS_CRUD")
+// @Secured("ROLE_APP_HAKEMUS_CRUD")
 public class FormBuilderResource {
 
     @Autowired
