@@ -54,7 +54,7 @@ public class LocaleFilterTest {
 
     private void putLangParameter(final String lang) {
         MultivaluedMap<String, String> queryParameters = new MultivaluedMapImpl();
-        queryParameters.putSingle("lang", lang);
+        queryParameters.putSingle(LocaleFilter.LANGUAGE_QUERY_PARAMETER_KEY, lang);
         when(containerRequest.getQueryParameters()).thenReturn(queryParameters);
     }
 }

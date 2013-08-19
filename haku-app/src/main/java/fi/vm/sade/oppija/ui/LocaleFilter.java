@@ -23,12 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MultivaluedMap;
 import java.util.Locale;
 
 public class LocaleFilter implements ContainerRequestFilter {
 
     private static final Locale DEFAULT_LOCALE = new Locale("fi");
+    public static final String LANGUAGE_COOKIE_KEY = "i18next";
+    public static final String LANGUAGE_QUERY_PARAMETER_KEY = "lang";
 
     final HttpServletRequest httpServletRequest;
 
@@ -60,11 +61,10 @@ public class LocaleFilter implements ContainerRequestFilter {
     }
 
     private String getLangQueryParameter(final ContainerRequest containerRequest) {
-        MultivaluedMap<String, String> queryParameters = containerRequest.getQueryParameters();
-        String lang = null;
-        if (queryParameters.containsKey("lang")) {
-            lang = queryParameters.get("lang").get(0);
+        String lang = containerRequest.getQueryParameters().getFirst(LANGUAGE_QUERY_PARAMETER_KEY);
+        if (lang != null) {
+            return lang;
         }
-        return lang;
+        return containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY);
     }
 }
