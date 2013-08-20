@@ -55,7 +55,7 @@
         <condition property="war.dir" value="haku-app/target">
             <isset property="integration-test" />
         </condition>
-        <condition property="war.dir" value="haku-app/target">
+        <condition property="war.dir" value="target">
             <isset property="system-test" />
         </condition>
         
