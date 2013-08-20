@@ -85,16 +85,17 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public ApplicationSearchResultDTO findApplications(@DefaultValue(value = "") @QueryParam("q") String query,
-                                                       @QueryParam("appState") String state,
+                                                       @QueryParam("appState") List<String> state,
                                                        @QueryParam("aoid") String aoid,
                                                        @QueryParam("lopoid") String lopoid,
+                                                       @QueryParam("asId") String asId,
                                                        @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @DefaultValue(value = "100") @QueryParam("rows") int rows) {
         LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{} start:{}, rows: {}",
                 query, state, aoid, lopoid, start, rows);
 
         return applicationService.findApplications(
-                query, new ApplicationQueryParameters(state, aoid, lopoid, start, rows));
+                query, new ApplicationQueryParameters(state, aoid, lopoid, asId, start, rows));
     }
 
     @GET

@@ -353,12 +353,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ArrayList<DBObject> filters = new ArrayList<DBObject>(2);
         DBObject stateQuery = null;
 
-        String state = applicationQueryParameters.getState();
-        if (!isEmpty(state)) {
-            if ("NOT_IDENTIFIED".equals(state)) {
+        List<String> state = applicationQueryParameters.getState();
+        if (state != null && !state.isEmpty()) {
+            if (state.size() == 1 && "NOT_IDENTIFIED".equals(state.get(0))) {
                 stateQuery = QueryBuilder.start(FIELD_PERSON_OID).exists(false).get();
             } else {
-                stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).is(state).get();
+                stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).in(state).get();
             }
         }
 
@@ -374,6 +374,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         String lopOid = applicationQueryParameters.getLopOid();
         if (!isEmpty(lopOid)) {
             filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
+        }
+
+        String asId = applicationQueryParameters.getAsId();
+        if (!isEmpty(asId)) {
+            filters.add(QueryBuilder.start(FIELD_APPLICATION_PERIOD_ID).is(asId).get());
         }
 
         filters.add(newOIdExistDBObject());
