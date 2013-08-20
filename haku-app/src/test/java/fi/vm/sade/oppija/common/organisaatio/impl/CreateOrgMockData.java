@@ -15,22 +15,18 @@
  */
 package fi.vm.sade.oppija.common.organisaatio.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import fi.vm.sade.oppija.common.organisaatio.Organization;
+import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
+import fi.vm.sade.organisaatio.api.model.types.OrganisaatioDTO;
+import fi.vm.sade.organisaatio.api.model.types.OrganisaatioSearchCriteriaDTO;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
-import fi.vm.sade.oppija.common.organisaatio.Organization;
-import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
-import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
-import fi.vm.sade.organisaatio.api.model.types.OrganisaatioSearchCriteriaDTO;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Create "mock" data from org service.
@@ -44,9 +40,9 @@ public class CreateOrgMockData {
         OrganisaatioSearchCriteriaDTO criteria = new OrganisaatioSearchCriteriaDTO();
         criteria.setMaxResults(1000);
         criteria.setSearchStr("espoo");
-        List<OrganisaatioPerustietoType> result = service.searchBasicOrganisaatios(criteria);
+        List<OrganisaatioDTO> result = service.searchOrganisaatios(criteria);
         List<Organization> transformed = Lists.newArrayList(Iterables.transform(result,
-                new OrganisaatioPerustietoTypeToOrganizationFunction()));
+                new OrganisaatioDTOToOrganizationFunction()));
         ObjectMapper mapper = new ObjectMapper();
         mapper.writer().writeValue(new File("/tmp/orgs.json"), transformed);
         context.close();
