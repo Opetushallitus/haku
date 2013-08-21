@@ -30,7 +30,7 @@
         <div class="note-content">
             <span class="note-date"><fmt:formatDate value="${note.added}" pattern="dd.MM.yyyy HH:mm:ss"/></span>
             <span class="note-text"><c:out value="${note.noteText}"/></span>
-            <span class="note-user"><c:out value="${note.user.userName}"/></span>
+            <span class="note-user"><c:out value="${note.user}"/></span>
         </div>
     </c:forEach>
 </fieldset>

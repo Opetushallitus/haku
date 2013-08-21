@@ -33,7 +33,6 @@ public class ApplicationNote implements Serializable {
     private Date added;
     private String user;
 
-
     @JsonProperty(value = "_id")
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = ObjectIdSerializer.class)
     @JsonDeserialize(using = ObjectIdDeserializer.class)

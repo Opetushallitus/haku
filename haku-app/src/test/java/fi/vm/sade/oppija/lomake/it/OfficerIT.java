@@ -30,7 +30,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         navigateToPath("virkailija", "hakemus");
     }
 
-    @Ignore
     @Test
     public void testSearchAndModify() throws Exception {
         clickSearch();
@@ -45,7 +44,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         checkApplicationState("Puutteellinen");
     }
 
-    @Ignore
     @Test
     public void testSearchByPreference() {
         List<WebElement> applicationLinks = findByClassName("application-link");
@@ -88,7 +86,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         assertTrue("Edit links found", editLinks.isEmpty());
     }
 
-    @Ignore
     @Test
     public void testComments() {
         clickSearch();
@@ -119,7 +116,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         assertTrue(passive);
     }
 
-    @Ignore
     @Test
     public void testOrganization() throws Exception {
         driver.findElement(new By.ByClassName("label")).click();
@@ -131,7 +127,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         findById("1.2.246.562.10.10108401950");
     }
 
-    @Ignore
     @Test
     public void testSearchByName() throws Exception {
         assertFalse("Application not found", SearchByTermAndState("topi", null).isEmpty());
@@ -143,7 +138,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         assertFalse("Application found", SearchByTermAndState("topi", Application.State.ACTIVE).isEmpty());
     }
 
-    @Ignore
     @Test
     public void testSearchByNameNotFound() throws Exception {
         assertTrue("Application found", SearchByTermAndState("Notfound", null).isEmpty());
@@ -153,7 +147,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         assertTrue("Application found", SearchByTermAndState("Notfound", Application.State.PASSIVE).isEmpty());
     }
 
-    @Ignore
     @Test
     public void testSearchByLastname() throws Exception {
         assertFalse("Application not found", SearchByTermAndState("Korhonen", null).isEmpty());
@@ -163,7 +156,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         assertTrue("Application not found", SearchByTermAndState("Korhonen", Application.State.PASSIVE).isEmpty());
     }
 
-    @Ignore
     @Test
     public void testSearchBySsn() throws Exception {
         assertFalse("Application not found", SearchByTermAndState("270802-184A", null).isEmpty());
@@ -173,7 +165,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         assertTrue("Application not found", SearchByTermAndState("270802-184A", Application.State.PASSIVE).isEmpty());
     }
 
-    @Ignore
     @Test
     public void testSearchByDob() throws Exception {
         assertTrue("Application not", SearchByTerm("120100").isEmpty());
@@ -181,7 +172,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         assertTrue("Application not found", SearchByTermAndState("120100", Application.State.PASSIVE).isEmpty());
     }
 
-    @Ignore
     @Test
     public void testSearchByDobDots() throws Exception {
         assertTrue("Application not", SearchByTerm("12.01.2000").isEmpty());
@@ -189,7 +179,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         assertTrue("Application not found", SearchByTermAndState("12.01.2000", Application.State.PASSIVE).isEmpty());
     }
 
-    @Ignore
     @Test
     public void testSearchByOid() throws Exception {
         assertTrue("Application not found", SearchByTerm(" 1.2.246.562.10.10108401950").isEmpty());
