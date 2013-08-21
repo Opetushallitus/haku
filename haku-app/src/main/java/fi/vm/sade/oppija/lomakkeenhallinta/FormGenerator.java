@@ -34,7 +34,7 @@ public class FormGenerator {
         Map<String, Map<String, String>> applicationSystems = tarjontaService.getApplicationSystemOidsAndNames();
         for (Map.Entry<String, Map<String, String>> applicationSystem : applicationSystems.entrySet()) {
             Yhteishaku2013 e = new Yhteishaku2013(koodistoService,
-                    applicationSystem.getKey(), aoid, new I18nText(applicationSystems.get(applicationSystem)));
+                    applicationSystem.getKey(), aoid, new I18nText(applicationSystems.get(applicationSystem.getKey())));
             forms.add(e.getApplicationSystem());
         }
         return ImmutableList.copyOf(forms);
