@@ -31,7 +31,7 @@ public class FormModelBuilder {
 
     public static final String PHASE_ID = "phase";
     public static final String THEME_ID = "theme";
-    public static final String APPLICATION_PERIOD_ID = "applicationSystemId";
+    public static final String APPLICATION_SYSTEM_ID = "applicationSystemId";
     public static final String FORM_ID = "form";
 
     private FormModel formModel = new FormModel();
@@ -53,7 +53,7 @@ public class FormModelBuilder {
     }
 
     public FormModelBuilder withDefaults() {
-        this.formModel.addApplicationSystem(ElementUtil.createActiveApplicationSystem(APPLICATION_PERIOD_ID, form));
+        this.formModel.addApplicationSystem(ElementUtil.createActiveApplicationSystem(APPLICATION_SYSTEM_ID, form));
         return this;
     }
 

@@ -65,11 +65,11 @@ public class FormController {
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
     public static final String ROOT_VIEW = "/elements/Root";
     public static final String VERBOSE_HELP_VIEW = "/help";
-    public static final String APPLICATION_PERIOD_LIST_VIEW = "/applicationSystemList";
+    public static final String APPLICATION_SYSTEM_LIST_VIEW = "/applicationSystemList";
     public static final String VALMIS_VIEW = "/valmis";
     public static final String PRINT_VIEW = "/print/print";
 
-    public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationSystemId";
+    public static final String APPLICATION_SYSTEM_ID_PATH_PARAM = "applicationSystemId";
     public static final String THEME_ID_PATH_PARAM = "themeId";
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
     private static final String PHASE_ID_PATH_PARAM = "phaseId";
@@ -103,13 +103,13 @@ public class FormController {
         Map<String, ApplicationSystem> applicationPerioidMap = formService.getApplicationPerioidMap();
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("applicationSystems", applicationPerioidMap.values());
-        return new Viewable(APPLICATION_PERIOD_LIST_VIEW, model);
+        return new Viewable(APPLICATION_SYSTEM_LIST_VIEW, model);
     }
 
     @GET
     @Path("/{applicationSystemId}")
     public Response getApplication(
-            @PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
+            @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
         LOGGER.debug("RedirectToLastPhase {}", new Object[]{applicationSystemId});
         Application application = userHolder.getApplication(applicationSystemId);
         if (application.isNew()) {
@@ -127,14 +127,14 @@ public class FormController {
     @GET
     @Path("/{applicationSystemId}/esikatselu")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getPreview(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId) {
+    public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) {
         return getPhase(applicationSystemId, "esikatselu");
     }
 
     @GET
     @Path("/{applicationSystemId}/{phaseId}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getPhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Viewable getPhase(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId) {
 
         LOGGER.debug("getElement {}, {}, {}", applicationSystemId, phaseId);
@@ -156,7 +156,7 @@ public class FormController {
     @GET
     @Path("/{applicationSystemId}/{phaseId}/{elementId}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getPhaseElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Viewable getPhaseElement(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                     @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                     @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
         return getPhase(applicationSystemId, elementId);
@@ -166,7 +166,7 @@ public class FormController {
     @Path("/{applicationSystemId}/{phaseId}/{elementId}/languageTest")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.TEXT_PLAIN + CHARSET_UTF_8)
-    public Serializable getLanguageTestChildren(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Serializable getLanguageTestChildren(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                                 @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                                 @QueryParam("ai") final String aidinkieli,
@@ -183,7 +183,7 @@ public class FormController {
     @GET
     @Path("/{applicationSystemId}/{phaseId}/{elementId}/relatedData/{key}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public Serializable getElementRelatedData(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Serializable getElementRelatedData(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                               @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                               @PathParam("key") final String key) {
@@ -203,7 +203,7 @@ public class FormController {
     @POST
     @Path("/{applicationSystemId}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    public Response prefillForm(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Response prefillForm(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException {
         userHolder.addPrefillData(MultivaluedMapUtil.toSingleValueMap(multiValues));
@@ -215,7 +215,7 @@ public class FormController {
     @POST
     @Path("/{applicationSystemId}/esikatselu")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    public Response submitApplication(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
+    public Response submitApplication(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
         LOGGER.debug("submitApplication {}", new Object[]{applicationSystemId});
         String oid = applicationService.submitApplication(applicationSystemId);
         RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, oid);
@@ -226,7 +226,7 @@ public class FormController {
     @Path("/{applicationSystemId}/{phaseId}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Response savePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Response savePhase(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}, {}, {}", applicationSystemId, phaseId, multiValues);
@@ -256,7 +256,7 @@ public class FormController {
     @GET
     @Path("/{applicationSystemId}/valmis/{oid}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getComplete(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Viewable getComplete(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 @PathParam("oid") final String oid) throws ResourceNotFoundException {
 
         LOGGER.debug("getComplete {}, {}", new Object[]{applicationSystemId});
@@ -267,7 +267,7 @@ public class FormController {
     @GET
     @Path("/{applicationSystemId}/tulostus/{oid}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getPrint(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Viewable getPrint(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                              @PathParam("oid") final String oid) throws ResourceNotFoundException {
         LOGGER.debug("getPrint {}, {}", new Object[]{applicationSystemId, oid});
         UIServiceResponse uiServiceResponse = uiService.getApplicationPrint(applicationSystemId, oid);
@@ -277,7 +277,7 @@ public class FormController {
     @GET
     @Path("/{applicationSystemId}/{phaseId}/{themeId}/help")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getFormHelp(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Viewable getFormHelp(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(THEME_ID_PATH_PARAM) final String themeId) {
 
@@ -299,7 +299,7 @@ public class FormController {
     @GET
     @Path("/{applicationSystemId}/{phaseId}/{gradeGridId}/additionalLanguageRow")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getAdditionalLanguageRow(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Viewable getAdditionalLanguageRow(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                              @PathParam("gradeGridId") final String gradeGridId) {
 
