@@ -61,7 +61,7 @@ public class OfficerController {
     public static final String OID_PATH_PARAM = "oid";
     public static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
-    public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationSystemId";
+    public static final String APPLICATION_SYSTEM_ID_PATH_PARAM = "applicationSystemId";
     public static final String ADDITIONAL_INFO_VIEW = "/virkailija/additionalInfo";
     public static final String SEARCH_INDEX_VIEW = "/virkailija/searchIndex";
     public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + ";charset=UTF-8";
@@ -114,7 +114,7 @@ public class OfficerController {
     @GET
     @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}/{elementId}")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable getPreviewElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Viewable getPreviewElement(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                       @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                       @PathParam(OID_PATH_PARAM) final String oid,
                                       @PathParam("elementId") final String elementId)
@@ -128,7 +128,7 @@ public class OfficerController {
     @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Viewable getPreview(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                @PathParam(OID_PATH_PARAM) final String oid)
             throws ResourceNotFoundException, IOException {
@@ -143,7 +143,7 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Response updatePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Response updatePhase(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(OID_PATH_PARAM) final String oid,
                                 final MultivaluedMap<String, String> multiValues)
@@ -263,7 +263,7 @@ public class OfficerController {
     @GET
     @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}/{elementId}/relatedData/{key}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public Serializable getElementRelatedData(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
+    public Serializable getElementRelatedData(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                               @PathParam(OID_PATH_PARAM) final String oid,
                                               @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,

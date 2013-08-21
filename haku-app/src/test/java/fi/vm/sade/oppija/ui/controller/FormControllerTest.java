@@ -53,7 +53,7 @@ public class FormControllerTest {
     public static final String ASID = "dummyAsid";
     public static final String OID = "1.1.1";
     private static final String FIRST_CATEGORY_ID = "henkilotiedot";
-    private static final String APPLICATION_PERIOD_ID = ASID;
+    private static final String APPLICATION_SYSTEM_ID = ASID;
     public static final String TEST_PHASE = "test_phase";
     public static final String PHASE_TITLE = "title";
     public static final Phase PHASE = new Phase(FIRST_CATEGORY_ID, createI18NAsIs(PHASE_TITLE), false);
@@ -77,8 +77,8 @@ public class FormControllerTest {
         this.application = new Application();
         FORM.addChild(PHASE);
         when(applicationService.getApplication(Matchers.<String>any())).thenReturn(this.application);
-        when(formService.getFirstPhase(APPLICATION_PERIOD_ID)).thenReturn(PHASE);
-        when(formService.getActiveForm(APPLICATION_PERIOD_ID)).thenReturn(FORM);
+        when(formService.getFirstPhase(APPLICATION_SYSTEM_ID)).thenReturn(PHASE);
+        when(formService.getActiveForm(APPLICATION_SYSTEM_ID)).thenReturn(FORM);
         when(userHolder.getApplication(Matchers.<String>any())).thenReturn(this.application);
         applicationState = new ApplicationState(application, FIRST_CATEGORY_ID);
         application.setPhaseId(FIRST_CATEGORY_ID);
@@ -92,8 +92,8 @@ public class FormControllerTest {
     @Test
     public void testGetFormAndRedirectToFirstCategory() throws Exception {
         this.application.setPhaseId(TEST_PHASE);
-        String expected = new RedirectToPhaseViewPath(APPLICATION_PERIOD_ID, TEST_PHASE).getPath();
-        Response response = formController.getApplication(APPLICATION_PERIOD_ID);
+        String expected = new RedirectToPhaseViewPath(APPLICATION_SYSTEM_ID, TEST_PHASE).getPath();
+        Response response = formController.getApplication(APPLICATION_SYSTEM_ID);
         String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
         assertEquals(expected, actual);
     }
@@ -101,9 +101,9 @@ public class FormControllerTest {
     @Test
     public void testGetFormAndRedirectToFirstCategoryNew() throws Exception {
         application.setPhaseId(null);
-        when(formService.getFirstPhase(APPLICATION_PERIOD_ID)).thenReturn(new Phase(FIRST_CATEGORY_ID, createI18NAsIs("title"), false));
-        String expected = "/lomake/" + APPLICATION_PERIOD_ID + "/" + FIRST_CATEGORY_ID;
-        Response response = formController.getApplication(APPLICATION_PERIOD_ID);
+        when(formService.getFirstPhase(APPLICATION_SYSTEM_ID)).thenReturn(new Phase(FIRST_CATEGORY_ID, createI18NAsIs("title"), false));
+        String expected = "/lomake/" + APPLICATION_SYSTEM_ID + "/" + FIRST_CATEGORY_ID;
+        Response response = formController.getApplication(APPLICATION_SYSTEM_ID);
         assertEquals(expected, resolveRedirectPath(response));
     }
 
@@ -116,34 +116,34 @@ public class FormControllerTest {
     @SuppressWarnings("rawtypes")
     @Test
     public void testGetCategoryMVCategory() throws Exception {
-        Viewable viewable = formController.getPhase(APPLICATION_PERIOD_ID, FIRST_CATEGORY_ID);
+        Viewable viewable = formController.getPhase(APPLICATION_SYSTEM_ID, FIRST_CATEGORY_ID);
         assertEquals(FIRST_CATEGORY_ID, ((Phase) ((Map) viewable.getModel()).get("element")).getId());
     }
 
     @SuppressWarnings("rawtypes")
     @Test
     public void testGetCategoryModelSize() throws Exception {
-        Viewable viewable = formController.getPhase(APPLICATION_PERIOD_ID, FIRST_CATEGORY_ID);
+        Viewable viewable = formController.getPhase(APPLICATION_SYSTEM_ID, FIRST_CATEGORY_ID);
         assertEquals(6, ((Map) viewable.getModel()).size());
     }
 
     @Test
     public void testGetCategoryView() throws Exception {
-        Viewable viewable = formController.getPhase(APPLICATION_PERIOD_ID, FIRST_CATEGORY_ID);
+        Viewable viewable = formController.getPhase(APPLICATION_SYSTEM_ID, FIRST_CATEGORY_ID);
         assertEquals("/elements/Root", viewable.getTemplateName());
     }
 
     @Test
     public void testGetCategoryWrongView() throws Exception {
-        Viewable viewable = formController.getPhase(APPLICATION_PERIOD_ID, FIRST_CATEGORY_ID);
+        Viewable viewable = formController.getPhase(APPLICATION_SYSTEM_ID, FIRST_CATEGORY_ID);
         assertNotSame(null, viewable.getTemplateName());
     }
 
     @Test()
     public void sendInvalid() throws Exception {
         when(applicationService.submitApplication(Matchers.<String>any())).thenReturn(OID);
-        Response response = formController.submitApplication(APPLICATION_PERIOD_ID);
-        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(APPLICATION_PERIOD_ID, OID);
+        Response response = formController.submitApplication(APPLICATION_SYSTEM_ID);
+        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(APPLICATION_SYSTEM_ID, OID);
         String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
         assertEquals(redirectToPendingViewPath.getPath(), actual);
     }
@@ -153,14 +153,14 @@ public class FormControllerTest {
         HashMap<String, I18nText> errorMessages = new HashMap<String, I18nText>();
         errorMessages.put("", ElementUtil.createI18NForm(""));
         applicationState.addError(errorMessages);
-        Viewable viewable = (Viewable) formController.savePhase(APPLICATION_PERIOD_ID, FIRST_CATEGORY_ID, new MultivaluedMapImpl()).getEntity();
+        Viewable viewable = (Viewable) formController.savePhase(APPLICATION_SYSTEM_ID, FIRST_CATEGORY_ID, new MultivaluedMapImpl()).getEntity();
         assertEquals(FormController.ROOT_VIEW, viewable.getTemplateName());
     }
 
     @Test
     public void testSaveCategoryValid() throws Exception {
-        Response response = formController.savePhase(APPLICATION_PERIOD_ID, FIRST_CATEGORY_ID, new MultivaluedMapImpl());
+        Response response = formController.savePhase(APPLICATION_SYSTEM_ID, FIRST_CATEGORY_ID, new MultivaluedMapImpl());
         String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
-        assertEquals(new RedirectToPhaseViewPath(APPLICATION_PERIOD_ID, FIRST_CATEGORY_ID).getPath(), actual);
+        assertEquals(new RedirectToPhaseViewPath(APPLICATION_SYSTEM_ID, FIRST_CATEGORY_ID).getPath(), actual);
     }
 }
