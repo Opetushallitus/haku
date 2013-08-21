@@ -2032,7 +2032,7 @@ label, .label {
   .form-row .form-row-content {
     float: left;
     width: 300px;
-    max-width: 390px; }
+    max-width: 455px; }
 
 /*** Form item structure
 ************************************************/
@@ -2810,17 +2810,9 @@ ul.unstyled {
 
 /* Applciation system */
 .application-system {
-  margin-top: 4em;
-    /*
-    border: #C3C3C3 1px dotted;
-    border-style: dashed none none none;
-
-    &:first-child {
-        border: none;
-    }
-    */ }
+  margin-top: 4em; }
   .application-system:first-child {
-    margin: 0; }
+    margin: 2em 0 0 0; }
   .application-system .application-option {
     border: #C3C3C3 1px dotted;
     border-style: dashed none none none;
@@ -3346,14 +3338,14 @@ button {
     margin-right: 1.5em;
     float: left; }
     .preference-sort .preference-fields .form-row {
-      margin: 1em 100px 0px 0px; }
+      margin: 1em 0 0 0; }
     .preference-sort .preference-fields .form-row:first-child {
       margin-top: 0px; }
     .preference-sort .preference-fields .form-row-label {
-      width: 83px;
+      width: 113px;
       float: left; }
     .preference-sort .preference-fields .form-row-content {
-      margin-left: 100px;
+      margin-left: 130px;
       float: none;
       width: 100%; }
   .preference-sort legend {
