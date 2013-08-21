@@ -71,7 +71,7 @@ public class DBObjectToApplicationFunction implements Function<DBObject, Applica
         try {
             app = mapper.convertValue(fromValue, Application.class);
         } catch (IllegalArgumentException iae) {
-            StringBuilder msg = new StringBuilder("Could not convert DBObject to Application : "+fromValue);
+            log.info("Could not convert DBObject to Application : "+fromValue);
             throw iae;
         }
         return app;
