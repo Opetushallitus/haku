@@ -19,7 +19,10 @@ package fi.vm.sade.oppija.hakemus.dao.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
@@ -405,7 +408,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ArrayList<DBObject> queries = new ArrayList<DBObject>(orgs.size());
 
         for (String org : orgs) {
-            log.info("filterByOrganization, org: "+org);
+            log.info("filterByOrganization, org: " + org);
             Pattern orgPattern = Pattern.compile(org);
             queries.add(QueryBuilder.start().or(
                     QueryBuilder.start(FIELD_LOP_PARENTS_1).regex(orgPattern).get(),
@@ -427,10 +430,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (filters.length > 0) {
             if (orgFilter.size() > 0) {
                 query = QueryBuilder.start()
-                    .and(baseQuery.get(),
-                        QueryBuilder.start().and(filters).get(),
-                        QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
-                    .get();
+                        .and(baseQuery.get(),
+                                QueryBuilder.start().and(filters).get(),
+                                QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
+                        .get();
             } else {
                 query = QueryBuilder.start()
                         .and(baseQuery.get(),
@@ -440,13 +443,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         } else {
             if (orgFilter.size() > 0) {
                 query = QueryBuilder.start()
-                    .and(baseQuery.get(),
-                            QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
-                    .get();
+                        .and(baseQuery.get(),
+                                QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
+                        .get();
             } else {
                 query = QueryBuilder.start()
-                   .and(baseQuery.get())
-                    .get();
+                        .and(baseQuery.get())
+                        .get();
             }
         }
         return query;

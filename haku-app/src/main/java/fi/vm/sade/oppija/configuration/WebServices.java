@@ -29,22 +29,22 @@ import org.springframework.context.annotation.Profile;
 @Profile("default")
 public class WebServices {
 
-    @Bean(name="organisaatioService")
+    @Bean(name = "organisaatioService")
     public OrganisaatioService getOrganisaatioService(@Value("${organisaatio.webservice.url.backend}") String url) {
         return getProxy(OrganisaatioService.class, url);
     }
 
-    @Bean(name="personalInformationService")
+    @Bean(name = "personalInformationService")
     public PersonalInformationService getPersonalInformationService(@Value("${personalInformation.webservice.url.backend}") String url) {
         return getProxy(PersonalInformationService.class, url);
     }
 
-    @Bean(name="authenticationService")
+    @Bean(name = "authenticationService")
     public AuthenticationService getAuthenticationService(@Value("${authentication.webservice.url.backend}") String url) {
         return getProxy(AuthenticationService.class, url);
     }
 
-    @Bean(name="cachingKoodistoClient")
+    @Bean(name = "cachingKoodistoClient")
     public CachingKoodistoClient getCachingKoodistoClient() {
         return new CachingKoodistoClient();
     }

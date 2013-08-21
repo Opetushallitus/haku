@@ -15,12 +15,12 @@ public final class KielitaitokysymyksetTheme {
     private static final String NOT_FI = "^((?!FI)[A-Z]{2})$";
     private static final String NOT_SV = "^((?!SV)[A-Z]{2})$";
     private static ImmutableList<String> ids = ImmutableList.of(
-                "preference1-Koulutus-id-lang",
-                "preference2-Koulutus-id-lang",
-                "preference3-Koulutus-id-lang",
-                "preference4-Koulutus-id-lang",
-                "preference5-Koulutus-id-lang"
-        );
+            "preference1-Koulutus-id-lang",
+            "preference2-Koulutus-id-lang",
+            "preference3-Koulutus-id-lang",
+            "preference4-Koulutus-id-lang",
+            "preference5-Koulutus-id-lang"
+    );
 
     public static Theme createKielitaitokysymyksetTheme() {
         Theme kielitaitokysymyksetTheme =
@@ -33,15 +33,15 @@ public final class KielitaitokysymyksetTheme {
     }
 
     private static RelatedQuestionRule createHakutoiveRule(String lang, String notLangRegex) {
-        RelatedQuestionRule hakutoive = new RelatedQuestionRule("preference_"+lang+"_rule", ids,
+        RelatedQuestionRule hakutoive = new RelatedQuestionRule("preference_" + lang + "_rule", ids,
                 lang.toUpperCase(), false);
         RelatedQuestionNotRule aidinkieliTaiPerusopetuksenKieliEiOle =
-                new RelatedQuestionNotRule("kielitutkinto_"+lang+"_rule",
+                new RelatedQuestionNotRule("kielitutkinto_" + lang + "_rule",
                         ImmutableList.of("aidinkieli", "perusopetuksen_kieli"), notLangRegex);
 
-        LanguageTestRule langTest = new LanguageTestRule("langTest_"+lang, lang.toUpperCase());
-        langTest.addChild(createKielitutkinto("yleinen_kielitutkinto_"+lang),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_"+lang));
+        LanguageTestRule langTest = new LanguageTestRule("langTest_" + lang, lang.toUpperCase());
+        langTest.addChild(createKielitutkinto("yleinen_kielitutkinto_" + lang),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_" + lang));
         aidinkieliTaiPerusopetuksenKieliEiOle.addChild(langTest);
 
         hakutoive.addChild(aidinkieliTaiPerusopetuksenKieliEiOle);

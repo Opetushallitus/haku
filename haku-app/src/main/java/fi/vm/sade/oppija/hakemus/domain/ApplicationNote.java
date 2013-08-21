@@ -40,8 +40,8 @@ public class ApplicationNote implements Serializable {
 
     @JsonCreator
     public ApplicationNote(@JsonProperty(value = "noteText") final String noteText,
-                       @JsonProperty(value = "added") final Date added,
-                       @JsonProperty(value = "user") final String user) {
+                           @JsonProperty(value = "added") final Date added,
+                           @JsonProperty(value = "user") final String user) {
         this.noteText = noteText;
         this.added = added;
         this.user = user;

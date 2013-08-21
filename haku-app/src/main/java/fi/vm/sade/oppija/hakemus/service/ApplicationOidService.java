@@ -17,18 +17,21 @@ package fi.vm.sade.oppija.hakemus.service;
 
 /**
  * Service to generate new application oids
+ *
  * @author Mikko Majapuro
  */
 public interface ApplicationOidService {
 
     /**
      * Generates a new unique oid
+     *
      * @return oid
      */
     String generateNewOid();
 
     /**
      * Return oid-prefix for applications.
+     *
      * @return
      */
     String getOidPrefix();

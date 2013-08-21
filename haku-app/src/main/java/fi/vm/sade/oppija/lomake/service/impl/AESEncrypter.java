@@ -16,13 +16,11 @@
 
 package fi.vm.sade.oppija.lomake.service.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
-import java.util.Arrays;
+import fi.vm.sade.oppija.lomake.domain.exception.ConfigurationException;
+import fi.vm.sade.oppija.lomake.service.EncrypterService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -31,13 +29,13 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import fi.vm.sade.oppija.lomake.domain.exception.ConfigurationException;
-import fi.vm.sade.oppija.lomake.service.EncrypterService;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.util.Arrays;
 
 @Service("aesEncrypter")
 public class AESEncrypter implements EncrypterService {
@@ -54,7 +52,7 @@ public class AESEncrypter implements EncrypterService {
 
 
     @Autowired
-    public AESEncrypter(@Value("${hakemus.aes.key}") String passPhrase, @Value("${hakemus.aes.salt}") String salt) 
+    public AESEncrypter(@Value("${hakemus.aes.key}") String passPhrase, @Value("${hakemus.aes.salt}") String salt)
             throws InvalidKeySpecException, NoSuchAlgorithmException, UnsupportedEncodingException {
         SecretKeyFactory factory = SecretKeyFactory.getInstance(PBKDF_2_WITH_HMAC_SHA_1);
         KeySpec spec = new PBEKeySpec(passPhrase.toCharArray(), salt.getBytes("UTF-8"), ITERATION_COUNT, KEY_LENGTH);
@@ -83,15 +81,15 @@ public class AESEncrypter implements EncrypterService {
             throw new ConfigurationException(e);
         }
     }
-    
-    private String encryptInternal(String encrypt) 
+
+    private String encryptInternal(String encrypt)
             throws UnsupportedEncodingException, GeneralSecurityException {
         byte[] bytes = encrypt.getBytes("UTF-8");
         byte[] encrypted = encrypt(bytes);
         return DatatypeConverter.printBase64Binary(encrypted);
     }
 
-    private byte[] encrypt(byte[] plain) 
+    private byte[] encrypt(byte[] plain)
             throws GeneralSecurityException {
         byte[] iv = generateIv();
 

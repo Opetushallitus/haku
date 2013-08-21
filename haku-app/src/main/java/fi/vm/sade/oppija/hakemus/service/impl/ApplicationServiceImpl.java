@@ -405,7 +405,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application fillLOPChain(Application application) {
-        String[] ids = new String[] {
+        String[] ids = new String[]{
                 "preference1-Opetuspiste-id",
                 "preference2-Opetuspiste-id",
                 "preference3-Opetuspiste-id",
@@ -419,7 +419,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 List<String> parentOids = organizationService.findParentOids(opetuspiste);
                 // OPH-guys have access to all organizations
                 parentOids.add(OPH_ORGANIZATION);
-                answers.put(id+"-parents", join(parentOids, ","));
+                answers.put(id + "-parents", join(parentOids, ","));
             }
         }
         application.addVaiheenVastaukset("hakutoiveet", answers);

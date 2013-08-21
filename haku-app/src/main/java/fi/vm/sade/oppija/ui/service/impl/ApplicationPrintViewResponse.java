@@ -40,6 +40,6 @@ public class ApplicationPrintViewResponse extends UIServiceResponse {
     }
 
     public void setDiscretionaryAttachmentAOIds(final List<String> discretionaryAttachmentAOIds) {
-       this.addObjectToModel(DISCRETIONARY_ATTACHMENT_AO_IDS, discretionaryAttachmentAOIds);
+        this.addObjectToModel(DISCRETIONARY_ATTACHMENT_AO_IDS, discretionaryAttachmentAOIds);
     }
 }
