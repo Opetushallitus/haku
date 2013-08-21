@@ -5,7 +5,6 @@ import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
@@ -25,7 +24,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -128,8 +126,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         ValidationResult phaseValidationResult = ElementTreeValidator.validate(phase, applicationPhase.getAnswers());
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
-        application.addNote(new ApplicationNote(noteText, new Date(), user));
-
+        applicationService.addNote(application, noteText);
 
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
@@ -180,7 +177,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public void addNote(String applicationOid, String note, User user) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(applicationOid);
-        applicationService.addNote(application, note, user);
+        applicationService.addNote(application, note);
     }
 
     private AdditionalQuestions getAdditionalQuestions(final Application application) throws IOException {

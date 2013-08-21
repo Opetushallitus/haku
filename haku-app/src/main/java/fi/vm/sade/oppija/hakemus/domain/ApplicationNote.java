@@ -17,7 +17,6 @@ package fi.vm.sade.oppija.hakemus.domain;
 
 import fi.vm.sade.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.oppija.lomake.domain.ObjectIdSerializer;
-import fi.vm.sade.oppija.lomake.domain.User;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
@@ -32,7 +31,7 @@ import java.util.Date;
 public class ApplicationNote implements Serializable {
     private String noteText;
     private Date added;
-    private User user;
+    private String user;
 
 
     @JsonProperty(value = "_id")
@@ -43,7 +42,7 @@ public class ApplicationNote implements Serializable {
     @JsonCreator
     public ApplicationNote(@JsonProperty(value = "noteText") final String noteText,
                        @JsonProperty(value = "added") final Date added,
-                       @JsonProperty(value = "user") final User user) {
+                       @JsonProperty(value = "user") final String user) {
         this.noteText = noteText;
         this.added = added;
         this.user = user;
@@ -57,7 +56,7 @@ public class ApplicationNote implements Serializable {
         return added;
     }
 
-    public User getUser() {
+    public String getUser() {
         return user;
     }
 }

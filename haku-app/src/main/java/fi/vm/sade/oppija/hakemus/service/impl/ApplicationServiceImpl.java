@@ -50,6 +50,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -173,7 +174,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             application.resetUser();
             application.setReceived(new Date());
-            application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), user));
+            addNote(application, "Hakemus vastaanotettu");
             this.applicationDAO.save(application);
             this.userHolder.removeApplication(application.getApplicationPeriodId());
             return application.getOid();
@@ -226,14 +227,21 @@ public class ApplicationServiceImpl implements ApplicationService {
         List<Application> applications = applicationDAO.find(query);
         Application application = applications.get(0);
         application.passivate();
-        applicationDAO.save(application);
+        Application queryApplication = new Application(applicationOid);
+        applicationDAO.update(queryApplication, application);
         return application;
     }
 
     @Override
-    public void addNote(Application application, String noteText, User user) {
+    public void addNote(Application application, String noteText) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String user = "[not authenticated]";
+        if (principal != null) {
+            user = principal.toString();
+        }
         application.addNote(new ApplicationNote(noteText, new Date(), user));
-        applicationDAO.save(application);
+        Application query = new Application(application.getOid());
+        applicationDAO.update(query, application);
     }
 
     @Override
@@ -389,7 +397,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setApplicationPeriodId(asId);
         application.setReceived(new Date());
         application.setState(Application.State.INCOMPLETE);
-        application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), userHolder.getUser()));
+        addNote(application, "Hakemus vastaanotettu");
         application.setOid(applicationOidService.generateNewOid());
         this.applicationDAO.save(application);
         return application;
@@ -423,8 +431,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         LOGGER.debug("Entering ApplicationServiceImpl.getApplication()");
         List<Application> listOfApplications = applicationDAO.find(queryApplication);
-        if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
+        if (listOfApplications.isEmpty()) {
             throw new ResourceNotFoundException("Could not find application " + queryApplication.getOid());
+        }
+        if (listOfApplications.size() > 1) {
+            throw new ResourceNotFoundException("Found multiple applications with oid " + queryApplication.getOid());
         }
 
         Application application = listOfApplications.get(0);

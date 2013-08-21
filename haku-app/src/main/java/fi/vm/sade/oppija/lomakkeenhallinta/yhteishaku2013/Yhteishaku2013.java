@@ -61,7 +61,7 @@ public class Yhteishaku2013 {
         instance.roll(Calendar.YEAR, 1);
         Date end = new Date(instance.getTimeInMillis());
 
-        Form form = createForm(asid, koodistoService, aoid, start);
+        Form form = createForm(asid, koodistoService, aoid, start, name);
         this.applicationPeriod = new ApplicationPeriod(asid, form, start, end, name);
     }
 
@@ -69,9 +69,10 @@ public class Yhteishaku2013 {
     private Form createForm(final String asid,
                             final KoodistoService koodistoService,
                             final String aoidAdditionalQuestion,
-                            final Date start) {
+                            final Date start,
+                            final I18nText name) {
         try {
-            Form form = new Form(asid, createI18NForm("form.title"));
+            Form form = new Form(asid, name);
             form.addChild(HenkilotiedotPhase.create(koodistoService));
             form.addChild(KoulutustaustaPhase.create(koodistoService));
             form.addChild(HakutoiveetPhase.create(aoidAdditionalQuestion));

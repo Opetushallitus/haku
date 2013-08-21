@@ -566,7 +566,7 @@
         <dependency>
             <groupId>fi.vm.sade.auth</groupId>
             <artifactId>authentication-api</artifactId>
-            <version>6.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- CXF dependencies -->

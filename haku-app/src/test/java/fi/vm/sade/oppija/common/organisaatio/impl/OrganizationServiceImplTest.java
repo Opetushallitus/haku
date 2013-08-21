@@ -1,9 +1,11 @@
 package fi.vm.sade.oppija.common.organisaatio.impl;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.common.organisaatio.Organization;
 import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
-import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
+import fi.vm.sade.organisaatio.api.model.types.MonikielinenTekstiTyyppi;
+import fi.vm.sade.organisaatio.api.model.types.OrganisaatioDTO;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioSearchCriteriaDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,13 +27,14 @@ public class OrganizationServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
-        List<OrganisaatioPerustietoType> serviceResult = new ArrayList<OrganisaatioPerustietoType>();
-        OrganisaatioPerustietoType organisaatioPerustietoType = new OrganisaatioPerustietoType();
-        organisaatioPerustietoType.setOid(OID);
-        serviceResult.add(organisaatioPerustietoType);
+        List<OrganisaatioDTO> serviceResult = new ArrayList<OrganisaatioDTO>();
+        OrganisaatioDTO organisaatioDTO= new OrganisaatioDTO();
+        organisaatioDTO.setOid(OID);
+        organisaatioDTO.setNimi(new MonikielinenTekstiTyyppi(Lists.newArrayList(new MonikielinenTekstiTyyppi.Teksti("fi", "nimi"))));
+        serviceResult.add(organisaatioDTO);
         OrganisaatioService organisaatioService = mock(OrganisaatioService.class);
         organizationServiceImpl = new OrganizationServiceImpl(organisaatioService);
-        when(organisaatioService.searchBasicOrganisaatios(any(OrganisaatioSearchCriteriaDTO.class))).thenReturn(serviceResult);
+        when(organisaatioService.searchOrganisaatios(any(OrganisaatioSearchCriteriaDTO.class))).thenReturn(serviceResult);
     }
 
 

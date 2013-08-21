@@ -20,7 +20,6 @@ import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 
@@ -175,7 +174,7 @@ public interface ApplicationService {
 
     Application passivateApplication(String oid);
 
-    void addNote(Application application, String s, User user);
+    void addNote(Application application, String s);
 
     /**
      * Creates a new empty application to specified application system.
