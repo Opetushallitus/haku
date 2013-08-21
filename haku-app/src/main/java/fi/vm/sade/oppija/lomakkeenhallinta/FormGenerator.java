@@ -32,8 +32,9 @@ public class FormGenerator {
     public List<ApplicationPeriod> generate() {
         List<ApplicationPeriod> forms = new ArrayList<ApplicationPeriod>();
         Map<String, Map<String, String>> applicationSystems = tarjontaService.getApplicationSystemOidsAndNames();
-        for (String applicationSystemOid : applicationSystems.keySet()) {
-            Yhteishaku2013 e = new Yhteishaku2013(koodistoService, applicationSystemOid, aoid, new I18nText(applicationSystems.get(applicationSystemOid)));
+        for (Map.Entry<String, Map<String, String>> applicationSystem : applicationSystems.entrySet()) {
+            Yhteishaku2013 e = new Yhteishaku2013(koodistoService,
+                    applicationSystem.getKey(), aoid, new I18nText(applicationSystems.get(applicationSystem)));
             forms.add(e.getApplicationPeriod());
         }
         return ImmutableList.copyOf(forms);

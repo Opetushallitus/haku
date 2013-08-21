@@ -46,7 +46,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
                 readble.add(organization);
             } else if (checkAccess(organization, getReadUpdateRole())) {
                 readble.add(organization);
-            } else  if (checkAccess(organization, getCreateReadUpdateDeleteRole())) {
+            } else if (checkAccess(organization, getCreateReadUpdateDeleteRole())) {
                 readble.add(organization);
             }
         }
@@ -57,8 +57,8 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     public boolean userCanReadApplication(Application application) {
         Map<String, String> answers = application.getVastauksetMerged();
         for (int i = 1; i <= 5; i++) {
-            String id = "preference"+i+"-Opetuspiste-id";
-            String parents = "preference"+i+"-Opetuspiste-id-parents";
+            String id = "preference" + i + "-Opetuspiste-id";
+            String parents = "preference" + i + "-Opetuspiste-id-parents";
             String organization = answers.get(id);
             if (StringUtils.isNotEmpty(organization) &&
                     checkAccess(organization, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {

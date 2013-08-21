@@ -34,8 +34,6 @@ import org.springframework.stereotype.Service;
 import java.util.Calendar;
 import java.util.Date;
 
-import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NForm;
-
 @Service
 public class Yhteishaku2013 {
 

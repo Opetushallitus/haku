@@ -57,7 +57,7 @@ public class KoulutustaustaPhase {
 
         Map<String, Code> educationMap = Maps.uniqueIndex(baseEducationCodes, new Function<Code, String>() {
             @Override
-            public String apply(fi.vm.sade.oppija.common.koodisto.domain.Code input) {
+            public String apply(fi.vm.sade.oppija.common.koodisto.domain.Code input) { // NOSONAR
                 return input.getValue();
             }
         });
