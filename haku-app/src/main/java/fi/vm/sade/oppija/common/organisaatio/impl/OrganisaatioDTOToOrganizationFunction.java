@@ -45,6 +45,6 @@ public class OrganisaatioDTOToOrganizationFunction implements
 
         final Date startDate = dto.getAlkuPvm();
         final Date endDate = dto.getLakkautusPvm();
-        return new Organization(new I18nText(name), oid, parentOid,types, startDate, endDate);
+        return new Organization(new I18nText(name), oid, parentOid, types, startDate, endDate);
     }
 }

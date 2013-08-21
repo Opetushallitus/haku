@@ -23,6 +23,8 @@ import fi.vm.sade.oppija.lomake.service.EncrypterService;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,8 @@ import java.util.Map;
 
 @Service
 public class DBObjectToApplicationFunction implements Function<DBObject, Application> {
+
+    private static final Logger log = LoggerFactory.getLogger(DBObjectToApplicationFunction.class);
 
     private final EncrypterService encrypterService;
 
@@ -63,6 +67,13 @@ public class DBObjectToApplicationFunction implements Function<DBObject, Applica
                 henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS, encrypterService.decrypt(hetu));
             }
         }
-        return mapper.convertValue(fromValue, Application.class);
+        Application app = null;
+        try {
+            app = mapper.convertValue(fromValue, Application.class);
+        } catch (IllegalArgumentException iae) {
+            log.info("Could not convert DBObject to Application : " + fromValue);
+            throw iae;
+        }
+        return app;
     }
 }

@@ -30,11 +30,11 @@ public interface AdditionalQuestionService {
     /**
      * Lists additional questions in a theme based on a list of education targets.
      *
-     * @param applicationSystemId  form id
-     * @param themeId theme id
-     * @param aoId    application option id
+     * @param applicationPeriodId form id
+     * @param themeId             theme id
+     * @param aoId                application option id
      * @return list of additional questions
      */
-    List<Question> findAdditionalQuestions(final String applicationSystemId, final String themeId, final String aoId);
+    List<Question> findAdditionalQuestions(final String applicationPeriodId, final String themeId, final String aoId);
 
 }

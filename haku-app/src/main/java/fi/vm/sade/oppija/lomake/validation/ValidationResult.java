@@ -17,12 +17,12 @@
 package fi.vm.sade.oppija.lomake.validation;
 
 
+import fi.vm.sade.oppija.lomake.domain.I18nText;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import fi.vm.sade.oppija.lomake.domain.I18nText;
 
 public class ValidationResult {
     private final Map<String, I18nText> errors;
