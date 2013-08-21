@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AnswersDifference {
+
     List<Difference> differences = new ArrayList<Difference>();
 
     public AnswersDifference(MapDifference<String, String> difference) {

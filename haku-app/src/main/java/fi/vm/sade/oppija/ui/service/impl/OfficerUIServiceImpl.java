@@ -66,13 +66,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             final String elementId) throws ResourceNotFoundException {
         Application application = this.applicationService.getApplication(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
-        Form activeForm = this.formService.getActiveForm(application.getApplicationPeriodId());
-        Element element = activeForm.getChildById(elementId);
-        ValidationResult validationResult = ElementTreeValidator.validateForm(activeForm, application);
+        Form form = this.formService.getForm(application.getApplicationPeriodId());
+        Element element = form.getChildById(elementId);
+        ValidationResult validationResult = ElementTreeValidator.validateForm(form, application);
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
         officerApplicationResponse.setElement(element);
-        officerApplicationResponse.setForm(activeForm);
+        officerApplicationResponse.setForm(form);
         officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return officerApplicationResponse;
@@ -82,12 +82,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws IOException, ResourceNotFoundException {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
-        Form activeForm = this.formService.getActiveForm(application.getApplicationPeriodId());
-        ValidationResult validationResult = ElementTreeValidator.validateForm(activeForm, application);
+        Form form = this.formService.getForm(application.getApplicationPeriodId());
+        ValidationResult validationResult = ElementTreeValidator.validateForm(form, application);
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
-        officerApplicationResponse.setElement(activeForm.getChildById(application.getPhaseId()));
-        officerApplicationResponse.setForm(activeForm);
+        officerApplicationResponse.setElement(form.getChildById(application.getPhaseId()));
+        officerApplicationResponse.setForm(form);
         officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
         officerApplicationResponse.setAdditionalQuestions(getAdditionalQuestions(application));
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
@@ -117,14 +117,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         loggerAspect.logUpdateApplication(application, applicationPhase);
 
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
-        final Form activeForm = formService.getForm(application.getApplicationPeriodId());
-        ValidationResult formValidationResult = ElementTreeValidator.validateForm(activeForm, application);
+        final Form form = formService.getForm(application.getApplicationPeriodId());
+        ValidationResult formValidationResult = ElementTreeValidator.validateForm(form, application);
         if (formValidationResult.hasErrors()) {
             application.incomplete();
         } else {
             application.activate();
         }
-        Element phase = activeForm.getChildById(applicationPhase.getPhaseId());
+        Element phase = form.getChildById(applicationPhase.getPhaseId());
         ValidationResult phaseValidationResult = ElementTreeValidator.validate(phase, applicationPhase.getAnswers());
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
@@ -136,7 +136,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
         officerApplicationResponse.setElement(phase);
-        officerApplicationResponse.setForm(activeForm);
+        officerApplicationResponse.setForm(form);
         officerApplicationResponse.setErrorMessages(phaseValidationResult.getErrorMessages());
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return officerApplicationResponse;
