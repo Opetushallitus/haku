@@ -1,4 +1,4 @@
-Haku: $applicationPeriodId
+Haku: $applicationSystemId
 Hakija: $applicant
 Hakemusnumero: $applicationId
 Hakemuksen päivämäärä ja tallennusaika: $applicationDate

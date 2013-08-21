@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.hakemus.domain;
 
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
@@ -28,16 +28,16 @@ import static org.junit.Assert.*;
 public class ApplicationInfoTest {
 
     private ApplicationInfo applicationInfo;
-    private ApplicationPeriod applicationPeriod;
+    private ApplicationSystem applicationSystem;
     private Form form;
     private Application application;
 
     @Before
     public void setUp() throws Exception {
         form = new Form("id", createI18NAsIs("title"));
-        this.applicationPeriod = ElementUtil.createActiveApplicationPeriod("ASID", form);
+        this.applicationSystem = ElementUtil.createActiveApplicationSystem("ASID", form);
         application = new Application();
-        applicationInfo = new ApplicationInfo(application, form, applicationPeriod);
+        applicationInfo = new ApplicationInfo(application, form, applicationSystem);
     }
 
     @Test
@@ -51,8 +51,8 @@ public class ApplicationInfoTest {
     }
 
     @Test
-    public void testGetApplicationPeriod() throws Exception {
-        assertEquals(applicationPeriod, applicationInfo.getApplicationPeriod());
+    public void testGetApplicationSystem() throws Exception {
+        assertEquals(applicationSystem, applicationInfo.getApplicationSystem());
     }
 
     @Test

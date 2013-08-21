@@ -17,7 +17,7 @@
 var childLONames = {};
 var preferenceRow = {
     populateSelectInput: function (orgId, selectInputId) {
-        $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationPeriodId + "/" + orgId,
+        $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationSystemId + "/" + orgId,
             {
                 'baseEducation': sortabletable_settings.baseEducation,
                 'vocational': sortabletable_settings.vocational
@@ -60,7 +60,7 @@ var preferenceRow = {
     },
 
     searchAdditionalQuestions: function (hakukohdeId, additionalQuestionsId, educationDegree, preferenceRowId, soraRequired) {
-        var url = sortabletable_settings.contextPath + "/lomake/" + sortabletable_settings.applicationPeriodId + "/" +
+        var url = sortabletable_settings.contextPath + "/lomake/" + sortabletable_settings.applicationSystemId + "/" +
             "/" + sortabletable_settings.vaiheId + "/" +
             sortabletable_settings.teemaId + "/additionalquestions/" + hakukohdeId;
 
@@ -109,7 +109,7 @@ var preferenceRow = {
                 minLength: 1,
                 source: function (request, response) {
                     $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + encodeURI(request.term), {
-                        asId: sortabletable_settings.applicationPeriodId
+                        asId: sortabletable_settings.applicationSystemId
                     }, function (data) {
                         response($.map(data, function (result) {
                             return {

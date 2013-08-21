@@ -41,11 +41,11 @@
                     <c:choose>
                         <c:when test="${oid eq null}">
                             <c:set var="editUrl"
-                                   value="${pageContext.request.contextPath}/lomake/${applicationPeriodId}/${phase.id}"/>
+                                   value="${pageContext.request.contextPath}/lomake/${applicationSystemId}/${phase.id}"/>
                         </c:when>
                         <c:otherwise>
                             <c:set var="editUrl"
-                                   value="${pageContext.request.contextPath}/virkailija/hakemus/${application.applicationPeriodId}/${phase.id}/${oid}"/>
+                                   value="${pageContext.request.contextPath}/virkailija/hakemus/${application.applicationSystemId}/${phase.id}/${oid}"/>
                         </c:otherwise>
                     </c:choose>
                     <virkailija:EditButton url="${editUrl}" application="${application}"/>

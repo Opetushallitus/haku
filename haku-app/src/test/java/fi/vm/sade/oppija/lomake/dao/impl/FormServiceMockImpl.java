@@ -18,9 +18,8 @@ package fi.vm.sade.oppija.lomake.dao.impl;
 
 import com.google.common.collect.Iterables;
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
@@ -29,7 +28,6 @@ import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class FormServiceMockImpl implements FormService {
@@ -43,17 +41,17 @@ public class FormServiceMockImpl implements FormService {
     }
 
     @Override
-    public Form getActiveForm(final String applicationPeriodId) {
+    public Form getActiveForm(final String applicationSystemId) {
         try {
-            return formModel.getApplicationPeriodById(applicationPeriodId).getForm();
+            return formModel.getApplicationSystemById(applicationSystemId).getForm();
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRuntime("Not found", e);
         }
     }
 
     @Override
-    public Element getFirstPhase(final String applicationPeriodId) {
-        Form activeForm = getActiveForm(applicationPeriodId);
+    public Element getFirstPhase(final String applicationSystemId) {
+        Form activeForm = getActiveForm(applicationSystemId);
         Element firstPhase = Iterables.getFirst(activeForm.getChildren(), null);
         if (firstPhase instanceof Phase) {
             return firstPhase;
@@ -62,8 +60,8 @@ public class FormServiceMockImpl implements FormService {
     }
 
     @Override
-    public Element getLastPhase(String applicationPeriodId) {
-        Form activeForm = getActiveForm(applicationPeriodId);
+    public Element getLastPhase(String applicationSystemId) {
+        Form activeForm = getActiveForm(applicationSystemId);
         Element lastPhase = Iterables.getLast(activeForm.getChildren(), null);
         if (lastPhase instanceof Phase) {
             return lastPhase;
@@ -72,18 +70,18 @@ public class FormServiceMockImpl implements FormService {
     }
 
     @Override
-    public Map<String, ApplicationPeriod> getApplicationPerioidMap() {
+    public Map<String, ApplicationSystem> getApplicationPerioidMap() {
         return this.formModel.getApplicationPerioidMap();
     }
 
     @Override
-    public ApplicationPeriod getApplicationPeriod(final String applicationPeriodId) {
-        return this.formModel.getApplicationPeriodById(applicationPeriodId);
+    public ApplicationSystem getApplicationSystem(final String applicationSystemId) {
+        return this.formModel.getApplicationSystemById(applicationSystemId);
     }
 
     @Override
-    public Form getForm(final String applicationPeriodId) {
-        return getApplicationPeriod(applicationPeriodId).getForm();
+    public Form getForm(final String applicationSystemId) {
+        return getApplicationSystem(applicationSystemId).getForm();
     }
 
     public FormModel getModel() {

@@ -1,4 +1,4 @@
-Ansökan: $applicationPeriodId
+Ansökan: $applicationSystemId
 Sökande: $applicant
 Ansökans nummer: $applicationId
 Ansökans datum och lagringstid: $applicationDate

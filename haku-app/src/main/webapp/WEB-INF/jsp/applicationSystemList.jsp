@@ -26,8 +26,8 @@
     </head>
     <body>
         <ul>
-            <c:forEach var="applicationPeriod" items="${it.applicationPeriods}">
-                <li><a id="${applicationPeriod.id}" href="${applicationPeriod.id}"><haku:i18nText value="${applicationPeriod.name}"/></a></li>
+            <c:forEach var="applicationSystem" items="${it.applicationSystems}">
+                <li><a id="${applicationSystem.id}" href="${applicationSystem.id}"><haku:i18nText value="${applicationSystem.name}"/></a></li>
             </c:forEach>
         </ul>
     </body>

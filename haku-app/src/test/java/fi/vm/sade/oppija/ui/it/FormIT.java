@@ -36,7 +36,7 @@ public class FormIT extends AbstractFormTest {
     }
 
     @Test
-    public void testApplicationPeriod() {
+    public void testApplicationSystem() {
         beginAt("/lomake");
         assertLinkPresent(ASID);
     }

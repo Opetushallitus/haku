@@ -24,7 +24,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ApplicationPeriod implements Serializable {
+public class ApplicationSystem implements Serializable {
 
     private static final long serialVersionUID = 709005625385191180L;
 
@@ -35,7 +35,7 @@ public class ApplicationPeriod implements Serializable {
     private final I18nText name;
 
 
-    public ApplicationPeriod(@JsonProperty(value = "id") final String id,
+    public ApplicationSystem(@JsonProperty(value = "id") final String id,
                              @JsonProperty(value = "form") final Form form,
                              @JsonProperty(value = "start") final Date start,
                              @JsonProperty(value = "end") final Date end,

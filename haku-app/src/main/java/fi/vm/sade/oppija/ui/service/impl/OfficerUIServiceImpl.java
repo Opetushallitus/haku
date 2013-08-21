@@ -7,7 +7,7 @@ import fi.vm.sade.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -64,7 +64,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             final String elementId) throws ResourceNotFoundException {
         Application application = this.applicationService.getApplication(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
-        Form form = this.formService.getForm(application.getApplicationPeriodId());
+        Form form = this.formService.getForm(application.getApplicationSystemId());
         Element element = form.getChildById(elementId);
         ValidationResult validationResult = ElementTreeValidator.validateForm(form, application);
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
@@ -80,7 +80,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws IOException, ResourceNotFoundException {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
-        Form form = this.formService.getForm(application.getApplicationPeriodId());
+        Form form = this.formService.getForm(application.getApplicationSystemId());
         ValidationResult validationResult = ElementTreeValidator.validateForm(form, application);
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
@@ -115,7 +115,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         loggerAspect.logUpdateApplication(application, applicationPhase);
 
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
-        final Form form = formService.getForm(application.getApplicationPeriodId());
+        final Form form = formService.getForm(application.getApplicationSystemId());
         ValidationResult formValidationResult = ElementTreeValidator.validateForm(form, application);
         if (formValidationResult.hasErrors()) {
             application.incomplete();
@@ -142,7 +142,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public Application getApplicationWithLastPhase(final String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
-        Element phase = formService.getLastPhase(application.getApplicationPeriodId());
+        Element phase = formService.getLastPhase(application.getApplicationSystemId());
         application.setPhaseId(phase.getId());
         return application;
     }
@@ -152,8 +152,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         UIServiceResponse uiServiceResponse = new UIServiceResponse();
         uiServiceResponse.addObjectToModel("organizationTypes", koodistoService.getOrganizationtypes());
         uiServiceResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
-        Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
-        uiServiceResponse.addObjectToModel("applicationPeriods", applicationPerioidMap);
+        Map<String, ApplicationSystem> applicationPerioidMap = formService.getApplicationPerioidMap();
+        uiServiceResponse.addObjectToModel("applicationSystems", applicationPerioidMap);
         return uiServiceResponse;
     }
 

@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.ui.selenium;
 
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -55,9 +55,9 @@ public class PostalCodeIT extends AbstractSeleniumBase {
     @Before
     public void init() throws IOException {
         Form form = new Form("lomake", createI18NAsIs("yhteishaku"));
-        ApplicationPeriod applicationPeriod = ElementUtil.createActiveApplicationPeriod("test", form);
+        ApplicationSystem applicationSystem = ElementUtil.createActiveApplicationSystem("test", form);
         FormModel formModel = new FormModel();
-        formModel.addApplicationPeriod(applicationPeriod);
+        formModel.addApplicationSystem(applicationSystem);
         Phase testivaihe = new Phase("testivaihe", createI18NAsIs("Testivaihe"), false);
         form.addChild(testivaihe);
 

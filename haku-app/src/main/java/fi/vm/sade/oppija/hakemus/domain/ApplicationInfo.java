@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.hakemus.domain;
 
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 
 /**
@@ -28,13 +28,13 @@ public class ApplicationInfo {
     public static final String STATE_PENDING = "valmis";
     final Application application;
     final Form form;
-    final ApplicationPeriod applicationPeriod;
+    final ApplicationSystem applicationSystem;
 
 
-    public ApplicationInfo(final Application application, final Form form, final ApplicationPeriod applicationPeriod) {
+    public ApplicationInfo(final Application application, final Form form, final ApplicationSystem applicationSystem) {
         this.application = application;
         this.form = form;
-        this.applicationPeriod = applicationPeriod;
+        this.applicationSystem = applicationSystem;
     }
 
     public Application getApplication() {
@@ -45,8 +45,8 @@ public class ApplicationInfo {
         return form;
     }
 
-    public ApplicationPeriod getApplicationPeriod() {
-        return applicationPeriod;
+    public ApplicationSystem getApplicationSystem() {
+        return applicationSystem;
     }
 
     public boolean isPending() {

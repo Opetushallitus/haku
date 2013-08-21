@@ -28,7 +28,7 @@ import java.util.Map;
 
 public interface ApplicationService {
 
-    Application getApplication(final String applicationPeriodId);
+    Application getApplication(final String applicationSystemId);
 
     Application getApplicationByOid(final String oid) throws ResourceNotFoundException;
 
@@ -56,15 +56,15 @@ public interface ApplicationService {
      *
      * @return
      */
-    String submitApplication(final String applicationPeriodId);
+    String submitApplication(final String applicationSystemId);
 
     /**
-     * @param applicationPeriodId
+     * @param applicationSystemId
      * @param oid
      * @return
      * @throws ResourceNotFoundException if an application is not found with the oid
      */
-    Application getPendingApplication(final String applicationPeriodId, final String oid) throws ResourceNotFoundException;
+    Application getPendingApplication(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
 
     /**
      * Retrieves all submitted applications related to specified application system

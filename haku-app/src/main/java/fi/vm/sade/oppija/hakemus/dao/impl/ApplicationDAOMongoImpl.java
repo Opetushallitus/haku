@@ -94,7 +94,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private static final String FIELD_APPLICATION_OID = "oid";
 
-    private static final String FIELD_APPLICATION_PERIOD_ID = "applicationPeriodId";
+    private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
     private static final String FIELD_PERSON_OID = "personOid";
     private static final String FIELD_APPLICATION_STATE = "state";
     private static final String EXISTS = "$exists";
@@ -127,7 +127,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public ApplicationState tallennaVaihe(ApplicationState state) {
 
-        Application queryApplication = new Application(state.getApplication().getApplicationPeriodId(), state.getApplication().getUser(),
+        Application queryApplication = new Application(state.getApplication().getApplicationSystemId(), state.getApplication().getUser(),
                 state.getApplication().getOid());
         final DBObject query = toDBObject.apply(queryApplication);
 
@@ -165,7 +165,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public List<Application> findByApplicationSystem(String asId) {
-        DBObject dbObject = QueryBuilder.start().and(QueryBuilder.start(FIELD_APPLICATION_PERIOD_ID).is(asId).get(),
+        DBObject dbObject = QueryBuilder.start().and(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId).get(),
                 newOIdExistDBObject()).get();
         return findApplications(dbObject);
     }
@@ -174,7 +174,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId) {
         DBObject dbObject = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
                 newOIdExistDBObject(),
-                new BasicDBObject(FIELD_APPLICATION_PERIOD_ID, asId),
+                new BasicDBObject(FIELD_APPLICATION_SYSTEM_ID, asId),
                 QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
                         Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get()).get();
         return findApplications(dbObject);
@@ -192,7 +192,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
         if (!Strings.isNullOrEmpty(ssn)) {
             String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
-            DBObject query = QueryBuilder.start(FIELD_APPLICATION_PERIOD_ID).is(asId)
+            DBObject query = QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
                     .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
                     .and(FIELD_APPLICATION_OID).exists(true)
                     .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
@@ -378,7 +378,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         String asId = applicationQueryParameters.getAsId();
         if (!isEmpty(asId)) {
-            filters.add(QueryBuilder.start(FIELD_APPLICATION_PERIOD_ID).is(asId).get());
+            filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId).get());
         }
 
         filters.add(newOIdExistDBObject());

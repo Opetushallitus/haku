@@ -20,7 +20,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
-<c:set var="applicationPeriods" value="${it.applicationPeriods}" scope="request"/>
+<c:set var="applicationSystems" value="${it.applicationSystems}" scope="request"/>
 <!doctype html>
 <fmt:setBundle basename="messages" scope="session"/>
 <html>

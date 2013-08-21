@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
@@ -44,7 +44,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
     public void init() {
         super.before();
         Form form = new Form(FORM_ID, createI18NAsIs("yhteishaku"));
-        ApplicationPeriod applicationPeriod = ElementUtil.createActiveApplicationPeriod(ASID, form);
+        ApplicationSystem applicationSystem = ElementUtil.createActiveApplicationSystem(ASID, form);
         Phase arvosanat = new Phase(PHASE_ID, createI18NAsIs("Arvosanat"), false);
         form.addChild(arvosanat);
         KoodistoServiceMockImpl koodistoService = new KoodistoServiceMockImpl();
@@ -52,7 +52,7 @@ public class GradeGridIT extends AbstractSeleniumBase {
         arvosanat.addChild(gradesTable.createGradeGrid("id"));
 
         FormModel formModel = new FormModel();
-        formModel.addApplicationPeriod(applicationPeriod);
+        formModel.addApplicationSystem(applicationSystem);
         updateIndexAndFormModel(formModel);
     }
 

@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013;
 
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
@@ -34,12 +34,10 @@ import org.springframework.stereotype.Service;
 import java.util.Calendar;
 import java.util.Date;
 
-import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NForm;
-
 @Service
 public class Yhteishaku2013 {
 
-    private final ApplicationPeriod applicationPeriod;
+    private final ApplicationSystem applicationSystem;
 
     @Autowired
     public Yhteishaku2013(
@@ -62,7 +60,7 @@ public class Yhteishaku2013 {
         Date end = new Date(instance.getTimeInMillis());
 
         Form form = createForm(asid, koodistoService, aoid, start, name);
-        this.applicationPeriod = new ApplicationPeriod(asid, form, start, end, name);
+        this.applicationSystem = new ApplicationSystem(asid, form, start, end, name);
     }
 
 
@@ -85,7 +83,7 @@ public class Yhteishaku2013 {
         }
     }
 
-    public ApplicationPeriod getApplicationPeriod() {
-        return applicationPeriod;
+    public ApplicationSystem getApplicationSystem() {
+        return applicationSystem;
     }
 }

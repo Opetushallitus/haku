@@ -122,8 +122,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                                                   final Application application,
                                                   final boolean skipValidators) {
         final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
-        final String applicationPeriodId = applicationState.getApplication().getApplicationPeriodId();
-        final Form activeForm = formService.getActiveForm(applicationPeriodId);
+        final String applicationSystemId = applicationState.getApplication().getApplicationSystemId();
+        final Form activeForm = formService.getActiveForm(applicationSystemId);
         final Element phase = activeForm.getChildById(applicationPhase.getPhaseId());
         final Map<String, String> vastaukset = applicationPhase.getAnswers();
 
@@ -131,7 +131,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         // if the current phase has previous phase, get all the answers for
         // validating rules
         if (!activeForm.isFirstChild(phase)) {
-            Application current = userHolder.getApplication(applicationPeriodId);
+            Application current = userHolder.getApplication(applicationSystemId);
             allAnswers.putAll(current.getVastauksetMerged());
         }
         allAnswers.putAll(vastaukset);
@@ -139,14 +139,14 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (!skipValidators) {
             ValidationResult validationResult = ElementTreeValidator.validate(phase, allAnswers);
             if (application.getOid() == null) {
-                validationResult = checkIfExistsBySocialSecurityNumber(applicationPeriodId,
+                validationResult = checkIfExistsBySocialSecurityNumber(applicationSystemId,
                         vastaukset.get(SocialSecurityNumber.HENKILOTUNNUS), validationResult);
             }
             applicationState.addError(validationResult.getErrorMessages());
         }
         if (applicationState.isValid()) {
             if (application.getOid() == null) {
-                checkIfExistsBySocialSecurityNumber(applicationPeriodId,
+                checkIfExistsBySocialSecurityNumber(applicationSystemId,
                         vastaukset.get(SocialSecurityNumber.HENKILOTUNNUS));
             }
             this.userHolder.savePhaseAnswers(applicationPhase);
@@ -157,13 +157,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public String submitApplication(final String ApplicationPeriodId) {
+    public String submitApplication(final String ApplicationSystemId) {
         final User user = userHolder.getUser();
-        Application application = userHolder.getApplication(ApplicationPeriodId);
-        Form form = formService.getForm(ApplicationPeriodId);
+        Application application = userHolder.getApplication(ApplicationSystemId);
+        Form form = formService.getForm(ApplicationSystemId);
         Map<String, String> allAnswers = application.getVastauksetMerged();
         ValidationResult validationResult = ElementTreeValidator.validate(form, allAnswers);
-        validationResult = checkIfExistsBySocialSecurityNumber(ApplicationPeriodId,
+        validationResult = checkIfExistsBySocialSecurityNumber(ApplicationSystemId,
                 allAnswers.get(SocialSecurityNumber.HENKILOTUNNUS), validationResult);
         if (!validationResult.hasErrors()) {
 
@@ -176,7 +176,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.setReceived(new Date());
             addNote(application, "Hakemus vastaanotettu");
             this.applicationDAO.save(application);
-            this.userHolder.removeApplication(application.getApplicationPeriodId());
+            this.userHolder.removeApplication(application.getApplicationSystemId());
             return application.getOid();
         } else {
             throw new IllegalStateException("Could not send the application ");
@@ -245,9 +245,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getPendingApplication(String applicationPeriodId, String oid) throws ResourceNotFoundException {
+    public Application getPendingApplication(String applicationSystemId, String oid) throws ResourceNotFoundException {
         final User user = userHolder.getUser();
-        Application application = new Application(applicationPeriodId, user, oid);
+        Application application = new Application(applicationSystemId, user, oid);
         if (!user.isKnown()) {
             application.removeUser();
         }
@@ -273,17 +273,17 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getApplication(final String applicationPeriodId) {
+    public Application getApplication(final String applicationSystemId) {
         User user = userHolder.getUser();
         if (user.isKnown()) {
-            Application application = new Application(applicationPeriodId, userHolder.getUser());
+            Application application = new Application(applicationSystemId, userHolder.getUser());
             List<Application> listOfApplications = applicationDAO.find(application);
             if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
                 return application;
             }
             return listOfApplications.get(0);
         } else {
-            return userHolder.getApplication(applicationPeriodId);
+            return userHolder.getApplication(applicationSystemId);
 
         }
     }
@@ -337,7 +337,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public List<String> getApplicationPreferenceOids(Application application) {
         List<String> oids = new ArrayList<String>();
-        final Form activeForm = formService.getActiveForm(application.getApplicationPeriodId());
+        final Form activeForm = formService.getActiveForm(application.getApplicationSystemId());
         Map<String, PreferenceRow> preferenceRows = ElementUtil.findElementsByType(activeForm,
                 PreferenceRow.class);
         Map<String, String> answers = application.getVastauksetMerged();
@@ -394,7 +394,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application officerCreateNewApplication(String asId) {
         Application application = new Application();
-        application.setApplicationPeriodId(asId);
+        application.setApplicationSystemId(asId);
         application.setReceived(new Date());
         application.setState(Application.State.INCOMPLETE);
         addNote(application, "Hakemus vastaanotettu");

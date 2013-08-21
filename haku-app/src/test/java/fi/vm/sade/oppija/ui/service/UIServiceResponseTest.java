@@ -36,7 +36,7 @@ public class UIServiceResponseTest {
 
     @Test
     public void testSetApplication() throws Exception {
-        application.setApplicationPeriodId("");
+        application.setApplicationSystemId("");
         uiServiceResponse.setApplication(application);
         assertEquals(6, uiServiceResponse.getModel().size());
     }

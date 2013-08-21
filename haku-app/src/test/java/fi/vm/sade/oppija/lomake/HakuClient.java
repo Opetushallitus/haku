@@ -42,7 +42,7 @@ public class HakuClient {
         this.applicationData = (Map<String, Map<String, String>>) data.get("answers");
         this.applicationData.put("esikatselu", new ImmutableMap.Builder<String, String>()
                 .put("nav-send", "true").build());
-        this.formUrl = baseUrl + data.get("applicationPeriodId");
+        this.formUrl = baseUrl + data.get("applicationSystemId");
 
     }
 

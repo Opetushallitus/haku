@@ -64,12 +64,12 @@ public class LoggerAspect {
      * Logs event when a form phase is successfully saved
      * as application data in data store.
      */
-    @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.hakemus.service.ApplicationService.submitApplication(..)) && args(applicationPeriodId,..)",
+    @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.hakemus.service.ApplicationService.submitApplication(..)) && args(applicationSystemId,..)",
             returning = "oid")
-    public void logSubmitApplication(final String applicationPeriodId, final String oid) {
+    public void logSubmitApplication(final String applicationSystemId, final String oid) {
         try {
             Tapahtuma t = new Tapahtuma();
-            t.setMuutoksenKohde("Haku: " + applicationPeriodId
+            t.setMuutoksenKohde("Haku: " + applicationSystemId
                     + ", käyttäjä: " + userHolder.getUser().getUserName() + ", hakemus oid: " + oid);
             t.setAikaleima(new Date());
             t.setKenenTietoja("" + userHolder.getUser().getUserName());

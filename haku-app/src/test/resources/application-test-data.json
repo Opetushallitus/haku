@@ -100,7 +100,7 @@
         "oid": "1.2.3.4.5.00000010003",
         "personOid": "9.8.7.6.5.1234567890",
         "state": "ACTIVE",
-        "applicationPeriodId": "Yhteishaku",
+        "applicationSystemId": "Yhteishaku",
         "phaseId": "esikatselu"
     },
     {
@@ -204,7 +204,7 @@
         },
         "oid": "1.2.3.4.5.00000020006",
         "state": "ACTIVE",
-        "applicationPeriodId": "Yhteishaku",
+        "applicationSystemId": "Yhteishaku",
         "phaseId": "esikatselu"
     },
     {
@@ -308,7 +308,7 @@
         },
         "oid": "1.2.3.4.5.00000030009",
         "state": "PASSIVE",
-        "applicationPeriodId": "Yhteishaku",
+        "applicationSystemId": "Yhteishaku",
         "phaseId": "esikatselu"
     }
 ]

@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake;
 
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
@@ -34,7 +34,7 @@ public class FormModelHelper {
         return "lomake/" + ElementUtil.getPath(getFirstApplicationPerioid(), id);
     }
 
-    public ApplicationPeriod getFirstApplicationPerioid() {
+    public ApplicationSystem getFirstApplicationPerioid() {
         return formModel.getApplicationPerioidMap().entrySet().iterator().next().getValue();
     }
 

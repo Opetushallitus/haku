@@ -59,7 +59,7 @@ public class UIServiceImpl implements UIService {
     @Override
     public UIServiceResponse getApplicationPrint(String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplication(oid);
-        final Form activeForm = formService.getForm(application.getApplicationPeriodId());
+        final Form activeForm = formService.getForm(application.getApplicationSystemId());
         ApplicationPrintViewResponse response = new ApplicationPrintViewResponse();
         response.setApplication(application);
         response.setForm(activeForm);
@@ -69,9 +69,9 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public UIServiceResponse getApplicationPrint(String applicationPeriodId, String oid) throws ResourceNotFoundException {
-        Form activeForm = formService.getActiveForm(applicationPeriodId);
-        Application application = applicationService.getPendingApplication(applicationPeriodId, oid);
+    public UIServiceResponse getApplicationPrint(String applicationSystemId, String oid) throws ResourceNotFoundException {
+        Form activeForm = formService.getActiveForm(applicationSystemId);
+        Application application = applicationService.getPendingApplication(applicationSystemId, oid);
         ApplicationPrintViewResponse response = new ApplicationPrintViewResponse();
         response.setApplication(application);
         response.setForm(activeForm);
@@ -81,9 +81,9 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public UIServiceResponse getApplicationComplete(String applicationPeriodId, String oid) throws ResourceNotFoundException {
-        Form activeForm = formService.getActiveForm(applicationPeriodId);
-        Application application = applicationService.getPendingApplication(applicationPeriodId, oid);
+    public UIServiceResponse getApplicationComplete(String applicationSystemId, String oid) throws ResourceNotFoundException {
+        Form activeForm = formService.getActiveForm(applicationSystemId);
+        Application application = applicationService.getPendingApplication(applicationSystemId, oid);
         ApplicationCompleteResponse response = new ApplicationCompleteResponse();
         response.setApplication(application);
         response.setForm(activeForm);

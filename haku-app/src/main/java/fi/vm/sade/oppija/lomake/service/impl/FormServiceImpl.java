@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.lomake.service.impl;
 
 
 import com.google.common.collect.Iterables;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -51,15 +51,15 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public Form getActiveForm(String applicationPeriodId) {
-        final ApplicationPeriod applicationPeriod = getApplicationPeriod(applicationPeriodId);
-        if (applicationPeriod == null) {
+    public Form getActiveForm(String applicationSystemId) {
+        final ApplicationSystem applicationSystem = getApplicationSystem(applicationSystemId);
+        if (applicationSystem == null) {
             throw new ResourceNotFoundExceptionRuntime("Application period not found");
         }
-        if (!applicationPeriod.isActive()) {
+        if (!applicationSystem.isActive()) {
             throw new ResourceNotFoundExceptionRuntime("Application period is not active");
         }
-        Form form = applicationPeriod.getForm();
+        Form form = applicationSystem.getForm();
         if (form == null) {
             throw new ResourceNotFoundExceptionRuntime("Form not found");
         }
@@ -67,13 +67,13 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public Form getForm(final String applicationPeriodId) {
-        return getApplicationPeriod(applicationPeriodId).getForm();
+    public Form getForm(final String applicationSystemId) {
+        return getApplicationSystem(applicationSystemId).getForm();
     }
 
     @Override
-    public Element getFirstPhase(final String applicationPeriodId) {
-        Form activeForm = getActiveForm(applicationPeriodId);
+    public Element getFirstPhase(final String applicationSystemId) {
+        Form activeForm = getActiveForm(applicationSystemId);
         Element firstPhase = Iterables.getFirst(activeForm.getChildren(), null);
         if (firstPhase instanceof Phase) {
             return firstPhase;
@@ -82,8 +82,8 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public Element getLastPhase(final String applicationPeriodId) {
-        Form activeForm = getActiveForm(applicationPeriodId);
+    public Element getLastPhase(final String applicationSystemId) {
+        Form activeForm = getActiveForm(applicationSystemId);
         Element lastPhase = Iterables.getLast(activeForm.getChildren(), null);
         if (lastPhase instanceof Phase) {
             return lastPhase;
@@ -92,18 +92,18 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public Map<String, ApplicationPeriod> getApplicationPerioidMap() {
+    public Map<String, ApplicationSystem> getApplicationPerioidMap() {
         FormModel model = getModel();
         return model.getApplicationPerioidMap();
     }
 
     @Override
-    public ApplicationPeriod getApplicationPeriod(final String applicationPeriodId) {
-        ApplicationPeriod applicationPeriod = getModel().getApplicationPeriodById(applicationPeriodId);
-        if (applicationPeriod == null) {
-            throw new ResourceNotFoundExceptionRuntime("Application period " + applicationPeriodId + " not found");
+    public ApplicationSystem getApplicationSystem(final String applicationSystemId) {
+        ApplicationSystem applicationSystem = getModel().getApplicationSystemById(applicationSystemId);
+        if (applicationSystem == null) {
+            throw new ResourceNotFoundExceptionRuntime("Application period " + applicationSystemId + " not found");
         }
-        return applicationPeriod;
+        return applicationSystem;
     }
 }
 

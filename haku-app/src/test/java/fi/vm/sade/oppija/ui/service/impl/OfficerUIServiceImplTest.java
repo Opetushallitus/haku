@@ -47,7 +47,7 @@ public class OfficerUIServiceImplTest {
     @Before
     public void setUp() throws Exception {
         application = new Application();
-        application.setApplicationPeriodId("asid");
+        application.setApplicationSystemId("asid");
         application.setOid(OID);
         application.setPhaseId(ID);
         form = new Form("form", ElementUtil.createI18NAsIs(ID));
@@ -84,7 +84,7 @@ public class OfficerUIServiceImplTest {
     @Test
     public void testUpdateApplication() throws Exception {
         UIServiceResponse uiServiceResponse = officerUIService.updateApplication(
-                OID, new ApplicationPhase(application.getApplicationPeriodId(), ID, new HashMap<String, String>()), new AnonymousUser());
+                OID, new ApplicationPhase(application.getApplicationSystemId(), ID, new HashMap<String, String>()), new AnonymousUser());
         assertTrue(10 == uiServiceResponse.getModel().size());
     }
 

@@ -20,7 +20,7 @@ import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
@@ -65,11 +65,11 @@ public class FormController {
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
     public static final String ROOT_VIEW = "/elements/Root";
     public static final String VERBOSE_HELP_VIEW = "/help";
-    public static final String APPLICATION_PERIOD_LIST_VIEW = "/applicationPeriodList";
+    public static final String APPLICATION_PERIOD_LIST_VIEW = "/applicationSystemList";
     public static final String VALMIS_VIEW = "/valmis";
     public static final String PRINT_VIEW = "/print/print";
 
-    public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
+    public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationSystemId";
     public static final String THEME_ID_PATH_PARAM = "themeId";
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
     private static final String PHASE_ID_PATH_PARAM = "phaseId";
@@ -98,75 +98,75 @@ public class FormController {
 
     @GET
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable listApplicationPeriods() {
-        LOGGER.debug("listApplicationPeriods");
-        Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
+    public Viewable listApplicationSystems() {
+        LOGGER.debug("listApplicationSystems");
+        Map<String, ApplicationSystem> applicationPerioidMap = formService.getApplicationPerioidMap();
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("applicationPeriods", applicationPerioidMap.values());
+        model.put("applicationSystems", applicationPerioidMap.values());
         return new Viewable(APPLICATION_PERIOD_LIST_VIEW, model);
     }
 
     @GET
-    @Path("/{applicationPeriodId}")
+    @Path("/{applicationSystemId}")
     public Response getApplication(
-            @PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId) throws URISyntaxException {
-        LOGGER.debug("RedirectToLastPhase {}", new Object[]{applicationPeriodId});
-        Application application = userHolder.getApplication(applicationPeriodId);
+            @PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
+        LOGGER.debug("RedirectToLastPhase {}", new Object[]{applicationSystemId});
+        Application application = userHolder.getApplication(applicationSystemId);
         if (application.isNew()) {
-            Element firstPhase = formService.getFirstPhase(applicationPeriodId);
+            Element firstPhase = formService.getFirstPhase(applicationSystemId);
             return Response.seeOther(new URI(
-                    new RedirectToPhaseViewPath(applicationPeriodId, firstPhase.getId()).getPath())).build();
+                    new RedirectToPhaseViewPath(applicationSystemId, firstPhase.getId()).getPath())).build();
 
         } else {
             return Response.seeOther(new URI(
-                    new RedirectToPhaseViewPath(applicationPeriodId,
+                    new RedirectToPhaseViewPath(applicationSystemId,
                             application.getPhaseId()).getPath())).build();
         }
     }
 
     @GET
-    @Path("/{applicationPeriodId}/esikatselu")
+    @Path("/{applicationSystemId}/esikatselu")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getPreview(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId) {
-        return getPhase(applicationPeriodId, "esikatselu");
+    public Viewable getPreview(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId) {
+        return getPhase(applicationSystemId, "esikatselu");
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{phaseId}")
+    @Path("/{applicationSystemId}/{phaseId}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getPhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    public Viewable getPhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId) {
 
-        LOGGER.debug("getElement {}, {}, {}", applicationPeriodId, phaseId);
-        Form activeForm = formService.getActiveForm(applicationPeriodId);
+        LOGGER.debug("getElement {}, {}, {}", applicationSystemId, phaseId);
+        Form activeForm = formService.getActiveForm(applicationSystemId);
         Element element = activeForm.getChildById(phaseId);
         Map<String, Object> model = new HashMap<String, Object>();
-        Map<String, String> values = applicationService.getApplication(applicationPeriodId).getVastauksetMerged();
+        Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
         values = userHolder.populateWithPrefillData(values);
         model.put("categoryData", values);
         model.put("element", element);
         model.put("template", element.getType());
         model.put("form", activeForm);
-        model.put("applicationPeriodId", applicationPeriodId);
+        model.put("applicationSystemId", applicationSystemId);
         model.put("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
 
         return new Viewable(ROOT_VIEW, model);
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{phaseId}/{elementId}")
+    @Path("/{applicationSystemId}/{phaseId}/{elementId}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getPhaseElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    public Viewable getPhaseElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
                                     @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                     @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
-        return getPhase(applicationPeriodId, elementId);
+        return getPhase(applicationSystemId, elementId);
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{phaseId}/{elementId}/languageTest")
+    @Path("/{applicationSystemId}/{phaseId}/{elementId}/languageTest")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.TEXT_PLAIN + CHARSET_UTF_8)
-    public Serializable getLanguageTestChildren(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    public Serializable getLanguageTestChildren(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
                                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                                 @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                                 @QueryParam("ai") final String aidinkieli,
@@ -174,21 +174,21 @@ public class FormController {
                                                 @QueryParam("a2") final String a2Kieli,
                                                 @QueryParam("a1Grade") final String a1Grade,
                                                 @QueryParam("a2Grade") final String a2Grade) {
-        LOGGER.debug("getLanguageTest {}, {}, {}, {}", applicationPeriodId, phaseId, elementId);
-        Form activeForm = formService.getActiveForm(applicationPeriodId);
+        LOGGER.debug("getLanguageTest {}, {}, {}, {}", applicationSystemId, phaseId, elementId);
+        Form activeForm = formService.getActiveForm(applicationSystemId);
         LanguageTestRule rule = (LanguageTestRule) activeForm.getChildById(elementId);
         return rule.getTests(aidinkieli, a1Kieli, a2Kieli, a1Grade, a2Grade);
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{phaseId}/{elementId}/relatedData/{key}")
+    @Path("/{applicationSystemId}/{phaseId}/{elementId}/relatedData/{key}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public Serializable getElementRelatedData(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    public Serializable getElementRelatedData(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
                                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                               @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                               @PathParam("key") final String key) {
-        LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationPeriodId, elementId, key);
-        Form activeForm = formService.getActiveForm(applicationPeriodId);
+        LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationSystemId, elementId, key);
+        Form activeForm = formService.getActiveForm(applicationSystemId);
         try {
             @SuppressWarnings("unchecked")
             DataRelatedQuestion<Serializable> element =
@@ -201,44 +201,44 @@ public class FormController {
     }
 
     @POST
-    @Path("/{applicationPeriodId}")
+    @Path("/{applicationSystemId}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    public Response prefillForm(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    public Response prefillForm(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException {
         userHolder.addPrefillData(MultivaluedMapUtil.toSingleValueMap(multiValues));
 
         return Response.seeOther(new URI(
-                new RedirectToFormViewPath(applicationPeriodId).getPath())).build();
+                new RedirectToFormViewPath(applicationSystemId).getPath())).build();
     }
 
     @POST
-    @Path("/{applicationPeriodId}/esikatselu")
+    @Path("/{applicationSystemId}/esikatselu")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    public Response submitApplication(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId) throws URISyntaxException {
-        LOGGER.debug("submitApplication {}", new Object[]{applicationPeriodId});
-        String oid = applicationService.submitApplication(applicationPeriodId);
-        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationPeriodId, oid);
+    public Response submitApplication(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
+        LOGGER.debug("submitApplication {}", new Object[]{applicationSystemId});
+        String oid = applicationService.submitApplication(applicationSystemId);
+        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, oid);
         return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
     }
 
     @POST
-    @Path("/{applicationPeriodId}/{phaseId}")
+    @Path("/{applicationSystemId}/{phaseId}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Response savePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    public Response savePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
-        LOGGER.debug("savePhase {}, {}, {}, {}", applicationPeriodId, phaseId, multiValues);
-        Form activeForm = formService.getActiveForm(applicationPeriodId);
+        LOGGER.debug("savePhase {}, {}, {}, {}", applicationSystemId, phaseId, multiValues);
+        Form activeForm = formService.getActiveForm(applicationSystemId);
         boolean skipValidators = skipValidators(multiValues, activeForm, phaseId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(
-                new ApplicationPhase(applicationPeriodId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)), skipValidators);
+                new ApplicationPhase(applicationSystemId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)), skipValidators);
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("applicationPeriodId", applicationPeriodId);
+        model.put("applicationSystemId", applicationSystemId);
         if (applicationState.isValid()) {
             return Response.seeOther(new URI(
-                    new RedirectToPhaseViewPath(applicationPeriodId,
+                    new RedirectToPhaseViewPath(applicationSystemId,
                             applicationState.getApplication().getPhaseId()).getPath())).build();
 
         } else {
@@ -254,34 +254,34 @@ public class FormController {
     }
 
     @GET
-    @Path("/{applicationPeriodId}/valmis/{oid}")
+    @Path("/{applicationSystemId}/valmis/{oid}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getComplete(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    public Viewable getComplete(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
                                 @PathParam("oid") final String oid) throws ResourceNotFoundException {
 
-        LOGGER.debug("getComplete {}, {}", new Object[]{applicationPeriodId});
-        UIServiceResponse response = uiService.getApplicationComplete(applicationPeriodId, oid);
+        LOGGER.debug("getComplete {}, {}", new Object[]{applicationSystemId});
+        UIServiceResponse response = uiService.getApplicationComplete(applicationSystemId, oid);
         return new Viewable(VALMIS_VIEW, response.getModel());
     }
 
     @GET
-    @Path("/{applicationPeriodId}/tulostus/{oid}")
+    @Path("/{applicationSystemId}/tulostus/{oid}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getPrint(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    public Viewable getPrint(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
                              @PathParam("oid") final String oid) throws ResourceNotFoundException {
-        LOGGER.debug("getPrint {}, {}", new Object[]{applicationPeriodId, oid});
-        UIServiceResponse uiServiceResponse = uiService.getApplicationPrint(applicationPeriodId, oid);
+        LOGGER.debug("getPrint {}, {}", new Object[]{applicationSystemId, oid});
+        UIServiceResponse uiServiceResponse = uiService.getApplicationPrint(applicationSystemId, oid);
         return new Viewable(PRINT_VIEW, uiServiceResponse.getModel());
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{phaseId}/{themeId}/help")
+    @Path("/{applicationSystemId}/{phaseId}/{themeId}/help")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getFormHelp(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    public Viewable getFormHelp(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(THEME_ID_PATH_PARAM) final String themeId) {
 
-        Form activeForm = formService.getActiveForm(applicationPeriodId);
+        Form activeForm = formService.getActiveForm(applicationSystemId);
         Map<String, Object> model = new HashMap<String, Object>();
         Element theme = activeForm.getChildById(themeId);
         model.put("theme", theme);
@@ -297,14 +297,14 @@ public class FormController {
     }
 
     @GET
-    @Path("/{applicationPeriodId}/{phaseId}/{gradeGridId}/additionalLanguageRow")
+    @Path("/{applicationSystemId}/{phaseId}/{gradeGridId}/additionalLanguageRow")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getAdditionalLanguageRow(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    public Viewable getAdditionalLanguageRow(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationSystemId,
                                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                              @PathParam("gradeGridId") final String gradeGridId) {
 
-        LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", applicationPeriodId, gradeGridId);
-        Form activeForm = formService.getActiveForm(applicationPeriodId);
+        LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", applicationSystemId, gradeGridId);
+        Form activeForm = formService.getActiveForm(applicationSystemId);
         Element element = activeForm.getChildById(gradeGridId);
         GradeGrid gradeGrid = (GradeGrid) element;
         Map<String, Object> model = new HashMap<String, Object>();
