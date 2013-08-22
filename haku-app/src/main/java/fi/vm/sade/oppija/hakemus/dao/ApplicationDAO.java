@@ -127,8 +127,9 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     /**
      * Updates key/value of the application by oid
-     * @param oid application oid
-     * @param key key to be updated, including full hierarchy of the key "additionalInfo.foo"
+     *
+     * @param oid   application oid
+     * @param key   key to be updated, including full hierarchy of the key "additionalInfo.foo"
      * @param value value of the given key
      */
     void updateKeyValue(final String oid, final String key, final String value);

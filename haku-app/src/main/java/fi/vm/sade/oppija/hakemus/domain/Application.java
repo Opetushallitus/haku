@@ -50,7 +50,7 @@ public class Application implements Serializable {
 
     private String oid;
     private State state;
-    private String applicationPeriodId;
+    private String applicationSystemId;
     private User user;
     private String phaseId;
     private String personOid;
@@ -62,11 +62,11 @@ public class Application implements Serializable {
     private LinkedList<ApplicationNote> notes = new LinkedList<ApplicationNote>();
 
     @JsonCreator
-    public Application(@JsonProperty(value = "applicationPeriodId") final String applicationPeriodId,
+    public Application(@JsonProperty(value = "applicationSystemId") final String applicationSystemId,
                        @JsonProperty(value = "user") final User user,
                        @JsonProperty(value = "answers") Map<String, Map<String, String>> answers,
                        @JsonProperty(value = "additionalInfo") Map<String, String> additionalInfo) {
-        this(applicationPeriodId, user);
+        this(applicationSystemId, user);
         if (answers != null) {
             this.answers = answers;
         }
@@ -91,33 +91,33 @@ public class Application implements Serializable {
 
 
     @JsonIgnore
-    public Application(@JsonProperty(value = "applicationPeriodId") final String applicationPeriodId,
+    public Application(@JsonProperty(value = "applicationSystemId") final String applicationSystemId,
                        @JsonProperty(value = "user") final User user) {
-        this.applicationPeriodId = applicationPeriodId;
+        this.applicationSystemId = applicationSystemId;
         this.user = user;
     }
 
     @JsonIgnore
-    public Application(@JsonProperty(value = "applicationPeriodId") final String applicationPeriodId,
+    public Application(@JsonProperty(value = "applicationSystemId") final String applicationSystemId,
                        @JsonProperty(value = "user") final User user,
                        final String oid) {
-        this.applicationPeriodId = applicationPeriodId;
+        this.applicationSystemId = applicationSystemId;
         this.user = user;
         this.oid = oid;
     }
 
     public Application(final User user, final ApplicationPhase phase) {
-        this(phase.getApplicationPeriodId(), user);
+        this(phase.getApplicationSystemId(), user);
         addVaiheenVastaukset(phase.getPhaseId(), phase.getAnswers());
     }
 
     public Application(final String oid, final ApplicationPhase phase) {
-        this(phase.getApplicationPeriodId(), oid);
+        this(phase.getApplicationSystemId(), oid);
         addVaiheenVastaukset(phase.getPhaseId(), phase.getAnswers());
     }
 
-    public Application(final String applicationPeriodId, final String oid) {
-        this.applicationPeriodId = applicationPeriodId;
+    public Application(final String applicationSystemId, final String oid) {
+        this.applicationSystemId = applicationSystemId;
         this.oid = oid;
     }
 
@@ -167,8 +167,8 @@ public class Application implements Serializable {
         this.user = null;
     }
 
-    public String getApplicationPeriodId() {
-        return applicationPeriodId;
+    public String getApplicationSystemId() {
+        return applicationSystemId;
     }
 
     @JsonIgnore
@@ -243,8 +243,8 @@ public class Application implements Serializable {
         this.meta = meta;
     }
 
-    public void setApplicationPeriodId(String applicationPeriodId) {
-        this.applicationPeriodId = applicationPeriodId;
+    public void setApplicationSystemId(String applicationSystemId) {
+        this.applicationSystemId = applicationSystemId;
     }
 
     public String getPersonOid() {

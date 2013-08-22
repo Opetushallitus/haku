@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.lomakkeenhallinta.util;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -211,18 +211,18 @@ public final class ElementUtil {
         }
     }
 
-    public static ApplicationPeriod createActiveApplicationPeriod(final String id, Form form) {
+    public static ApplicationSystem createActiveApplicationSystem(final String id, Form form) {
         Date start = new Date();
         final Calendar instance = Calendar.getInstance();
         instance.roll(Calendar.YEAR, 1);
         Date end = new Date(instance.getTimeInMillis());
-        return new ApplicationPeriod(id, form, start, end, ElementUtil.createI18NAsIs("test application period"));
+        return new ApplicationSystem(id, form, start, end, ElementUtil.createI18NAsIs("test application period"));
     }
 
-    public static String getPath(final ApplicationPeriod applicationPeriod, final String id) {
-        List<String> paths = paths(applicationPeriod.getForm(), id);
+    public static String getPath(final ApplicationSystem applicationSystem, final String id) {
+        List<String> paths = paths(applicationSystem.getForm(), id);
         paths.remove(0);
-        paths.add(0, applicationPeriod.getId());
+        paths.add(0, applicationSystem.getId());
         return Joiner.on("/").skipNulls().join(paths);
     }
 

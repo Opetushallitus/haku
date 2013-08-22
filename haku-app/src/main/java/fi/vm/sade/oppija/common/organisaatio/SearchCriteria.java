@@ -22,7 +22,7 @@ public class SearchCriteria {
     private boolean includePlanned;
 
     private String learningInstitutionType;
-    
+
     private String organizationType;
 
     private String searchString;
@@ -33,6 +33,7 @@ public class SearchCriteria {
     public String getLearningInstitutionType() {
         return learningInstitutionType;
     }
+
     public String getOrganizationType() {
         return organizationType;
     }

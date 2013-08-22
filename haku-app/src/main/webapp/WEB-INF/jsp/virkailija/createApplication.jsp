@@ -16,7 +16,7 @@
                 <div class="margin-top-2">
                     <label for="asSelect"><fmt:message key="virkailija.hakemus.syota.valitsehaku"/></label>
                     <select id="asSelect" name="asId">
-                        <c:forEach var="option" items="${applicationPeriods}">
+                        <c:forEach var="option" items="${applicationSystems}">
                             <option value="${option.key}"><haku:i18nText value="${option.value.name}"/></option>
                         </c:forEach>
                     </select>

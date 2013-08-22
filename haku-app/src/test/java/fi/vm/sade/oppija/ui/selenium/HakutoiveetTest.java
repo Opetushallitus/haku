@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.ui.selenium;
 
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
@@ -42,7 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createActiveApplicationPeriod;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createActiveApplicationSystem;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertNull;
 
@@ -53,15 +53,15 @@ import static org.junit.Assert.assertNull;
  */
 public class HakutoiveetTest extends AbstractSeleniumBase {
 
-    private ApplicationPeriod activeApplicationPeriod;
+    private ApplicationSystem activeApplicationSystem;
 
     @Before
     public void init() throws IOException {
         super.before();
         FormModel formModel = new FormModel();
         Form form = new Form("lomake", createI18NAsIs("yhteishaku"));
-        activeApplicationPeriod = createActiveApplicationPeriod(ASID, form);
-        formModel.addApplicationPeriod(activeApplicationPeriod);
+        activeApplicationSystem = createActiveApplicationSystem(ASID, form);
+        formModel.addApplicationSystem(activeApplicationSystem);
         Phase hakutoiveet = new Phase("hakutoiveet", createI18NAsIs("Hakutoiveet"), false);
         Phase lisakysymykset = new Phase("lisakysymykset", createI18NAsIs("Lisäkysymykset"), false);
         form.addChild(hakutoiveet);
@@ -127,7 +127,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
     }
 
     private String getHakutoiveetPath() {
-        String hakutoiveet = ElementUtil.getPath(this.activeApplicationPeriod, "hakutoiveet");
+        String hakutoiveet = ElementUtil.getPath(this.activeApplicationSystem, "hakutoiveet");
         return "lomake/" + hakutoiveet;
     }
 }

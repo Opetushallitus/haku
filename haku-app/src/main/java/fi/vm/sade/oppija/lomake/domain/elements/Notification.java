@@ -25,9 +25,11 @@ public class Notification extends Titled {
 
     private static final long serialVersionUID = -235576061716035350L;
 
-    public enum NotificationType {WARNING("warning"), INFO("info");
+    public enum NotificationType {
+        WARNING("warning"), INFO("info");
 
         private final String type;
+
         NotificationType(String type) {
             this.type = type;
         }

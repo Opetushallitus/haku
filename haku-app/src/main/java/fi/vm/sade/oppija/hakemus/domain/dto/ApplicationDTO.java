@@ -60,7 +60,7 @@ public class ApplicationDTO {
     public ApplicationDTO(Application application) {
         this(application.getOid(),
                 application.getPersonOid(),
-                application.getApplicationPeriodId(),
+                application.getApplicationSystemId(),
                 application.getVastauksetMerged(),
                 application.getAdditionalInfo());
     }

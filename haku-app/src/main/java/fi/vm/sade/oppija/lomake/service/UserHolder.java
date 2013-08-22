@@ -63,24 +63,24 @@ public class UserHolder implements Serializable {
         return populated;
     }
 
-    public Application getApplication(final String applicationPeriodId) {
-        if (applications.containsKey(applicationPeriodId)) {
-            return applications.get(applicationPeriodId);
+    public Application getApplication(final String applicationSystemId) {
+        if (applications.containsKey(applicationSystemId)) {
+            return applications.get(applicationSystemId);
         } else {
-            Application application = new Application(applicationPeriodId, user);
-            this.applications.put(applicationPeriodId, application);
+            Application application = new Application(applicationSystemId, user);
+            this.applications.put(applicationSystemId, application);
             return application;
         }
 
     }
 
     public Application savePhaseAnswers(ApplicationPhase applicationPhase) {
-        Application application = this.getApplication(applicationPhase.getApplicationPeriodId());
+        Application application = this.getApplication(applicationPhase.getApplicationSystemId());
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
         return application;
     }
 
-    public void removeApplication(final String applicationPeriodId) {
-        this.applications.remove(applicationPeriodId);
+    public void removeApplication(final String applicationSystemId) {
+        this.applications.remove(applicationSystemId);
     }
 }

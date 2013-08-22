@@ -16,24 +16,29 @@
 
 package fi.vm.sade.oppija.hakemus.dao;
 
+import java.util.List;
+
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class ApplicationQueryParameters {
-    private final String state;
+    private final List<String> state;
     private final String aoId;
     private final String lopOid;
+    private final String asId;
     private final int start;
     private final int rows;
 
-    public ApplicationQueryParameters(final String state, final String aoId, final String lopOid, final int start, final int rows) {
+    public ApplicationQueryParameters(final List<String> state, final String aoId, final String lopOid, final String asId,
+                                      final int start, final int rows) {
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
-        this.state = isEmpty(state) ? null : state;
+        this.state = state;
         this.aoId = isEmpty(aoId) ? null : aoId;
+        this.asId = isEmpty(asId) ? null : asId;
         this.start = start;
         this.rows = rows;
     }
 
-    public String getState() {
+    public List<String> getState() {
         return state;
     }
 
@@ -43,6 +48,10 @@ public class ApplicationQueryParameters {
 
     public String getLopOid() {
         return lopOid;
+    }
+
+    public String getAsId() {
+        return asId;
     }
 
     public int getStart() {

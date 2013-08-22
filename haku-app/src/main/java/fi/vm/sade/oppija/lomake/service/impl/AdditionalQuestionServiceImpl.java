@@ -45,8 +45,8 @@ public class AdditionalQuestionServiceImpl implements AdditionalQuestionService 
     }
 
     @Override
-    public List<Question> findAdditionalQuestions(final String applicationPeriodId, final String themeId, final String aoId) {
-        Form form = formService.getActiveForm(applicationPeriodId);
+    public List<Question> findAdditionalQuestions(final String applicationSystemId, final String themeId, final String aoId) {
+        Form form = formService.getActiveForm(applicationSystemId);
         Theme theme = (Theme) form.getChildById(themeId);
         return theme.getAdditionalQuestions(aoId);
 

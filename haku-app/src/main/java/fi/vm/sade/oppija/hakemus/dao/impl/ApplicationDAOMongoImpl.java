@@ -19,7 +19,10 @@ package fi.vm.sade.oppija.hakemus.dao.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
@@ -94,7 +97,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private static final String FIELD_APPLICATION_OID = "oid";
 
-    private static final String FIELD_APPLICATION_PERIOD_ID = "applicationPeriodId";
+    private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
     private static final String FIELD_PERSON_OID = "personOid";
     private static final String FIELD_APPLICATION_STATE = "state";
     private static final String EXISTS = "$exists";
@@ -127,7 +130,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public ApplicationState tallennaVaihe(ApplicationState state) {
 
-        Application queryApplication = new Application(state.getApplication().getApplicationPeriodId(), state.getApplication().getUser(),
+        Application queryApplication = new Application(state.getApplication().getApplicationSystemId(), state.getApplication().getUser(),
                 state.getApplication().getOid());
         final DBObject query = toDBObject.apply(queryApplication);
 
@@ -165,7 +168,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public List<Application> findByApplicationSystem(String asId) {
-        DBObject dbObject = QueryBuilder.start().and(QueryBuilder.start(FIELD_APPLICATION_PERIOD_ID).is(asId).get(),
+        DBObject dbObject = QueryBuilder.start().and(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId).get(),
                 newOIdExistDBObject()).get();
         return findApplications(dbObject);
     }
@@ -174,7 +177,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId) {
         DBObject dbObject = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
                 newOIdExistDBObject(),
-                new BasicDBObject(FIELD_APPLICATION_PERIOD_ID, asId),
+                new BasicDBObject(FIELD_APPLICATION_SYSTEM_ID, asId),
                 QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
                         Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get()).get();
         return findApplications(dbObject);
@@ -192,7 +195,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
         if (!Strings.isNullOrEmpty(ssn)) {
             String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
-            DBObject query = QueryBuilder.start(FIELD_APPLICATION_PERIOD_ID).is(asId)
+            DBObject query = QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
                     .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
                     .and(FIELD_APPLICATION_OID).exists(true)
                     .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
@@ -353,12 +356,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ArrayList<DBObject> filters = new ArrayList<DBObject>(2);
         DBObject stateQuery = null;
 
-        String state = applicationQueryParameters.getState();
-        if (!isEmpty(state)) {
-            if ("NOT_IDENTIFIED".equals(state)) {
+        List<String> state = applicationQueryParameters.getState();
+        if (state != null && !state.isEmpty()) {
+            if (state.size() == 1 && "NOT_IDENTIFIED".equals(state.get(0))) {
                 stateQuery = QueryBuilder.start(FIELD_PERSON_OID).exists(false).get();
             } else {
-                stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).is(state).get();
+                stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).in(state).get();
             }
         }
 
@@ -374,6 +377,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         String lopOid = applicationQueryParameters.getLopOid();
         if (!isEmpty(lopOid)) {
             filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
+        }
+
+        String asId = applicationQueryParameters.getAsId();
+        if (!isEmpty(asId)) {
+            filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId).get());
         }
 
         filters.add(newOIdExistDBObject());
@@ -400,7 +408,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ArrayList<DBObject> queries = new ArrayList<DBObject>(orgs.size());
 
         for (String org : orgs) {
-            log.info("filterByOrganization, org: "+org);
+            log.info("filterByOrganization, org: " + org);
             Pattern orgPattern = Pattern.compile(org);
             queries.add(QueryBuilder.start().or(
                     QueryBuilder.start(FIELD_LOP_PARENTS_1).regex(orgPattern).get(),
@@ -422,10 +430,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (filters.length > 0) {
             if (orgFilter.size() > 0) {
                 query = QueryBuilder.start()
-                    .and(baseQuery.get(),
-                        QueryBuilder.start().and(filters).get(),
-                        QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
-                    .get();
+                        .and(baseQuery.get(),
+                                QueryBuilder.start().and(filters).get(),
+                                QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
+                        .get();
             } else {
                 query = QueryBuilder.start()
                         .and(baseQuery.get(),
@@ -435,13 +443,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         } else {
             if (orgFilter.size() > 0) {
                 query = QueryBuilder.start()
-                    .and(baseQuery.get(),
-                            QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
-                    .get();
+                        .and(baseQuery.get(),
+                                QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
+                        .get();
             } else {
                 query = QueryBuilder.start()
-                   .and(baseQuery.get())
-                    .get();
+                        .and(baseQuery.get())
+                        .get();
             }
         }
         return query;

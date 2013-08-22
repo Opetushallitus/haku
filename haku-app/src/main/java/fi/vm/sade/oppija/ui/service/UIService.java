@@ -36,12 +36,12 @@ public interface UIService {
     /**
      * Can be used to build the model of the user application sent/complete print view
      *
-     * @param applicationPeriodId
+     * @param applicationSystemId
      * @param oid
      * @return
      * @throws ResourceNotFoundException
      */
-    UIServiceResponse getApplicationPrint(final String applicationPeriodId, final String oid) throws ResourceNotFoundException;
+    UIServiceResponse getApplicationPrint(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
 
-    UIServiceResponse getApplicationComplete(final String applicationPeriodId, final String oid) throws ResourceNotFoundException;
+    UIServiceResponse getApplicationComplete(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
 }

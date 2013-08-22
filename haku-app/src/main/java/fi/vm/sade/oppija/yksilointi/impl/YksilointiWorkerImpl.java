@@ -65,17 +65,17 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         this.formService = formService;
 
         VelocityEngine velocityEngine = new VelocityEngine();
-        velocityEngine.setProperty(VelocityEngine.ENCODING_DEFAULT, "UTF-8");
+        velocityEngine.setProperty(VelocityEngine.INPUT_ENCODING, "UTF-8");
+        velocityEngine.setProperty(VelocityEngine.OUTPUT_ENCODING, "UTF-8");
         velocityEngine.setProperty("resource.loader", "class");
         velocityEngine.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         velocityEngine.setProperty("class.resource.loader.path", "email");
         velocityEngine.setProperty("class.resource.loader.cache", "true");
         velocityEngine.setProperty("runtime.log.logsystem.log4j.logger", "velocity");
         velocityEngine.init();
-
         templateMap = new HashMap<String, Template>();
-        templateMap.put("suomi", velocityEngine.getTemplate("email/application_received_fi.vm"));
-        templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_sv.vm"));
+        templateMap.put("suomi", velocityEngine.getTemplate("email/application_received_fi.vm", "UTF-8"));
+        templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_sv.vm", "UTF-8"));
     }
 
     /**
@@ -137,7 +137,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         String applicationId = application.getOid();
         applicationId = applicationId.substring(applicationId.lastIndexOf('.') + 1);
 
-        ctx.put("applicationPeriodId", getFormName(application));
+        ctx.put("applicationSystemId", getFormName(application));
         ctx.put("applicant", getApplicantName(application));
         ctx.put("applicationId", applicationId);
         ctx.put("applicationDate", applicationDate);
@@ -169,7 +169,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     }
 
     private String getFormName(Application application) {
-        Form form = formService.getForm(application.getApplicationPeriodId());
+        Form form = formService.getForm(application.getApplicationSystemId());
         Map<String, String> translations = form.getI18nText().getTranslations();
         String lang = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
         String realLang = "suomi".equals(lang) ? "fi" : "sv";
@@ -189,6 +189,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         email.setFrom(replyTo);
         email.setSubject(subject);
         email.addTo(toAddress);
+        email.setCharset("utf-8");
         return email;
     }
 }

@@ -17,7 +17,8 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013;
 
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.esikatselu.EsikatseluPhase;
@@ -33,12 +34,10 @@ import org.springframework.stereotype.Service;
 import java.util.Calendar;
 import java.util.Date;
 
-import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NForm;
-
 @Service
 public class Yhteishaku2013 {
 
-    private final ApplicationPeriod applicationPeriod;
+    private final ApplicationSystem applicationSystem;
 
     @Autowired
     public Yhteishaku2013(
@@ -46,22 +45,32 @@ public class Yhteishaku2013 {
             final @Value("${asid}") String asid,
             final @Value("${aoid}") String aoid) { // NOSONAR
 
+        this(koodistoService, asid, aoid, ElementUtil.createI18NAsIs(asid));
+    }
+
+    public Yhteishaku2013(
+            final KoodistoService koodistoService,
+            final String asid,
+            final String aoid,
+            final I18nText name) { // NOSONAR
+
         Date start = new Date();
         final Calendar instance = Calendar.getInstance();
         instance.roll(Calendar.YEAR, 1);
         Date end = new Date(instance.getTimeInMillis());
 
-        Form form = createForm(asid, koodistoService, aoid, start);
-        this.applicationPeriod = new ApplicationPeriod(asid, form, start, end, ElementUtil.createI18NAsIs(asid));
+        Form form = createForm(asid, koodistoService, aoid, start, name);
+        this.applicationSystem = new ApplicationSystem(asid, form, start, end, name);
     }
 
 
     private Form createForm(final String asid,
                             final KoodistoService koodistoService,
                             final String aoidAdditionalQuestion,
-                            final Date start) {
+                            final Date start,
+                            final I18nText name) {
         try {
-            Form form = new Form(asid, createI18NForm("form.title"));
+            Form form = new Form(asid, name);
             form.addChild(HenkilotiedotPhase.create(koodistoService));
             form.addChild(KoulutustaustaPhase.create(koodistoService));
             form.addChild(HakutoiveetPhase.create(aoidAdditionalQuestion));
@@ -74,7 +83,7 @@ public class Yhteishaku2013 {
         }
     }
 
-    public ApplicationPeriod getApplicationPeriod() {
-        return applicationPeriod;
+    public ApplicationSystem getApplicationSystem() {
+        return applicationSystem;
     }
 }

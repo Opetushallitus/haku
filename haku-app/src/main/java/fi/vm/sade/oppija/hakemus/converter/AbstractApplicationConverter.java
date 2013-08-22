@@ -19,7 +19,7 @@ public abstract class AbstractApplicationConverter<T> implements Converter<Appli
         List<HakukohdeTyyppi> preferences = new ArrayList<HakukohdeTyyppi>();
         int i = 1;
 
-        while(true) {
+        while (true) {
             String key = String.format(OppijaConstants.PREFERENCE_ID, i);
             if (keyValues.containsKey(key)) {
                 String value = keyValues.get(key);

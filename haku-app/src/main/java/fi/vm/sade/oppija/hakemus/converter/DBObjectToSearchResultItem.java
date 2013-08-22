@@ -47,6 +47,7 @@ public class DBObjectToSearchResultItem implements Function<DBObject, Applicatio
         if (dbObject != null) {
             ApplicationSearchResultItemDTO item = new ApplicationSearchResultItemDTO();
             item.setOid((String) dbObject.get("oid"));
+            item.setPersonOid((String) dbObject.get("personOid"));
             if (dbObject.containsField("state")) {
                 item.setState(Application.State.valueOf((String) dbObject.get("state")));
             }

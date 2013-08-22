@@ -61,7 +61,7 @@ public class OfficerController {
     public static final String OID_PATH_PARAM = "oid";
     public static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
-    public static final String APPLICATION_PERIOD_ID_PATH_PARAM = "applicationPeriodId";
+    public static final String APPLICATION_SYSTEM_ID_PATH_PARAM = "applicationSystemId";
     public static final String ADDITIONAL_INFO_VIEW = "/virkailija/additionalInfo";
     public static final String SEARCH_INDEX_VIEW = "/virkailija/searchIndex";
     public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + ";charset=UTF-8";
@@ -105,59 +105,60 @@ public class OfficerController {
         LOGGER.debug("redirectToLastPhase {}", new Object[]{oid});
         Application application = officerUIService.getApplicationWithLastPhase(oid);
         URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW,
-                application.getApplicationPeriodId(),
+                application.getApplicationSystemId(),
                 application.getPhaseId(),
                 application.getOid());
         return seeOther(path).build();
     }
 
     @GET
-    @Path("/hakemus/{applicationPeriodId}/{phaseId}/{oid}/{elementId}")
+    @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}/{elementId}")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable getPreviewElement(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    public Viewable getPreviewElement(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                       @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                       @PathParam(OID_PATH_PARAM) final String oid,
                                       @PathParam("elementId") final String elementId)
             throws ResourceNotFoundException {
-        LOGGER.debug("getPreviewElement {}, {}, {}", applicationPeriodId, phaseId, oid);
+        LOGGER.debug("getPreviewElement {}, {}, {}", applicationSystemId, phaseId, oid);
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplicationElement(oid, phaseId, elementId);
         return new Viewable("/elements/Root", uiServiceResponse.getModel()); // TODO remove hardcoded Phase
     }
 
     @GET
-    @Path("/hakemus/{applicationPeriodId}/{phaseId}/{oid}")
+    @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable getPreview(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
+    public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                @PathParam(OID_PATH_PARAM) final String oid)
             throws ResourceNotFoundException, IOException {
 
-        LOGGER.debug("getPreview {}, {}, {}", applicationPeriodId, phaseId, oid);
+        LOGGER.debug("getPreview {}, {}, {}", applicationSystemId, phaseId, oid);
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, phaseId);
         return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel()); // TODO remove hardcoded Phase
     }
 
     @POST
-    @Path("/hakemus/{applicationPeriodId}/{phaseId}/{oid}")
+    @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Response updatePhase(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    public Response updatePhase(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(OID_PATH_PARAM) final String oid,
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException, ResourceNotFoundException {
 
-        LOGGER.debug("updatePhase {}, {}, {}", applicationPeriodId, phaseId, oid);
+        LOGGER.debug("updatePhase {}, {}, {}", applicationSystemId, phaseId, oid);
 
         UIServiceResponse uiServiceResponse = officerUIService.updateApplication(oid,
-                new ApplicationPhase(applicationPeriodId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)),
+                new ApplicationPhase(applicationSystemId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)),
                 userHolder.getUser());
 
         if (uiServiceResponse.hasErrors()) {
             return ok(new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel())).build();
         } else {
-            URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, applicationPeriodId, "esikatselu", oid);
+            URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, applicationSystemId, "esikatselu", oid);
             return seeOther(path).build();
         }
     }
@@ -260,15 +261,15 @@ public class OfficerController {
     }
 
     @GET
-    @Path("/hakemus/{applicationPeriodId}/{phaseId}/{oid}/{elementId}/relatedData/{key}")
+    @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}/{elementId}/relatedData/{key}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public Serializable getElementRelatedData(@PathParam(APPLICATION_PERIOD_ID_PATH_PARAM) final String applicationPeriodId,
+    public Serializable getElementRelatedData(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                               @PathParam(OID_PATH_PARAM) final String oid,
                                               @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                               @PathParam("key") final String key) {
-        LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationPeriodId, elementId, key);
-        Form activeForm = formService.getActiveForm(applicationPeriodId);
+        LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationSystemId, elementId, key);
+        Form activeForm = formService.getActiveForm(applicationSystemId);
         try {
             @SuppressWarnings("unchecked")
             DataRelatedQuestion<Serializable> element =

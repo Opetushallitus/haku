@@ -21,7 +21,6 @@ import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioDTO;
-import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioSearchCriteriaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -52,8 +51,8 @@ public class OrganizationServiceImpl implements OrganizationService {
         criteriaDTO.setSuunnitellut(criteria.isIncludePlanned());
         criteriaDTO.setLakkautetut(criteria.isIncludePassive());
         criteriaDTO.setOppilaitosTyyppi(criteria.getLearningInstitutionType());
-        final List<OrganisaatioPerustietoType> result = service.searchBasicOrganisaatios(criteriaDTO);
-        return Lists.newArrayList(Lists.transform(result, new OrganisaatioPerustietoTypeToOrganizationFunction()));
+        final List<OrganisaatioDTO> result = service.searchOrganisaatios(criteriaDTO);
+        return Lists.newArrayList(Lists.transform(result, new OrganisaatioDTOToOrganizationFunction()));
     }
 
     @Override

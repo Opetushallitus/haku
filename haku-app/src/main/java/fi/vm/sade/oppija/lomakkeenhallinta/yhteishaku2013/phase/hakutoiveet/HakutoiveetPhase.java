@@ -86,7 +86,7 @@ public class HakutoiveetPhase {
 
         pr.addChild(createDiscretionaryQuestionsAndRules(id));
         pr.addChild(createSoraQuestions(id),
-                    createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id));
+                createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id));
         return pr;
     }
 

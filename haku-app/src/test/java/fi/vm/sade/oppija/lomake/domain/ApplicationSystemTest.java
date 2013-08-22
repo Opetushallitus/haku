@@ -26,13 +26,13 @@ import java.util.Date;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class ApplicationPeriodTest {
+public class ApplicationSystemTest {
 
     @Test
     public void testIsActiveSame() throws Exception {
         Date now = new Date();
-        ApplicationPeriod applicationPeriod = new ApplicationPeriod("1", new Form("", ElementUtil.createI18NAsIs("")), now, now, ElementUtil.createI18NAsIs(""));
-        assertFalse(applicationPeriod.isActive());
+        ApplicationSystem applicationSystem = new ApplicationSystem("1", new Form("", ElementUtil.createI18NAsIs("")), now, now, ElementUtil.createI18NAsIs(""));
+        assertFalse(applicationSystem.isActive());
     }
 
     @Test
@@ -41,7 +41,7 @@ public class ApplicationPeriodTest {
         final Calendar instance = Calendar.getInstance();
         instance.roll(Calendar.YEAR, 1);
         Date end = new Date(instance.getTimeInMillis());
-        ApplicationPeriod applicationPeriod = new ApplicationPeriod("1", new Form("", ElementUtil.createI18NAsIs("")), start, end, ElementUtil.createI18NAsIs(""));
-        assertTrue(applicationPeriod.isActive());
+        ApplicationSystem applicationSystem = new ApplicationSystem("1", new Form("", ElementUtil.createI18NAsIs("")), start, end, ElementUtil.createI18NAsIs(""));
+        assertTrue(applicationSystem.isActive());
     }
 }

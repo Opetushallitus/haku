@@ -17,18 +17,21 @@ package fi.vm.sade.oppija.hakemus.dao;
 
 /**
  * DAO for generating unique application oids
+ *
  * @author Mikko Majapuro
  */
 public interface ApplicationOidDAO {
 
     /**
      * Generates a new unique oid
+     *
      * @return oid
      */
     String generateNewOid();
-    
+
     /**
      * Return oid-prefix for applications.
+     *
      * @return
      */
     String getOidPrefix();

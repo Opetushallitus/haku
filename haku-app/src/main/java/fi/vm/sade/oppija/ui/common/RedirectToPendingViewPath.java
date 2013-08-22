@@ -24,11 +24,11 @@ public class RedirectToPendingViewPath implements ViewPath {
     public static final String VALMIS_VIEW = "valmis";
     private final String path;
 
-    public RedirectToPendingViewPath(final String applicationPeriodId, final String oid) {
-        Preconditions.checkNotNull(applicationPeriodId);
+    public RedirectToPendingViewPath(final String applicationSystemId, final String oid) {
+        Preconditions.checkNotNull(applicationSystemId);
         Preconditions.checkNotNull(oid);
         Joiner joiner = Joiner.on("/").skipNulls();
-        path = joiner.join(REDIRECT_LOMAKE, applicationPeriodId, VALMIS_VIEW, oid);
+        path = joiner.join(REDIRECT_LOMAKE, applicationSystemId, VALMIS_VIEW, oid);
     }
 
 

@@ -89,7 +89,7 @@
 
     var sortabletable_settings = {
         contextPath: '<c:out value="${pageContext.request.contextPath}"/>',
-        applicationPeriodId: '<c:out value="${it.applicationPeriodId}"/>',
+        applicationSystemId: '<c:out value="${it.applicationSystemId}"/>',
         vaiheId: '<c:out value="${vaihe.id}"/>',
         teemaId: '<c:out value="${parent.id}"/>',
         baseEducation: '<c:out value="${categoryData.POHJAKOULUTUS}"/>',

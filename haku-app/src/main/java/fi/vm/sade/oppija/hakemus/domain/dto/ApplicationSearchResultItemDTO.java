@@ -35,18 +35,21 @@ public class ApplicationSearchResultItemDTO implements Serializable {
     private String firstNames;
     private String lastName;
     private String ssn;
+    private String personOid;
 
     @JsonCreator
     public ApplicationSearchResultItemDTO(@JsonProperty(value = "oid") final String oid,
                                           @JsonProperty(value = "state") final Application.State state,
                                           @JsonProperty(value = "firstNames") final String firstNames,
                                           @JsonProperty(value = "lastName") final String lastName,
-                                          @JsonProperty(value = "ssn") final String ssn) {
+                                          @JsonProperty(value = "ssn") final String ssn,
+                                          @JsonProperty(value = "personOid") final String personOid) {
         this.oid = oid;
         this.state = state;
         this.firstNames = firstNames;
         this.lastName = lastName;
         this.ssn = ssn;
+        this.personOid = personOid;
     }
 
     @JsonIgnore
@@ -92,5 +95,13 @@ public class ApplicationSearchResultItemDTO implements Serializable {
 
     public void setSsn(String ssn) {
         this.ssn = ssn;
+    }
+
+    public String getPersonOid() {
+        return personOid;
+    }
+
+    public void setPersonOid(String personOid) {
+        this.personOid = personOid;
     }
 }

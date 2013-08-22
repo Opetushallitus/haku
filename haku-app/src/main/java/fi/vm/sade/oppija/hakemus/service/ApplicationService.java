@@ -20,7 +20,6 @@ import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 
@@ -29,7 +28,7 @@ import java.util.Map;
 
 public interface ApplicationService {
 
-    Application getApplication(final String applicationPeriodId);
+    Application getApplication(final String applicationSystemId);
 
     Application getApplicationByOid(final String oid) throws ResourceNotFoundException;
 
@@ -57,15 +56,15 @@ public interface ApplicationService {
      *
      * @return
      */
-    String submitApplication(final String applicationPeriodId);
+    String submitApplication(final String applicationSystemId);
 
     /**
-     * @param applicationPeriodId
+     * @param applicationSystemId
      * @param oid
      * @return
      * @throws ResourceNotFoundException if an application is not found with the oid
      */
-    Application getPendingApplication(final String applicationPeriodId, final String oid) throws ResourceNotFoundException;
+    Application getPendingApplication(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
 
     /**
      * Retrieves all submitted applications related to specified application system
@@ -175,7 +174,7 @@ public interface ApplicationService {
 
     Application passivateApplication(String oid);
 
-    void addNote(Application application, String s, User user);
+    void addNote(Application application, String s);
 
     /**
      * Creates a new empty application to specified application system.

@@ -16,22 +16,16 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
-import com.google.common.base.Predicate;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.validation.Validator;
-import fi.vm.sade.oppija.lomake.validation.validators.*;
-import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.lomake.validation.validators.PreferenceTableValidator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import static com.google.common.base.Predicates.*;
-import static fi.vm.sade.oppija.lomake.validation.validators.FunctionalValidator.ValidatorPredicate.validate;
 
 /**
  * Preference table element with row sorting functionality

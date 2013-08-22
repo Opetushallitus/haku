@@ -5,10 +5,9 @@ import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -25,7 +24,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -66,13 +64,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             final String elementId) throws ResourceNotFoundException {
         Application application = this.applicationService.getApplication(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
-        Form activeForm = this.formService.getActiveForm(application.getApplicationPeriodId());
-        Element element = activeForm.getChildById(elementId);
-        ValidationResult validationResult = ElementTreeValidator.validateForm(activeForm, application);
+        Form form = this.formService.getForm(application.getApplicationSystemId());
+        Element element = form.getChildById(elementId);
+        ValidationResult validationResult = ElementTreeValidator.validateForm(form, application);
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
         officerApplicationResponse.setElement(element);
-        officerApplicationResponse.setForm(activeForm);
+        officerApplicationResponse.setForm(form);
         officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return officerApplicationResponse;
@@ -82,12 +80,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws IOException, ResourceNotFoundException {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
-        Form activeForm = this.formService.getActiveForm(application.getApplicationPeriodId());
-        ValidationResult validationResult = ElementTreeValidator.validateForm(activeForm, application);
+        Form form = this.formService.getForm(application.getApplicationSystemId());
+        ValidationResult validationResult = ElementTreeValidator.validateForm(form, application);
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
-        officerApplicationResponse.setElement(activeForm.getChildById(application.getPhaseId()));
-        officerApplicationResponse.setForm(activeForm);
+        officerApplicationResponse.setElement(form.getChildById(application.getPhaseId()));
+        officerApplicationResponse.setForm(form);
         officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
         officerApplicationResponse.setAdditionalQuestions(getAdditionalQuestions(application));
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
@@ -117,26 +115,25 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         loggerAspect.logUpdateApplication(application, applicationPhase);
 
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
-        final Form activeForm = formService.getForm(application.getApplicationPeriodId());
-        ValidationResult formValidationResult = ElementTreeValidator.validateForm(activeForm, application);
+        final Form form = formService.getForm(application.getApplicationSystemId());
+        ValidationResult formValidationResult = ElementTreeValidator.validateForm(form, application);
         if (formValidationResult.hasErrors()) {
             application.incomplete();
         } else {
             application.activate();
         }
-        Element phase = activeForm.getChildById(applicationPhase.getPhaseId());
+        Element phase = form.getChildById(applicationPhase.getPhaseId());
         ValidationResult phaseValidationResult = ElementTreeValidator.validate(phase, applicationPhase.getAnswers());
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
-        application.addNote(new ApplicationNote(noteText, new Date(), user));
-
+        applicationService.addNote(application, noteText);
 
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
         officerApplicationResponse.setElement(phase);
-        officerApplicationResponse.setForm(activeForm);
+        officerApplicationResponse.setForm(form);
         officerApplicationResponse.setErrorMessages(phaseValidationResult.getErrorMessages());
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return officerApplicationResponse;
@@ -145,7 +142,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public Application getApplicationWithLastPhase(final String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
-        Element phase = formService.getLastPhase(application.getApplicationPeriodId());
+        Element phase = formService.getLastPhase(application.getApplicationSystemId());
         application.setPhaseId(phase.getId());
         return application;
     }
@@ -155,8 +152,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         UIServiceResponse uiServiceResponse = new UIServiceResponse();
         uiServiceResponse.addObjectToModel("organizationTypes", koodistoService.getOrganizationtypes());
         uiServiceResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
-        Map<String, ApplicationPeriod> applicationPerioidMap = formService.getApplicationPerioidMap();
-        uiServiceResponse.addObjectToModel("applicationPeriods", applicationPerioidMap);
+        Map<String, ApplicationSystem> applicationPerioidMap = formService.getApplicationPerioidMap();
+        uiServiceResponse.addObjectToModel("applicationSystems", applicationPerioidMap);
         return uiServiceResponse;
     }
 
@@ -180,7 +177,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public void addNote(String applicationOid, String note, User user) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(applicationOid);
-        applicationService.addNote(application, note, user);
+        applicationService.addNote(application, note);
     }
 
     private AdditionalQuestions getAdditionalQuestions(final Application application) throws IOException {

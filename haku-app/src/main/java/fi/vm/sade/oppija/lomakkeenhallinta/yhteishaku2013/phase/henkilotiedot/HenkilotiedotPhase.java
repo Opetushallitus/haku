@@ -83,9 +83,9 @@ public class HenkilotiedotPhase {
         sukupuoli.addOptions(koodistoService.getGenders());
         setRequiredInlineAndVerboseHelp(sukupuoli);
 
-        Option male =  sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
+        Option male = sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
                 sukupuoli.getOptions().get(0) : sukupuoli.getOptions().get(1);
-        Option female =  sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Nainen") ?
+        Option female = sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Nainen") ?
                 sukupuoli.getOptions().get(0) : sukupuoli.getOptions().get(1);
         SocialSecurityNumber socialSecurityNumber =
                 new SocialSecurityNumber("ssn_question", createI18NForm("form.henkilotiedot.hetu"),

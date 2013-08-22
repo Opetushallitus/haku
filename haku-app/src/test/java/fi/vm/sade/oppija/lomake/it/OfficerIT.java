@@ -5,6 +5,7 @@ import fi.vm.sade.oppija.common.selenium.LoginPage;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.HakuClient;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -73,6 +74,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     @Test
     public void testEditControls() throws InterruptedException {
         clickSearch();
+        screenshot("editControls");
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
         List<WebElement> editLinks = findByClassName("edit-link");

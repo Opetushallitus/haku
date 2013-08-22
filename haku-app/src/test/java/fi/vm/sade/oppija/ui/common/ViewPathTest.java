@@ -18,8 +18,8 @@ package fi.vm.sade.oppija.ui.common;
 
 public class ViewPathTest {
 
-    public static final String APPLICATION_PERIOD_ID = "apid";
+    public static final String APPLICATION_SYSTEM_ID = "asid";
     public static final String REDIRECT_FORM = "/lomake";
-    public static final String REDIRECT_TO_FORM_PREFIX = REDIRECT_FORM + "/" + APPLICATION_PERIOD_ID;
+    public static final String REDIRECT_TO_FORM_PREFIX = REDIRECT_FORM + "/" + APPLICATION_SYSTEM_ID;
 
 }

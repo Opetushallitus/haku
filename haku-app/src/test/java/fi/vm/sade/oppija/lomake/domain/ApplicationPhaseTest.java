@@ -31,8 +31,8 @@ public class ApplicationPhaseTest {
     private final ApplicationPhase applicationPhase = new ApplicationPhase(AS_ID, ID, answers);
 
     @Test
-    public void testGetApplicationPeriodId() throws Exception {
-        assertEquals(AS_ID, applicationPhase.getApplicationPeriodId());
+    public void testGetApplicationSystemId() throws Exception {
+        assertEquals(AS_ID, applicationPhase.getApplicationSystemId());
     }
 
     @Test
@@ -51,7 +51,7 @@ public class ApplicationPhaseTest {
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)
-    public void testConstructNullApplicationPeriodId() throws Exception {
+    public void testConstructNullApplicationSystemId() throws Exception {
         new ApplicationPhase(null, ID, answers);
     }
 

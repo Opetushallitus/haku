@@ -5,6 +5,7 @@ import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
 import fi.vm.sade.security.OrganisationHierarchyAuthorizer;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
                 readble.add(organization);
             } else if (checkAccess(organization, getReadUpdateRole())) {
                 readble.add(organization);
-            } else  if (checkAccess(organization, getCreateReadUpdateDeleteRole())) {
+            } else if (checkAccess(organization, getCreateReadUpdateDeleteRole())) {
                 readble.add(organization);
             }
         }
@@ -56,13 +57,19 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     public boolean userCanReadApplication(Application application) {
         Map<String, String> answers = application.getVastauksetMerged();
         for (int i = 1; i <= 5; i++) {
-            String id = "preference"+i+"-Opetuspiste-id";
-            String parents = "preference"+i+"-Opetuspiste-id-parents";
-            if (checkAccess(answers.get(id), getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+            String id = "preference" + i + "-Opetuspiste-id";
+            String parents = "preference" + i + "-Opetuspiste-id-parents";
+            String organization = answers.get(id);
+            if (StringUtils.isNotEmpty(organization) &&
+                    checkAccess(organization, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+                log.debug("User can read application, org: {}", organization);
                 return true;
             }
             for (String parent : parents.split(",")) {
-                if (checkAccess(answers.get(parent), getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+                organization = answers.get(parent);
+                if (StringUtils.isNotEmpty(organization) &&
+                        checkAccess(organization, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+                    log.debug("User can read application, parent org: {}", organization);
                     return true;
                 }
             }

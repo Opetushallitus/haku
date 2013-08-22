@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.service;
 
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomakkeenhallinta.FormGenerator;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
@@ -35,7 +35,7 @@ public class FormModelHolder {
 
     public FormModelHolder(final Yhteishaku2013 yhteishaku2013) {
         formModel = new FormModel();
-        formModel.addApplicationPeriod(yhteishaku2013.getApplicationPeriod());
+        formModel.addApplicationSystem(yhteishaku2013.getApplicationSystem());
         this.formGenerator = null;
 
     }
@@ -58,9 +58,9 @@ public class FormModelHolder {
     public synchronized boolean generateAndReplace() {
         try {
             formModel = new FormModel();
-            List<ApplicationPeriod> generate = formGenerator.generate();
-            for (ApplicationPeriod applicationPeriod : generate) {
-                formModel.addApplicationPeriod(applicationPeriod);
+            List<ApplicationSystem> generate = formGenerator.generate();
+            for (ApplicationSystem applicationSystem : generate) {
+                formModel.addApplicationSystem(applicationSystem);
             }
             return true;
         } catch (Exception e) {

@@ -30,21 +30,21 @@ public class FormModel implements Serializable {
     private static final long serialVersionUID = -530066716898062722L;
 
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-    final Map<String, ApplicationPeriod> applicationPerioidMap;
+    final Map<String, ApplicationSystem> applicationPerioidMap;
 
     public FormModel() {
-        this.applicationPerioidMap = new HashMap<String, ApplicationPeriod>();
+        this.applicationPerioidMap = new HashMap<String, ApplicationSystem>();
     }
 
-    public ApplicationPeriod getApplicationPeriodById(final String id) {
+    public ApplicationSystem getApplicationSystemById(final String id) {
         return applicationPerioidMap.get(id);
     }
 
-    public void addApplicationPeriod(ApplicationPeriod applicationPeriod) {
-        applicationPerioidMap.put(applicationPeriod.getId(), applicationPeriod);
+    public void addApplicationSystem(ApplicationSystem applicationSystem) {
+        applicationPerioidMap.put(applicationSystem.getId(), applicationSystem);
     }
 
-    public Map<String, ApplicationPeriod> getApplicationPerioidMap() {
+    public Map<String, ApplicationSystem> getApplicationPerioidMap() {
         return applicationPerioidMap;
     }
 }

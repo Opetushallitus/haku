@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.lomake.service.impl;
 
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
-import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
@@ -35,17 +35,17 @@ public class FormServiceImplTest {
 
     public static final Form FORM = new Form(ElementUtil.randomId(), createI18NAsIs("Form title"));
     public static final Phase PHASE = new Phase(ElementUtil.randomId(), createI18NAsIs("Phase title"), false);
-    public ApplicationPeriod applicationPeriod;
+    public ApplicationSystem applicationSystem;
     private FormServiceImpl formService;
 
     @Before
     public void setUp() throws Exception {
-        this.applicationPeriod = ElementUtil.createActiveApplicationPeriod("ASID", FORM);
+        this.applicationSystem = ElementUtil.createActiveApplicationSystem("ASID", FORM);
         Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl(), "dummyAsid", "dummyAoid");
         FormModelHolder holder = new FormModelHolder(yhteishaku2013);
         FormModel model = new FormModel();
         FORM.addChild(PHASE);
-        model.addApplicationPeriod(applicationPeriod);
+        model.addApplicationSystem(applicationSystem);
         holder.updateModel(model);
         formService = new FormServiceImpl(holder);
     }
@@ -56,13 +56,13 @@ public class FormServiceImplTest {
     }
 
     @Test
-    public void testGetApplicationPeriodById() throws Exception {
-        ApplicationPeriod applicationPeriodById = formService.getApplicationPeriod(applicationPeriod.getId());
-        assertEquals(applicationPeriod, applicationPeriodById);
+    public void testGetApplicationSystemById() throws Exception {
+        ApplicationSystem applicationSystemById = formService.getApplicationSystem(applicationSystem.getId());
+        assertEquals(applicationSystem, applicationSystemById);
     }
 
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
-    public void testGetApplicationPeriodByIdNotFound() throws Exception {
-        formService.getApplicationPeriod("lskdjflsdk");
+    public void testGetApplicationSystemByIdNotFound() throws Exception {
+        formService.getApplicationSystem("lskdjflsdk");
     }
 }

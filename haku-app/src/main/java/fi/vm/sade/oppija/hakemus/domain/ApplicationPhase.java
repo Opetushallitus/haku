@@ -24,21 +24,21 @@ import java.util.Map;
 
 public class ApplicationPhase {
 
-    private final String applicationPeriodId;
+    private final String applicationSystemId;
     private final String phaseId;
     private final Map<String, String> answers = new HashMap<String, String>();
 
-    public ApplicationPhase(final String applicationPeriodId, final String phaseId, final Map<String, String> answers) {
-        Validate.notNull(applicationPeriodId, "applicationPeriodId is null");
+    public ApplicationPhase(final String applicationSystemId, final String phaseId, final Map<String, String> answers) {
+        Validate.notNull(applicationSystemId, "applicationSystemId is null");
         Validate.notNull(phaseId, "phaseId is null");
         Validate.notNull(answers, "answers is null");
-        this.applicationPeriodId = applicationPeriodId;
+        this.applicationSystemId = applicationSystemId;
         this.phaseId = phaseId;
         this.answers.putAll(answers);
     }
 
-    public String getApplicationPeriodId() {
-        return applicationPeriodId;
+    public String getApplicationSystemId() {
+        return applicationSystemId;
     }
 
     public String getPhaseId() {
