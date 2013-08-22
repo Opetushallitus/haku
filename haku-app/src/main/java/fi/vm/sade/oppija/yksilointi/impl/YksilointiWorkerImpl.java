@@ -88,8 +88,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Application application = applicationService.getNextWithoutPersonOid();
 
         long endTime = System.currentTimeMillis() + (limit - 500);
-        LOGGER.debug("Starting processApplications, limit: {}, application: {}",
-                limit, application != null ? application.getOid() : "null");
+        LOGGER.debug("Starting processApplications, limit: {}, application: {} {}",
+                limit, application != null ? application.getOid() : "null", System.currentTimeMillis());
         while (application != null && endTime > System.currentTimeMillis()) {
             applicationService.addPersonAndAuthenticate(application);
             applicationService.fillLOPChain(application);
@@ -101,10 +101,10 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 }
             }
             application = applicationService.getNextWithoutPersonOid();
-            LOGGER.debug("Processed application, next application: {}",
-                    application != null ? application.getOid() : "null");
+            LOGGER.debug("Processed application, next application: {} {}",
+                    application != null ? application.getOid() : "null", System.currentTimeMillis());
         }
-        LOGGER.debug("Done processing applications");
+        LOGGER.debug("Done processing applications {}", System.currentTimeMillis());
     }
 
     private void sendMail(Application application) throws EmailException {
