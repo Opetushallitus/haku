@@ -38,7 +38,9 @@ public class Scheduler {
     public void runIdentification() {
         if (run) {
             try {
-                worker.processApplications(interval - 500, sendMail);
+                LOGGER.debug("Running identification scheduler");
+                worker.processApplications(interval, sendMail);
+                LOGGER.debug("Finished running identification scheduler");
             } catch (Exception e) {
                 LOGGER.error("Error processing applications", e);
                 //run = false;
