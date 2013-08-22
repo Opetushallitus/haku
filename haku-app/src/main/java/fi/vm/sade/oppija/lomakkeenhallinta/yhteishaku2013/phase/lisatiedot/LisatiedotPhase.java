@@ -20,7 +20,7 @@ import java.util.GregorianCalendar;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
-public class LisatiedotPhase {
+public class    LisatiedotPhase {
     public static final int AGE_WORK_EXPERIENCE = 16;
     public static final String TYOKOKEMUS_PATTERN = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$";
 

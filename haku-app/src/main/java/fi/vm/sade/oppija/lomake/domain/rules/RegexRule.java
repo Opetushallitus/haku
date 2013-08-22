@@ -52,6 +52,17 @@ public final class RegexRule {
         return toCommaSeparatedString(selectors);
     }
 
+
+    public static String tochildIdList(final Element element) {
+        return Joiner.on(',').skipNulls().join(
+                Iterables.transform(element.getChildren(), new Function<Element, String>() {
+                    @Override
+                    public String apply(final Element element) {
+                        return "'" + element.getId() + "'";
+                    }
+                }));
+    }
+
     public static String toCommaSeparatedString(final Iterable<String> listOfStrings) {
         return Joiner.on(',').skipNulls().join(listOfStrings);
     }
