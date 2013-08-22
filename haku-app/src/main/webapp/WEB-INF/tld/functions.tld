@@ -15,6 +15,12 @@
         <function-signature>java.lang.String toNameSelectorString(java.lang.Iterable)</function-signature>
     </function>
     <function>
+        <name>tochildIdList</name>
+        <function-class>fi.vm.sade.oppija.lomake.domain.rules.RegexRule</function-class>
+        <function-signature>java.lang.String tochildIdList(fi.vm.sade.oppija.lomake.domain.elements.Element)</function-signature>
+    </function>
+
+    <function>
         <name>toCommaSeparatedString</name>
         <function-class>fi.vm.sade.oppija.lomake.domain.rules.RegexRule</function-class>
         <function-signature>java.lang.String toCommaSeparatedString(java.lang.Iterable)</function-signature>
@@ -28,7 +34,8 @@
     <function>
         <name>allChildren</name>
         <function-class>fi.vm.sade.oppija.lomake.domain.elements.Element</function-class>
-        <function-signature>java.util.List getAllChildren(fi.vm.sade.oppija.lomake.domain.elements.Element)</function-signature>
+        <function-signature>java.util.List getAllChildren(fi.vm.sade.oppija.lomake.domain.elements.Element)
+        </function-signature>
     </function>
     <function>
         <name>dod</name>
