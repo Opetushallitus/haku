@@ -114,7 +114,14 @@
         <servlet-name>cxf</servlet-name>
         <url-pattern>/services/*</url-pattern>
     </servlet-mapping>
-
+	<filter>
+        <filter-name>jersey2</filter-name>
+        <filter-class>org.apache.cxf.transport.servlet.CXFServlet</filter-class>
+        <init-param>
+            <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+            <param-value>fi.vm.sade.oppija.common.filter.CorsFilter</param-value>
+        </init-param>
+    </filter>
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
         <location>/WEB-INF/jsp/error/servererror.jsp</location>
