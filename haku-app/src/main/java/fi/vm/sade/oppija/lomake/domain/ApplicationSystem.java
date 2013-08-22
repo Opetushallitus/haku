@@ -17,12 +17,15 @@
 package fi.vm.sade.oppija.lomake.domain;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
 
 public class ApplicationSystem implements Serializable {
 
@@ -30,30 +33,31 @@ public class ApplicationSystem implements Serializable {
 
     private final String id;
     private final Form form;
-    private final Date start;
-    private final Date end;
     private final I18nText name;
+    private final List<ApplicationPeriod> applicationPeriods;
 
-
+    @JsonCreator
     public ApplicationSystem(@JsonProperty(value = "id") final String id,
                              @JsonProperty(value = "form") final Form form,
-                             @JsonProperty(value = "start") final Date start,
-                             @JsonProperty(value = "end") final Date end,
-                             @JsonProperty(value = "name") final I18nText name) {
+                             @JsonProperty(value = "name") final I18nText name,
+                             @JsonProperty(value = "applicationPeriods") final List<ApplicationPeriod> applicationPeriods) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(form);
         Preconditions.checkNotNull(name);
         this.id = id;
         this.form = form;
-        this.start = new Date(start.getTime());
-        this.end = new Date(end.getTime());
         this.name = name;
+        this.applicationPeriods = applicationPeriods != null ? ImmutableList.copyOf(applicationPeriods) : Lists.<ApplicationPeriod>newArrayList();
     }
 
     @JsonIgnore
     public boolean isActive() {
-        final long now = new Date().getTime();
-        return start.getTime() <= now && end.getTime() > now;
+        for (ApplicationPeriod ap : applicationPeriods) {
+            if (ap.isActive()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getId() {
@@ -64,15 +68,11 @@ public class ApplicationSystem implements Serializable {
         return form;
     }
 
-    public Date getStart() {
-        return start;
-    }
-
-    public Date getEnd() {
-        return end;
-    }
-
     public I18nText getName() {
         return name;
+    }
+
+    public List<ApplicationPeriod> getApplicationPeriods() {
+        return applicationPeriods;
     }
 }

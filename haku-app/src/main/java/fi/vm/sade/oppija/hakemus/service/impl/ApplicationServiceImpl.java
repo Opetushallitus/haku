@@ -337,7 +337,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public List<String> getApplicationPreferenceOids(Application application) {
         List<String> oids = new ArrayList<String>();
-        final Form activeForm = formService.getActiveForm(application.getApplicationSystemId());
+        final Form activeForm = formService.getForm(application.getApplicationSystemId());
         Map<String, PreferenceRow> preferenceRows = ElementUtil.findElementsByType(activeForm,
                 PreferenceRow.class);
         Map<String, String> answers = application.getVastauksetMerged();

@@ -27,7 +27,12 @@
     <body>
         <ul>
             <c:forEach var="applicationSystem" items="${it.applicationSystems}">
-                <li><a id="${applicationSystem.id}" href="${applicationSystem.id}"><haku:i18nText value="${applicationSystem.name}"/></a></li>
+                <li>
+                    <a id="${applicationSystem.id}" href="${applicationSystem.id}"><haku:i18nText value="${applicationSystem.name}"/></a>
+                    <c:if test="${applicationSystem.active}">
+                        &nbsp;Haku käynnissä!
+                    </c:if>
+                </li>
             </c:forEach>
         </ul>
     </body>

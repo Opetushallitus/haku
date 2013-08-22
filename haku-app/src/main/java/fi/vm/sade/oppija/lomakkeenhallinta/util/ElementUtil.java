@@ -18,6 +18,8 @@ package fi.vm.sade.oppija.lomakkeenhallinta.util;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
@@ -216,7 +218,8 @@ public final class ElementUtil {
         final Calendar instance = Calendar.getInstance();
         instance.roll(Calendar.YEAR, 1);
         Date end = new Date(instance.getTimeInMillis());
-        return new ApplicationSystem(id, form, start, end, ElementUtil.createI18NAsIs("test application period"));
+        List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
+        return new ApplicationSystem(id, form, ElementUtil.createI18NAsIs("test application period"), applicationPeriods);
     }
 
     public static String getPath(final ApplicationSystem applicationSystem, final String id) {
