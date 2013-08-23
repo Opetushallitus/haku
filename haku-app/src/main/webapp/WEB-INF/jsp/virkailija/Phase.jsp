@@ -61,94 +61,100 @@
                         <jsp:include page="confirmPassivation.jsp"/>
                     </c:otherwise>
                 </c:choose>
+                <c:choose>
+                    <c:when test="${empty application.personOid}"> --%>
+                        <jsp:include page="addPersonOid.jsp" />
+                    </c:when>
+                </c:choose>
             </c:when>
         </c:choose>
-
-    </div>
-</div>
-<div id="wrapper" class="virkailija">
-
-    <virkailija:headerButtons oid="${application.oid}" preview="${preview}"/>
-
-    <div class="grid16-16">
-        <h3><c:out value="${categoryData['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
-                value="${categoryData['Sukunimi']}" escapeXml="true"/></h3>
-        <table class="margin-top-2">
-            <tr>
-                <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}"/>
-                <c:if test="${application.state eq 'ACTIVE'}">
-                    <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
-                </c:if>
-                <c:if test="${application.state eq 'PASSIVE'}">
-                    <fmt:message key="virkailija.hakemus.tila.peruttu" var="msg"/>
-                </c:if>
-                <c:if test="${application.state eq 'INCOMPLETE'}">
-                    <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="msg"/>
-                </c:if>
-                <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${msg}'/>
-                <haku:infoCell key="virkailija.hakemus.puhelin" value="${categoryData['matkapuhelinnumero']}"/>
-            </tr>
-            <tr>
-                <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${categoryData['Henkilotunnus']}"/>
-                <haku:infoCell key="virkailija.hakemus.oppijanumero" value="${application.personOid}"/>
-                <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${categoryData['Sähköposti']}"/>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${categoryData['aidinkieli']}"/>
-            </tr>
-
-        </table>
     </div>
 
-    <section class="grid16-16 margin-top-2">
+    <div id="wrapper" class="virkailija">
 
-        <div class="tabs">
-            <a href="#" data-tabs-group="applicationtabs" data-tabs-id="application"
-               class="tab current"><span>Hakemus</span></a>
+        <virkailija:headerButtons oid="${application.oid}" preview="${preview}"/>
+
+        <div class="grid16-16">
+            <h3><c:out value="${categoryData['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
+                    value="${categoryData['Sukunimi']}" escapeXml="true"/></h3>
+            <table class="margin-top-2">
+                <tr>
+                    <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}"/>
+                    <c:if test="${application.state eq 'ACTIVE'}">
+                        <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
+                    </c:if>
+                    <c:if test="${application.state eq 'PASSIVE'}">
+                        <fmt:message key="virkailija.hakemus.tila.peruttu" var="msg"/>
+                    </c:if>
+                    <c:if test="${application.state eq 'INCOMPLETE'}">
+                        <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="msg"/>
+                    </c:if>
+                    <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${msg}'/>
+                    <haku:infoCell key="virkailija.hakemus.puhelin" value="${categoryData['matkapuhelinnumero']}"/>
+                </tr>
+                <tr>
+                    <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${categoryData['Henkilotunnus']}"/>
+                    <haku:infoCell key="virkailija.hakemus.oppijanumero" value="${application.personOid}"/>
+                    <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${categoryData['Sähköposti']}"/>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${categoryData['aidinkieli']}"/>
+                </tr>
+
+            </table>
         </div>
 
-        <div class="tabsheets">
-            <section id="application" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="application"
-                     style="display: block">
+        <section class="grid16-16 margin-top-2">
 
-                <haku:messages messages="${errorMessages}" additionalClass="warning"/>
+            <div class="tabs">
+                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="application"
+                   class="tab current"><span>Hakemus</span></a>
+            </div>
 
-                <c:choose>
-                    <c:when test="${preview}">
-                        <c:set var="virkailijaPreview" value="true" scope="request"/>
-                        <div class="form">
-                            <c:forEach var="child" items="${phase.children}">
-                                <c:set var="element" value="${child}" scope="request"/>
-                                <c:set var="parentId" value="${form.id}.${phase.id}" scope="request"/>
-                                <jsp:include page="../elements/${child.type}Preview.jsp"/>
-                            </c:forEach>
-                            <jsp:include page="./additionalInfoPreview.jsp"/>
-                            <jsp:include page="./notes.jsp"/>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <c:set var="virkailijaEdit" value="true" scope="request" />
-                        <form id="form-${phase.id}" class="form" method="post">
-                            <c:forEach var="child" items="${phase.children}">
-                                <c:set var="element" value="${child}" scope="request"/>
-                                <c:set var="parentId" value="${form.id}.${phase.id}" scope="request"/>
-                                <jsp:include page="../elements/${child.type}.jsp"/>
-                            </c:forEach>
-                            <button class="save" name="vaiheId" type="submit" value="${phase.id}">
-                                <span><span><fmt:message key="lomake.button.save"/></span></span>
-                            </button>
-                        </form>
-                    </c:otherwise>
-                </c:choose>
+            <div class="tabsheets">
+                <section id="application" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="application"
+                         style="display: block">
 
-                <hr/>
+                    <haku:messages messages="${errorMessages}" additionalClass="warning"/>
 
-            </section>
+                    <c:choose>
+                        <c:when test="${preview}">
+                            <c:set var="virkailijaPreview" value="true" scope="request"/>
+                            <div class="form">
+                                <c:forEach var="child" items="${phase.children}">
+                                    <c:set var="element" value="${child}" scope="request"/>
+                                    <c:set var="parentId" value="${form.id}.${phase.id}" scope="request"/>
+                                    <jsp:include page="../elements/${child.type}Preview.jsp"/>
+                                </c:forEach>
+                                <jsp:include page="./additionalInfoPreview.jsp"/>
+                                <jsp:include page="./notes.jsp"/>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="virkailijaEdit" value="true" scope="request" />
+                            <form id="form-${phase.id}" class="form" method="post">
+                                <c:forEach var="child" items="${phase.children}">
+                                    <c:set var="element" value="${child}" scope="request"/>
+                                    <c:set var="parentId" value="${form.id}.${phase.id}" scope="request"/>
+                                    <jsp:include page="../elements/${child.type}.jsp"/>
+                                </c:forEach>
+                                <button class="save" name="vaiheId" type="submit" value="${phase.id}">
+                                    <span><span><fmt:message key="lomake.button.save"/></span></span>
+                                </button>
+                            </form>
+                        </c:otherwise>
+                    </c:choose>
 
-        </div>
-    </section>
+                    <hr/>
+
+                </section>
+
+            </div>
+        </section>
+    </div>
+    <div class="clear"></div>
 </div>
 </body>
 </html>

@@ -221,9 +221,11 @@ $(document).ready(function () {
             }
         },
         set : {
+            /*
             active:function(){
                 $('#overlay .popup-dialog-wrapper').addClass('inactive').last().removeClass('inactive');
             },
+            */
             overlay:function(){
             
                 // Show overlay if 1 or more popovers are open/visible
@@ -232,7 +234,7 @@ $(document).ready(function () {
                 {
                     $('#overlay').show();
                     
-                    popover.set.active();
+                    //popover.set.active();
                 }
                 else
                 {
