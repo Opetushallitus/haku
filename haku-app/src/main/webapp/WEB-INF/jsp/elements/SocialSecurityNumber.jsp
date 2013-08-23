@@ -27,9 +27,9 @@
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
             <c:choose>
-                <c:when test="${virkailijaEdit}">
-                    <input ${element.attributeString} style="display: none" value="<c:out value='${categoryData[element.id]}'/>"/>
-                    <input type="text" disabled="disabled" size="11" value="<c:out value='${categoryData[element.id]}'/>"/>
+                <c:when test="${virkailijaEdit and not empty categoryData[element.id]}">
+                    <input disabled="disabled" value="<c:out value='${categoryData[element.id]}'/>"/>
+                    <input name="${element.id}" type="hidden" value="<c:out value='${categoryData[element.id]}'/>"/>
                 </c:when>
                 <c:otherwise>
                     <input ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"/>

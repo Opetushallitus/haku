@@ -7,6 +7,7 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomakkeenhallinta.service.tarjonta.TarjontaService;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MediaType;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SimpleTarjontaService implements TarjontaService {
@@ -57,5 +55,23 @@ public class SimpleTarjontaService implements TarjontaService {
             oidsAndNames.put(oid, namesTransformed);
         }
         return oidsAndNames;
+    }
+
+    @Override
+    public List<ApplicationPeriod> getApplicationPeriods(String asId) {
+        WebResource asWebResource = webResource.path(asId);
+        Map<String, Object> as = asWebResource.get(new GenericType<Map<String, Object>>() {
+        });
+        List<Map<String, Object>> aps = (List<Map<String, Object>>) as.get("hakuaikas");
+        List<ApplicationPeriod> applicationPeriods = new ArrayList<ApplicationPeriod>();
+
+        for (Map<String, Object> ap : aps) {
+            Date start = new Date((Long) ap.get("alkuPvm"));
+            Date end = new Date((Long) ap.get("loppuPvm"));
+            ApplicationPeriod applicationPeriod = new ApplicationPeriod(start, end);
+            applicationPeriods.add(applicationPeriod);
+        }
+
+        return applicationPeriods;
     }
 }

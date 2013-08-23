@@ -269,7 +269,7 @@ public class OfficerController {
                                               @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                               @PathParam("key") final String key) {
         LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationSystemId, elementId, key);
-        Form activeForm = formService.getActiveForm(applicationSystemId);
+        Form activeForm = formService.getForm(applicationSystemId);
         try {
             @SuppressWarnings("unchecked")
             DataRelatedQuestion<Serializable> element =

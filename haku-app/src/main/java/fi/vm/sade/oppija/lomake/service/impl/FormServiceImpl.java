@@ -83,7 +83,7 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public Element getLastPhase(final String applicationSystemId) {
-        Form activeForm = getActiveForm(applicationSystemId);
+        Form activeForm = getForm(applicationSystemId);
         Element lastPhase = Iterables.getLast(activeForm.getChildren(), null);
         if (lastPhase instanceof Phase) {
             return lastPhase;
