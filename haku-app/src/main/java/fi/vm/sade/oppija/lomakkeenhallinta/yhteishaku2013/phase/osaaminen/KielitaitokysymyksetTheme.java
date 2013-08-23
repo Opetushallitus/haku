@@ -12,8 +12,6 @@ import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
 public final class KielitaitokysymyksetTheme {
-    private static final String NOT_FI = "^((?!FI)[A-Z]{2})$";
-    private static final String NOT_SV = "^((?!SV)[A-Z]{2})$";
     private static ImmutableList<String> ids = ImmutableList.of(
             "preference1-Koulutus-id-lang",
             "preference2-Koulutus-id-lang",
@@ -27,17 +25,23 @@ public final class KielitaitokysymyksetTheme {
                 new Theme("KielitaitokysymyksetTheme", ElementUtil.createI18NForm("form.kielitaito.otsikko"), null, true);
 
         kielitaitokysymyksetTheme.addChild(
-                createHakutoiveRule("fi", NOT_FI),
-                createHakutoiveRule("sv", NOT_SV));
+                createHakutoiveRule("fi"),
+                createHakutoiveRule("sv"));
         return kielitaitokysymyksetTheme;
     }
 
-    private static RelatedQuestionRule createHakutoiveRule(String lang, String notLangRegex) {
+    private static RelatedQuestionRule createHakutoiveRule(final String lang) {
         RelatedQuestionRule hakutoive = new RelatedQuestionRule("preference_" + lang + "_rule", ids,
                 lang.toUpperCase(), false);
         RelatedQuestionNotRule aidinkieliTaiPerusopetuksenKieliEiOle =
                 new RelatedQuestionNotRule("kielitutkinto_" + lang + "_rule",
-                        ImmutableList.of("aidinkieli", "perusopetuksen_kieli"), notLangRegex);
+                        ImmutableList.of("aidinkieli", "perusopetuksen_kieli"), lang.toUpperCase());
+
+
+
+
+
+
 
         LanguageTestRule langTest = new LanguageTestRule("langTest_" + lang, lang.toUpperCase());
         langTest.addChild(createKielitutkinto("yleinen_kielitutkinto_" + lang),
