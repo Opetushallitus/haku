@@ -67,7 +67,6 @@ public class LoggerAspect {
     @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.hakemus.service.ApplicationService.submitApplication(..)) && args(applicationSystemId,..)",
             returning = "oid")
     public void logSubmitApplication(final String applicationSystemId, final String oid) {
-        /*
         try {
             Tapahtuma t = new Tapahtuma();
             t.setMuutoksenKohde("Haku: " + applicationSystemId
@@ -83,11 +82,9 @@ public class LoggerAspect {
         } catch (Exception e) {
             LOGGER.warn("Could not log laitaVireille event");
         }
-        */
     }
 
     public void logUpdateApplication(final Application application, final ApplicationPhase applicationPhase) {
-        /*
         try {
 
             MapDifference<String, String> diffAnswers = ApplicationUtil.diffAnswers(application, applicationPhase);
@@ -112,7 +109,6 @@ public class LoggerAspect {
         } catch (Exception e) {
             LOGGER.warn("Could not log update application event");
         }
-        */
     }
 
 }
