@@ -17,31 +17,31 @@
 package fi.vm.sade.oppija.lomake.domain.rules;
 
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class RelatedQuestionNotRule extends RelatedQuestionRule {
+public abstract class Rule extends Element {
 
     private static final long serialVersionUID = -6030200061901263949L;
 
-    public RelatedQuestionNotRule(@JsonProperty(value = "id") String id,
-                                  @JsonProperty(value = "relatedElementId") List<String> relatedElementId,
-                                  @JsonProperty(value = "expression") String expression) {
-        super(id, relatedElementId, expression, false);
-        this.type = RelatedQuestionRule.class.getSimpleName();
+    public Rule(@JsonProperty(value = "relatedElementId") List<String> relatedElementId) {
+        super(ElementUtil.randomId());
+
     }
 
     @Override
-    public List<Element> getChildren(final Map<String, String> values) {
-        for (String relatedId : getRelatedElementId()) {
-            final String value = values.get(relatedId);
-            if (RegexRule.evaluate(value, getExpression())) {
-                return Collections.emptyList();
-            }
+    public final List<Element> getChildren(final Map<String, String> values) {
+        if (evaluate(values)) {
+            return super.getChildren();
+        } else {
+            return Collections.emptyList();
         }
-        return this.getChildren();
     }
+
+    public abstract boolean evaluate(Map<String, String> values);
+
 }

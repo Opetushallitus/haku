@@ -17,31 +17,33 @@
 package fi.vm.sade.oppija.lomake.domain.rules;
 
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.oppija.lomake.domain.rules.expression.Expr;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class RelatedQuestionNotRule extends RelatedQuestionRule {
+public class RelatedQuestionComplexRule extends Element {
 
     private static final long serialVersionUID = -6030200061901263949L;
+    private final List<String> relatedIds;
+    private final Expr expr;
 
-    public RelatedQuestionNotRule(@JsonProperty(value = "id") String id,
-                                  @JsonProperty(value = "relatedElementId") List<String> relatedElementId,
-                                  @JsonProperty(value = "expression") String expression) {
-        super(id, relatedElementId, expression, false);
-        this.type = RelatedQuestionRule.class.getSimpleName();
+    public RelatedQuestionComplexRule(@JsonProperty(value = "id") String id,
+                                      @JsonProperty(value = "expr") final Expr expr) {
+        super(id);
+        this.expr = expr;
+        relatedIds = null;
+        this.type = RelatedQuestionComplexRule.class.getSimpleName();
     }
 
     @Override
     public List<Element> getChildren(final Map<String, String> values) {
-        for (String relatedId : getRelatedElementId()) {
-            final String value = values.get(relatedId);
-            if (RegexRule.evaluate(value, getExpression())) {
-                return Collections.emptyList();
-            }
+        if (expr.evaluate(values)) {
+            return getChildren();
         }
-        return this.getChildren();
+        return Collections.emptyList();
+
     }
 }

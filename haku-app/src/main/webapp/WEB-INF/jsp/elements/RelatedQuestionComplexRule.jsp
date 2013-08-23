@@ -19,15 +19,6 @@
   ~ European Union Public Licence for more details.
   --%>
 <div id="${element.id}" class="related-question-rule-class">
-
-    <script type="text/javascript">
-        (function () {
-            $("${ f:toNameSelectorString(element.relatedElementId)}").change(function (event) {
-                var childIds = [ ${ f:tochildIdList(element)}];
-                relatedRule.changeState($(this), $("#${element.id} .rule-childs"), childIds, "${element.expression}");
-            });
-        })();
-    </script>
     <div class="rule-childs clear">
         <haku:viewChilds element="${element}"/>
     </div>

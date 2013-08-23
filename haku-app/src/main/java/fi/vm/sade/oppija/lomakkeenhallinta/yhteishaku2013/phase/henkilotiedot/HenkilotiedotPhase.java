@@ -10,7 +10,12 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.PostalCode;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
+import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomake.domain.rules.expression.EqualsOperator;
+import fi.vm.sade.oppija.lomake.domain.rules.expression.Expr;
+import fi.vm.sade.oppija.lomake.domain.rules.expression.Value;
+import fi.vm.sade.oppija.lomake.domain.rules.expression.Variable;
 import fi.vm.sade.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
@@ -37,16 +42,23 @@ public class HenkilotiedotPhase {
 
         Theme henkilotiedotRyhma = new Theme("HenkilotiedotGrp", createI18NForm("form.henkilotiedot.otsikko"), null, true);
 
+
         // Nimet
         Question sukunimi = createRequiredTextQuestion("Sukunimi", "form.henkilotiedot.sukunimi", "30");
         sukunimi.setInline(true);
         sukunimi.setValidator(createRegexValidator(sukunimi.getId(), ElementUtil.ISO88591_NAME_REGEX));
         henkilotiedotRyhma.addChild(sukunimi);
 
+
         Question etunimet = createRequiredTextQuestion("Etunimet", "form.henkilotiedot.etunimet", "30");
         etunimet.setInline(true);
         etunimet.setValidator(createRegexValidator(etunimet.getId(), ElementUtil.ISO88591_NAME_REGEX));
-        henkilotiedotRyhma.addChild(etunimet);
+        Expr leftValue = new Variable("Sukunimi");
+        Expr rightValue = new Value("Rajapaju");
+        Expr op = new EqualsOperator(leftValue, rightValue);
+        RelatedQuestionComplexRule relatedQuestionComplexRule = new RelatedQuestionComplexRule(ElementUtil.randomId(), op);
+        relatedQuestionComplexRule.addChild(etunimet);
+        henkilotiedotRyhma.addChild(relatedQuestionComplexRule);
 
         TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", createI18NForm("form.henkilotiedot.kutsumanimi"));
         kutsumanimi.setHelp(createI18NForm("form.henkilotiedot.kutsumanimi.help"));
