@@ -43,12 +43,14 @@ public class KoulutustaustaPhase {
         koulutustaustaRyhma.setHelp(createI18NForm("form.koulutustausta.help"));
         koulutustaustaRyhma.addChild(createKoulutustaustaRadio(koodistoService));
 
-        Radio osallistunut = new Radio("osallistunut", createI18NForm("form.koulutustausta.osallistunutPaasykokeisiin"));
+
+        //Tätä ei kysytä syksyn yhteishaussa, tarvitaan myöhemmin.
+        /*Radio osallistunut = new Radio("osallistunut", createI18NForm("form.koulutustausta.osallistunutPaasykokeisiin"));
         addYesAndIDontOptions(osallistunut);
         addRequiredValidator(osallistunut);
         setVerboseHelp(osallistunut);
 
-        koulutustaustaRyhma.addChild(osallistunut);
+        koulutustaustaRyhma.addChild(osallistunut);*/
         return koulutustausta;
     }
 
