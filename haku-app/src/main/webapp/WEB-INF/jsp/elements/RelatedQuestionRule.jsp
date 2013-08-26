@@ -20,15 +20,12 @@
   --%>
 <c:set var="nameSelectors" value="${ f:tochildIdList(element)}"/>
 <div id="${element.id}" class="related-question-rule-class">
+
     <script type="text/javascript">
         (function () {
-
-            var ruleData =  {
-                jsonExpr : JSON.parse('${element.exprJsonStr}'),
-                ruleSelector : "#${element.id} .rule-childs",
-                childIds : [ ${nameSelectors} ]
-            };
-            complexRule.init(ruleData);
+            $("${ f:toNameSelectorString(element.relatedElementId)}").change(function (event) {
+                relatedRule.changeState($(this), $("#${element.id} .rule-childs"), [ ${nameSelectors} ], "${element.expression}");
+            });
         })();
     </script>
     <div class="rule-childs clear">

@@ -18,8 +18,12 @@ package fi.vm.sade.oppija.lomake.domain.rules;
 
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.rules.expression.Expr;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -27,15 +31,20 @@ import java.util.Map;
 public class RelatedQuestionComplexRule extends Element {
 
     private static final long serialVersionUID = -6030200061901263949L;
-    private final List<String> relatedIds;
     private final Expr expr;
+    private final String exprJsonStr;
 
     public RelatedQuestionComplexRule(@JsonProperty(value = "id") String id,
                                       @JsonProperty(value = "expr") final Expr expr) {
         super(id);
         this.expr = expr;
-        relatedIds = null;
-        this.type = RelatedQuestionComplexRule.class.getSimpleName();
+        ObjectMapper mapper = new ObjectMapper();
+        String tmp = "";
+        try {
+            tmp = mapper.writeValueAsString(this.expr);
+        } catch (IOException e) {
+        }
+        this.exprJsonStr = tmp;
     }
 
     @Override
@@ -45,5 +54,10 @@ public class RelatedQuestionComplexRule extends Element {
         }
         return Collections.emptyList();
 
+    }
+
+    @JsonIgnore
+    public String getExprJsonStr() {
+        return exprJsonStr;
     }
 }

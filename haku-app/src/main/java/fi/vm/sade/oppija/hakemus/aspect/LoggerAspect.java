@@ -48,17 +48,20 @@ import java.util.List;
 @Component
 public class LoggerAspect {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(LoggerAspect.class);
+//    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(LoggerAspect.class);
+//
+//    private final Logger logger;
+//    private final UserHolder userHolder;
+//
+//    @Autowired
+//    public LoggerAspect(final Logger logger, final UserHolder userHolder) {
+//        this.logger = logger;
+//        this.userHolder = userHolder;
+//    }
 
-    private final Logger logger;
-    private final UserHolder userHolder;
 
-    @Autowired
-    public LoggerAspect(final Logger logger, final UserHolder userHolder) {
-        this.logger = logger;
-        this.userHolder = userHolder;
-    }
-
+//    public LoggerAspect(Logger logger, UserHolderMock test) {
+//    }
 
     /**
      * Logs event when a form phase is successfully saved
@@ -67,48 +70,48 @@ public class LoggerAspect {
     @AfterReturning(pointcut = "execution(* fi.vm.sade.oppija.hakemus.service.ApplicationService.submitApplication(..)) && args(applicationSystemId,..)",
             returning = "oid")
     public void logSubmitApplication(final String applicationSystemId, final String oid) {
-        try {
-            Tapahtuma t = new Tapahtuma();
-            t.setMuutoksenKohde("Haku: " + applicationSystemId
-                    + ", käyttäjä: " + userHolder.getUser().getUserName() + ", hakemus oid: " + oid);
-            t.setAikaleima(new Date());
-            t.setKenenTietoja("" + userHolder.getUser().getUserName());
-            t.setTapahtumatyyppi("Hakemus lähetetty");
-            t.setTekija("Hakemus Service");
-            t.setUusiArvo("SUBMITTED");
-            t.setVanhaArvo("DRAFT");
-            LOGGER.debug(t.toString());
-            logger.log(t);
-        } catch (Exception e) {
-            LOGGER.warn("Could not log laitaVireille event");
-        }
+//        try {
+//            Tapahtuma t = new Tapahtuma();
+//            t.setMuutoksenKohde("Haku: " + applicationSystemId
+//                    + ", käyttäjä: " + userHolder.getUser().getUserName() + ", hakemus oid: " + oid);
+//            t.setAikaleima(new Date());
+//            t.setKenenTietoja("" + userHolder.getUser().getUserName());
+//            t.setTapahtumatyyppi("Hakemus lähetetty");
+//            t.setTekija("Hakemus Service");
+//            t.setUusiArvo("SUBMITTED");
+//            t.setVanhaArvo("DRAFT");
+//            LOGGER.debug(t.toString());
+//            logger.log(t);
+//        } catch (Exception e) {
+//            LOGGER.warn("Could not log laitaVireille event");
+//        }
     }
 
     public void logUpdateApplication(final Application application, final ApplicationPhase applicationPhase) {
-        try {
-
-            MapDifference<String, String> diffAnswers = ApplicationUtil.diffAnswers(application, applicationPhase);
-            AnswersDifference answersDifference = new AnswersDifference(diffAnswers);
-            List<Difference> differences = answersDifference.getDifferences();
-            Tapahtuma tapahtuma;
-            for (Difference difference : differences) {
-                tapahtuma = new Tapahtuma();
-                tapahtuma.setMuutoksenKohde("hakemus: " + application.getOid() +
-                        ", vaihe: " + applicationPhase.getPhaseId() +
-                        ", kysymys: " + difference.getKey());
-                tapahtuma.setAikaleima(new Date());
-                tapahtuma.setKenenTietoja(userHolder.getUser().getUserName());
-                tapahtuma.setTapahtumatyyppi("Hakemuksen muokkaus");
-                tapahtuma.setTekija(userHolder.getUser().getUserName());
-                tapahtuma.setUusiArvo(difference.getNewValue());
-                tapahtuma.setVanhaArvo(difference.getOldValue());
-                LOGGER.debug(tapahtuma.toString());
-                logger.log(tapahtuma);
-            }
-
-        } catch (Exception e) {
-            LOGGER.warn("Could not log update application event");
-        }
+//        try {
+//
+//            MapDifference<String, String> diffAnswers = ApplicationUtil.diffAnswers(application, applicationPhase);
+//            AnswersDifference answersDifference = new AnswersDifference(diffAnswers);
+//            List<Difference> differences = answersDifference.getDifferences();
+//            Tapahtuma tapahtuma;
+//            for (Difference difference : differences) {
+//                tapahtuma = new Tapahtuma();
+//                tapahtuma.setMuutoksenKohde("hakemus: " + application.getOid() +
+//                        ", vaihe: " + applicationPhase.getPhaseId() +
+//                        ", kysymys: " + difference.getKey());
+//                tapahtuma.setAikaleima(new Date());
+//                tapahtuma.setKenenTietoja(userHolder.getUser().getUserName());
+//                tapahtuma.setTapahtumatyyppi("Hakemuksen muokkaus");
+//                tapahtuma.setTekija(userHolder.getUser().getUserName());
+//                tapahtuma.setUusiArvo(difference.getNewValue());
+//                tapahtuma.setVanhaArvo(difference.getOldValue());
+//                LOGGER.debug(tapahtuma.toString());
+//                logger.log(tapahtuma);
+//            }
+//
+//        } catch (Exception e) {
+//            LOGGER.warn("Could not log update application event");
+//        }
     }
 
 }
