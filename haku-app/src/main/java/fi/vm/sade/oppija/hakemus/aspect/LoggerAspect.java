@@ -69,14 +69,14 @@ public class LoggerAspect {
     public void logSubmitApplication(final String applicationSystemId, final String oid) {
         try {
             Tapahtuma t = new Tapahtuma();
-            t.setMuutoksenKohde("Haku: " + applicationSystemId
+
+            t.setTarget("Haku: " + applicationSystemId
                     + ", käyttäjä: " + userHolder.getUser().getUserName() + ", hakemus oid: " + oid);
-            t.setAikaleima(new Date());
-            t.setKenenTietoja("" + userHolder.getUser().getUserName());
-            t.setTapahtumatyyppi("Hakemus lähetetty");
-            t.setTekija("Hakemus Service");
-            t.setUusiArvo("SUBMITTED");
-            t.setVanhaArvo("DRAFT");
+            t.setTimestamp(new Date());
+            t.setUserActsForUser("" + userHolder.getUser().getUserName());
+            t.setType("Hakemus lähetetty");
+            t.setUser("Hakemus Service");
+            t.addValueChange("STATE", "DRAFT", "SUBMITTED");
             LOGGER.debug(t.toString());
             logger.log(t);
         } catch (Exception e) {
@@ -93,15 +93,14 @@ public class LoggerAspect {
             Tapahtuma tapahtuma;
             for (Difference difference : differences) {
                 tapahtuma = new Tapahtuma();
-                tapahtuma.setMuutoksenKohde("hakemus: " + application.getOid() +
+                tapahtuma.setTarget("hakemus: " + application.getOid() +
                         ", vaihe: " + applicationPhase.getPhaseId() +
                         ", kysymys: " + difference.getKey());
-                tapahtuma.setAikaleima(new Date());
-                tapahtuma.setKenenTietoja(userHolder.getUser().getUserName());
-                tapahtuma.setTapahtumatyyppi("Hakemuksen muokkaus");
-                tapahtuma.setTekija(userHolder.getUser().getUserName());
-                tapahtuma.setUusiArvo(difference.getNewValue());
-                tapahtuma.setVanhaArvo(difference.getOldValue());
+                tapahtuma.setTimestamp(new Date());
+                tapahtuma.setUserActsForUser(userHolder.getUser().getUserName());
+                tapahtuma.setType("Hakemuksen muokkaus");
+                tapahtuma.setUser(userHolder.getUser().getUserName());
+                tapahtuma.addValueChange(difference.getKey(), difference.getOldValue(), difference.getNewValue());
                 LOGGER.debug(tapahtuma.toString());
                 logger.log(tapahtuma);
             }
