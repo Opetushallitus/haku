@@ -162,6 +162,31 @@ public class FormController {
         return getPhase(applicationSystemId, elementId);
     }
 
+    @POST
+    @Path("/{applicationSystemId}/{phaseId}/{elementId}")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
+    public Viewable getPhaseElement2(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+                                     @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                                     @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
+                                     final MultivaluedMap<String, String> multiValues) {
+        LOGGER.debug("getElement {}, {}, {}", applicationSystemId, phaseId);
+        Form activeForm = formService.getActiveForm(applicationSystemId);
+        Element element = activeForm.getChildById(elementId);
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
+        values.putAll(MultivaluedMapUtil.toSingleValueMap(multiValues));
+        model.put("categoryData", values);
+        model.put("element", element);
+        model.put("template", element.getType());
+        model.put("form", activeForm);
+        model.put("applicationSystemId", applicationSystemId);
+        model.put("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
+
+        return new Viewable(ROOT_VIEW, model);
+    }
+
     @GET
     @Path("/{applicationSystemId}/{phaseId}/{elementId}/languageTest")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)

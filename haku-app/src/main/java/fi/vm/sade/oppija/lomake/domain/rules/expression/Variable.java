@@ -4,19 +4,15 @@ import com.google.common.base.Preconditions;
 
 import java.util.Map;
 
-public class Variable extends Expr {
-    public Variable(String name) {
-        super(null, null, null, name);
-        Preconditions.checkNotNull(name);
+public class Variable extends Value {
+
+    public Variable(final String name) {
+        super(name);
+        Preconditions.checkNotNull("Variable name can not be null", name);
     }
 
     @Override
-    public boolean evaluate(Map<String, String> context) {
-        return false;
-    }
-
-    @Override
-    public String getValue(Map<String, String> context) {
+    public String getValue(final Map<String, String> context) {
         return context.get(super.getValue(context));
     }
 }

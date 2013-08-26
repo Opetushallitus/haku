@@ -48,17 +48,20 @@ import java.util.List;
 @Component
 public class LoggerAspect {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(LoggerAspect.class);
+//    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(LoggerAspect.class);
+//
+//    private final Logger logger;
+//    private final UserHolder userHolder;
+//
+//    @Autowired
+//    public LoggerAspect(final Logger logger, final UserHolder userHolder) {
+//        this.logger = logger;
+//        this.userHolder = userHolder;
+//    }
 
-    private final Logger logger;
-    private final UserHolder userHolder;
 
-    @Autowired
-    public LoggerAspect(final Logger logger, final UserHolder userHolder) {
-        this.logger = logger;
-        this.userHolder = userHolder;
-    }
-
+//    public LoggerAspect(Logger logger, UserHolderMock test) {
+//    }
 
     /**
      * Logs event when a form phase is successfully saved
