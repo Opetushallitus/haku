@@ -17,7 +17,13 @@
     <function>
         <name>tochildIdList</name>
         <function-class>fi.vm.sade.oppija.lomake.domain.rules.RegexRule</function-class>
-        <function-signature>java.lang.String tochildIdList(fi.vm.sade.oppija.lomake.domain.elements.Element)</function-signature>
+        <function-signature>java.lang.String tochildIdList(fi.vm.sade.oppija.lomake.domain.elements.Element)
+        </function-signature>
+    </function>
+    <function>
+        <name>setToList</name>
+        <function-class>fi.vm.sade.oppija.lomake.domain.rules.RegexRule</function-class>
+        <function-signature>java.lang.String setToList(java.util.Set)</function-signature>
     </function>
 
     <function>

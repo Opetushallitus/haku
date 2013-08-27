@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -59,6 +60,16 @@ public final class RegexRule {
                     @Override
                     public String apply(final Element element) {
                         return "'" + element.getId() + "'";
+                    }
+                }));
+    }
+
+    public static String setToList(final Set<String> names) {
+        return Joiner.on(',').skipNulls().join(
+                Iterables.transform(names, new Function<String, String>() {
+                    @Override
+                    public String apply(final String name) {
+                        return "'" + name + "'";
                     }
                 }));
     }

@@ -19,20 +19,19 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:set var="nameSelectors" value="${ f:tochildIdList(element)}"/>
+<c:set var="variables" value="${ f:setToList(element.variables)}"/>
 <div id="${element.id}" class="related-question-rule-class">
     <script type="text/javascript">
         (function () {
-
-            var ruleData =  {
-                jsonExpr : JSON.parse('${element.exprJsonStr}'),
-                ruleSelector : "#${element.id} .rule-childs",
-                childIds : [ ${nameSelectors} ]
+            var ruleData = {
+                variables:  [${variables}],
+                ruleId: "${element.id}",
+                childIds: [ ${nameSelectors} ]
             };
             complexRule.init(ruleData);
         })();
     </script>
-    <div class="rule-childs clear">
-        <haku:viewChilds element="${element}"/>
-    </div>
+    <haku:viewChilds element="${element}"/>
 </div>
 <c:remove var="nameSelectors"/>
+<c:remove var="variables"/>
