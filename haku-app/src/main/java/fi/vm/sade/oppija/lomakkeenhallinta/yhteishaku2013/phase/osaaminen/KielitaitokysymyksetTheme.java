@@ -1,53 +1,67 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen;
 
 import com.google.common.base.CaseFormat;
-import com.google.common.collect.ImmutableList;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
-import fi.vm.sade.oppija.lomake.domain.rules.LanguageTestRule;
-import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionNotRule;
-import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.oppija.lomake.domain.rules.expression.And;
+import fi.vm.sade.oppija.lomake.domain.rules.expression.Expr;
+import fi.vm.sade.oppija.lomake.domain.rules.expression.Not;
+import fi.vm.sade.oppija.lomake.domain.rules.expression.Or;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
 public final class KielitaitokysymyksetTheme {
-    private static final String NOT_FI = "^((?!FI)[A-Z]{2})$";
-    private static final String NOT_SV = "^((?!SV)[A-Z]{2})$";
-    private static ImmutableList<String> ids = ImmutableList.of(
+    private static final String[] preferenceIds = new String[]{
             "preference1-Koulutus-id-lang",
             "preference2-Koulutus-id-lang",
             "preference3-Koulutus-id-lang",
             "preference4-Koulutus-id-lang",
             "preference5-Koulutus-id-lang"
-    );
+    };
+    private static final String[] languageQuestions = new String[]{
+            "aidinkieli",
+            "perusopetuksen_kieli",
+            "lukion_kieli",
+            "PK_AI_OPPIAINE",
+            "LK_AI_OPPIAINE"
+    };
 
-    public static Theme createKielitaitokysymyksetTheme() {
+    public static Element createKielitaitokysymyksetTheme() {
+        Expr suomiOnAidinkieliTaiKouluSuomeksi = atLeastOneVariableEqualsToValue("FI", languageQuestions);
+        Expr ruotsiOnAidinkieliTaiKouluRuotsiksi = atLeastOneVariableEqualsToValue("SV", languageQuestions);
+
+        Expr suomenArvosanatRiittaa = arvosanatarkastus("FI");
+        Expr ruotsinArvosanatRiittaa = arvosanatarkastus("SV");
+
+
+        Expr haettuSuomenkieliseenKoulutukseen = atLeastOneVariableEqualsToValue("FI", preferenceIds);
+        Expr haettuRuotsinkieliseenKoulutukseen = atLeastOneVariableEqualsToValue("SV", preferenceIds);
+
+        Expr riittavaSuomenkielenTaito = new Or(suomiOnAidinkieliTaiKouluSuomeksi, suomenArvosanatRiittaa);
+        Expr riittavaRuotsinkielenTaito = new Or(ruotsiOnAidinkieliTaiKouluRuotsiksi, ruotsinArvosanatRiittaa);
+
+
+        Expr kysytaankoSuomi = new And(haettuSuomenkieliseenKoulutukseen, new Not(riittavaSuomenkielenTaito));
+        Expr kysytaankoRuotsi = new And(haettuRuotsinkieliseenKoulutukseen, new Not(riittavaRuotsinkielenTaito));
+
+        Expr naytetaankoKielitaitoteema = new Or(kysytaankoSuomi, kysytaankoRuotsi);
+
+        RelatedQuestionComplexRule naytetaankoTeema = new RelatedQuestionComplexRule("naytä-teema-" + ElementUtil.randomId(), naytetaankoKielitaitoteema);
+
         Theme kielitaitokysymyksetTheme =
                 new Theme("KielitaitokysymyksetTheme", ElementUtil.createI18NForm("form.kielitaito.otsikko"), null, true);
+        naytetaankoTeema.addChild(kielitaitokysymyksetTheme);
 
-        kielitaitokysymyksetTheme.addChild(
-                createHakutoiveRule("fi", NOT_FI),
-                createHakutoiveRule("sv", NOT_SV));
-        return kielitaitokysymyksetTheme;
+        RelatedQuestionComplexRule naytetaankoSuomi = new RelatedQuestionComplexRule("nayta-suomi-" + ElementUtil.randomId(), kysytaankoSuomi);
+        RelatedQuestionComplexRule naytetaankoRuotsi = new RelatedQuestionComplexRule("nayta-Ruotsi-" + ElementUtil.randomId(), kysytaankoRuotsi);
+        naytetaankoSuomi.addChild(createKielitutkinto("yleinen_kielitutkinto_fi"), createKielitutkinto("valtionhallinnon_kielitutkinto_fi"));
+        naytetaankoRuotsi.addChild(createKielitutkinto("yleinen_kielitutkinto_sv"), createKielitutkinto("valtionhallinnon_kielitutkinto_sv"));
+        kielitaitokysymyksetTheme.addChild(naytetaankoSuomi, naytetaankoRuotsi);
+        return naytetaankoTeema;
     }
-
-    private static RelatedQuestionRule createHakutoiveRule(String lang, String notLangRegex) {
-        RelatedQuestionRule hakutoive = new RelatedQuestionRule("preference_" + lang + "_rule", ids,
-                lang.toUpperCase(), false);
-        RelatedQuestionNotRule aidinkieliTaiPerusopetuksenKieliEiOle =
-                new RelatedQuestionNotRule("kielitutkinto_" + lang + "_rule",
-                        ImmutableList.of("aidinkieli", "perusopetuksen_kieli"), notLangRegex);
-
-        LanguageTestRule langTest = new LanguageTestRule("langTest_" + lang, lang.toUpperCase());
-        langTest.addChild(createKielitutkinto("yleinen_kielitutkinto_" + lang),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_" + lang));
-        aidinkieliTaiPerusopetuksenKieliEiOle.addChild(langTest);
-
-        hakutoive.addChild(aidinkieliTaiPerusopetuksenKieliEiOle);
-        return hakutoive;
-    }
-
 
     private static Radio createKielitutkinto(final String id) {
         Radio radio = new Radio(id,
@@ -56,5 +70,21 @@ public final class KielitaitokysymyksetTheme {
         addDefaultTrueFalseOptions(radio);
         addRequiredValidator(radio);
         return radio;
+    }
+
+    private static Expr arvosanatarkastus(final String language) {
+        Expr pkA1OnSuomi = atLeastOneVariableEqualsToValue(language, "PK_A1_OPPIAINE");
+        Expr lkA1OnSuomi = atLeastOneVariableEqualsToValue(language, "LK_A1_OPPIAINE");
+        Expr pkA2OnSuomi = atLeastOneVariableEqualsToValue(language, "PK_A2_OPPIAINE");
+        Expr lkA2OnSuomi = atLeastOneVariableEqualsToValue(language, "LK_A2_OPPIAINE");
+        Expr pkA1ArvosanaOnHyva = atLeastOneValueEqualsToVariable("PK_A1", "7", "8", "9", "10");
+        Expr lkA1ArvosanaOnHyva = atLeastOneValueEqualsToVariable("LK_A1", "7", "8", "9", "10");
+        Expr pkA2ArvosanaOnHyva = atLeastOneValueEqualsToVariable("PK_A2", "7", "8", "9", "10");
+        Expr lkA2ArvosanaOnHyva = atLeastOneValueEqualsToVariable("LK_A2", "7", "8", "9", "10");
+        Expr pkA1Riittaa = new And(pkA1OnSuomi, pkA1ArvosanaOnHyva);
+        Expr lkA1Riittaa = new And(lkA1OnSuomi, lkA1ArvosanaOnHyva);
+        Expr pkA2Riittaa = new And(pkA2OnSuomi, pkA2ArvosanaOnHyva);
+        Expr lkA2Riittaa = new And(lkA2OnSuomi, lkA2ArvosanaOnHyva);
+        return new Or(new Or(pkA1Riittaa, pkA2Riittaa), new Or(lkA1Riittaa, lkA2Riittaa));
     }
 }

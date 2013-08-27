@@ -3,7 +3,6 @@ package fi.vm.sade.oppija.common.selenium;
 import com.google.common.base.Joiner;
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -67,7 +66,11 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         for (WebElement element : elements) {
             if (element.isDisplayed()) {
                 Select select = new Select(element);
-                select.selectByIndex(2);
+                if (select.getOptions().size() > 6) {
+                    select.selectByIndex(6);
+                } else {
+                    select.selectByIndex(2);
+                }
             }
         }
     }

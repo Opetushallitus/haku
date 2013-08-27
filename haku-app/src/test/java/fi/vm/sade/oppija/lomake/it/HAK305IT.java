@@ -47,7 +47,7 @@ public class HAK305IT extends DummyModelBaseItTest {
 
         // Native lang == FI, no lang test
         elementsNotPresentByName("yleinen_kielitutkinto_sv", "valtionhallinnon_kielitutkinto_sv",
-                "yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
+                "yleinen_kielitutkinto_fi", "vlaltionhallinnon_kielitutkinto_fi");
 
         driver.findElement(new By.ById("nav-henkilotiedot")).click();
         setNativeLanguage(NATIVE_LANGUAGE_SV);
@@ -56,6 +56,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         nextPhase();
         nextPhase(); // Osaaminen
 
+        selectByValue("PK_AI_OPPIAINE", "SV");
         // Native & school lang == FI, lang test
         elementsPresentByName("yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
 

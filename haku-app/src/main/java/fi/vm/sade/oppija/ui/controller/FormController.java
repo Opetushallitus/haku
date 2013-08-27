@@ -28,7 +28,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.lomake.domain.rules.LanguageTestRule;
 import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
@@ -162,22 +161,29 @@ public class FormController {
         return getPhase(applicationSystemId, elementId);
     }
 
-    @GET
-    @Path("/{applicationSystemId}/{phaseId}/{elementId}/languageTest")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @Consumes(MediaType.TEXT_PLAIN + CHARSET_UTF_8)
-    public Serializable getLanguageTestChildren(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
-                                                @QueryParam("ai") final String aidinkieli,
-                                                @QueryParam("a1") final String a1Kieli,
-                                                @QueryParam("a2") final String a2Kieli,
-                                                @QueryParam("a1Grade") final String a1Grade,
-                                                @QueryParam("a2Grade") final String a2Grade) {
-        LOGGER.debug("getLanguageTest {}, {}, {}, {}", applicationSystemId, phaseId, elementId);
+    @POST
+    @Path("/{applicationSystemId}/{phaseId}/{elementId}")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
+    public Viewable getPhaseElement2(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+                                     @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                                     @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
+                                     final MultivaluedMap<String, String> multiValues) {
+        LOGGER.debug("getElement {}, {}, {}", applicationSystemId, phaseId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        LanguageTestRule rule = (LanguageTestRule) activeForm.getChildById(elementId);
-        return rule.getTests(aidinkieli, a1Kieli, a2Kieli, a1Grade, a2Grade);
+        Element element = activeForm.getChildById(elementId);
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
+        values.putAll(MultivaluedMapUtil.toSingleValueMap(multiValues));
+        model.put("categoryData", values);
+        model.put("element", element);
+        model.put("template", element.getType());
+        model.put("form", activeForm);
+        model.put("applicationSystemId", applicationSystemId);
+        model.put("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
+
+        return new Viewable(ROOT_VIEW, model);
     }
 
     @GET
