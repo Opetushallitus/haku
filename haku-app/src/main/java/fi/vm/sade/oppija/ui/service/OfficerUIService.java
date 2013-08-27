@@ -35,4 +35,6 @@ public interface OfficerUIService {
     void addNote(String applicationOid, String note, User user) throws ResourceNotFoundException;
 
     Application createApplication(final String asId);
+
+    void addPersonOid(final String oid, final String personOid) throws ResourceNotFoundException;
 }

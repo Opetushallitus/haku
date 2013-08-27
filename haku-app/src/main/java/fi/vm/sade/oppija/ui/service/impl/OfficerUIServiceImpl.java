@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.ui.service.impl;
 
+import com.google.common.base.Strings;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
@@ -188,5 +189,17 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public Application createApplication(final String asId) {
         return applicationService.officerCreateNewApplication(asId);
+    }
+
+    @Override
+    public void addPersonOid(String oid, String personOid) throws ResourceNotFoundException {
+        Application application = applicationService.getApplicationByOid(oid);
+        if (!Strings.isNullOrEmpty(application.getPersonOid())) {
+            throw new IllegalStateException("Person oid is already set");
+        } else if (Strings.isNullOrEmpty(personOid)) {
+            throw new IllegalArgumentException("Invalid person oid");
+        }
+        application.setPersonOid(personOid);
+        applicationService.addNote(application, "Oppijanumero syötetty");
     }
 }

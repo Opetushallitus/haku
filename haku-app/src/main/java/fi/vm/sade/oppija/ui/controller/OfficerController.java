@@ -280,4 +280,17 @@ public class OfficerController {
             return null;
         }
     }
+
+    @POST
+    @Path("/hakemus/{oid}/addpersonoid")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
+    public Viewable addPersonOid(@PathParam(OID_PATH_PARAM) final String oid,
+                            final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
+        final String personOid = multiValues.getFirst("newPersonOid");
+        LOGGER.debug("addPersonOid: oid {}, personOid {}", oid, personOid);
+        officerUIService.addPersonOid(oid, personOid);
+        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
+        return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel());
+    }
 }
