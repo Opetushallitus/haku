@@ -13,6 +13,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.ui.HakuPermissionService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +37,7 @@ public class OfficerUIServiceImplTest {
     private FormService formService;
     private ValintaperusteetService valintaperusteetService;
     private KoodistoService koodistoService;
+    private HakuPermissionService hakuPermissionService;
     private LoggerAspect loggerAspect;
 
     private Application application;
@@ -55,9 +57,10 @@ public class OfficerUIServiceImplTest {
         formService = mock(FormService.class);
         valintaperusteetService = mock(ValintaperusteetService.class);
         koodistoService = mock(KoodistoService.class);
+        hakuPermissionService = mock(HakuPermissionService.class);
         loggerAspect = mock(LoggerAspect.class);
         officerUIService = new OfficerUIServiceImpl(
-                applicationService, formService, valintaperusteetService, koodistoService, loggerAspect, "");
+                applicationService, formService, valintaperusteetService, koodistoService, hakuPermissionService, loggerAspect, "");
         form.addChild(phase);
         when(applicationService.getApplicationPreferenceOids(application)).thenReturn(OIDS);
         when(applicationService.getApplication(OID)).thenReturn(application);
@@ -66,6 +69,7 @@ public class OfficerUIServiceImplTest {
         when(formService.getForm(any(String.class))).thenReturn(form);
         when(formService.getActiveForm(any(String.class))).thenReturn(form);
         when(formService.getLastPhase(any(String.class))).thenReturn(phase);
+        when(hakuPermissionService.userCanUpdateApplication(any(Application.class))).thenReturn(true);
     }
 
     @Test

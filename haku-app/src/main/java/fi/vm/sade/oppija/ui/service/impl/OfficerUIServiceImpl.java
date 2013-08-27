@@ -16,6 +16,7 @@ import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.oppija.ui.HakuPermissionService;
 import fi.vm.sade.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final FormService formService;
     private final ValintaperusteetService valintaperusteetService;
     private final KoodistoService koodistoService;
+    private final HakuPermissionService hakuPermissionService;
     private final String koulutusinformaatioBaseUrl;
     private final LoggerAspect loggerAspect;
 
@@ -45,6 +47,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final FormService formService,
                                 final ValintaperusteetService valintaperusteetService,
                                 final KoodistoService koodistoService,
+                                final HakuPermissionService hakuPermissionService,
                                 final LoggerAspect loggerAspect,
                                 @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl
     )
@@ -54,6 +57,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.formService = formService;
         this.valintaperusteetService = valintaperusteetService;
         this.koodistoService = koodistoService;
+        this.hakuPermissionService = hakuPermissionService;
         this.loggerAspect = loggerAspect;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
     }
@@ -113,6 +117,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             throw new ResourceNotFoundException("Passive application");
         }
 
+        checkUpdatePermission(application);
+
         loggerAspect.logUpdateApplication(application, applicationPhase);
 
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
@@ -138,6 +144,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         officerApplicationResponse.setErrorMessages(phaseValidationResult.getErrorMessages());
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return officerApplicationResponse;
+    }
+
+    private void checkUpdatePermission(Application application) throws ResourceNotFoundException {
+        if (!hakuPermissionService.userCanUpdateApplication(application)) {
+            throw new ResourceNotFoundException("User can not update application "+application.getOid());
+        }
     }
 
     @Override
