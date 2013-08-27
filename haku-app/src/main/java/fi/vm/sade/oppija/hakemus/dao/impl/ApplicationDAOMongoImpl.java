@@ -404,6 +404,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 log.debug("Organization: {}", org);
             }
         }
+
         log.debug("OrganisaatioHenkilo.canRead().count() == {} ", orgs.size());
         ArrayList<DBObject> queries = new ArrayList<DBObject>(orgs.size());
 
@@ -427,31 +428,24 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private DBObject newQueryBuilderWithFilters(final DBObject[] filters, final QueryBuilder baseQuery) {
         DBObject query;
         ArrayList<DBObject> orgFilter = filterByOrganization();
-        if (filters.length > 0) {
-            if (orgFilter.size() > 0) {
-                query = QueryBuilder.start()
-                        .and(baseQuery.get(),
-                                QueryBuilder.start().and(filters).get(),
-                                QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
-                        .get();
-            } else {
-                query = QueryBuilder.start()
-                        .and(baseQuery.get(),
-                                QueryBuilder.start().and(filters).get())
-                        .get();
-            }
+
+        if (orgFilter.isEmpty()) {
+            query = QueryBuilder.start("_id").exists(false).get();
         } else {
-            if (orgFilter.size() > 0) {
+            if (filters.length > 0) {
                 query = QueryBuilder.start()
-                        .and(baseQuery.get(),
-                                QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
+                    .and(baseQuery.get(),
+                            QueryBuilder.start().and(filters).get(),
+                            QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
                         .get();
             } else {
                 query = QueryBuilder.start()
-                        .and(baseQuery.get())
+                        .and(baseQuery.get(),
+                                QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
                         .get();
             }
         }
+
         return query;
     }
 
