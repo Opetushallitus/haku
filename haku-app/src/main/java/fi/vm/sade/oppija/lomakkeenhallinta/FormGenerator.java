@@ -2,6 +2,7 @@ package fi.vm.sade.oppija.lomakkeenhallinta;
 
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
+import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomakkeenhallinta.service.tarjonta.TarjontaService;
@@ -33,8 +34,10 @@ public class FormGenerator {
         List<ApplicationSystem> forms = new ArrayList<ApplicationSystem>();
         Map<String, Map<String, String>> applicationSystems = tarjontaService.getApplicationSystemOidsAndNames();
         for (Map.Entry<String, Map<String, String>> applicationSystem : applicationSystems.entrySet()) {
+            List<ApplicationPeriod> applicationPeriods = tarjontaService.getApplicationPeriods(applicationSystem.getKey());
             Yhteishaku2013 e = new Yhteishaku2013(koodistoService,
-                    applicationSystem.getKey(), aoid, new I18nText(applicationSystems.get(applicationSystem.getKey())));
+                    applicationSystem.getKey(), aoid, new I18nText(applicationSystems.get(applicationSystem.getKey())),
+                    applicationPeriods);
             forms.add(e.getApplicationSystem());
         }
         return ImmutableList.copyOf(forms);

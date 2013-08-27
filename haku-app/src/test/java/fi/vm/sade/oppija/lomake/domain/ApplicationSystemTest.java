@@ -16,12 +16,14 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -31,7 +33,9 @@ public class ApplicationSystemTest {
     @Test
     public void testIsActiveSame() throws Exception {
         Date now = new Date();
-        ApplicationSystem applicationSystem = new ApplicationSystem("1", new Form("", ElementUtil.createI18NAsIs("")), now, now, ElementUtil.createI18NAsIs(""));
+        List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(now, now));
+        ApplicationSystem applicationSystem = new ApplicationSystem("1", new Form("", ElementUtil.createI18NAsIs("")),
+                ElementUtil.createI18NAsIs(""), applicationPeriods);
         assertFalse(applicationSystem.isActive());
     }
 
@@ -41,7 +45,9 @@ public class ApplicationSystemTest {
         final Calendar instance = Calendar.getInstance();
         instance.roll(Calendar.YEAR, 1);
         Date end = new Date(instance.getTimeInMillis());
-        ApplicationSystem applicationSystem = new ApplicationSystem("1", new Form("", ElementUtil.createI18NAsIs("")), start, end, ElementUtil.createI18NAsIs(""));
+        List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
+        ApplicationSystem applicationSystem = new ApplicationSystem("1", new Form("", ElementUtil.createI18NAsIs("")),
+                ElementUtil.createI18NAsIs(""), applicationPeriods);
         assertTrue(applicationSystem.isActive());
     }
 }

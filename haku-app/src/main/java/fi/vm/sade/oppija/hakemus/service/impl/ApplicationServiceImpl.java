@@ -51,6 +51,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -237,7 +238,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String user = "[not authenticated]";
         if (principal != null) {
-            user = principal.toString();
+            if (UserDetails.class.isAssignableFrom(principal.getClass())) {
+                UserDetails userDetails = (UserDetails) principal;
+                user = userDetails.getUsername();
+            } else {
+                user = principal.toString();
+            }
         }
         application.addNote(new ApplicationNote(noteText, new Date(), user));
         Application query = new Application(application.getOid());
@@ -337,7 +343,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public List<String> getApplicationPreferenceOids(Application application) {
         List<String> oids = new ArrayList<String>();
-        final Form activeForm = formService.getActiveForm(application.getApplicationSystemId());
+        final Form activeForm = formService.getForm(application.getApplicationSystemId());
         Map<String, PreferenceRow> preferenceRows = ElementUtil.findElementsByType(activeForm,
                 PreferenceRow.class);
         Map<String, String> answers = application.getVastauksetMerged();

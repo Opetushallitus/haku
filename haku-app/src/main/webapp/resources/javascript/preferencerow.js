@@ -109,7 +109,8 @@ var preferenceRow = {
                 minLength: 1,
                 source: function (request, response) {
                     $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + encodeURI(request.term), {
-                        asId: sortabletable_settings.applicationSystemId
+                        asId: sortabletable_settings.applicationSystemId,
+                        baseEducation: sortabletable_settings.baseEducation
                     }, function (data) {
                         response($.map(data, function (result) {
                             return {

@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.hakemus.aspect;
 
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
-import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.service.mock.UserHolderMock;
 import org.junit.Test;
 
@@ -26,7 +25,7 @@ public class LoggerAspectTest {
 
     public static final LoggerAspect LOGGER_ASPECT = new LoggerAspect(new Logger() {
         @Override
-        public void log(Tapahtuma tapahtuma) throws Exception {
+        public void log(Tapahtuma tapahtuma) {
 
         }
     }, new UserHolderMock("test"));
