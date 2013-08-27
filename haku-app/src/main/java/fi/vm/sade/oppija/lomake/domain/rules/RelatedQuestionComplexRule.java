@@ -18,33 +18,23 @@ package fi.vm.sade.oppija.lomake.domain.rules;
 
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.rules.expression.Expr;
+import fi.vm.sade.oppija.lomake.domain.rules.expression.Variable;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RelatedQuestionComplexRule extends Element {
 
     private static final long serialVersionUID = -6030200061901263949L;
     private final Expr expr;
-    private final String exprJsonStr;
+    private final Set<String> variables;
 
     public RelatedQuestionComplexRule(@JsonProperty(value = "id") String id,
                                       @JsonProperty(value = "expr") final Expr expr) {
         super(id);
         this.expr = expr;
-        ObjectMapper mapper = new ObjectMapper();
-        String tmp = "";
-        try {
-            tmp = mapper.writeValueAsString(this.expr);
-        } catch (IOException e) {
-        }
-        this.exprJsonStr = tmp;
+        variables = getVariables(expr);
     }
 
     @Override
@@ -57,7 +47,21 @@ public class RelatedQuestionComplexRule extends Element {
     }
 
     @JsonIgnore
-    public String getExprJsonStr() {
-        return exprJsonStr;
+    public Set<String> getVariables() {
+        return variables;
+    }
+
+    private static Set<String> getVariables(final Expr expr) {
+        HashSet<String> variableIds = new HashSet<String>();
+        if (expr == null) {
+            return variableIds;
+        }
+        if (expr instanceof Variable) {
+            variableIds.add(expr.getValue());
+        }
+        variableIds.addAll(getVariables(expr.getLeft()));
+        variableIds.addAll(getVariables(expr.getRight()));
+        return variableIds;
+
     }
 }

@@ -9,6 +9,7 @@ public class VariableTest {
 
     public static final String VARIABLE_NAME = "id";
     public static final String CONTEXT_VALUE = "1";
+    public static final String EMPTY_STRING = "";
 
     @Test
     public void testGetValue() {
@@ -19,6 +20,12 @@ public class VariableTest {
     @Test
     public void testGetValueNotFound() {
         assertEquals(null,
-                new Variable(VARIABLE_NAME).getValue(ImmutableMap.of(VARIABLE_NAME+"zztop", CONTEXT_VALUE)));
+                new Variable(VARIABLE_NAME).getValue(ImmutableMap.of(VARIABLE_NAME + "zztop", CONTEXT_VALUE)));
+    }
+
+    @Test
+    public void testGetValueEmpty() {
+        assertEquals(EMPTY_STRING,
+                new Variable(VARIABLE_NAME).getValue(ImmutableMap.of(VARIABLE_NAME, EMPTY_STRING)));
     }
 }

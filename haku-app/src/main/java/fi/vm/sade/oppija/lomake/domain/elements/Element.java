@@ -26,8 +26,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
-import fi.vm.sade.oppija.lomake.domain.rules.LanguageTestRule;
-import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionNotRule;
+import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -55,7 +54,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
                 @JsonSubTypes.Type(value = TextQuestion.class),
                 @JsonSubTypes.Type(value = Phase.class),
                 @JsonSubTypes.Type(value = RelatedQuestionRule.class),
-                @JsonSubTypes.Type(value = RelatedQuestionNotRule.class),
+                @JsonSubTypes.Type(value = RelatedQuestionComplexRule.class),
                 @JsonSubTypes.Type(value = AddElementRule.class),
                 @JsonSubTypes.Type(value = GradeGrid.class),
                 @JsonSubTypes.Type(value = SubjectRow.class),
@@ -73,8 +72,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
                 @JsonSubTypes.Type(value = Notification.class),
                 @JsonSubTypes.Type(value = DateQuestion.class),
                 @JsonSubTypes.Type(value = Group.class),
-                @JsonSubTypes.Type(value = HiddenValue.class),
-                @JsonSubTypes.Type(value = LanguageTestRule.class)
+                @JsonSubTypes.Type(value = HiddenValue.class)
         }
 )
 public abstract class Element implements Serializable {

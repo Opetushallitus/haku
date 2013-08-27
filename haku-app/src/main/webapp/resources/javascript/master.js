@@ -28,82 +28,40 @@ var relatedRule = {
 }
 
 var complexRule = {
-    initEvents: function (expr, ruleData) {
-        if (!expr) {
-            return;
-        }
-        var type = expr.type;
-
-        if (type == 'Variable') {
-            //keypress paste focus textInput input
-            $("[name=\"" + expr.value + "\"]").on('change ', ruleData, complexRule.refreshView);
-        }
-        this.initEvents(expr.left, ruleData);
-        this.initEvents(expr.right, ruleData);
-    },
     init: function (ruleData) {
-        this.initEvents(ruleData.jsonExpr, ruleData);
-    },
+        for (index in ruleData.variables) {
 
-
-    evaluateExpression: function (expr) {
-        if (!expr) {
-            return false;
-        }
-        var type = expr.type;
-
-        if (type == 'Value') {
-            return expr.value;
-        } else if (type == 'Variable') {
-            return $("#" + expr.value).val();
-        } else if (type == 'NotEquals') {
-            return complexRule.evaluateExpression(expr.left) != complexRule.evaluateExpression(expr.right);
-        } else if (type == 'Equals') {
-            return complexRule.evaluateExpression(expr.left) == complexRule.evaluateExpression(expr.right);
-        } else if (type == 'Or') {
-            return complexRule.evaluateExpression(expr.left) || complexRule.evaluateExpression(expr.right);
-        } else if (type == 'And') {
-            return complexRule.evaluateExpression(expr.left) && complexRule.evaluateExpression(expr.right);
-        } else {
-            return false;
+            var question = $("[name=\"" + ruleData.variables[index] + "\"]");
+            if (question.length) {
+                var events = $._data(question[0], "events");
+                if (events) {
+                    if (events.change.length < 1 && events.change[0].data.ruleId != ruleData.ruleId) {
+                        question.on('change ', ruleData, complexRule.refreshView);
+                    }
+                } else {
+                    question.on('change ', ruleData, complexRule.refreshView);
+                }
+            }
         }
     },
 
     refreshView: function (event) {
-        console.log("refreshView");
+        console.log("refresh view " + event.type);
         var ruleData = event.data;
-        var selector = $(ruleData.ruleSelector);
-        if (true) { //complexRule.evaluateExpression(ruleData.jsonExpr)
-            console.log("true");
-            if ($.trim(selector.html()) === "") {
-                var url = document.URL.split("?")[0];
-                console.log(url);
-                for (var id in ruleData.childIds) {
-                    var t = url + '/' + ruleData.childIds[id]
-                    console.log("call : " + t )
-                    $.ajax({
-                        type: 'POST',
-                        url: t,
-                        data: $("form.form").serialize(),
+        var url = document.URL.split("?")[0] + '/' + ruleData.ruleId;
+        $.ajax({
+            type: 'POST',
+            url: url,
+            async: false,
+            data: $("form.form").serialize(),
 
-                        success: function (data, textStatus, jqXHR) {
-                            console.log(textStatus);
-                            console.log(data);
-                            selector.append(data);
-
-                        },
-                        error: function(e, ts, et) { alert(e); alert(ts) }
-                    });
-//                    $.get(url + '/' + ruleData.childIds[id],
-//                        function (html) {
-//                            selector.append(html);
-//                        }
-//                    );
-                }
+            success: function (data, textStatus, jqXHR) {
+                console.log(textStatus);
+                $("#" + ruleData.ruleId).replaceWith(data);
+            },
+            error: function (e, ts, et) {
+                console.log("refresh view error" + ts);
             }
-        } else {
-            console.log("false");
-            selector.html("");
-        }
+        });
     }
 }
