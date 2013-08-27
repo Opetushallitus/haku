@@ -19,6 +19,7 @@ import java.util.Map;
 )
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public abstract class Expr {
+
     private final Expr left;
     private final Expr right;
     private final String value;

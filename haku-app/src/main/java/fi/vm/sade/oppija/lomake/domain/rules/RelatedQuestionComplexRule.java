@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.domain.rules;
 
+import com.google.common.base.Preconditions;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.oppija.lomake.domain.rules.expression.Variable;
@@ -33,6 +34,7 @@ public class RelatedQuestionComplexRule extends Element {
     public RelatedQuestionComplexRule(@JsonProperty(value = "id") String id,
                                       @JsonProperty(value = "expr") final Expr expr) {
         super(id);
+        Preconditions.checkNotNull(expr);
         this.expr = expr;
         variables = getVariables(expr);
     }
@@ -49,6 +51,10 @@ public class RelatedQuestionComplexRule extends Element {
     @JsonIgnore
     public Set<String> getVariables() {
         return variables;
+    }
+
+    public Expr getExpr() {
+        return expr;
     }
 
     private static Set<String> getVariables(final Expr expr) {

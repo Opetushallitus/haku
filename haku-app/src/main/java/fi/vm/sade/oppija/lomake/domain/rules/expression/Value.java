@@ -1,6 +1,7 @@
 package fi.vm.sade.oppija.lomake.domain.rules.expression;
 
 import com.google.common.base.Preconditions;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Map;
 
@@ -10,7 +11,7 @@ public class Value extends Expr {
     public static final Value TRUE = new Value(TRUE_STR);
     public static final Value FALSE = new Value(Boolean.FALSE.toString());
 
-    public Value(final String value) {
+    public Value(@JsonProperty(value = "value") final String value) {
         super(null, null, value);
         Preconditions.checkNotNull(value);
     }

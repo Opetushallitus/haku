@@ -1,13 +1,14 @@
 package fi.vm.sade.oppija.lomake.domain.rules.expression;
 
 import com.google.common.base.Preconditions;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Map;
 
 public class Not extends Expr {
-    public Not(final Expr expr) {
-        super(expr, null, null);
-        Preconditions.checkNotNull(expr);
+    public Not(@JsonProperty(value = "left") final Expr left) {
+        super(left, null, null);
+        Preconditions.checkNotNull(left);
     }
 
     @Override
