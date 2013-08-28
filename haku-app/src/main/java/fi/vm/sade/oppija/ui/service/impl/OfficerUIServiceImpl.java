@@ -95,6 +95,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         officerApplicationResponse.setAdditionalQuestions(getAdditionalQuestions(application));
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         officerApplicationResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
+        officerApplicationResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
         return officerApplicationResponse;
     }
 

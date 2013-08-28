@@ -17,8 +17,10 @@
     </c:choose>
     <c:choose>
         <c:when test="${!application.passive}">
-            <a href="#" id="passivateApplication" data-po-show="confirmPassivation" class="button small "><fmt:message
-                    key="virkailija.hakemus.passivoi.hakemus"/></a>
+            <c:if test="${it.virkailijaDeleteAllowed}">
+                <a href="#" id="passivateApplication" data-po-show="confirmPassivation" class="button small "><fmt:message
+                        key="virkailija.hakemus.passivoi.hakemus"/></a>
+            </c:if>
         </c:when>
         <c:otherwise>
             <a href="#" id="activateApplication" data-po-show="confirmActivation" class="button small "><fmt:message
