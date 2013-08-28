@@ -94,6 +94,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
         officerApplicationResponse.setAdditionalQuestions(getAdditionalQuestions(application));
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
+        officerApplicationResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
         return officerApplicationResponse;
     }
 
