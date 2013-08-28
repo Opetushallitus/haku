@@ -63,6 +63,11 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         return userCanAccessApplication(application, getReadUpdateRole(), getCreateReadUpdateDeleteRole());
     }
 
+    @Override
+    public boolean userCanDeleteApplication(Application application) {
+        return userCanAccessApplication(application, getCreateReadUpdateDeleteRole());
+    }
+
     private boolean userCanAccessApplication(Application application, String... roles) {
         Map<String, String> answers = application.getVastauksetMerged();
         for (int i = 1; i <= 5; i++) {

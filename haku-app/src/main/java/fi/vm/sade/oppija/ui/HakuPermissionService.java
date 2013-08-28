@@ -11,4 +11,6 @@ public interface HakuPermissionService {
     boolean userCanReadApplication(Application application);
 
     boolean userCanUpdateApplication(Application application);
+
+    boolean userCanDeleteApplication(Application application);
 }

@@ -58,7 +58,9 @@
                         <jsp:include page="confirmActivation.jsp"/>
                     </c:when>
                     <c:otherwise>
-                        <jsp:include page="confirmPassivation.jsp"/>
+                        <c:if test="${it.virkailijaDeleteAllowed}">
+                            <jsp:include page="confirmPassivation.jsp"/>
+                        </c:if>
                     </c:otherwise>
                 </c:choose>
                 <c:choose>
