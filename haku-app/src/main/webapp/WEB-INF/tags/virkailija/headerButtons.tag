@@ -25,6 +25,13 @@
                     key="virkailija.hakemus.aktivoi.hakemus"/></a>
         </c:otherwise>
     </c:choose>
+    <c:choose>
+        <c:when test="${empty application.personOid}">
+            <a href="#" id="addPersonOid" data-po-show="addPersonOid" class="button small">
+                <fmt:message key="virkailija.hakemus.lisaa.oppijanumero" />
+            </a>
+        </c:when>
+    </c:choose>
     <a href="${contextPath}/virkailija/hakemus/${oid}/print" class="button small print" target="_blank"><fmt:message
     key="lomake.valmis.button.tulosta"/></a>
 </div>

@@ -1,5 +1,6 @@
 package fi.vm.sade.oppija.ui.service.impl;
 
+import com.google.common.base.Strings;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
@@ -15,6 +16,7 @@ import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.oppija.ui.HakuPermissionService;
 import fi.vm.sade.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.slf4j.Logger;
@@ -36,6 +38,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final FormService formService;
     private final ValintaperusteetService valintaperusteetService;
     private final KoodistoService koodistoService;
+    private final HakuPermissionService hakuPermissionService;
     private final String koulutusinformaatioBaseUrl;
     private final LoggerAspect loggerAspect;
 
@@ -44,6 +47,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final FormService formService,
                                 final ValintaperusteetService valintaperusteetService,
                                 final KoodistoService koodistoService,
+                                final HakuPermissionService hakuPermissionService,
                                 final LoggerAspect loggerAspect,
                                 @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl
     )
@@ -53,24 +57,26 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.formService = formService;
         this.valintaperusteetService = valintaperusteetService;
         this.koodistoService = koodistoService;
+        this.hakuPermissionService = hakuPermissionService;
         this.loggerAspect = loggerAspect;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
     }
 
     @Override
-    public UIServiceResponse getValidatedApplicationElement(
+    public UIServiceResponse getApplicationElement(
             final String oid,
             final String phaseId,
-            final String elementId) throws ResourceNotFoundException {
-        Application application = this.applicationService.getApplication(oid);
+            final String elementId,
+            final boolean validate) throws ResourceNotFoundException {
+        Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
         Element element = form.getChildById(elementId);
-        ValidationResult validationResult = ElementTreeValidator.validateForm(form, application);
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
         officerApplicationResponse.setElement(element);
         officerApplicationResponse.setForm(form);
+        ValidationResult validationResult = ElementTreeValidator.validateForm(form, application);
         officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return officerApplicationResponse;
@@ -112,6 +118,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             throw new ResourceNotFoundException("Passive application");
         }
 
+        checkUpdatePermission(application);
+
         loggerAspect.logUpdateApplication(application, applicationPhase);
 
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
@@ -137,6 +145,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         officerApplicationResponse.setErrorMessages(phaseValidationResult.getErrorMessages());
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return officerApplicationResponse;
+    }
+
+    private void checkUpdatePermission(Application application) throws ResourceNotFoundException {
+        if (!hakuPermissionService.userCanUpdateApplication(application)) {
+            throw new ResourceNotFoundException("User can not update application " + application.getOid());
+        }
     }
 
     @Override
@@ -188,5 +202,17 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public Application createApplication(final String asId) {
         return applicationService.officerCreateNewApplication(asId);
+    }
+
+    @Override
+    public void addPersonOid(String oid, String personOid) throws ResourceNotFoundException {
+        Application application = applicationService.getApplicationByOid(oid);
+        if (!Strings.isNullOrEmpty(application.getPersonOid())) {
+            throw new IllegalStateException("Person oid is already set");
+        } else if (Strings.isNullOrEmpty(personOid)) {
+            throw new IllegalArgumentException("Invalid person oid");
+        }
+        application.setPersonOid(personOid);
+        applicationService.addNote(application, "Oppijanumero syötetty");
     }
 }

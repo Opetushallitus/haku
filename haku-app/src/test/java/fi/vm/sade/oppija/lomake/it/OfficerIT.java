@@ -184,6 +184,20 @@ public class OfficerIT extends DummyModelBaseItTest {
         assertTrue("Application not found", SearchByTerm(" 1.2.246.562.10.10108401950").isEmpty());
     }
 
+    @Test
+    public void testCreateNewApplicationAndSetPersonOid() {
+        findByIdAndClick("create-application");
+        Select asSelect = new Select(driver.findElement(By.id("asSelect")));
+        asSelect.selectByIndex(0);
+        findByIdAndClick("submit_confirm");
+        driver.findElement(new By.ByLinkText("Lisää oppijanumero")).click();
+        final String personOid = "1.3.4.5.6.434324324";
+        WebElement element =  driver.findElement(By.id("newPersonOid"));
+        element.sendKeys(personOid);
+        element.submit();
+        assertTrue(selenium.isTextPresent(personOid));
+    }
+
     private List<WebElement> SearchByTerm(final String term) {
         enterSearchTerm(term);
         clickSearch();

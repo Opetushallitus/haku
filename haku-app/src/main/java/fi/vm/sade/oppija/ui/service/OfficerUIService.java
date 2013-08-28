@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.util.Map;
 
 public interface OfficerUIService {
-    UIServiceResponse getValidatedApplicationElement(final String oid, final String phaseId, final String elementId)
+    UIServiceResponse getApplicationElement(final String oid,
+                                            final String phaseId,
+                                            final String elementId,
+                                            final boolean validate)
             throws ResourceNotFoundException;
 
     UIServiceResponse getValidatedApplication(final String oid, final String phaseId)
@@ -35,4 +38,6 @@ public interface OfficerUIService {
     void addNote(String applicationOid, String note, User user) throws ResourceNotFoundException;
 
     Application createApplication(final String asId);
+
+    void addPersonOid(final String oid, final String personOid) throws ResourceNotFoundException;
 }

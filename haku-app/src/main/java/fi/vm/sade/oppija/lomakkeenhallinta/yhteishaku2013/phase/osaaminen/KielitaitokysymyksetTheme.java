@@ -49,14 +49,14 @@ public final class KielitaitokysymyksetTheme {
 
         Expr naytetaankoKielitaitoteema = new Or(kysytaankoSuomi, kysytaankoRuotsi);
 
-        RelatedQuestionComplexRule naytetaankoTeema = new RelatedQuestionComplexRule("naytä-teema-" + ElementUtil.randomId(), naytetaankoKielitaitoteema);
+        RelatedQuestionComplexRule naytetaankoTeema = new RelatedQuestionComplexRule(ElementUtil.randomId(), naytetaankoKielitaitoteema);
 
         Theme kielitaitokysymyksetTheme =
                 new Theme("KielitaitokysymyksetTheme", ElementUtil.createI18NForm("form.kielitaito.otsikko"), null, true);
         naytetaankoTeema.addChild(kielitaitokysymyksetTheme);
 
-        RelatedQuestionComplexRule naytetaankoSuomi = new RelatedQuestionComplexRule("nayta-suomi-" + ElementUtil.randomId(), kysytaankoSuomi);
-        RelatedQuestionComplexRule naytetaankoRuotsi = new RelatedQuestionComplexRule("nayta-Ruotsi-" + ElementUtil.randomId(), kysytaankoRuotsi);
+        RelatedQuestionComplexRule naytetaankoSuomi = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSuomi);
+        RelatedQuestionComplexRule naytetaankoRuotsi = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoRuotsi);
         naytetaankoSuomi.addChild(createKielitutkinto("yleinen_kielitutkinto_fi"), createKielitutkinto("valtionhallinnon_kielitutkinto_fi"));
         naytetaankoRuotsi.addChild(createKielitutkinto("yleinen_kielitutkinto_sv"), createKielitutkinto("valtionhallinnon_kielitutkinto_sv"));
         kielitaitokysymyksetTheme.addChild(naytetaankoSuomi, naytetaankoRuotsi);

@@ -45,7 +45,6 @@ public class RelatedQuestionComplexRule extends Element {
             return getChildren();
         }
         return Collections.emptyList();
-
     }
 
     @JsonIgnore

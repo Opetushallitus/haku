@@ -165,7 +165,7 @@ public class FormController {
     @Path("/{applicationSystemId}/{phaseId}/{elementId}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    public Viewable getPhaseElement2(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+    public Viewable updateRules(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                      @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                      @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                      final MultivaluedMap<String, String> multiValues) {

@@ -159,7 +159,6 @@ var preferenceRow = {
             $educationDegreeSora.val(selectedOption.data("sora")).change();
             $educationDegreeAoIdentifier.val(selectedOption.data("aoidentifier")).change();
             $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
-            preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"), educationDegree, preferenceRowId, false);
             preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
         });
     }
