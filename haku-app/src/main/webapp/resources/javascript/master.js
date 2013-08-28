@@ -60,17 +60,16 @@ $(document).ready(function () {
             }
         },
         set: {
-            /*
-             active:function(){
-             $('#overlay .popup-dialog-wrapper').addClass('inactive').last().removeClass('inactive');
-             },
-             */
+            active: function () {
+                $('#overlay .popup-dialog-wrapper').addClass('inactive').last().removeClass('inactive');
+            },
             overlay: function () {
 
                 // Show overlay if 1 or more popovers are open/visible
                 // Hide overlay if no popovers are open/visible
                 if (popover.handlers.openPopovers > 0) {
                     $('#overlay').show();
+
                     popover.set.active();
                 }
                 else {
@@ -148,6 +147,7 @@ $(document).ready(function () {
                 $('body').on('click', '[data-po-add]', function (event) {
                     event.preventDefault();
                     popover.add();
+
                 });
 
                 // Show already existing popover with id
@@ -169,202 +169,6 @@ $(document).ready(function () {
     }
 
     popover.build();
-
-    var orgSearch = {
-        settings: {
-            listenTimeout: 500
-        },
-        build: function () {
-            orgSearch.listen.listHeight();
-        },
-        listen: {
-            listHeight: function () {
-                // Listen for changes in
-
-                height = $('#orgsearch').height();
-                setTimeout(function () {
-                    if (height != $('#orgsearch').height()) {
-                        form_height = $('#orgsearch .orgsearchform').outerHeight(true);
-                        list_height = height - form_height;
-                        $('#orgsearch .orgsearchlist').css({'height': list_height + 'px'});
-                    }
-                    orgSearch.listen.listHeight();
-                }, orgSearch.settings.listenTimeout);
-            }
-        }
-    }
-
-    orgSearch.build();
-
-    var fieldInfo = {
-        load: function () {
-            $('input[title]').each(function () {
-                label = $(this).attr('title');
-                $(this).val(label);
-                $(this).addClass('blurred');
-            });
-
-            $('input[data-field-preset]').each(function () {
-                label = $(this).attr('data-field-preset');
-                $(this).val(label);
-                $(this).addClass('blurred');
-            });
-        },
-        build: function () {
-            fieldInfo.load();
-            fieldInfo.setTriggers();
-        },
-        setTriggers: function () {
-            $('input[title]').focus(function () {
-                if ($(this).val() == $(this).attr('title')) {
-                    $(this).val('');
-                    $(this).removeClass('blurred');
-                }
-            });
-
-            $('input[title]').blur(function () {
-                if ($(this).val() == '') {
-                    $(this).val($(this).attr('title'));
-                    $(this).addClass('blurred');
-                }
-            });
-
-            $('input[data-field-preset]').focus(function () {
-                if ($(this).val() == $(this).attr('data-field-preset')) {
-                    $(this).removeClass('blurred');
-                }
-            });
-
-            $('input[data-field-preset]').blur(function () {
-                if ($(this).val() == $(this).attr('data-field-preset')) {
-                    $(this).addClass('blurred');
-                }
-            });
-        }
-    }
-
-
-    var overlayPopup = {
-        setPopup: function (id) {
-
-            popup_height = $('#popup > .popup-content[data-popup-id="' + id + '"]').height();
-            popup_width = $('#popup > .popup-content[data-popup-id="' + id + '"]').width();
-            $('#popup').css({'width': popup_width + 'px', 'height': popup_height + 'px'});
-
-            window_height = $(window).height();
-            window_scrollTop = $(window).scrollTop();
-            popup_height = $('#popup').height();
-
-
-            window_offset = (window_height - popup_height) / 2 + window_scrollTop;
-            $('#popup').offset({top: window_offset});
-
-
-        },
-        popupAction: function (param, url) {
-
-            if (param.indexOf('close') != -1) {
-                $('#overlay').hide();
-            }
-            else if (param.indexOf('open') != -1) {
-                params = param.split(':');
-                id = params[1];
-
-                $('#popup > .popup-content').hide();
-                $('#popup > .popup-content[data-popup-id="' + id + '"]').show();
-                $('#popup > .popup-content[data-popup-id="' + id + '"]').find('[data-popup-url]').attr('href', url);
-
-                $('#overlay').show();
-                overlayPopup.setPopup(id);
-            }
-            else if (param.indexOf('goto') != -1) {
-
-
-            }
-        },
-        build: function () {
-            overlayPopup.setTriggers();
-        },
-        setTriggers: function () {
-            $('#overlay .close').click(function (event) {
-                event.preventDefault();
-                $('#overlay').hide();
-            });
-
-
-            $('[data-popup-action]').click(function (event) {
-                event.preventDefault();
-                if (!$(this).hasClass('disabled')) {
-                    params = $(this).attr('data-popup-action');
-                    url = $(this).attr('href');
-
-                    overlayPopup.popupAction(params, url);
-                }
-            });
-        }
-    }
-
-    var fieldDate = {
-        generateLinks: function () {
-            index = 0;
-
-            $('input.text.date').each(function () {
-                id = index;
-                if ($(this).hasClass('small')) {
-                    html = '<span class="datepicker small" data-date-field-id="' + id + '">&#8203;</span>';
-                }
-                else {
-                    html = '<span class="datepicker" data-date-field-id="' + id + '">&#8203;</span>';
-                }
-                $(this).attr('data-date-field-id', id);
-                $(this).after(html);
-                index = index + 1;
-            });
-        },
-        build: function () {
-            fieldDate.generateLinks();
-            fieldDate.setTriggers();
-        },
-        setTriggers: function () {
-
-            $('input.text.date').datepicker({dateFormat: 'dd/mm/yy'});
-
-            $('input.text.date').focus(function () {
-                if (typeof $(this).attr('data-date-field-id') != 'undefined') {
-                    id = $(this).attr('data-date-field-id');
-
-                    $('.datepicker[data-date-field-id="' + id + '"]').addClass('active');
-                }
-            });
-
-            $('input.text.date').blur(function () {
-                if (typeof $(this).attr('data-date-field-id') != 'undefined') {
-                    id = $(this).attr('data-date-field-id');
-
-                    $('.datepicker[data-date-field-id="' + id + '"]').removeClass('active');
-                }
-            });
-
-            $('.datepicker').click(function (event) {
-                event.preventDefault();
-
-                if (typeof $(this).attr('data-date-field-id') != 'undefined') {
-                    id = $(this).attr('data-date-field-id');
-
-                    if ($(this).hasClass('active')) {
-                        $('input[data-date-field-id="' + id + '"]').blur();
-                    }
-                    else {
-                        $('input[data-date-field-id="' + id + '"]').focus();
-                    }
-                }
-            });
-        }
-    }
-
-    fieldInfo.build();
-    overlayPopup.build();
-    fieldDate.build();
 
 });
 var relatedRule = {
