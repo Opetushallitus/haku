@@ -48,7 +48,9 @@
                                    value="${pageContext.request.contextPath}/virkailija/hakemus/${application.applicationSystemId}/${phase.id}/${oid}"/>
                         </c:otherwise>
                     </c:choose>
-                    <virkailija:EditButton url="${editUrl}" application="${application}"/>
+                    <c:if test="${it.virkailijaEditAllowed}">
+                        <virkailija:EditButton url="${editUrl}" application="${application}"/>
+                    </c:if>
                 </c:if>
             </c:forEach>
         </c:if>
