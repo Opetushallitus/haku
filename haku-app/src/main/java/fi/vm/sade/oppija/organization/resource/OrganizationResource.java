@@ -109,6 +109,11 @@ public class OrganizationResource {
         criteria.setIncludePlanned(includePlanned);
         List<Organization> organizations = organizationService.search(criteria);
         LOGGER.debug("getOrganizations found {} organizations", organizations.size());
+        if (LOGGER.isDebugEnabled()) {
+            for (Organization org : organizations) {
+                LOGGER.debug(org.toString());
+            }
+        }
         return organizations;
     }
 }
