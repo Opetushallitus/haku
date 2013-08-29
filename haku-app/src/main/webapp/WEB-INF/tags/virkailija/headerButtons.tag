@@ -17,13 +17,22 @@
     </c:choose>
     <c:choose>
         <c:when test="${!application.passive}">
-            <a href="#" id="passivateApplication" data-po-show="confirmPassivation" class="button small "><fmt:message
-                    key="virkailija.hakemus.passivoi.hakemus"/></a>
+            <c:if test="${it.virkailijaDeleteAllowed}">
+                <a href="#" id="passivateApplication" data-po-show="confirmPassivation" class="button small "><fmt:message
+                        key="virkailija.hakemus.passivoi.hakemus"/></a>
+            </c:if>
         </c:when>
         <c:otherwise>
             <a href="#" id="activateApplication" data-po-show="confirmActivation" class="button small "><fmt:message
                     key="virkailija.hakemus.aktivoi.hakemus"/></a>
         </c:otherwise>
+    </c:choose>
+    <c:choose>
+        <c:when test="${empty application.personOid}">
+            <a href="#" id="addPersonOid" data-po-show="addPersonOid" class="button small">
+                <fmt:message key="virkailija.hakemus.lisaa.oppijanumero" />
+            </a>
+        </c:when>
     </c:choose>
     <a href="${contextPath}/virkailija/hakemus/${oid}/print" class="button small print" target="_blank"><fmt:message
     key="lomake.valmis.button.tulosta"/></a>

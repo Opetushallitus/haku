@@ -36,7 +36,7 @@ public class AdditionalGradeQuestionTest extends DummyModelBaseItTest {
         navigateToPhase(KOULUTUSTAUSTA_PHASE_ID);
 
         findByIdAndClick("POHJAKOULUTUS_tutkinto1", "PK_PAATTOTODISTUSVUOSI", "LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN",
-                "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI", "osallistunut_false", "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON_false");
+                "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI", "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON_false");
         setValue("perusopetuksen_kieli", "SV");
         setValue("PK_PAATTOTODISTUSVUOSI", "2013");
 

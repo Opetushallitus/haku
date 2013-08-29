@@ -18,26 +18,18 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<c:set var="nameSelectors" value="${ f:tochildIdList(element)}"/>
+<div id="${element.id}" class="related-question-rule-class">
 
-<div id="${element.id}" class="related-question-rule-class"
-     data-selector="${ f:toNameSelectorString(element.relatedElementId)}">
     <script type="text/javascript">
-        var ${fn:replace(element.id, '-', '_')} = {
-            childIds : [<c:forEach var="child" items="${element.children}" varStatus="status">"${child.id}"${not status.last ? ', ' : ''}</c:forEach>],
-            ruleChildSelector : "#${element.id} .rule-childs",
-            expression : "${element.expression}",
-            relatedSelector : "${ f:toNameSelectorString(element.relatedElementId)}"
-        };
-        var ${fn:replace(element.id, '-', '_')}_func = function (event) {
-            var $this = $(this);
-            var settings = ${fn:replace(element.id, '-', '_')};
-            relatedRule.changeState($this, $(settings.ruleChildSelector), settings.childIds, settings.expression);
-        };
         (function () {
-            $("${ f:toNameSelectorString(element.relatedElementId)}").change(${fn:replace(element.id, '-', '_')}_func);
+            $("${ f:toNameSelectorString(element.relatedElementId)}").change(function (event) {
+                relatedRule.changeState($(this), $("#${element.id} .rule-childs"), [ ${nameSelectors} ], "${element.expression}");
+            });
         })();
     </script>
     <div class="rule-childs clear">
         <haku:viewChilds element="${element}"/>
     </div>
 </div>
+<c:remove var="nameSelectors"/>

@@ -19,4 +19,14 @@ public class HakuPermissionServiceMockImpl implements HakuPermissionService {
     public boolean userCanReadApplication(Application application) {
         return true;
     }
+
+    @Override
+    public boolean userCanUpdateApplication(Application application) {
+        return true;
+    }
+
+    @Override
+    public boolean userCanDeleteApplication(Application application) {
+        return true;
+    }
 }

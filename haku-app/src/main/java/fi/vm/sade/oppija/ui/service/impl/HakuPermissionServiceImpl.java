@@ -55,20 +55,34 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanReadApplication(Application application) {
+        return userCanAccessApplication(application, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole());
+    }
+
+    @Override
+    public boolean userCanUpdateApplication(Application application) {
+        return userCanAccessApplication(application, getReadUpdateRole(), getCreateReadUpdateDeleteRole());
+    }
+
+    @Override
+    public boolean userCanDeleteApplication(Application application) {
+        return userCanAccessApplication(application, getCreateReadUpdateDeleteRole());
+    }
+
+    private boolean userCanAccessApplication(Application application, String... roles) {
         Map<String, String> answers = application.getVastauksetMerged();
         for (int i = 1; i <= 5; i++) {
             String id = "preference" + i + "-Opetuspiste-id";
             String parents = "preference" + i + "-Opetuspiste-id-parents";
             String organization = answers.get(id);
             if (StringUtils.isNotEmpty(organization) &&
-                    checkAccess(organization, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+                    checkAccess(organization, roles)) {
                 log.debug("User can read application, org: {}", organization);
                 return true;
             }
             for (String parent : parents.split(",")) {
                 organization = answers.get(parent);
                 if (StringUtils.isNotEmpty(organization) &&
-                        checkAccess(organization, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+                        checkAccess(organization, roles)) {
                     log.debug("User can read application, parent org: {}", organization);
                     return true;
                 }

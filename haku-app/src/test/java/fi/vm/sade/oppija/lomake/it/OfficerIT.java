@@ -5,7 +5,6 @@ import fi.vm.sade.oppija.common.selenium.LoginPage;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.HakuClient;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -74,7 +73,6 @@ public class OfficerIT extends DummyModelBaseItTest {
     @Test
     public void testEditControls() throws InterruptedException {
         clickSearch();
-        screenshot("editControls");
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
         List<WebElement> editLinks = findByClassName("edit-link");
@@ -121,7 +119,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         driver.findElement(new By.ByClassName("label")).click();
         selenium.typeKeys("searchString", "Espoo");
         driver.findElement(new By.ById("search-organizations")).click();
-        screenshot("organizations");
         driver.findElement(new By.ById("1.2.246.562.10.10108401950"));
         findByIdAndClick("search-organizations");
         findById("1.2.246.562.10.10108401950");
@@ -182,6 +179,20 @@ public class OfficerIT extends DummyModelBaseItTest {
     @Test
     public void testSearchByOid() throws Exception {
         assertTrue("Application not found", SearchByTerm(" 1.2.246.562.10.10108401950").isEmpty());
+    }
+
+    @Test
+    public void testCreateNewApplicationAndSetPersonOid() {
+        findByIdAndClick("create-application");
+        Select asSelect = new Select(driver.findElement(By.id("asSelect")));
+        asSelect.selectByIndex(0);
+        findByIdAndClick("submit_confirm");
+        driver.findElement(new By.ByLinkText("Lisää oppijanumero")).click();
+        final String personOid = "1.3.4.5.6.434324324";
+        WebElement element =  driver.findElement(By.id("newPersonOid"));
+        element.sendKeys(personOid);
+        element.submit();
+        assertTrue(selenium.isTextPresent(personOid));
     }
 
     private List<WebElement> SearchByTerm(final String term) {

@@ -42,4 +42,8 @@ public class UIServiceResponse {
         return !errors.isEmpty();
     }
 
+    public void addAnswers(final Map<String, String> answers) {
+        ((Map<String, String>) this.model.get(CATEGORY_DATA)).putAll(answers);
+    }
+
 }

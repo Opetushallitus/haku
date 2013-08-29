@@ -34,7 +34,6 @@ var preferenceRow = {
                     if (hakukohdeId == item.id) {
                         selected = 'selected = "selected"';
                         // overrides additional questions rendered in the backend
-                        //preferenceRow.searchAdditionalQuestions(hakukohdeId, $selectInput.data("additionalquestions"), item.educationDegree, null, false);
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
                     }
                     $selectInput.append('<option value="' + item.name
@@ -57,21 +56,6 @@ var preferenceRow = {
         $("#" + selectInputId + "-id-athlete").val(false).change();
         $("#" + selectInputId).html("<option></option>");
         preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
-    },
-
-    searchAdditionalQuestions: function (hakukohdeId, additionalQuestionsId, educationDegree, preferenceRowId, soraRequired) {
-        var url = sortabletable_settings.contextPath + "/lomake/" + sortabletable_settings.applicationSystemId + "/" +
-            "/" + sortabletable_settings.vaiheId + "/" +
-            sortabletable_settings.teemaId + "/additionalquestions/" + hakukohdeId;
-
-//            $.get(url, {
-//                    'ed': educationDegree,
-//                    'preferenceRowId': preferenceRowId,
-//                    'sora': soraRequired
-//                },
-//                function (data) {
-//                    $("#" + additionalQuestionsId).html(data);
-//                });
     },
 
     displayChildLONames: function (hakukohdeId, childLONamesId) {
@@ -159,7 +143,6 @@ var preferenceRow = {
             $educationDegreeSora.val(selectedOption.data("sora")).change();
             $educationDegreeAoIdentifier.val(selectedOption.data("aoidentifier")).change();
             $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
-            preferenceRow.searchAdditionalQuestions(selectedId, $(this).data("additionalquestions"), educationDegree, preferenceRowId, false);
             preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
         });
     }

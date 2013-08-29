@@ -67,6 +67,7 @@ public class OfficerController {
     public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + ";charset=UTF-8";
     public static final String VIRKAILIJA_PHASE_VIEW = "/virkailija/Phase";
     public static final String APPLICATION_PRINT_VIEW = "/print/print";
+    public static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
     @Autowired
     OfficerUIService officerUIService;
@@ -120,14 +121,13 @@ public class OfficerController {
                                       @PathParam("elementId") final String elementId)
             throws ResourceNotFoundException {
         LOGGER.debug("getPreviewElement {}, {}, {}", applicationSystemId, phaseId, oid);
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplicationElement(oid, phaseId, elementId);
+        UIServiceResponse uiServiceResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, true);
         return new Viewable("/elements/Root", uiServiceResponse.getModel()); // TODO remove hardcoded Phase
     }
 
     @GET
     @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                @PathParam(OID_PATH_PARAM) final String oid)
@@ -161,6 +161,21 @@ public class OfficerController {
             URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, applicationSystemId, "esikatselu", oid);
             return seeOther(path).build();
         }
+    }
+    @POST
+    @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}/{elementId}")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
+    public Viewable updateView(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                                @PathParam(OID_PATH_PARAM) final String oid,
+                                @PathParam("elementId") final String elementId,
+                                final MultivaluedMap<String, String> multiValues)
+            throws ResourceNotFoundException {
+        UIServiceResponse uiServiceResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, false);
+        uiServiceResponse.addAnswers(MultivaluedMapUtil.toSingleValueMap(multiValues));
+        return new Viewable("/elements/Root", uiServiceResponse.getModel());
     }
 
     @POST
@@ -198,7 +213,7 @@ public class OfficerController {
 
     @POST
     @Path("/hakemus/{oid}/addPersonAndAuthenticate")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Viewable addPersonAndAuthenticate(@PathParam(OID_PATH_PARAM) final String oid,
@@ -279,5 +294,18 @@ public class OfficerController {
             LOGGER.error(e.toString());
             return null;
         }
+    }
+
+    @POST
+    @Path("/hakemus/{oid}/addpersonoid")
+    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
+    public Viewable addPersonOid(@PathParam(OID_PATH_PARAM) final String oid,
+                                 final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
+        final String personOid = multiValues.getFirst("newPersonOid");
+        LOGGER.debug("addPersonOid: oid {}, personOid {}", oid, personOid);
+        officerUIService.addPersonOid(oid, personOid);
+        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
+        return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel());
     }
 }

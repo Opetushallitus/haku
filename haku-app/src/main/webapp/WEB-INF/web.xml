@@ -57,7 +57,7 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
-            <param-value>fi.vm.sade.oppija.ui.LocaleFilter</param-value>
+            <param-value>fi.vm.sade.oppija.ui.LocaleFilter;fi.vm.sade.oppija.common.filter.XSSFilter</param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
