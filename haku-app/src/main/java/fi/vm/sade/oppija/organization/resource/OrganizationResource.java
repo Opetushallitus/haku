@@ -107,6 +107,8 @@ public class OrganizationResource {
         criteria.setLearningInstitutionType(learningInstitutionType);
         criteria.setIncludePassive(includePassive);
         criteria.setIncludePlanned(includePlanned);
-        return organizationService.search(criteria);
+        List<Organization> organizations = organizationService.search(criteria);
+        LOGGER.debug("getOrganizations found {} organizations", organizations.size());
+        return organizations;
     }
 }

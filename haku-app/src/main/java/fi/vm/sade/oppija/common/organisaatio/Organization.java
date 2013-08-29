@@ -94,4 +94,11 @@ public class Organization {
     public List<String> getTypes() {
         return types;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder("{'").append(name).append("'")
+                .append(", ").append(oid).append("}");
+        return str.toString();
+    }
 }
