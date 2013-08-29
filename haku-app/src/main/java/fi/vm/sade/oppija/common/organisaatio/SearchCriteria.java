@@ -76,4 +76,14 @@ public class SearchCriteria {
         this.searchString = searchString;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder("{'").append(searchString).append("'")
+                .append(", orgType: ").append(organizationType)
+                .append(", liType: ").append(learningInstitutionType)
+                .append(", planned: ").append(includePlanned)
+                .append(", passive: ").append(includePassive)
+                .append("}");
+        return str.toString();
+    }
 }
