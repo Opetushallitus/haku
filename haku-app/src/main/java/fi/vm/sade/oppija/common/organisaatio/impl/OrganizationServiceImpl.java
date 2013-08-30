@@ -22,6 +22,8 @@ import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioDTO;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioSearchCriteriaDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,8 @@ import java.util.List;
 @Service
 @Profile("default")
 public class OrganizationServiceImpl implements OrganizationService {
+
+    private static final Logger log = LoggerFactory.getLogger(OrganizationServiceImpl.class);
 
     public static final int MAX_RESULTS = 10000;
     private final OrganisaatioService service;
@@ -52,6 +56,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         criteriaDTO.setLakkautetut(criteria.isIncludePassive());
         criteriaDTO.setOppilaitosTyyppi(criteria.getLearningInstitutionType());
         final List<OrganisaatioDTO> result = service.searchOrganisaatios(criteriaDTO);
+        log.debug("Criteria: {}, found {} organizations", criteria, result.size());
         return Lists.newArrayList(Lists.transform(result, new OrganisaatioDTOToOrganizationFunction()));
     }
 
