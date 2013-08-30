@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.lomake.validation.validators;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +50,7 @@ public class RegexFieldValidatorTest {
     public void testValidateValid() throws Exception {
         values.put(FIELD_NAME, TEST_VALUE);
         RegexFieldValidator validator = createValidator(TEST_VALUE);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -57,7 +58,7 @@ public class RegexFieldValidatorTest {
     public void testValidateInvalid() throws Exception {
         values.put(FIELD_NAME, TEST_VALUE + "Ä");
         RegexFieldValidator validator = createValidator(TEST_VALUE);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -65,7 +66,7 @@ public class RegexFieldValidatorTest {
     public void testValidatePattern() throws Exception {
         values.put(FIELD_NAME, TEST_VALUE);
         RegexFieldValidator validator = createValidator(PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -79,7 +80,7 @@ public class RegexFieldValidatorTest {
     public void testMobilePhoneValid() {
         values.put(FIELD_NAME, "+358404683775");
         RegexFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -87,7 +88,7 @@ public class RegexFieldValidatorTest {
     public void testMobilePhoneValid2() {
         values.put(FIELD_NAME, "+358-40-468 4229");
         RegexFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -95,7 +96,7 @@ public class RegexFieldValidatorTest {
     public void testMobilePhoneValid3() {
         values.put(FIELD_NAME, "050 445 3668");
         RegexFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -103,7 +104,7 @@ public class RegexFieldValidatorTest {
     public void testMobilePhoneValid4() {
         values.put(FIELD_NAME, "+556 4534534 34345");
         RegexFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -111,7 +112,7 @@ public class RegexFieldValidatorTest {
     public void testMobilePhoneValid5() {
         values.put(FIELD_NAME, "345345345345345");
         RegexFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -119,7 +120,7 @@ public class RegexFieldValidatorTest {
     public void testMobilePhoneValid6() {
         values.put(FIELD_NAME, "041 445 3668");
         RegexFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -127,7 +128,7 @@ public class RegexFieldValidatorTest {
     public void testMobilePhoneValid7() {
         values.put(FIELD_NAME, "042-445-3668");
         RegexFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -135,7 +136,7 @@ public class RegexFieldValidatorTest {
     public void testMobilePhoneValid8() {
         values.put(FIELD_NAME, "043 445 3668");
         RegexFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -143,7 +144,7 @@ public class RegexFieldValidatorTest {
     public void testMobilePhoneInvalid() {
         values.put(FIELD_NAME, "+358904534534534");
         RegexFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -151,7 +152,7 @@ public class RegexFieldValidatorTest {
     public void testMobilePhoneInvalid2() {
         values.put(FIELD_NAME, "0933243432432");
         RegexFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -159,7 +160,7 @@ public class RegexFieldValidatorTest {
     public void testMobilePhoneInvalid3() {
         values.put(FIELD_NAME, "sfgdrgergergerg");
         RegexFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -167,7 +168,7 @@ public class RegexFieldValidatorTest {
     public void testMobilePhoneInvalid4() {
         values.put(FIELD_NAME, "047 343 4666");
         RegexFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -175,7 +176,7 @@ public class RegexFieldValidatorTest {
     public void testMobilePhoneInvalid5() {
         values.put(FIELD_NAME, "+358 33 556 6777");
         RegexFieldValidator validator = createValidator(MOBILE_PHONE_PATTERN);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -221,14 +222,14 @@ public class RegexFieldValidatorTest {
     @Test
     public void testValidateWorkExperienceWithoutValue() throws Exception {
         RegexFieldValidator validator = createValidator(PATTERN_WORK_EXPERIENCE);
-        ValidationResult validationResult = validator.validate(values);
+        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
     private ValidationResult validateWorkExperience(final String value) {
         values.put(FIELD_NAME, value);
         RegexFieldValidator validator = createValidator(PATTERN_WORK_EXPERIENCE);
-        return validator.validate(values);
+        return validator.validate(new ValidationInput(null, values, null, null));
     }
 
 

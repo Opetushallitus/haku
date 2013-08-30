@@ -2,6 +2,7 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Test;
@@ -49,7 +50,7 @@ public class RegexFieldFieldValidatorTest {
     public void validateValid() throws Exception {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, "test");
         RegexFieldValidator test = new RegexFieldValidator(FIELD_NAME, ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "test");
-        ValidationResult validationResult = test.validate(values);
+        ValidationResult validationResult = test.validate(new ValidationInput(null, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -57,7 +58,7 @@ public class RegexFieldFieldValidatorTest {
     public void validateInvalid() throws Exception {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, "test2");
         RegexFieldValidator test = new RegexFieldValidator(FIELD_NAME, ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "test");
-        ValidationResult validationResult = test.validate(values);
+        ValidationResult validationResult = test.validate(new ValidationInput(null, values, null, null));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -85,6 +86,6 @@ public class RegexFieldFieldValidatorTest {
 
     private ValidationResult validate(String name) {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, name);
-        return regexFieldFieldValidator.validate(values);
+        return regexFieldFieldValidator.validate(new ValidationInput(null, values, null, null));
     }
 }

@@ -3,6 +3,7 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
@@ -27,14 +28,16 @@ public class UniqValuesValidatorTest {
 
     @Test
     public void testValidateFalse() throws Exception {
-        ValidationResult validate = uniqValuesValidator.validate(ImmutableMap.of("AI", "1", "BI", "1"));
+        ValidationResult validate = uniqValuesValidator.validate(new ValidationInput(null, ImmutableMap.of("AI", "1", "BI", "1"),
+                null, null));
         assertTrue(validate.hasErrors());
     }
 
     @Test
     public void testValidateTrue() throws Exception {
         UniqValuesValidator uniqValuesValidator = new UniqValuesValidator(ID, ImmutableList.of("AI", "BI"), MSG_KEY);
-        ValidationResult validate = uniqValuesValidator.validate(ImmutableMap.of("AI", "1", "BI", "2"));
+        ValidationResult validate = uniqValuesValidator.validate(new ValidationInput(null, ImmutableMap.of("AI", "1", "BI", "2"),
+                null, null));
         assertFalse(validate.hasErrors());
     }
 
@@ -44,7 +47,7 @@ public class UniqValuesValidatorTest {
         Map<String, String> values = new HashMap<String, String>(1);
         values.put("AI", null);
         values.put("BI", null);
-        ValidationResult validate = uniqValuesValidator.validate(values);
+        ValidationResult validate = uniqValuesValidator.validate(new ValidationInput(null, values, null, null));
         assertFalse(validate.hasErrors());
     }
 }

@@ -16,32 +16,35 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
-import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+@Component
 public final class ElementTreeValidator {
 
-    private ElementTreeValidator() {
+    private final ValidatorFactory validatorFactory;
+
+    @Autowired
+    public ElementTreeValidator(ValidatorFactory validatorFactory) {
+        this.validatorFactory = validatorFactory;
     }
 
-    public static ValidationResult validate(final Element element, final Map<String, String> values) {
+    public ValidationResult validate(final ValidationInput validationInput) {
         List<ValidationResult> listOfValidationResult = new ArrayList<ValidationResult>();
+        Element element = validationInput.getElement();
         if (!element.getId().equals("esikatselu")) { // TODO Refactor preview and remove this!
             for (Validator validator : element.getValidators()) {
-                listOfValidationResult.add(validator.validate(values));
+                listOfValidationResult.add(validatorFactory.buildValidator(validator).validate(validationInput));
             }
-            for (Element child : element.getChildren(values)) {
-                listOfValidationResult.add(validate(child, values));
+            for (Element child : element.getChildren(validationInput.getValues())) {
+                listOfValidationResult.add(validate(new ValidationInput(child, validationInput.getValues(),
+                        validationInput.getApplicationOid(), validationInput.getApplicationSystemId())));
             }
         }
         return new ValidationResult(listOfValidationResult);
-    }
-
-    public static ValidationResult validateForm(final Element element, final Application application) {
-        return validate(element, application.getVastauksetMerged());
     }
 }

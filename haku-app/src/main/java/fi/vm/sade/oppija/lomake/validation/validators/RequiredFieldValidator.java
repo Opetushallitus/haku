@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -31,7 +32,8 @@ public class RequiredFieldValidator extends FieldValidator {
     }
 
     @Override
-    public ValidationResult validate(final Map<String, String> values) {
+    public ValidationResult validate(final ValidationInput validationInput) {
+        final Map<String, String> values = validationInput.getValues();
         if (values == null || StringUtils.isBlank(values.get(getFieldName()))) {
             return invalidValidationResult;
         }

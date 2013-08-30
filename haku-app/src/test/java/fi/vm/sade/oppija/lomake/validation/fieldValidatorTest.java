@@ -65,7 +65,7 @@ public class fieldValidatorTest {
     private FieldValidator createValidator(String fieldName, I18nText errorMessage) {
         return new FieldValidator(fieldName, errorMessage) {
             @Override
-            public ValidationResult validate(Map<String, String> values) {
+            public ValidationResult validate(final ValidationInput validationInput) {
                 throw new NotImplementedException();
             }
         };

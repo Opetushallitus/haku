@@ -18,18 +18,17 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 
 import com.google.common.base.Predicate;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 
-import java.util.Map;
-
 public class FunctionalValidator implements Validator {
 
-    private Predicate<Map<String, String>> predicate;
+    private Predicate<ValidationInput> predicate;
     private String inputId;
     private I18nText errorMessage;
 
-    public FunctionalValidator(Predicate<Map<String, String>> predicate, final String inputId,
+    public FunctionalValidator(Predicate<ValidationInput> predicate, final String inputId,
                                final I18nText errorMessage) {
         this.predicate = predicate;
         this.inputId = inputId;
@@ -37,15 +36,15 @@ public class FunctionalValidator implements Validator {
     }
 
     @Override
-    public ValidationResult validate(Map<String, String> values) {
+    public ValidationResult validate(final ValidationInput validationInput) {
 
-        if (this.predicate.apply(values)) {
+        if (this.predicate.apply(validationInput)) {
             return new ValidationResult();
         }
         return new ValidationResult(inputId, errorMessage);
     }
 
-    public static final class ValidatorPredicate implements Predicate<Map<String, String>> {
+    public static final class ValidatorPredicate implements Predicate<ValidationInput> {
 
         private Validator validator;
 
@@ -53,13 +52,13 @@ public class FunctionalValidator implements Validator {
             this.validator = validator;
         }
 
-        public static Predicate<Map<String, String>> validate(Validator validator) {
+        public static Predicate<ValidationInput> validate(Validator validator) {
             return new ValidatorPredicate(validator);
         }
 
         @Override
-        public boolean apply(Map<String, String> stringStringMap) {
-            return !validator.validate(stringStringMap).hasErrors();
+        public boolean apply(ValidationInput validationInput) {
+            return !validator.validate(validationInput).hasErrors();
         }
     }
 }

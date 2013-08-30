@@ -33,6 +33,8 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.SsnUniqueValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.UniqValuesValidator;
 import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
 
@@ -167,6 +169,11 @@ public final class ElementUtil {
                         element.getId(),
                         ElementUtil.createI18NTextError("yleinen.pakollinen")));
     }
+
+    public static void addSsnUniqueValidator(final Element element) {
+        element.setValidator(new SsnUniqueValidator());
+    }
+
 
     public static void setRequiredInlineAndVerboseHelp(final Question question) {
         addRequiredValidator(question);
