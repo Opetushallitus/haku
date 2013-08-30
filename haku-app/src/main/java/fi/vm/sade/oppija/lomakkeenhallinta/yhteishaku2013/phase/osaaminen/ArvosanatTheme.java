@@ -40,7 +40,7 @@ public final class ArvosanatTheme {
         arvosanatTheme.addChild(relatedQuestionLukio);
 
         RelatedQuestionRule relatedQuestionEiTutkintoa = new RelatedQuestionRule("rule_grade_no", RELATED_ELEMENT_ID,
-                orStr("5", OppijaConstants.KESKEYTYNYT), false);
+                orStr("5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO), false);
         relatedQuestionEiTutkintoa.addChild(
                 new Text("nogradegrid", createI18NForm("form.arvosanat.eiKysyta")));
         arvosanatTheme.addChild(relatedQuestionEiTutkintoa);
