@@ -15,6 +15,8 @@
  */
 package fi.vm.sade.oppija.common.organisaatio;
 
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+
 import java.util.List;
 
 public interface OrganizationService {
@@ -26,7 +28,7 @@ public interface OrganizationService {
      * @param criteria
      * @return
      */
-    List<Organization> search(SearchCriteria criteria);
+    List<Organization> search(OrganisaatioSearchCriteria criteria);
 
     List<String> findParentOids(String organizationOid);
 

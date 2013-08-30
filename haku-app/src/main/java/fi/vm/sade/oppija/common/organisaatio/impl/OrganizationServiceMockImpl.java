@@ -21,11 +21,11 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.*;
 import fi.vm.sade.oppija.common.organisaatio.Organization;
 import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.exception.ConfigurationException;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -217,12 +217,12 @@ public class OrganizationServiceMockImpl implements OrganizationService {
     }
 
     @Override
-    public List<Organization> search(SearchCriteria criteria) {
+    public List<Organization> search(OrganisaatioSearchCriteria criteria) {
         @SuppressWarnings("unchecked")
-        final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchString()),
-                new OrgTypePredicate(criteria.getOrganizationType()),
-                new OrgIncludePassivePredicate(criteria.isIncludePassive()),
-                new OrgIncludePlannedPredicate(criteria.isIncludePlanned()));
+        final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchStr()),
+                new OrgTypePredicate(criteria.getOrganisaatioTyyppi()),
+                new OrgIncludePassivePredicate(criteria.isLakkautetut()),
+                new OrgIncludePlannedPredicate(criteria.isSuunnitellut()));
         return Lists.newArrayList(Iterables.filter(orgs, predicate));
     }
 

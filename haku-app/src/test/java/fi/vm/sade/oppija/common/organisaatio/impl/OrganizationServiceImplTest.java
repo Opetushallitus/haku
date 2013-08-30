@@ -1,12 +1,9 @@
 package fi.vm.sade.oppija.common.organisaatio.impl;
 
-import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.common.organisaatio.Organization;
-import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
-import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
-import fi.vm.sade.organisaatio.api.model.types.MonikielinenTekstiTyyppi;
-import fi.vm.sade.organisaatio.api.model.types.OrganisaatioDTO;
-import fi.vm.sade.organisaatio.api.model.types.OrganisaatioSearchCriteriaDTO;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+import fi.vm.sade.organisaatio.service.search.OrganisaatioSearchService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,20 +24,20 @@ public class OrganizationServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
-        List<OrganisaatioDTO> serviceResult = new ArrayList<OrganisaatioDTO>();
-        OrganisaatioDTO organisaatioDTO= new OrganisaatioDTO();
+        List<OrganisaatioPerustieto> serviceResult = new ArrayList<OrganisaatioPerustieto>();
+        OrganisaatioPerustieto organisaatioDTO= new OrganisaatioPerustieto();
         organisaatioDTO.setOid(OID);
-        organisaatioDTO.setNimi(new MonikielinenTekstiTyyppi(Lists.newArrayList(new MonikielinenTekstiTyyppi.Teksti("fi", "nimi"))));
+        organisaatioDTO.setNimiFi("nimi");
         serviceResult.add(organisaatioDTO);
-        OrganisaatioService organisaatioService = mock(OrganisaatioService.class);
+        OrganisaatioSearchService organisaatioService = mock(OrganisaatioSearchService.class);
         organizationServiceImpl = new OrganizationServiceImpl(organisaatioService);
-        when(organisaatioService.searchOrganisaatios(any(OrganisaatioSearchCriteriaDTO.class))).thenReturn(serviceResult);
+        when(organisaatioService.searchBasicOrganisaatios(any(OrganisaatioSearchCriteria.class))).thenReturn(serviceResult);
     }
 
 
     @Test
     public void testSearch() throws IOException {
-        List<Organization> search = organizationServiceImpl.search(new SearchCriteria());
+        List<Organization> search = organizationServiceImpl.search(new OrganisaatioSearchCriteria());
         assertEquals("Wrong oid ", OID, search.get(0).getOid());
     }
 }

@@ -15,24 +15,22 @@
  */
 package fi.vm.sade.oppija.common.organisaatio.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import fi.vm.sade.oppija.common.organisaatio.Organization;
+import fi.vm.sade.oppija.common.organisaatio.impl.OrganizationServiceMockImpl.OrgNamePredicate;
+import fi.vm.sade.oppija.common.organisaatio.impl.OrganizationServiceMockImpl.OrgTypePredicate;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Test;
-
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
-import fi.vm.sade.oppija.common.organisaatio.Organization;
-import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
-import fi.vm.sade.oppija.common.organisaatio.impl.OrganizationServiceMockImpl.OrgNamePredicate;
-import fi.vm.sade.oppija.common.organisaatio.impl.OrganizationServiceMockImpl.OrgTypePredicate;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the mock.
@@ -102,8 +100,8 @@ public class OrganizationServiceMockImplTest {
     @Test
     public void testReadTestData() throws IOException {
         OrganizationServiceMockImpl impl = new OrganizationServiceMockImpl();
-        SearchCriteria criteria = new SearchCriteria();
-        criteria.setSearchString("espoo");
+        OrganisaatioSearchCriteria criteria = new OrganisaatioSearchCriteria();
+        criteria.setSearchStr("espoo");
         assertTrue("No search results found", impl.search(criteria).size() > 0);
     }
 }
