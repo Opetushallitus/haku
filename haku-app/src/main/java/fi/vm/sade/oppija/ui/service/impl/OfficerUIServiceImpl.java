@@ -14,6 +14,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
