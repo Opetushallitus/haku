@@ -36,12 +36,11 @@ public class ElementUtilTest {
     public static final String NO_TRANSLATION = "test";
     public static final String HAS_TRANSLATION = "translated_key";
     public static final String TRANSLATED_FI = "suomeksi";
-    public static final String TRANSLATED_EN = "in english";
 
     @Test
     public void testCreateI18NTextSize() throws Exception {
         I18nText test = ElementUtil.createI18NForm("test");
-        assertTrue(test.getTranslations().size() == 3);
+        assertTrue(test.getTranslations().size() == 2);
     }
 
     @Test
@@ -54,7 +53,6 @@ public class ElementUtilTest {
     public void testCreateI18NTextHasTranslation() throws Exception {
         I18nText test = ElementUtil.createI18NForm(HAS_TRANSLATION);
         assertEquals(TRANSLATED_FI, test.getTranslations().get("fi"));
-        assertEquals(TRANSLATED_EN, test.getTranslations().get("en"));
     }
 
     @Test

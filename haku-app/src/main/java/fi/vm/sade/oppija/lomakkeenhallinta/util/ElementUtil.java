@@ -50,7 +50,7 @@ public final class ElementUtil {
     private static Logger log = Logger.getLogger(ElementUtil.class);
     public static final String DISABLED = "disabled";
     public static final String HIDDEN = "hidden";
-    private static final String[] LANGS = {"fi", "sv", "en"};
+    private static final String[] LANGS = {"fi", "sv"};
 
     private ElementUtil() {
     }

@@ -23,7 +23,6 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
@@ -52,7 +51,6 @@ import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +67,6 @@ public class FormController {
     public static final String PRINT_VIEW = "/print/print";
 
     public static final String APPLICATION_SYSTEM_ID_PATH_PARAM = "applicationSystemId";
-    public static final String THEME_ID_PATH_PARAM = "themeId";
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
     private static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
@@ -123,11 +120,16 @@ public class FormController {
         }
     }
 
-    @GET
-    @Path("/{applicationSystemId}/esikatselu")
-    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) {
-        return getPhase(applicationSystemId, "esikatselu");
+    @POST
+    @Path("/{applicationSystemId}")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
+    public Response prefillForm(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+                                final MultivaluedMap<String, String> multiValues)
+            throws URISyntaxException {
+        userHolder.addPrefillData(MultivaluedMapUtil.toSingleValueMap(multiValues));
+
+        return Response.seeOther(new URI(
+                new RedirectToFormViewPath(applicationSystemId).getPath())).build();
     }
 
     @GET
@@ -153,6 +155,13 @@ public class FormController {
     }
 
     @GET
+    @Path("/{applicationSystemId}/esikatselu")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) {
+        return getPhase(applicationSystemId, "esikatselu");
+    }
+
+    @GET
     @Path("/{applicationSystemId}/{phaseId}/{elementId}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getPhaseElement(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
@@ -166,9 +175,9 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     public Viewable updateRules(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                     @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                                     @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
-                                     final MultivaluedMap<String, String> multiValues) {
+                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
+                                final MultivaluedMap<String, String> multiValues) {
         LOGGER.debug("getElement {}, {}, {}", applicationSystemId, phaseId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
         Element element = activeForm.getChildById(elementId);
@@ -206,17 +215,6 @@ public class FormController {
         }
     }
 
-    @POST
-    @Path("/{applicationSystemId}")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    public Response prefillForm(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                final MultivaluedMap<String, String> multiValues)
-            throws URISyntaxException {
-        userHolder.addPrefillData(MultivaluedMapUtil.toSingleValueMap(multiValues));
-
-        return Response.seeOther(new URI(
-                new RedirectToFormViewPath(applicationSystemId).getPath())).build();
-    }
 
     @POST
     @Path("/{applicationSystemId}/esikatselu")
@@ -281,25 +279,11 @@ public class FormController {
     }
 
     @GET
-    @Path("/{applicationSystemId}/{phaseId}/{themeId}/help")
+    @Path("/{applicationSystemId}/{elementId}/help")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getFormHelp(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                                @PathParam(THEME_ID_PATH_PARAM) final String themeId) {
-
-        Form activeForm = formService.getActiveForm(applicationSystemId);
-        Map<String, Object> model = new HashMap<String, Object>();
-        Element theme = activeForm.getChildById(themeId);
-        model.put("theme", theme);
-        List<Element> listsOfTitledElements = new ArrayList<Element>();
-        for (Element tElement : theme.getChildren()) {
-            if (tElement instanceof Titled) {
-                listsOfTitledElements.add(tElement);
-            }
-        }
-        model.put("listsOfTitledElements", listsOfTitledElements);
-
-        return new Viewable(VERBOSE_HELP_VIEW, model);
+                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) throws ResourceNotFoundException {
+        return new Viewable(VERBOSE_HELP_VIEW, uiService.getElementHelp(applicationSystemId, elementId));
     }
 
     @GET

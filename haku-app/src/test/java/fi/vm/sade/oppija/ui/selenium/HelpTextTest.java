@@ -45,7 +45,7 @@ public class HelpTextTest extends AbstractSeleniumBase {
 
     @Test
     public void testVerboseHelp() {
-        final String url = getBaseUrl() + "lomake/" + ASID + "/henkilotiedot/HenkilotiedotGrp/help";
+        final String url = getBaseUrl() + "lomake/" + ASID + "/HenkilotiedotGrp/help";
         final WebDriver driver = seleniumHelper.getDriver();
         driver.get(url);
         assertNotNull("Could not find verbose help page", driver.findElement(By.id("help-page")));
