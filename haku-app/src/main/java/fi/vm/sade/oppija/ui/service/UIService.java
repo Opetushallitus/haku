@@ -18,6 +18,8 @@ package fi.vm.sade.oppija.ui.service;
 
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 
+import java.util.Map;
+
 /**
  * @author Mikko Majapuro
  */
@@ -44,4 +46,6 @@ public interface UIService {
     UIServiceResponse getApplicationPrint(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
 
     UIServiceResponse getApplicationComplete(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
+
+    Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId) throws ResourceNotFoundException;
 }
