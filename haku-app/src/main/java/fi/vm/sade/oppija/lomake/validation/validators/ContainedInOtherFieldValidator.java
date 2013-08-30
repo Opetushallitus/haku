@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -35,7 +36,8 @@ public class ContainedInOtherFieldValidator extends FieldValidator {
     }
 
     @Override
-    public ValidationResult validate(Map<String, String> values) {
+    public ValidationResult validate(final ValidationInput validationInput) {
+        Map<String, String> values = validationInput.getValues();
         String otherValue = values.get(otherFieldName);
         String thisValue = values.get(fieldName);
         if (otherValue == null || thisValue == null || !otherValue.trim().toLowerCase().contains(thisValue.trim().toLowerCase())) {

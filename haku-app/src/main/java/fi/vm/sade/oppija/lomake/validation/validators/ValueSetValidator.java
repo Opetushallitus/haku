@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -37,9 +38,9 @@ public class ValueSetValidator extends FieldValidator {
     }
 
     @Override
-    public ValidationResult validate(Map<String, String> values) {
+    public ValidationResult validate(final ValidationInput validationInput) {
         ValidationResult validationResult = new ValidationResult();
-        String value = values.get(fieldName);
+        String value = validationInput.getValues().get(fieldName);
         if (value != null && !this.validValues.contains(value)) {
             validationResult = new ValidationResult(fieldName, getErrorMessage());
         }

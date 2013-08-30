@@ -90,6 +90,7 @@ public class HenkilotiedotPhase {
         SocialSecurityNumber socialSecurityNumber =
                 new SocialSecurityNumber("ssn_question", createI18NForm("form.henkilotiedot.hetu"),
                         sukupuoli.getI18nText(), male, female, sukupuoli.getId(), henkilotunnus);
+        addSsnUniqueValidator(socialSecurityNumber);
 
         RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FIN$", true);
         hetuRule.addChild(socialSecurityNumber);

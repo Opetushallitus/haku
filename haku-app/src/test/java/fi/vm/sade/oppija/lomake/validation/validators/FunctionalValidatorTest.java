@@ -16,6 +16,7 @@
 package fi.vm.sade.oppija.lomake.validation.validators;
 
 import com.google.common.base.Predicate;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class FunctionalValidatorTest {
 
     @Test
     public void testValidAndOperator() {
-        Predicate<Map<String, String>> predicate = and(validate(
+        Predicate<ValidationInput> predicate = and(validate(
                 new RegexFieldValidator("a", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "foo")),
                 validate(new RegexFieldValidator(
                         "b", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "bar")));
@@ -43,14 +44,14 @@ public class FunctionalValidatorTest {
         Map<String, String> values = new HashMap<String, String>();
         values.put("a", "foo");
         values.put("b", "bar");
-        ValidationResult result = fv.validate(values);
+        ValidationResult result = fv.validate(new ValidationInput(null, values, null, null));
         assertNotNull(result);
         assertFalse(result.hasErrors());
     }
 
     @Test
     public void testInvalidAndOperator() {
-        Predicate<Map<String, String>> predicate = and(validate(
+        Predicate<ValidationInput> predicate = and(validate(
                 new RegexFieldValidator("a", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "foo")),
                 validate(new RegexFieldValidator(
                         "b", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "bar")));
@@ -59,14 +60,14 @@ public class FunctionalValidatorTest {
         Map<String, String> values = new HashMap<String, String>();
         values.put("a", "foo");
         values.put("b", "fail");
-        ValidationResult result = fv.validate(values);
+        ValidationResult result = fv.validate(new ValidationInput(null, values, null, null));
         assertNotNull(result);
         assertTrue(result.hasErrors());
     }
 
     @Test
     public void testValidAndOrOperators() {
-        Predicate<Map<String, String>> predicate = or(and(validate(new RegexFieldValidator("a",
+        Predicate<ValidationInput> predicate = or(and(validate(new RegexFieldValidator("a",
                 ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "foo")),
                 validate(new RegexFieldValidator(
                         "b", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "bar"))),
@@ -78,14 +79,14 @@ public class FunctionalValidatorTest {
         values.put("a", "foo");
         values.put("b", "fail");
         values.put("c", "ok");
-        ValidationResult result = fv.validate(values);
+        ValidationResult result = fv.validate(new ValidationInput(null, values, null, null));
         assertNotNull(result);
         assertFalse(result.hasErrors());
     }
 
     @Test
     public void testValidAndOperatorWithNegation() {
-        Predicate<Map<String, String>> predicate = and(validate(
+        Predicate<ValidationInput> predicate = and(validate(
                 new RegexFieldValidator("a",
                         ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "foo")),
                 not(validate(new RegexFieldValidator("b",
@@ -95,7 +96,7 @@ public class FunctionalValidatorTest {
         Map<String, String> values = new HashMap<String, String>();
         values.put("a", "foo");
         values.put("b", "fail");
-        ValidationResult result = fv.validate(values);
+        ValidationResult result = fv.validate(new ValidationInput(null, values, null, null));
         assertNotNull(result);
         assertFalse(result.hasErrors());
     }

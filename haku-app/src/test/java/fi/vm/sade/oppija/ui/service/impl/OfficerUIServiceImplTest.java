@@ -12,6 +12,8 @@ import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.service.FormService;
+import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
@@ -39,6 +41,7 @@ public class OfficerUIServiceImplTest {
     private KoodistoService koodistoService;
     private HakuPermissionService hakuPermissionService;
     private LoggerAspect loggerAspect;
+    private ElementTreeValidator elementTreeValidator;
 
     private Application application;
     private AdditionalQuestions additionalQuestions = new AdditionalQuestions();
@@ -59,8 +62,10 @@ public class OfficerUIServiceImplTest {
         koodistoService = mock(KoodistoService.class);
         hakuPermissionService = mock(HakuPermissionService.class);
         loggerAspect = mock(LoggerAspect.class);
+        ValidatorFactory validatorFactory = mock(ValidatorFactory.class);
+        elementTreeValidator = new ElementTreeValidator(validatorFactory);
         officerUIService = new OfficerUIServiceImpl(
-                applicationService, formService, valintaperusteetService, koodistoService, hakuPermissionService, loggerAspect, "");
+                applicationService, formService, valintaperusteetService, koodistoService, hakuPermissionService, loggerAspect, "", elementTreeValidator);
         form.addChild(phase);
         when(applicationService.getApplicationPreferenceOids(application)).thenReturn(OIDS);
         when(applicationService.getApplication(OID)).thenReturn(application);

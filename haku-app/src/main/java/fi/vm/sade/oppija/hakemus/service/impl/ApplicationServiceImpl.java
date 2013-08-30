@@ -35,10 +35,10 @@ import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
@@ -55,7 +55,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -82,6 +81,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
     private final HakuPermissionService hakuPermissionService;
+    private final ElementTreeValidator elementTreeValidator;
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
@@ -90,7 +90,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
                                   AuthenticationService authenticationService,
                                   OrganizationService organizationService,
-                                  HakuPermissionService hakuPermissionService) {
+                                  HakuPermissionService hakuPermissionService,
+                                  ElementTreeValidator elementTreeValidator) {
 
         this.applicationDAO = applicationDAO;
         this.userHolder = userHolder;
@@ -99,6 +100,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.authenticationService = authenticationService;
         this.organizationService = organizationService;
         this.hakuPermissionService = hakuPermissionService;
+        this.elementTreeValidator = elementTreeValidator;
 
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
         this.dobPattern = Pattern.compile(DATE_OF_BIRTH_PATTERN);
@@ -138,18 +140,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         allAnswers.putAll(vastaukset);
 
         if (!skipValidators) {
-            ValidationResult validationResult = ElementTreeValidator.validate(phase, allAnswers);
-            if (application.getOid() == null) {
-                validationResult = checkIfExistsBySocialSecurityNumber(applicationSystemId,
-                        vastaukset.get(SocialSecurityNumber.HENKILOTUNNUS), validationResult);
-            }
+            ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, allAnswers,
+                    application.getOid(), applicationSystemId));
             applicationState.addError(validationResult.getErrorMessages());
         }
         if (applicationState.isValid()) {
-            if (application.getOid() == null) {
-                checkIfExistsBySocialSecurityNumber(applicationSystemId,
-                        vastaukset.get(SocialSecurityNumber.HENKILOTUNNUS));
-            }
             this.userHolder.savePhaseAnswers(applicationPhase);
         }
         // sets all answers merged, needed for re-rendering view if errors
@@ -158,14 +153,14 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public String submitApplication(final String ApplicationSystemId) {
+    public String submitApplication(final String applicationSystemId) {
         final User user = userHolder.getUser();
-        Application application = userHolder.getApplication(ApplicationSystemId);
-        Form form = formService.getForm(ApplicationSystemId);
+        Application application = userHolder.getApplication(applicationSystemId);
+        Form form = formService.getForm(applicationSystemId);
         Map<String, String> allAnswers = application.getVastauksetMerged();
-        ValidationResult validationResult = ElementTreeValidator.validate(form, allAnswers);
-        validationResult = checkIfExistsBySocialSecurityNumber(ApplicationSystemId,
-                allAnswers.get(SocialSecurityNumber.HENKILOTUNNUS), validationResult);
+        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, allAnswers,
+                application.getOid(), applicationSystemId));
+
         if (!validationResult.hasErrors()) {
 
             application.setOid(applicationOidService.generateNewOid());
@@ -453,30 +448,4 @@ public class ApplicationServiceImpl implements ApplicationService {
         return application;
 
     }
-
-    private void checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
-        if (ssn != null) {
-            Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
-            if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumber(asId, ssn)) {
-                throw new IllegalStateException("Application already exists by social security number " + ssn);
-            }
-        }
-    }
-
-    private ValidationResult checkIfExistsBySocialSecurityNumber(String asId, String ssn,
-                                                                 ValidationResult validationResult) {
-        if (validationResult == null) {
-            validationResult = new ValidationResult();
-        }
-        if (ssn != null) {
-            Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
-            if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumber(asId, ssn)) {
-                ValidationResult result = new ValidationResult("Henkilotunnus",
-                        ElementUtil.createI18NTextError("henkilotiedot.hetuKaytetty"));
-                return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
-            }
-        }
-        return validationResult;
-    }
-
 }

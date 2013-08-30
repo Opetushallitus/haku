@@ -15,6 +15,7 @@
  */
 package fi.vm.sade.oppija.lomake.validation.validators;
 
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,7 +66,7 @@ public class PreferenceTableValidatorTest {
         values.put("e3", "e3");
         values.put("e4", "e4");
         values.put("e5", "e5");
-        ValidationResult result = validator.validate(values);
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
         assertNotNull(result);
         assertFalse(result.hasErrors());
     }
@@ -77,7 +78,7 @@ public class PreferenceTableValidatorTest {
         values.put("li2", "li1");
         values.put("e1", "e1");
         values.put("e2", "e1");
-        ValidationResult result = validator.validate(values);
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
         assertNotNull(result);
         assertTrue(result.hasErrors());
     }
@@ -91,7 +92,7 @@ public class PreferenceTableValidatorTest {
         values.put("e1", "e1");
         values.put("e2", "e2");
         values.put("e4", "e4");
-        ValidationResult result = validator.validate(values);
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
         assertNotNull(result);
         assertTrue(result.hasErrors());
     }
@@ -102,7 +103,7 @@ public class PreferenceTableValidatorTest {
         values.put("li1", "li1");
         values.put("li2", "li2");
         values.put("e1", "e1");
-        ValidationResult result = validator.validate(values);
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
         assertNotNull(result);
         assertTrue(result.hasErrors());
     }
@@ -113,7 +114,7 @@ public class PreferenceTableValidatorTest {
         values.put("li1", "li1");
         values.put("e1", "e1");
         values.put("e2", "e2");
-        ValidationResult result = validator.validate(values);
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
         assertNotNull(result);
         assertTrue(result.hasErrors());
     }

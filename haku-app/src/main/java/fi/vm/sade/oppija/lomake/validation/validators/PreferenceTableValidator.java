@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.lomake.validation.validators;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
@@ -39,9 +40,10 @@ public class PreferenceTableValidator implements Validator {
     }
 
     @Override
-    public ValidationResult validate(Map<String, String> values) {
+    public ValidationResult validate(final ValidationInput validationInput) {
         List<String> learningInstitutions = new ArrayList<String>();
         List<String> educations = new ArrayList<String>();
+        final Map<String, String> values = validationInput.getValues();
         final Map<String, I18nText> errors = new HashMap<String, I18nText>();
 
         for (int i = 0; i < this.learningInstitutionInputIds.size(); ++i) {

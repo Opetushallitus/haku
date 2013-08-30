@@ -20,8 +20,6 @@ import fi.vm.sade.oppija.lomake.validation.validators.*;
 import org.codehaus.jackson.annotate.JsonSubTypes;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 
-import java.util.Map;
-
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ContainedInOtherFieldValidator.class),
@@ -33,9 +31,10 @@ import java.util.Map;
         @JsonSubTypes.Type(value = UniqValuesValidator.class),
         @JsonSubTypes.Type(value = ValueSetValidator.class),
         @JsonSubTypes.Type(value = ValueSetValidator.class),
-        @JsonSubTypes.Type(value = AlwaysFailsValidator.class)
+        @JsonSubTypes.Type(value = AlwaysFailsValidator.class),
+        @JsonSubTypes.Type(value = SsnUniqueValidator.class)
 }
 )
 public interface Validator {
-    ValidationResult validate(final Map<String, String> values);
+    ValidationResult validate(final ValidationInput validationInput);
 }
