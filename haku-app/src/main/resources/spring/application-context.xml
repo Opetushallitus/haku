@@ -62,13 +62,18 @@
 
     <beans>
         <context:annotation-config/>
-        <context:component-scan base-package="fi.vm.sade.oppija,fi.vm.sade.security"/>
+        <context:component-scan base-package="fi.vm.sade.oppija,fi.vm.sade.security,fi.vm.sade.organisaatio.service.search"/>
         <aop:aspectj-autoproxy/>
 
         <!-- Configure the multipart resolver -->
         <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
             <!-- one of the properties available; the maximum file size in bytes -->
             <property name="maxUploadSize" value="1000000"/>
+        </bean>
+
+        <bean id="organisaatioSearchService" class="fi.vm.sade.organisaatio.service.search.OrganisaatioSearchService">
+        </bean>
+        <bean id="solrServerFactory" class="fi.vm.sade.organisaatio.service.search.SolrServerFactory">
         </bean>
 
         <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">

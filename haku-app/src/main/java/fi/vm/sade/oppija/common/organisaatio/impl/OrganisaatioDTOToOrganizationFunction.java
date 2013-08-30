@@ -40,6 +40,8 @@ public class OrganisaatioDTOToOrganizationFunction implements
         final String oid = dto.getOid();
         final String parentOid = dto.getParentOid();
 
+        log.debug("dto.parentoid: {}", parentOid);
+
         final List<String> types = Lists.transform(dto.getTyypit(),
                 new Function<OrganisaatioTyyppi, String>() {
                     public String apply(OrganisaatioTyyppi src) {
