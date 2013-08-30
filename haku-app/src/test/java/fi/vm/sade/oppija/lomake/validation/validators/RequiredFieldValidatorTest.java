@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.lomake.validation.validators;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,7 +52,7 @@ public class RequiredFieldValidatorTest {
     }
 
     private boolean isValid() {
-        return requiredFieldValidator.validate(values).hasErrors();
+        return requiredFieldValidator.validate(new ValidationInput(null, values, null, null)).hasErrors();
     }
 
 }

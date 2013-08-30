@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -28,8 +29,8 @@ public class UniqValuesValidator extends FieldValidator {
     }
 
     @Override
-    public ValidationResult validate(Map<String, String> allValues) {
-        Collection<String> values = Maps.filterEntries(allValues, notNullKeyValue).values();
+    public ValidationResult validate(final ValidationInput validationInput) {
+        Collection<String> values = Maps.filterEntries(validationInput.getValues(), notNullKeyValue).values();
         Set<String> uniqValues = new HashSet<String>(values);
         if (uniqValues.size() != values.size()) {
             return invalidValidationResult;

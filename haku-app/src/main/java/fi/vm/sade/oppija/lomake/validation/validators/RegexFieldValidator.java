@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.Validate;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -40,8 +41,8 @@ public class RegexFieldValidator extends FieldValidator {
     }
 
     @Override
-    public ValidationResult validate(Map<String, String> values) {
-        String value = values.get(fieldName);
+    public ValidationResult validate(final ValidationInput validationInput) {
+        String value = validationInput.getValues().get(fieldName);
         if (value != null) {
             if (!compiledPattern.matcher(value).matches()) {
                 return invalidValidationResult;

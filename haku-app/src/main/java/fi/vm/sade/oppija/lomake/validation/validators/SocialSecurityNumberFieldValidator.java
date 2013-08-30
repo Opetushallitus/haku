@@ -16,6 +16,7 @@
 package fi.vm.sade.oppija.lomake.validation.validators;
 
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
@@ -60,8 +61,8 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     }
 
     @Override
-    public ValidationResult validate(Map<String, String> values) {
-        String socialSecurityNumber = values.get(fieldName);
+    public ValidationResult validate(final ValidationInput validationInput) {
+        String socialSecurityNumber = validationInput.getValues().get(fieldName);
         ValidationResult validationResult = new ValidationResult();
         if (socialSecurityNumber != null) {
             Matcher matcher = socialSecurityNumberPattern.matcher(socialSecurityNumber);

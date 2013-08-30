@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.lomake.validation.validators;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.Validate;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -41,7 +42,8 @@ public class EqualsValidator extends FieldValidator {
     }
 
     @Override
-    public ValidationResult validate(Map<String, String> values) {
+    public ValidationResult validate(final ValidationInput validationInput) {
+        Map<String, String> values = validationInput.getValues();
         String value = values.get(fieldName);
         if (value != null) {
             if (validValue.equals(value)) {

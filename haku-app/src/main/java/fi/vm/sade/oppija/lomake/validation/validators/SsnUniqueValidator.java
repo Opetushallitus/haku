@@ -16,23 +16,17 @@
 
 package fi.vm.sade.oppija.lomake.validation.validators;
 
-import fi.vm.sade.oppija.lomake.domain.I18nText;
-import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
-import org.codehaus.jackson.annotate.JsonProperty;
+import fi.vm.sade.oppija.lomake.validation.Validator;
 
-import java.util.Map;
-
-public class AlwaysFailsValidator extends FieldValidator {
-
-    public AlwaysFailsValidator(@JsonProperty(value = "fieldName") final String fieldName,
-                                @JsonProperty(value = "errorMessage") final I18nText errorMessage) {
-        super(fieldName, errorMessage);
-    }
+/**
+ * @author Mikko Majapuro
+ */
+public class SsnUniqueValidator implements Validator {
 
     @Override
-    public ValidationResult validate(final ValidationInput validationInput) {
-        return invalidValidationResult;
+    public ValidationResult validate(ValidationInput validationInput) {
+        return new ValidationResult();
     }
 }

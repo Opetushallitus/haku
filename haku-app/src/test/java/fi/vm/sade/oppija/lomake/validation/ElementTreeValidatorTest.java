@@ -28,6 +28,9 @@ import java.util.HashMap;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NTextError;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ElementTreeValidatorTest {
 
@@ -35,26 +38,32 @@ public class ElementTreeValidatorTest {
     private static final String AOID = "dummyAoid";
     private TextQuestion textQuestion;
     private FormServiceMockImpl formModelDummyMemoryDao;
+    private ElementTreeValidator elementTreeValidator;
 
     @Before
     public void setUp() throws Exception {
         textQuestion = new TextQuestion("id", createI18NAsIs("title"));
         formModelDummyMemoryDao = new FormServiceMockImpl(ASID, AOID);
+        SsnUniqueConcreteValidator ssnUniqueConcreteValidator = mock(SsnUniqueConcreteValidator.class);
+        when(ssnUniqueConcreteValidator.validate(any(ValidationInput.class))).thenReturn(new ValidationResult());
+        ValidatorFactory validatorFactory = new ValidatorFactory(ssnUniqueConcreteValidator);
+
+        elementTreeValidator = new ElementTreeValidator(validatorFactory);
     }
 
     @Test(expected = NullPointerException.class)
     public void testValidateNulls() throws Exception {
-        ElementTreeValidator.validate(null, null);
+        elementTreeValidator.validate(new ValidationInput(null, null, null, null));
     }
 
     @Test(expected = NullPointerException.class)
     public void testValidateNullElement() throws Exception {
-        ElementTreeValidator.validate(null, new HashMap<String, String>());
+        elementTreeValidator.validate(new ValidationInput(null, new HashMap<String, String>(), null, null));
     }
 
     @Test()
     public void testValidateNullValues() throws Exception {
-        ValidationResult validationResult = ElementTreeValidator.validate(textQuestion, null);
+        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(textQuestion, null, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -62,7 +71,8 @@ public class ElementTreeValidatorTest {
     public void testValidateRequiredElement() throws Exception {
         textQuestion.setValidator
                 (new RequiredFieldValidator("id", createI18NTextError("Error message")));
-        ValidationResult validationResult = ElementTreeValidator.validate(textQuestion, new HashMap<String, String>());
+        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(textQuestion, new HashMap<String, String>(),
+                null, null));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -80,7 +90,7 @@ public class ElementTreeValidatorTest {
         Element phase = formModelDummyMemoryDao.getFirstPhase(ASID);
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", asuinmaa);
-        ValidationResult validationResult = ElementTreeValidator.validate(phase, values);
+        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, values, null, null));
         assertEquals(errorCount, validationResult.getErrorMessages().size());
     }
 
