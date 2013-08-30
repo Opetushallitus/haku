@@ -20,7 +20,9 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
@@ -32,6 +34,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,6 +94,22 @@ public class UIServiceImpl implements UIService {
         response.setDiscretionaryAttachmentAOIds(getDiscretionaryAttachmentAOIds(application));
         response.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return response;
+    }
+
+    @Override
+    public Map<String, Object> getElementHelp(String applicationSystemId, String elementId) throws ResourceNotFoundException {
+        Form activeForm = formService.getActiveForm(applicationSystemId);
+        Map<String, Object> model = new HashMap<String, Object>();
+        Element theme = activeForm.getChildById(elementId);
+        model.put("theme", theme);
+        List<Element> listsOfTitledElements = new ArrayList<Element>();
+        for (Element tElement : theme.getChildren()) {
+            if (tElement instanceof Titled) {
+                listsOfTitledElements.add(tElement);
+            }
+        }
+        model.put("listsOfTitledElements", listsOfTitledElements);
+        return model;
     }
 
     private List<String> getDiscretionaryAttachmentAOIds(final Application application) {
