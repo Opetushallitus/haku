@@ -97,8 +97,8 @@ public class Organization {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("{'").append(name).append("'")
-                .append(", ").append(oid).append("}");
+        StringBuilder str = new StringBuilder("{'").append(name.getTranslations().get("fi")).append("'")
+                .append(", oid:").append(oid).append(", parent:").append(parentOid). append("}");
         return str.toString();
     }
 }

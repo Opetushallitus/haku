@@ -18,17 +18,15 @@ package fi.vm.sade.oppija.common.organisaatio.impl;
 import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.common.organisaatio.Organization;
 import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
-import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
-import fi.vm.sade.organisaatio.api.model.types.OrganisaatioDTO;
-import fi.vm.sade.organisaatio.api.model.types.OrganisaatioSearchCriteriaDTO;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+import fi.vm.sade.organisaatio.service.search.OrganisaatioSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,36 +36,33 @@ public class OrganizationServiceImpl implements OrganizationService {
     private static final Logger log = LoggerFactory.getLogger(OrganizationServiceImpl.class);
 
     public static final int MAX_RESULTS = 10000;
-    private final OrganisaatioService service;
+    private final OrganisaatioSearchService service;
 
     @Autowired
-    public OrganizationServiceImpl(final OrganisaatioService service) {
+    public OrganizationServiceImpl(final OrganisaatioSearchService service) {
         this.service = service;
     }
 
     @Override
-    public List<Organization> search(final SearchCriteria criteria) {
+    public List<Organization> search(final OrganisaatioSearchCriteria searchCriteria) {
 
-        final OrganisaatioSearchCriteriaDTO criteriaDTO = new OrganisaatioSearchCriteriaDTO();
-        criteriaDTO.setMaxResults(MAX_RESULTS);
-        criteriaDTO.setSearchStr(criteria.getSearchString());
-        criteriaDTO.setOrganisaatioTyyppi(criteria.getOrganizationType());
-        criteriaDTO.setSuunnitellut(criteria.isIncludePlanned());
-        criteriaDTO.setLakkautetut(criteria.isIncludePassive());
-        criteriaDTO.setOppilaitosTyyppi(criteria.getLearningInstitutionType());
-        final List<OrganisaatioDTO> result = service.searchOrganisaatios(criteriaDTO);
-        log.debug("Criteria: {}, found {} organizations", criteria, result.size());
-        return Lists.newArrayList(Lists.transform(result, new OrganisaatioDTOToOrganizationFunction()));
+//        final OrganisaatioSearchCriteria criteria = new OrganisaatioSearchCriteria();
+//        criteria.setMaxResults(MAX_RESULTS);
+//        criteria.setSearchStr(searchCriteria.getSearchString());
+//        criteria.setOrganisaatioTyyppi(searchCriteria.getOrganizationType());
+//        criteria.setSuunnitellut(searchCriteria.isIncludePlanned());
+//        criteria.setLakkautetut(searchCriteria.isIncludePassive());
+//        criteria.setOppilaitosTyyppi(searchCriteria.getLearningInstitutionType());
+        searchCriteria.setMaxResults(MAX_RESULTS);
+        final List<OrganisaatioPerustieto> result = service.searchBasicOrganisaatios(searchCriteria);
+
+        log.debug("Criteria: {}, found {} organizations", searchCriteria, result.size());
+        return Lists.newArrayList(Lists.transform(result, new OrganisaatioPerustietoToOrganizationFunction()));
     }
 
     @Override
     public List<String> findParentOids(final String organizationOid) {
-        List<OrganisaatioDTO> parents = service.findParentsTo(organizationOid);
-        List<String> parentOids = new ArrayList<String>(parents.size());
-        for (OrganisaatioDTO org : parents) {
-            parentOids.add(org.getOid());
-        }
-        return parentOids;
+        return service.findParentOids(organizationOid);
     }
 
 }

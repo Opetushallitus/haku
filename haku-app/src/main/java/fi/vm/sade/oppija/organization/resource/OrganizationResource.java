@@ -22,7 +22,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.oppija.common.organisaatio.Organization;
 import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.oppija.common.organisaatio.SearchCriteria;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,12 +103,12 @@ public class OrganizationResource {
                                                 final boolean includePlanned) throws IOException {
         LOGGER.debug("getOrganizations {} {} {} {}",
                 searchString, organizationType, learningInstitutionType, includePassive, includePlanned);
-        SearchCriteria criteria = new SearchCriteria();
-        criteria.setSearchString(searchString);
-        criteria.setOrganizationType(organizationType);
-        criteria.setLearningInstitutionType(learningInstitutionType);
-        criteria.setIncludePassive(includePassive);
-        criteria.setIncludePlanned(includePlanned);
+        OrganisaatioSearchCriteria criteria = new OrganisaatioSearchCriteria();
+        criteria.setSearchStr(searchString);
+        criteria.setOrganisaatioTyyppi(organizationType);
+        criteria.setOppilaitosTyyppi(learningInstitutionType);
+        criteria.setLakkautetut(includePassive);
+        criteria.setSuunnitellut(includePlanned);
         List<Organization> organizations = organizationService.search(criteria);
         LOGGER.debug("getOrganizations found {} organizations", organizations.size());
         if (LOGGER.isDebugEnabled()) {
