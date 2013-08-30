@@ -66,6 +66,7 @@ public class OrganizationResource {
                 return ORGANIZATION_ROOT_ID.equals(organization.getParentOid());
             }
         });
+        LOGGER.debug("toMap, root organizations: {}", roots.size());
         List<Map<String, Object>> result = Lists.newArrayList();
         for (Organization organization : roots) {
             Map<String, Object> org = Maps.newHashMap();
@@ -73,6 +74,7 @@ public class OrganizationResource {
             org.put("children", getChildren(listOfOrganization, organization.getOid()));
             result.add(org);
         }
+        LOGGER.debug("toMap, {} organizations", result.size());
         return result;
     }
 
@@ -107,6 +109,13 @@ public class OrganizationResource {
         criteria.setLearningInstitutionType(learningInstitutionType);
         criteria.setIncludePassive(includePassive);
         criteria.setIncludePlanned(includePlanned);
-        return organizationService.search(criteria);
+        List<Organization> organizations = organizationService.search(criteria);
+        LOGGER.debug("getOrganizations found {} organizations", organizations.size());
+        if (LOGGER.isDebugEnabled()) {
+            for (Organization org : organizations) {
+                LOGGER.debug(org.toString());
+            }
+        }
+        return organizations;
     }
 }

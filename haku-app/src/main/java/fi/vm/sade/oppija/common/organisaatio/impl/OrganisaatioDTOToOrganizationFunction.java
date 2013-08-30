@@ -7,6 +7,8 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.organisaatio.api.model.types.MonikielinenTekstiTyyppi;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioDTO;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -14,6 +16,8 @@ import java.util.List;
 
 public class OrganisaatioDTOToOrganizationFunction implements
         Function<OrganisaatioDTO, Organization> {
+
+    private static final Logger log = LoggerFactory.getLogger(OrganisaatioDTOToOrganizationFunction.class);
 
     @Override
     public Organization apply(OrganisaatioDTO dto) {
@@ -45,6 +49,8 @@ public class OrganisaatioDTOToOrganizationFunction implements
 
         final Date startDate = dto.getAlkuPvm();
         final Date endDate = dto.getLakkautusPvm();
-        return new Organization(new I18nText(name), oid, parentOid, types, startDate, endDate);
+        Organization org = new Organization(new I18nText(name), oid, parentOid, types, startDate, endDate);
+        log.debug("Transformed organization: {}", org);
+        return org;
     }
 }

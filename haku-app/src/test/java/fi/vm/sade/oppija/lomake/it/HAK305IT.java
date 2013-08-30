@@ -47,7 +47,7 @@ public class HAK305IT extends DummyModelBaseItTest {
 
         // Native lang == FI, no lang test
         elementsNotPresentByName("yleinen_kielitutkinto_sv", "valtionhallinnon_kielitutkinto_sv",
-                "yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
+                "yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_sv");
 
         driver.findElement(new By.ById("nav-henkilotiedot")).click();
         setNativeLanguage(NATIVE_LANGUAGE_SV);
@@ -56,6 +56,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         nextPhase();
         nextPhase(); // Osaaminen
 
+        selectByValue("PK_AI_OPPIAINE", "SV");
         // Native & school lang == FI, lang test
         elementsPresentByName("yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
 
@@ -70,6 +71,7 @@ public class HAK305IT extends DummyModelBaseItTest {
 
         // First foreign lang == FI, grade 10, no lang test
         selectByValue("PK_A1_OPPIAINE", "FI");
+        selectByValue("PK_A1", "10");
         elementsNotPresentByName("yleinen_kielitutkinto_sv", "valtionhallinnon_kielitutkinto_sv",
                 "yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_fi");
 
@@ -85,10 +87,10 @@ public class HAK305IT extends DummyModelBaseItTest {
 
     private void fillInArvosanatTheme() {
         driver.findElement(new By.ById("arvosanatTheme"));
-        driver.findElement(new By.ById("KielitaitokysymyksetTheme"));
         select();
         selectByValue("PK_A1_OPPIAINE", "EN");
         selectByValue("PK_B1_OPPIAINE", "SE");
+        //driver.findElement(new By.ById("KielitaitokysymyksetTheme"));
     }
 
     private void fillInRestOfThePhasesAndCheckTheOID() {

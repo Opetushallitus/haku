@@ -14,7 +14,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
@@ -42,7 +41,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final HakuPermissionService hakuPermissionService;
     private final String koulutusinformaatioBaseUrl;
     private final LoggerAspect loggerAspect;
-    private final ElementTreeValidator elementTreeValidator;
 
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
@@ -51,8 +49,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final KoodistoService koodistoService,
                                 final HakuPermissionService hakuPermissionService,
                                 final LoggerAspect loggerAspect,
-                                @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
-                                final ElementTreeValidator elementTreeValidator
+                                @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl
     )
 
     {
@@ -63,24 +60,23 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.hakuPermissionService = hakuPermissionService;
         this.loggerAspect = loggerAspect;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
-        this.elementTreeValidator = elementTreeValidator;
     }
 
     @Override
-    public UIServiceResponse getValidatedApplicationElement(
+    public UIServiceResponse getApplicationElement(
             final String oid,
             final String phaseId,
-            final String elementId) throws ResourceNotFoundException {
-        Application application = this.applicationService.getApplication(oid);
+            final String elementId,
+            final boolean validate) throws ResourceNotFoundException {
+        Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
         Element element = form.getChildById(elementId);
-        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
-                oid, application.getApplicationSystemId()));
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
         officerApplicationResponse.setElement(element);
         officerApplicationResponse.setForm(form);
+        ValidationResult validationResult = ElementTreeValidator.validateForm(form, application);
         officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return officerApplicationResponse;
@@ -91,8 +87,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
-        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
-                oid, application.getApplicationSystemId()));
+        ValidationResult validationResult = ElementTreeValidator.validateForm(form, application);
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
         officerApplicationResponse.setElement(form.getChildById(application.getPhaseId()));
@@ -100,6 +95,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
         officerApplicationResponse.setAdditionalQuestions(getAdditionalQuestions(application));
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
+        officerApplicationResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
+        officerApplicationResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
         return officerApplicationResponse;
     }
 
@@ -129,16 +126,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
         final Form form = formService.getForm(application.getApplicationSystemId());
-        ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
-                oid, application.getApplicationSystemId()));
+        ValidationResult formValidationResult = ElementTreeValidator.validateForm(form, application);
         if (formValidationResult.hasErrors()) {
             application.incomplete();
         } else {
             application.activate();
         }
         Element phase = form.getChildById(applicationPhase.getPhaseId());
-        ValidationResult phaseValidationResult = elementTreeValidator.validate(new ValidationInput(phase, applicationPhase.getAnswers(),
-                oid, application.getApplicationSystemId()));
+        ValidationResult phaseValidationResult = ElementTreeValidator.validate(phase, applicationPhase.getAnswers());
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
         applicationService.addNote(application, noteText);
@@ -156,7 +151,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private void checkUpdatePermission(Application application) throws ResourceNotFoundException {
         if (!hakuPermissionService.userCanUpdateApplication(application)) {
-            throw new ResourceNotFoundException("User can not update application "+application.getOid());
+            throw new ResourceNotFoundException("User can not update application " + application.getOid());
         }
     }
 

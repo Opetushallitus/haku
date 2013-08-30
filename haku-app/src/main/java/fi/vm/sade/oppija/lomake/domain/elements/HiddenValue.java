@@ -25,7 +25,8 @@ public class HiddenValue extends Element {
 
     private String value;
 
-    public HiddenValue(@JsonProperty(value = "id") String id, @JsonProperty(value = "value") String value) {
+    public HiddenValue(final @JsonProperty(value = "id") String id,
+                       final @JsonProperty(value = "value") String value) {
         super(id);
         this.addAttribute("name", id);
         this.value = value;

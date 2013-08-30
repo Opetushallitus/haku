@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -50,6 +51,27 @@ public final class RegexRule {
             }
         });
         return toCommaSeparatedString(selectors);
+    }
+
+
+    public static String tochildIdList(final Element element) {
+        return Joiner.on(',').skipNulls().join(
+                Iterables.transform(element.getChildren(), new Function<Element, String>() {
+                    @Override
+                    public String apply(final Element element) {
+                        return "'" + element.getId() + "'";
+                    }
+                }));
+    }
+
+    public static String setToList(final Set<String> names) {
+        return Joiner.on(',').skipNulls().join(
+                Iterables.transform(names, new Function<String, String>() {
+                    @Override
+                    public String apply(final String name) {
+                        return "'" + name + "'";
+                    }
+                }));
     }
 
     public static String toCommaSeparatedString(final Iterable<String> listOfStrings) {

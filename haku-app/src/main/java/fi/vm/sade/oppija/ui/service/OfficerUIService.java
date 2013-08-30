@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.util.Map;
 
 public interface OfficerUIService {
-    UIServiceResponse getValidatedApplicationElement(final String oid, final String phaseId, final String elementId)
+    UIServiceResponse getApplicationElement(final String oid,
+                                            final String phaseId,
+                                            final String elementId,
+                                            final boolean validate)
             throws ResourceNotFoundException;
 
     UIServiceResponse getValidatedApplication(final String oid, final String phaseId)
