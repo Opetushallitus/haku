@@ -48,4 +48,9 @@
         <function-class>fi.vm.sade.oppija.lomake.domain.rules.RegexRule</function-class>
         <function-signature>java.lang.String getDateOfBirth(java.util.Map)</function-signature>
     </function>
+    <function>
+        <name>formatOid</name>
+        <function-class>fi.vm.sade.oppija.lomake.util.StringUtil</function-class>
+        <function-signature>java.lang.String parseOidSuffix(java.lang.String)</function-signature>
+    </function>
 </taglib>
