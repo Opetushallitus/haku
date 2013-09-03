@@ -31,7 +31,7 @@ public class FormIT extends AbstractFormTest {
 
     @Before
     public void setUp() throws Exception {
-        FormServiceMockImpl dummyMem = new FormServiceMockImpl(ASID, AOID);
+        FormServiceMockImpl dummyMem = new FormServiceMockImpl(ASID);
         updateModelAndCreateFormModelHelper(dummyMem.getModel());
     }
 

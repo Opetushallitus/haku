@@ -24,6 +24,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,8 +42,8 @@ public class FormServiceImplTest {
     @Before
     public void setUp() throws Exception {
         this.applicationSystem = ElementUtil.createActiveApplicationSystem("ASID", FORM);
-        Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl(), "dummyAsid", "dummyAoid");
-        FormModelHolder holder = new FormModelHolder(yhteishaku2013);
+        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), "ASID");
+        FormModelHolder holder = new FormModelHolder(formGeneratorMock);
         FormModel model = new FormModel();
         FORM.addChild(PHASE);
         model.addApplicationSystem(applicationSystem);

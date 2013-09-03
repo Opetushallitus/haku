@@ -42,7 +42,6 @@ public class ApplicationSystem implements Serializable {
                              @JsonProperty(value = "name") final I18nText name,
                              @JsonProperty(value = "applicationPeriods") final List<ApplicationPeriod> applicationPeriods) {
         Preconditions.checkNotNull(id);
-        Preconditions.checkNotNull(form);
         Preconditions.checkNotNull(name);
         this.id = id;
         this.form = form;

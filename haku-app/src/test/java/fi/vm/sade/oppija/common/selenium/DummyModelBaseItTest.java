@@ -22,7 +22,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     @Before
     public void setUp() throws Exception {
-        FormServiceMockImpl formModelDummyMemoryDao = new FormServiceMockImpl(ASID, AOID);
+        FormServiceMockImpl formModelDummyMemoryDao = new FormServiceMockImpl(ASID);
         updateIndexAndFormModel(formModelDummyMemoryDao.getModel());
         driver = seleniumHelper.getDriver();
         selenium = seleniumHelper.getSelenium();
