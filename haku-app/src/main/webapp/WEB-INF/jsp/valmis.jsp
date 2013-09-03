@@ -141,8 +141,7 @@
                     <h3><fmt:message key="lomake.valmis.palaute"/></h3>
 
                     <p>
-                        Anna palautetta palvelun toiminnasta vastaamalla lyhyeen kyselyyn. Voit vastata kyselyyn
-                        26.6.2012 asti.
+                        <fmt:message key="lomake.valmis.palaute.p1"/>
                     </p>
 
                     <p>
