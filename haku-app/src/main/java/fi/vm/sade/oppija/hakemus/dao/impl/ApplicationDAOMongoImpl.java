@@ -249,7 +249,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 QueryBuilder.start(FIELD_LOP_2).is(lopOid).get(),
                 QueryBuilder.start(FIELD_LOP_3).is(lopOid).get(),
                 QueryBuilder.start(FIELD_LOP_4).is(lopOid).get(),
-                QueryBuilder.start(FIELD_LOP_5).is(lopOid).get()
+                QueryBuilder.start(FIELD_LOP_5).is(lopOid).get(),
+                QueryBuilder.start(FIELD_LOP_PARENTS_1).regex(Pattern.compile(lopOid)).get(),
+                QueryBuilder.start(FIELD_LOP_PARENTS_2).regex(Pattern.compile(lopOid)).get(),
+                QueryBuilder.start(FIELD_LOP_PARENTS_3).regex(Pattern.compile(lopOid)).get(),
+                QueryBuilder.start(FIELD_LOP_PARENTS_4).regex(Pattern.compile(lopOid)).get(),
+                QueryBuilder.start(FIELD_LOP_PARENTS_5).regex(Pattern.compile(lopOid)).get()
         );
     }
 
