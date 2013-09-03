@@ -24,6 +24,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.Select;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -119,7 +120,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         findByIdAndClick("submit_confirm");
 
         String oid = driver.findElement(new By.ByClassName("number")).getText();
-        assertTrue(oid.startsWith("1.2.3.4.5"));
+        assertFalse(oid.contains("."));
 
         navigateToFirstPhase();
 
