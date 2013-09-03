@@ -20,6 +20,7 @@ import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class HAK305IT extends DummyModelBaseItTest {
@@ -85,7 +86,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         findByIdAndClick("submit_confirm");
 
         String oid = driver.findElement(new By.ByClassName("number")).getText();
-        assertTrue(oid.startsWith("1.2.3.4.5"));
+        assertFalse(oid.startsWith("1.2.3.4.5"));
     }
 
 

@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="f" uri="/WEB-INF/tld/functions.tld" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -78,7 +79,7 @@
 
                     <p class="application-number">
                         <fmt:message key="lomake.valmis.hakulomakenumerosi"/>: <span class="number"><c:out
-                            value="${application.oid}"/></span>
+                            value="${ f:formatOid(application.oid)}"/></span>
                     </p>
 
                     <c:if test="${(not empty categoryData['Sähköposti'])}">
