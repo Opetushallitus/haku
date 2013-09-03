@@ -74,6 +74,11 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
             String id = "preference" + i + "-Opetuspiste-id";
             String parents = "preference" + i + "-Opetuspiste-id-parents";
             String organization = answers.get(id);
+
+            if (i == 1 && StringUtils.isEmpty(organization)) {
+                return true; // Anyone can read empty application
+            }
+
             if (StringUtils.isNotEmpty(organization) &&
                     checkAccess(organization, roles)) {
                 log.debug("User can read application, org: {}", organization);

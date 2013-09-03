@@ -424,7 +424,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     QueryBuilder.start(FIELD_LOP_PARENTS_5).regex(orgPattern).get())
                     .get());
         }
-        queries.add(QueryBuilder.start(FIELD_AO_1).exists(false).get());
 
         log.debug("queries: {}", queries.size());
 
