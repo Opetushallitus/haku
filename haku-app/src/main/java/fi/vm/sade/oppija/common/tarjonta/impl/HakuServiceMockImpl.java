@@ -28,7 +28,7 @@ import java.util.List;
  * @author Mikko Majapuro
  */
 @Service
-@Profile("default")
+@Profile("dev")
 public class HakuServiceMockImpl implements HakuService {
 
     @Override
