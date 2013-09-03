@@ -73,7 +73,6 @@
                 <div class="clear"></div>
 
                 <div class="form" data-form-step-id="7">
-                    <img src="${contextPath}/resources/img/valmis/Valmis-Kuva1.jpg" title="" alt="" class="set-right"/>
 
                     <h3 class="h2"><fmt:message key="lomake.valmis.hakemuksesionvastaanotettu"/></h3>
 
@@ -90,43 +89,56 @@
                     </c:if>
 
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nisi nisl, dignissim id
-                        molestie non, vehicula eu risus. Donec eu magna neque, eget sodales lacus. Vivamus eget enim
-                        justo, sed consectetur enim. Curabitur nisl erat, egestas ut facilisis vel, interdum ac risus.
+                        <fmt:message key="lomake.valmis.p1"/>
                     </p>
 
-                    <a href="${contextPath}/lomake/${application.applicationSystemId}/tulostus/${application.oid}" class="button small print" target="_blank"><fmt:message
-                    key="lomake.valmis.button.tulosta"/></a>
+                    <p>
+                        <fmt:message key="lomake.valmis.p2"/>
+                    </p>
+
+                    <p>
+                        <fmt:message key="lomake.valmis.p3"/>
+                    </p>
+
+                    <p>
+                        <a href="${contextPath}/lomake/${application.applicationSystemId}/tulostus/${application.oid}" class="button small print" target="_blank"><fmt:message
+                        key="lomake.valmis.button.tulosta"/></a>
+                    </p>
 
                     <div class="clear"></div>
                     <jsp:include page="./print/discretionaryAttachments.jsp"/>
                     <hr/>
 
-
-
-                    <img src="${contextPath}/resources/img/valmis/Valmis-Kuva2.jpg" title="" alt="" class="set-left"/>
-
-                    <h3>Muutoksen tekeminen</h3>
+                    <c:if test="${categoryData['preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys']}">
+                        <h3><fmt:message key="lomake.valmis.haeturheilijana.header"/></h3>
+                        <p>
+                             <fmt:message key="lomake.valmis.haeturheilijana"/>
+                        </p>
+                        <p>
+                            <a href="http://www.noc.fi/huippu-urheilu/tukipalvelut/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/" target="_blank">
+                                http://www.noc.fi/huippu-urheilu/tukipalvelut/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
+                            </a>
+                        </p>
+                        <hr/>
+                    </c:if>
+                    <h3><fmt:message key="lomake.valmis.muutoksentekeminen"/></h3>
 
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nisi nisl, dignissim id
-                        molestie non, vehicula eu risus. Donec eu magna neque, eget sodales lacus. Vivamus eget enim
-                        justo, sed consectetur enim. Curabitur nisl erat, egestas ut facilisis vel, interdum ac risus.
+                        <fmt:message key="lomake.valmis.muutoksentekeminen.p1"/>
                     </p>
 
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nisi nisl, dignissim id
-                        molestie non, vehicula eu risus. Donec eu magna neque, eget sodales lacus. Vivamus eget enim
-                        justo, sed consectetur enim. Curabitur nisl erat, egestas ut facilisis vel, interdum ac risus.
+                        <fmt:message key="lomake.valmis.muutoksentekeminen.p2"/>
+                    </p>
+
+                    <p>
+                        <fmt:message key="lomake.valmis.muutoksentekeminen.p3"/>
                     </p>
 
                     <div class="clear"></div>
                     <hr/>
 
-                    <img src="${contextPath}/resources/img/valmis/Valmis-Kuva3.jpg" title="" alt=""
-                         class="set-right"/>
-
-                    <h3>Palautekysely</h3>
+                    <h3><fmt:message key="lomake.valmis.palaute"/></h3>
 
                     <p>
                         Anna palautetta palvelun toiminnasta vastaamalla lyhyeen kyselyyn. Voit vastata kyselyyn
@@ -134,13 +146,7 @@
                     </p>
 
                     <p>
-                        <a href="#">Siirry palautekyselyyn</a>
-                    </p>
-
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nisi nisl, dignissim id
-                        molestie non, vehicula eu risus. Donec eu magna neque, eget sodales lacus. Vivamus eget enim
-                        justo, sed consectetur enim. Curabitur nisl erat, egestas ut facilisis vel, interdum ac risus.
+                        <a href="https://opintopolku.fi/palaute" target="_blank">https://opintopolku.fi/palaute</a>
                     </p>
 
                     <div class="clear"></div>
