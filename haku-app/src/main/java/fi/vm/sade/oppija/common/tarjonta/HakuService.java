@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomakkeenhallinta;
+package fi.vm.sade.oppija.common.tarjonta;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author Mikko Majapuro
  */
-public interface FormGenerator {
+public interface HakuService {
 
-    public List<ApplicationSystem> generate();
+    List<ApplicationSystem> getApplicationSystems();
 }

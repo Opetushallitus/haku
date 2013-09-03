@@ -14,16 +14,25 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomakkeenhallinta;
+package fi.vm.sade.oppija.common.tarjonta.impl;
 
+import com.google.common.collect.Lists;
+import fi.vm.sade.oppija.common.tarjonta.HakuService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author Mikko Majapuro
  */
-public interface FormGenerator {
+@Service
+@Profile("default")
+public class HakuServiceMockImpl implements HakuService {
 
-    public List<ApplicationSystem> generate();
+    @Override
+    public List<ApplicationSystem> getApplicationSystems() {
+        return Lists.newArrayList();
+    }
 }

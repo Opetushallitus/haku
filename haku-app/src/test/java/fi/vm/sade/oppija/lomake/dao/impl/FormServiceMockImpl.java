@@ -26,6 +26,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.FormModelHolder;
 import fi.vm.sade.oppija.lomake.service.FormService;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 
 import java.util.Map;
@@ -34,9 +35,10 @@ public class FormServiceMockImpl implements FormService {
 
     private FormModel formModel;
 
-    public FormServiceMockImpl(final String asid, final String aoid) {
-        Yhteishaku2013 yhteishaku2013 = new Yhteishaku2013(new KoodistoServiceMockImpl(), asid, aoid);
-        FormModelHolder formModelHolder = new FormModelHolder(yhteishaku2013);
+    public FormServiceMockImpl(final String asid) {
+        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), asid);
+        FormModelHolder formModelHolder = new FormModelHolder(formGeneratorMock);
+        formModelHolder.generateAndReplace();
         this.formModel = formModelHolder.getModel();
     }
 
