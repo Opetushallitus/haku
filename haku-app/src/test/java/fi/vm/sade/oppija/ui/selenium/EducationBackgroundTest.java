@@ -34,7 +34,7 @@ public class EducationBackgroundTest extends AbstractSeleniumBase {
 
     @Before
     public void init() {
-        FormServiceMockImpl formModel = new FormServiceMockImpl(ASID, AOID);
+        FormServiceMockImpl formModel = new FormServiceMockImpl(ASID);
         this.formModelHelper = updateIndexAndFormModel(formModel.getModel());
 
     }

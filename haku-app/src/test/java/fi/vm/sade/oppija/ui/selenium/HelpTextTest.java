@@ -31,7 +31,7 @@ public class HelpTextTest extends AbstractSeleniumBase {
 
     @Before
     public void init() {
-        dummyMem = new FormServiceMockImpl(ASID, AOID);
+        dummyMem = new FormServiceMockImpl(ASID);
         updateModel(dummyMem.getModel());
     }
 
