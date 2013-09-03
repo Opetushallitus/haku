@@ -19,10 +19,10 @@ package fi.vm.sade.oppija.lomake.service;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomakkeenhallinta.FormGenerator;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,18 +33,10 @@ public class FormModelHolder {
     private final FormGenerator formGenerator;
     private FormModel formModel;
 
-    public FormModelHolder(final Yhteishaku2013 yhteishaku2013) {
-        formModel = new FormModel();
-        formModel.addApplicationSystem(yhteishaku2013.getApplicationSystem());
-        this.formGenerator = null;
-
-    }
-
     @Autowired
-    public FormModelHolder(FormGenerator formGenerator) {
+    public FormModelHolder(@Qualifier(value = "formGeneratorImpl") FormGenerator formGenerator) {
         this.formGenerator = formGenerator;
         formModel = new FormModel();
-        //generateAndReplace();
     }
 
     public FormModel getModel() {

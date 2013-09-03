@@ -26,35 +26,18 @@ public class HakutoiveetPhase {
     public static final String DISCRETIONARY_EDUCATION_DEGREE = "32";
     public static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
 
-    public static Phase create(final String aoidAdditionalQuestion) {
+    public static Phase create() {
 
         // Hakutoiveet
         Phase hakutoiveet = new Phase(HAKUTOIVEET_PHASE_ID, createI18NForm("form.hakutoiveet.otsikko"), false);
 
-        hakutoiveet.addChild(createHakutoiveetTheme(aoidAdditionalQuestion));
+        hakutoiveet.addChild(createHakutoiveetTheme());
         return hakutoiveet;
     }
 
-    private static Theme createHakutoiveetTheme(final String aoidAdditionalQuestion) {
-        final String elementIdPrefix = aoidAdditionalQuestion.replace('.', '_');
+    private static Theme createHakutoiveetTheme() {
 
-        Radio radio3 = new Radio(
-                elementIdPrefix + "_additional_question_1",
-                createI18NForm("form.hakutoiveet.paasykoe.tuloksiaSaaKayttaa"));
-        radio3.addOption(elementIdPrefix + "_q1_option_1",
-                createI18NForm("form.hakutoiveet.paasykoe.eiOsallistunut"), "q1_option_1");
-        radio3.addOption(elementIdPrefix + "_q1_option_2",
-                createI18NForm("form.hakutoiveet.paasykoe.eiSaaKayttaa"), "q1_option_2");
-        radio3.addOption(elementIdPrefix + "_q1_option_3",
-                createI18NForm("form.hakutoiveet.paasykoe.saaKayttaa"), "q1_option_3");
-
-        List<Question> lisakysymysList = new ArrayList<Question>();
-        lisakysymysList.add(radio3);
-
-        Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
-        lisakysymysMap.put(aoidAdditionalQuestion, lisakysymysList);
-
-        Theme hakutoiveetTheme = new Theme("hakutoiveetGrp", createI18NForm("form.hakutoiveet.otsikko"), lisakysymysMap, true);
+        Theme hakutoiveetTheme = new Theme("hakutoiveetGrp", createI18NForm("form.hakutoiveet.otsikko"), null, true);
         hakutoiveetTheme.setHelp(createI18NForm("form.hakutoiveet.help"));
         PreferenceTable preferenceTable =
                 new PreferenceTable("preferencelist", createI18NForm("form.hakutoiveet.otsikko"));

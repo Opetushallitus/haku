@@ -35,7 +35,6 @@ import static org.mockito.Mockito.when;
 public class ElementTreeValidatorTest {
 
     private static final String ASID = "dummyAsid";
-    private static final String AOID = "dummyAoid";
     private TextQuestion textQuestion;
     private FormServiceMockImpl formModelDummyMemoryDao;
     private ElementTreeValidator elementTreeValidator;
@@ -43,7 +42,7 @@ public class ElementTreeValidatorTest {
     @Before
     public void setUp() throws Exception {
         textQuestion = new TextQuestion("id", createI18NAsIs("title"));
-        formModelDummyMemoryDao = new FormServiceMockImpl(ASID, AOID);
+        formModelDummyMemoryDao = new FormServiceMockImpl(ASID);
         SsnUniqueConcreteValidator ssnUniqueConcreteValidator = mock(SsnUniqueConcreteValidator.class);
         when(ssnUniqueConcreteValidator.validate(any(ValidationInput.class))).thenReturn(new ValidationResult());
         ValidatorFactory validatorFactory = new ValidatorFactory(ssnUniqueConcreteValidator);
