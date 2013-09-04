@@ -16,12 +16,15 @@
 
 package fi.vm.sade.oppija.lomake.validation.validators;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public class ContainedInOtherFieldValidator extends FieldValidator {
@@ -40,10 +43,24 @@ public class ContainedInOtherFieldValidator extends FieldValidator {
         Map<String, String> values = validationInput.getValues();
         String otherValue = values.get(otherFieldName);
         String thisValue = values.get(fieldName);
-        if (otherValue == null || thisValue == null || !otherValue.trim().toLowerCase().contains(thisValue.trim().toLowerCase())) {
-            return invalidValidationResult;
+
+        if (otherValue == null && thisValue == null) {
+            return validValidationResult;
+        } else if (otherFieldName != null && thisValue != null) {
+            String[] split = otherValue.split("[\\W]");
+            Iterable lowercaseNameParts = Iterables.transform(Arrays.asList(split), new Function<String, String>() {
+                @Override
+                public String apply(final String input) {
+                    return input.toLowerCase();
+                }
+            });
+            if (Iterables.contains(lowercaseNameParts, thisValue.toLowerCase())) {
+                return validValidationResult;
+            }
         }
-        return validValidationResult;
+
+
+        return invalidValidationResult;
     }
 
     public String getOtherFieldName() {
