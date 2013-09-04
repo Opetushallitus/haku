@@ -77,13 +77,16 @@ public class HakutoiveetPhase {
         Radio discretionary = new Radio(index + "-discretionary", createI18NForm("form.hakutoiveet.harkinnanvarainen"));
         addDefaultTrueFalseOptions(discretionary);
         addRequiredValidator(discretionary);
+        discretionary.setHelp(createI18NForm("form.hakutoiveet.harkinnanvarainen.ohje"));
 
         DropdownSelect discretionaryFollowUp = new DropdownSelect(discretionary.getId() + "-follow-up",
                 createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"), null);
+        discretionaryFollowUp.addOption("eiValittu", ElementUtil.createI18NAsIs(""), "");
         discretionaryFollowUp.addOption(discretionaryFollowUp.getId() + "oppimisvaikudet",
                 createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.oppimisvaikeudet"), "oppimisvaikudet");
         discretionaryFollowUp.addOption(discretionaryFollowUp.getId() + "sosiaalisetsyyt",
                 createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset"), "sosiaalisetsyyt");
+        addRequiredValidator(discretionaryFollowUp);
 
         RelatedQuestionRule discretionaryFollowUpRule = new RelatedQuestionRule(index + "-discretionary-follow-up-rule",
                 ImmutableList.of(discretionary.getId()), Boolean.TRUE.toString().toLowerCase(), false);
