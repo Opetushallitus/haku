@@ -9,6 +9,13 @@ Hakutoiveesi:
 $preference
 
 #end
+#if ($athlete)
+
+Haet urheilijana ammatilliseen koulutukseen. Lisätietoja löydät osoitteesta
+
+http://www.noc.fi/huippu-urheilu/tukipalvelut/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
+
+#end
 
 Anna palautetta opintopolku.fi:n toiminnasta vastaamalla lyhyeen kyselyyn
 osoitteessa https://www.survette.com/34894-28325-671@opintopolku&syksy2013.

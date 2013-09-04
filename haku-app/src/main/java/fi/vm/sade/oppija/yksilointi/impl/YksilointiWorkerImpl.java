@@ -39,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Service
 public class YksilointiWorkerImpl implements YksilointiWorker {
@@ -147,6 +148,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         ctx.put("applicationId", applicationId);
         ctx.put("applicationDate", applicationDate);
         ctx.put("preferences", getPreferences(application));
+        ctx.put("athlete", isAthlete(application));
 
         return ctx;
     }
@@ -165,6 +167,15 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             preferences.add(i + ". " + koulu + "\n   " + koulutus);
         }
         return preferences;
+    }
+
+    private boolean isAthlete(Application application) {
+        Map<String, String> answers = application.getVastauksetMerged();
+        return (isNotEmpty(answers.get("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys")) ||
+                isNotEmpty(answers.get("preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys")) ||
+                isNotEmpty(answers.get("preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys")) ||
+                isNotEmpty(answers.get("preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys")) ||
+                isNotEmpty(answers.get("preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys")));
     }
 
     private String getApplicantName(Application application) {
