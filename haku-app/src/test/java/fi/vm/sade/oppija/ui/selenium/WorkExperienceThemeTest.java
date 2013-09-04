@@ -65,7 +65,7 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
         navigateToFirstPhase();
         setValue("Sukunimi", "Ankka");
         setValue("Etunimet", "Aku Kalle");
-        setValue("Kutsumanimi", "A");
+        setValue("Kutsumanimi", "AKu");
         setValue("Henkilotunnus", hetu);
         setValue("Sähköposti", "aku.ankka@ankkalinna.al");
         setValue("matkapuhelinnumero1", "0501000100");
