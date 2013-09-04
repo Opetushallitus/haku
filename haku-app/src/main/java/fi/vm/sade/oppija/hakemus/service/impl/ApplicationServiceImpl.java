@@ -135,7 +135,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         // validating rules
         if (!activeForm.isFirstChild(phase)) {
             Application current = userHolder.getApplication(applicationSystemId);
-            allAnswers.putAll(current.getVastauksetMerged());
+            allAnswers.putAll(current.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId()));
         }
         allAnswers.putAll(vastaukset);
 
