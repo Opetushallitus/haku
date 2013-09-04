@@ -57,7 +57,7 @@ public class HenkilotiedotPhase {
                         ElementUtil.createI18NTextError("yleinen.virheellinenArvo")));
         kutsumanimi.setValidator(
                 createRegexValidator(kutsumanimi.getId(), ISO88591_NAME_REGEX));
-        setRequiredInlineAndVerboseHelp(kutsumanimi);
+        setRequiredInlineAndVerboseHelp(kutsumanimi, "form.henkilotiedot.kutsumanimi.verboseHelp");
 
         henkilotiedotRyhma.addChild(kutsumanimi);
 
@@ -68,7 +68,7 @@ public class HenkilotiedotPhase {
         setDefaultOption("FIN", kansalaisuus.getOptions());
         kansalaisuus.addAttribute("placeholder", "Valitse kansalaisuus");
         kansalaisuus.setHelp(createI18NForm("form.henkilotiedot.kansalaisuus.help"));
-        setRequiredInlineAndVerboseHelp(kansalaisuus);
+        setRequiredInlineAndVerboseHelp(kansalaisuus, "form.henkilotiedot.kansalaisuus.verboseHelp");
         henkilotiedotRyhma.addChild(kansalaisuus);
 
         TextQuestion henkilotunnus =
@@ -77,11 +77,11 @@ public class HenkilotiedotPhase {
         henkilotunnus.addAttribute("size", "11");
         henkilotunnus.addAttribute("maxlength", "11");
         henkilotunnus.setValidator(createRegexValidator(henkilotunnus.getId(), HETU_PATTERN));
-        setRequiredInlineAndVerboseHelp(henkilotunnus);
+        setRequiredInlineAndVerboseHelp(henkilotunnus, "form.henkilotiedot.henkilotunnus.verboseHelp");
 
         Radio sukupuoli = new Radio("sukupuoli", createI18NForm("form.henkilotiedot.sukupuoli"));
         sukupuoli.addOptions(koodistoService.getGenders());
-        setRequiredInlineAndVerboseHelp(sukupuoli);
+        setRequiredInlineAndVerboseHelp(sukupuoli,"form.henkilotiedot.sukupuoli.verboseHelp");
 
         Option male = sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
                 sukupuoli.getOptions().get(0) : sukupuoli.getOptions().get(1);
@@ -100,7 +100,7 @@ public class HenkilotiedotPhase {
         Radio onkoSinullaSuomalainenHetu = new Radio("onkoSinullaSuomalainenHetu",
                 createI18NForm("form.henkilotiedot.hetu.onkoSuomalainen"));
         addDefaultTrueFalseOptions(onkoSinullaSuomalainenHetu);
-        setRequiredInlineAndVerboseHelp(onkoSinullaSuomalainenHetu);
+        setRequiredInlineAndVerboseHelp(onkoSinullaSuomalainenHetu, "form.henkilotiedot.hetu.onkoSuomalainen.verboseHelp");
         RelatedQuestionRule suomalainenHetuRule = new RelatedQuestionRule("suomalainenHetuRule",
                 onkoSinullaSuomalainenHetu.getId(), "^true$", false);
         suomalainenHetuRule.addChild(socialSecurityNumber);
@@ -145,7 +145,7 @@ public class HenkilotiedotPhase {
         email.addAttribute("size", "50");
         email.setValidator(createRegexValidator(email.getId(), EMAIL_REGEX));
         email.setHelp(createI18NForm("form.henkilotiedot.email.help"));
-        ElementUtil.setVerboseHelp(email);
+        ElementUtil.setVerboseHelp(email, "form.henkilotiedot.email.verboseHelp");
         email.setInline(true);
         henkilotiedotRyhma.addChild(email);
 
@@ -156,7 +156,7 @@ public class HenkilotiedotPhase {
         puhelinnumero1.setHelp(createI18NForm("form.henkilotiedot.matkapuhelinnumero.help"));
         puhelinnumero1.addAttribute("size", "30");
         puhelinnumero1.setValidator(createRegexValidator(puhelinnumero1.getId(), MOBILE_PHONE_PATTERN));
-        ElementUtil.setVerboseHelp(puhelinnumero1);
+        ElementUtil.setVerboseHelp(puhelinnumero1, "form.henkilotiedot.matkapuhelinnumero.verboseHelp");
         puhelinnumero1.setInline(true);
         henkilotiedotRyhma.addChild(puhelinnumero1);
 
@@ -187,7 +187,7 @@ public class HenkilotiedotPhase {
         asuinmaa.addOptions(koodistoService.getCountries());
         setDefaultOption("FIN", asuinmaa.getOptions());
         asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
-        setRequiredInlineAndVerboseHelp(asuinmaa);
+        setRequiredInlineAndVerboseHelp(asuinmaa, "form.henkilotiedot.asuinmaa.verboseHelp");
 
         RelatedQuestionRule asuinmaaFI = new RelatedQuestionRule("rule1", asuinmaa.getId(), "FIN", true);
         Question lahiosoite = createRequiredTextQuestion("lahiosoite", "form.henkilotiedot.lahiosoite", "40");
@@ -209,7 +209,7 @@ public class HenkilotiedotPhase {
         kotikunta.addOption("eiValittu", ElementUtil.createI18NAsIs(""), "");
         kotikunta.addOptions(koodistoService.getMunicipalities());
         kotikunta.addAttribute("placeholder", "Valitse kotikunta");
-        setRequiredInlineAndVerboseHelp(kotikunta);
+        setRequiredInlineAndVerboseHelp(kotikunta, "form.henkilotiedot.kotikunta.verboseHelp");
         kotikunta.setHelp(createI18NForm("form.henkilotiedot.kotikunta.help"));
         asuinmaaFI.addChild(kotikunta);
 
@@ -230,9 +230,7 @@ public class HenkilotiedotPhase {
         kaupunkiUlkomaa.setInline(true);
         relatedQuestionRule2.addChild(kaupunkiUlkomaa);
 
-
         asuinmaa.addChild(relatedQuestionRule2);
-
         asuinmaa.addChild(asuinmaaFI);
 
         henkilotiedotRyhma.addChild(asuinmaa);
@@ -244,7 +242,7 @@ public class HenkilotiedotPhase {
         aidinkieli.addOption("eiValittu", ElementUtil.createI18NAsIs(""), "");
         aidinkieli.addOptions(koodistoService.getLanguages());
         aidinkieli.addAttribute("placeholder", "Valitse Äidinkieli");
-        setRequiredInlineAndVerboseHelp(aidinkieli);
+        setRequiredInlineAndVerboseHelp(aidinkieli, "form.henkilotiedot.aidinkieli.verboseHelp");
         aidinkieli.setHelp(createI18NForm("form.henkilotiedot.aidinkieli.help"));
         henkilotiedotRyhma.addChild(aidinkieli);
 

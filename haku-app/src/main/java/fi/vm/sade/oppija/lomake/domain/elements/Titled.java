@@ -27,7 +27,7 @@ public abstract class Titled extends Element {
     private I18nText i18nText;
 
     // verbose help text that is rendered in a separate help window
-    private String verboseHelp;
+    private I18nText verboseHelp;
 
     public Titled(@JsonProperty(value = "id") final String id,
                   @JsonProperty(value = "i18nText") final I18nText i18nText) {
@@ -39,11 +39,11 @@ public abstract class Titled extends Element {
         return i18nText;
     }
 
-    public String getVerboseHelp() {
+    public I18nText getVerboseHelp() {
         return verboseHelp;
     }
 
-    public void setVerboseHelp(final String verboseHelp) {
+    public void setVerboseHelp(final I18nText verboseHelp) {
         this.verboseHelp = verboseHelp;
     }
 

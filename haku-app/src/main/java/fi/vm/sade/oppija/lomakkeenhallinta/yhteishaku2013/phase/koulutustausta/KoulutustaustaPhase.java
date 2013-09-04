@@ -99,7 +99,7 @@ public class KoulutustaustaPhase {
         millatutkinnolla.addOption(TUTKINTO_ULKOMAINEN_TUTKINTO, createI18NForm("form.koulutustausta.ulkomailla"),
                 educationMap.get(ULKOMAINEN_TUTKINTO).getValue(),
                 createI18NForm("form.koulutustausta.ulkomailla.help"));
-        ElementUtil.setVerboseHelp(millatutkinnolla);
+        ElementUtil.setVerboseHelp(millatutkinnolla, "form.koulutustausta.millaTutkinnolla.verboseHelp");
         addRequiredValidator(millatutkinnolla);
 
         Notification tutkintoUlkomaillaNotification = new Notification(TUTKINTO_ULKOMAILLA_NOTIFICATION_ID,
@@ -215,7 +215,7 @@ public class KoulutustaustaPhase {
         perusopetuksenKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NAsIs(""), "");
         perusopetuksenKieli.addOptions(koodistoService.getLanguages());
         addRequiredValidator(perusopetuksenKieli);
-        setVerboseHelp(perusopetuksenKieli);
+        setVerboseHelp(perusopetuksenKieli, "form.koulutustausta.perusopetuksenKieli.verboseHelp");
         pkKysymyksetRule.addChild(perusopetuksenKieli);
 
         DropdownSelect lukionKieli = new DropdownSelect("lukion_kieli",
@@ -223,7 +223,7 @@ public class KoulutustaustaPhase {
         lukionKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NAsIs(""), "");
         lukionKieli.addOptions(koodistoService.getLanguages());
         addRequiredValidator(lukionKieli);
-        setVerboseHelp(lukionKieli);
+        setVerboseHelp(lukionKieli, "form.koulutustausta.lukionKieli.verboseHelp");
         lukioRule.addChild(lukionKieli);
 
         return millatutkinnolla;
