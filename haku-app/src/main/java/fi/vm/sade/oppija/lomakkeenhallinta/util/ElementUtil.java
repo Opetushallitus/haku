@@ -35,7 +35,6 @@ import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.SsnUniqueValidator;
-import fi.vm.sade.oppija.lomake.validation.validators.UniqValuesValidator;
 import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
 
@@ -176,14 +175,14 @@ public final class ElementUtil {
     }
 
 
-    public static void setRequiredInlineAndVerboseHelp(final Question question) {
+    public static void setRequiredInlineAndVerboseHelp(final Question question, final String helpId) {
         addRequiredValidator(question);
-        setVerboseHelp(question);
+        setVerboseHelp(question, helpId);
         question.setInline(true);
     }
 
-    public static void setVerboseHelp(final Titled titled) {
-        titled.setVerboseHelp(OppijaConstants.VERBOSE_HELP);
+    public static void setVerboseHelp(final Titled titled, final String helpId) {
+        titled.setVerboseHelp(createI18NText(helpId, "form_verboseHelp"));
     }
 
     public static String randomId() {

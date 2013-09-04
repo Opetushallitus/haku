@@ -45,7 +45,7 @@ public class LisatiedotPhase {
                 .setHelp(createI18NForm("form.tyokokemus.kuukausina.help"));
         tyokokemuskuukaudet.setValidator(createRegexValidator(tyokokemuskuukaudet.getId(), TYOKOKEMUS_PATTERN));
         tyokokemuskuukaudet.addAttribute("size", "8");
-        setVerboseHelp(tyokokemuskuukaudet);
+        setVerboseHelp(tyokokemuskuukaudet, "form.tyokokemus.kuukausina.verboseHelp");
         workExperienceTheme.addChild(tyokokemuskuukaudet);
         return workExperienceTheme;
     }
@@ -70,14 +70,14 @@ public class LisatiedotPhase {
         lupaGroup.addChild(lupaSahkoisesti);
         lupaGroup.addChild(lupaSms);
         lupatiedotTheme.addChild(lupaGroup);
-        setVerboseHelp(lupatiedotTheme);
+        setVerboseHelp(lupatiedotTheme, "form.lisatiedot.lupatiedot.verboseHelp");
 
         Radio asiointikieli = new Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, createI18NForm("form.asiointikieli.otsikko"));
         asiointikieli.setHelp(createI18NForm("form.asiointikieli.help"));
         asiointikieli.addOption("suomi", createI18NForm("form.asiointikieli.suomi"), "suomi");
         asiointikieli.addOption("ruotsi", createI18NForm("form.asiointikieli.ruotsi"), "ruotsi");
         addRequiredValidator(asiointikieli);
-        setVerboseHelp(asiointikieli);
+        setVerboseHelp(asiointikieli, "form.asiointikieli.otsikko.verboseHelp");
         lupatiedotTheme.addChild(asiointikieli);
         return lupatiedotTheme;
     }
