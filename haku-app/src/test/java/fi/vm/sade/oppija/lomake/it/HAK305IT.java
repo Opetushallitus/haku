@@ -93,7 +93,7 @@ public class HAK305IT extends DummyModelBaseItTest {
     private void fillInTheHenkilotiedotPhase(final String aidinkieli) {
         setValue("Sukunimi", "Ankka");
         setValue("Etunimet", "Aku Kalle");
-        setValue("Kutsumanimi", "A");
+        setValue("Kutsumanimi", "AKu");
         setValue("Henkilotunnus", "010113-668B");
         setValue("Sähköposti", "aku.ankka@ankkalinna.al");
         setValue("matkapuhelinnumero1", "0501000100");
