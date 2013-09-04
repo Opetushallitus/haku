@@ -20,6 +20,7 @@
     <legend class="${styleBaseClass}-label ${element.attributes['required'].value}"><haku:i18nText
             value="${element.i18nText}"/><haku:popup element="${element}" /></legend>
     <div class="${styleBaseClass}-content">
+        <haku:help element="${element}"/>
         <c:set var="value" value="${(empty value) ? categoryData[element.id] : value}"/>
         <c:forEach var="option" items="${element.options}" varStatus="status">
             <haku:errorMessage id="${option.id}"/>
@@ -32,7 +33,6 @@
             </div>
         </c:forEach>
         <haku:errorMessage id="${element.id}"/>
-        <haku:help element="${element}"/>
     </div>
     <div class="clear"></div>
     <haku:viewChilds element="${element}"/>
