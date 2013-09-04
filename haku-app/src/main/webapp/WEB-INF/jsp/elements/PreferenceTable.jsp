@@ -88,6 +88,7 @@
     var prerequisiteArray = prerequisiteStr.split(',');
 
     var sortabletable_settings = {
+        elementId: '<c:out value="${element.id}"/>',
         contextPath: '<c:out value="${pageContext.request.contextPath}"/>',
         applicationSystemId: '<c:out value="${it.applicationSystemId}"/>',
         vaiheId: '<c:out value="${vaihe.id}"/>',
