@@ -133,8 +133,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
         final Form form = formService.getForm(application.getApplicationSystemId());
+        Map<String, String> allAnswers = application.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId());
+        allAnswers.putAll(applicationPhase.getAnswers());
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,
-                application.getVastauksetMerged(), oid, application.getApplicationSystemId()));
+                allAnswers, oid, application.getApplicationSystemId()));
         if (formValidationResult.hasErrors()) {
             application.incomplete();
         } else {
