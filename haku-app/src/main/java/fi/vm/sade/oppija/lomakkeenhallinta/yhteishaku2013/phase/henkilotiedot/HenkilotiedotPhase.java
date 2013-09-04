@@ -54,7 +54,7 @@ public class HenkilotiedotPhase {
         kutsumanimi.setValidator(
                 new ContainedInOtherFieldValidator(kutsumanimi.getId(),
                         etunimet.getId(),
-                        ElementUtil.createI18NTextError("Virheellinen syöte")));
+                        ElementUtil.createI18NTextError("yleinen.virheellinenArvo")));
         kutsumanimi.setValidator(
                 createRegexValidator(kutsumanimi.getId(), ISO88591_NAME_REGEX));
         setRequiredInlineAndVerboseHelp(kutsumanimi);
