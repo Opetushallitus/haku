@@ -30,7 +30,7 @@ public class GradesTable {
                 ElementUtil.createI18NForm("form.arvosanat.otsikko"),
                 gradeGridHelper.isComprehensiveSchool());
 
-        ElementUtil.setVerboseHelp(gradeGrid);
+        ElementUtil.setVerboseHelp(gradeGrid, "form.arvosanat.otsikko.verboseHelp");
 
         for (SubjectRow nativeLanguage : gradeGridHelper.getNativeLanguages()) {
             gradeGrid.addChild(createGradeGridRow(nativeLanguage, true, true));

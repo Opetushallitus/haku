@@ -9,16 +9,10 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.Popup;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
@@ -53,7 +47,7 @@ public class HakutoiveetPhase {
         preferenceTable.addChild(pr3);
         preferenceTable.addChild(pr4);
         preferenceTable.addChild(pr5);
-        ElementUtil.setVerboseHelp(preferenceTable);
+        ElementUtil.setVerboseHelp(preferenceTable, "form.hakutoiveet.otsikko.verboseHelp");
         hakutoiveetTheme.addChild(preferenceTable);
         return hakutoiveetTheme;
     }
@@ -91,7 +85,6 @@ public class HakutoiveetPhase {
         RelatedQuestionRule discretionaryFollowUpRule = new RelatedQuestionRule(index + "-discretionary-follow-up-rule",
                 ImmutableList.of(discretionary.getId()), Boolean.TRUE.toString().toLowerCase(), false);
         discretionaryFollowUpRule.addChild(discretionaryFollowUp);
-
 
         discretionary.addChild(discretionaryFollowUpRule);
 
