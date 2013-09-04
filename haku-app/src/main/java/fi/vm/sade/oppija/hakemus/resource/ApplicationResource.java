@@ -89,13 +89,14 @@ public class ApplicationResource {
                                                        @QueryParam("aoid") String aoid,
                                                        @QueryParam("lopoid") String lopoid,
                                                        @QueryParam("asId") String asId,
+                                                       @QueryParam("aoOid") String aoOid,
                                                        @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @DefaultValue(value = "100") @QueryParam("rows") int rows) {
-        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{} start:{}, rows: {}",
-                query, state, aoid, lopoid, start, rows);
+        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}",
+                query, state, aoid, lopoid, asId, aoOid, start, rows);
 
         return applicationService.findApplications(
-                query, new ApplicationQueryParameters(state, aoid, lopoid, asId, start, rows));
+                query, new ApplicationQueryParameters(state, aoid, lopoid, asId, aoOid, start, rows));
     }
 
     @GET

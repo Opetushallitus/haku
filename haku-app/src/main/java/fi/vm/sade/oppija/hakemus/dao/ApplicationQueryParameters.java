@@ -25,15 +25,17 @@ public class ApplicationQueryParameters {
     private final String aoId;
     private final String lopOid;
     private final String asId;
+    private final String aoOid;
     private final int start;
     private final int rows;
 
     public ApplicationQueryParameters(final List<String> state, final String aoId, final String lopOid, final String asId,
-                                      final int start, final int rows) {
+                                      final String aoOid, final int start, final int rows) {
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
         this.state = state;
         this.aoId = isEmpty(aoId) ? null : aoId;
         this.asId = isEmpty(asId) ? null : asId;
+        this.aoOid = isEmpty(aoOid) ? null : aoOid;
         this.start = start;
         this.rows = rows;
     }
@@ -52,6 +54,10 @@ public class ApplicationQueryParameters {
 
     public String getAsId() {
         return asId;
+    }
+
+    public String getAoOid() {
+        return aoOid;
     }
 
     public int getStart() {
