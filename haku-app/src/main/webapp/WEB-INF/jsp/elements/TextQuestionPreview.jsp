@@ -23,8 +23,8 @@
             <td><c:out value="${categoryData[element.id]}"/></td>
         </c:when>
         <c:otherwise>
-            <td><span class="label"><haku:i18nText value="${element.i18nText}"/>:</span><c:out
-                    value="${categoryData[element.id]}"/></td>
+            <td class="label"><span><haku:i18nText value="${element.i18nText}"/>:</span></td>
+            <td><c:out value="${categoryData[element.id]}"/></td>
         </c:otherwise>
     </c:choose>
 </tr>
