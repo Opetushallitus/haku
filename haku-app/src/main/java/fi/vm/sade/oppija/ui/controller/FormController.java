@@ -68,6 +68,7 @@ public class FormController {
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
     private static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
+    public static final int MAX_PREFILL_PARAMETERS = 100;
 
     final FormService formService;
     private final ApplicationService applicationService;
@@ -123,7 +124,10 @@ public class FormController {
     public Response prefillForm(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException {
-        userHolder.addPrefillData(MultivaluedMapUtil.toSingleValueMap(multiValues));
+        if (multiValues.size() > MAX_PREFILL_PARAMETERS) {
+            throw new IllegalArgumentException("Too many prefill data values");
+        }
+        userHolder.addPrefillData(applicationSystemId, MultivaluedMapUtil.toSingleValueMap(multiValues));
 
         return Response.seeOther(new URI(
                 new RedirectToFormViewPath(applicationSystemId).getPath())).build();

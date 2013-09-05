@@ -45,6 +45,7 @@ public class LisatiedotPhase {
                 .setHelp(createI18NForm("form.tyokokemus.kuukausina.help"));
         tyokokemuskuukaudet.setValidator(createRegexValidator(tyokokemuskuukaudet.getId(), TYOKOKEMUS_PATTERN));
         tyokokemuskuukaudet.addAttribute("size", "8");
+        tyokokemuskuukaudet.addAttribute("maxlength", "4");
         setVerboseHelp(tyokokemuskuukaudet, "form.tyokokemus.kuukausina.verboseHelp");
         workExperienceTheme.addChild(tyokokemuskuukaudet);
         return workExperienceTheme;
