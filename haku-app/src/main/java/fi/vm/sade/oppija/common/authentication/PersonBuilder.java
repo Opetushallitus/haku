@@ -14,6 +14,7 @@ public class PersonBuilder {
     private String language;
     private String nationality;
     private String contactLanguage;
+    private String dateOfBirth;
 
     private PersonBuilder() {
 
@@ -24,8 +25,8 @@ public class PersonBuilder {
     }
 
     public Person get() {
-        return new Person(firstNames, nickName, lastName, socialSecurityNumber,
-        noSocialSecurityNumber, email, sex, homeCity, securityOrder, language, nationality, contactLanguage);
+        return new Person(firstNames, nickName, lastName, socialSecurityNumber, noSocialSecurityNumber, email, sex,
+                homeCity, securityOrder, language, nationality, contactLanguage, dateOfBirth);
     }
 
     public String getFirstNames() {
@@ -133,6 +134,15 @@ public class PersonBuilder {
 
     public PersonBuilder setContactLanguage(String contactLanguage) {
         this.contactLanguage = contactLanguage;
+        return this;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public PersonBuilder setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
         return this;
     }
 }

@@ -48,6 +48,7 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_NATIONALITY = "kansalaisuus";
     public static final String ELEMENT_ID_FIRST_LANGUAGE = "äidinkieli";
     public static final String ELEMENT_ID_CONTACT_LANGUAGE = "asiointikieli";
+    public static final String ELEMENT_ID_DATE_OF_BIRTH = "syntymaaika";
 
     public static final String PHASE_ID_CONTACT = "henkilotiedot";
 

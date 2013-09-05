@@ -32,10 +32,11 @@ public class Person {
     private String language;
     private String nationality;
     private String contactLanguage;
+    private String dateOfBirth;
 
     public Person(String firstNames, String nickName, String lastName, String socialSecurityNumber,
                   boolean noSocialSecurityNumber, String email, String sex, String homeCity,
-                  boolean securityOrder, String language, String nationality, String contactLanguage) {
+                  boolean securityOrder, String language, String nationality, String contactLanguage, String dateOfBirth) {
         this.firstNames = firstNames;
         this.nickName = nickName;
         this.lastName = lastName;
@@ -48,6 +49,7 @@ public class Person {
         this.language = language;
         this.nationality = nationality;
         this.contactLanguage = contactLanguage;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getFirstNames() {
@@ -97,4 +99,9 @@ public class Person {
     public String getContactLanguage() {
         return contactLanguage;
     }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
 }
