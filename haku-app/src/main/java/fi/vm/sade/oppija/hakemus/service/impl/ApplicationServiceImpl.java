@@ -200,6 +200,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                     .setSocialSecurityNumber(ssn);
         } else {
             personBuilder.setNoSocialSecurityNumber(true);
+            personBuilder.setDateOfBirth(allAnswers.get(OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH));
         }
 
         try {
