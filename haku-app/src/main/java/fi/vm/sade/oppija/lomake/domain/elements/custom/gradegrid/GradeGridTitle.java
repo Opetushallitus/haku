@@ -8,9 +8,7 @@ public class GradeGridTitle extends Titled {
 
     private boolean removable;
 
-    public GradeGridTitle(@JsonProperty(value = "id") final String id,
-                          @JsonProperty(value = "i18nText") final I18nText i18nText,
-                          @JsonProperty(value = "removable") final boolean removable) {
+    public GradeGridTitle(final String id, final I18nText i18nText, final boolean removable) {
         super(id, i18nText);
         this.removable = removable;
     }

@@ -16,7 +16,9 @@
 
 package fi.vm.sade.oppija.lomakkeenhallinta.resources;
 
-import fi.vm.sade.oppija.lomake.service.FormModelHolder;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.oppija.lomakkeenhallinta.FormGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -27,6 +29,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 
 @Controller
@@ -34,20 +37,23 @@ import java.net.URISyntaxException;
 // @Secured("ROLE_APP_HAKEMUS_CRUD")
 public class FormBuilderResource {
 
+    private final FormGenerator formGenerator;
+    private final ApplicationSystemService applicationSystemService;
+
     @Autowired
-    private FormModelHolder formModelHolder;
+    public FormBuilderResource(final FormGenerator formGenerator, final ApplicationSystemService applicationSystemService) {
+        this.formGenerator = formGenerator;
+        this.applicationSystemService = applicationSystemService;
+    }
+
 
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     public Response generate() throws URISyntaxException {
-        if (formModelHolder.generateAndReplace()) {
-            return Response.seeOther(new URI("/lomake/")).build();
-        } else {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Lomakkeen luonti epäonnistui(koodisto)").build();
+        List<ApplicationSystem> applicationSystems = formGenerator.generate();
+        for (ApplicationSystem applicationSystem : applicationSystems) {
+            applicationSystemService.save(applicationSystem);
         }
-    }
-
-    public void setFormModelHolder(final FormModelHolder formModelHolder) {
-        this.formModelHolder = formModelHolder;
+        return Response.seeOther(new URI("/lomake/")).build();
     }
 }

@@ -9,13 +9,12 @@ import fi.vm.sade.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
@@ -46,6 +45,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final String koulutusinformaatioBaseUrl;
     private final LoggerAspect loggerAspect;
     private final ElementTreeValidator elementTreeValidator;
+    private final ApplicationSystemService applicationSystemService;
 
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
@@ -55,7 +55,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final HakuPermissionService hakuPermissionService,
                                 final LoggerAspect loggerAspect,
                                 @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
-                                final ElementTreeValidator elementTreeValidator
+                                final ElementTreeValidator elementTreeValidator,
+                                final ApplicationSystemService applicationSystemService
     )
 
     {
@@ -67,6 +68,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.loggerAspect = loggerAspect;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
         this.elementTreeValidator = elementTreeValidator;
+        this.applicationSystemService = applicationSystemService;
     }
 
     @Override
@@ -180,8 +182,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         UIServiceResponse uiServiceResponse = new UIServiceResponse();
         uiServiceResponse.addObjectToModel("organizationTypes", koodistoService.getOrganizationtypes());
         uiServiceResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
-        Map<String, ApplicationSystem> applicationPerioidMap = formService.getApplicationPerioidMap();
-        uiServiceResponse.addObjectToModel("applicationSystems", applicationPerioidMap);
+        uiServiceResponse.addObjectToModel("applicationSystems", applicationSystemService.getAllApplicationSystems());
         return uiServiceResponse;
     }
 

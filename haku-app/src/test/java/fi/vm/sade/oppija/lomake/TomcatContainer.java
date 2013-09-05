@@ -84,6 +84,7 @@ public class TomcatContainer implements DisposableBean {
 
     private void createWebApp(File webApp) {
         System.setProperty(MONGO_DB_NAME, name);
+        System.setProperty("application.system.cache", "false");
         System.setProperty(SPRING_PROFILES_ACTIVE_KEY, SPRING_PROFILES_ACTIVE_VALUE_DEV);
         mTomcat.addWebapp(mTomcat.getHost(), getContextPath(), webApp.getAbsolutePath());
 

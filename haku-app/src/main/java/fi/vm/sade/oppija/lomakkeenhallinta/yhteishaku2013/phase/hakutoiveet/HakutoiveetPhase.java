@@ -31,7 +31,7 @@ public class HakutoiveetPhase {
 
     private static Theme createHakutoiveetTheme() {
 
-        Theme hakutoiveetTheme = new Theme("hakutoiveetGrp", createI18NForm("form.hakutoiveet.otsikko"), null, true);
+        Theme hakutoiveetTheme = new Theme("hakutoiveetGrp", createI18NForm("form.hakutoiveet.otsikko"), true);
         hakutoiveetTheme.setHelp(createI18NForm("form.hakutoiveet.help"));
         PreferenceTable preferenceTable =
                 new PreferenceTable("preferencelist", createI18NForm("form.hakutoiveet.otsikko"));

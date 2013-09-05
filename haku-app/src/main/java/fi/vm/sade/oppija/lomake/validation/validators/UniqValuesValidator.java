@@ -9,14 +9,18 @@ import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.Transient;
 
 import java.util.*;
 
 public class UniqValuesValidator extends FieldValidator {
 
     private final List<String> keys;
+    @Transient
     private final Predicate<Map.Entry<String, String>> notNullKeyValue;
 
+    @PersistenceConstructor
     public UniqValuesValidator(@JsonProperty(value = "fieldName") final String fieldName,
                                @JsonProperty(value = "keys") final List<String> keys,
                                @JsonProperty(value = "errorMessage") final I18nText errorMessage) {

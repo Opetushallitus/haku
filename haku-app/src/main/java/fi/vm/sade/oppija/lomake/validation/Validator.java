@@ -16,25 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
-import fi.vm.sade.oppija.lomake.validation.validators.*;
-import org.codehaus.jackson.annotate.JsonSubTypes;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = ContainedInOtherFieldValidator.class),
-        @JsonSubTypes.Type(value = FunctionalValidator.class),
-        @JsonSubTypes.Type(value = PreferenceTableValidator.class),
-        @JsonSubTypes.Type(value = RegexFieldValidator.class),
-        @JsonSubTypes.Type(value = RequiredFieldValidator.class),
-        @JsonSubTypes.Type(value = SocialSecurityNumberFieldValidator.class),
-        @JsonSubTypes.Type(value = UniqValuesValidator.class),
-        @JsonSubTypes.Type(value = ValueSetValidator.class),
-        @JsonSubTypes.Type(value = ValueSetValidator.class),
-        @JsonSubTypes.Type(value = AlwaysFailsValidator.class),
-        @JsonSubTypes.Type(value = SsnUniqueValidator.class)
-}
-)
 public interface Validator {
     ValidationResult validate(final ValidationInput validationInput);
 }

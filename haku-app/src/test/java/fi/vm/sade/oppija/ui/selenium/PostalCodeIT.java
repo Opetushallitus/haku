@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.ui.selenium;
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
@@ -42,9 +41,6 @@ import java.util.concurrent.TimeUnit;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.addRequiredValidator;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 
-/**
- * @author Mikko Majapuro
- */
 public class PostalCodeIT extends AbstractSeleniumBase {
 
 
@@ -56,12 +52,10 @@ public class PostalCodeIT extends AbstractSeleniumBase {
     public void init() throws IOException {
         Form form = new Form("lomake", createI18NAsIs("yhteishaku"));
         ApplicationSystem applicationSystem = ElementUtil.createActiveApplicationSystem("test", form);
-        FormModel formModel = new FormModel();
-        formModel.addApplicationSystem(applicationSystem);
         Phase testivaihe = new Phase("testivaihe", createI18NAsIs("Testivaihe"), false);
         form.addChild(testivaihe);
 
-        Theme testiRyhma = new Theme("testiGrp", createI18NAsIs("TestiGrp"), null, true);
+        Theme testiRyhma = new Theme("testiGrp", createI18NAsIs("TestiGrp"), true);
         testivaihe.addChild(testiRyhma);
         Map<String, PostOffice> postOffices = new HashMap<String, PostOffice>();
         postOffices.put(POSTCODE, new PostOffice(POSTCODE, ElementUtil.createI18NAsIs(POST_OFFICE)));
@@ -75,7 +69,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
 
         TextQuestion tq = new TextQuestion("foo", createI18NAsIs("bar"));
         testiRyhma.addChild(tq);
-        updateModel(formModel);
+        updateApplicationSystem(applicationSystem);
     }
 
     @Test

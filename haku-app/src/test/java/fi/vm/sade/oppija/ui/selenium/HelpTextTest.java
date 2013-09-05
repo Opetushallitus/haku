@@ -16,8 +16,9 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
+import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -27,12 +28,10 @@ import static org.junit.Assert.assertNotNull;
 
 public class HelpTextTest extends AbstractSeleniumBase {
 
-    private FormServiceMockImpl dummyMem;
-
     @Before
     public void init() {
-        dummyMem = new FormServiceMockImpl(ASID);
-        updateModel(dummyMem.getModel());
+        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
+        updateApplicationSystem(formGeneratorMock.createApplicationSystem());
     }
 
     @Test

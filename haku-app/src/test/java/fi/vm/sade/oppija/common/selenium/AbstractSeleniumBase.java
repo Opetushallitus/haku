@@ -19,9 +19,9 @@ package fi.vm.sade.oppija.common.selenium;
 import fi.vm.sade.oppija.common.MongoWrapper;
 import fi.vm.sade.oppija.common.it.AdminResourceClient;
 import fi.vm.sade.oppija.common.it.TomcatContainerBase;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.oppija.lomake.SeleniumContainer;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.ui.selenium.SeleniumHelper;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -45,10 +45,6 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     @Autowired
     protected MongoWrapper mongoWrapper;
 
-    public AbstractSeleniumBase() {
-        super();
-    }
-
     @Before
     public void before() {
         mongoWrapper.dropDatabase();
@@ -57,21 +53,13 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     }
 
     @After
-    public void after() {
+    public void tearDown() throws Exception {
         mongoWrapper.dropDatabase();
-        seleniumHelper = container.getSeleniumHelper();
-        seleniumHelper.logout();
     }
 
-    protected FormModelHelper updateIndexAndFormModel(FormModel formModel) {
-        AdminResourceClient adminResourceClient = new AdminResourceClient(getBaseUrl());
-        adminResourceClient.updateModel(formModel);
-        return new FormModelHelper(formModel);
-    }
-
-    protected void updateModel(FormModel formModel) {
-        AdminResourceClient adminResourceClient = new AdminResourceClient(getBaseUrl());
-        adminResourceClient.updateModel(formModel);
+    protected ApplicationSystemHelper updateApplicationSystem(final ApplicationSystem applicationSystem) {
+        adminResourceClient.updateApplicationSystem(applicationSystem);
+        return new ApplicationSystemHelper(applicationSystem);
     }
 
     protected void screenshot(String filename) {
@@ -118,6 +106,5 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         }
         return elements;
     }
-
 
 }

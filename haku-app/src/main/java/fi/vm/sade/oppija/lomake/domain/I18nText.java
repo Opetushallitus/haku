@@ -28,7 +28,7 @@ public class I18nText implements Serializable {
     private static final long serialVersionUID = 3485756393751579235L;
     private final Map<String, String> translations;
 
-    @JsonCreator
+
     public I18nText(@JsonProperty(value = "translations") final Map<String, String> translations) {
         this.translations = ImmutableMap.copyOf(translations);
     }

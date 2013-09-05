@@ -17,8 +17,8 @@
 package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
@@ -37,7 +37,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class ShowChildsIT extends AbstractSeleniumBase {
 
-    private FormModelHelper formModelHelper;
+    private ApplicationSystemHelper applicationSystemHelper;
     private CheckBox checkBox1;
     private WebDriver driver;
 
@@ -46,7 +46,7 @@ public class ShowChildsIT extends AbstractSeleniumBase {
         checkBox1 = new CheckBox("value", createI18NAsIs("title"));
         final CheckBox checkBox2 = new CheckBox("value2", createI18NAsIs("title2"));
 
-        final Theme theme = new Theme("ekaryhma", createI18NAsIs("ekaryhma"), null, true);
+        final Theme theme = new Theme("ekaryhma", createI18NAsIs("ekaryhma"), true);
         theme.addChild(new TextQuestion("alikysymys1", createI18NAsIs("alikysymys1")));
         theme.addChild(new TextQuestion("alikysymys2", createI18NAsIs("alikysymys2")));
 
@@ -63,15 +63,15 @@ public class ShowChildsIT extends AbstractSeleniumBase {
         relatedQuestionRule3.addChild(new TextQuestion("tamanakyykolmellanollalla", createI18NAsIs("tamanakyykolmellanollalla")));
         textQuestion.addChild(relatedQuestionRule3);
 
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox1, checkBox2);
-        this.formModelHelper = updateIndexAndFormModel(formModel);
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(checkBox1, checkBox2);
+        this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
         driver = seleniumHelper.getDriver();
     }
 
     @Test
     public void testInputExistsWithNoJavaScript() throws IOException, InterruptedException {
 
-        final String startUrl = formModelHelper.getStartUrl();
+        final String startUrl = applicationSystemHelper.getStartUrl();
         driver.get(getBaseUrl() + startUrl);
         WebElement checkbox = driver.findElement(By.id(checkBox1.getId()));
         checkbox.click();

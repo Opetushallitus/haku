@@ -17,8 +17,8 @@
 package fi.vm.sade.oppija.ui.it;
 
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
@@ -39,7 +39,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
  */
 public class RadioGroupIT extends AbstractFormTest {
 
-    private FormModelHelper formModelHelper;
+    private ApplicationSystemHelper applicationSystemHelper;
     private Radio radio;
 
     @Before
@@ -47,13 +47,13 @@ public class RadioGroupIT extends AbstractFormTest {
         radio = new Radio("radio", createI18NAsIs("foo"));
         radio.addOption("value1", createI18NAsIs("radio"), "title");
         radio.addOption("value2", createI18NAsIs("radio2"), "title2");
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(radio);
-        this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(radio);
+        this.applicationSystemHelper = updateModelAndCreateFormModelHelper(applicationSystem);
     }
 
     @Test
     public void testInputExists() throws IOException {
-        final String startUrl = formModelHelper.getStartUrl();
+        final String startUrl = applicationSystemHelper.getStartUrl();
         beginAt(startUrl);
         List<Option> options = radio.getOptions();
         for (Option option : options) {

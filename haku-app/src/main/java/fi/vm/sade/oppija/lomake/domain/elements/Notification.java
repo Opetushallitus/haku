@@ -16,7 +16,6 @@
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * @author Mikko Majapuro
@@ -45,11 +44,9 @@ public class Notification extends Titled {
 
     }
 
-
     private NotificationType notificationType;
 
-    public Notification(@JsonProperty(value = "id") String id, @JsonProperty(value = "i18nText") I18nText i18nText,
-                        @JsonProperty(value = "type") NotificationType notificationType) {
+    public Notification(final String id, final I18nText i18nText, final NotificationType notificationType) {
         super(id, i18nText);
         this.notificationType = notificationType;
     }

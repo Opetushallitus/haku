@@ -17,8 +17,8 @@
 package fi.vm.sade.oppija.ui.it;
 
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.Text;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.CheckBox;
@@ -30,24 +30,23 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
+import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 public class CheckBoxIT extends AbstractFormTest {
     public static final String CHECKBOX_ID = "checkbox";
     public static final Text TEXT_ELEMENT = new Text("textId", ElementUtil.createI18NAsIs("text"));
-    private FormModelHelper formModelHelper;
+    private ApplicationSystemHelper applicationSystemHelper;
     private CheckBox checkBox;
 
     @Before
     public void init() throws IOException {
         checkBox = new CheckBox(CHECKBOX_ID, createI18NAsIs("foo"));
         checkBox.addChild(TEXT_ELEMENT);
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(checkBox);
-        this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
-
-        final String startUrl = formModelHelper.getStartUrl();
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(checkBox);
+        this.applicationSystemHelper = updateModelAndCreateFormModelHelper(applicationSystem);
+        final String startUrl = applicationSystemHelper.getStartUrl();
         beginAt(startUrl);
     }
 

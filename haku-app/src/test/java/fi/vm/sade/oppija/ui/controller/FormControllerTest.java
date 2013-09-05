@@ -24,7 +24,7 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -61,19 +61,19 @@ public class FormControllerTest {
     private FormController formController;
     private ApplicationService applicationService;
     private FormService formService;
-    private AdditionalQuestionService additionalQuestionService;
     private Application application;
     private ApplicationState applicationState;
+    private ApplicationSystemService applicationSystemService;
 
     @Before
     public void setUp() throws Exception {
 
         this.applicationService = mock(ApplicationService.class);
         this.formService = mock(FormService.class);
-        this.additionalQuestionService = mock(AdditionalQuestionService.class);
+        this.applicationSystemService = mock(ApplicationSystemService.class);
         UserHolder userHolder = mock(UserHolder.class);
         UIService uiService = mock(UIService.class);
-        this.formController = new FormController(formService, applicationService, userHolder, additionalQuestionService, "", uiService);
+        this.formController = new FormController(formService, applicationService, userHolder, "", uiService, applicationSystemService);
         this.application = new Application();
         FORM.addChild(PHASE);
         when(applicationService.getApplication(Matchers.<String>any())).thenReturn(this.application);

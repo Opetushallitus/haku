@@ -42,12 +42,6 @@ public class MongoWrapperTest {
     }
 
     @Test
-    public void testDropCollection() {
-        mongoWrapper.dropCollection(NAME);
-        verify(mockCollection, times(1)).drop();
-    }
-
-    @Test
     public void testGetCollection() {
         assertEquals(mockCollection, mongoWrapper.getCollection(NAME));
     }

@@ -37,7 +37,7 @@ public class LisatiedotPhase {
         cal.setTime(start);
         cal.roll(Calendar.YEAR, -AGE_WORK_EXPERIENCE);
         WorkExperienceTheme workExperienceTheme = new WorkExperienceTheme("tyokokemusGrp",
-                createI18NForm("form.lisatiedot.tyokokemus"), null, "32", cal.getTime());
+                createI18NForm("form.lisatiedot.tyokokemus"), "32", cal.getTime());
         workExperienceTheme.setHelp(createI18NForm("form.tyokokemus.help"));
         TextQuestion tyokokemuskuukaudet = new TextQuestion("TYOKOKEMUSKUUKAUDET",
                 createI18NForm("form.tyokokemus.kuukausina"));
@@ -51,7 +51,7 @@ public class LisatiedotPhase {
     }
 
     private static Theme createLupatiedot() {
-        Theme lupatiedotTheme = new Theme("lupatiedotGrp", createI18NForm("form.lisatiedot.lupatiedot"), null, true);
+        Theme lupatiedotTheme = new Theme("lupatiedotGrp", createI18NForm("form.lisatiedot.lupatiedot"), true);
         CheckBox lupaMarkkinointi = new CheckBox(
                 "lupaMarkkinointi",
                 createI18NForm("form.lupatiedot.saaMarkkinoida"));
@@ -83,7 +83,7 @@ public class LisatiedotPhase {
     }
 
     private static Element createUrheilijanLisakysymykset() {
-        Theme urheilijanLisakysymyksetTeema = new Theme(ElementUtil.randomId(), createI18NForm("form.lisatiedot.urheilija"), null, true);
+        Theme urheilijanLisakysymyksetTeema = new Theme(ElementUtil.randomId(), createI18NForm("form.lisatiedot.urheilija"), true);
 
         ImmutableList<String> ids = ImmutableList.of(
                 "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys",

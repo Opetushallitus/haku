@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 
 public class TextArea extends Question {
@@ -26,13 +25,8 @@ public class TextArea extends Question {
     public static final String ROWS = "3";
     public static final String COLS = "20";
 
-    public TextArea(@JsonProperty(value = "id") final String id,
-                    @JsonProperty(value = "i18nText") final I18nText i18nText) {
+    public TextArea(final String id, final I18nText i18nText) {
         super(id, i18nText);
-        initAttributes();
-    }
-
-    private void initAttributes() {
         addAttribute("rows", ROWS);
         addAttribute("cols", COLS);
     }

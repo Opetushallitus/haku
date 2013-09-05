@@ -25,8 +25,8 @@ public abstract class Question extends Titled {
     private static final long serialVersionUID = -6202853270204822932L;
     private boolean inline = false;
 
-    protected Question(@JsonProperty(value = "id") final String id,
-                       @JsonProperty(value = "i18nText") I18nText i18nText) {
+
+    protected Question(final String id, final I18nText i18nText) {
         super(id, i18nText);
         super.addAttribute("name", id);
     }

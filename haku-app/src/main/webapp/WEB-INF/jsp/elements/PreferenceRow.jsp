@@ -27,7 +27,6 @@
     <c:set value="${sortableItem.learningInstitutionInputId}" var="textInputId" scope="page"/>
     <c:set value="${sortableItem.learningInstitutionInputId}-id" var="hiddenInputId" scope="page"/>
     <c:set value="${sortableItem.educationInputId}" var="selectInputId" scope="page"/>
-    <c:set value="${sortableItem.id}-Lisakysymykset" var="additionalQuestionsId" scope="page"/>
     <c:set value="${sortableItem.educationInputId}-id" var="hiddenKoulutusId" scope="page"/>
     <c:set value="${sortableItem.educationInputId}-educationDegree" var="hiddenEducationDegreeId" scope="page"/>
     <c:set value="${sortableItem.id}-childLONames" var="childLONamesId" scope="page"/>
@@ -37,7 +36,7 @@
     <c:set value="${hiddenKoulutusId}-athlete" var="hiddenKoulutusIdAthlete" scope="page"/>
 
     <div class="form-row">
-        <label class="form-row-label ${sortableItem.attributes['required'].value}" for="${textInputId}"><haku:i18nText
+        <label class="form-row-label ${sortableItem.attributes['required']}" for="${textInputId}"><haku:i18nText
                 value="${sortableItem.learningInstitutionLabel}"/></label>
 
         <div class="form-row-content">
@@ -48,7 +47,7 @@
                        type="text"
                        data-selectinputid="${selectInputId}"
                        size="60"
-                ${sortableItem.attributes['required'].value}/>
+                ${sortableItem.attributes['required']}/>
                 <haku:errorMessage id="${textInputId}" additionalClass="margin-top-1"/>
                 <input id="${hiddenInputId}" name="${hiddenInputId}" value="<c:out value='${categoryData[hiddenInputId]}'/>"
                        type="hidden"/>
@@ -57,16 +56,15 @@
         <div class="clear"></div>
     </div>
     <div class="form-row">
-        <label class="form-row-label ${sortableItem.attributes['required'].value}" for="${selectInputId}"><haku:i18nText
+        <label class="form-row-label ${sortableItem.attributes['required']}" for="${selectInputId}"><haku:i18nText
                 value="${sortableItem.educationLabel}"/></label>
 
         <div class="form-row-content">
             <div class="field-container-select">
                 <select id="${selectInputId}" name="${selectInputId}"
                         placeholder="${sortableItem.selectEducationPlaceholder}"
-                        data-additionalquestions="${additionalQuestionsId}"
                         data-childlonames="${childLONamesId}"
-                ${sortableItem.attributes['required'].value}>
+                ${sortableItem.attributes['required']}>
                 </select>
                 <haku:errorMessage id="${selectInputId}" additionalClass="margin-top-1"/>
                 <haku:input-hidden id="${hiddenKoulutusId}" data="${categoryData}"/>

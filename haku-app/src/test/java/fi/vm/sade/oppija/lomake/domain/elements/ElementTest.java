@@ -16,11 +16,11 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements;
 
-import fi.vm.sade.oppija.lomake.domain.Attribute;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collection;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -75,8 +75,8 @@ public class ElementTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void testAddAttributes() throws Exception {
-        Collection<Attribute> attributes = testElement.getAttributes().values();
-        attributes.add(new Attribute("k", "v"));
+        Map<String,String> attributes = testElement.getAttributes();
+        attributes.put("k", "v");
     }
 
     @Test

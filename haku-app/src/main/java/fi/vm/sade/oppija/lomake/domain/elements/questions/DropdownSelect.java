@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 public class DropdownSelect extends OptionQuestion {
 
@@ -25,9 +24,7 @@ public class DropdownSelect extends OptionQuestion {
 
     private final String defaultValueAttribute;
 
-    public DropdownSelect(@JsonProperty(value = "id") final String id,
-                          @JsonProperty(value = "i18nText") final I18nText i18nText,
-                          @JsonProperty(value = "defaultValueAttribute") final String defaultValueAttribute) {
+    public DropdownSelect(final String id, final I18nText i18nText, final String defaultValueAttribute) {
         super(id, i18nText);
         this.defaultValueAttribute = defaultValueAttribute;
     }

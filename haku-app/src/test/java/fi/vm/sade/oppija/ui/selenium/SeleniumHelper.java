@@ -56,4 +56,8 @@ public class SeleniumHelper {
     public void logout() {
         getDriver().get(baseUrl + "user/logout");
     }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
 }

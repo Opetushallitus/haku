@@ -27,11 +27,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PreDestroy;
+import java.util.Set;
 
 
 @Service
 public class MongoWrapper {
     private static final Logger LOG = LoggerFactory.getLogger(MongoWrapper.class);
+
     private final Mongo mongo;
     private final DB db;
 
@@ -52,11 +54,6 @@ public class MongoWrapper {
     public void dropDatabase() {
         LOG.debug("Drop database {}", mongo.debugString());
         db.dropDatabase();
-    }
-
-    public void dropCollection(final String name) {
-        LOG.debug("Drop collection {} from database {}", name, mongo.debugString());
-        db.getCollection(name).drop();
     }
 
     public DBCollection getCollection(final String name) {
