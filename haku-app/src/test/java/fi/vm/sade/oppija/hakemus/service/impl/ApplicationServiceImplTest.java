@@ -25,6 +25,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -197,8 +198,7 @@ public class ApplicationServiceImplTest {
         answerMap.put(OppijaConstants.ELEMENT_ID_NATIONALITY, "swe");
         application.addVaiheenVastaukset("henkilotiedot", answerMap);
         application = service.addPersonAndAuthenticate(application);
-        assertNotNull("PersonOid should not be null", application.getPersonOid());
-        assertEquals("Wrong person oid", PERSON_OID, application.getPersonOid());
+        assertNull("PersonOid should be null", application.getPersonOid());
     }
 
     @Test

@@ -182,31 +182,25 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application addPersonAndAuthenticate(Application application) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
 
-        PersonBuilder personBuilder = PersonBuilder.start()
-                .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
-                .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
-                .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
-                .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL))
-                .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
-                .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
-                .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
-                .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
-                .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE))
-                .setSecurityOrder(false);
+        if (!isEmpty(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
+            PersonBuilder personBuilder = PersonBuilder.start()
+                    .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
+                    .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
+                    .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
+                    .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL))
+                    .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
+                    .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
+                    .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
+                    .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
+                    .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE))
+                    .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
+                    .setSecurityOrder(false);
 
-        String ssn = allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER);
-        if (isNotEmpty(ssn)) {
-            personBuilder.setNoSocialSecurityNumber(false)
-                    .setSocialSecurityNumber(ssn);
-        } else {
-            personBuilder.setNoSocialSecurityNumber(true);
-            personBuilder.setDateOfBirth(allAnswers.get(OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH));
-        }
-
-        try {
-            application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
-        } catch (GenericFault fail) {
-            LOGGER.info(fail.getMessage());
+            try {
+                application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
+            } catch (GenericFault fail) {
+                LOGGER.info(fail.getMessage());
+            }
         }
 
         application.activate();
