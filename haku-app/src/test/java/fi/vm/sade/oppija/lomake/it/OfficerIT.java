@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
@@ -193,6 +194,19 @@ public class OfficerIT extends DummyModelBaseItTest {
         element.sendKeys(personOid);
         element.submit();
         assertTrue(selenium.isTextPresent(personOid));
+    }
+
+    @Test
+    public void testPrintView() {
+        clickSearch();
+        WebElement applicationLink = findByClassName("application-link").get(0);
+        applicationLink.click();
+        WebElement printLink = findByClassName("print").get(0);
+        printLink.click();
+        ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
+        driver.switchTo().window(newTab.get(1));
+        assertTrue(driver.getCurrentUrl().contains("print"));
+        assertTrue(selenium.isTextPresent("Korhonen"));
     }
 
     private List<WebElement> SearchByTerm(final String term) {
