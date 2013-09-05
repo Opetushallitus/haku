@@ -215,10 +215,10 @@ public class HenkilotiedotPhase {
         kotikunta.setHelp(createI18NForm("form.henkilotiedot.kotikunta.help"));
         asuinmaaFI.addChild(kotikunta);
 
-        CheckBox ensisijainenOsoite = new CheckBox("ensisijainenOsoite1",
+        /*CheckBox ensisijainenOsoite = new CheckBox("ensisijainenOsoite1",
                 createI18NForm("form.henkilotiedot.ensisijainenOsoite"));
         ensisijainenOsoite.setInline(true);
-        asuinmaaFI.addChild(ensisijainenOsoite);
+        asuinmaaFI.addChild(ensisijainenOsoite);*/
 
         RelatedQuestionRule relatedQuestionRule2 =
                 new RelatedQuestionRule("rule2", asuinmaa.getId(), NOT_FI, false);
