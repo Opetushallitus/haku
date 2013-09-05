@@ -18,8 +18,8 @@ package fi.vm.sade.oppija.ui.it;
 
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
@@ -42,17 +42,8 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
     public static final String OPTION_3_ID = "xx";
     public static final String FI_VM_SADE_OPPIJA_LANGUAGE = "fi_vm_sade_oppija_language";
     public static final String SELECTED_ATTRIBUTE = "selected";
-    private FormModelHelper formModelHelper;
-    private WebDriver driver;
+    private ApplicationSystemHelper applicationSystemHelper;
     private DropdownSelect dropdownSelect;
-
-    @Test
-    public void testSelect() throws IOException {
-        init(null, false);
-        assertSelected(OPTION_1_ID);
-        assertNotSelected(OPTION_2_ID);
-        assertNotSelected(OPTION_3_ID);
-    }
 
     @Test
     public void testSelectWithDefault() throws IOException {
@@ -63,12 +54,21 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
     }
 
     @Test
+    public void testSelect() throws IOException {
+        init(null, false);
+        assertSelected(OPTION_1_ID);
+        assertNotSelected(OPTION_2_ID);
+        assertNotSelected(OPTION_3_ID);
+    }
+
+
+    @Test
     public void testSelectWithAttribute() throws IOException {
         init(FI_VM_SADE_OPPIJA_LANGUAGE, false);
         assertNotSelected(OPTION_2_ID);
         assertNotSelected(OPTION_3_ID);
         assertSelected(OPTION_1_ID);
-        driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstPhase().getId()) + "?lang=sv");
+        seleniumHelper.getDriver().get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()) + "?lang=sv");
         assertNotSelected(OPTION_1_ID);
         assertNotSelected(OPTION_3_ID);
         assertSelected(OPTION_2_ID);
@@ -92,19 +92,18 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
         }
         List<Option> listOfOptions = ImmutableList.of(option3, option2, option1);
         dropdownSelect.addOptions(listOfOptions);
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
-        this.formModelHelper = updateIndexAndFormModel(formModel);
-        driver = seleniumHelper.getDriver();
-        driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstPhase().getId()));
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
+        this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
+        seleniumHelper.getDriver().get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()));
     }
 
     private void assertNotSelected(final String id) {
-        WebElement element = driver.findElement(new By.ById(id));
+        WebElement element = seleniumHelper.getDriver().findElement(new By.ById(id));
         assertEquals("Invalid attribute selected (" + id + ")", null, element.getAttribute(SELECTED_ATTRIBUTE));
     }
 
     private void assertSelected(final String id) {
-        WebElement element = driver.findElement(new By.ById(id));
+        WebElement element = seleniumHelper.getDriver().findElement(new By.ById(id));
         assertEquals("Selected attribute not found (" + id + ")", "true", element.getAttribute(SELECTED_ATTRIBUTE));
     }
 }

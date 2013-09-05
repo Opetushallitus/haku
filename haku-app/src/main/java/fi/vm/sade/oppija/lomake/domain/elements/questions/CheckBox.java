@@ -24,8 +24,7 @@ public class CheckBox extends Question {
     private static final long serialVersionUID = -3440726329489605608L;
     private String value = "true";
 
-    public CheckBox(@JsonProperty(value = "id") final String id,
-                    @JsonProperty(value = "i18nText") final I18nText i18nText) {
+    public CheckBox(final String id, final I18nText i18nText) {
         super(id, i18nText);
     }
 

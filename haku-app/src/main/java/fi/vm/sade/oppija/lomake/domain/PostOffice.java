@@ -16,8 +16,6 @@
 
 package fi.vm.sade.oppija.lomake.domain;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 import java.io.Serializable;
 
 /**
@@ -27,12 +25,12 @@ public class PostOffice implements Serializable {
 
     private static final long serialVersionUID = -7984081943035919928L;
 
-    final String postcode;
-    final I18nText postOffice;
+    private final String postcode;
+    private final I18nText postOffice;
 
-    public PostOffice(@JsonProperty(value = "postcode") final String postcode,
-                      @JsonProperty(value = "postOffice") final I18nText i18nText) {
-        this.postOffice = i18nText;
+    public PostOffice(final String postcode,
+                      final I18nText postOffice) {
+        this.postOffice = postOffice;
         this.postcode = postcode;
     }
 

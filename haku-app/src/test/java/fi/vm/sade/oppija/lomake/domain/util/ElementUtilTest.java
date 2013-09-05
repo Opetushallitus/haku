@@ -59,7 +59,7 @@ public class ElementUtilTest {
     public void testFindElementsByType() {
         Form form = new Form("form", new I18nText(ImmutableMap.of("fi", "form")));
         Phase phase = new Phase("phase", new I18nText(ImmutableMap.of("fi", "phase")), false);
-        Theme theme = new Theme("theme", new I18nText(ImmutableMap.of("fi", "theme")), null, true);
+        Theme theme = new Theme("theme", new I18nText(ImmutableMap.of("fi", "theme")), true);
         phase.addChild(theme);
         TextQuestion tq1 = new TextQuestion("text1", new I18nText(ImmutableMap.of("fi", "text1")));
         TextQuestion tq2 = new TextQuestion("text2", new I18nText(ImmutableMap.of("fi", "text2")));
@@ -77,7 +77,7 @@ public class ElementUtilTest {
     public void testFindElementsByTypeAsList() {
         Form form = new Form("form", new I18nText(ImmutableMap.of("fi", "form")));
         Phase phase = new Phase("phase", new I18nText(ImmutableMap.of("fi", "phase")), false);
-        Theme theme = new Theme("theme", new I18nText(ImmutableMap.of("fi", "theme")), null, true);
+        Theme theme = new Theme("theme", new I18nText(ImmutableMap.of("fi", "theme")), true);
         phase.addChild(theme);
         TextQuestion tq1 = new TextQuestion("text1", new I18nText(ImmutableMap.of("fi", "text1")));
         TextQuestion tq2 = new TextQuestion("text2", new I18nText(ImmutableMap.of("fi", "text2")));

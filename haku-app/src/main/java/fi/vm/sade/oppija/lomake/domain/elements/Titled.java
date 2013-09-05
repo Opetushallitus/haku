@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.lomake.domain.elements;
 
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 public abstract class Titled extends Element {
 
@@ -29,8 +28,7 @@ public abstract class Titled extends Element {
     // verbose help text that is rendered in a separate help window
     private I18nText verboseHelp;
 
-    public Titled(@JsonProperty(value = "id") final String id,
-                  @JsonProperty(value = "i18nText") final I18nText i18nText) {
+    public Titled(final String id, final I18nText i18nText) {
         super(id);
         this.i18nText = i18nText;
     }

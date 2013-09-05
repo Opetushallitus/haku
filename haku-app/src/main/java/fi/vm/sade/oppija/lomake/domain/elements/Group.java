@@ -16,14 +16,9 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
-/**
- * @author Mikko Majapuro
- */
 public class Group extends Element {
 
-    public Group(@JsonProperty(value = "id") String id) {
+    public Group(String id) {
         super(id);
     }
 }

@@ -17,8 +17,8 @@
 package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
@@ -38,7 +38,7 @@ import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
  * @since 1.1
  */
 public class SocialSecurityNumberTest extends AbstractSeleniumBase {
-    private FormModelHelper formModelHelper;
+    private ApplicationSystemHelper applicationSystemHelper;
 
     @Before
     public void init() throws IOException {
@@ -62,9 +62,9 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
         SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NAsIs("Henkilötunnus"),
                 sukupuoli.getI18nText(), sukupuoli.getOptions().get(0), sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilötunnus);
 
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(socialSecurityNumber);
-        this.formModelHelper = updateIndexAndFormModel(formModel);
-        seleniumHelper.getDriver().get(getBaseUrl() + formModelHelper.getStartUrl());
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(socialSecurityNumber);
+        this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
+        seleniumHelper.getDriver().get(getBaseUrl() + applicationSystemHelper.getStartUrl());
     }
 
 

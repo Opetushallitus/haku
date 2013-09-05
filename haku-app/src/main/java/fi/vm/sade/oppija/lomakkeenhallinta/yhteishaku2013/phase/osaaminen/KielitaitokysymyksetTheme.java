@@ -44,7 +44,7 @@ public final class KielitaitokysymyksetTheme {
         RelatedQuestionComplexRule naytetaankoTeema = new RelatedQuestionComplexRule(ElementUtil.randomId(), naytetaankoKielitaitoteema);
 
         Theme kielitaitokysymyksetTheme =
-                new Theme("KielitaitokysymyksetTheme", ElementUtil.createI18NForm("form.kielitaito.otsikko"), null, true);
+                new Theme("KielitaitokysymyksetTheme", ElementUtil.createI18NForm("form.kielitaito.otsikko"), true);
         naytetaankoTeema.addChild(kielitaitokysymyksetTheme);
 
         RelatedQuestionComplexRule naytetaankoSuomi = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSuomi);

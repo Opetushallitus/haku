@@ -17,10 +17,11 @@ import static org.junit.Assert.assertTrue;
 
 public class OfficerIT extends DummyModelBaseItTest {
 
+
     @Before
     public void setUp() throws Exception {
-        super.setUp();
-        HakuClient hakuClient = new HakuClient(getBaseUrl() + "lomake/", "application.json");
+        String baseUrl = getBaseUrl();
+        HakuClient hakuClient = new HakuClient(baseUrl + "lomake/", "application.json");
         hakuClient.apply();
         final LoginPage loginPage = new LoginPage(seleniumHelper.getSelenium());
         navigateToPath("user", "login");

@@ -22,6 +22,8 @@ import fi.vm.sade.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.oppija.lomake.domain.rules.expression.Variable;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.Transient;
 
 import java.util.*;
 
@@ -29,8 +31,11 @@ public class RelatedQuestionComplexRule extends Element {
 
     private static final long serialVersionUID = -6030200061901263949L;
     private final Expr expr;
+
+    @Transient
     private final Set<String> variables;
 
+    @PersistenceConstructor
     public RelatedQuestionComplexRule(@JsonProperty(value = "id") String id,
                                       @JsonProperty(value = "expr") final Expr expr) {
         super(id);
@@ -47,7 +52,7 @@ public class RelatedQuestionComplexRule extends Element {
         return Collections.emptyList();
     }
 
-    @JsonIgnore
+    @Transient
     public Set<String> getVariables() {
         return variables;
     }

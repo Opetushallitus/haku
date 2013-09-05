@@ -17,7 +17,6 @@
   --%>
 
 <%-- set education specific additional questions for this theme --%>
-<c:set var="additionalQuestionList" value="${additionalQuestions[element.id]}" scope="request"/>
 <fieldset id="${element.id}">
     <legend class="h3"><haku:i18nText value="${element.i18nText}"/></legend>
     <hr/>

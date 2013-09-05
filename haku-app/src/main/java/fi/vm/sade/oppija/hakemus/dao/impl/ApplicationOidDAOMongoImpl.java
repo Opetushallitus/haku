@@ -37,7 +37,7 @@ public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
     private static final String SEQUENCE_NAME = "applicationsequence";
 
     @Autowired
-    protected MongoWrapper factoryBean;
+    protected MongoWrapper mongoWrapper;
 
     @Value("${application.oid.prefix}")
     private String oidPrefix;
@@ -72,7 +72,7 @@ public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
     }
 
     protected DBCollection getSequence() {
-        return factoryBean.getCollection(SEQUENCE_NAME);
+        return mongoWrapper.getCollection(SEQUENCE_NAME);
     }
 
     String formatOid(String oid) {

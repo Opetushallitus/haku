@@ -19,110 +19,57 @@ package fi.vm.sade.oppija.lomake.domain.elements;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
-import fi.vm.sade.oppija.lomake.domain.Attribute;
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.*;
-import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.*;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.Popup;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
-import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
-import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
-import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.Validator;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonSubTypes;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.springframework.data.annotation.Transient;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = CheckBox.class),
-                @JsonSubTypes.Type(value = TitledGroup.class),
-                @JsonSubTypes.Type(value = DropdownSelect.class),
-                @JsonSubTypes.Type(value = Option.class),
-                @JsonSubTypes.Type(value = Radio.class),
-                @JsonSubTypes.Type(value = TextArea.class),
-                @JsonSubTypes.Type(value = Theme.class),
-                @JsonSubTypes.Type(value = TextQuestion.class),
-                @JsonSubTypes.Type(value = Phase.class),
-                @JsonSubTypes.Type(value = RelatedQuestionRule.class),
-                @JsonSubTypes.Type(value = RelatedQuestionComplexRule.class),
-                @JsonSubTypes.Type(value = AddElementRule.class),
-                @JsonSubTypes.Type(value = GradeGrid.class),
-                @JsonSubTypes.Type(value = SubjectRow.class),
-                @JsonSubTypes.Type(value = GradeGridRow.class),
-                @JsonSubTypes.Type(value = GradeGridColumn.class),
-                @JsonSubTypes.Type(value = GradeGridTitle.class),
-                @JsonSubTypes.Type(value = GradeGridOptionQuestion.class),
-                @JsonSubTypes.Type(value = GradeGridAddLang.class),
-                @JsonSubTypes.Type(value = PreferenceTable.class),
-                @JsonSubTypes.Type(value = PreferenceRow.class),
-                @JsonSubTypes.Type(value = PostalCode.class),
-                @JsonSubTypes.Type(value = SocialSecurityNumber.class),
-                @JsonSubTypes.Type(value = Text.class),
-                @JsonSubTypes.Type(value = WorkExperienceTheme.class),
-                @JsonSubTypes.Type(value = Notification.class),
-                @JsonSubTypes.Type(value = DateQuestion.class),
-                @JsonSubTypes.Type(value = Group.class),
-                @JsonSubTypes.Type(value = HiddenValue.class)
-        }
-)
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Element implements Serializable {
     private static final long serialVersionUID = 3485937447100055723L;
     public static final String ID_DELIMITER = "_";
+
+    @Transient
+    protected final String type = this.getClass().getSimpleName();
+
     protected final String id;
-    protected transient String type = this.getClass().getSimpleName();
-
+    protected final List<Validator> validators;
+    protected final List<Element> children;
+    protected final Map<String, String> attributes;
     protected I18nText help;
-
-    protected final List<Validator> validators = new ArrayList<Validator>();
-
-    protected final List<Element> children = new ArrayList<Element>();
-
-    protected final Map<String, Attribute> attributes = new HashMap<String, Attribute>();
-
     protected Element popup;
 
 
-    private transient StringBuilder attributeString = new StringBuilder();
-
-
-    protected Element(@JsonProperty String id) {
+    protected Element(final String id) {
         this.id = id;
-        addAttribute("id", id);
         this.help = null;
+        this.validators = new ArrayList<Validator>();
+        this.children = new ArrayList<Element>();
+        this.attributes = new HashMap<String, String>();
+        addAttribute("id", id);
+
     }
 
     public String getId() {
         return id;
     }
 
-    @JsonIgnore
+    @Transient
     public String getType() {
         return type;
     }
 
-
-    @JsonDeserialize(keyAs = String.class, contentAs = Attribute.class)
-    @JsonSerialize(keyAs = String.class, contentAs = Attribute.class)
-    public Map<String, Attribute> getAttributes() {
-        return attributes;
-    }
-
-    @JsonDeserialize(keyAs = String.class, contentAs = Attribute.class)
-    @JsonSerialize(keyAs = String.class, contentAs = Attribute.class)
-    public void setAttributes(final Map<String, Attribute> attributes) {
-        for (Map.Entry<String, Attribute> entry : attributes.entrySet()) {
-            addAttribute(entry.getValue().getKey(), entry.getValue().getValue());
-        }
+    public Map<String, String> getAttributes() {
+        return ImmutableMap.copyOf(attributes);
     }
 
     public I18nText getHelp() {
@@ -150,17 +97,23 @@ public abstract class Element implements Serializable {
         checkNotNull(key, "Attribute's key cannot be null");
         checkNotNull(value, "Attribute's value cannot be null");
         if (!attributes.containsKey(key)) {
-            Attribute attribute = new Attribute(key, value);
-            this.attributes.put(key, attribute);
-            if (!"required".equals(key)) {
-                attributeString.append(attribute.getAsString());
-            }
+            this.attributes.put(key, value);
         }
     }
 
-    @JsonIgnore
+
+    @Transient
     public final String getAttributeString() {
-        return attributeString.toString();
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry<String, String> attr : attributes.entrySet()) {
+            if (!"required".equals(attr.getKey())) {
+                builder.append(attr.getKey());
+                builder.append("=\"");
+                builder.append(attr.getValue());
+                builder.append("\" ");
+            }
+        }
+        return builder.toString();
     }
 
     @Override
@@ -216,7 +169,7 @@ public abstract class Element implements Serializable {
     }
 
 
-    @JsonIgnore
+    @Transient
     public Element getChildById(final String id) {
         Element element = getChildById(this, id);
         if (element == null) {
@@ -225,7 +178,7 @@ public abstract class Element implements Serializable {
         return element;
     }
 
-    @JsonIgnore
+    @Transient
     private Element getChildById(final Element element, final String id) {
         if (element.getId().equals(id)) {
             return element;

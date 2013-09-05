@@ -5,7 +5,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class GradeGridRow extends Element {
 
-    public GradeGridRow(@JsonProperty(value = "id") String id) {
+    public GradeGridRow(final String id) {
         super(id);
     }
 }

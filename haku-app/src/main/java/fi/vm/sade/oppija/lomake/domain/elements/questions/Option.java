@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Option extends Titled {
 
@@ -26,9 +25,7 @@ public class Option extends Titled {
     private final String value;
     private boolean defaultOption = false;
 
-    public Option(@JsonProperty(value = "id") final String id,
-                  @JsonProperty(value = "i18nText") final I18nText i18nText,
-                  @JsonProperty(value = "value") final String value) {
+    public Option(final String id, final I18nText i18nText, final String value) {
         super(id, i18nText);
         this.value = value;
     }

@@ -16,27 +16,28 @@
 
 package fi.vm.sade.oppija.lomake.domain.builders;
 
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
 
 import java.util.Date;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 
-public class FormModelBuilder {
+public class FormModelBuilder { // TODO rename to application system builder
 
     public static final String PHASE_ID = "phase";
     public static final String THEME_ID = "theme";
     public static final String APPLICATION_SYSTEM_ID = "applicationSystemId";
     public static final String FORM_ID = "form";
 
-    private FormModel formModel = new FormModel();
+    private ApplicationSystem applicationSystem;
     private Phase phase = new Phase(PHASE_ID, createI18NAsIs(PHASE_ID), false);
-    private Theme theme = new Theme(THEME_ID, createI18NAsIs(THEME_ID), null, true);
+    private Theme theme = new Theme(THEME_ID, createI18NAsIs(THEME_ID), true);
 
     private FormBuilder formBuilder =
             new FormBuilder(FORM_ID,
@@ -48,12 +49,12 @@ public class FormModelBuilder {
         return formBuilder.withChild(phase.addChild(theme)).build();
     }
 
-    public FormModel build() {
-        return formModel;
+    public ApplicationSystem build() {
+        return applicationSystem;
     }
 
     public FormModelBuilder withDefaults() {
-        this.formModel.addApplicationSystem(ElementUtil.createActiveApplicationSystem(APPLICATION_SYSTEM_ID, form));
+        this.applicationSystem = ElementUtil.createActiveApplicationSystem(APPLICATION_SYSTEM_ID, form);
         return this;
     }
 
@@ -65,7 +66,7 @@ public class FormModelBuilder {
         return this;
     }
 
-    public FormModel buildDefaultFormWithFields(Element... elements) {
+    public ApplicationSystem buildDefaultFormWithFields(Element... elements) {
         return this.withDefaults().addChildToTeema(elements).build();
     }
 }

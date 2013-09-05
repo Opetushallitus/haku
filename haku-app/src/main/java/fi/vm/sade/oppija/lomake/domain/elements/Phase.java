@@ -18,16 +18,13 @@ package fi.vm.sade.oppija.lomake.domain.elements;
 
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Phase extends Titled {
 
     private static final long serialVersionUID = 1369853692287570194L;
     private boolean preview;
 
-    public Phase(@JsonProperty(value = "id") String id,
-                 @JsonProperty(value = "i18nText") I18nText i18nText,
-                 @JsonProperty(value = "preview") final boolean preview) {
+    public Phase(String id, I18nText i18nText, final boolean preview) {
         super(id, i18nText);
         this.preview = preview;
     }

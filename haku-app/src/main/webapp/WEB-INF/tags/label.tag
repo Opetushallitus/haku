@@ -18,6 +18,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<label id="label-${element.id}" for="${element.id}" class="${styleBaseClass}-label ${element.attributes['required'].value}">
+<label id="label-${element.id}" for="${element.id}" class="${styleBaseClass}-label ${element.attributes['required']}">
     <haku:i18nText value="${element.i18nText}"/>
 </label>

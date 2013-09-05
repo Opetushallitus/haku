@@ -17,8 +17,8 @@
 package fi.vm.sade.oppija.ui.it;
 
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextArea;
 import org.junit.Before;
@@ -37,17 +37,17 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
  */
 public class TextAreaIT extends AbstractFormTest {
 
-    private FormModelHelper formModelHelper;
+    private ApplicationSystemHelper applicationSystemHelper;
 
     @Before
     public void init() throws IOException {
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(new TextArea("vapaa_teksti", createI18NAsIs("foo")));
-        this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(new TextArea("vapaa_teksti", createI18NAsIs("foo")));
+        this.applicationSystemHelper = updateModelAndCreateFormModelHelper(applicationSystem);
     }
 
     @Test
     public void testInputExists() throws IOException {
-        final String startUrl = formModelHelper.getStartUrl();
+        final String startUrl = applicationSystemHelper.getStartUrl();
         beginAt(startUrl);
         assertElementPresent("vapaa_teksti");
     }

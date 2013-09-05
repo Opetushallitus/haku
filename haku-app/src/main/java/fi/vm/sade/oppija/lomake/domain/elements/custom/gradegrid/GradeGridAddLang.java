@@ -6,8 +6,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class GradeGridAddLang extends Titled {
 
-    public GradeGridAddLang(@JsonProperty(value = "id") final String id,
-                            @JsonProperty(value = "i18nText") final I18nText i18nText) {
+    public GradeGridAddLang(final String id, final I18nText i18nText) {
         super(id, i18nText);
 
     }

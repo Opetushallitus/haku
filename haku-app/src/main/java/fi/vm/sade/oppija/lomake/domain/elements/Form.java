@@ -17,25 +17,25 @@
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.data.annotation.Transient;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Form extends Titled {
 
     private static final long serialVersionUID = 8083152169717295356L;
 
-    public Form(@JsonProperty(value = "id") final String id,
-                @JsonProperty(value = "i18nText") final I18nText i18nText) {
+    public Form(final String id, final I18nText i18nText) {
         super(id, i18nText);
     }
 
-
-    @JsonIgnore
+    @Transient
     public boolean isFirstChild(final Element phase) {
         return hasChildren() && this.children.get(0).equals(phase);
     }
 
-    @JsonIgnore
+    @Transient
     public Element getPreviewPhase() {
         return super.getChildById("esikatselu");
     }

@@ -40,6 +40,9 @@ public abstract class TomcatContainerBase {
     protected String AOID;
 
     @Autowired
+    protected AdminResourceClient adminResourceClient;
+
+    @Autowired
     protected TomcatContainer container;
 
     public String getBaseUrl() {

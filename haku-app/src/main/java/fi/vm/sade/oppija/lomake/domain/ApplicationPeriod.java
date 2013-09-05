@@ -17,24 +17,22 @@
 package fi.vm.sade.oppija.lomake.domain;
 
 import com.google.common.base.Preconditions;
-import org.codehaus.jackson.annotate.JsonCreator;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.data.annotation.Transient;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author Mikko Majapuro
- */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ApplicationPeriod implements Serializable {
 
-    private final Date start;
-    private final Date end;
+    private Date start;
+    private Date end;
 
-    @JsonCreator
-    public ApplicationPeriod(@JsonProperty(value = "start") final Date start,
-                             @JsonProperty(value = "end") final Date end) {
+    public ApplicationPeriod(final Date start, final Date end) {
         Preconditions.checkNotNull(start);
         Preconditions.checkNotNull(end);
         this.start = start;
@@ -49,7 +47,7 @@ public class ApplicationPeriod implements Serializable {
         return end;
     }
 
-    @JsonIgnore
+    @Transient
     public boolean isActive() {
         final long now = new Date().getTime();
         return start.getTime() <= now && end.getTime() > now;

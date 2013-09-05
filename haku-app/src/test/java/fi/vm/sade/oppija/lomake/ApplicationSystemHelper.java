@@ -17,29 +17,25 @@
 package fi.vm.sade.oppija.lomake;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 
-public class FormModelHelper {
-    private final FormModel formModel;
+public class ApplicationSystemHelper {
+    private final ApplicationSystem applicationSystem;
 
-    public FormModelHelper(FormModel formModel) {
-        this.formModel = formModel;
+    public ApplicationSystemHelper(final ApplicationSystem applicationSystem) {
+        this.applicationSystem = applicationSystem;
 
     }
 
     public String getFormUrl(final String id) {
-        return "lomake/" + ElementUtil.getPath(getFirstApplicationPerioid(), id);
+        return "lomake/" + ElementUtil.getPath(applicationSystem, id);
     }
 
-    public ApplicationSystem getFirstApplicationPerioid() {
-        return formModel.getApplicationPerioidMap().entrySet().iterator().next().getValue();
-    }
 
     public Element getFirstPhase() {
-        return getFirstApplicationPerioid().getForm().getChildren().iterator().next();
+        return this.applicationSystem.getForm().getChildren().iterator().next();
     }
 
     public String getStartUrl() {
