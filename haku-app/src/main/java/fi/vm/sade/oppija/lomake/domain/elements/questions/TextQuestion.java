@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.data.annotation.PersistenceConstructor;
 
 public class TextQuestion extends Question {
 

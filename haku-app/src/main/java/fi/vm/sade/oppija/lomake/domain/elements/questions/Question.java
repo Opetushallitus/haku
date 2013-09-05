@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 public abstract class Question extends Titled {
 

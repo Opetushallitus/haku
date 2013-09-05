@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.lomake.domain;
 
 import com.google.common.collect.ImmutableMap;
-import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;

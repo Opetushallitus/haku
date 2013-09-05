@@ -23,7 +23,6 @@ import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.Validate;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.Map;
 import java.util.regex.Pattern;
 
 public class RegexFieldValidator extends FieldValidator {

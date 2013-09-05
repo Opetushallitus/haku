@@ -19,10 +19,8 @@ package fi.vm.sade.oppija.lomake.domain.rules;
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Group;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.annotation.Transient;
 
 import java.util.Collections;
 import java.util.List;

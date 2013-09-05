@@ -22,8 +22,6 @@ import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.Map;
-
 public class AlwaysFailsValidator extends FieldValidator {
 
     public AlwaysFailsValidator(@JsonProperty(value = "fieldName") final String fieldName,
