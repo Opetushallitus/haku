@@ -1,7 +1,6 @@
 package fi.vm.sade.oppija.lomake.domain.rules.expression;
 
 import com.google.common.base.Preconditions;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Map;
 

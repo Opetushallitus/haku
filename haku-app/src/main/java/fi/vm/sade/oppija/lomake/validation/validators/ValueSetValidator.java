@@ -24,7 +24,6 @@ import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
-import java.util.Map;
 
 public class ValueSetValidator extends FieldValidator {
 
