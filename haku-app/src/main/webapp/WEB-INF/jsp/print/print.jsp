@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="f" uri="/WEB-INF/tld/functions.tld" %>
 <!DOCTYPE html>
 <fmt:setBundle basename="messages" scope="session"/>
 <c:set var="form" value="${it.form}" scope="request"/>
@@ -32,7 +33,7 @@
         <time><fmt:formatDate value="${application.received}" pattern="yyyy-MM-dd HH:mm:ss"/></time>
     </p>
     <div class="application-number"><fmt:message key="virkailija.hakemus.hakemusnro"/>&nbsp;<c:out
-            value="${application.oid}" escapeXml="true"/></div>
+            value="${f:formatOid(application.oid)}" escapeXml="true"/></div>
 </header>
 <c:forEach var="child" items="${phase.children}">
     <c:set var="element" value="${child}" scope="request"/>

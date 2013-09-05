@@ -22,7 +22,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -117,10 +120,22 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         // Esikatselu
         nextPhase();
+
         findByIdAndClick("submit_confirm");
+
+
 
         String oid = driver.findElement(new By.ByClassName("number")).getText();
         assertFalse(oid.contains("."));
+
+        //tulostus
+        WebElement printLink = findByClassName("print").get(0);
+        printLink.click();
+        ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
+        driver.switchTo().window(newTab.get(1));
+        assertTrue(driver.getCurrentUrl().contains("tulostus"));
+        assertTrue(selenium.isTextPresent("Ankka"));
+        driver.switchTo().window(newTab.get(0));
 
         navigateToFirstPhase();
 
