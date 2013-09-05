@@ -53,7 +53,8 @@ public class UserHolder implements Serializable {
         this.user = user;
     }
 
-    public void addPrefillData(final Map<String, String> data) {
+    public void addPrefillData(final String applicationSystemId, final Map<String, String> data) {
+        this.applications.remove(applicationSystemId);
         this.userPrefillData.putAll(data);
     }
 
