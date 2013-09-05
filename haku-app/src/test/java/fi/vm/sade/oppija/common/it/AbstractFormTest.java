@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
@@ -16,16 +17,32 @@
 
 package fi.vm.sade.oppija.common.it;
 
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.common.MongoWrapper;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
+import org.junit.After;
+import org.junit.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractFormTest extends AbstractRemoteTest {
 
-    protected FormModelHelper updateModelAndCreateFormModelHelper(FormModel formModel) {
-        super.initTestEngine();
-        AdminResourceClient adminResourceClient = new AdminResourceClient(getBaseUrl());
-        adminResourceClient.updateModel(formModel);
-        return new FormModelHelper(formModel);
+    @Autowired
+    protected MongoWrapper mongoWrapper;
+
+    @Before
+    public void setUp2() throws Exception {
+        mongoWrapper.dropDatabase();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        mongoWrapper.dropDatabase();
+
+    }
+
+    protected ApplicationSystemHelper updateModelAndCreateFormModelHelper(final ApplicationSystem applicationSystem) {
+        adminResourceClient.updateApplicationSystem(applicationSystem);
+        return new ApplicationSystemHelper(applicationSystem);
     }
 
 }

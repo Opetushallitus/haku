@@ -49,8 +49,6 @@ public class ApplicationIT extends DummyModelBaseItTest {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
-        mongoWrapper.dropCollection("application");
         mongoWrapper.getCollection("application").insert(applicationTestDataObject);
         final LoginPage loginPage = new LoginPage(seleniumHelper.getSelenium());
         navigateToPath("user", "login");

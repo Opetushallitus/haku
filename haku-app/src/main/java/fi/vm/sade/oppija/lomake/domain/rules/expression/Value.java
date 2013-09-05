@@ -11,7 +11,7 @@ public class Value extends Expr {
     public static final Value TRUE = new Value(TRUE_STR);
     public static final Value FALSE = new Value(Boolean.FALSE.toString());
 
-    public Value(@JsonProperty(value = "value") final String value) {
+    public Value(final String value) {
         super(null, null, value);
         Preconditions.checkNotNull(value);
     }

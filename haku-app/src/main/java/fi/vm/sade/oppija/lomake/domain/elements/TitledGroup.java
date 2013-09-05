@@ -17,14 +17,12 @@
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 public class TitledGroup extends Titled {
 
     private static final long serialVersionUID = -2019606546368821081L;
 
-    public TitledGroup(@JsonProperty(value = "id") final String id,
-                       @JsonProperty(value = "i18nText") final I18nText i18nText) {
+    public TitledGroup(final String id, final I18nText i18nText) {
         super(id, i18nText);
     }
 

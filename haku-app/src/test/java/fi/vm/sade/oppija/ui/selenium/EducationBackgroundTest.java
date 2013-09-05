@@ -16,32 +16,37 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
+import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta.KoulutustaustaPhase;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import java.util.List;
+
 /**
  * @author Hannu Lyytikainen
  */
 public class EducationBackgroundTest extends AbstractSeleniumBase {
 
-    private FormModelHelper formModelHelper;
+    private ApplicationSystemHelper applicationSystemHelper;
 
     @Before
     public void init() {
-        FormServiceMockImpl formModel = new FormServiceMockImpl(ASID);
-        this.formModelHelper = updateIndexAndFormModel(formModel.getModel());
+        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
+        List<ApplicationSystem> applicationSystems = formGeneratorMock.generate();
+        this.applicationSystemHelper = updateApplicationSystem(applicationSystems.get(0));
 
     }
 
     @Test
     public void testRule() {
-        final String startUrl = formModelHelper.getFormUrl("koulutustausta");
+        final String startUrl = applicationSystemHelper.getFormUrl("koulutustausta");
 
         WebDriver driver = seleniumHelper.getDriver();
         driver.get(getBaseUrl() + startUrl); //  lomake/Yhteishaku/henkilotiedot

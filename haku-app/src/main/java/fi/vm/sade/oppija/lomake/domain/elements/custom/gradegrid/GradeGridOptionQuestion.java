@@ -1,29 +1,39 @@
 package fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid;
 
+import com.google.common.base.Preconditions;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
-import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.Transient;
 
 import java.util.List;
 
 public class GradeGridOptionQuestion extends Element {
 
 
-    private final List<Option> options;
+    private final List<Option> gradeRange;
     private final boolean selected;
 
-    public GradeGridOptionQuestion(@JsonProperty(value = "id") final String id,
-                                   @JsonProperty(value = "gradeRange") final List<Option> gradeRange,
-                                   @JsonProperty(value = "selected") final boolean selected) {
+    @PersistenceConstructor
+    public GradeGridOptionQuestion(final String id,
+                                   final List<Option> gradeRange,
+                                   final boolean selected) {
         super(id);
         addAttribute("name", id);
-        this.options = gradeRange;
+        Preconditions.checkNotNull(gradeRange);
+        Preconditions.checkNotNull(selected);
+        this.gradeRange = gradeRange;
         this.selected = selected;
     }
 
-    public List<Option> getOptions() {
-        return options;
+    public List<Option> getGradeRange() {
+        return gradeRange;
     }
+    @Transient
+    public List<Option> getOptions() {
+        return gradeRange;
+    }
+
 
     public boolean isSelected() {
         return selected;

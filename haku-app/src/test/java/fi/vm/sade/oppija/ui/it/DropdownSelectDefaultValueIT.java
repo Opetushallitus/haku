@@ -18,8 +18,8 @@ package fi.vm.sade.oppija.ui.it;
 
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
@@ -41,7 +41,7 @@ public class DropdownSelectDefaultValueIT extends AbstractSeleniumBase {
     public static final String OPTION_1_ID = "fi";
     public static final String OPTION_2_ID = "sv";
     public static final String OPTION_3_ID = "xx";
-    private FormModelHelper formModelHelper;
+    private ApplicationSystemHelper applicationSystemHelper;
     private WebDriver driver;
     private DropdownSelect dropdownSelect;
 
@@ -54,10 +54,10 @@ public class DropdownSelectDefaultValueIT extends AbstractSeleniumBase {
         option2.setDefaultOption(true);
         List<Option> listOfOptions = ImmutableList.of(option1, option2, option3);
         dropdownSelect.addOptions(listOfOptions);
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
-        this.formModelHelper = updateIndexAndFormModel(formModel);
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
+        this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
         driver = seleniumHelper.getDriver();
-        driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstPhase().getId()));
+        driver.get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()));
     }
 
     @Test

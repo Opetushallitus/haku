@@ -18,21 +18,13 @@ package fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
-import org.codehaus.jackson.annotate.JsonProperty;
 
-/**
- * Grid element that is used to gather grade information from user.
- *
- * @author Hannu Lyytikainen
- */
 public class GradeGrid extends Titled {
 
     private static final long serialVersionUID = 7703132498783434771L;
     private final boolean extraColumn;
 
-    public GradeGrid(@JsonProperty(value = "id") final String id,
-                     @JsonProperty(value = "i18nText") final I18nText i18nText,
-                     @JsonProperty(value = "extraColumn") final boolean extraColumn) {
+    public GradeGrid(final String id, final I18nText i18nText, final boolean extraColumn) {
         super(id, i18nText);
         this.extraColumn = extraColumn;
     }

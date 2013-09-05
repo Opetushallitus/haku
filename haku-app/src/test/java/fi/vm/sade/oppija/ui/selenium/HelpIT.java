@@ -18,8 +18,8 @@ package fi.vm.sade.oppija.ui.selenium;
 
 
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
@@ -40,7 +40,7 @@ public class HelpIT extends AbstractSeleniumBase {
     public static final String TITLE = "TITLE";
     public static final I18nText HELP_TEXT = createI18NAsIs("Apuva");
 
-    private FormModelHelper formModelHelper;
+    private ApplicationSystemHelper applicationSystemHelper;
     private CheckBox checkBox;
 
     @Before
@@ -62,9 +62,9 @@ public class HelpIT extends AbstractSeleniumBase {
     }
 
     private String initModelAndGetHelpText(final Element element) {
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(element);
-        this.formModelHelper = updateIndexAndFormModel(formModel);
-        this.seleniumHelper.getDriver().get(getBaseUrl() + formModelHelper.getStartUrl());
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(element);
+        this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
+        this.seleniumHelper.getDriver().get(getBaseUrl() + applicationSystemHelper.getStartUrl());
         WebElement helpWebElement = seleniumHelper.getDriver().findElement(By.id(HELP_ID));
         return helpWebElement.getText();
     }

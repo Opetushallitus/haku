@@ -27,7 +27,7 @@ import static org.junit.Assert.assertTrue;
 public class HAK153IT extends DummyModelBaseItTest {
 
     @Test
-    public void testSoraAndUrheilijanLisakysymys() throws Exception {
+    public void testSoraAndUrheilijanLisakysymys() {
         navigateToPhase(HakutoiveetPhase.HAKUTOIVEET_PHASE_ID);
         selenium.typeKeys("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();

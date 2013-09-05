@@ -17,7 +17,7 @@
   --%>
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <fieldset class="${styleBaseClass}">
-    <legend class="${styleBaseClass}-label ${element.attributes['required'].value}"><haku:i18nText
+    <legend class="${styleBaseClass}-label ${element.attributes['required']}"><haku:i18nText
             value="${element.i18nText}"/><haku:popup element="${element}" /></legend>
     <div class="${styleBaseClass}-content">
         <haku:help element="${element}"/>

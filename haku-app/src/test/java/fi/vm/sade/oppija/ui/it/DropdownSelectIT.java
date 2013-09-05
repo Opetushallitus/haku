@@ -16,10 +16,9 @@
 
 package fi.vm.sade.oppija.ui.it;
 
-import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import org.junit.Before;
@@ -37,7 +36,7 @@ import static org.junit.Assert.assertEquals;
 public class DropdownSelectIT extends AbstractSeleniumBase {
 
     public static final String SELECT_ID = "select_id";
-    private FormModelHelper formModelHelper;
+    private ApplicationSystemHelper applicationSystemHelper;
     private WebDriver driver;
     private DropdownSelect dropdownSelect;
 
@@ -46,10 +45,10 @@ public class DropdownSelectIT extends AbstractSeleniumBase {
         dropdownSelect = new DropdownSelect(SELECT_ID, createI18NAsIs(SELECT_ID), null);
         dropdownSelect.addOption("option1", createI18NAsIs("option1"), "option1");
         dropdownSelect.addOption("option2", createI18NAsIs("option2"), "option2");
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
-        this.formModelHelper = updateIndexAndFormModel(formModel);
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
+        this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
         driver = seleniumHelper.getDriver();
-        driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstPhase().getId()));
+        driver.get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()));
     }
 
     @Test
@@ -77,14 +76,14 @@ public class DropdownSelectIT extends AbstractSeleniumBase {
 
     @Test
     public void testLabelLangSv() throws IOException {
-        driver.get(getBaseUrl() + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstPhase().getId()) + "?lang=sv");
+        driver.get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()) + "?lang=sv");
         WebElement label = driver.findElement(new By.ByTagName("label"));
         assertEquals("Invalid label id", dropdownSelect.getI18nText().getTranslations().get("sv"), label.getText());
     }
 
     @Test
     public void testLabelLangXx() throws IOException {
-        driver.get(getBaseUrl()  + this.formModelHelper.getFormUrl(this.formModelHelper.getFirstPhase().getId()) + "?lang=xx");
+        driver.get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()) + "?lang=xx");
         WebElement label = driver.findElement(new By.ByTagName("label"));
         assertEquals("Invalid label id", "???", label.getText());
     }

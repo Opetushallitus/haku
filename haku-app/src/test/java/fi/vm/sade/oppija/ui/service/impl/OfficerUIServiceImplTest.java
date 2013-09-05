@@ -11,6 +11,7 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidatorFactory;
@@ -18,6 +19,7 @@ import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -64,8 +66,16 @@ public class OfficerUIServiceImplTest {
         loggerAspect = mock(LoggerAspect.class);
         ValidatorFactory validatorFactory = mock(ValidatorFactory.class);
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
+
         officerUIService = new OfficerUIServiceImpl(
-                applicationService, formService, valintaperusteetService, koodistoService, hakuPermissionService, loggerAspect, "", elementTreeValidator);
+                applicationService,
+                formService,
+                valintaperusteetService,
+                koodistoService,
+                hakuPermissionService,
+                loggerAspect, "",
+                elementTreeValidator,
+                mock(ApplicationSystemService.class));
         form.addChild(phase);
         when(applicationService.getApplicationPreferenceOids(application)).thenReturn(OIDS);
         when(applicationService.getApplication(OID)).thenReturn(application);

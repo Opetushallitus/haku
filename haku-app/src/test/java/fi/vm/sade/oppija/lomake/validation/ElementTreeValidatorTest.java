@@ -16,10 +16,13 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
+import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +32,7 @@ import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsI
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NTextError;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +46,10 @@ public class ElementTreeValidatorTest {
     @Before
     public void setUp() throws Exception {
         textQuestion = new TextQuestion("id", createI18NAsIs("title"));
-        formModelDummyMemoryDao = new FormServiceMockImpl(ASID);
+        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
+        ApplicationSystemService mock = mock(ApplicationSystemService.class);
+        when(mock.getApplicationSystem(anyString())).thenReturn(formGeneratorMock.createApplicationSystem());
+        formModelDummyMemoryDao = new FormServiceMockImpl(mock);
         SsnUniqueConcreteValidator ssnUniqueConcreteValidator = mock(SsnUniqueConcreteValidator.class);
         when(ssnUniqueConcreteValidator.validate(any(ValidationInput.class))).thenReturn(new ValidationResult());
         ValidatorFactory validatorFactory = new ValidatorFactory(ssnUniqueConcreteValidator);

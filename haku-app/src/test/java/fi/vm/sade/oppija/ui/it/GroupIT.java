@@ -17,11 +17,11 @@
 package fi.vm.sade.oppija.ui.it;
 
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
-import fi.vm.sade.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.oppija.lomake.domain.elements.Text;
+import fi.vm.sade.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import net.sourceforge.jwebunit.api.IElement;
 import org.junit.Before;
@@ -30,22 +30,22 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
-import static org.junit.Assert.assertNotNull;
 import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 import static net.sourceforge.jwebunit.junit.JWebUnit.getElementByXPath;
+import static org.junit.Assert.assertNotNull;
 
 public class GroupIT extends AbstractFormTest {
     public static final String GROUP_ID = "grpid";
     public static final Text CHILD_ELEMENT = new Text("textId", ElementUtil.createI18NAsIs("text"));
-    private FormModelHelper formModelHelper;
+    private ApplicationSystemHelper applicationSystemHelper;
 
     @Before
     public void init() throws IOException {
         TitledGroup titledGroup = new TitledGroup(GROUP_ID, createI18NAsIs("foo"));
         titledGroup.addChild(CHILD_ELEMENT);
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(titledGroup);
-        this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
-        final String startUrl = formModelHelper.getStartUrl();
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(titledGroup);
+        this.applicationSystemHelper = updateModelAndCreateFormModelHelper(applicationSystem);
+        final String startUrl = applicationSystemHelper.getStartUrl();
         beginAt(startUrl);
     }
 

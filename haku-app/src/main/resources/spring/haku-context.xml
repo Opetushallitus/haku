@@ -4,12 +4,4 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="mongo" class="com.mongodb.Mongo">
-        <constructor-arg>
-            <bean class="com.mongodb.MongoURI">
-                <constructor-arg value="${mongodb.url}"/>
-            </bean>
-        </constructor-arg>
-    </bean>
-
 </beans>

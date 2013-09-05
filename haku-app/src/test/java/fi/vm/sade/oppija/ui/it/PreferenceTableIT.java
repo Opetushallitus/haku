@@ -17,8 +17,8 @@
 package fi.vm.sade.oppija.ui.it;
 
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
@@ -39,7 +39,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class PreferenceTableIT extends AbstractFormTest {
 
-    private FormModelHelper formModelHelper;
+    private ApplicationSystemHelper applicationSystemHelper;
 
     @Before
     public void init() throws IOException {
@@ -52,13 +52,13 @@ public class PreferenceTableIT extends AbstractFormTest {
                 createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"), "Valitse koulutus");
         table.addChild(row);
         table.addChild(row2);
-        FormModel formModel = new FormModelBuilder().buildDefaultFormWithFields(table);
-        this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(table);
+        this.applicationSystemHelper = updateModelAndCreateFormModelHelper(applicationSystem);
     }
 
     @Test
     public void testSelectInputExists() throws IOException {
-        final String startUrl = formModelHelper.getStartUrl();
+        final String startUrl = applicationSystemHelper.getStartUrl();
         beginAt(startUrl);
         assertElementPresent("r1-Koulutus");
         getElementById("r1-Koulutus");
@@ -70,7 +70,7 @@ public class PreferenceTableIT extends AbstractFormTest {
 
     @Test
     public void testTextInputExists() throws IOException {
-        final String startUrl = formModelHelper.getStartUrl();
+        final String startUrl = applicationSystemHelper.getStartUrl();
         beginAt(startUrl);
         assertElementPresent("r1-Opetuspiste");
         final IElement input = getElementById("r1-Opetuspiste");

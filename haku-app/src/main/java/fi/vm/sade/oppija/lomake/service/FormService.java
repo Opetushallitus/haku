@@ -16,11 +16,8 @@
 
 package fi.vm.sade.oppija.lomake.service;
 
-import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-
-import java.util.Map;
 
 public interface FormService {
 
@@ -28,13 +25,9 @@ public interface FormService {
 
     Element getLastPhase(final String applicationSystemId);
 
-    ApplicationSystem getApplicationSystem(final String applicationSystemId);
-
     Form getForm(final String applicationSystemId);
 
     Form getActiveForm(final String applicationSystemId);
-
-    Map<String, ApplicationSystem> getApplicationPerioidMap();
 
 
 }

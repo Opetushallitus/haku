@@ -19,44 +19,30 @@ package fi.vm.sade.oppija.lomake.service.impl;
 
 import com.google.common.collect.Iterables;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
-import fi.vm.sade.oppija.lomake.service.FormModelHolder;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class FormServiceImpl implements FormService {
 
 
-    private final FormModelHolder holder;
+    private final ApplicationSystemService applicationSystemService;
 
     @Autowired
-    public FormServiceImpl(final FormModelHolder holder) {
-        this.holder = holder;
-    }
-
-    private FormModel getModel() {
-        FormModel model = holder.getModel();
-        if (model == null) {
-            throw new ResourceNotFoundExceptionRuntime("Model not found");
-        }
-        return model;
+    public FormServiceImpl(final ApplicationSystemService applicationSystemService) {
+        this.applicationSystemService = applicationSystemService;
     }
 
     @Override
     public Form getActiveForm(String applicationSystemId) {
-        final ApplicationSystem applicationSystem = getApplicationSystem(applicationSystemId);
-        if (applicationSystem == null) {
-            throw new ResourceNotFoundExceptionRuntime("Application period not found");
-        }
+        final ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemId);
+
         if (!applicationSystem.isActive()) {
             throw new ResourceNotFoundExceptionRuntime("Application period is not active");
         }
@@ -69,7 +55,13 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public Form getForm(final String applicationSystemId) {
-        return getApplicationSystem(applicationSystemId).getForm();
+        final ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemId);
+
+        Form form = applicationSystem.getForm();
+        if (form == null) {
+            throw new ResourceNotFoundExceptionRuntime("Form not found");
+        }
+        return form;
     }
 
     @Override
@@ -90,21 +82,6 @@ public class FormServiceImpl implements FormService {
             return lastPhase;
         }
         throw new ResourceNotFoundExceptionRuntime("Last phase not found");
-    }
-
-    @Override
-    public Map<String, ApplicationSystem> getApplicationPerioidMap() {
-        FormModel model = getModel();
-        return model.getApplicationPerioidMap();
-    }
-
-    @Override
-    public ApplicationSystem getApplicationSystem(final String applicationSystemId) {
-        ApplicationSystem applicationSystem = getModel().getApplicationSystemById(applicationSystemId);
-        if (applicationSystem == null) {
-            throw new ResourceNotFoundExceptionRuntime("Application period " + applicationSystemId + " not found");
-        }
-        return applicationSystem;
     }
 }
 

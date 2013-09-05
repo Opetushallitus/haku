@@ -38,6 +38,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.Principal;
 
 import static javax.ws.rs.core.Response.seeOther;
 
@@ -65,7 +66,8 @@ public class LoginController {
             Response.temporaryRedirect(new URI(redirect));
         }
 
-        String name = securityContext.getUserPrincipal().getName();
+        Principal userPrincipal = securityContext.getUserPrincipal();
+        String name = userPrincipal.getName();
         userHolder.login(new User(name));
         req.getSession().setAttribute(USERNAME_SESSION_ATTRIBURE, name);
         return getResponseByUsername(name);

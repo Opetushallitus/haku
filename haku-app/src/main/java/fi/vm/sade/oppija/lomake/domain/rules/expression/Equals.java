@@ -7,8 +7,7 @@ import java.util.Map;
 
 public class Equals extends Expr {
 
-    public Equals(@JsonProperty(value = "left") final Expr left,
-                  @JsonProperty(value = "right") final Expr right) {
+    public Equals(final Expr left, final Expr right) {
         super(left, right, null);
         Preconditions.checkNotNull(left);
         Preconditions.checkNotNull(right);

@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 public class SubjectRow extends Question {
 
@@ -29,12 +28,8 @@ public class SubjectRow extends Question {
     private final boolean comprehensiveSchool;
     private final boolean language;
 
-    public SubjectRow(@JsonProperty(value = "id") final String id,
-                      @JsonProperty(value = "i18nText") final I18nText i18nText,
-                      @JsonProperty(value = "optional") boolean optional,
-                      @JsonProperty(value = "highSchool") boolean highSchool,
-                      @JsonProperty(value = "comprehensiveSchool") boolean comprehensiveSchool,
-                      @JsonProperty(value = "language") boolean language) {
+    public SubjectRow(final String id, final I18nText i18nText,
+                      boolean optional, boolean highSchool, boolean comprehensiveSchool, boolean language) {
         super(id, i18nText);
         this.optional = optional;
         this.highSchool = highSchool;

@@ -19,15 +19,12 @@ package fi.vm.sade.oppija.ui.selenium;
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.hakutoiveet.HakutoiveetPhase;
 import org.junit.Before;
@@ -37,10 +34,8 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createActiveApplicationSystem;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
@@ -57,24 +52,13 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
     @Before
     public void init() throws IOException {
-        super.before();
-        FormModel formModel = new FormModel();
         Form form = new Form("lomake", createI18NAsIs("yhteishaku"));
         activeApplicationSystem = createActiveApplicationSystem(ASID, form);
-        formModel.addApplicationSystem(activeApplicationSystem);
         Phase hakutoiveet = new Phase("hakutoiveet", createI18NAsIs("Hakutoiveet"), false);
-        Phase lisakysymykset = new Phase("lisakysymykset", createI18NAsIs("Lisäkysymykset"), false);
         form.addChild(hakutoiveet);
-        form.addChild(lisakysymykset);
 
-        Map<String, List<Question>> lisakysymysMap = new HashMap<String, List<Question>>();
 
-        TextQuestion textQuestion = new TextQuestion("1_2_246_562_14_79893512065_additional_question_1", createI18NAsIs("Lorem ipsum"));
-        List<Question> lisakysymysList = new ArrayList<Question>();
-        lisakysymysList.add(textQuestion);
-        lisakysymysMap.put("1.2.246.562.14.79893512065", lisakysymysList);
-
-        Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", createI18NAsIs("Hakutoiveet"), lisakysymysMap, true);
+        Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", createI18NAsIs("Hakutoiveet"), true);
         hakutoiveet.addChild(hakutoiveetRyhmä);
         hakutoiveetRyhmä.setHelp(createI18NAsIs("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem."));
         PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NAsIs("Hakutoiveet"));
@@ -85,14 +69,7 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         preferenceTable.addChild(pr2);
         preferenceTable.addChild(pr3);
         hakutoiveetRyhmä.addChild(preferenceTable);
-
-        TextQuestion lisakysymys = new TextQuestion("lisakysymys", createI18NAsIs("Lisäkysymys"));
-        Theme lisakysymyksetRyhma = new Theme("lisakysymyksetGrp", createI18NAsIs("Lisäkysymykset"), null, true);
-        lisakysymykset.addChild(lisakysymyksetRyhma);
-        RelatedQuestionRule relatedQuestionRule = new RelatedQuestionRule("rule1", "preference1-Koulutus-id", "1.2.246.562.14.79893512065", false);
-        relatedQuestionRule.addChild(lisakysymys);
-        lisakysymyksetRyhma.addChild(relatedQuestionRule);
-        updateIndexAndFormModel(formModel);
+        updateApplicationSystem(activeApplicationSystem);
     }
 
     @Test
@@ -109,8 +86,6 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         findByIdAndClick("preference1_sora_terveys_false");
         findByIdAndClick("preference1_sora_oikeudenMenetys_false");
         driver.findElement(By.xpath("//button[@class='right']")).click();
-        //seleniumHelper.navigate("/lomake/Yhteishaku/lomake/lisakysymykset");
-        driver.findElement(By.id("lisakysymys"));
     }
 
     @Test(expected = NoSuchElementException.class)
@@ -123,7 +98,6 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
         s.isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
         driver.findElement(By.xpath("//button[@name='nav-next']")).click();
-        assertNull(driver.findElement(By.id("lisakysymys")));
     }
 
     private String getHakutoiveetPath() {

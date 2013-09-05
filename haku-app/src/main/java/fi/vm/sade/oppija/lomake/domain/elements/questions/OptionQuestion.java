@@ -22,7 +22,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.ValueSetValidator;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.*;
 
@@ -32,8 +31,7 @@ public abstract class OptionQuestion extends Question {
     private final List<Option> options = new ArrayList<Option>();
     private Map<String, List<Option>> optionsSortedByText;
 
-    protected OptionQuestion(@JsonProperty(value = "id") String id,
-                             @JsonProperty(value = "i18nText") I18nText i18nText) {
+    protected OptionQuestion(final String id, final I18nText i18nText) {
         super(id, i18nText);
     }
 

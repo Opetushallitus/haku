@@ -16,13 +16,16 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-import fi.vm.sade.oppija.lomake.domain.FormModel;
-import fi.vm.sade.oppija.lomake.service.FormModelHolder;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
@@ -39,21 +42,14 @@ public class AdminController {
     private static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
     @Autowired
-    public FormModelHolder formModelHolder;
-
-    @GET
-    @Path("/model")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public FormModel asJson() {
-        return formModelHolder.getModel();
-    }
+    ApplicationSystemService applicationSystemService;
 
     @POST
-    @Path("/model")
-    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public Response replaceModel(final FormModel formModel) throws URISyntaxException {
-        formModelHolder.updateModel(formModel);
+    @Path("/applicationSystem")
+    @Consumes({MediaType.APPLICATION_JSON + CHARSET_UTF_8, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON + CHARSET_UTF_8, MediaType.APPLICATION_XML})
+    public Response save(final ApplicationSystem applicationSystem) throws URISyntaxException {
+        applicationSystemService.save(applicationSystem);
         return created(new URI("/lomake/")).build();
     }
 }

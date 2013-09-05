@@ -29,13 +29,14 @@ public class HenkilotiedotPhase {
     public static final String AIDINKIELI_ID = "aidinkieli";
     private static final String HETU_PATTERN = "^([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))$";
     private static final String POSTINUMERO_PATTERN = "[0-9]{5}";
+    private static final String DATE_PATTERN = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[012])\\.(19|20)\\d\\d$";
 
     public static Phase create(final KoodistoService koodistoService) {
 
         // Henkilötiedot
         Phase henkilotiedot = new Phase("henkilotiedot", createI18NForm("form.henkilotiedot.otsikko"), false);
 
-        Theme henkilotiedotRyhma = new Theme("HenkilotiedotGrp", createI18NForm("form.henkilotiedot.otsikko"), null, true);
+        Theme henkilotiedotRyhma = new Theme("HenkilotiedotGrp", createI18NForm("form.henkilotiedot.otsikko"), true);
 
         // Nimet
         Question sukunimi = createRequiredTextQuestion("Sukunimi", "form.henkilotiedot.sukunimi", "30");
@@ -111,6 +112,7 @@ public class HenkilotiedotPhase {
         eiSuomalaistaHetuaRule.addChild(sukupuoli);
 
         DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NForm("form.henkilotiedot.syntymaaika"));
+        syntymaaika.setValidator(ElementUtil.createRegexValidator(syntymaaika.getId(), DATE_PATTERN));
         addRequiredValidator(syntymaaika);
         syntymaaika.setInline(true);
         eiSuomalaistaHetuaRule.addChild(syntymaaika);

@@ -14,25 +14,12 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.converter;
+package fi.vm.sade.oppija.lomake.domain.exception;
 
-import com.google.common.base.Function;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
+public class ApplicationSystemNotFound extends RuntimeException {
+    private static final long serialVersionUID = -8188728650814173417L;
 
-import java.util.Map;
-
-/**
- * @author jukka
- * @version 9/12/125:19 PM}
- * @since 1.1
- */
-public class FormModelToMap implements Function<FormModel, Map> {
-    @Override
-    public Map apply(FormModel formModel) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
-        return mapper.convertValue(formModel, Map.class);
+    public ApplicationSystemNotFound(final String id) {
+        super("Application system " + id + " not found");
     }
 }
