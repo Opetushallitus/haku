@@ -18,7 +18,7 @@ public class ApplicationSystemRepository {
     }
 
     public void save(final ApplicationSystem applicationSystem) {
-        mongoOperations.insert(applicationSystem);
+        mongoOperations.save(applicationSystem);
     }
 
     public ApplicationSystem findById(final String asid) {
