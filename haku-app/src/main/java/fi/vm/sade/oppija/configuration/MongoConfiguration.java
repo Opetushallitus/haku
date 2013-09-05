@@ -1,14 +1,16 @@
 package fi.vm.sade.oppija.configuration;
 
 import com.mongodb.Mongo;
-import com.mongodb.WriteConcern;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.mongodb.core.MongoFactoryBean;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Configuration
 public class MongoConfiguration {
@@ -26,10 +28,11 @@ public class MongoConfiguration {
      */
     public
     @Bean
-    MongoFactoryBean mongo() {
+    MongoFactoryBean mongo(@Value("${mongodb.url}") String mongoUrl) throws URISyntaxException {
         MongoFactoryBean mongo = new MongoFactoryBean();
-        mongo.setHost("localhost");
-        mongo.setWriteConcern(WriteConcern.FSYNC_SAFE);
+        URI url1 = new URI(mongoUrl);
+        mongo.setHost(url1.getHost());
+        mongo.setPort(url1.getPort());
         return mongo;
     }
 }
