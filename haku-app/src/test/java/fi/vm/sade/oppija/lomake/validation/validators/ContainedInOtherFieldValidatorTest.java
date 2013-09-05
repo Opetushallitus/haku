@@ -77,4 +77,22 @@ public class ContainedInOtherFieldValidatorTest {
         ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
         assertTrue(result.hasErrors());
     }
+
+    @Test
+    public void testVaino() {
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put(thatField, "Väinö");
+        values.put(thisField, "Väinö");
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        assertFalse(result.hasErrors());
+    }
+
+    @Test
+    public void testSame() {
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put(thatField, thisField);
+        values.put(thisField, thisField);
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        assertFalse(result.hasErrors());
+    }
 }
