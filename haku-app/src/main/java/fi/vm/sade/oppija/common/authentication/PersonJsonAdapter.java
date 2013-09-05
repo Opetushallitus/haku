@@ -46,7 +46,15 @@ public class PersonJsonAdapter implements JsonSerializer<Person> {
         personJson.add("etunimet", new JsonPrimitive(person.getFirstNames()));
         personJson.add("kutsumanimi", new JsonPrimitive(person.getNickName()));
         personJson.add("sukunimi", new JsonPrimitive(person.getLastName()));
-        personJson.add("hetu", new JsonPrimitive(person.getSocialSecurityNumber()));
+        String hetu = person.getSocialSecurityNumber();
+        if (!isEmpty(hetu)) {
+            personJson.add("hetu", new JsonPrimitive(hetu));
+            personJson.add("kayttajatunnus", new JsonPrimitive(hetu));
+        } else {
+            String userId = person.getFirstNames()+person.getLastName()+person.getDateOfBirth();
+            userId = userId.replaceAll(" ", "_");
+            personJson.add("kayttajatunnus", new JsonPrimitive(userId));
+        }
         String sex = person.getSex();
         if (!isEmpty(sex)) {
             personJson.add("sukupuoli", new JsonPrimitive(sex.equals(SukupuoliType.MIES.value()) ? "MIES" : "NAINEN"));
@@ -56,7 +64,6 @@ public class PersonJsonAdapter implements JsonSerializer<Person> {
         personJson.add("henkiloTyyppi", new JsonPrimitive("OPPIJA"));
         personJson.add("yksiloity", new JsonPrimitive(false));
         personJson.add("passivoitu", new JsonPrimitive(false));
-        personJson.add("kayttajatunnus", new JsonPrimitive(person.getSocialSecurityNumber()));
 
         return personJson;
     }
