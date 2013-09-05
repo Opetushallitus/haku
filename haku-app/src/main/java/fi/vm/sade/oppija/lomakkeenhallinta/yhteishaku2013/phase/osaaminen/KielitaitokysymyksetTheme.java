@@ -14,26 +14,26 @@ import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
 public final class KielitaitokysymyksetTheme {
-    private static final String[] preferenceIds = new String[]{
+    private static final String[] PREFERENCE_IDS = new String[]{
             "preference1-Koulutus-id-lang",
             "preference2-Koulutus-id-lang",
             "preference3-Koulutus-id-lang",
             "preference4-Koulutus-id-lang",
             "preference5-Koulutus-id-lang"
     };
-    private static final String[] languageQuestions = new String[]{
+    private static final String[] LANGUAGE_QUESTIONS = new String[]{
             "aidinkieli",
             "perusopetuksen_kieli",
             "lukion_kieli",
     };
 
     public static Element createKielitaitokysymyksetTheme() {
-        Expr suomiOnAidinkieliTaiKouluSuomeksi = atLeastOneVariableEqualsToValue("FI", languageQuestions);
-        Expr ruotsiOnAidinkieliTaiKouluRuotsiksi = atLeastOneVariableEqualsToValue("SV", languageQuestions);
+        Expr suomiOnAidinkieliTaiKouluSuomeksi = atLeastOneVariableEqualsToValue("FI", LANGUAGE_QUESTIONS);
+        Expr ruotsiOnAidinkieliTaiKouluRuotsiksi = atLeastOneVariableEqualsToValue("SV", LANGUAGE_QUESTIONS);
 
 
-        Expr haettuSuomenkieliseenKoulutukseen = atLeastOneVariableEqualsToValue("FI", preferenceIds);
-        Expr haettuRuotsinkieliseenKoulutukseen = atLeastOneVariableEqualsToValue("SV", preferenceIds);
+        Expr haettuSuomenkieliseenKoulutukseen = atLeastOneVariableEqualsToValue("FI", PREFERENCE_IDS);
+        Expr haettuRuotsinkieliseenKoulutukseen = atLeastOneVariableEqualsToValue("SV", PREFERENCE_IDS);
 
 
         Expr kysytaankoSuomi = new And(haettuSuomenkieliseenKoulutukseen, new Not(suomiOnAidinkieliTaiKouluSuomeksi));
