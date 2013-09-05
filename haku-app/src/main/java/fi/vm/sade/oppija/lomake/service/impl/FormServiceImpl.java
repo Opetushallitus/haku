@@ -41,6 +41,9 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public Form getActiveForm(String applicationSystemId) {
+        if (applicationSystemId == null) {
+            throw new ResourceNotFoundExceptionRuntime("Application system not found");
+        }
         final ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemId);
 
         if (!applicationSystem.isActive()) {

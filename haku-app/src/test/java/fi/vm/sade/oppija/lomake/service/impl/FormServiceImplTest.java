@@ -16,39 +16,39 @@
 
 package fi.vm.sade.oppija.lomake.service.impl;
 
-import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.List;
+import org.mockito.Matchers;
+import org.mockito.internal.matchers.Any;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class FormServiceImplTest {
 
     public static final Form FORM = new Form(ElementUtil.randomId(), createI18NAsIs("Form title"));
     public static final Phase PHASE = new Phase(ElementUtil.randomId(), createI18NAsIs("Phase title"), false);
-    public ApplicationSystem applicationSystem;
     private FormServiceImpl formService;
 
     @Before
     public void setUp() throws Exception {
-        this.applicationSystem = ElementUtil.createActiveApplicationSystem("ASID", FORM);
+        ApplicationSystem applicationSystem = ElementUtil.createActiveApplicationSystem(ElementUtil.randomId(), FORM);
         FORM.addChild(PHASE);
-        //formService = new FormServiceImpl(holder, null); // TODO add tests
+        ApplicationSystemService applicationSystemServiceMock = mock(ApplicationSystemService.class);
+        when(applicationSystemServiceMock.getApplicationSystem(applicationSystem.getId())).thenReturn(applicationSystem);
+        formService = new FormServiceImpl(applicationSystemServiceMock);
     }
 
-    @Ignore
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testGetFirstPhaseNotFound() throws Exception {
-        formService.getFirstPhase(null);
+        Element firstPhase = formService.getFirstPhase(null);
     }
-
 }
