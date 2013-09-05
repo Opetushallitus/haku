@@ -7,8 +7,11 @@ import fi.vm.sade.oppija.lomake.HakuClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -197,12 +200,22 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     @Test
-    public void testPrintView() {
+    public void testPrintView() throws InterruptedException {
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
         WebElement printLink = findByClassName("print").get(0);
+
+        final int windowsBefore = driver.getWindowHandles().size();
         printLink.click();
+        ExpectedCondition<Boolean> windowCondition = new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return driver.getWindowHandles().size() == windowsBefore + 1;
+            }
+        };
+        WebDriverWait waitForWindow = new WebDriverWait(driver, 5);
+        waitForWindow.until(windowCondition);
+
         ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
         driver.switchTo().window(newTab.get(1));
         assertTrue(driver.getCurrentUrl().contains("print"));

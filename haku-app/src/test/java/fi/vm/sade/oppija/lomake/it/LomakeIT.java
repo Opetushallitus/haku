@@ -22,8 +22,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 
@@ -130,7 +133,18 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         //tulostus
         WebElement printLink = findByClassName("print").get(0);
+
+        final int windowsBefore = driver.getWindowHandles().size();
+
         printLink.click();
+        ExpectedCondition<Boolean> windowCondition = new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return driver.getWindowHandles().size() == windowsBefore + 1;
+            }
+        };
+        WebDriverWait waitForWindow = new WebDriverWait(driver, 5);
+        waitForWindow.until(windowCondition);
+
         ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
         driver.switchTo().window(newTab.get(1));
         assertTrue(driver.getCurrentUrl().contains("tulostus"));
