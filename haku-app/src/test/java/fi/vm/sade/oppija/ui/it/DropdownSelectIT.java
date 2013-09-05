@@ -22,6 +22,7 @@ import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -81,6 +82,7 @@ public class DropdownSelectIT extends AbstractSeleniumBase {
         assertEquals("Invalid label id", dropdownSelect.getI18nText().getTranslations().get("sv"), label.getText());
     }
 
+    @Ignore
     @Test
     public void testLabelLangXx() throws IOException {
         driver.get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()) + "?lang=xx");

@@ -23,6 +23,7 @@ import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -61,7 +62,7 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
         assertNotSelected(OPTION_3_ID);
     }
 
-
+    @Ignore
     @Test
     public void testSelectWithAttribute() throws IOException {
         init(FI_VM_SADE_OPPIJA_LANGUAGE, false);
