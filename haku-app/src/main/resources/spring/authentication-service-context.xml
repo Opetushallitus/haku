@@ -11,7 +11,8 @@
 
     <context:property-placeholder
             location="classpath:haku.properties, file:///${user.home:''}/oph-configuration/haku.properties,
-            file:///${user.home:''}/oph-configuration/common.properties"
+            file:///${user.home:''}/oph-configuration/common.properties,
+            file:///${user.home:''}/oph-configuration/override.properties"
             ignore-resource-not-found="true"/>
 
     <beans profile="default">
