@@ -201,6 +201,8 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testPrintView() throws InterruptedException {
+
+
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
@@ -217,9 +219,12 @@ public class OfficerIT extends DummyModelBaseItTest {
         waitForWindow.until(windowCondition);
 
         ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
+
         driver.switchTo().window(newTab.get(1));
         assertTrue(driver.getCurrentUrl().contains("print"));
         assertTrue(selenium.isTextPresent("Korhonen"));
+        driver.close();
+        driver.switchTo().window(newTab.get(0));
     }
 
     private List<WebElement> SearchByTerm(final String term) {
