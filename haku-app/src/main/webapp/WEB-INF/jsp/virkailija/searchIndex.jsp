@@ -53,7 +53,7 @@
     <div id="overlay">
         <jsp:include page="createApplication.jsp"/>
     </div>
-    <div id="wrapper">
+    <div id="app-container">
 
         <table class="structural-table" style="margin-left: 0.625%;width:99.375%;">
             <tbody>

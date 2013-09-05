@@ -50,7 +50,7 @@ public class AuthenticationServiceImplTest {
     @Test
     public void testAddUser() {
         Person p = new Person("Onni Pekka", "Onni", "Oppija", "111166-987F",
-                false, "mm@mail.com", "m", "Helsinki", false, "fi", "FINLAND", "fi", "11.11.1966");
+                false, "mm@mail.com", "m", "Helsinki", false, "fi", "FINLAND", "fi");
 
         String oid = authenticationService.addPerson(p);
 

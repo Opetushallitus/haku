@@ -41,7 +41,7 @@
 
 </head>
 <body>
-<div id="wrapper" class="virkailija">
+<div id="app-container" class="virkailija">
     <section class="grid16-16 margin-top-2">
         <form class="form" method="post">
             <fieldset>

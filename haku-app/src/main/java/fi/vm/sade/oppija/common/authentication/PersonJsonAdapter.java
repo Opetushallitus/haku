@@ -50,10 +50,6 @@ public class PersonJsonAdapter implements JsonSerializer<Person> {
         if (!isEmpty(hetu)) {
             personJson.add("hetu", new JsonPrimitive(hetu));
             personJson.add("kayttajatunnus", new JsonPrimitive(hetu));
-        } else {
-            String userId = person.getFirstNames()+person.getLastName()+person.getDateOfBirth();
-            userId = userId.replaceAll(" ", "_");
-            personJson.add("kayttajatunnus", new JsonPrimitive(userId));
         }
         String sex = person.getSex();
         if (!isEmpty(sex)) {
