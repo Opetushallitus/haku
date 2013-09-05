@@ -40,9 +40,9 @@
     <c:if test="${not empty fn:children(element, categoryData)}">
         <tr>
             <td></td>
-            <td>Kysymykset</td>
+            <td class="sublabel">Kysymykset</td>
             <td>
-                <table>
+                <table class="additional-questions-table width-100">
                     <tbody>
                         <haku:viewChilds element="${element}"/>
                     </tbody>
