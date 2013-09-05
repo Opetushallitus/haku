@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.MongoFactoryBean;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -32,7 +31,10 @@ public class MongoConfiguration {
         MongoFactoryBean mongo = new MongoFactoryBean();
         URI url1 = new URI(mongoUrl);
         mongo.setHost(url1.getHost());
-        mongo.setPort(url1.getPort());
+        int port = url1.getPort();
+        if (port > 0) {
+            mongo.setPort(port);
+        }
         return mongo;
     }
 }
