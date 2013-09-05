@@ -273,7 +273,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     private ApplicationSearchResultDTO searchApplications(DBObject query, int start, int rows) {
-        final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject("_id", 1)).skip(start).limit(rows);
+        final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject("answers.henkilotiedot.Sukunimi", 1)
+                .append("answers.henkilotiedot.Etunimet", 1)).skip(start).limit(rows);
         return new ApplicationSearchResultDTO(dbCursor.count(), Lists.newArrayList(Iterables.transform(dbCursor, dbObjectToSearchResultItem)));
     }
 
