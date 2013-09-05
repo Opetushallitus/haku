@@ -16,8 +16,6 @@
 
 package fi.vm.sade.oppija.lomake.domain.elements;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 /**
  * @author Mikko Majapuro
  */
@@ -25,8 +23,7 @@ public class HiddenValue extends Element {
 
     private String value;
 
-    public HiddenValue(final @JsonProperty(value = "id") String id,
-                       final @JsonProperty(value = "value") String value) {
+    public HiddenValue(String id, String value) {
         super(id);
         this.addAttribute("name", id);
         this.value = value;

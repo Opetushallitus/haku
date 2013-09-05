@@ -181,6 +181,17 @@ public class Application implements Serializable {
     }
 
     @JsonIgnore
+    public Map<String, String> getVastauksetMergedIgnoringPhase(final String phaseId) {
+        final Map<String, String> answers = new HashMap<String, String>();
+        for (String phaseKey : this.answers.keySet()) {
+            if (!phaseKey.equalsIgnoreCase(phaseId)) {
+                answers.putAll(this.answers.get(phaseKey));
+            }
+        }
+        return answers;
+    }
+
+    @JsonIgnore
     public void removeUser() {
         if (user != null) {
             HashMap<String, String> meta = new HashMap<String, String>();

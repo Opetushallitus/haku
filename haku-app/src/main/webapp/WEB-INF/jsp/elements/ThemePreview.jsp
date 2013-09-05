@@ -20,9 +20,6 @@
   ~ European Union Public Licence for more details.
   --%>
 
-<%-- set education specific additional questions for this theme --%>
-<c:set var="additionalQuestionList" value="${additionalQuestions[element.id]}" scope="request"/>
-
 <c:set var="showTheme" value="${false}" />
 <c:forEach var="child" items="${fn:allChildren(element)}">
     <c:if test="${!showTheme}">

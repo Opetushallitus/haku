@@ -37,7 +37,7 @@ public class FormGeneratorMock implements FormGenerator {
     private final KoodistoService koodistoService;
     private final String asId;
 
-    public FormGeneratorMock(KoodistoService koodistoService, String asId) {
+    public FormGeneratorMock(final KoodistoService koodistoService, final String asId) {
         this.koodistoService = koodistoService;
         this.asId = asId;
     }
@@ -45,14 +45,27 @@ public class FormGeneratorMock implements FormGenerator {
     @Override
     public List<ApplicationSystem> generate() {
         List<ApplicationSystem> asList = Lists.newArrayList();
-        Date start = new Date();
         final Calendar instance = Calendar.getInstance();
-        instance.roll(Calendar.YEAR, 1);
+        instance.roll(Calendar.YEAR, -1);
+        Date start = new Date(instance.getTimeInMillis());
+        instance.roll(Calendar.YEAR, 2);
         Date end = new Date(instance.getTimeInMillis());
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
         I18nText name = ElementUtil.createI18NAsIs(asId);
-        Form form =  Yhteishaku2013.generateForm(new ApplicationSystem(asId, null, name, applicationPeriods), koodistoService);
+        Form form = Yhteishaku2013.generateForm(new ApplicationSystem(asId, null, name, applicationPeriods), koodistoService);
         asList.add(new ApplicationSystem(asId, form, name, applicationPeriods));
         return asList;
+    }
+
+    public ApplicationSystem createApplicationSystem() {
+        final Calendar instance = Calendar.getInstance();
+        instance.roll(Calendar.YEAR, -1);
+        Date start = new Date(instance.getTimeInMillis());
+        instance.roll(Calendar.YEAR, 2);
+        Date end = new Date(instance.getTimeInMillis());
+        List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
+        I18nText name = ElementUtil.createI18NAsIs(asId);
+        Form form = Yhteishaku2013.generateForm(new ApplicationSystem(asId, null, name, applicationPeriods), koodistoService);
+        return new ApplicationSystem(asId, form, name, applicationPeriods);
     }
 }

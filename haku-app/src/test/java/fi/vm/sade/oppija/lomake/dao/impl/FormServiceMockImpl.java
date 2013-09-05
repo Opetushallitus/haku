@@ -17,38 +17,33 @@
 package fi.vm.sade.oppija.lomake.dao.impl;
 
 import com.google.common.collect.Iterables;
-import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomake.domain.exception.ApplicationSystemNotFound;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
-import fi.vm.sade.oppija.lomake.service.FormModelHolder;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
-
-import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class FormServiceMockImpl implements FormService {
 
-    private FormModel formModel;
+    private ApplicationSystemService applicationSystemService;
 
-    public FormServiceMockImpl(final String asid) {
-        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), asid);
-        FormModelHolder formModelHolder = new FormModelHolder(formGeneratorMock);
-        formModelHolder.generateAndReplace();
-        this.formModel = formModelHolder.getModel();
+    @Autowired
+    public FormServiceMockImpl(final ApplicationSystemService applicationSystemService) {
+        this.applicationSystemService = applicationSystemService;
     }
 
     @Override
     public Form getActiveForm(final String applicationSystemId) {
-        try {
-            return formModel.getApplicationSystemById(applicationSystemId).getForm();
-        } catch (Exception e) {
-            throw new ResourceNotFoundExceptionRuntime("Not found", e);
+        ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemId);
+        if (applicationSystem.isActive()) {
+            return applicationSystem.getForm();
         }
+        throw new ApplicationSystemNotFound(applicationSystemId);
     }
 
     @Override
@@ -71,23 +66,11 @@ public class FormServiceMockImpl implements FormService {
         throw new ResourceNotFoundExceptionRuntime("Last phase not found");
     }
 
-    @Override
-    public Map<String, ApplicationSystem> getApplicationPerioidMap() {
-        return this.formModel.getApplicationPerioidMap();
-    }
-
-    @Override
-    public ApplicationSystem getApplicationSystem(final String applicationSystemId) {
-        return this.formModel.getApplicationSystemById(applicationSystemId);
-    }
 
     @Override
     public Form getForm(final String applicationSystemId) {
-        return getApplicationSystem(applicationSystemId).getForm();
-    }
-
-    public FormModel getModel() {
-        return this.formModel;
+        ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemId);
+        return applicationSystem.getForm();
     }
 
 }

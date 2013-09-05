@@ -21,6 +21,8 @@ import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Group;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.Transient;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +35,7 @@ public class RelatedQuestionRule extends Element {
     private final List<String> relatedElementId;
     private final boolean showImmediately;
 
+    @PersistenceConstructor
     public RelatedQuestionRule(@JsonProperty(value = "id") String id,
                                @JsonProperty(value = "relatedElementId") List<String> relatedElementId,
                                @JsonProperty(value = "expression") String expression,
@@ -43,7 +46,7 @@ public class RelatedQuestionRule extends Element {
         this.showImmediately = showImmediately;
     }
 
-    @JsonIgnore
+
     public RelatedQuestionRule(@JsonProperty(value = "id") String id,
                                @JsonProperty(value = "relatedElementId") String relatedElementId,
                                @JsonProperty(value = "expression") String expression,

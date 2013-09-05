@@ -19,7 +19,6 @@ public final class ArvosanatTheme {
         Theme arvosanatTheme = new Theme(
                 ARVOSANAT_THEME_ID,
                 createI18NForm("form.arvosanat.otsikko"),
-                null,
                 true);
 
         GradesTable gradesTablePK = new GradesTable(koodistoService, true);

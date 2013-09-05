@@ -2,7 +2,8 @@ package fi.vm.sade.oppija.common.selenium;
 
 import com.google.common.base.Joiner;
 import com.thoughtworks.selenium.Selenium;
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -21,9 +22,9 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     protected Selenium selenium;
 
     @Before
-    public void setUp() throws Exception {
-        FormServiceMockImpl formModelDummyMemoryDao = new FormServiceMockImpl(ASID);
-        updateIndexAndFormModel(formModelDummyMemoryDao.getModel());
+    public void setUDummyModelBaseIt() throws Exception {
+        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
+        updateApplicationSystem(formGeneratorMock.createApplicationSystem());
         driver = seleniumHelper.getDriver();
         selenium = seleniumHelper.getSelenium();
     }
@@ -57,8 +58,10 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected void navigateToPath(final String... pathSegments) {
         Joiner joiner = Joiner.on("/").skipNulls();
-        String[] baseUrl = {StringUtils.removeEnd(getBaseUrl(), "/")};
-        driver.get(joiner.join(ArrayUtils.addAll(baseUrl, pathSegments)));
+        String[] baseUrl = new String[]{StringUtils.removeEnd(getBaseUrl(), "/")};
+        String[] parts = ArrayUtils.addAll(baseUrl, pathSegments);
+        String join = joiner.join(parts);
+        driver.get(join);
     }
 
     protected void select() {

@@ -17,7 +17,6 @@ package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -34,9 +33,7 @@ public abstract class DataRelatedQuestion<E extends Serializable> extends Questi
     protected Map<String, E> data;
 
 
-    protected DataRelatedQuestion(@JsonProperty(value = "id") final String id,
-                                  @JsonProperty(value = "i18nText") final I18nText i18nText,
-                                  @JsonProperty(value = "data") Map<String, E> data) {
+    protected DataRelatedQuestion(final String id, final I18nText i18nText, final Map<String, E> data) {
         super(id, i18nText);
         this.data = ImmutableMap.copyOf(data);
     }

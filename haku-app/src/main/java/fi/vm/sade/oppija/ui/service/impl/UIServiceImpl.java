@@ -62,7 +62,7 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public UIServiceResponse getApplicationPrint(String oid) throws ResourceNotFoundException {
-        Application application = applicationService.getApplication(oid);
+        Application application = applicationService.getApplicationByOid(oid);
         final Form activeForm = formService.getForm(application.getApplicationSystemId());
         ApplicationPrintViewResponse response = new ApplicationPrintViewResponse();
         response.setApplication(application);

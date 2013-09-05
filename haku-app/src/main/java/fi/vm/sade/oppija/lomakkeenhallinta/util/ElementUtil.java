@@ -221,9 +221,10 @@ public final class ElementUtil {
     }
 
     public static ApplicationSystem createActiveApplicationSystem(final String id, Form form) {
-        Date start = new Date();
         final Calendar instance = Calendar.getInstance();
-        instance.roll(Calendar.YEAR, 1);
+        instance.roll(Calendar.YEAR, -1);
+        Date start = new Date(instance.getTimeInMillis());
+        instance.roll(Calendar.YEAR, 2);
         Date end = new Date(instance.getTimeInMillis());
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
         return new ApplicationSystem(id, form, ElementUtil.createI18NAsIs("test application period"), applicationPeriods);

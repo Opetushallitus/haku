@@ -22,8 +22,8 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +81,7 @@ public class SocialSecurityNumber extends Question {
     }
 
     @Override
-    @JsonIgnore
+    @Transient
     public List<Validator> getValidators() {
         List<Validator> listOfValidators = new ArrayList<Validator>();
         listOfValidators.addAll(this.ssn.getValidators());

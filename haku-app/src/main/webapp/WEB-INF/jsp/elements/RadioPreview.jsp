@@ -33,8 +33,8 @@
             </td>
         </c:when>
         <c:otherwise>
-            <td><span class="label"><haku:i18nText value="${element.i18nText}"/>:</span><haku:i18nText
-                    value="${value.i18nText}"/></td>
+            <td class="label"><span><haku:i18nText value="${element.i18nText}"/>:</span></td>
+            <td><haku:i18nText value="${value.i18nText}"/></td>
         </c:otherwise>
     </c:choose>
 </tr>

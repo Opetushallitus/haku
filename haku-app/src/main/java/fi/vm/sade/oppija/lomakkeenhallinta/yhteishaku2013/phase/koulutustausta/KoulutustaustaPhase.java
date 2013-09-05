@@ -38,7 +38,7 @@ public class KoulutustaustaPhase {
 
     public static Phase create(final KoodistoService koodistoService) {
         Phase koulutustausta = new Phase("koulutustausta", createI18NForm("form.koulutustausta.otsikko"), false);
-        Theme koulutustaustaRyhma = new Theme("KoulutustaustaGrp", createI18NForm("form.koulutustausta.otsikko"), null, true);
+        Theme koulutustaustaRyhma = new Theme("KoulutustaustaGrp", createI18NForm("form.koulutustausta.otsikko"), true);
         koulutustausta.addChild(koulutustaustaRyhma);
         koulutustaustaRyhma.setHelp(createI18NForm("form.koulutustausta.help"));
         koulutustaustaRyhma.addChild(createKoulutustaustaRadio(koodistoService));

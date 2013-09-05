@@ -17,8 +17,8 @@
 package fi.vm.sade.oppija.ui.it;
 
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.lomake.FormModelHelper;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import org.junit.Before;
@@ -28,39 +28,38 @@ import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsI
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 public class TextQuestionIT extends AbstractFormTest {
-    protected FormModel formModel;
-    private FormModelHelper formModelHelper;
+    private ApplicationSystemHelper applicationSystemHelper;
 
     @Before
     public void init() {
         TextQuestion textQuestion = new TextQuestion("sukunimi", createI18NAsIs("foo"));
         textQuestion.setHelp(createI18NAsIs("help"));
-        formModel = new FormModelBuilder().buildDefaultFormWithFields(textQuestion);
-        this.formModelHelper = updateModelAndCreateFormModelHelper(formModel);
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(textQuestion);
+        this.applicationSystemHelper = updateModelAndCreateFormModelHelper(applicationSystem);
     }
 
     @Test
     public void testFormExists() {
-        String startUrl = formModelHelper.getStartUrl();
+        String startUrl = applicationSystemHelper.getStartUrl();
         beginAt(startUrl);
-        assertFormPresent("form-" + formModelHelper.getFirstPhase().getId()); //check phase.jsp html form id
+        assertFormPresent("form-" + applicationSystemHelper.getFirstPhase().getId()); //check phase.jsp html form id
     }
 
     @Test
     public void testInputExists() {
-        beginAt(formModelHelper.getStartUrl());
+        beginAt(applicationSystemHelper.getStartUrl());
         assertElementPresent("sukunimi");
     }
 
     @Test
     public void testLabelExists() {
-        beginAt(formModelHelper.getStartUrl());
+        beginAt(applicationSystemHelper.getStartUrl());
         assertElementPresent("label-sukunimi");
     }
 
     @Test
     public void testHelpExists() {
-        beginAt(formModelHelper.getStartUrl());
+        beginAt(applicationSystemHelper.getStartUrl());
         assertElementPresent("help-sukunimi");
     }
 }

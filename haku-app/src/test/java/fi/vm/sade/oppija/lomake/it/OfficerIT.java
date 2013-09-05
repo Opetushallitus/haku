@@ -7,9 +7,13 @@ import fi.vm.sade.oppija.lomake.HakuClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
@@ -17,10 +21,11 @@ import static org.junit.Assert.assertTrue;
 
 public class OfficerIT extends DummyModelBaseItTest {
 
+
     @Before
     public void setUp() throws Exception {
-        super.setUp();
-        HakuClient hakuClient = new HakuClient(getBaseUrl() + "lomake/", "application.json");
+        String baseUrl = getBaseUrl();
+        HakuClient hakuClient = new HakuClient(baseUrl + "lomake/", "application.json");
         hakuClient.apply();
         final LoginPage loginPage = new LoginPage(seleniumHelper.getSelenium());
         navigateToPath("user", "login");
@@ -193,6 +198,34 @@ public class OfficerIT extends DummyModelBaseItTest {
         element.sendKeys(personOid);
         element.submit();
         assertTrue(selenium.isTextPresent(personOid));
+    }
+
+    @Test
+    public void testPrintView() throws InterruptedException {
+
+
+        clickSearch();
+        WebElement applicationLink = findByClassName("application-link").get(0);
+        applicationLink.click();
+        WebElement printLink = findByClassName("print").get(0);
+
+        final int windowsBefore = driver.getWindowHandles().size();
+        printLink.click();
+        ExpectedCondition<Boolean> windowCondition = new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return driver.getWindowHandles().size() == windowsBefore + 1;
+            }
+        };
+        WebDriverWait waitForWindow = new WebDriverWait(driver, 5);
+        waitForWindow.until(windowCondition);
+
+        ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
+
+        driver.switchTo().window(newTab.get(1));
+        assertTrue(driver.getCurrentUrl().contains("print"));
+        assertTrue(selenium.isTextPresent("Korhonen"));
+        driver.close();
+        driver.switchTo().window(newTab.get(0));
     }
 
     private List<WebElement> SearchByTerm(final String term) {

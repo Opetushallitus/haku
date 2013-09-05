@@ -21,7 +21,7 @@ import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
 import fi.vm.sade.authentication.service.GenericFault;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
-import fi.vm.sade.oppija.common.authentication.Person;
+import fi.vm.sade.oppija.common.authentication.PersonBuilder;
 import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
@@ -38,9 +38,9 @@ import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
-import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
@@ -57,8 +57,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.join;
+import static org.apache.commons.lang.StringUtils.*;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -135,7 +134,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         // validating rules
         if (!activeForm.isFirstChild(phase)) {
             Application current = userHolder.getApplication(applicationSystemId);
-            allAnswers.putAll(current.getVastauksetMerged());
+            allAnswers.putAll(current.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId()));
         }
         allAnswers.putAll(vastaukset);
 
@@ -182,24 +181,23 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application addPersonAndAuthenticate(Application application) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
-        // create student id for finnish applicants
 
-        if (allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER) != null) {
-
-            // invoke authentication service to obtain oid
-            Person person = new Person(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES),
-                    allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME),
-                    allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME),
-                    allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER), false,
-                    allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL),
-                    allAnswers.get(OppijaConstants.ELEMENT_ID_SEX),
-                    allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY), false,
-                    allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE),
-                    allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY),
-                    allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE));
+        if (!isEmpty(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
+            PersonBuilder personBuilder = PersonBuilder.start()
+                    .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
+                    .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
+                    .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
+                    .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL))
+                    .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
+                    .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
+                    .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
+                    .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
+                    .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE))
+                    .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
+                    .setSecurityOrder(false);
 
             try {
-                application.setPersonOid(this.authenticationService.addPerson(person));
+                application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
             } catch (GenericFault fail) {
                 LOGGER.info(fail.getMessage());
             }

@@ -20,14 +20,12 @@ import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.oppija.lomake.service.AdditionalQuestionService;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
@@ -74,31 +72,30 @@ public class FormController {
     final FormService formService;
     private final ApplicationService applicationService;
     private final UserHolder userHolder;
-    private final AdditionalQuestionService additionalQuestionService;
     private final String koulutusinformaatioBaseUrl;
     private final UIService uiService;
+    private final ApplicationSystemService applicationSystemService;
 
     @Autowired
     public FormController(@Qualifier("formServiceImpl") final FormService formService,
                           final ApplicationService applicationService, final UserHolder userHolder,
-                          final AdditionalQuestionService additionalQuestionService,
                           @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
-                          final UIService uiService) {
+                          final UIService uiService, ApplicationSystemService applicationSystemService) {
         this.formService = formService;
         this.applicationService = applicationService;
         this.userHolder = userHolder;
-        this.additionalQuestionService = additionalQuestionService;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
         this.uiService = uiService;
+        this.applicationSystemService = applicationSystemService;
+
     }
 
     @GET
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable listApplicationSystems() {
         LOGGER.debug("listApplicationSystems");
-        Map<String, ApplicationSystem> applicationPerioidMap = formService.getApplicationPerioidMap();
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("applicationSystems", applicationPerioidMap.values());
+        model.put("applicationSystems", applicationSystemService.getAllApplicationSystems());
         return new Viewable(APPLICATION_SYSTEM_LIST_VIEW, model);
     }
 
@@ -138,7 +135,7 @@ public class FormController {
     public Viewable getPhase(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId) {
 
-        LOGGER.debug("getElement {}, {}, {}", applicationSystemId, phaseId);
+        LOGGER.debug("getElement {}, {}", applicationSystemId, phaseId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
         Element element = activeForm.getChildById(phaseId);
         Map<String, Object> model = new HashMap<String, Object>();
@@ -301,33 +298,6 @@ public class FormController {
         model.put("element", gradeGrid);
         model.put("template", "gradegrid/additionalLanguageRow");
         return new Viewable(ROOT_VIEW, model);
-    }
-
-    /**
-     * Searches for additional questions related to an application option
-     * and its education degree and sora requirement.
-     *
-     * @param applicationSystemId application system id
-     * @param phaseId             phase id
-     * @param themeId             theme id
-     * @param aoId                application option id
-     * @return list of questions
-     */
-    @GET
-    @Path("/{applicationSystemId}/{phaseId}/{themeId}/additionalquestions/{aoId}")
-    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getAdditionalQuestions(@PathParam("applicationSystemId") final String applicationSystemId,
-                                           @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                                           @PathParam("themeId") final String themeId,
-                                           @PathParam("aoId") final String aoId
-    ) {
-        LOGGER.debug("getAdditionalQuestions {}, {}, {}, {}, {}", applicationSystemId, phaseId, themeId, aoId);
-        List<Question> additionalQuestions = additionalQuestionService.
-                findAdditionalQuestions(applicationSystemId, themeId, aoId);
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("additionalQuestions", additionalQuestions);
-        model.put("categoryData", applicationService.getApplication(applicationSystemId).getVastauksetMerged());
-        return new Viewable("/additionalQuestions", model);
     }
 
     private boolean skipValidators(MultivaluedMap<String, String> multiValues, Form form, String phaseId) {

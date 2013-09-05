@@ -161,6 +161,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (IOException e) {
             log.error("Creating person failed due to: " + e.toString());
         }
+        log.debug("createHenkilo responseString: {}", responseString);
         return responseString;
     }
 

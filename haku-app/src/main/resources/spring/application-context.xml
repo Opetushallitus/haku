@@ -32,7 +32,8 @@
     <beans profile="default">
         <context:property-placeholder
                 location="file:///${user.home:''}/oph-configuration/haku.properties,
-                    file:///${user.home:''}/oph-configuration/common.properties"
+                    file:///${user.home:''}/oph-configuration/common.properties,
+                    file:///${user.home:''}/oph-configuration/override.properties"
                 ignore-resource-not-found="true" properties-ref="defaultProps"/>
 
         <bean id="defaultProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">

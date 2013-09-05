@@ -22,6 +22,7 @@ import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.data.annotation.Transient;
 
 /**
  * Renders as a user's application preference row. Title is used to hold the name of the preference row (Hakutoive 1, Hakutoive 2 etc.)
@@ -97,7 +98,7 @@ public class PreferenceRow extends Question {
         return educationDegreeId;
     }
 
-    @JsonIgnore
+    @Transient
     public String getEducationOidInputId() {
         return educationInputId + "-id";
     }

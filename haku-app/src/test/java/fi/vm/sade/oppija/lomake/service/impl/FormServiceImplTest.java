@@ -16,54 +16,39 @@
 
 package fi.vm.sade.oppija.lomake.service.impl;
 
-import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.oppija.lomake.domain.FormModel;
+import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
-import fi.vm.sade.oppija.lomake.service.FormModelHolder;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
+import org.mockito.internal.matchers.Any;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class FormServiceImplTest {
 
     public static final Form FORM = new Form(ElementUtil.randomId(), createI18NAsIs("Form title"));
     public static final Phase PHASE = new Phase(ElementUtil.randomId(), createI18NAsIs("Phase title"), false);
-    public ApplicationSystem applicationSystem;
     private FormServiceImpl formService;
 
     @Before
     public void setUp() throws Exception {
-        this.applicationSystem = ElementUtil.createActiveApplicationSystem("ASID", FORM);
-        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), "ASID");
-        FormModelHolder holder = new FormModelHolder(formGeneratorMock);
-        FormModel model = new FormModel();
+        ApplicationSystem applicationSystem = ElementUtil.createActiveApplicationSystem(ElementUtil.randomId(), FORM);
         FORM.addChild(PHASE);
-        model.addApplicationSystem(applicationSystem);
-        holder.updateModel(model);
-        formService = new FormServiceImpl(holder);
+        ApplicationSystemService applicationSystemServiceMock = mock(ApplicationSystemService.class);
+        when(applicationSystemServiceMock.getApplicationSystem(applicationSystem.getId())).thenReturn(applicationSystem);
+        formService = new FormServiceImpl(applicationSystemServiceMock);
     }
 
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testGetFirstPhaseNotFound() throws Exception {
-        formService.getFirstPhase(null);
-    }
-
-    @Test
-    public void testGetApplicationSystemById() throws Exception {
-        ApplicationSystem applicationSystemById = formService.getApplicationSystem(applicationSystem.getId());
-        assertEquals(applicationSystem, applicationSystemById);
-    }
-
-    @Test(expected = ResourceNotFoundExceptionRuntime.class)
-    public void testGetApplicationSystemByIdNotFound() throws Exception {
-        formService.getApplicationSystem("lskdjflsdk");
+        Element firstPhase = formService.getFirstPhase(null);
     }
 }

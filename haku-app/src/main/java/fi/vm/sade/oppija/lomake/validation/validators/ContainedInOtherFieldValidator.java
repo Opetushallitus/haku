@@ -16,8 +16,6 @@
 
 package fi.vm.sade.oppija.lomake.validation.validators;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
@@ -47,14 +45,8 @@ public class ContainedInOtherFieldValidator extends FieldValidator {
         if (otherValue == null && thisValue == null) {
             return validValidationResult;
         } else if (otherFieldName != null && thisValue != null) {
-            String[] split = otherValue.split("[\\W]");
-            Iterable lowercaseNameParts = Iterables.transform(Arrays.asList(split), new Function<String, String>() {
-                @Override
-                public String apply(final String input) {
-                    return input.toLowerCase();
-                }
-            });
-            if (Iterables.contains(lowercaseNameParts, thisValue.toLowerCase())) {
+            String[] split = otherValue.toLowerCase().split("-|\\.|,| ");
+            if (Arrays.asList(split).contains(thisValue.toLowerCase())) {
                 return validValidationResult;
             }
         }

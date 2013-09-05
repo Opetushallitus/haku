@@ -18,7 +18,8 @@ package fi.vm.sade.oppija.ui.it;
 
 
 import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.lomake.dao.impl.FormServiceMockImpl;
+import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,8 +32,8 @@ public class FormIT extends AbstractFormTest {
 
     @Before
     public void setUp() throws Exception {
-        FormServiceMockImpl dummyMem = new FormServiceMockImpl(ASID);
-        updateModelAndCreateFormModelHelper(dummyMem.getModel());
+        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
+        updateModelAndCreateFormModelHelper(formGeneratorMock.createApplicationSystem());
     }
 
     @Test
