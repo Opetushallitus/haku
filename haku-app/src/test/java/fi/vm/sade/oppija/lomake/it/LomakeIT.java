@@ -149,6 +149,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         driver.switchTo().window(newTab.get(1));
         assertTrue(driver.getCurrentUrl().contains("tulostus"));
         assertTrue(selenium.isTextPresent("Ankka"));
+        driver.close();
         driver.switchTo().window(newTab.get(0));
 
         navigateToFirstPhase();
