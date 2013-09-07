@@ -17,10 +17,7 @@ package fi.vm.sade.oppija.koulutusinformaatio.resource;
 
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -33,10 +30,12 @@ public class SearchResourceMock {
     @GET
     @Path("/lop/search/{term}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public String organizationSearch(@PathParam("term") final String term) {
+    public String organizationSearch(@PathParam("term") final String term, @DefaultValue(value = "1") @QueryParam("baseEducation") final String baseEducation) {
         if (term.equalsIgnoreCase("esp")) {
             return "[{\"id\":\"1.2.246.562.10.89537774706\",\"name\":\"FAKTIA, Espoo op\",\"key\":\"faktia, espoo op\"}," +
                     "{\"id\":\"1.2.246.562.10.10108401950\",\"name\":\"Espoon kaupunki\",\"key\":\"espoon kaupunki\"}]";
+        } else if (term.equalsIgnoreCase("sturen") && baseEducation.equals("9")) {
+            return "[{\"id\":\"1.2.246.562.10.51872958189\",\"name\":\"Stadin ammattiopisto, Sturenkadun toimipaikka\"}]";
         } else {
             return "[]";
         }
@@ -45,7 +44,8 @@ public class SearchResourceMock {
     @GET
     @Path("/ao/search/{asId}/{lopId}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public String hakukohdeSearch(@PathParam("asId") final String asId, @PathParam("lopId") final String lopId) {
+    public String hakukohdeSearch(@PathParam("asId") final String asId, @PathParam("lopId") final String lopId,
+                                  @DefaultValue(value = "1") @QueryParam("baseEducation") final String baseEducation) {
         if (lopId.equalsIgnoreCase("1.2.246.562.10.89537774706")) {
             return "[{\"id\":\"1.2.246.562.14.673437691210\"," +
                     "\"name\":\"Talonrakennus ja ymäristösuunnittelu, yo\"," +
@@ -79,6 +79,25 @@ public class SearchResourceMock {
                     "\"teachingLanguages\":[\"SV\"], " +
                     "\"childLONames\":[" +
                     "\"Käsi- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun ja valmistuksen koulutusohjelma\"]}]";
+        } else if(lopId.equalsIgnoreCase("1.2.246.562.10.51872958189") && baseEducation.equals("9")) {
+            return "[{\"id\":\"1.2.246.562.5.20176855623\",\"name\":\"Tieto- ja tietoliikennetekniikan perustutkinto, yo\"," +
+                    "\"aoIdentifier\":\"143\",\"educationDegree\":\"32\",\"childLONames\":[\"Tieto- ja tietoliikennetekniikka, "+
+                    "elektroniikka-asentaja\"],\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true}," +
+                    "{\"id\":\"1.2.246.562.5.32094353409\",\"name\":\"Turvallisuusalan perustutkinto, yo\",\"aoIdentifier\":\"505\"," +
+                    "\"educationDegree\":\"32\",\"childLONames\":[\"Turvallisuusala, turvallisuusvalvoja\"],\"sora\":false," +
+                    "\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.37738069758\","+
+                    "\"name\":\"Maanmittausalan perustutkinto, yo\",\"aoIdentifier\":\"890\",\"educationDegree\":\"32\","+
+                    "\"childLONames\":[\"Maanmittaustekniikka, kartoittaja\"],\"sora\":false,\"teachingLanguages\":[\"FI\"],"+
+                    "\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.52308596866\",\"name\":\"Suunnitteluassistentin perustutkinto, "+
+                    "yo\",\"aoIdentifier\":\"668\",\"educationDegree\":\"32\",\"childLONames\":[\"Tekninen suunnittelu, suunnitteluassistentti\"],"+
+                    "\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.66688607689\","+
+                    "\"name\":\"Sähkö- ja automaatiotekniikan perustutkinto, yo\",\"aoIdentifier\":\"192\",\"educationDegree\":\"32\","+
+                    "\"childLONames\":[\"Sähkö- ja automaatiotekniikka, sähköasentaja\"],\"sora\":false,\"teachingLanguages\":[\"FI\"],"+
+                    "\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.79820899882\",\"name\":\"Puualan perustutkinto, yo\","+
+                    "\"aoIdentifier\":\"891\",\"educationDegree\":\"32\",\"childLONames\":[\"Teollisuuspuuseppä, puuseppä\"],"+
+                    "\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.95890367071\","+
+                    "\"name\":\"Verhoilu- ja sisustusalan perustutkinto, yo\",\"aoIdentifier\":\"653\",\"educationDegree\":\"32\","+
+                    "\"childLONames\":[\"Sisustus, sisustaja\",\"Verhoilu, verhoilija\"],\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true}]";
         } else {
             return "[]";
         }

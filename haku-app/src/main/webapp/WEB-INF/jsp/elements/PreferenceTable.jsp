@@ -95,6 +95,7 @@
         teemaId: '<c:out value="${parent.id}"/>',
         baseEducation: '<c:out value="${categoryData.POHJAKOULUTUS}"/>',
         vocational: '<c:out value="${categoryData.ammatillinenTutkintoSuoritettu}"/>',
+        preferenceAndBaseEducationConflictMessage: '<fmt:message key="hakutoiveet.pohjakoulutusristiriita"/>',
         <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') or fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
             koulutusinformaatioBaseUrl: '<c:out value="${it.koulutusinformaatioBaseUrl}"/>'
         </c:if>
