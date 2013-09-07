@@ -74,6 +74,18 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         testHAK123AandHAK124();
 
+        findByIdAndClick("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_YLIOPPILAS);
+        findById("lukioPaattotodistusVuosi");
+        selenium.typeKeys("lukioPaattotodistusVuosi", "2012");
+        findByIdAndClick("ammatillinenTutkintoSuoritettu_false");
+        setValue("lukion_kieli", "FI");
+        nextPhase();
+
+        setValue("preference1-Opetuspiste", "sturen");
+        driver.findElement(By.linkText("Stadin ammattiopisto, Sturenkadun toimipaikka")).click();
+        driver.findElement(By.xpath("//option[@data-id='1.2.246.562.5.20176855623']")).click();
+        driver.findElement(new By.ByClassName("left")).click();
+
         findByIdAndClick("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_PERUSKOULU);
 
         findById("PK_PAATTOTODISTUSVUOSI");
@@ -82,6 +94,9 @@ public class LomakeIT extends DummyModelBaseItTest {
         findByIdAndClick("LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN", "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI", "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON_false");
         setValue("perusopetuksen_kieli", "FI");
         nextPhase();
+
+        assertTrue(selenium.isTextPresent("ristiriita"));
+
         //Skip toimipiste
         setValue("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();

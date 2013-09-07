@@ -64,6 +64,7 @@
                 <select id="${selectInputId}" name="${selectInputId}"
                         placeholder="${sortableItem.selectEducationPlaceholder}"
                         data-childlonames="${childLONamesId}"
+                        data-selectedname="<c:out value='${categoryData[selectInputId]}'/>"
                 ${sortableItem.attributes['required']}>
                 </select>
                 <haku:errorMessage id="${selectInputId}" additionalClass="margin-top-1"/>
