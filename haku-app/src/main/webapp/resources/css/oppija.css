@@ -1594,7 +1594,7 @@ footer {
     text-align: center; }
   footer .small {
     text-align: center;
-    color: #767676; }
+    color: #7f7f7f; }
 
 /*
 #sitefooter .footer-container
@@ -1672,7 +1672,7 @@ h6, .h6 {
 
 small {
   font-size: 1em;
-  color: #767676; }
+  color: #7f7f7f; }
   small.cursive {
     font-style: italic; }
 
@@ -2508,10 +2508,10 @@ a.btn-remove {
 /*** Infobox
 ************************************************/
 .infobox {
-  background: #f8f8f8;
+  background: #fafafa;
   padding: 10px;
   margin-bottom: 20px;
-  border: 1px solid #bdbdbd; }
+  border: 1px solid #dddddd; }
   .infobox.banner {
     background: #feedbd; }
   .infobox .emphasized {
@@ -2887,17 +2887,23 @@ ul.unstyled {
       background-position: -52px 0px; }
 
 /* Application system */
-.application-system {
-  margin-top: 4em; }
-  .application-system:first-child {
-    margin: 1.5em 0 0 0; }
-  .application-system .application-option {
-    border: #C3C3C3 1px dotted;
-    border-style: dashed none none none;
-    padding: 1em 0; }
-    .application-system .application-option:first-child {
-      border: none;
-      padding: 0 0 1em 0; }
+.application-container .application-system {
+  margin-top: 2em; }
+.application-container .title {
+  margin: 0;
+  padding: 5px 0 5px 10px;
+  background-color: #fafafa;
+  border: #dddddd 1px solid;
+  border-top: none; }
+  .application-container .title:first-child {
+    border-top: #dddddd 1px solid; }
+.application-container .content {
+  margin: 0;
+  padding: 10px 0 10px 10px;
+  border: #dddddd 1px solid;
+  border-top: none; }
+.application-container .small {
+  color: #7f7f7f; }
 
 /*** compare
 ************************************************/
@@ -3351,67 +3357,142 @@ button {
     border-top-color: #ececec;
     border-bottom-color: #c2c2c2;
     vertical-align: top;
-    padding: 2em 1.5em;
+    padding: 20px 10px;
     background-color: #ffffff; }
   .preference-sort tbody tr:nth-child(odd) td {
     background-color: #f9fbfc; }
+  .preference-sort tbody tr:first-child td.index .down {
+    margin-top: 19px; }
   .preference-sort button.reset {
     float: right; }
   .preference-sort .index {
-    text-align: center; }
-    .preference-sort .index .up span,
-    .preference-sort .index .down span {
-      border: solid 16px #000000;
-      width: 0px;
-      height: 0px;
-      border-left-color: transparent;
-      border-right-color: transparent;
-      background-color: transparent;
-      padding: 0px;
-      margin: 2px;
-      position: relative;
-      background-image: none; }
-      .preference-sort .index .up span span,
-      .preference-sort .index .down span span {
-        border: solid 15px #feba00;
-        width: 0px;
-        height: 0px;
-        overflow: hidden;
-        border-left-color: transparent;
-        border-right-color: transparent;
-        background-color: transparent;
-        padding: 0px;
-        margin: 0px;
-        position: absolute;
-        left: -15px; }
+    		/*
+    		text-align:center;
+    
+    
+    		.up,
+    		.down
+    		{
+    			span
+    			{
+    				border:solid 16px #000000;
+    				width:0px;
+    				height:0px;
+    				border-left-color:transparent;
+    				border-right-color:transparent;
+    				background-color:transparent;
+    				padding:0px;
+    				margin:2px;
+    				position:relative;
+    				background-image:none;
+    				
+    				span
+    				{
+    					border:solid 15px #feba00;
+    					width:0px;
+    					height:0px;
+    					overflow:hidden;
+    					border-left-color:transparent;
+    					border-right-color:transparent;
+    					background-color:transparent;
+    					padding:0px;
+    					margin:0px;
+    					position:absolute;
+    					left:-15px;
+    				}
+    			}
+    		}
+    
+    		.up
+    		{
+    			span
+    			{
+    				border-top-width:0px;
+    				
+    				span
+    				{
+    					border-top-width:0px;bottom:-16px;
+    				}
+    			}
+    			
+    			&:hover span span
+    			{
+    				border-top-width:0px;bottom:-15px;
+    			}
+    			
+    			&:active span span,
+    			&:focus span span
+    			{
+    				left:-14px;
+    				bottom:-16px;
+    				border-width:14px;
+    				border-top-width:0px;
+    			}
+    		}
+    		
+    		.down
+    		{
+    			span
+    			{
+    				border-bottom-width:0px;
+    				
+    				span
+    				{
+    					border-bottom-width:0px;top:-15px;
+    				}
+    			}
+    			
+    			&:hover span span
+    			{
+    				border-bottom-width:0px;top:-16px;
+    			}
+    			
+    			&:active span span,
+    			&:focus span span
+    			{
+    				left:-14px;
+    				top:-14px;
+    				border-width:14px;
+    				border-bottom-width:0px;
+    			}
+    		}
+    
+    		.label
+    		{
+    			text-transform:uppercase;
+    		}
+    		*/ }
+    .preference-sort .index span {
+      text-align: left;
+      font-size: 2.769em;
+      line-height: 1em;
+      margin: 0 20px 0 0; }
+    .preference-sort .index .sort-arrows {
+      float: right; }
+    .preference-sort .index .up, .preference-sort .index .down {
+      float: right;
+      font-size: 0;
+      line-height: 0; }
+      .preference-sort .index .up span, .preference-sort .index .down span {
+        background-image: url("../img/updownarrow-sprite.png");
+        color: transparent;
+        font-size: 0;
+        line-height: 0;
+        width: 19px;
+        height: 18px;
+        margin: 0; }
+        .preference-sort .index .up span span, .preference-sort .index .down span span {
+          background-image: none;
+          width: 0;
+          height: 0; }
     .preference-sort .index .up span {
-      border-top-width: 0px; }
-      .preference-sort .index .up span span {
-        border-top-width: 0px;
-        bottom: -16px; }
-    .preference-sort .index .up:hover span span {
-      border-top-width: 0px;
-      bottom: -15px; }
-    .preference-sort .index .up:active span span, .preference-sort .index .up:focus span span {
-      left: -14px;
-      bottom: -16px;
-      border-width: 14px;
-      border-top-width: 0px; }
+      background-position: 0 0; }
+    .preference-sort .index .up:hover span {
+      background-position: -19px 0; }
     .preference-sort .index .down span {
-      border-bottom-width: 0px; }
-      .preference-sort .index .down span span {
-        border-bottom-width: 0px;
-        top: -15px; }
-    .preference-sort .index .down:hover span span {
-      border-bottom-width: 0px;
-      top: -16px; }
-    .preference-sort .index .down:active span span, .preference-sort .index .down:focus span span {
-      left: -14px;
-      top: -14px;
-      border-width: 14px;
-      border-bottom-width: 0px; }
-    .preference-sort .index .label {
-      text-transform: uppercase; }
+      background-position: 0 -18px; }
+    .preference-sort .index .down:hover span {
+      background-position: -19px -18px; }
   .preference-sort .preference-fields {
     margin-right: 1.5em;
     float: left; }
