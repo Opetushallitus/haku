@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.ui.provider;
 
 import com.google.common.collect.ImmutableMap;
 import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

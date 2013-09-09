@@ -79,24 +79,24 @@ public class SearchResourceMock {
                     "\"teachingLanguages\":[\"SV\"], " +
                     "\"childLONames\":[" +
                     "\"Käsi- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun ja valmistuksen koulutusohjelma\"]}]";
-        } else if(lopId.equalsIgnoreCase("1.2.246.562.10.51872958189") && baseEducation.equals("9")) {
+        } else if (lopId.equalsIgnoreCase("1.2.246.562.10.51872958189") && baseEducation.equals("9")) {
             return "[{\"id\":\"1.2.246.562.5.20176855623\",\"name\":\"Tieto- ja tietoliikennetekniikan perustutkinto, yo\"," +
-                    "\"aoIdentifier\":\"143\",\"educationDegree\":\"32\",\"childLONames\":[\"Tieto- ja tietoliikennetekniikka, "+
+                    "\"aoIdentifier\":\"143\",\"educationDegree\":\"32\",\"childLONames\":[\"Tieto- ja tietoliikennetekniikka, " +
                     "elektroniikka-asentaja\"],\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true}," +
                     "{\"id\":\"1.2.246.562.5.32094353409\",\"name\":\"Turvallisuusalan perustutkinto, yo\",\"aoIdentifier\":\"505\"," +
                     "\"educationDegree\":\"32\",\"childLONames\":[\"Turvallisuusala, turvallisuusvalvoja\"],\"sora\":false," +
-                    "\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.37738069758\","+
-                    "\"name\":\"Maanmittausalan perustutkinto, yo\",\"aoIdentifier\":\"890\",\"educationDegree\":\"32\","+
-                    "\"childLONames\":[\"Maanmittaustekniikka, kartoittaja\"],\"sora\":false,\"teachingLanguages\":[\"FI\"],"+
-                    "\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.52308596866\",\"name\":\"Suunnitteluassistentin perustutkinto, "+
-                    "yo\",\"aoIdentifier\":\"668\",\"educationDegree\":\"32\",\"childLONames\":[\"Tekninen suunnittelu, suunnitteluassistentti\"],"+
-                    "\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.66688607689\","+
-                    "\"name\":\"Sähkö- ja automaatiotekniikan perustutkinto, yo\",\"aoIdentifier\":\"192\",\"educationDegree\":\"32\","+
-                    "\"childLONames\":[\"Sähkö- ja automaatiotekniikka, sähköasentaja\"],\"sora\":false,\"teachingLanguages\":[\"FI\"],"+
-                    "\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.79820899882\",\"name\":\"Puualan perustutkinto, yo\","+
-                    "\"aoIdentifier\":\"891\",\"educationDegree\":\"32\",\"childLONames\":[\"Teollisuuspuuseppä, puuseppä\"],"+
-                    "\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.95890367071\","+
-                    "\"name\":\"Verhoilu- ja sisustusalan perustutkinto, yo\",\"aoIdentifier\":\"653\",\"educationDegree\":\"32\","+
+                    "\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.37738069758\"," +
+                    "\"name\":\"Maanmittausalan perustutkinto, yo\",\"aoIdentifier\":\"890\",\"educationDegree\":\"32\"," +
+                    "\"childLONames\":[\"Maanmittaustekniikka, kartoittaja\"],\"sora\":false,\"teachingLanguages\":[\"FI\"]," +
+                    "\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.52308596866\",\"name\":\"Suunnitteluassistentin perustutkinto, " +
+                    "yo\",\"aoIdentifier\":\"668\",\"educationDegree\":\"32\",\"childLONames\":[\"Tekninen suunnittelu, suunnitteluassistentti\"]," +
+                    "\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.66688607689\"," +
+                    "\"name\":\"Sähkö- ja automaatiotekniikan perustutkinto, yo\",\"aoIdentifier\":\"192\",\"educationDegree\":\"32\"," +
+                    "\"childLONames\":[\"Sähkö- ja automaatiotekniikka, sähköasentaja\"],\"sora\":false,\"teachingLanguages\":[\"FI\"]," +
+                    "\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.79820899882\",\"name\":\"Puualan perustutkinto, yo\"," +
+                    "\"aoIdentifier\":\"891\",\"educationDegree\":\"32\",\"childLONames\":[\"Teollisuuspuuseppä, puuseppä\"]," +
+                    "\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.95890367071\"," +
+                    "\"name\":\"Verhoilu- ja sisustusalan perustutkinto, yo\",\"aoIdentifier\":\"653\",\"educationDegree\":\"32\"," +
                     "\"childLONames\":[\"Sisustus, sisustaja\",\"Verhoilu, verhoilija\"],\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true}]";
         } else {
             return "[]";

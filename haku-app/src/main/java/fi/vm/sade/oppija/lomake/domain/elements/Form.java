@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import org.springframework.data.annotation.Transient;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -28,15 +27,5 @@ public class Form extends Titled {
 
     public Form(final String id, final I18nText i18nText) {
         super(id, i18nText);
-    }
-
-    @Transient
-    public boolean isFirstChild(final Element phase) {
-        return hasChildren() && this.children.get(0).equals(phase);
-    }
-
-    @Transient
-    public Element getPreviewPhase() {
-        return super.getChildById("esikatselu");
     }
 }

@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.ui.service;
 
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
 
 import java.util.Map;
 

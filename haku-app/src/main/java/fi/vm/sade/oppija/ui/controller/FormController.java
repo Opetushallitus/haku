@@ -23,11 +23,11 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
+import fi.vm.sade.oppija.lomake.util.ElementTree;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.oppija.ui.common.RedirectToFormViewPath;
@@ -96,7 +96,7 @@ public class FormController {
     public Viewable listApplicationSystems() {
         LOGGER.debug("listApplicationSystems");
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("applicationSystems", applicationSystemService.getAllApplicationSystems());
+        model.put("applicationSystems", applicationSystemService.getAllApplicationSystems("id", "name", "applicationPeriods"));
         return new Viewable(APPLICATION_SYSTEM_LIST_VIEW, model);
     }
 
@@ -141,7 +141,7 @@ public class FormController {
 
         LOGGER.debug("getElement {}, {}", applicationSystemId, phaseId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        Element element = activeForm.getChildById(phaseId);
+        Element element = new ElementTree(activeForm).getChildById(phaseId);
         Map<String, Object> model = new HashMap<String, Object>();
         Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
         values = userHolder.populateWithPrefillData(values);
@@ -181,7 +181,7 @@ public class FormController {
                                 final MultivaluedMap<String, String> multiValues) {
         LOGGER.debug("getElement {}, {}, {}", applicationSystemId, phaseId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        Element element = activeForm.getChildById(elementId);
+        Element element = new ElementTree(activeForm).getChildById(elementId);
 
         Map<String, Object> model = new HashMap<String, Object>();
         Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
@@ -205,17 +205,8 @@ public class FormController {
                                               @PathParam("key") final String key) {
         LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationSystemId, elementId, key);
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        try {
-            @SuppressWarnings("unchecked")
-            DataRelatedQuestion<Serializable> element =
-                    (DataRelatedQuestion<Serializable>) activeForm.getChildById(elementId);
-            return element.getData(key);
-        } catch (Exception e) {
-            LOGGER.error(e.toString());
-            return null;
-        }
+        return new ElementTree(activeForm).getRelatedData(elementId, key);
     }
-
 
     @POST
     @Path("/{applicationSystemId}/esikatselu")
@@ -248,7 +239,7 @@ public class FormController {
 
         } else {
             model.putAll(applicationState.getModelObjects());
-            Element phase = activeForm.getChildById(phaseId);
+            Element phase = new ElementTree(activeForm).getChildById(phaseId);
             model.put("element", phase);
             model.put("form", activeForm);
             model.put("template", phase.getType());
@@ -296,7 +287,7 @@ public class FormController {
 
         LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", applicationSystemId, gradeGridId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        Element element = activeForm.getChildById(gradeGridId);
+        Element element = new ElementTree(activeForm).getChildById(gradeGridId);
         GradeGrid gradeGrid = (GradeGrid) element;
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("element", gradeGrid);

@@ -30,9 +30,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class LomakeIT extends DummyModelBaseItTest {
 
@@ -140,7 +138,6 @@ public class LomakeIT extends DummyModelBaseItTest {
         nextPhase();
 
         findByIdAndClick("submit_confirm");
-
 
 
         String oid = driver.findElement(new By.ByClassName("number")).getText();

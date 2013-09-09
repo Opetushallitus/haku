@@ -15,7 +15,7 @@
  */
 package fi.vm.sade.oppija.lomake.service;
 
-import fi.vm.sade.oppija.lomake.domain.exception.ConfigurationException;
+import fi.vm.sade.oppija.lomake.exception.ConfigurationException;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

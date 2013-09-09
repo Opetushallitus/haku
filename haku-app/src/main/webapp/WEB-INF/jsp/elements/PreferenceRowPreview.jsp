@@ -32,9 +32,9 @@
         <td></td>
         <td class="sublabel"><haku:i18nText value="${element.educationLabel}"/></td>
         <td class="bold"><c:out value="${categoryData[selectInputId]}"/>
-        <c:if test="${virkailijaPreview}">
-            &nbsp;[<c:out value="${categoryData[aoIdentifier]}" />]
-        </c:if>
+            <c:if test="${virkailijaPreview}">
+                &nbsp;[<c:out value="${categoryData[aoIdentifier]}"/>]
+            </c:if>
         </td>
     </tr>
     <c:if test="${not empty fn:children(element, categoryData)}">
@@ -44,7 +44,7 @@
             <td>
                 <table class="additional-questions-table width-100">
                     <tbody>
-                        <haku:viewChilds element="${element}"/>
+                    <haku:viewChilds element="${element}"/>
                     </tbody>
                 </table>
             </td>

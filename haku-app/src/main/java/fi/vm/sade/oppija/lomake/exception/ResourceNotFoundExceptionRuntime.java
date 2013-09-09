@@ -14,17 +14,16 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain.exception;
+package fi.vm.sade.oppija.lomake.exception;
 
-/**
- * @author jukka
- * @version 9/10/1210:29 AM}
- * @since 1.1
- */
-public class IllegalStateException extends RuntimeException {
+public class ResourceNotFoundExceptionRuntime extends RuntimeException {
     private static final long serialVersionUID = -8188728650814173417L;
 
-    public IllegalStateException(final String message) {
+    public ResourceNotFoundExceptionRuntime(final String message) {
         super(message);
+    }
+
+    public ResourceNotFoundExceptionRuntime(final String message, final Exception exception) {
+        super(message, exception);
     }
 }

@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.common.selenium;
 
 import fi.vm.sade.oppija.common.MongoWrapper;
-import fi.vm.sade.oppija.common.it.AdminResourceClient;
 import fi.vm.sade.oppija.common.it.TomcatContainerBase;
 import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.oppija.lomake.SeleniumContainer;

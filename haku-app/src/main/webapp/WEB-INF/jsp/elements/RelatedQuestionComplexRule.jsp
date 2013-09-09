@@ -24,7 +24,7 @@
     <script type="text/javascript">
         (function () {
             var ruleData = {
-                variables:  [${variables}],
+                variables: [${variables}],
                 ruleId: "${element.id}",
                 childIds: [ ${nameSelectors} ]
             };
