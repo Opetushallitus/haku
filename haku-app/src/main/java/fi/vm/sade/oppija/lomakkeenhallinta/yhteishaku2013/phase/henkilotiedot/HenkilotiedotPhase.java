@@ -77,6 +77,7 @@ public class HenkilotiedotPhase {
         henkilotunnus.addAttribute("placeholder", "ppkkvv*****");
         henkilotunnus.addAttribute("size", "11");
         henkilotunnus.addAttribute("maxlength", "11");
+        henkilotunnus.setHelp(createI18NForm("form.henkilotiedot.henkilotunnus.help"));
         henkilotunnus.setValidator(createRegexValidator(henkilotunnus.getId(), HETU_PATTERN));
         setRequiredInlineAndVerboseHelp(henkilotunnus, "form.henkilotiedot.henkilotunnus.verboseHelp");
 
