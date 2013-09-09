@@ -7,6 +7,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomakkeenhallinta.FormGenerator;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ public class FormBuilderResourceTest {
         formGenerator = mock(FormGenerator.class);
         applicationSystemService = mock(ApplicationSystemService.class);
         I18nText test = ElementUtil.createI18NAsIs("test");
-        ApplicationSystem applicationSystem = new ApplicationSystem("1", new Form("", test), test, null);
+        ApplicationSystem applicationSystem = new ApplicationSystem("1", new Form("", test), test, null, Yhteishaku2013.VARSINAINEN_HAKU);
         when(formGenerator.generate()).thenReturn(ImmutableList.of(applicationSystem));
         formBuilderResource = new FormBuilderResource(formGenerator, applicationSystemService);
     }
