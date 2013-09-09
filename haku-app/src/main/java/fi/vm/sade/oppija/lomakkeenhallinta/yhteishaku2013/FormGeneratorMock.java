@@ -52,8 +52,9 @@ public class FormGeneratorMock implements FormGenerator {
         Date end = new Date(instance.getTimeInMillis());
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
         I18nText name = ElementUtil.createI18NAsIs(asId);
-        Form form = Yhteishaku2013.generateForm(new ApplicationSystem(asId, null, name, applicationPeriods), koodistoService);
-        asList.add(new ApplicationSystem(asId, form, name, applicationPeriods));
+        Form form = Yhteishaku2013.generateForm(new ApplicationSystem(asId, null, name, applicationPeriods,
+                Yhteishaku2013.VARSINAINEN_HAKU), koodistoService);
+        asList.add(new ApplicationSystem(asId, form, name, applicationPeriods, Yhteishaku2013.VARSINAINEN_HAKU));
         return asList;
     }
 
@@ -65,7 +66,8 @@ public class FormGeneratorMock implements FormGenerator {
         Date end = new Date(instance.getTimeInMillis());
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
         I18nText name = ElementUtil.createI18NAsIs(asId);
-        Form form = Yhteishaku2013.generateForm(new ApplicationSystem(asId, null, name, applicationPeriods), koodistoService);
-        return new ApplicationSystem(asId, form, name, applicationPeriods);
+        Form form = Yhteishaku2013.generateForm(new ApplicationSystem(asId, null, name, applicationPeriods,
+                Yhteishaku2013.VARSINAINEN_HAKU), koodistoService);
+        return new ApplicationSystem(asId, form, name, applicationPeriods, Yhteishaku2013.VARSINAINEN_HAKU);
     }
 }

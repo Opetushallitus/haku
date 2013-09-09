@@ -45,10 +45,12 @@ public class ApplicationSystem implements Serializable {
     private I18nText name;
     @XmlAttribute
     private List<ApplicationPeriod> applicationPeriods;
+    @XmlAttribute
+    private String applicationSystemType;
 
     @PersistenceConstructor
     public ApplicationSystem(final String id, final Form form, final I18nText name,
-                             final List<ApplicationPeriod> applicationPeriods) {
+                             final List<ApplicationPeriod> applicationPeriods, final String applicationSystemType) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(name);
         this.id = id;
@@ -56,6 +58,7 @@ public class ApplicationSystem implements Serializable {
         this.name = name;
         this.applicationPeriods = applicationPeriods != null ?
                 ImmutableList.copyOf(applicationPeriods) : Lists.<ApplicationPeriod>newArrayList();
+        this.applicationSystemType = applicationSystemType;
     }
 
     @Transient
@@ -82,5 +85,9 @@ public class ApplicationSystem implements Serializable {
 
     public List<ApplicationPeriod> getApplicationPeriods() {
         return applicationPeriods;
+    }
+
+    public String getApplicationSystemType() {
+        return applicationSystemType;
     }
 }

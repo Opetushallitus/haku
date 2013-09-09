@@ -8,11 +8,13 @@ import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.Popup;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceTable;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.SinglePreference;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
@@ -20,12 +22,16 @@ public class HakutoiveetPhase {
     public static final String DISCRETIONARY_EDUCATION_DEGREE = "32";
     public static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
 
-    public static Phase create() {
+    public static Phase create(final String asType) {
 
         // Hakutoiveet
         Phase hakutoiveet = new Phase(HAKUTOIVEET_PHASE_ID, createI18NForm("form.hakutoiveet.otsikko"), false);
 
-        hakutoiveet.addChild(createHakutoiveetTheme());
+        if (Yhteishaku2013.LISA_HAKU.equals(asType)) {
+            hakutoiveet.addChild(createHakutoiveetThemeLisahaku());
+        } else {
+            hakutoiveet.addChild(createHakutoiveetTheme());
+        }
         return hakutoiveet;
     }
 
@@ -49,6 +55,23 @@ public class HakutoiveetPhase {
         preferenceTable.addChild(pr5);
         ElementUtil.setVerboseHelp(preferenceTable, "form.hakutoiveet.otsikko.verboseHelp");
         hakutoiveetTheme.addChild(preferenceTable);
+        return hakutoiveetTheme;
+    }
+
+    private static Theme createHakutoiveetThemeLisahaku() {
+        Theme hakutoiveetTheme = new Theme("hakutoiveetGrp", createI18NForm("form.hakutoiveet.otsikko"), true);
+        hakutoiveetTheme.setHelp(createI18NForm("form.hakutoiveet.lisahaku.help"));
+        final String id = "preference1";
+        SinglePreference singlePreference = new SinglePreference(id,
+                createI18NForm("form.hakutoiveet.koulutus"),
+                createI18NForm("form.hakutoiveet.opetuspiste"),
+                createI18NForm("form.hakutoiveet.otsikko"),
+                createI18NForm("form.hakutoiveet.sisaltyvatKoulutusohjelmat"));
+        singlePreference.addChild(createDiscretionaryQuestionsAndRules(id));
+        singlePreference.addChild(createSoraQuestions(id),
+                createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id));
+        hakutoiveetTheme.addChild(singlePreference);
+        ElementUtil.setVerboseHelp(singlePreference, "form.hakutoiveet.otsikko.lisahaku.verboseHelp");
         return hakutoiveetTheme;
     }
 

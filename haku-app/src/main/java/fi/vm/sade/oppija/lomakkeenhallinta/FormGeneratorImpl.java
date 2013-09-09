@@ -29,7 +29,7 @@ public class FormGeneratorImpl implements FormGenerator {
         List<ApplicationSystem> asList = Lists.newArrayList();
         for (ApplicationSystem as : applicationSystems) {
             Form form = Yhteishaku2013.generateForm(as, koodistoService);
-            asList.add(new ApplicationSystem(as.getId(), form, as.getName(), as.getApplicationPeriods()));
+            asList.add(new ApplicationSystem(as.getId(), form, as.getName(), as.getApplicationPeriods(), as.getApplicationSystemType()));
         }
         return asList;
     }

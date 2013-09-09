@@ -134,7 +134,7 @@ var preferenceRow = {
                     }
                 }
             });
-            if ($hiddenInput.val() !== '') {
+            if ($hiddenInput.val() && $hiddenInput.val() !== '') {
                 preferenceRow.populateSelectInput($hiddenInput.val(), selectInputId, true, this.id);
             }
         });
