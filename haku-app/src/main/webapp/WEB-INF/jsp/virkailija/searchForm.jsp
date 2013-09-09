@@ -22,6 +22,7 @@
         <input type="hidden" id="lopoid" name="lopoid">
 
         <h3 id="lop-title"></h3>
+
         <div class="grid16-16">
             <table class="form-layout-table width-100">
                 <tr>
@@ -72,7 +73,8 @@
                 </tr>
                 <tr>
                     <td>
-                        <a href="#" id="create-application" data-po-show="createApplication" class="button secondary small"><fmt:message key="virkailija.hakemus.syota"/></a>
+                        <a href="#" id="create-application" data-po-show="createApplication"
+                           class="button secondary small"><fmt:message key="virkailija.hakemus.syota"/></a>
                     </td>
                 </tr>
             </table>

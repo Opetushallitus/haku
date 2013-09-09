@@ -1,4 +1,4 @@
-package fi.vm.sade.oppija.lomake.domain.exception;
+package fi.vm.sade.oppija.lomake.exception;
 
 import org.junit.Test;
 

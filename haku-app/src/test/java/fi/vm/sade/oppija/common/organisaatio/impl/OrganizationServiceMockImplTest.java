@@ -43,8 +43,9 @@ public class OrganizationServiceMockImplTest {
     static final OrganizationServiceMockImpl organisaatioService = new OrganizationServiceMockImpl() {
 
         final Date now = new Date();
-        final Date start = new Date(now.getTime()-1000*60*60*24);
-        final Date end = new Date(now.getTime()+1000*60*60*24);
+        final Date start = new Date(now.getTime() - 1000 * 60 * 60 * 24);
+        final Date end = new Date(now.getTime() + 1000 * 60 * 60 * 24);
+
         public void init() {
             add(getOrganization("nimi1", "1", null, start, end, "Koulutustoimija"));
             add(getOrganization("nimi2", "2", "1", start, end, "Oppilaitos"));

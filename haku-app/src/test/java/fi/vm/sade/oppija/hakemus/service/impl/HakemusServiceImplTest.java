@@ -2,7 +2,6 @@ package fi.vm.sade.oppija.hakemus.service.impl;
 
 import fi.vm.sade.oppija.hakemus.converter.ApplicationToHakemusTyyppi;
 import fi.vm.sade.oppija.hakemus.converter.ApplicationToHakutoiveTyyppi;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.service.hakemus.HakemusService;

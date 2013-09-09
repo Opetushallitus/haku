@@ -194,7 +194,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         findByIdAndClick("submit_confirm");
         driver.findElement(new By.ByLinkText("Lisää oppijanumero")).click();
         final String personOid = "1.3.4.5.6.434324324";
-        WebElement element =  driver.findElement(By.id("newPersonOid"));
+        WebElement element = driver.findElement(By.id("newPersonOid"));
         element.sendKeys(personOid);
         element.submit();
         assertTrue(selenium.isTextPresent(personOid));

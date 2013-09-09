@@ -20,10 +20,10 @@ import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
+import fi.vm.sade.oppija.lomake.util.ElementTree;
 import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.oppija.ui.common.UriUtil;
 import fi.vm.sade.oppija.ui.service.OfficerUIService;
@@ -163,6 +163,22 @@ public class OfficerController {
     }
 
     @POST
+    @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}/{elementId}")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
+    public Viewable updateView(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                               @PathParam(OID_PATH_PARAM) final String oid,
+                               @PathParam("elementId") final String elementId,
+                               final MultivaluedMap<String, String> multiValues)
+            throws ResourceNotFoundException {
+        UIServiceResponse uiServiceResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, false);
+        uiServiceResponse.addAnswers(MultivaluedMapUtil.toSingleValueMap(multiValues));
+        return new Viewable("/elements/Root", uiServiceResponse.getModel());
+    }
+
+    @POST
     @Path("/hakemus/{oid}/additionalInfo")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
@@ -269,15 +285,7 @@ public class OfficerController {
                                               @PathParam("key") final String key) {
         LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationSystemId, elementId, key);
         Form activeForm = formService.getForm(applicationSystemId);
-        try {
-            @SuppressWarnings("unchecked")
-            DataRelatedQuestion<Serializable> element =
-                    (DataRelatedQuestion<Serializable>) activeForm.getChildById(elementId);
-            return element.getData(key);
-        } catch (Exception e) {
-            LOGGER.error(e.toString());
-            return null;
-        }
+        return new ElementTree(activeForm).getRelatedData(elementId, key);
     }
 
     @POST

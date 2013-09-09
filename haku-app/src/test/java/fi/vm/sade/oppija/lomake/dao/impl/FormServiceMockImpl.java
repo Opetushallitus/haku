@@ -21,11 +21,10 @@ import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomake.domain.exception.ApplicationSystemNotFound;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.exception.ApplicationSystemNotFound;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class FormServiceMockImpl implements FormService {

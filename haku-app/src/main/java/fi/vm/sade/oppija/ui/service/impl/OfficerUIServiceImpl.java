@@ -3,8 +3,6 @@ package fi.vm.sade.oppija.ui.service.impl;
 import com.google.common.base.Strings;
 import com.sun.scenario.effect.Merge;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
-import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
-import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
@@ -12,9 +10,10 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
+import fi.vm.sade.oppija.lomake.util.ElementTree;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
@@ -29,7 +28,6 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.HEAD;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -39,7 +37,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private final ApplicationService applicationService;
     private final FormService formService;
-    private final ValintaperusteetService valintaperusteetService;
     private final KoodistoService koodistoService;
     private final HakuPermissionService hakuPermissionService;
     private final String koulutusinformaatioBaseUrl;
@@ -50,7 +47,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
                                 final FormService formService,
-                                final ValintaperusteetService valintaperusteetService,
                                 final KoodistoService koodistoService,
                                 final HakuPermissionService hakuPermissionService,
                                 final LoggerAspect loggerAspect,
@@ -62,7 +58,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     {
         this.applicationService = applicationService;
         this.formService = formService;
-        this.valintaperusteetService = valintaperusteetService;
         this.koodistoService = koodistoService;
         this.hakuPermissionService = hakuPermissionService;
         this.loggerAspect = loggerAspect;
@@ -79,7 +74,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Application application = this.applicationService.getApplication(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
-        Element element = form.getChildById(elementId);
+        Element element = new ElementTree(form).getChildById(elementId);
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
         officerApplicationResponse.setElement(element);
@@ -100,10 +95,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 oid, application.getApplicationSystemId()));
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
-        officerApplicationResponse.setElement(form.getChildById(application.getPhaseId()));
+        officerApplicationResponse.setElement(new ElementTree(form).getChildById(application.getPhaseId()));
         officerApplicationResponse.setForm(form);
         officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
-        officerApplicationResponse.setAdditionalQuestions(getAdditionalQuestions(application));
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         officerApplicationResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
         officerApplicationResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
@@ -115,7 +109,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         OfficerAdditionalInfoResponse officerAdditionalInfoResponse = new OfficerAdditionalInfoResponse();
         Application application = applicationService.getApplicationByOid(oid);
         officerAdditionalInfoResponse.setApplication(application);
-        officerAdditionalInfoResponse.setAdditionalQuestions(getAdditionalQuestions(application));
         return officerAdditionalInfoResponse;
     }
 
@@ -145,7 +138,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         } else {
             application.activate();
         }
-        Element phase = form.getChildById(applicationPhase.getPhaseId());
+        Element phase = new ElementTree(form).getChildById(applicationPhase.getPhaseId());
         ValidationResult phaseValidationResult = elementTreeValidator.validate(new ValidationInput(phase,
                 applicationPhase.getAnswers(), oid, application.getApplicationSystemId()));
 
@@ -182,7 +175,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         UIServiceResponse uiServiceResponse = new UIServiceResponse();
         uiServiceResponse.addObjectToModel("organizationTypes", koodistoService.getOrganizationtypes());
         uiServiceResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
-        uiServiceResponse.addObjectToModel("applicationSystems", applicationSystemService.getAllApplicationSystems());
+        uiServiceResponse.addObjectToModel("applicationSystems", applicationSystemService.getAllApplicationSystems("id", "name"));
         return uiServiceResponse;
     }
 
@@ -207,11 +200,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public void addNote(String applicationOid, String note, User user) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(applicationOid);
         applicationService.addNote(application, note);
-    }
-
-    private AdditionalQuestions getAdditionalQuestions(final Application application) throws IOException {
-        List<String> applicationPreferenceOids = this.applicationService.getApplicationPreferenceOids(application);
-        return this.valintaperusteetService.retrieveAdditionalQuestions(applicationPreferenceOids);
     }
 
     @Override

@@ -14,19 +14,26 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain.exception;
+package fi.vm.sade.oppija.lomake.exception;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class IllegalStateExceptionTest {
+public class ResourceNotFoundExceptionRuntimeTest {
 
-    public static final String MESSAGE = "Väärä vaihe";
+    public static final String MESSAGE = "virhe";
+    public static final NullPointerException EXCEPTION = new NullPointerException();
 
     @Test
     public void testMessage() throws Exception {
-        IllegalStateException illegalStateException = new IllegalStateException(MESSAGE);
-        assertEquals(MESSAGE, illegalStateException.getMessage());
+        ResourceNotFoundExceptionRuntime resourceNotFoundExceptionRuntime = new ResourceNotFoundExceptionRuntime(MESSAGE);
+        assertEquals(MESSAGE, resourceNotFoundExceptionRuntime.getMessage());
+    }
+
+    @Test
+    public void testException() throws Exception {
+        ResourceNotFoundExceptionRuntime resourceNotFoundExceptionRuntime = new ResourceNotFoundExceptionRuntime(MESSAGE, EXCEPTION);
+        assertEquals(EXCEPTION, resourceNotFoundExceptionRuntime.getCause());
     }
 }

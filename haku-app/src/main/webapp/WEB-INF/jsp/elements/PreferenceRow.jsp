@@ -49,7 +49,8 @@
                        size="60"
                 ${sortableItem.attributes['required']}/>
                 <haku:errorMessage id="${textInputId}" additionalClass="margin-top-1"/>
-                <input id="${hiddenInputId}" name="${hiddenInputId}" value="<c:out value='${categoryData[hiddenInputId]}'/>"
+                <input id="${hiddenInputId}" name="${hiddenInputId}"
+                       value="<c:out value='${categoryData[hiddenInputId]}'/>"
                        type="hidden"/>
             </div>
         </div>

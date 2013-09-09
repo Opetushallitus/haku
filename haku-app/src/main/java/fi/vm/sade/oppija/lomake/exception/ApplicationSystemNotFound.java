@@ -13,18 +13,13 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-package fi.vm.sade.oppija.lomake.domain.exception;
 
-/**
- * Thrown when a requested resource is not found.
- *
- * @author Hannu Lyytikainen
- */
-public class ResourceNotFoundException extends Exception {
+package fi.vm.sade.oppija.lomake.exception;
 
-    private static final long serialVersionUID = 6713047877279434439L;
+public class ApplicationSystemNotFound extends RuntimeException {
+    private static final long serialVersionUID = -8188728650814173417L;
 
-    public ResourceNotFoundException(String message) {
-        super(message);
+    public ApplicationSystemNotFound(final String id) {
+        super("Application system " + id + " not found");
     }
 }

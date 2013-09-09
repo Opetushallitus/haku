@@ -82,7 +82,7 @@ public class HenkilotiedotPhase {
 
         Radio sukupuoli = new Radio("sukupuoli", createI18NForm("form.henkilotiedot.sukupuoli"));
         sukupuoli.addOptions(koodistoService.getGenders());
-        setRequiredInlineAndVerboseHelp(sukupuoli,"form.henkilotiedot.sukupuoli.verboseHelp");
+        setRequiredInlineAndVerboseHelp(sukupuoli, "form.henkilotiedot.sukupuoli.verboseHelp");
 
         Option male = sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
                 sukupuoli.getOptions().get(0) : sukupuoli.getOptions().get(1);

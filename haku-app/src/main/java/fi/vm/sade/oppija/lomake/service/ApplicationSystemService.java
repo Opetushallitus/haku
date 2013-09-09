@@ -9,5 +9,5 @@ public interface ApplicationSystemService {
 
     void save(final ApplicationSystem applicationSystem);
 
-    List<ApplicationSystem> getAllApplicationSystems();
+    List<ApplicationSystem> getAllApplicationSystems(final String... includeFields);
 }

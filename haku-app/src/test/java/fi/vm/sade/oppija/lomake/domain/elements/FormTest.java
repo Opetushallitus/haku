@@ -17,7 +17,8 @@
 package fi.vm.sade.oppija.lomake.domain.elements;
 
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.util.ElementTree;
 import org.junit.Test;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
@@ -28,17 +29,18 @@ public class FormTest {
     public static final String ID_TO_GET = "id2";
     private Form form = new Form("id", createI18NAsIs("title"));
     private TextQuestion expectedElement = new TextQuestion(ID_TO_GET, createI18NAsIs("title2"));
+    private ElementTree elementTree = new ElementTree(form);
 
     @Test
     public void testGetElementById() throws Exception {
         form.addChild(expectedElement);
-        Element actualElement = form.getChildById(ID_TO_GET);
+        Element actualElement = elementTree.getChildById(ID_TO_GET);
         assertEquals(expectedElement, actualElement);
     }
 
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
     public void testGetElementByIdNotFound() throws Exception {
         form.addChild(expectedElement);
-        form.getChildById(ID_TO_GET + "2");
+        elementTree.getChildById(ID_TO_GET + "2");
     }
 }

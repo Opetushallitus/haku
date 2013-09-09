@@ -56,12 +56,14 @@ public class HakuServiceImpl implements HakuService {
     @Override
     public List<ApplicationSystem> getApplicationSystems() {
         LOGGER.debug("getApplicationSystems");
-        List<OidRDTO> hakuOids = webResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<List<OidRDTO>>(){});
+        List<OidRDTO> hakuOids = webResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<List<OidRDTO>>() {
+        });
         List<HakuDTO> hakuDTOs = Lists.newArrayList();
         if (hakuOids != null) {
             for (OidRDTO oid : hakuOids) {
                 WebResource asWebResource = webResource.path(oid.getOid());
-                HakuDTO haku = asWebResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<HakuDTO>(){});
+                HakuDTO haku = asWebResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<HakuDTO>() {
+                });
                 hakuDTOs.add(haku);
             }
         }

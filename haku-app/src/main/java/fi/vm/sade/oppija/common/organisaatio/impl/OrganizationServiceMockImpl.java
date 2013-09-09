@@ -22,7 +22,7 @@ import com.google.common.collect.*;
 import fi.vm.sade.oppija.common.organisaatio.Organization;
 import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import fi.vm.sade.oppija.lomake.domain.exception.ConfigurationException;
+import fi.vm.sade.oppija.lomake.exception.ConfigurationException;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;

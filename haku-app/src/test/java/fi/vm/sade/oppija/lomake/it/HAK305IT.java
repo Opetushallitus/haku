@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class HAK305IT extends DummyModelBaseItTest {
 
