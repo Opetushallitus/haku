@@ -48,7 +48,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -161,13 +160,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         final DBObject query = toDBObject.apply(application);
         query.put(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, false));
         return findOneApplication(query);
-    }
-
-    @Override
-    public List<Application> findByApplicationSystem(String asId) {
-        DBObject dbObject = QueryBuilder.start().and(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId).get(),
-                newOIdExistDBObject()).get();
-        return findApplications(dbObject);
     }
 
     @Override

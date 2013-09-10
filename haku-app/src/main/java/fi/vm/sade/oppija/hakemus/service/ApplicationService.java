@@ -67,16 +67,6 @@ public interface ApplicationService {
     Application getPendingApplication(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
 
     /**
-     * Retrieves all submitted applications related to specified application system
-     *
-     * @param applicationSystemId
-     * @return list of applications
-     */
-    List<Application> getApplicationsByApplicationSystem(String applicationSystemId);
-
-    List<Application> getApplicationsByApplicationSystemAndApplicationOption(String asId, String aoId);
-
-    /**
      * Returns all applications where one of the selected application options is the
      * one given as parameter.
      *

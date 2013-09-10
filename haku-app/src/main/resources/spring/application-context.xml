@@ -78,14 +78,6 @@
         <bean id="solrServerFactory" class="fi.vm.sade.organisaatio.service.search.SolrServerFactory">
         </bean>
 
-        <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
-            <property name="converters">
-                <set>
-                    <bean class="fi.vm.sade.oppija.hakemus.converter.ApplicationToApplicantConverter"/>
-                </set>
-            </property>
-        </bean>
-
         <bean id="yksilointiScheduler" class="fi.vm.sade.oppija.yksilointi.Scheduler">
             <property name="run" value="${scheduler.run}"/>
             <property name="sendMail" value="${scheduler.sendMail}"/>

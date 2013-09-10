@@ -75,11 +75,6 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public List<Application> findByApplicationSystem(String asId) {
-        return null;
-    }
-
-    @Override
     public List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
