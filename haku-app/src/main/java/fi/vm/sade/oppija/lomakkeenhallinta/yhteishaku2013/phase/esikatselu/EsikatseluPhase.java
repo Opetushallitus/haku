@@ -16,6 +16,7 @@ public class EsikatseluPhase {
 
     public static Phase create(final Form form) {
         Phase esikatselu = new Phase("esikatselu", createI18NForm("form.esikatselu.otsikko"), true);
+        esikatselu.setHelp(createI18NForm("form.esikatselu.help"));
 
         List<Theme> themes = findElementsByTypeAsList(form, Theme.class);
 
