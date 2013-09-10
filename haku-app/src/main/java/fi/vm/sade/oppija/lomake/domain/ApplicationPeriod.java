@@ -29,14 +29,14 @@ import java.util.Date;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ApplicationPeriod implements Serializable {
 
-    private Date start;
-    private Date end;
+    private final Date start;
+    private final Date end;
 
     public ApplicationPeriod(final Date start, final Date end) {
         Preconditions.checkNotNull(start);
         Preconditions.checkNotNull(end);
-        this.start = start;
-        this.end = end;
+        this.start = new Date(start.getTime());
+        this.end = new Date(end.getTime());
     }
 
     public Date getStart() {

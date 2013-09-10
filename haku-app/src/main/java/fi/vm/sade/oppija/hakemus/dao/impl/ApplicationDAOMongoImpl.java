@@ -122,9 +122,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         this.dbObjectToSearchResultItem = dbObjectToSearchResultItem;
         this.authenticationService = authenticationService;
         this.hakuPermissionService = hakuPermissionService;
-
-        java.util.logging.Logger mongoLogger = java.util.logging.Logger.getLogger("com.mongodb");
-        mongoLogger.setLevel(Level.SEVERE);
     }
 
     @Override
