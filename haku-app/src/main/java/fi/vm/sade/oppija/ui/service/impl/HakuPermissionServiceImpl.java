@@ -20,8 +20,9 @@ import java.util.Map;
 @Profile("default")
 public class HakuPermissionServiceImpl extends AbstractPermissionService implements HakuPermissionService {
 
+    public static final int MAX_NUMBER_OF_PREFERENCES = 5;
     private AuthenticationService authenticationService;
-    private static final Logger log = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
 
     @Autowired
     public HakuPermissionServiceImpl(AuthenticationService authenticationService,
@@ -40,9 +41,9 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
         List<String> readble = new ArrayList<String>();
         for (String organization : organizations) {
-            log.debug("Calling checkAccess({}, {})", organization, getReadRole());
+            LOG.debug("Calling checkAccess({}, {})", organization, getReadRole());
             if (checkAccess(organization, getReadRole())) {
-                log.debug("Can read");
+                LOG.debug("Can read");
                 readble.add(organization);
             } else if (checkAccess(organization, getReadUpdateRole())) {
                 readble.add(organization);
@@ -70,7 +71,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     private boolean userCanAccessApplication(Application application, String... roles) {
         Map<String, String> answers = application.getVastauksetMerged();
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= MAX_NUMBER_OF_PREFERENCES; i++) {
             String id = "preference" + i + "-Opetuspiste-id";
             String parents = "preference" + i + "-Opetuspiste-id-parents";
             String organization = answers.get(id);
@@ -81,14 +82,14 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
             if (StringUtils.isNotEmpty(organization) &&
                     checkAccess(organization, roles)) {
-                log.debug("User can read application, org: {}", organization);
+                LOG.debug("User can read application, org: {}", organization);
                 return true;
             }
             for (String parent : parents.split(",")) {
                 organization = answers.get(parent);
                 if (StringUtils.isNotEmpty(organization) &&
                         checkAccess(organization, roles)) {
-                    log.debug("User can read application, parent org: {}", organization);
+                    LOG.debug("User can read application, parent org: {}", organization);
                     return true;
                 }
             }

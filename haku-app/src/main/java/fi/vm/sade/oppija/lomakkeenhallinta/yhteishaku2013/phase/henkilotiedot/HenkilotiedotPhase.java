@@ -31,6 +31,9 @@ public class HenkilotiedotPhase {
     private static final String POSTINUMERO_PATTERN = "[0-9]{5}";
     private static final String DATE_PATTERN = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[012])\\.(19|20)\\d\\d$";
 
+    private HenkilotiedotPhase() {
+    }
+
     public static Phase create(final KoodistoService koodistoService) {
 
         // Henkilötiedot

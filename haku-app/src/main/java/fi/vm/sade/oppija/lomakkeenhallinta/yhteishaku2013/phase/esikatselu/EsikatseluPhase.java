@@ -11,6 +11,9 @@ import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.findElementsB
 
 public class EsikatseluPhase {
 
+    private EsikatseluPhase() {
+    }
+
     public static Phase create(final Form form) {
         Phase esikatselu = new Phase("esikatselu", createI18NForm("form.esikatselu.otsikko"), true);
 

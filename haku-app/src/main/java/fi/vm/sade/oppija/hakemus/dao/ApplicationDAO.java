@@ -123,7 +123,7 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     ApplicationSearchResultDTO findByApplicantDob(String term, ApplicationQueryParameters applicationQueryParameters);
 
-    public void setHakuPermissionService(HakuPermissionService hakuPermissionService);
+    void setHakuPermissionService(HakuPermissionService hakuPermissionService);
 
     /**
      * Updates key/value of the application by oid

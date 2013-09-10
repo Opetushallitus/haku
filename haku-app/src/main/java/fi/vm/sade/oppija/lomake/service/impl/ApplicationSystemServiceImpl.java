@@ -22,7 +22,8 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     final boolean cacheApplicationSystems;
 
     @Autowired
-    public ApplicationSystemServiceImpl(final ApplicationSystemRepository applicationSystemRepository, @Value("${application.system.cache:true}") boolean cacheApplicationSystems) {
+    public ApplicationSystemServiceImpl(final ApplicationSystemRepository applicationSystemRepository,
+                                     @Value("${application.system.cache:true}") final boolean cacheApplicationSystems) {
         this.applicationSystemRepository = applicationSystemRepository;
         this.cacheApplicationSystems = cacheApplicationSystems;
     }
