@@ -36,6 +36,9 @@ public class KoulutustaustaPhase {
     public static final String TUTKINTO_PERUSKOULU = "tutkinto1";
     public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-3])$";
 
+    private KoulutustaustaPhase() {
+    }
+
     public static Phase create(final KoodistoService koodistoService) {
         Phase koulutustausta = new Phase("koulutustausta", createI18NForm("form.koulutustausta.otsikko"), false);
         Theme koulutustaustaRyhma = new Theme("KoulutustaustaGrp", createI18NForm("form.koulutustausta.otsikko"), true);
