@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
+import fi.vm.sade.oppija.lomake.validation.validators.SsnAndPreferenceUniqueValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.SsnUniqueValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,15 +28,20 @@ import org.springframework.stereotype.Component;
 public class ValidatorFactory {
 
     private final SsnUniqueConcreteValidator ssnUniqueConcreteValidator;
+    private final SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator;
 
     @Autowired
-    public ValidatorFactory(SsnUniqueConcreteValidator ssnUniqueConcreteValidator) {
+    public ValidatorFactory(SsnUniqueConcreteValidator ssnUniqueConcreteValidator,
+                            SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator) {
         this.ssnUniqueConcreteValidator = ssnUniqueConcreteValidator;
+        this.ssnAndPreferenceUniqueConcreteValidator = ssnAndPreferenceUniqueConcreteValidator;
     }
 
     public Validator buildValidator(final Validator validator) {
         if (validator != null && validator instanceof SsnUniqueValidator) {
             return ssnUniqueConcreteValidator;
+        } else if (validator != null && validator instanceof SsnAndPreferenceUniqueValidator) {
+            return ssnAndPreferenceUniqueConcreteValidator;
         }
         return validator;
     }

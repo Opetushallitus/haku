@@ -37,7 +37,7 @@ public class Yhteishaku2013 {
     public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService) {
         try {
             Form form = new Form(as.getId(), as.getName());
-            form.addChild(HenkilotiedotPhase.create(koodistoService));
+            form.addChild(HenkilotiedotPhase.create(koodistoService, as.getApplicationSystemType()));
             form.addChild(KoulutustaustaPhase.create(koodistoService));
             form.addChild(HakutoiveetPhase.create(as.getApplicationSystemType()));
             form.addChild(OsaaminenPhase.create(koodistoService));
