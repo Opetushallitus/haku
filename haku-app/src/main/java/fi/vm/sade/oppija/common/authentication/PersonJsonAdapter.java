@@ -4,6 +4,8 @@ import com.google.gson.*;
 import fi.vm.sade.authentication.service.types.dto.SukupuoliType;
 
 import java.lang.reflect.Type;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
@@ -50,18 +52,33 @@ public class PersonJsonAdapter implements JsonSerializer<Person> {
         if (!isEmpty(hetu)) {
             personJson.add("hetu", new JsonPrimitive(hetu));
             personJson.add("kayttajatunnus", new JsonPrimitive(hetu));
+            personJson.add("eiSuomalaistaHetua", new JsonPrimitive(false));
+        } else {
+            personJson.add("kayttajatunnus", new JsonPrimitive(buildUserId(person)));
+            personJson.add("eiSuomalaistaHetua", new JsonPrimitive(true));
         }
+
         String sex = person.getSex();
         if (!isEmpty(sex)) {
             personJson.add("sukupuoli", new JsonPrimitive(sex.equals(SukupuoliType.MIES.value()) ? "MIES" : "NAINEN"));
         }
-        personJson.add("eiSuomalaistaHetua", new JsonPrimitive(person.isNoSocialSecurityNumber()));
 
         personJson.add("henkiloTyyppi", new JsonPrimitive("OPPIJA"));
         personJson.add("yksiloity", new JsonPrimitive(false));
         personJson.add("passivoitu", new JsonPrimitive(false));
 
         return personJson;
+    }
+
+    private String buildUserId(Person person) {
+        String id = person.getLastName() + person.getFirstNames() + String.valueOf(System.currentTimeMillis());
+        MessageDigest sha = null;
+        try {
+            sha = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return String.valueOf(sha.digest(id.getBytes()));
     }
 
 }
