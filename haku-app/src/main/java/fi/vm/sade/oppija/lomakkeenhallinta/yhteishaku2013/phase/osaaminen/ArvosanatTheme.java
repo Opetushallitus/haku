@@ -15,6 +15,9 @@ public final class ArvosanatTheme {
     public static final String ARVOSANAT_THEME_ID = "arvosanatTheme";
 
 
+    private ArvosanatTheme() {
+    }
+
     public static Theme createArvosanatTheme(final KoodistoService koodistoService) {
         Theme arvosanatTheme = new Theme(
                 ARVOSANAT_THEME_ID,

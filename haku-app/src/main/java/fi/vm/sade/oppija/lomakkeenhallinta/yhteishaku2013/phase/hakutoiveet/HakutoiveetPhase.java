@@ -20,6 +20,9 @@ public class HakutoiveetPhase {
     public static final String DISCRETIONARY_EDUCATION_DEGREE = "32";
     public static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
 
+    private HakutoiveetPhase() {
+    }
+
     public static Phase create() {
 
         // Hakutoiveet

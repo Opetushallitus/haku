@@ -27,6 +27,9 @@ public final class KielitaitokysymyksetTheme {
             "lukion_kieli",
     };
 
+    private KielitaitokysymyksetTheme() {
+    }
+
     public static Element createKielitaitokysymyksetTheme() {
         Expr suomiOnAidinkieliTaiKouluSuomeksi = atLeastOneVariableEqualsToValue("FI", LANGUAGE_QUESTIONS);
         Expr ruotsiOnAidinkieliTaiKouluRuotsiksi = atLeastOneVariableEqualsToValue("SV", LANGUAGE_QUESTIONS);
