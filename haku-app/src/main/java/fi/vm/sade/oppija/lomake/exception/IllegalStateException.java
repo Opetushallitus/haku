@@ -14,12 +14,17 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain.exception;
+package fi.vm.sade.oppija.lomake.exception;
 
-public class ApplicationSystemNotFound extends RuntimeException {
+/**
+ * @author jukka
+ * @version 9/10/1210:29 AM}
+ * @since 1.1
+ */
+public class IllegalStateException extends RuntimeException {
     private static final long serialVersionUID = -8188728650814173417L;
 
-    public ApplicationSystemNotFound(final String id) {
-        super("Application system " + id + " not found");
+    public IllegalStateException(final String message) {
+        super(message);
     }
 }

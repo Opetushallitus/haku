@@ -26,25 +26,26 @@
     <c:forEach var="child" items="${element.children}" varStatus="status">
         <tr>
             <td class="index">
-                <haku:i18nText value="${child.i18nText}"/>
-                <br/>
-                <c:if test="${not status.first}">
-                    <button class="up sort" data-id="${child.id}" data-target="${element.children[status.index - 1].id}"
-                            type="button">
-                        <span>
-                            <span>^</span>
-                        </span>
-                    </button>
-                    <br/>
-                </c:if>
-                <c:if test="${not status.last}">
-                    <button class="down sort" data-id="${child.id}"
-                            data-target="${element.children[status.index + 1].id}" type="button">
-                        <span>
-                            <span>v</span>
-                        </span>
-                    </button>
-                </c:if>
+                <span><haku:i18nText value="${child.i18nText}"/></span>
+                <div class="sort-arrows">
+                    <c:if test="${not status.first}">
+                        <button class="up sort" data-id="${child.id}" data-target="${element.children[status.index - 1].id}"
+                                type="button">
+                            <span>
+                                <span>^</span>
+                            </span>
+                        </button>
+                        <br/>
+                    </c:if>
+                    <c:if test="${not status.last}">
+                        <button class="down sort" data-id="${child.id}"
+                                data-target="${element.children[status.index + 1].id}" type="button">
+                            <span>
+                                <span>v</span>
+                            </span>
+                        </button>
+                    </c:if>
+                </div>
             </td>
             <td>
                 <c:set var="index" value="${status.count}" scope="request"/>
@@ -61,10 +62,12 @@
 <!-- terveydentilavaatimukset -->
 <div class="popup-dialog-wrapper" id="sora-popup">
     <span class="popup-dialog-close"></span>
+
     <div class="popup-dialog">
         <span class="popup-dialog-close">
-            <fmt:message key="form.popup.sulje" />
+            <fmt:message key="form.popup.sulje"/>
         </span>
+
         <div class="popup-dialog-header">
             <h3>
                 <fmt:message key="form.hakutoiveet.terveydentilavaatimukset.otsikko"/>
@@ -75,7 +78,7 @@
             <button type="button" class="primary popup-dialog-close">
                 <span>
                     <span>
-                        <fmt:message key="form.popup.sulje" />
+                        <fmt:message key="form.popup.sulje"/>
                     </span>
                 </span>
             </button>
@@ -95,14 +98,16 @@
         teemaId: '<c:out value="${parent.id}"/>',
         baseEducation: '<c:out value="${categoryData.POHJAKOULUTUS}"/>',
         vocational: '<c:out value="${categoryData.ammatillinenTutkintoSuoritettu}"/>',
+        preferenceAndBaseEducationConflictMessage: '<fmt:message key="hakutoiveet.pohjakoulutusristiriita"/>',
         <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') or fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
-            koulutusinformaatioBaseUrl: '<c:out value="${it.koulutusinformaatioBaseUrl}"/>'
+        koulutusinformaatioBaseUrl: '<c:out value="${it.koulutusinformaatioBaseUrl}"/>'
         </c:if>
         <c:if test="${not fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') and not fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
-            koulutusinformaatioBaseUrl: location.protocol + '//<c:out value="${it.koulutusinformaatioBaseUrl}"/>'
+        koulutusinformaatioBaseUrl: location.protocol + '//<c:out value="${it.koulutusinformaatioBaseUrl}"/>'
         </c:if>
     }
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencerow.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencetable.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/resources/javascript/preferencetable.js"></script>
 

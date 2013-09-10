@@ -19,15 +19,15 @@
 
 <!DOCTYPE HTML>
 <html lang="fi">
-    <head>
-        <META http-equiv="Content-Type" content="text/html;charset=UTF-8">
-        <meta charset="utf-8"/>
-        <title></title>
-    </head>
-    <body>
-        <ul>
-            <c:forEach var="applicationSystem" items="${it.applicationSystems}">
-                <li>
+<head>
+    <META http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta charset="utf-8"/>
+    <title></title>
+</head>
+<body>
+<ul>
+    <c:forEach var="applicationSystem" items="${it.applicationSystems}">
+        <li>
                     <a id="${applicationSystem.id}" href="${applicationSystem.id}"><haku:i18nText value="${applicationSystem.name}"/></a>
                     <c:if test="${applicationSystem.active}">
                         &nbsp;Haku käynnissä!

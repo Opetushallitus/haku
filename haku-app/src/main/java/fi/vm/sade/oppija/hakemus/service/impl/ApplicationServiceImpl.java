@@ -35,9 +35,10 @@ import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
+import fi.vm.sade.oppija.lomake.util.ElementTree;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
@@ -57,7 +58,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.join;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -126,13 +128,14 @@ public class ApplicationServiceImpl implements ApplicationService {
         final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
         final String applicationSystemId = applicationState.getApplication().getApplicationSystemId();
         final Form activeForm = formService.getActiveForm(applicationSystemId);
-        final Element phase = activeForm.getChildById(applicationPhase.getPhaseId());
+        ElementTree elementTree = new ElementTree(activeForm);
+        final Element phase = elementTree.getChildById(applicationPhase.getPhaseId());
         final Map<String, String> vastaukset = applicationPhase.getAnswers();
 
         Map<String, String> allAnswers = new HashMap<String, String>();
         // if the current phase has previous phase, get all the answers for
         // validating rules
-        if (!activeForm.isFirstChild(phase)) {
+        if (!elementTree.isFirstChild(phase)) {
             Application current = userHolder.getApplication(applicationSystemId);
             allAnswers.putAll(current.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId()));
         }
@@ -182,7 +185,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application addPersonAndAuthenticate(Application application) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
 
-        if (!isEmpty(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
+        //if (!isEmpty(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
             PersonBuilder personBuilder = PersonBuilder.start()
                     .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
                     .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
@@ -201,7 +204,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             } catch (GenericFault fail) {
                 LOGGER.info(fail.getMessage());
             }
-        }
+        //}
 
         application.activate();
         this.applicationDAO.save(application);

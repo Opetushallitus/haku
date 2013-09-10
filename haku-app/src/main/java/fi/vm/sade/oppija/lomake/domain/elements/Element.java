@@ -22,7 +22,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.Popup;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import org.springframework.data.annotation.Transient;
 
@@ -63,11 +62,6 @@ public abstract class Element implements Serializable {
         return id;
     }
 
-    @Transient
-    public String getType() {
-        return type;
-    }
-
     public Map<String, String> getAttributes() {
         return ImmutableMap.copyOf(attributes);
     }
@@ -101,43 +95,10 @@ public abstract class Element implements Serializable {
         }
     }
 
-
-    @Transient
-    public final String getAttributeString() {
-        StringBuilder builder = new StringBuilder();
-        for (Map.Entry<String, String> attr : attributes.entrySet()) {
-            if (!"required".equals(attr.getKey())) {
-                builder.append(attr.getKey());
-                builder.append("=\"");
-                builder.append(attr.getValue());
-                builder.append("\" ");
-            }
-        }
-        return builder.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Element element = (Element) o;
-
-        return Objects.equal(this.id, element.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
-
     public List<Validator> getValidators() {
         return ImmutableList.copyOf(validators);
     }
+
 
     public void setValidators(final List<Validator> validators) {
         this.validators.addAll(validators);
@@ -155,45 +116,48 @@ public abstract class Element implements Serializable {
         return ImmutableList.copyOf(children);
     }
 
-    public static List<Element> getAllChildren(Element element) {
-        return element.getAllChildren();
-    }
-
-    private List<Element> getAllChildren() {
-        ArrayList<Element> allChildren = new ArrayList<Element>();
-        for (Element child : children) {
-            allChildren.add(child);
-            allChildren.addAll(child.getAllChildren());
-        }
-        return allChildren;
-    }
-
 
     @Transient
-    public Element getChildById(final String id) {
-        Element element = getChildById(this, id);
-        if (element == null) {
-            throw new ResourceNotFoundExceptionRuntime("Could not find element " + id);
-        }
-        return element;
+    public String getType() {
+        return type;
     }
 
     @Transient
-    private Element getChildById(final Element element, final String id) {
-        if (element.getId().equals(id)) {
-            return element;
-        }
-        Element tmp = null;
-        for (Element child : element.getChildren()) {
-            tmp = getChildById(child, id);
-            if (tmp != null) {
-                return tmp;
-            }
-        }
-        return tmp;
-    }
-
     public final boolean hasChildren() {
         return this.children.size() > 0;
+    }
+
+    @Transient
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Element element = (Element) o;
+
+        return Objects.equal(this.id, element.id);
+    }
+
+    @Transient
+    public final String getAttributeString() {
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry<String, String> attr : attributes.entrySet()) {
+            if (!"required".equals(attr.getKey())) {
+                builder.append(attr.getKey());
+                builder.append("=\"");
+                builder.append(attr.getValue());
+                builder.append("\" ");
+            }
+        }
+        return builder.toString();
     }
 }

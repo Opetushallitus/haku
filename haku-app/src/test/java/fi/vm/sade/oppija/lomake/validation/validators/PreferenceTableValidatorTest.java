@@ -29,6 +29,7 @@ import static org.junit.Assert.*;
 
 /**
  * Unit tests for preference table validator
+ *
  * @author Mikko Majapuro
  */
 public class PreferenceTableValidatorTest {

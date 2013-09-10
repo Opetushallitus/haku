@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.lomake.domain;
 import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -35,7 +36,7 @@ public class ApplicationSystemTest {
         Date now = new Date();
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(now, now));
         ApplicationSystem applicationSystem = new ApplicationSystem("1", new Form("", ElementUtil.createI18NAsIs("")),
-                ElementUtil.createI18NAsIs(""), applicationPeriods);
+                ElementUtil.createI18NAsIs(""), applicationPeriods, Yhteishaku2013.VARSINAINEN_HAKU);
         assertFalse(applicationSystem.isActive());
     }
 
@@ -47,7 +48,7 @@ public class ApplicationSystemTest {
         Date end = new Date(instance.getTimeInMillis());
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
         ApplicationSystem applicationSystem = new ApplicationSystem("1", new Form("", ElementUtil.createI18NAsIs("")),
-                ElementUtil.createI18NAsIs(""), applicationPeriods);
+                ElementUtil.createI18NAsIs(""), applicationPeriods, Yhteishaku2013.VARSINAINEN_HAKU);
         assertTrue(applicationSystem.isActive());
     }
 }

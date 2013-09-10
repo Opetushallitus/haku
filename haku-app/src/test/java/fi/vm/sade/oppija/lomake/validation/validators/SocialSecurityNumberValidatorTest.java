@@ -67,7 +67,7 @@ public class SocialSecurityNumberValidatorTest {
         ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertTrue(validationResult.hasErrors());
     }
-    
+
     @Test
     public void testInvalidDOB() {
         String[] hetus = new String[] {"000000-0000", "310277-1112"};
@@ -79,7 +79,7 @@ public class SocialSecurityNumberValidatorTest {
             assertTrue(validationResult.hasErrors());
         }
     }
-    
+
     @Test
     public void testNotYetBorn() {
         values.put("henkilotunnus", "311299A999E");
@@ -88,5 +88,5 @@ public class SocialSecurityNumberValidatorTest {
         ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
         assertTrue(validationResult.hasErrors());
     }
-    
+
 }

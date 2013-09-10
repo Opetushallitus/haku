@@ -49,7 +49,8 @@
                        size="60"
                 ${sortableItem.attributes['required']}/>
                 <haku:errorMessage id="${textInputId}" additionalClass="margin-top-1"/>
-                <input id="${hiddenInputId}" name="${hiddenInputId}" value="<c:out value='${categoryData[hiddenInputId]}'/>"
+                <input id="${hiddenInputId}" name="${hiddenInputId}"
+                       value="<c:out value='${categoryData[hiddenInputId]}'/>"
                        type="hidden"/>
             </div>
         </div>
@@ -64,6 +65,7 @@
                 <select id="${selectInputId}" name="${selectInputId}"
                         placeholder="${sortableItem.selectEducationPlaceholder}"
                         data-childlonames="${childLONamesId}"
+                        data-selectedname="<c:out value='${categoryData[selectInputId]}'/>"
                 ${sortableItem.attributes['required']}>
                 </select>
                 <haku:errorMessage id="${selectInputId}" additionalClass="margin-top-1"/>

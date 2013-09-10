@@ -17,41 +17,19 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<c:set var="additionalQuestions" value="${it.additionalQuestions}" scope="request"/>
 <c:set var="additionalInfo" value="${it.application.additionalInfo}" scope="request"/>
 <fieldset>
     <legend class="h3"><fmt:message key="virkailija.lisakysymys.otsikko"/></legend>
     <hr/>
-    <virkailija:EditButton url="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/additionalInfo" application="${it.application}"/>
+    <virkailija:EditButton url="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/additionalInfo"
+                           application="${it.application}"/>
     <table class="form-summary-table width-50">
         <tbody>
-        <c:forEach var="question" items="${additionalQuestions.allQuestions}">
-            <tr>
-                <td class="label"><c:out value='${question.key}'/></td>
-                <td>
-                    <c:choose>
-                        <c:when test="${question.type eq 'TOTUUSARVO'}">
-                            <c:if test="${additionalInfo[question.key] eq true}">
-                                <fmt:message key="virkailija.lisakysymys.kylla"/>
-                            </c:if>
-                            <c:if test="${additionalInfo[question.key] eq false}">
-                                <fmt:message key="virkailija.lisakysymys.ei"/>
-                            </c:if>
-                        </c:when>
-                        <c:otherwise>
-                            <c:out value="${additionalInfo[question.key]}" escapeXml="true"/>
-                        </c:otherwise>
-                    </c:choose>
-                </td>
-            </tr>
-        </c:forEach>
         <c:forEach var="data" items="${additionalInfo}">
-            <c:if test="${additionalQuestions.questionMap[data.key] eq null}">
-                <tr>
-                    <td class="label"><c:out value='${data.key}' escapeXml="true"/></td>
-                    <td><c:out value='${data.value}' escapeXml="true"/></td>
-                </tr>
-            </c:if>
+            <tr>
+                <td class="label"><c:out value='${data.key}' escapeXml="true"/></td>
+                <td><c:out value='${data.value}' escapeXml="true"/></td>
+            </tr>
         </c:forEach>
         </tbody>
     </table>

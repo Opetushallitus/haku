@@ -16,22 +16,25 @@
 
 var childLONames = {};
 var preferenceRow = {
-    populateSelectInput: function (orgId, selectInputId) {
+    populateSelectInput: function (orgId, selectInputId, isInit, providerInputId) {
         $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationSystemId + "/" + orgId,
             {
                 'baseEducation': sortabletable_settings.baseEducation,
                 'vocational': sortabletable_settings.vocational
             },
             function (data) {
-                var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId);
+                var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId),
+                    selectedPreferenceOK = false;
 
                 preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
                 $("#" + selectInputId).html("<option></option>");
+                $selectInput.parent().find(".warning").hide();
 
                 $(data).each(function (index, item) {
                     var selected = "";
                     childLONames[item.id] = item.childLONames;
                     if (hakukohdeId == item.id) {
+                        selectedPreferenceOK = true;
                         selected = 'selected = "selected"';
                         // overrides additional questions rendered in the backend
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
@@ -44,6 +47,19 @@ var preferenceRow = {
                         '" data-aoidentifier="' + item.aoIdentifier +
                         '" data-athlete="' + item.athleteEducation + '" >' + item.name + '</option>');
                 });
+                if (isInit && !selectedPreferenceOK && hakukohdeId && hakukohdeId !== '') {
+                    var $providerInput = $("#" + providerInputId),
+                        warning = '<div class="notification warning margin-top-1"><span>' +
+                            sortabletable_settings.preferenceAndBaseEducationConflictMessage +
+                            '</span><span><small>' +
+                            $providerInput.val() +
+                            '</small></span><span><small>' +
+                            $selectInput.data('selectedname') +
+                            '</small></span></div>';
+                    $('[id|="' + providerInputId + '"]').val('');
+                    preferenceRow.clearSelectInput(selectInputId);
+                    $selectInput.after(warning);
+                }
             });
     },
 
@@ -108,7 +124,7 @@ var preferenceRow = {
                 select: function (event, ui) {
                     $hiddenInput.val(ui.item.dataId);
                     preferenceRow.clearSelectInput(selectInputId);
-                    preferenceRow.populateSelectInput(ui.item.dataId, selectInputId);
+                    preferenceRow.populateSelectInput(ui.item.dataId, selectInputId, false, this.id);
                 },
                 change: function (ev, ui) {
                     if (!ui.item) {
@@ -118,8 +134,8 @@ var preferenceRow = {
                     }
                 }
             });
-            if ($hiddenInput.val() !== '') {
-                preferenceRow.populateSelectInput($hiddenInput.val(), selectInputId);
+            if ($hiddenInput.val() && $hiddenInput.val() !== '') {
+                preferenceRow.populateSelectInput($hiddenInput.val(), selectInputId, true, this.id);
             }
         });
         $(".field-container-select select").unbind();

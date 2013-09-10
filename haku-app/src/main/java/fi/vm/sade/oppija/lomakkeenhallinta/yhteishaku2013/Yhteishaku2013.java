@@ -30,12 +30,16 @@ import java.util.Date;
 
 public class Yhteishaku2013 {
 
+    public static String VARSINAINEN_HAKU = "hakutyyppi_01";
+    public static String TAYDENNYS_HAKU = "hakutyyppi_02";
+    public static String LISA_HAKU = "hakutyyppi_03";
+
     public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService) {
         try {
             Form form = new Form(as.getId(), as.getName());
             form.addChild(HenkilotiedotPhase.create(koodistoService));
             form.addChild(KoulutustaustaPhase.create(koodistoService));
-            form.addChild(HakutoiveetPhase.create());
+            form.addChild(HakutoiveetPhase.create(as.getApplicationSystemType()));
             form.addChild(OsaaminenPhase.create(koodistoService));
             Date start = as.getApplicationPeriods() != null && !as.getApplicationPeriods().isEmpty() ? as.getApplicationPeriods().get(0).getStart() :
                     new Date();

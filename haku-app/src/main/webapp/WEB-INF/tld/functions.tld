@@ -39,7 +39,7 @@
     </function>
     <function>
         <name>allChildren</name>
-        <function-class>fi.vm.sade.oppija.lomake.domain.elements.Element</function-class>
+        <function-class>fi.vm.sade.oppija.lomake.util.ElementTree</function-class>
         <function-signature>java.util.List getAllChildren(fi.vm.sade.oppija.lomake.domain.elements.Element)
         </function-signature>
     </function>

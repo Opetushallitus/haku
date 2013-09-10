@@ -16,18 +16,15 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import fi.vm.sade.oppija.lomake.domain.I18nText;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import fi.vm.sade.oppija.lomake.domain.I18nText;
-import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import static org.junit.Assert.*;
 
 
 public class ValidationResultTest {

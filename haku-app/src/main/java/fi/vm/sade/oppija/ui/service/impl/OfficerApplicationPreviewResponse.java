@@ -1,6 +1,5 @@
 package fi.vm.sade.oppija.ui.service.impl;
 
-import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
@@ -10,7 +9,6 @@ public class OfficerApplicationPreviewResponse extends UIServiceResponse {
 
     public static final String FORM = "form";
     public static final String ELEMENT = "element";
-    public static final String ADDITIONAL_QUESTIONS = "additionalQuestions";
     public static final String TEMPLATE = "template";
 
     public void setForm(final Form form) {
@@ -22,10 +20,5 @@ public class OfficerApplicationPreviewResponse extends UIServiceResponse {
         Validate.notNull(element, "Element was null");
         this.addObjectToModel(ELEMENT, element);
         this.addObjectToModel(TEMPLATE, element.getType());
-    }
-
-    public void setAdditionalQuestions(final AdditionalQuestions additionalQuestions) {
-        Validate.notNull(additionalQuestions, "AdditionalQuestions was null");
-        this.addObjectToModel(ADDITIONAL_QUESTIONS, additionalQuestions);
     }
 }

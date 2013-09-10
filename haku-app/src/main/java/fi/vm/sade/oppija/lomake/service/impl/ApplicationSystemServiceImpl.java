@@ -1,7 +1,7 @@
 package fi.vm.sade.oppija.lomake.service.impl;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.oppija.lomake.domain.exception.ApplicationSystemNotFound;
+import fi.vm.sade.oppija.lomake.exception.ApplicationSystemNotFound;
 import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.repository.ApplicationSystemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,8 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     final boolean cacheApplicationSystems;
 
     @Autowired
-    public ApplicationSystemServiceImpl(final ApplicationSystemRepository applicationSystemRepository, @Value("${application.system.cache:true}") boolean cacheApplicationSystems) {
+    public ApplicationSystemServiceImpl(final ApplicationSystemRepository applicationSystemRepository,
+                                     @Value("${application.system.cache:true}") final boolean cacheApplicationSystems) {
         this.applicationSystemRepository = applicationSystemRepository;
         this.cacheApplicationSystems = cacheApplicationSystems;
     }
@@ -49,7 +50,7 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     }
 
     @Override
-    public List<ApplicationSystem> getAllApplicationSystems() {
-        return this.applicationSystemRepository.findAll();
+    public List<ApplicationSystem> getAllApplicationSystems(String... includeFields) {
+        return this.applicationSystemRepository.findAll(includeFields);
     }
 }

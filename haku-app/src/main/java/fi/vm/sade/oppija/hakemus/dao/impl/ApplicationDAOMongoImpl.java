@@ -33,7 +33,7 @@ import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
@@ -122,9 +122,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         this.dbObjectToSearchResultItem = dbObjectToSearchResultItem;
         this.authenticationService = authenticationService;
         this.hakuPermissionService = hakuPermissionService;
-
-        java.util.logging.Logger mongoLogger = java.util.logging.Logger.getLogger("com.mongodb");
-        mongoLogger.setLevel(Level.SEVERE);
     }
 
     @Override
@@ -445,9 +442,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         } else {
             if (filters.length > 0) {
                 query = QueryBuilder.start()
-                    .and(baseQuery.get(),
-                            QueryBuilder.start().and(filters).get(),
-                            QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
+                        .and(baseQuery.get(),
+                                QueryBuilder.start().and(filters).get(),
+                                QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
                         .get();
             } else {
                 query = QueryBuilder.start()

@@ -57,7 +57,9 @@ public class HakuDTOToApplicationSystemFunction implements Function<HakuDTO, App
                 applicationPeriods.add(new ApplicationPeriod(hakuaika.getAlkuPvm(), hakuaika.getLoppuPvm()));
             }
         }
-        ApplicationSystem applicationSystem = new ApplicationSystem(hakuDTO.getOid(), null, name, applicationPeriods);
+        String asType = hakuDTO.getHakutyyppiUri().split("#")[0];
+        ApplicationSystem applicationSystem = new ApplicationSystem(hakuDTO.getOid(), null, name, applicationPeriods,
+                asType);
         return applicationSystem;
     }
 }

@@ -1,7 +1,6 @@
 package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 /**
  * @author Mikko Majapuro

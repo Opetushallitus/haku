@@ -10,7 +10,7 @@ public class UriUtilTest {
 
     @Test(expected = NullPointerException.class)
     public void testPathSegmentsToUri() throws Exception {
-        UriUtil.pathSegmentsToUri((String[])null);
+        UriUtil.pathSegmentsToUri((String[]) null);
     }
 
     @Test
@@ -33,7 +33,7 @@ public class UriUtilTest {
 
     @Test
     public void testPathSegmentsToUriSkipNulls() throws Exception {
-        URI uri = UriUtil.pathSegmentsToUri("seg1", null , "seg2");
+        URI uri = UriUtil.pathSegmentsToUri("seg1", null, "seg2");
         assertEquals("seg1/seg2", uri.toString());
     }
 }

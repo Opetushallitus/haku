@@ -20,7 +20,6 @@ import com.google.common.base.Preconditions;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.oppija.lomake.domain.rules.expression.Variable;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.annotation.Transient;

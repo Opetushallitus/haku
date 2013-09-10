@@ -31,6 +31,9 @@ public class HenkilotiedotPhase {
     private static final String POSTINUMERO_PATTERN = "[0-9]{5}";
     private static final String DATE_PATTERN = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[012])\\.(19|20)\\d\\d$";
 
+    private HenkilotiedotPhase() {
+    }
+
     public static Phase create(final KoodistoService koodistoService) {
 
         // Henkilötiedot
@@ -77,12 +80,13 @@ public class HenkilotiedotPhase {
         henkilotunnus.addAttribute("placeholder", "ppkkvv*****");
         henkilotunnus.addAttribute("size", "11");
         henkilotunnus.addAttribute("maxlength", "11");
+        henkilotunnus.setHelp(createI18NForm("form.henkilotiedot.henkilotunnus.help"));
         henkilotunnus.setValidator(createRegexValidator(henkilotunnus.getId(), HETU_PATTERN));
         setRequiredInlineAndVerboseHelp(henkilotunnus, "form.henkilotiedot.henkilotunnus.verboseHelp");
 
         Radio sukupuoli = new Radio("sukupuoli", createI18NForm("form.henkilotiedot.sukupuoli"));
         sukupuoli.addOptions(koodistoService.getGenders());
-        setRequiredInlineAndVerboseHelp(sukupuoli,"form.henkilotiedot.sukupuoli.verboseHelp");
+        setRequiredInlineAndVerboseHelp(sukupuoli, "form.henkilotiedot.sukupuoli.verboseHelp");
 
         Option male = sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
                 sukupuoli.getOptions().get(0) : sukupuoli.getOptions().get(1);

@@ -35,7 +35,7 @@ import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.SsnUniqueValidator;
-
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
 
@@ -227,7 +227,8 @@ public final class ElementUtil {
         instance.roll(Calendar.YEAR, 2);
         Date end = new Date(instance.getTimeInMillis());
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
-        return new ApplicationSystem(id, form, ElementUtil.createI18NAsIs("test application period"), applicationPeriods);
+        return new ApplicationSystem(id, form, ElementUtil.createI18NAsIs("test application period"),
+                applicationPeriods, Yhteishaku2013.VARSINAINEN_HAKU);
     }
 
     public static String getPath(final ApplicationSystem applicationSystem, final String id) {

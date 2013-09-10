@@ -23,11 +23,11 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
+import fi.vm.sade.oppija.lomake.util.ElementTree;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.oppija.ui.common.RedirectToFormViewPath;
@@ -69,6 +69,12 @@ public class FormController {
     private static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
     public static final int MAX_PREFILL_PARAMETERS = 100;
+    public static final String MODEL_KEY_ELEMENT = "element";
+    public static final String MODEL_KEY_TEMPLATE = "template";
+    public static final String MODEL_KEY_FORM = "form";
+    public static final String MODEL_KEY_APPLICATION_SYSTEM_ID = "applicationSystemId";
+    public static final String MODEL_KEY_CATEGORY_DATA = "categoryData";
+    public static final String MODEL_KEY_KOULUTUSINFORMAATIO_BASE_URL = "koulutusinformaatioBaseUrl";
 
     final FormService formService;
     private final ApplicationService applicationService;
@@ -96,7 +102,7 @@ public class FormController {
     public Viewable listApplicationSystems() {
         LOGGER.debug("listApplicationSystems");
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("applicationSystems", applicationSystemService.getAllApplicationSystems());
+        model.put("applicationSystems", applicationSystemService.getAllApplicationSystems("id", "name", "applicationPeriods"));
         return new Viewable(APPLICATION_SYSTEM_LIST_VIEW, model);
     }
 
@@ -141,16 +147,16 @@ public class FormController {
 
         LOGGER.debug("getElement {}, {}", applicationSystemId, phaseId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        Element element = activeForm.getChildById(phaseId);
+        Element element = new ElementTree(activeForm).getChildById(phaseId);
         Map<String, Object> model = new HashMap<String, Object>();
         Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
         values = userHolder.populateWithPrefillData(values);
-        model.put("categoryData", values);
-        model.put("element", element);
-        model.put("template", element.getType());
-        model.put("form", activeForm);
-        model.put("applicationSystemId", applicationSystemId);
-        model.put("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
+        model.put(MODEL_KEY_CATEGORY_DATA, values);
+        model.put(MODEL_KEY_ELEMENT, element);
+        model.put(MODEL_KEY_TEMPLATE, element.getType());
+        model.put(MODEL_KEY_FORM, activeForm);
+        model.put(MODEL_KEY_APPLICATION_SYSTEM_ID, applicationSystemId);
+        model.put(MODEL_KEY_KOULUTUSINFORMAATIO_BASE_URL, koulutusinformaatioBaseUrl);
 
         return new Viewable(ROOT_VIEW, model);
     }
@@ -179,19 +185,19 @@ public class FormController {
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                 final MultivaluedMap<String, String> multiValues) {
-        LOGGER.debug("getElement {}, {}, {}", applicationSystemId, phaseId);
+        LOGGER.debug("updateRules {}, {}, {}", applicationSystemId, phaseId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        Element element = activeForm.getChildById(elementId);
+        Element element = new ElementTree(activeForm).getChildById(elementId);
 
         Map<String, Object> model = new HashMap<String, Object>();
         Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
         values.putAll(MultivaluedMapUtil.toSingleValueMap(multiValues));
-        model.put("categoryData", values);
-        model.put("element", element);
-        model.put("template", element.getType());
-        model.put("form", activeForm);
-        model.put("applicationSystemId", applicationSystemId);
-        model.put("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
+        model.put(MODEL_KEY_CATEGORY_DATA, values);
+        model.put(MODEL_KEY_ELEMENT, element);
+        model.put(MODEL_KEY_TEMPLATE, element.getType());
+        model.put(MODEL_KEY_FORM, activeForm);
+        model.put(MODEL_KEY_APPLICATION_SYSTEM_ID, applicationSystemId);
+        model.put(MODEL_KEY_KOULUTUSINFORMAATIO_BASE_URL, koulutusinformaatioBaseUrl);
 
         return new Viewable(ROOT_VIEW, model);
     }
@@ -205,17 +211,8 @@ public class FormController {
                                               @PathParam("key") final String key) {
         LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationSystemId, elementId, key);
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        try {
-            @SuppressWarnings("unchecked")
-            DataRelatedQuestion<Serializable> element =
-                    (DataRelatedQuestion<Serializable>) activeForm.getChildById(elementId);
-            return element.getData(key);
-        } catch (Exception e) {
-            LOGGER.error(e.toString());
-            return null;
-        }
+        return new ElementTree(activeForm).getRelatedData(elementId, key);
     }
-
 
     @POST
     @Path("/{applicationSystemId}/esikatselu")
@@ -240,7 +237,7 @@ public class FormController {
         ApplicationState applicationState = applicationService.saveApplicationPhase(
                 new ApplicationPhase(applicationSystemId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)), skipValidators);
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("applicationSystemId", applicationSystemId);
+        model.put(MODEL_KEY_APPLICATION_SYSTEM_ID, applicationSystemId);
         if (applicationState.isValid()) {
             return Response.seeOther(new URI(
                     new RedirectToPhaseViewPath(applicationSystemId,
@@ -248,11 +245,11 @@ public class FormController {
 
         } else {
             model.putAll(applicationState.getModelObjects());
-            Element phase = activeForm.getChildById(phaseId);
-            model.put("element", phase);
-            model.put("form", activeForm);
-            model.put("template", phase.getType());
-            model.put("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
+            Element phase = new ElementTree(activeForm).getChildById(phaseId);
+            model.put(MODEL_KEY_ELEMENT, phase);
+            model.put(MODEL_KEY_FORM, activeForm);
+            model.put(MODEL_KEY_TEMPLATE, phase.getType());
+            model.put(MODEL_KEY_KOULUTUSINFORMAATIO_BASE_URL, koulutusinformaatioBaseUrl);
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, model)).build();
         }
 
@@ -296,11 +293,11 @@ public class FormController {
 
         LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", applicationSystemId, gradeGridId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        Element element = activeForm.getChildById(gradeGridId);
+        Element element = new ElementTree(activeForm).getChildById(gradeGridId);
         GradeGrid gradeGrid = (GradeGrid) element;
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("element", gradeGrid);
-        model.put("template", "gradegrid/additionalLanguageRow");
+        model.put(MODEL_KEY_ELEMENT, gradeGrid);
+        model.put(MODEL_KEY_TEMPLATE, "gradegrid/additionalLanguageRow");
         return new Viewable(ROOT_VIEW, model);
     }
 

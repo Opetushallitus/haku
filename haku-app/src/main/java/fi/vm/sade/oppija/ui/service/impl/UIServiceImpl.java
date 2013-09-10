@@ -23,8 +23,9 @@ import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
+import fi.vm.sade.oppija.lomake.util.ElementTree;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.oppija.ui.service.UIService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
@@ -100,7 +101,7 @@ public class UIServiceImpl implements UIService {
     public Map<String, Object> getElementHelp(String applicationSystemId, String elementId) throws ResourceNotFoundException {
         Form activeForm = formService.getActiveForm(applicationSystemId);
         Map<String, Object> model = new HashMap<String, Object>();
-        Element theme = activeForm.getChildById(elementId);
+        Element theme = new ElementTree(activeForm).getChildById(elementId);
         model.put("theme", theme);
         List<Element> listsOfTitledElements = new ArrayList<Element>();
         for (Element tElement : theme.getChildren()) {
