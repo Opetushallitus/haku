@@ -63,7 +63,8 @@
 
     <beans>
         <context:annotation-config/>
-        <context:component-scan base-package="fi.vm.sade.oppija,fi.vm.sade.security,fi.vm.sade.organisaatio.service.search"/>
+        <context:component-scan
+                base-package="fi.vm.sade.oppija,fi.vm.sade.security,fi.vm.sade.organisaatio.service.search"/>
         <aop:aspectj-autoproxy/>
 
         <!-- Configure the multipart resolver -->
@@ -79,11 +80,9 @@
 
         <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
             <property name="converters">
-                <list>
-                    <bean class="fi.vm.sade.oppija.hakemus.converter.ApplicationToHakemusTyyppi"/>
-                    <bean class="fi.vm.sade.oppija.hakemus.converter.ApplicationToHakutoiveTyyppi"/>
+                <set>
                     <bean class="fi.vm.sade.oppija.hakemus.converter.ApplicationToApplicantConverter"/>
-                </list>
+                </set>
             </property>
         </bean>
 
