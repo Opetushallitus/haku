@@ -20,6 +20,7 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Arrays;
@@ -39,10 +40,12 @@ public class ContainedInOtherFieldValidator extends FieldValidator {
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
         Map<String, String> values = validationInput.getValues();
-        String otherValue = values.get(otherFieldName);
-        String thisValue = values.get(fieldName);
+        String otherValue = StringUtils.trim(values.get(otherFieldName));
+        String thisValue = StringUtils.trim(values.get(fieldName));
 
         if (otherValue == null && thisValue == null) {
+            return validValidationResult;
+        } else if (otherValue != null && otherValue.equals(thisValue)) {
             return validValidationResult;
         } else if (otherFieldName != null && thisValue != null) {
             String[] split = otherValue.toLowerCase().split("-|\\.|,| ");
