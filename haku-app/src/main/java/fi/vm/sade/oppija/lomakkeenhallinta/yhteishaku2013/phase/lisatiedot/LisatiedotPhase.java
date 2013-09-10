@@ -98,7 +98,8 @@ public class LisatiedotPhase {
                 "preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys",
                 "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys"
         );
-        RelatedQuestionRule urheilijanLisakysymyksetSaanto = new RelatedQuestionRule(ElementUtil.randomId(), ids, ElementUtil.KYLLA, false);
+        RelatedQuestionRule urheilijanLisakysymyksetSaanto = new RelatedQuestionRule(ElementUtil.randomId(), ids,
+                ElementUtil.KYLLA, false);
         urheilijanLisakysymyksetSaanto.addChild(urheilijanLisakysymyksetTeema);
 
         TitledGroup opinnotGroup = new TitledGroup(ElementUtil.randomId(),
