@@ -24,6 +24,9 @@ public class LisatiedotPhase {
     public static final int AGE_WORK_EXPERIENCE = 16;
     public static final String TYOKOKEMUS_PATTERN = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$";
 
+    private LisatiedotPhase() {
+    }
+
     public static Phase create(final Date start) {
         Phase lisatiedot = new Phase("lisatiedot", createI18NForm("form.lisatiedot.otsikko"), false);
         lisatiedot.addChild(createTyokokemus(start));
@@ -73,7 +76,8 @@ public class LisatiedotPhase {
         lupatiedotTheme.addChild(lupaGroup);
         setVerboseHelp(lupatiedotTheme, "form.lisatiedot.lupatiedot.verboseHelp");
 
-        Radio asiointikieli = new Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, createI18NForm("form.asiointikieli.otsikko"));
+        Radio asiointikieli = new Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE,
+                createI18NForm("form.asiointikieli.otsikko"));
         asiointikieli.setHelp(createI18NForm("form.asiointikieli.help"));
         asiointikieli.addOption("suomi", createI18NForm("form.asiointikieli.suomi"), "suomi");
         asiointikieli.addOption("ruotsi", createI18NForm("form.asiointikieli.ruotsi"), "ruotsi");
@@ -84,7 +88,8 @@ public class LisatiedotPhase {
     }
 
     private static Element createUrheilijanLisakysymykset() {
-        Theme urheilijanLisakysymyksetTeema = new Theme(ElementUtil.randomId(), createI18NForm("form.lisatiedot.urheilija"), true);
+        Theme urheilijanLisakysymyksetTeema = new Theme(ElementUtil.randomId(),
+                createI18NForm("form.lisatiedot.urheilija"), true);
 
         ImmutableList<String> ids = ImmutableList.of(
                 "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys",
@@ -96,23 +101,29 @@ public class LisatiedotPhase {
         RelatedQuestionRule urheilijanLisakysymyksetSaanto = new RelatedQuestionRule(ElementUtil.randomId(), ids, ElementUtil.KYLLA, false);
         urheilijanLisakysymyksetSaanto.addChild(urheilijanLisakysymyksetTeema);
 
-        TitledGroup opinnotGroup = new TitledGroup(ElementUtil.randomId(), createI18NForm("form.lisatiedot.urheilija.opinnot"));
-        TextQuestion liikunnanopettaja = new TextQuestion("liikunnanopettajan-nimi", createI18NForm("form.lisatiedot.urheilija.opinnot.liikunnanopettajan.nimi"));
+        TitledGroup opinnotGroup = new TitledGroup(ElementUtil.randomId(),
+                createI18NForm("form.lisatiedot.urheilija.opinnot"));
+        TextQuestion liikunnanopettaja = new TextQuestion("liikunnanopettajan-nimi",
+                createI18NForm("form.lisatiedot.urheilija.opinnot.liikunnanopettajan.nimi"));
         liikunnanopettaja.setInline(true);
         liikunnanopettaja.addAttribute("size", "30");
 
-        TextQuestion lukuaineidenKeskiarvo = new TextQuestion("lukuaineiden-keskiarvo", createI18NForm("form.lisatiedot.urheilija.opinnot.lukuaineiden.keskiarvo"));
+        TextQuestion lukuaineidenKeskiarvo = new TextQuestion("lukuaineiden-keskiarvo",
+                createI18NForm("form.lisatiedot.urheilija.opinnot.lukuaineiden.keskiarvo"));
         lukuaineidenKeskiarvo.setInline(true);
         lukuaineidenKeskiarvo.addAttribute("size", "30");
 
-        TextQuestion pakollinenLiikunnanNumero = createTextQuestion("pakollinen-liikunnan-numero", "form.lisatiedot.urheilija.opinnot.pakollisen.liikunnan.numero");
+        TextQuestion pakollinenLiikunnanNumero = createTextQuestion("pakollinen-liikunnan-numero",
+                "form.lisatiedot.urheilija.opinnot.pakollisen.liikunnan.numero");
 
         opinnotGroup.addChild(liikunnanopettaja, lukuaineidenKeskiarvo, pakollinenLiikunnanNumero);
 
         TitledGroup urheilulajitGroup = createUrheilulajitRyhma();
 
-        TitledGroup saavutuksetGroup = new TitledGroup(ElementUtil.randomId(), createI18NForm("form.lisatiedot.urheilija.saavutukset"));
-        TextArea saavutukset = new TextArea("saavutukset", createI18NForm("form.lisatiedot.urheilija.saavutukset.saavutukset"));
+        TitledGroup saavutuksetGroup = new TitledGroup(ElementUtil.randomId(),
+                createI18NForm("form.lisatiedot.urheilija.saavutukset"));
+        TextArea saavutukset = new TextArea("saavutukset",
+                createI18NForm("form.lisatiedot.urheilija.saavutukset.saavutukset"));
         saavutukset.addAttribute("cols", "50");
         saavutukset.addAttribute("rows", "4");
         saavutukset.addAttribute("maxlength", "200");
@@ -120,32 +131,40 @@ public class LisatiedotPhase {
         saavutukset.setHelp(createI18NForm("form.lisatiedot.urheilija.saavutukset.saavutukset.help"));
         saavutuksetGroup.addChild(saavutukset);
 
-        TitledGroup valmentajaGroup = new TitledGroup(ElementUtil.randomId(), createI18NForm("form.lisatiedot.urheilija.valmentajan.yhteystiedot"));
-        TextQuestion valmentajanNimi = new TextQuestion("valmentajan-nimi", createI18NForm("form.lisatiedot.urheilija.valmentajan.yhteystiedot.nimi"));
+        TitledGroup valmentajaGroup = new TitledGroup(ElementUtil.randomId(),
+                createI18NForm("form.lisatiedot.urheilija.valmentajan.yhteystiedot"));
+        TextQuestion valmentajanNimi = new TextQuestion("valmentajan-nimi",
+                createI18NForm("form.lisatiedot.urheilija.valmentajan.yhteystiedot.nimi"));
         valmentajanNimi.setInline(true);
         valmentajanNimi.addAttribute("size", "30");
         valmentajaGroup.addChild(valmentajanNimi);
-        TextQuestion valmentajanPuhelinnumero = new TextQuestion("valmentajan-puhelinnumero", createI18NForm("form.lisatiedot.urheilija.valmentajan.yhteystiedot.puhelinnumero"));
+        TextQuestion valmentajanPuhelinnumero = new TextQuestion("valmentajan-puhelinnumero",
+                createI18NForm("form.lisatiedot.urheilija.valmentajan.yhteystiedot.puhelinnumero"));
         valmentajanPuhelinnumero.setInline(true);
         valmentajanPuhelinnumero.addAttribute("size", "30");
         valmentajaGroup.addChild(valmentajanPuhelinnumero);
-        TextQuestion email = new TextQuestion("valmentajan-sähköpostiosoite", createI18NForm("form.lisatiedot.urheilija.valmentajan.yhteystiedot.sahkopostiosoite"));
+        TextQuestion email = new TextQuestion("valmentajan-sähköpostiosoite",
+                createI18NForm("form.lisatiedot.urheilija.valmentajan.yhteystiedot.sahkopostiosoite"));
         email.addAttribute("size", "50");
         email.setValidator(createRegexValidator(email.getId(), EMAIL_REGEX));
         email.setInline(true);
         valmentajaGroup.addChild(email);
 
 
-        TitledGroup valmennusryhmaGroup = new TitledGroup(ElementUtil.randomId(), createI18NForm("form.lisatiedot.urheilija.valmennusryhma"));
-        TextQuestion lajiliitto = new TextQuestion("lajiliitto-maajoukkue", createI18NForm("form.lisatiedot.urheilija.valmennusryhma.lajiliitto"));
+        TitledGroup valmennusryhmaGroup = new TitledGroup(ElementUtil.randomId(),
+                createI18NForm("form.lisatiedot.urheilija.valmennusryhma"));
+        TextQuestion lajiliitto = new TextQuestion("lajiliitto-maajoukkue",
+                createI18NForm("form.lisatiedot.urheilija.valmennusryhma.lajiliitto"));
         lajiliitto.setInline(true);
         lajiliitto.addAttribute("size", "30");
         valmennusryhmaGroup.addChild(lajiliitto);
-        TextQuestion piiri = new TextQuestion("alue-piiri", createI18NForm("form.lisatiedot.urheilija.valmennusryhma.alue"));
+        TextQuestion piiri = new TextQuestion("alue-piiri",
+                createI18NForm("form.lisatiedot.urheilija.valmennusryhma.alue"));
         piiri.setInline(true);
         piiri.addAttribute("size", "30");
         valmennusryhmaGroup.addChild(piiri);
-        TextQuestion seura = new TextQuestion("seura", createI18NForm("form.lisatiedot.urheilija.valmennusryhma.seura"));
+        TextQuestion seura = new TextQuestion("seura",
+                createI18NForm("form.lisatiedot.urheilija.valmennusryhma.seura"));
         seura.addAttribute("size", "30");
         seura.setInline(true);
         valmennusryhmaGroup.addChild(seura);
@@ -155,12 +174,14 @@ public class LisatiedotPhase {
     }
 
     private static TitledGroup createUrheilulajitRyhma() {
-        TitledGroup urheilulajit = new TitledGroup(ElementUtil.randomId(), createI18NForm("form.lisatiedot.urheilija.urheilu"));
+        TitledGroup urheilulajit = new TitledGroup(ElementUtil.randomId(),
+                createI18NForm("form.lisatiedot.urheilija.urheilu"));
 
         TextQuestion urheilulaji1 = createTextQuestion("Urheilulaji1", "form.lisatiedot.urheilija.urheilu.urheilulaji");
         TextQuestion lajiliitto1 = createTextQuestion("lajiliitto1", "form.lisatiedot.urheilija.urheilu.lajiliitto");
 
-        TextQuestion urheilulaji2 = createTextQuestion("Urheilulaji2", "form.lisatiedot.urheilija.urheilu.urheilulaji2");
+        TextQuestion urheilulaji2 = createTextQuestion("Urheilulaji2",
+                "form.lisatiedot.urheilija.urheilu.urheilulaji2");
         urheilulaji2.setHelp(createI18NForm("form.lisatiedot.urheilija.urheilu.urheilulaji2.help"));
         TextQuestion lajiliitto2 = createTextQuestion("lajiliitto2", "form.lisatiedot.urheilija.urheilu.lajiliitto2");
 
