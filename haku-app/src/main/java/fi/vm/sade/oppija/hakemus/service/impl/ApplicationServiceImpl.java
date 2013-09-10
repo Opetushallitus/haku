@@ -185,7 +185,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application addPersonAndAuthenticate(Application application) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
 
-        if (!isEmpty(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
+        //if (!isEmpty(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
             PersonBuilder personBuilder = PersonBuilder.start()
                     .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
                     .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
@@ -204,7 +204,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             } catch (GenericFault fail) {
                 LOGGER.info(fail.getMessage());
             }
-        }
+        //}
 
         application.activate();
         this.applicationDAO.save(application);
