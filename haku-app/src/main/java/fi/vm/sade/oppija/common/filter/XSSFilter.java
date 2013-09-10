@@ -68,7 +68,8 @@ public class XSSFilter implements ContainerRequestFilter {
             value = value.replaceAll("\0", "");
 
             if (!Jsoup.isValid(value, Whitelist.none())) {
-                throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity("Illegal request (XSS)").type(MediaType.APPLICATION_JSON).build());
+                throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
+                        .entity("Illegal request (XSS)").type(MediaType.APPLICATION_JSON).build());
             }
         }
         return value;
