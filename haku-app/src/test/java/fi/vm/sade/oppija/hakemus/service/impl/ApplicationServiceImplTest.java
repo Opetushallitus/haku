@@ -196,7 +196,9 @@ public class ApplicationServiceImplTest {
         answerMap.put(OppijaConstants.ELEMENT_ID_NATIONALITY, "swe");
         application.addVaiheenVastaukset("henkilotiedot", answerMap);
         application = service.addPersonAndAuthenticate(application);
-        assertNull("PersonOid should be null", application.getPersonOid());
+//        assertNull("PersonOid should be null", application.getPersonOid());
+        assertNotNull("PersonOid should not be null", application.getPersonOid());
+        assertEquals("Wrong person oid", PERSON_OID, application.getPersonOid());
     }
 
     @Test
