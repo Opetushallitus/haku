@@ -1,6 +1,5 @@
 package fi.vm.sade.oppija.ui.service.impl;
 
-import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
@@ -26,11 +25,6 @@ public class OfficerApplicationPreviewResponseTest {
         officerApplicationPreviewResponse.setElement(null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testSetAdditionalQuestionsNull() {
-        officerApplicationPreviewResponse.setAdditionalQuestions(null);
-    }
-
     @Test
     public void testSetForm() {
         officerApplicationPreviewResponse.setForm(FORM);
@@ -41,13 +35,6 @@ public class OfficerApplicationPreviewResponseTest {
     public void testSetElement() {
         officerApplicationPreviewResponse.setElement(FORM);
         assertResult(FORM, OfficerApplicationPreviewResponse.ELEMENT);
-    }
-
-    @Test
-    public void testSetAdditionalQuestions() {
-        AdditionalQuestions expected = new AdditionalQuestions();
-        officerApplicationPreviewResponse.setAdditionalQuestions(expected);
-        assertResult(expected, OfficerApplicationPreviewResponse.ADDITIONAL_QUESTIONS);
     }
 
     private void assertResult(Object expected, final String key) {

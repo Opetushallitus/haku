@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.lomake.domain.elements;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collection;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -75,7 +74,7 @@ public class ElementTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void testAddAttributes() throws Exception {
-        Map<String,String> attributes = testElement.getAttributes();
+        Map<String, String> attributes = testElement.getAttributes();
         attributes.put("k", "v");
     }
 

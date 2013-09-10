@@ -37,7 +37,7 @@ public class RegexFieldValidatorTest {
     public static final String PATTERN_WORK_EXPERIENCE = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$"; // 0-1000
     public static final String TEST_VALUE = "ABC";
     public static final String MOBILE_PHONE_PATTERN =
-               "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
+            "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
 
     private Map<String, String> values;
 

@@ -13,26 +13,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-package fi.vm.sade.oppija.common.valintaperusteet.impl;
 
-import java.io.IOException;
-
-import org.junit.Assert;
+package fi.vm.sade.oppija.lomake.exception;
 
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
+import static org.junit.Assert.assertEquals;
 
-import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
+public class IllegalStateExceptionTest {
 
-public class ValinaperusteetServiceMockImplTest {
+    public static final String MESSAGE = "Väärä vaihe";
 
     @Test
-    public void testBuildInData() throws IOException {
-        ValintaperusteetServiceMockImpl mock = new ValintaperusteetServiceMockImpl();
-        AdditionalQuestions aq = mock.retrieveAdditionalQuestions(Lists.newArrayList("873"));
-        Assert.assertEquals(2, aq.getQuestistionsForHakukohde("873").size());
-        Assert.assertEquals(0, aq.getQuestistionsForHakukohde("874").size());
+    public void testMessage() throws Exception {
+        fi.vm.sade.oppija.lomake.exception.IllegalStateException illegalStateException = new IllegalStateException(MESSAGE);
+        assertEquals(MESSAGE, illegalStateException.getMessage());
     }
-
 }

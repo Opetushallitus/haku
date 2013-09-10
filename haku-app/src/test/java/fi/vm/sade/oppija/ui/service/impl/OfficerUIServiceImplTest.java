@@ -2,8 +2,6 @@ package fi.vm.sade.oppija.ui.service.impl;
 
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
-import fi.vm.sade.oppija.common.valintaperusteet.AdditionalQuestions;
-import fi.vm.sade.oppija.common.valintaperusteet.ValintaperusteetService;
 import fi.vm.sade.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
@@ -19,7 +17,6 @@ import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -39,14 +36,12 @@ public class OfficerUIServiceImplTest {
     private OfficerUIServiceImpl officerUIService;
     private ApplicationService applicationService;
     private FormService formService;
-    private ValintaperusteetService valintaperusteetService;
     private KoodistoService koodistoService;
     private HakuPermissionService hakuPermissionService;
     private LoggerAspect loggerAspect;
     private ElementTreeValidator elementTreeValidator;
 
     private Application application;
-    private AdditionalQuestions additionalQuestions = new AdditionalQuestions();
     private Phase phase = new Phase(ID, ElementUtil.createI18NAsIs("title"), false);
 
     private Form form;
@@ -60,7 +55,6 @@ public class OfficerUIServiceImplTest {
         form = new Form("form", ElementUtil.createI18NAsIs(ID));
         applicationService = mock(ApplicationService.class);
         formService = mock(FormService.class);
-        valintaperusteetService = mock(ValintaperusteetService.class);
         koodistoService = mock(KoodistoService.class);
         hakuPermissionService = mock(HakuPermissionService.class);
         loggerAspect = mock(LoggerAspect.class);
@@ -70,7 +64,6 @@ public class OfficerUIServiceImplTest {
         officerUIService = new OfficerUIServiceImpl(
                 applicationService,
                 formService,
-                valintaperusteetService,
                 koodistoService,
                 hakuPermissionService,
                 loggerAspect, "",
@@ -80,7 +73,6 @@ public class OfficerUIServiceImplTest {
         when(applicationService.getApplicationPreferenceOids(application)).thenReturn(OIDS);
         when(applicationService.getApplication(OID)).thenReturn(application);
         when(applicationService.getApplicationByOid(OID)).thenReturn(application);
-        when(valintaperusteetService.retrieveAdditionalQuestions(OIDS)).thenReturn(additionalQuestions);
         when(formService.getForm(any(String.class))).thenReturn(form);
         when(formService.getActiveForm(any(String.class))).thenReturn(form);
         when(formService.getLastPhase(any(String.class))).thenReturn(phase);
@@ -91,13 +83,6 @@ public class OfficerUIServiceImplTest {
     public void testGetValidatedApplication() throws Exception {
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(OID, ID);
         assertTrue(uiServiceResponse.getModel().size() > 0);
-    }
-
-    @Test
-    public void testGetAdditionalInfo() throws Exception {
-        UIServiceResponse uiServiceResponse = officerUIService.getAdditionalInfo(OID);
-        assertEquals(application, uiServiceResponse.getModel().get(UIServiceResponse.APPLICATION));
-        assertEquals(additionalQuestions, uiServiceResponse.getModel().get(OfficerAdditionalInfoResponse.ADDITIONAL_QUESTIONS));
     }
 
     @Test

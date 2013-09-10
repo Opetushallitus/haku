@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.ui.provider;
 
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import org.junit.Before;
 import org.junit.Test;
 

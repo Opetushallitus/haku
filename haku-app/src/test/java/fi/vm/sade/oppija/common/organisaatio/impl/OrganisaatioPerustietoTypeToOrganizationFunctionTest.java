@@ -15,14 +15,13 @@
  */
 package fi.vm.sade.oppija.common.organisaatio.impl;
 
-import static org.junit.Assert.assertEquals;
+import fi.vm.sade.oppija.common.organisaatio.Organization;
+import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
+import org.junit.Test;
 
 import java.util.Date;
 
-import org.junit.Test;
-
-import fi.vm.sade.oppija.common.organisaatio.Organization;
-import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
+import static org.junit.Assert.assertEquals;
 
 public class OrganisaatioPerustietoTypeToOrganizationFunctionTest {
 
@@ -37,7 +36,7 @@ public class OrganisaatioPerustietoTypeToOrganizationFunctionTest {
         dto.setOid("oid");
         dto.setParentOid("parentOid");
         final Date start = new Date(0);
-        final Date end = new Date(1000); 
+        final Date end = new Date(1000);
         dto.setAlkuPvm(start);
         dto.setLakkautusPvm(end);
 
@@ -50,6 +49,6 @@ public class OrganisaatioPerustietoTypeToOrganizationFunctionTest {
         assertEquals("parentOid", org.getParentOid());
         assertEquals(0l, org.getStartDate().getTime());
         assertEquals(1000l, org.getEndDate().getTime());
-        
+
     }
 }

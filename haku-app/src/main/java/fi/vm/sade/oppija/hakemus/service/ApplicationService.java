@@ -20,7 +20,7 @@ import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.oppija.lomake.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 
 import java.util.List;

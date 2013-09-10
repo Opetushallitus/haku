@@ -16,8 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.service;
 
-import static org.junit.Assert.assertEquals;
-
+import fi.vm.sade.oppija.lomake.service.impl.AESEncrypter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fi.vm.sade.oppija.lomake.service.impl.AESEncrypter;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author jukka

@@ -25,7 +25,7 @@ public class OrganizationServiceImplTest {
     @Before
     public void setUp() throws Exception {
         List<OrganisaatioPerustieto> serviceResult = new ArrayList<OrganisaatioPerustieto>();
-        OrganisaatioPerustieto organisaatioDTO= new OrganisaatioPerustieto();
+        OrganisaatioPerustieto organisaatioDTO = new OrganisaatioPerustieto();
         organisaatioDTO.setOid(OID);
         organisaatioDTO.setNimiFi("nimi");
         serviceResult.add(organisaatioDTO);

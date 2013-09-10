@@ -77,12 +77,13 @@ public class HenkilotiedotPhase {
         henkilotunnus.addAttribute("placeholder", "ppkkvv*****");
         henkilotunnus.addAttribute("size", "11");
         henkilotunnus.addAttribute("maxlength", "11");
+        henkilotunnus.setHelp(createI18NForm("form.henkilotiedot.henkilotunnus.help"));
         henkilotunnus.setValidator(createRegexValidator(henkilotunnus.getId(), HETU_PATTERN));
         setRequiredInlineAndVerboseHelp(henkilotunnus, "form.henkilotiedot.henkilotunnus.verboseHelp");
 
         Radio sukupuoli = new Radio("sukupuoli", createI18NForm("form.henkilotiedot.sukupuoli"));
         sukupuoli.addOptions(koodistoService.getGenders());
-        setRequiredInlineAndVerboseHelp(sukupuoli,"form.henkilotiedot.sukupuoli.verboseHelp");
+        setRequiredInlineAndVerboseHelp(sukupuoli, "form.henkilotiedot.sukupuoli.verboseHelp");
 
         Option male = sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
                 sukupuoli.getOptions().get(0) : sukupuoli.getOptions().get(1);
