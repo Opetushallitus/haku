@@ -190,7 +190,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                     .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
                     .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
                     .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
-                    .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL))
                     .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
                     .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
                     .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
