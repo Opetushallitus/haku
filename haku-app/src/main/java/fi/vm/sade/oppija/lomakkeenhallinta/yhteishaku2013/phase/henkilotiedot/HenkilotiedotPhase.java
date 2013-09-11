@@ -13,6 +13,7 @@ import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,7 @@ public class HenkilotiedotPhase {
     private HenkilotiedotPhase() {
     }
 
-    public static Phase create(final KoodistoService koodistoService) {
+    public static Phase create(final KoodistoService koodistoService, final String asType) {
 
         // Henkilötiedot
         Phase henkilotiedot = new Phase("henkilotiedot", createI18NForm("form.henkilotiedot.otsikko"), false);
@@ -95,7 +96,7 @@ public class HenkilotiedotPhase {
         SocialSecurityNumber socialSecurityNumber =
                 new SocialSecurityNumber("ssn_question", createI18NForm("form.henkilotiedot.hetu"),
                         sukupuoli.getI18nText(), male, female, sukupuoli.getId(), henkilotunnus);
-        addSsnUniqueValidator(socialSecurityNumber);
+        addApplicationUniqueValidator(socialSecurityNumber, asType);
 
         RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FIN$", true);
         hetuRule.addChild(socialSecurityNumber);

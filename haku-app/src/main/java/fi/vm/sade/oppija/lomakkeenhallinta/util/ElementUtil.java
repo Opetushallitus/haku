@@ -34,6 +34,7 @@ import fi.vm.sade.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.SsnAndPreferenceUniqueValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.SsnUniqueValidator;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import org.apache.commons.lang3.Validate;
@@ -171,8 +172,12 @@ public final class ElementUtil {
                         ElementUtil.createI18NTextError("yleinen.pakollinen")));
     }
 
-    public static void addSsnUniqueValidator(final Element element) {
-        element.setValidator(new SsnUniqueValidator());
+    public static void addApplicationUniqueValidator(final Element element, final String asType) {
+        if (Yhteishaku2013.LISA_HAKU.equals(asType)) {
+            element.setValidator(new SsnAndPreferenceUniqueValidator());
+        } else {
+            element.setValidator(new SsnUniqueValidator());
+        }
     }
 
 
