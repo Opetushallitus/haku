@@ -3205,7 +3205,7 @@ button {
         display: none; }
     button.plus:hover span {
       background-position: -22px center; }
-    button.plus:focus span, button.plus:active span {
+    button.plus:active span {
       background-position: -44px center; }
     button.plus:disabled span {
       background-position: -66px center; }
@@ -3249,13 +3249,13 @@ button {
 
 /*** Theme help
 ************************************************/
-.theme-help {
+.theme-help, .phase-help {
   clear: both; }
-  .theme-help .help-text {
+  .theme-help .help-text, .phase-help .help-text {
     width: 90%;
     float: left;
     margin-bottom: 2em; }
-  .theme-help .helplink {
+  .theme-help .helplink, .phase-help .helplink {
     display: block;
     width: 20px;
     height: 21px;
@@ -3264,12 +3264,15 @@ button {
     background-position: 0px center;
     background-repeat: no-repeat;
     float: right; }
-    .theme-help .helplink:hover {
+    .theme-help .helplink:hover, .phase-help .helplink:hover {
       background-position: -20px center; }
-    .theme-help .helplink:active, .theme-help .helplink:focus {
+    .theme-help .helplink:active, .theme-help .helplink:focus, .phase-help .helplink:active, .phase-help .helplink:focus {
       background-position: -40px center; }
-    .theme-help .helplink:disabled, .theme-help .helplink.disabled {
+    .theme-help .helplink:disabled, .theme-help .helplink.disabled, .phase-help .helplink:disabled, .phase-help .helplink.disabled {
       background-position: -60px center; }
+
+.phase-help .help-text {
+  margin-top: 2em; }
 
 /*** Form step navigation
 ************************************************/

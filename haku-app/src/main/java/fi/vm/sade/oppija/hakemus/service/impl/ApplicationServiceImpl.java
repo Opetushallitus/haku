@@ -59,7 +59,6 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.join;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -190,7 +189,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                     .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
                     .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
                     .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
-                    .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL))
                     .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
                     .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
                     .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
@@ -256,17 +254,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         List<Application> listOfApplications = applicationDAO.find(application);
         return listOfApplications.get(0);
-    }
-
-    @Override
-    public List<Application> getApplicationsByApplicationSystem(String applicationSystemId) {
-
-        return applicationDAO.findByApplicationSystem(applicationSystemId);
-    }
-
-    @Override
-    public List<Application> getApplicationsByApplicationSystemAndApplicationOption(String asId, String aoId) {
-        return applicationDAO.findByApplicationSystemAndApplicationOption(asId, aoId);
     }
 
     @Override
@@ -401,30 +388,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setState(Application.State.INCOMPLETE);
         addNote(application, "Hakemus vastaanotettu");
         application.setOid(applicationOidService.generateNewOid());
-        this.applicationDAO.save(application);
-        return application;
-    }
-
-    @Override
-    public Application fillLOPChain(Application application) {
-        String[] ids = new String[]{
-                "preference1-Opetuspiste-id",
-                "preference2-Opetuspiste-id",
-                "preference3-Opetuspiste-id",
-                "preference4-Opetuspiste-id",
-                "preference5-Opetuspiste-id"};
-
-        Map<String, String> answers = application.getAnswers().get("hakutoiveet");
-        for (String id : ids) {
-            String opetuspiste = answers.get(id);
-            if (!isEmpty(opetuspiste)) {
-                List<String> parentOids = organizationService.findParentOids(opetuspiste);
-                // OPH-guys have access to all organizations
-                parentOids.add(OPH_ORGANIZATION);
-                answers.put(id + "-parents", join(parentOids, ","));
-            }
-        }
-        application.addVaiheenVastaukset("hakutoiveet", answers);
         this.applicationDAO.save(application);
         return application;
     }

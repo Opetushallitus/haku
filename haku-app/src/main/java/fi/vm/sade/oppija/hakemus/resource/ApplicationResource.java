@@ -16,11 +16,8 @@
 
 package fi.vm.sade.oppija.hakemus.resource;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.hakemus.domain.dto.ApplicantDTO;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
@@ -52,9 +49,6 @@ public class ApplicationResource {
     @Autowired
     private ApplicationService applicationService;
 
-    @Autowired
-    private ConversionService conversionService;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
     private static final String OID = "oid";
 
@@ -63,9 +57,8 @@ public class ApplicationResource {
     }
 
     @Autowired
-    public ApplicationResource(ApplicationService applicationService, ConversionService conversionService) {
+    public ApplicationResource(ApplicationService applicationService) {
         this.applicationService = applicationService;
-        this.conversionService = conversionService;
     }
 
     @GET
@@ -134,27 +127,7 @@ public class ApplicationResource {
         }
     }
 
-    @GET
-    @Path("applicant/{asId}/{aoId}")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
-    public List<ApplicantDTO> findApplicants(@PathParam("asId") String asId, @PathParam("aoId") String aoId) {
-        LOGGER.debug("Finding applicants asId:{}, aoID:{}", asId, aoId);
-        List<Application> applications = applicationService.getApplicationsByApplicationSystemAndApplicationOption(asId, aoId);
-        return Lists.transform(applications, new Function<Application, ApplicantDTO>() {
-            @Override
-            public ApplicantDTO apply(Application application) {
-                return conversionService.convert(application, ApplicantDTO.class);
-            }
-        });
-    }
-
     public void setApplicationService(ApplicationService applicationService) {
         this.applicationService = applicationService;
     }
-
-    public void setConversionService(ConversionService conversionService) {
-        this.conversionService = conversionService;
-    }
-
 }

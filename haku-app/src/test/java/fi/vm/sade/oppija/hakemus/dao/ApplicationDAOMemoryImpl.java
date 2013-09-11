@@ -75,11 +75,6 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public List<Application> findByApplicationSystem(String asId) {
-        return null;
-    }
-
-    @Override
     public List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -91,6 +86,11 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     @Override
     public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
         return false;
+    }
+
+    @Override
+    public boolean checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String aoId) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

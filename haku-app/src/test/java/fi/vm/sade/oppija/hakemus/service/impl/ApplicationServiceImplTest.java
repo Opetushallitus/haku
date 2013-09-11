@@ -200,11 +200,4 @@ public class ApplicationServiceImplTest {
         assertNotNull("PersonOid should not be null", application.getPersonOid());
         assertEquals("Wrong person oid", PERSON_OID, application.getPersonOid());
     }
-
-    @Test
-    public void testGetApplicationsByApplicationSystemAndApplicationOption() {
-        List<Application> results = service.getApplicationsByApplicationSystemAndApplicationOption(AS_ID, AO_ID);
-        assertNotNull(results);
-        assertEquals(1, results.size());
-    }
 }

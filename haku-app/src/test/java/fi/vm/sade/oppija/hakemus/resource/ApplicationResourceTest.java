@@ -88,7 +88,7 @@ public class ApplicationResourceTest {
         when(applicationService.getApplicationsByApplicationOption(anyList())).thenReturn(applications);
         when(applicationService.findApplications(eq(OID), any(ApplicationQueryParameters.class))).thenReturn(searchResultDTO);
         when(applicationService.findApplications(eq(INVALID_OID), any(ApplicationQueryParameters.class))).thenReturn(emptySearchResultDTO);
-        this.applicationResource = new ApplicationResource(this.applicationService, this.conversionService);
+        this.applicationResource = new ApplicationResource(this.applicationService);
     }
 
     @Test

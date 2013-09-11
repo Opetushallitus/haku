@@ -48,7 +48,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -164,13 +163,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<Application> findByApplicationSystem(String asId) {
-        DBObject dbObject = QueryBuilder.start().and(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId).get(),
-                newOIdExistDBObject()).get();
-        return findApplications(dbObject);
-    }
-
-    @Override
     public List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId) {
         DBObject dbObject = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
                 newOIdExistDBObject(),
@@ -196,6 +188,21 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
                     .and(FIELD_APPLICATION_OID).exists(true)
                     .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
+                    .get();
+            return getCollection().count(query) > 0;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String aoId) {
+        if (!Strings.isNullOrEmpty(ssn)) {
+            String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
+            DBObject query = QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
+                    .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
+                    .and(FIELD_APPLICATION_OID).exists(true)
+                    .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
+                    .and(queryByPreference(aoId).get())
                     .get();
             return getCollection().count(query) > 0;
         }

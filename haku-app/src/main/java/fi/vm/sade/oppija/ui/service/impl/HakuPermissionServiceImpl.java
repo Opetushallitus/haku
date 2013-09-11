@@ -85,14 +85,14 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
                 LOG.debug("User can read application, org: {}", organization);
                 return true;
             }
-            for (String parent : parents.split(",")) {
-                organization = answers.get(parent);
-                if (StringUtils.isNotEmpty(organization) &&
-                        checkAccess(organization, roles)) {
-                    LOG.debug("User can read application, parent org: {}", organization);
-                    return true;
-                }
-            }
+//            for (String parent : parents.split(",")) {
+//                organization = answers.get(parent);
+//                if (StringUtils.isNotEmpty(organization) &&
+//                        checkAccess(organization, roles)) {
+//                    LOG.debug("User can read application, parent org: {}", organization);
+//                    return true;
+//                }
+//            }
         }
         return false;
     }

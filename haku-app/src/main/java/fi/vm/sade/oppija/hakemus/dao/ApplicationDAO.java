@@ -52,14 +52,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     List<Application> find(DBObject query);
 
     /**
-     * Returns Applications that are included in specified application system.
-     *
-     * @param asId application system ids
-     * @return list of applications or an empty list if none are found
-     */
-    List<Application> findByApplicationSystem(String asId);
-
-    /**
      * Finds all the applications related to given application system and application option.
      * Matching applications must be ACTIVE and contains application OID
      *
@@ -88,6 +80,16 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @return true if application exists, false otherwise
      */
     boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn);
+
+    /**
+     * Checks if submitted application already exists by specified social security number, application option and
+     * application system
+     * @param asId application system id
+     * @param ssn social security number
+     * @param aoId application option oid
+     * @return true if application already exists, false otherwise
+     */
+    boolean checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String aoId);
 
     /**
      * Return all applications where applicants first name or last name contains
