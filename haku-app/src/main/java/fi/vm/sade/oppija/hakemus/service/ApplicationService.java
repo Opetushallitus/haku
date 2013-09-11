@@ -174,11 +174,4 @@ public interface ApplicationService {
      */
     Application officerCreateNewApplication(final String asId);
 
-    /**
-     * Add organizations from the organization hierarchy root to every provider.
-     *
-     * @param application to handle
-     * @return application with added organizations
-     */
-    Application fillLOPChain(Application application);
 }
