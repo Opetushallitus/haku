@@ -48,7 +48,7 @@
 <haku:input-hidden id="${discretionary}" data="${categoryData}"/>
 
 <div id="container-childLONames" class="notification block light-grey margin-2" style="display: none">
-    <span><haku:i18nText value="${sortableItem.childLONameListLabel}"/>:&nbsp;</span>
+    <span><haku:i18nText value="${element.childLONameListLabel}"/>:&nbsp;</span>
     <span id="childLONames"></span>
 </div>
 
