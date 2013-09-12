@@ -52,14 +52,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     List<Application> find(DBObject query);
 
     /**
-     * Returns Applications that are included in specified application system.
-     *
-     * @param asId application system ids
-     * @return list of applications or an empty list if none are found
-     */
-    List<Application> findByApplicationSystem(String asId);
-
-    /**
      * Finds all the applications related to given application system and application option.
      * Matching applications must be ACTIVE and contains application OID
      *

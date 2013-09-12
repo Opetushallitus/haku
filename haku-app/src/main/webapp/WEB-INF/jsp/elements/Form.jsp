@@ -21,10 +21,8 @@
 
 <!DOCTYPE html>
 <fmt:setBundle basename="messages" scope="session"/>
-<c:set var="vaihe" value="${element}" scope="request"/>
-<c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
-<c:set var="preview" value="${vaihe.preview}" scope="request"/>
+<c:set var="preview" value="true" scope="request"/>
 
 <html>
 <head>
@@ -56,7 +54,7 @@
             });
         });
     </script>
-    <title><haku:i18nText value="${form.i18nText}"/> - <haku:i18nText value="${vaihe.i18nText}"/></title>
+    <title><haku:i18nText value="${element.i18nText}"/> - esikatselu</title>
 </head>
 <body>
 <div id="viewport">
@@ -107,24 +105,16 @@
                     <c:forEach var="phase" items="${form.children}" varStatus="status">
                         <li>
                             <c:if test="${pastPhases}">
-                                <a id="nav-${phase.id}" href="javascript:pastPhase('${phase.id}')"
-                                   <c:if test="${phase.id eq vaihe.id}">class="current"</c:if>>
+                                <a id="nav-${phase.id}" href="${phase.id}">
                                     <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
                                 </a>
-                            </c:if>
-                            <c:if test="${!pastPhases}">
-                            	<span>
-                            	<span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
-                            	</span>
-                            </c:if>
-                            <c:if test="${(pastPhases && phase.id eq vaihe.id)}">
-                                <c:set var="pastPhases" value="false"/>
                             </c:if>
                         </li>
                     </c:forEach>
                     <li>
-                        <span>
-                            <span class="index"><c:out value="${fn:length(form.children) + 1}"/></span><fmt:message key="lomake.esikatselu"/></span>
+                        <a class="current"><span class="index"><c:out
+                                value="${fn:length(form.children) + 1}"/></span><fmt:message
+                                key="lomake.esikatselu"/></a>
                     </li>
                     <li>
                         <span>
@@ -136,28 +126,14 @@
                 <div class="clear"></div>
             </div>
 
-            <c:choose>
-                <c:when test="${preview}">
-                    <div class="form">
-                        <jsp:include page="../prev_next_buttons_preview.jsp"/>
-                        <c:forEach var="child" items="${element.children}">
-                            <c:set var="element" value="${child}" scope="request"/>
-                            <jsp:include page="./${child.type}Preview.jsp"/>
-                        </c:forEach>
-                        <jsp:include page="../prev_next_buttons_preview.jsp"/>
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <form id="form-${vaihe.id}" class="form" method="post">
-                        <jsp:include page="../prev_next_buttons.jsp"/>
-                        <c:forEach var="child" items="${vaihe.children}">
-                            <c:set var="element" value="${child}" scope="request"/>
-                            <jsp:include page="./${child.type}.jsp"/>
-                        </c:forEach>
-                        <jsp:include page="../prev_next_buttons.jsp"/>
-                    </form>
-                </c:otherwise>
-            </c:choose>
+            <div class="form">
+                <jsp:include page="../prev_next_buttons_preview.jsp"/>
+                <c:forEach var="child" items="${element.children}">
+                    <c:set var="element" value="${child}" scope="request"/>
+                    <jsp:include page="./${child.type}Preview.jsp"/>
+                </c:forEach>
+                <jsp:include page="../prev_next_buttons_preview.jsp"/>
+            </div>
         </div>
     </div>
 </div>

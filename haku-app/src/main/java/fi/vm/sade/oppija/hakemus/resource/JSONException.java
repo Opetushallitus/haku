@@ -31,8 +31,4 @@ public class JSONException extends WebApplicationException {
     public JSONException(Response.Status status, String message, Throwable cause) {
         super(cause, Response.status(status).entity(new ErrorMessage(message)).type(MediaType.APPLICATION_JSON).build());
     }
-
-    public JSONException(Response.Status status, String message) {
-        super(Response.status(status).entity(new ErrorMessage(message)).type(MediaType.APPLICATION_JSON).build());
-    }
 }

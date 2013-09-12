@@ -49,7 +49,6 @@ public class UIServiceImpl implements UIService {
     private final ApplicationService applicationService;
     private final FormService formService;
     private final String koulutusinformaatioBaseUrl;
-    public static final Logger LOGGER = LoggerFactory.getLogger(UIServiceImpl.class);
 
 
     @Autowired

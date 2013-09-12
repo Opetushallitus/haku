@@ -16,58 +16,34 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
-import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
-import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen.GradesTable;
-import org.junit.Before;
+import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
-import static org.junit.Assert.assertNotNull;
-
 /**
  * @author Hannu Lyytikainen
  */
-public class GradeGridIT extends AbstractSeleniumBase {
+public class GradeGridIT extends DummyModelBaseItTest {
 
-    public static final String PHASE_ID = "arvosanat";
-    public static final String FORM_ID = "lomake";
-
-    @Before
-    public void init() {
-        Form form = new Form(FORM_ID, createI18NAsIs("yhteishaku"));
-        ApplicationSystem applicationSystem = ElementUtil.createActiveApplicationSystem(ASID, form);
-        Phase arvosanat = new Phase(PHASE_ID, createI18NAsIs("Arvosanat"), false);
-        form.addChild(arvosanat);
-        KoodistoServiceMockImpl koodistoService = new KoodistoServiceMockImpl();
-        GradesTable gradesTable = new GradesTable(koodistoService, true);
-        arvosanat.addChild(gradesTable.createGradeGrid("id"));
-
-        updateApplicationSystem(applicationSystem);
-    }
-
-    @Test
-    public void testTableExists() {
-        final String url = getBaseUrl() + "lomake/" + ASID + "/lomake/arvosanat";
-        final WebDriver driver = seleniumHelper.getDriver();
-        driver.get(url);
-
-        assertNotNull(driver.findElement(By.id("gradegrid-table")));
-
-    }
 
     @Test
     public void testAddLanguage() {
-        final String url = getBaseUrl() + "lomake/" + ASID + "/lomake/arvosanat";
-        final WebDriver driver = seleniumHelper.getDriver();
-        driver.get(url);
-        driver.findElement(By.id("nativeLanguage")).click();
-        driver.findElement(By.id("additionalLanguages")).click();
+        navigateToFirstPhase();
+        fillOut(defaultValues.henkilotiedot);
+        nextPhase();
+        fillOut(defaultValues.koulutustausta_lk);
+        nextPhase();
+        setValue("preference1-Opetuspiste", "Esp");
+        driver.findElement(By.linkText(DefaultValues.OPETUSPISTE)).click();
+        driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
+        findByIdAndClick("preference1-discretionary_false");
+        findByIdAndClick("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true");
+        findByIdAndClick("preference1_sora_terveys_false");
+        findByIdAndClick("preference1_sora_oikeudenMenetys_false");
+        nextPhase();
+
+        findByIdAndClick("nativeLanguage");
+        findByIdAndClick("additionalLanguages");
     }
 }

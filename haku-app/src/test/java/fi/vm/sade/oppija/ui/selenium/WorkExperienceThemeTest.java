@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -34,10 +35,10 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
     public void testWorkExperienceShown() {
         gotoHakutoiveet("010113-668B");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
-        findByIdAndClick("preference1-discretionary_false");
-        findByIdAndClick("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true");
-        findByIdAndClick("preference1_sora_terveys_false");
-        findByIdAndClick("preference1_sora_oikeudenMenetys_false");
+        findByIdAndClick("preference1-discretionary_false",
+                "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true",
+                "preference1_sora_terveys_false",
+                "preference1_sora_oikeudenMenetys_false");
         nextPhase();
 
         select();
@@ -63,24 +64,12 @@ public class WorkExperienceThemeTest extends DummyModelBaseItTest {
 
     private void gotoHakutoiveet(final String hetu) {
         navigateToFirstPhase();
-        setValue("Sukunimi", "Ankka");
-        setValue("Etunimet", "Aku Kalle");
-        setValue("Kutsumanimi", "AKu");
-        setValue("Henkilotunnus", hetu);
-        setValue("Sähköposti", "aku.ankka@ankkalinna.al");
-        setValue("matkapuhelinnumero1", "0501000100");
-        setValue("aidinkieli", "FI");
-        setValue("asuinmaa", "FIN");
-        setValue("kotikunta", "jalasjarvi");
-        setValue("lahiosoite", "Katu 1");
-        setValue("Postinumero", "00100");
+        LinkedHashMap<String, String> henkilotiedot = defaultValues.henkilotiedot;
+        henkilotiedot.put("Henkilotunnus", hetu);
+        fillOut(henkilotiedot);
 
         nextPhase();
-
-        findByIdAndClick("POHJAKOULUTUS_tutkinto1", "LISAKOULUTUS_KYMPPI", "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON_false");
-        findById("PK_PAATTOTODISTUSVUOSI");
-        setValue("perusopetuksen_kieli", "FI");
-        setValue("PK_PAATTOTODISTUSVUOSI", "2012");
+        fillOut(defaultValues.koulutustausta_pk);
 
         nextPhase();
 

@@ -47,23 +47,21 @@ import java.util.Map;
 @Path("/applications")
 public class ApplicationResource {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
+
+    private static final String OID = "oid";
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
     @Autowired
     private ApplicationService applicationService;
-
     @Autowired
     private ConversionService conversionService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
-    private static final String OID = "oid";
-
     public ApplicationResource() {
-        super();
     }
 
-    @Autowired
-    public ApplicationResource(ApplicationService applicationService, ConversionService conversionService) {
+    public ApplicationResource(final ApplicationService applicationService,
+                               final ConversionService conversionService) {
         this.applicationService = applicationService;
         this.conversionService = conversionService;
     }
@@ -148,13 +146,4 @@ public class ApplicationResource {
             }
         });
     }
-
-    public void setApplicationService(ApplicationService applicationService) {
-        this.applicationService = applicationService;
-    }
-
-    public void setConversionService(ConversionService conversionService) {
-        this.conversionService = conversionService;
-    }
-
 }

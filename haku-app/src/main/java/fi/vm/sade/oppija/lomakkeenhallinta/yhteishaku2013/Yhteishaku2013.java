@@ -40,7 +40,7 @@ public class Yhteishaku2013 {
             Date start = as.getApplicationPeriods() != null && !as.getApplicationPeriods().isEmpty() ? as.getApplicationPeriods().get(0).getStart() :
                     new Date();
             form.addChild(LisatiedotPhase.create(start));
-            form.addChild(EsikatseluPhase.create(form));
+            //form.addChild(EsikatseluPhase.create(form));
             return form;
         } catch (Exception e) {
             throw new RuntimeException(Yhteishaku2013.class.getCanonicalName() + " init failed", e);

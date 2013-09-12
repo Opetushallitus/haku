@@ -50,7 +50,6 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -145,11 +144,14 @@ public class FormController {
     public Viewable getPhase(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId) {
 
-        LOGGER.debug("getElement {}, {}", applicationSystemId, phaseId);
+        LOGGER.debug("getPhase {}, {}", applicationSystemId, phaseId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        Element element = new ElementTree(activeForm).getChildById(phaseId);
+        ElementTree elementTree = new ElementTree(activeForm);
+        Element element = elementTree.getChildById(phaseId);
         Map<String, Object> model = new HashMap<String, Object>();
-        Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
+        Application application = applicationService.getApplication(applicationSystemId);
+        elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
+        Map<String, String> values = application.getVastauksetMerged();
         values = userHolder.populateWithPrefillData(values);
         model.put(MODEL_KEY_CATEGORY_DATA, values);
         model.put(MODEL_KEY_ELEMENT, element);
@@ -165,7 +167,16 @@ public class FormController {
     @Path("/{applicationSystemId}/esikatselu")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) {
-        return getPhase(applicationSystemId, "esikatselu");
+        Form activeForm = formService.getActiveForm(applicationSystemId);
+        Map<String, Object> model = new HashMap<String, Object>();
+        Application application = applicationService.getApplication(applicationSystemId);
+        Map<String, String> values = application.getVastauksetMerged();
+        model.put(MODEL_KEY_CATEGORY_DATA, values);
+        model.put(MODEL_KEY_ELEMENT, activeForm);
+        model.put(MODEL_KEY_TEMPLATE, activeForm.getType());
+        model.put(MODEL_KEY_FORM, activeForm);
+        model.put(MODEL_KEY_APPLICATION_SYSTEM_ID, applicationSystemId);
+        return new Viewable(ROOT_VIEW, model);
     }
 
     @GET
@@ -174,7 +185,23 @@ public class FormController {
     public Viewable getPhaseElement(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                     @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                     @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
-        return getPhase(applicationSystemId, elementId);
+        LOGGER.debug("getPhaseElement {}, {}", applicationSystemId, phaseId);
+        Form activeForm = formService.getActiveForm(applicationSystemId);
+        ElementTree elementTree = new ElementTree(activeForm);
+        Map<String, Object> model = new HashMap<String, Object>();
+        Application application = applicationService.getApplication(applicationSystemId);
+        elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
+        Element element = elementTree.getChildById(elementId);
+        Map<String, String> values = application.getVastauksetMerged();
+        values = userHolder.populateWithPrefillData(values);
+        model.put(MODEL_KEY_CATEGORY_DATA, values);
+        model.put(MODEL_KEY_ELEMENT, element);
+        model.put(MODEL_KEY_TEMPLATE, element.getType());
+        model.put(MODEL_KEY_FORM, activeForm);
+        model.put(MODEL_KEY_APPLICATION_SYSTEM_ID, applicationSystemId);
+        model.put(MODEL_KEY_KOULUTUSINFORMAATIO_BASE_URL, koulutusinformaatioBaseUrl);
+
+        return new Viewable(ROOT_VIEW, model);
     }
 
     @POST
@@ -233,9 +260,8 @@ public class FormController {
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}, {}, {}", applicationSystemId, phaseId, multiValues);
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        boolean skipValidators = skipValidators(multiValues, activeForm, phaseId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(
-                new ApplicationPhase(applicationSystemId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)), skipValidators);
+                new ApplicationPhase(applicationSystemId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)));
         Map<String, Object> model = new HashMap<String, Object>();
         model.put(MODEL_KEY_APPLICATION_SYSTEM_ID, applicationSystemId);
         if (applicationState.isValid()) {
@@ -300,28 +326,4 @@ public class FormController {
         model.put(MODEL_KEY_TEMPLATE, "gradegrid/additionalLanguageRow");
         return new Viewable(ROOT_VIEW, model);
     }
-
-    private boolean skipValidators(MultivaluedMap<String, String> multiValues, Form form, String phaseId) {
-        List<String> phaseIdList = multiValues.get(PHASE_ID_PATH_PARAM);
-        if (phaseIdList == null || phaseIdList.size() == 0) {
-            return false;
-        }
-
-        String targetPhaseId = phaseIdList.get(0);
-        boolean skipValidators = targetPhaseId.endsWith("-skip-validators");
-        if (skipValidators) {
-            targetPhaseId = targetPhaseId.substring(0, targetPhaseId.lastIndexOf("-skip-validators"));
-            multiValues.get(PHASE_ID_PATH_PARAM).set(0, targetPhaseId);
-        }
-
-        for (Element phase : form.getChildren()) {
-            if (phase.getId().equals(targetPhaseId)) {
-                return skipValidators;
-            } else if (phase.getId().equals(phaseId)) {
-                return false; // Never skip validators when moving forwards
-            }
-        }
-        return false; // Do not skip, if neither the target phase nor the current phase was found in form's phases.
-    }
-
 }

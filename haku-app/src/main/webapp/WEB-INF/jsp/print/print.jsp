@@ -13,6 +13,7 @@
 <c:set var="print" value="true" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <c:set var="discretionaryAttachmentAOIds" value="${it.discretionaryAttachmentAOIds}" scope="request"/>
+
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -35,11 +36,11 @@
     <div class="application-number"><fmt:message key="virkailija.hakemus.hakemusnro"/>&nbsp;<c:out
             value="${f:formatOid(application.oid)}" escapeXml="true"/></div>
 </header>
-<c:forEach var="child" items="${phase.children}">
-    <c:set var="element" value="${child}" scope="request"/>
-    <c:set var="parentId" value="${form.id}.${phase.id}" scope="request"/>
-    <jsp:include page="../print/${child.type}Print.jsp"/>
+<c:forEach var="phase" items="${form.children}">
+    <c:set var="element" value="${phase}" scope="request"/>
+    <jsp:include page="./${phase.type}Print.jsp"/>
 </c:forEach>
+
 <jsp:include page="../print/discretionaryAttachments.jsp"/>
 <hr>
 <footer>

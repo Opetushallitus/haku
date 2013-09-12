@@ -24,7 +24,7 @@ public class Phase extends Titled {
     private static final long serialVersionUID = 1369853692287570194L;
     private boolean preview;
 
-    public Phase(String id, I18nText i18nText, final boolean preview) {
+    public Phase(final String id, final I18nText i18nText, final boolean preview) {
         super(id, i18nText);
         this.preview = preview;
     }
