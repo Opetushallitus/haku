@@ -59,6 +59,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.join;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -365,6 +366,32 @@ public class ApplicationServiceImpl implements ApplicationService {
         } else {
             applicationDAO.updateKeyValue(applicationOid, "additionalInfo." + key, value);
         }
+    }
+
+    @Override
+    public Application fillLOPChain(Application application) {
+        String[] ids = new String[]{
+                "preference1-Opetuspiste-id",
+                "preference2-Opetuspiste-id",
+                "preference3-Opetuspiste-id",
+                "preference4-Opetuspiste-id",
+                "preference5-Opetuspiste-id"};
+
+        Map<String, String> answers = application.getAnswers().get("hakutoiveet");
+        for (String id : ids) {
+            String opetuspiste = answers.get(id);
+            if (!isEmpty(opetuspiste)) {
+                List<String> parentOids = organizationService.findParentOids(opetuspiste);
+                // OPH-guys have access to all organizations
+                parentOids.add(OPH_ORGANIZATION);
+                // Also add organization itself
+                parentOids.add(opetuspiste);
+                answers.put(id + "-parents", join(parentOids, ","));
+            }
+        }
+        application.addVaiheenVastaukset("hakutoiveet", answers);
+        this.applicationDAO.save(application);
+        return application;
     }
 
     @Override

@@ -58,54 +58,44 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 @Service("applicationDAOMongoImpl")
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> implements ApplicationDAO {
 
-    private static final Logger log = LoggerFactory.getLogger(ApplicationDAOMongoImpl.class);
-
     public static final int HUNDRED = 100;
-    private final EncrypterService shaEncrypter;
-    private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
+    private static final Logger log = LoggerFactory.getLogger(ApplicationDAOMongoImpl.class);
     private static final String FIELD_AO_1 = "answers.hakutoiveet.preference1-Koulutus-id";
-
     private static final String FIELD_AO_2 = "answers.hakutoiveet.preference2-Koulutus-id";
     private static final String FIELD_AO_3 = "answers.hakutoiveet.preference3-Koulutus-id";
     private static final String FIELD_AO_4 = "answers.hakutoiveet.preference4-Koulutus-id";
     private static final String FIELD_AO_5 = "answers.hakutoiveet.preference5-Koulutus-id";
     private static final String FIELD_AO_KOULUTUS_ID_1 = "answers.hakutoiveet.preference1-Koulutus-id-aoIdentifier";
-
     private static final String FIELD_AO_KOULUTUS_ID_2 = "answers.hakutoiveet.preference2-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_ID_3 = "answers.hakutoiveet.preference3-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_ID_4 = "answers.hakutoiveet.preference4-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_ID_5 = "answers.hakutoiveet.preference5-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_1 = "answers.hakutoiveet.preference1-Koulutus";
-
     private static final String FIELD_AO_KOULUTUS_2 = "answers.hakutoiveet.preference2-Koulutus";
     private static final String FIELD_AO_KOULUTUS_3 = "answers.hakutoiveet.preference3-Koulutus";
     private static final String FIELD_AO_KOULUTUS_4 = "answers.hakutoiveet.preference4-Koulutus";
     private static final String FIELD_AO_KOULUTUS_5 = "answers.hakutoiveet.preference5-Koulutus";
     private static final String FIELD_LOP_1 = "answers.hakutoiveet.preference1-Opetuspiste-id";
-
     private static final String FIELD_LOP_2 = "answers.hakutoiveet.preference2-Opetuspiste-id";
     private static final String FIELD_LOP_3 = "answers.hakutoiveet.preference3-Opetuspiste-id";
     private static final String FIELD_LOP_4 = "answers.hakutoiveet.preference4-Opetuspiste-id";
     private static final String FIELD_LOP_5 = "answers.hakutoiveet.preference5-Opetuspiste-id";
-
     private static final String FIELD_LOP_PARENTS_1 = "answers.hakutoiveet.preference1-Opetuspiste-id-parents";
     private static final String FIELD_LOP_PARENTS_2 = "answers.hakutoiveet.preference2-Opetuspiste-id-parents";
     private static final String FIELD_LOP_PARENTS_3 = "answers.hakutoiveet.preference3-Opetuspiste-id-parents";
     private static final String FIELD_LOP_PARENTS_4 = "answers.hakutoiveet.preference4-Opetuspiste-id-parents";
     private static final String FIELD_LOP_PARENTS_5 = "answers.hakutoiveet.preference5-Opetuspiste-id-parents";
-
     private static final String FIELD_APPLICATION_OID = "oid";
-
     private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
     private static final String FIELD_PERSON_OID = "personOid";
     private static final String FIELD_APPLICATION_STATE = "state";
     private static final String EXISTS = "$exists";
-
+    private final EncrypterService shaEncrypter;
+    private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
     @Value("${application.oid.prefix}")
     private String applicationOidPrefix;
     @Value("${user.oid.prefix}")
     private String userOidPrefix;
-
     private AuthenticationService authenticationService;
     private HakuPermissionService hakuPermissionService;
 
