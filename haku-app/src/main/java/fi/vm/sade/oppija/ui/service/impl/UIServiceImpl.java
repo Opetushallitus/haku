@@ -109,6 +109,7 @@ public class UIServiceImpl implements UIService {
                 listsOfTitledElements.add(tElement);
             }
         }
+        listsOfTitledElements.add(theme);
         model.put("listsOfTitledElements", listsOfTitledElements);
         return model;
     }
