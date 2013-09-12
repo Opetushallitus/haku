@@ -377,7 +377,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 "preference4-Opetuspiste-id",
                 "preference5-Opetuspiste-id"};
 
-        Map<String, String> answers = application.getAnswers().get("hakutoiveet");
+        HashMap<String, String> answers = new HashMap<String, String>(application.getAnswers().get("hakutoiveet"));
         for (String id : ids) {
             String opetuspiste = answers.get(id);
             if (!isEmpty(opetuspiste)) {
