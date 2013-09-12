@@ -42,7 +42,7 @@
     </div>
 </div>
 <!-- Piwik -->
-<script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
 <!-- End Piwik Code -->
 </body>
 </html>
