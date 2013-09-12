@@ -174,4 +174,5 @@ public interface ApplicationService {
      */
     Application officerCreateNewApplication(final String asId);
 
+    Application fillLOPChain(Application application);
 }
