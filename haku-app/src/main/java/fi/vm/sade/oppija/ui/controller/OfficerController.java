@@ -57,15 +57,15 @@ public class OfficerController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(OfficerController.class);
     public static final String VIRKAILIJA_HAKEMUS_VIEW = "/virkailija/hakemus";
-    public static final String DEFAULT_VIEW = "/virkailija/Phase";
+    public static final String DEFAULT_VIEW = "/virkailija/Form";
     public static final String OID_PATH_PARAM = "oid";
+    public static final String VERBOSE_HELP_VIEW = "/help";
     public static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
     public static final String APPLICATION_SYSTEM_ID_PATH_PARAM = "applicationSystemId";
     public static final String ADDITIONAL_INFO_VIEW = "/virkailija/additionalInfo";
     public static final String SEARCH_INDEX_VIEW = "/virkailija/searchIndex";
     public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + ";charset=UTF-8";
-    public static final String VIRKAILIJA_PHASE_VIEW = "/virkailija/Phase";
     public static final String APPLICATION_PRINT_VIEW = "/print/print";
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
@@ -97,6 +97,14 @@ public class OfficerController {
         final String asId = multiValues.getFirst("asId");
         Application application = officerUIService.createApplication(asId);
         return redirectToLastPhase(application.getOid());
+    }
+
+    @GET
+    @Path("/hakemus/{applicationSystemId}/{phaseId}/{elementId}/help")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    public Viewable getFormHelp(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) throws ResourceNotFoundException {
+        return new Viewable(VERBOSE_HELP_VIEW, uiService.getElementHelp(applicationSystemId, elementId));
     }
 
     @GET
@@ -135,7 +143,7 @@ public class OfficerController {
 
         LOGGER.debug("getPreview {}, {}, {}", applicationSystemId, phaseId, oid);
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, phaseId);
-        return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel()); // TODO remove hardcoded Phase
+        return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel()); // TODO remove hardcoded Phase
     }
 
     @POST
@@ -226,7 +234,7 @@ public class OfficerController {
         officerUIService.addPersonAndAuthenticate(oid);
         officerUIService.addNote(oid, reasonBuilder.toString(), userHolder.getUser());
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
-        return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel());
+        return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
     }
 
     @POST
@@ -246,7 +254,7 @@ public class OfficerController {
 
         officerUIService.passivateApplication(oid, reasonBuilder.toString(), userHolder.getUser());
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
-        return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel());
+        return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
     }
 
     @POST
@@ -265,7 +273,7 @@ public class OfficerController {
 
         officerUIService.addNote(oid, noteBuilder.toString(), userHolder.getUser());
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
-        return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel());
+        return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
     }
 
     @GET
@@ -299,6 +307,6 @@ public class OfficerController {
         LOGGER.debug("addPersonOid: oid {}, personOid {}", oid, personOid);
         officerUIService.addPersonOid(oid, personOid);
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
-        return new Viewable(VIRKAILIJA_PHASE_VIEW, uiServiceResponse.getModel());
+        return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
     }
 }

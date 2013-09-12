@@ -79,7 +79,6 @@ public class OfficerControllerTest {
         when(formService.getActiveForm(ASID)).thenReturn(form);
 
         ApplicationState applicationState = new ApplicationState(app, "henkilotiedot");
-        when(applicationService.saveApplicationPhase(any(ApplicationPhase.class), eq(OID), eq(false))).thenReturn(applicationState);
 
         OfficerUIService officerApplicationService = mock(OfficerUIService.class);
         UIServiceResponse uiServiceResponse = new UIServiceResponse();

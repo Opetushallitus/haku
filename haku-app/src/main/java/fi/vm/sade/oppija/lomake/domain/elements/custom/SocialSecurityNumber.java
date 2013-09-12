@@ -45,13 +45,9 @@ public class SocialSecurityNumber extends Question {
     private I18nText sexI18nText;
     public static final String HENKILOTUNNUS_HASH = "Henkilotunnus_digest";
 
-    public SocialSecurityNumber(@JsonProperty(value = "id") final String id,
-                                @JsonProperty(value = "i18nText") final I18nText i18nText,
-                                @JsonProperty(value = "sexI18nText") final I18nText sexI18nText,
-                                @JsonProperty(value = "maleOption") final Option maleOption,
-                                @JsonProperty(value = "femaleOption") final Option femaleOption,
-                                @JsonProperty(value = "sexId") final String sexId,
-                                @JsonProperty(value = "ssn") final TextQuestion ssn) {
+    public SocialSecurityNumber(final String id, final I18nText i18nText, final I18nText sexI18nText,
+                                final Option maleOption, final Option femaleOption,
+                                final String sexId, final TextQuestion ssn) {
         super(id, i18nText);
         this.ssn = ssn;
         this.maleOption = maleOption;

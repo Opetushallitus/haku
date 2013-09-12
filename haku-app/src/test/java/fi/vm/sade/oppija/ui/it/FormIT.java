@@ -17,38 +17,21 @@
 package fi.vm.sade.oppija.ui.it;
 
 
-import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
-import org.junit.Before;
+import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.*;
-
-/**
- * @author Hannu Lyytikainen
- */
-public class FormIT extends AbstractFormTest {
-
-    @Before
-    public void setUp() throws Exception {
-        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
-        updateModelAndCreateFormModelHelper(formGeneratorMock.createApplicationSystem());
-    }
+public class FormIT extends DummyModelBaseItTest {
 
     @Test
     public void testApplicationSystem() {
-        beginAt("/lomake");
-        assertLinkPresent(ASID);
+        String url = getBaseUrl() + "lomake";
+        driver.get(url);
+        findById(ASID);
     }
 
     @Test
     public void testPhase() throws Exception {
-        beginAt("/lomake/" + ASID + "/henkilotiedot");
-        assertLinkPresent("nav-henkilotiedot");
-        assertLinkNotPresent("nav-koulutustausta");
-        gotoPage("/lomake/" + ASID + "/koulutustausta");
-        assertLinkPresent("nav-henkilotiedot");
-        assertLinkPresent("nav-koulutustausta");
+        navigateToFirstPhase();
+        findById("nav-henkilotiedot");
     }
 }

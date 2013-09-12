@@ -48,7 +48,6 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 @Service
 public class ApplicationToDBObjectFunction implements Function<Application, DBObject> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationToDBObjectFunction.class);
     private final EncrypterService aesEncypter;
     private final EncrypterService shaEncrypter;
 

@@ -59,6 +59,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.join;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -110,20 +111,13 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
     @Override
-    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, boolean skipValidators) {
+    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase) {
         final Application application = new Application(this.userHolder.getUser(), applicationPhase);
-        return saveApplicationPhase(applicationPhase, application, skipValidators);
-    }
-
-    @Override
-    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, String oid, boolean skipValidators) {
-        final Application application = new Application(oid, applicationPhase);
-        return saveApplicationPhase(applicationPhase, application, skipValidators);
+        return saveApplicationPhase(applicationPhase, application);
     }
 
     private ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase,
-                                                  final Application application,
-                                                  final boolean skipValidators) {
+                                                  final Application application) {
         final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
         final String applicationSystemId = applicationState.getApplication().getApplicationSystemId();
         final Form activeForm = formService.getActiveForm(applicationSystemId);
@@ -134,13 +128,16 @@ public class ApplicationServiceImpl implements ApplicationService {
         Map<String, String> allAnswers = new HashMap<String, String>();
         // if the current phase has previous phase, get all the answers for
         // validating rules
+        Application current = userHolder.getApplication(applicationSystemId);
+
+        elementTree.isStateValid(current.getPhaseId(), applicationPhase.getPhaseId());
+
         if (!elementTree.isFirstChild(phase)) {
-            Application current = userHolder.getApplication(applicationSystemId);
             allAnswers.putAll(current.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId()));
         }
         allAnswers.putAll(vastaukset);
 
-        if (!skipValidators) {
+        if (elementTree.isValidationNeeded(applicationPhase.getPhaseId(), application.getPhaseId())) {
             ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, allAnswers,
                     application.getOid(), applicationSystemId));
             applicationState.addError(validationResult.getErrorMessages());
@@ -368,6 +365,32 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public Application fillLOPChain(Application application) {
+        String[] ids = new String[]{
+                "preference1-Opetuspiste-id",
+                "preference2-Opetuspiste-id",
+                "preference3-Opetuspiste-id",
+                "preference4-Opetuspiste-id",
+                "preference5-Opetuspiste-id"};
+
+        HashMap<String, String> answers = new HashMap<String, String>(application.getAnswers().get("hakutoiveet"));
+        for (String id : ids) {
+            String opetuspiste = answers.get(id);
+            if (!isEmpty(opetuspiste)) {
+                List<String> parentOids = organizationService.findParentOids(opetuspiste);
+                // OPH-guys have access to all organizations
+                parentOids.add(OPH_ORGANIZATION);
+                // Also add organization itself
+                parentOids.add(opetuspiste);
+                answers.put(id + "-parents", join(parentOids, ","));
+            }
+        }
+        application.addVaiheenVastaukset("hakutoiveet", answers);
+        this.applicationDAO.save(application);
+        return application;
+    }
+
+    @Override
     public Application getNextWithoutPersonOid() {
         BasicDBObject query = new BasicDBObject();
         query.put("personOid", new BasicDBObject("$exists", false));
@@ -408,8 +431,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (!hakuPermissionService.userCanReadApplication(application)) {
             throw new ResourceNotFoundException("User is not allowed to read application " + application.getOid());
         }
-
         return application;
-
     }
+
+
 }

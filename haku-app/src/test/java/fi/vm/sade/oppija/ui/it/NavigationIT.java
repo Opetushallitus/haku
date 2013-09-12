@@ -16,50 +16,113 @@
 
 package fi.vm.sade.oppija.ui.it;
 
-import fi.vm.sade.oppija.common.it.AbstractFormTest;
-import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
-import org.junit.Before;
+import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
+import fi.vm.sade.oppija.ui.selenium.DefaultValues;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 import java.io.IOException;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.*;
-
-public class NavigationIT extends AbstractFormTest {
-
-    @Before
-    public void setUp() throws Exception {
-        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
-        updateModelAndCreateFormModelHelper(formGeneratorMock.createApplicationSystem());
-    }
+public class NavigationIT extends DummyModelBaseItTest {
 
     @Test
     public void testNavigationExists() throws IOException {
-        beginAt("/lomake/" + ASID + "/henkilotiedot");
-        assertLinkPresent("nav-henkilotiedot");
-        assertElementPresentByXPath("//span[@class='index']");
+        navigateToFirstPhase();
+        elementsPresentBy(By.xpath("//a[@id='nav-henkilotiedot']"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'2')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'3')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'4')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'5')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'6')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'7')]"));
+
+        elementsPresentBy(By.xpath("//button[@class='right']"));
+        elementsNotPresentBy(By.xpath("//button[@class='left']"));
+        fillOut(defaultValues.henkilotiedot);
+        nextPhase();
+
+        elementsPresentBy(By.xpath("//a[@id='nav-henkilotiedot']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-koulutustausta']"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'3')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'4')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'5')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'6')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'7')]"));
+
+        elementsPresentBy(By.xpath("//button[@class='right']"));
+        elementsPresentBy(By.xpath("//button[@class='left']"));
+        fillOut(defaultValues.koulutustausta_pk);
+        nextPhase();
+
+        elementsPresentBy(By.xpath("//a[@id='nav-henkilotiedot']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-koulutustausta']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-hakutoiveet']"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'4')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'5')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'6')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'7')]"));
+
+        elementsPresentBy(By.xpath("//button[@class='right']"));
+        elementsPresentBy(By.xpath("//button[@class='left']"));
+
+        setValue("preference1-Opetuspiste", "Esp");
+        driver.findElement(By.linkText(DefaultValues.OPETUSPISTE)).click();
+        driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
+        findByIdAndClick("preference1-discretionary_false");
+        findByIdAndClick("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true");
+        findByIdAndClick("preference1_sora_terveys_false");
+        findByIdAndClick("preference1_sora_oikeudenMenetys_false");
+        nextPhase();
+
+        select();
+        selectByValue("PK_A1_OPPIAINE", "EN");
+        selectByValue("PK_B1_OPPIAINE", "SV");
+        elementsPresentBy(By.xpath("//a[@id='nav-henkilotiedot']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-koulutustausta']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-hakutoiveet']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-osaaminen']"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'5')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'6')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'7')]"));
+        elementsPresentBy(By.xpath("//button[@class='right']"));
+        elementsPresentBy(By.xpath("//button[@class='left']"));
+        nextPhase();
+
+        elementsPresentBy(By.xpath("//a[@id='nav-henkilotiedot']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-koulutustausta']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-hakutoiveet']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-osaaminen']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-lisatiedot']"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'6')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'7')]"));
+        elementsPresentBy(By.xpath("//button[@class='right']"));
+        elementsPresentBy(By.xpath("//button[@class='left']"));
+
+        fillOut(defaultValues.lisatiedot);
+        nextPhase();
+        elementsPresentBy(By.xpath("//a[@id='nav-henkilotiedot']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-koulutustausta']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-hakutoiveet']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-osaaminen']"));
+        elementsPresentBy(By.xpath("//a[@id='nav-lisatiedot']"));
+        elementsPresentBy(By.xpath("//li/a[@class='current']"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'7')]"));
+
+        elementsPresentBy(By.xpath("//button[@class='right']"));
+        elementsPresentBy(By.xpath("//button[@class='left']"));
+
+        nextPhase();
+
+        findByIdAndClick("submit_confirm");
+
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'1')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'2')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'3')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'4')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'5')]"));
+        elementsPresentBy(By.xpath("//li/span/span[contains(text(),'6')]"));
+        elementsPresentBy(By.xpath("//li/a[@class='current']/span[contains(text(),'7')]"));
+
     }
 
-    @Test
-    public void testFirstGategoryNavButtons() throws IOException {
-        beginAt("/lomake/" + ASID + "/henkilotiedot");
-        assertElementPresentByXPath("//button[@class='right']");
-        assertElementNotPresentByXPath("//button[@class='left']");
-    }
-
-    @Test
-    public void testMiddleGategoryNavButtons() throws IOException {
-        beginAt("/lomake/" + ASID + "/koulutustausta");
-        assertElementPresentByXPath("//button[@class='right']");
-        assertElementPresentByXPath("//button[@class='left']");
-    }
-
-    @Test
-    public void testLastGategoryNavButtons() throws IOException {
-        beginAt("/lomake/" + ASID + "/esikatselu");
-        assertElementNotPresentByXPath("//button[@name='nav-next']");
-        assertElementPresentByXPath("//button[@class='left']");
-        assertElementPresentByXPath("//button[@class='right']");
-    }
 }

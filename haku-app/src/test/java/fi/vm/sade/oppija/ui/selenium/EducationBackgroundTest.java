@@ -16,49 +16,29 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
-import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
-import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
-import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
+import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta.KoulutustaustaPhase;
-import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 
-import java.util.List;
-
-/**
- * @author Hannu Lyytikainen
- */
-public class EducationBackgroundTest extends AbstractSeleniumBase {
-
-    private ApplicationSystemHelper applicationSystemHelper;
-
-    @Before
-    public void init() {
-        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
-        List<ApplicationSystem> applicationSystems = formGeneratorMock.generate();
-        this.applicationSystemHelper = updateApplicationSystem(applicationSystems.get(0));
-
-    }
+public class EducationBackgroundTest extends DummyModelBaseItTest {
 
     @Test
     public void testRule() {
-        final String startUrl = applicationSystemHelper.getFormUrl("koulutustausta");
+        navigateToFirstPhase();
 
-        WebDriver driver = seleniumHelper.getDriver();
-        driver.get(getBaseUrl() + startUrl); //  lomake/Yhteishaku/henkilotiedot
+        fillOut(defaultValues.henkilotiedot);
+
+        nextPhase();
 
         driver.findElement(new By.ById("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_PERUSKOULU)).click();
-
-        driver.findElement(new By.ByName("PK_PAATTOTODISTUSVUOSI"));
-
+        elementsPresentByName("PK_PAATTOTODISTUSVUOSI");
         driver.findElement(new By.ById("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_YLIOPPILAS)).click();
+        elementsPresentByName("lukioPaattotodistusVuosi");
 
-        driver.findElement(new By.ByName("lukioPaattotodistusVuosi"));
+
 
     }
+
 
 }

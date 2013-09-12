@@ -64,9 +64,10 @@
                                     value="${phase.i18nText}"/> &gt;</span></li>
                         </c:forEach>
                         <li>
-                            <a class="current"><span class="index"><c:out
-                                    value="${fn:length(form.children) + 1}"/></span><fmt:message
-                                    key="lomake.valmis"/></a>
+                            <span><span class="index">${fn:length(form.children) + 1}</span><fmt:message key="lomake.esikatselu"/> &gt;</span>
+                        </li>
+                        <li>
+                            <a class="current"><span class="index"><c:out value="${fn:length(form.children) + 2}"/></span><fmt:message key="lomake.valmis"/></a>
                         </li>
                     </ul>
                     <div class="clear"></div>
@@ -102,8 +103,9 @@
                     </p>
 
                     <p>
-                        <a href="${contextPath}/lomake/${application.applicationSystemId}/tulostus/${application.oid}" class="button small print" target="_blank"><fmt:message
-                        key="lomake.valmis.button.tulosta"/></a>
+                        <a href="${contextPath}/lomake/${application.applicationSystemId}/tulostus/${application.oid}"
+                           class="button small print" target="_blank"><fmt:message
+                                key="lomake.valmis.button.tulosta"/></a>
                     </p>
 
                     <div class="clear"></div>
@@ -111,16 +113,19 @@
                     <hr/>
 
                     <c:if test="${categoryData['preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys']}">
-                        <h3><fmt:message key="lomake.valmis.haeturheilijana.header"/></h3>
-                        <p>
-                             <fmt:message key="lomake.valmis.haeturheilijana"/>
-                        </p>
-                        <p>
-                            <a href="http://www.noc.fi/huippu-urheilu/tukipalvelut/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/" target="_blank">
-                                http://www.noc.fi/huippu-urheilu/tukipalvelut/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
-                            </a>
-                        </p>
-                        <hr/>
+                    <h3><fmt:message key="lomake.valmis.haeturheilijana.header"/></h3>
+
+                    <p>
+                        <fmt:message key="lomake.valmis.haeturheilijana"/>
+                    </p>
+
+                    <p>
+                        <a href="http://www.noc.fi/huippu-urheilu/tukipalvelut/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/"
+                           target="_blank">
+                            http://www.noc.fi/huippu-urheilu/tukipalvelut/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
+                        </a>
+                    </p>
+                    <hr/>
                     </c:if>
                     <h3><fmt:message key="lomake.valmis.muutoksentekeminen"/></h3>
 
@@ -155,5 +160,8 @@
         </section>
     </div>
 </div>
+<!-- Piwik -->
+<script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
+<!-- End Piwik Code -->
 </body>
 </html>

@@ -49,7 +49,6 @@ public class UIServiceImpl implements UIService {
     private final ApplicationService applicationService;
     private final FormService formService;
     private final String koulutusinformaatioBaseUrl;
-    public static final Logger LOGGER = LoggerFactory.getLogger(UIServiceImpl.class);
 
 
     @Autowired
@@ -109,6 +108,7 @@ public class UIServiceImpl implements UIService {
                 listsOfTitledElements.add(tElement);
             }
         }
+        listsOfTitledElements.add(theme);
         model.put("listsOfTitledElements", listsOfTitledElements);
         return model;
     }

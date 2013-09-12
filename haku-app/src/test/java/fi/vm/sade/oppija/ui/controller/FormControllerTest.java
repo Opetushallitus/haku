@@ -82,7 +82,7 @@ public class FormControllerTest {
         when(userHolder.getApplication(Matchers.<String>any())).thenReturn(this.application);
         applicationState = new ApplicationState(application, FIRST_CATEGORY_ID);
         application.setPhaseId(FIRST_CATEGORY_ID);
-        when(applicationService.saveApplicationPhase(Matchers.<ApplicationPhase>any(), eq(false))).thenReturn(applicationState);
+        when(applicationService.saveApplicationPhase(Matchers.<ApplicationPhase>any())).thenReturn(applicationState);
     }
 
     private String resolveRedirectPath(Response response) {

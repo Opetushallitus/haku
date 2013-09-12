@@ -95,7 +95,7 @@ public class OfficerUIServiceImplTest {
     @Test
     public void testGetApplicationWithLastPhase() throws Exception {
         Application expectedApplication = officerUIService.getApplicationWithLastPhase(OID);
-        assertEquals(ID, expectedApplication.getPhaseId());
+        assertEquals("esikatselu", expectedApplication.getPhaseId());
     }
 
     @Test

@@ -19,8 +19,6 @@ import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
 import fi.vm.sade.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,8 +28,6 @@ import java.util.Map;
 
 @Service
 public class OfficerUIServiceImpl implements OfficerUIService {
-
-    public static final Logger LOGGER = LoggerFactory.getLogger(OfficerUIServiceImpl.class);
 
     private final ApplicationService applicationService;
     private final FormService formService;
@@ -94,9 +90,15 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 oid, application.getApplicationSystemId()));
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
-        officerApplicationResponse.setElement(new ElementTree(form).getChildById(application.getPhaseId()));
         officerApplicationResponse.setForm(form);
+        if (!"esikatselu".equals(phaseId)) {
+            officerApplicationResponse.setElement(new ElementTree(form).getChildById(application.getPhaseId()));
+        } else {
+            officerApplicationResponse.setElement(form);
+
+        }
         officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
+        officerApplicationResponse.addObjectToModel("preview", "esikatselu".equals(phaseId));
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         officerApplicationResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
         officerApplicationResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
@@ -144,6 +146,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
         applicationService.addNote(application, noteText);
 
+        this.applicationService.fillLOPChain(application);
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
@@ -164,8 +167,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public Application getApplicationWithLastPhase(final String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
-        Element phase = formService.getLastPhase(application.getApplicationSystemId());
-        application.setPhaseId(phase.getId());
+        application.setPhaseId("esikatselu");
         return application;
     }
 

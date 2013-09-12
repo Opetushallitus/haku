@@ -19,4 +19,4 @@
 <c:set var="categoryData" value="${it.categoryData}" scope="request"/>
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="applicationSystemId" value="${it.applicationSystemId}" scope="request"/>
-<jsp:include page="./${it.template}.jsp"/>
+<jsp:include page="./${element.type}.jsp"/>

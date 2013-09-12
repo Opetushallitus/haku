@@ -20,47 +20,37 @@
 <fmt:setBundle basename="messages" scope="session"/>
 
 <c:forEach var="item" items="${form.children}" varStatus="status">
-    <c:if test="${(not status.first) and (item eq vaihe) and (not status.last)}">
-        <div class="float-left">
-            <button class="left" name="phaseId" type="submit" value="${tmpPrev.id}-skip-validators">
+    <c:if test="${(item eq vaihe)}">
+        <c:if test="${(not status.first)}">
+            <div class="float-left">
+                <button class="left" name="phaseId" type="submit" value="${tmpPrev.id}">
                 <span>
                     <span><fmt:message key="lomake.button.previous"/></span>
                 </span>
-            </button>
-        </div>
-    </c:if>
-    <c:choose>
-        <c:when test="${(status.last) and (tmpPrev eq vaihe) }">
+                </button>
+            </div>
+        </c:if>
+        <c:if test="${status.last}">
             <div class="float-right">
-                <button class="right" name="phaseId" type="submit" value="${item.id}">
+                <button class="right" name="phaseId" type="submit" value="esikatselu">
                    <span>
                        <span><fmt:message key="lomake.button.preview"/></span>
                    </span>
                 </button>
             </div>
             <div class="clear"></div>
-        </c:when>
-        <c:when test="${(not status.last) and (tmpPrev eq vaihe) }">
-            <div class="float-right">
-                <button class="right" name="phaseId" type="submit" value="${item.id}">
-                    <span>
-                        <span><fmt:message key="lomake.button.next"/></span>
-                    </span>
-                </button>
-            </div>
-            <div class="clear"></div>
-        </c:when>
-        <c:when test="${(status.last) and (item eq vaihe)}">
-            <div class="float-right">
-                <button class="right" name="phaseId" type="submit" value="${item.id}">
-                   <span>
-                       <span><fmt:message key="lomake.button.save"/></span>
-                   </span>
-                </button>
-            </div>
-            <div class="clear"></div>
-        </c:when>
-    </c:choose>
+        </c:if>
+    </c:if>
+    <c:if test="${(tmpPrev eq vaihe)}">
+        <div class="float-right">
+            <button class="right" name="phaseId" type="submit" value="${item.id}">
+                <span>
+                    <span><fmt:message key="lomake.button.next"/></span>
+                </span>
+            </button>
+        </div>
+        <div class="clear"></div>
+    </c:if>
     <c:set var="tmpPrev" value="${item}" scope="page"/>
 </c:forEach>
 <c:remove var="tmpPrev" scope="page"/>
