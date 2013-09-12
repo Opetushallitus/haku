@@ -33,8 +33,10 @@
         <section id="page">
             <h1><haku:i18nText value="${it.theme.i18nText}"/></h1>
             <c:forEach var="entry" items="${it.listsOfTitledElements}">
+              <c:if test="${not empty entry.verboseHelp.translations[requestScope['fi_vm_sade_oppija_language']]}">
                 <h3><haku:i18nText value="${entry.i18nText}"/></h3>
                 <p><haku:i18nText value="${entry.verboseHelp}"/></p>
+              </c:if>
             </c:forEach>
         </section>
     </div>

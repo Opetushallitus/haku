@@ -55,6 +55,7 @@ public final class KielitaitokysymyksetTheme {
         naytetaankoSuomi.addChild(createKielitutkinto("yleinen_kielitutkinto_fi"), createKielitutkinto("valtionhallinnon_kielitutkinto_fi"));
         naytetaankoRuotsi.addChild(createKielitutkinto("yleinen_kielitutkinto_sv"), createKielitutkinto("valtionhallinnon_kielitutkinto_sv"));
         kielitaitokysymyksetTheme.addChild(naytetaankoSuomi, naytetaankoRuotsi);
+        ElementUtil.setVerboseHelp(kielitaitokysymyksetTheme, "form.kielitaito.otsikko.verboseHelp");
         return naytetaankoTeema;
     }
 
