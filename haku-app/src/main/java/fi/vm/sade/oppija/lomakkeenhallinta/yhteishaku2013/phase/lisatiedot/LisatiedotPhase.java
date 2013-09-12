@@ -90,6 +90,7 @@ public class LisatiedotPhase {
     private static Element createUrheilijanLisakysymykset() {
         Theme urheilijanLisakysymyksetTeema = new Theme(ElementUtil.randomId(),
                 createI18NForm("form.lisatiedot.urheilija"), true);
+        ElementUtil.setVerboseHelp(urheilijanLisakysymyksetTeema, "form.lisatiedot.urheilija.verboseHelp");
 
         ImmutableList<String> ids = ImmutableList.of(
                 "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys",

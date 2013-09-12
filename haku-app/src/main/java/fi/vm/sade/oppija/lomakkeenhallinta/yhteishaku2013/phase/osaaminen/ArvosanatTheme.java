@@ -4,6 +4,7 @@ import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.elements.Text;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NForm;
@@ -48,6 +49,7 @@ public final class ArvosanatTheme {
         arvosanatTheme.addChild(relatedQuestionEiTutkintoa);
 
         arvosanatTheme.setHelp(createI18NForm("form.arvosanat.help"));
+        ElementUtil.setVerboseHelp(arvosanatTheme, "form.arvosanat.otsikko.verboseHelp");
         return arvosanatTheme;
     }
 
