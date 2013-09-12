@@ -35,6 +35,7 @@
     <c:set value="${hiddenKoulutusId}-aoIdentifier" var="hiddenKoulutusIdAoIdentifier" scope="page"/>
     <c:set value="${hiddenKoulutusId}-athlete" var="hiddenKoulutusIdAthlete" scope="page"/>
 
+    <haku:errorMessage id="${sortableItem.id}" additionalClass="margin-top-1"/>
     <div class="form-row">
         <label class="form-row-label ${sortableItem.attributes['required']}" for="${textInputId}"><haku:i18nText
                 value="${sortableItem.learningInstitutionLabel}"/></label>
