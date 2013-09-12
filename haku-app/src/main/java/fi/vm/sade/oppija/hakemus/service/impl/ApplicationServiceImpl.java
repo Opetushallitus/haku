@@ -190,7 +190,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                     .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
                     .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
                     .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
-                    .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL))
                     .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
                     .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
                     .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
@@ -370,6 +369,32 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public Application fillLOPChain(Application application) {
+        String[] ids = new String[]{
+                "preference1-Opetuspiste-id",
+                "preference2-Opetuspiste-id",
+                "preference3-Opetuspiste-id",
+                "preference4-Opetuspiste-id",
+                "preference5-Opetuspiste-id"};
+
+        HashMap<String, String> answers = new HashMap<String, String>(application.getAnswers().get("hakutoiveet"));
+        for (String id : ids) {
+            String opetuspiste = answers.get(id);
+            if (!isEmpty(opetuspiste)) {
+                List<String> parentOids = organizationService.findParentOids(opetuspiste);
+                // OPH-guys have access to all organizations
+                parentOids.add(OPH_ORGANIZATION);
+                // Also add organization itself
+                parentOids.add(opetuspiste);
+                answers.put(id + "-parents", join(parentOids, ","));
+            }
+        }
+        application.addVaiheenVastaukset("hakutoiveet", answers);
+        this.applicationDAO.save(application);
+        return application;
+    }
+
+    @Override
     public Application getNextWithoutPersonOid() {
         BasicDBObject query = new BasicDBObject();
         query.put("personOid", new BasicDBObject("$exists", false));
@@ -390,30 +415,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setState(Application.State.INCOMPLETE);
         addNote(application, "Hakemus vastaanotettu");
         application.setOid(applicationOidService.generateNewOid());
-        this.applicationDAO.save(application);
-        return application;
-    }
-
-    @Override
-    public Application fillLOPChain(Application application) {
-        String[] ids = new String[]{
-                "preference1-Opetuspiste-id",
-                "preference2-Opetuspiste-id",
-                "preference3-Opetuspiste-id",
-                "preference4-Opetuspiste-id",
-                "preference5-Opetuspiste-id"};
-
-        Map<String, String> answers = application.getAnswers().get("hakutoiveet");
-        for (String id : ids) {
-            String opetuspiste = answers.get(id);
-            if (!isEmpty(opetuspiste)) {
-                List<String> parentOids = organizationService.findParentOids(opetuspiste);
-                // OPH-guys have access to all organizations
-                parentOids.add(OPH_ORGANIZATION);
-                answers.put(id + "-parents", join(parentOids, ","));
-            }
-        }
-        application.addVaiheenVastaukset("hakutoiveet", answers);
         this.applicationDAO.save(application);
         return application;
     }
