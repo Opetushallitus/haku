@@ -58,6 +58,16 @@ public final class ElementTree {
         return tmp;
     }
 
+    public boolean isValidationNeeded(final String currentId, final String nextId) {
+        List<Element> children = root.getChildren();
+        if (children.get(children.size() - 1).getId().equals(currentId)) {
+            return true;
+        }
+        int nextIndex = children.indexOf(getChildById(nextId));
+        int currentIndex = children.indexOf(getChildById(currentId));
+        return nextIndex > currentIndex;
+    }
+
     public static List<Element> getAllChildren(final Element element) {
         ArrayList<Element> allChildren = new ArrayList<Element>();
         for (Element child : element.getChildren()) {
@@ -65,5 +75,35 @@ public final class ElementTree {
             getAllChildren(child);
         }
         return allChildren;
+    }
+
+    public boolean isStateValid(String currentId, String saveId) {
+        List<Element> children = root.getChildren();
+        int nextIndex = children.indexOf(getChildById(saveId));
+        if (nextIndex < 0) {
+            return false;
+        } else if ((currentId == null && nextIndex == 0) || currentId.equals(saveId)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void checkPhaseTransfer(String currentId, String nextId) {
+
+        List<Element> children = root.getChildren();
+        int nextIndex = children.indexOf(getChildById(nextId));
+        if (currentId == null && nextIndex == 0) {
+            return;
+        } else if (currentId != null) {
+            if (currentId.equals("esikatselu")){
+                return;
+            }
+            int currentIndex = children.indexOf(getChildById(currentId));
+            if (nextIndex == currentIndex) {
+                return;
+            }
+        }
+        throw new ElementNotFound(nextId);
+
     }
 }

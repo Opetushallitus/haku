@@ -19,8 +19,6 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
 import fi.vm.sade.oppija.lomake.domain.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -39,7 +37,6 @@ import java.util.Map;
 public class UserHolder implements Serializable {
 
     private static final long serialVersionUID = 8093993846121110534L;
-    public static final Logger LOGGER = LoggerFactory.getLogger(UserHolder.class);
 
     private final Map<String, Application> applications = new HashMap<String, Application>();
     private User user = new AnonymousUser();

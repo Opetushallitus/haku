@@ -28,24 +28,23 @@ import static org.junit.Assert.assertTrue;
  */
 public class AdditionalGradeQuestionTest extends DummyModelBaseItTest {
 
-    public static final String OPETUSPISTE = "FAKTIA, Espoo op";
-    public static final String KOULUTUSTAUSTA_PHASE_ID = "koulutustausta";
 
     @Test
     public void testAdditionalSubjects() {
-        navigateToPhase(KOULUTUSTAUSTA_PHASE_ID);
+        navigateToFirstPhase();
 
-        findByIdAndClick("POHJAKOULUTUS_tutkinto1", "PK_PAATTOTODISTUSVUOSI", "LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN",
-                "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI", "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON_false");
-        setValue("perusopetuksen_kieli", "SV");
-        setValue("PK_PAATTOTODISTUSVUOSI", "2013");
+        fillOut(defaultValues.henkilotiedot);
+
+        nextPhase();
+
+        fillOut(defaultValues.koulutustausta_pk);
 
         nextPhase();
 
         // select a LOI
 
         setValue("preference1-Opetuspiste", "Esp");
-        driver.findElement(By.linkText(OPETUSPISTE)).click();
+        driver.findElement(By.linkText(DefaultValues.OPETUSPISTE)).click();
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
         findByIdAndClick("preference1-discretionary_false");
         findByIdAndClick("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true");

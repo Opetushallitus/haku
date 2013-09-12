@@ -90,20 +90,18 @@ public class LoggerAspect {
             MapDifference<String, String> diffAnswers = ApplicationUtil.diffAnswers(application, applicationPhase);
             AnswersDifference answersDifference = new AnswersDifference(diffAnswers);
             List<Difference> differences = answersDifference.getDifferences();
-            Tapahtuma tapahtuma;
+            Tapahtuma tapahtuma = new Tapahtuma();
+            tapahtuma.setTarget("hakemus: " + application.getOid() +
+                    ", vaihe: " + applicationPhase.getPhaseId());
+            tapahtuma.setTimestamp(new Date());
+            tapahtuma.setUserActsForUser(userHolder.getUser().getUserName());
+            tapahtuma.setType("Hakemuksen muokkaus");
+            tapahtuma.setUser(userHolder.getUser().getUserName());
             for (Difference difference : differences) {
-                tapahtuma = new Tapahtuma();
-                tapahtuma.setTarget("hakemus: " + application.getOid() +
-                        ", vaihe: " + applicationPhase.getPhaseId() +
-                        ", kysymys: " + difference.getKey());
-                tapahtuma.setTimestamp(new Date());
-                tapahtuma.setUserActsForUser(userHolder.getUser().getUserName());
-                tapahtuma.setType("Hakemuksen muokkaus");
-                tapahtuma.setUser(userHolder.getUser().getUserName());
                 tapahtuma.addValueChange(difference.getKey(), difference.getOldValue(), difference.getNewValue());
-                LOGGER.debug(tapahtuma.toString());
-                logger.log(tapahtuma);
             }
+            LOGGER.debug(tapahtuma.toString());
+            logger.log(tapahtuma);
 
         } catch (Exception e) {
             LOGGER.warn("Could not log update application event");

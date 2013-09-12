@@ -282,22 +282,4 @@ public final class ElementUtil {
             return current;
         }
     }
-
-    public static Expr atLeastOneValueEqualsToVariable(final String id, final String... values) {
-        if (values.length == 1) {
-            return new Equals(new Variable(id), new Value(values[0]));
-        } else {
-            Expr current = null;
-            Expr equal;
-            for (String value : values) {
-                equal = new Equals(new Variable(id), new Value(value));
-                if (current == null) {
-                    current = new Equals(new Variable(id), new Value(value));
-                } else {
-                    current = new Or(current, equal);
-                }
-            }
-            return current;
-        }
-    }
 }

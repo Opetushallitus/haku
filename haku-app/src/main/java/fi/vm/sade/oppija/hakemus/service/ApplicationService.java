@@ -36,20 +36,9 @@ public interface ApplicationService {
      * Save answers of a single form phase. Phase is saved to the currently modified application of the user session.
      *
      * @param applicationPhase
-     * @param skipValidators   set to true, if you want the phase to be saved regardless of validation results
      * @return application state
      */
-    ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, boolean skipValidators);
-
-    /**
-     * Save answers of a single form phase. Phase is saved to the application with the parameter oid.
-     *
-     * @param applicationPhase
-     * @param oid
-     * @param skipValidators   set to true, if you want the phase to be saved regardless of validation results
-     * @return application state
-     */
-    ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase, final String oid, final boolean skipValidators);
+    ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase);
 
     /**
      * Submits an application based on current user and form.

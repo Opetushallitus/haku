@@ -127,8 +127,6 @@ public class OrganizationServiceMockImpl implements OrganizationService {
     private final Map<String, Organization> oidOrg = new HashMap<String, Organization>();
     final List<Organization> orgs = Lists.newArrayList();
 
-    protected OrganisaatioPerustietoType oph;
-
     public OrganizationServiceMockImpl() {
         init();
     }
@@ -206,14 +204,6 @@ public class OrganizationServiceMockImpl implements OrganizationService {
                                            Date startDate, Date endDate, String... types) {
         final I18nText orgName = ElementUtil.createI18NAsIs(name);
         return new Organization(orgName, oid, parentOid, Arrays.asList(types), startDate, endDate);
-    }
-
-    private I18nText getI18nText(String... kv) {
-        final HashMap<String, String> translations = Maps.newHashMap();
-        for (int i = 0; i < kv.length / 2; i++) {
-            translations.put(kv[i * 2], kv[i * 2 + 1]);
-        }
-        return new I18nText(translations);
     }
 
     @Override
