@@ -23,7 +23,6 @@ import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.Arrays;
 import java.util.Map;
 
 public class ContainedInOtherFieldValidator extends FieldValidator {
@@ -48,12 +47,9 @@ public class ContainedInOtherFieldValidator extends FieldValidator {
         } else if (otherValue != null && otherValue.equals(thisValue)) {
             return validValidationResult;
         } else if (otherFieldName != null && thisValue != null) {
-            String[] split = otherValue.toLowerCase().split("-|\\.|,| ");
-            if (Arrays.asList(split).contains(thisValue.toLowerCase())) {
-                return validValidationResult;
-            }
+            return otherValue.toLowerCase().contains(thisValue.toLowerCase())
+                    ? validValidationResult : invalidValidationResult;
         }
-
 
         return invalidValidationResult;
     }
