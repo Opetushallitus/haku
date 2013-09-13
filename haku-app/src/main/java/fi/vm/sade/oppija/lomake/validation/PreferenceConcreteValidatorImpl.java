@@ -23,6 +23,8 @@ import fi.vm.sade.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SinglePreference;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -38,6 +40,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     private static final String GENERIC_ERROR = "hakutoiveet.virheellinen.hakutoive";
     private static final String CAN_BE_APPLIED_ERROR = "hakutoiveet.eivoihakea";
     private static final String BASE_EDUCATION_ERROR = "hakutoiveet.pohjakoulutusristiriita";
+    private static final Logger LOGGER = LoggerFactory.getLogger(PreferenceConcreteValidatorImpl.class);
 
     @Autowired
     public PreferenceConcreteValidatorImpl(ApplicationOptionService applicationOptionService) {
@@ -67,8 +70,8 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                     return createError(validationInput.getElement().getId(), BASE_EDUCATION_ERROR);
                 }
             } catch (RuntimeException e) {
-                throw e;
-                //return createError(validationInput.getElement().getId(), GENERIC_ERROR);
+                LOGGER.error("validation error", e);
+                return createError(validationInput.getElement().getId(), GENERIC_ERROR);
             }
         }
         return validationResult;
