@@ -36,6 +36,14 @@ import java.util.*;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Application implements Serializable {
 
+    public String getStudentOid() {
+        return studentOid;
+    }
+
+    public void setStudentOid(String studentOid) {
+        this.studentOid = studentOid;
+    }
+
     public enum State {
         ACTIVE, PASSIVE, INCOMPLETE
     }
@@ -54,6 +62,7 @@ public class Application implements Serializable {
     private User user;
     private String phaseId;
     private String personOid;
+    private String studentOid;
     private Date received;
 
     private Map<String, Map<String, String>> answers = new HashMap<String, Map<String, String>>();

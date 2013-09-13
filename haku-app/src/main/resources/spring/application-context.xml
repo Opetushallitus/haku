@@ -84,6 +84,7 @@
             <property name="interval" value="${scheduler.delay}"/>
         </bean>
         <task:scheduled-tasks scheduler="scheduler">
+            <task:scheduled ref="yksilointiScheduler" method="runProcess" fixed-delay="${scheduler.delay}"/>
             <task:scheduled ref="yksilointiScheduler" method="runIdentification" fixed-delay="${scheduler.delay}"/>
         </task:scheduled-tasks>
 

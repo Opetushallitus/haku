@@ -265,7 +265,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     private void activate(String oid) throws InterruptedException {
-        navigateToPath("virkailija", "hakemus", oid, "addPersonAndAuthenticate");
+        navigateToPath("virkailija", "hakemus", oid, "addPersonOid");
     }
 
     private void passivate() {

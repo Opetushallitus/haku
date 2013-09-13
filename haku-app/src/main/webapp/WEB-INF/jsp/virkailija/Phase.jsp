@@ -96,7 +96,8 @@
                 </tr>
                 <tr>
                     <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${categoryData['Henkilotunnus']}"/>
-                    <haku:infoCell key="virkailija.hakemus.oppijanumero" value="${application.personOid}"/>
+                    <haku:infoCell key="virkailija.hakemus.henkilonumero" value="${application.personOid}"/>
+                    <haku:infoCell key="virkailija.hakemus.oppijanumero" value="${application.studentOid}"/>
                     <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${categoryData['Sähköposti']}"/>
                 </tr>
                 <tr>

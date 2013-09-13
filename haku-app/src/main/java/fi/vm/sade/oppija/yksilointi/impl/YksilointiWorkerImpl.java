@@ -92,7 +92,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         LOGGER.debug("Starting processApplications, limit: {}, application: {} {}",
                 limit, application != null ? application.getOid() : "null", System.currentTimeMillis());
         while (application != null && endTime > System.currentTimeMillis()) {
-            applicationService.addPersonAndAuthenticate(application);
+            applicationService.addPersonOid(application);
             applicationService.fillLOPChain(application);
             if (sendMail) {
                 try {
@@ -106,6 +106,15 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     application != null ? application.getOid() : "null", System.currentTimeMillis());
         }
         LOGGER.debug("Done processing applications {}", System.currentTimeMillis());
+    }
+
+    public void processIdentification(int limit) {
+        Application application = applicationService.getNextWithoutStudentOid();
+        long endTime = System.currentTimeMillis() + (limit - 500);
+        while (application != null && endTime > System.currentTimeMillis()) {
+            applicationService.addStudentOid(application);
+            application = applicationService.getNextWithoutStudentOid();
+        }
     }
 
     private void sendMail(Application application) throws EmailException {

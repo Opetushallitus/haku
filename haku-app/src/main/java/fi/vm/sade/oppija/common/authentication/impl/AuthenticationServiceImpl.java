@@ -22,10 +22,7 @@ import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
 import fi.vm.sade.oppija.common.authentication.PersonJsonAdapter;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.RequestEntity;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.httpclient.methods.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -137,6 +134,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             }
         }
         return orgs;
+    }
+
+    @Override
+    public String getStudentOid(String personOid) {
+        String resource = targetService + "/resources/henkilo/" + personOid + "/yksiloi";
+        String serviceTicket = getServiceticket();
+        String url = resource + "?ticket=" + serviceTicket;
+        HttpClient client = new HttpClient();
+        PutMethod put = new PutMethod(url);
+        try {
+            client.executeMethod(put);
+        } catch(IOException e) {
+            log.error("Getting studentOid for {} failed due to: {}", personOid, e.toString());
+            return null;
+        }
+
+        return null;
     }
 
     private String getServiceticket() {

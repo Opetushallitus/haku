@@ -207,6 +207,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
     }
 
+    public Application findNextWithoutStudentOid() {
+        return null;
+    }
+
     private QueryBuilder queryByPreference(final List<String> aoIds) {
         return QueryBuilder.start().or(
                 QueryBuilder.start(FIELD_AO_1).in(aoIds).get(),

@@ -35,7 +35,7 @@ public class Scheduler {
         this.worker = worker;
     }
 
-    public void runIdentification() {
+    public void runProcess() {
         if (run) {
             try {
                 LOGGER.debug("Running identification scheduler {}", System.currentTimeMillis());
@@ -45,6 +45,12 @@ public class Scheduler {
                 LOGGER.error("Error processing applications", e);
                 //run = false;
             }
+        }
+    }
+
+    public void runIdentification() {
+        if (run) {
+            worker.processIdentification(interval);
         }
     }
 

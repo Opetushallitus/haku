@@ -19,4 +19,5 @@ public interface YksilointiWorker {
 
     void processApplications(int limit, boolean sendMail);
 
+    void processIdentification(int limit);
 }

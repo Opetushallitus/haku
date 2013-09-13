@@ -202,7 +202,7 @@ public class OfficerController {
     }
 
     @GET
-    @Path("/hakemus/{oid}/addPersonAndAuthenticate")
+    @Path("/hakemus/{oid}/addPersonOid")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Response addPersonAndAuthenticate(@PathParam(OID_PATH_PARAM) final String oid)
@@ -212,8 +212,8 @@ public class OfficerController {
     }
 
     @POST
-    @Path("/hakemus/{oid}/addPersonAndAuthenticate")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Path("/hakemus/{oid}/addPersonOid")
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Viewable addPersonAndAuthenticate(@PathParam(OID_PATH_PARAM) final String oid,

@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.hakemus.service.impl;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
 import fi.vm.sade.authentication.service.GenericFault;
@@ -182,28 +183,26 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application addPersonAndAuthenticate(Application application) {
+    public Application addPersonOid(Application application) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
 
-        //if (!isEmpty(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
-            PersonBuilder personBuilder = PersonBuilder.start()
-                    .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
-                    .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
-                    .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
-                    .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
-                    .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
-                    .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
-                    .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
-                    .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE))
-                    .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
-                    .setSecurityOrder(false);
+        PersonBuilder personBuilder = PersonBuilder.start()
+                .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
+                .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
+                .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
+                .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
+                .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
+                .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
+                .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
+                .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE))
+                .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
+                .setSecurityOrder(false);
 
-            try {
-                application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
-            } catch (GenericFault fail) {
-                LOGGER.info(fail.getMessage());
-            }
-        //}
+        try {
+            application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
+        } catch (GenericFault fail) {
+            LOGGER.info(fail.getMessage());
+        }
 
         application.activate();
         this.applicationDAO.save(application);
@@ -211,10 +210,26 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application addPersonAndAuthenticate(String applicationOid) {
+    public Application addPersonOid(String applicationOid) {
         DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
         List<Application> applications = applicationDAO.find(query);
-        return addPersonAndAuthenticate(applications.get(0));
+        return addPersonOid(applications.get(0));
+    }
+
+    @Override
+    public Application addStudentOid(String applicationOid) {
+        DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
+        List<Application> applications = applicationDAO.find(query);
+        return addStudentOid(applications.get(0));
+    }
+
+    @Override
+    public Application addStudentOid(Application application) {
+        String studentOid = authenticationService.getStudentOid(application.getPersonOid());
+        if (studentOid != null) {
+            application.setStudentOid(studentOid);
+        }
+        return null;
     }
 
     @Override
@@ -400,6 +415,20 @@ public class ApplicationServiceImpl implements ApplicationService {
         query.put("personOid", new BasicDBObject("$exists", false));
         query.put("oid", new BasicDBObject("$exists", true));
         query.put("state", new BasicDBObject("$exists", false));
+        List<Application> apps = applicationDAO.find(query);
+        if (apps.size() > 0) {
+            return apps.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public Application getNextWithoutStudentOid() {
+        BasicDBObject query = new BasicDBObject();
+        query.put("studentOid", new BasicDBObject("$exists", false));
+        query.put("oid", new BasicDBObject("$exists", true));
+        query.put("state", new BasicDBObject("$exists", true));
+
         List<Application> apps = applicationDAO.find(query);
         if (apps.size() > 0) {
             return apps.get(0);
