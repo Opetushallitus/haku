@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.validation;
 
+import fi.vm.sade.oppija.lomake.validation.validators.PreferenceValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.SsnAndPreferenceUniqueValidator;
 import fi.vm.sade.oppija.lomake.validation.validators.SsnUniqueValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,19 +30,26 @@ public class ValidatorFactory {
 
     private final SsnUniqueConcreteValidator ssnUniqueConcreteValidator;
     private final SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator;
+    private final PreferenceConcreteValidator preferenceConcreteValidator;
 
     @Autowired
     public ValidatorFactory(SsnUniqueConcreteValidator ssnUniqueConcreteValidator,
-                            SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator) {
+                            SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator,
+                            PreferenceConcreteValidator preferenceConcreteValidator) {
         this.ssnUniqueConcreteValidator = ssnUniqueConcreteValidator;
         this.ssnAndPreferenceUniqueConcreteValidator = ssnAndPreferenceUniqueConcreteValidator;
+        this.preferenceConcreteValidator = preferenceConcreteValidator;
     }
 
     public Validator buildValidator(final Validator validator) {
-        if (validator != null && validator instanceof SsnUniqueValidator) {
-            return ssnUniqueConcreteValidator;
-        } else if (validator != null && validator instanceof SsnAndPreferenceUniqueValidator) {
-            return ssnAndPreferenceUniqueConcreteValidator;
+        if (validator != null) {
+            if (validator instanceof SsnUniqueValidator) {
+                return ssnUniqueConcreteValidator;
+            } else if (validator instanceof SsnAndPreferenceUniqueValidator) {
+                return ssnAndPreferenceUniqueConcreteValidator;
+            } else if (validator instanceof PreferenceValidator) {
+                return preferenceConcreteValidator;
+            }
         }
         return validator;
     }

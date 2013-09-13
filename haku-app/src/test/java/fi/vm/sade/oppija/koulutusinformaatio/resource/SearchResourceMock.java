@@ -58,6 +58,7 @@ public class SearchResourceMock {
                     "\"]}," +
                     "{\"id\":\"1.2.246.562.14.79893512065\"," +
                     "\"name\":\"Kaivosalan perustutkinto, pk\"," +
+                    "\"aoIdentifier\":\"333\"," +
                     "\"educationDegree\":\"32\", " +
                     "\"sora\": true , " +
                     "\"teachingLanguages\":[\"FI\"]," +

@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.util;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
@@ -25,6 +26,8 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.SinglePreference;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
@@ -32,10 +35,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.oppija.lomake.validation.Validator;
-import fi.vm.sade.oppija.lomake.validation.validators.RegexFieldValidator;
-import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
-import fi.vm.sade.oppija.lomake.validation.validators.SsnAndPreferenceUniqueValidator;
-import fi.vm.sade.oppija.lomake.validation.validators.SsnUniqueValidator;
+import fi.vm.sade.oppija.lomake.validation.validators.*;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
 import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
@@ -178,6 +178,11 @@ public final class ElementUtil {
         } else {
             element.setValidator(new SsnUniqueValidator());
         }
+    }
+
+    public static void addPreferenceValidator(final Element element) {
+        Preconditions.checkArgument(element instanceof PreferenceRow || element instanceof SinglePreference);
+        element.setValidator(new PreferenceValidator());
     }
 
 
