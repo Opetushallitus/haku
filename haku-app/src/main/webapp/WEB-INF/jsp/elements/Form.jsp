@@ -128,6 +128,9 @@
 
             <div class="form">
                 <jsp:include page="../prev_next_buttons_preview.jsp"/>
+                <div class="phase-help">
+                    <div class="help-text"><fmt:message key="form.esikatselu.help" /></div>
+                </div>
                 <c:forEach var="child" items="${element.children}">
                     <c:set var="element" value="${child}" scope="request"/>
                     <jsp:include page="./${child.type}Preview.jsp"/>
