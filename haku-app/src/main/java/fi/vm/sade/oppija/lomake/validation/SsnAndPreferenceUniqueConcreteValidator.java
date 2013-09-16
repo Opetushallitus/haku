@@ -56,7 +56,7 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
 
     private ValidationResult checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String applicationOid, String aoId) {
         ValidationResult validationResult = new ValidationResult();
-        if (!Strings.isNullOrEmpty(ssn) && !Strings.isNullOrEmpty(applicationOid) && !Strings.isNullOrEmpty(aoId)) {
+        if (!Strings.isNullOrEmpty(ssn) && Strings.isNullOrEmpty(applicationOid) && !Strings.isNullOrEmpty(aoId)) {
             Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
             if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumberAndAo(asId, ssn, aoId)) {
                 ValidationResult result = new ValidationResult("Henkilotunnus",
