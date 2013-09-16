@@ -22,7 +22,7 @@ import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
+import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,7 +66,7 @@ public class ApplicationResourceTest {
         Map<String, Map<String, String>> phases = new HashMap<String, Map<String, String>>();
         phases.put("henkilotiedot", phase1);
 
-        this.application = new Application(ASID, new AnonymousUser(), phases, null);
+        this.application = new Application(ASID, new User(User.ANONYMOUS_USER), phases, null);
         this.application.setOid(OID);
 
         try {

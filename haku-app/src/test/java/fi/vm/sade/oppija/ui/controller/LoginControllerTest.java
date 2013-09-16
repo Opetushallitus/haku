@@ -38,7 +38,7 @@ import static org.mockito.Mockito.*;
 public class LoginControllerTest {
 
     public static final String LOCATION_HEADER_NAME = "Location";
-    private LoginController loginController = new LoginController(new UserHolder());
+    private LoginController loginController = new LoginController();
 
     private HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
     private SecurityContext securityContext = mock(SecurityContext.class);

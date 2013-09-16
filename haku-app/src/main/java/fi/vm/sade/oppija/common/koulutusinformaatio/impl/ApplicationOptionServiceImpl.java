@@ -23,15 +23,14 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.oppija.common.koulutusinformaatio.ApplicationOptionDTOToApplicationOptionFunction;
 import fi.vm.sade.oppija.common.koulutusinformaatio.ApplicationOptionService;
-import fi.vm.sade.oppija.common.koulutusinformaatio.ApplicationOption;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MediaType;
@@ -62,7 +61,8 @@ public class ApplicationOptionServiceImpl implements ApplicationOptionService {
             return null;
         } else {
             WebResource asWebResource = webResource.path(oid);
-            ApplicationOptionDTO ao = asWebResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<ApplicationOptionDTO>(){});
+            ApplicationOptionDTO ao = asWebResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<ApplicationOptionDTO>() {
+            });
             return converterFunction.apply(ao);
         }
     }

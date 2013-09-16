@@ -32,10 +32,6 @@ public final class ElementTree {
         }
     }
 
-    public boolean isFirstChild(final Element element) {
-        return root.hasChildren() && root.getChildren().get(0).equals(element);
-    }
-
     public Element getChildById(final String id) {
         Element element = getChildById(root, id);
         if (element == null) {
@@ -82,7 +78,7 @@ public final class ElementTree {
         int nextIndex = children.indexOf(getChildById(saveId));
         if (nextIndex < 0) {
             return false;
-        } else if ((currentId == null && nextIndex == 0) || currentId.equals(saveId)) {
+        } else if ((currentId == null && nextIndex == 0) || (currentId != null && currentId.equals(saveId))) {
             return true;
         }
         return false;
@@ -95,7 +91,7 @@ public final class ElementTree {
         if (currentId == null && nextIndex == 0) {
             return;
         } else if (currentId != null) {
-            if (currentId.equals("esikatselu")){
+            if (currentId.equals("esikatselu")) {
                 return;
             }
             int currentIndex = children.indexOf(getChildById(currentId));

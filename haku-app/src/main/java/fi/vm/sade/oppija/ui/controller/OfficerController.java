@@ -68,6 +68,7 @@ public class OfficerController {
     public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + ";charset=UTF-8";
     public static final String APPLICATION_PRINT_VIEW = "/print/print";
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
+    public static final String PHASE_ID_PREVIEW = "esikatselu";
 
     @Autowired
     OfficerUIService officerUIService;
@@ -166,7 +167,7 @@ public class OfficerController {
         if (uiServiceResponse.hasErrors()) {
             return ok(new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel())).build();
         } else {
-            URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, applicationSystemId, "esikatselu", oid);
+            URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, applicationSystemId, PHASE_ID_PREVIEW, oid);
             return seeOther(path).build();
         }
     }
@@ -232,8 +233,8 @@ public class OfficerController {
             reasonBuilder.append(reasonPart);
         }
         officerUIService.addPersonAndAuthenticate(oid);
-        officerUIService.addNote(oid, reasonBuilder.toString(), userHolder.getUser());
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
+        officerUIService.addNote(oid, reasonBuilder.toString());
+        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
         return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
     }
 
@@ -252,8 +253,8 @@ public class OfficerController {
             reasonBuilder.append(reasonPart);
         }
 
-        officerUIService.passivateApplication(oid, reasonBuilder.toString(), userHolder.getUser());
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
+        officerUIService.passivateApplication(oid, reasonBuilder.toString());
+        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
         return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
     }
 
@@ -271,8 +272,8 @@ public class OfficerController {
             noteBuilder.append(notePart);
         }
 
-        officerUIService.addNote(oid, noteBuilder.toString(), userHolder.getUser());
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
+        officerUIService.addNote(oid, noteBuilder.toString());
+        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
         return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
     }
 
@@ -302,11 +303,11 @@ public class OfficerController {
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     public Viewable addPersonOid(@PathParam(OID_PATH_PARAM) final String oid,
-                                 final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
+                                 final MultivaluedMap<String, String> multiValues) throws ResourceNotFoundException {
         final String personOid = multiValues.getFirst("newPersonOid");
         LOGGER.debug("addPersonOid: oid {}, personOid {}", oid, personOid);
         officerUIService.addPersonOid(oid, personOid);
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
+        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
         return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
     }
 }

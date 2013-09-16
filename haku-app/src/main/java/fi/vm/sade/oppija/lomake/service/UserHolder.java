@@ -17,15 +17,17 @@ package fi.vm.sade.oppija.lomake.service;
 
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
 import fi.vm.sade.oppija.lomake.domain.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author jukka
@@ -38,20 +40,17 @@ public class UserHolder implements Serializable {
 
     private static final long serialVersionUID = 8093993846121110534L;
 
-    private final Map<String, Application> applications = new HashMap<String, Application>();
-    private User user = new AnonymousUser();
-    private final Map<String, String> userPrefillData = new HashMap<String, String>();
+    private final Map<String, Application> applications = new ConcurrentHashMap<String, Application>();
+    private final Map<String, String> userPrefillData = new ConcurrentHashMap<String, String>();
 
     public User getUser() {
-        return user;
-    }
-
-    public void login(final User user) {
-        this.user = user;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return new User(authentication.getName());
     }
 
     public void addPrefillData(final String applicationSystemId, final Map<String, String> data) {
         this.applications.remove(applicationSystemId);
+        this.userPrefillData.clear();
         this.userPrefillData.putAll(data);
     }
 
@@ -65,7 +64,7 @@ public class UserHolder implements Serializable {
         if (applications.containsKey(applicationSystemId)) {
             return applications.get(applicationSystemId);
         } else {
-            Application application = new Application(applicationSystemId, user);
+            Application application = new Application(applicationSystemId, getUser());
             this.applications.put(applicationSystemId, application);
             return application;
         }

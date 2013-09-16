@@ -118,12 +118,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     private ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase,
                                                   final Application application) {
-        final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
-        final String applicationSystemId = applicationState.getApplication().getApplicationSystemId();
+        //
+        final String applicationSystemId = application.getApplicationSystemId();
         final Form activeForm = formService.getActiveForm(applicationSystemId);
         ElementTree elementTree = new ElementTree(activeForm);
         final Element phase = elementTree.getChildById(applicationPhase.getPhaseId());
-        final Map<String, String> vastaukset = applicationPhase.getAnswers();
+        final Map<String, String> answers = applicationPhase.getAnswers();
 
         Map<String, String> allAnswers = new HashMap<String, String>();
         // if the current phase has previous phase, get all the answers for
@@ -132,16 +132,16 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         elementTree.isStateValid(current.getPhaseId(), applicationPhase.getPhaseId());
 
-        if (!elementTree.isFirstChild(phase)) {
-            allAnswers.putAll(current.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId()));
-        }
-        allAnswers.putAll(vastaukset);
+        allAnswers.putAll(current.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId()));
+        allAnswers.putAll(answers);
 
+        final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
         if (elementTree.isValidationNeeded(applicationPhase.getPhaseId(), application.getPhaseId())) {
             ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, allAnswers,
                     application.getOid(), applicationSystemId));
             applicationState.addError(validationResult.getErrorMessages());
         }
+
         if (applicationState.isValid()) {
             this.userHolder.savePhaseAnswers(applicationPhase);
         }
@@ -182,23 +182,23 @@ public class ApplicationServiceImpl implements ApplicationService {
         Map<String, String> allAnswers = application.getVastauksetMerged();
 
         //if (!isEmpty(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
-            PersonBuilder personBuilder = PersonBuilder.start()
-                    .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
-                    .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
-                    .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
-                    .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
-                    .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
-                    .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
-                    .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
-                    .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE))
-                    .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
-                    .setSecurityOrder(false);
+        PersonBuilder personBuilder = PersonBuilder.start()
+                .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
+                .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
+                .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
+                .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
+                .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
+                .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
+                .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
+                .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE))
+                .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
+                .setSecurityOrder(false);
 
-            try {
-                application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
-            } catch (GenericFault fail) {
-                LOGGER.info(fail.getMessage());
-            }
+        try {
+            application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
+        } catch (GenericFault fail) {
+            LOGGER.info(fail.getMessage());
+        }
         //}
 
         application.activate();

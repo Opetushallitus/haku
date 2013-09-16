@@ -36,6 +36,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
     @Test
     public void submitApplication() throws Exception {
+
         navigateToFirstPhase();
         setValue("Sukunimi", "Ankka");
         setValue("Etunimet", "Aku Kalle");
@@ -67,7 +68,6 @@ public class LomakeIT extends DummyModelBaseItTest {
         selenium.typeKeys("lahiosoite", "Katu 1");
         selenium.typeKeys("Postinumero", "00100");
 
-        nextPhase();
         nextPhase();
 
         testHAK123AandHAK124();
