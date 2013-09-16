@@ -67,11 +67,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public UIServiceResponse getValidatedApplicationElement(
+    public UIServiceResponse getApplicationElement(
             final String oid,
             final String phaseId,
-            final String elementId) throws ResourceNotFoundException {
-        Application application = this.applicationService.getApplication(oid);
+            final String elementId,
+            final boolean validate) throws ResourceNotFoundException {
+        Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
         Element element = new ElementTree(form).getChildById(elementId);
@@ -159,7 +160,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private void checkUpdatePermission(Application application) throws ResourceNotFoundException {
         if (!hakuPermissionService.userCanUpdateApplication(application)) {
-            throw new ResourceNotFoundException("User can not update application "+application.getOid());
+            throw new ResourceNotFoundException("User can not update application " + application.getOid());
         }
     }
 

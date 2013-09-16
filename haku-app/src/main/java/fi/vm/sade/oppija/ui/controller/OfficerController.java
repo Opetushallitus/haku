@@ -67,6 +67,7 @@ public class OfficerController {
     public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + ";charset=UTF-8";
     public static final String VIRKAILIJA_PHASE_VIEW = "/virkailija/Phase";
     public static final String APPLICATION_PRINT_VIEW = "/print/print";
+    public static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
     @Autowired
     OfficerUIService officerUIService;
@@ -120,7 +121,7 @@ public class OfficerController {
                                       @PathParam("elementId") final String elementId)
             throws ResourceNotFoundException {
         LOGGER.debug("getPreviewElement {}, {}, {}", applicationSystemId, phaseId, oid);
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplicationElement(oid, phaseId, elementId);
+        UIServiceResponse uiServiceResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, true);
         return new Viewable("/elements/Root", uiServiceResponse.getModel()); // TODO remove hardcoded Phase
     }
 
@@ -293,7 +294,7 @@ public class OfficerController {
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     public Viewable addPersonOid(@PathParam(OID_PATH_PARAM) final String oid,
-                            final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
+                                 final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
         final String personOid = multiValues.getFirst("newPersonOid");
         LOGGER.debug("addPersonOid: oid {}, personOid {}", oid, personOid);
         officerUIService.addPersonOid(oid, personOid);

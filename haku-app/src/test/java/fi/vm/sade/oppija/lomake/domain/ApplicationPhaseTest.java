@@ -36,7 +36,7 @@ public class ApplicationPhaseTest {
     }
 
     @Test
-    public void testGetVaiheId() throws Exception {
+    public void testGetPhaseId() throws Exception {
         assertEquals(ID, applicationPhase.getPhaseId());
     }
 
