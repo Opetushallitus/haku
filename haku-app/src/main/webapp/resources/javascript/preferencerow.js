@@ -28,7 +28,6 @@ var preferenceRow = {
 
                 preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
                 $("#" + selectInputId).html("<option></option>");
-                $selectInput.parent().find(".warning").hide();
 
                 $(data).each(function (index, item) {
                     var selected = "";
@@ -48,6 +47,7 @@ var preferenceRow = {
                         '" data-athlete="' + item.athleteEducation + '" >' + item.name + '</option>');
                 });
                 if (isInit && !selectedPreferenceOK && hakukohdeId && hakukohdeId !== '') {
+                    $selectInput.parent().find(".warning").hide();
                     var $providerInput = $("#" + providerInputId),
                         warning = '<div class="notification warning margin-top-1"><span>' +
                             sortabletable_settings.preferenceAndBaseEducationConflictMessage +
