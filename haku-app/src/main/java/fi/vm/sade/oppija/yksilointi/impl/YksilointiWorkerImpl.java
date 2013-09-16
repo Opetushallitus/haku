@@ -92,8 +92,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         LOGGER.debug("Starting processApplications, limit: {}, application: {} {}",
                 limit, application != null ? application.getOid() : "null", System.currentTimeMillis());
         while (application != null && endTime > System.currentTimeMillis()) {
-            applicationService.addPersonOid(application);
             applicationService.fillLOPChain(application);
+            applicationService.addPersonOid(application);
             if (sendMail) {
                 try {
                     sendMail(application);
