@@ -15,7 +15,6 @@
 <c:set value="${element.id}-Koulutus-id-sora" var="educationSora" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-aoIdentifier" var="aoIdentifier" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-athlete" var="educationAthlete" scope="page"/>
-<c:set value="${element.id}-discretionary" var="discretionary" scope="page"/>
 
 
 <table>
@@ -45,7 +44,6 @@
 <haku:input-hidden id="${educationSora}" data="${categoryData}"/>
 <haku:input-hidden id="${aoIdentifier}" data="${categoryData}"/>
 <haku:input-hidden id="${educationAthlete}" data="${categoryData}"/>
-<haku:input-hidden id="${discretionary}" data="${categoryData}"/>
 
 <div id="container-childLONames" class="notification block light-grey margin-2" style="display: none">
     <span><haku:i18nText value="${element.childLONameListLabel}"/>:&nbsp;</span>
