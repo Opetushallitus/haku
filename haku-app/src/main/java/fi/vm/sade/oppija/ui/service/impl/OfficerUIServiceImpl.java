@@ -20,8 +20,6 @@ import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
 import fi.vm.sade.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,8 +30,6 @@ import java.util.Map;
 
 @Service
 public class OfficerUIServiceImpl implements OfficerUIService {
-
-    public static final Logger LOGGER = LoggerFactory.getLogger(OfficerUIServiceImpl.class);
 
     private final ApplicationService applicationService;
     private final FormService formService;
@@ -88,7 +84,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws IOException, ResourceNotFoundException {
+    public UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws ResourceNotFoundException {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
@@ -96,9 +92,15 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 oid, application.getApplicationSystemId()));
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
         officerApplicationResponse.setApplication(application);
-        officerApplicationResponse.setElement(new ElementTree(form).getChildById(application.getPhaseId()));
         officerApplicationResponse.setForm(form);
+        if (!"esikatselu".equals(phaseId)) {
+            officerApplicationResponse.setElement(new ElementTree(form).getChildById(application.getPhaseId()));
+        } else {
+            officerApplicationResponse.setElement(form);
+
+        }
         officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
+        officerApplicationResponse.addObjectToModel("preview", "esikatselu".equals(phaseId));
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         officerApplicationResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
         officerApplicationResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
@@ -167,8 +169,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public Application getApplicationWithLastPhase(final String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
-        Element phase = formService.getLastPhase(application.getApplicationSystemId());
-        application.setPhaseId(phase.getId());
+        application.setPhaseId("esikatselu");
         return application;
     }
 
@@ -192,14 +193,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public Application passivateApplication(String oid, String reason, User user) throws ResourceNotFoundException {
+    public Application passivateApplication(String oid, String reason) throws ResourceNotFoundException {
         reason = "Hakemus passivoitu: " + reason;
-        addNote(oid, reason, user);
+        addNote(oid, reason);
         return applicationService.passivateApplication(oid);
     }
 
     @Override
-    public void addNote(String applicationOid, String note, User user) throws ResourceNotFoundException {
+    public void addNote(String applicationOid, String note) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(applicationOid);
         applicationService.addNote(application, note);
     }

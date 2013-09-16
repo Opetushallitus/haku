@@ -46,6 +46,8 @@ public class SinglePreference extends Titled {
         this.educationLabel = educationLabel;
         this.learningInstitutionLabel = learningInstitutionLabel;
         this.childLONameListLabel = childLONameListLabel;
+        setValidator(new RequiredFieldValidator(getId() + "-Opetuspiste", ElementUtil.createI18NTextError("yleinen.pakollinen")));
+        setValidator(new RequiredFieldValidator(getId() + "-Koulutus", ElementUtil.createI18NTextError("yleinen.pakollinen")));
     }
 
     public I18nText getEducationLabel() {
@@ -58,14 +60,5 @@ public class SinglePreference extends Titled {
 
     public I18nText getChildLONameListLabel() {
         return childLONameListLabel;
-    }
-
-    @Override
-    @Transient
-    public List<Validator> getValidators() {
-        List<Validator> listOfValidators = new ArrayList<Validator>();
-        listOfValidators.add(new RequiredFieldValidator(getId() + "-Opetuspiste", ElementUtil.createI18NTextError("yleinen.pakollinen")));
-        listOfValidators.add(new RequiredFieldValidator(getId() + "-Koulutus", ElementUtil.createI18NTextError("yleinen.pakollinen")));
-        return listOfValidators;
     }
 }

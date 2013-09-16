@@ -52,8 +52,10 @@ public class ElementTreeValidatorTest {
         formModelDummyMemoryDao = new FormServiceMockImpl(mock);
         SsnUniqueConcreteValidator ssnUniqueConcreteValidator = mock(SsnUniqueConcreteValidator.class);
         SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator = mock(SsnAndPreferenceUniqueConcreteValidator.class);
+        PreferenceConcreteValidator preferenceConcreteValidator = mock(PreferenceConcreteValidator.class);
         when(ssnUniqueConcreteValidator.validate(any(ValidationInput.class))).thenReturn(new ValidationResult());
-        ValidatorFactory validatorFactory = new ValidatorFactory(ssnUniqueConcreteValidator, ssnAndPreferenceUniqueConcreteValidator);
+        ValidatorFactory validatorFactory = new ValidatorFactory(ssnUniqueConcreteValidator, ssnAndPreferenceUniqueConcreteValidator,
+                preferenceConcreteValidator);
 
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
     }

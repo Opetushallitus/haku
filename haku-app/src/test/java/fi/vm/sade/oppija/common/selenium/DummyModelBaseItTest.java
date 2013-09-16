@@ -3,7 +3,9 @@ package fi.vm.sade.oppija.common.selenium;
 import com.google.common.base.Joiner;
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
+import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
+import fi.vm.sade.oppija.ui.selenium.DefaultValues;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -12,7 +14,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.fail;
 
@@ -20,11 +24,13 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected WebDriver driver;
     protected Selenium selenium;
+    protected DefaultValues defaultValues = new DefaultValues();
+    public ApplicationSystemHelper applicationSystemHelper;
 
     @Before
     public void setUDummyModelBaseIt() throws Exception {
         FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
-        updateApplicationSystem(formGeneratorMock.createApplicationSystem());
+        applicationSystemHelper = updateApplicationSystem(formGeneratorMock.createApplicationSystem());
         driver = seleniumHelper.getDriver();
         selenium = seleniumHelper.getSelenium();
     }
@@ -39,15 +45,14 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
             Select followUpSelect = new Select(element);
             followUpSelect.selectByValue(value);
         } else if ("input".equals(element.getTagName())) {
-            selenium.typeKeys(id, value);
+            String type = element.getAttribute("type");
+            if ("radio".equals(type) || "checkbox".equals(type)) {
+                element.click();
+            } else {
+                selenium.typeKeys(id, value);
+            }
         }
 
-    }
-
-    protected void navigateToPhase(final String phaseId) {
-        Joiner joiner = Joiner.on("/").skipNulls();
-        String url = joiner.join(StringUtils.removeEnd(getBaseUrl(), "/"), "lomake", ASID, phaseId);
-        driver.get(url);
     }
 
     protected void navigateToFirstPhase() {
@@ -94,8 +99,35 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     protected void elementsNotPresentByName(final String... names) {
         for (String name : names) {
             if (!driver.findElements(By.name(name)).isEmpty()) {
-                fail("name " + name + " found");
+                fail("name " + name + " not found");
             }
+        }
+    }
+
+    protected void elementsPresentBy(By... byes) {
+        for (By by : byes) {
+            driver.findElement(by);
+        }
+    }
+
+    protected void elementsNotPresentBy(By... byes) {
+        for (By by : byes) {
+            if (!driver.findElements(by).isEmpty()) {
+                fail("element " + by.toString() + " not found");
+            }
+        }
+    }
+
+    protected void findById(final String... ids) {
+        for (String id : ids) {
+            driver.findElement(new By.ById(id));
+        }
+    }
+
+
+    protected final void fillOut(final LinkedHashMap<String, String> values) {
+        for (Map.Entry<String, String> questionAndAnswer : values.entrySet()) {
+            setValue(questionAndAnswer.getKey(), questionAndAnswer.getValue());
         }
     }
 }

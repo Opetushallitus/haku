@@ -32,11 +32,8 @@
     <context:component-scan base-package="fi.vm.sade.oppija.hakemus.converter"/>
     <context:component-scan base-package="fi.vm.sade.oppija.lomake.dao"/>
     <context:component-scan base-package="fi.vm.sade.oppija.lomake.service"/>
-    <context:component-scan base-package="fi.vm.sade.oppija.lomake.event"/>
     <context:component-scan base-package="fi.vm.sade.oppija.hakemus.service"/>
     <context:component-scan base-package="fi.vm.sade.oppija.hakemus.dao"/>
-
-    <import resource="haku-context.xml"/>
 
     <bean id="logger" class="fi.vm.sade.log.client.LoggerMock"/>
 

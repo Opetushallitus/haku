@@ -41,7 +41,7 @@
     <script src="${contextPath}/resources/javascript/master.js"></script>
     <script>
         function pastPhase(phaseId) {
-            $('#form-${vaihe.id}').append('<input type="hidden" name="phaseId" value="' + phaseId + '-skip-validators" />');
+            $('#form-${vaihe.id}').append('<input type="hidden" name="phaseId" value="' + phaseId + '" />');
             $('#form-${vaihe.id}').submit();
         }
         $(document).ready(function () {
@@ -107,27 +107,15 @@
                     <c:forEach var="phase" items="${form.children}" varStatus="status">
                         <li>
                             <c:if test="${pastPhases}">
-                                <c:choose>
-                                    <c:when test="${preview}">
-                                        <a id="nav-${phase.id}" href="${phase.id}">
-                                            <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
-                                        </a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a id="nav-${phase.id}" href="javascript:pastPhase('${phase.id}')"
-                                           <c:if test="${phase.id eq vaihe.id}">class="current"</c:if>>
-                                            <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
-                                        </a>
-                                    </c:otherwise>
-                                </c:choose>
+                                <a id="nav-${phase.id}" href="javascript:pastPhase('${phase.id}')"
+                                   <c:if test="${phase.id eq vaihe.id}">class="current"</c:if>>
+                                    <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
+                                </a>
                             </c:if>
                             <c:if test="${!pastPhases}">
                             	<span>
                             	<span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
                             	</span>
-                                <%--a id="nav-nav-${phase.id}" href="${phase.id}">
-                                <span class="index">${status.count}</span><haku:i18nText value="${phase.i18nText}"/>&nbsp;&gt;
-                                </a --%>
                             </c:if>
                             <c:if test="${(pastPhases && phase.id eq vaihe.id)}">
                                 <c:set var="pastPhases" value="false"/>
@@ -136,7 +124,11 @@
                     </c:forEach>
                     <li>
                         <span>
-                            <span class="index"><c:out value="${fn:length(form.children) + 1}"/></span>
+                            <span class="index"><c:out value="${fn:length(form.children) + 1}"/></span><fmt:message key="lomake.esikatselu"/></span>
+                    </li>
+                    <li>
+                        <span>
+                            <span class="index"><c:out value="${fn:length(form.children) + 2}"/></span>
                             <fmt:message key="lomake.valmis"/>
                         </span>
                     </li>
@@ -148,17 +140,12 @@
                 <c:when test="${preview}">
                     <div class="form">
                         <jsp:include page="../prev_next_buttons_preview.jsp"/>
-                        <div class="phase-help">
-                            <div class="help-text"><haku:i18nText value="${element.help}"/></div>
-                        </div>
 
                         <c:forEach var="child" items="${vaihe.children}">
                             <c:set var="element" value="${child}" scope="request"/>
-                            <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
                             <jsp:include page="./${child.type}Preview.jsp"/>
                         </c:forEach>
                         <jsp:include page="../prev_next_buttons_preview.jsp"/>
-
                     </div>
                 </c:when>
                 <c:otherwise>
@@ -167,7 +154,6 @@
 
                         <c:forEach var="child" items="${vaihe.children}">
                             <c:set var="element" value="${child}" scope="request"/>
-                            <c:set var="parentId" value="${form.id}.${vaihe.id}" scope="request"/>
                             <jsp:include page="./${child.type}.jsp"/>
                         </c:forEach>
                         <jsp:include page="../prev_next_buttons.jsp"/>
@@ -177,6 +163,9 @@
         </div>
     </div>
 </div>
+<!-- Piwik
+<script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
+ End Piwik Code -->
 </body>
 </html>
 

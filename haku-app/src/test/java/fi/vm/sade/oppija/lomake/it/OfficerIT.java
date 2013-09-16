@@ -21,7 +21,6 @@ import static org.junit.Assert.assertTrue;
 
 public class OfficerIT extends DummyModelBaseItTest {
 
-
     @Before
     public void setUp() throws Exception {
         String baseUrl = getBaseUrl();

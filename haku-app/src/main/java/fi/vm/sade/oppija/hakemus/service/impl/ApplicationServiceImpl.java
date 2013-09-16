@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.hakemus.service.impl;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
 import fi.vm.sade.authentication.service.GenericFault;
@@ -56,6 +55,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.HEAD;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -112,41 +112,37 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
     @Override
-    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, boolean skipValidators) {
+    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase) {
         final Application application = new Application(this.userHolder.getUser(), applicationPhase);
-        return saveApplicationPhase(applicationPhase, application, skipValidators);
-    }
-
-    @Override
-    public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase, String oid, boolean skipValidators) {
-        final Application application = new Application(oid, applicationPhase);
-        return saveApplicationPhase(applicationPhase, application, skipValidators);
+        return saveApplicationPhase(applicationPhase, application);
     }
 
     private ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase,
-                                                  final Application application,
-                                                  final boolean skipValidators) {
-        final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
-        final String applicationSystemId = applicationState.getApplication().getApplicationSystemId();
+                                                  final Application application) {
+        //
+        final String applicationSystemId = application.getApplicationSystemId();
         final Form activeForm = formService.getActiveForm(applicationSystemId);
         ElementTree elementTree = new ElementTree(activeForm);
         final Element phase = elementTree.getChildById(applicationPhase.getPhaseId());
-        final Map<String, String> vastaukset = applicationPhase.getAnswers();
+        final Map<String, String> answers = applicationPhase.getAnswers();
 
         Map<String, String> allAnswers = new HashMap<String, String>();
         // if the current phase has previous phase, get all the answers for
         // validating rules
-        if (!elementTree.isFirstChild(phase)) {
-            Application current = userHolder.getApplication(applicationSystemId);
-            allAnswers.putAll(current.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId()));
-        }
-        allAnswers.putAll(vastaukset);
+        Application current = userHolder.getApplication(applicationSystemId);
 
-        if (!skipValidators) {
+        elementTree.isStateValid(current.getPhaseId(), applicationPhase.getPhaseId());
+
+        allAnswers.putAll(current.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId()));
+        allAnswers.putAll(answers);
+
+        final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
+        if (elementTree.isValidationNeeded(applicationPhase.getPhaseId(), application.getPhaseId())) {
             ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, allAnswers,
                     application.getOid(), applicationSystemId));
             applicationState.addError(validationResult.getErrorMessages());
         }
+
         if (applicationState.isValid()) {
             this.userHolder.savePhaseAnswers(applicationPhase);
         }
@@ -464,8 +460,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (!hakuPermissionService.userCanReadApplication(application)) {
             throw new ResourceNotFoundException("User is not allowed to read application " + application.getOid());
         }
-
         return application;
-
     }
+
+
 }

@@ -26,7 +26,7 @@ public class Code {
     private String value;
     private I18nText metadata;
 
-    public Code(String value, I18nText metadata) {
+    public Code(final String value, final I18nText metadata) {
         this.value = value;
         this.metadata = metadata;
     }

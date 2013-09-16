@@ -53,7 +53,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-@Path("/lomake")
+@Path("lomake")
 public class FormController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
@@ -75,7 +75,7 @@ public class FormController {
     public static final String MODEL_KEY_CATEGORY_DATA = "categoryData";
     public static final String MODEL_KEY_KOULUTUSINFORMAATIO_BASE_URL = "koulutusinformaatioBaseUrl";
 
-    final FormService formService;
+    private final FormService formService;
     private final ApplicationService applicationService;
     private final UserHolder userHolder;
     private final String koulutusinformaatioBaseUrl;
@@ -144,9 +144,10 @@ public class FormController {
     public Viewable getPhase(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId) {
 
-        LOGGER.debug("getElement {}, {}", applicationSystemId, phaseId);
+        LOGGER.debug("getPhase {}, {}", applicationSystemId, phaseId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        Element element = new ElementTree(activeForm).getChildById(phaseId);
+        ElementTree elementTree = new ElementTree(activeForm);
+        Element element = elementTree.getChildById(phaseId);
         Map<String, Object> model = new HashMap<String, Object>();
         Application application = applicationService.getApplication(applicationSystemId);
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
@@ -166,7 +167,16 @@ public class FormController {
     @Path("/{applicationSystemId}/esikatselu")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) {
-        return getPhase(applicationSystemId, "esikatselu");
+        Form activeForm = formService.getActiveForm(applicationSystemId);
+        Map<String, Object> model = new HashMap<String, Object>();
+        Application application = applicationService.getApplication(applicationSystemId);
+        Map<String, String> values = application.getVastauksetMerged();
+        model.put(MODEL_KEY_CATEGORY_DATA, values);
+        model.put(MODEL_KEY_ELEMENT, activeForm);
+        model.put(MODEL_KEY_TEMPLATE, activeForm.getType());
+        model.put(MODEL_KEY_FORM, activeForm);
+        model.put(MODEL_KEY_APPLICATION_SYSTEM_ID, applicationSystemId);
+        return new Viewable(ROOT_VIEW, model);
     }
 
     @GET
@@ -316,28 +326,4 @@ public class FormController {
         model.put(MODEL_KEY_TEMPLATE, "gradegrid/additionalLanguageRow");
         return new Viewable(ROOT_VIEW, model);
     }
-
-    private boolean skipValidators(MultivaluedMap<String, String> multiValues, Form form, String phaseId) {
-        List<String> phaseIdList = multiValues.get(PHASE_ID_PATH_PARAM);
-        if (phaseIdList == null || phaseIdList.size() == 0) {
-            return false;
-        }
-
-        String targetPhaseId = phaseIdList.get(0);
-        boolean skipValidators = targetPhaseId.endsWith("-skip-validators");
-        if (skipValidators) {
-            targetPhaseId = targetPhaseId.substring(0, targetPhaseId.lastIndexOf("-skip-validators"));
-            multiValues.get(PHASE_ID_PATH_PARAM).set(0, targetPhaseId);
-        }
-
-        for (Element phase : form.getChildren()) {
-            if (phase.getId().equals(targetPhaseId)) {
-                return skipValidators;
-            } else if (phase.getId().equals(phaseId)) {
-                return false; // Never skip validators when moving forwards
-            }
-        }
-        return false; // Do not skip, if neither the target phase nor the current phase was found in form's phases.
-    }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -14,28 +14,19 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.lomake.domain;
+package fi.vm.sade.oppija.lomake.validation.validators;
 
-import org.codehaus.jackson.annotate.JsonTypeInfo;
-
-import java.util.UUID;
+import fi.vm.sade.oppija.lomake.validation.ValidationInput;
+import fi.vm.sade.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.oppija.lomake.validation.Validator;
 
 /**
- * @author jukka
- * @version 10/12/123:58 PM}
- * @since 1.1
+ * @author Mikko Majapuro
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-public class AnonymousUser extends User {
-
-    private static final long serialVersionUID = -1001066637131188797L;
-
-    public AnonymousUser() {
-        super(UUID.randomUUID().toString());
-    }
+public class PreferenceValidator implements Validator {
 
     @Override
-    public boolean isKnown() {
-        return false;
+    public ValidationResult validate(ValidationInput validationInput) {
+        return new ValidationResult();
     }
 }

@@ -29,8 +29,6 @@ import fi.vm.sade.oppija.lomake.util.ElementTree;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.oppija.ui.service.UIService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -49,7 +47,6 @@ public class UIServiceImpl implements UIService {
     private final ApplicationService applicationService;
     private final FormService formService;
     private final String koulutusinformaatioBaseUrl;
-    public static final Logger LOGGER = LoggerFactory.getLogger(UIServiceImpl.class);
 
 
     @Autowired

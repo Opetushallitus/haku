@@ -72,6 +72,8 @@ public class HakutoiveetPhase {
                 createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id));
         hakutoiveetTheme.addChild(singlePreference);
         ElementUtil.setVerboseHelp(singlePreference, "form.hakutoiveet.otsikko.lisahaku.verboseHelp");
+        ElementUtil.addPreferenceValidator(singlePreference);
+        addApplicationUniqueValidator(singlePreference, Yhteishaku2013.LISA_HAKU);
         return hakutoiveetTheme;
     }
 
@@ -87,6 +89,7 @@ public class HakutoiveetPhase {
         pr.addChild(createDiscretionaryQuestionsAndRules(id));
         pr.addChild(createSoraQuestions(id),
                 createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id));
+        ElementUtil.addPreferenceValidator(pr);
         return pr;
     }
 

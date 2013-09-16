@@ -41,5 +41,8 @@
         </section>
     </div>
 </div>
+<!-- Piwik -->
+<script src="${pageContext.request.contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
+<!-- End Piwik Code -->
 </body>
 </html>

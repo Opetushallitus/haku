@@ -36,7 +36,7 @@ public final class ElementTreeValidator {
     public ValidationResult validate(final ValidationInput validationInput) {
         List<ValidationResult> listOfValidationResult = new ArrayList<ValidationResult>();
         Element element = validationInput.getElement();
-        if (!element.getId().equals("esikatselu")) { // TODO Refactor preview and remove this!
+        if (!element.getId().equals("esikatselu")) {
             for (Validator validator : element.getValidators()) {
                 listOfValidationResult.add(validatorFactory.buildValidator(validator).validate(validationInput));
             }

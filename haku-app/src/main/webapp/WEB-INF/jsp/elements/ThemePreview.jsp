@@ -19,43 +19,33 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
-<c:set var="showTheme" value="${false}"/>
-<c:forEach var="child" items="${fn:allChildren(element)}">
-    <c:if test="${!showTheme}">
-        <c:set var="showTheme" value="${not empty categoryData[child.id]}"/>
-    </c:if>
-</c:forEach>
-
-<c:if test="${showTheme or not (oid eq null)}">
-    <fieldset>
-        <legend class="h3"><haku:i18nText value="${element.i18nText}"/></legend>
-        <hr>
-        <c:forEach var="phase" items="${form.children}">
-            <c:if test="${(not phase.preview)}">
-                <c:forEach var="teema" items="${phase.children}">
-                    <c:if test="${(teema.id eq element.id)}">
-                        <c:choose>
-                            <c:when test="${oid eq null}">
-                                <c:set var="editUrl"
-                                       value="${pageContext.request.contextPath}/lomake/${applicationSystemId}/${phase.id}"/>
-                            </c:when>
-                            <c:otherwise>
-                                <c:set var="editUrl"
-                                       value="${pageContext.request.contextPath}/virkailija/hakemus/${application.applicationSystemId}/${phase.id}/${oid}"/>
-                            </c:otherwise>
-                        </c:choose>
-                        <c:if test="${it.virkailijaEditAllowed}">
-                            <virkailija:EditButton url="${editUrl}" application="${application}"/>
-                        </c:if>
+<fieldset>
+    <legend class="h3"><haku:i18nText value="${element.i18nText}"/></legend>
+    <hr>
+    <c:forEach var="phase" items="${form.children}">
+        <c:if test="${(not phase.preview)}">
+            <c:forEach var="teema" items="${phase.children}">
+                <c:if test="${(teema.id eq element.id)}">
+                    <c:choose>
+                        <c:when test="${oid eq null}">
+                            <c:set var="editUrl"
+                                   value="${pageContext.request.contextPath}/lomake/${applicationSystemId}/${phase.id}"/>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="editUrl"
+                                   value="${pageContext.request.contextPath}/virkailija/hakemus/${application.applicationSystemId}/${phase.id}/${oid}"/>
+                        </c:otherwise>
+                    </c:choose>
+                    <c:if test="${it.virkailijaEditAllowed}">
+                        <virkailija:EditButton url="${editUrl}" application="${application}"/>
                     </c:if>
-                </c:forEach>
-            </c:if>
-        </c:forEach>
-        <table class="form-summary-table width-80">
-            <tbody>
-            <haku:viewChilds element="${element}"/>
-            </tbody>
-        </table>
-    </fieldset>
-</c:if>
+                </c:if>
+            </c:forEach>
+        </c:if>
+    </c:forEach>
+    <table class="form-summary-table width-80">
+        <tbody>
+        <haku:viewChilds element="${element}"/>
+        </tbody>
+    </table>
+</fieldset>
