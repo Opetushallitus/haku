@@ -73,6 +73,7 @@ public class HakutoiveetPhase {
         hakutoiveetTheme.addChild(singlePreference);
         ElementUtil.setVerboseHelp(singlePreference, "form.hakutoiveet.otsikko.lisahaku.verboseHelp");
         ElementUtil.addPreferenceValidator(singlePreference);
+        addApplicationUniqueValidator(singlePreference, Yhteishaku2013.LISA_HAKU);
         return hakutoiveetTheme;
     }
 
