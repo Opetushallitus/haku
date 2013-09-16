@@ -51,15 +51,17 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
     public ValidationResult validate(ValidationInput validationInput) {
         return checkIfExistsBySocialSecurityNumberAndAo(validationInput.getApplicationSystemId(),
                 validationInput.getValues().get(SocialSecurityNumber.HENKILOTUNNUS),
-                validationInput.getApplicationOid(), validationInput.getValues().get(preferenceKey));
+                validationInput.getApplicationOid(), validationInput.getValues().get(preferenceKey),
+                validationInput.getElement().getId());
     }
 
-    private ValidationResult checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String applicationOid, String aoId) {
+    private ValidationResult checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String applicationOid, String aoId,
+                                                                      String elementId) {
         ValidationResult validationResult = new ValidationResult();
         if (!Strings.isNullOrEmpty(ssn) && Strings.isNullOrEmpty(applicationOid) && !Strings.isNullOrEmpty(aoId)) {
             Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
             if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumberAndAo(asId, ssn, aoId)) {
-                ValidationResult result = new ValidationResult("Henkilotunnus",
+                ValidationResult result = new ValidationResult(elementId,
                         ElementUtil.createI18NTextError("henkilotiedot.hetuKaytetty"));
                 return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
             }
