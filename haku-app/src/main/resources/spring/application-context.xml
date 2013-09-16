@@ -89,7 +89,6 @@
 
         <task:scheduler id="scheduler" pool-size="1"/>
 
-        <import resource="haku-context.xml"/>
         <import resource="cxf-context.xml"/>
     </beans>
 

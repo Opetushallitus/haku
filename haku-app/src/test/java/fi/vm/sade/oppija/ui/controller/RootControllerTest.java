@@ -17,13 +17,20 @@
 package fi.vm.sade.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 public class RootControllerTest {
 
-    private RootController rootController = new RootController();
+
+    private RootController rootController;
+
+    @Before
+    public void setUp() throws Exception {
+        rootController = new RootController();
+    }
 
     @Test
     public void testGetIndexView() throws Exception {

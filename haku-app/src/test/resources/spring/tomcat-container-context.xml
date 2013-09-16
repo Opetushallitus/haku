@@ -27,8 +27,6 @@
     <context:property-placeholder location="classpath:haku.properties, classpath:haku-test.properties"
                                   ignore-resource-not-found="true"/>
 
-    <import resource="haku-context.xml"/>
-
     <context:annotation-config/>
     <context:component-scan base-package="fi.vm.sade.oppija"/>
 

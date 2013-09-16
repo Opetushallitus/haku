@@ -60,7 +60,7 @@ public class OfficerControllerTest {
     @Before
     public void setUp() throws Exception {
         officerController = new OfficerController();
-        officerController.userHolder = new UserHolder();
+        officerController.userHolder = mock(UserHolder.class);
 
         ApplicationService applicationService = mock(ApplicationService.class);
         FormService formService = mock(FormService.class);
@@ -78,8 +78,6 @@ public class OfficerControllerTest {
         form.addChild(phase);
         when(formService.getActiveForm(ASID)).thenReturn(form);
 
-        ApplicationState applicationState = new ApplicationState(app, "henkilotiedot");
-
         OfficerUIService officerApplicationService = mock(OfficerUIService.class);
         UIServiceResponse uiServiceResponse = new UIServiceResponse();
         when(officerApplicationService.getValidatedApplication(OID, PREVIEW_PHASE)).thenReturn(uiServiceResponse);
@@ -95,14 +93,8 @@ public class OfficerControllerTest {
         assertEquals("/virkailija/hakemus/" + ASID + "/valmis/" + OID, getLocationHeader(response));
     }
 
-//    @Test
-//    public void testGetPhase() throws Exception {
-//        Viewable viewable = officerController.getPreview(ASID, PREVIEW_PHASE, OID);
-//        assertEquals(OfficerController.VIRKAILIJA_PHASE_VIEW, viewable.getTemplateName());
-//    }
-
     @Test
-    public void testSavePhase() throws URISyntaxException, ResourceNotFoundException {
+    public void testUpdatePhase() throws URISyntaxException, ResourceNotFoundException {
         Response response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }

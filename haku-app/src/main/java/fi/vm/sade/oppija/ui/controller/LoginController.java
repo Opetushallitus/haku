@@ -16,16 +16,8 @@
 
 package fi.vm.sade.oppija.ui.controller;
 
-/**
- * @author jukka
- * @version 10/12/121:20 PM}
- * @since 1.1
- */
-
 import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.oppija.lomake.domain.User;
-import fi.vm.sade.oppija.lomake.service.UserHolder;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,18 +36,11 @@ import static javax.ws.rs.core.Response.seeOther;
 
 @Component
 @Path("user")
+@Profile("dev")
 public class LoginController {
 
     public static final String TOP_LOGIN_VIEW = "/top/login";
     public static final String LOGIN_VIEW = "/index";
-    public static final String USERNAME_SESSION_ATTRIBURE = "username";
-
-    private final UserHolder userHolder;
-
-    @Autowired
-    public LoginController(final UserHolder userHolder) {
-        this.userHolder = userHolder;
-    }
 
     @GET
     @Path("postLogin")
@@ -67,10 +52,7 @@ public class LoginController {
         }
 
         Principal userPrincipal = securityContext.getUserPrincipal();
-        String name = userPrincipal.getName();
-        userHolder.login(new User(name));
-        req.getSession().setAttribute(USERNAME_SESSION_ATTRIBURE, name);
-        return getResponseByUsername(name);
+        return getResponseByUsername(userPrincipal.getName());
     }
 
     @GET

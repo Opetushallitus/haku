@@ -82,7 +82,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws IOException, ResourceNotFoundException {
+    public UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws ResourceNotFoundException {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
@@ -191,14 +191,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public Application passivateApplication(String oid, String reason, User user) throws ResourceNotFoundException {
+    public Application passivateApplication(String oid, String reason) throws ResourceNotFoundException {
         reason = "Hakemus passivoitu: " + reason;
-        addNote(oid, reason, user);
+        addNote(oid, reason);
         return applicationService.passivateApplication(oid);
     }
 
     @Override
-    public void addNote(String applicationOid, String note, User user) throws ResourceNotFoundException {
+    public void addNote(String applicationOid, String note) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(applicationOid);
         applicationService.addNote(application, note);
     }
