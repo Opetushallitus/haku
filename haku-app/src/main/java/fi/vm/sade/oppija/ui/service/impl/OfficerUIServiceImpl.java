@@ -1,7 +1,6 @@
 package fi.vm.sade.oppija.ui.service.impl;
 
 import com.google.common.base.Strings;
-import com.sun.scenario.effect.Merge;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.oppija.hakemus.domain.Application;
@@ -24,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.HEAD;
 import java.io.IOException;
 import java.util.Map;
 
