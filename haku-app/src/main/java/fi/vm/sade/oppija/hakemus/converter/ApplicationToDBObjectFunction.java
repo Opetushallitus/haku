@@ -25,8 +25,6 @@ import fi.vm.sade.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -40,11 +38,6 @@ import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
-/**
- * @author jukka
- * @version 11/22/124:39 PM}
- * @since 1.1
- */
 @Service
 public class ApplicationToDBObjectFunction implements Function<Application, DBObject> {
 

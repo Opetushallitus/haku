@@ -24,7 +24,6 @@ import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.exception.ConfigurationException;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.organisaatio.api.model.types.OrganisaatioPerustietoType;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.Profile;
