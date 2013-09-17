@@ -48,7 +48,7 @@ public final class RegexRule {
         Iterable<String> selectors = Iterables.transform(listOfStrings, new Function<String, String>() {
             @Override
             public String apply(final String input) {
-                return "[name='" + input + "']";
+                return "[name='" + input + "']"; //NOSONAR
             }
         });
         return toCommaSeparatedString(selectors);
@@ -60,8 +60,7 @@ public final class RegexRule {
                 Iterables.transform(element.getChildren(), new Function<Element, String>() {
                     @Override
                     public String apply(final Element element) {
-                        checkNotNull(element);
-                        return "'" + element.getId() + "'";
+                        return "'" + element.getId() + "'"; //NOSONAR
                     }
                 }));
     }
