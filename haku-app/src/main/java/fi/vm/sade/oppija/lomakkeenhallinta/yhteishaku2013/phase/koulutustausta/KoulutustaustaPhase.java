@@ -58,7 +58,7 @@ public final class KoulutustaustaPhase {
         return koulutustausta;
     }
 
-    public static final Radio createKoulutustaustaRadio(final KoodistoService koodistoService) {
+    public static Radio createKoulutustaustaRadio(final KoodistoService koodistoService) {
         List<Code> baseEducationCodes = koodistoService.getCodes("pohjakoulutustoinenaste", 1);
 
         Map<String, Code> educationMap = Maps.uniqueIndex(baseEducationCodes, new Function<Code, String>() {

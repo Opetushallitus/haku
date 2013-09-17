@@ -23,7 +23,7 @@ public class ElementTreeTest {
 
     @Test
     public void testGetRelatedData() {
-        Question relatedElement = ElementUtil.createRequiredTextQuestion(ElementUtil.randomId(), "name", "10");
+        Question relatedElement = ElementUtil.createRequiredTextQuestion(ElementUtil.randomId(), "name", 10);
         HashMap<String, Element> relatedData = new HashMap<String, Element>();
         String id = ElementUtil.randomId();
         relatedData.put(id, relatedElement);

@@ -47,7 +47,7 @@ public final class LisatiedotPhase {
         tyokokemuskuukaudet
                 .setHelp(createI18NForm("form.tyokokemus.kuukausina.help"));
         tyokokemuskuukaudet.setValidator(createRegexValidator(tyokokemuskuukaudet.getId(), TYOKOKEMUS_PATTERN));
-        tyokokemuskuukaudet.addAttribute("size", "8");
+        addSizeAttribute(tyokokemuskuukaudet, 8);
         tyokokemuskuukaudet.addAttribute("maxlength", "4");
         setVerboseHelp(tyokokemuskuukaudet, "form.tyokokemus.kuukausina.verboseHelp");
         workExperienceTheme.addChild(tyokokemuskuukaudet);
@@ -194,7 +194,7 @@ public final class LisatiedotPhase {
     private static TextQuestion createTextQuestion(final String id, final String messageKey) {
         TextQuestion textQuestion = new TextQuestion(id, createI18NForm(messageKey));
         textQuestion.setInline(true);
-        textQuestion.addAttribute("size", "30");
+        addSizeAttribute(textQuestion, 30);
         return textQuestion;
     }
 }

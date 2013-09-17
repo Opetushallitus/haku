@@ -20,7 +20,7 @@ public class MongoConfiguration {
     }
 
     @Bean
-    public MongoFactoryBean mongo(final @Value("${mongodb.url}") String mongoUrl) throws URISyntaxException {
+    public MongoFactoryBean mongo(@Value("${mongodb.url}") final String mongoUrl) throws URISyntaxException {
         MongoFactoryBean mongo = new MongoFactoryBean();
         URI url1 = new URI(mongoUrl);
         mongo.setHost(url1.getHost());

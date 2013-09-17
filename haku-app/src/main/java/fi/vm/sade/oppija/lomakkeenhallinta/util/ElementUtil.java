@@ -151,12 +151,18 @@ public final class ElementUtil {
         return "(" + Joiner.on('|').skipNulls().join(values) + ")";
     }
 
-    public static Question createRequiredTextQuestion(final String id, final String name, final String size) {
+    public static Question createRequiredTextQuestion(final String id, final String name, final int size) {
         TextQuestion textQuestion = new TextQuestion(id, createI18NForm(name));
         addRequiredValidator(textQuestion);
-        textQuestion.addAttribute("size", size);
+        addSizeAttribute(textQuestion, size);
         return textQuestion;
     }
+
+    public static Element addSizeAttribute(final Element element, final int size) {
+        element.addAttribute("size", String.valueOf(size));
+        return element;
+    }
+
 
     public static Validator createRegexValidator(final String id, final String pattern) {
         return new RegexFieldValidator(id,
