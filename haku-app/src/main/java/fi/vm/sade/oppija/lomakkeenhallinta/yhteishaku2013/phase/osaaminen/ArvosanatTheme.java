@@ -3,6 +3,7 @@ package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.osaaminen;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.elements.Text;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
@@ -33,13 +34,17 @@ public final class ArvosanatTheme {
         );
         RelatedQuestionRule relatedQuestionPK = new RelatedQuestionRule("rule_grade_pk", RELATED_ELEMENT_ID,
                 pkAnwers, false);
-        relatedQuestionPK.addChild(gradesTablePK.createGradeGrid("grid_pk"));
+        GradeGrid grid_pk = gradesTablePK.createGradeGrid("grid_pk");
+        grid_pk.setHelp(createI18NForm("form.arvosanat.help"));
+        relatedQuestionPK.addChild(grid_pk);
         arvosanatTheme.addChild(relatedQuestionPK);
 
         String yoAnwers = orStr(OppijaConstants.YLIOPPILAS);
         RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", RELATED_ELEMENT_ID,
                 yoAnwers, false);
-        relatedQuestionLukio.addChild(gradesTableYO.createGradeGrid("grid_yo"));
+        GradeGrid grid_yo = gradesTableYO.createGradeGrid("grid_yo");
+        grid_yo.setHelp(createI18NForm("form.arvosanat.help"));
+        relatedQuestionLukio.addChild(grid_yo);
         arvosanatTheme.addChild(relatedQuestionLukio);
 
         RelatedQuestionRule relatedQuestionEiTutkintoa = new RelatedQuestionRule("rule_grade_no", RELATED_ELEMENT_ID,
@@ -48,7 +53,6 @@ public final class ArvosanatTheme {
                 new Text("nogradegrid", createI18NForm("form.arvosanat.eiKysyta")));
         arvosanatTheme.addChild(relatedQuestionEiTutkintoa);
 
-        arvosanatTheme.setHelp(createI18NForm("form.arvosanat.help"));
         ElementUtil.setVerboseHelp(arvosanatTheme, "form.arvosanat.otsikko.verboseHelp");
         return arvosanatTheme;
     }
