@@ -18,7 +18,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<fmt:setBundle basename="form_messages"/>
 <c:set value="${element.id}-Opetuspiste" var="textInputId" scope="page"/>
 <c:set value="${element.id}-Koulutus" var="selectInputId" scope="page"/>
 <c:set value="${element.id}-Koulutus-id" var="selectHiddenInputId" scope="page"/>
@@ -41,7 +40,7 @@
         <c:if test="${not empty fn:children(element, categoryData)}">
             <tr>
                 <td></td>
-                <td class="sublabel"><fmt:message key="form.hakutoiveet.kysymykset"/></td>
+                <td class="sublabel"><fmt:message key="hakutoiveet.kysymykset"/></td>
                 <td>
                 <table class="additional-questions-table width-100">
                 <tbody>
