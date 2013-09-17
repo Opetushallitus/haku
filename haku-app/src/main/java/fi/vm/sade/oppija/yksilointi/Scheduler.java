@@ -39,7 +39,7 @@ public class Scheduler {
         if (run) {
             try {
                 LOGGER.debug("Running identification scheduler {}", System.currentTimeMillis());
-                worker.processApplications(interval, sendMail);
+                worker.processApplications(sendMail);
                 LOGGER.debug("Finished running identification scheduler {}", System.currentTimeMillis());
             } catch (Exception e) {
                 LOGGER.error("Error processing applications", e);

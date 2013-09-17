@@ -63,6 +63,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public String addPerson(Person person) {
 
+        log.debug("start addPerson, {}", System.currentTimeMillis() / 1000);
+
         String hetuResource = targetService + "/resources/henkilo/byHetu";
         String serviceTicket = getServiceticket();
 
@@ -71,6 +73,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         log.info("Getting person from " + realHetuUrl);
         GetMethod get = new GetMethod(realHetuUrl);
         try {
+            log.debug("execute getByHetu addPerson, {}", System.currentTimeMillis() / 1000);
             client.executeMethod(get);
         } catch (IOException e) {
             log.error("Checking hetu failed due to: " + e.toString());
@@ -98,6 +101,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         JsonObject henkiloJson = new JsonParser().parse(responseString).getAsJsonObject();
+
+        log.debug("endAddPerson, {}", System.currentTimeMillis() / 1000);
         return henkiloJson.get("oidHenkilo").getAsString();
     }
 
@@ -145,6 +150,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private String createHenkilo(HttpClient client, Person person) {
 
+        log.debug("start createHenkilo, {}", System.currentTimeMillis() / 1000);
         String henkiloResource = targetService + "/resources/henkilo";
 
         String responseString = null;
@@ -160,6 +166,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             log.error("Creating person failed due to: " + e.toString());
         }
         log.debug("createHenkilo responseString: {}", responseString);
+
+        log.debug("end createHenkilo, {}", System.currentTimeMillis() / 1000);
         return responseString;
     }
 

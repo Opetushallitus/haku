@@ -17,6 +17,6 @@ package fi.vm.sade.oppija.yksilointi;
 
 public interface YksilointiWorker {
 
-    void processApplications(int limit, boolean sendMail);
+    void processApplications(boolean sendMail);
 
 }

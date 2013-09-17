@@ -85,13 +85,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
      * @param limit
      * @param sendMail
      */
-    public void processApplications(int limit, boolean sendMail) {
+    public void processApplications(boolean sendMail) {
         Application application = applicationService.getNextWithoutPersonOid();
 
-        long endTime = System.currentTimeMillis() + (limit - 500);
-        LOGGER.debug("Starting processApplications, limit: {}, application: {} {}",
-                limit, application != null ? application.getOid() : "null", System.currentTimeMillis());
-        while (application != null && endTime > System.currentTimeMillis()) {
+        LOGGER.debug("Starting processApplications, application: {} {}",
+                application != null ? application.getOid() : "null", System.currentTimeMillis());
+        while (application != null) {
             applicationService.addPersonAndAuthenticate(application);
             applicationService.fillLOPChain(application);
             if (sendMail) {

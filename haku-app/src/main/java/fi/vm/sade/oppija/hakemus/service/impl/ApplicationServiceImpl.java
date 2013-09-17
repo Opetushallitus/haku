@@ -181,6 +181,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application addPersonAndAuthenticate(Application application) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
 
+        LOGGER.debug("start addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
+
         //if (!isEmpty(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
         PersonBuilder personBuilder = PersonBuilder.start()
                 .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
@@ -201,8 +203,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         //}
 
+
+        LOGGER.debug("activate addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
         application.activate();
+        LOGGER.debug("save addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
         this.applicationDAO.save(application);
+        LOGGER.debug("end addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
         return application;
     }
 
