@@ -43,7 +43,7 @@ public class ApplicationNote implements Serializable {
                            @JsonProperty(value = "added") final Date added,
                            @JsonProperty(value = "user") final String user) {
         this.noteText = noteText;
-        this.added = added;
+        this.added = new Date(added.getTime());
         this.user = user;
     }
 
@@ -52,7 +52,7 @@ public class ApplicationNote implements Serializable {
     }
 
     public Date getAdded() {
-        return added;
+        return new Date(added.getTime());
     }
 
     public String getUser() {
