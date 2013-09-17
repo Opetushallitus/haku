@@ -18,7 +18,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<fmt:setBundle basename="form_messages" scope="session"/>
+<fmt:setBundle basename="form_messages"/>
 <c:set value="${element.id}-Opetuspiste" var="textInputId" scope="page"/>
 <c:set value="${element.id}-Koulutus" var="selectInputId" scope="page"/>
 <c:set value="${element.id}-Koulutus-id" var="selectHiddenInputId" scope="page"/>
