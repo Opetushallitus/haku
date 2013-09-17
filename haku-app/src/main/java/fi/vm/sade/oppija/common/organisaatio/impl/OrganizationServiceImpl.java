@@ -33,7 +33,7 @@ import java.util.List;
 @Profile("default")
 public class OrganizationServiceImpl implements OrganizationService {
 
-    private static final Logger log = LoggerFactory.getLogger(OrganizationServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OrganizationServiceImpl.class);
 
     public static final int MAX_RESULTS = 10000;
     private final OrganisaatioSearchService service;
@@ -56,7 +56,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         searchCriteria.setMaxResults(MAX_RESULTS);
         final List<OrganisaatioPerustieto> result = service.searchBasicOrganisaatios(searchCriteria);
 
-        log.debug("Criteria: {}, found {} organizations", searchCriteria, result.size());
+        LOG.debug("Criteria: {}, found {} organizations", searchCriteria, result.size());
         return Lists.newArrayList(Lists.transform(result, new OrganisaatioPerustietoToOrganizationFunction()));
     }
 

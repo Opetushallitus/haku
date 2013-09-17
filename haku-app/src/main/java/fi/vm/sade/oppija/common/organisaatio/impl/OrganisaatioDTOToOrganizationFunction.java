@@ -17,7 +17,7 @@ import java.util.List;
 public class OrganisaatioDTOToOrganizationFunction implements
         Function<OrganisaatioDTO, Organization> {
 
-    private static final Logger log = LoggerFactory.getLogger(OrganisaatioDTOToOrganizationFunction.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OrganisaatioDTOToOrganizationFunction.class);
 
     @Override
     public Organization apply(OrganisaatioDTO dto) {
@@ -40,7 +40,7 @@ public class OrganisaatioDTOToOrganizationFunction implements
         final String oid = dto.getOid();
         final String parentOid = dto.getParentOid();
 
-        log.debug("dto.parentoid: {}", parentOid);
+        LOG.debug("dto.parentoid: {}", parentOid);
 
         final List<String> types = Lists.transform(dto.getTyypit(),
                 new Function<OrganisaatioTyyppi, String>() {
@@ -52,7 +52,7 @@ public class OrganisaatioDTOToOrganizationFunction implements
         final Date startDate = dto.getAlkuPvm();
         final Date endDate = dto.getLakkautusPvm();
         Organization org = new Organization(new I18nText(name), oid, parentOid, types, startDate, endDate);
-        log.debug("Transformed organization: {}", org);
+        LOG.debug("Transformed organization: {}", org);
         return org;
     }
 }

@@ -15,13 +15,13 @@ import java.net.URISyntaxException;
 public class MongoConfiguration {
 
     @Bean
-    public MongoOperations mongoTemplate(final Mongo mongo, final @Value("${mongo.db.name}") String collection) {
+    public MongoOperations mongoTemplate(final Mongo mongo, @Value("${mongo.db.name}") final String collection) {
         MongoTemplate mongoTemplate = new MongoTemplate(mongo, collection);
         return mongoTemplate;
     }
 
     @Bean
-    public MongoFactoryBean mongo(@Value("${mongodb.url}") String mongoUrl) throws URISyntaxException {
+    public MongoFactoryBean mongo(final @Value("${mongodb.url}") String mongoUrl) throws URISyntaxException {
         MongoFactoryBean mongo = new MongoFactoryBean();
         URI url1 = new URI(mongoUrl);
         mongo.setHost(url1.getHost());

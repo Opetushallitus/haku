@@ -21,7 +21,7 @@ import java.util.Map;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
-public class HenkilotiedotPhase {
+public final class HenkilotiedotPhase {
 
     public static final String MOBILE_PHONE_PATTERN =
             "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";

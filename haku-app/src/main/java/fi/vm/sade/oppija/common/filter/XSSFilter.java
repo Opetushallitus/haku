@@ -47,12 +47,11 @@ public class XSSFilter implements ContainerRequestFilter {
     }
 
     private void clean(MultivaluedMap<String, String> parameters) {
-        for(Map.Entry<String, List<String>> params : parameters.entrySet()) {
+        for (Map.Entry<String, List<String>> params : parameters.entrySet()) {
             String key = params.getKey();
             List<String> values = params.getValue();
             List<String> cleanValues = new ArrayList<String>();
-            for(String value : values)
-            {
+            for (String value : values) {
                 cleanValues.add(stripXSS(value));
             }
             parameters.put(key, cleanValues);
@@ -60,7 +59,7 @@ public class XSSFilter implements ContainerRequestFilter {
     }
 
     public static String stripXSS(String value) throws HTTPException {
-        if(value != null) {
+        if (value != null) {
             // Use the ESAPI library to avoid encoded attacks.
             value = ESAPI.encoder().canonicalize(value);
 

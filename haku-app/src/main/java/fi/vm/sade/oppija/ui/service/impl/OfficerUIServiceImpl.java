@@ -47,9 +47,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
                                 final ElementTreeValidator elementTreeValidator,
                                 final ApplicationSystemService applicationSystemService
-    )
-
-    {
+    ) {
         this.applicationService = applicationService;
         this.formService = formService;
         this.koodistoService = koodistoService;

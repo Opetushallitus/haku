@@ -22,15 +22,11 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Hannu Lyytikainen
- */
 public class SocialSecurityNumber extends Question {
 
     private static final long serialVersionUID = -5573908500482185095L;

@@ -14,7 +14,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.*;
 
-public class UniqValuesValidator extends FieldValidator {
+public final class UniqValuesValidator extends FieldValidator {
 
     private final List<String> keys;
     @Transient

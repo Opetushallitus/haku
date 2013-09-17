@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface HakuPermissionService {
 
-    public List<String> userCanReadApplications(List<String> organizations);
+    List<String> userCanReadApplications(List<String> organizations);
 
     boolean userCanReadApplication(Application application);
 

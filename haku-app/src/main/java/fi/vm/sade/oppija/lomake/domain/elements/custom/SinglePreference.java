@@ -18,14 +18,9 @@ package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
-import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.data.annotation.Transient;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -41,7 +36,7 @@ public class SinglePreference extends Titled {
                             @JsonProperty(value = "learningInstitutionLabel") final I18nText learningInstitutionLabel,
                             @JsonProperty(value = "i18nText") final I18nText i18nText,
                             @JsonProperty(value = "childLONameListLabel") final I18nText childLONameListLabel
-                            ) {
+    ) {
         super(id, i18nText);
         this.educationLabel = educationLabel;
         this.learningInstitutionLabel = learningInstitutionLabel;

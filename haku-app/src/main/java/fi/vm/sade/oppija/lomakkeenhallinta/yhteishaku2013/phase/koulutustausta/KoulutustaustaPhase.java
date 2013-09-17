@@ -19,10 +19,11 @@ import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants.*;
 
-public class KoulutustaustaPhase {
+public final class KoulutustaustaPhase {
     public static final String TUTKINTO_ULKOMAILLA_NOTIFICATION_ID = "tutkinto7-notification";
     public static final String TUTKINTO_KESKEYTNYT_NOTIFICATION_ID = "tutkinto5-notification";
     public static final String TUTKINTO_OSITTAIN_YKSILOLLISTETTY = "tutkinto2";
@@ -62,8 +63,9 @@ public class KoulutustaustaPhase {
 
         Map<String, Code> educationMap = Maps.uniqueIndex(baseEducationCodes, new Function<Code, String>() {
             @Override
-            public String apply(fi.vm.sade.oppija.common.koodisto.domain.Code input) { // NOSONAR
-                return input.getValue();
+            public String apply(fi.vm.sade.oppija.common.koodisto.domain.Code code) {
+                checkNotNull(code);
+                return code.getValue();
             }
         });
 

@@ -45,10 +45,8 @@ public class EqualsValidator extends FieldValidator {
     public ValidationResult validate(final ValidationInput validationInput) {
         Map<String, String> values = validationInput.getValues();
         String value = values.get(fieldName);
-        if (value != null) {
-            if (validValue.equals(value)) {
-                return validValidationResult;
-            }
+        if (value != null && validValue.equals(value)) {
+            return validValidationResult;
         }
         return invalidValidationResult;
     }

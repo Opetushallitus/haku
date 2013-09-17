@@ -59,7 +59,7 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> implements ApplicationDAO {
 
     public static final int HUNDRED = 100;
-    private static final Logger log = LoggerFactory.getLogger(ApplicationDAOMongoImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ApplicationDAOMongoImpl.class);
     private static final String FIELD_AO_1 = "answers.hakutoiveet.preference1-Koulutus-id";
     private static final String FIELD_AO_2 = "answers.hakutoiveet.preference2-Koulutus-id";
     private static final String FIELD_AO_3 = "answers.hakutoiveet.preference3-Koulutus-id";
@@ -397,24 +397,24 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private ArrayList<DBObject> filterByOrganization() {
 
         List<String> orgs = authenticationService.getOrganisaatioHenkilo();
-        log.debug("OrganisaatioHenkilo.count() == {} ", orgs.size());
-        if (log.isDebugEnabled()) {
+        LOG.debug("OrganisaatioHenkilo.count() == {} ", orgs.size());
+        if (LOG.isDebugEnabled()) {
             for (String org : orgs) {
-                log.debug("Organization: {}", org);
+                LOG.debug("Organization: {}", org);
             }
         }
         orgs = hakuPermissionService.userCanReadApplications(orgs);
-        if (log.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             for (String org : orgs) {
-                log.debug("Organization: {}", org);
+                LOG.debug("Organization: {}", org);
             }
         }
 
-        log.debug("OrganisaatioHenkilo.canRead().count() == {} ", orgs.size());
+        LOG.debug("OrganisaatioHenkilo.canRead().count() == {} ", orgs.size());
         ArrayList<DBObject> queries = new ArrayList<DBObject>(orgs.size());
 
         for (String org : orgs) {
-            log.info("filterByOrganization, org: " + org);
+            LOG.info("filterByOrganization, org: " + org);
             Pattern orgPattern = Pattern.compile(org);
             queries.add(QueryBuilder.start().or(
                     QueryBuilder.start(FIELD_LOP_PARENTS_1).regex(orgPattern).get(),
@@ -425,7 +425,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     .get());
         }
 
-        log.debug("queries: {}", queries.size());
+        LOG.debug("queries: {}", queries.size());
 
         return queries;
     }

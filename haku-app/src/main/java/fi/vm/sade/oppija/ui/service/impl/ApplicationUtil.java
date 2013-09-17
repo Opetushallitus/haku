@@ -5,7 +5,7 @@ import com.google.common.collect.Maps;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 
-public class ApplicationUtil {
+public final class ApplicationUtil {
     private ApplicationUtil() {
     }
 
