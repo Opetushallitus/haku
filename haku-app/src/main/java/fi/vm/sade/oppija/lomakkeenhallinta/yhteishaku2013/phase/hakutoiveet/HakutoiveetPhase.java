@@ -127,8 +127,7 @@ public class HakutoiveetPhase {
                 ImmutableList.of("POHJAKOULUTUS"), "(" + OppijaConstants.KESKEYTYNYT + "|" + OppijaConstants.ULKOMAINEN_TUTKINTO + ")", false);
         discretionaryRule3.addChild(new HiddenValue(discretionary.getId(), ElementUtil.KYLLA));
 
-        Element[] discretionaryRules = {discretionaryRule2, discretionaryRule3};
-        return discretionaryRules;
+        return new Element[]{discretionaryRule2, discretionaryRule3};
 
     }
 

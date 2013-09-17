@@ -98,9 +98,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         JsonObject henkiloJson = new JsonParser().parse(responseString).getAsJsonObject();
-        String oid = henkiloJson.get("oidHenkilo").getAsString();
-        return oid;
-
+        return henkiloJson.get("oidHenkilo").getAsString();
     }
 
     @Override

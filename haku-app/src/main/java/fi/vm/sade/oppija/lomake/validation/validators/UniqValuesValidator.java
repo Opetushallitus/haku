@@ -46,7 +46,7 @@ public final class UniqValuesValidator extends FieldValidator {
         return keys;
     }
 
-    private class NotNullKeyValues implements Predicate<Map.Entry<String, String>> {
+    private final class NotNullKeyValues implements Predicate<Map.Entry<String, String>> {
         private final List<String> keys = new ArrayList<String>();
 
         private NotNullKeyValues(List<String> keys) {

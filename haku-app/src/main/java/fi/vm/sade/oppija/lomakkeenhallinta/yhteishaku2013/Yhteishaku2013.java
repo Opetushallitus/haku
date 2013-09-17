@@ -29,9 +29,8 @@ import java.util.Date;
 
 public class Yhteishaku2013 {
 
-    public static String VARSINAINEN_HAKU = "hakutyyppi_01";
-    public static String TAYDENNYS_HAKU = "hakutyyppi_02";
-    public static String LISA_HAKU = "hakutyyppi_03";
+    public static final String VARSINAINEN_HAKU = "hakutyyppi_01";
+    public static final String LISA_HAKU = "hakutyyppi_03";
 
     public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService) {
         try {
@@ -43,7 +42,6 @@ public class Yhteishaku2013 {
             Date start = as.getApplicationPeriods() != null && !as.getApplicationPeriods().isEmpty() ? as.getApplicationPeriods().get(0).getStart() :
                     new Date();
             form.addChild(LisatiedotPhase.create(start));
-            //form.addChild(EsikatseluPhase.create(form));
             return form;
         } catch (Exception e) {
             throw new RuntimeException(Yhteishaku2013.class.getCanonicalName() + " init failed", e);

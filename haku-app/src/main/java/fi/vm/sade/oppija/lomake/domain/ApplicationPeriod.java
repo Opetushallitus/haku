@@ -40,11 +40,11 @@ public class ApplicationPeriod implements Serializable {
     }
 
     public Date getStart() {
-        return start;
+        return new Date(start.getTime());
     }
 
     public Date getEnd() {
-        return end;
+        return new Date(end.getTime());
     }
 
     @Transient

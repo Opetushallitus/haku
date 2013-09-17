@@ -16,8 +16,7 @@ public class MongoConfiguration {
 
     @Bean
     public MongoOperations mongoTemplate(final Mongo mongo, @Value("${mongo.db.name}") final String collection) {
-        MongoTemplate mongoTemplate = new MongoTemplate(mongo, collection);
-        return mongoTemplate;
+        return new MongoTemplate(mongo, collection);
     }
 
     @Bean
