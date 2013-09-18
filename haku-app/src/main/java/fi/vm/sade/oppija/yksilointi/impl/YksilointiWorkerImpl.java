@@ -111,7 +111,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Application application = applicationService.getNextWithoutStudentOid();
         LOGGER.debug("Starting processIdentification, application: {} {}",
                 application != null ? application.getOid() : "null", System.currentTimeMillis());
+
         while (application != null) {
+            Long lastChecked = application.getStudentOidChecked();
+            if (System.currentTimeMillis() - lastChecked < (60 * 60 * 1000)) {
+                return; 
+            }
             LOGGER.debug("Checking studentOid for application {}", application.getOid());
             applicationService.checkStudentOid(application);
             application = applicationService.getNextWithoutStudentOid();

@@ -476,6 +476,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         query.put("oid", new BasicDBObject("$exists", true));
         query.put("personOid", new BasicDBObject("$exists", true));
         query.put("studentOid", new BasicDBObject("$exists", false));
+        query.put("answers.henkilotiedot.Henkilotunnus", new BasicDBObject("$exists", true));
 
         DBObject sortBy = new BasicDBObject("studentOidChecked", 1);
 
