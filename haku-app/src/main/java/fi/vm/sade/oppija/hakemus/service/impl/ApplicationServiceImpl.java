@@ -422,16 +422,20 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application getNextWithoutPersonOid() {
         Application application = applicationDAO.getNextWithoutPersonOid();
-        application.setPersonOidChecked(System.currentTimeMillis());
-        applicationDAO.save(application);
+        if (application != null) {
+            application.setPersonOidChecked(System.currentTimeMillis());
+            applicationDAO.save(application);
+        }
         return application;
     }
 
     @Override
     public Application getNextWithoutStudentOid() {
         Application application = applicationDAO.getNextWithoutStudentOid();
-        application.setStudentOidChecked(System.currentTimeMillis());
-        applicationDAO.save(application);
+        if (application != null) {
+            application.setStudentOidChecked(System.currentTimeMillis());
+            applicationDAO.save(application);
+        }
         return application;
     }
 
