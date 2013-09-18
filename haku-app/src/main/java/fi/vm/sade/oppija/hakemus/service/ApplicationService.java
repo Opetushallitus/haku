@@ -152,8 +152,7 @@ public interface ApplicationService {
     Application addPersonAndAuthenticate(String oid);
 
     Application passivateApplication(String oid);
-
-    void addNote(Application application, String s);
+    void addNote(final Application application, final String noteText, final boolean persist);
 
     /**
      * Creates a new empty application to specified application system.
@@ -163,5 +162,7 @@ public interface ApplicationService {
      */
     Application officerCreateNewApplication(final String asId);
 
-    Application fillLOPChain(Application application);
+    Application fillLOPChain(final Application application, final boolean persist);
+
+
 }

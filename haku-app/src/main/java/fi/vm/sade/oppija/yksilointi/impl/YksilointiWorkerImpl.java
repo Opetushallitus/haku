@@ -92,7 +92,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 application != null ? application.getOid() : "null", System.currentTimeMillis());
         while (application != null) {
             applicationService.addPersonAndAuthenticate(application);
-            applicationService.fillLOPChain(application);
+            applicationService.fillLOPChain(application, true);
             if (sendMail) {
                 try {
                     sendMail(application);

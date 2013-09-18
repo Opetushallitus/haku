@@ -51,15 +51,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.join;
+import static org.apache.commons.lang.StringUtils.*;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -168,7 +165,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             application.resetUser();
             application.setReceived(new Date());
-            addNote(application, "Hakemus vastaanotettu");
+            addNote(application, "Hakemus vastaanotettu", false);
             this.applicationDAO.save(application);
             this.userHolder.removeApplication(application.getApplicationSystemId());
             return application.getOid();
@@ -231,20 +228,16 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void addNote(Application application, String noteText) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String user = "[not authenticated]";
-        if (principal != null) {
-            if (UserDetails.class.isAssignableFrom(principal.getClass())) {
-                UserDetails userDetails = (UserDetails) principal;
-                user = userDetails.getUsername();
-            } else {
-                user = principal.toString();
-            }
+    public void addNote(final Application application, final String noteText, final boolean persist) {
+        addNoteToApplicationObject(application, noteText);
+        if (persist) {
+            Application query = new Application(application.getOid());
+            applicationDAO.update(query, application);
         }
-        application.addNote(new ApplicationNote(noteText, new Date(), user));
-        Application query = new Application(application.getOid());
-        applicationDAO.update(query, application);
+    }
+
+    private void addNoteToApplicationObject(final Application application, final String noteText) {
+        application.addNote(new ApplicationNote(noteText, new Date(), userHolder.getUser().getUserName()));
     }
 
     @Override
@@ -371,7 +364,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application fillLOPChain(Application application) {
+    public Application fillLOPChain(final Application application, final boolean save) {
         String[] ids = new String[]{
                 "preference1-Opetuspiste-id",
                 "preference2-Opetuspiste-id",
@@ -379,20 +372,25 @@ public class ApplicationServiceImpl implements ApplicationService {
                 "preference4-Opetuspiste-id",
                 "preference5-Opetuspiste-id"};
 
-        HashMap<String, String> answers = new HashMap<String, String>(application.getAnswers().get("hakutoiveet"));
-        for (String id : ids) {
-            String opetuspiste = answers.get(id);
-            if (!isEmpty(opetuspiste)) {
-                List<String> parentOids = organizationService.findParentOids(opetuspiste);
-                // OPH-guys have access to all organizations
-                parentOids.add(OPH_ORGANIZATION);
-                // Also add organization itself
-                parentOids.add(opetuspiste);
-                answers.put(id + "-parents", join(parentOids, ","));
+        Map<String, String> hakutoiveet = application.getAnswers().get("hakutoiveet");
+        if (hakutoiveet != null) {
+            HashMap<String, String> answers = new HashMap<String, String>(hakutoiveet);
+            for (String id : ids) {
+                String opetuspiste = answers.get(id);
+                if (isNotEmpty(opetuspiste)) {
+                    List<String> parentOids = organizationService.findParentOids(opetuspiste);
+                    // OPH-guys have access to all organizations
+                    parentOids.add(OPH_ORGANIZATION);
+                    // Also add organization itself
+                    parentOids.add(opetuspiste);
+                    answers.put(id + "-parents", join(parentOids, ","));
+                }
+            }
+            application.addVaiheenVastaukset("hakutoiveet", answers);
+            if (save) {
+                this.applicationDAO.save(application);
             }
         }
-        application.addVaiheenVastaukset("hakutoiveet", answers);
-        this.applicationDAO.save(application);
         return application;
     }
 
@@ -415,7 +413,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setApplicationSystemId(asId);
         application.setReceived(new Date());
         application.setState(Application.State.INCOMPLETE);
-        addNote(application, "Hakemus vastaanotettu");
+        addNote(application, "Hakemus vastaanotettu", false);
         application.setOid(applicationOidService.generateNewOid());
         this.applicationDAO.save(application);
         return application;
