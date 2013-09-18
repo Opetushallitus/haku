@@ -19,7 +19,6 @@ import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants.*;
 
@@ -68,7 +67,7 @@ public final class KoulutustaustaPhase {
             }
         });
 
-        Radio millatutkinnolla = new Radio("POHJAKOULUTUS",
+        Radio millatutkinnolla = new Radio(ELEMENT_ID_BASE_EDUCATION,
                 createI18NForm("form.koulutustausta.millaTutkinnolla"));
         millatutkinnolla.addOption(TUTKINTO_PERUSKOULU, createI18NForm("form.koulutustausta.peruskoulu"),
                 educationMap.get(PERUSKOULU).getValue(),

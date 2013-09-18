@@ -24,7 +24,11 @@
 <c:set var="referenceDate" value="${element.referenceDate}"/>
 <c:forEach var="key" items="${element.aoEducationDegreeKeys}">
     <c:if test="${(categoryData[key] eq element.requiredEducationDegree) && (dob lt referenceDate)}">
-        <c:set var="show" value="true"/>
+        <c:forEach var="reqBaseEducation" items="${element.requiredBaseEducations}">
+            <c:if test="${(categoryData[element.baseEducationKey] eq reqBaseEducation)}">
+                <c:set var="show" value="true"/>
+            </c:if>
+        </c:forEach>
     </c:if>
 </c:forEach>
 

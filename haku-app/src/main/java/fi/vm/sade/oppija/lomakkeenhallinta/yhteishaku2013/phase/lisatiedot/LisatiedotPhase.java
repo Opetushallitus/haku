@@ -1,6 +1,7 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.lisatiedot;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
@@ -40,7 +41,10 @@ public final class LisatiedotPhase {
         cal.setTime(start);
         cal.roll(Calendar.YEAR, -AGE_WORK_EXPERIENCE);
         WorkExperienceTheme workExperienceTheme = new WorkExperienceTheme("tyokokemusGrp",
-                createI18NForm("form.lisatiedot.tyokokemus"), "32", cal.getTime());
+                createI18NForm("form.lisatiedot.tyokokemus"), "32", cal.getTime(),
+                Lists.newArrayList(OppijaConstants.PERUSKOULU, OppijaConstants.OSITTAIN_YKSILOLLISTETTY,
+                        OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY, OppijaConstants.YKSILOLLISTETTY,
+                        OppijaConstants.YLIOPPILAS));
         workExperienceTheme.setHelp(createI18NForm("form.tyokokemus.help"));
         TextQuestion tyokokemuskuukaudet = new TextQuestion("TYOKOKEMUSKUUKAUDET",
                 createI18NForm("form.tyokokemus.kuukausina"));
