@@ -163,9 +163,9 @@
         </div>
     </div>
 </div>
-<!-- Piwik
+<!-- Piwik -->
 <script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
- End Piwik Code -->
+ <!-- End Piwik Code -->
 </body>
 </html>
 

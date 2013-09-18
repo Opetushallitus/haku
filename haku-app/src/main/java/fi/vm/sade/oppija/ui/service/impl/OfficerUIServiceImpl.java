@@ -142,9 +142,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 applicationPhase.getAnswers(), oid, application.getApplicationSystemId()));
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
-        applicationService.addNote(application, noteText);
-
-        this.applicationService.fillLOPChain(application);
+        this.applicationService.addNote(application, noteText, false);
+        this.applicationService.fillLOPChain(application, false);
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
@@ -198,7 +197,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public void addNote(String applicationOid, String note) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(applicationOid);
-        applicationService.addNote(application, note);
+        applicationService.addNote(application, note, true);
     }
 
     @Override
@@ -215,6 +214,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             throw new IllegalArgumentException("Invalid person oid");
         }
         application.setPersonOid(personOid);
-        applicationService.addNote(application, "Oppijanumero syötetty");
+        applicationService.addNote(application, "Oppijanumero syötetty", true);
     }
 }
