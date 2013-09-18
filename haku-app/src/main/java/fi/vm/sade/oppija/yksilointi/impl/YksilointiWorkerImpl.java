@@ -88,7 +88,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public void processApplications(boolean sendMail) {
         Application application = applicationService.getNextWithoutPersonOid();
 
-        LOGGER.debug("Starting processApplications, limit: {}, application: {} {}",
+        LOGGER.debug("Starting processApplications, application: {} {}",
                 application != null ? application.getOid() : "null", System.currentTimeMillis());
         while (application != null) {
             applicationService.fillLOPChain(application);
@@ -109,7 +109,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     public void processIdentification() {
         Application application = applicationService.getNextWithoutStudentOid();
-        LOGGER.debug("Starting processIdentification, limit: {}, application: {} {}",
+        LOGGER.debug("Starting processIdentification, application: {} {}",
                 application != null ? application.getOid() : "null", System.currentTimeMillis());
         while (application != null) {
             applicationService.checkStudentOid(application);

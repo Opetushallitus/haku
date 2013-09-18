@@ -177,7 +177,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 throw new RuntimeException(e);
             }
             JsonObject henkiloJson = new JsonParser().parse(responseString).getAsJsonObject();
-            String oid = henkiloJson.get("oppijanumero").getAsString();
+            String oid = null;
+            if (!henkiloJson.get("oppijanumero").isJsonNull()) {
+                oid = henkiloJson.get("oppijanumero").getAsString();
+            }
             return oid;
         }
 
