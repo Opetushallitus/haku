@@ -229,15 +229,13 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         String studentOid = application.getStudentOid();
 
-        if (isNotEmpty(studentOid) && isNotEmpty(personOid) && personOid.equals(studentOid)) {
-            return application;
-        }
-
-        if (isNotEmpty(personOid)) {
+        if (isNotEmpty(personOid) && isEmpty(studentOid)) {
             studentOid = authenticationService.checkStudentOid(application.getPersonOid());
             application.setStudentOid(studentOid);
         }
 
+        application.setStudentOidChecked(System.currentTimeMillis());
+        applicationDAO.save(application);
         return application;
     }
 
