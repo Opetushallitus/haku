@@ -85,13 +85,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
      * @param limit
      * @param sendMail
      */
-    public void processApplications(int limit, boolean sendMail) {
+    public void processApplications(boolean sendMail) {
         Application application = applicationService.getNextWithoutPersonOid();
 
-        long endTime = System.currentTimeMillis() + (limit - 500);
         LOGGER.debug("Starting processApplications, limit: {}, application: {} {}",
-                limit, application != null ? application.getOid() : "null", System.currentTimeMillis());
-        while (application != null && endTime > System.currentTimeMillis()) {
+                application != null ? application.getOid() : "null", System.currentTimeMillis());
+        while (application != null) {
             applicationService.fillLOPChain(application);
             applicationService.addPersonOid(application);
             if (sendMail) {
@@ -108,11 +107,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         LOGGER.debug("Done processing applications {}", System.currentTimeMillis());
     }
 
-    public void processIdentification(int limit) {
+    public void processIdentification() {
         Application application = applicationService.getNextWithoutStudentOid();
-        long endTime = System.currentTimeMillis() + (limit - 500);
-        while (application != null && endTime > System.currentTimeMillis()) {
-            applicationService.addStudentOid(application);
+        LOGGER.debug("Starting processIdentification, limit: {}, application: {} {}",
+                application != null ? application.getOid() : "null", System.currentTimeMillis());
+        while (application != null) {
+            applicationService.checkStudentOid(application);
             application = applicationService.getNextWithoutStudentOid();
         }
     }

@@ -28,4 +28,6 @@ public interface AuthenticationService {
     List<String> getOrganisaatioHenkilo();
 
     String getStudentOid(String personOid);
+
+    String checkStudentOid(String personOid);
 }

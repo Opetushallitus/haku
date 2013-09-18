@@ -142,7 +142,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String serviceTicket = getServiceticket();
         String url = resource + "?ticket=" + serviceTicket;
         HttpClient client = new HttpClient();
-        PutMethod put = new PutMethod(url);
+        PutMethod put= new PutMethod(url);
         try {
             client.executeMethod(put);
         } catch(IOException e) {
@@ -151,6 +151,38 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         return null;
+    }
+
+    @Override
+    public String checkStudentOid(String personOid) {
+        String resource = targetService + "/resources/henkilo/" + personOid;
+        String serviceTicket = getServiceticket();
+        String url = resource + "?ticket=" + serviceTicket;
+        HttpClient client = new HttpClient();
+        GetMethod get = new GetMethod(url);
+        try {
+            client.executeMethod(get);
+        } catch(IOException e) {
+            log.error("Getting studentOid for {} failed due to: {}", personOid, e.toString());
+            return null;
+        }
+
+        int status = get.getStatusCode();
+        if (status == 200) {
+            String responseString = null;
+            try {
+                responseString = get.getResponseBodyAsString();
+            } catch (IOException e) {
+                // It's because I'm lazy
+                throw new RuntimeException(e);
+            }
+            JsonObject henkiloJson = new JsonParser().parse(responseString).getAsJsonObject();
+            String oid = henkiloJson.get("oppijanumero").getAsString();
+            return oid;
+        }
+
+        return null;
+
     }
 
     private String getServiceticket() {

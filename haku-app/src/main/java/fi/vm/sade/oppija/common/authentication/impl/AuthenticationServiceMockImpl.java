@@ -44,6 +44,11 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
 
     @Override
     public String getStudentOid(String personOid) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return personOid;
+    }
+
+    @Override
+    public String checkStudentOid(String personOid) {
+        return personOid;
     }
 }

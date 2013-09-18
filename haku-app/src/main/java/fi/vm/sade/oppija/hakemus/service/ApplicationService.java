@@ -153,9 +153,9 @@ public interface ApplicationService {
 
     Application passivateApplication(String oid);
 
-    Application addStudentOid(String applicationOid);
+    Application checkStudentOid(String applicationOid);
 
-    Application addStudentOid(Application application);
+    Application checkStudentOid(Application application);
 
     void addNote(Application application, String s);
 

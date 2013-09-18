@@ -306,7 +306,7 @@ public class OfficerController {
     public Viewable addStudentOid(@PathParam(OID_PATH_PARAM) final String oid,
                                  final MultivaluedMap<String, String> multiValues) throws ResourceNotFoundException {
         final String studentOid = multiValues.getFirst("newStudentOid");
-        LOGGER.debug("addStudentOid: oid {}, personOid {}", oid, studentOid);
+        LOGGER.debug("checkStudentOid: oid {}, personOid {}", oid, studentOid);
         officerUIService.addStudentOid(oid, studentOid);
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
         return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());

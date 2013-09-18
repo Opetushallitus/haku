@@ -207,10 +207,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
     }
 
-    public Application findNextWithoutStudentOid() {
-        return null;
-    }
-
     private QueryBuilder queryByPreference(final List<String> aoIds) {
         return QueryBuilder.start().or(
                 QueryBuilder.start(FIELD_AO_1).in(aoIds).get(),
@@ -472,5 +468,37 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject query = new BasicDBObject("oid", oid);
         DBObject update = new BasicDBObject("$set", new BasicDBObject(key, value));
         getCollection().update(query, update);
+    }
+
+    @Override
+    public Application getNextWithoutStudentOid() {
+        DBObject query = new BasicDBObject();
+        query.put("oid", new BasicDBObject("$exists", true));
+        query.put("personOid", new BasicDBObject("$exists", true));
+        query.put("studentOid", new BasicDBObject("$exists", false));
+
+        DBObject sortBy = new BasicDBObject("studentOidChecked", 1);
+
+        DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+        if (!cursor.hasNext()) {
+            return null;
+        }
+        return fromDBObject.apply(cursor.next());
+    }
+
+    @Override
+    public Application getNextWithoutPersonOid() {
+        DBObject query = new BasicDBObject();
+        query.put("personOid", new BasicDBObject("$exists", false));
+        query.put("oid", new BasicDBObject("$exists", true));
+        query.put("state", new BasicDBObject("$exists", false));
+
+        DBObject sortBy = new BasicDBObject("personOidChecked", 1);
+
+        DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+        if (!cursor.hasNext()) {
+            return null;
+        }
+        return fromDBObject.apply(cursor.next());
     }
 }
