@@ -41,4 +41,14 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
     public List<String> getOrganisaatioHenkilo() {
         return Lists.newArrayList("1.2.246.562.10.84682192491", "1.2.246.562.10.00000000001", "1.2.246.562.10.94550468022");
     }
+
+    @Override
+    public String getStudentOid(String personOid) {
+        return personOid;
+    }
+
+    @Override
+    public String checkStudentOid(String personOid) {
+        return personOid;
+    }
 }

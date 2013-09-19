@@ -20,7 +20,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -184,7 +183,7 @@ public class ApplicationServiceImplTest {
         Application application = new Application();
 
         application.addVaiheenVastaukset("henkilotiedot", answerMap);
-        application = service.addPersonAndAuthenticate(application);
+        application = service.addPersonOid(application);
         assertNotNull("PersonOid should not be null", application.getPersonOid());
         assertEquals("Wrong person oid", PERSON_OID, application.getPersonOid());
     }
@@ -195,7 +194,7 @@ public class ApplicationServiceImplTest {
         answerMap.remove(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER);
         answerMap.put(OppijaConstants.ELEMENT_ID_NATIONALITY, "swe");
         application.addVaiheenVastaukset("henkilotiedot", answerMap);
-        application = service.addPersonAndAuthenticate(application);
+        application = service.addPersonOid(application);
 //        assertNull("PersonOid should be null", application.getPersonOid());
         assertNotNull("PersonOid should not be null", application.getPersonOid());
         assertEquals("Wrong person oid", PERSON_OID, application.getPersonOid());

@@ -135,4 +135,8 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @param value value of the given key
      */
     void updateKeyValue(final String oid, final String key, final String value);
+
+    Application getNextWithoutStudentOid();
+
+    Application getNextWithoutPersonOid();
 }

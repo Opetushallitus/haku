@@ -28,8 +28,8 @@
         </c:otherwise>
     </c:choose>
     <c:choose>
-        <c:when test="${empty application.personOid}">
-            <a href="#" id="addPersonOid" data-po-show="addPersonOid" class="button small">
+        <c:when test="${empty application.studentOid}">
+            <a href="#" id="addStudentOid" data-po-show="addStudentOid" class="button small">
                 <fmt:message key="virkailija.hakemus.lisaa.oppijanumero" />
             </a>
         </c:when>

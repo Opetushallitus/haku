@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
 import fi.vm.sade.authentication.service.GenericFault;
@@ -166,6 +165,8 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.resetUser();
             application.setReceived(new Date());
             addNote(application, "Hakemus vastaanotettu", false);
+            application.setPersonOidChecked(System.currentTimeMillis());
+            application.setStudentOidChecked(System.currentTimeMillis());
             this.applicationDAO.save(application);
             this.userHolder.removeApplication(application.getApplicationSystemId());
             return application.getOid();
@@ -175,12 +176,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application addPersonAndAuthenticate(Application application) {
+    public Application addPersonOid(Application application) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
 
-        LOGGER.debug("start addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
+        LOGGER.debug("start addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000L);
 
-        //if (!isEmpty(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
         PersonBuilder personBuilder = PersonBuilder.start()
                 .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
                 .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
@@ -198,7 +198,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         } catch (GenericFault fail) {
             LOGGER.info(fail.getMessage());
         }
-        //}
 
 
         LOGGER.debug("activate addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
@@ -210,17 +209,46 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application addPersonAndAuthenticate(String applicationOid) {
+    public Application addPersonOid(String applicationOid) {
         DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
         List<Application> applications = applicationDAO.find(query);
-        return addPersonAndAuthenticate(applications.get(0));
+        return addPersonOid(applications.get(0));
+    }
+
+    @Override
+    public Application checkStudentOid(String applicationOid) {
+        DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
+        List<Application> applications = applicationDAO.find(query);
+        return checkStudentOid(applications.get(0));
+    }
+
+    @Override
+    public Application checkStudentOid(Application application) {
+        String personOid = application.getPersonOid();
+
+        if (isEmpty(personOid)) {
+            application = addPersonOid(application);
+            personOid = application.getPersonOid();
+        }
+
+        String studentOid = application.getStudentOid();
+
+        if (isNotEmpty(personOid) && isEmpty(studentOid)) {
+            studentOid = authenticationService.checkStudentOid(application.getPersonOid());
+            application.setStudentOid(studentOid);
+        }
+
+        application.setStudentOidChecked(System.currentTimeMillis());
+        applicationDAO.save(application);
+        return application;
     }
 
     @Override
     public Application passivateApplication(String applicationOid) {
-        DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
-        List<Application> applications = applicationDAO.find(query);
-        Application application = applications.get(0);
+        Application query = new Application();
+        query.setOid(applicationOid);
+        List<Application> apps = applicationDAO.find(query);
+        Application application = apps.get(0);
         application.passivate();
         Application queryApplication = new Application(applicationOid);
         applicationDAO.update(queryApplication, application);
@@ -396,15 +424,22 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application getNextWithoutPersonOid() {
-        BasicDBObject query = new BasicDBObject();
-        query.put("personOid", new BasicDBObject("$exists", false));
-        query.put("oid", new BasicDBObject("$exists", true));
-        query.put("state", new BasicDBObject("$exists", false));
-        List<Application> apps = applicationDAO.find(query);
-        if (apps.size() > 0) {
-            return apps.get(0);
+        Application application = applicationDAO.getNextWithoutPersonOid();
+        if (application != null) {
+            application.setPersonOidChecked(System.currentTimeMillis());
+            applicationDAO.save(application);
         }
-        return null;
+        return application;
+    }
+
+    @Override
+    public Application getNextWithoutStudentOid() {
+        Application application = applicationDAO.getNextWithoutStudentOid();
+        if (application != null) {
+            application.setStudentOidChecked(System.currentTimeMillis());
+            applicationDAO.save(application);
+        }
+        return application;
     }
 
     @Override

@@ -146,4 +146,14 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     public void updateKeyValue(String oid, String key, String value) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    @Override
+    public Application getNextWithoutStudentOid() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Application getNextWithoutPersonOid() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

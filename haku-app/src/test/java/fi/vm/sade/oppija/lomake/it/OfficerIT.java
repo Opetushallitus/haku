@@ -168,7 +168,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testSearchByDob() throws Exception {
-        assertTrue("Application not", SearchByTerm("120100").isEmpty());
+        assertTrue("Application found", SearchByTerm("120100").isEmpty());
         clearSearch();
         assertTrue("Application not found", SearchByTermAndState("120100", Application.State.PASSIVE).isEmpty());
     }
@@ -201,8 +201,6 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testPrintView() throws InterruptedException {
-
-
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
@@ -264,7 +262,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     private void activate(String oid) throws InterruptedException {
-        navigateToPath("virkailija", "hakemus", oid, "addPersonAndAuthenticate");
+        navigateToPath("virkailija", "hakemus", oid, "addPersonOid");
     }
 
     private void passivate() {

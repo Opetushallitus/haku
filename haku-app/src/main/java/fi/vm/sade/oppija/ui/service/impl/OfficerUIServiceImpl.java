@@ -184,7 +184,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Override
     public void addPersonAndAuthenticate(String oid) throws ResourceNotFoundException {
-        applicationService.addPersonAndAuthenticate(oid);
+        applicationService.addPersonOid(oid);
     }
 
     @Override
@@ -206,14 +206,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public void addPersonOid(String oid, String personOid) throws ResourceNotFoundException {
+    public void addStudentOid(String oid, String studentOid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
-        if (!Strings.isNullOrEmpty(application.getPersonOid())) {
+        if (!Strings.isNullOrEmpty(application.getStudentOid())) {
             throw new IllegalStateException("Person oid is already set");
-        } else if (Strings.isNullOrEmpty(personOid)) {
-            throw new IllegalArgumentException("Invalid person oid");
+        } else if (Strings.isNullOrEmpty(studentOid)) {
+            throw new IllegalArgumentException("Invalid student oid");
         }
-        application.setPersonOid(personOid);
-        applicationService.addNote(application, "Oppijanumero syötetty", true);
+        application.setStudentOid(studentOid);
+        applicationService.addNote(application, "Oppijanumero syötetty");
     }
 }

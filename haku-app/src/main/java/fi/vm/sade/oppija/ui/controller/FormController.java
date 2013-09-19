@@ -93,7 +93,6 @@ public class FormController {
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
         this.uiService = uiService;
         this.applicationSystemService = applicationSystemService;
-
     }
 
     @GET
