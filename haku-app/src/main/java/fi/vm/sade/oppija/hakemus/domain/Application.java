@@ -36,30 +36,6 @@ import java.util.*;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Application implements Serializable {
 
-    public String getStudentOid() {
-        return studentOid;
-    }
-
-    public void setStudentOid(String studentOid) {
-        this.studentOid = studentOid;
-    }
-
-    public Long getPersonOidChecked() {
-        return personOidChecked;
-    }
-
-    public void setPersonOidChecked(Long personOidChecked) {
-        this.personOidChecked = personOidChecked;
-    }
-
-    public Long getStudentOidChecked() {
-        return studentOidChecked;
-    }
-
-    public void setStudentOidChecked(Long studentOidChecked) {
-        this.studentOidChecked = studentOidChecked;
-    }
-
     public enum State {
         ACTIVE, PASSIVE, INCOMPLETE
     }
@@ -299,6 +275,30 @@ public class Application implements Serializable {
 
     public Date getReceived() {
         return received;
+    }
+
+    public String getStudentOid() {
+        return studentOid;
+    }
+
+    public void setStudentOid(String studentOid) {
+        this.studentOid = studentOid;
+    }
+
+    public Long getPersonOidChecked() {
+        return personOidChecked;
+    }
+
+    public void setPersonOidChecked(Long personOidChecked) {
+        this.personOidChecked = personOidChecked;
+    }
+
+    public Long getStudentOidChecked() {
+        return studentOidChecked;
+    }
+
+    public void setStudentOidChecked(Long studentOidChecked) {
+        this.studentOidChecked = studentOidChecked;
     }
 
     public List<ApplicationNote> getNotes() {
