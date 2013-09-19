@@ -15,8 +15,7 @@ public interface OfficerUIService {
                                             final boolean validate)
             throws ResourceNotFoundException;
 
-    UIServiceResponse getValidatedApplication(final String oid, final String phaseId)
-            throws IOException, ResourceNotFoundException;
+    UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws ResourceNotFoundException;
 
     UIServiceResponse getAdditionalInfo(final String oid) throws ResourceNotFoundException, IOException;
 
@@ -30,14 +29,13 @@ public interface OfficerUIService {
     void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo)
             throws ResourceNotFoundException;
 
-    void addPersonAndAuthenticate(final String oid)
-            throws ResourceNotFoundException;
+    void addPersonAndAuthenticate(final String oid) throws ResourceNotFoundException;
 
-    Application passivateApplication(String oid, String reason, User user) throws ResourceNotFoundException;
+    Application passivateApplication(String oid, String reason) throws ResourceNotFoundException;
 
-    void addNote(String applicationOid, String note, User user) throws ResourceNotFoundException;
+    void addNote(String applicationOid, String note) throws ResourceNotFoundException;
 
     Application createApplication(final String asId);
 
-    void addPersonOid(final String oid, final String personOid) throws ResourceNotFoundException;
+    void addStudentOid(final String oid, final String studentOid) throws ResourceNotFoundException;
 }

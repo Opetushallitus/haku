@@ -26,4 +26,8 @@ public interface AuthenticationService {
     String addPerson(Person person);
 
     List<String> getOrganisaatioHenkilo();
+
+    String getStudentOid(String personOid);
+
+    String checkStudentOid(String personOid);
 }

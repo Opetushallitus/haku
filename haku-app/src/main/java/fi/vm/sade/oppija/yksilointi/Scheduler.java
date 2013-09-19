@@ -26,7 +26,6 @@ public class Scheduler {
     public static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
     private boolean run;
     private boolean sendMail;
-    private int interval;
 
     private fi.vm.sade.oppija.yksilointi.YksilointiWorker worker;
 
@@ -35,16 +34,24 @@ public class Scheduler {
         this.worker = worker;
     }
 
-    public void runIdentification() {
+    public void runProcess() {
         if (run) {
             try {
                 LOGGER.debug("Running identification scheduler {}", System.currentTimeMillis());
-                worker.processApplications(interval, sendMail);
+                worker.processApplications(sendMail);
                 LOGGER.debug("Finished running identification scheduler {}", System.currentTimeMillis());
             } catch (Exception e) {
                 LOGGER.error("Error processing applications", e);
                 //run = false;
             }
+        }
+    }
+
+    public void runIdentification() {
+        if (run) {
+            LOGGER.debug("Running identification scheduler {}", System.currentTimeMillis());
+            worker.processIdentification();
+            LOGGER.debug("Finished running identification scheduler {}", System.currentTimeMillis());
         }
     }
 
@@ -54,10 +61,6 @@ public class Scheduler {
 
     public void setSendMail(boolean sendMail) {
         this.sendMail = sendMail;
-    }
-
-    public void setInterval(int interval) {
-        this.interval = interval;
     }
 
 }

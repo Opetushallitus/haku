@@ -1,6 +1,7 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.lisatiedot;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
@@ -20,7 +21,7 @@ import java.util.GregorianCalendar;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
-public class LisatiedotPhase {
+public final class LisatiedotPhase {
     public static final int AGE_WORK_EXPERIENCE = 16;
     public static final String TYOKOKEMUS_PATTERN = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$";
 
@@ -40,14 +41,17 @@ public class LisatiedotPhase {
         cal.setTime(start);
         cal.roll(Calendar.YEAR, -AGE_WORK_EXPERIENCE);
         WorkExperienceTheme workExperienceTheme = new WorkExperienceTheme("tyokokemusGrp",
-                createI18NForm("form.lisatiedot.tyokokemus"), "32", cal.getTime());
+                createI18NForm("form.lisatiedot.tyokokemus"), "32", cal.getTime(),
+                Lists.newArrayList(OppijaConstants.PERUSKOULU, OppijaConstants.OSITTAIN_YKSILOLLISTETTY,
+                        OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY, OppijaConstants.YKSILOLLISTETTY,
+                        OppijaConstants.YLIOPPILAS));
         workExperienceTheme.setHelp(createI18NForm("form.tyokokemus.help"));
         TextQuestion tyokokemuskuukaudet = new TextQuestion("TYOKOKEMUSKUUKAUDET",
                 createI18NForm("form.tyokokemus.kuukausina"));
         tyokokemuskuukaudet
                 .setHelp(createI18NForm("form.tyokokemus.kuukausina.help"));
         tyokokemuskuukaudet.setValidator(createRegexValidator(tyokokemuskuukaudet.getId(), TYOKOKEMUS_PATTERN));
-        tyokokemuskuukaudet.addAttribute("size", "8");
+        addSizeAttribute(tyokokemuskuukaudet, 8);
         tyokokemuskuukaudet.addAttribute("maxlength", "4");
         setVerboseHelp(tyokokemuskuukaudet, "form.tyokokemus.kuukausina.verboseHelp");
         workExperienceTheme.addChild(tyokokemuskuukaudet);
@@ -194,7 +198,7 @@ public class LisatiedotPhase {
     private static TextQuestion createTextQuestion(final String id, final String messageKey) {
         TextQuestion textQuestion = new TextQuestion(id, createI18NForm(messageKey));
         textQuestion.setInline(true);
-        textQuestion.addAttribute("size", "30");
+        addSizeAttribute(textQuestion, 30);
         return textQuestion;
     }
 }

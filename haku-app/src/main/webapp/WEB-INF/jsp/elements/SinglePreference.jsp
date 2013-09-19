@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setBundle basename="form_messages" scope="session"/>
 <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
 <c:set value="${element.id}-Opetuspiste" var="opetuspiste" scope="page"/>
 <c:set value="${element.id}-Opetuspiste-id" var="opetuspisteId" scope="page"/>
@@ -15,7 +14,6 @@
 <c:set value="${element.id}-Koulutus-id-sora" var="educationSora" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-aoIdentifier" var="aoIdentifier" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-athlete" var="educationAthlete" scope="page"/>
-<c:set value="${element.id}-discretionary" var="discretionary" scope="page"/>
 
 
 <table>
@@ -45,7 +43,6 @@
 <haku:input-hidden id="${educationSora}" data="${categoryData}"/>
 <haku:input-hidden id="${aoIdentifier}" data="${categoryData}"/>
 <haku:input-hidden id="${educationAthlete}" data="${categoryData}"/>
-<haku:input-hidden id="${discretionary}" data="${categoryData}"/>
 
 <div id="container-childLONames" class="notification block light-grey margin-2" style="display: none">
     <span><haku:i18nText value="${element.childLONameListLabel}"/>:&nbsp;</span>
@@ -80,19 +77,19 @@
     <span class="popup-dialog-close"></span>
     <div class="popup-dialog">
         <span class="popup-dialog-close">
-            <fmt:message key="form.popup.sulje" />
+            <fmt:message key="popup.sulje" />
         </span>
         <div class="popup-dialog-header">
             <h3>
-                <fmt:message key="form.hakutoiveet.terveydentilavaatimukset.otsikko"/>
+                <fmt:message key="hakutoiveet.terveydentilavaatimukset.otsikko"/>
             </h3>
         </div>
         <div class="popup-dialog-content">
-            <fmt:message key="form.hakutoiveet.terveydentilavaatimukset.sisalto"/>
+            <fmt:message key="hakutoiveet.terveydentilavaatimukset.sisalto"/>
             <button type="button" class="primary popup-dialog-close">
                 <span>
                     <span>
-                        <fmt:message key="form.popup.sulje" />
+                        <fmt:message key="popup.sulje" />
                     </span>
                 </span>
             </button>

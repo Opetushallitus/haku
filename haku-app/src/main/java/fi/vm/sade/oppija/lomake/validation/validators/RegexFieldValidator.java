@@ -42,10 +42,8 @@ public class RegexFieldValidator extends FieldValidator {
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
         String value = validationInput.getValues().get(fieldName);
-        if (value != null) {
-            if (!compiledPattern.matcher(value).matches()) {
-                return invalidValidationResult;
-            }
+        if (value != null && !compiledPattern.matcher(value).matches()) {
+            return invalidValidationResult;
         }
         return validValidationResult;
     }

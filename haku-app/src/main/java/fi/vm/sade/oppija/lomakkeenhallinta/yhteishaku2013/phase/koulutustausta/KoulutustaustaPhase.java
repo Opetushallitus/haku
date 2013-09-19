@@ -22,7 +22,7 @@ import java.util.Map;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants.*;
 
-public class KoulutustaustaPhase {
+public final class KoulutustaustaPhase {
     public static final String TUTKINTO_ULKOMAILLA_NOTIFICATION_ID = "tutkinto7-notification";
     public static final String TUTKINTO_KESKEYTNYT_NOTIFICATION_ID = "tutkinto5-notification";
     public static final String TUTKINTO_OSITTAIN_YKSILOLLISTETTY = "tutkinto2";
@@ -57,17 +57,17 @@ public class KoulutustaustaPhase {
         return koulutustausta;
     }
 
-    public static final Radio createKoulutustaustaRadio(final KoodistoService koodistoService) {
+    public static Radio createKoulutustaustaRadio(final KoodistoService koodistoService) {
         List<Code> baseEducationCodes = koodistoService.getCodes("pohjakoulutustoinenaste", 1);
 
         Map<String, Code> educationMap = Maps.uniqueIndex(baseEducationCodes, new Function<Code, String>() {
             @Override
-            public String apply(fi.vm.sade.oppija.common.koodisto.domain.Code input) { // NOSONAR
-                return input.getValue();
+            public String apply(fi.vm.sade.oppija.common.koodisto.domain.Code code) {
+                return code.getValue(); //NOSONAR
             }
         });
 
-        Radio millatutkinnolla = new Radio("POHJAKOULUTUS",
+        Radio millatutkinnolla = new Radio(ELEMENT_ID_BASE_EDUCATION,
                 createI18NForm("form.koulutustausta.millaTutkinnolla"));
         millatutkinnolla.addOption(TUTKINTO_PERUSKOULU, createI18NForm("form.koulutustausta.peruskoulu"),
                 educationMap.get(PERUSKOULU).getValue(),

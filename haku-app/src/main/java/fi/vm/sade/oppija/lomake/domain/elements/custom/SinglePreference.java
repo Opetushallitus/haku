@@ -18,14 +18,9 @@ package fi.vm.sade.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
-import fi.vm.sade.oppija.lomake.validation.Validator;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.data.annotation.Transient;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -41,11 +36,13 @@ public class SinglePreference extends Titled {
                             @JsonProperty(value = "learningInstitutionLabel") final I18nText learningInstitutionLabel,
                             @JsonProperty(value = "i18nText") final I18nText i18nText,
                             @JsonProperty(value = "childLONameListLabel") final I18nText childLONameListLabel
-                            ) {
+    ) {
         super(id, i18nText);
         this.educationLabel = educationLabel;
         this.learningInstitutionLabel = learningInstitutionLabel;
         this.childLONameListLabel = childLONameListLabel;
+        setValidator(new RequiredFieldValidator(getId() + "-Opetuspiste", ElementUtil.createI18NTextError("yleinen.pakollinen")));
+        setValidator(new RequiredFieldValidator(getId() + "-Koulutus", ElementUtil.createI18NTextError("yleinen.pakollinen")));
     }
 
     public I18nText getEducationLabel() {
@@ -58,14 +55,5 @@ public class SinglePreference extends Titled {
 
     public I18nText getChildLONameListLabel() {
         return childLONameListLabel;
-    }
-
-    @Override
-    @Transient
-    public List<Validator> getValidators() {
-        List<Validator> listOfValidators = new ArrayList<Validator>();
-        listOfValidators.add(new RequiredFieldValidator(getId() + "-Opetuspiste", ElementUtil.createI18NTextError("yleinen.pakollinen")));
-        listOfValidators.add(new RequiredFieldValidator(getId() + "-Koulutus", ElementUtil.createI18NTextError("yleinen.pakollinen")));
-        return listOfValidators;
     }
 }

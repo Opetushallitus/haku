@@ -1,6 +1,6 @@
 package fi.vm.sade.oppija.common.authentication;
 
-public class PersonBuilder {
+public final class PersonBuilder {
 
     private String firstNames;
     private String nickName;

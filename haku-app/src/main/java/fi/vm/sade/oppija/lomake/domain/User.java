@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.lomake.domain;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonSubTypes;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.io.Serializable;
@@ -29,13 +28,10 @@ import java.io.Serializable;
  * @since 1.1
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = AnonymousUser.class)
-        })
 public class User implements Serializable {
 
     private static final long serialVersionUID = -989381286044396123L;
+    public static final String ANONYMOUS_USER = "anonymousUser";
 
     private String userName;
 
@@ -49,7 +45,7 @@ public class User implements Serializable {
 
     @JsonIgnore
     public boolean isKnown() {
-        return true;
+        return !ANONYMOUS_USER.equals(userName);
     }
 
     @Override

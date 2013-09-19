@@ -73,7 +73,6 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         Map<String, String> answers = application.getVastauksetMerged();
         for (int i = 1; i <= MAX_NUMBER_OF_PREFERENCES; i++) {
             String id = "preference" + i + "-Opetuspiste-id";
-            String parents = "preference" + i + "-Opetuspiste-id-parents";
             String organization = answers.get(id);
 
             if (i == 1 && StringUtils.isEmpty(organization)) {
@@ -85,14 +84,6 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
                 LOG.debug("User can read application, org: {}", organization);
                 return true;
             }
-//            for (String parent : parents.split(",")) {
-//                organization = answers.get(parent);
-//                if (StringUtils.isNotEmpty(organization) &&
-//                        checkAccess(organization, roles)) {
-//                    LOG.debug("User can read application, parent org: {}", organization);
-//                    return true;
-//                }
-//            }
         }
         return false;
     }

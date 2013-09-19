@@ -140,7 +140,7 @@ public interface ApplicationService {
      * @param application to process
      * @return processed application
      */
-    Application addPersonAndAuthenticate(Application application);
+    Application addPersonOid(Application application);
 
     /**
      * Set proper user for this application. If user can be authenticated, activate application. Otherwise, set
@@ -149,11 +149,13 @@ public interface ApplicationService {
      * @param oid of application to process
      * @return processed application
      */
-    Application addPersonAndAuthenticate(String oid);
+    Application addPersonOid(String applicatioOid);
 
     Application passivateApplication(String oid);
 
-    void addNote(Application application, String s);
+    Application checkStudentOid(String applicationOid);
+
+    Application checkStudentOid(Application application);
 
     /**
      * Creates a new empty application to specified application system.
@@ -163,5 +165,9 @@ public interface ApplicationService {
      */
     Application officerCreateNewApplication(final String asId);
 
-    Application fillLOPChain(Application application);
+    Application fillLOPChain(Application application, boolean save);
+
+    Application getNextWithoutStudentOid();
+
+    void addNote(final Application application, final String noteText, final boolean persist);
 }

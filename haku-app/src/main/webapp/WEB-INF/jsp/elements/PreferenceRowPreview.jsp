@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fn" uri="/WEB-INF/tld/functions.tld" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -17,7 +18,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
 <c:set value="${element.id}-Opetuspiste" var="textInputId" scope="page"/>
 <c:set value="${element.id}-Koulutus" var="selectInputId" scope="page"/>
 <c:set value="${element.id}-Koulutus-id" var="selectHiddenInputId" scope="page"/>
@@ -40,7 +40,7 @@
     <c:if test="${not empty fn:children(element, categoryData)}">
         <tr>
             <td></td>
-            <td class="sublabel">Kysymykset</td>
+            <td class="sublabel"><fmt:message key="hakutoiveet.kysymykset"/></td>
             <td>
                 <table class="additional-questions-table width-100">
                     <tbody>

@@ -40,7 +40,7 @@ import java.util.Map;
 @Service
 public class DBObjectToApplicationFunction implements Function<DBObject, Application> {
 
-    private static final Logger log = LoggerFactory.getLogger(DBObjectToApplicationFunction.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DBObjectToApplicationFunction.class);
 
     private final EncrypterService encrypterService;
 
@@ -71,7 +71,7 @@ public class DBObjectToApplicationFunction implements Function<DBObject, Applica
         try {
             app = mapper.convertValue(fromValue, Application.class);
         } catch (IllegalArgumentException iae) {
-            log.info("Could not convert DBObject to Application : " + fromValue);
+            LOG.info("Could not convert DBObject to Application : " + fromValue);
             throw iae;
         }
         return app;

@@ -6,7 +6,7 @@ import fi.vm.sade.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.oppija.lomake.domain.AnonymousUser;
+import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
@@ -88,7 +88,7 @@ public class OfficerUIServiceImplTest {
     @Test
     public void testUpdateApplication() throws Exception {
         UIServiceResponse uiServiceResponse = officerUIService.updateApplication(
-                OID, new ApplicationPhase(application.getApplicationSystemId(), ID, new HashMap<String, String>()), new AnonymousUser());
+                OID, new ApplicationPhase(application.getApplicationSystemId(), ID, new HashMap<String, String>()), new User(User.ANONYMOUS_USER));
         assertTrue(10 == uiServiceResponse.getModel().size());
     }
 

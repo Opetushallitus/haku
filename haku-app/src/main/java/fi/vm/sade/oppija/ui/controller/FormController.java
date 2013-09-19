@@ -53,7 +53,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-@Path("/lomake")
+@Path("lomake")
 public class FormController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(FormController.class);
@@ -75,7 +75,7 @@ public class FormController {
     public static final String MODEL_KEY_CATEGORY_DATA = "categoryData";
     public static final String MODEL_KEY_KOULUTUSINFORMAATIO_BASE_URL = "koulutusinformaatioBaseUrl";
 
-    final FormService formService;
+    private final FormService formService;
     private final ApplicationService applicationService;
     private final UserHolder userHolder;
     private final String koulutusinformaatioBaseUrl;
@@ -93,7 +93,6 @@ public class FormController {
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
         this.uiService = uiService;
         this.applicationSystemService = applicationSystemService;
-
     }
 
     @GET

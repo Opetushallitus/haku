@@ -14,7 +14,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.*;
 
-public class UniqValuesValidator extends FieldValidator {
+public final class UniqValuesValidator extends FieldValidator {
 
     private final List<String> keys;
     @Transient
@@ -46,7 +46,7 @@ public class UniqValuesValidator extends FieldValidator {
         return keys;
     }
 
-    private class NotNullKeyValues implements Predicate<Map.Entry<String, String>> {
+    private final class NotNullKeyValues implements Predicate<Map.Entry<String, String>> {
         private final List<String> keys = new ArrayList<String>();
 
         private NotNullKeyValues(List<String> keys) {

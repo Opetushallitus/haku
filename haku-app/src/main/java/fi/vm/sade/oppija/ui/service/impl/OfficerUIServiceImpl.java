@@ -47,9 +47,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
                                 final ElementTreeValidator elementTreeValidator,
                                 final ApplicationSystemService applicationSystemService
-    )
-
-    {
+    ) {
         this.applicationService = applicationService;
         this.formService = formService;
         this.koodistoService = koodistoService;
@@ -82,7 +80,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws IOException, ResourceNotFoundException {
+    public UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws ResourceNotFoundException {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
@@ -144,9 +142,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 applicationPhase.getAnswers(), oid, application.getApplicationSystemId()));
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
-        applicationService.addNote(application, noteText);
-
-        this.applicationService.fillLOPChain(application);
+        this.applicationService.addNote(application, noteText, false);
+        this.applicationService.fillLOPChain(application, false);
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
         OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
@@ -187,20 +184,20 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Override
     public void addPersonAndAuthenticate(String oid) throws ResourceNotFoundException {
-        applicationService.addPersonAndAuthenticate(oid);
+        applicationService.addPersonOid(oid);
     }
 
     @Override
-    public Application passivateApplication(String oid, String reason, User user) throws ResourceNotFoundException {
+    public Application passivateApplication(String oid, String reason) throws ResourceNotFoundException {
         reason = "Hakemus passivoitu: " + reason;
-        addNote(oid, reason, user);
+        addNote(oid, reason);
         return applicationService.passivateApplication(oid);
     }
 
     @Override
-    public void addNote(String applicationOid, String note, User user) throws ResourceNotFoundException {
+    public void addNote(String applicationOid, String note) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(applicationOid);
-        applicationService.addNote(application, note);
+        applicationService.addNote(application, note, true);
     }
 
     @Override
@@ -209,14 +206,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public void addPersonOid(String oid, String personOid) throws ResourceNotFoundException {
+    public void addStudentOid(String oid, String studentOid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
-        if (!Strings.isNullOrEmpty(application.getPersonOid())) {
+        if (!Strings.isNullOrEmpty(application.getStudentOid())) {
             throw new IllegalStateException("Person oid is already set");
-        } else if (Strings.isNullOrEmpty(personOid)) {
-            throw new IllegalArgumentException("Invalid person oid");
+        } else if (Strings.isNullOrEmpty(studentOid)) {
+            throw new IllegalArgumentException("Invalid student oid");
         }
-        application.setPersonOid(personOid);
-        applicationService.addNote(application, "Oppijanumero syötetty");
+        application.setStudentOid(studentOid);
+        applicationService.addNote(application, "Oppijanumero syötetty", true);
     }
 }

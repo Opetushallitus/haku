@@ -22,10 +22,7 @@ import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.Person;
 import fi.vm.sade.oppija.common.authentication.PersonJsonAdapter;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.RequestEntity;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.httpclient.methods.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,6 +60,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public String addPerson(Person person) {
 
+        log.debug("start addPerson, {}", System.currentTimeMillis() / 1000);
+
         String hetuResource = targetService + "/resources/henkilo/byHetu";
         String serviceTicket = getServiceticket();
 
@@ -71,6 +70,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         log.info("Getting person from " + realHetuUrl);
         GetMethod get = new GetMethod(realHetuUrl);
         try {
+            log.debug("execute getByHetu addPerson, {}", System.currentTimeMillis() / 1000);
             client.executeMethod(get);
         } catch (IOException e) {
             log.error("Checking hetu failed due to: " + e.toString());
@@ -98,9 +98,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         JsonObject henkiloJson = new JsonParser().parse(responseString).getAsJsonObject();
-        String oid = henkiloJson.get("oidHenkilo").getAsString();
-        return oid;
 
+        log.debug("endAddPerson, {}", System.currentTimeMillis() / 1000);
+        return henkiloJson.get("oidHenkilo").getAsString();
     }
 
     @Override
@@ -139,6 +139,58 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return orgs;
     }
 
+    @Override
+    public String getStudentOid(String personOid) {
+        String resource = targetService + "/resources/henkilo/" + personOid + "/yksiloi";
+        String serviceTicket = getServiceticket();
+        String url = resource + "?ticket=" + serviceTicket;
+        HttpClient client = new HttpClient();
+        PutMethod put= new PutMethod(url);
+        try {
+            client.executeMethod(put);
+        } catch(IOException e) {
+            log.error("Getting studentOid for {} failed due to: {}", personOid, e.toString());
+            return null;
+        }
+
+        return null;
+    }
+
+    @Override
+    public String checkStudentOid(String personOid) {
+        String resource = targetService + "/resources/henkilo/" + personOid;
+        String serviceTicket = getServiceticket();
+        String url = resource + "?ticket=" + serviceTicket;
+        HttpClient client = new HttpClient();
+        GetMethod get = new GetMethod(url);
+        try {
+            client.executeMethod(get);
+        } catch(IOException e) {
+            log.error("Getting studentOid for {} failed due to: {}", personOid, e.toString());
+            return null;
+        }
+
+        int status = get.getStatusCode();
+        if (status == 200) {
+            String responseString = null;
+            try {
+                responseString = get.getResponseBodyAsString();
+            } catch (IOException e) {
+                // It's because I'm lazy
+                throw new RuntimeException(e);
+            }
+            JsonObject henkiloJson = new JsonParser().parse(responseString).getAsJsonObject();
+            String oid = null;
+            if (!henkiloJson.get("oppijanumero").isJsonNull()) {
+                oid = henkiloJson.get("oppijanumero").getAsString();
+            }
+            return oid;
+        }
+
+        return null;
+
+    }
+
     private String getServiceticket() {
         String realCasUrl = casUrl + "/v1/tickets";
         log.info("Getting CAS ticket from " + realCasUrl + " for " + targetService);
@@ -147,6 +199,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private String createHenkilo(HttpClient client, Person person) {
 
+        log.debug("start createHenkilo, {}", System.currentTimeMillis() / 1000);
         String henkiloResource = targetService + "/resources/henkilo";
 
         String responseString = null;
@@ -162,6 +215,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             log.error("Creating person failed due to: " + e.toString());
         }
         log.debug("createHenkilo responseString: {}", responseString);
+
+        log.debug("end createHenkilo, {}", System.currentTimeMillis() / 1000);
         return responseString;
     }
 

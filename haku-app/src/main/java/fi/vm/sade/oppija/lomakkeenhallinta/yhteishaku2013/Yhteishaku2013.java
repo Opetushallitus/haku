@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.esikatselu.EsikatseluPhase;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.henkilotiedot.HenkilotiedotPhase;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta.KoulutustaustaPhase;
@@ -30,9 +29,8 @@ import java.util.Date;
 
 public class Yhteishaku2013 {
 
-    public static String VARSINAINEN_HAKU = "hakutyyppi_01";
-    public static String TAYDENNYS_HAKU = "hakutyyppi_02";
-    public static String LISA_HAKU = "hakutyyppi_03";
+    public static final String VARSINAINEN_HAKU = "hakutyyppi_01";
+    public static final String LISA_HAKU = "hakutyyppi_03";
 
     public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService) {
         try {
@@ -44,7 +42,6 @@ public class Yhteishaku2013 {
             Date start = as.getApplicationPeriods() != null && !as.getApplicationPeriods().isEmpty() ? as.getApplicationPeriods().get(0).getStart() :
                     new Date();
             form.addChild(LisatiedotPhase.create(start));
-            //form.addChild(EsikatseluPhase.create(form));
             return form;
         } catch (Exception e) {
             throw new RuntimeException(Yhteishaku2013.class.getCanonicalName() + " init failed", e);

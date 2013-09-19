@@ -141,12 +141,7 @@
                     <div class="form">
                         <jsp:include page="../prev_next_buttons_preview.jsp"/>
 
-                        <div class="phase-help">
-                            <div class="help-text"><haku:i18nText value="${element.help}"/></div>
-                        </div>
-
                         <c:forEach var="child" items="${vaihe.children}">
-
                             <c:set var="element" value="${child}" scope="request"/>
                             <jsp:include page="./${child.type}Preview.jsp"/>
                         </c:forEach>
@@ -168,9 +163,9 @@
         </div>
     </div>
 </div>
-<!-- Piwik
+<!-- Piwik -->
 <script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
- End Piwik Code -->
+ <!-- End Piwik Code -->
 </body>
 </html>
 

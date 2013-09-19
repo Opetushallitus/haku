@@ -54,6 +54,9 @@ public class Application implements Serializable {
     private User user;
     private String phaseId;
     private String personOid;
+    private Long personOidChecked;
+    private String studentOid;
+    private Long studentOidChecked;
     private Date received;
 
     private Map<String, Map<String, String>> answers = new HashMap<String, Map<String, String>>();
@@ -272,6 +275,30 @@ public class Application implements Serializable {
 
     public Date getReceived() {
         return received;
+    }
+
+    public String getStudentOid() {
+        return studentOid;
+    }
+
+    public void setStudentOid(String studentOid) {
+        this.studentOid = studentOid;
+    }
+
+    public Long getPersonOidChecked() {
+        return personOidChecked;
+    }
+
+    public void setPersonOidChecked(Long personOidChecked) {
+        this.personOidChecked = personOidChecked;
+    }
+
+    public Long getStudentOidChecked() {
+        return studentOidChecked;
+    }
+
+    public void setStudentOidChecked(Long studentOidChecked) {
+        this.studentOidChecked = studentOidChecked;
     }
 
     public List<ApplicationNote> getNotes() {

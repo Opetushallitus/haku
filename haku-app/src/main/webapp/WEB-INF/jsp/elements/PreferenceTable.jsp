@@ -18,8 +18,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
-<fmt:setBundle basename="form_messages" scope="session"/>
 <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
 <table id="${element.id}" class="preference-sort">
     <tbody>
@@ -65,20 +63,20 @@
 
     <div class="popup-dialog">
         <span class="popup-dialog-close">
-            <fmt:message key="form.popup.sulje"/>
+            <fmt:message key="popup.sulje"/>
         </span>
 
         <div class="popup-dialog-header">
             <h3>
-                <fmt:message key="form.hakutoiveet.terveydentilavaatimukset.otsikko"/>
+                <fmt:message key="hakutoiveet.terveydentilavaatimukset.otsikko"/>
             </h3>
         </div>
         <div class="popup-dialog-content">
-            <fmt:message key="form.hakutoiveet.terveydentilavaatimukset.sisalto"/>
+            <fmt:message key="hakutoiveet.terveydentilavaatimukset.sisalto"/>
             <button type="button" class="primary popup-dialog-close">
                 <span>
                     <span>
-                        <fmt:message key="form.popup.sulje"/>
+                        <fmt:message key="popup.sulje"/>
                     </span>
                 </span>
             </button>

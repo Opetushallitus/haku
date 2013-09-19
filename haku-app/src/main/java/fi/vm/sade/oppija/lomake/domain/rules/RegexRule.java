@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
 public final class RegexRule {
@@ -47,7 +48,7 @@ public final class RegexRule {
         Iterable<String> selectors = Iterables.transform(listOfStrings, new Function<String, String>() {
             @Override
             public String apply(final String input) {
-                return "[name='" + input + "']";
+                return "[name='" + input + "']"; //NOSONAR
             }
         });
         return toCommaSeparatedString(selectors);
@@ -59,7 +60,7 @@ public final class RegexRule {
                 Iterables.transform(element.getChildren(), new Function<Element, String>() {
                     @Override
                     public String apply(final Element element) {
-                        return "'" + element.getId() + "'";
+                        return "'" + element.getId() + "'"; //NOSONAR
                     }
                 }));
     }

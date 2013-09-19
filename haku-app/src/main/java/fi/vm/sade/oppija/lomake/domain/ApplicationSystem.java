@@ -20,37 +20,26 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.annotation.Transient;
+import org.springframework.data.annotation.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.List;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@Document
 public class ApplicationSystem implements Serializable {
 
     private static final long serialVersionUID = 709005625385191180L;
     @Id
-    @XmlAttribute
     private String id;
-    @XmlAttribute
     private Form form;
-    @XmlAttribute
     private I18nText name;
-    @XmlAttribute
     private List<ApplicationPeriod> applicationPeriods;
-    @XmlAttribute
     private String applicationSystemType;
 
-    @PersistenceConstructor
     public ApplicationSystem(final String id, final Form form, final I18nText name,
-                             final List<ApplicationPeriod> applicationPeriods, final String applicationSystemType) {
+                             final List<ApplicationPeriod> applicationPeriods,
+                             final String applicationSystemType) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(name);
         this.id = id;
@@ -59,6 +48,7 @@ public class ApplicationSystem implements Serializable {
         this.applicationPeriods = applicationPeriods != null ?
                 ImmutableList.copyOf(applicationPeriods) : Lists.<ApplicationPeriod>newArrayList();
         this.applicationSystemType = applicationSystemType;
+
     }
 
     @Transient

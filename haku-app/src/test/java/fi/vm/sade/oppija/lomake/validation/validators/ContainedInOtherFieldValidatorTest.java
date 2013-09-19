@@ -113,4 +113,22 @@ public class ContainedInOtherFieldValidatorTest {
         ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
         assertFalse(result.hasErrors());
     }
+
+    @Test
+    public void testSpaceAtTheEnd() {
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put(thatField, "Teemu-Hanz");
+        values.put(thisField, "Teemu-Hanz");
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        assertFalse(result.hasErrors());
+    }
+
+    @Test
+    public void testSpace() {
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put(thatField, "Teemu-Hanz");
+        values.put(thisField, "    Teemu-Hanz");
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        assertFalse(result.hasErrors());
+    }
 }

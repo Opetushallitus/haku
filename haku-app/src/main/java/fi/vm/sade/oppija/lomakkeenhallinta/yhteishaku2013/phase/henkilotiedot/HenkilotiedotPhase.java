@@ -21,7 +21,7 @@ import java.util.Map;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
-public class HenkilotiedotPhase {
+public final class HenkilotiedotPhase {
 
     public static final String MOBILE_PHONE_PATTERN =
             "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
@@ -43,19 +43,19 @@ public class HenkilotiedotPhase {
         Theme henkilotiedotRyhma = new Theme("HenkilotiedotGrp", createI18NForm("form.henkilotiedot.otsikko"), true);
 
         // Nimet
-        Question sukunimi = createRequiredTextQuestion("Sukunimi", "form.henkilotiedot.sukunimi", "30");
+        Question sukunimi = createRequiredTextQuestion("Sukunimi", "form.henkilotiedot.sukunimi", 30);
         sukunimi.setInline(true);
         sukunimi.setValidator(createRegexValidator(sukunimi.getId(), ElementUtil.ISO88591_NAME_REGEX));
         henkilotiedotRyhma.addChild(sukunimi);
 
-        Question etunimet = createRequiredTextQuestion("Etunimet", "form.henkilotiedot.etunimet", "30");
+        Question etunimet = createRequiredTextQuestion("Etunimet", "form.henkilotiedot.etunimet", 30);
         etunimet.setInline(true);
         etunimet.setValidator(createRegexValidator(etunimet.getId(), ElementUtil.ISO88591_NAME_REGEX));
         henkilotiedotRyhma.addChild(etunimet);
 
         TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", createI18NForm("form.henkilotiedot.kutsumanimi"));
         kutsumanimi.setHelp(createI18NForm("form.henkilotiedot.kutsumanimi.help"));
-        kutsumanimi.addAttribute("size", "20");
+        addSizeAttribute(kutsumanimi, 20);
         kutsumanimi.setValidator(
                 new ContainedInOtherFieldValidator(kutsumanimi.getId(),
                         etunimet.getId(),
@@ -79,7 +79,7 @@ public class HenkilotiedotPhase {
         TextQuestion henkilotunnus =
                 new TextQuestion("Henkilotunnus", createI18NForm("form.henkilotiedot.henkilotunnus"));
         henkilotunnus.addAttribute("placeholder", "ppkkvv*****");
-        henkilotunnus.addAttribute("size", "11");
+        addSizeAttribute(henkilotunnus, 11);
         henkilotunnus.addAttribute("maxlength", "11");
         henkilotunnus.setHelp(createI18NForm("form.henkilotiedot.henkilotunnus.help"));
         henkilotunnus.setValidator(createRegexValidator(henkilotunnus.getId(), HETU_PATTERN));
@@ -96,7 +96,9 @@ public class HenkilotiedotPhase {
         SocialSecurityNumber socialSecurityNumber =
                 new SocialSecurityNumber("ssn_question", createI18NForm("form.henkilotiedot.hetu"),
                         sukupuoli.getI18nText(), male, female, sukupuoli.getId(), henkilotunnus);
-        addApplicationUniqueValidator(socialSecurityNumber, asType);
+        if (!asType.equals(Yhteishaku2013.LISA_HAKU)) {
+            addApplicationUniqueValidator(socialSecurityNumber, asType);
+        }
 
         RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FIN$", true);
         hetuRule.addChild(socialSecurityNumber);
@@ -124,19 +126,19 @@ public class HenkilotiedotPhase {
 
         TextQuestion syntymapaikka =
                 new TextQuestion("syntymapaikka", createI18NForm("form.henkilotiedot.syntymapaikka"));
-        syntymapaikka.addAttribute("size", "30");
+        addSizeAttribute(syntymapaikka, 30);
         addRequiredValidator(syntymapaikka);
         syntymapaikka.setInline(true);
         eiSuomalaistaHetuaRule.addChild(syntymapaikka);
 
         TextQuestion kansallinenIdTunnus =
                 new TextQuestion("kansallinenIdTunnus", createI18NForm("form.henkilotiedot.kansallinenId"));
-        kansallinenIdTunnus.addAttribute("size", "30");
+        addSizeAttribute(kansallinenIdTunnus, 30);
         kansallinenIdTunnus.setInline(true);
         eiSuomalaistaHetuaRule.addChild(kansallinenIdTunnus);
 
         TextQuestion passinnumero = new TextQuestion("passinnumero", createI18NForm("form.henkilotiedot.passinnumero"));
-        passinnumero.addAttribute("size", "30");
+        addSizeAttribute(passinnumero, 30);
         passinnumero.setInline(true);
         eiSuomalaistaHetuaRule.addChild(passinnumero);
 
@@ -149,7 +151,7 @@ public class HenkilotiedotPhase {
 
         // Email
         TextQuestion email = new TextQuestion("Sähköposti", createI18NForm("form.henkilotiedot.email"));
-        email.addAttribute("size", "50");
+        addSizeAttribute(email, 50);
         email.setValidator(createRegexValidator(email.getId(), EMAIL_REGEX));
         email.setHelp(createI18NForm("form.henkilotiedot.email.help"));
         ElementUtil.setVerboseHelp(email, "form.henkilotiedot.email.verboseHelp");
@@ -161,7 +163,7 @@ public class HenkilotiedotPhase {
         TextQuestion puhelinnumero1 = new TextQuestion("matkapuhelinnumero1",
                 createI18NForm("form.henkilotiedot.matkapuhelinnumero"));
         puhelinnumero1.setHelp(createI18NForm("form.henkilotiedot.matkapuhelinnumero.help"));
-        puhelinnumero1.addAttribute("size", "30");
+        addSizeAttribute(puhelinnumero1, 30);
         puhelinnumero1.setValidator(createRegexValidator(puhelinnumero1.getId(), MOBILE_PHONE_PATTERN));
         ElementUtil.setVerboseHelp(puhelinnumero1, "form.henkilotiedot.matkapuhelinnumero.verboseHelp");
         puhelinnumero1.setInline(true);
@@ -173,6 +175,7 @@ public class HenkilotiedotPhase {
             TextQuestion extranumero = new TextQuestion("matkapuhelinnumero" + i,
                     createI18NForm("form.henkilotiedot.puhelinnumero"));
             extranumero.addAttribute("size", "30");
+            addSizeAttribute(extranumero, 30);
             extranumero.setValidator(createRegexValidator(extranumero.getId(), PHONE_PATTERN));
             extranumero.setInline(true);
 
@@ -197,13 +200,13 @@ public class HenkilotiedotPhase {
         setRequiredInlineAndVerboseHelp(asuinmaa, "form.henkilotiedot.asuinmaa.verboseHelp");
 
         RelatedQuestionRule asuinmaaFI = new RelatedQuestionRule("rule1", asuinmaa.getId(), "FIN", true);
-        Question lahiosoite = createRequiredTextQuestion("lahiosoite", "form.henkilotiedot.lahiosoite", "40");
+        Question lahiosoite = createRequiredTextQuestion("lahiosoite", "form.henkilotiedot.lahiosoite", 40);
         lahiosoite.setInline(true);
         asuinmaaFI.addChild(lahiosoite);
 
         Element postinumero = new PostalCode("Postinumero", createI18NForm("form.henkilotiedot.postinumero"),
                 createPostOffices(koodistoService));
-        postinumero.addAttribute("size", "5");
+        addSizeAttribute(postinumero, 5);
         postinumero.addAttribute("maxlength", "5");
         addRequiredValidator(postinumero);
         postinumero.addAttribute("placeholder", "#####");
@@ -227,13 +230,13 @@ public class HenkilotiedotPhase {
 
         RelatedQuestionRule relatedQuestionRule2 =
                 new RelatedQuestionRule("rule2", asuinmaa.getId(), NOT_FI, false);
-        Question osoiteUlkomaa = createRequiredTextQuestion("osoiteUlkomaa", "form.henkilotiedot.osoite", "40");
+        Question osoiteUlkomaa = createRequiredTextQuestion("osoiteUlkomaa", "form.henkilotiedot.osoite", 40);
         osoiteUlkomaa.setInline(true);
         relatedQuestionRule2.addChild(osoiteUlkomaa);
-        Question postinumeroUlkomaa = createRequiredTextQuestion("postinumeroUlkomaa", "form.henkilotiedot.postinumero", "12");
+        Question postinumeroUlkomaa = createRequiredTextQuestion("postinumeroUlkomaa", "form.henkilotiedot.postinumero", 12);
         postinumeroUlkomaa.setInline(true);
         relatedQuestionRule2.addChild(postinumeroUlkomaa);
-        Question kaupunkiUlkomaa = createRequiredTextQuestion("kaupunkiUlkomaa", "form.henkilotiedot.kaupunki", "25");
+        Question kaupunkiUlkomaa = createRequiredTextQuestion("kaupunkiUlkomaa", "form.henkilotiedot.kaupunki", 25);
         kaupunkiUlkomaa.setInline(true);
         relatedQuestionRule2.addChild(kaupunkiUlkomaa);
 

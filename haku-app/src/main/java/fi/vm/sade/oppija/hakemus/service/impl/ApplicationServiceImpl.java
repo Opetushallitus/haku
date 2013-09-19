@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.hakemus.service.impl;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
 import fi.vm.sade.authentication.service.GenericFault;
@@ -51,15 +50,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.join;
+import static org.apache.commons.lang.StringUtils.*;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -118,12 +114,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     private ApplicationState saveApplicationPhase(final ApplicationPhase applicationPhase,
                                                   final Application application) {
-        final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
-        final String applicationSystemId = applicationState.getApplication().getApplicationSystemId();
+        //
+        final String applicationSystemId = application.getApplicationSystemId();
         final Form activeForm = formService.getActiveForm(applicationSystemId);
         ElementTree elementTree = new ElementTree(activeForm);
         final Element phase = elementTree.getChildById(applicationPhase.getPhaseId());
-        final Map<String, String> vastaukset = applicationPhase.getAnswers();
+        final Map<String, String> answers = applicationPhase.getAnswers();
 
         Map<String, String> allAnswers = new HashMap<String, String>();
         // if the current phase has previous phase, get all the answers for
@@ -132,16 +128,16 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         elementTree.isStateValid(current.getPhaseId(), applicationPhase.getPhaseId());
 
-        if (!elementTree.isFirstChild(phase)) {
-            allAnswers.putAll(current.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId()));
-        }
-        allAnswers.putAll(vastaukset);
+        allAnswers.putAll(current.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId()));
+        allAnswers.putAll(answers);
 
+        final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
         if (elementTree.isValidationNeeded(applicationPhase.getPhaseId(), application.getPhaseId())) {
             ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, allAnswers,
                     application.getOid(), applicationSystemId));
             applicationState.addError(validationResult.getErrorMessages());
         }
+
         if (applicationState.isValid()) {
             this.userHolder.savePhaseAnswers(applicationPhase);
         }
@@ -168,7 +164,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             application.resetUser();
             application.setReceived(new Date());
-            addNote(application, "Hakemus vastaanotettu");
+            addNote(application, "Hakemus vastaanotettu", false);
+            application.setPersonOidChecked(System.currentTimeMillis());
+            application.setStudentOidChecked(System.currentTimeMillis());
             this.applicationDAO.save(application);
             this.userHolder.removeApplication(application.getApplicationSystemId());
             return application.getOid();
@@ -178,46 +176,79 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application addPersonAndAuthenticate(Application application) {
+    public Application addPersonOid(Application application) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
 
-        //if (!isEmpty(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
-            PersonBuilder personBuilder = PersonBuilder.start()
-                    .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
-                    .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
-                    .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
-                    .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
-                    .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
-                    .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
-                    .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
-                    .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE))
-                    .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
-                    .setSecurityOrder(false);
+        LOGGER.debug("start addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000L);
 
-            try {
-                application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
-            } catch (GenericFault fail) {
-                LOGGER.info(fail.getMessage());
-            }
-        //}
+        PersonBuilder personBuilder = PersonBuilder.start()
+                .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
+                .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
+                .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
+                .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
+                .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
+                .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
+                .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
+                .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE))
+                .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
+                .setSecurityOrder(false);
 
+        try {
+            application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
+        } catch (GenericFault fail) {
+            LOGGER.info(fail.getMessage());
+        }
+
+
+        LOGGER.debug("activate addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
         application.activate();
+        LOGGER.debug("save addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
         this.applicationDAO.save(application);
+        LOGGER.debug("end addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
         return application;
     }
 
     @Override
-    public Application addPersonAndAuthenticate(String applicationOid) {
+    public Application addPersonOid(String applicationOid) {
         DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
         List<Application> applications = applicationDAO.find(query);
-        return addPersonAndAuthenticate(applications.get(0));
+        return addPersonOid(applications.get(0));
+    }
+
+    @Override
+    public Application checkStudentOid(String applicationOid) {
+        DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
+        List<Application> applications = applicationDAO.find(query);
+        return checkStudentOid(applications.get(0));
+    }
+
+    @Override
+    public Application checkStudentOid(Application application) {
+        String personOid = application.getPersonOid();
+
+        if (isEmpty(personOid)) {
+            application = addPersonOid(application);
+            personOid = application.getPersonOid();
+        }
+
+        String studentOid = application.getStudentOid();
+
+        if (isNotEmpty(personOid) && isEmpty(studentOid)) {
+            studentOid = authenticationService.checkStudentOid(application.getPersonOid());
+            application.setStudentOid(studentOid);
+        }
+
+        application.setStudentOidChecked(System.currentTimeMillis());
+        applicationDAO.save(application);
+        return application;
     }
 
     @Override
     public Application passivateApplication(String applicationOid) {
-        DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
-        List<Application> applications = applicationDAO.find(query);
-        Application application = applications.get(0);
+        Application query = new Application();
+        query.setOid(applicationOid);
+        List<Application> apps = applicationDAO.find(query);
+        Application application = apps.get(0);
         application.passivate();
         Application queryApplication = new Application(applicationOid);
         applicationDAO.update(queryApplication, application);
@@ -225,20 +256,16 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void addNote(Application application, String noteText) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String user = "[not authenticated]";
-        if (principal != null) {
-            if (UserDetails.class.isAssignableFrom(principal.getClass())) {
-                UserDetails userDetails = (UserDetails) principal;
-                user = userDetails.getUsername();
-            } else {
-                user = principal.toString();
-            }
+    public void addNote(final Application application, final String noteText, final boolean persist) {
+        addNoteToApplicationObject(application, noteText);
+        if (persist) {
+            Application query = new Application(application.getOid());
+            applicationDAO.update(query, application);
         }
-        application.addNote(new ApplicationNote(noteText, new Date(), user));
-        Application query = new Application(application.getOid());
-        applicationDAO.update(query, application);
+    }
+
+    private void addNoteToApplicationObject(final Application application, final String noteText) {
+        application.addNote(new ApplicationNote(noteText, new Date(), userHolder.getUser().getUserName()));
     }
 
     @Override
@@ -365,7 +392,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application fillLOPChain(Application application) {
+    public Application fillLOPChain(final Application application, final boolean save) {
         String[] ids = new String[]{
                 "preference1-Opetuspiste-id",
                 "preference2-Opetuspiste-id",
@@ -373,34 +400,46 @@ public class ApplicationServiceImpl implements ApplicationService {
                 "preference4-Opetuspiste-id",
                 "preference5-Opetuspiste-id"};
 
-        HashMap<String, String> answers = new HashMap<String, String>(application.getAnswers().get("hakutoiveet"));
-        for (String id : ids) {
-            String opetuspiste = answers.get(id);
-            if (!isEmpty(opetuspiste)) {
-                List<String> parentOids = organizationService.findParentOids(opetuspiste);
-                // OPH-guys have access to all organizations
-                parentOids.add(OPH_ORGANIZATION);
-                // Also add organization itself
-                parentOids.add(opetuspiste);
-                answers.put(id + "-parents", join(parentOids, ","));
+        Map<String, String> hakutoiveet = application.getAnswers().get("hakutoiveet");
+        if (hakutoiveet != null) {
+            HashMap<String, String> answers = new HashMap<String, String>(hakutoiveet);
+            for (String id : ids) {
+                String opetuspiste = answers.get(id);
+                if (isNotEmpty(opetuspiste)) {
+                    List<String> parentOids = organizationService.findParentOids(opetuspiste);
+                    // OPH-guys have access to all organizations
+                    parentOids.add(OPH_ORGANIZATION);
+                    // Also add organization itself
+                    parentOids.add(opetuspiste);
+                    answers.put(id + "-parents", join(parentOids, ","));
+                }
+            }
+            application.addVaiheenVastaukset("hakutoiveet", answers);
+            if (save) {
+                this.applicationDAO.save(application);
             }
         }
-        application.addVaiheenVastaukset("hakutoiveet", answers);
-        this.applicationDAO.save(application);
         return application;
     }
 
     @Override
     public Application getNextWithoutPersonOid() {
-        BasicDBObject query = new BasicDBObject();
-        query.put("personOid", new BasicDBObject("$exists", false));
-        query.put("oid", new BasicDBObject("$exists", true));
-        query.put("state", new BasicDBObject("$exists", false));
-        List<Application> apps = applicationDAO.find(query);
-        if (apps.size() > 0) {
-            return apps.get(0);
+        Application application = applicationDAO.getNextWithoutPersonOid();
+        if (application != null) {
+            application.setPersonOidChecked(System.currentTimeMillis());
+            applicationDAO.save(application);
         }
-        return null;
+        return application;
+    }
+
+    @Override
+    public Application getNextWithoutStudentOid() {
+        Application application = applicationDAO.getNextWithoutStudentOid();
+        if (application != null) {
+            application.setStudentOidChecked(System.currentTimeMillis());
+            applicationDAO.save(application);
+        }
+        return application;
     }
 
     @Override
@@ -409,7 +448,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setApplicationSystemId(asId);
         application.setReceived(new Date());
         application.setState(Application.State.INCOMPLETE);
-        addNote(application, "Hakemus vastaanotettu");
+        addNote(application, "Hakemus vastaanotettu", false);
         application.setOid(applicationOidService.generateNewOid());
         this.applicationDAO.save(application);
         return application;

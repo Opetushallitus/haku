@@ -82,18 +82,16 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     /**
      * Post-process applications.
      *
-     * @param limit
      * @param sendMail
      */
-    public void processApplications(int limit, boolean sendMail) {
+    public void processApplications(boolean sendMail) {
         Application application = applicationService.getNextWithoutPersonOid();
 
-        long endTime = System.currentTimeMillis() + (limit - 500);
-        LOGGER.debug("Starting processApplications, limit: {}, application: {} {}",
-                limit, application != null ? application.getOid() : "null", System.currentTimeMillis());
-        while (application != null && endTime > System.currentTimeMillis()) {
-            applicationService.addPersonAndAuthenticate(application);
-            applicationService.fillLOPChain(application);
+        LOGGER.debug("Starting processApplications, application: {} {}",
+                application != null ? application.getOid() : "null", System.currentTimeMillis());
+        while (application != null) {
+            applicationService.fillLOPChain(application, false);
+            applicationService.addPersonOid(application);
             if (sendMail) {
                 try {
                     sendMail(application);
@@ -106,6 +104,21 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     application != null ? application.getOid() : "null", System.currentTimeMillis());
         }
         LOGGER.debug("Done processing applications {}", System.currentTimeMillis());
+    }
+
+    public void processIdentification() {
+        Application application = applicationService.getNextWithoutStudentOid();
+        LOGGER.debug("Starting processIdentification, application: {} {}",
+                application != null ? application.getOid() : "null", System.currentTimeMillis());
+
+        while (application != null) {
+            Long lastChecked = application.getStudentOidChecked();
+            if (lastChecked == null || lastChecked == 0 || System.currentTimeMillis() - lastChecked > (1000 * 60 * 5)) {
+                LOGGER.debug("Checking studentOid for application {}", application.getOid());
+                applicationService.checkStudentOid(application);
+                application = applicationService.getNextWithoutStudentOid();
+            }
+        }
     }
 
     private void sendMail(Application application) throws EmailException {

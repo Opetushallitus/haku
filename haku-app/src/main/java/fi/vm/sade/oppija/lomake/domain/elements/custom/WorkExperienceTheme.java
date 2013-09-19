@@ -22,6 +22,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.Transient;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -36,18 +37,28 @@ public class WorkExperienceTheme extends Theme {
     // Applicant must be born before this day to get asked about work experience.
     private final Date referenceDate;
 
+    // the phase is only relevant to applicants having required base education
+    private final List<String> requiredBaseEducations;
+
     public WorkExperienceTheme(@JsonProperty(value = "id") String id,
                                @JsonProperty(value = "i18nText") I18nText i18nText,
                                @JsonProperty(value = "requiredEducationDegree") String requiredEducationDegree,
-                               @JsonProperty(value = "referenceDate") Date referenceDate) {
+                               @JsonProperty(value = "referenceDate") Date referenceDate,
+                               @JsonProperty(value = "requiredBaseEducations") List<String> requiredBaseEducations) {
         super(id, i18nText, true);
         this.requiredEducationDegree = requiredEducationDegree;
         this.referenceDate = referenceDate;
+        this.requiredBaseEducations = requiredBaseEducations;
     }
 
     @Transient
     public String[] getAoEducationDegreeKeys() {
         return OppijaConstants.AO_EDUCATION_DEGREE_KEYS;
+    }
+
+    @Transient
+    public String getBaseEducationKey() {
+        return OppijaConstants.ELEMENT_ID_BASE_EDUCATION;
     }
 
     public void setRequiredEducationDegree(String requiredEducationDegree) {
@@ -60,5 +71,9 @@ public class WorkExperienceTheme extends Theme {
 
     public Date getReferenceDate() {
         return referenceDate;
+    }
+
+    public List<String> getRequiredBaseEducations() {
+        return requiredBaseEducations;
     }
 }

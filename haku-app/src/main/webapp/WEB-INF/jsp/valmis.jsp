@@ -156,6 +156,12 @@
 
                     <div class="clear"></div>
 
+                    <hr/>
+                    <p>
+                        <fmt:message key="lomake.valmis.takaisin.opintopolkuun"/>&nbsp;
+                        <a href="https://opintopolku.fi"><fmt:message key="lomake.valmis.takaisin.opintopolkuun.linkki"/></a>
+                    </p>
+                 </div>
             </section>
         </section>
     </div>

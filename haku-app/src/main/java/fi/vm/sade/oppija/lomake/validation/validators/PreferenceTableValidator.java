@@ -62,7 +62,7 @@ public class PreferenceTableValidator implements Validator {
             }
 
             if (!checkEmptyRowBeforeGivenPreference(educations, education)) {
-                errors.put(educationInputId, ElementUtil.createI18NTextError("hakutoiveet.tyhjia"));
+                errors.put(educationInputIds.get(i - 1), ElementUtil.createI18NTextError("hakutoiveet.tyhjia"));
             }
 
             learningInstitutions.add(learningInstitution);

@@ -11,6 +11,8 @@ import fi.vm.sade.oppija.lomake.domain.rules.expression.Not;
 import fi.vm.sade.oppija.lomake.domain.rules.expression.Or;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
+import javax.ws.rs.HEAD;
+
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
 
 public final class KielitaitokysymyksetTheme {
