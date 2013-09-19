@@ -165,7 +165,9 @@ public interface ApplicationService {
      */
     Application officerCreateNewApplication(final String asId);
 
-    Application fillLOPChain(Application application);
+    Application fillLOPChain(Application application, boolean save);
 
     Application getNextWithoutStudentOid();
+
+    void addNote(final Application application, final String noteText, final boolean persist);
 }

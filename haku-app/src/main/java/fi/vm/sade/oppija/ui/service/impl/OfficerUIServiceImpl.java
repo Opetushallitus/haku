@@ -214,6 +214,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             throw new IllegalArgumentException("Invalid student oid");
         }
         application.setStudentOid(studentOid);
-        applicationService.addNote(application, "Oppijanumero syötetty");
+        applicationService.addNote(application, "Oppijanumero syötetty", true);
     }
 }

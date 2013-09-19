@@ -82,7 +82,6 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     /**
      * Post-process applications.
      *
-     * @param limit
      * @param sendMail
      */
     public void processApplications(boolean sendMail) {
@@ -91,7 +90,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         LOGGER.debug("Starting processApplications, application: {} {}",
                 application != null ? application.getOid() : "null", System.currentTimeMillis());
         while (application != null) {
-            applicationService.fillLOPChain(application);
+            applicationService.fillLOPChain(application, false);
             applicationService.addPersonOid(application);
             if (sendMail) {
                 try {
