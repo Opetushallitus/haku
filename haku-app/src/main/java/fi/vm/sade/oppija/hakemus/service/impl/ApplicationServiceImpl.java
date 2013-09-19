@@ -194,14 +194,16 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .setSecurityOrder(false);
 
         try {
+            application.setPersonOidChecked(System.currentTimeMillis());
             application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
+            LOGGER.debug("activate addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
+            application.activate();
         } catch (GenericFault fail) {
             LOGGER.info(fail.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
         }
 
-
-        LOGGER.debug("activate addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
-        application.activate();
         LOGGER.debug("save addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
         this.applicationDAO.save(application);
         LOGGER.debug("end addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
