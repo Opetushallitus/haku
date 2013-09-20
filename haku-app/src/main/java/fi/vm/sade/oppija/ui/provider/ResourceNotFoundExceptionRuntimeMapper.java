@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.ui.provider;
 
+import com.google.common.collect.ImmutableMap;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import org.slf4j.Logger;
@@ -25,16 +26,31 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 @Provider
 @Component
-public class ResourceNotFoundExceptionRuntimeMapper extends BaseExceptionMapper implements ExceptionMapper<ResourceNotFoundExceptionRuntime> {
+public class ResourceNotFoundExceptionRuntimeMapper implements ExceptionMapper<ResourceNotFoundExceptionRuntime> {
     public static final Logger LOGGER = LoggerFactory.getLogger(ResourceNotFoundExceptionRuntimeMapper.class);
+    public static final String ERROR_PAGE = "/error/error";
+    public static final String MODEL_STACK_TRACE = "stackTrace";
+    public static final String MODEL_MESSAGE = "message";
+    public static final String ERROR_ID = "error_id";
+    public static final String ERROR_TIMESTAMP = "timestamp";
 
     @Override
     public Response toResponse(ResourceNotFoundExceptionRuntime exception) {
-        Map<String, String> model = createModel(exception);
+        String timestamp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date());
+               String uuid = UUID.randomUUID().toString();
+               LOGGER.error("Error: " + uuid, exception);
+        Map<String, String> model = ImmutableMap.of(
+                MODEL_STACK_TRACE, exception.toString(),
+                MODEL_MESSAGE, exception.getMessage(),
+                ERROR_ID, uuid,
+                ERROR_TIMESTAMP, timestamp);
         return Response.status(Response.Status.NOT_FOUND).entity(new Viewable(ERROR_PAGE, model)).build();
     }
 }
