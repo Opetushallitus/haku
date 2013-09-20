@@ -90,6 +90,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_PERSON_OID = "personOid";
     private static final String FIELD_APPLICATION_STATE = "state";
     private static final String EXISTS = "$exists";
+    private static final String FIELD_STUDENT_OID = "studentOid";
     private final EncrypterService shaEncrypter;
     private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
     @Value("${application.oid.prefix}")
@@ -359,7 +360,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         List<String> state = applicationQueryParameters.getState();
         if (state != null && !state.isEmpty()) {
             if (state.size() == 1 && "NOT_IDENTIFIED".equals(state.get(0))) {
-                stateQuery = QueryBuilder.start(FIELD_PERSON_OID).exists(false).get();
+                stateQuery = QueryBuilder.start(FIELD_STUDENT_OID).exists(false).get();
             } else {
                 stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).in(state).get();
             }
