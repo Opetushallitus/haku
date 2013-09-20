@@ -17,9 +17,6 @@
 package fi.vm.sade.oppija.ui.provider;
 
 import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.core.Response;
@@ -29,12 +26,13 @@ import java.util.Map;
 
 @Provider
 @Component
-public class ResourceNotFoundExceptionRuntimeMapper extends BaseExceptionMapper implements ExceptionMapper<ResourceNotFoundExceptionRuntime> {
-    public static final Logger LOGGER = LoggerFactory.getLogger(ResourceNotFoundExceptionRuntimeMapper.class);
+public class ThrowableRuntimeMapper extends BaseExceptionMapper implements ExceptionMapper<Throwable> {
 
     @Override
-    public Response toResponse(ResourceNotFoundExceptionRuntime exception) {
+    public Response toResponse(Throwable exception) {
         Map<String, String> model = createModel(exception);
-        return Response.status(Response.Status.NOT_FOUND).entity(new Viewable(ERROR_PAGE, model)).build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new Viewable(ERROR_PAGE, model)).build();
     }
+
+
 }
