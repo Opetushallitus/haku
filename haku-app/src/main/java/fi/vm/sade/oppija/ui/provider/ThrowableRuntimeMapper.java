@@ -24,8 +24,6 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 import java.util.Map;
 
-@Provider
-@Component
 public class ThrowableRuntimeMapper extends BaseExceptionMapper implements ExceptionMapper<Throwable> {
 
     @Override
