@@ -120,9 +120,9 @@
                     </p>
 
                     <p>
-                        <a href="http://www.noc.fi/huippu-urheilu/tukipalvelut/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/"
+                        <a href="http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/"
                            target="_blank">
-                            http://www.noc.fi/huippu-urheilu/tukipalvelut/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
+                            http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
                         </a>
                     </p>
                     <hr/>
