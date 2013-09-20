@@ -139,7 +139,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         Element phase = new ElementTree(form).getChildById(applicationPhase.getPhaseId());
         ValidationResult phaseValidationResult = elementTreeValidator.validate(new ValidationInput(phase,
-                applicationPhase.getAnswers(), oid, application.getApplicationSystemId()));
+                allAnswers, oid, application.getApplicationSystemId()));
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
         this.applicationService.addNote(application, noteText, false);
