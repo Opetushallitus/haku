@@ -186,17 +186,21 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     @Test
-    public void testCreateNewApplicationAndSetPersonOid() {
+    public void testCreateNewApplicationAndSetPersonOid() throws InterruptedException {
         findByIdAndClick("create-application");
         Select asSelect = new Select(driver.findElement(By.id("asSelect")));
         asSelect.selectByIndex(0);
         findByIdAndClick("submit_confirm");
+        activate("1.2.3.4.5.00000000013");
         driver.findElement(new By.ByLinkText("Lisää oppijanumero")).click();
-        final String personOid = "1.3.4.5.6.434324324";
-        WebElement element = driver.findElement(By.id("newPersonOid"));
-        element.sendKeys(personOid);
+        screenshot("personOid1");
+        WebElement element = driver.findElement(By.id("addStudentOidForm"));
         element.submit();
-        assertTrue(selenium.isTextPresent(personOid));
+        screenshot("personOid2");
+        String personOid = driver.findElement(By.id("infocell_henkilonumero")).getText();
+        personOid = personOid.substring(personOid.indexOf(':'));
+        String studentOid = driver.findElement(By.id("infocell_oppijanumero")).getText();
+        assertTrue(studentOid.contains(personOid));
     }
 
     @Test
@@ -262,7 +266,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     private void activate(String oid) throws InterruptedException {
-        navigateToPath("virkailija", "hakemus", oid, "addPersonOid");
+        navigateToPath("virkailija", "hakemus", oid, "activate");
     }
 
     private void passivate() {

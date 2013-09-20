@@ -148,12 +148,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         PutMethod put= new PutMethod(url);
         try {
             client.executeMethod(put);
+            return personOid;
         } catch(IOException e) {
             log.error("Getting studentOid for {} failed due to: {}", personOid, e.toString());
             return null;
         }
-
-        return null;
     }
 
     @Override

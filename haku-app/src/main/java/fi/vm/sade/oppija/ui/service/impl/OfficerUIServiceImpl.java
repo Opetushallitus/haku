@@ -1,6 +1,7 @@
 package fi.vm.sade.oppija.ui.service.impl;
 
 import com.google.common.base.Strings;
+import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.oppija.hakemus.domain.Application;
@@ -37,6 +38,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final LoggerAspect loggerAspect;
     private final ElementTreeValidator elementTreeValidator;
     private final ApplicationSystemService applicationSystemService;
+    private final AuthenticationService authenticationService;
 
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
@@ -46,7 +48,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final LoggerAspect loggerAspect,
                                 @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
                                 final ElementTreeValidator elementTreeValidator,
-                                final ApplicationSystemService applicationSystemService
+                                final ApplicationSystemService applicationSystemService,
+                                final AuthenticationService authenticationService
     ) {
         this.applicationService = applicationService;
         this.formService = formService;
@@ -56,6 +59,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
         this.elementTreeValidator = elementTreeValidator;
         this.applicationSystemService = applicationSystemService;
+        this.authenticationService = authenticationService;
     }
 
     @Override
@@ -184,7 +188,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Override
     public void addPersonAndAuthenticate(String oid) throws ResourceNotFoundException {
-        applicationService.addPersonOid(oid);
+        Application application = applicationService.getApplicationByOid(oid);
+        applicationService.fillLOPChain(application, false);
+        applicationService.addPersonOid(application);
     }
 
     @Override
@@ -206,13 +212,15 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public void addStudentOid(String oid, String studentOid) throws ResourceNotFoundException {
+    public void addStudentOid(String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
+        String studentOid = application.getPersonOid();
         if (!Strings.isNullOrEmpty(application.getStudentOid())) {
-            throw new IllegalStateException("Person oid is already set");
+            throw new IllegalStateException("Student oid is already set");
         } else if (Strings.isNullOrEmpty(studentOid)) {
             throw new IllegalArgumentException("Invalid student oid");
         }
+        authenticationService.getStudentOid(studentOid);
         application.setStudentOid(studentOid);
         applicationService.addNote(application, "Oppijanumero syötetty", true);
     }
