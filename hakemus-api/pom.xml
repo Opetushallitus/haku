@@ -23,7 +23,7 @@
     <parent>
         <artifactId>haku</artifactId>
         <groupId>fi.vm.sade.haku</groupId>
-        <version>6.1-SNAPSHOT</version>
+        <version>6.1.1</version>
         <relativePath>..</relativePath>
     </parent>
 
