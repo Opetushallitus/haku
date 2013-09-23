@@ -97,7 +97,7 @@ public final class HenkilotiedotPhase {
                 new SocialSecurityNumber("ssn_question", createI18NForm("form.henkilotiedot.hetu"),
                         sukupuoli.getI18nText(), male, female, sukupuoli.getId(), henkilotunnus);
         if (!asType.equals(Yhteishaku2013.LISA_HAKU)) {
-            addApplicationUniqueValidator(socialSecurityNumber, asType);
+            addApplicationUniqueValidator(henkilotunnus, asType);
         }
 
         RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FIN$", true);
