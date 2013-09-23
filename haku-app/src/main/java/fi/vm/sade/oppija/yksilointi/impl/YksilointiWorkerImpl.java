@@ -114,7 +114,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         while (application != null) {
             LOGGER.debug("Checking studentOid for application {}", application.getOid());
             Long lastChecked = application.getStudentOidChecked();
-            if (lastChecked == null || lastChecked == 0 || System.currentTimeMillis() - lastChecked > (1000 * 60 * 5)) {
+            if (lastChecked == null || lastChecked == 0 || System.currentTimeMillis() - lastChecked > (1000 * 60 * 120)) {
                 applicationService.checkStudentOid(application);
             }
             application = applicationService.getNextWithoutStudentOid();
