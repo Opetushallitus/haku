@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ attribute name="key" required="true" type="java.lang.String" %>
 <%@ attribute name="value" required="true" %>
-<td>
+<%@ attribute name="cellId" required="false" type="java.lang.String" %>
+<td <c:if test="${not empty cellId}">id="<c:out value="${cellId}"/>"</c:if>>
     <span class="bold"><fmt:message key="${key}"/>: </span><c:out value="${value}" escapeXml="true"/>
 </td>

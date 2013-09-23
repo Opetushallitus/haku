@@ -1,6 +1,7 @@
 package fi.vm.sade.oppija.ui.service.impl;
 
 import com.google.common.collect.ImmutableList;
+import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.oppija.hakemus.domain.Application;
@@ -40,6 +41,7 @@ public class OfficerUIServiceImplTest {
     private HakuPermissionService hakuPermissionService;
     private LoggerAspect loggerAspect;
     private ElementTreeValidator elementTreeValidator;
+    private AuthenticationService authenticationService;
 
     private Application application;
     private Phase phase = new Phase(ID, ElementUtil.createI18NAsIs("title"), false);
@@ -60,6 +62,7 @@ public class OfficerUIServiceImplTest {
         loggerAspect = mock(LoggerAspect.class);
         ValidatorFactory validatorFactory = mock(ValidatorFactory.class);
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
+        authenticationService = mock(AuthenticationService.class);
 
         officerUIService = new OfficerUIServiceImpl(
                 applicationService,
@@ -68,7 +71,8 @@ public class OfficerUIServiceImplTest {
                 hakuPermissionService,
                 loggerAspect, "",
                 elementTreeValidator,
-                mock(ApplicationSystemService.class));
+                mock(ApplicationSystemService.class),
+                authenticationService);
         form.addChild(phase);
         when(applicationService.getApplicationPreferenceOids(application)).thenReturn(OIDS);
         when(applicationService.getApplication(OID)).thenReturn(application);

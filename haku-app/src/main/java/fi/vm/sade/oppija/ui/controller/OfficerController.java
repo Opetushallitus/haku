@@ -29,7 +29,6 @@ import fi.vm.sade.oppija.ui.common.UriUtil;
 import fi.vm.sade.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.oppija.ui.service.UIService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
-import org.ietf.jgss.Oid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -213,7 +212,7 @@ public class OfficerController {
     }
 
     @GET
-    @Path("/hakemus/{oid}/addPersonOid")
+    @Path("/hakemus/{oid}/activate")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Response addPersonAndAuthenticate(@PathParam(OID_PATH_PARAM) final String oid)
@@ -223,18 +222,15 @@ public class OfficerController {
     }
 
     @POST
-    @Path("/hakemus/{oid}/addPersonOid")
+    @Path("/hakemus/{oid}/activate")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Viewable addPersonAndAuthenticate(@PathParam(OID_PATH_PARAM) final String oid,
                                              final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
         StringBuilder reasonBuilder = new StringBuilder();
-        for (String reasonPart : multiValues.get("activation-reason")) {
-            reasonBuilder.append(reasonPart);
-        }
-        officerUIService.addPersonAndAuthenticate(oid);
-        officerUIService.addNote(oid, reasonBuilder.toString());
+        officerUIService.addStudentOid(oid);
+        officerUIService.addNote(oid, "Hakija yksilöity");
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
         return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
     }
@@ -300,14 +296,14 @@ public class OfficerController {
     }
 
     @POST
-    @Path("/hakemus/{oid}/addstudentoid")
+    @Path("/hakemus/{oid}/addStudentOid")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     public Viewable addStudentOid(@PathParam(OID_PATH_PARAM) final String oid,
                                  final MultivaluedMap<String, String> multiValues) throws ResourceNotFoundException {
         final String studentOid = multiValues.getFirst("newStudentOid");
-        LOGGER.debug("checkStudentOid: oid {}, personOid {}", oid, studentOid);
-        officerUIService.addStudentOid(oid, studentOid);
+        LOGGER.debug("addStudentOid: oid {}, personOid {}", oid, studentOid);
+        officerUIService.addStudentOid(oid);
         UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
         return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
     }

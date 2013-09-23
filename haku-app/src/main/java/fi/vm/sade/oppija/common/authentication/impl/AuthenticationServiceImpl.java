@@ -85,9 +85,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String responseString = null;
         if (status == 404) {
             responseString = createHenkilo(client, person);
-        } else if (status >= 500) {
-            log.error("Checking hetu failed due to: " + get.getStatusCode() + get.getStatusText());
-            return null;
         } else if (status == 200) {
             try {
                 responseString = get.getResponseBodyAsString();
@@ -95,6 +92,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 // It's because I'm lazy
                 throw new RuntimeException(e);
             }
+        } else {
+            log.error("Checking hetu failed due to: " + get.getStatusCode() + get.getStatusText());
+            return null;
         }
 
         JsonObject henkiloJson = new JsonParser().parse(responseString).getAsJsonObject();
@@ -148,12 +148,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         PutMethod put= new PutMethod(url);
         try {
             client.executeMethod(put);
+            return personOid;
         } catch(IOException e) {
             log.error("Getting studentOid for {} failed due to: {}", personOid, e.toString());
             return null;
         }
-
-        return null;
     }
 
     @Override

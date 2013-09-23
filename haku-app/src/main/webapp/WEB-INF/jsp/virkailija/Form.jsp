@@ -62,7 +62,7 @@
                     </c:otherwise>
                 </c:choose>
                 <c:choose>
-                    <c:when test="${empty application.studentOid}"> --%>
+                    <c:when test="${empty application.studentOid}">
                         <jsp:include page="addStudentOid.jsp" />
                     </c:when>
                 </c:choose>
@@ -94,12 +94,12 @@
                 </tr>
                 <tr>
                     <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${categoryData['Henkilotunnus']}"/>
-                    <haku:infoCell key="virkailija.hakemus.henkilonumero" value="${application.personOid}"/>
+                    <haku:infoCell key="virkailija.hakemus.henkilonumero" value="${application.personOid}" cellId="infocell_henkilonumero"/>
                     <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${categoryData['Sähköposti']}"/>
                 </tr>
                 <tr>
                     <td></td>
-                    <haku:infoCell key="virkailija.hakemus.oppijanumero" value="${application.studentOid}"/>
+                    <haku:infoCell key="virkailija.hakemus.oppijanumero" value="${application.studentOid}" cellId="infocell_oppijanumero"/>
                     <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${categoryData['aidinkieli']}"/>
                 </tr>
 

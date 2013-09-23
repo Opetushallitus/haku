@@ -11,12 +11,11 @@
             <h3><fmt:message key="virkailija.hakemus.lisaa.oppijanumero.varmistus"/></h3>
         </div>
         <div class="popup-dialog-content">
-            <form method="post" action="${contextPath}/virkailija/hakemus/${application.oid}/addstudentoid">
+            <form method="post" id="addStudentOidForm" action="${contextPath}/virkailija/hakemus/${application.oid}/addStudentOid">
                 <div class="margin-bottom-2">
                     <p>
                         <fmt:message key="virkailija.hakemus.lisaa.oppijanumero.viesti"/>
                     </p>
-                    <input type="text" name="newStudentOid" id="newPersonOid" value="" />
                 </div>
                 <div>
                     <button class="small" name="nav-send" value="true" data-po-hide="addStudentOid">
