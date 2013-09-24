@@ -42,7 +42,7 @@
                         }
                         if (data.attachmentDeliveryDeadline) {
                             var deadline = new Date(data.attachmentDeliveryDeadline);
-                            addrsHtml = addrsHtml.concat('<br>' + deliveryDeadlineLabel + ' ' + deadline.toString('yyyy-MM-dd'));
+                            addrsHtml = addrsHtml.concat('<br>' + deliveryDeadlineLabel + ' ' + deadline.format('yyyy-MM-dd'));
                         }
                         addrsHtml = addrsHtml.concat('</address><br>');
                         $discretionaryAttachments.append(addrsHtml);
