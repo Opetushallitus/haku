@@ -189,6 +189,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public void addPersonAndAuthenticate(String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
+        application.activate();
         applicationService.fillLOPChain(application, false);
         applicationService.addPersonOid(application);
     }

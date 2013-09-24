@@ -11,7 +11,7 @@
             <h3><fmt:message key="virkailija.hakemus.aktivoi.hakemus.varmistus"/></h3>
         </div>
         <div class="popup-dialog-content">
-            <form method="post" action="${contextPath}/virkailija/hakemus/${application.oid}/addPersonAndAuthenticate">
+            <form method="post" action="${contextPath}/virkailija/hakemus/${application.oid}/activate">
                 <div class="margin-bottom-2">
                     <p>
                         <fmt:message key="virkailija.hakemus.aktivoi.hakemus.viesti"/>

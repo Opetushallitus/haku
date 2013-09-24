@@ -215,7 +215,7 @@ public class OfficerController {
     @Path("/hakemus/{oid}/activate")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Response addPersonAndAuthenticate(@PathParam(OID_PATH_PARAM) final String oid)
+    public Response activate(@PathParam(OID_PATH_PARAM) final String oid)
             throws URISyntaxException, ResourceNotFoundException {
         officerUIService.addPersonAndAuthenticate(oid);
         return seeOther(UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, oid, "")).build();
@@ -226,7 +226,7 @@ public class OfficerController {
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Viewable addPersonAndAuthenticate(@PathParam(OID_PATH_PARAM) final String oid,
+    public Viewable activate(@PathParam(OID_PATH_PARAM) final String oid,
                                              final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
         StringBuilder reasonBuilder = new StringBuilder();
         officerUIService.addStudentOid(oid);
