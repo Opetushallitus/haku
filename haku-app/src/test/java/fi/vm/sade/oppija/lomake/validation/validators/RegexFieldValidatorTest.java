@@ -234,9 +234,13 @@ public class RegexFieldValidatorTest {
 
 
     private RegexFieldValidator createValidator(final String pattern) {
-        return new RegexFieldValidator(FIELD_NAME, ERROR_MESSAGE, pattern);
+        return new RegexFieldValidator(FIELD_NAME, ERROR_MESSAGE, pattern, false);
 
     }
 
+    private RegexFieldValidator createValidator(final String pattern, final boolean trim) {
+        return new RegexFieldValidator(FIELD_NAME, ERROR_MESSAGE, pattern, trim);
+
+    }
 
 }
