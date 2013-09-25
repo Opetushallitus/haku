@@ -67,8 +67,7 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-            <param-value>(/(images|js|styles|(WEB-INF/jsp)|resources|services)/.*)|(/buildversion\.txt)|(/healthcheck)
-            </param-value>
+            <param-value>(/(images|js|styles|(WEB-INF/jsp)|resources|services)/.*)|(/buildversion\.txt)|(/healthcheck)</param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
@@ -112,6 +111,15 @@
         <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
+    <servlet>
+        <servlet-name>healthcheck</servlet-name>
+        <servlet-class>fi.vm.sade.healthcheck.HealthCheckServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>healthcheck</servlet-name>
+        <url-pattern>/healthcheck</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>cxf</servlet-name>

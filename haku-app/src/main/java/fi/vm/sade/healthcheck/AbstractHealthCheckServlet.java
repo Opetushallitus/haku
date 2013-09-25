@@ -23,6 +23,7 @@ import java.util.Map;
  *
  * @author Antti Salonen
  */
+@WebServlet(urlPatterns = {"/healthcheck"}, loadOnStartup = 1)
 public abstract class AbstractHealthCheckServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(HealthCheckServlet.class);
 
