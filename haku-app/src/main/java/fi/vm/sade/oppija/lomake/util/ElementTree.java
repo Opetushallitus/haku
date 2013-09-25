@@ -95,7 +95,7 @@ public final class ElementTree {
                 return;
             }
             int currentIndex = children.indexOf(getChildById(currentId));
-            if (nextIndex == currentIndex) {
+            if (nextIndex <= currentIndex) {
                 return;
             }
         }
