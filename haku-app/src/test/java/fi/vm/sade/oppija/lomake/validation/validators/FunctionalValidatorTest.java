@@ -36,9 +36,9 @@ public class FunctionalValidatorTest {
     @Test
     public void testValidAndOperator() {
         Predicate<ValidationInput> predicate = and(validate(
-                new RegexFieldValidator("a", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "foo")),
+                new RegexFieldValidator("a", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "foo", false)),
                 validate(new RegexFieldValidator(
-                        "b", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "bar")));
+                        "b", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "bar", false)));
 
         FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NAsIs("error"));
         Map<String, String> values = new HashMap<String, String>();
@@ -52,9 +52,9 @@ public class FunctionalValidatorTest {
     @Test
     public void testInvalidAndOperator() {
         Predicate<ValidationInput> predicate = and(validate(
-                new RegexFieldValidator("a", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "foo")),
+                new RegexFieldValidator("a", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "foo", false)),
                 validate(new RegexFieldValidator(
-                        "b", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "bar")));
+                        "b", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "bar", false)));
 
         FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NAsIs("error"));
         Map<String, String> values = new HashMap<String, String>();
@@ -67,12 +67,12 @@ public class FunctionalValidatorTest {
 
     @Test
     public void testValidAndOrOperators() {
-        Predicate<ValidationInput> predicate = or(and(validate(new RegexFieldValidator("a",
-                ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "foo")),
-                validate(new RegexFieldValidator(
-                        "b", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "bar"))),
-                validate(new RegexFieldValidator(
-                        "c", ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "ok")));
+        Predicate<ValidationInput> predicate =
+                or(
+                        and(
+                                validate(ElementUtil.createRegexValidator("a", "foo")),
+                                validate(ElementUtil.createRegexValidator("b", "bar"))),
+                validate(ElementUtil.createRegexValidator("c", "ok")));
 
         FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NAsIs("error"));
         Map<String, String> values = new HashMap<String, String>();
@@ -88,9 +88,9 @@ public class FunctionalValidatorTest {
     public void testValidAndOperatorWithNegation() {
         Predicate<ValidationInput> predicate = and(validate(
                 new RegexFieldValidator("a",
-                        ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "foo")),
+                        ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "foo", false)),
                 not(validate(new RegexFieldValidator("b",
-                        ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "bar"))));
+                        ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "bar", false))));
 
         FunctionalValidator fv = new FunctionalValidator(predicate, "id", ElementUtil.createI18NAsIs("error"));
         Map<String, String> values = new HashMap<String, String>();

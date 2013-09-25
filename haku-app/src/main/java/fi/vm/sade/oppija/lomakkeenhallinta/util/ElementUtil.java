@@ -45,7 +45,7 @@ import java.util.*;
 
 public final class ElementUtil {
 
-    public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ][a-zA-ZÀ-ÖØ-öø-ÿ ,-]*(?:[a-zA-ZÀ-ÖØ-öø-ÿ]+$)$";
+    public static final String ISO88591_NAME_REGEX = "^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ][a-zA-ZÀ-ÖØ-öø-ÿ ,-]*(?:[a-zA-ZÀ-ÖØ-öø-ÿ]+$)$";
     public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$";
 
     public static final String KYLLA = Boolean.TRUE.toString().toLowerCase();
@@ -163,11 +163,14 @@ public final class ElementUtil {
         return element;
     }
 
-
-    public static Validator createRegexValidator(final String id, final String pattern) {
+    public static Validator createRegexValidator(final String id, final String pattern, final boolean trim) {
         return new RegexFieldValidator(id,
                 ElementUtil.createI18NTextError("yleinen.virheellinenArvo"),
-                pattern);
+                pattern, trim);
+    }
+
+    public static Validator createRegexValidator(final String id, final String pattern) {
+        return createRegexValidator(id, pattern, false);
     }
 
     public static void addRequiredValidator(final Element element) {
