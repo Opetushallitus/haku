@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -27,7 +28,9 @@ public class OrganizationServiceImplTest {
         List<OrganisaatioPerustieto> serviceResult = new ArrayList<OrganisaatioPerustieto>();
         OrganisaatioPerustieto organisaatioDTO = new OrganisaatioPerustieto();
         organisaatioDTO.setOid(OID);
-        organisaatioDTO.setNimiFi("nimi");
+        HashMap<String, String> nimiMap = new HashMap<String, String>();
+        nimiMap.put("fi", "nimi");
+        organisaatioDTO.setNimi(nimiMap);
         serviceResult.add(organisaatioDTO);
         OrganisaatioSearchService organisaatioService = mock(OrganisaatioSearchService.class);
         organizationServiceImpl = new OrganizationServiceImpl(organisaatioService);
