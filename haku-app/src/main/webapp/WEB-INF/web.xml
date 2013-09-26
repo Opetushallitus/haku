@@ -67,11 +67,16 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-            <param-value>(/(images|js|styles|(WEB-INF/jsp)|resources|services)/.*)|(/buildversion\.txt)|(/healthcheck)</param-value>
+            <param-value>(/(images|js|styles|(WEB-INF/jsp)|resources|services)/.*)|(/buildversion\.txt)|(/healthcheck)
+            </param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
             <param-value>fi.vm.sade.oppija.common.filter.CorsFilter</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.config.feature.DisableWADL</param-name>
+            <param-value>true</param-value>
         </init-param>
     </filter>
 
