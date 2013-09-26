@@ -8,7 +8,6 @@ import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 public class OrganisaatioPerustietoToOrganizationFunction implements
@@ -20,16 +19,6 @@ public class OrganisaatioPerustietoToOrganizationFunction implements
 
     @Override
     public Organization apply(OrganisaatioPerustieto input) {
-        final HashMap<String, String> name = new HashMap<String, String>();
-        if (input.getNimiFi() != null) {
-            name.put(FI, input.getNimiFi());
-        }
-        if (input.getNimiSv() != null) {
-            name.put(SV, input.getNimiSv());
-        }
-        if (input.getNimiEn() != null) {
-            name.put(EN, input.getNimiEn());
-        }
         final String oid = input.getOid();
         final String parentOid = input.getParentOid();
 
@@ -43,6 +32,6 @@ public class OrganisaatioPerustietoToOrganizationFunction implements
         final Date startDate = input.getAlkuPvm();
         final Date endDate = input.getLakkautusPvm();
 
-        return new Organization(new I18nText(name), oid, parentOid, types, startDate, endDate);
+        return new Organization(new I18nText(input.getNimi()), oid, parentOid, types, startDate, endDate);
     }
 }
