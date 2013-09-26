@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.common.filter;
 
+import com.google.common.base.Strings;
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerRequestFilter;
 import org.jsoup.Jsoup;
@@ -36,6 +37,10 @@ import java.util.Map;
  */
 public class XSSFilter implements ContainerRequestFilter {
 
+    private static final String PIWIK_REF = "_pk_ref";
+    private static final String PIWIK_CVAR = "_pk_cvar";
+    private static final String PIWIK_ID = "_pk_id";
+    private static final String PIWIK_SES = "_pk_ses";
 
     @Override
     public ContainerRequest filter(ContainerRequest containerRequest) {
@@ -52,7 +57,11 @@ public class XSSFilter implements ContainerRequestFilter {
             List<String> values = params.getValue();
             List<String> cleanValues = new ArrayList<String>();
             for (String value : values) {
-                cleanValues.add(stripXSS(value));
+                if (shouldCheck(key, value)) {
+                    cleanValues.add(stripXSS(value));
+                } else {
+                    cleanValues.add(value);
+                }
             }
             parameters.put(key, cleanValues);
         }
@@ -72,5 +81,24 @@ public class XSSFilter implements ContainerRequestFilter {
             }
         }
         return value;
+    }
+
+    private boolean shouldCheck(final String key, final String value) {
+        if (containsPiwikKey(key)) {
+            return false;
+        } else if (containsPiwikKey(value)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean containsPiwikKey(final String input) {
+        if (!Strings.isNullOrEmpty(input) && (input.contains(PIWIK_REF) || input.contains(PIWIK_CVAR) ||
+            input.contains(PIWIK_ID) || input.contains(PIWIK_SES))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
