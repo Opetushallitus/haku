@@ -53,7 +53,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 //        criteria.setSuunnitellut(searchCriteria.isIncludePlanned());
 //        criteria.setLakkautetut(searchCriteria.isIncludePassive());
 //        criteria.setOppilaitosTyyppi(searchCriteria.getLearningInstitutionType());
-        searchCriteria.setMaxResults(MAX_RESULTS);
+//        searchCriteria.setMaxResults(MAX_RESULTS);
         final List<OrganisaatioPerustieto> result = service.searchBasicOrganisaatios(searchCriteria);
 
         LOG.debug("Criteria: {}, found {} organizations", searchCriteria, result.size());
