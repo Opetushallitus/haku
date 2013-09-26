@@ -112,7 +112,17 @@ public class NavigationIT extends DummyModelBaseItTest {
         elementsPresentBy(By.xpath("//button[@class='left']"));
 
         nextPhase();
-
+        selenium.goBack();
+        selenium.goBack();
+        selenium.goBack();
+        selenium.goBack();
+        selenium.goBack();
+        nextPhase();
+        nextPhase();
+        nextPhase();
+        nextPhase();
+        nextPhase();
+        nextPhase();
         findByIdAndClick("submit_confirm");
 
         elementsPresentBy(By.xpath("//li/span/span[contains(text(),'1')]"));
