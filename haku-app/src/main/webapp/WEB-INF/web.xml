@@ -67,7 +67,8 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-            <param-value>(/(images|js|styles|(WEB-INF/jsp)|resources|services)/.*)|(/buildversion\.txt)|(/healthcheck)</param-value>
+            <param-value>(/(images|js|styles|(WEB-INF/jsp)|resources|services)/.*)|(/buildversion\.txt)|(/healthcheck)
+            </param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
