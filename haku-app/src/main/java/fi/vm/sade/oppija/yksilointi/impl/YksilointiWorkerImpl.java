@@ -111,7 +111,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         LOGGER.debug("Starting processIdentification, application: {} {}",
                 application != null ? application.getOid() : "null", System.currentTimeMillis());
 
-        Long endTime = System.currentTimeMillis() + (1000 * 60);
+        Long endTime = System.currentTimeMillis() + (1000 * 10);
 
         while (application != null && System.currentTimeMillis() < endTime) {
             LOGGER.debug("Checking studentOid for application {}", application.getOid());
