@@ -38,9 +38,9 @@ public class LomakeIT extends DummyModelBaseItTest {
     public void submitApplication() throws Exception {
 
         navigateToFirstPhase();
-        setValue("Sukunimi", "Ankka");
-        setValue("Etunimet", "Aku Kalle");
-        setValue("Kutsumanimi", "AKu");
+        setValue("Sukunimi", "Ankka ");
+        setValue("Etunimet", " Aku Kalle");
+        setValue("Kutsumanimi", " AKu");
         setValue("Henkilotunnus", "010113-668B");
         setValue("Sähköposti", "aku.ankka@ankkalinna.al");
         setValue("matkapuhelinnumero1", "0501000100");
