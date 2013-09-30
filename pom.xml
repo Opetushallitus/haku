@@ -5,7 +5,7 @@
 
     <groupId>fi.vm.sade.haku</groupId>
     <artifactId>haku</artifactId>
-    <version>6.2-SNAPSHOT</version>
+    <version>6.2</version>
     <packaging>pom</packaging>
     <name>Haku :: Parent</name>
 
@@ -36,7 +36,7 @@
         <guava.version>15.0</guava.version>
         <ehcache.version>2.4.8</ehcache.version>
 
-        <internal-dependencies.version>6.2-SNAPSHOT</internal-dependencies.version>
+        <internal-dependencies.version>6.2</internal-dependencies.version>
         <webapp-portal-decorator.version>${internal-dependencies.version}</webapp-portal-decorator.version>
         <hakemus-api.version>${internal-dependencies.version}</hakemus-api.version>
         <koodisto-api.version>${internal-dependencies.version}</koodisto-api.version>
