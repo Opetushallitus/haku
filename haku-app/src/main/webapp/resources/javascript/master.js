@@ -1,4 +1,9 @@
 $(document).ready(function () {
+    $('form').submit(function () {
+        $(this).find('input:text').each(function () {
+            $(this).val($.trim($(this).val()));
+        });
+    });
 
     var popover = {
         handlers: {

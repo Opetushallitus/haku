@@ -232,15 +232,8 @@ public class RegexFieldValidatorTest {
         return validator.validate(new ValidationInput(null, values, null, null));
     }
 
-
     private RegexFieldValidator createValidator(final String pattern) {
-        return new RegexFieldValidator(FIELD_NAME, ERROR_MESSAGE, pattern, false);
+        return new RegexFieldValidator(FIELD_NAME, ERROR_MESSAGE, pattern);
 
     }
-
-    private RegexFieldValidator createValidator(final String pattern, final boolean trim) {
-        return new RegexFieldValidator(FIELD_NAME, ERROR_MESSAGE, pattern, trim);
-
-    }
-
 }

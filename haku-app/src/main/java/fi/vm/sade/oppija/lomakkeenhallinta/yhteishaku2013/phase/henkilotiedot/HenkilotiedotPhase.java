@@ -45,12 +45,12 @@ public final class HenkilotiedotPhase {
         // Nimet
         Question sukunimi = createRequiredTextQuestion("Sukunimi", "form.henkilotiedot.sukunimi", 30);
         sukunimi.setInline(true);
-        sukunimi.setValidator(createRegexValidator(sukunimi.getId(), ElementUtil.ISO88591_NAME_REGEX, true));
+        sukunimi.setValidator(createRegexValidator(sukunimi.getId(), ElementUtil.ISO88591_NAME_REGEX));
         henkilotiedotRyhma.addChild(sukunimi);
 
         Question etunimet = createRequiredTextQuestion("Etunimet", "form.henkilotiedot.etunimet", 30);
         etunimet.setInline(true);
-        etunimet.setValidator(createRegexValidator(etunimet.getId(), ElementUtil.ISO88591_NAME_REGEX, true));
+        etunimet.setValidator(createRegexValidator(etunimet.getId(), ElementUtil.ISO88591_NAME_REGEX));
         henkilotiedotRyhma.addChild(etunimet);
 
         TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", createI18NForm("form.henkilotiedot.kutsumanimi"));
@@ -61,7 +61,7 @@ public final class HenkilotiedotPhase {
                         etunimet.getId(),
                         ElementUtil.createI18NTextError("yleinen.virheellinenArvo")));
         kutsumanimi.setValidator(
-                createRegexValidator(kutsumanimi.getId(), ISO88591_NAME_REGEX, true));
+                createRegexValidator(kutsumanimi.getId(), ISO88591_NAME_REGEX));
         setRequiredInlineAndVerboseHelp(kutsumanimi, "form.henkilotiedot.kutsumanimi.verboseHelp");
 
         henkilotiedotRyhma.addChild(kutsumanimi);
