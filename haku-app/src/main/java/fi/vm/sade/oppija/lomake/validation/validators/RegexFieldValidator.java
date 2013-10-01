@@ -21,7 +21,6 @@ import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.Validate;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.regex.Pattern;
 
@@ -30,9 +29,9 @@ public class RegexFieldValidator extends FieldValidator {
     private final String pattern;
     private final Pattern compiledPattern;
 
-    public RegexFieldValidator(@JsonProperty(value = "fieldName") final String fieldName,
-                               @JsonProperty(value = "errorMessage") final I18nText errorMessage,
-                               @JsonProperty(value = "pattern") final String pattern) {
+    public RegexFieldValidator(final String fieldName,
+                               final I18nText errorMessage,
+                               final String pattern) {
         super(fieldName, errorMessage);
         Validate.notNull(pattern, "Pattern can't be null");
         this.pattern = pattern;

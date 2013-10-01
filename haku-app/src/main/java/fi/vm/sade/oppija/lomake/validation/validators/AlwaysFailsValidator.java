@@ -20,12 +20,10 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 public class AlwaysFailsValidator extends FieldValidator {
 
-    public AlwaysFailsValidator(@JsonProperty(value = "fieldName") final String fieldName,
-                                @JsonProperty(value = "errorMessage") final I18nText errorMessage) {
+    public AlwaysFailsValidator(final String fieldName, final I18nText errorMessage) {
         super(fieldName, errorMessage);
     }
 

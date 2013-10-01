@@ -21,13 +21,11 @@ import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Map;
 
 public class RequiredFieldValidator extends FieldValidator {
-    public RequiredFieldValidator(@JsonProperty(value = "fieldName") final String fieldName,
-                                  @JsonProperty(value = "errorMessage") final I18nText errorMessage) {
+    public RequiredFieldValidator(final String fieldName, final I18nText errorMessage) {
         super(fieldName, errorMessage);
     }
 

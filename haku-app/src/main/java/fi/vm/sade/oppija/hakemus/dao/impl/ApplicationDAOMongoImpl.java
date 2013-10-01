@@ -35,7 +35,7 @@ import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.oppija.lomake.service.EncrypterService;
-import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

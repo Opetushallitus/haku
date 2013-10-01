@@ -27,6 +27,7 @@ public class NavigationIT extends DummyModelBaseItTest {
 
     @Test
     public void testNavigationExists() throws IOException {
+
         navigateToFirstPhase();
         elementsPresentBy(By.xpath("//a[@id='nav-henkilotiedot']"));
         elementsPresentBy(By.xpath("//li/span/span[contains(text(),'2')]"));
@@ -135,4 +136,9 @@ public class NavigationIT extends DummyModelBaseItTest {
 
     }
 
+    @Test
+    public void testApplicationSystemNotFound() throws Exception {
+        navigateToPath("lomake/nonexistingapplicationsysytemid");
+        findByXPath("//*[contains(.,'Tapahtui odottamaton virhe.')]");
+    }
 }

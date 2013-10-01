@@ -13,10 +13,6 @@ import java.util.List;
 public class OrganisaatioPerustietoToOrganizationFunction implements
         Function<OrganisaatioPerustieto, Organization> {
 
-    private static final String FI = "fi";
-    private static final String SV = "sv";
-    private static final String EN = "en";
-
     @Override
     public Organization apply(OrganisaatioPerustieto input) {
         final String oid = input.getOid();

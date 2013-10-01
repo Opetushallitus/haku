@@ -22,7 +22,7 @@ import com.google.common.collect.Lists;
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.oppija.lomake.validation.ApplicationState;
+import fi.vm.sade.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
 import org.springframework.stereotype.Component;
 

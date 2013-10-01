@@ -21,7 +21,7 @@ import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.annotate.JsonProperty;
+import org.apache.commons.lang3.Validate;
 
 import java.util.Map;
 
@@ -29,10 +29,11 @@ public class ContainedInOtherFieldValidator extends FieldValidator {
 
     private final String otherFieldName;
 
-    public ContainedInOtherFieldValidator(@JsonProperty(value = "fieldName") final String fieldName,
-                                          @JsonProperty(value = "otherFieldName") final String otherFieldName,
-                                          @JsonProperty(value = "errorMessage") final I18nText errorMessage) {
+    public ContainedInOtherFieldValidator(final String fieldName,
+                                          final String otherFieldName,
+                                          final I18nText errorMessage) {
         super(fieldName, errorMessage);
+        Validate.notNull(otherFieldName, "'otherFieldName' can't be null");
         this.otherFieldName = otherFieldName;
     }
 
