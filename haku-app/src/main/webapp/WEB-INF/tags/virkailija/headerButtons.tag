@@ -34,6 +34,12 @@
             </a>
         </c:when>
     </c:choose>
+    <c:if test="${it.postProcessAllowed}">
+        <a href="#" id="postProcessApplication" data-po-show="postProcessApplication" class="button small">
+            <fmt:message key="virkailija.hakemus.postProcess" />
+        </a>
+    </c:if>
+
     <a href="${contextPath}/virkailija/hakemus/${oid}/print" class="button small print" target="_blank"><fmt:message
     key="lomake.valmis.button.tulosta"/></a>
 </div>

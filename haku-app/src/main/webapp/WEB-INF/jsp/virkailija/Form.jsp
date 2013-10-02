@@ -66,6 +66,9 @@
                         <jsp:include page="addStudentOid.jsp" />
                     </c:when>
                 </c:choose>
+                <c:if test="${it.postProcessAllowed}">
+                    <jsp:include page="postProcess.jsp" />
+                </c:if>
             </c:when>
         </c:choose>
     </div>

@@ -196,17 +196,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         try {
             application.setPersonOidChecked(System.currentTimeMillis());
             application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
-            LOGGER.debug("activate addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
-            application.activate();
         } catch (GenericFault fail) {
             LOGGER.info(fail.getMessage());
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
-
-        LOGGER.debug("save addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
-        this.applicationDAO.save(application);
-        LOGGER.debug("end addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
         return application;
     }
 
@@ -252,6 +246,18 @@ public class ApplicationServiceImpl implements ApplicationService {
         List<Application> apps = applicationDAO.find(query);
         Application application = apps.get(0);
         application.passivate();
+        Application queryApplication = new Application(applicationOid);
+        applicationDAO.update(queryApplication, application);
+        return application;
+    }
+
+    @Override
+    public Application activateApplication(String applicationOid) {
+        Application query = new Application();
+        query.setOid(applicationOid);
+        List<Application> apps = applicationDAO.find(query);
+        Application application = apps.get(0);
+        application.activate();
         Application queryApplication = new Application(applicationOid);
         applicationDAO.update(queryApplication, application);
         return application;

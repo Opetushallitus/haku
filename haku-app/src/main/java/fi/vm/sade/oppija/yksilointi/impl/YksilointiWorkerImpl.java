@@ -92,6 +92,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         while (application != null) {
             applicationService.fillLOPChain(application, false);
             applicationService.addPersonOid(application);
+            application.activate();
+            applicationService.update(new Application(application.getOid()), application);
             if (sendMail) {
                 try {
                     sendMail(application);
@@ -107,20 +109,20 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     }
 
     public void processIdentification() {
-//        Application application = applicationService.getNextWithoutStudentOid();
-//        LOGGER.debug("Starting processIdentification, application: {} {}",
-//                application != null ? application.getOid() : "null", System.currentTimeMillis());
-//
-//        Long endTime = System.currentTimeMillis() + (1000 * 60);
-//
-//        while (application != null && System.currentTimeMillis() < endTime) {
-//            LOGGER.debug("Checking studentOid for application {}", application.getOid());
-//            Long lastChecked = application.getStudentOidChecked();
-//            if (lastChecked == null || lastChecked == 0) {
-//                applicationService.checkStudentOid(application);
-//            }
-//            application = applicationService.getNextWithoutStudentOid();
-//        }
+        Application application = applicationService.getNextWithoutStudentOid();
+        LOGGER.debug("Starting processIdentification, application: {} {}",
+                application != null ? application.getOid() : "null", System.currentTimeMillis());
+
+        Long endTime = System.currentTimeMillis() + (1000 * 60);
+
+        while (application != null && System.currentTimeMillis() < endTime) {
+            LOGGER.debug("Checking studentOid for application {}", application.getOid());
+            Long lastChecked = application.getStudentOidChecked();
+            if (lastChecked == null || lastChecked == 0) {
+                applicationService.checkStudentOid(application);
+            }
+            application = applicationService.getNextWithoutStudentOid();
+        }
     }
 
     private void sendMail(Application application) throws EmailException {

@@ -170,4 +170,6 @@ public interface ApplicationService {
     Application getNextWithoutStudentOid();
 
     void addNote(final Application application, final String noteText, final boolean persist);
+
+    Application activateApplication(String oid);
 }

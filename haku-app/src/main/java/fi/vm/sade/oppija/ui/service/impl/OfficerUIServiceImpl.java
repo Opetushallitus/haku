@@ -20,6 +20,8 @@ import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
 import fi.vm.sade.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,8 @@ import java.util.Map;
 
 @Service
 public class OfficerUIServiceImpl implements OfficerUIService {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(OfficerUIServiceImpl.class);
 
     private final ApplicationService applicationService;
     private final FormService formService;
@@ -104,6 +108,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         officerApplicationResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
         officerApplicationResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
+        officerApplicationResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanUpdateApplication(application));
         return officerApplicationResponse;
     }
 
@@ -189,9 +194,17 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public void addPersonAndAuthenticate(String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
-        application.activate();
         applicationService.fillLOPChain(application, false);
         applicationService.addPersonOid(application);
+        application.activate();
+        applicationService.update(new Application(oid), application);
+    }
+
+    @Override
+    public Application activateApplication(String oid, String reason) throws ResourceNotFoundException {
+        reason = "Hakemus aktivoitu: " + reason;
+        addNote(oid, reason);
+        return applicationService.activateApplication(oid);
     }
 
     @Override
@@ -225,4 +238,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.setStudentOid(studentOid);
         applicationService.addNote(application, "Oppijanumero syötetty", true);
     }
+
+    @Override
+    public void postProcess(String oid) throws ResourceNotFoundException {
+        Application application = applicationService.getApplicationByOid(oid);
+        application = applicationService.fillLOPChain(application, false);
+        applicationService.addPersonOid(application);
+        application = applicationService.activateApplication(oid);
+        applicationService.update(new Application(oid), application);
+    }
+
 }
