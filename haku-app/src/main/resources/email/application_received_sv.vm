@@ -9,10 +9,13 @@ Dina ansökningsönskemål:
 $preference
 
 #end
+#if ($athlete)
 
-Ge respons om hur studieninfo.fi fungerade genom att svara på en kort enkät
-på adressen https://www.survette.com/34894-28325-671@studieinfo&hosten2013.
-Du kan svara fram till 11.10.2013.
+Haet urheilijana ammatilliseen koulutukseen. Lisätietoja löydät osoitteesta
+
+http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
+
+#end
 
 Detta är ett automatiskt meddelande. Svara inte på detta meddelande. Om du vill
 ändra på dina ansökningsönskemål, kontakta Studieinfos ansökningsrådgivning
