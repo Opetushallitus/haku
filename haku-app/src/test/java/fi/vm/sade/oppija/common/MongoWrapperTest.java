@@ -4,6 +4,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -35,6 +36,7 @@ public class MongoWrapperTest {
     }
 
     @Test
+    @Ignore
     public void testDropDatabase() {
         mongoWrapper.dropDatabase();
         verify(dbMock, times(1)).dropDatabase();
