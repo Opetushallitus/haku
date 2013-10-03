@@ -142,19 +142,6 @@
                     </p>
 
                     <div class="clear"></div>
-                    <hr/>
-
-                    <h3><fmt:message key="lomake.valmis.palaute"/></h3>
-
-                    <p>
-                        <fmt:message key="lomake.valmis.palaute.p1"/>
-                    </p>
-
-                    <p>
-                        <a href="https://opintopolku.fi/palaute" target="_blank">https://opintopolku.fi/palaute</a>
-                    </p>
-
-                    <div class="clear"></div>
 
                     <hr/>
                     <p>
