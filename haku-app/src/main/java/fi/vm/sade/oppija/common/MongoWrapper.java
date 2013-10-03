@@ -52,7 +52,14 @@ public class MongoWrapper {
 
     public void dropDatabase() {
         LOG.debug("Drop database {}", mongo.debugString());
-        db.dropDatabase();
+        for (String collectionName : db.getCollectionNames()) {
+            if (!collectionName.startsWith("system.")) {
+                LOG.debug("Drop collection {}", collectionName);
+                DBCollection collection = db.getCollection(collectionName);
+                collection.drop();
+            }
+        }
+        //db.dropDatabase();
     }
 
     public DBCollection getCollection(final String name) {
