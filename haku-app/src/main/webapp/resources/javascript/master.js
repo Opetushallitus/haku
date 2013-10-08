@@ -167,6 +167,10 @@ $(document).ready(function () {
                 $('body').on('click', '[data-po-hide]', function (event) {
                     event.preventDefault();
                     id = $(this).attr('data-po-hide');
+                    var toClear = $(this).attr('data-po-clear-on-hide');
+                    if (toClear) {
+                        $('#' + toClear).val('');
+                    }
                     popover.hide(id);
                 });
             }

@@ -16,10 +16,10 @@
                     <p>
                         <fmt:message key="virkailija.hakemus.aktivoi.hakemus.viesti"/>
                     </p>
-                    <textarea name="activation-reason" ></textarea>
+                    <textarea name="activation-reason" id="activation-reason"></textarea>
                 </div>
                 <div>
-                    <button class="small" name="nav-send" value="true" data-po-hide="confirmActivation">
+                    <button class="small" name="nav-send" value="true" data-po-clear-on-hide="activation-reason" data-po-hide="confirmActivation">
                         <fmt:message key="lomake.send.confirm.no"/>
                     </button>
                     <button id="submit_confirm" class="primary set-right small" name="nav-send" type="submit" value="true">

@@ -16,10 +16,10 @@
                     <p>
                         <fmt:message key="virkailija.hakemus.passivoi.hakemus.viesti"/>
                     </p>
-                    <textarea name="passivation-reason" ></textarea>
+                    <textarea name="passivation-reason" id="passivation-reason" ></textarea>
                 </div>
                 <div>
-                    <button class="small" name="nav-send" value="true" data-po-hide="confirmPassivation">
+                    <button class="small" name="nav-send" value="true" data-po-clear-on-hide="passivation-reason" data-po-hide="confirmPassivation">
                         <fmt:message key="lomake.send.confirm.no"/>
                     </button>
                     <button id="submit_confirm" class="primary set-right small" name="nav-send" type="submit" value="true">
