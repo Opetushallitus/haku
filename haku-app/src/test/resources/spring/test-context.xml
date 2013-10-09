@@ -32,7 +32,4 @@
         <constructor-arg type="java.lang.String" value="test"/>
     </bean>
 
-    <bean id="searchResourceMock" class="fi.vm.sade.oppija.koulutusinformaatio.resource.SearchResourceMock">
-
-    </bean>
 </beans>

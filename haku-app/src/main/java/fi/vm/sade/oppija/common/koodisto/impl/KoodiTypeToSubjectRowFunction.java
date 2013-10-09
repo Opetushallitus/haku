@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.common.koodisto.impl;
 import com.google.common.base.Function;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.koodisto.service.types.common.KoodiUriAndVersioType;
-import fi.vm.sade.koodisto.util.CachingKoodistoClient;
+import fi.vm.sade.koodisto.util.KoodistoClient;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 
@@ -33,9 +33,9 @@ public class KoodiTypeToSubjectRowFunction implements Function<KoodiType, Subjec
     public static final String CODE_ONPERUSASTEENOPPIAINE = "onperusasteenoppiaine";
     public static final String CODE_OPPIAINEENKIELISYYS = "oppiaineenkielisyys";
     public static final String CODE_VALUE_TRUE = "1";
-    private final CachingKoodistoClient koodiService;
+    private final KoodistoClient koodiService;
 
-    public KoodiTypeToSubjectRowFunction(CachingKoodistoClient koodiService) {
+    public KoodiTypeToSubjectRowFunction(final KoodistoClient koodiService) {
         this.koodiService = koodiService;
     }
 

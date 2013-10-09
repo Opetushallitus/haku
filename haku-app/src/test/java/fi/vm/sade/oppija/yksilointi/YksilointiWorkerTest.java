@@ -18,7 +18,7 @@ package fi.vm.sade.oppija.yksilointi;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
+import fi.vm.sade.oppija.hakemus.it.dao.ApplicationDAO;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,9 +46,9 @@ public class YksilointiWorkerTest extends AbstractDAOTest {
     }
 
     //@Before
-    public void setUp() {
+    public void setUpWorker() {
         try {
-            mongoWrapper.getCollection(getCollectionName()).insert(applicationTestDataObject);
+            mongoTemplate.getCollection(getCollectionName()).insert(applicationTestDataObject);
         } catch (Exception e) {
             LOGGER.error("Error set up test", e);
         }

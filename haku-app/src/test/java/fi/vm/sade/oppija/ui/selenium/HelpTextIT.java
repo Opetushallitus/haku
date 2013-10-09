@@ -26,7 +26,7 @@ import org.openqa.selenium.WebDriver;
 
 import static org.junit.Assert.assertNotNull;
 
-public class HelpTextTest extends AbstractSeleniumBase {
+public class HelpTextIT extends AbstractSeleniumBase {
 
     @Before
     public void init() {
@@ -37,7 +37,7 @@ public class HelpTextTest extends AbstractSeleniumBase {
     @Test
     public void testQuestionHelp() {
         final String url = getBaseUrl() + "lomake/" + ASID + "/henkilotiedot";
-        final WebDriver driver = seleniumHelper.getDriver();
+        final WebDriver driver = seleniumContainer.getDriver();
         driver.get(url);
         assertNotNull("Could not find question specific help", driver.findElement(By.id("help-Kutsumanimi")));
     }
@@ -45,7 +45,7 @@ public class HelpTextTest extends AbstractSeleniumBase {
     @Test
     public void testVerboseHelp() {
         final String url = getBaseUrl() + "lomake/" + ASID + "/HenkilotiedotGrp/help";
-        final WebDriver driver = seleniumHelper.getDriver();
+        final WebDriver driver = seleniumContainer.getDriver();
         driver.get(url);
         assertNotNull("Could not find verbose help page", driver.findElement(By.id("help-page")));
     }

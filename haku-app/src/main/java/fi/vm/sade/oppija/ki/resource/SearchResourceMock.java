@@ -13,8 +13,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-package fi.vm.sade.oppija.koulutusinformaatio.resource;
+package fi.vm.sade.oppija.ki.resource;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -25,6 +26,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Component
 @Path("/education/")
+@Profile("dev")
 public class SearchResourceMock {
 
     @GET

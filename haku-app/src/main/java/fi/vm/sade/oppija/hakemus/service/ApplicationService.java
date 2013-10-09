@@ -16,7 +16,7 @@
 
 package fi.vm.sade.oppija.hakemus.service;
 
-import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
+import fi.vm.sade.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;

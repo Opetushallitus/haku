@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.hakemus.dao;
+package fi.vm.sade.oppija.hakemus.it.dao;
 
 import com.mongodb.DBObject;
 import fi.vm.sade.oppija.common.dao.BaseDAO;

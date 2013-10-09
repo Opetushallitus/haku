@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.hakemus.dao.impl;
+package fi.vm.sade.oppija.hakemus.it.dao.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
@@ -28,8 +28,8 @@ import fi.vm.sade.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.oppija.hakemus.converter.DBObjectToApplicationFunction;
 import fi.vm.sade.oppija.hakemus.converter.DBObjectToSearchResultItem;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
+import fi.vm.sade.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;

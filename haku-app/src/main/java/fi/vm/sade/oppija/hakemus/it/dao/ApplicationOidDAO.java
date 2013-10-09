@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-package fi.vm.sade.oppija.hakemus.dao;
+package fi.vm.sade.oppija.hakemus.it.dao;
 
 /**
  * DAO for generating unique application oids

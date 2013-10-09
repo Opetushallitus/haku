@@ -17,26 +17,26 @@
 
 package fi.vm.sade.oppija.common.it;
 
-import fi.vm.sade.oppija.common.MongoWrapper;
 import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 public abstract class AbstractFormTest extends AbstractRemoteTest {
 
     @Autowired
-    protected MongoWrapper mongoWrapper;
+    protected MongoTemplate mongoTemplate;
 
     @Before
     public void setUp2() throws Exception {
-        mongoWrapper.dropDatabase();
+        mongoTemplate.getDb().dropDatabase();
     }
 
     @After
-    public void tearDown() throws Exception {
-        mongoWrapper.dropDatabase();
+    public void afterFormTest() throws Exception {
+        mongoTemplate.getDb().dropDatabase();
 
     }
 

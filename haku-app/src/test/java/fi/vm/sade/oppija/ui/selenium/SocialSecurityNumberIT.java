@@ -37,7 +37,7 @@ import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.*;
  * @version 10/3/123:25 PM}
  * @since 1.1
  */
-public class SocialSecurityNumberTest extends AbstractSeleniumBase {
+public class SocialSecurityNumberIT extends AbstractSeleniumBase {
     private ApplicationSystemHelper applicationSystemHelper;
 
     @Before
@@ -64,20 +64,20 @@ public class SocialSecurityNumberTest extends AbstractSeleniumBase {
 
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(socialSecurityNumber);
         this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
-        seleniumHelper.getDriver().get(getBaseUrl() + applicationSystemHelper.getStartUrl());
+        seleniumContainer.getDriver().get(getBaseUrl() + applicationSystemHelper.getStartUrl());
     }
 
 
     @Test
     public void testInputMale() {
-        seleniumHelper.getSelenium().type("Henkilotunnus", "010101-111X");
-        seleniumHelper.getDriver().findElement(By.xpath("//*[text()='Mies']"));
+        seleniumContainer.getSelenium().type("Henkilotunnus", "010101-111X");
+        seleniumContainer.getDriver().findElement(By.xpath("//*[text()='Mies']"));
     }
 
     @Test
     public void testInputFemale() {
-        seleniumHelper.getSelenium().type("Henkilotunnus", "010101-112X");
-        seleniumHelper.getDriver().findElement(By.xpath("//*[text()='Nainen']"));
+        seleniumContainer.getSelenium().type("Henkilotunnus", "010101-112X");
+        seleniumContainer.getDriver().findElement(By.xpath("//*[text()='Nainen']"));
 
 
     }

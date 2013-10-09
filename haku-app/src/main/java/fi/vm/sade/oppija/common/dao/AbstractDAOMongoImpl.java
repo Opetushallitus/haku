@@ -22,15 +22,15 @@ import com.google.common.collect.Lists;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import fi.vm.sade.oppija.common.MongoWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.List;
 
 public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
 
     @Autowired
-    protected MongoWrapper factoryBean;
+    protected MongoTemplate mongoTemplate;
 
     protected final Function<T, DBObject> toDBObject;
     protected final Function<DBObject, T> fromDBObject;
@@ -43,7 +43,7 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
     protected abstract String getCollectionName();
 
     protected DBCollection getCollection() {
-        return factoryBean.getCollection(getCollectionName());
+        return mongoTemplate.getCollection(getCollectionName());
     }
 
     @Override

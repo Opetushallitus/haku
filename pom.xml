@@ -35,6 +35,8 @@
         <mockito.version>1.9.5</mockito.version>
         <guava.version>15.0</guava.version>
         <ehcache.version>2.4.8</ehcache.version>
+        <flapdoodle.version>1.36</flapdoodle.version>
+        <org.apache.tomcat.embed>7.0.39</org.apache.tomcat.embed>
 
         <internal-dependencies.version>7.0-SNAPSHOT</internal-dependencies.version>
         <authentication-api.version>6.2-SNAPSHOT</authentication-api.version>

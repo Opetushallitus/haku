@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Hannu Lyytikainen
  */
-public class AdditionalGradeQuestionTest extends DummyModelBaseItTest {
+public class AdditionalGradeQuestionIT extends DummyModelBaseItTest {
 
 
     @Test

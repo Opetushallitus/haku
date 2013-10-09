@@ -30,14 +30,4 @@
     <context:annotation-config/>
     <context:component-scan base-package="fi.vm.sade.oppija"/>
 
-
-    <bean id="tomcat" class="fi.vm.sade.oppija.lomake.TomcatContainer">
-        <constructor-arg value="${mongo.db.name}"/>
-    </bean>
-
-
-    <bean id="seleniumContainer" class="fi.vm.sade.oppija.lomake.SeleniumContainer">
-        <constructor-arg name="tomcatContainer" ref="tomcat"/>
-    </bean>
-
 </beans>

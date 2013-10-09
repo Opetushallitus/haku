@@ -14,10 +14,9 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.hakemus.dao.impl;
+package fi.vm.sade.oppija.hakemus.it.dao.impl;
 
 import fi.vm.sade.oppija.common.dao.AbstractDAOTest;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationOidDAO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +32,13 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
-@ActiveProfiles(profiles = "dev")
-public class ApplicationOidDAOMongoImplTest extends AbstractDAOTest {
+@ActiveProfiles(profiles = {"dev", "it"})
+public class ApplicationOidDAOMongoImplIT extends AbstractDAOTest {
 
     @Autowired
     @Qualifier("applicationOidDAOMongoImpl")
-    private ApplicationOidDAO applicationOidDAO;
+    private ApplicationOidDAOMongoImpl applicationOidDAOMongo;
+
 
     @Override
     protected String getCollectionName() {
@@ -47,8 +47,8 @@ public class ApplicationOidDAOMongoImplTest extends AbstractDAOTest {
 
     @Test
     public void testSequence() throws Exception {
-        String oid1 = applicationOidDAO.generateNewOid();
-        String oid2 = applicationOidDAO.generateNewOid();
+        String oid1 = applicationOidDAOMongo.generateNewOid();
+        String oid2 = applicationOidDAOMongo.generateNewOid();
         assertNotNull(oid1);
         assertNotNull(oid2);
         assertNotSame(oid1, oid2);
@@ -59,28 +59,27 @@ public class ApplicationOidDAOMongoImplTest extends AbstractDAOTest {
         // OIDin tarkistesumma lasketaan kuten suomalaisissa pankkiviitteissä.
         // Testiä varten summat laskettu Tuataralla, 
         // http://tarkistusmerkit.teppovuori.fi/tuatara.htm#viite
-        ApplicationOidDAOMongoImpl mongoImpl = new ApplicationOidDAOMongoImpl();
-        String formattedOid = mongoImpl.formatOid("0");
+        String formattedOid = applicationOidDAOMongo.formatOid("0");
         assertEquals("00000000000", formattedOid);
-        formattedOid = mongoImpl.formatOid("1");
+        formattedOid = applicationOidDAOMongo.formatOid("1");
         assertEquals("00000000013", formattedOid);
-        formattedOid = mongoImpl.formatOid("2847535");
+        formattedOid = applicationOidDAOMongo.formatOid("2847535");
         assertEquals("00028475358", formattedOid);
-        formattedOid = mongoImpl.formatOid("9837593");
+        formattedOid = applicationOidDAOMongo.formatOid("9837593");
         assertEquals("00098375938", formattedOid);
-        formattedOid = mongoImpl.formatOid("2845834");
+        formattedOid = applicationOidDAOMongo.formatOid("2845834");
         assertEquals("00028458346", formattedOid);
-        formattedOid = mongoImpl.formatOid("100000");
+        formattedOid = applicationOidDAOMongo.formatOid("100000");
         assertEquals("00001000009", formattedOid);
-        formattedOid = mongoImpl.formatOid("110000");
+        formattedOid = applicationOidDAOMongo.formatOid("110000");
         assertEquals("00001100006", formattedOid);
-        formattedOid = mongoImpl.formatOid("101000");
+        formattedOid = applicationOidDAOMongo.formatOid("101000");
         assertEquals("00001010002", formattedOid);
-        formattedOid = mongoImpl.formatOid("100100");
+        formattedOid = applicationOidDAOMongo.formatOid("100100");
         assertEquals("00001001008", formattedOid);
-        formattedOid = mongoImpl.formatOid("100010");
+        formattedOid = applicationOidDAOMongo.formatOid("100010");
         assertEquals("00001000106", formattedOid);
-        formattedOid = mongoImpl.formatOid("100001");
+        formattedOid = applicationOidDAOMongo.formatOid("100001");
         assertEquals("00001000012", formattedOid);
     }
 }

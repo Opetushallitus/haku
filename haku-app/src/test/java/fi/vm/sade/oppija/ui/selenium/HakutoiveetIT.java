@@ -42,7 +42,7 @@ import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsI
  *
  * @author Mikko Majapuro
  */
-public class HakutoiveetTest extends AbstractSeleniumBase {
+public class HakutoiveetIT extends AbstractSeleniumBase {
 
     private ApplicationSystem activeApplicationSystem;
 
@@ -70,10 +70,10 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
     @Test
     public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
-        final WebDriver driver = seleniumHelper.getDriver();
-        seleniumHelper.navigate(getHakutoiveetPath());
+        final WebDriver driver = seleniumContainer.getDriver();
+        seleniumContainer.navigate(getHakutoiveetPath());
         driver.findElement(By.id("preference1-Opetuspiste"));
-        Selenium s = seleniumHelper.getSelenium();
+        Selenium s = seleniumContainer.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
@@ -86,9 +86,9 @@ public class HakutoiveetTest extends AbstractSeleniumBase {
 
     @Test(expected = NoSuchElementException.class)
     public void testEducationPreferenceNoAdditionalQuestion() throws InterruptedException {
-        final WebDriver driver = seleniumHelper.getDriver();
-        seleniumHelper.navigate(getHakutoiveetPath());
-        Selenium s = seleniumHelper.getSelenium();
+        final WebDriver driver = seleniumContainer.getDriver();
+        seleniumContainer.navigate(getHakutoiveetPath());
+        Selenium s = seleniumContainer.getSelenium();
         s.typeKeys("preference1-Opetuspiste", "Eso");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();

@@ -16,11 +16,11 @@
 
 package fi.vm.sade.oppija.common.dao;
 
-import fi.vm.sade.oppija.common.MongoWrapper;
 import org.junit.After;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 /**
  * Abstract base class for DAO tests.
@@ -34,12 +34,12 @@ public abstract class AbstractDAOTest {
     public static final Logger LOGGER = LoggerFactory.getLogger(AbstractDAOTest.class);
 
     @Autowired
-    protected MongoWrapper mongoWrapper;
+    protected MongoTemplate mongoTemplate;
 
     @After
     public void removeTestData() {
         try {
-            mongoWrapper.getCollection(getCollectionName()).drop();
+            mongoTemplate.getCollection(getCollectionName()).drop();
         } catch (Exception e) {
             LOGGER.error("Error removing test data", e);
         }

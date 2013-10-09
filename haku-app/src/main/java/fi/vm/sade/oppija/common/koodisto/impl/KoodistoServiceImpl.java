@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.common.koodisto.impl;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
-import fi.vm.sade.koodisto.util.CachingKoodistoClient;
+import fi.vm.sade.koodisto.util.KoodistoClient;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.common.koodisto.domain.Code;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
@@ -55,10 +55,10 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_GENDER = "sukupuoli";
 
 
-    private final CachingKoodistoClient koodiService;
+    private final KoodistoClient koodiService;
 
     @Autowired
-    public KoodistoServiceImpl(final CachingKoodistoClient koodiService) {
+    public KoodistoServiceImpl(final KoodistoClient koodiService) {
         this.koodiService = koodiService;
     }
 

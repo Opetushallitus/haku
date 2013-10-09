@@ -22,11 +22,11 @@ import static org.junit.Assert.assertTrue;
 public class OfficerIT extends DummyModelBaseItTest {
 
     @Before
-    public void setUp() throws Exception {
+    public void beforeOfficerIt() throws Exception {
         String baseUrl = getBaseUrl();
         HakuClient hakuClient = new HakuClient(baseUrl + "lomake/", "application.json");
         hakuClient.apply();
-        final LoginPage loginPage = new LoginPage(seleniumHelper.getSelenium());
+        final LoginPage loginPage = new LoginPage(seleniumContainer.getSelenium());
         navigateToPath("user", "login");
         loginPage.login("officer");
         activate("1.2.3.4.5.00000000000");

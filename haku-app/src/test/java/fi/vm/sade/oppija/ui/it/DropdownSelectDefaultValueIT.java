@@ -56,7 +56,7 @@ public class DropdownSelectDefaultValueIT extends AbstractSeleniumBase {
         dropdownSelect.addOptions(listOfOptions);
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
         this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
-        driver = seleniumHelper.getDriver();
+        driver = seleniumContainer.getDriver();
         driver.get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()));
     }
 

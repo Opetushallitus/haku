@@ -21,7 +21,7 @@ import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta.K
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-public class EducationBackgroundTest extends DummyModelBaseItTest {
+public class EducationBackgroundIT extends DummyModelBaseItTest {
 
     @Test
     public void testRule() {

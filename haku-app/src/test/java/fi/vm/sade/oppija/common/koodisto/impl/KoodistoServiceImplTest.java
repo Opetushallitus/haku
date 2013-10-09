@@ -17,6 +17,7 @@
 package fi.vm.sade.oppija.common.koodisto.impl;
 
 import fi.vm.sade.koodisto.util.CachingKoodistoClient;
+import fi.vm.sade.koodisto.util.KoodistoClient;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,7 +32,7 @@ public class KoodistoServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
-        CachingKoodistoClient koodiService = mock(CachingKoodistoClient.class);
+        KoodistoClient koodiService = mock(KoodistoClient.class);
         when(koodiService.getKoodisForKoodisto(anyString(), anyInt(), anyBoolean())).thenReturn(TestObjectCreator.createKoodiTypeList());
         koodistoService = new KoodistoServiceImpl(koodiService);
     }

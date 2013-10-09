@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.hakemus.dao;
+package fi.vm.sade.oppija.hakemus.it.dao;
 
 import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
@@ -54,10 +54,10 @@ import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
-@ActiveProfiles(profiles = "dev")
-public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
+@ActiveProfiles(profiles = {"dev", "it"})
+public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationDAOMongoImplTest.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationDAOMongoImplIT.class);
     public static final User TEST_USER = new User("test");
     public static final String ARVO = "arvo";
     public static final String TEST_PHASE = "vaihe1";
@@ -77,9 +77,9 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUpMongo() throws Exception {
         try {
-            mongoWrapper.getCollection(getCollectionName()).insert(applicationTestDataObject);
+            mongoTemplate.getCollection(getCollectionName()).insert(applicationTestDataObject);
         } catch (Exception e) {
             LOGGER.error("Error set up test", e);
         }
@@ -89,7 +89,6 @@ public class ApplicationDAOMongoImplTest extends AbstractDAOTest {
         when(hakuPermissionService.userCanReadApplications(anyList())).thenReturn(Lists.newArrayList("1.2.246.562.10.84682192491"));
         applicationDAO.setHakuPermissionService(hakuPermissionService);
 
-        final String id = String.valueOf(System.currentTimeMillis());
         this.applicationSystemId = ElementUtil.randomId();
     }
 

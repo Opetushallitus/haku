@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Hannu Lyytikainen
  */
-public class WorkExperienceThemeTest extends DummyModelBaseItTest {
+public class WorkExperienceThemeIT extends DummyModelBaseItTest {
 
     @Test
     public void testWorkExperienceShown() {

@@ -16,37 +16,57 @@
 package fi.vm.sade.oppija.lomake;
 
 import com.thoughtworks.selenium.Selenium;
-import fi.vm.sade.oppija.ui.selenium.SeleniumHelper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PreDestroy;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author jukka
- * @version 10/19/123:28 PM}
- * @since 1.1
- */
+@Service
+@Profile("it")
+public class SeleniumContainer {
 
-public class SeleniumContainer implements DisposableBean {
+    private final WebDriver webDriver;
+    private final Selenium selenium;
+    private final String webDriverBaseUrl;
 
-    private SeleniumHelper seleniumHelper;
-
-    public SeleniumContainer(TomcatContainer tomcatContainer) {
-        WebDriver driver = new FirefoxDriver();
-        Selenium selenium = new WebDriverBackedSelenium(driver, tomcatContainer.getBaseUrl());
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        this.seleniumHelper = new SeleniumHelper(selenium, driver, tomcatContainer.getBaseUrl());
+    @Autowired
+    public SeleniumContainer(@Value("${webdriver.base.url:http://localhost:8080/haku-app/}") final String webDriverBaseUrl) {
+        this.webDriverBaseUrl = webDriverBaseUrl;
+        this.webDriver = new FirefoxDriver();
+        this.selenium = new WebDriverBackedSelenium(this.webDriver, this.webDriverBaseUrl);
+        this.webDriver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 
-    public SeleniumHelper getSeleniumHelper() {
-        return seleniumHelper;
-    }
-
-    @Override
+    @PreDestroy
     public void destroy() throws Exception {
-        seleniumHelper.close();
+        webDriver.quit();
+        webDriver.close();
+        selenium.close();
+    }
+
+    public WebDriver getDriver() {
+        return webDriver;
+    }
+
+    public void logout() {
+        selenium.open(this.webDriverBaseUrl + "user/logout");
+    }
+
+    public String getBaseUrl() {
+        return webDriverBaseUrl;
+    }
+
+    public void navigate(final String path) {
+        selenium.open(webDriverBaseUrl + path);
+    }
+
+    public Selenium getSelenium() {
+        return selenium;
     }
 }

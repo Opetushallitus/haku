@@ -14,15 +14,15 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.hakemus.dao.impl;
+package fi.vm.sade.oppija.hakemus.it.dao.impl;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import fi.vm.sade.oppija.common.MongoWrapper;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationOidDAO;
+import fi.vm.sade.oppija.hakemus.it.dao.ApplicationOidDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,13 +35,15 @@ public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
 
     private static final String SEQUENCE_FIELD = "seq";
     private static final String SEQUENCE_NAME = "applicationsequence";
+    private final MongoTemplate mongoTemplate;
+    private final String oidPrefix;
 
     @Autowired
-    protected MongoWrapper mongoWrapper;
-
-    @Value("${application.oid.prefix}")
-    private String oidPrefix;
-
+    public ApplicationOidDAOMongoImpl(final MongoTemplate mongoTemplate,
+                                      @Value("${application.oid.prefix}") final String oidPrefix) {
+        this.mongoTemplate = mongoTemplate;
+        this.oidPrefix = oidPrefix;
+    }
 
     @Override
     public String generateNewOid() {
@@ -72,7 +74,7 @@ public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
     }
 
     protected DBCollection getSequence() {
-        return mongoWrapper.getCollection(SEQUENCE_NAME);
+        return mongoTemplate.getCollection(SEQUENCE_NAME);
     }
 
     String formatOid(String oid) {
