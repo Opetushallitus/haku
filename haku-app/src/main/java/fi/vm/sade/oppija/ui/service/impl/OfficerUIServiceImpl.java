@@ -243,8 +243,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public void postProcess(String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
         application = applicationService.fillLOPChain(application, false);
-        applicationService.addPersonOid(application);
-        application = applicationService.activateApplication(oid);
+        application = applicationService.addPersonOid(application);
+        application.activate();
         applicationService.update(new Application(oid), application);
     }
 
