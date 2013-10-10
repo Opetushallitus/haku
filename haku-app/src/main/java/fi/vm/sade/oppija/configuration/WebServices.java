@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.configuration;
 import fi.vm.sade.authentication.service.AuthenticationService;
 import fi.vm.sade.authentication.service.PersonalInformationService;
 import fi.vm.sade.koodisto.util.CachingKoodistoClient;
+import fi.vm.sade.koodisto.util.KoodistoClient;
 import fi.vm.sade.organisaatio.api.model.OrganisaatioService;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,7 +46,7 @@ public class WebServices {
     }
 
     @Bean(name = "cachingKoodistoClient")
-    public CachingKoodistoClient getCachingKoodistoClient() {
+    public KoodistoClient getCachingKoodistoClient() {
         return new CachingKoodistoClient();
     }
 

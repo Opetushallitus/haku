@@ -33,30 +33,30 @@ import static org.mockito.Mockito.when;
  */
 public class AuthenticationServiceImplTest {
 
-    AuthenticationServiceImpl authenticationService;
-
-    public static final String OID = "1.2.246.562.24.50700775342";
-
-    @Before
-    public void setup() {
-        HenkiloType ht = new HenkiloType();
-        ht.setOidHenkilo(OID);
-        UserManagementService userManagementService = mock(UserManagementService.class);
-        when(userManagementService.addHenkilo(any(AddHenkiloDataType.class))).thenReturn(ht);
-//        this.authenticationService = new AuthenticationServiceImpl(userManagementService);
-    }
-
-    @Ignore
-    @Test
-    public void testAddUser() {
-        Person p = new Person("Onni Pekka", "Onni", "Oppija", "111166-987F",
-                false, "mm@mail.com", "m", "Helsinki", false, "fi", "FINLAND", "fi");
-
-        String oid = authenticationService.addPerson(p);
-
-        assertEquals(oid, OID);
-
-    }
+//    //AuthenticationServiceImpl authenticationService;
+//
+//    public static final String OID = "1.2.246.562.24.50700775342";
+//
+//    @Before
+//    public void setup() {
+//        HenkiloType ht = new HenkiloType();
+//        ht.setOidHenkilo(OID);
+//        UserManagementService userManagementService = mock(UserManagementService.class);
+//        when(userManagementService.addHenkilo(any(AddHenkiloDataType.class))).thenReturn(ht);
+////        this.authenticationService = new AuthenticationServiceImpl(userManagementService);
+//    }
+//
+//    @Ignore
+//    @Test
+//    public void testAddUser() {
+//        Person p = new Person("Onni Pekka", "Onni", "Oppija", "111166-987F",
+//                false, "mm@mail.com", "m", "Helsinki", false, "fi", "FINLAND", "fi");
+//
+//        String oid = authenticationService.addPerson(p);
+//
+//        assertEquals(oid, OID);
+//
+//    }
 
 
 }
