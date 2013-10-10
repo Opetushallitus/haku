@@ -30,7 +30,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/tomcat-container-context.xml")
-@ActiveProfiles(profiles = {"dev", "it"})
+@ActiveProfiles("it")
 public abstract class TomcatContainerBase {
 
     @Value("${asid}")

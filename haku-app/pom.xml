@@ -1020,19 +1020,15 @@ buildTtime=${maven.build.timestamp}
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>tomcat-maven-plugin</artifactId>
-                        <version>1.1</version>
+                        <groupId>org.apache.tomcat.maven</groupId>
+                        <artifactId>tomcat7-maven-plugin</artifactId>
+                        <version>2.1</version>
                         <configuration>
                             <charset>UTF-8</charset>
                             <uriEncoding>UTF-8</uriEncoding>
-                            <addContextWarDependencies>true</addContextWarDependencies>
                             <systemProperties>
                                 <spring.profiles.active>dev</spring.profiles.active>
                             </systemProperties>
-                            <warSourceDirectory>
-                                ${project.build.directory}/${project.build.finalName}
-                            </warSourceDirectory>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -1071,13 +1067,13 @@ buildTtime=${maven.build.timestamp}
         <profile>
             <id>integration-test</id>
             <properties>
-                <springProfileActive>dev</springProfileActive>
+                <springProfileActive>it</springProfileActive>
                 <log4jConfigLocation>/WEB-INF/classes/log4j.properties</log4jConfigLocation>
             </properties>
             <build>
                 <resources>
                     <resource>
-                        <directory>config/integration-test</directory>
+                        <directory>config/it</directory>
                     </resource>
                     <resource>
                         <directory>src/main/resources</directory>
@@ -1085,7 +1081,7 @@ buildTtime=${maven.build.timestamp}
                 </resources>
                 <testResources>
                     <testResource>
-                        <directory>config/integration-test</directory>
+                        <directory>config/it</directory>
                     </testResource>
                     <testResource>
                         <directory>src/test/resources</directory>
@@ -1104,13 +1100,13 @@ buildTtime=${maven.build.timestamp}
                             </includes>
                             <testFailureIgnore>false</testFailureIgnore>
                             <additionalClasspathElements>
-                                <additionalClasspathElement>/config/dev/log4.properties</additionalClasspathElement>
+                                <additionalClasspathElement>/config/it/log4.properties</additionalClasspathElement>
                             </additionalClasspathElements>
                             <classpathDependencyExcludes>
                                 <classpathDependencyExcludes>net.sf.saxon:Saxon-HE</classpathDependencyExcludes>
                             </classpathDependencyExcludes>
                             <systemProperties>
-                                <spring.profiles.active>dev</spring.profiles.active>
+                                <spring.profiles.active>it</spring.profiles.active>
                                 <application.system.cache>false</application.system.cache>
                             </systemProperties>
                         </configuration>

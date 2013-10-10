@@ -31,9 +31,7 @@
 
     <beans profile="default">
         <context:property-placeholder
-                location="file:///${user.home:''}/oph-configuration/haku.properties,
-                    file:///${user.home:''}/oph-configuration/common.properties,
-                    file:///${user.home:''}/oph-configuration/override.properties"
+                location="file:///${user.home:''}/oph-configuration/*.properties"
                 ignore-resource-not-found="true" properties-ref="defaultProps"/>
 
         <bean id="defaultProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
@@ -53,12 +51,20 @@
 
     <beans profile="dev">
         <context:property-placeholder
-                location="classpath:haku.properties, file:///${user.home:''}/oph-configuration/haku.properties,
-                    file:///${user.home:''}/oph-configuration/common.properties, classpath:haku-test.properties"
-                ignore-resource-not-found="true" properties-ref="defaultProps"/>
-        <import resource="security-context-dev.xml"/>
-        <bean id="defaultProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
+                location="classpath:haku.properties, classpath:ext.properties, file:///${user.home:''}/oph-configuration/*.properties"
+                ignore-resource-not-found="true" properties-ref="devProps"/>
+        <bean id="devProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
+        <import resource="form-login-security-context.xml"/>
         <import resource="classpath:/META-INF/spring/logger-mock-context.xml"/>
+    </beans>
+
+    <beans profile="it">
+        <context:property-placeholder
+                location="classpath:haku.properties, classpath:ext.properties, classpath:haku-test.properties"
+                ignore-resource-not-found="true" properties-ref="itProps"/>
+        <bean id="itProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
+        <import resource="classpath:/META-INF/spring/logger-mock-context.xml"/>
+        <import resource="form-login-security-context.xml"/>
     </beans>
 
     <beans>

@@ -54,7 +54,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
-@ActiveProfiles(profiles = {"dev", "it"})
+@ActiveProfiles(profiles = {"it"})
 public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationDAOMongoImplIT.class);

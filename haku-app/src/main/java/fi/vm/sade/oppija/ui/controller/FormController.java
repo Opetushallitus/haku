@@ -269,6 +269,7 @@ public class FormController {
                             applicationState.getApplication().getPhaseId()).getPath())).build();
 
         } else {
+            LOGGER.debug("Invalid fields: {}", applicationState.getErrors().keySet());
             model.putAll(applicationState.getModelObjects());
             Element phase = new ElementTree(activeForm).getChildById(phaseId);
             model.put(MODEL_KEY_ELEMENT, phase);

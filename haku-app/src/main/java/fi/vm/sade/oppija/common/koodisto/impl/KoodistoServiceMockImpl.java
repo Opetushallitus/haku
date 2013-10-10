@@ -35,7 +35,7 @@ import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsI
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants.*;
 
 @Service
-@Profile("dev")
+@Profile(value = {"dev", "it"})
 public class KoodistoServiceMockImpl implements KoodistoService {
 
     public static final String LEARNING_INSTITUTION_TYPE = "Yliopistot";

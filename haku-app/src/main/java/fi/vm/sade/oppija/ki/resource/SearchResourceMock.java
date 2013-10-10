@@ -26,7 +26,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Component
 @Path("/education/")
-@Profile("dev")
+@Profile(value = {"dev", "it"})
 public class SearchResourceMock {
 
     @GET

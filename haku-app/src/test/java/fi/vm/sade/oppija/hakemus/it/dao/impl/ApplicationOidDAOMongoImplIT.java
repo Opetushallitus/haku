@@ -32,7 +32,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
-@ActiveProfiles(profiles = {"dev", "it"})
+@ActiveProfiles(profiles = {"it"})
 public class ApplicationOidDAOMongoImplIT extends AbstractDAOTest {
 
     @Autowired
