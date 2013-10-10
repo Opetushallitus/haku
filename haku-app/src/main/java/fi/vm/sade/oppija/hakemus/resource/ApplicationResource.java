@@ -16,9 +16,9 @@
 
 package fi.vm.sade.oppija.hakemus.resource;
 
-import fi.vm.sade.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
 import org.slf4j.Logger;

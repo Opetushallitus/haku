@@ -15,19 +15,6 @@
  */
 package fi.vm.sade.oppija.common.authentication.impl;
 
-import fi.vm.sade.authentication.service.UserManagementService;
-import fi.vm.sade.authentication.service.types.AddHenkiloDataType;
-import fi.vm.sade.authentication.service.types.dto.HenkiloType;
-import fi.vm.sade.oppija.common.authentication.Person;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 /**
  * @author Hannu Lyytikainen
  */

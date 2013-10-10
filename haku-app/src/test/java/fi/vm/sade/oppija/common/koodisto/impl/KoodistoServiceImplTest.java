@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.common.koodisto.impl;
 
-import fi.vm.sade.koodisto.util.CachingKoodistoClient;
 import fi.vm.sade.koodisto.util.KoodistoClient;
 import org.junit.Before;
 import org.junit.Test;

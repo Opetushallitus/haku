@@ -16,12 +16,12 @@
 
 package fi.vm.sade.oppija.hakemus.service;
 
-import fi.vm.sade.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.lomake.domain.ApplicationState;
+import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Map;

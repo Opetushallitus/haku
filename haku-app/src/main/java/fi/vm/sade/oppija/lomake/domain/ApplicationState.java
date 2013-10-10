@@ -18,7 +18,6 @@ package fi.vm.sade.oppija.lomake.domain;
 
 
 import fi.vm.sade.oppija.hakemus.domain.Application;
-import fi.vm.sade.oppija.lomake.domain.I18nText;
 
 import java.util.HashMap;
 import java.util.Map;
