@@ -10,7 +10,6 @@
     <name>Haku :: Parent</name>
 
     <modules>
-        <module>hakemus-api</module>
         <module>haku-app</module>
     </modules>
 
@@ -41,7 +40,6 @@
         <internal-dependencies.version>7.0-SNAPSHOT</internal-dependencies.version>
         <authentication-api.version>6.2-SNAPSHOT</authentication-api.version>
         <generic-common.version>6.3-SNAPSHOT</generic-common.version>
-        <hakemus-api.version>${internal-dependencies.version}</hakemus-api.version>
         <koodisto-api.version>6.3-SNAPSHOT</koodisto-api.version>
         <koulutusinformaatio-api.version>6.3-SNAPSHOT</koulutusinformaatio-api.version>
         <log-client.version>6.2-SNAPSHOT</log-client.version>
