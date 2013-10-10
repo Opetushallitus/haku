@@ -40,31 +40,31 @@ public class LocaleFilter implements ContainerRequestFilter {
     @Override
     public ContainerRequest filter(ContainerRequest containerRequest) {
         HttpSession session = httpServletRequest.getSession();
-//        String lang = getLangQueryParameter(containerRequest);
-//        Locale currentLocale = (Locale) Config.get(session, Config.FMT_LOCALE);
-        Locale newLocale = DEFAULT_LOCALE;//getNewLocale(lang, currentLocale);
+        String lang = getLangQueryParameter(containerRequest);
+        Locale currentLocale = (Locale) Config.get(session, Config.FMT_LOCALE);
+        Locale newLocale = getNewLocale(lang, currentLocale);
         Config.set(session, Config.FMT_LOCALE, newLocale);
         httpServletRequest.setAttribute("fi_vm_sade_oppija_language", newLocale.getLanguage());
         return containerRequest;
     }
 
-//    private Locale getNewLocale(final String lang, final Locale currentLocale) {
-//        Locale locale;
-//        if (lang != null) {
-//            locale = new Locale(lang);
-//        } else if (currentLocale != null) {
-//            locale = currentLocale;
-//        } else {
-//            locale = DEFAULT_LOCALE;
-//        }
-//        return locale;
-//    }
-//
-//    private String getLangQueryParameter(final ContainerRequest containerRequest) {
-//        String lang = containerRequest.getQueryParameters().getFirst(LANGUAGE_QUERY_PARAMETER_KEY);
-//        if (lang != null) {
-//            return lang;
-//        }
-//        return containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY);
-//    }
+    private Locale getNewLocale(final String lang, final Locale currentLocale) {
+        Locale locale;
+        if (lang != null) {
+            locale = new Locale(lang);
+        } else if (currentLocale != null) {
+            locale = currentLocale;
+        } else {
+            locale = DEFAULT_LOCALE;
+        }
+        return locale;
+    }
+
+    private String getLangQueryParameter(final ContainerRequest containerRequest) {
+        String lang = containerRequest.getQueryParameters().getFirst(LANGUAGE_QUERY_PARAMETER_KEY);
+        if (lang != null) {
+            return lang;
+        }
+        return containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY);
+    }
 }
