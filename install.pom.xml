@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>fi.vm.sade.haku</groupId>
-    <version>6.2</version>
+    <version>6.2.1</version>
     <artifactId>haku-app</artifactId>
     <packaging>war</packaging>
     <dependencies>
