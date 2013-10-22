@@ -17,7 +17,7 @@
 package fi.vm.sade.oppija.lomake.validation;
 
 import com.google.common.base.Strings;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
+import fi.vm.sade.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;

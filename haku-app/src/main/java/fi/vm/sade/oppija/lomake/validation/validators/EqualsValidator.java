@@ -21,7 +21,6 @@ import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.Validate;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Map;
 
@@ -29,9 +28,9 @@ public class EqualsValidator extends FieldValidator {
 
     private final String validValue;
 
-    public EqualsValidator(@JsonProperty(value = "fieldName") final String fieldName,
-                           @JsonProperty(value = "errorMessage") final I18nText errorMessage,
-                           @JsonProperty(value = "validValue") final String validValue) {
+    public EqualsValidator(final String fieldName,
+                           final I18nText errorMessage,
+                           final String validValue) {
         super(fieldName, errorMessage);
         Validate.notNull(validValue, "Valid value can't be null");
         this.validValue = validValue;

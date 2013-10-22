@@ -20,6 +20,7 @@ import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
@@ -28,7 +29,6 @@ import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.util.ElementTree;
-import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.oppija.ui.common.RedirectToFormViewPath;
 import fi.vm.sade.oppija.ui.common.RedirectToPendingViewPath;
@@ -269,6 +269,7 @@ public class FormController {
                             applicationState.getApplication().getPhaseId()).getPath())).build();
 
         } else {
+            LOGGER.debug("Invalid fields: {}", applicationState.getErrors().keySet());
             model.putAll(applicationState.getModelObjects());
             Element phase = new ElementTree(activeForm).getChildById(phaseId);
             model.put(MODEL_KEY_ELEMENT, phase);

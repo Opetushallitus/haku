@@ -31,8 +31,8 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     public void setUDummyModelBaseIt() throws Exception {
         FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
         applicationSystemHelper = updateApplicationSystem(formGeneratorMock.createApplicationSystem());
-        driver = seleniumHelper.getDriver();
-        selenium = seleniumHelper.getSelenium();
+        driver = seleniumContainer.getDriver();
+        selenium = seleniumContainer.getSelenium();
     }
 
     protected void nextPhase() {

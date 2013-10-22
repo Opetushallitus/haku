@@ -20,7 +20,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import org.springframework.data.annotation.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;

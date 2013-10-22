@@ -17,10 +17,10 @@
 package fi.vm.sade.oppija.hakemus.resource;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
+import fi.vm.sade.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;

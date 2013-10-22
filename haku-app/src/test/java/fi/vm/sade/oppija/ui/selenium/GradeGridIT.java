@@ -19,7 +19,6 @@ package fi.vm.sade.oppija.ui.selenium;
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 
 /**
  * @author Hannu Lyytikainen

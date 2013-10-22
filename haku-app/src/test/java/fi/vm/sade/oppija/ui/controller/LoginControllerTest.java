@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.oppija.lomake.service.UserHolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

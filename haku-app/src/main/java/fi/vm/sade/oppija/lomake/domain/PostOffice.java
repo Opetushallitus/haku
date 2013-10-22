@@ -28,8 +28,7 @@ public class PostOffice implements Serializable {
     private final String postcode;
     private final I18nText postOffice;
 
-    public PostOffice(final String postcode,
-                      final I18nText postOffice) {
+    public PostOffice(final String postcode, final I18nText postOffice) {
         this.postOffice = postOffice;
         this.postcode = postcode;
     }

@@ -24,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.data.annotation.Transient;
 
+
 import java.util.regex.Pattern;
 
 public class RegexFieldValidator extends FieldValidator {

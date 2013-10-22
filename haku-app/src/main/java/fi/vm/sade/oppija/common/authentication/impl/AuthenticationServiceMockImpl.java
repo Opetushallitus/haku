@@ -27,7 +27,7 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 @Service
-@Profile("dev")
+@Profile(value = {"dev", "it"})
 public class AuthenticationServiceMockImpl implements AuthenticationService {
 
     public static final int RANGE_SIZE = 1000000000;

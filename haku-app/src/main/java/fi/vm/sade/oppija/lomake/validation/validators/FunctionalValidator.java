@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomake.validation.Validator;
+import org.apache.commons.lang3.Validate;
 
 public class FunctionalValidator implements Validator {
 
@@ -30,6 +31,9 @@ public class FunctionalValidator implements Validator {
 
     public FunctionalValidator(Predicate<ValidationInput> predicate, final String inputId,
                                final I18nText errorMessage) {
+        Validate.notNull(predicate, "'predicate' can't be null");
+        Validate.notNull(inputId, "'inputId' can't be null");
+        Validate.notNull(errorMessage, "'errorMessage' can't be null");
         this.predicate = predicate;
         this.inputId = inputId;
         this.errorMessage = errorMessage;

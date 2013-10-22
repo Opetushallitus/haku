@@ -82,7 +82,7 @@ $(document).ready(function () {
     orgSearchDialog.build();
 
 
-    var applicationSearch = (function () {
+    applicationSearch = (function () {
         var oid = $('#oid');
         var self = this,
             $tbody = $('#application-table tbody:first'),
@@ -109,8 +109,23 @@ $(document).ready(function () {
             }
         }
 
-        this.search = function (start) {
-            var queryParameters = createQueryParameters(start);
+        this.search = function (start, useLast) {
+
+            var queryParameters = undefined;
+
+            $.cookie.json = false;
+            if (useLast) {
+                var queryParamStr = $.cookie('hakemus_last_search');
+                if (!queryParamStr) {
+                    queryParameters = createQueryParameters(start);
+                } else {
+                    queryParameters = JSON.parse(queryParamStr);
+                }
+            } else {
+                queryParameters = createQueryParameters(start);
+                $.cookie('hakemus_last_search', JSON.stringify(queryParameters));
+            }
+
             $.getJSON(page_settings.contextPath + "/applications",
                 queryParameters,
                 function (data) {
@@ -155,7 +170,7 @@ $(document).ready(function () {
 
 
     $('#search-applications').click(function (event) {
-        applicationSearch.search(0);
+        applicationSearch.search(0, false);
         return false;
     });
 

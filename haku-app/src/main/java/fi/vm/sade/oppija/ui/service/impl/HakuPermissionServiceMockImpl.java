@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Profile("dev")
+@Profile(value = {"dev", "it"})
 public class HakuPermissionServiceMockImpl implements HakuPermissionService {
     @Override
     public List<String> userCanReadApplications(List<String> organizations) {

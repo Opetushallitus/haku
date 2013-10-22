@@ -21,7 +21,6 @@ import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
 
@@ -29,9 +28,9 @@ public class ValueSetValidator extends FieldValidator {
 
     private final List<String> validValues;
 
-    public ValueSetValidator(@JsonProperty(value = "fieldName") final String fieldName,
-                             @JsonProperty(value = "errorMessage") final I18nText errorMessage,
-                             @JsonProperty(value = "validValues") final List<String> validValues) {
+    public ValueSetValidator(final String fieldName,
+                             final I18nText errorMessage,
+                             final List<String> validValues) {
         super(fieldName, errorMessage);
         this.validValues = ImmutableList.copyOf(validValues);
     }

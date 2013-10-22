@@ -39,7 +39,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  * Mock that returns test data.
  */
 @Service
-@Profile("dev")
+@Profile(value = {"dev", "it"})
 public class OrganizationServiceMockImpl implements OrganizationService {
 
     /**

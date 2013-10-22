@@ -44,7 +44,7 @@ public class HelpIT extends AbstractSeleniumBase {
     private CheckBox checkBox;
 
     @Before
-    public void setUp() throws Exception {
+    public void beforeHelpIt() throws Exception {
         checkBox = new CheckBox(ID, createI18NAsIs(TITLE));
     }
 
@@ -52,7 +52,7 @@ public class HelpIT extends AbstractSeleniumBase {
     public void testCheckBox() {
         checkBox.setHelp(HELP_TEXT);
         String actualHelpText = initModelAndGetHelpText(checkBox);
-        System.out.println(this.seleniumHelper.getSelenium().getHtmlSource());
+        System.out.println(this.seleniumContainer.getSelenium().getHtmlSource());
         assertEquals(HELP_TEXT.getTranslations().get("fi"), actualHelpText);
     }
 
@@ -64,8 +64,8 @@ public class HelpIT extends AbstractSeleniumBase {
     private String initModelAndGetHelpText(final Element element) {
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(element);
         this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
-        this.seleniumHelper.getDriver().get(getBaseUrl() + applicationSystemHelper.getStartUrl());
-        WebElement helpWebElement = seleniumHelper.getDriver().findElement(By.id(HELP_ID));
+        this.seleniumContainer.getDriver().get(getBaseUrl() + applicationSystemHelper.getStartUrl());
+        WebElement helpWebElement = seleniumContainer.getDriver().findElement(By.id(HELP_ID));
         return helpWebElement.getText();
     }
 }

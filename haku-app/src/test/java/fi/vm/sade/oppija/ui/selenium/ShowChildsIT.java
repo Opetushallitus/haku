@@ -65,7 +65,7 @@ public class ShowChildsIT extends AbstractSeleniumBase {
 
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(checkBox1, checkBox2);
         this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
-        driver = seleniumHelper.getDriver();
+        driver = seleniumContainer.getDriver();
     }
 
     @Test

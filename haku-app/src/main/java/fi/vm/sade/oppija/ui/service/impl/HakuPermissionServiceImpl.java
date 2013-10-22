@@ -69,7 +69,13 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         return userCanAccessApplication(application, getCreateReadUpdateDeleteRole());
     }
 
+    @SuppressWarnings("deprecation")
     private boolean userCanAccessApplication(Application application, String... roles) {
+        if (checkAccess(getRootOrgOid(), roles)) {
+            // OPH users can access anything
+            return true;
+        }
+
         Map<String, String> answers = application.getVastauksetMerged();
         for (int i = 1; i <= MAX_NUMBER_OF_PREFERENCES; i++) {
             String id = "preference" + i + "-Opetuspiste-id";

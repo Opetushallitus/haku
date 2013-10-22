@@ -22,14 +22,15 @@ import fi.vm.sade.authentication.service.GenericFault;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
 import fi.vm.sade.oppija.common.authentication.PersonBuilder;
 import fi.vm.sade.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationDAO;
-import fi.vm.sade.oppija.hakemus.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -38,7 +39,6 @@ import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.util.ElementTree;
-import fi.vm.sade.oppija.lomake.validation.ApplicationState;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.oppija.lomake.validation.ValidationResult;
@@ -196,17 +196,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         try {
             application.setPersonOidChecked(System.currentTimeMillis());
             application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
-            LOGGER.debug("activate addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
-            application.activate();
         } catch (GenericFault fail) {
             LOGGER.info(fail.getMessage());
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
-
-        LOGGER.debug("save addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
-        this.applicationDAO.save(application);
-        LOGGER.debug("end addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000);
         return application;
     }
 
@@ -252,6 +246,18 @@ public class ApplicationServiceImpl implements ApplicationService {
         List<Application> apps = applicationDAO.find(query);
         Application application = apps.get(0);
         application.passivate();
+        Application queryApplication = new Application(applicationOid);
+        applicationDAO.update(queryApplication, application);
+        return application;
+    }
+
+    @Override
+    public Application activateApplication(String applicationOid) {
+        Application query = new Application();
+        query.setOid(applicationOid);
+        List<Application> apps = applicationDAO.find(query);
+        Application application = apps.get(0);
+        application.activate();
         Application queryApplication = new Application(applicationOid);
         applicationDAO.update(queryApplication, application);
         return application;

@@ -18,10 +18,7 @@ package fi.vm.sade.oppija.lomake;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
-
-import java.util.List;
 
 
 public class ApplicationSystemHelper {

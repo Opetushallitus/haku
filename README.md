@@ -5,14 +5,16 @@ Hakemuksen ja hakulomakkeen käsittely
 
 ### Getting Started
 
+    cd haku
     mvn clean install
     cd haku-app
-    mvn -Dspring.profiles.active=dev tomcat:run
+    mvn tomcat7:run
 
 #### Integration tests
     
-    mvn clean package -Dspring.profiles.active=dev -Pintegration-test
+    mvn clean package verify -Pintegration-test
 
 ### Documentation
+
 
 ### License

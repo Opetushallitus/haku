@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.common.it;
 
-import fi.vm.sade.oppija.lomake.TomcatContainer;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +30,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/tomcat-container-context.xml")
-@ActiveProfiles(profiles = "dev")
+@ActiveProfiles("it")
 public abstract class TomcatContainerBase {
 
     @Value("${asid}")
@@ -42,10 +41,7 @@ public abstract class TomcatContainerBase {
     @Autowired
     protected AdminResourceClient adminResourceClient;
 
-    @Autowired
-    protected TomcatContainer container;
-
     public String getBaseUrl() {
-        return container.getBaseUrl();
+        return "http://localhost:8080/haku-app/";
     }
 }

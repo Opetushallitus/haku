@@ -76,9 +76,9 @@ public class PostalCodeIT extends AbstractSeleniumBase {
     @Ignore
     public void testPostalCode() throws InterruptedException, IOException {
         final String url = "lomake/test/lomake/testivaihe";
-        final WebDriver driver = seleniumHelper.getDriver();
+        final WebDriver driver = seleniumContainer.getDriver();
         driver.get(getBaseUrl() + url);
-        Selenium s = seleniumHelper.getSelenium();
+        Selenium s = seleniumContainer.getSelenium();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         WebElement postinumero = driver.findElement(By.xpath("//input[@id='" + POSTCODE_ID + "']"));
         postinumero.click();

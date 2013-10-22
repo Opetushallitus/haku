@@ -26,7 +26,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
@@ -69,7 +68,7 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
         assertNotSelected(OPTION_2_ID);
         assertNotSelected(OPTION_3_ID);
         assertSelected(OPTION_1_ID);
-        seleniumHelper.getDriver().get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()) + "?lang=sv");
+        seleniumContainer.getDriver().get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()) + "?lang=sv");
         assertNotSelected(OPTION_1_ID);
         assertNotSelected(OPTION_3_ID);
         assertSelected(OPTION_2_ID);
@@ -95,16 +94,16 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
         dropdownSelect.addOptions(listOfOptions);
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
         this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
-        seleniumHelper.getDriver().get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()));
+        seleniumContainer.getDriver().get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()));
     }
 
     private void assertNotSelected(final String id) {
-        WebElement element = seleniumHelper.getDriver().findElement(new By.ById(id));
+        WebElement element = seleniumContainer.getDriver().findElement(new By.ById(id));
         assertEquals("Invalid attribute selected (" + id + ")", null, element.getAttribute(SELECTED_ATTRIBUTE));
     }
 
     private void assertSelected(final String id) {
-        WebElement element = seleniumHelper.getDriver().findElement(new By.ById(id));
+        WebElement element = seleniumContainer.getDriver().findElement(new By.ById(id));
         assertEquals("Selected attribute not found (" + id + ")", "true", element.getAttribute(SELECTED_ATTRIBUTE));
     }
 }

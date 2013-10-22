@@ -26,8 +26,10 @@ public class ValidationInput {
     private final Element element;
     private final Map<String, String> values;
 
-    public ValidationInput(Element element, Map<String, String> values, String applicationOid,
-                           String applicationSystemId) {
+    public ValidationInput(final Element element,
+                           final Map<String, String> values,
+                           final String applicationOid,
+                           final String applicationSystemId) {
         this.element = element;
         this.values = values;
         this.applicationOid = applicationOid;

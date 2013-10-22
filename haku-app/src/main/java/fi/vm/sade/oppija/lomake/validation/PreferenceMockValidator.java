@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
  * @author Mikko Majapuro
  */
 @Component
-@Profile("dev")
+@Profile(value = {"dev", "it"})
 public class PreferenceMockValidator extends PreferenceConcreteValidator {
 
     @Override

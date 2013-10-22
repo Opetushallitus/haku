@@ -27,7 +27,7 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/")
 @Controller
-@Profile("dev")
+@Profile(value = {"dev", "it"})
 public class RootController {
 
     private static final String CHARSET_UTF_8 = ";charset=UTF-8";

@@ -50,5 +50,8 @@ Opetushallitus<br/>
 PL 380<br/>
 00531 Helsinki<br/>
 <footer style="width: 100%;bottom: 0; position: fixed; float: right">${it.timestamp} &nbsp;${it.error_id}</footer>
+<!-- Piwik -->
+<script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
+ <!-- End Piwik Code -->
 </body>
 </html>
