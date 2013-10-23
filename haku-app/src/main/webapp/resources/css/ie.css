@@ -1,0 +1,5 @@
+/* >= IE8 specific styles */
+#overlay {
+  background: transparent;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#88000000,endColorstr=#88000000);
+  zoom: 1; }

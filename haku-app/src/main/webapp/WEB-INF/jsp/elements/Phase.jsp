@@ -31,6 +31,9 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="${contextPath}/resources/css/oppija.css" type="text/css">
+    <!--[if lt IE 9]>
+    <link href="${contextPath}/resources/css/ie.css" type="text/css" rel="stylesheet"/>
+    <![endif]-->
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
     <script src="${contextPath}/resources/jquery/jquery.min.js"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>

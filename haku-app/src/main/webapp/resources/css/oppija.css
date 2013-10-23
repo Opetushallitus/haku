@@ -1670,11 +1670,18 @@ h6, .h6 {
   font-size: 0.923em;
   line-height: 1.538em; }
 
-small {
+small, .small {
   font-size: 1em;
   color: #7f7f7f; }
-  small.cursive {
+  small.cursive, .small.cursive {
     font-style: italic; }
+
+.banner-text {
+  padding-left: 20px;
+  color: #ff0000;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.231em; }
 
 #viewport {
   position: relative;
@@ -1710,7 +1717,7 @@ header {
         height: 48px;
         border: #FFFFFF 4px solid;
         outline: none;
-        vertical-align: baseline;
+        background: #FFFFFF none;
         -webkit-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
         -moz-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
         -o-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
@@ -1721,11 +1728,11 @@ header {
         -o-border-radius: 3px;
         -ms-border-radius: 3px;
         border-radius: 3px; }
+        header .search-container .search .search-field:focus {
+          border: #fde7a5 4px solid; }
         @media only screen and (min-width: 519px) {
           header .search-container .search .search-field {
             width: 60%; } }
-        header .search-container .search .search-field:focus {
-          border: #fde7a5 4px solid; }
       header .search-container .search .search-container {
         max-width: none;
         text-align: left; }
@@ -1804,6 +1811,9 @@ header {
                 display: inline; } }
             header .search-container .search .magnifier span span.h2 {
               color: #333333; }
+
+.lt-ie9 header .search .search-field {
+  background-color: #fff5da; }
 
 #siteheader {
   margin-bottom: 2em; }
@@ -1984,7 +1994,8 @@ header {
         width: 19px;
         height: 17px;
         display: block;
-        color: transparent; }
+        color: transparent;
+        font-size: 0px; }
 
 /*** Form generic
 ************************************************/
@@ -2282,78 +2293,6 @@ label, .label {
     margin: 0; }
   .toprow .set-right {
     padding-left: 20px; }
-
-/*** Tabsheet
-************************************************/
-.tabsheets {
-  background-color: #FFFFFF;
-  border: solid 2px #bdbdbd;
-  padding: 20px 10px; }
-  .tabsheets.sub {
-    border: none;
-    padding: 0; }
-
-.tabsheet {
-  display: none; }
-
-.tabs.main .tab {
-  color: #3E3E3E;
-  background-color: #ffffff;
-  display: inline-block;
-  border: solid 1px #bdbdbd;
-  padding: 1px;
-  text-decoration: none;
-  text-shadow: 0 1px 0 #FFFFFF;
-  position: relative;
-  top: 3px;
-  margin: 0 10px 0 0;
-  float: left;
-  max-width: 390px; }
-  .tabs.main .tab span {
-    display: block;
-    padding: 0px 10px;
-    height: 36px;
-    line-height: 36px;
-    font-weight: normal;
-    background: #f6f6f6;
-    background: #c6c6c6;
-    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#c6c6c6));
-    background: -webkit-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -o-linear-gradient(top, whitesmoke, #c6c6c6); }
-    .tabs.main .tab span:after {
-      content: "\00a0"; }
-    .tabs.main .tab span.fluid {
-      max-width: 390px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap; }
-  .tabs.main .tab:hover span {
-    background: #c6c6c6;
-    background: whitesmoke;
-    background: -webkit-gradient(linear, left top, left bottom, from(#c6c6c6), to(whitesmoke));
-    background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
-    background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
-    background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
-    background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
-.tabs.main .tab.current {
-  border-top-width: 2px;
-  border-right-width: 2px;
-  border-left-width: 2px;
-  border-bottom-width: 0px;
-  padding-bottom: 3px;
-  position: relative;
-  top: 2px; }
-  .tabs.main .tab.current span {
-    font-weight: bold;
-    background: white;
-    background: white;
-    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
-    background: -webkit-linear-gradient(top, whitesmoke, white);
-    background: -moz-linear-gradient(top, whitesmoke, white);
-    background: -ms-linear-gradient(top, whitesmoke, white);
-    background: -o-linear-gradient(top, whitesmoke, white); }
 
 /*** Image figure, Video Figure
 ************************************************/
@@ -2853,7 +2792,8 @@ ul.unstyled {
       background-repeat: no-repeat;
       background-position: center center;
       cursor: pointer;
-      color: transparent; }
+      color: transparent;
+      font-size: 0px; }
     .popup-dialog-wrapper .popup-dialog > .popup-dialog-header {
       font-size: 14px;
       font-weight: bold;
@@ -3231,6 +3171,53 @@ button {
         margin: 0px;
         background: none; }
 
+/*
+table {
+    border-spacing: 0;
+    width: 100%;
+    border: none;
+
+    td, th {
+        border: 0;
+        padding: 5px;
+        border-right: 1px solid #FFFFFF;
+    }
+}
+
+table thead th {
+    font-weight: bold;
+    text-align: left;
+    min-width: 120px;
+    background-color: #dff2f8;
+
+    &.down a {
+        background-image: url('../img/arrow-down.png');
+    }
+
+    &.up a {
+        background-image: url('../img/arrow-up.png');
+    }
+
+    &.nosort a {
+        background-image: url('../img/arrow-sorting.png');
+    }
+
+    a {
+        display: block;
+        width: 100%;
+        height: 24px;
+        background: #dff2f8 none no-repeat scroll center right;
+    }
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #dff2f8;
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: #FFFFFF;
+}
+*/
 /*** Application form
 **************************************************************/
 #sitecontent .content {
