@@ -45,8 +45,8 @@ public class RadioGroupIT extends AbstractFormTest {
     @Before
     public void init() throws IOException {
         radio = new Radio("radio", createI18NAsIs("foo"));
-        radio.addOption("value1", createI18NAsIs("radio"), "title");
-        radio.addOption("value2", createI18NAsIs("radio2"), "title2");
+        radio.addOption(createI18NAsIs("radio"), "title");
+        radio.addOption(createI18NAsIs("radio2"), "title2");
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(radio);
         this.applicationSystemHelper = updateModelAndCreateFormModelHelper(applicationSystem);
     }

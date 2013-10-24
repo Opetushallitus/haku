@@ -40,8 +40,6 @@ public class PreferenceRow extends Question {
     private I18nText learningInstitutionLabel;
     // label text for the child learning opportunity list
     private I18nText childLONameListLabel;
-    // place holder text for education select
-    private String selectEducationPlaceholder;
     private String learningInstitutionInputId;
     private String educationInputId;
     private String educationDegreeId;
@@ -51,15 +49,13 @@ public class PreferenceRow extends Question {
                          @JsonProperty(value = "resetLabel") final I18nText resetLabel,
                          @JsonProperty(value = "educationLabel") final I18nText educationLabel,
                          @JsonProperty(value = "learningInstitutionLabel") final I18nText learningInstitutionLabel,
-                         @JsonProperty(value = "childLONameListLabel") final I18nText childLONameListLabel,
-                         @JsonProperty(value = "selectEducationPlaceholder") final String selectEducationPlaceholder
+                         @JsonProperty(value = "childLONameListLabel") final I18nText childLONameListLabel
     ) {
         super(id, i18nText);
         this.resetLabel = resetLabel;
         this.educationLabel = educationLabel;
         this.learningInstitutionLabel = learningInstitutionLabel;
         this.childLONameListLabel = childLONameListLabel;
-        this.selectEducationPlaceholder = selectEducationPlaceholder;
         this.learningInstitutionInputId = this.id + "-Opetuspiste";
         this.educationInputId = this.id + "-Koulutus";
         this.educationDegreeId = this.id + "-Koulutus-educationDegree";
@@ -79,10 +75,6 @@ public class PreferenceRow extends Question {
 
     public I18nText getChildLONameListLabel() {
         return childLONameListLabel;
-    }
-
-    public String getSelectEducationPlaceholder() {
-        return selectEducationPlaceholder;
     }
 
     public String getLearningInstitutionInputId() {

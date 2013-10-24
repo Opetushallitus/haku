@@ -35,12 +35,6 @@ public class KoodiTypeToOptionFunctionTest {
     }
 
     @Test
-    public void testApplyId() throws Exception {
-        Option option = koodiTypeToOptionFunction.apply(koodiType);
-        assertEquals(TestObjectCreator.KOODI_KOODI_URI_AND_ARVO, option.getId());
-    }
-
-    @Test
     public void testApplyText() throws Exception {
         koodiType.getMetadata().add(TestObjectCreator.createKoodiMetadataType());
         Option option = koodiTypeToOptionFunction.apply(koodiType);

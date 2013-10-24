@@ -64,7 +64,6 @@
         <div class="form-row-content">
             <div class="field-container-select">
                 <select id="${selectInputId}" name="${selectInputId}"
-                        placeholder="${sortableItem.selectEducationPlaceholder}"
                         data-childlonames="${childLONamesId}"
                         data-selectedname="<c:out value='${categoryData[selectInputId]}'/>"
                 ${sortableItem.attributes['required']}>

@@ -30,7 +30,7 @@
                         <label for="application-state"><fmt:message key="virkailija.hakemus.hae.hakemuksia"/></label>
 
                         <div class="field-search-containerbox">
-                            <input type="text" id="entry" class="search width-60" placeholder=""/>
+                            <input type="text" id="entry" name="entry" class="search width-60" placeholder=""/>
                         </div>
                         <small><fmt:message key="virkailija.hakemus.hae.otsikko"/></small>
                     </td>

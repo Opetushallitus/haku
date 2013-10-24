@@ -112,7 +112,7 @@ public class GradesTable {
         GradeGridRow gradeGridRow = ElementUtil.createHiddenGradeGridRowWithId("additionalRow-" + subjectRow.getId());
         gradeGridRow.addChild(columnsArray);
         gradeGridRow.addAttribute("hidden", "hidden");
-        gradeGridRow.addAttribute("group", group);
+        gradeGridRow.addAttribute("data-group", group);
 
         return gradeGridRow;
     }

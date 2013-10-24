@@ -1,4 +1,4 @@
-﻿/*
+﻿﻿/*
  * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
@@ -82,7 +82,7 @@ $(document).ready(function () {
     orgSearchDialog.build();
 
 
-    applicationSearch = (function () {
+    var applicationSearch = (function () {
         var oid = $('#oid');
         var self = this,
             $tbody = $('#application-table tbody:first'),
@@ -109,23 +109,8 @@ $(document).ready(function () {
             }
         }
 
-        this.search = function (start, useLast) {
-
-            var queryParameters = undefined;
-
-            $.cookie.json = false;
-            if (useLast) {
-                var queryParamStr = $.cookie('hakemus_last_search');
-                if (!queryParamStr) {
-                    queryParameters = createQueryParameters(start);
-                } else {
-                    queryParameters = JSON.parse(queryParamStr);
-                }
-            } else {
-                queryParameters = createQueryParameters(start);
-                $.cookie('hakemus_last_search', JSON.stringify(queryParameters));
-            }
-
+        this.search = function (start) {
+            var queryParameters = createQueryParameters(start);
             $.getJSON(page_settings.contextPath + "/applications",
                 queryParameters,
                 function (data) {
@@ -170,7 +155,7 @@ $(document).ready(function () {
 
 
     $('#search-applications').click(function (event) {
-        applicationSearch.search(0, false);
+        applicationSearch.search(0);
         return false;
     });
 

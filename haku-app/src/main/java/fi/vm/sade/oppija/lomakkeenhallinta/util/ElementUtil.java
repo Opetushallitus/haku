@@ -125,13 +125,13 @@ public final class ElementUtil {
     }
 
     public static void addDefaultTrueFalseOptions(final Radio radio) {
-        radio.addOption(KYLLA, createI18NForm("form.yleinen.kylla"), KYLLA);
-        radio.addOption(EI, createI18NForm("form.yleinen.ei"), EI);
+        radio.addOption(createI18NForm("form.yleinen.kylla"), KYLLA);
+        radio.addOption(createI18NForm("form.yleinen.ei"), EI);
     }
 
     public static void addYesAndIDontOptions(final Radio radio) {
-        radio.addOption(KYLLA, createI18NForm("form.yleinen.kylla"), KYLLA);
-        radio.addOption(EI, createI18NForm("form.yleinen.en"), EI);
+        radio.addOption(createI18NForm("form.yleinen.kylla"), KYLLA);
+        radio.addOption(createI18NForm("form.yleinen.en"), EI);
     }
 
     public static GradeGridRow createHiddenGradeGridRowWithId(final String id) {

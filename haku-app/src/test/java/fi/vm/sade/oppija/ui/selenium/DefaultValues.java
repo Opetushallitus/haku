@@ -1,17 +1,28 @@
 package fi.vm.sade.oppija.ui.selenium;
 
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta.KoulutustaustaPhase;
+import com.google.common.collect.Maps;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public final class DefaultValues {
 
+    public static final String KYSYMYS_POHJAKOULUTUS = "POHJAKOULUTUS";
+    public static final String TUTKINTO_ULKOMAINEN_TUTKINTO = "0";
+    public static final String TUTKINTO_PERUSKOULU = "1";
+    public static final String TUTKINTO_OSITTAIN_YKSILOLLISTETTY = "2";
+    public static final String TUTKINTO_ERITYISOPETUKSEN_YKSILOLLISTETTY = "3";
+    public static final String TUTKINTO_YKSILOLLISTETTY = "6";
+    public static final String TUTKINTO_KESKEYTYNYT = "7";
+    public static final String TUTKINTO_YLIOPPILAS = "9";
+
     public static final String OPETUSPISTE = "FAKTIA, Espoo op";
 
-    public final LinkedHashMap<String, String> henkilotiedot = new LinkedHashMap<String, String>();
-    public final LinkedHashMap<String, String> koulutustausta_pk = new LinkedHashMap<String, String>();
-    public final LinkedHashMap<String, String> koulutustausta_lk = new LinkedHashMap<String, String>();
-    public final LinkedHashMap<String, String> lisatiedot = new LinkedHashMap<String, String>();
+    public final Map<String, String> henkilotiedot = new LinkedHashMap<String, String>();
+    public final Map<String, String> koulutustausta_pk = new LinkedHashMap<String, String>();
+    public final Map<String, String> koulutustausta_lk = new LinkedHashMap<String, String>();
+    public final Map<String, String> lisatiedot = new LinkedHashMap<String, String>();
+    public final Map<String, String> preference1 = new LinkedHashMap<String, String>();
 
     public DefaultValues() {
         henkilotiedot.put("Sukunimi", "Ankka");
@@ -26,21 +37,50 @@ public final class DefaultValues {
         henkilotiedot.put("lahiosoite", "Katu 1");
         henkilotiedot.put("Postinumero", "00100");
 
-        koulutustausta_lk.put("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_YLIOPPILAS, null);
+        koulutustausta_lk.put("POHJAKOULUTUS", "9");
         koulutustausta_lk.put("lukioPaattotodistusVuosi", "2012");
-        koulutustausta_lk.put("ammatillinenTutkintoSuoritettu_false", null);
+        koulutustausta_lk.put("ammatillinenTutkintoSuoritettu", "false");
         koulutustausta_lk.put("lukion_kieli", "FI");
 
-        koulutustausta_pk.put("POHJAKOULUTUS_tutkinto1", null);
+        koulutustausta_pk.put("POHJAKOULUTUS", "1");
         koulutustausta_pk.put("PK_PAATTOTODISTUSVUOSI", "2012");
-        koulutustausta_pk.put("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON_false", null);
+        koulutustausta_pk.put("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
         koulutustausta_pk.put("perusopetuksen_kieli", "FI");
 
         lisatiedot.put("TYOKOKEMUSKUUKAUDET", "10");
-        lisatiedot.put("asiointikieli_suomi", null);
-        lisatiedot.put("lupaMarkkinointi", null);
-        lisatiedot.put("lupaJulkaisu", null);
+        lisatiedot.put("asiointikieli", "suomi");
+        lisatiedot.put("lupaMarkkinointi", "true");
+        lisatiedot.put("lupaJulkaisu", "true");
+
+        preference1.put("preference1-discretionary", "false");
+        preference1.put("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
+        preference1.put("preference1_sora_terveys", "false");
+        preference1.put("preference1_sora_oikeudenMenetys", "false");
     }
 
+    public Map<String, String> getHenkilotiedot(final Map<String, String> values) {
+        return getNewMap(henkilotiedot, values);
+    }
 
+    public Map<String, String> getKoulutustausta_pk(final Map<String, String> values) {
+        return getNewMap(koulutustausta_pk, values);
+    }
+
+    public Map<String, String> getKoulutustausta_lk(final Map<String, String> values) {
+        return getNewMap(koulutustausta_lk, values);
+    }
+
+    public Map<String, String> getPreference1(final Map<String, String> values) {
+        return getNewMap(preference1, values);
+    }
+
+    public Map<String, String> getLisatiedot(final Map<String, String> values) {
+        return getNewMap(lisatiedot, values);
+    }
+
+    private Map<String, String> getNewMap(final Map<String, String> defaultValues, final Map<String, String> values) {
+        LinkedHashMap<String, String> newMap = Maps.newLinkedHashMap(defaultValues);
+        newMap.putAll(values);
+        return newMap;
+    }
 }

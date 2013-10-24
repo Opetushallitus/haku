@@ -60,14 +60,14 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
     public KoodistoServiceMockImpl() {
         List<Option> listOfGradeGrades = new ArrayList<Option>();
-        listOfGradeGrades.add(new Option("grade_0", createI18NAsIs("Ei arvosanaa"), "0"));
-        listOfGradeGrades.add(new Option("grade_10", createI18NAsIs("10"), "10"));
-        listOfGradeGrades.add(new Option("grade_9", createI18NAsIs("9"), "9"));
-        listOfGradeGrades.add(new Option("grade_8", createI18NAsIs("8"), "8"));
-        listOfGradeGrades.add(new Option("grade_7", createI18NAsIs("7"), "7"));
-        listOfGradeGrades.add(new Option("grade_6", createI18NAsIs("6"), "6"));
-        listOfGradeGrades.add(new Option("grade_5", createI18NAsIs("5"), "5"));
-        listOfGradeGrades.add(new Option("grade_4", createI18NAsIs("4"), "4"));
+        listOfGradeGrades.add(new Option(createI18NAsIs("Ei arvosanaa"), "0"));
+        listOfGradeGrades.add(new Option(createI18NAsIs("10"), "10"));
+        listOfGradeGrades.add(new Option(createI18NAsIs("9"), "9"));
+        listOfGradeGrades.add(new Option(createI18NAsIs("8"), "8"));
+        listOfGradeGrades.add(new Option(createI18NAsIs("7"), "7"));
+        listOfGradeGrades.add(new Option(createI18NAsIs("6"), "6"));
+        listOfGradeGrades.add(new Option(createI18NAsIs("5"), "5"));
+        listOfGradeGrades.add(new Option(createI18NAsIs("4"), "4"));
         this.listOfGradeGrades = ImmutableList.copyOf(listOfGradeGrades);
 
         this.listOfPostOffices = ImmutableList.of(
@@ -103,70 +103,53 @@ public class KoodistoServiceMockImpl implements KoodistoService {
         );
 
         this.listOfLearningInstitutionTypes = ImmutableList.of(
-                new Option(LEARNING_INSTITUTION_TYPE,
-                        createI18NAsIs(LEARNING_INSTITUTION_TYPE), LEARNING_INSTITUTION_TYPE));
+                new Option(createI18NAsIs(LEARNING_INSTITUTION_TYPE), LEARNING_INSTITUTION_TYPE));
         this.listOfOrganizationTypes =
                 ImmutableList.of(
-                        new Option(ORGANIZATION_TYPE,
-                                createI18NAsIs(ORGANIZATION_TYPE), ORGANIZATION_TYPE));
+                        new Option(createI18NAsIs(ORGANIZATION_TYPE), ORGANIZATION_TYPE));
 
         this.listOfCountries =
                 ImmutableList.of(
-                        new Option(SUOMI,
-                                createI18NAsIs("Suomi"), SUOMI),
-                        new Option(RUOTSI,
-                                createI18NAsIs("Ruotsi"), RUOTSI));
+                        new Option(createI18NAsIs("Suomi"), SUOMI),
+                        new Option(createI18NAsIs("Ruotsi"), RUOTSI));
 
         this.listOfLanguages =
                 ImmutableList.of(
-                        new Option(ElementUtil.randomId(),
-                                createI18NAsIs("Suomi"), "FI"),
-                        new Option(ElementUtil.randomId(),
-                                createI18NAsIs("Ruotsi"), "SV"),
-                        new Option(ElementUtil.randomId(),
-                                createI18NAsIs("Saame"), "SE"),
-                        new Option(ElementUtil.randomId(),
-                                createI18NAsIs("Englanti"), "EN"));
+                        new Option(createI18NAsIs("Suomi"), "FI"),
+                        new Option(createI18NAsIs("Ruotsi"), "SV"),
+                        new Option(createI18NAsIs("Saame"), "SE"),
+                        new Option(createI18NAsIs("Englanti"), "EN"));
 
         this.listOfNationalities =
                 ImmutableList.of(
-                        new Option(SUOMI,
-                                createI18NAsIs("Suomi"), SUOMI),
-                        new Option(RUOTSI,
-                                createI18NAsIs("Ruotsi"), RUOTSI));
+                        new Option(createI18NAsIs("Suomi"), SUOMI),
+                        new Option(createI18NAsIs("Ruotsi"), RUOTSI));
 
         this.listOfMunicipalities = ImmutableList.of(
-                new Option("jalasjarvi",
-                        createI18NAsIs("Jalasjärvi"), "jalasjarvi"),
-                new Option("janakkala",
-                        createI18NAsIs("Janakkala"), "janakkala"),
-                new Option("joensuu",
-                        createI18NAsIs("Joensuu"), "joensuu"),
-                new Option("jokioinen",
-                        createI18NAsIs("jokioinen"), "jokioinen"),
-                new Option("jomala",
-                        createI18NAsIs("Jomala"), "jomala")
+                new Option(createI18NAsIs("Jalasjärvi"), "jalasjarvi"),
+                new Option(createI18NAsIs("Janakkala"), "janakkala"),
+                new Option(createI18NAsIs("Joensuu"), "joensuu"),
+                new Option(createI18NAsIs("jokioinen"), "jokioinen"),
+                new Option(createI18NAsIs("Jomala"), "jomala")
         );
 
         this.listOfLanguageAndLiterature = ImmutableList.of(
-                new Option("FI", createI18NAsIs("Suomi äidinkielenä"), "FI"),
-                new Option("SV", createI18NAsIs("Ruotsi äidinkielenä"), "SV"),
-                new Option("SE", createI18NAsIs("Saame äidinkielenä"), "SE"),
-                new Option("RI", createI18NAsIs("Romani äidinkielenä"), "RI"),
-                new Option("VK", createI18NAsIs("Viittomakieli äidinkielenä"), "VK"),
-                new Option("XX", createI18NAsIs("Muu oppilaan äidinkieli"), "XX"),
-                new Option("FI_2", createI18NAsIs("Suomi toisena kielenä"), "FI_2"),
-                new Option("SV_2", createI18NAsIs("Ruotsi toisena kielenä"), "SV_2"),
-                new Option("FI_SE", createI18NAsIs("Suomi saamenkielisille"), "FI_SE"),
-                new Option("FI_VK", createI18NAsIs("Suomi viittomakielisille"), "FI_VK"),
-                new Option("SV_VK", createI18NAsIs("Ruotsi viittomakielisille"), "SV_VK"));
+                new Option(createI18NAsIs("Suomi äidinkielenä"), "FI"),
+                new Option(createI18NAsIs("Ruotsi äidinkielenä"), "SV"),
+                new Option(createI18NAsIs("Saame äidinkielenä"), "SE"),
+                new Option(createI18NAsIs("Romani äidinkielenä"), "RI"),
+                new Option(createI18NAsIs("Viittomakieli äidinkielenä"), "VK"),
+                new Option(createI18NAsIs("Muu oppilaan äidinkieli"), "XX"),
+                new Option(createI18NAsIs("Suomi toisena kielenä"), "FI_2"),
+                new Option(createI18NAsIs("Ruotsi toisena kielenä"), "SV_2"),
+                new Option(createI18NAsIs("Suomi saamenkielisille"), "FI_SE"),
+                new Option(createI18NAsIs("Suomi viittomakielisille"), "FI_VK"),
+                new Option(createI18NAsIs("Ruotsi viittomakielisille"), "SV_VK"));
 
         this.listOfGenders =
                 ImmutableList.of(
-                        new Option("1",
-                                createI18NAsIs("Mies"), "1"),
-                        new Option("2",
-                                createI18NAsIs("Nainen"), "2"));
+                        new Option(createI18NAsIs("Mies"), "1"),
+                        new Option(createI18NAsIs("Nainen"), "2"));
 
         this.listOfBaseEducationCodes = ImmutableList.of(
                 new Code(ULKOMAINEN_TUTKINTO, createI18NAsIs("Ulkomailla suoritettu koulutus")),

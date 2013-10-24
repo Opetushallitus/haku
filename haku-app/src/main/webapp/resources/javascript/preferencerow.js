@@ -28,7 +28,7 @@ var preferenceRow = {
                     selectedPreferenceOK = false;
 
                 preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
-                $("#" + selectInputId).html("<option></option>");
+                $("#" + selectInputId).html("<option>&nbsp;</option>");
 
                 $(data).each(function (index, item) {
                     var selected = "";
@@ -72,7 +72,7 @@ var preferenceRow = {
         $("#" + selectInputId + "-id-sora").val(false).change();
         $("#" + selectInputId + "-id-aoIdentifier").val("").change();
         $("#" + selectInputId + "-id-athlete").val(false).change();
-        $("#" + selectInputId).html("<option></option>");
+        $("#" + selectInputId).html("<option>&nbsp;</option>");
         preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
     },
 

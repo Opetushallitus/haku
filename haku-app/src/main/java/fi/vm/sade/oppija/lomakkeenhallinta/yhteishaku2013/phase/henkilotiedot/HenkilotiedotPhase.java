@@ -71,7 +71,6 @@ public final class HenkilotiedotPhase {
                 new DropdownSelect("kansalaisuus", createI18NForm("form.henkilotiedot.kansalaisuus"), null);
         kansalaisuus.addOptions(koodistoService.getNationalities());
         setDefaultOption("FIN", kansalaisuus.getOptions());
-        kansalaisuus.addAttribute("placeholder", "Valitse kansalaisuus");
         kansalaisuus.setHelp(createI18NForm("form.henkilotiedot.kansalaisuus.help"));
         setRequiredInlineAndVerboseHelp(kansalaisuus, "form.henkilotiedot.kansalaisuus.verboseHelp");
         henkilotiedotRyhma.addChild(kansalaisuus);
@@ -196,7 +195,6 @@ public final class HenkilotiedotPhase {
         DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", createI18NForm("form.henkilotiedot.asuinmaa"), null);
         asuinmaa.addOptions(koodistoService.getCountries());
         setDefaultOption("FIN", asuinmaa.getOptions());
-        asuinmaa.addAttribute("placeholder", "Valitse kansalaisuus");
         setRequiredInlineAndVerboseHelp(asuinmaa, "form.henkilotiedot.asuinmaa.verboseHelp");
 
         RelatedQuestionRule asuinmaaFI = new RelatedQuestionRule("rule1", asuinmaa.getId(), "FIN", true);
@@ -216,9 +214,8 @@ public final class HenkilotiedotPhase {
 
         DropdownSelect kotikunta =
                 new DropdownSelect("kotikunta", createI18NForm("form.henkilotiedot.kotikunta"), null);
-        kotikunta.addOption("eiValittu", ElementUtil.createI18NAsIs(""), "");
+        kotikunta.addOption(ElementUtil.createI18NAsIs(""), "");
         kotikunta.addOptions(koodistoService.getMunicipalities());
-        kotikunta.addAttribute("placeholder", "Valitse kotikunta");
         setRequiredInlineAndVerboseHelp(kotikunta, "form.henkilotiedot.kotikunta.verboseHelp");
         kotikunta.setHelp(createI18NForm("form.henkilotiedot.kotikunta.help"));
         asuinmaaFI.addChild(kotikunta);
@@ -249,9 +246,8 @@ public final class HenkilotiedotPhase {
         DropdownSelect aidinkieli =
                 new DropdownSelect(AIDINKIELI_ID, createI18NForm("form.henkilotiedot.aidinkieli"),
                         "fi_vm_sade_oppija_language");
-        aidinkieli.addOption("eiValittu", ElementUtil.createI18NAsIs(""), "");
+        aidinkieli.addOption(ElementUtil.createI18NAsIs(""), "");
         aidinkieli.addOptions(koodistoService.getLanguages());
-        aidinkieli.addAttribute("placeholder", "Valitse Äidinkieli");
         setRequiredInlineAndVerboseHelp(aidinkieli, "form.henkilotiedot.aidinkieli.verboseHelp");
         aidinkieli.setHelp(createI18NForm("form.henkilotiedot.aidinkieli.help"));
         henkilotiedotRyhma.addChild(aidinkieli);

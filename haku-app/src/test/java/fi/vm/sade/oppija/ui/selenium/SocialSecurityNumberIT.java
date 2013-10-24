@@ -54,8 +54,8 @@ public class SocialSecurityNumberIT extends AbstractSeleniumBase {
         henkilötunnus.setInline(true);
 
         Radio sukupuoli = new Radio("Sukupuoli", createI18NAsIs("Sukupuoli"));
-        sukupuoli.addOption("1", createI18NForm("form.henkilotiedot.sukupuoli.mies"), "1");
-        sukupuoli.addOption("2", createI18NForm("form.henkilotiedot.sukupuoli.nainen"), "2");
+        sukupuoli.addOption(createI18NForm("form.henkilotiedot.sukupuoli.mies"), "1");
+        sukupuoli.addOption(createI18NForm("form.henkilotiedot.sukupuoli.nainen"), "2");
         addRequiredValidator(sukupuoli);
         sukupuoli.setInline(true);
 

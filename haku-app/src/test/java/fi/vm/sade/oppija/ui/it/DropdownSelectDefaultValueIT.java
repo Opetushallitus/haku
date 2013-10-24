@@ -23,9 +23,9 @@ import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -37,20 +37,20 @@ import static org.junit.Assert.assertEquals;
 
 public class DropdownSelectDefaultValueIT extends AbstractSeleniumBase {
 
-    public static final String SELECT_ID = "select_id";
     public static final String OPTION_1_ID = "fi";
     public static final String OPTION_2_ID = "sv";
     public static final String OPTION_3_ID = "xx";
+    private final Option option1 = new Option(createI18NAsIs(OPTION_1_ID), OPTION_1_ID);
+    private final Option option2 = new Option(createI18NAsIs(OPTION_2_ID), OPTION_2_ID);
+    private final Option option3 = new Option(createI18NAsIs(OPTION_3_ID), OPTION_3_ID);
     private ApplicationSystemHelper applicationSystemHelper;
     private WebDriver driver;
     private DropdownSelect dropdownSelect;
 
     @Before
     public void init() throws IOException {
-        dropdownSelect = new DropdownSelect(SELECT_ID, createI18NAsIs(SELECT_ID), null);
-        Option option1 = new Option(OPTION_1_ID, createI18NAsIs(OPTION_1_ID), OPTION_1_ID);
-        Option option2 = new Option(OPTION_2_ID, createI18NAsIs(OPTION_2_ID), OPTION_2_ID);
-        Option option3 = new Option(OPTION_3_ID, createI18NAsIs(OPTION_3_ID), OPTION_3_ID);
+        String id = ElementUtil.randomId();
+        dropdownSelect = new DropdownSelect(id, createI18NAsIs(id), null);
         option2.setDefaultOption(true);
         List<Option> listOfOptions = ImmutableList.of(option1, option2, option3);
         dropdownSelect.addOptions(listOfOptions);
@@ -62,11 +62,11 @@ public class DropdownSelectDefaultValueIT extends AbstractSeleniumBase {
 
     @Test
     public void testSelect() throws IOException {
-        WebElement option1 = driver.findElement(new By.ById(OPTION_1_ID));
-        WebElement option2 = driver.findElement(new By.ById(OPTION_2_ID));
-        WebElement option3 = driver.findElement(new By.ById(OPTION_3_ID));
-        assertEquals("Invalid attribute selected", null, option1.getAttribute("selected"));
-        assertEquals("Invalid attribute selected", null, option3.getAttribute("selected"));
-        assertEquals("Selected attribute not present on a selected option", "true", option2.getAttribute("selected"));
+        WebElement we1 = findByXPath("//select['@name" +dropdownSelect.getId()+ "']/option[@value='" + option1.getValue()+ "']");
+        WebElement we2 = findByXPath("//select['@name" +dropdownSelect.getId()+ "']/option[@value='" + option2.getValue()+ "']");
+        WebElement we3 = findByXPath("//select['@name" +dropdownSelect.getId()+ "']/option[@value='" + option3.getValue()+ "']");
+        assertEquals("Invalid attribute selected", null, we1.getAttribute("selected"));
+        assertEquals("Invalid attribute selected", null, we3.getAttribute("selected"));
+        assertEquals("Selected attribute not present on a selected option", "true", we2.getAttribute("selected"));
     }
 }

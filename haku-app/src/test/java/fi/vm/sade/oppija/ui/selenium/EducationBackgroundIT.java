@@ -17,9 +17,9 @@
 package fi.vm.sade.oppija.ui.selenium;
 
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta.KoulutustaustaPhase;
 import org.junit.Test;
-import org.openqa.selenium.By;
+
+import static fi.vm.sade.oppija.ui.selenium.DefaultValues.*;
 
 public class EducationBackgroundIT extends DummyModelBaseItTest {
 
@@ -31,11 +31,10 @@ public class EducationBackgroundIT extends DummyModelBaseItTest {
 
         nextPhase();
 
-        driver.findElement(new By.ById("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_PERUSKOULU)).click();
+        clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
         elementsPresentByName("PK_PAATTOTODISTUSVUOSI");
-        driver.findElement(new By.ById("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_YLIOPPILAS)).click();
+        clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_YLIOPPILAS);
         elementsPresentByName("lukioPaattotodistusVuosi");
-
 
 
     }

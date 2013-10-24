@@ -30,7 +30,6 @@
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
-    <script src="${contextPath}/resources/jquery/jquery.cookie.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <script src="${contextPath}/resources/javascript/bootstrap-paginator.min.js"></script>
@@ -70,13 +69,6 @@
         </table>
     </div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function() {
-        var useLast = window.location.hash;
-        if (useLast && useLast === '#useLast') {
-            applicationSearch.search(0, true);
-        }
-    });
-</script>
+
 </body>
 </html>

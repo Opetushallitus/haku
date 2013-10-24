@@ -35,7 +35,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Element implements Serializable {
     private static final long serialVersionUID = 3485937447100055723L;
-    public static final String ID_DELIMITER = "_";
 
     @Transient
     protected final String type = this.getClass().getSimpleName();
