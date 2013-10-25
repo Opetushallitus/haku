@@ -5,7 +5,7 @@
 
     <groupId>fi.vm.sade.haku</groupId>
     <artifactId>haku</artifactId>
-    <version>6.2.2</version>
+    <version>6.2.3</version>
     <packaging>pom</packaging>
     <name>Haku :: Parent</name>
 
@@ -40,7 +40,7 @@
         <webapp-portal-decorator.version>${internal-dependencies.version}</webapp-portal-decorator.version>
         <hakemus-api.version>${internal-dependencies.version}</hakemus-api.version>
         <koodisto-api.version>${internal-dependencies.version}</koodisto-api.version>
-        <koulutusinformaatio-api.version>6.2.3</koulutusinformaatio-api.version>
+        <koulutusinformaatio-api.version>6.2.4</koulutusinformaatio-api.version>
         <tarjonta-api.version>${internal-dependencies.version}</tarjonta-api.version>
         <log-client.version>${internal-dependencies.version}</log-client.version>
         <generic-common.version>${internal-dependencies.version}</generic-common.version>
