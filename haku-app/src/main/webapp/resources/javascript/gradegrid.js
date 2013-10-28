@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // hide and disable closest tr
-    $('#gradegrid-table').on('click', 'a.btn-remove', function () {
+    $('#gradegrid-table').on('click', 'a.remove', function () {
         var row = $(this).closest('tr');
         $("#" + row.attr('data-group')).closest('tr').show();
         row.hide();
