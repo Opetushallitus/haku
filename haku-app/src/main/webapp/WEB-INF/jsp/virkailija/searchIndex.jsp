@@ -35,7 +35,8 @@
     <script src="${contextPath}/resources/javascript/bootstrap-paginator.min.js"></script>
     <link href="${contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet">
     <link href="${contextPath}/resources/css/virkailija.css" type="text/css" rel="stylesheet"/>
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/hakemus.css" type="text/css" rel="stylesheet"/>
+    <!--<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">-->
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
     <haku:ie9StyleFix/>
 </head>
