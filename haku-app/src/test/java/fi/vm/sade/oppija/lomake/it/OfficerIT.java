@@ -184,7 +184,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testSearchByOid() throws Exception {
-        assertTrue("Application not found", SearchByTerm(" 1.2.246.562.10.10108401950").isEmpty());
+        assertTrue("Application not found", SearchByTerm("1.2.246.562.10.10108401950").isEmpty());
     }
 
     @Test
@@ -268,6 +268,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     private void activate(String oid) throws InterruptedException {
+        navigateToPath("virkailija", "hakemus", oid, "postProcess");
         navigateToPath("virkailija", "hakemus", oid, "activate");
     }
 

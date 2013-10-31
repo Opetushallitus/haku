@@ -93,6 +93,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_STUDENT_OID = "studentOid";
     private final EncrypterService shaEncrypter;
     private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
+
+    private static final Pattern OID_PATTERN = Pattern.compile("((^([0-9]{1,4}\\.){5})|(^))[0-9]{11}$");
+    private static final Pattern HETU_PATTERN = Pattern.compile("^[0-3][0-9][0-1][0-9][0-9][0-9][-+Aa][0-9]{3}[0-9a-zA-Z]");
+    private static final DateFormat HETU_DATE = new SimpleDateFormat("ddMMyy");
+    private static final DateFormat LONG_HETU_DATE = new SimpleDateFormat("ddMMyyyy");
+    private static final DateFormat FORM_DATE = new SimpleDateFormat("dd.MM.yyyy");
+
     @Value("${application.oid.prefix}")
     private String applicationOidPrefix;
     @Value("${user.oid.prefix}")
@@ -208,6 +215,76 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
     }
 
+    @Override
+    public ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters applicationQueryParameters) {
+        DBObject[] filters = buildQueryFilter(applicationQueryParameters);
+        StringTokenizer st = new StringTokenizer(term, " ");
+        ArrayList<DBObject> queries = new ArrayList<DBObject>();
+        while (st.hasMoreTokens()) {
+            String token = st.nextToken();
+            if (OID_PATTERN.matcher(token).matches()) {
+                if (token.indexOf('.') > -1) { // Long form
+                    if (token.startsWith(applicationOidPrefix)) {
+                        queries.add(QueryBuilder.start(FIELD_APPLICATION_OID).is(token).get());
+                    } else if (token.startsWith(userOidPrefix)) {
+                        queries.add(QueryBuilder.start(FIELD_PERSON_OID).is(token).get());
+                    } else {
+                        queries = addDobOrNameQuery(queries, token);
+                    }
+                } else { // Short form
+                    queries.add(
+                            QueryBuilder.start().or(
+                                    QueryBuilder.start(FIELD_APPLICATION_OID).is(applicationOidPrefix + "." + token).get(),
+                                    QueryBuilder.start(FIELD_PERSON_OID).is(userOidPrefix + "." + token).get()
+                            ).get()
+                    );
+                }
+            } else if (HETU_PATTERN.matcher(token).matches()) {
+                String encryptedSsn = shaEncrypter.encrypt(token.toUpperCase());
+                queries.add(
+                        QueryBuilder.start("answers.henkilotiedot.Henkilotunnus_digest").is(encryptedSsn).get()
+                );
+            } else { // Name or date of birth
+                queries = addDobOrNameQuery(queries, token);
+            }
+        }
+
+        QueryBuilder baseQuery = queries.size() > 0 ? QueryBuilder.start().and(queries.toArray(new DBObject[queries.size()])) : QueryBuilder.start();
+        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
+        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
+    }
+
+    private ArrayList<DBObject> addDobOrNameQuery(ArrayList<DBObject> queries, String token) {
+        String possibleDob = token.replace(".", "");
+        Date dob = tryDate(HETU_DATE, possibleDob);
+        if (dob == null) {
+            dob = tryDate(LONG_HETU_DATE, possibleDob);
+        }
+        if (dob != null) {
+            queries.add(
+                    QueryBuilder.start("answers.henkilotiedot.syntymaaika").is(FORM_DATE.format(dob)).get()
+            );
+        } else {
+            queries.add(
+                    QueryBuilder.start().or(
+                            QueryBuilder.start("fullName").regex(Pattern.compile("^" + token.toLowerCase() + " ")).get(),
+                            QueryBuilder.start("fullName").regex(Pattern.compile(" " + token.toLowerCase())).get()
+                    ).get()
+            );
+        }
+        return queries;
+    }
+
+    private Date tryDate(DateFormat df, String str) {
+        Date date = null;
+        try {
+            date = df.parse(str);
+        } catch (ParseException pe) {
+            // NOP
+        }
+        return date;
+    }
+
     private QueryBuilder queryByPreference(final List<String> aoIds) {
         return QueryBuilder.start().or(
                 QueryBuilder.start(FIELD_AO_1).in(aoIds).get(),
@@ -268,13 +345,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     private ApplicationSearchResultDTO searchApplications(DBObject query, int start, int rows) {
-        final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject("answers.henkilotiedot.Sukunimi", 1)
-                .append("answers.henkilotiedot.Etunimet", 1)).skip(start).limit(rows);
+        final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject("fullName", 1))
+                .skip(start).limit(rows);
         return new ApplicationSearchResultDTO(dbCursor.count(), Lists.newArrayList(Iterables.transform(dbCursor, dbObjectToSearchResultItem)));
     }
 
     @Override
-    public ApplicationSearchResultDTO findByApplicantName(String term, ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findByApplicantName(String term, ApplicationQueryParameters
+        applicationQueryParameters) {
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         Pattern namePattern = Pattern.compile(term, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
         QueryBuilder baseQuery = QueryBuilder.start().or(

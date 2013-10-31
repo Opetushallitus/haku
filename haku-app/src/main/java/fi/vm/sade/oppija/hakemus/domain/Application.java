@@ -22,6 +22,7 @@ import com.google.common.collect.Maps;
 import fi.vm.sade.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.oppija.lomake.domain.ObjectIdSerializer;
 import fi.vm.sade.oppija.lomake.domain.User;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -59,6 +60,8 @@ public class Application implements Serializable {
     private Long studentOidChecked;
     private Date received;
 
+    private String fullName;
+
     private Map<String, Map<String, String>> answers = new HashMap<String, Map<String, String>>();
     private Map<String, String> meta = new HashMap<String, String>();
     private Map<String, String> additionalInfo = new HashMap<String, String>();
@@ -72,6 +75,7 @@ public class Application implements Serializable {
         this(applicationSystemId, user);
         if (answers != null) {
             this.answers = answers;
+            updateFullName();
         }
         if (additionalInfo != null) {
             this.additionalInfo = additionalInfo;
@@ -159,6 +163,7 @@ public class Application implements Serializable {
         this.phaseId = answers.get(VAIHE_ID);
         Map<String, String> answersWithoutPhaseId = Maps.filterKeys(answers, Predicates.not(Predicates.equalTo(VAIHE_ID)));
         this.answers.put(phaseId, answersWithoutPhaseId);
+        updateFullName();
         return this;
     }
 
@@ -205,12 +210,30 @@ public class Application implements Serializable {
     }
 
     public Map<String, String> getPhaseAnswers(final String phaseId) {
-        return ImmutableMap.copyOf(this.answers.get(phaseId));
+        Map<String, String> phaseAnswers = this.answers.get(phaseId);
+        if (phaseAnswers != null && !phaseAnswers.isEmpty()) {
+            return ImmutableMap.copyOf(phaseAnswers);
+        }
+        return new HashMap<String, String>();
     }
 
     @JsonIgnore
     public boolean isNew() {
         return this.phaseId == null;
+    }
+
+    @JsonIgnore
+    public void updateFullName() {
+        Map<String, String> henkilotiedot = getPhaseAnswers("henkilotiedot");
+        if (henkilotiedot != null) {
+            String lastName = henkilotiedot.get(OppijaConstants.ELEMENT_ID_LAST_NAME);
+            String firstNames = henkilotiedot.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES);
+            if (lastName != null) {
+                fullName = lastName.toLowerCase() + " " + firstNames.toLowerCase();
+            } else {
+                fullName = "";
+            }
+        }
     }
 
     public Map<String, Map<String, String>> getAnswers() {
@@ -301,6 +324,14 @@ public class Application implements Serializable {
         this.studentOidChecked = studentOidChecked;
     }
 
+    public void setFullname(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
     public List<ApplicationNote> getNotes() {
         return notes;
     }
@@ -308,4 +339,5 @@ public class Application implements Serializable {
     public void addNote(ApplicationNote note) {
         notes.add(0, note);
     }
+
 }
