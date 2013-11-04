@@ -16,12 +16,12 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -35,10 +35,8 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
     public void testWorkExperienceShown() {
         gotoHakutoiveet("010113-668B");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
-        findByIdAndClick("preference1-discretionary_false",
-                "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true",
-                "preference1_sora_terveys_false",
-                "preference1_sora_oikeudenMenetys_false");
+        fillOut(defaultValues.preference1);
+
         nextPhase();
 
         select();
@@ -53,7 +51,8 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
     public void testWorkExperienceNotShown() {
         gotoHakutoiveet("010113A668B");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
-        findByIdAndClick("preference1-discretionary_false");
+        clickByNameAndValue("preference1-discretionary", "false");
+
         nextPhase();
         select();
         nextPhase();
@@ -64,9 +63,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
 
     private void gotoHakutoiveet(final String hetu) {
         navigateToFirstPhase();
-        LinkedHashMap<String, String> henkilotiedot = defaultValues.henkilotiedot;
-        henkilotiedot.put("Henkilotunnus", hetu);
-        fillOut(henkilotiedot);
+        fillOut(defaultValues.getHenkilotiedot(ImmutableMap.of("Henkilotunnus", hetu)));
 
         nextPhase();
         fillOut(defaultValues.koulutustausta_pk);

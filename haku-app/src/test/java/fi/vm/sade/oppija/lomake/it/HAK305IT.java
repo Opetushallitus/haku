@@ -16,10 +16,13 @@
 
 package fi.vm.sade.oppija.lomake.it;
 
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
+import static fi.vm.sade.oppija.ui.selenium.DefaultValues.KYSYMYS_POHJAKOULUTUS;
+import static fi.vm.sade.oppija.ui.selenium.DefaultValues.TUTKINTO_PERUSKOULU;
 import static org.junit.Assert.assertFalse;
 
 public class HAK305IT extends DummyModelBaseItTest {
@@ -31,11 +34,11 @@ public class HAK305IT extends DummyModelBaseItTest {
     public void submitApplication() throws Exception {
         navigateToFirstPhase();
 
-        fillInTheHenkilotiedotPhase(NATIVE_LANGUAGE_FI);
+        fillOutTheHenkilotiedotPhase(NATIVE_LANGUAGE_FI);
 
         nextPhase();
 
-        fillInTheKoulutustaustaPhase(NATIVE_LANGUAGE_FI);
+        fillOutTheKoulutustaustaPhase(NATIVE_LANGUAGE_FI);
 
         nextPhase();
 
@@ -56,8 +59,8 @@ public class HAK305IT extends DummyModelBaseItTest {
         nextPhase();
         nextPhase(); // Osaaminen
 
-
-        findByIdAndClick("yleinen_kielitutkinto_fi_true", "valtionhallinnon_kielitutkinto_fi_true");
+        clickByNameAndValue("yleinen_kielitutkinto_fi", "true");
+        clickByNameAndValue("valtionhallinnon_kielitutkinto_fi", "true");
         nextPhase();
         fillInRestOfThePhasesAndCheckTheOID();
     }
@@ -76,8 +79,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         clickAllElementsByXPath("//input[@type='checkbox']");
 
         setValue("TYOKOKEMUSKUUKAUDET", "2");
-        findByIdAndClick("asiointikieli_suomi");
-
+        clickByNameAndValue("asiointikieli", "suomi");
         nextPhase();
 
         // Esikatselu
@@ -89,22 +91,14 @@ public class HAK305IT extends DummyModelBaseItTest {
     }
 
 
-    private void fillInTheHenkilotiedotPhase(final String aidinkieli) {
-        setValue("Sukunimi", "Ankka");
-        setValue("Etunimet", "Aku Kalle");
-        setValue("Kutsumanimi", "AKu");
-        setValue("Henkilotunnus", "010113-668B");
-        setValue("Sähköposti", "aku.ankka@ankkalinna.al");
-        setValue("matkapuhelinnumero1", "0501000100");
-        setNativeLanguage(aidinkieli);
-        setValue("asuinmaa", "FIN");
-        setValue("kotikunta", "jalasjarvi");
-        setValue("lahiosoite", "Katu 1");
-        setValue("Postinumero", "00100");
+    private void fillOutTheHenkilotiedotPhase(final String aidinkieli) {
+        fillOut(defaultValues.getHenkilotiedot(ImmutableMap.of("aidinkieli", aidinkieli)));
     }
 
-    private void fillInTheKoulutustaustaPhase(final String opetuskieli) {
-        findByIdAndClick("POHJAKOULUTUS_tutkinto1", "LISAKOULUTUS_KYMPPI", "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON_false");
+    private void fillOutTheKoulutustaustaPhase(final String opetuskieli) {
+        clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
+        clickByNameAndValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
+        findByIdAndClick("LISAKOULUTUS_KYMPPI");
         findById("PK_PAATTOTODISTUSVUOSI");
         setPerusopetuksenKieli(opetuskieli);
         setValue("PK_PAATTOTODISTUSVUOSI", "2012");
@@ -115,10 +109,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         selenium.typeKeys("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
-        findByIdAndClick("preference1-discretionary_false");
-        findByIdAndClick("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true");
-        findByIdAndClick("preference1_sora_terveys_false");
-        findByIdAndClick("preference1_sora_oikeudenMenetys_false");
+        fillOut(defaultValues.preference1);
     }
 
 

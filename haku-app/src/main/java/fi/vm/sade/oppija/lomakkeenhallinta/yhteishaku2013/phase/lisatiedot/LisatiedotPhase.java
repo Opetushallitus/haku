@@ -83,8 +83,8 @@ public final class LisatiedotPhase {
         Radio asiointikieli = new Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE,
                 createI18NForm("form.asiointikieli.otsikko"));
         asiointikieli.setHelp(createI18NForm("form.asiointikieli.help"));
-        asiointikieli.addOption("suomi", createI18NForm("form.asiointikieli.suomi"), "suomi");
-        asiointikieli.addOption("ruotsi", createI18NForm("form.asiointikieli.ruotsi"), "ruotsi");
+        asiointikieli.addOption(createI18NForm("form.asiointikieli.suomi"), "suomi");
+        asiointikieli.addOption(createI18NForm("form.asiointikieli.ruotsi"), "ruotsi");
         addRequiredValidator(asiointikieli);
         setVerboseHelp(asiointikieli, "form.asiointikieli.otsikko.verboseHelp");
         lupatiedotTheme.addChild(asiointikieli);

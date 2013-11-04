@@ -45,7 +45,6 @@ import fi.vm.sade.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -317,27 +316,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public ApplicationSearchResultDTO findApplications(final String term,
                                                        final ApplicationQueryParameters applicationQueryParameters) {
-        if (shortOidPattern.matcher(term).matches()) {
-            return applicationDAO.findByOid(term, applicationQueryParameters);
-        } else if (oidPattern.matcher(term).matches()) {
-            if (term.startsWith(applicationOidService.getOidPrefix())) {
-                return applicationDAO.findByApplicationOid(term, applicationQueryParameters);
-            } else {
-                return applicationDAO.findByUserOid(term, applicationQueryParameters);
-            }
-        } else if (socialSecurityNumberPattern.matcher(term).matches()) {
-            return applicationDAO.findByApplicantSsn(term, applicationQueryParameters);
-        } else if (dobPattern.matcher(term).matches()) {
-            return applicationDAO.findByApplicantDob(term, applicationQueryParameters);
-        } else if (!StringUtils.isEmpty(term)) {
-            return applicationDAO.findByApplicantName(term, applicationQueryParameters);
-        } else if (isEmpty(term)) {
-            LOGGER.debug("Find all applications, empty term");
-            ApplicationSearchResultDTO ret = applicationDAO.findAllFiltered(applicationQueryParameters);
-            LOGGER.debug("Found {} results", ret.getResults().size());
-            return ret;
-        }
-        return new ApplicationSearchResultDTO(0, null);
+        return applicationDAO.findAllQueried(term, applicationQueryParameters);
     }
 
     @Override
@@ -373,6 +352,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void update(final Application queryApplication, final Application application) {
+        // application.updateFullName();
         this.applicationDAO.update(queryApplication, application);
     }
 

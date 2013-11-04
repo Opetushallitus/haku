@@ -37,8 +37,8 @@
         <tr>
             <td colspan="2">
                 <input type="checkbox" name="${element.id}"
-                       disabled="true" ${(categoryData[element.id] eq element.value) ? "checked=\"checked\"" : ""} value="${element.value}"/>
-                <label for="${element.id}"><haku:i18nText value="${element.i18nText}"/></label>
+                       disabled="disabled" ${(categoryData[element.id] eq element.value) ? "checked=\"checked\"" : ""} value="${element.value}"/>
+                <label><haku:i18nText value="${element.i18nText}"/></label>
             </td>
         </tr>
     </c:otherwise>

@@ -72,6 +72,20 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         }
     }
 
+    protected WebElement findByNameAndValue(final String name, final String value) {
+        return findByTagAndNameAndValue("input", name, value);
+    }
+
+    protected WebElement findByTagAndNameAndValue(final String tag, final String name, final String value) {
+        WebDriver driver = seleniumContainer.getDriver();
+        System.out.println("//" + tag + "[@name='" + name + "' and @value='" + value + "']");
+        return driver.findElement(new By.ByXPath("//" + tag + "[@name='" + name + "' and @value='" + value + "']"));
+    }
+
+    protected void clickByNameAndValue(final String name, final String value) {
+        findByNameAndValue(name, value).click();
+    }
+
     protected void findByIdAndClick(final String... ids) {
         WebDriver driver = seleniumContainer.getDriver();
         for (String id : ids) {
@@ -91,8 +105,8 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         }
     }
 
-    protected void findByXPath(final String xpath) {
-        seleniumContainer.getDriver().findElement(By.xpath(xpath));
+    protected WebElement findByXPath(final String xpath) {
+        return seleniumContainer.getDriver().findElement(By.xpath(xpath));
     }
 
     protected List<WebElement> findByClassName(final String... classNames) {

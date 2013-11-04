@@ -38,7 +38,7 @@
             </c:if>
             <c:forEach var="option" items="${element.optionsSortedByText[requestScope['fi_vm_sade_oppija_language']]}">
                 <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
-                <option name="${element.id}" value="${option.value}" ${tmp_selected_value eq option.value ? "selected=\"selected\" " : " "} ${option.attributeString}><haku:i18nText value="${option.i18nText}"/></option>
+                <option value="${option.value}" ${tmp_selected_value eq option.value ? "selected=\"selected\" " : " "} ><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
             </c:forEach>
             <c:remove var="tmp_selected_value"/>
         </select>

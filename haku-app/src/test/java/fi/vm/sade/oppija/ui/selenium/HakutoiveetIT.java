@@ -78,9 +78,11 @@ public class HakutoiveetIT extends AbstractSeleniumBase {
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
         s.isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
-        findByIdAndClick("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true");
-        findByIdAndClick("preference1_sora_terveys_false");
-        findByIdAndClick("preference1_sora_oikeudenMenetys_false");
+
+        clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
+        clickByNameAndValue("preference1_sora_terveys", "false");
+        clickByNameAndValue("preference1_sora_oikeudenMenetys", "false");
+
         driver.findElement(By.xpath("//button[@class='right']")).click();
     }
 

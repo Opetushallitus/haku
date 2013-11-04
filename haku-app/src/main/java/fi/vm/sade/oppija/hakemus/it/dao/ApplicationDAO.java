@@ -139,4 +139,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     Application getNextWithoutStudentOid();
 
     Application getNextWithoutPersonOid();
+
+    ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters applicationQueryParameters);
 }

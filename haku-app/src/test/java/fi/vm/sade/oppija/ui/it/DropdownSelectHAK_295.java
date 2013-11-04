@@ -25,7 +25,6 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
@@ -44,49 +43,15 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
     public static final String SELECTED_ATTRIBUTE = "selected";
     private ApplicationSystemHelper applicationSystemHelper;
     private DropdownSelect dropdownSelect;
-
-    @Test
-    public void testSelectWithDefault() throws IOException {
-        init(null, true);
-        assertNotSelected(OPTION_1_ID);
-        assertSelected(OPTION_2_ID);
-        assertNotSelected(OPTION_3_ID);
-    }
-
-    @Test
-    public void testSelect() throws IOException {
-        init(null, false);
-        assertSelected(OPTION_1_ID);
-        assertNotSelected(OPTION_2_ID);
-        assertNotSelected(OPTION_3_ID);
-    }
-
-    @Ignore
-    @Test
-    public void testSelectWithAttribute() throws IOException {
-        init(FI_VM_SADE_OPPIJA_LANGUAGE, false);
-        assertNotSelected(OPTION_2_ID);
-        assertNotSelected(OPTION_3_ID);
-        assertSelected(OPTION_1_ID);
-        seleniumContainer.getDriver().get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()) + "?lang=sv");
-        assertNotSelected(OPTION_1_ID);
-        assertNotSelected(OPTION_3_ID);
-        assertSelected(OPTION_2_ID);
-    }
-
-    @Test
-    public void testSelectWithAttributeAndDefault() throws IOException {
-        init(FI_VM_SADE_OPPIJA_LANGUAGE, true);
-        assertSelected(OPTION_1_ID);
-        assertNotSelected(OPTION_2_ID);
-        assertNotSelected(OPTION_3_ID);
-    }
+    Option option1;
+    Option option2;
+    Option option3;
 
     private void init(final String dropdownAttribute, final boolean setDefault) {
+        option1 = new Option(createI18NAsIs(OPTION_1_ID), OPTION_1_ID);
+        option2 = new Option(createI18NAsIs(OPTION_2_ID), OPTION_2_ID);
+        option3 = new Option(createI18NAsIs(OPTION_3_ID), OPTION_3_ID);
         dropdownSelect = new DropdownSelect(SELECT_ID, createI18NAsIs(SELECT_ID), dropdownAttribute);
-        Option option1 = new Option(OPTION_1_ID, createI18NAsIs(OPTION_1_ID), OPTION_1_ID);
-        Option option2 = new Option(OPTION_2_ID, createI18NAsIs(OPTION_2_ID), OPTION_2_ID);
-        Option option3 = new Option(OPTION_3_ID, createI18NAsIs(OPTION_3_ID), OPTION_3_ID);
         if (setDefault) {
             option2.setDefaultOption(true);
         }
@@ -97,13 +62,45 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
         seleniumContainer.getDriver().get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()));
     }
 
-    private void assertNotSelected(final String id) {
-        WebElement element = seleniumContainer.getDriver().findElement(new By.ById(id));
-        assertEquals("Invalid attribute selected (" + id + ")", null, element.getAttribute(SELECTED_ATTRIBUTE));
+    @Test
+    public void testSelectWithDefault() throws IOException {
+        init(null, true);
+        assertOption(option1, null);
+        assertOption(option2, "true");
+        assertOption(option3, null);
     }
 
-    private void assertSelected(final String id) {
-        WebElement element = seleniumContainer.getDriver().findElement(new By.ById(id));
-        assertEquals("Selected attribute not found (" + id + ")", "true", element.getAttribute(SELECTED_ATTRIBUTE));
+    @Test
+    public void testSelect() throws IOException {
+        init(null, false);
+        assertOption(option1, "true");
+        assertOption(option2, null);
+        assertOption(option3, null);
+    }
+
+    @Ignore
+    @Test
+    public void testSelectWithAttribute() throws IOException {
+        init(FI_VM_SADE_OPPIJA_LANGUAGE, false);
+        assertOption(option2, null);
+        assertOption(option3, null);
+        assertOption(option1, "true");
+        seleniumContainer.getDriver().get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()) + "?lang=sv");
+        assertOption(option1, null);
+        assertOption(option2, null);
+        assertOption(option2, "true");
+    }
+
+    @Test
+    public void testSelectWithAttributeAndDefault() throws IOException {
+        init(FI_VM_SADE_OPPIJA_LANGUAGE, true);
+        assertOption(option1, "true");
+        assertOption(option2, null);
+        assertOption(option3, null);
+    }
+
+    private void assertOption(final Option option, String value) {
+        WebElement element = findByXPath("//select['@name" + dropdownSelect.getId() + "']/option[@value='" + option.getValue() + "']");
+        assertEquals("Selected attribute not found (" + SELECT_ID + ")", value, element.getAttribute(SELECTED_ATTRIBUTE));
     }
 }

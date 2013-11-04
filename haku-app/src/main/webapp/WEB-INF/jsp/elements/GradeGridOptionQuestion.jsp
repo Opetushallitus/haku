@@ -17,11 +17,11 @@
   --%>
 <select ${element.attributeString}>
     <c:if test="${not element.selected}">
-        <option disabled selected value=""></option>
+        <option disabled value="">&nbsp;</option>
     </c:if>
     <c:forEach var="option" items="${element.options}">
         <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
-        <option value="${option.value}" ${(categoryData[element.id] eq option.value or (categoryData[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "} ${option.attributeString}><haku:i18nText value="${option.i18nText}"/></option>
+        <option value="${option.value}" ${(categoryData[element.id] eq option.value or (categoryData[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "}><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
     </c:forEach>
 </select>
 <script>
@@ -31,7 +31,7 @@
             var row = element.closest('tr');
             row.removeAttr('hidden');
             row.find('*:disabled').attr("disabled", false);
-            var group = element.closest('tr').attr('group');
+            var group = element.closest('tr').attr('data-group');
         }
     })
 </script>

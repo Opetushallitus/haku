@@ -83,10 +83,10 @@ public class ApplicationServiceImplTest {
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
 
         ApplicationSearchResultDTO searchResultDTO = new ApplicationSearchResultDTO(1, Lists.newArrayList(new ApplicationSearchResultItemDTO()));
-        when(applicationDAO.findByApplicantSsn(eq(SSN), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
-        when(applicationDAO.findByApplicantName(eq(NAME), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
-        when(applicationDAO.findByApplicationOid(eq(OID), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
-        when(applicationDAO.findByOid(eq(SHORT_OID), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findAllQueried(eq(SSN), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findAllQueried(eq(NAME), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findAllQueried(eq(OID), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findAllQueried(eq(SHORT_OID), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
         when(applicationDAO.find(any(Application.class))).thenReturn(Lists.newArrayList(application));
         when(applicationOidService.getOidPrefix()).thenReturn("1.2.3.4.5");
         when(authenticationService.addPerson(any(Person.class))).thenReturn(PERSON_OID);
@@ -113,7 +113,7 @@ public class ApplicationServiceImplTest {
         ApplicationSearchResultDTO results = service.findApplications(SSN, applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.getResults().size());
-        verify(applicationDAO, only()).findByApplicantSsn(eq(SSN), eq(applicationQueryParameters));
+        verify(applicationDAO, only()).findAllQueried(eq(SSN), eq(applicationQueryParameters));
     }
 
     @Test
@@ -121,7 +121,7 @@ public class ApplicationServiceImplTest {
         ApplicationSearchResultDTO results = service.findApplications(NAME, applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.getResults().size());
-        verify(applicationDAO, only()).findByApplicantName(eq(NAME), eq(applicationQueryParameters));
+        verify(applicationDAO, only()).findAllQueried(eq(NAME), eq(applicationQueryParameters));
     }
 
     @Test
@@ -130,7 +130,7 @@ public class ApplicationServiceImplTest {
         ApplicationSearchResultDTO results = service.findApplications(OID, applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.getResults().size());
-        verify(applicationDAO, only()).findByApplicationOid(eq(OID), eq(applicationQueryParameters));
+        verify(applicationDAO, only()).findAllQueried(eq(OID), eq(applicationQueryParameters));
     }
 
     @Test
@@ -139,7 +139,7 @@ public class ApplicationServiceImplTest {
         ApplicationSearchResultDTO results = service.findApplications(SHORT_OID, applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.getResults().size());
-        verify(applicationDAO, only()).findByOid(eq(SHORT_OID), eq(applicationQueryParameters));
+        verify(applicationDAO, only()).findAllQueried(eq(SHORT_OID), eq(applicationQueryParameters));
     }
 
     @Test

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.oppija.lomake.it;
 
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.phase.koulutustausta.KoulutustaustaPhase;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 
+import static fi.vm.sade.oppija.ui.selenium.DefaultValues.*;
 import static org.junit.Assert.*;
 
 public class LomakeIT extends DummyModelBaseItTest {
@@ -71,11 +73,10 @@ public class LomakeIT extends DummyModelBaseItTest {
         nextPhase();
 
         testHAK123AandHAK124();
-
-        findByIdAndClick("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_YLIOPPILAS);
+        clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_YLIOPPILAS);
         findById("lukioPaattotodistusVuosi");
         selenium.typeKeys("lukioPaattotodistusVuosi", "2012");
-        findByIdAndClick("ammatillinenTutkintoSuoritettu_false");
+        clickByNameAndValue("ammatillinenTutkintoSuoritettu", "false");
         setValue("lukion_kieli", "FI");
         nextPhase();
 
@@ -84,12 +85,14 @@ public class LomakeIT extends DummyModelBaseItTest {
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.5.20176855623']")).click();
         driver.findElement(new By.ByClassName("left")).click();
 
-        findByIdAndClick("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_PERUSKOULU);
+        clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
+        //findByIdAndClick("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_PERUSKOULU);
 
         findById("PK_PAATTOTODISTUSVUOSI");
         selenium.typeKeys("PK_PAATTOTODISTUSVUOSI", "2013");
 
-        findByIdAndClick("LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN", "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI", "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON_false");
+        findByIdAndClick("LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN", "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI");
+        clickByNameAndValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
         setValue("perusopetuksen_kieli", "FI");
         nextPhase();
 
@@ -99,11 +102,10 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
-        findByIdAndClick("preference1-discretionary_true");
-        findByIdAndClick("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true");
-        findByIdAndClick("preference1_sora_terveys_false");
-        findByIdAndClick("preference1_sora_oikeudenMenetys_false");
-        Select followUpSelect = new Select(driver.findElement(new By.ById("preference1-discretionary-follow-up")));
+
+        fillOut(defaultValues.getPreference1(ImmutableMap.of("preference1-discretionary", "true")));
+
+        Select followUpSelect = new Select(driver.findElement(new By.ByName("preference1-discretionary-follow-up")));
         followUpSelect.selectByIndex(1);
 
         nextPhase();
@@ -129,7 +131,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         // Ei mene läpi, asiointikieli valitsematta
         nextPhase();
-        findByIdAndClick("asiointikieli_suomi");
+        clickByNameAndValue("asiointikieli", "suomi");
 
         // Menee läpi
         nextPhase();
@@ -138,7 +140,6 @@ public class LomakeIT extends DummyModelBaseItTest {
         nextPhase();
 
         findByIdAndClick("submit_confirm");
-
 
         String oid = driver.findElement(new By.ByClassName("number")).getText();
         assertFalse(oid.contains("."));
@@ -172,9 +173,9 @@ public class LomakeIT extends DummyModelBaseItTest {
     }
 
     private void testHAK123AandHAK124() {
-        findByIdAndClick("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_KESKEYTYNYT);
+        clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_KESKEYTYNYT);
         findById(KoulutustaustaPhase.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
-        findByIdAndClick("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_ULKOMAINEN_TUTKINTO);
+        clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_ULKOMAINEN_TUTKINTO);
         findById(KoulutustaustaPhase.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
     }
 }

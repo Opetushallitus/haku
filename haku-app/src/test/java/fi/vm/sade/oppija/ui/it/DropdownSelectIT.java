@@ -44,8 +44,8 @@ public class DropdownSelectIT extends AbstractSeleniumBase {
     @Before
     public void init() throws IOException {
         dropdownSelect = new DropdownSelect(SELECT_ID, createI18NAsIs(SELECT_ID), null);
-        dropdownSelect.addOption("option1", createI18NAsIs("option1"), "option1");
-        dropdownSelect.addOption("option2", createI18NAsIs("option2"), "option2");
+        dropdownSelect.addOption(createI18NAsIs("option1"), "option1");
+        dropdownSelect.addOption(createI18NAsIs("option2"), "option2");
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
         this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
         driver = seleniumContainer.getDriver();

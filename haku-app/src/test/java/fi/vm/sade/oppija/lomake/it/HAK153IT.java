@@ -19,6 +19,7 @@ package fi.vm.sade.oppija.lomake.it;
 import fi.vm.sade.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import static org.junit.Assert.assertTrue;
 
@@ -39,8 +40,8 @@ public class HAK153IT extends DummyModelBaseItTest {
         driver.findElement(By.xpath("//option[@data-sora='false' and @data-id='1.2.246.562.14.71344129359']")).click();
         boolean soraNotFound = driver.findElements(By.xpath("//a[@href='#' and @data-po-show='sora-popup' and @class='popup-link']")).isEmpty();
         findByXPath("//option[@data-athlete='true' and @data-id='1.2.246.562.14.71344129359']");
-        findById("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true");
-        findById("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_false");
+        clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "false");
+        clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
         assertTrue(soraNotFound);
     }
 }

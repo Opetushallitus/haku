@@ -25,15 +25,9 @@ import static fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants.*;
 public final class KoulutustaustaPhase {
     public static final String TUTKINTO_ULKOMAILLA_NOTIFICATION_ID = "tutkinto7-notification";
     public static final String TUTKINTO_KESKEYTNYT_NOTIFICATION_ID = "tutkinto5-notification";
-    public static final String TUTKINTO_OSITTAIN_YKSILOLLISTETTY = "tutkinto2";
-    public static final String TUTKINTO_ERITYISOPETUKSEN_YKSILOLLISTETTY = "tutkinto3";
-    public static final String TUTKINTO_YKSILOLLISTETTY = "tutkinto6";
-    public static final String TUTKINTO_KESKEYTYNYT = "tutkinto7";
-    public static final String TUTKINTO_YLIOPPILAS = "tutkinto9";
-    public static final String TUTKINTO_ULKOMAINEN_TUTKINTO = "tutkinto0";
+
     public static final String TUTKINTO_KESKEYTYNYT_RULE = "tutkinto_7_rule";
     public static final String TUTKINTO_ULKOMAILLA_RULE = "tutkinto_0_rule";
-    public static final String TUTKINTO_PERUSKOULU = "tutkinto1";
     public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-3])$";
 
     private KoulutustaustaPhase() {
@@ -69,37 +63,32 @@ public final class KoulutustaustaPhase {
 
         Radio millatutkinnolla = new Radio(ELEMENT_ID_BASE_EDUCATION,
                 createI18NForm("form.koulutustausta.millaTutkinnolla"));
-        millatutkinnolla.addOption(TUTKINTO_PERUSKOULU, createI18NForm("form.koulutustausta.peruskoulu"),
+        millatutkinnolla.addOption(createI18NForm("form.koulutustausta.peruskoulu"),
                 educationMap.get(PERUSKOULU).getValue(),
                 createI18NForm("form.koulutustausta.peruskoulu.help"));
         millatutkinnolla
-                .addOption(TUTKINTO_OSITTAIN_YKSILOLLISTETTY,
-                        createI18NForm("form.koulutustausta.osittainYksilollistetty"),
+                .addOption(createI18NForm("form.koulutustausta.osittainYksilollistetty"),
                         educationMap.get(OSITTAIN_YKSILOLLISTETTY).getValue(),
                         createI18NForm("form.koulutustausta.osittainYksilollistetty.help"));
         millatutkinnolla
                 .addOption(
-                        TUTKINTO_ERITYISOPETUKSEN_YKSILOLLISTETTY,
                         createI18NForm("form.koulutustausta.erityisopetuksenYksilollistetty"),
                         ERITYISOPETUKSEN_YKSILOLLISTETTY,
                         createI18NForm("form.koulutustausta.erityisopetuksenYksilollistetty.help"));
         millatutkinnolla
                 .addOption(
-                        TUTKINTO_YKSILOLLISTETTY,
                         createI18NForm("form.koulutustausta.yksilollistetty"),
                         educationMap.get(YKSILOLLISTETTY).getValue(),
                         createI18NForm("form.koulutustausta.yksilollistetty.help"));
-        millatutkinnolla.addOption(TUTKINTO_KESKEYTYNYT,
-                createI18NForm("form.koulutustausta.keskeytynyt"),
+        millatutkinnolla.addOption(createI18NForm("form.koulutustausta.keskeytynyt"),
                 educationMap.get(KESKEYTYNYT).getValue(),
                 createI18NForm("form.koulutustausta.keskeytynyt"));
         millatutkinnolla
                 .addOption(
-                        TUTKINTO_YLIOPPILAS,
                         createI18NForm("form.koulutustausta.lukio"),
                         educationMap.get(YLIOPPILAS).getValue(),
                         createI18NForm("form.koulutustausta.lukio.help"));
-        millatutkinnolla.addOption(TUTKINTO_ULKOMAINEN_TUTKINTO, createI18NForm("form.koulutustausta.ulkomailla"),
+        millatutkinnolla.addOption(createI18NForm("form.koulutustausta.ulkomailla"),
                 educationMap.get(ULKOMAINEN_TUTKINTO).getValue(),
                 createI18NForm("form.koulutustausta.ulkomailla.help"));
         ElementUtil.setVerboseHelp(millatutkinnolla, "form.koulutustausta.millaTutkinnolla.verboseHelp");
@@ -175,10 +164,10 @@ public final class KoulutustaustaPhase {
 
         DropdownSelect ylioppilastutkinto = new DropdownSelect("ylioppilastutkinto",
                 createI18NForm("form.koulutustausta.lukio.yotutkinto"), null);
-        ylioppilastutkinto.addOption("fi", createI18NForm("form.koulutustausta.lukio.yotutkinto.fi"), "fi");
-        ylioppilastutkinto.addOption("ib", createI18NForm("form.koulutustausta.lukio.yotutkinto.ib"), "ib");
-        ylioppilastutkinto.addOption("eb", createI18NForm("form.koulutustausta.lukio.yotutkinto.eb"), "eb");
-        ylioppilastutkinto.addOption("rp", createI18NForm("form.koulutustausta.lukio.yotutkinto.rp"), "rp");
+        ylioppilastutkinto.addOption(createI18NForm("form.koulutustausta.lukio.yotutkinto.fi"), "fi");
+        ylioppilastutkinto.addOption(createI18NForm("form.koulutustausta.lukio.yotutkinto.ib"), "ib");
+        ylioppilastutkinto.addOption(createI18NForm("form.koulutustausta.lukio.yotutkinto.eb"), "eb");
+        ylioppilastutkinto.addOption(createI18NForm("form.koulutustausta.lukio.yotutkinto.rp"), "rp");
         addRequiredValidator(ylioppilastutkinto);
         ylioppilastutkinto.setInline(true);
         setDefaultOption("fi", ylioppilastutkinto.getOptions());
@@ -215,7 +204,7 @@ public final class KoulutustaustaPhase {
 
         DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
                 createI18NForm("form.koulutustausta.perusopetuksenKieli"), null);
-        perusopetuksenKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NAsIs(""), "");
+        perusopetuksenKieli.addOption(ElementUtil.createI18NAsIs(""), "");
         perusopetuksenKieli.addOptions(koodistoService.getLanguages());
         addRequiredValidator(perusopetuksenKieli);
         setVerboseHelp(perusopetuksenKieli, "form.koulutustausta.perusopetuksenKieli.verboseHelp");
@@ -223,7 +212,7 @@ public final class KoulutustaustaPhase {
 
         DropdownSelect lukionKieli = new DropdownSelect("lukion_kieli",
                 createI18NForm("form.koulutustausta.lukionKieli"), null);
-        lukionKieli.addOption(ElementUtil.randomId(), ElementUtil.createI18NAsIs(""), "");
+        lukionKieli.addOption(ElementUtil.createI18NAsIs(""), "");
         lukionKieli.addOptions(koodistoService.getLanguages());
         addRequiredValidator(lukionKieli);
         setVerboseHelp(lukionKieli, "form.koulutustausta.lukionKieli.verboseHelp");

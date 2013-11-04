@@ -19,6 +19,6 @@
     <c:set var="tmp" value="${element}" scope="page"></c:set>
     <haku:viewChilds element="${element}"/>
     <c:if test="${tmp.removable}">
-        <a href="#" class="btn-remove"></a>
+        <a href="#" class="remove"></a>
     </c:if>
 </td>

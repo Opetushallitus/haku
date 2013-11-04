@@ -14,7 +14,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,11 +23,12 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected WebDriver driver;
     protected Selenium selenium;
-    protected DefaultValues defaultValues = new DefaultValues();
+    protected DefaultValues defaultValues;
     public ApplicationSystemHelper applicationSystemHelper;
 
     @Before
     public void setUDummyModelBaseIt() throws Exception {
+        defaultValues = new DefaultValues();
         FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
         applicationSystemHelper = updateApplicationSystem(formGeneratorMock.createApplicationSystem());
         driver = seleniumContainer.getDriver();
@@ -40,14 +40,14 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     }
 
     protected void setValue(final String id, final String value) {
-        WebElement element = driver.findElement(new By.ById(id));
-        if ("select".equals(element.getTagName())) {
-            Select followUpSelect = new Select(element);
-            followUpSelect.selectByValue(value);
-        } else if ("input".equals(element.getTagName())) {
+        WebElement element = driver.findElement(new By.ByName(id));
+        String tagName = element.getTagName();
+        if ("select".equals(tagName)) {
+            new Select(element).selectByValue(value);
+        } else if ("input".equals(tagName)) {
             String type = element.getAttribute("type");
             if ("radio".equals(type) || "checkbox".equals(type)) {
-                element.click();
+                clickByNameAndValue(id, value);
             } else {
                 selenium.typeKeys(id, value);
             }
@@ -124,8 +124,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         }
     }
 
-
-    protected final void fillOut(final LinkedHashMap<String, String> values) {
+    protected final void fillOut(final Map<String, String> values) {
         for (Map.Entry<String, String> questionAndAnswer : values.entrySet()) {
             setValue(questionAndAnswer.getKey(), questionAndAnswer.getValue());
         }

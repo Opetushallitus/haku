@@ -156,4 +156,9 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     public Application getNextWithoutPersonOid() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    @Override
+    public ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters applicationQueryParameters) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

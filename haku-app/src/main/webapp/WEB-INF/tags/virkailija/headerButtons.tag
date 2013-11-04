@@ -9,7 +9,7 @@
 <div class="grid16-16">
     <c:choose>
         <c:when test="${preview}">
-            <a href="${contextPath}/virkailija/hakemus#useLast" class="button small back"></a>
+            <a href="${contextPath}/virkailija/hakemus" class="button small back"></a>
         </c:when>
         <c:otherwise>
             <a href="${contextPath}/virkailija/hakemus/${oid}/" class="button small back"></a>

@@ -16,6 +16,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.ArrayList;
 import java.util.List;
 
+import static fi.vm.sade.oppija.ui.selenium.DefaultValues.KYSYMYS_POHJAKOULUTUS;
+import static fi.vm.sade.oppija.ui.selenium.DefaultValues.TUTKINTO_YLIOPPILAS;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -42,7 +44,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         List<WebElement> editLinks = findByClassName("edit-link");
         WebElement editLink = editLinks.get(1);
         editLink.click();
-        findByIdAndClick("POHJAKOULUTUS_tutkinto9");
+        clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_YLIOPPILAS);
         driver.findElement(new By.ByClassName("save")).click();
         checkApplicationState("Puutteellinen");
     }
@@ -182,7 +184,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testSearchByOid() throws Exception {
-        assertTrue("Application not found", SearchByTerm(" 1.2.246.562.10.10108401950").isEmpty());
+        assertTrue("Application not found", SearchByTerm("1.2.246.562.10.10108401950").isEmpty());
     }
 
     @Test
@@ -266,6 +268,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     private void activate(String oid) throws InterruptedException {
+        navigateToPath("virkailija", "hakemus", oid, "postProcess");
         navigateToPath("virkailija", "hakemus", oid, "activate");
     }
 

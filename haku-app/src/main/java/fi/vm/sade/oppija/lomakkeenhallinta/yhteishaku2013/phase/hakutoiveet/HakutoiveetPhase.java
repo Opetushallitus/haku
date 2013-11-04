@@ -83,8 +83,7 @@ public class HakutoiveetPhase {
                 createI18NForm("form.yleinen.tyhjenna"),
                 createI18NForm("form.hakutoiveet.koulutus"),
                 createI18NForm("form.hakutoiveet.opetuspiste"),
-                createI18NForm("form.hakutoiveet.sisaltyvatKoulutusohjelmat"),
-                "Valitse koulutus");
+                createI18NForm("form.hakutoiveet.sisaltyvatKoulutusohjelmat"));
 
         pr.addChild(createDiscretionaryQuestionsAndRules(id));
         pr.addChild(createSoraQuestions(id),
@@ -101,11 +100,9 @@ public class HakutoiveetPhase {
 
         DropdownSelect discretionaryFollowUp = new DropdownSelect(discretionary.getId() + "-follow-up",
                 createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu"), null);
-        discretionaryFollowUp.addOption("eiValittu", ElementUtil.createI18NAsIs(""), "");
-        discretionaryFollowUp.addOption(discretionaryFollowUp.getId() + "oppimisvaikudet",
-                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.oppimisvaikeudet"), "oppimisvaikudet");
-        discretionaryFollowUp.addOption(discretionaryFollowUp.getId() + "sosiaalisetsyyt",
-                createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset"), "sosiaalisetsyyt");
+        discretionaryFollowUp.addOption(ElementUtil.createI18NAsIs(""), "");
+        discretionaryFollowUp.addOption(createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.oppimisvaikeudet"), "oppimisvaikudet");
+        discretionaryFollowUp.addOption(createI18NForm("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset"), "sosiaalisetsyyt");
         addRequiredValidator(discretionaryFollowUp);
 
         RelatedQuestionRule discretionaryFollowUpRule = new RelatedQuestionRule(index + "-discretionary-follow-up-rule",
@@ -138,14 +135,14 @@ public class HakutoiveetPhase {
                 ImmutableList.of(index + "-Koulutus-id-sora"), ElementUtil.KYLLA, false);
 
         Radio sora1 = new Radio(index + "_sora_terveys", createI18NForm("form.sora.terveys"));
-        sora1.addOption(ElementUtil.EI, createI18NForm("form.yleinen.ei"), ElementUtil.EI);
-        sora1.addOption(ElementUtil.KYLLA, createI18NForm("form.sora.kylla"), ElementUtil.KYLLA);
+        sora1.addOption(createI18NForm("form.yleinen.ei"), ElementUtil.EI);
+        sora1.addOption(createI18NForm("form.sora.kylla"), ElementUtil.KYLLA);
         addRequiredValidator(sora1);
         sora1.setPopup(new Popup("sora-popup", createI18NForm("form.hakutoiveet.terveydentilavaatimukset.otsikko")));
 
         Radio sora2 = new Radio(index + "_sora_oikeudenMenetys", createI18NForm("form.sora.oikeudenMenetys"));
-        sora2.addOption(ElementUtil.EI, createI18NForm("form.yleinen.ei"), ElementUtil.EI);
-        sora2.addOption(ElementUtil.KYLLA, createI18NForm("form.sora.kylla"), ElementUtil.KYLLA);
+        sora2.addOption(createI18NForm("form.yleinen.ei"), ElementUtil.EI);
+        sora2.addOption(createI18NForm("form.sora.kylla"), ElementUtil.KYLLA);
         addRequiredValidator(sora2);
 
         hasSora.addChild(sora1, sora2);

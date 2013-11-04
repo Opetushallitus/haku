@@ -18,6 +18,7 @@ package fi.vm.sade.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 public class Option extends Titled {
 
@@ -25,8 +26,8 @@ public class Option extends Titled {
     private final String value;
     private boolean defaultOption = false;
 
-    public Option(final String id, final I18nText i18nText, final String value) {
-        super(id, i18nText);
+    public Option(final I18nText i18nText, final String value) {
+        super(ElementUtil.randomId(), i18nText);
         this.value = value;
     }
 

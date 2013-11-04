@@ -69,10 +69,9 @@ public class NavigationIT extends DummyModelBaseItTest {
         setValue("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText(DefaultValues.OPETUSPISTE)).click();
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
-        findByIdAndClick("preference1-discretionary_false");
-        findByIdAndClick("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_true");
-        findByIdAndClick("preference1_sora_terveys_false");
-        findByIdAndClick("preference1_sora_oikeudenMenetys_false");
+
+        fillOut(defaultValues.preference1);
+
         nextPhase();
 
         select();

@@ -2647,7 +2647,6 @@
                               "en": "Opetuspiste_en"
                             }
                           },
-                          "selectEducationPlaceholder": "Valitse koulutus",
                           "help": "",
                           "ihelp": {
                             "id": "preference1_help",
@@ -2714,7 +2713,6 @@
                               "en": "Opetuspiste_en"
                             }
                           },
-                          "selectEducationPlaceholder": "Valitse koulutus",
                           "help": "",
                           "ihelp": {
                             "id": "preference2_help",
@@ -2776,7 +2774,6 @@
                               "en": "Opetuspiste_en"
                             }
                           },
-                          "selectEducationPlaceholder": "Valitse koulutus",
                           "help": "",
                           "ihelp": {
                             "id": "preference3_help",
@@ -2838,7 +2835,6 @@
                               "en": "Opetuspiste_en"
                             }
                           },
-                          "selectEducationPlaceholder": "Valitse koulutus",
                           "help": "",
                           "ihelp": {
                             "id": "preference4_help",
@@ -2900,7 +2896,6 @@
                               "en": "Opetuspiste_en"
                             }
                           },
-                          "selectEducationPlaceholder": "Valitse koulutus",
                           "help": "",
                           "ihelp": {
                             "id": "preference5_help",
@@ -7403,7 +7398,6 @@
                               "en": "Opetuspiste_en"
                             }
                           },
-                          "selectEducationPlaceholder": "Valitse koulutus",
                           "help": "",
                           "ihelp": {
                             "id": "preference1_help",
@@ -7470,7 +7464,6 @@
                               "en": "Opetuspiste_en"
                             }
                           },
-                          "selectEducationPlaceholder": "Valitse koulutus",
                           "help": "",
                           "ihelp": {
                             "id": "preference2_help",
@@ -7532,7 +7525,6 @@
                               "en": "Opetuspiste_en"
                             }
                           },
-                          "selectEducationPlaceholder": "Valitse koulutus",
                           "help": "",
                           "ihelp": {
                             "id": "preference3_help",
@@ -7594,7 +7586,6 @@
                               "en": "Opetuspiste_en"
                             }
                           },
-                          "selectEducationPlaceholder": "Valitse koulutus",
                           "help": "",
                           "ihelp": {
                             "id": "preference4_help",
@@ -7656,7 +7647,6 @@
                               "en": "Opetuspiste_en"
                             }
                           },
-                          "selectEducationPlaceholder": "Valitse koulutus",
                           "help": "",
                           "ihelp": {
                             "id": "preference5_help",

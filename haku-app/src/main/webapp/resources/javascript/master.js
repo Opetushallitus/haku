@@ -65,17 +65,12 @@ $(document).ready(function () {
             }
         },
         set: {
-            active: function () {
-                $('#overlay .popup-dialog-wrapper').addClass('inactive').last().removeClass('inactive');
-            },
             overlay: function () {
 
                 // Show overlay if 1 or more popovers are open/visible
                 // Hide overlay if no popovers are open/visible
                 if (popover.handlers.openPopovers > 0) {
                     $('#overlay').show();
-
-                    popover.set.active();
                 }
                 else {
                     $('#overlay').hide();
@@ -157,7 +152,6 @@ $(document).ready(function () {
 
                 // Show already existing popover with id
                 $('body').on('click', '[data-po-show]', function (event) {
-                    //console.log($(this).attr('data-po-show'));
                     event.preventDefault();
                     id = $(this).attr('data-po-show');
                     popover.show(id);
