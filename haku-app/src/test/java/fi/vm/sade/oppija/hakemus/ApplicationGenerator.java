@@ -52,7 +52,7 @@ public class ApplicationGenerator {
         applicationToDBObjectFunction = new ApplicationToDBObjectFunction(aesEncrypter, sha2Encrypter);
         client = new MongoClient(new ServerAddress("localhost", 27017));
         db = client.getDB("hakulomake");
-        mongoTemplate = new MongoTemplate(client, "hakulomake");
+        // mongoTemplate = new MongoTemplate(client, "hakulomake");
         oidDao = new ApplicationOidDAOMongoImpl(mongoTemplate, oidPrefix);
     }
 
