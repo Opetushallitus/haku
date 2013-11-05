@@ -28,9 +28,12 @@ public class ApplicationQueryParameters {
     private final String aoOid;
     private final int start;
     private final int rows;
+    private String orderBy;
+    private int orderDir;
 
     public ApplicationQueryParameters(final List<String> state, final String aoId, final String lopOid, final String asId,
-                                      final String aoOid, final int start, final int rows) {
+                                      final String aoOid, final int start, final int rows,
+                                      final String orderBy, final int orderDir) {
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
         this.state = state;
         this.aoId = isEmpty(aoId) ? null : aoId;
@@ -38,6 +41,8 @@ public class ApplicationQueryParameters {
         this.aoOid = isEmpty(aoOid) ? null : aoOid;
         this.start = start;
         this.rows = rows;
+        this.orderBy = orderBy;
+        this.orderDir = orderDir;
     }
 
     public List<String> getState() {
@@ -66,5 +71,13 @@ public class ApplicationQueryParameters {
 
     public int getRows() {
         return rows;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public int getOrderDir() {
+        return orderDir;
     }
 }

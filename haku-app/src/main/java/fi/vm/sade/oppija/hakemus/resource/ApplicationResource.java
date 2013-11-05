@@ -87,7 +87,30 @@ public class ApplicationResource {
                 query, state, aoid, lopoid, asId, aoOid, start, rows);
 
         return applicationService.findApplications(
-                query, new ApplicationQueryParameters(state, aoid, lopoid, asId, aoOid, start, rows));
+                query, new ApplicationQueryParameters(state, aoid, lopoid, asId, aoOid, start, rows, "fullName", 1));
+    }
+
+    @GET
+    @Path("list/{orderBy}/{orderDir}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
+    public ApplicationSearchResultDTO findApplicationsOrdered(@PathParam("orderBy") String orderBy,
+                                                       @PathParam("orderDir") String orderDir,
+                                                       @DefaultValue(value = "") @QueryParam("q") String query,
+                                                       @QueryParam("appState") List<String> state,
+                                                       @QueryParam("aoid") String aoid,
+                                                       @QueryParam("lopoid") String lopoid,
+                                                       @QueryParam("asId") String asId,
+                                                       @QueryParam("aoOid") String aoOid,
+                                                       @DefaultValue(value = "0") @QueryParam("start") int start,
+                                                       @DefaultValue(value = "100") @QueryParam("rows") int rows) {
+        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}, " +
+                "orderBy: {}, orderDir: {}",
+                query, state, aoid, lopoid, asId, aoOid, start, rows, orderBy, orderDir);
+
+        int realOrderDir = "desc".equals(orderDir) ? -1 : 1;
+        return applicationService.findApplications(query, new ApplicationQueryParameters(state, aoid, lopoid, asId,
+                aoOid, start, rows, orderBy, realOrderDir));
     }
 
     @GET

@@ -94,47 +94,11 @@ public class ApplicationDAOMemoryImpl implements Serializable, ApplicationDAO {
     }
 
     @Override
-    public ApplicationSearchResultDTO findByApplicantName(String term, ApplicationQueryParameters applicationQueryParameters) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public ApplicationSearchResultDTO findByApplicantSsn(String term, ApplicationQueryParameters applicationQueryParameters) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public ApplicationSearchResultDTO findByOid(String term, ApplicationQueryParameters applicationQueryParameters) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public ApplicationSearchResultDTO findByApplicationOid(String term, ApplicationQueryParameters applicationQueryParameters) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public ApplicationSearchResultDTO findByUserOid(String term, ApplicationQueryParameters applicationQueryParameters) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public ApplicationSearchResultDTO findAllFiltered(ApplicationQueryParameters applicationQueryParameters) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
     public ApplicationState tallennaVaihe(final ApplicationState state) {
         Application application = find(new Application(state.getApplication().getApplicationSystemId(), state.getApplication().getUser())).get(0);
         application.addVaiheenVastaukset(state.getPhaseId(), state.getApplication().getVastauksetMerged());
         hakemukset.add(application);
         return state;
-    }
-
-    @Override
-    public ApplicationSearchResultDTO findByApplicantDob(String term, ApplicationQueryParameters applicationQueryParameters) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override
