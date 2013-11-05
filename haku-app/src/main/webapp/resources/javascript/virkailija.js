@@ -129,7 +129,7 @@ $(document).ready(function () {
                             currentPage: Math.ceil(start / maxRows) + 1,
                             totalPages: Math.ceil(data.totalCount / maxRows),
                             onPageClicked: function (e, originalEvent, type, page) {
-                                applicationSearch.search((page - 1) * maxRows);
+                                applicationSearch.search((page - 1) * maxRows, orderBy, orderDir);
                             }
                         }
                         $('#pagination').bootstrapPaginator(options);
