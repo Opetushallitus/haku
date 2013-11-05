@@ -91,40 +91,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      */
     boolean checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String aoId);
 
-    /**
-     * Return all applications where applicants first name or last name contains
-     * given term, case insensitive.
-     *
-     * @param term
-     * @return
-     */
-    ApplicationSearchResultDTO findByApplicantName(String term, ApplicationQueryParameters applicationQueryParameters);
-
-    /**
-     * Return all applications where applicants ssn matches given term.
-     *
-     * @param term
-     * @return
-     */
-    ApplicationSearchResultDTO findByApplicantSsn(String term, ApplicationQueryParameters applicationQueryParameters);
-
-    /**
-     * Return applications which oid or applicants' oid matches given term.
-     *
-     * @param applicationQueryParameters
-     * @param term
-     * @return
-     */
-    ApplicationSearchResultDTO findByOid(String term, ApplicationQueryParameters applicationQueryParameters);
-
-    ApplicationSearchResultDTO findByApplicationOid(String term, ApplicationQueryParameters applicationQueryParameters);
-
-    ApplicationSearchResultDTO findByUserOid(String term, ApplicationQueryParameters applicationQueryParameters);
-
-    ApplicationSearchResultDTO findAllFiltered(ApplicationQueryParameters applicationQueryParameters);
-
-    ApplicationSearchResultDTO findByApplicantDob(String term, ApplicationQueryParameters applicationQueryParameters);
-
     void setHakuPermissionService(HakuPermissionService hakuPermissionService);
 
     /**

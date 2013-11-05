@@ -208,14 +208,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public ApplicationSearchResultDTO findAllFiltered(ApplicationQueryParameters applicationQueryParameters) {
-        DBObject[] filters = buildQueryFilter(applicationQueryParameters);
-        QueryBuilder baseQuery = QueryBuilder.start();
-        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
-    }
-
-    @Override
     public ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters applicationQueryParameters) {
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         StringTokenizer st = new StringTokenizer(term, " ");
@@ -251,7 +243,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         QueryBuilder baseQuery = queries.size() > 0 ? QueryBuilder.start().and(queries.toArray(new DBObject[queries.size()])) : QueryBuilder.start();
         DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
+        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows(),
+                applicationQueryParameters.getOrderBy(), applicationQueryParameters.getOrderDir());
     }
 
     private ArrayList<DBObject> addDobOrNameQuery(ArrayList<DBObject> queries, String token) {
@@ -344,91 +337,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
     }
 
-    private ApplicationSearchResultDTO searchApplications(DBObject query, int start, int rows) {
-        final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject("fullName", 1))
+    private ApplicationSearchResultDTO searchApplications(DBObject query, int start, int rows, String orderBy,
+                                                          int orderDir) {
+        LOG.debug("Ordering: {}, {}", orderBy, orderDir);
+        final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject(orderBy, orderDir))
                 .skip(start).limit(rows);
         return new ApplicationSearchResultDTO(dbCursor.count(), Lists.newArrayList(Iterables.transform(dbCursor, dbObjectToSearchResultItem)));
-    }
-
-    @Override
-    public ApplicationSearchResultDTO findByApplicantName(String term, ApplicationQueryParameters
-        applicationQueryParameters) {
-        DBObject[] filters = buildQueryFilter(applicationQueryParameters);
-        Pattern namePattern = Pattern.compile(term, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
-        QueryBuilder baseQuery = QueryBuilder.start().or(
-                QueryBuilder.start("answers.henkilotiedot.Etunimet").regex(namePattern).get(),
-                QueryBuilder.start("answers.henkilotiedot.Sukunimi").regex(namePattern).get());
-        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
-    }
-
-    @Override
-    public ApplicationSearchResultDTO findByOid(String term, ApplicationQueryParameters applicationQueryParameters) {
-        DBObject[] filters = buildQueryFilter(applicationQueryParameters);
-        QueryBuilder baseQuery;
-        if (term.startsWith(applicationOidPrefix)) {
-            baseQuery = QueryBuilder.start(FIELD_APPLICATION_OID).is(term);
-        } else if (term.startsWith(userOidPrefix)) {
-            baseQuery = QueryBuilder.start(FIELD_PERSON_OID).is(term);
-        } else {
-            baseQuery = QueryBuilder.start().or(
-                    QueryBuilder.start(FIELD_APPLICATION_OID).is(applicationOidPrefix + "." + term).get(),
-                    QueryBuilder.start(FIELD_PERSON_OID).is(userOidPrefix + "." + term).get());
-        }
-        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
-    }
-
-    @Override
-    public ApplicationSearchResultDTO findByApplicationOid(String term, ApplicationQueryParameters applicationQueryParameters) {
-        DBObject[] filters = buildQueryFilter(applicationQueryParameters);
-        QueryBuilder baseQuery = QueryBuilder.start(FIELD_APPLICATION_OID).is(term);
-        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
-    }
-
-    @Override
-    public ApplicationSearchResultDTO findByUserOid(String term, ApplicationQueryParameters applicationQueryParameters) {
-        DBObject[] filters = buildQueryFilter(applicationQueryParameters);
-        QueryBuilder baseQuery = QueryBuilder.start(FIELD_PERSON_OID).is(term);
-        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
-    }
-
-    @Override
-    public ApplicationSearchResultDTO findByApplicantSsn(String term, ApplicationQueryParameters applicationQueryParameters) {
-        DBObject[] filters = buildQueryFilter(applicationQueryParameters);
-        QueryBuilder baseQuery = QueryBuilder.start("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH)
-                .is(shaEncrypter.encrypt(term));
-        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
-    }
-
-    @Override
-    public ApplicationSearchResultDTO findByApplicantDob(final String term, final ApplicationQueryParameters applicationQueryParameters) {
-        DBObject[] filters = buildQueryFilter(applicationQueryParameters);
-        String dob = hetuDobToIsoDate(term);
-        QueryBuilder baseQuery = QueryBuilder.start("answers.henkilotiedot.syntymaaika").is(dob);
-        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
-        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows());
-    }
-
-    private String hetuDobToIsoDate(final String term) {
-        DateFormat dobFmt = new SimpleDateFormat("ddMMyy");
-        DateFormat isoFmt = new SimpleDateFormat("dd.MM.yyyy");
-        dobFmt.setLenient(false);
-        try {
-            Date dob = dobFmt.parse(term);
-            if (new Date().before(dob)) {
-                Calendar cal = GregorianCalendar.getInstance();
-                cal.setTime(dob);
-                cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - HUNDRED);
-                dob = cal.getTime();
-            }
-            return isoFmt.format(dob);
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Can not parse " + term + " as date", e);
-        }
     }
 
     private DBObject[] buildQueryFilter(final ApplicationQueryParameters applicationQueryParameters) {

@@ -109,9 +109,9 @@ $(document).ready(function () {
             }
         }
 
-        this.search = function (start) {
+        this.search = function (start, orderBy, orderDir) {
             var queryParameters = createQueryParameters(start);
-            $.getJSON(page_settings.contextPath + "/applications",
+            $.getJSON(page_settings.contextPath + "/applications/list/"+orderBy+"/"+orderDir,
                 queryParameters,
                 function (data) {
                     $tbody.empty();
@@ -155,7 +155,7 @@ $(document).ready(function () {
 
 
     $('#search-applications').click(function (event) {
-        applicationSearch.search(0);
+        applicationSearch.search(0, 'fullName', 'asc');
         return false;
     });
 
