@@ -51,6 +51,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testSearchByPreference() {
+        clearSearch();
         List<WebElement> applicationLinks = findByClassName("application-link");
         assertTrue("Applications found", applicationLinks.isEmpty());
 
