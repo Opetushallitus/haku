@@ -81,6 +81,7 @@ $(document).ready(function () {
 
     orgSearchDialog.build();
 
+    var cookieName = 'hakemukset_last_search';
 
     var applicationSearch = (function () {
         var oid = $('#oid');
@@ -91,14 +92,21 @@ $(document).ready(function () {
             maxRows = 50;
 
         function createQueryParameters(start) {
+            $.cookie.json = true;
+            var lastSearch = $.cookie(cookieName);
             var obj = {};
-            addParameter(obj, 'q', '#entry');
-            addParameter(obj, 'oid', '#oid');
-            addParameter(obj, 'appState', '#application-state');
-            addParameter(obj, 'aoid', '#application-preference');
-            addParameter(obj, 'lopoid', '#lopoid');
-            obj['start'] = start;
-            obj['rows'] = maxRows;
+            if (lastSearch) {
+                obj = lastSearch;
+            } else {
+                addParameter(obj, 'q', '#entry');
+                addParameter(obj, 'oid', '#oid');
+                addParameter(obj, 'appState', '#application-state');
+                addParameter(obj, 'aoid', '#application-preference');
+                addParameter(obj, 'lopoid', '#lopoid');
+                obj['start'] = start;
+                obj['rows'] = maxRows;
+                $.cookie(cookieName, obj);
+            }
             return obj;
         }
 
@@ -153,8 +161,12 @@ $(document).ready(function () {
         return this;
     })();
 
+    if ($.cookie(cookieName)) {
+        applicationSearch.search(0, 'fullName', 'asc');
+    }
 
     $('#search-applications').click(function (event) {
+        $.removeCookie(cookieName);
         applicationSearch.search(0, 'fullName', 'asc');
         return false;
     });
@@ -162,6 +174,22 @@ $(document).ready(function () {
     $('#reset-search').click(function (event) {
         applicationSearch.reset();
         return false;
+    });
+
+    $('#application-table-header-lastName').click(function (event) {
+        application.search(0, 'fullName', 'asc');
+    });
+
+    $('#application-table-header-ssn').click(function (event) {
+        application.search(0, 'ssn', 'asc');
+    });
+
+    $('#application-table-header-applicationOid').click(function (event) {
+        application.search(0, 'applicationOid', 'asc');
+    });
+
+    $('#application-table-header-state').click(function (event) {
+        application.search(0, 'state', 'asc');
     });
 
     var additionalInfo = (function () {
