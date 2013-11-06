@@ -98,8 +98,7 @@
             <table id="application-table" class="virkailija-table-1">
                 <thead>
                 <tr>
-                    <td id="application-table-header-lastName"><fmt:message key="virkailija.hakemus.sukunimi"/></td>
-                    <td id="application-table-header-firstName"><fmt:message key="virkailija.hakemus.etunimi"/></td>
+                    <td id="application-table-header-fullName"><fmt:message key="virkailija.hakemus.nimi"/></td>
                     <td id="application-table-header-ssn"><fmt:message key="virkailija.hakemus.henkilotunnus"/></td>
                     <td id="application-table-header-applicationOid"><fmt:message key="virkailija.hakemus.hakemusnro"/></td>
                     <td id="application-table-header-state"><fmt:message key="virkailija.hakemus.hakemuksen.tila"/></td>

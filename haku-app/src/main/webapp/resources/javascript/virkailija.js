@@ -95,7 +95,7 @@ $(document).ready(function () {
             $.cookie.json = true;
             var lastSearch = $.cookie(cookieName);
             var obj = {};
-            if (lastSearch) {
+            if (lastSearch && window.location.hash === '#useLast') {
                 obj = lastSearch;
             } else {
                 addParameter(obj, 'q', '#entry');
@@ -127,8 +127,7 @@ $(document).ready(function () {
                     if (data.totalCount > 0) {
                         $(data.results).each(function (index, item) {
                             $tbody.append('<tr><td>' +
-                                (item.lastName ? item.lastName : '') + '</td><td>' +
-                                (item.firstNames ? item.firstNames : '') + '</td><td>' +
+                                (item.lastName ? item.lastName : '') + ' ' + (item.firstNames ? item.firstNames : '') + '</td><td>' +
                                 (item.ssn ? item.ssn : '') + '</td><td><a class="application-link" href="' +
                                 page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
                                 item.oid + '</a></td><td>' + (item.state ? page_settings[item.state] : '') + '</td></tr>');
@@ -146,26 +145,27 @@ $(document).ready(function () {
                     }
                 });
         },
-            this.updateCounters = function (count) {
-                $resultcount.empty().append(count);
-                $applicationTabLabel.empty().append('Hakemukset ' + count);
-            },
-            this.reset = function () {
-                self.updateCounters(0);
-                $tbody.empty();
-                $('#entry').val('');
-                $('#application-state').val('');
-                $('#application-preference').val('');
-                $('#pagination').empty();
-            }
+        this.updateCounters = function (count) {
+            $resultcount.empty().append(count);
+            $applicationTabLabel.empty().append('Hakemukset (' + count + ')');
+        },
+        this.reset = function () {
+            self.updateCounters(0);
+            $tbody.empty();
+            $('#entry').val('');
+            $('#application-state').val('');
+            $('#application-preference').val('');
+            $('#pagination').empty();
+        }
         return this;
     })();
 
-    if ($.cookie(cookieName)) {
+    if ($.cookie(cookieName) && window.location.hash === '#useLast') {
         applicationSearch.search(0, 'fullName', 'asc');
     }
 
     $('#search-applications').click(function (event) {
+        window.location.hash = '';
         $.removeCookie(cookieName);
         applicationSearch.search(0, 'fullName', 'asc');
         return false;
@@ -176,20 +176,16 @@ $(document).ready(function () {
         return false;
     });
 
-    $('#application-table-header-lastName').click(function (event) {
-        application.search(0, 'fullName', 'asc');
-    });
-
-    $('#application-table-header-ssn').click(function (event) {
-        application.search(0, 'ssn', 'asc');
+    $('#application-table-header-fullName').click(function (event) {
+        applicationSearch.search(0, 'fullName', 'asc');
     });
 
     $('#application-table-header-applicationOid').click(function (event) {
-        application.search(0, 'applicationOid', 'asc');
+        applicationSearch.search(0, 'applicationOid', 'asc');
     });
 
     $('#application-table-header-state').click(function (event) {
-        application.search(0, 'state', 'asc');
+        applicationSearch.search(0, 'state', 'asc');
     });
 
     var additionalInfo = (function () {
