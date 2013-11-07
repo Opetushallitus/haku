@@ -461,7 +461,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public void updateKeyValue(String oid, String key, String value) {
         DBObject query = new BasicDBObject("oid", oid);
         DBObject update = new BasicDBObject("$set", new BasicDBObject(key, value));
-        getCollection().update(query, update);
+        getCollection().findAndModify(query, update);
     }
 
     @Override
