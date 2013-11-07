@@ -37,15 +37,15 @@
         <flapdoodle.version>1.36</flapdoodle.version>
         <org.apache.tomcat.embed>7.0.39</org.apache.tomcat.embed>
 
-        <internal-dependencies.version>7.0-SNAPSHOT</internal-dependencies.version>
-        <authentication-api.version>6.2-SNAPSHOT</authentication-api.version>
-        <generic-common.version>6.3-SNAPSHOT</generic-common.version>
-        <koodisto-api.version>6.3-SNAPSHOT</koodisto-api.version>
-        <koulutusinformaatio-api.version>6.3-SNAPSHOT</koulutusinformaatio-api.version>
-        <log-client.version>6.2-SNAPSHOT</log-client.version>
-        <organisaatio-api.version>6.3-SNAPSHOT</organisaatio-api.version>
-        <organisaatio-solr-client.version>6.3-SNAPSHOT</organisaatio-solr-client.version>
-        <tarjonta-api.version>6.3-SNAPSHOT</tarjonta-api.version>
+        <internal-dependencies.version>${project.version}</internal-dependencies.version>
+        <authentication-api.version>${internal-dependencies.version}</authentication-api.version>
+        <generic-common.version>${internal-dependencies.version}</generic-common.version>
+        <koodisto-api.version>${internal-dependencies.version}</koodisto-api.version>
+        <koulutusinformaatio-api.version>${internal-dependencies.version}</koulutusinformaatio-api.version>
+        <log-client.version>${internal-dependencies.version}</log-client.version>
+        <organisaatio-api.version>${internal-dependencies.version}</organisaatio-api.version>
+        <organisaatio-solr-client.version>${internal-dependencies.version}</organisaatio-solr-client.version>
+        <tarjonta-api.version>${internal-dependencies.version}</tarjonta-api.version>
         <webapp-portal-decorator.version>${internal-dependencies.version}</webapp-portal-decorator.version>
     </properties>
 
