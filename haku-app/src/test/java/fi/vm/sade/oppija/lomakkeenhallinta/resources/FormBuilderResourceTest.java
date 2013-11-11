@@ -2,6 +2,7 @@ package fi.vm.sade.oppija.lomakkeenhallinta.resources;
 
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
@@ -28,7 +29,8 @@ public class FormBuilderResourceTest {
         formGenerator = mock(FormGenerator.class);
         applicationSystemService = mock(ApplicationSystemService.class);
         I18nText test = ElementUtil.createI18NAsIs("test");
-        ApplicationSystem applicationSystem = new ApplicationSystem("1", new Form("", test), test, null, Yhteishaku2013.VARSINAINEN_HAKU);
+        ApplicationSystem applicationSystem = new ApplicationSystemBuilder().addId("1")
+                .addForm(new Form("", test)).addName(test).addApplicationSystemType(Yhteishaku2013.VARSINAINEN_HAKU).get();
         when(formGenerator.generate()).thenReturn(ImmutableList.of(applicationSystem));
         formBuilderResource = new FormBuilderResource(formGenerator, applicationSystemService);
     }

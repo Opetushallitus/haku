@@ -22,6 +22,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuaikaRDTO;
@@ -57,9 +58,15 @@ public class HakuDTOToApplicationSystemFunction implements Function<HakuDTO, App
                 applicationPeriods.add(new ApplicationPeriod(hakuaika.getAlkuPvm(), hakuaika.getLoppuPvm()));
             }
         }
-        String asType = hakuDTO.getHakutyyppiUri().split("#")[0];
-        ApplicationSystem applicationSystem = new ApplicationSystem(hakuDTO.getOid(), null, name, applicationPeriods,
-                asType);
+
+        ApplicationSystem applicationSystem = new ApplicationSystemBuilder()
+                .addId(hakuDTO.getOid())
+                .addName(name)
+                .addApplicationPeriods(applicationPeriods)
+                .addApplicationSystemType(hakuDTO.getHakutyyppiUri().split("#")[0])
+                .addHakukausiUri(hakuDTO.getHakukausiUri().split("#")[0])
+                .addHakukausiVuosi(hakuDTO.getHakukausiVuosi())
+                .get();
         return applicationSystem;
     }
 }

@@ -1947,7 +1947,7 @@ table.dropmenu-table {
   display: block; }
 
 /*
-	Taulukko tyyli perustietojen näyttämiselle, esim. hakijan henkilötietot
+	Taulukko tyyli perustietojen nï¿½yttï¿½miselle, esim. hakijan henkilï¿½tietot
 */
 .perustieto-table {
   width: 100%; }
@@ -4075,3 +4075,10 @@ div.tilaParial:after, div.henkiloPartial:after {
       left: 10%;
 }
 */
+
+#application-table td.sorted-asc:after {
+    content : url(/haku-app/resources/img/arrow-down.png);
+}
+#application-table td.sorted-desc:after {
+    content : url(/haku-app/resources/img/arrow-up.png);
+}

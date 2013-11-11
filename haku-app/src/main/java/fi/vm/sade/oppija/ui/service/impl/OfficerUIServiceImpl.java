@@ -182,7 +182,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         UIServiceResponse uiServiceResponse = new UIServiceResponse();
         uiServiceResponse.addObjectToModel("organizationTypes", koodistoService.getOrganizationtypes());
         uiServiceResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
-        uiServiceResponse.addObjectToModel("applicationSystems", applicationSystemService.getAllApplicationSystems("id", "name"));
+        uiServiceResponse.addObjectToModel("applicationSystems",
+                applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi"));
+        uiServiceResponse.addObjectToModel("hakukausiOptions", koodistoService.getHakukausi());
+
         return uiServiceResponse;
     }
 

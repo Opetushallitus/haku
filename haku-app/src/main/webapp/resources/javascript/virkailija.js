@@ -103,6 +103,7 @@ $(document).ready(function () {
                 addParameter(obj, 'appState', '#application-state');
                 addParameter(obj, 'aoid', '#application-preference');
                 addParameter(obj, 'lopoid', '#lopoid');
+                addParameter(obj, 'asId', '#application-system');
                 obj['start'] = start;
                 obj['rows'] = maxRows;
                 $.cookie(cookieName, obj);
@@ -118,6 +119,7 @@ $(document).ready(function () {
         }
 
         this.search = function (start, orderBy, orderDir) {
+            $('#application-table thead tr td').removeAttr('class');
             var queryParameters = createQueryParameters(start);
             $.getJSON(page_settings.contextPath + "/applications/list/"+orderBy+"/"+orderDir,
                 queryParameters,
@@ -150,6 +152,7 @@ $(document).ready(function () {
             $applicationTabLabel.empty().append('Hakemukset (' + count + ')');
         },
         this.reset = function () {
+            $('#application-table thead tr td').removeAttr('class');
             self.updateCounters(0);
             $tbody.empty();
             $('#entry').val('');
@@ -176,16 +179,29 @@ $(document).ready(function () {
         return false;
     });
 
+    function sortApplications(column, sortBy) {
+        var clazz = column.attr('class');
+        var sortOrder = 'asc';
+        if (clazz === 'sorted-asc') {
+            clazz = 'sorted-desc';
+            sortOrder = 'desc';
+        } else {
+            clazz = 'sorted-asc';
+        }
+        applicationSearch.search(0, sortBy, sortOrder);
+        column.attr('class', clazz);
+    }
+
     $('#application-table-header-fullName').click(function (event) {
-        applicationSearch.search(0, 'fullName', 'asc');
+        sortApplications($(this), 'fullName');
     });
 
     $('#application-table-header-applicationOid').click(function (event) {
-        applicationSearch.search(0, 'applicationOid', 'asc');
+        sortApplications($(this), 'applicationOid');
     });
 
     $('#application-table-header-state').click(function (event) {
-        applicationSearch.search(0, 'state', 'asc');
+        sortApplications($(this), 'state');
     });
 
     var additionalInfo = (function () {

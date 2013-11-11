@@ -48,5 +48,7 @@ public interface KoodistoService {
 
     List<Option> getGenders();
 
+    List<Option> getHakukausi();
+
     List<Code> getCodes(String koodistoUrl, int version);
 }

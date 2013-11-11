@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomakkeenhallinta.FormGenerator;
@@ -52,9 +53,12 @@ public class FormGeneratorMock implements FormGenerator {
         Date end = new Date(instance.getTimeInMillis());
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
         I18nText name = ElementUtil.createI18NAsIs(asId);
-        Form form = Yhteishaku2013.generateForm(new ApplicationSystem(asId, null, name, applicationPeriods,
-                Yhteishaku2013.VARSINAINEN_HAKU), koodistoService);
-        asList.add(new ApplicationSystem(asId, form, name, applicationPeriods, Yhteishaku2013.VARSINAINEN_HAKU));
+        Form form = Yhteishaku2013.generateForm(new ApplicationSystemBuilder().addId(asId).addName(name)
+                .addApplicationPeriods(applicationPeriods).addApplicationSystemType(Yhteishaku2013.VARSINAINEN_HAKU)
+                .get(), koodistoService);
+        asList.add(new ApplicationSystemBuilder().addId(asId).addForm(form).addName(name)
+                .addApplicationPeriods(applicationPeriods).addApplicationSystemType(Yhteishaku2013.VARSINAINEN_HAKU)
+                .get());
         return asList;
     }
 
@@ -66,8 +70,11 @@ public class FormGeneratorMock implements FormGenerator {
         Date end = new Date(instance.getTimeInMillis());
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
         I18nText name = ElementUtil.createI18NAsIs(asId);
-        Form form = Yhteishaku2013.generateForm(new ApplicationSystem(asId, null, name, applicationPeriods,
-                Yhteishaku2013.VARSINAINEN_HAKU), koodistoService);
-        return new ApplicationSystem(asId, form, name, applicationPeriods, Yhteishaku2013.VARSINAINEN_HAKU);
+        Form form = Yhteishaku2013.generateForm(new ApplicationSystemBuilder().addId(asId).addName(name)
+                .addApplicationPeriods(applicationPeriods).addApplicationSystemType(Yhteishaku2013.VARSINAINEN_HAKU)
+                .get(), koodistoService);
+        return new ApplicationSystemBuilder().addId(asId).addForm(form).addName(name)
+                .addApplicationPeriods(applicationPeriods).addApplicationSystemType(Yhteishaku2013.VARSINAINEN_HAKU)
+                .get();
     }
 }

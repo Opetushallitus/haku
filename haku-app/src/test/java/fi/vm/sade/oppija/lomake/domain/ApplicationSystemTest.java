@@ -35,8 +35,12 @@ public class ApplicationSystemTest {
     public void testIsActiveSame() throws Exception {
         Date now = new Date();
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(now, now));
-        ApplicationSystem applicationSystem = new ApplicationSystem("1", new Form("", ElementUtil.createI18NAsIs("")),
-                ElementUtil.createI18NAsIs(""), applicationPeriods, Yhteishaku2013.VARSINAINEN_HAKU);
+        ApplicationSystem applicationSystem = new ApplicationSystemBuilder().addId("1")
+                .addForm(new Form("", ElementUtil.createI18NAsIs("")))
+                .addName(ElementUtil.createI18NAsIs(""))
+                .addApplicationPeriods(applicationPeriods)
+                .addApplicationSystemType(Yhteishaku2013.VARSINAINEN_HAKU)
+                .addName(ElementUtil.createI18NAsIs("")).get();
         assertFalse(applicationSystem.isActive());
     }
 
@@ -47,8 +51,12 @@ public class ApplicationSystemTest {
         instance.roll(Calendar.YEAR, 1);
         Date end = new Date(instance.getTimeInMillis());
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
-        ApplicationSystem applicationSystem = new ApplicationSystem("1", new Form("", ElementUtil.createI18NAsIs("")),
-                ElementUtil.createI18NAsIs(""), applicationPeriods, Yhteishaku2013.VARSINAINEN_HAKU);
+        ApplicationSystem applicationSystem = new ApplicationSystemBuilder().addId("1")
+                .addForm(new Form("", ElementUtil.createI18NAsIs("")))
+                .addName(ElementUtil.createI18NAsIs(""))
+                .addApplicationPeriods(applicationPeriods)
+                .addApplicationSystemType(Yhteishaku2013.VARSINAINEN_HAKU)
+                .addName(ElementUtil.createI18NAsIs("")).get();
         assertTrue(applicationSystem.isActive());
     }
 }

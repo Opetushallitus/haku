@@ -37,10 +37,13 @@ public class ApplicationSystem implements Serializable {
     private I18nText name;
     private List<ApplicationPeriod> applicationPeriods;
     private String applicationSystemType;
+    private Integer hakukausiVuosi;
+    private String hakukausiUri;
 
     public ApplicationSystem(final String id, final Form form, final I18nText name,
                              final List<ApplicationPeriod> applicationPeriods,
-                             final String applicationSystemType) {
+                             final String applicationSystemType, Integer hakukausiVuosi,
+                             final String hakukausiUri) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(name);
         this.id = id;
@@ -49,7 +52,8 @@ public class ApplicationSystem implements Serializable {
         this.applicationPeriods = applicationPeriods != null ?
                 ImmutableList.copyOf(applicationPeriods) : Lists.<ApplicationPeriod>newArrayList();
         this.applicationSystemType = applicationSystemType;
-
+        this.hakukausiVuosi = hakukausiVuosi;
+        this.hakukausiUri = hakukausiUri;
     }
 
     @Transient
@@ -80,5 +84,13 @@ public class ApplicationSystem implements Serializable {
 
     public String getApplicationSystemType() {
         return applicationSystemType;
+    }
+
+    public Integer getHakukausiVuosi() {
+        return hakukausiVuosi;
+    }
+
+    public String getHakukausiUri() {
+        return hakukausiUri;
     }
 }

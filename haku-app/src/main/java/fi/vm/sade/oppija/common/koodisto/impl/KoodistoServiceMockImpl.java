@@ -53,6 +53,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Option> listOfNationalities;
     public final List<Option> listOfMunicipalities;
     public final List<Option> listOfGenders;
+    public final List<Option> listOfKausi;
     public final List<Code> listOfBaseEducationCodes;
     // koodisto uri -> codes
     public Map<String, List<Code>> codes = Maps.newHashMap();
@@ -151,6 +152,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                         new Option(createI18NAsIs("Mies"), "1"),
                         new Option(createI18NAsIs("Nainen"), "2"));
 
+        this.listOfKausi =
+                ImmutableList.of(
+                        new Option(createI18NAsIs("Kevät"), "K"),
+                        new Option(createI18NAsIs("Syksy"), "S"));
+
         this.listOfBaseEducationCodes = ImmutableList.of(
                 new Code(ULKOMAINEN_TUTKINTO, createI18NAsIs("Ulkomailla suoritettu koulutus")),
                 new Code(PERUSKOULU, createI18NAsIs("Perusopetuksen oppimäärä")),
@@ -229,6 +235,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getGenders() {
         return listOfGenders;
+    }
+
+    @Override
+    public List<Option> getHakukausi() {
+        return listOfKausi;
     }
 
     private static PostOffice createPostOffice(final String postCode, final String text) {

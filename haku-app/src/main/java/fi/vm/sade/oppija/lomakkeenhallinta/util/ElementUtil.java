@@ -22,6 +22,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
@@ -244,8 +245,11 @@ public final class ElementUtil {
         instance.roll(Calendar.YEAR, 2);
         Date end = new Date(instance.getTimeInMillis());
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
-        return new ApplicationSystem(id, form, ElementUtil.createI18NAsIs("test application period"),
-                applicationPeriods, Yhteishaku2013.VARSINAINEN_HAKU);
+        return new ApplicationSystemBuilder().addId(id).addForm(form)
+                .addName(ElementUtil.createI18NAsIs("test application period"))
+                .addApplicationPeriods(applicationPeriods)
+                .addApplicationSystemType(Yhteishaku2013.VARSINAINEN_HAKU)
+                .get();
     }
 
     public static String getPath(final ApplicationSystem applicationSystem, final String id) {

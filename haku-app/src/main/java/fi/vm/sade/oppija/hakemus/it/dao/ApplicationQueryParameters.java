@@ -80,4 +80,5 @@ public class ApplicationQueryParameters {
     public int getOrderDir() {
         return orderDir;
     }
+
 }

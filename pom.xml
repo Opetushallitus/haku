@@ -42,11 +42,11 @@
         <authentication-api.version>7.0-SNAPSHOT</authentication-api.version>
         <generic-common.version>${internal-dependencies.version}</generic-common.version>
         <koodisto-api.version>7.0-SNAPSHOT</koodisto-api.version>
-        <koulutusinformaatio-api.version>7.0-SNAPSHOT</koulutusinformaatio-api.version>
+        <koulutusinformaatio-api.version>${internal-dependencies.version}</koulutusinformaatio-api.version>
         <log-client.version>7.0-SNAPSHOT</log-client.version>
         <organisaatio-api.version>7.0-SNAPSHOT</organisaatio-api.version>
         <organisaatio-solr-client.version>7.0-SNAPSHOT</organisaatio-solr-client.version>
-        <tarjonta-api.version>7.0-SNAPSHOT</tarjonta-api.version>
+        <tarjonta-api.version>${internal-dependencies.version}</tarjonta-api.version>
         <webapp-portal-decorator.version>${internal-dependencies.version}</webapp-portal-decorator.version>
     </properties>
 
