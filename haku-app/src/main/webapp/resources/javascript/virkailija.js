@@ -104,6 +104,8 @@ $(document).ready(function () {
                 addParameter(obj, 'aoid', '#application-preference');
                 addParameter(obj, 'lopoid', '#lopoid');
                 addParameter(obj, 'asId', '#application-system');
+                addParameter(obj, 'asYear', '#hakukausiVuosi');
+                addParameter(obj, 'asSemester', '#hakukausi');
                 obj['start'] = start;
                 obj['rows'] = maxRows;
                 $.cookie(cookieName, obj);

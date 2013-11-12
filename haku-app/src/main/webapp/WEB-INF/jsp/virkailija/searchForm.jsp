@@ -39,12 +39,12 @@
                         <label for="hakukausi"><fmt:message key="virkailija.hakemus.hakukausi"/></label>
                         <div class="field-search-containerbox">
                             <select id="hakukausi">
-                                <option id="hakukausi_empty">&nbsp;</option>
+                                <option value="">&nbsp;</option>
                                 <c:forEach var="option" items="${it.hakukausiOptions}">
-                                    <option id="hakukausi_${option.value}"><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
+                                    <option value="${option.value}" ><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
                                 </c:forEach>
                             </select>
-                            <input type="text" id="hakukausiVuosi" name="hakukausiVuosi"  class="search width-60" placeholder=""/>
+                            <input type="text" id="hakukausiVuosi" name="hakukausiVuosi" placeholder=""/>
                         </div>
                     </td>
                     <td>

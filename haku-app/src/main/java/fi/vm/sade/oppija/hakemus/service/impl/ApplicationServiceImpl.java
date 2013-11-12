@@ -36,6 +36,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.service.UserHolder;
 import fi.vm.sade.oppija.lomake.util.ElementTree;
@@ -77,6 +78,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
     private final HakuPermissionService hakuPermissionService;
+    private final ApplicationSystemService applicationSystemService;
     private final ElementTreeValidator elementTreeValidator;
 
     @Autowired
@@ -87,6 +89,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   AuthenticationService authenticationService,
                                   OrganizationService organizationService,
                                   HakuPermissionService hakuPermissionService,
+                                  ApplicationSystemService applicationSystemService,
                                   ElementTreeValidator elementTreeValidator) {
 
         this.applicationDAO = applicationDAO;
@@ -96,6 +99,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.authenticationService = authenticationService;
         this.organizationService = organizationService;
         this.hakuPermissionService = hakuPermissionService;
+        this.applicationSystemService = applicationSystemService;
         this.elementTreeValidator = elementTreeValidator;
 
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);

@@ -21,6 +21,7 @@ import fi.vm.sade.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +31,12 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * API for accessing applications.
@@ -48,6 +52,9 @@ public class ApplicationResource {
     @Autowired
     private ApplicationService applicationService;
 
+    @Autowired
+    private ApplicationSystemService applicationSystemService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
     private static final String OID = "oid";
 
@@ -55,8 +62,9 @@ public class ApplicationResource {
     }
 
     @Autowired
-    public ApplicationResource(ApplicationService applicationService) {
+    public ApplicationResource(ApplicationService applicationService, ApplicationSystemService applicationSystemService) {
         this.applicationService = applicationService;
+        this.applicationSystemService = applicationSystemService;
     }
 
     @GET
@@ -80,14 +88,27 @@ public class ApplicationResource {
                                                        @QueryParam("aoid") String aoid,
                                                        @QueryParam("lopoid") String lopoid,
                                                        @QueryParam("asId") String asId,
+                                                       @QueryParam("asSemester") String asSemester,
+                                                       @QueryParam("asYear") String asYear,
                                                        @QueryParam("aoOid") String aoOid,
                                                        @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @DefaultValue(value = "100") @QueryParam("rows") int rows) {
-        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}",
-                query, state, aoid, lopoid, asId, aoOid, start, rows);
+        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}, " +
+                "asSemester: {}, asYear: {}",
+                query, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear);
 
+        List<String> asIds = new ArrayList<String>();
+        if (isNotEmpty(asId)) {
+            asIds.add(asId);
+        }
+        if (isNotEmpty(asSemester) || isNotEmpty(asYear)) {
+            asIds.addAll(applicationSystemService.findByYearAndSemester(asSemester, asYear));
+        }
+        for (String s : asIds) {
+            LOGGER.debug("asId: {}", s);
+        }
         return applicationService.findApplications(
-                query, new ApplicationQueryParameters(state, aoid, lopoid, asId, aoOid, start, rows, "fullName", 1));
+                query, new ApplicationQueryParameters(state, asIds, aoid, lopoid, aoOid, start, rows, "fullName", 1));
     }
 
     @GET
@@ -101,15 +122,28 @@ public class ApplicationResource {
                                                        @QueryParam("aoid") String aoid,
                                                        @QueryParam("lopoid") String lopoid,
                                                        @QueryParam("asId") String asId,
+                                                       @QueryParam("asSemester") String asSemester,
+                                                       @QueryParam("asYear") String asYear,
                                                        @QueryParam("aoOid") String aoOid,
                                                        @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @DefaultValue(value = "100") @QueryParam("rows") int rows) {
         LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}, " +
-                "orderBy: {}, orderDir: {}",
-                query, state, aoid, lopoid, asId, aoOid, start, rows, orderBy, orderDir);
+                "asSemester: {}, asYear: {}",
+                query, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear);
 
         int realOrderDir = "desc".equals(orderDir) ? -1 : 1;
-        return applicationService.findApplications(query, new ApplicationQueryParameters(state, aoid, lopoid, asId,
+
+        List<String> asIds = new ArrayList<String>();
+        if (isNotEmpty(asId)) {
+            asIds.add(asId);
+        }
+        if (isNotEmpty(asSemester) || isNotEmpty(asYear)) {
+            asIds.addAll(applicationSystemService.findByYearAndSemester(asSemester, asYear));
+        }
+        for (String s : asIds) {
+            LOGGER.debug("asId: {}", s);
+        }
+        return applicationService.findApplications(query, new ApplicationQueryParameters(state, asIds, aoid, lopoid,
                 aoOid, start, rows, orderBy, realOrderDir));
     }
 

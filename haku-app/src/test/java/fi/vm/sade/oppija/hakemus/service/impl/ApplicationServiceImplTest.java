@@ -11,6 +11,7 @@ import fi.vm.sade.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidatorFactory;
@@ -64,11 +65,12 @@ public class ApplicationServiceImplTest {
     Map<String, String> answerMap;
     private ApplicationQueryParameters applicationQueryParameters;
     private ApplicationServiceImpl service;
+    private ApplicationSystemService applicationSystemService;
     private ElementTreeValidator elementTreeValidator;
 
     @Before
     public void setUp() {
-        applicationQueryParameters = new ApplicationQueryParameters(null, "", "", "", "", 0, Integer.MAX_VALUE, "fullName", 1);
+        applicationQueryParameters = new ApplicationQueryParameters(null, null, "", "", "", 0, Integer.MAX_VALUE, "fullName", 1);
         application = new Application();
         Map<String, String> answers = new HashMap<String, String>();
         answers.put("avain", "arvo");
@@ -79,6 +81,7 @@ public class ApplicationServiceImplTest {
         authenticationService = mock(AuthenticationService.class);
         organizationService = mock(OrganizationService.class);
         hakuPermissionService = mock(HakuPermissionService.class);
+        applicationSystemService = mock(ApplicationSystemService.class);
         ValidatorFactory validatorFactory = mock(ValidatorFactory.class);
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
 
@@ -94,7 +97,7 @@ public class ApplicationServiceImplTest {
         when(hakuPermissionService.userCanReadApplication(any(Application.class))).thenReturn(true);
 
         service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService, organizationService,
-                hakuPermissionService, elementTreeValidator);
+                hakuPermissionService, applicationSystemService, elementTreeValidator);
 
         answerMap = new HashMap<String, String>();
         answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_NAMES, "Etunimi");

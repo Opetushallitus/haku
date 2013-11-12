@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Document
-public class ApplicationSystem implements Serializable {
+public class  ApplicationSystem implements Serializable {
 
     private static final long serialVersionUID = 709005625385191180L;
     @Id

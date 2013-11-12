@@ -24,6 +24,7 @@ import fi.vm.sade.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.oppija.lomake.domain.User;
 import fi.vm.sade.oppija.lomake.exception.ResourceNotFoundException;
+import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.convert.ConversionService;
@@ -46,6 +47,7 @@ import static org.mockito.Mockito.*;
 public class ApplicationResourceTest {
 
     private ApplicationService applicationService;
+    private ApplicationSystemService applicationSystemService;
     private ApplicationResource applicationResource;
     private Application application;
     private ConversionService conversionService;
@@ -58,6 +60,7 @@ public class ApplicationResourceTest {
     @Before
     public void setUp() {
         this.applicationService = mock(ApplicationService.class);
+        this.applicationSystemService = mock(ApplicationSystemService.class);
         this.conversionService = mock(ConversionService.class);
 
 
@@ -88,18 +91,19 @@ public class ApplicationResourceTest {
         when(applicationService.getApplicationsByApplicationOption(anyList())).thenReturn(applications);
         when(applicationService.findApplications(eq(OID), any(ApplicationQueryParameters.class))).thenReturn(searchResultDTO);
         when(applicationService.findApplications(eq(INVALID_OID), any(ApplicationQueryParameters.class))).thenReturn(emptySearchResultDTO);
-        this.applicationResource = new ApplicationResource(this.applicationService);
+        when(applicationSystemService.findByYearAndSemester(any(String.class), any(String.class))).thenReturn(new ArrayList<String>());
+        this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService);
     }
 
     @Test
     public void testFindApplications() {
-        ApplicationSearchResultDTO applications = this.applicationResource.findApplications(OID, null, "", null, null, null, 0, Integer.MAX_VALUE);
+        ApplicationSearchResultDTO applications = this.applicationResource.findApplications(OID, null, "", null, null, null, null, null, 0, Integer.MAX_VALUE);
         assertEquals(1, applications.getResults().size());
     }
 
     @Test
     public void testFindApplicationsNoMatch() {
-        ApplicationSearchResultDTO applications = this.applicationResource.findApplications(INVALID_OID, null, "", null, null, null, 0, Integer.MAX_VALUE);
+        ApplicationSearchResultDTO applications = this.applicationResource.findApplications(INVALID_OID, null, "", null, null, null, null, null, 0, Integer.MAX_VALUE);
         assertEquals(0, applications.getTotalCount());
     }
 

@@ -32,7 +32,10 @@ public class FormGeneratorImpl implements FormGenerator {
             Form form = Yhteishaku2013.generateForm(as, koodistoService);
             asList.add(new ApplicationSystemBuilder().addId(as.getId()).addForm(form)
                     .addName(as.getName()).addApplicationPeriods(as.getApplicationPeriods())
-                    .addApplicationSystemType(as.getApplicationSystemType()).get());
+                    .addApplicationSystemType(as.getApplicationSystemType())
+                    .addHakukausiUri(as.getHakukausiUri())
+                    .addHakukausiVuosi(as.getHakukausiVuosi())
+                    .get());
         }
         return asList;
     }

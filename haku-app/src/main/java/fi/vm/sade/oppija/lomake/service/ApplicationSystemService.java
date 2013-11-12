@@ -10,4 +10,6 @@ public interface ApplicationSystemService {
     void save(final ApplicationSystem applicationSystem);
 
     List<ApplicationSystem> getAllApplicationSystems(final String... includeFields);
+
+    List<String> findByYearAndSemester(String asSemester, String asYear);
 }

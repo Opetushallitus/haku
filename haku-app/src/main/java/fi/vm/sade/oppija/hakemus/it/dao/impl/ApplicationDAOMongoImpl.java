@@ -209,11 +209,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters applicationQueryParameters) {
+        LOG.debug("Gonna find me some applications with mongo");
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         StringTokenizer st = new StringTokenizer(term, " ");
         ArrayList<DBObject> queries = new ArrayList<DBObject>();
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
+            LOG.debug("Searching with token: '{}'", token);
             if (OID_PATTERN.matcher(token).matches()) {
                 if (token.indexOf('.') > -1) { // Long form
                     if (token.startsWith(applicationOidPrefix)) {
@@ -241,6 +243,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             }
         }
 
+        LOG.debug("I haz {} queries!", queries.size());
         QueryBuilder baseQuery = queries.size() > 0 ? QueryBuilder.start().and(queries.toArray(new DBObject[queries.size()])) : QueryBuilder.start();
         DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
         return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows(),
@@ -342,6 +345,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         LOG.debug("Ordering: {}, {}", orderBy, orderDir);
         final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject(orderBy, orderDir))
                 .skip(start).limit(rows);
+        LOG.debug("Matches: {}", dbCursor.count());
         return new ApplicationSearchResultDTO(dbCursor.count(), Lists.newArrayList(Iterables.transform(dbCursor, dbObjectToSearchResultItem)));
     }
 
@@ -377,9 +381,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
         }
 
-        String asId = applicationQueryParameters.getAsId();
-        if (!isEmpty(asId)) {
-            filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId).get());
+        List<String> asIds = applicationQueryParameters.getAsIds();
+        if (!asIds.isEmpty()) {
+            filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(asIds).get());
         }
 
         filters.add(newOIdExistDBObject());

@@ -154,8 +154,8 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
         this.listOfKausi =
                 ImmutableList.of(
-                        new Option(createI18NAsIs("Kevät"), "K"),
-                        new Option(createI18NAsIs("Syksy"), "S"));
+                        new Option(createI18NAsIs("Kevät"), "kausi_k"),
+                        new Option(createI18NAsIs("Syksy"), "kausi_s"));
 
         this.listOfBaseEducationCodes = ImmutableList.of(
                 new Code(ULKOMAINEN_TUTKINTO, createI18NAsIs("Ulkomailla suoritettu koulutus")),
