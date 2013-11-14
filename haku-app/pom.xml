@@ -45,6 +45,10 @@
             <version>${tarjonta-api.version}</version>
             <exclusions>
                 <exclusion>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-bundle</artifactId>
+                </exclusion>
+                <exclusion>
                     <artifactId>cxf-rt-frontend-jaxrs</artifactId>
                     <groupId>org.apache.cxf</groupId>
                 </exclusion>
