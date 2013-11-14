@@ -394,24 +394,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private ArrayList<DBObject> filterByOrganization() {
 
         List<String> orgs = authenticationService.getOrganisaatioHenkilo();
-        LOG.debug("OrganisaatioHenkilo.count() == {} ", orgs.size());
-        if (LOG.isDebugEnabled()) {
-            for (String org : orgs) {
-                LOG.debug("Organization: {}", org);
-            }
-        }
         orgs = hakuPermissionService.userCanReadApplications(orgs);
-        if (LOG.isDebugEnabled()) {
-            for (String org : orgs) {
-                LOG.debug("Organization: {}", org);
-            }
-        }
 
         LOG.debug("OrganisaatioHenkilo.canRead().count() == {} ", orgs.size());
         ArrayList<DBObject> queries = new ArrayList<DBObject>(orgs.size());
 
         for (String org : orgs) {
-            LOG.info("filterByOrganization, org: " + org);
             Pattern orgPattern = Pattern.compile(org);
             queries.add(QueryBuilder.start().or(
                     QueryBuilder.start(FIELD_LOP_PARENTS_1).regex(orgPattern).get(),

@@ -84,6 +84,8 @@ $(document).ready(function () {
     var cookieName = 'hakemukset_last_search';
 
     var applicationSearch = (function () {
+        $.cookie.path = '/haku-app/virkailija';
+        $.cookie.json = true;
         var oid = $('#oid');
         var self = this,
             $tbody = $('#application-table tbody:first'),
@@ -92,11 +94,21 @@ $(document).ready(function () {
             maxRows = 50;
 
         function createQueryParameters(start) {
-            $.cookie.json = true;
             var lastSearch = $.cookie(cookieName);
+            $.cookie.path = '/haku-app/virkailija';
+            $.cookie.json = true;
             var obj = {};
             if (lastSearch && window.location.hash === '#useLast') {
                 obj = lastSearch;
+                $('#entry').val(obj.q);
+                $('#oid').val(obj.oid);
+                $('#application-state').val(obj.appState);
+                $('#application-preference').val(obj.aoid);
+                $('#lopoid').val(obj.lopoid);
+                $('#lop-title').text(obj.lopTitle);
+                $('#application-system').val(obj.asId);
+                $('#hakukausiVuosi').val(obj.asYear);
+                $('#hakukausi').val(obj.asSemester);
             } else {
                 addParameter(obj, 'q', '#entry');
                 addParameter(obj, 'oid', '#oid');
@@ -106,8 +118,13 @@ $(document).ready(function () {
                 addParameter(obj, 'asId', '#application-system');
                 addParameter(obj, 'asYear', '#hakukausiVuosi');
                 addParameter(obj, 'asSemester', '#hakukausi');
+                var lopTitle = $('#lop-title').text();
+                if (lopTitle) {
+                    obj['lopTitle'] = lopTitle;
+                }
                 obj['start'] = start;
                 obj['rows'] = maxRows;
+                $.removeCookie(cookieName);
                 $.cookie(cookieName, obj);
             }
             return obj;
@@ -154,6 +171,9 @@ $(document).ready(function () {
             $applicationTabLabel.empty().append('Hakemukset (' + count + ')');
         },
         this.reset = function () {
+            $.cookie.path = '/haku-app/virkailija';
+            $.cookie.json = true;
+            $.removeCookie(cookieName);
             $('#application-table thead tr td').removeAttr('class');
             self.updateCounters(0);
             $tbody.empty();
@@ -171,6 +191,8 @@ $(document).ready(function () {
 
     $('#search-applications').click(function (event) {
         window.location.hash = '';
+        $.cookie.path = '/haku-app/virkailija';
+        $.cookie.json = true;
         $.removeCookie(cookieName);
         applicationSearch.search(0, 'fullName', 'asc');
         return false;
@@ -256,7 +278,7 @@ $(document).ready(function () {
         $('#reset-organizations').click(function (event) {
             $('#lopoid').val('');
             $('#lop-title').empty();
-
+            applicationSearch.search(0, 'fullName', 'asc');
         });
         $('#search-organizations').click(function (event) {
             var parameters = $('#orgsearchform').serialize();
@@ -281,8 +303,8 @@ $(document).ready(function () {
                     $('#orgsearchlist').find('ul').eq(0).addClass("treelist").removeClass('branch');
                 }
             ).complete(function () {
-                    $('#search-organizations').removeAttr('disabled');
-                });
+                $('#search-organizations').removeAttr('disabled');
+            });
             return false;
         });
         function createListItem(leaf, org) {
@@ -304,6 +326,7 @@ $(document).ready(function () {
             label.click(function (e) {
                 $('#lopoid').val($(this).attr('id'));
                 $('#lop-title').text($(this).html());
+                applicationSearch.search(0, 'fullName', 'asc');
                 e.preventDefault();
             });
 
