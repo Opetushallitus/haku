@@ -22,14 +22,14 @@ import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.validation.validators.RequiredFieldValidator;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.FormGeneratorMock;
+import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.FormGeneratorMock;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
-import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NTextError;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -79,7 +79,7 @@ public class ElementTreeValidatorTest {
     @Test()
     public void testValidateRequiredElement() throws Exception {
         textQuestion.setValidator
-                (new RequiredFieldValidator("id", createI18NTextError("Error message")));
+                (new RequiredFieldValidator("id", createI18NText("Error message", "form_errors_yhteishaku_syksy")));
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(textQuestion, new HashMap<String, String>(),
                 null, null));
         assertTrue(validationResult.hasErrors());

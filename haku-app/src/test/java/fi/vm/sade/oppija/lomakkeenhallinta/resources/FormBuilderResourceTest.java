@@ -8,7 +8,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomakkeenhallinta.FormGenerator;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class FormBuilderResourceTest {
         applicationSystemService = mock(ApplicationSystemService.class);
         I18nText test = ElementUtil.createI18NAsIs("test");
         ApplicationSystem applicationSystem = new ApplicationSystemBuilder().addId("1")
-                .addForm(new Form("", test)).addName(test).addApplicationSystemType(Yhteishaku2013.VARSINAINEN_HAKU).get();
+                .addForm(new Form("", test)).addName(test).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU).get();
         when(formGenerator.generate()).thenReturn(ImmutableList.of(applicationSystem));
         formBuilderResource = new FormBuilderResource(formGenerator, applicationSystemService);
     }

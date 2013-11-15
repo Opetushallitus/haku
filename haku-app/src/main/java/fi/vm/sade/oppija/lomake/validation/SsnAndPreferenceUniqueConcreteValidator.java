@@ -62,7 +62,7 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
             Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
             if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumberAndAo(asId, ssn, aoId)) {
                 ValidationResult result = new ValidationResult(elementId,
-                        ElementUtil.createI18NTextError("henkilotiedot.hetuKaytetty"));
+                        ElementUtil.createI18NText("henkilotiedot.hetuKaytetty", "form_messages_yhteishaku_kevat"));
                 return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
             }
         }

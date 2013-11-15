@@ -6,7 +6,10 @@ import fi.vm.sade.oppija.common.tarjonta.HakuService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.LisahakuSyksy;
+import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.YhteishakuKevat;
+import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.YhteishakuSyksy;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +32,19 @@ public class FormGeneratorImpl implements FormGenerator {
         List<ApplicationSystem> applicationSystems = hakuService.getApplicationSystems();
         List<ApplicationSystem> asList = Lists.newArrayList();
         for (ApplicationSystem as : applicationSystems) {
-            Form form = Yhteishaku2013.generateForm(as, koodistoService);
+            Form form = null;
+            if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
+                form = LisahakuSyksy.generateForm(as, koodistoService);
+            } else {
+                if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
+                    form = YhteishakuSyksy.generateForm(as, koodistoService);
+                } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
+                    form = YhteishakuKevat.generateForm(as, koodistoService);
+                } else {
+                    //skip
+                    continue;
+                }
+            }
             asList.add(new ApplicationSystemBuilder().addId(as.getId()).addForm(form)
                     .addName(as.getName()).addApplicationPeriods(as.getApplicationPeriods())
                     .addApplicationSystemType(as.getApplicationSystemType())

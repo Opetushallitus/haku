@@ -54,7 +54,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     }
 
     public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId) {
-        super(socialSecurityNumberId, ElementUtil.createI18NTextError(GENERIC_ERROR_MESSAGE));
+        super(socialSecurityNumberId, ElementUtil.createI18NText(GENERIC_ERROR_MESSAGE, "form_errors_yhteishaku_kevat"));
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
         fmt = new SimpleDateFormat("ddMMyyyy");
         fmt.setLenient(false);
@@ -68,7 +68,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
             Matcher matcher = socialSecurityNumberPattern.matcher(socialSecurityNumber);
             if (!matcher.matches()) {
                 validationResult = new ValidationResult(fieldName,
-                        ElementUtil.createI18NTextError(GENERIC_ERROR_MESSAGE));
+                        ElementUtil.createI18NText(GENERIC_ERROR_MESSAGE, "form_errors_yhteishaku_kevat"));
             }
             if (!validationResult.hasErrors()) {
                 validationResult = checkDOB(socialSecurityNumber);
@@ -88,7 +88,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
         int ssnNumber = Integer.valueOf(dob + id);
         String myCheck = checks[ssnNumber % 31]; // NOSONAR
         if (!check.equalsIgnoreCase(myCheck)) {
-            result = new ValidationResult(getFieldName(), ElementUtil.createI18NTextError(GENERIC_ERROR_MESSAGE));
+            result = new ValidationResult(getFieldName(), ElementUtil.createI18NText(GENERIC_ERROR_MESSAGE, "form_errors_yhteishaku_kevat"));
         }
         return result;
     }
@@ -108,10 +108,12 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
         try {
             dob = fmt.parse(dayAndMonth + year);
         } catch (ParseException e) {
-            result = new ValidationResult(fieldName, ElementUtil.createI18NTextError(NOT_A_DATE_ERROR));
+            result = new ValidationResult(fieldName, ElementUtil.createI18NText(NOT_A_DATE_ERROR,
+                    "form_errors_yhteishaku_kevat"));
         }
         if (dob != null && dob.after(new Date())) {
-            result = new ValidationResult(fieldName, ElementUtil.createI18NTextError(DOB_IN_FUTURE));
+            result = new ValidationResult(fieldName, ElementUtil.createI18NText(DOB_IN_FUTURE,
+                    "form_errors_yhteishaku_kevat"));
         }
         return result;
     }

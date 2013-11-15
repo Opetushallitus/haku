@@ -41,8 +41,10 @@ public class SinglePreference extends Titled {
         this.educationLabel = educationLabel;
         this.learningInstitutionLabel = learningInstitutionLabel;
         this.childLONameListLabel = childLONameListLabel;
-        setValidator(new RequiredFieldValidator(getId() + "-Opetuspiste", ElementUtil.createI18NTextError("yleinen.pakollinen")));
-        setValidator(new RequiredFieldValidator(getId() + "-Koulutus", ElementUtil.createI18NTextError("yleinen.pakollinen")));
+        setValidator(new RequiredFieldValidator(getId() + "-Opetuspiste", ElementUtil.createI18NText("yleinen.pakollinen",
+                "form_errors_yhteishaku_kevat")));
+        setValidator(new RequiredFieldValidator(getId() + "-Koulutus", ElementUtil.createI18NText("yleinen.pakollinen",
+                "form_errors_yhteishaku_kevat")));
     }
 
     public I18nText getEducationLabel() {

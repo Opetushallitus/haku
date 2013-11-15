@@ -61,7 +61,7 @@ public class PostalCodeIT extends AbstractSeleniumBase {
         postOffices.put(POSTCODE, new PostOffice(POSTCODE, ElementUtil.createI18NAsIs(POST_OFFICE)));
         PostalCode postinumero = new PostalCode(POSTCODE_ID, createI18NAsIs(POSTCODE_ID), postOffices);
         postinumero.addAttribute("size", "5");
-        addRequiredValidator(postinumero);
+        addRequiredValidator(postinumero, "form_errors_yhteishaku_syksy");
         postinumero.addAttribute("pattern", "[0-9]{5}");
         postinumero.addAttribute("title", "#####");
         postinumero.addAttribute("maxlength", "5");

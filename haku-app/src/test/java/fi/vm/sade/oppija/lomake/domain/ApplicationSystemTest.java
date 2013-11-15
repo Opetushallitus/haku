@@ -19,7 +19,7 @@ package fi.vm.sade.oppija.lomake.domain;
 import com.google.common.collect.Lists;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.oppija.lomakkeenhallinta.yhteishaku2013.Yhteishaku2013;
+import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -39,7 +39,7 @@ public class ApplicationSystemTest {
                 .addForm(new Form("", ElementUtil.createI18NAsIs("")))
                 .addName(ElementUtil.createI18NAsIs(""))
                 .addApplicationPeriods(applicationPeriods)
-                .addApplicationSystemType(Yhteishaku2013.VARSINAINEN_HAKU)
+                .addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
                 .addName(ElementUtil.createI18NAsIs("")).get();
         assertFalse(applicationSystem.isActive());
     }
@@ -55,7 +55,7 @@ public class ApplicationSystemTest {
                 .addForm(new Form("", ElementUtil.createI18NAsIs("")))
                 .addName(ElementUtil.createI18NAsIs(""))
                 .addApplicationPeriods(applicationPeriods)
-                .addApplicationSystemType(Yhteishaku2013.VARSINAINEN_HAKU)
+                .addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
                 .addName(ElementUtil.createI18NAsIs("")).get();
         assertTrue(applicationSystem.isActive());
     }

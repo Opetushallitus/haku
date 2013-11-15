@@ -109,7 +109,8 @@ public abstract class OptionQuestion extends Question {
             values.add(option.getValue());
         }
 
-        listOfValidator.add(new ValueSetValidator(this.getId(), ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), values));
+        listOfValidator.add(new ValueSetValidator(this.getId(), ElementUtil.createI18NText("yleinen.virheellinenArvo",
+                "form_messages_yhteishaku_kevat"), values));
         return listOfValidator;
     }
 }

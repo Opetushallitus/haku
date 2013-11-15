@@ -46,17 +46,17 @@ public class SocialSecurityNumberIT extends AbstractSeleniumBase {
         TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", createI18NAsIs("Henkilotunnus"));
         henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
         henkilötunnus.addAttribute("title", "ppkkvv*****");
-        addRequiredValidator(henkilötunnus);
-        henkilötunnus.setValidator(createRegexValidator(henkilötunnus.getId(), "[0-9]{6}.[0-9]{4}"));
+        addRequiredValidator(henkilötunnus, "form_errors_yhteishaku_syksy");
+        henkilötunnus.setValidator(createRegexValidator(henkilötunnus.getId(), "[0-9]{6}.[0-9]{4}", "form_errors_yhteishaku_syksy"));
         henkilötunnus.addAttribute("size", "11");
         henkilötunnus.addAttribute("maxlength", "11");
         henkilötunnus.setHelp(createI18NAsIs("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi"));
         henkilötunnus.setInline(true);
 
         Radio sukupuoli = new Radio("Sukupuoli", createI18NAsIs("Sukupuoli"));
-        sukupuoli.addOption(createI18NForm("form.henkilotiedot.sukupuoli.mies"), "1");
-        sukupuoli.addOption(createI18NForm("form.henkilotiedot.sukupuoli.nainen"), "2");
-        addRequiredValidator(sukupuoli);
+        sukupuoli.addOption(createI18NText("form.henkilotiedot.sukupuoli.mies", "form_messages_yhteishaku_syksy"), "1");
+        sukupuoli.addOption(createI18NText("form.henkilotiedot.sukupuoli.nainen", "form_messages_yhteishaku_syksy"), "2");
+        addRequiredValidator(sukupuoli, "form_errors_yhteishaku_syksy");
         sukupuoli.setInline(true);
 
         SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NAsIs("Henkilötunnus"),

@@ -97,8 +97,10 @@ public class PreferenceRow extends Question {
     @Override
     public void addAttribute(final String key, final String value) {
         if ("required".equals(key)) {
-            setValidator(new RequiredFieldValidator(learningInstitutionInputId, ElementUtil.createI18NTextError("yleinen.pakollinen")));
-            setValidator(new RequiredFieldValidator(educationInputId, ElementUtil.createI18NTextError("yleinen.pakollinen")));
+            setValidator(new RequiredFieldValidator(learningInstitutionInputId, ElementUtil.createI18NText("yleinen.pakollinen",
+                    "form_errors_yhteishaku_kevat")));
+            setValidator(new RequiredFieldValidator(educationInputId, ElementUtil.createI18NText("yleinen.pakollinen",
+                    "form_errors_yhteishaku_kevat")));
         } else {
             super.addAttribute(key, value);
         }

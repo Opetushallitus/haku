@@ -54,15 +54,15 @@ public class PreferenceTableValidator implements Validator {
 
             if (!checkBothNullOrTyped(learningInstitution, education)) {
                 errors.put(education == null || education.isEmpty() ? educationInputId : learningInstitutionInputId,
-                        ElementUtil.createI18NTextError("yleinen.pakollinen"));
+                        ElementUtil.createI18NText("yleinen.pakollinen", "form_errors_yhteishaku_kevat"));
             }
 
             if (!checkUnique(learningInstitutions, educations, learningInstitution, education)) {
-                errors.put(educationInputId, ElementUtil.createI18NTextError("hakutoiveet.duplikaatteja"));
+                errors.put(educationInputId, ElementUtil.createI18NText("hakutoiveet.duplikaatteja", "form_errors_yhteishaku_kevat"));
             }
 
             if (!checkEmptyRowBeforeGivenPreference(educations, education)) {
-                errors.put(educationInputIds.get(i - 1), ElementUtil.createI18NTextError("hakutoiveet.tyhjia"));
+                errors.put(educationInputIds.get(i - 1), ElementUtil.createI18NText("hakutoiveet.tyhjia", "form_errors_yhteishaku_kevat"));
             }
 
             learningInstitutions.add(learningInstitution);

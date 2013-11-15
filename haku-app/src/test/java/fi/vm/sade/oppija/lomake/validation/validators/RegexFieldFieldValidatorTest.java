@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Map;
 
-import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NTextError;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -20,7 +20,7 @@ public class RegexFieldFieldValidatorTest {
     private static final String FIELD_NAME = "name";
 
     private final RegexFieldValidator regexFieldFieldValidator = new RegexFieldValidator(FIELD_NAME,
-            createI18NTextError("yleinen.virheellinenArvo"), ElementUtil.ISO88591_NAME_REGEX);
+            createI18NText("yleinen.virheellinenArvo", "form_errors_yhteishaku_syksy"), ElementUtil.ISO88591_NAME_REGEX);
 
     private final List<String> listOfValidNames = ImmutableList.of(
             "",
@@ -49,7 +49,8 @@ public class RegexFieldFieldValidatorTest {
     @Test
     public void validateValid() throws Exception {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, "test");
-        RegexFieldValidator test = new RegexFieldValidator(FIELD_NAME, ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "test");
+        RegexFieldValidator test = new RegexFieldValidator(FIELD_NAME, ElementUtil.createI18NText("yleinen.virheellinenArvo",
+                "form_errors_yhteishaku_syksy"), "test");
         ValidationResult validationResult = test.validate(new ValidationInput(null, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
@@ -57,7 +58,8 @@ public class RegexFieldFieldValidatorTest {
     @Test
     public void validateInvalid() throws Exception {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, "test2");
-        RegexFieldValidator test = new RegexFieldValidator(FIELD_NAME, ElementUtil.createI18NTextError("yleinen.virheellinenArvo"), "test");
+        RegexFieldValidator test = new RegexFieldValidator(FIELD_NAME, ElementUtil.createI18NText("yleinen.virheellinenArvo",
+                "form_errors_yhteishaku_syksy"), "test");
         ValidationResult validationResult = test.validate(new ValidationInput(null, values, null, null));
         assertTrue(validationResult.hasErrors());
     }

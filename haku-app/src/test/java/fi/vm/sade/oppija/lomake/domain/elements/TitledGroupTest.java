@@ -30,7 +30,7 @@ public class TitledGroupTest {
 
     @Before
     public void setUp() throws Exception {
-        titledGroup = new TitledGroup(ID, ElementUtil.createI18NForm(TITLE));
+        titledGroup = new TitledGroup(ID, ElementUtil.createI18NText(TITLE, "form_messages_yhteishaku_syksy"));
     }
 
     @Test

@@ -25,13 +25,13 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NTextError;
+import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class RegexFieldValidatorTest {
 
-    public static final I18nText ERROR_MESSAGE = createI18NTextError("kenttä on virheellinen");
+    public static final I18nText ERROR_MESSAGE = createI18NText("kenttä on virheellinen", "form_errors_yhteishaku_syksy");
     public static final String FIELD_NAME = "kenttä";
     public static final String PATTERN = "[A-Za-z]{3}";
     public static final String PATTERN_WORK_EXPERIENCE = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$"; // 0-1000

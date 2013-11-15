@@ -150,7 +150,7 @@ public class FormControllerTest {
     @Test
     public void testSaveCategoryInvalid() throws Exception {
         HashMap<String, I18nText> errorMessages = new HashMap<String, I18nText>();
-        errorMessages.put("", ElementUtil.createI18NForm(""));
+        errorMessages.put("", ElementUtil.createI18NText("", "form_messages_yhteishaku_syksy"));
         applicationState.addError(errorMessages);
         Viewable viewable = (Viewable) formController.savePhase(APPLICATION_SYSTEM_ID, FIRST_CATEGORY_ID, new MultivaluedMapImpl()).getEntity();
         assertEquals(FormController.ROOT_VIEW, viewable.getTemplateName());

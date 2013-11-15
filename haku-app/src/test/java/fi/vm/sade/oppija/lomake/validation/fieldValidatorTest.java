@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 public class fieldValidatorTest {
 
     public static final String FIELD_NAME = "field_name";
-    public static final I18nText ERROR_MESSAGE = ElementUtil.createI18NTextError("error_message");
+    public static final I18nText ERROR_MESSAGE = ElementUtil.createI18NText("error_message", "form_errors_yhteishaku_syksy");
 
     @Test
     public void testFieldNameConstructor() throws Exception {
