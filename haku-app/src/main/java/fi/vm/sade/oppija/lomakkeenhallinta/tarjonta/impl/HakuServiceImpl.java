@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.common.tarjonta.impl;
+package fi.vm.sade.oppija.lomakkeenhallinta.tarjonta.impl;
 
 import com.google.common.collect.Lists;
 import com.sun.jersey.api.client.Client;
@@ -22,8 +22,8 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import fi.vm.sade.oppija.common.tarjonta.HakuService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.oppija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;

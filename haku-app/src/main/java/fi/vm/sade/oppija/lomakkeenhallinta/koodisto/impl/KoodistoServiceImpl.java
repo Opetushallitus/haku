@@ -14,17 +14,17 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.common.koodisto.impl;
+package fi.vm.sade.oppija.lomakkeenhallinta.koodisto.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.koodisto.util.KoodistoClient;
-import fi.vm.sade.oppija.common.koodisto.KoodistoService;
-import fi.vm.sade.oppija.common.koodisto.domain.Code;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.domain.Code;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

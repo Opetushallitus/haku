@@ -17,7 +17,6 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot;
 
 import com.google.common.collect.ImmutableMap;
-import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
@@ -28,6 +27,7 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 

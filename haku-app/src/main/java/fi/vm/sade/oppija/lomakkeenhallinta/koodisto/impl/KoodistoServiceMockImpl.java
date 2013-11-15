@@ -14,15 +14,15 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.common.koodisto.impl;
+package fi.vm.sade.oppija.lomakkeenhallinta.koodisto.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import fi.vm.sade.oppija.common.koodisto.KoodistoService;
-import fi.vm.sade.oppija.common.koodisto.domain.Code;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

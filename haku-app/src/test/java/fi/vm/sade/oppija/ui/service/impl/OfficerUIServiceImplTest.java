@@ -2,7 +2,6 @@ package fi.vm.sade.oppija.ui.service.impl;
 
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.oppija.common.authentication.AuthenticationService;
-import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.oppija.hakemus.domain.Application;
 import fi.vm.sade.oppija.hakemus.domain.ApplicationPhase;
@@ -14,6 +13,7 @@ import fi.vm.sade.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.oppija.lomake.service.FormService;
 import fi.vm.sade.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.oppija.lomake.validation.ValidatorFactory;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.ui.HakuPermissionService;
 import fi.vm.sade.oppija.ui.service.UIServiceResponse;

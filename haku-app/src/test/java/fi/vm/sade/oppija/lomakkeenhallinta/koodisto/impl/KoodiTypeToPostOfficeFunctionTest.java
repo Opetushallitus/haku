@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.common.koodisto.impl;
+package fi.vm.sade.oppija.lomakkeenhallinta.koodisto.impl;
 
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;

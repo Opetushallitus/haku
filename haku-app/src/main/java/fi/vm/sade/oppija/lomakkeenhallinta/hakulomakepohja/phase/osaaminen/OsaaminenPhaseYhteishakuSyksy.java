@@ -16,8 +16,8 @@
 
 package fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
-import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.KoodistoService;
 
 import static fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 

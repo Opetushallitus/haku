@@ -14,12 +14,12 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.common.koodisto;
+package fi.vm.sade.oppija.lomakkeenhallinta.koodisto;
 
-import fi.vm.sade.oppija.common.koodisto.domain.Code;
 import fi.vm.sade.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.domain.Code;
 
 import java.util.List;
 

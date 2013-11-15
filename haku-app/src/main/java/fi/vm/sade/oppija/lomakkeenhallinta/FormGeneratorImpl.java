@@ -1,14 +1,14 @@
 package fi.vm.sade.oppija.lomakkeenhallinta;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.oppija.common.koodisto.KoodistoService;
-import fi.vm.sade.oppija.common.tarjonta.HakuService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.LisahakuSyksy;
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.YhteishakuKevat;
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.YhteishakuSyksy;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.oppija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

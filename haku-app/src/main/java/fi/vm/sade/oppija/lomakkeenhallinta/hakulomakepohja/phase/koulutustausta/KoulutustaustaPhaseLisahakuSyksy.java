@@ -18,8 +18,6 @@ package fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
-import fi.vm.sade.oppija.common.koodisto.KoodistoService;
-import fi.vm.sade.oppija.common.koodisto.domain.Code;
 import fi.vm.sade.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.oppija.lomake.domain.elements.Theme;
@@ -30,6 +28,8 @@ import fi.vm.sade.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.oppija.lomake.validation.validators.AlwaysFailsValidator;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.List;

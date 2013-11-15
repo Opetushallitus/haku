@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.common.koodisto.impl;
+package fi.vm.sade.oppija.lomakkeenhallinta.koodisto.impl;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.common.tarjonta;
+package fi.vm.sade.oppija.lomakkeenhallinta.tarjonta;
 
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 

@@ -16,7 +16,6 @@
 
 package fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja;
 
-import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhaseYhteishakuKevat;
@@ -24,6 +23,7 @@ import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.H
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhaseYhteishakuKevat;
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhaseYhteishakuKevat;
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseYhteishakuKevat;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.KoodistoService;
 
 import java.util.Date;
 

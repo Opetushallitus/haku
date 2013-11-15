@@ -13,37 +13,39 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-
-package fi.vm.sade.oppija.common.koodisto.impl;
+package fi.vm.sade.oppija.lomakkeenhallinta.koodisto.impl;
 
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-public class KoodiTypeToOptionFunctionTest {
-    private KoodiTypeToOptionFunction koodiTypeToOptionFunction;
+public class KoodiTypeToSubjectRowFunctionTest {
+
+
+    private KoodiTypeToSubjectRowFunction koodiTypeToSubjectRowFunction;
     private KoodiType koodiType;
 
     @Before
     public void setUp() throws Exception {
-        koodiTypeToOptionFunction = new KoodiTypeToOptionFunction();
+        koodiTypeToSubjectRowFunction = new KoodiTypeToSubjectRowFunction(null);
         this.koodiType = TestObjectCreator.createKoodiType(TestObjectCreator.KOODI_KOODI_URI_AND_ARVO);
+
+    }
+
+    @Test
+    public void testApplyId() throws Exception {
+        SubjectRow subjectRow = koodiTypeToSubjectRowFunction.apply(koodiType);
+        assertEquals(TestObjectCreator.KOODI_KOODI_URI_AND_ARVO, subjectRow.getId());
     }
 
     @Test
     public void testApplyText() throws Exception {
         koodiType.getMetadata().add(TestObjectCreator.createKoodiMetadataType());
-        Option option = koodiTypeToOptionFunction.apply(koodiType);
-        assertFalse(option.getI18nText().getTranslations().isEmpty());
-    }
-
-    @Test
-    public void testApplyValue() throws Exception {
-        Option option = koodiTypeToOptionFunction.apply(koodiType);
-        assertEquals(TestObjectCreator.KOODI_KOODI_URI_AND_ARVO, option.getValue());
+        SubjectRow subjectRow = koodiTypeToSubjectRowFunction.apply(koodiType);
+        assertFalse(subjectRow.getI18nText().getTranslations().isEmpty());
     }
 }

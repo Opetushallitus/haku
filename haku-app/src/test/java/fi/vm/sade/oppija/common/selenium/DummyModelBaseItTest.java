@@ -2,9 +2,9 @@ package fi.vm.sade.oppija.common.selenium;
 
 import com.google.common.base.Joiner;
 import com.thoughtworks.selenium.Selenium;
-import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.FormGeneratorMock;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.ui.selenium.DefaultValues;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;

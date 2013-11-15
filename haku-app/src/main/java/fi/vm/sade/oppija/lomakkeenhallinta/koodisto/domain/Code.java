@@ -14,18 +14,36 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.common.koodisto.impl;
+package fi.vm.sade.oppija.lomakkeenhallinta.koodisto.domain;
 
-import com.google.common.base.Function;
-import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 
-public class KoodiTypeToOptionFunction implements Function<KoodiType, Option> {
+/**
+ * @author Hannu Lyytikainen
+ */
+public class Code {
 
-    @Override
-    public Option apply(final KoodiType koodiType) {
-        return new Option(new I18nText(TranslationsUtil.createTranslationsMap(koodiType)), koodiType.getKoodiArvo());
+    private String value;
+    private I18nText metadata;
+
+    public Code(final String value, final I18nText metadata) {
+        this.value = value;
+        this.metadata = metadata;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public I18nText getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(I18nText metadata) {
+        this.metadata = metadata;
+    }
 }

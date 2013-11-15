@@ -1,16 +1,16 @@
 package fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
 import fi.vm.sade.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.gradegrid.*;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomake.validation.validators.UniqValuesValidator;
+import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.predicate.IdEndsWith;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.oppija.lomakkeenhallinta.util.function.ElementToId;
-import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.predicate.IdEndsWith;
 
 import java.util.List;
 

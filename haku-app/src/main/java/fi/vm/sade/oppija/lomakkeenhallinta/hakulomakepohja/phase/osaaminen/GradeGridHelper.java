@@ -3,13 +3,13 @@ package fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import fi.vm.sade.oppija.common.koodisto.KoodistoService;
 import fi.vm.sade.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.predicate.ComprehensiveSchools;
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.predicate.HighSchools;
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.predicate.Ids;
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.predicate.Languages;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.KoodistoService;
 
 import java.util.List;
 

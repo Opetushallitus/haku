@@ -16,9 +16,9 @@
 
 package fi.vm.sade.oppija.ui.selenium;
 
-import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.FormGeneratorMock;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;

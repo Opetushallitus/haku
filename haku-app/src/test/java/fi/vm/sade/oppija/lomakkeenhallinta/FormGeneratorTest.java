@@ -1,7 +1,7 @@
 package fi.vm.sade.oppija.lomakkeenhallinta;
 
-import fi.vm.sade.oppija.common.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.oppija.lomakkeenhallinta.hakulomakepohja.FormGeneratorMock;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -14,18 +14,19 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.common.koodisto.impl;
+package fi.vm.sade.oppija.lomakkeenhallinta.koodisto.impl;
 
 import com.google.common.base.Function;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.oppija.lomake.domain.I18nText;
-import fi.vm.sade.oppija.lomake.domain.PostOffice;
+import fi.vm.sade.oppija.lomakkeenhallinta.koodisto.domain.Code;
 
-public class KoodiTypeToPostOfficeFunction implements Function<KoodiType, PostOffice> {
-
+/**
+ * @author Hannu Lyytikainen
+ */
+public class KoodiTypeToCodeFunction implements Function<KoodiType, Code> {
     @Override
-    public PostOffice apply(final KoodiType koodiType) {
-        return new PostOffice(koodiType.getKoodiArvo(), new I18nText(TranslationsUtil.createTranslationsMap(koodiType)));
+    public Code apply(fi.vm.sade.koodisto.service.types.common.KoodiType input) {
+        return new Code(input.getKoodiArvo(), new I18nText(TranslationsUtil.createTranslationsMap(input)));
     }
-
 }

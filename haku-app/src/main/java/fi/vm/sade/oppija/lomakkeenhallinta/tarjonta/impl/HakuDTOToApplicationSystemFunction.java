@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.oppija.common.tarjonta.impl;
+package fi.vm.sade.oppija.lomakkeenhallinta.tarjonta.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
