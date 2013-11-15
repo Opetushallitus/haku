@@ -66,16 +66,23 @@ $(document).ready(function () {
                     event.preventDefault();
                     target = $(this).closest('#orgsearch');
                     if (target.hasClass('expand')) {
-                        target.removeClass('expand');
-                        orgSearchDialog.set.tableCellWidth();
+                        orgSearchDialog.collapse();
                     }
                     else {
-                        target.addClass('expand');
-                        orgSearchDialog.set.tableCellWidth();
-                        orgSearchDialog.set.listHeight();
+                        orgSearchDialog.expand();
                     }
                 });
             }
+        },
+
+        expand: function() {
+            $('#orgsearch').addClass('expand');
+            orgSearchDialog.set.tableCellWidth();
+            orgSearchDialog.set.listHeight();
+        },
+        collapse: function() {
+            $('#orgsearch').removeClass('expand');
+            orgSearchDialog.set.tableCellWidth();
         }
     }
 
@@ -109,6 +116,9 @@ $(document).ready(function () {
                 $('#application-system').val(obj.asId);
                 $('#hakukausiVuosi').val(obj.asYear);
                 $('#hakukausi').val(obj.asSemester);
+                if (obj.orgSearchExpanded) {
+                    orgSearchDialog.expand();
+                }
             } else {
                 addParameter(obj, 'q', '#entry');
                 addParameter(obj, 'oid', '#oid');
@@ -121,6 +131,9 @@ $(document).ready(function () {
                 var lopTitle = $('#lop-title').text();
                 if (lopTitle) {
                     obj['lopTitle'] = lopTitle;
+                }
+                if ($('#orgsearch').hasClass('expand')) {
+                    obj['orgSearchExpanded'] = true;
                 }
                 obj['start'] = start;
                 obj['rows'] = maxRows;
