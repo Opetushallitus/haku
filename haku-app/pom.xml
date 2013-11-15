@@ -771,6 +771,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <port>9090</port>
                     <charset>UTF-8</charset>
                     <uriEncoding>UTF-8</uriEncoding>
                 </configuration>

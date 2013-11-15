@@ -125,7 +125,7 @@ public class HakuClient {
     public static void main(String[] args) throws IOException {
 
         HakuClient hakuClient = new HakuClient(
-                "http://localhost:8080/haku-app/lomake/",
+                "http://localhost:9090/haku-app/lomake/",
                 "application.json");
 
         try {

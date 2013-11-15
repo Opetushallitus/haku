@@ -38,10 +38,13 @@ public abstract class TomcatContainerBase {
     @Value("${aoid}")
     protected String AOID;
 
+    @Value("${webdriver.base.url:http://localhost:9090/haku-app/}")
+    protected String baseUrl;
+
     @Autowired
     protected AdminResourceClient adminResourceClient;
 
     public String getBaseUrl() {
-        return "http://localhost:8080/haku-app/";
+        return baseUrl;
     }
 }

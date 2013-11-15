@@ -36,7 +36,7 @@ public class SeleniumContainer {
     private final String webDriverBaseUrl;
 
     @Autowired
-    public SeleniumContainer(@Value("${webdriver.base.url:http://localhost:8080/haku-app/}") final String webDriverBaseUrl) {
+    public SeleniumContainer(@Value("${webdriver.base.url:http://localhost:9090/haku-app/}") final String webDriverBaseUrl) {
         this.webDriverBaseUrl = webDriverBaseUrl;
         this.webDriver = new FirefoxDriver();
         this.selenium = new WebDriverBackedSelenium(this.webDriver, this.webDriverBaseUrl);
