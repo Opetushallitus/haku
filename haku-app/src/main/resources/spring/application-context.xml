@@ -73,8 +73,9 @@
 
     <beans>
         <context:annotation-config/>
+
         <context:component-scan
-                base-package="fi.vm.sade.haku.oppija,fi.vm.sade.security,fi.vm.sade.organisaatio.service.search"/>
+                base-package="fi.vm.sade.haku,fi.vm.sade.security,fi.vm.sade.organisaatio.service.search"/>
         <aop:aspectj-autoproxy/>
 
         <!-- Configure the multipart resolver -->
