@@ -81,6 +81,10 @@
                                         key="virkailija.hakemus.tila.yksiloimatta"/></option>
                             </select>
                         </div>
+                        <div class="field-search-containerbox">
+                            <input type="checkbox" id="discretionary-only"/>
+                            <label for="discretionary-only">Näytä vain harkinnanvaraisesti hakeneet</label>
+                        </div>
                     </td>
                     <td>
 

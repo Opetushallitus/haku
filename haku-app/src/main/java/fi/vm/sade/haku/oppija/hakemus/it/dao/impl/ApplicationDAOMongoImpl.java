@@ -85,6 +85,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_LOP_PARENTS_3 = "answers.hakutoiveet.preference3-Opetuspiste-id-parents";
     private static final String FIELD_LOP_PARENTS_4 = "answers.hakutoiveet.preference4-Opetuspiste-id-parents";
     private static final String FIELD_LOP_PARENTS_5 = "answers.hakutoiveet.preference5-Opetuspiste-id-parents";
+    private static final String FIELD_DISCRETIONARY_1 = "answers.hakutoiveet.preference1-discretionary";
+    private static final String FIELD_DISCRETIONARY_2 = "answers.hakutoiveet.preference2-discretionary";
+    private static final String FIELD_DISCRETIONARY_3 = "answers.hakutoiveet.preference3-discretionary";
+    private static final String FIELD_DISCRETIONARY_4 = "answers.hakutoiveet.preference4-discretionary";
+    private static final String FIELD_DISCRETIONARY_5 = "answers.hakutoiveet.preference5-discretionary";
     private static final String FIELD_APPLICATION_OID = "oid";
     private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
     private static final String FIELD_PERSON_OID = "personOid";
@@ -209,7 +214,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters applicationQueryParameters) {
-        LOG.debug("Gonna find me some applications with mongo");
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         StringTokenizer st = new StringTokenizer(term, " ");
         ArrayList<DBObject> queries = new ArrayList<DBObject>();
@@ -243,7 +247,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             }
         }
 
-        LOG.debug("I haz {} queries!", queries.size());
         QueryBuilder baseQuery = queries.size() > 0 ? QueryBuilder.start().and(queries.toArray(new DBObject[queries.size()])) : QueryBuilder.start();
         DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
         return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows(),
@@ -326,6 +329,16 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         );
     }
 
+    private QueryBuilder queryDiscretionaryOnly() {
+        return QueryBuilder.start().or(
+                QueryBuilder.start(FIELD_DISCRETIONARY_1).is(Boolean.TRUE.toString()).get(),
+                QueryBuilder.start(FIELD_DISCRETIONARY_2).is(Boolean.TRUE.toString()).get(),
+                QueryBuilder.start(FIELD_DISCRETIONARY_3).is(Boolean.TRUE.toString()).get(),
+                QueryBuilder.start(FIELD_DISCRETIONARY_4).is(Boolean.TRUE.toString()).get(),
+                QueryBuilder.start(FIELD_DISCRETIONARY_5).is(Boolean.TRUE.toString()).get()
+        );
+    }
+
     private Application findOneApplication(DBObject query) {
         DBObject result = getCollection().findOne(query);
         if (result != null) {
@@ -343,6 +356,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private ApplicationSearchResultDTO searchApplications(DBObject query, int start, int rows, String orderBy,
                                                           int orderDir) {
         LOG.debug("Ordering: {}, {}", orderBy, orderDir);
+        LOG.debug("Query: {}", query);
         final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject(orderBy, orderDir))
                 .skip(start).limit(rows);
         LOG.debug("Matches: {}", dbCursor.count());
@@ -386,6 +400,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(asIds).get());
         }
 
+        if (applicationQueryParameters.isDiscretionaryOnly()) {
+            filters.add(queryDiscretionaryOnly().get());
+        }
+
         filters.add(newOIdExistDBObject());
 
         return filters.toArray(new DBObject[filters.size()]);
@@ -419,6 +437,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private DBObject newQueryBuilderWithFilters(final DBObject[] filters, final QueryBuilder baseQuery) {
         DBObject query;
         ArrayList<DBObject> orgFilter = filterByOrganization();
+
+        LOG.debug("Filters: {}",filters.length);
 
         if (orgFilter.isEmpty()) {
             query = QueryBuilder.start("_id").exists(false).get();

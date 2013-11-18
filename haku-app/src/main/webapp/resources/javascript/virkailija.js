@@ -116,6 +116,7 @@ $(document).ready(function () {
                 $('#application-system').val(obj.asId);
                 $('#hakukausiVuosi').val(obj.asYear);
                 $('#hakukausi').val(obj.asSemester);
+                $('#discretionary-only').prop('checked', obj.discretionaryOnly);
                 if (obj.orgSearchExpanded) {
                     orgSearchDialog.expand();
                 }
@@ -128,6 +129,7 @@ $(document).ready(function () {
                 addParameter(obj, 'asId', '#application-system');
                 addParameter(obj, 'asYear', '#hakukausiVuosi');
                 addParameter(obj, 'asSemester', '#hakukausi');
+                addParameter(obj, 'discretionaryOnly', '#discretionary-only');
                 var lopTitle = $('#lop-title').text();
                 if (lopTitle) {
                     obj['lopTitle'] = lopTitle;
@@ -135,6 +137,7 @@ $(document).ready(function () {
                 if ($('#orgsearch').hasClass('expand')) {
                     obj['orgSearchExpanded'] = true;
                 }
+                obj['discretionaryOnly'] = $('#discretionary-only').prop('checked');
                 obj['start'] = start;
                 obj['rows'] = maxRows;
                 $.removeCookie(cookieName);
