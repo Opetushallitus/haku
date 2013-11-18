@@ -67,10 +67,13 @@
                                     value="${phase.i18nText}"/> &gt;</span></li>
                         </c:forEach>
                         <li>
-                            <span><span class="index">${fn:length(form.children) + 1}</span><fmt:message key="lomake.esikatselu"/> &gt;</span>
+                            <span><span class="index">${fn:length(form.children) + 1}</span><fmt:message
+                                    key="lomake.esikatselu"/> &gt;</span>
                         </li>
                         <li>
-                            <a class="current"><span class="index"><c:out value="${fn:length(form.children) + 2}"/></span><fmt:message key="lomake.valmis"/></a>
+                            <a class="current"><span class="index"><c:out
+                                    value="${fn:length(form.children) + 2}"/></span><fmt:message
+                                    key="lomake.valmis"/></a>
                         </li>
                     </ul>
                     <div class="clear"></div>
@@ -87,10 +90,10 @@
                     </p>
 
                     <c:if test="${(not empty categoryData['Sähköposti'])}">
-                    <p>
-                        <fmt:message key="lomake.valmis.sinulleonlahetettyvahvistussahkopostiisi"/>: <c:out
-                            value="${categoryData['Sähköposti']}"/>
-                    </p>
+                        <p>
+                            <fmt:message key="lomake.valmis.sinulleonlahetettyvahvistussahkopostiisi"/>: <c:out
+                                value="${categoryData['Sähköposti']}"/>
+                        </p>
                     </c:if>
 
                     <p>
@@ -116,21 +119,22 @@
                     <hr/>
 
                     <c:if test="${categoryData['preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys']}">
-                    <h3><fmt:message key="lomake.valmis.haeturheilijana.header"/></h3>
+                        <h3><fmt:message key="lomake.valmis.haeturheilijana.header"/></h3>
 
-                    <p>
-                        <fmt:message key="lomake.valmis.haeturheilijana"/>
-                    </p>
+                        <p>
+                            <fmt:message key="lomake.valmis.haeturheilijana"/>
+                        </p>
 
-                    <p>
-                        <a href="http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/"
-                           target="_blank">
-                            http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
-                        </a>
-                    </p>
-                    <hr/>
+                        <p>
+                            <a href="http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/"
+                               target="_blank">
+                                http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
+                            </a>
+                        </p>
+                        <hr/>
                     </c:if>
-                    <h3><fmt:message key="lomake.valmis.muutoksentekeminen"/></h3>
+                    <h3>
+                        <fmt:message key="lomake.valmis.muutoksentekeminen"/></h3>
 
                     <p>
                         <fmt:message key="lomake.valmis.muutoksentekeminen.p1"/>
@@ -149,9 +153,10 @@
                     <hr/>
                     <p>
                         <fmt:message key="lomake.valmis.takaisin.opintopolkuun"/>&nbsp;
-                        <a href="https://opintopolku.fi"><fmt:message key="lomake.valmis.takaisin.opintopolkuun.linkki"/></a>
+                        <a href="https://opintopolku.fi"><fmt:message
+                                key="lomake.valmis.takaisin.opintopolkuun.linkki"/></a>
                     </p>
-                 </div>
+                </div>
             </section>
         </section>
     </div>

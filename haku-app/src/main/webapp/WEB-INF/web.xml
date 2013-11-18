@@ -55,11 +55,12 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
-            <param-value>fi.vm.sade.oppija.ui.LocaleFilter;fi.vm.sade.oppija.common.filter.XSSFilter</param-value>
+            <param-value>fi.vm.sade.haku.oppija.ui.LocaleFilter;fi.vm.sade.haku.oppija.common.filter.XSSFilter
+            </param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
-            <param-value>fi.vm.sade.oppija.common.filter.NoCacheFilter</param-value>
+            <param-value>fi.vm.sade.haku.oppija.common.filter.NoCacheFilter</param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.JSPTemplatesBasePath</param-name>
@@ -72,7 +73,7 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
-            <param-value>fi.vm.sade.oppija.common.filter.CorsFilter</param-value>
+            <param-value>fi.vm.sade.haku.oppija.common.filter.CorsFilter</param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.feature.DisableWADL</param-name>

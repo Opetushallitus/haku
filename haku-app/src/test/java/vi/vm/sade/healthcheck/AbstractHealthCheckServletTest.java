@@ -1,6 +1,6 @@
 package vi.vm.sade.healthcheck;
 
-import fi.vm.sade.healthcheck.AbstractHealthCheckServlet;
+import fi.vm.sade.haku.healthcheck.AbstractHealthCheckServlet;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ public class AbstractHealthCheckServletTest {
                 put("inner", "inner\"val");
             }});
         }};
-        Assert.assertEquals("{\"applications\": \"1\", \"mäppi\": {\"inner\": \"inner\\\"val\"}}", new AbstractHealthCheckServlet(){
+        Assert.assertEquals("{\"applications\": \"1\", \"mäppi\": {\"inner\": \"inner\\\"val\"}}", new AbstractHealthCheckServlet() {
             protected Map<String, Object> checkHealthAndReturnStats() {
                 return null;
             }

@@ -74,7 +74,7 @@
     <beans>
         <context:annotation-config/>
         <context:component-scan
-                base-package="fi.vm.sade.oppija,fi.vm.sade.security,fi.vm.sade.organisaatio.service.search"/>
+                base-package="fi.vm.sade.haku.oppija,fi.vm.sade.security,fi.vm.sade.organisaatio.service.search"/>
         <aop:aspectj-autoproxy/>
 
         <!-- Configure the multipart resolver -->
@@ -88,7 +88,7 @@
         <bean id="solrServerFactory" class="fi.vm.sade.organisaatio.service.search.SolrServerFactory">
         </bean>
 
-        <bean id="yksilointiScheduler" class="fi.vm.sade.oppija.yksilointi.Scheduler">
+        <bean id="yksilointiScheduler" class="fi.vm.sade.haku.oppija.yksilointi.Scheduler">
             <property name="run" value="${scheduler.run}"/>
             <property name="sendMail" value="${scheduler.sendMail}"/>
         </bean>

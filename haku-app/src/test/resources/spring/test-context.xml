@@ -25,10 +25,10 @@
     <import resource="classpath:spring/application-context.xml"/>
 
     <context:property-placeholder location="classpath:haku.properties, classpath:haku-test.properties"
-            ignore-resource-not-found="true"/>
+                                  ignore-resource-not-found="true"/>
 
     <!-- Override session scoped UserHolder with a mock implementation -->
-    <bean id="userHolder" class="fi.vm.sade.oppija.lomake.service.mock.UserHolderMock">
+    <bean id="userHolder" class="fi.vm.sade.haku.oppija.lomake.service.mock.UserHolderMock">
         <constructor-arg type="java.lang.String" value="test"/>
     </bean>
 

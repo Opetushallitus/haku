@@ -2,7 +2,7 @@
 <%@ tag trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="fn" uri="/WEB-INF/tld/functions.tld" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ attribute name="element" required="true" type="fi.vm.sade.oppija.lomake.domain.elements.Element" %>
+<%@ attribute name="element" required="true" type="fi.vm.sade.haku.oppija.lomake.domain.elements.Element" %>
 <c:forEach var="child" items="${fn:children(element, categoryData)}">
     <c:set var="parent" value="${element}" scope="request"/>
     <c:set var="element" value="${child}" scope="request"/>
