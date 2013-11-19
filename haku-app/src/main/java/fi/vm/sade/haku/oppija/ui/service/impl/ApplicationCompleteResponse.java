@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.ui.service.UIServiceResponse;
 
@@ -29,6 +30,7 @@ public class ApplicationCompleteResponse extends UIServiceResponse {
 
     public static final String FORM = "form";
     public static final String DISCRETIONARY_ATTACHMENT_AO_IDS = "discretionaryAttachmentAOIds";
+    public static final String APPLICATION_COMPLETE_ELEMENTS = "applicationCompleteElements";
 
     public void setForm(final Form form) {
         this.addObjectToModel(FORM, form);
@@ -41,5 +43,9 @@ public class ApplicationCompleteResponse extends UIServiceResponse {
     @Override
     public void setApplication(final Application application) {
         this.addObjectToModel(APPLICATION, application);
+    }
+
+    public void setApplicationCompleteElements(final List<Element> applicationCompleteElements) {
+        this.addObjectToModel(APPLICATION_COMPLETE_ELEMENTS, applicationCompleteElements);
     }
 }

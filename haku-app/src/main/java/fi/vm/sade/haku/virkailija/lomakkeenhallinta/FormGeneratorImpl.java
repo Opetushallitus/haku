@@ -3,6 +3,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.LisahakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.YhteishakuKevat;
@@ -33,13 +34,17 @@ public class FormGeneratorImpl implements FormGenerator {
         List<ApplicationSystem> asList = Lists.newArrayList();
         for (ApplicationSystem as : applicationSystems) {
             Form form = null;
+            List<Element> applicationCompleteElements;
             if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
                 form = LisahakuSyksy.generateForm(as, koodistoService);
+                applicationCompleteElements = LisahakuSyksy.generateApplicationCompleteElements();
             } else {
                 if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
                     form = YhteishakuSyksy.generateForm(as, koodistoService);
+                    applicationCompleteElements = YhteishakuSyksy.generateApplicationCompleteElements();
                 } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
                     form = YhteishakuKevat.generateForm(as, koodistoService);
+                    applicationCompleteElements = YhteishakuKevat.generateApplicationCompleteElements();
                 } else {
                     //skip
                     continue;
@@ -50,6 +55,7 @@ public class FormGeneratorImpl implements FormGenerator {
                     .addApplicationSystemType(as.getApplicationSystemType())
                     .addHakukausiUri(as.getHakukausiUri())
                     .addHakukausiVuosi(as.getHakukausiVuosi())
+                    .addApplicationCompleteElements(applicationCompleteElements)
                     .get());
         }
         return asList;

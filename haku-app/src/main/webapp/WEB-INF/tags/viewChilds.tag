@@ -10,6 +10,9 @@
         <c:when test="${preview or print}">
             <jsp:include page="/WEB-INF/jsp/elements/${child.type}Preview.jsp"/>
         </c:when>
+        <c:when test="${complete}">
+            <jsp:include page="/WEB-INF/jsp/valmis/${child.type}.jsp"/>
+        </c:when>
         <c:otherwise>
             <jsp:include page="/WEB-INF/jsp/elements/${child.type}.jsp"/>
         </c:otherwise>

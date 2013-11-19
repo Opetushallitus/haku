@@ -89,6 +89,7 @@ public class UIServiceImpl implements UIService {
         ApplicationCompleteResponse response = new ApplicationCompleteResponse();
         response.setApplication(application);
         response.setForm(activeForm);
+        response.setApplicationCompleteElements(formService.getApplicationCompleteElements(applicationSystemId));
         response.setDiscretionaryAttachmentAOIds(getDiscretionaryAttachmentAOIds(application));
         response.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return response;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -14,22 +14,16 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.haku.oppija.lomake.service;
+package fi.vm.sade.haku.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 
-import java.util.List;
+/**
+ * @author Mikko Majapuro
+ */
+public class DiscretionaryAttachments extends Element {
 
-public interface FormService {
-
-    Element getFirstPhase(final String applicationSystemId);
-
-    Element getLastPhase(final String applicationSystemId);
-
-    Form getForm(final String applicationSystemId);
-
-    Form getActiveForm(final String applicationSystemId);
-
-    List<Element> getApplicationCompleteElements(final String applicationSystemId);
+    public DiscretionaryAttachments(String id) {
+        super(id);
+    }
 }

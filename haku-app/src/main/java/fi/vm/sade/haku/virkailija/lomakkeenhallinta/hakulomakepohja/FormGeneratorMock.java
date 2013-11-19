@@ -56,9 +56,11 @@ public class FormGeneratorMock implements FormGenerator {
         I18nText name = ElementUtil.createI18NAsIs(asId);
         Form form = YhteishakuSyksy.generateForm(new ApplicationSystemBuilder().addId(asId).addName(name)
                 .addApplicationPeriods(applicationPeriods).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
+                .addApplicationCompleteElements(YhteishakuSyksy.generateApplicationCompleteElements())
                 .get(), koodistoService);
         asList.add(new ApplicationSystemBuilder().addId(asId).addForm(form).addName(name)
                 .addApplicationPeriods(applicationPeriods).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
+                .addApplicationCompleteElements(YhteishakuSyksy.generateApplicationCompleteElements())
                 .get());
         return asList;
     }
@@ -73,9 +75,11 @@ public class FormGeneratorMock implements FormGenerator {
         I18nText name = ElementUtil.createI18NAsIs(asId);
         Form form = YhteishakuSyksy.generateForm(new ApplicationSystemBuilder().addId(asId).addName(name)
                 .addApplicationPeriods(applicationPeriods).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
+                .addApplicationCompleteElements(YhteishakuSyksy.generateApplicationCompleteElements())
                 .get(), koodistoService);
         return new ApplicationSystemBuilder().addId(asId).addForm(form).addName(name)
                 .addApplicationPeriods(applicationPeriods).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
+                .addApplicationCompleteElements(YhteishakuSyksy.generateApplicationCompleteElements())
                 .get();
     }
 }

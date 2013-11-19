@@ -60,7 +60,7 @@ public class FormController {
     public static final String ROOT_VIEW = "/elements/Root";
     public static final String VERBOSE_HELP_VIEW = "/help";
     public static final String APPLICATION_SYSTEM_LIST_VIEW = "/applicationSystemList";
-    public static final String VALMIS_VIEW = "/valmis";
+    public static final String VALMIS_VIEW = "/valmis/valmis";
     public static final String PRINT_VIEW = "/print/print";
 
     public static final String APPLICATION_SYSTEM_ID_PATH_PARAM = "applicationSystemId";

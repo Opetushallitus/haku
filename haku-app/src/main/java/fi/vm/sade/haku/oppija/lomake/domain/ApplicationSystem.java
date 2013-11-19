@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.lomake.domain;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -39,11 +40,12 @@ public class ApplicationSystem implements Serializable {
     private String applicationSystemType;
     private Integer hakukausiVuosi;
     private String hakukausiUri;
+    private List<Element> applicationCompleteElements;
 
     public ApplicationSystem(final String id, final Form form, final I18nText name,
                              final List<ApplicationPeriod> applicationPeriods,
                              final String applicationSystemType, Integer hakukausiVuosi,
-                             final String hakukausiUri) {
+                             final String hakukausiUri, final List<Element> applicationCompleteElements) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(name);
         this.id = id;
@@ -54,6 +56,7 @@ public class ApplicationSystem implements Serializable {
         this.applicationSystemType = applicationSystemType;
         this.hakukausiVuosi = hakukausiVuosi;
         this.hakukausiUri = hakukausiUri;
+        this.applicationCompleteElements = applicationCompleteElements;
     }
 
     @Transient
@@ -92,5 +95,9 @@ public class ApplicationSystem implements Serializable {
 
     public String getHakukausiUri() {
         return hakukausiUri;
+    }
+
+    public List<Element> getApplicationCompleteElements() {
+        return applicationCompleteElements;
     }
 }

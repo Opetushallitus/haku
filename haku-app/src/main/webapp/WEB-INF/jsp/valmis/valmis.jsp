@@ -20,11 +20,13 @@
   ~ European Union Public Licence for more details.
   --%>
 <fmt:setBundle basename="messages" scope="session"/>
+<c:set var="complete" value="true" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
 <c:set var="categoryData" value="${it.application.vastauksetMerged}" scope="request"/>
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="application" value="${it.application}" scope="request"/>
 <c:set var="discretionaryAttachmentAOIds" value="${it.discretionaryAttachmentAOIds}" scope="request"/>
+<c:set var="completeElements" value="${it.applicationCompleteElements}" scope="request"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -89,73 +91,10 @@
                             value="${ f:formatOid(application.oid)}"/></span>
                     </p>
 
-                    <c:if test="${(not empty categoryData['Sähköposti'])}">
-                        <p>
-                            <fmt:message key="lomake.valmis.sinulleonlahetettyvahvistussahkopostiisi"/>: <c:out
-                                value="${categoryData['Sähköposti']}"/>
-                        </p>
-                    </c:if>
-
-                    <p>
-                        <fmt:message key="lomake.valmis.p1"/>
-                    </p>
-
-                    <p>
-                        <fmt:message key="lomake.valmis.p2"/>
-                    </p>
-
-                    <p>
-                        <fmt:message key="lomake.valmis.p3"/>
-                    </p>
-
-                    <p>
-                        <a href="${contextPath}/lomake/${application.applicationSystemId}/tulostus/${application.oid}"
-                           class="button small print" target="_blank"><fmt:message
-                                key="lomake.valmis.button.tulosta"/></a>
-                    </p>
-
-                    <div class="clear"></div>
-                    <jsp:include page="./print/discretionaryAttachments.jsp"/>
-                    <hr/>
-
-                    <c:if test="${categoryData['preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys'] or categoryData['preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys']}">
-                        <h3><fmt:message key="lomake.valmis.haeturheilijana.header"/></h3>
-
-                        <p>
-                            <fmt:message key="lomake.valmis.haeturheilijana"/>
-                        </p>
-
-                        <p>
-                            <a href="http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/"
-                               target="_blank">
-                                http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
-                            </a>
-                        </p>
-                        <hr/>
-                    </c:if>
-                    <h3>
-                        <fmt:message key="lomake.valmis.muutoksentekeminen"/></h3>
-
-                    <p>
-                        <fmt:message key="lomake.valmis.muutoksentekeminen.p1"/>
-                    </p>
-
-                    <p>
-                        <fmt:message key="lomake.valmis.muutoksentekeminen.p2"/>
-                    </p>
-
-                    <p>
-                        <fmt:message key="lomake.valmis.muutoksentekeminen.p3"/>
-                    </p>
-
-                    <div class="clear"></div>
-
-                    <hr/>
-                    <p>
-                        <fmt:message key="lomake.valmis.takaisin.opintopolkuun"/>&nbsp;
-                        <a href="https://opintopolku.fi"><fmt:message
-                                key="lomake.valmis.takaisin.opintopolkuun.linkki"/></a>
-                    </p>
+                    <c:forEach var="cElement" items="${completeElements}">
+                        <c:set var="element" value="${cElement}" scope="request"/>
+                        <jsp:include page="/WEB-INF/jsp/valmis/${element.type}.jsp"/>
+                    </c:forEach>
                 </div>
             </section>
         </section>

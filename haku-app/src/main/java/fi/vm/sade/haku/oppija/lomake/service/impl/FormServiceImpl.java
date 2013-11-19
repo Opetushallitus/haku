@@ -28,6 +28,8 @@ import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FormServiceImpl implements FormService {
 
@@ -85,6 +87,19 @@ public class FormServiceImpl implements FormService {
             return lastPhase;
         }
         throw new ResourceNotFoundExceptionRuntime("Last phase not found");
+    }
+
+    public ApplicationSystemService getApplicationSystemService() {
+        return applicationSystemService;
+    }
+
+    @Override
+    public List<Element> getApplicationCompleteElements(String applicationSystemId) {
+        if (applicationSystemId == null) {
+            throw new ResourceNotFoundExceptionRuntime("Application system not found");
+        }
+        final ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemId);
+        return applicationSystem.getApplicationCompleteElements();
     }
 }
 

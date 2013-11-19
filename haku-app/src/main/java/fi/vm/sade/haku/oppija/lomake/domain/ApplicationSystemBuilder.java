@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.lomake.domain;
 
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public class ApplicationSystemBuilder {
     private String applicationSystemType;
     private Integer hakukausiVuosi;
     private String hakukausiUri;
+    private List<Element> applicationCompleteElements;
 
     public ApplicationSystemBuilder() {
         // NOP
@@ -52,8 +54,13 @@ public class ApplicationSystemBuilder {
         return this;
     }
 
+    public ApplicationSystemBuilder addApplicationCompleteElements(List<Element> applicationCompleteElements) {
+        this.applicationCompleteElements = applicationCompleteElements;
+        return this;
+    }
+
     public ApplicationSystem get() {
         return new ApplicationSystem(id, form, name, applicationPeriods,
-                applicationSystemType, hakukausiVuosi, hakukausiUri);
+                applicationSystemType, hakukausiVuosi, hakukausiUri, applicationCompleteElements);
     }
 }
