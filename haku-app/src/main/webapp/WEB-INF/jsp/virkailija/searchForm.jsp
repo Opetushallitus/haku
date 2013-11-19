@@ -60,7 +60,7 @@
                             <select id="application-system">
                                 <option value="">&nbsp;</option>
                                 <c:forEach var="applicationSystem" items="${it.applicationSystems}">
-                                    <option value="${applicationSystem.id}"><haku:i18nText value="${applicationSystem.name}"/>&nbsp;</option>
+                                    <option <c:if test="${applicationSystem == it.defaultAS}">selected="selected"</c:if> value="${applicationSystem.id}"><haku:i18nText value="${applicationSystem.name}"/>&nbsp;</option>
                                 </c:forEach>
                             </select>
                         </div>

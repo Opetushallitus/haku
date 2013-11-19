@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.lomake.service.impl;
 
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
@@ -10,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -56,6 +55,38 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     @Override
     public List<ApplicationSystem> getAllApplicationSystems(String... includeFields) {
         return this.applicationSystemRepository.findAll(includeFields);
+    }
+
+    @Override
+    public ApplicationSystem getDefaultApplicationSystem(List<ApplicationSystem> systems) {
+        ArrayList<ApplicationSystem> candidates = new ArrayList<ApplicationSystem>();
+        for (ApplicationSystem as : systems) {
+            if (as.isActive()) {
+                candidates.add(as);
+            }
+        }
+        if (candidates.size() == 1) {
+            return candidates.get(0);
+        } else if (candidates.size() == 0) {
+            return systems.size() > 0 ? systems.get(0) : null;
+        }
+        Collections.sort(candidates, new Comparator<ApplicationSystem>() {
+            @Override
+            public int compare(ApplicationSystem as, ApplicationSystem other) {
+                List<ApplicationPeriod> asPeriods = as.getApplicationPeriods();
+                List<ApplicationPeriod> otherPeriods = other.getApplicationPeriods();
+                if (asPeriods.size() == 0 && otherPeriods.size() == 0) {
+                    return 0;
+                } else if (asPeriods.size() == 0) {
+                    return 1;
+                } else if (otherPeriods.size() == 0) {
+                    return -1;
+                }
+                return as.getApplicationPeriods().get(0).getStart()
+                        .compareTo(other.getApplicationPeriods().get(0).getStart());
+            }
+        });
+        return candidates.get(0);
     }
 
     @Override

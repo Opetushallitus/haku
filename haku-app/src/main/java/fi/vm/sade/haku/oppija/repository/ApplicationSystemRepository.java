@@ -34,12 +34,15 @@ public class ApplicationSystemRepository {
     }
 
     public List<ApplicationSystem> findAll(String... includeFields) {
+        log.debug("Finding all ApplicationSystems {}", includeFields);
         Query q = new Query();
         for (String includeField : includeFields) {
             q.fields().include(includeField);
 
         }
-        return mongoOperations.find(q, ApplicationSystem.class);
+        List<ApplicationSystem> systems = mongoOperations.find(q, ApplicationSystem.class);
+        log.debug("Found {} systems", systems.size());
+        return systems;
     }
 
     public List<ApplicationSystem> findBySemesterAndYear(String semester, String year) {

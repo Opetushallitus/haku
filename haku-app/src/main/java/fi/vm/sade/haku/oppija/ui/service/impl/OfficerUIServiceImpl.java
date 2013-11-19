@@ -5,6 +5,7 @@ import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -182,8 +184,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         UIServiceResponse uiServiceResponse = new UIServiceResponse();
         uiServiceResponse.addObjectToModel("organizationTypes", koodistoService.getOrganizationtypes());
         uiServiceResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
-        uiServiceResponse.addObjectToModel("applicationSystems",
-                applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi"));
+        List<ApplicationSystem> applicationSystems =
+                applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");
+        ApplicationSystem defaultAS = applicationSystemService.getDefaultApplicationSystem(applicationSystems);
+        uiServiceResponse.addObjectToModel("applicationSystems", applicationSystems);
+        uiServiceResponse.addObjectToModel("defaultAS", defaultAS != null ? defaultAS : "");
         uiServiceResponse.addObjectToModel("hakukausiOptions", koodistoService.getHakukausi());
 
         return uiServiceResponse;
