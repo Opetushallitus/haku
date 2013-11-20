@@ -26,7 +26,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
-import fi.vm.sade.haku.oppija.lomake.service.UserHolder;
+import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIServiceResponse;
 import org.junit.Before;
@@ -59,7 +59,7 @@ public class OfficerControllerTest {
     @Before
     public void setUp() throws Exception {
         officerController = new OfficerController();
-        officerController.userHolder = mock(UserHolder.class);
+        officerController.userSession = mock(UserSession.class);
 
         ApplicationService applicationService = mock(ApplicationService.class);
         FormService formService = mock(FormService.class);

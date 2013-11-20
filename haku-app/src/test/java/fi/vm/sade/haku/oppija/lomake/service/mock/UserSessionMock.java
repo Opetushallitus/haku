@@ -16,17 +16,17 @@
 package fi.vm.sade.haku.oppija.lomake.service.mock;
 
 import fi.vm.sade.haku.oppija.lomake.domain.User;
-import fi.vm.sade.haku.oppija.lomake.service.UserHolder;
+import fi.vm.sade.haku.oppija.lomake.service.UserSession;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
-/**
- * @author Hannu Lyytikainen
- */
-public class UserHolderMock extends UserHolder {
+public class UserSessionMock extends UserSession {
 
     private static final long serialVersionUID = 1956696173293019715L;
     private final User user;
 
-    public UserHolderMock(String username) {
+
+    public UserSessionMock(String username) {
         this.user = new User(username);
     }
 

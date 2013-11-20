@@ -21,7 +21,7 @@ import fi.vm.sade.haku.oppija.common.dao.BaseDAO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
-import fi.vm.sade.haku.oppija.ui.HakuPermissionService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 
 import java.util.List;
 

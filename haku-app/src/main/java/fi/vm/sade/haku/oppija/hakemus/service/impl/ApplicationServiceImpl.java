@@ -28,20 +28,21 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
-import fi.vm.sade.haku.oppija.lomake.service.UserHolder;
+import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
-import fi.vm.sade.haku.oppija.ui.HakuPermissionService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -65,7 +66,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private static final String OPH_ORGANIZATION = "1.2.246.562.10.00000000001";
     private final ApplicationDAO applicationDAO;
     private final ApplicationOidService applicationOidService;
-    private final UserHolder userHolder;
+    private final UserSession userSession;
     private final FormService formService;
     private static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))";
     private static final String DATE_OF_BIRTH_PATTERN = "[0-9]{6}";
@@ -83,7 +84,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
-                                  final UserHolder userHolder,
+                                  final UserSession userSession,
                                   @Qualifier("formServiceImpl") final FormService formService,
                                   @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
                                   AuthenticationService authenticationService,
@@ -93,7 +94,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   ElementTreeValidator elementTreeValidator) {
 
         this.applicationDAO = applicationDAO;
-        this.userHolder = userHolder;
+        this.userSession = userSession;
         this.formService = formService;
         this.applicationOidService = applicationOidService;
         this.authenticationService = authenticationService;
@@ -111,7 +112,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationState saveApplicationPhase(ApplicationPhase applicationPhase) {
-        final Application application = new Application(this.userHolder.getUser(), applicationPhase);
+        final Application application = new Application(this.userSession.getUser(), applicationPhase);
         return saveApplicationPhase(applicationPhase, application);
     }
 
@@ -127,7 +128,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Map<String, String> allAnswers = new HashMap<String, String>();
         // if the current phase has previous phase, get all the answers for
         // validating rules
-        Application current = userHolder.getApplication(applicationSystemId);
+        Application current = userSession.getApplication(applicationSystemId);
 
         elementTree.isStateValid(current.getPhaseId(), applicationPhase.getPhaseId());
 
@@ -142,7 +143,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         if (applicationState.isValid()) {
-            this.userHolder.savePhaseAnswers(applicationPhase);
+            this.userSession.savePhaseAnswers(applicationPhase);
         }
         // sets all answers merged, needed for re-rendering view if errors
         applicationState.setAnswersMerged(allAnswers);
@@ -151,8 +152,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public String submitApplication(final String applicationSystemId) {
-        final User user = userHolder.getUser();
-        Application application = userHolder.getApplication(applicationSystemId);
+        final User user = userSession.getUser();
+        Application application = userSession.getApplication(applicationSystemId);
         Form form = formService.getForm(applicationSystemId);
         Map<String, String> allAnswers = application.getVastauksetMerged();
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, allAnswers,
@@ -171,7 +172,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.setPersonOidChecked(System.currentTimeMillis());
             application.setStudentOidChecked(System.currentTimeMillis());
             this.applicationDAO.save(application);
-            this.userHolder.removeApplication(application.getApplicationSystemId());
+            this.userSession.removeApplication(application);
             return application.getOid();
         } else {
             throw new IllegalStateException("Could not send the application ");
@@ -276,12 +277,23 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private void addNoteToApplicationObject(final Application application, final String noteText) {
-        application.addNote(new ApplicationNote(noteText, new Date(), userHolder.getUser().getUserName()));
+        application.addNote(new ApplicationNote(noteText, new Date(), userSession.getUser().getUserName()));
+    }
+
+    @Override
+    public Application getSubmittedApplication(final String applicationSystemId, final String oid) {
+        Application submittedApplication = userSession.getSubmittedApplication();
+        if (submittedApplication != null &&
+                submittedApplication.getApplicationSystemId().equals(applicationSystemId) &&
+                submittedApplication.getOid().equals(oid)) {
+            return submittedApplication;
+        }
+        throw new ResourceNotFoundExceptionRuntime("Could not found submitted application");
     }
 
     @Override
     public Application getPendingApplication(String applicationSystemId, String oid) throws ResourceNotFoundException {
-        final User user = userHolder.getUser();
+        final User user = userSession.getUser();
         Application application = new Application(applicationSystemId, user, oid);
         if (!user.isKnown()) {
             application.removeUser();
@@ -298,16 +310,16 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application getApplication(final String applicationSystemId) {
-        User user = userHolder.getUser();
+        User user = userSession.getUser();
         if (user.isKnown()) {
-            Application application = new Application(applicationSystemId, userHolder.getUser());
+            Application application = new Application(applicationSystemId, userSession.getUser());
             List<Application> listOfApplications = applicationDAO.find(application);
             if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
                 return application;
             }
             return listOfApplications.get(0);
         } else {
-            return userHolder.getApplication(applicationSystemId);
+            return userSession.getApplication(applicationSystemId);
 
         }
     }

@@ -29,19 +29,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * @author jukka
- * @version 10/12/122:46 PM}
- * @since 1.1
- */
-@Component("userHolder")
+
+@Component("UserSession")
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class UserHolder implements Serializable {
+public class UserSession implements Serializable {
 
     private static final long serialVersionUID = 8093993846121110534L;
 
     private final Map<String, Application> applications = new ConcurrentHashMap<String, Application>();
     private final Map<String, String> userPrefillData = new ConcurrentHashMap<String, String>();
+    private Application submittedApplication = null;
 
     public User getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -66,6 +63,7 @@ public class UserHolder implements Serializable {
         } else {
             Application application = new Application(applicationSystemId, getUser());
             this.applications.put(applicationSystemId, application);
+            this.submittedApplication = null;
             return application;
         }
 
@@ -77,7 +75,13 @@ public class UserHolder implements Serializable {
         return application;
     }
 
-    public void removeApplication(final String applicationSystemId) {
-        this.applications.remove(applicationSystemId);
+    public void removeApplication(final Application application) {
+        if (null != this.applications.remove(application.getApplicationSystemId())) {
+            this.submittedApplication = application;
+        }
+    }
+
+    public Application getSubmittedApplication() {
+        return submittedApplication;
     }
 }

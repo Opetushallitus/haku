@@ -62,36 +62,25 @@ public class UIServiceImpl implements UIService {
     public UIServiceResponse getApplicationPrint(String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
         final Form activeForm = formService.getForm(application.getApplicationSystemId());
-        ApplicationPrintViewResponse response = new ApplicationPrintViewResponse();
-        response.setApplication(application);
-        response.setForm(activeForm);
-        response.setDiscretionaryAttachmentAOIds(getDiscretionaryAttachmentAOIds(application));
-        response.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
-        return response;
+        List<String> discretionaryAttachmentAOIds = getDiscretionaryAttachmentAOIds(application);
+        return new UIServiceResponse(application, activeForm, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
     }
 
     @Override
     public UIServiceResponse getApplicationPrint(String applicationSystemId, String oid) throws ResourceNotFoundException {
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        Application application = applicationService.getPendingApplication(applicationSystemId, oid);
-        ApplicationPrintViewResponse response = new ApplicationPrintViewResponse();
-        response.setApplication(application);
-        response.setForm(activeForm);
-        response.setDiscretionaryAttachmentAOIds(getDiscretionaryAttachmentAOIds(application));
-        response.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
-        return response;
+        Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
+        List<String> discretionaryAttachmentAOIds = getDiscretionaryAttachmentAOIds(application);
+        return new UIServiceResponse(application, activeForm, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
     }
 
     @Override
     public UIServiceResponse getApplicationComplete(String applicationSystemId, String oid) throws ResourceNotFoundException {
         Form activeForm = formService.getActiveForm(applicationSystemId);
         Application application = applicationService.getPendingApplication(applicationSystemId, oid);
-        ApplicationCompleteResponse response = new ApplicationCompleteResponse();
-        response.setApplication(application);
-        response.setForm(activeForm);
+        List<String> discretionaryAttachmentAOIds = getDiscretionaryAttachmentAOIds(application);
+        UIServiceResponse response = new UIServiceResponse(application, activeForm, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
         response.setApplicationCompleteElements(formService.getApplicationCompleteElements(applicationSystemId));
-        response.setDiscretionaryAttachmentAOIds(getDiscretionaryAttachmentAOIds(application));
-        response.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
         return response;
     }
 

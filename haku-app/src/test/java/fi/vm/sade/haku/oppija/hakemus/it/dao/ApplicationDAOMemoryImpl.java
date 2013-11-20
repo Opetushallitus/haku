@@ -23,7 +23,7 @@ import com.mongodb.DBObject;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
-import fi.vm.sade.haku.oppija.ui.HakuPermissionService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;

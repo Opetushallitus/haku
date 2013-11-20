@@ -5,6 +5,7 @@ import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -16,7 +17,6 @@ import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
-import fi.vm.sade.haku.oppija.ui.HakuPermissionService;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIServiceResponse;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -78,15 +77,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
         Element element = new ElementTree(form).getChildById(elementId);
-        OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
-        officerApplicationResponse.setApplication(application);
-        officerApplicationResponse.setElement(element);
-        officerApplicationResponse.setForm(form);
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId()));
-        officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
-        officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
-        return officerApplicationResponse;
+        return new UIServiceResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
     }
 
     @Override
@@ -96,30 +89,22 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Form form = this.formService.getForm(application.getApplicationSystemId());
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId()));
-        OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
-        officerApplicationResponse.setApplication(application);
-        officerApplicationResponse.setForm(form);
+        Element element = form;
         if (!"esikatselu".equals(phaseId)) {
-            officerApplicationResponse.setElement(new ElementTree(form).getChildById(application.getPhaseId()));
-        } else {
-            officerApplicationResponse.setElement(form);
-
+            element = new ElementTree(form).getChildById(application.getPhaseId());
         }
-        officerApplicationResponse.setErrorMessages(validationResult.getErrorMessages());
-        officerApplicationResponse.addObjectToModel("preview", "esikatselu".equals(phaseId));
-        officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
-        officerApplicationResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
-        officerApplicationResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
-        officerApplicationResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanUpdateApplication(application));
-        return officerApplicationResponse;
+        UIServiceResponse uiServiceResponse =
+                new UIServiceResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
+        uiServiceResponse.addObjectToModel("preview", "esikatselu".equals(phaseId));
+        uiServiceResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
+        uiServiceResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
+        uiServiceResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanUpdateApplication(application));
+        return uiServiceResponse;
     }
 
     @Override
-    public UIServiceResponse getAdditionalInfo(String oid) throws ResourceNotFoundException, IOException {
-        OfficerAdditionalInfoResponse officerAdditionalInfoResponse = new OfficerAdditionalInfoResponse();
-        Application application = applicationService.getApplicationByOid(oid);
-        officerAdditionalInfoResponse.setApplication(application);
-        return officerAdditionalInfoResponse;
+    public UIServiceResponse getAdditionalInfo(String oid) throws ResourceNotFoundException {
+        return new UIServiceResponse(applicationService.getApplicationByOid(oid));
     }
 
     @Override
@@ -157,13 +142,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.applicationService.fillLOPChain(application, false);
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
-        OfficerApplicationPreviewResponse officerApplicationResponse = new OfficerApplicationPreviewResponse();
-        officerApplicationResponse.setApplication(application);
-        officerApplicationResponse.setElement(phase);
-        officerApplicationResponse.setForm(form);
-        officerApplicationResponse.setErrorMessages(phaseValidationResult.getErrorMessages());
-        officerApplicationResponse.addObjectToModel("koulutusinformaatioBaseUrl", koulutusinformaatioBaseUrl);
-        return officerApplicationResponse;
+        return new UIServiceResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);
     }
 
     private void checkUpdatePermission(Application application) throws ResourceNotFoundException {

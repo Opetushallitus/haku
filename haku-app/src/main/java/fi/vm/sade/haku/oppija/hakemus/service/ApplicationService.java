@@ -172,4 +172,6 @@ public interface ApplicationService {
     void addNote(final Application application, final String noteText, final boolean persist);
 
     Application activateApplication(String oid);
+
+    Application getSubmittedApplication(final String applicationSystemId, final String oid);
 }

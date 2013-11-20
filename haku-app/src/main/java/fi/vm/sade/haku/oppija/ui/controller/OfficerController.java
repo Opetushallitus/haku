@@ -22,7 +22,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
-import fi.vm.sade.haku.oppija.lomake.service.UserHolder;
+import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.haku.oppija.ui.common.UriUtil;
@@ -78,7 +78,7 @@ public class OfficerController {
     FormService formService;
 
     @Autowired
-    UserHolder userHolder;
+    UserSession userSession;
 
     @GET
     @Path("/hakemus/")
@@ -162,7 +162,7 @@ public class OfficerController {
 
         UIServiceResponse uiServiceResponse = officerUIService.updateApplication(oid,
                 new ApplicationPhase(applicationSystemId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)),
-                userHolder.getUser());
+                userSession.getUser());
 
         if (uiServiceResponse.hasErrors()) {
             return ok(new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel())).build();

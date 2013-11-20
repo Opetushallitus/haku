@@ -1,7 +1,7 @@
-package fi.vm.sade.haku.oppija.ui.service.impl;
+package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.ui.HakuPermissionService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 

@@ -27,7 +27,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
-import fi.vm.sade.haku.oppija.lomake.service.UserHolder;
+import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToFormViewPath;
@@ -77,19 +77,19 @@ public class FormController {
 
     private final FormService formService;
     private final ApplicationService applicationService;
-    private final UserHolder userHolder;
+    private final UserSession userSession;
     private final String koulutusinformaatioBaseUrl;
     private final UIService uiService;
     private final ApplicationSystemService applicationSystemService;
 
     @Autowired
     public FormController(@Qualifier("formServiceImpl") final FormService formService,
-                          final ApplicationService applicationService, final UserHolder userHolder,
+                          final ApplicationService applicationService, final UserSession userSession,
                           @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
                           final UIService uiService, ApplicationSystemService applicationSystemService) {
         this.formService = formService;
         this.applicationService = applicationService;
-        this.userHolder = userHolder;
+        this.userSession = userSession;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
         this.uiService = uiService;
         this.applicationSystemService = applicationSystemService;
@@ -109,7 +109,7 @@ public class FormController {
     public Response getApplication(
             @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
         LOGGER.debug("RedirectToLastPhase {}", new Object[]{applicationSystemId});
-        Application application = userHolder.getApplication(applicationSystemId);
+        Application application = userSession.getApplication(applicationSystemId);
         if (application.isNew()) {
             Element firstPhase = formService.getFirstPhase(applicationSystemId);
             return Response.seeOther(new URI(
@@ -131,7 +131,7 @@ public class FormController {
         if (multiValues.size() > MAX_PREFILL_PARAMETERS) {
             throw new IllegalArgumentException("Too many prefill data values");
         }
-        userHolder.addPrefillData(applicationSystemId, MultivaluedMapUtil.toSingleValueMap(multiValues));
+        userSession.addPrefillData(applicationSystemId, MultivaluedMapUtil.toSingleValueMap(multiValues));
 
         return Response.seeOther(new URI(
                 new RedirectToFormViewPath(applicationSystemId).getPath())).build();
@@ -151,7 +151,7 @@ public class FormController {
         Application application = applicationService.getApplication(applicationSystemId);
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
         Map<String, String> values = application.getVastauksetMerged();
-        values = userHolder.populateWithPrefillData(values);
+        values = userSession.populateWithPrefillData(values);
         model.put(MODEL_KEY_CATEGORY_DATA, values);
         model.put(MODEL_KEY_ELEMENT, element);
         model.put(MODEL_KEY_TEMPLATE, element.getType());
@@ -192,7 +192,7 @@ public class FormController {
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
         Element element = elementTree.getChildById(elementId);
         Map<String, String> values = application.getVastauksetMerged();
-        values = userHolder.populateWithPrefillData(values);
+        values = userSession.populateWithPrefillData(values);
         model.put(MODEL_KEY_CATEGORY_DATA, values);
         model.put(MODEL_KEY_ELEMENT, element);
         model.put(MODEL_KEY_TEMPLATE, element.getType());

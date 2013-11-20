@@ -16,7 +16,7 @@
 
 package fi.vm.sade.haku.oppija.hakemus.aspect;
 
-import fi.vm.sade.haku.oppija.lomake.service.mock.UserHolderMock;
+import fi.vm.sade.haku.oppija.lomake.service.mock.UserSessionMock;
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class LoggerAspectTest {
         public void log(Tapahtuma tapahtuma) {
 
         }
-    }, new UserHolderMock("test"));
+    }, new UserSessionMock("test"));
 
     @Test
     public void testlogSubmitApplication() throws Exception {

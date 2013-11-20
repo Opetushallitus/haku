@@ -1,8 +1,8 @@
-package fi.vm.sade.haku.oppija.ui.service.impl;
+package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import fi.vm.sade.generic.service.AbstractPermissionService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.ui.HakuPermissionService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.security.OrganisationHierarchyAuthorizer;
 import org.apache.commons.lang3.StringUtils;

@@ -78,7 +78,6 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected WebElement findByTagAndNameAndValue(final String tag, final String name, final String value) {
         WebDriver driver = seleniumContainer.getDriver();
-        System.out.println("//" + tag + "[@name='" + name + "' and @value='" + value + "']");
         return driver.findElement(new By.ByXPath("//" + tag + "[@name='" + name + "' and @value='" + value + "']"));
     }
 

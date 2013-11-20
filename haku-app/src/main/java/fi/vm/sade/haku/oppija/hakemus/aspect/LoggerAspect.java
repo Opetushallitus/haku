@@ -22,8 +22,7 @@ import fi.vm.sade.haku.oppija.common.diff.AnswersDifference;
 import fi.vm.sade.haku.oppija.common.diff.Difference;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.haku.oppija.lomake.service.UserHolder;
-import fi.vm.sade.haku.oppija.ui.service.impl.ApplicationUtil;
+import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -51,12 +50,12 @@ public class LoggerAspect {
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(LoggerAspect.class);
 
     private final Logger logger;
-    private final UserHolder userHolder;
+    private final UserSession userSession;
 
     @Autowired
-    public LoggerAspect(final Logger logger, final UserHolder userHolder) {
+    public LoggerAspect(final Logger logger, final UserSession userSession) {
         this.logger = logger;
-        this.userHolder = userHolder;
+        this.userSession = userSession;
     }
 
 
@@ -71,9 +70,9 @@ public class LoggerAspect {
             Tapahtuma t = new Tapahtuma();
 
             t.setTarget("Haku: " + applicationSystemId
-                    + ", käyttäjä: " + userHolder.getUser().getUserName() + ", hakemus oid: " + oid);
+                    + ", käyttäjä: " + userSession.getUser().getUserName() + ", hakemus oid: " + oid);
             t.setTimestamp(new Date());
-            t.setUserActsForUser("" + userHolder.getUser().getUserName());
+            t.setUserActsForUser("" + userSession.getUser().getUserName());
             t.setType("Hakemus lähetetty");
             t.setUser("Hakemus Service");
             t.addValueChange("STATE", "DRAFT", "SUBMITTED");
@@ -87,16 +86,16 @@ public class LoggerAspect {
     public void logUpdateApplication(final Application application, final ApplicationPhase applicationPhase) {
         try {
 
-            MapDifference<String, String> diffAnswers = ApplicationUtil.diffAnswers(application, applicationPhase);
+            MapDifference<String, String> diffAnswers = ApplicationDiffUtil.diffAnswers(application, applicationPhase);
             AnswersDifference answersDifference = new AnswersDifference(diffAnswers);
             List<Difference> differences = answersDifference.getDifferences();
             Tapahtuma tapahtuma = new Tapahtuma();
             tapahtuma.setTarget("hakemus: " + application.getOid() +
                     ", vaihe: " + applicationPhase.getPhaseId());
             tapahtuma.setTimestamp(new Date());
-            tapahtuma.setUserActsForUser(userHolder.getUser().getUserName());
+            tapahtuma.setUserActsForUser(userSession.getUser().getUserName());
             tapahtuma.setType("Hakemuksen muokkaus");
-            tapahtuma.setUser(userHolder.getUser().getUserName());
+            tapahtuma.setUser(userSession.getUser().getUserName());
             for (Difference difference : differences) {
                 tapahtuma.addValueChange(difference.getKey(), difference.getOldValue(), difference.getNewValue());
             }

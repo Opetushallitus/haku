@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -34,15 +35,15 @@ public class ApplicationSystemRepository {
     }
 
     public List<ApplicationSystem> findAll(String... includeFields) {
-        log.debug("Finding all ApplicationSystems {}", includeFields);
+        log.debug("Find all ApplicationSystems (include fields: {})", Arrays.toString(includeFields));
         Query q = new Query();
         for (String includeField : includeFields) {
             q.fields().include(includeField);
 
         }
-        List<ApplicationSystem> systems = mongoOperations.find(q, ApplicationSystem.class);
-        log.debug("Found {} systems", systems.size());
-        return systems;
+        List<ApplicationSystem> applicationSystems = mongoOperations.find(q, ApplicationSystem.class);
+        log.debug("Found {} applicationSystems", applicationSystems.size());
+        return applicationSystems;
     }
 
     public List<ApplicationSystem> findBySemesterAndYear(String semester, String year) {
