@@ -3,6 +3,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaam
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Ordering;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.predicate.ComprehensiveSchools;
@@ -11,6 +12,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaami
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.predicate.Languages;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.addRequiredValidator;
@@ -73,7 +75,14 @@ public class GradeGridHelper {
     }
 
     public List<SubjectRow> getNotLanguageSubjects() {
-        return ImmutableList.copyOf(
+        Ordering<SubjectRow> fixedOrdering = new Ordering<SubjectRow>() {
+            List<String> order = Arrays.asList("MA", "BI", "GE", "FY", "KE", "TE", "KT", "HI", "YH", "MU", "KU", "KS", "LI", "FI", "PS");
+
+            public int compare(SubjectRow o1, SubjectRow o2) {
+                return Integer.valueOf(order.indexOf(o1.getId())).compareTo(order.indexOf(o2.getId()));
+            }
+        };
+        return fixedOrdering.sortedCopy(
                 Iterables.filter(Iterables.filter(subjects, Predicates.not(new Languages())),
                         Predicates.not(new Ids<SubjectRow>("AI", "AI2"))));
 
