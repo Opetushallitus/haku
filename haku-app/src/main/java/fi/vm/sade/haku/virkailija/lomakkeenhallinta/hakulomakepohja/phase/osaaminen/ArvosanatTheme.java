@@ -3,13 +3,14 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaam
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.orStr;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
 public final class ArvosanatTheme {
 
@@ -26,20 +27,23 @@ public final class ArvosanatTheme {
                 ARVOSANAT_THEME_ID,
                 createI18NText("form.arvosanat.otsikko", formMessages),
                 true);
+        ElementUtil.setVerboseHelp(arvosanatTheme, "form.arvosanat.otsikko.verboseHelp", verboseHelps);
 
         GradesTable gradesTablePK = new GradesTable(koodistoService, true, formMessages, formErrors, verboseHelps);
         GradesTable gradesTableYO = new GradesTable(koodistoService, false, formMessages, formErrors, verboseHelps);
 
-        String pkAnwers = orStr(OppijaConstants.PERUSKOULU, OppijaConstants.OSITTAIN_YKSILOLLISTETTY,
-                OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY, OppijaConstants.YKSILOLLISTETTY
-        );
-        RelatedQuestionRule relatedQuestionPK = new RelatedQuestionRule("rule_grade_pk", RELATED_ELEMENT_ID,
-                pkAnwers, false);
+        // Peruskoulu
         GradeGrid grid_pk = gradesTablePK.createGradeGrid("grid_pk", formMessages, formErrors, verboseHelps);
         grid_pk.setHelp(createI18NText("form.arvosanat.help", formMessages));
-        relatedQuestionPK.addChild(grid_pk);
-        arvosanatTheme.addChild(relatedQuestionPK);
+        Expr vanhaPkTodistus = new And(
+                new Not(new Equals(new Variable("PK_PAATTOTODISTUSVUOSI"), new Value("2014"))),
+                atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.PERUSKOULU,
+                        OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY, OppijaConstants.YKSILOLLISTETTY, OppijaConstants.OSITTAIN_YKSILOLLISTETTY));
+        RelatedQuestionComplexRule relatedQuestionPk = new RelatedQuestionComplexRule("rule_grade_pk", vanhaPkTodistus);
+        relatedQuestionPk.addChild(grid_pk);
+        arvosanatTheme.addChild(relatedQuestionPk);
 
+        // Lukio
         String yoAnwers = orStr(OppijaConstants.YLIOPPILAS);
         RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", RELATED_ELEMENT_ID,
                 yoAnwers, false);
@@ -48,14 +52,17 @@ public final class ArvosanatTheme {
         relatedQuestionLukio.addChild(grid_yo);
         arvosanatTheme.addChild(relatedQuestionLukio);
 
-        RelatedQuestionRule relatedQuestionEiTutkintoa = new RelatedQuestionRule("rule_grade_no", RELATED_ELEMENT_ID,
-                orStr("5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO), false);
-        relatedQuestionEiTutkintoa.addChild(
-                new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta", formMessages)));
-        arvosanatTheme.addChild(relatedQuestionEiTutkintoa);
+        // Ei kysytä arvosanoja
+        Expr tuorePkTodistus = new Equals(new Variable("PK_PAATTOTODISTUSVUOSI"), new Value("2014"));
+        Expr eiTutkintoa = atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, "5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO);
 
-        ElementUtil.setVerboseHelp(arvosanatTheme, "form.arvosanat.otsikko.verboseHelp", verboseHelps);
+        RelatedQuestionComplexRule eiNayteta = new RelatedQuestionComplexRule("rule_grade_no", new Or(tuorePkTodistus, eiTutkintoa));
+        eiNayteta.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta", formMessages)));
+
+        arvosanatTheme.addChild(eiNayteta);
+
         return arvosanatTheme;
+
     }
 
 }

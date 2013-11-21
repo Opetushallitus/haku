@@ -290,7 +290,6 @@ public final class ElementUtil {
             return current;
         }
     }
-
     public static Expr atLeastOneValueEqualsToVariable(final String variable, final String... values) {
         if (values.length == 1) {
             return new Equals(new Value(values[0]), new Variable(variable));
