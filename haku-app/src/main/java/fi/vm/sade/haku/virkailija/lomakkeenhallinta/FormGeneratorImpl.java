@@ -7,7 +7,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.LisahakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.YhteishakuKevat;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.YhteishakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -39,7 +38,9 @@ public class FormGeneratorImpl implements FormGenerator {
                 form = LisahakuSyksy.generateForm(as, koodistoService);
                 applicationCompleteElements = LisahakuSyksy.generateApplicationCompleteElements();
             } else {
-                if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
+                form = YhteishakuKevat.generateForm(as, koodistoService);
+                applicationCompleteElements = YhteishakuKevat.generateApplicationCompleteElements();
+                /*if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
                     form = YhteishakuSyksy.generateForm(as, koodistoService);
                     applicationCompleteElements = YhteishakuSyksy.generateApplicationCompleteElements();
                 } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
@@ -48,7 +49,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 } else {
                     //skip
                     continue;
-                }
+                } */
             }
             asList.add(new ApplicationSystemBuilder().addId(as.getId()).addForm(form)
                     .addName(as.getName()).addApplicationPeriods(as.getApplicationPeriods())
