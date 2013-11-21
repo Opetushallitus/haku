@@ -103,6 +103,10 @@ public class HakutoiveetPhaseYhteishakuKevat {
                 FORM_MESSAGES), "oppimisvaikudet");
         discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset",
                 FORM_MESSAGES), "sosiaalisetsyyt");
+        discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.todistustenvertailuvaikeudet",
+                FORM_MESSAGES), "todistustenvertailuvaikeudet");
+        discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.todistustenpuuttuminen",
+                FORM_MESSAGES), "todistustenpuuttuminen");
         addRequiredValidator(discretionaryFollowUp, FORM_ERRORS);
 
         RelatedQuestionRule discretionaryFollowUpRule = new RelatedQuestionRule(index + "-discretionary-follow-up-rule",
