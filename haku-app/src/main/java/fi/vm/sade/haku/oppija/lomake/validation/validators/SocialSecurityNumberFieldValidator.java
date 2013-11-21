@@ -1,0 +1,120 @@
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
+package fi.vm.sade.haku.oppija.lomake.validation.validators;
+
+import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
+import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
+public class SocialSecurityNumberFieldValidator extends FieldValidator {
+
+    // Sonarin mukaan tässä luokassa on isosti taikanumeroita. Niin on.
+    // Hetussa on määrättyjä asioita tarkoittavia numeroita määrätyillä
+    // paikoilla, enkä ala tehdä niitä varten erityisjärjestelyjä.
+
+    public static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}[aA+-][0-9]{3}([0-9]|[a-z]|[A-Z]))";
+    public static final String GENERIC_ERROR_MESSAGE = "henkilotiedot.hetu.virhe";
+    private final Pattern socialSecurityNumberPattern;
+    private static final String NOT_A_DATE_ERROR = "henkilotiedot.hetu.eiPvm";
+    private static final String DOB_IN_FUTURE = "henkilotiedot.hetu.tulevaisuudessa";
+    private static Map<String, Integer> centuries = new HashMap<String, Integer>();
+    private DateFormat fmt;
+    private static String[] checks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C",
+            "D", "E", "F", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T", "U", "V", "W", "X", "Y"};
+
+    static {
+        centuries.put("+", 1800); // NOSONAR
+        centuries.put("-", 1900); // NOSONAR
+        centuries.put("a", 2000); // NOSONAR
+        centuries.put("A", 2000); // NOSONAR
+    }
+
+    public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId) {
+        super(socialSecurityNumberId, ElementUtil.createI18NText(GENERIC_ERROR_MESSAGE, "form_errors_yhteishaku_kevat"));
+        this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
+        fmt = new SimpleDateFormat("ddMMyyyy");
+        fmt.setLenient(false);
+    }
+
+    @Override
+    public ValidationResult validate(final ValidationInput validationInput) {
+        String socialSecurityNumber = validationInput.getValues().get(fieldName);
+        ValidationResult validationResult = new ValidationResult();
+        if (socialSecurityNumber != null) {
+            Matcher matcher = socialSecurityNumberPattern.matcher(socialSecurityNumber);
+            if (!matcher.matches()) {
+                validationResult = new ValidationResult(fieldName,
+                        ElementUtil.createI18NText(GENERIC_ERROR_MESSAGE, "form_errors_yhteishaku_kevat"));
+            }
+            if (!validationResult.hasErrors()) {
+                validationResult = checkDOB(socialSecurityNumber);
+            }
+            if (!validationResult.hasErrors()) {
+                validationResult = checkCheckSum(socialSecurityNumber);
+            }
+        }
+        return validationResult;
+    }
+
+    private ValidationResult checkCheckSum(String socialSecurityNumber) {
+        ValidationResult result = new ValidationResult();
+        String dob = socialSecurityNumber.substring(0, 6); // NOSONAR
+        String id = socialSecurityNumber.substring(7, 10); // NOSONAR
+        String check = socialSecurityNumber.substring(10, 11); // NOSONAR
+        int ssnNumber = Integer.valueOf(dob + id);
+        String myCheck = checks[ssnNumber % 31]; // NOSONAR
+        if (!check.equalsIgnoreCase(myCheck)) {
+            result = new ValidationResult(getFieldName(), ElementUtil.createI18NText(GENERIC_ERROR_MESSAGE, "form_errors_yhteishaku_kevat"));
+        }
+        return result;
+    }
+
+    /**
+     * Tarkistaa, että annetussa hetussa on tunnistettava päivämäärä, ja että päivämäärä on menneisyydessä.
+     *
+     * @param socialSecurityNumber tarkastettavaksi
+     * @return ValidationResult-olio mahdollisine virheviesteineen.
+     */
+    private ValidationResult checkDOB(String socialSecurityNumber) {
+        ValidationResult result = new ValidationResult();
+        String dayAndMonth = socialSecurityNumber.substring(0, 4); // NOSONAR
+        String year = Integer.toString((centuries.get(socialSecurityNumber.substring(6, 7)) + Integer // NOSONAR
+                .valueOf(socialSecurityNumber.substring(4, 6)))); // NOSONAR
+        Date dob = null;
+        try {
+            dob = fmt.parse(dayAndMonth + year);
+        } catch (ParseException e) {
+            result = new ValidationResult(fieldName, ElementUtil.createI18NText(NOT_A_DATE_ERROR,
+                    "form_errors_yhteishaku_kevat"));
+        }
+        if (dob != null && dob.after(new Date())) {
+            result = new ValidationResult(fieldName, ElementUtil.createI18NText(DOB_IN_FUTURE,
+                    "form_errors_yhteishaku_kevat"));
+        }
+        return result;
+    }
+}

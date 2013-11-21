@@ -29,6 +29,7 @@
     <title><fmt:message key="virkailija.haku.hakijatiedot"/></title>
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/jquery.cookie.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>

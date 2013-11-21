@@ -17,6 +17,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <section id="searchSection">
     <form id="searchform">
         <input type="hidden" id="lopoid" name="lopoid">
@@ -27,12 +28,42 @@
             <table class="form-layout-table width-100">
                 <tr>
                     <td>
-                        <label for="application-state"><fmt:message key="virkailija.hakemus.hae.hakemuksia"/></label>
+                        <label for="entry"><fmt:message key="virkailija.hakemus.hae.hakemuksia"/></label>
 
                         <div class="field-search-containerbox">
                             <input type="text" id="entry" name="entry" class="search width-60" placeholder=""/>
                         </div>
                         <small><fmt:message key="virkailija.hakemus.hae.otsikko"/></small>
+                    </td>
+                    <td>
+                        <label for="hakukausi"><fmt:message key="virkailija.hakemus.hakukausi"/></label>
+                        <div class="field-search-containerbox">
+                            <select id="hakukausi">
+                                <option value="">&nbsp;</option>
+                                <c:forEach var="option" items="${it.hakukausiOptions}">
+                                    <option value="${option.value}" ><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
+                                </c:forEach>
+                            </select>
+                            <input type="text" id="hakukausiVuosi" name="hakukausiVuosi" placeholder=""/>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="field-search-containerbox">
+                            Ze Lähtökoulu hier gehen.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="application-system"><fmt:message key="virkailija.hakemus.haku"/></label>
+                        <div class="field-search-containerbox">
+                            <select id="application-system">
+                                <option value="">&nbsp;</option>
+                                <c:forEach var="applicationSystem" items="${it.applicationSystems}">
+                                    <option <c:if test="${applicationSystem == it.defaultAS}">selected="selected"</c:if> value="${applicationSystem.id}"><haku:i18nText value="${applicationSystem.name}"/>&nbsp;</option>
+                                </c:forEach>
+                            </select>
+                        </div>
                     </td>
                     <td>
                         <label for="application-state"><fmt:message
@@ -50,6 +81,13 @@
                                         key="virkailija.hakemus.tila.yksiloimatta"/></option>
                             </select>
                         </div>
+                        <div class="field-search-containerbox">
+                            <input type="checkbox" id="discretionary-only"/>
+                            <label for="discretionary-only">Näytä vain harkinnanvaraisesti hakeneet</label>
+                        </div>
+                    </td>
+                    <td>
+
                     </td>
                 </tr>
 
@@ -62,6 +100,10 @@
                             <input class="width-60" type="text" id="application-preference"
                                    placeholder="<fmt:message key="virkailija.hakemus.hakukohde.otsikko.kentta"/>"/>
                         </div>
+                    </td>
+
+                    <td>
+
                     </td>
 
                     <td class="padding-top-4">
@@ -98,11 +140,10 @@
             <table id="application-table" class="virkailija-table-1">
                 <thead>
                 <tr>
-                    <td><fmt:message key="virkailija.hakemus.sukunimi"/></td>
-                    <td><fmt:message key="virkailija.hakemus.etunimi"/></td>
-                    <td><fmt:message key="virkailija.hakemus.henkilotunnus"/></td>
-                    <td><fmt:message key="virkailija.hakemus.hakemusnro"/></td>
-                    <td><fmt:message key="virkailija.hakemus.hakemuksen.tila"/></td>
+                    <td id="application-table-header-fullName" class="sorted-not"><fmt:message key="virkailija.hakemus.nimi"/></td>
+                    <td id="application-table-header-ssn" class="sorted-not"><fmt:message key="virkailija.hakemus.henkilotunnus"/></td>
+                    <td id="application-table-header-applicationOid" class="sorted-not"><fmt:message key="virkailija.hakemus.hakemusnro"/></td>
+                    <td id="application-table-header-state" class="sorted-not"><fmt:message key="virkailija.hakemus.hakemuksen.tila"/></td>
                 </tr>
                 </thead>
                 <tbody>

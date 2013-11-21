@@ -28,6 +28,6 @@
                                   ignore-resource-not-found="true"/>
 
     <context:annotation-config/>
-    <context:component-scan base-package="fi.vm.sade.oppija"/>
+    <context:component-scan base-package="fi.vm.sade.haku.oppija"/>
 
 </beans>

@@ -1,6 +1,6 @@
 <%@ tag description="Outputs elements label" body-content="empty" pageEncoding="UTF-8" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
-<%@ attribute name="element" required="true" type="fi.vm.sade.oppija.lomake.domain.elements.Element" %>
+<%@ attribute name="element" required="true" type="fi.vm.sade.haku.oppija.lomake.domain.elements.Element" %>
 <%@ attribute name="styleBaseClass" required="false" type="java.lang.String" %>
 <%@ tag trimDirectiveWhitespaces="true" %>
 <%--
