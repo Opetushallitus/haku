@@ -33,7 +33,7 @@ public interface UIService {
      * @return ui service response containing model data
      * @throws ResourceNotFoundException
      */
-    UIServiceResponse getApplicationPrint(final String oid) throws ResourceNotFoundException;
+    ModelResponse getApplicationPrint(final String oid) throws ResourceNotFoundException;
 
     /**
      * Can be used to build the model of the user application sent/complete print view
@@ -43,9 +43,9 @@ public interface UIService {
      * @return
      * @throws ResourceNotFoundException
      */
-    UIServiceResponse getApplicationPrint(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
+    ModelResponse getApplicationPrint(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
 
-    UIServiceResponse getApplicationComplete(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
+    ModelResponse getApplicationComplete(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
 
     Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId) throws ResourceNotFoundException;
 }

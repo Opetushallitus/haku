@@ -18,7 +18,7 @@
   --%>
 <c:remove var="value" scope="page"/>
 <c:forEach var="option" items="${element.options}" varStatus="status">
-    <c:if test="${(categoryData[element.id] eq option.value)}">
+    <c:if test="${(answers[element.id] eq option.value)}">
         <c:set var="value" value="${option}" scope="page"/>
     </c:if>
 </c:forEach>

@@ -18,11 +18,6 @@ package fi.vm.sade.haku.oppija.lomake.domain.builders;
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 
-/**
- * @author jukka
- * @version 9/7/121:10 PM}
- * @since 1.1
- */
 public class ElementBuilder {
     protected final Element element;
 
@@ -30,9 +25,9 @@ public class ElementBuilder {
         this.element = element;
     }
 
-    public ElementBuilder withChild(Element... child) {
-        for (Element category : child) {
-            element.addChild(category);
+    public ElementBuilder withChild(Element... children) {
+        for (Element child : children) {
+            element.addChild(child);
         }
         return this;
     }

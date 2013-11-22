@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<div class="popup-dialog-wrapper" id="postProcessApplication" style="z-index:1000;display:none;">
+<div class="popup-dialog-wrapper" id="postProcessApplicationDialog" style="z-index:1000;display:none;">
     <span class="popup-dialog-close">&#8203;</span>
 
     <div class="popup-dialog">
@@ -21,7 +21,7 @@
                     <button class="small" name="nav-send" value="true" data-po-hide="postProcess">
                         <fmt:message key="virkailija.hakemus.syota.peru"/>
                     </button>
-                    <button id="submit_confirm" class="primary set-right small" name="nav-send" type="submit" value="true">
+                    <button id="submit-dialog" class="primary set-right small" type="submit">
                         <fmt:message key="virkailija.hakemus.syota.laheta"/>
                     </button>
                 </div>

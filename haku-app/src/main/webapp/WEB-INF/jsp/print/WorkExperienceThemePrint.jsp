@@ -2,7 +2,7 @@
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <c:set var="show" value="false"/>
 <c:forEach var="key" items="${element.aoEducationDegreeKeys}">
-    <c:if test="${categoryData[key] eq element.requiredEducationDegree}">
+    <c:if test="${answers[key] eq element.requiredEducationDegree}">
         <c:set var="show" value="true"/>
     </c:if>
 </c:forEach>

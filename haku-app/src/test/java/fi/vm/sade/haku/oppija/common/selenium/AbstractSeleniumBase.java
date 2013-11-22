@@ -91,6 +91,9 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
             driver.findElement(new By.ById(id)).click();
         }
     }
+    protected String getTrimmedTextById(final String id) {
+        return seleniumContainer.getDriver().findElement(By.id(id)).getText().trim();
+    }
 
     protected void selectByValue(final String id, final String value) {
         Select select = new Select(seleniumContainer.getDriver().findElement(new By.ById(id)));

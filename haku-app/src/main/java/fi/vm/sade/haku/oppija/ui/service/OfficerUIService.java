@@ -9,22 +9,22 @@ import java.io.IOException;
 import java.util.Map;
 
 public interface OfficerUIService {
-    UIServiceResponse getApplicationElement(final String oid,
+    ModelResponse getApplicationElement(final String oid,
                                             final String phaseId,
                                             final String elementId,
                                             final boolean validate)
             throws ResourceNotFoundException;
 
-    UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws ResourceNotFoundException;
+    ModelResponse getValidatedApplication(final String oid, final String phaseId) throws ResourceNotFoundException;
 
-    UIServiceResponse getAdditionalInfo(final String oid) throws ResourceNotFoundException, IOException;
+    ModelResponse getAdditionalInfo(final String oid) throws ResourceNotFoundException, IOException;
 
-    UIServiceResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user)
+    ModelResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user)
             throws ResourceNotFoundException;
 
     Application getApplicationWithLastPhase(final String oid) throws ResourceNotFoundException;
 
-    UIServiceResponse getOrganizationAndLearningInstitutions();
+    ModelResponse getOrganizationAndLearningInstitutions();
 
     void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo)
             throws ResourceNotFoundException;

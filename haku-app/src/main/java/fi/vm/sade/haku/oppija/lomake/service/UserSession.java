@@ -30,11 +30,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-@Component("UserSession")
+@Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class UserSession implements Serializable {
+public class UserSession implements Serializable{
 
     private static final long serialVersionUID = 8093993846121110534L;
+
+    public static final int MAX_PREFILL_PARAMETERS = 100;
 
     private final Map<String, Application> applications = new ConcurrentHashMap<String, Application>();
     private final Map<String, String> userPrefillData = new ConcurrentHashMap<String, String>();
@@ -46,6 +48,9 @@ public class UserSession implements Serializable {
     }
 
     public void addPrefillData(final String applicationSystemId, final Map<String, String> data) {
+        if (data.size() > MAX_PREFILL_PARAMETERS) {
+            throw new IllegalArgumentException("Too many prefill data values");
+        }
         this.applications.remove(applicationSystemId);
         this.userPrefillData.clear();
         this.userPrefillData.putAll(data);

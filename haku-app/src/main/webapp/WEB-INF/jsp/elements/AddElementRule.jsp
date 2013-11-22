@@ -20,7 +20,7 @@
 <c:set var="styleBaseClass" value="form-row"/>
 <div id="${element.id}" class="${styleBaseClass}">
     <c:choose>
-        <c:when test="${empty categoryData[element.relatedElementId]}">
+        <c:when test="${empty answers[element.relatedElementId]}">
             <div class="${styleBaseClass}-content ${element.id}-removable">
                 <a id="${element.id}-link" href="#"><haku:i18nText value="${element.text}"/></a>
             </div>
@@ -61,7 +61,7 @@
     </c:choose>
     <div class="rule-childs clear">
         <c:choose>
-            <c:when test="${not empty categoryData[element.relatedElementId]}">
+            <c:when test="${not empty answers[element.relatedElementId]}">
                 <haku:viewChilds element="${element}"/>
             </c:when>
         </c:choose>

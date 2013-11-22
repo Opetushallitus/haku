@@ -33,8 +33,8 @@ import fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToFormViewPath;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
+import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
-import fi.vm.sade.haku.oppija.ui.service.UIServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +67,6 @@ public class FormController {
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
     private static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
-    public static final int MAX_PREFILL_PARAMETERS = 100;
-    public static final String MODEL_KEY_ELEMENT = "element";
-    public static final String MODEL_KEY_TEMPLATE = "template";
-    public static final String MODEL_KEY_FORM = "form";
-    public static final String MODEL_KEY_APPLICATION_SYSTEM_ID = "applicationSystemId";
-    public static final String MODEL_KEY_CATEGORY_DATA = "categoryData";
-    public static final String MODEL_KEY_KOULUTUSINFORMAATIO_BASE_URL = "koulutusinformaatioBaseUrl";
 
     private final FormService formService;
     private final ApplicationService applicationService;
@@ -99,9 +92,10 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable listApplicationSystems() {
         LOGGER.debug("listApplicationSystems");
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("applicationSystems", applicationSystemService.getAllApplicationSystems("id", "name", "applicationPeriods"));
-        return new Viewable(APPLICATION_SYSTEM_LIST_VIEW, model);
+        ModelResponse modelResponse = new ModelResponse();
+        modelResponse.addObjectToModel(ModelResponse.APPLICATION_SYSTEMS,
+                applicationSystemService.getAllApplicationSystems("id", "name", "applicationPeriods"));
+        return new Viewable(APPLICATION_SYSTEM_LIST_VIEW, modelResponse.getModel());
     }
 
     @GET
@@ -128,11 +122,7 @@ public class FormController {
     public Response prefillForm(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException {
-        if (multiValues.size() > MAX_PREFILL_PARAMETERS) {
-            throw new IllegalArgumentException("Too many prefill data values");
-        }
         userSession.addPrefillData(applicationSystemId, MultivaluedMapUtil.toSingleValueMap(multiValues));
-
         return Response.seeOther(new URI(
                 new RedirectToFormViewPath(applicationSystemId).getPath())).build();
     }
@@ -147,19 +137,18 @@ public class FormController {
         Form activeForm = formService.getActiveForm(applicationSystemId);
         ElementTree elementTree = new ElementTree(activeForm);
         Element element = elementTree.getChildById(phaseId);
-        Map<String, Object> model = new HashMap<String, Object>();
         Application application = applicationService.getApplication(applicationSystemId);
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
         Map<String, String> values = application.getVastauksetMerged();
         values = userSession.populateWithPrefillData(values);
-        model.put(MODEL_KEY_CATEGORY_DATA, values);
-        model.put(MODEL_KEY_ELEMENT, element);
-        model.put(MODEL_KEY_TEMPLATE, element.getType());
-        model.put(MODEL_KEY_FORM, activeForm);
-        model.put(MODEL_KEY_APPLICATION_SYSTEM_ID, applicationSystemId);
-        model.put(MODEL_KEY_KOULUTUSINFORMAATIO_BASE_URL, koulutusinformaatioBaseUrl);
-
-        return new Viewable(ROOT_VIEW, model);
+        ModelResponse modelResponse = new ModelResponse();
+        modelResponse.addAnswers(values);
+        modelResponse.setElement(element);
+        modelResponse.setForm(activeForm);
+        modelResponse.setApplicationSystemId(applicationSystemId);
+        modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
+        System.out.println(modelResponse);
+        return new Viewable(ROOT_VIEW, modelResponse.getModel());
     }
 
     @GET
@@ -167,15 +156,14 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) {
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        Map<String, Object> model = new HashMap<String, Object>();
         Application application = applicationService.getApplication(applicationSystemId);
         Map<String, String> values = application.getVastauksetMerged();
-        model.put(MODEL_KEY_CATEGORY_DATA, values);
-        model.put(MODEL_KEY_ELEMENT, activeForm);
-        model.put(MODEL_KEY_TEMPLATE, activeForm.getType());
-        model.put(MODEL_KEY_FORM, activeForm);
-        model.put(MODEL_KEY_APPLICATION_SYSTEM_ID, applicationSystemId);
-        return new Viewable(ROOT_VIEW, model);
+        ModelResponse modelResponse = new ModelResponse();
+        modelResponse.addAnswers(values);
+        modelResponse.setElement(activeForm);
+        modelResponse.setForm(activeForm);
+        modelResponse.setApplicationSystemId(applicationSystemId);
+        return new Viewable(ROOT_VIEW, modelResponse.getModel());
     }
 
     @GET
@@ -187,20 +175,14 @@ public class FormController {
         LOGGER.debug("getPhaseElement {}, {}", applicationSystemId, phaseId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
         ElementTree elementTree = new ElementTree(activeForm);
-        Map<String, Object> model = new HashMap<String, Object>();
         Application application = applicationService.getApplication(applicationSystemId);
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
-        Element element = elementTree.getChildById(elementId);
-        Map<String, String> values = application.getVastauksetMerged();
-        values = userSession.populateWithPrefillData(values);
-        model.put(MODEL_KEY_CATEGORY_DATA, values);
-        model.put(MODEL_KEY_ELEMENT, element);
-        model.put(MODEL_KEY_TEMPLATE, element.getType());
-        model.put(MODEL_KEY_FORM, activeForm);
-        model.put(MODEL_KEY_APPLICATION_SYSTEM_ID, applicationSystemId);
-        model.put(MODEL_KEY_KOULUTUSINFORMAATIO_BASE_URL, koulutusinformaatioBaseUrl);
+        ModelResponse modelResponse = new ModelResponse(application, activeForm, elementTree.getChildById(elementId));
+        modelResponse.addAnswers(userSession.populateWithPrefillData(application.getVastauksetMerged()));
+        modelResponse.setApplicationSystemId(applicationSystemId);
+        modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
 
-        return new Viewable(ROOT_VIEW, model);
+        return new Viewable(ROOT_VIEW, modelResponse.getModel());
     }
 
     @POST
@@ -213,19 +195,17 @@ public class FormController {
                                 final MultivaluedMap<String, String> multiValues) {
         LOGGER.debug("updateRules {}, {}, {}", applicationSystemId, phaseId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        Element element = new ElementTree(activeForm).getChildById(elementId);
-
-        Map<String, Object> model = new HashMap<String, Object>();
         Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
         values.putAll(MultivaluedMapUtil.toSingleValueMap(multiValues));
-        model.put(MODEL_KEY_CATEGORY_DATA, values);
-        model.put(MODEL_KEY_ELEMENT, element);
-        model.put(MODEL_KEY_TEMPLATE, element.getType());
-        model.put(MODEL_KEY_FORM, activeForm);
-        model.put(MODEL_KEY_APPLICATION_SYSTEM_ID, applicationSystemId);
-        model.put(MODEL_KEY_KOULUTUSINFORMAATIO_BASE_URL, koulutusinformaatioBaseUrl);
 
-        return new Viewable(ROOT_VIEW, model);
+        ModelResponse modelResponse = new ModelResponse();
+        modelResponse.addAnswers(values);
+        modelResponse.setElement(new ElementTree(activeForm).getChildById(elementId));
+        modelResponse.setForm(activeForm);
+        modelResponse.setApplicationSystemId(applicationSystemId);
+        modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
+
+        return new Viewable(ROOT_VIEW, modelResponse.getModel());
     }
 
     @GET
@@ -261,8 +241,7 @@ public class FormController {
         Form activeForm = formService.getActiveForm(applicationSystemId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(
                 new ApplicationPhase(applicationSystemId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)));
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put(MODEL_KEY_APPLICATION_SYSTEM_ID, applicationSystemId);
+
         if (applicationState.isValid()) {
             return Response.seeOther(new URI(
                     new RedirectToPhaseViewPath(applicationSystemId,
@@ -270,13 +249,13 @@ public class FormController {
 
         } else {
             LOGGER.debug("Invalid fields: {}", applicationState.getErrors().keySet());
-            model.putAll(applicationState.getModelObjects());
-            Element phase = new ElementTree(activeForm).getChildById(phaseId);
-            model.put(MODEL_KEY_ELEMENT, phase);
-            model.put(MODEL_KEY_FORM, activeForm);
-            model.put(MODEL_KEY_TEMPLATE, phase.getType());
-            model.put(MODEL_KEY_KOULUTUSINFORMAATIO_BASE_URL, koulutusinformaatioBaseUrl);
-            return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, model)).build();
+            ModelResponse modelResponse = new ModelResponse();
+            modelResponse.addObjectsToModel(applicationState.getModelObjects());
+            modelResponse.setApplicationSystemId(applicationSystemId);
+            modelResponse.setElement(new ElementTree(activeForm).getChildById(phaseId));
+            modelResponse.setForm(activeForm);
+            modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
+            return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, modelResponse.getModel())).build();
         }
 
     }
@@ -288,7 +267,7 @@ public class FormController {
                                 @PathParam("oid") final String oid) throws ResourceNotFoundException {
 
         LOGGER.debug("getComplete {}, {}", new Object[]{applicationSystemId});
-        UIServiceResponse response = uiService.getApplicationComplete(applicationSystemId, oid);
+        ModelResponse response = uiService.getApplicationComplete(applicationSystemId, oid);
         return new Viewable(VALMIS_VIEW, response.getModel());
     }
 
@@ -298,8 +277,8 @@ public class FormController {
     public Viewable getPrint(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                              @PathParam("oid") final String oid) throws ResourceNotFoundException {
         LOGGER.debug("getPrint {}, {}", new Object[]{applicationSystemId, oid});
-        UIServiceResponse uiServiceResponse = uiService.getApplicationPrint(applicationSystemId, oid);
-        return new Viewable(PRINT_VIEW, uiServiceResponse.getModel());
+        ModelResponse modelResponse = uiService.getApplicationPrint(applicationSystemId, oid);
+        return new Viewable(PRINT_VIEW, modelResponse.getModel());
     }
 
     @GET
@@ -322,8 +301,8 @@ public class FormController {
         Element element = new ElementTree(activeForm).getChildById(gradeGridId);
         GradeGrid gradeGrid = (GradeGrid) element;
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put(MODEL_KEY_ELEMENT, gradeGrid);
-        model.put(MODEL_KEY_TEMPLATE, "gradegrid/additionalLanguageRow");
+        model.put(ModelResponse.ELEMENT, gradeGrid);
+        model.put(ModelResponse.TEMPLATE, "gradegrid/additionalLanguageRow");
         return new Viewable(ROOT_VIEW, model);
     }
 }

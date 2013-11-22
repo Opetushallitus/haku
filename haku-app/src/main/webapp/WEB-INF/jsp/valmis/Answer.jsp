@@ -1,2 +1,2 @@
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-        <c:out value="${categoryData[element.id]}"/>
+        <c:out value="${answers[element.id]}"/>

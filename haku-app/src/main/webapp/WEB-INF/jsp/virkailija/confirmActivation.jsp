@@ -22,7 +22,7 @@
                     <button class="small" name="nav-send" value="true" data-po-clear-on-hide="activation-reason" data-po-hide="confirmActivation">
                         <fmt:message key="lomake.send.confirm.no"/>
                     </button>
-                    <button id="submit_confirm" class="primary set-right small" name="nav-send" type="submit" value="true">
+                    <button id="conform-activation" class="primary set-right small" type="submit">
                         <fmt:message key="lomake.send.confirm.yes"/>
                     </button>
                 </div>

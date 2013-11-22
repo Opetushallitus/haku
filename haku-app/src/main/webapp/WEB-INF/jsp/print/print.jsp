@@ -8,7 +8,7 @@
 <fmt:setBundle basename="messages" scope="session"/>
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="application" value="${it.application}" scope="request"/>
-<c:set var="categoryData" value="${it.application.vastauksetMerged}" scope="request"/>
+<c:set var="answers" value="${it.application.vastauksetMerged}" scope="request"/>
 <c:set var="phase" value="${it.phase}" scope="request"/>
 <c:set var="print" value="true" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
@@ -27,7 +27,7 @@
 <header>
     <h1><haku:i18nText value="${form.i18nText}"/></h1>
 
-    <h2><c:out value="${categoryData['Etunimet']}" escapeXml="true"/>&nbsp;<c:out value="${categoryData['Sukunimi']}"
+    <h2><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out value="${answers['Sukunimi']}"
                                                                                   escapeXml="true"/></h2>
 
     <p><fmt:message key="lomake.tulostus.vastaanotettu"/>&nbsp;

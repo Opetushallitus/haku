@@ -21,7 +21,7 @@
             value="${element.i18nText}"/><haku:popup element="${element}"/></legend>
     <div class="${styleBaseClass}-content">
         <haku:help element="${element}"/>
-        <c:set var="value" value="${(empty value) ? categoryData[element.id] : value}"/>
+        <c:set var="value" value="${(empty value) ? answers[element.id] : value}"/>
         <c:forEach var="option" items="${element.options}" varStatus="status">
             <haku:errorMessage id="${option.id}"/>
             <div class="field-container-radio">

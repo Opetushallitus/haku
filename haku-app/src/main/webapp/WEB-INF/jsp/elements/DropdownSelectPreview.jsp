@@ -17,7 +17,7 @@
   --%>
 
 <c:forEach var="option" items="${element.options}">
-    <c:if test="${(categoryData[element.id] eq option.value)}">
+    <c:if test="${(answers[element.id] eq option.value)}">
         <c:set var="value" value="${option}"/>
     </c:if>
 </c:forEach>

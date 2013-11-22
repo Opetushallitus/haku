@@ -25,7 +25,7 @@
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="oid" value="${it.oid}" scope="request"/>
 <c:set var="application" value="${it.application}" scope="request"/>
-<c:set var="categoryData" value="${it.application.vastauksetMerged}" scope="request"/>
+<c:set var="answers" value="${it.application.vastauksetMerged}" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
 <html>
@@ -78,11 +78,11 @@
         <virkailija:headerButtons oid="${application.oid}" preview="${preview}"/>
 
         <div class="grid16-16">
-            <h3><c:out value="${categoryData['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
-                    value="${categoryData['Sukunimi']}" escapeXml="true"/></h3>
+            <h3><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
+                    value="${answers['Sukunimi']}" escapeXml="true"/></h3>
             <table class="margin-top-2">
                 <tr>
-                    <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}"/>
+                    <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}" cellId="infocell_oid"/>
                     <c:if test="${application.state eq 'ACTIVE'}">
                         <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
                     </c:if>
@@ -93,17 +93,17 @@
                         <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="msg"/>
                     </c:if>
                     <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${msg}'/>
-                    <haku:infoCell key="virkailija.hakemus.puhelin" value="${categoryData['matkapuhelinnumero']}"/>
+                    <haku:infoCell key="virkailija.hakemus.puhelin" value="${answers['matkapuhelinnumero']}"/>
                 </tr>
                 <tr>
-                    <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${categoryData['Henkilotunnus']}"/>
+                    <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${answers['Henkilotunnus']}"/>
                     <haku:infoCell key="virkailija.hakemus.henkilonumero" value="${application.personOid}" cellId="infocell_henkilonumero"/>
-                    <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${categoryData['Sähköposti']}"/>
+                    <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${answers['Sähköposti']}"/>
                 </tr>
                 <tr>
                     <td></td>
                     <haku:infoCell key="virkailija.hakemus.oppijanumero" value="${application.studentOid}" cellId="infocell_oppijanumero"/>
-                    <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${categoryData['aidinkieli']}"/>
+                    <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${answers['aidinkieli']}"/>
                 </tr>
 
             </table>

@@ -21,12 +21,12 @@
     </c:if>
     <c:forEach var="option" items="${element.options}">
         <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
-        <option value="${option.value}" ${(categoryData[element.id] eq option.value or (categoryData[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "}><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
+        <option value="${option.value}" ${(answers[element.id] eq option.value or (answers[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "}><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
     </c:forEach>
 </select>
 <script>
     $(document).ready(function () {
-        if (${not (categoryData[element.id] eq null)}) {
+        if (${not (answers[element.id] eq null)}) {
             var element = $("#${element.id}");
             var row = element.closest('tr');
             row.removeAttr('hidden');

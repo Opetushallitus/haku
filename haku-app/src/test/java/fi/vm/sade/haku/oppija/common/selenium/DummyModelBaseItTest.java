@@ -124,6 +124,10 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         }
     }
 
+    protected List<WebElement> getById(final String id) {
+        return  driver.findElements(new By.ById(id));
+    }
+
     protected final void fillOut(final Map<String, String> values) {
         for (Map.Entry<String, String> questionAndAnswer : values.entrySet()) {
             setValue(questionAndAnswer.getKey(), questionAndAnswer.getValue());

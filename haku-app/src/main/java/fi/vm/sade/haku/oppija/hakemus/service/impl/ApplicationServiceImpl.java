@@ -135,7 +135,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         allAnswers.putAll(current.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId()));
         allAnswers.putAll(answers);
 
-        final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId());
+        final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId(), answers);
+
         if (elementTree.isValidationNeeded(applicationPhase.getPhaseId(), application.getPhaseId())) {
             ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, allAnswers,
                     application.getOid(), applicationSystemId));
@@ -145,8 +146,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (applicationState.isValid()) {
             this.userSession.savePhaseAnswers(applicationPhase);
         }
-        // sets all answers merged, needed for re-rendering view if errors
-        applicationState.setAnswersMerged(allAnswers);
         return applicationState;
     }
 

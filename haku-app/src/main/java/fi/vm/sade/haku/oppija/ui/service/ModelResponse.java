@@ -6,17 +6,16 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
-import org.apache.commons.lang.Validate;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UIServiceResponse {
+public class ModelResponse {
     public static final String OID = "oid";
     public static final String APPLICATION_SYSTEM_ID = "applicationSystemId";
     public static final String APPLICATION = "application";
-    public static final String CATEGORY_DATA = "categoryData";
+    public static final String ANSWERS = "answers";
     public static final String APPLICATION_PHASE_ID = "applicationPhaseId";
     public static final String ERROR_MESSAGES = "errorMessages";
     public static final String KOULUTUSINFORMAATIO_BASE_URL = "koulutusinformaatioBaseUrl";
@@ -25,42 +24,43 @@ public class UIServiceResponse {
     public static final String FORM = "form";
     public static final String DISCRETIONARY_ATTACHMENT_AO_IDS = "discretionaryAttachmentAOIds";
     public static final String APPLICATION_COMPLETE_ELEMENTS = "applicationCompleteElements";
+    public static final String APPLICATION_SYSTEMS = "applicationSystems";
 
 
     private final Map<String, I18nText> errors = new HashMap<String, I18nText>();
     private Map<String, Object> model = new HashMap<String, Object>();
 
-    public UIServiceResponse() {
+    public ModelResponse() {
     }
 
-    public UIServiceResponse(final Application application) {
+    public ModelResponse(final Application application) {
         setApplication(application);
     }
 
-    public UIServiceResponse(final Application application, final Form form) {
+    public ModelResponse(final Application application, final Form form) {
         this(application);
         setForm(form);
     }
 
-    public UIServiceResponse(final Application application, final Form form, final Element element) {
+    public ModelResponse(final Application application, final Form form, final Element element) {
         this(application, form);
         setElement(element);
     }
 
-    public UIServiceResponse(final Application application,
-                             final Form form,
-                             final List<String> discretionaryAttachmentAOIds,
-                             final String koulutusinformaatioBaseUrl) {
+    public ModelResponse(final Application application,
+                         final Form form,
+                         final List<String> discretionaryAttachmentAOIds,
+                         final String koulutusinformaatioBaseUrl) {
         this(application, form);
         setDiscretionaryAttachmentAOIds(discretionaryAttachmentAOIds);
         setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
     }
 
-    public UIServiceResponse(final Application application,
-                             final Form form,
-                             final Element element,
-                             final ValidationResult validationResult,
-                             final String koulutusinformaatioBaseUrl) {
+    public ModelResponse(final Application application,
+                         final Form form,
+                         final Element element,
+                         final ValidationResult validationResult,
+                         final String koulutusinformaatioBaseUrl) {
         this(application, form, element);
         setErrorMessages(validationResult.getErrorMessages());
         setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
@@ -83,7 +83,7 @@ public class UIServiceResponse {
         this.addObjectToModel(APPLICATION_SYSTEM_ID, application.getApplicationSystemId());
         this.addObjectToModel(OID, application.getOid());
         this.addObjectToModel(APPLICATION_PHASE_ID, application.getPhaseId());
-        this.addObjectToModel(CATEGORY_DATA, application.getVastauksetMerged());
+        this.addObjectToModel(ANSWERS, application.getVastauksetMerged());
     }
 
     public void setErrorMessages(final Map<String, I18nText> errors) {
@@ -95,7 +95,12 @@ public class UIServiceResponse {
     }
 
     public void addAnswers(final Map<String, String> answers) {
-        ((Map<String, String>) this.model.get(CATEGORY_DATA)).putAll(answers);
+        Map<String, String> tmp = (Map<String, String>) this.model.get(ANSWERS);
+        if (tmp == null) {
+            addObjectToModel(ANSWERS, answers);
+        } else {
+            tmp.putAll(answers);
+        }
     }
 
     public void setKoulutusinformaatioBaseUrl(final String url) {
@@ -103,12 +108,10 @@ public class UIServiceResponse {
     }
 
     public void setForm(final Form form) {
-        Validate.notNull(form, "Form was null");
         this.addObjectToModel(FORM, form);
     }
 
     public void setElement(final Element element) {
-        Validate.notNull(element, "Element was null");
         this.addObjectToModel(ELEMENT, element);
         this.addObjectToModel(TEMPLATE, element.getType());
     }
@@ -119,5 +122,24 @@ public class UIServiceResponse {
 
     public void setApplicationCompleteElements(final List<Element> applicationCompleteElements) {
         this.addObjectToModel(APPLICATION_COMPLETE_ELEMENTS, applicationCompleteElements);
+    }
+
+    public void setApplicationSystemId(final String asid) {
+        this.addObjectToModel(APPLICATION_SYSTEM_ID, asid);
+    }
+
+    public void addObjectsToModel(final Map<String, Object> modelObjects) {
+        for (Map.Entry<String, Object> entry : modelObjects.entrySet()) {
+            this.addObjectToModel(entry.getKey(), entry.getValue());
+        }
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ModelResponse{");
+        sb.append("errors=").append(errors);
+        sb.append(", model=").append(model);
+        sb.append('}');
+        return sb.toString();
     }
 }

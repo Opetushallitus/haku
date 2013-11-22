@@ -28,7 +28,7 @@ import fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
-import fi.vm.sade.haku.oppija.ui.service.UIServiceResponse;
+import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,8 +84,8 @@ public class OfficerController {
     @Path("/hakemus/")
     @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
     public Viewable search() {
-        UIServiceResponse uiServiceResponse = officerUIService.getOrganizationAndLearningInstitutions();
-        return new Viewable(SEARCH_INDEX_VIEW, uiServiceResponse.getModel());
+        ModelResponse modelResponse = officerUIService.getOrganizationAndLearningInstitutions();
+        return new Viewable(SEARCH_INDEX_VIEW, modelResponse.getModel());
     }
 
     @POST
@@ -130,8 +130,8 @@ public class OfficerController {
                                       @PathParam("elementId") final String elementId)
             throws ResourceNotFoundException {
         LOGGER.debug("getPreviewElement {}, {}, {}", applicationSystemId, phaseId, oid);
-        UIServiceResponse uiServiceResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, true);
-        return new Viewable("/elements/Root", uiServiceResponse.getModel()); // TODO remove hardcoded Phase
+        ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, true);
+        return new Viewable("/elements/Root", modelResponse.getModel()); // TODO remove hardcoded Phase
     }
 
     @GET
@@ -143,8 +143,8 @@ public class OfficerController {
             throws ResourceNotFoundException, IOException {
 
         LOGGER.debug("getPreview {}, {}, {}", applicationSystemId, phaseId, oid);
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, phaseId);
-        return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel()); // TODO remove hardcoded Phase
+        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, phaseId);
+        return new Viewable(DEFAULT_VIEW, modelResponse.getModel()); // TODO remove hardcoded Phase
     }
 
     @POST
@@ -160,12 +160,12 @@ public class OfficerController {
 
         LOGGER.debug("updatePhase {}, {}, {}", applicationSystemId, phaseId, oid);
 
-        UIServiceResponse uiServiceResponse = officerUIService.updateApplication(oid,
+        ModelResponse modelResponse = officerUIService.updateApplication(oid,
                 new ApplicationPhase(applicationSystemId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)),
                 userSession.getUser());
 
-        if (uiServiceResponse.hasErrors()) {
-            return ok(new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel())).build();
+        if (modelResponse.hasErrors()) {
+            return ok(new Viewable(DEFAULT_VIEW, modelResponse.getModel())).build();
         } else {
             URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, applicationSystemId, PHASE_ID_PREVIEW, oid);
             return seeOther(path).build();
@@ -183,9 +183,9 @@ public class OfficerController {
                                @PathParam("elementId") final String elementId,
                                final MultivaluedMap<String, String> multiValues)
             throws ResourceNotFoundException {
-        UIServiceResponse uiServiceResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, false);
-        uiServiceResponse.addAnswers(MultivaluedMapUtil.toSingleValueMap(multiValues));
-        return new Viewable("/elements/Root", uiServiceResponse.getModel());
+        ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, false);
+        modelResponse.addAnswers(MultivaluedMapUtil.toSingleValueMap(multiValues));
+        return new Viewable("/elements/Root", modelResponse.getModel());
     }
 
     @POST
@@ -207,8 +207,8 @@ public class OfficerController {
     public Viewable getAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid)
             throws ResourceNotFoundException, IOException {
         LOGGER.debug("getAdditionalInfo  {}, {}", new Object[]{oid});
-        UIServiceResponse uiServiceResponse = officerUIService.getAdditionalInfo(oid);
-        return new Viewable(ADDITIONAL_INFO_VIEW, uiServiceResponse.getModel());
+        ModelResponse modelResponse = officerUIService.getAdditionalInfo(oid);
+        return new Viewable(ADDITIONAL_INFO_VIEW, modelResponse.getModel());
     }
 
     @GET
@@ -238,8 +238,8 @@ public class OfficerController {
         }
 
         officerUIService.activateApplication(oid, reasonBuilder.toString());
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
-        return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
+        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
+        return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
 
     @POST
@@ -258,8 +258,8 @@ public class OfficerController {
         }
 
         officerUIService.passivateApplication(oid, reasonBuilder.toString());
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
-        return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
+        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
+        return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
 
     @POST
@@ -269,8 +269,8 @@ public class OfficerController {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Viewable postProcess(@PathParam(OID_PATH_PARAM) final String oid) throws IOException, ResourceNotFoundException {
         officerUIService.postProcess(oid);
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
-        return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
+        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
+        return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
 
     @POST
@@ -288,16 +288,16 @@ public class OfficerController {
         }
 
         officerUIService.addNote(oid, noteBuilder.toString());
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
-        return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
+        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
+        return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
 
     @GET
     @Path("/hakemus/{oid}/print")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Viewable applicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException {
-        UIServiceResponse uiServiceResponse = uiService.getApplicationPrint(oid);
-        return new Viewable(APPLICATION_PRINT_VIEW, uiServiceResponse.getModel());
+        ModelResponse modelResponse = uiService.getApplicationPrint(oid);
+        return new Viewable(APPLICATION_PRINT_VIEW, modelResponse.getModel());
     }
 
     @GET
@@ -320,7 +320,7 @@ public class OfficerController {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Viewable addStudentOid(@PathParam(OID_PATH_PARAM) final String oid) throws IOException, ResourceNotFoundException {
         officerUIService.addStudentOid(oid);
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
-        return new Viewable(DEFAULT_VIEW, uiServiceResponse.getModel());
+        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
+        return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
 }

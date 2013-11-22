@@ -22,7 +22,7 @@
             <td><haku:i18nText value="${element.i18nText}"/></td>
             <td>
                 <c:choose>
-                    <c:when test="${(categoryData[element.id] eq element.value)}">
+                    <c:when test="${(answers[element.id] eq element.value)}">
                         <fmt:message key="lomake.tulostus.kylla"/>
                     </c:when>
                     <c:otherwise>
@@ -37,7 +37,7 @@
         <tr>
             <td colspan="2">
                 <input type="checkbox" name="${element.id}"
-                       disabled="disabled" ${(categoryData[element.id] eq element.value) ? "checked=\"checked\"" : ""} value="${element.value}"/>
+                       disabled="disabled" ${(answers[element.id] eq element.value) ? "checked=\"checked\"" : ""} value="${element.value}"/>
                 <label><haku:i18nText value="${element.i18nText}"/></label>
             </td>
         </tr>
