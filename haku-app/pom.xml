@@ -22,7 +22,7 @@
     <parent>
         <artifactId>haku</artifactId>
         <groupId>fi.vm.sade.haku</groupId>
-        <version>7.0-SNAPSHOT</version>
+        <version>7.0</version>
     </parent>
     <artifactId>haku-app</artifactId>
     <packaging>war</packaging>
@@ -44,6 +44,10 @@
             <artifactId>tarjonta-api</artifactId>
             <version>${tarjonta-api.version}</version>
             <exclusions>
+                <exclusion>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-bundle</artifactId>
+                </exclusion>
                 <exclusion>
                     <artifactId>cxf-rt-frontend-jaxrs</artifactId>
                     <groupId>org.apache.cxf</groupId>
