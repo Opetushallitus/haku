@@ -12,6 +12,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.function.ElementToId;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GradesTable {
@@ -164,7 +165,9 @@ public class GradesTable {
                 subjectLanguages = gradeGridHelper.getLanguageAndLiterature();
                 ElementUtil.setDefaultOption("FI", subjectLanguages);
             } else {
-                subjectLanguages = gradeGridHelper.getSubjectLanguages();
+                subjectLanguages = new ArrayList<Option>();
+                subjectLanguages.add(new Option(ElementUtil.createI18NAsIs(""), ""));
+                subjectLanguages.addAll(gradeGridHelper.getSubjectLanguages());
             }
             GradeGridOptionQuestion child = new GradeGridOptionQuestion(id + "_OPPIAINE", subjectLanguages, false);
             ElementUtil.addRequiredValidator(child, formErrors);
