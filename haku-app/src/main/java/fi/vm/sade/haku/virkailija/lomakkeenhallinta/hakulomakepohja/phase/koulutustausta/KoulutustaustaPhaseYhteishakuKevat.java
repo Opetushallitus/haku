@@ -44,7 +44,7 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
 
     public static final String TUTKINTO_KESKEYTYNYT_RULE = "tutkinto_7_rule";
     public static final String TUTKINTO_ULKOMAILLA_RULE = "tutkinto_0_rule";
-    public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-3])$";
+    public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-4])$";
 
     private static final String FORM_MESSAGES = "form_messages_yhteishaku_kevat";
     private static final String FORM_ERRORS = "form_errors_yhteishaku_kevat";
