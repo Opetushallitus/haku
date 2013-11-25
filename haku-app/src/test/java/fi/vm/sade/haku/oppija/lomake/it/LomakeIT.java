@@ -86,7 +86,6 @@ public class LomakeIT extends DummyModelBaseItTest {
         driver.findElement(new By.ByClassName("left")).click();
 
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
-        //findByIdAndClick("POHJAKOULUTUS_" + KoulutustaustaPhase.TUTKINTO_PERUSKOULU);
 
         findById("PK_PAATTOTODISTUSVUOSI");
         selenium.typeKeys("PK_PAATTOTODISTUSVUOSI", "2013");
