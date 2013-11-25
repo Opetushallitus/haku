@@ -135,7 +135,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         allAnswers.putAll(current.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId()));
         allAnswers.putAll(answers);
 
-        final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId(), answers);
+        final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId(), allAnswers);
 
         if (elementTree.isValidationNeeded(applicationPhase.getPhaseId(), application.getPhaseId())) {
             ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, allAnswers,

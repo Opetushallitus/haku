@@ -93,7 +93,7 @@
                         <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="msg"/>
                     </c:if>
                     <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${msg}'/>
-                    <haku:infoCell key="virkailija.hakemus.puhelin" value="${answers['matkapuhelinnumero']}"/>
+                    <haku:infoCell key="virkailija.hakemus.puhelin" value="${answers['matkapuhelinnumero1']}"/>
                 </tr>
                 <tr>
                     <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${answers['Henkilotunnus']}"/>
