@@ -15,6 +15,7 @@
  */
 
 var childLONames = {};
+var lopCache = {};
 var preferenceRow = {
     populateSelectInput: function (orgId, selectInputId, isInit, providerInputId) {
         setTimeout(function() {
@@ -110,10 +111,24 @@ var preferenceRow = {
             $(this).autocomplete({
                 minLength: 1,
                 source: function (request, response) {
+                    var term = request.term;
+                    if ( term in lopCache ) {
+                        response($.map(lopCache[ term ], function (result) {
+                            return {
+                                label: result.name,
+                                value: result.name,
+                                dataId: result.id
+                            }
+                        }));
+                        return;
+                    }
                     $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + encodeURI(request.term), {
                         asId: sortabletable_settings.applicationSystemId,
-                        baseEducation: sortabletable_settings.baseEducation
+                        baseEducation: sortabletable_settings.baseEducation,
+                        start: 0,
+                        rows: 999999
                     }, function (data) {
+                        lopCache[request.term] = data;
                         response($.map(data, function (result) {
                             return {
                                 label: result.name,
@@ -134,6 +149,12 @@ var preferenceRow = {
                         $hiddenInput.val("");
                         preferenceRow.clearSelectInput(selectInputId);
                     }
+                }
+            });
+            $(this).focus(function(event) {
+                wasOpen = $(this).autocomplete( "widget" ).is( ":visible" );
+                if (!wasOpen && (!$(this).val() || $(this).val() === '')) {
+                    $(this).autocomplete("search", "*");
                 }
             });
             if ($hiddenInput.val() && $hiddenInput.val() !== '') {
