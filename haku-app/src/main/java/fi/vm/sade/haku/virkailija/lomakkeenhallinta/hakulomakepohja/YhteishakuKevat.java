@@ -46,7 +46,7 @@ public class YhteishakuKevat {
         try {
             Form form = new Form(as.getId(), as.getName());
             form.addChild(HenkilotiedotPhaseYhteishakuKevat.create(koodistoService));
-            form.addChild(KoulutustaustaPhaseYhteishakuKevat.create(koodistoService));
+            form.addChild(KoulutustaustaPhaseYhteishakuKevat.create(koodistoService, as));
             form.addChild(HakutoiveetPhaseYhteishakuKevat.create());
             form.addChild(OsaaminenPhaseYhteishakuKevat.create(koodistoService));
             Date start = as.getApplicationPeriods() != null && !as.getApplicationPeriods().isEmpty() ?
