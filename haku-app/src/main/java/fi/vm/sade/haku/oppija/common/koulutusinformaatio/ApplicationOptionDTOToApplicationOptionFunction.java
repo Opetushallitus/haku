@@ -36,7 +36,7 @@ public class ApplicationOptionDTOToApplicationOptionFunction implements Function
             ao.setSpecificApplicationDates(applicationOptionDTO.isSpecificApplicationDates());
             ao.setTeachingLanguages(applicationOptionDTO.getTeachingLanguages());
             ao.setAoIdentifier(applicationOptionDTO.getAoIdentifier());
-
+            ao.setKaksoistutkinto(applicationOptionDTO.isKaksoistutkinto());
             LearningOpportunityProvider lop = new LearningOpportunityProvider();
             lop.setId(applicationOptionDTO.getProvider().getId());
             lop.setName(applicationOptionDTO.getProvider().getName());

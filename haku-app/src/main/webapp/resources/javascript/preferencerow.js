@@ -46,6 +46,7 @@ var preferenceRow = {
                         '" data-lang="' + item.teachingLanguages[0] +
                         '" data-sora="' + item.sora +
                         '" data-aoidentifier="' + item.aoIdentifier +
+                        '" data-kaksoistutkinto="' + item.kaksoistutkinto +
                         '" data-athlete="' + item.athleteEducation + '" >' + item.name + '</option>');
                 });
                 if (isInit && !selectedPreferenceOK && hakukohdeId && hakukohdeId !== '') {
@@ -73,6 +74,7 @@ var preferenceRow = {
         $("#" + selectInputId + "-id-sora").val(false).change();
         $("#" + selectInputId + "-id-aoIdentifier").val("").change();
         $("#" + selectInputId + "-id-athlete").val(false).change();
+        $("#" + selectInputId + "-id-kaksoistutkinto").val(false).change();
         $("#" + selectInputId).html("<option>&nbsp;</option>");
         preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
     },
@@ -167,6 +169,7 @@ var preferenceRow = {
                 $educationDegreeInput = $("#" + this.id + "-educationDegree"),
                 $educationDegreeLang = $("#" + this.id + "-id-lang"),
                 $educationDegreeSora = $("#" + this.id + "-id-sora"),
+                $educationDegreeKaksoistutkinto = $("#" + this.id + "-id-kaksoistutkinto"),
                 $educationDegreeAoIdentifier = $("#" + this.id + "-id-aoIdentifier"),
                 $educationDegreeAthlete = $("#" + this.id + "-id-athlete"),
                 selectedId, educationDegree, value = $(this).val(),
@@ -180,6 +183,7 @@ var preferenceRow = {
             $educationDegreeInput.val(educationDegree).change();
             $educationDegreeLang.val(selectedOption.data("lang")).change();
             $educationDegreeSora.val(selectedOption.data("sora")).change();
+            $educationDegreeKaksoistutkinto.val(selectedOption.data("kaksoistutkinto")).change();
             $educationDegreeAoIdentifier.val(selectedOption.data("aoidentifier")).change();
             $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
             preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
