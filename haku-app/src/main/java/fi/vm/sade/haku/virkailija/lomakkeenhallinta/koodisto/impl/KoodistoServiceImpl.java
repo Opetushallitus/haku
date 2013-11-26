@@ -16,8 +16,10 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
@@ -148,7 +150,18 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getHakukausi() {
-        return codesToOptions(CODE_HAKUKAUSI);
+        return ImmutableList.copyOf(
+                Lists.reverse(
+                        Lists.transform(
+                                getKoodiTypes(CODE_HAKUKAUSI),
+                                new Function<KoodiType, Option>() {
+                                    @Override
+                                    public Option apply(final KoodiType koodiType) {
+                                        return new Option(
+                                                new I18nText(TranslationsUtil.createTranslationsMap(koodiType)),
+                                                koodiType.getKoodiUri());
+                                    }
+                                })));
     }
 
     @Override
