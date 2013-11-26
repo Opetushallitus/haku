@@ -13,7 +13,7 @@ import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
-import fi.vm.sade.haku.oppija.ui.service.UIServiceResponse;
+import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -85,15 +85,15 @@ public class OfficerUIServiceImplTest {
 
     @Test
     public void testGetValidatedApplication() throws Exception {
-        UIServiceResponse uiServiceResponse = officerUIService.getValidatedApplication(OID, ID);
-        assertTrue(uiServiceResponse.getModel().size() > 0);
+        ModelResponse modelResponse = officerUIService.getValidatedApplication(OID, ID);
+        assertTrue(modelResponse.getModel().size() > 0);
     }
 
     @Test
     public void testUpdateApplication() throws Exception {
-        UIServiceResponse uiServiceResponse = officerUIService.updateApplication(
+        ModelResponse modelResponse = officerUIService.updateApplication(
                 OID, new ApplicationPhase(application.getApplicationSystemId(), ID, new HashMap<String, String>()), new User(User.ANONYMOUS_USER));
-        assertTrue(10 == uiServiceResponse.getModel().size());
+        assertTrue(10 == modelResponse.getModel().size());
     }
 
     @Test
@@ -104,8 +104,8 @@ public class OfficerUIServiceImplTest {
 
     @Test
     public void testGetOrganizationAndLearningInstitutions() throws Exception {
-        UIServiceResponse uiServiceResponse = officerUIService.getOrganizationAndLearningInstitutions();
-        assertEquals("Model size does not match", 6, uiServiceResponse.getModel().size());
+        ModelResponse modelResponse = officerUIService.getOrganizationAndLearningInstitutions();
+        assertEquals("Model size does not match", 6, modelResponse.getModel().size());
     }
 
     @Test

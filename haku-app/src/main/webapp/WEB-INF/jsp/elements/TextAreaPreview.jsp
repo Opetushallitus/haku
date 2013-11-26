@@ -18,5 +18,5 @@
 
 <tr>
     <td class="label"><haku:i18nText value="${element.i18nText}"/></td>
-    <td><c:out value="${categoryData[element.id]}"/></td>
+    <td><c:out value="${answers[element.id]}"/></td>
 </tr>

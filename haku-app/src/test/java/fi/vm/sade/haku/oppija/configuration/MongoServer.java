@@ -40,7 +40,6 @@ public class MongoServer {
     public void destroy() {
         mongod.stop();
         mongodExecutable.stop();
-        mongodExecutable.cleanup();
     }
 
 

@@ -34,6 +34,7 @@
     <c:set value="${hiddenKoulutusId}-sora" var="hiddenKoulutusIdSora" scope="page"/>
     <c:set value="${hiddenKoulutusId}-aoIdentifier" var="hiddenKoulutusIdAoIdentifier" scope="page"/>
     <c:set value="${hiddenKoulutusId}-athlete" var="hiddenKoulutusIdAthlete" scope="page"/>
+    <c:set value="${hiddenKoulutusId}-kaksoistutkinto" var="hiddenKoulutusIdKaksoistutkinto" scope="page"/>
 
     <haku:errorMessage id="${sortableItem.id}" additionalClass="margin-top-1"/>
     <div class="form-row">
@@ -44,14 +45,14 @@
             <div class="field-container-text">
                 <input id="${textInputId}"
                        name="${textInputId}"
-                       value="<c:out value='${categoryData[textInputId]}'/>"
+                       value="<c:out value='${answers[textInputId]}'/>"
                        type="text"
                        data-selectinputid="${selectInputId}"
                        size="60"
                 ${sortableItem.attributes['required']}/>
                 <haku:errorMessage id="${textInputId}" additionalClass="margin-top-1"/>
                 <input id="${hiddenInputId}" name="${hiddenInputId}"
-                       value="<c:out value='${categoryData[hiddenInputId]}'/>"
+                       value="<c:out value='${answers[hiddenInputId]}'/>"
                        type="hidden"/>
             </div>
         </div>
@@ -65,16 +66,17 @@
             <div class="field-container-select">
                 <select id="${selectInputId}" name="${selectInputId}"
                         data-childlonames="${childLONamesId}"
-                        data-selectedname="<c:out value='${categoryData[selectInputId]}'/>"
+                        data-selectedname="<c:out value='${answers[selectInputId]}'/>"
                 ${sortableItem.attributes['required']}>
                 </select>
                 <haku:errorMessage id="${selectInputId}" additionalClass="margin-top-1"/>
-                <haku:input-hidden id="${hiddenKoulutusId}" data="${categoryData}"/>
-                <haku:input-hidden id="${hiddenEducationDegreeId}" data="${categoryData}"/>
-                <haku:input-hidden id="${hiddenKoulutusIdLang}" data="${categoryData}"/>
-                <haku:input-hidden id="${hiddenKoulutusIdSora}" data="${categoryData}"/>
-                <haku:input-hidden id="${hiddenKoulutusIdAoIdentifier}" data="${categoryData}"/>
-                <haku:input-hidden id="${hiddenKoulutusIdAthlete}" data="${categoryData}"/>
+                <haku:input-hidden id="${hiddenKoulutusId}" data="${answers}"/>
+                <haku:input-hidden id="${hiddenEducationDegreeId}" data="${answers}"/>
+                <haku:input-hidden id="${hiddenKoulutusIdLang}" data="${answers}"/>
+                <haku:input-hidden id="${hiddenKoulutusIdSora}" data="${answers}"/>
+                <haku:input-hidden id="${hiddenKoulutusIdAoIdentifier}" data="${answers}"/>
+                <haku:input-hidden id="${hiddenKoulutusIdAthlete}" data="${answers}"/>
+                <haku:input-hidden id="${hiddenKoulutusIdKaksoistutkinto}" data="${answers}"/>
             </div>
         </div>
         <div class="clear"></div>

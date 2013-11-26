@@ -19,13 +19,13 @@
   --%>
 <c:set var="show" value="false"/>
 
-<c:set var="dodStr" value="${fn:dod(categoryData)}"/>
+<c:set var="dodStr" value="${fn:dod(answers)}"/>
 <fmt:parseDate var="dob" pattern="dd.MM.yyyy" value="${dodStr}"/>
 <c:set var="referenceDate" value="${element.referenceDate}"/>
 <c:forEach var="key" items="${element.aoEducationDegreeKeys}">
-    <c:if test="${(categoryData[key] eq element.requiredEducationDegree) && (dob lt referenceDate)}">
+    <c:if test="${(answers[key] eq element.requiredEducationDegree) && (dob lt referenceDate)}">
         <c:forEach var="reqBaseEducation" items="${element.requiredBaseEducations}">
-            <c:if test="${(categoryData[element.baseEducationKey] eq reqBaseEducation)}">
+            <c:if test="${(answers[element.baseEducationKey] eq reqBaseEducation)}">
                 <c:set var="show" value="true"/>
             </c:if>
         </c:forEach>

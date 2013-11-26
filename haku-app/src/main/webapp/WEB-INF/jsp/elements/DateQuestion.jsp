@@ -22,7 +22,7 @@
 
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
-            <input ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"/>
+            <input ${element.attributeString} value="<c:out value='${answers[element.id]}'/>"/>
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
 

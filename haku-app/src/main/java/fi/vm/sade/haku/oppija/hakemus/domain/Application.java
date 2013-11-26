@@ -158,10 +158,10 @@ public class Application implements Serializable {
         return state != null && state.equals(State.INCOMPLETE);
     }
 
-    // final, koska kutsutaan konstruktorista
+    // final, koska kutsutaan rakentajasta
     public final Application addVaiheenVastaukset(final String phaseId, Map<String, String> answers) {
         this.phaseId = answers.get(VAIHE_ID);
-        Map<String, String> answersWithoutPhaseId = Maps.filterKeys(answers, Predicates.not(Predicates.equalTo(VAIHE_ID)));
+        Map<String, String> answersWithoutPhaseId = ImmutableMap.copyOf(Maps.filterKeys(answers, Predicates.not(Predicates.equalTo(VAIHE_ID))));
         this.answers.put(phaseId, answersWithoutPhaseId);
         updateFullName();
         return this;

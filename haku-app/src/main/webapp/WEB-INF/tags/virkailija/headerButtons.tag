@@ -9,10 +9,10 @@
 <div class="grid16-16">
     <c:choose>
         <c:when test="${preview}">
-            <a href="${contextPath}/virkailija/hakemus#useLast" class="button small back"></a>
+            <a id="back" href="${contextPath}/virkailija/hakemus#useLast" class="button small back"></a>
         </c:when>
         <c:otherwise>
-            <a href="${contextPath}/virkailija/hakemus/${oid}/" class="button small back"></a>
+            <a id="back" href="${contextPath}/virkailija/hakemus/${oid}/" class="button small back"></a>
         </c:otherwise>
     </c:choose>
     <c:choose>
@@ -35,7 +35,7 @@
         </c:when>
     </c:choose>
     <c:if test="${it.postProcessAllowed}">
-        <a href="#" id="postProcessApplication" data-po-show="postProcessApplication" class="button small">
+        <a href="#" id="postProcessApplication" data-po-show="postProcessApplicationDialog" class="button small">
             <fmt:message key="virkailija.hakemus.postProcess" />
         </a>
     </c:if>

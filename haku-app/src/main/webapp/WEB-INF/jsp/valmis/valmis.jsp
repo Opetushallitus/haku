@@ -22,7 +22,7 @@
 <fmt:setBundle basename="messages" scope="session"/>
 <c:set var="complete" value="true" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
-<c:set var="categoryData" value="${it.application.vastauksetMerged}" scope="request"/>
+<c:set var="answers" value="${it.application.vastauksetMerged}" scope="request"/>
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="application" value="${it.application}" scope="request"/>
 <c:set var="discretionaryAttachmentAOIds" value="${it.discretionaryAttachmentAOIds}" scope="request"/>

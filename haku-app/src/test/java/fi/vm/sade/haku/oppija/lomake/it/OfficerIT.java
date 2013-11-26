@@ -49,36 +49,9 @@ public class OfficerIT extends DummyModelBaseItTest {
         checkApplicationState("Puutteellinen");
     }
 
-    @Test
-    public void testSearchByPreference() {
-        clearSearch();
-        List<WebElement> applicationLinks = findByClassName("application-link");
-        assertTrue("Applications found", applicationLinks.isEmpty());
-
-        selenium.typeKeys("application-preference", "vosala"); // Kaivosalan
-        selectState(null);
-        clickSearch();
-        applicationLinks = findByClassName("application-link");
-        assertFalse("Applications not found", applicationLinks.isEmpty());
-
-        clearSearch();
-        selenium.typeKeys("application-preference", "123");
-        selectState(null);
-        clickSearch();
-        applicationLinks = findByClassName("application-link");
-        assertFalse("Applications not found", applicationLinks.isEmpty());
-
-        clearSearch();
-        selenium.typeKeys("application-preference", "notfound");
-        selectState(null);
-        clickSearch();
-        applicationLinks = findByClassName("application-link");
-        assertTrue("Applications found", applicationLinks.isEmpty());
-
-    }
 
     @Test
-    public void testEditControls() throws InterruptedException {
+    public void testEditControls() {
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
@@ -132,82 +105,62 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     @Test
-    public void testSearchByName() throws Exception {
-        assertFalse("Application not found", SearchByTermAndState("topi", null).isEmpty());
-        clearSearch();
-        assertFalse("Application not found", SearchByTermAndState("topi", null).isEmpty());
-        clearSearch();
-        assertTrue("Application found", SearchByTermAndState("topi", Application.State.PASSIVE).isEmpty());
-        clearSearch();
-        assertFalse("Application found", SearchByTermAndState("topi", Application.State.ACTIVE).isEmpty());
+    public void testSearch() throws Exception {
+        testSearchByTermAndState();
+        testSearchByPreference();
+    }
+
+
+    private void testSearchByPreference() {
+        assertFalse("Applications not found", searchByPreference("vosala").isEmpty());
+        assertFalse("Applications not found", searchByPreference("123").isEmpty());
+        assertTrue("Applications found", searchByPreference("notfound").isEmpty());
+
+    }
+
+    private void testSearchByTermAndState() throws Exception {
+        shouldFindByTerm("topi");
+        shouldNotFindByTermAndState("topi", Application.State.PASSIVE);
+        shouldNotFindByTermAndState("topi", Application.State.INCOMPLETE);
+        shouldNotFindByTermAndState("Notfound", null);
+        shouldNotFindByTermAndState("Notfound", Application.State.ACTIVE);
+        shouldNotFindByTermAndState("Notfound", Application.State.PASSIVE);
+        shouldFindByTermAndState("Korhonen", null);
+        shouldFindByTermAndState("Korhonen", Application.State.ACTIVE);
+        shouldNotFindByTermAndState("Korhonen", Application.State.PASSIVE);
+        shouldFindByTermAndState("270802-184A", null);
+        shouldFindByTermAndState("270802-184A", Application.State.ACTIVE);
+        shouldNotFindByTermAndState("270802-184A", Application.State.PASSIVE);
+        shouldFindByTerm("27.08.1902");
+        //shouldFindByTerm("270802");
+        shouldNotFindByTerm("120100");
+        shouldNotFindByTerm("12.01.2000");
+
+        shouldNotFindByTerm("1.2.246.562.10.10108401950");
     }
 
     @Test
-    public void testSearchByNameNotFound() throws Exception {
-        assertTrue("Application found", SearchByTermAndState("Notfound", null).isEmpty());
-        clearSearch();
-        assertTrue("Application found", SearchByTermAndState("Notfound", Application.State.ACTIVE).isEmpty());
-        clearSearch();
-        assertTrue("Application found", SearchByTermAndState("Notfound", Application.State.PASSIVE).isEmpty());
-    }
-
-    @Test
-    public void testSearchByLastname() throws Exception {
-        assertFalse("Application not found", SearchByTermAndState("Korhonen", null).isEmpty());
-        clearSearch();
-        assertFalse("Application not found", SearchByTermAndState("Korhonen", Application.State.ACTIVE).isEmpty());
-        clearSearch();
-        assertTrue("Application not found", SearchByTermAndState("Korhonen", Application.State.PASSIVE).isEmpty());
-    }
-
-    @Test
-    public void testSearchBySsn() throws Exception {
-        assertFalse("Application not found", SearchByTermAndState("270802-184A", null).isEmpty());
-        clearSearch();
-        assertFalse("Application not found", SearchByTermAndState("270802-184A", Application.State.ACTIVE).isEmpty());
-        clearSearch();
-        assertTrue("Application not found", SearchByTermAndState("270802-184A", Application.State.PASSIVE).isEmpty());
-    }
-
-    @Test
-    public void testSearchByDob() throws Exception {
-        assertTrue("Application found", SearchByTerm("120100").isEmpty());
-        clearSearch();
-        assertTrue("Application not found", SearchByTermAndState("120100", Application.State.PASSIVE).isEmpty());
-    }
-
-    @Test
-    public void testSearchByDobDots() throws Exception {
-        assertTrue("Application not", SearchByTerm("12.01.2000").isEmpty());
-        clearSearch();
-        assertTrue("Application not found", SearchByTermAndState("12.01.2000", Application.State.PASSIVE).isEmpty());
-    }
-
-    @Test
-    public void testSearchByOid() throws Exception {
-        assertTrue("Application not found", SearchByTerm("1.2.246.562.10.10108401950").isEmpty());
-    }
-
-    @Test
-    public void testCreateNewApplicationAndSetPersonOid() throws InterruptedException {
+    public void testCreateNewApplicationAndSetPersonOid() {
         findByIdAndClick("create-application");
         Select asSelect = new Select(driver.findElement(By.id("asSelect")));
         asSelect.selectByIndex(0);
         findByIdAndClick("submit_confirm");
-        activate("1.2.3.4.5.00000000013");
+        String oid = getTrimmedTextById("_infocell_oid");
+        findByIdAndClick("back");
+        activate(oid);
+        driver.findElement(new By.ByLinkText(oid)).click();
         driver.findElement(new By.ByLinkText("Lisää oppijanumero")).click();
         screenshot("personOid1");
         WebElement element = driver.findElement(By.id("addStudentOidForm"));
         element.submit();
         screenshot("personOid2");
-        String personOid = driver.findElement(By.id("infocell_henkilonumero")).getText();
-        personOid = personOid.substring(personOid.indexOf(':'));
-        String studentOid = driver.findElement(By.id("infocell_oppijanumero")).getText();
+        String personOid = getTrimmedTextById("_infocell_henkilonumero");
+        String studentOid = getTrimmedTextById("_infocell_oppijanumero");
         assertTrue(studentOid.contains(personOid));
     }
 
     @Test
-    public void testPrintView() throws InterruptedException {
+    public void View() {
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
@@ -239,7 +192,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         return findByClassName("application-link");
     }
 
-    private List<WebElement> SearchByTermAndState(final String term, Application.State state) {
+    private List<WebElement> searchByTermAndState(final String term, Application.State state) {
         enterSearchTerm(term);
         selectState(state);
         clickSearch();
@@ -247,17 +200,17 @@ public class OfficerIT extends DummyModelBaseItTest {
         return findByClassName("application-link");
     }
 
-    private void enterSearchTerm(final String term) {
-        setValue("entry", term);
-    }
-
     private void selectState(Application.State state) {
         Select stateSelect = new Select(driver.findElement(By.id("application-state")));
         stateSelect.selectByValue(state == null ? "" : state.toString());
     }
 
-    private void checkApplicationState(String applicationState) {
-        driver.findElement(By.xpath("//*[contains(.,'" + applicationState + "')]"));
+    private WebElement checkApplicationState(String applicationState) {
+        return driver.findElement(By.xpath("//*[contains(.,'" + applicationState + "')]"));
+    }
+
+    private void enterSearchTerm(final String term) {
+        setValue("entry", term);
     }
 
     private void clearSearch() {
@@ -268,14 +221,62 @@ public class OfficerIT extends DummyModelBaseItTest {
         findByIdAndClick("search-applications");
     }
 
-    private void activate(String oid) throws InterruptedException {
-        navigateToPath("virkailija", "hakemus", oid, "postProcess");
+    private void activate(String oid) {
+        clearSearch();
+        List<WebElement> webElements = SearchByTerm(oid);
+        for (WebElement webElement : webElements) {
+            if (webElement.getText().equals(oid)) {
+                webElement.click();
+                break;
+            }
+        }
+        findByIdAndClick("postProcessApplication");
+        findByIdAndClick("submit-dialog");
+
         navigateToPath("virkailija", "hakemus", oid, "activate");
+        List<WebElement> passivateApplication = getById("passivateApplication");
+        if (passivateApplication.isEmpty()) {
+            List<WebElement> activateApplication = getById("activateApplication");
+            if (!activateApplication.isEmpty()) {
+                activateApplication.get(0).click();
+                findByIdAndClick("conform-activation");
+
+
+            }
+        }
+        findByIdAndClick("back");
     }
 
     private void passivate() {
         findByIdAndClick("passivateApplication");
         selenium.typeKeys("passivation-reason", "reason");
         findByIdAndClick("submit_confirm");
+    }
+
+    private List<WebElement> searchByPreference(final String preference) {
+        clearSearch();
+        selenium.typeKeys("application-preference", preference);
+        clickSearch();
+        return findByClassName("application-link");
+    }
+
+    private void shouldFindByTermAndState(final String term, final Application.State state) {
+        clearSearch();
+        assertFalse("Application not found", searchByTermAndState(term, state).isEmpty());
+    }
+
+    private void shouldNotFindByTermAndState(final String term, final Application.State state) {
+        clearSearch();
+        assertTrue("Application found", searchByTermAndState(term, state).isEmpty());
+    }
+
+    private void shouldFindByTerm(final String term) {
+        clearSearch();
+        assertFalse("Application found", SearchByTerm(term).isEmpty());
+    }
+
+    private void shouldNotFindByTerm(final String term) {
+        clearSearch();
+        assertTrue("Application not", SearchByTerm(term).isEmpty());
     }
 }

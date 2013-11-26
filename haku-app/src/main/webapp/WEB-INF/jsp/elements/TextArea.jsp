@@ -21,7 +21,7 @@
 
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
-            <textarea ${element.attributeString}><c:out value="${categoryData[element.id]}"/></textarea>
+            <textarea ${element.attributeString}><c:out value="${answers[element.id]}"/></textarea>
         </div>
         <haku:errorMessage id="${element.id}"/>
         <haku:help element="${element}"/>

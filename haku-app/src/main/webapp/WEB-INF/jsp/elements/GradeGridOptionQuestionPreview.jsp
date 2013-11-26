@@ -16,7 +16,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:forEach var="option" items="${element.options}">
-    <c:if test="${(categoryData[element.id] eq option.value)}">
+    <c:if test="${(answers[element.id] eq option.value)}">
         <haku:i18nText value="${option.i18nText}"/>
     </c:if>
 </c:forEach>

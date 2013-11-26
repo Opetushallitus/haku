@@ -1,4 +1,4 @@
-﻿﻿/*
+﻿/*
  * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
@@ -193,10 +193,16 @@ $(document).ready(function () {
             $('#application-table thead tr td').removeAttr('class');
             self.updateCounters(0);
             $tbody.empty();
+            $('#lopoid').val('');
+            $('#lop-title').empty();
             $('#entry').val('');
             $('#application-state').val('');
             $('#application-preference').val('');
             $('#pagination').empty();
+            $('#application-system').val('');
+            $('#hakukausiVuosi').val('');
+            $('#hakukausi').val('');
+            $('#discretionary-only').attr('checked', false);
         }
         return this;
     })();

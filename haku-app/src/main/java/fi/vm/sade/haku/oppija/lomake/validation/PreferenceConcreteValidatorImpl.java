@@ -60,7 +60,8 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 ApplicationOption ao = applicationOptionService.get(aoId);
                 if (ao == null || !checkProvider(validationInput, ao) || !checkAthlete(validationInput, ao) ||
                         !checkSora(validationInput, ao) || !checkTeachingLang(validationInput, ao) ||
-                        !checkApplicationSystem(validationInput, ao) || !checkAOIdentifier(validationInput, ao)) {
+                        !checkApplicationSystem(validationInput, ao) || !checkAOIdentifier(validationInput, ao) ||
+                        !checkKaksoistutkinto(validationInput, ao)) {
                     return createError(validationInput.getElement().getId(), GENERIC_ERROR);
                 }
                 if (!checkApplicationDates(ao)) {
@@ -99,6 +100,15 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         final String key = validationInput.getElement().getId() + "-Koulutus-id-sora";
         if (validationInput.getValues().containsKey(key) && Boolean.valueOf(validationInput.getValues().get(key)).booleanValue()
                 == applicationOption.isSora()) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkKaksoistutkinto(final ValidationInput validationInput, final ApplicationOption applicationOption) {
+        final String key = validationInput.getElement().getId() + "-Koulutus-id-kaksoistutkinto";
+        if (validationInput.getValues().containsKey(key) && Boolean.valueOf(validationInput.getValues().get(key)).booleanValue()
+                == applicationOption.isKaksoistutkinto()) {
             return true;
         }
         return false;

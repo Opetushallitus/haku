@@ -22,22 +22,22 @@
 <c:set value="${element.id}-Koulutus" var="selectInputId" scope="page"/>
 <c:set value="${element.id}-Koulutus-id" var="selectHiddenInputId" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-aoIdentifier" var="aoIdentifier" scope="page"/>
-<c:if test="${not empty categoryData[selectHiddenInputId]}">
+<c:if test="${not empty answers[selectHiddenInputId]}">
     <tr>
         <td class="padding-top-3"><span class="margin-right-5 bold"><c:out value="${index}"/></span></td>
         <td class="sublabel padding-top-3"><haku:i18nText value="${element.learningInstitutionLabel}"/></td>
-        <td class="bold padding-top-3"><c:out value="${categoryData[textInputId]}"/></td>
+        <td class="bold padding-top-3"><c:out value="${answers[textInputId]}"/></td>
     </tr>
     <tr>
         <td></td>
         <td class="sublabel"><haku:i18nText value="${element.educationLabel}"/></td>
-        <td class="bold"><c:out value="${categoryData[selectInputId]}"/>
+        <td class="bold"><c:out value="${answers[selectInputId]}"/>
         <c:if test="${virkailijaPreview}">
-        &nbsp;[<c:out value="${categoryData[aoIdentifier]}"/>]
+        &nbsp;[<c:out value="${answers[aoIdentifier]}"/>]
         </c:if>
         </td>
         </tr>
-        <c:if test="${not empty fn:children(element, categoryData)}">
+        <c:if test="${not empty fn:children(element, answers)}">
             <tr>
                 <td></td>
                 <td class="sublabel"><fmt:message key="hakutoiveet.kysymykset"/></td>

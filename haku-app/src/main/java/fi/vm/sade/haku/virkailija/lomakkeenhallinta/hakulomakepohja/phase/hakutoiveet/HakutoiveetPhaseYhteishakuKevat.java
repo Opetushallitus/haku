@@ -84,7 +84,8 @@ public class HakutoiveetPhaseYhteishakuKevat {
 
         pr.addChild(createDiscretionaryQuestionsAndRules(id));
         pr.addChild(createSoraQuestions(id),
-                createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id));
+                createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id),
+                createKaksoistutkintoQuestions(id));
         ElementUtil.addPreferenceValidator(pr);
         return pr;
     }
@@ -103,6 +104,10 @@ public class HakutoiveetPhaseYhteishakuKevat {
                 FORM_MESSAGES), "oppimisvaikudet");
         discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset",
                 FORM_MESSAGES), "sosiaalisetsyyt");
+        discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.todistustenvertailuvaikeudet",
+                FORM_MESSAGES), "todistustenvertailuvaikeudet");
+        discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.todistustenpuuttuminen",
+                FORM_MESSAGES), "todistustenpuuttuminen");
         addRequiredValidator(discretionaryFollowUp, FORM_ERRORS);
 
         RelatedQuestionRule discretionaryFollowUpRule = new RelatedQuestionRule(index + "-discretionary-follow-up-rule",
@@ -157,6 +162,18 @@ public class HakutoiveetPhaseYhteishakuKevat {
         addRequiredValidator(radio, FORM_ERRORS);
         RelatedQuestionRule hasQuestion = new RelatedQuestionRule(radio.getId() + "_related_question_rule",
                 ImmutableList.of(index + "-Koulutus-id-athlete"), ElementUtil.KYLLA, false);
+
+        hasQuestion.addChild(radio);
+        return hasQuestion;
+    }
+
+    public static Element createKaksoistutkintoQuestions(final String index) {
+        Radio radio = new Radio(index + "_kaksoistutkinnon_lisakysymys",
+                createI18NText("form.hakutoiveet.kaksoistutkinnon.lisakysymys", FORM_MESSAGES));
+        addDefaultTrueFalseOptions(radio, FORM_MESSAGES);
+        addRequiredValidator(radio, FORM_ERRORS);
+        RelatedQuestionRule hasQuestion = new RelatedQuestionRule(radio.getId() + "_related_question_rule",
+                ImmutableList.of(index + "-Koulutus-id-kaksoistutkinto"), ElementUtil.KYLLA, false);
 
         hasQuestion.addChild(radio);
         return hasQuestion;

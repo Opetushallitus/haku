@@ -28,7 +28,7 @@ import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
-import fi.vm.sade.haku.oppija.ui.service.UIServiceResponse;
+import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -78,10 +78,10 @@ public class OfficerControllerTest {
         when(formService.getActiveForm(ASID)).thenReturn(form);
 
         OfficerUIService officerApplicationService = mock(OfficerUIService.class);
-        UIServiceResponse uiServiceResponse = new UIServiceResponse();
-        when(officerApplicationService.getValidatedApplication(OID, PREVIEW_PHASE)).thenReturn(uiServiceResponse);
-        when(officerApplicationService.getAdditionalInfo(OID)).thenReturn(uiServiceResponse);
-        when(officerApplicationService.updateApplication(eq(OID), any(ApplicationPhase.class), any(User.class))).thenReturn(uiServiceResponse);
+        ModelResponse modelResponse = new ModelResponse();
+        when(officerApplicationService.getValidatedApplication(OID, PREVIEW_PHASE)).thenReturn(modelResponse);
+        when(officerApplicationService.getAdditionalInfo(OID)).thenReturn(modelResponse);
+        when(officerApplicationService.updateApplication(eq(OID), any(ApplicationPhase.class), any(User.class))).thenReturn(modelResponse);
         when(officerApplicationService.getApplicationWithLastPhase(eq(OID))).thenReturn(app);
         officerController.officerUIService = officerApplicationService;
     }

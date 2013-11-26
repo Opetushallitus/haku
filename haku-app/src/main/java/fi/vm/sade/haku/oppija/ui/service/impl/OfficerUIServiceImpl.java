@@ -18,7 +18,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
-import fi.vm.sade.haku.oppija.ui.service.UIServiceResponse;
+import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import org.slf4j.Logger;
@@ -68,7 +68,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public UIServiceResponse getApplicationElement(
+    public ModelResponse getApplicationElement(
             final String oid,
             final String phaseId,
             final String elementId,
@@ -79,11 +79,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Element element = new ElementTree(form).getChildById(elementId);
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId()));
-        return new UIServiceResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
+        return new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
     }
 
     @Override
-    public UIServiceResponse getValidatedApplication(final String oid, final String phaseId) throws ResourceNotFoundException {
+    public ModelResponse getValidatedApplication(final String oid, final String phaseId) throws ResourceNotFoundException {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
@@ -93,22 +93,22 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         if (!"esikatselu".equals(phaseId)) {
             element = new ElementTree(form).getChildById(application.getPhaseId());
         }
-        UIServiceResponse uiServiceResponse =
-                new UIServiceResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
-        uiServiceResponse.addObjectToModel("preview", "esikatselu".equals(phaseId));
-        uiServiceResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
-        uiServiceResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
-        uiServiceResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanUpdateApplication(application));
-        return uiServiceResponse;
+        ModelResponse modelResponse =
+                new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
+        modelResponse.addObjectToModel("preview", "esikatselu".equals(phaseId));
+        modelResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
+        modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
+        modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanUpdateApplication(application));
+        return modelResponse;
     }
 
     @Override
-    public UIServiceResponse getAdditionalInfo(String oid) throws ResourceNotFoundException {
-        return new UIServiceResponse(applicationService.getApplicationByOid(oid));
+    public ModelResponse getAdditionalInfo(String oid) throws ResourceNotFoundException {
+        return new ModelResponse(applicationService.getApplicationByOid(oid));
     }
 
     @Override
-    public UIServiceResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user)
+    public ModelResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user)
             throws ResourceNotFoundException {
 
         Application queryApplication = new Application(oid);
@@ -142,7 +142,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.applicationService.fillLOPChain(application, false);
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
-        return new UIServiceResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);
+        return new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);
     }
 
     private void checkUpdatePermission(Application application) throws ResourceNotFoundException {
@@ -159,18 +159,18 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public UIServiceResponse getOrganizationAndLearningInstitutions() {
-        UIServiceResponse uiServiceResponse = new UIServiceResponse();
-        uiServiceResponse.addObjectToModel("organizationTypes", koodistoService.getOrganizationtypes());
-        uiServiceResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
+    public ModelResponse getOrganizationAndLearningInstitutions() {
+        ModelResponse modelResponse = new ModelResponse();
+        modelResponse.addObjectToModel("organizationTypes", koodistoService.getOrganizationtypes());
+        modelResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
         List<ApplicationSystem> applicationSystems =
                 applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");
         ApplicationSystem defaultAS = applicationSystemService.getDefaultApplicationSystem(applicationSystems);
-        uiServiceResponse.addObjectToModel("applicationSystems", applicationSystems);
-        uiServiceResponse.addObjectToModel("defaultAS", defaultAS != null ? defaultAS : "");
-        uiServiceResponse.addObjectToModel("hakukausiOptions", koodistoService.getHakukausi());
+        modelResponse.addObjectToModel("applicationSystems", applicationSystems);
+        modelResponse.addObjectToModel("defaultAS", defaultAS != null ? defaultAS : "");
+        modelResponse.addObjectToModel("hakukausiOptions", koodistoService.getHakukausi());
 
-        return uiServiceResponse;
+        return modelResponse;
     }
 
     @Override

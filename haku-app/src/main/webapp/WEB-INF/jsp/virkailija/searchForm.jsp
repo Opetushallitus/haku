@@ -49,7 +49,8 @@
                     </td>
                     <td>
                         <div class="field-search-containerbox">
-                            Ze Lähtökoulu hier gehen.
+                            <!-- lähtökoulu -->
+                            &nbsp;
                         </div>
                     </td>
                 </tr>
@@ -70,7 +71,7 @@
                                 key="virkailija.hakemus.hakemuksen.tila.otsikko"/></label>
 
                         <div class="field-select-containerbox">
-                            <select class="width-50" id="application-state" ng-model="applicationState">
+                            <select class="width-50" id="application-state">
                                 <option value=""><fmt:message key="virkailija.hakemus.tila.kaikki"/></option>
                                 <option selected="selected" value="ACTIVE"><fmt:message
                                         key="virkailija.hakemus.tila.voimassa"/></option>

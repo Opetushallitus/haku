@@ -32,6 +32,7 @@ public class ApplicationOption {
     private List<String> teachingLanguages;
     private LearningOpportunityProvider provider;
     private String aoIdentifier;
+    private boolean kaksoistutkinto;
 
     public String getId() {
         return id;
@@ -103,5 +104,13 @@ public class ApplicationOption {
 
     public void setAoIdentifier(String aoIdentifier) {
         this.aoIdentifier = aoIdentifier;
+    }
+
+    public boolean isKaksoistutkinto() {
+        return kaksoistutkinto;
+    }
+
+    public void setKaksoistutkinto(boolean kaksoistutkinto) {
+        this.kaksoistutkinto = kaksoistutkinto;
     }
 }

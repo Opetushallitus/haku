@@ -163,6 +163,12 @@ public final class ElementUtil {
                 pattern);
     }
 
+    public static Validator createValueSetValidator(final String id, final List<String> validValues, final String bundleName) {
+        return new ValueSetValidator(id,
+                ElementUtil.createI18NText("yleinen.virheellinenArvo", bundleName),
+                validValues);
+    }
+
     public static void addRequiredValidator(final Element element, final String bundleName) {
         element.addAttribute("required", "required");
         element.setValidator(
@@ -290,7 +296,6 @@ public final class ElementUtil {
             return current;
         }
     }
-
     public static Expr atLeastOneValueEqualsToVariable(final String variable, final String... values) {
         if (values.length == 1) {
             return new Equals(new Value(values[0]), new Variable(variable));

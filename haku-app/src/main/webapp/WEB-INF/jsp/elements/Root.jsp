@@ -16,7 +16,7 @@
   --%>
 
 <c:set var="element" value="${it.element}" scope="request"/>
-<c:set var="categoryData" value="${it.categoryData}" scope="request"/>
+<c:set var="answers" value="${it.answers}" scope="request"/>
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="applicationSystemId" value="${it.applicationSystemId}" scope="request"/>
 <jsp:include page="./${element.type}.jsp"/>

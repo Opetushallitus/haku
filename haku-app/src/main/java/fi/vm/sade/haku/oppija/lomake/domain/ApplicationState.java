@@ -18,28 +18,27 @@ package fi.vm.sade.haku.oppija.lomake.domain;
 
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ApplicationState {
 
-    private static final String APPLICATION_KEY = "application";
-    public static final String VALMIS = "valmis";
-    private final Map<String, I18nText> errors = new HashMap<String, I18nText>();
-    private final Map<String, Object> modelObjects = new HashMap<String, Object>();
+    private final Application application;
     private final String phaseId;
+    private Map<String, String> answers = new HashMap<String, String>();
+
+    private final Map<String, I18nText> errors = new HashMap<String, I18nText>();
 
     public ApplicationState(final Application application, final String phaseId) {
-        modelObjects.put(APPLICATION_KEY, application);
-        modelObjects.put("categoryData", application.getVastauksetMerged());
-        modelObjects.put("errorMessages", errors);
-        modelObjects.put("applicationPhaseId", application.getPhaseId());
+        this.application = application;
         this.phaseId = phaseId;
     }
 
-    public void addModelObject(final String key, final Object object) {
-        this.modelObjects.put(key, object);
+    public ApplicationState(final Application application, final String phaseId, final Map<String, String> answers) {
+        this(application, phaseId);
+        this.answers.putAll(answers);
     }
 
     public boolean isValid() {
@@ -55,22 +54,23 @@ public class ApplicationState {
     }
 
     public Map<String, Object> getModelObjects() {
+        Map<String, Object> modelObjects = new HashMap<String, Object>();
+        modelObjects.put(ModelResponse.APPLICATION, application);
+        if (answers.isEmpty()) {
+            modelObjects.put(ModelResponse.ANSWERS, application.getVastauksetMerged());
+        } else {
+            modelObjects.put(ModelResponse.ANSWERS, this.answers);
+        }
+        modelObjects.put(ModelResponse.ERROR_MESSAGES, errors);
+        modelObjects.put(ModelResponse.APPLICATION_PHASE_ID, application.getPhaseId());
         return modelObjects;
     }
 
     public Application getApplication() {
-        return (Application) modelObjects.get(APPLICATION_KEY);
+        return this.application;
     }
 
     public String getPhaseId() {
         return phaseId;
-    }
-
-    public boolean isFinalStage() {
-        return VALMIS.equals(phaseId);
-    }
-
-    public void setAnswersMerged(Map<String, String> answersMerged) {
-        modelObjects.put("categoryData", answersMerged);
     }
 }

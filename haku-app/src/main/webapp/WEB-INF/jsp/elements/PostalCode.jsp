@@ -18,10 +18,10 @@
 <div class="form-row">
 
     <haku:label element="${element}" styleBaseClass="form-row"/>
-    <c:set value="${categoryData['postitoimipaikka']}" var="postOffice" scope="page"/>
+    <c:set value="${answers['postitoimipaikka']}" var="postOffice" scope="page"/>
     <div class="form-row-content">
         <div class="field-container-text">
-            <input type="text" ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"
+            <input type="text" ${element.attributeString} value="<c:out value='${answers[element.id]}'/>"
                    class="postal-code"/>
                 <input type="hidden" value="<c:out value='${postOffice}' />" name="postitoimipaikka"
                    class="post-office"/>
