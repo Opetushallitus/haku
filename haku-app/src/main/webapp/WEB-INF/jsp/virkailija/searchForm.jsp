@@ -49,7 +49,8 @@
                     </td>
                     <td>
                         <div class="field-search-containerbox">
-                            Ze Lähtökoulu hier gehen.
+                            <!-- lähtökoulu -->
+                            &nbsp;
                         </div>
                     </td>
                 </tr>

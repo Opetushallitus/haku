@@ -104,10 +104,21 @@ public class KoodistoServiceMockImpl implements KoodistoService {
         );
 
         this.listOfLearningInstitutionTypes = ImmutableList.of(
-                new Option(createI18NAsIs(LEARNING_INSTITUTION_TYPE), LEARNING_INSTITUTION_TYPE));
+                new Option(createI18NAsIs("Oppisopimustoimipiste"), "04"),
+                new Option(createI18NAsIs("Muu organisaatio"), "05"),
+                new Option(createI18NAsIs("Oppilaitos"), "02"),
+                new Option(createI18NAsIs("Koulutustoimija"), "01"),
+                new Option(createI18NAsIs("Toimipiste"), "03")
+
+        );
+
         this.listOfOrganizationTypes =
                 ImmutableList.of(
-                        new Option(createI18NAsIs(ORGANIZATION_TYPE), ORGANIZATION_TYPE));
+                    new Option(createI18NAsIs("Oppisopimustoimipiste"), "04"),
+                    new Option(createI18NAsIs("Muu organisaatio"), "05"),
+                    new Option(createI18NAsIs("Oppilaitos"), "02"),
+                    new Option(createI18NAsIs("Koulutustoimija"), "01"),
+                    new Option(createI18NAsIs("Toimipiste"), "03"));
 
         this.listOfCountries =
                 ImmutableList.of(

@@ -40,7 +40,7 @@ import java.util.Map;
 @Path("/organization")
 @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
 public class OrganizationResource {
-    public static final Logger LOGGER = LoggerFactory.getLogger(OrganizationResource.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrganizationResource.class);
 
     public static final String ORGANIZATION_ROOT_ID = "1.2.246.562.10.00000000001";
 
@@ -48,14 +48,19 @@ public class OrganizationResource {
     private OrganizationService organizationService;
 
     @GET
-    @Path("/hakemus/")
+    @Path("/hakemus")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<Map<String, Object>> searchJson(@QueryParam("searchString") final String searchString,
                                                 @QueryParam("organizationType") final String organizationType,
                                                 @QueryParam("learningInstitutionType") final String learningInstitutionType,
                                                 @QueryParam("includePassive") @DefaultValue("false") final boolean includePassive,
                                                 @QueryParam("includePlanned") @DefaultValue("false") final boolean includePlanned) throws IOException {
-        List<Organization> listOfOrganization = getOrganizations(searchString, organizationType, learningInstitutionType, includePassive, includePlanned);
+        LOGGER.debug("Search organizations 2");
+        System.out.println("FFS");
+        LOGGER.debug("Search organizations q: {}, orgType: {}, loiType: {}, passive: {}, planned: {} ", searchString,
+                organizationType, learningInstitutionType, includePassive, includePlanned);
+        List<Organization> listOfOrganization = getOrganizations(searchString, organizationType,
+                learningInstitutionType, includePassive, includePlanned);
         return toMap(listOfOrganization);
     }
 

@@ -53,7 +53,15 @@ public class OrganizationServiceImpl implements OrganizationService {
 //        criteria.setSuunnitellut(searchCriteria.isIncludePlanned());
 //        criteria.setLakkautetut(searchCriteria.isIncludePassive());
 //        criteria.setOppilaitosTyyppi(searchCriteria.getLearningInstitutionType());
-//        searchCriteria.setMaxResults(MAX_RESULTS);
+
+        LOG.debug("search organization kunta: {}, oidRestrictions: {}, loiType: {}, orgType: {}, q: {}, skipParents: {}",
+                searchCriteria.getKunta(),
+                searchCriteria.getOidRestrictionList().size(),
+                searchCriteria.getOppilaitosTyyppi(),
+                searchCriteria.getOrganisaatioTyyppi(),
+                searchCriteria.getSearchStr(),
+                searchCriteria.getSkipParents());
+
         final List<OrganisaatioPerustieto> result = service.searchBasicOrganisaatios(searchCriteria);
 
         LOG.debug("Criteria: {}, found {} organizations", searchCriteria, result.size());
