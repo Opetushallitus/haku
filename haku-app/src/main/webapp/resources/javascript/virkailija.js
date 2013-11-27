@@ -156,6 +156,7 @@ $(document).ready(function () {
         this.search = function (start, orderBy, orderDir) {
             $('#application-table thead tr td').removeAttr('class');
             var queryParameters = createQueryParameters(start);
+            $('#search-spinner').show();
             $.getJSON(page_settings.contextPath + "/applications/list/"+orderBy+"/"+orderDir,
                 queryParameters,
                 function (data) {
@@ -180,6 +181,7 @@ $(document).ready(function () {
                     } else {
                         $('#pagination').empty();
                     }
+                    $('#search-spinner').hide();
                 });
         },
         this.updateCounters = function (count) {

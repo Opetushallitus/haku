@@ -41,10 +41,10 @@
                             <select id="hakukausi">
                                 <option value="">&nbsp;</option>
                                 <c:forEach var="option" items="${it.hakukausiOptions}">
-                                    <option value="${option.value}" ><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
+                                    <option value="${option.value}" <c:if test="${option.value == it.defaultSemester}">selected="selected"</c:if> ><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
                                 </c:forEach>
                             </select>
-                            <input type="text" id="hakukausiVuosi" name="hakukausiVuosi" placeholder=""/>
+                            <input type="text" id="hakukausiVuosi" name="hakukausiVuosi" value="${it.defaultYear}"/>
                         </div>
                     </td>
                     <td>
@@ -88,7 +88,9 @@
                         </div>
                     </td>
                     <td>
-
+                        <div id="search-spinner" style="display: none">
+                            <img src="${contextPath}/resources/img/icon-notification.png" alt="Hakee..."/>
+                        </div>
                     </td>
                 </tr>
 
