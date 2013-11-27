@@ -241,5 +241,3 @@ var complexRule = {
         });
     }
 };
-
-$.getScript("/static/js/oph-banner.js");
