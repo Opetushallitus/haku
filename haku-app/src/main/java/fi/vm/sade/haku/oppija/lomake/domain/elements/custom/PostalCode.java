@@ -17,19 +17,14 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.PostOffice;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
 
-import java.util.Map;
+import java.util.List;
 
-/**
- * @author Mikko Majapuro
- */
-public class PostalCode extends DataRelatedQuestion<PostOffice> {
+public class PostalCode extends OptionQuestion {
 
-    private static final long serialVersionUID = 5889226903401200340L;
-
-    public PostalCode(final String id, final I18nText i18nText, final Map<String, PostOffice> data) {
-        super(id, i18nText, data);
+    public PostalCode(final String id, final I18nText i18nText, final List<Option> options) {
+        super(id, i18nText, options);
     }
 }

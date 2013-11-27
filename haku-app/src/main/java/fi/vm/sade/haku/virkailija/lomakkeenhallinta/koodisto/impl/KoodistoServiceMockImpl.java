@@ -18,12 +18,10 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import fi.vm.sade.haku.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -38,12 +36,10 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.
 @Profile(value = {"dev", "it"})
 public class KoodistoServiceMockImpl implements KoodistoService {
 
-    public static final String LEARNING_INSTITUTION_TYPE = "Yliopistot";
-    public static final String ORGANIZATION_TYPE = "Toimipiste";
     private static final String RUOTSI = "SWE";
     private static final String SUOMI = "FIN";
     public final List<Option> listOfGradeGrades;
-    public final List<PostOffice> listOfPostOffices;
+    public final List<Option> listOfPostOffices;
     public final List<SubjectRow> listOfSubjects;
     public final List<Option> listOfLearningInstitutionTypes;
     public final List<Option> listOfOrganizationTypes;
@@ -72,9 +68,9 @@ public class KoodistoServiceMockImpl implements KoodistoService {
         this.listOfGradeGrades = ImmutableList.copyOf(listOfGradeGrades);
 
         this.listOfPostOffices = ImmutableList.of(
-                createPostOffice("00100", "Helsinki"),
-                createPostOffice("02100", "Espoo"),
-                createPostOffice("33100", "Tampere"));
+                new Option(createI18NAsIs("Helsinki"), "00100"),
+                new Option(createI18NAsIs("Espoo"), "02100"),
+                new Option(createI18NAsIs("Tampere"), "33100"));
 
         this.listOfSubjects = ImmutableList.of(
                 new SubjectRow("A1", createI18NAsIs("A1-kieli"), true, true, true, true),
@@ -114,11 +110,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
         this.listOfOrganizationTypes =
                 ImmutableList.of(
-                    new Option(createI18NAsIs("Oppisopimustoimipiste"), "04"),
-                    new Option(createI18NAsIs("Muu organisaatio"), "05"),
-                    new Option(createI18NAsIs("Oppilaitos"), "02"),
-                    new Option(createI18NAsIs("Koulutustoimija"), "01"),
-                    new Option(createI18NAsIs("Toimipiste"), "03"));
+                        new Option(createI18NAsIs("Oppisopimustoimipiste"), "04"),
+                        new Option(createI18NAsIs("Muu organisaatio"), "05"),
+                        new Option(createI18NAsIs("Oppilaitos"), "02"),
+                        new Option(createI18NAsIs("Koulutustoimija"), "01"),
+                        new Option(createI18NAsIs("Toimipiste"), "03"));
 
         this.listOfCountries =
                 ImmutableList.of(
@@ -183,7 +179,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     }
 
     @Override
-    public List<PostOffice> getPostOffices() {
+    public List<Option> getPostOffices() {
         return this.listOfPostOffices;
     }
 
@@ -251,9 +247,5 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getHakukausi() {
         return listOfKausi;
-    }
-
-    private static PostOffice createPostOffice(final String postCode, final String text) {
-        return new PostOffice(postCode, ElementUtil.createI18NAsIs(text));
     }
 }

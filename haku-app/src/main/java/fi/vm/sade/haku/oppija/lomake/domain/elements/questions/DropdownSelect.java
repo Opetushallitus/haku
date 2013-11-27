@@ -20,8 +20,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 
 public class DropdownSelect extends OptionQuestion {
 
-    private static final long serialVersionUID = -4123932313676830396L;
-
     private final String defaultValueAttribute;
 
     public DropdownSelect(final String id, final I18nText i18nText, final String defaultValueAttribute) {

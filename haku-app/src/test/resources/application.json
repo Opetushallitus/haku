@@ -1,6 +1,6 @@
 {
     "applicationSystemId": "1.2.246.562.5.50476818906",
-    "fullName" : "korhonen pena topi",
+    "fullName": "korhonen pena topi",
     "answers": {
         "henkilotiedot": {
             "aidinkieli": "FI",
@@ -8,7 +8,6 @@
             "kansalaisuus": "FIN",
             "asuinmaa": "FIN",
             "Sukunimi": "Korhonen",
-            "postitoimipaikka": "Helsinki",
             "Henkilotunnus": "270802-184A",
             "matkapuhelinnumero": "0401000202",
             "Postinumero": "00100",
@@ -34,15 +33,15 @@
             "LISAKOULUTUS_KYMPPI": "true",
             "perusopetuksen_kieli": "FI",
             "phaseId": "hakutoiveet",
-            "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON" : "false"
+            "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON": "false"
         },
         "hakutoiveet": {
-            "preference1-discretionary" : "false",
+            "preference1-discretionary": "false",
             "preference1-Opetuspiste": "FAKTIA, Espoo op",
             "preference1-Harkinnanvarainen": "false",
             "preference1-Koulutus-educationDegree": "32",
             "preference1-Koulutus-id": "1.2 .246 .562 .14 .79893512065",
-			"preference1-Opetuspiste-id-parents" : "1.2.246.562.10.84682192491",
+            "preference1-Opetuspiste-id-parents": "1.2.246.562.10.84682192491",
             "preference1-Opetuspiste-id": "1.2.246.562.10.89537774706",
             "preference1-Koulutus": "Kaivosalan perustutkinto, pk",
             "preference1-Koulutus-id-aoIdentifier": "123",

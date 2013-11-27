@@ -22,38 +22,60 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import org.springframework.data.annotation.Transient;
 
 import java.util.*;
 
 public abstract class OptionQuestion extends Question {
 
     private static final long serialVersionUID = -2304711424350028559L;
+
     private final List<Option> options = new ArrayList<Option>();
+
+    @Transient
+    private final Map<String, Option> optionsMap = new LinkedHashMap<String, Option>();
+    @Transient
     private Map<String, List<Option>> optionsSortedByText;
 
     protected OptionQuestion(final String id, final I18nText i18nText) {
         super(id, i18nText);
     }
 
+    protected OptionQuestion(final String id, final I18nText i18nText, final List<Option> options) {
+        this(id, i18nText);
+        addOptions(options);
+    }
+
+    public final void addOptions(final List<Option> options) {
+        for (Option option : options) {
+            addOption(option);
+        }
+    }
+
     public Option addOption(final I18nText i18nText, final String value) {
         Option option = new Option(i18nText, value);
-        this.options.add(option);
+        addOption(option);
         return option;
     }
 
     public Option addOption(final I18nText i18nText, final String value, final I18nText help) {
         Option option = new Option(i18nText, value);
         option.setHelp(help);
-        this.options.add(option);
+        addOption(option);
         return option;
     }
 
-    public final void addOptions(final List<Option> options) {
-        this.options.addAll(options);
+    private void addOption(final Option option) {
+        this.optionsMap.put(option.getValue(), option);
+        this.options.add(option);
     }
 
     public List<Option> getOptions() {
         return ImmutableList.copyOf(options);
+    }
+
+    public Map<String, Option> getData() {
+        return optionsMap;
     }
 
     public Map<String, List<Option>> getOptionsSortedByText() {

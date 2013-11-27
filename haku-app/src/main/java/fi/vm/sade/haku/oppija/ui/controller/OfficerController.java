@@ -19,16 +19,14 @@ package fi.vm.sade.haku.oppija.ui.controller;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
-import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.haku.oppija.ui.common.UriUtil;
+import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
-import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +38,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -298,19 +295,6 @@ public class OfficerController {
     public Viewable applicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException {
         ModelResponse modelResponse = uiService.getApplicationPrint(oid);
         return new Viewable(APPLICATION_PRINT_VIEW, modelResponse.getModel());
-    }
-
-    @GET
-    @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}/{elementId}/relatedData/{key}")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public Serializable getElementRelatedData(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                                              @PathParam(OID_PATH_PARAM) final String oid,
-                                              @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
-                                              @PathParam("key") final String key) {
-        LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationSystemId, elementId, key);
-        Form activeForm = formService.getForm(applicationSystemId);
-        return new ElementTree(activeForm).getRelatedData(elementId, key);
     }
 
     @POST

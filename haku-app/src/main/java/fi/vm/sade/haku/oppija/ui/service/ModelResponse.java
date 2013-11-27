@@ -2,6 +2,7 @@ package fi.vm.sade.haku.oppija.ui.service;
 
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -128,12 +129,6 @@ public class ModelResponse {
         this.addObjectToModel(APPLICATION_SYSTEM_ID, asid);
     }
 
-    public void addObjectsToModel(final Map<String, Object> modelObjects) {
-        for (Map.Entry<String, Object> entry : modelObjects.entrySet()) {
-            this.addObjectToModel(entry.getKey(), entry.getValue());
-        }
-    }
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ModelResponse{");
@@ -141,5 +136,12 @@ public class ModelResponse {
         sb.append(", model=").append(model);
         sb.append('}');
         return sb.toString();
+    }
+
+    public void setApplicationState(final ApplicationState applicationState) {
+        this.setErrorMessages(applicationState.getErrors());
+        for (Map.Entry<String, Object> entry : applicationState.getModelObjects().entrySet()) {
+            this.addObjectToModel(entry.getKey(), entry.getValue());
+        }
     }
 }

@@ -1,12 +1,10 @@
 package fi.vm.sade.haku.oppija.lomake.util;
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DataRelatedQuestion;
 import fi.vm.sade.haku.oppija.lomake.exception.ElementNotFound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,18 +16,6 @@ public final class ElementTree {
 
     public ElementTree(final Element root) {
         this.root = root;
-    }
-
-    public Serializable getRelatedData(final String elementId, final String key) {
-        try {
-            @SuppressWarnings("unchecked")
-            DataRelatedQuestion element =
-                    (DataRelatedQuestion<Serializable>) getChildById(elementId);
-            return element.getData(key);
-        } catch (Exception e) {
-            LOGGER.error(e.toString());
-            return null;
-        }
     }
 
     public Element getChildById(final String id) {

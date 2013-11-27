@@ -126,7 +126,8 @@ public class LomakeIT extends DummyModelBaseItTest {
         // Ei mene läpi, työkokemus > 1000 kuukautta
         nextPhase();
         findById("TYOKOKEMUSKUUKAUDET");
-        selenium.typeKeys("TYOKOKEMUSKUUKAUDET", "\b\b\b\b2"); // \b is backspace
+
+        setValue("TYOKOKEMUSKUUKAUDET", StringUtils.repeat("\b", "1001".length()) + "2"); //\b is backspace
 
         // Ei mene läpi, asiointikieli valitsematta
         nextPhase();

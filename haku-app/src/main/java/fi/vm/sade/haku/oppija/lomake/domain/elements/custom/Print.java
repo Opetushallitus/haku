@@ -24,7 +24,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
  */
 public class Print extends Titled {
 
-    public Print(String id, I18nText i18nText) {
+    public Print(final String id, final I18nText i18nText) {
         super(id, i18nText);
     }
 }
