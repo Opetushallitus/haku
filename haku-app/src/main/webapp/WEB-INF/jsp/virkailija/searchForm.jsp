@@ -38,7 +38,7 @@
                     <td>
                         <label for="hakukausi"><fmt:message key="virkailija.hakemus.hakukausi"/></label>
                         <div class="field-search-containerbox">
-                            <select id="hakukausi">
+                            <select id="hakukausi" name="hakukausi">
                                 <option value="">&nbsp;</option>
                                 <c:forEach var="option" items="${it.hakukausiOptions}">
                                     <option value="${option.value}" <c:if test="${option.value == it.defaultSemester}">selected="selected"</c:if> ><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>

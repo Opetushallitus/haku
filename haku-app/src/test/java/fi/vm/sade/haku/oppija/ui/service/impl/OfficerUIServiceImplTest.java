@@ -105,7 +105,7 @@ public class OfficerUIServiceImplTest {
     @Test
     public void testGetOrganizationAndLearningInstitutions() throws Exception {
         ModelResponse modelResponse = officerUIService.getOrganizationAndLearningInstitutions();
-        assertEquals("Model size does not match", 6, modelResponse.getModel().size());
+        assertEquals("Model size does not match", 8, modelResponse.getModel().size());
     }
 
     @Test

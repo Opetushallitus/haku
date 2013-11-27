@@ -37,6 +37,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testSearchAndModify() throws Exception {
+        resetSemesterAndYear();
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
@@ -52,6 +53,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testEditControls() {
+        resetSemesterAndYear();
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
@@ -66,6 +68,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testComments() {
+        resetSemesterAndYear();
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
@@ -161,6 +164,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void View() {
+        resetSemesterAndYear();
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
@@ -219,6 +223,12 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     private void clickSearch() {
         findByIdAndClick("search-applications");
+    }
+
+    private void resetSemesterAndYear() {
+        WebElement element = driver.findElement(new By.ById("hakukausiVuosi"));
+        element.clear();
+        setValue("hakukausi", "");
     }
 
     private void activate(String oid) {
