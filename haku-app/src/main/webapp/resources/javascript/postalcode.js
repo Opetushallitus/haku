@@ -25,10 +25,7 @@
                 url: url,
                 async: false,
                 data: $("form.form").serialize(),
-
                 success: function (data, textStatus, jqXHR) {
-                    console.log(textStatus);
-                    console.log(data);
                     $(".post-office").replaceWith($(data).find(".post-office"))
                 },
                 error: function (e, ts, et) {
