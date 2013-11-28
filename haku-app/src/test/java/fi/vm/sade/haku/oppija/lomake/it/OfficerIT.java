@@ -31,13 +31,13 @@ public class OfficerIT extends DummyModelBaseItTest {
         final LoginPage loginPage = new LoginPage(seleniumContainer.getSelenium());
         navigateToPath("user", "login");
         loginPage.login("officer");
-        activate("1.2.3.4.5.00000000000");
+        activate("1.2.246.562.11.00000000000");
         navigateToPath("virkailija", "hakemus");
     }
 
     @Test
     public void testSearchAndModify() throws Exception {
-        resetSemesterAndYear();
+        clearSearch();
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
@@ -53,7 +53,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testEditControls() {
-        resetSemesterAndYear();
+        clearSearch();
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
@@ -68,7 +68,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testComments() {
-        resetSemesterAndYear();
+        clearSearch();
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
@@ -153,10 +153,8 @@ public class OfficerIT extends DummyModelBaseItTest {
         activate(oid);
         driver.findElement(new By.ByLinkText(oid)).click();
         driver.findElement(new By.ByLinkText("Lisää oppijanumero")).click();
-        screenshot("personOid1");
         WebElement element = driver.findElement(By.id("addStudentOidForm"));
         element.submit();
-        screenshot("personOid2");
         String personOid = getTrimmedTextById("_infocell_henkilonumero");
         String studentOid = getTrimmedTextById("_infocell_oppijanumero");
         assertTrue(studentOid.contains(personOid));
@@ -164,7 +162,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void View() {
-        resetSemesterAndYear();
+        clearSearch();
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
@@ -219,21 +217,19 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     private void clearSearch() {
         findByIdAndClick("reset-search");
+        WebElement element = driver.findElement(new By.ById("hakukausiVuosi"));
+        element.clear();
+        setValue("hakukausi", "");
+        setValue("application-state", "");
     }
 
     private void clickSearch() {
         findByIdAndClick("search-applications");
     }
 
-    private void resetSemesterAndYear() {
-        WebElement element = driver.findElement(new By.ById("hakukausiVuosi"));
-        element.clear();
-        setValue("hakukausi", "");
-    }
-
     private void activate(String oid) {
         clearSearch();
-        List<WebElement> webElements = SearchByTerm(oid);
+        List<WebElement> webElements = SearchByTerm("");
         for (WebElement webElement : webElements) {
             if (webElement.getText().equals(oid)) {
                 webElement.click();

@@ -36,6 +36,10 @@
                         <small><fmt:message key="virkailija.hakemus.hae.otsikko"/></small>
                     </td>
                     <td>
+                        <script type="text/javascript">
+                            hakukausiDefaultYear = '<c:out value="${it.defaultYear}"/>';
+                            hakukausiDefaultSemester = '<c:out value="${it.defaultSemester}"/>';
+                        </script>
                         <label for="hakukausi"><fmt:message key="virkailija.hakemus.hakukausi"/></label>
                         <div class="field-search-containerbox">
                             <select id="hakukausi" name="hakukausi">
@@ -71,7 +75,7 @@
                                 key="virkailija.hakemus.hakemuksen.tila.otsikko"/></label>
 
                         <div class="field-select-containerbox">
-                            <select class="width-50" id="application-state">
+                            <select class="width-50" id="application-state" name="application-state">
                                 <option value=""><fmt:message key="virkailija.hakemus.tila.kaikki"/></option>
                                 <option selected="selected" value="ACTIVE"><fmt:message
                                         key="virkailija.hakemus.tila.voimassa"/></option>

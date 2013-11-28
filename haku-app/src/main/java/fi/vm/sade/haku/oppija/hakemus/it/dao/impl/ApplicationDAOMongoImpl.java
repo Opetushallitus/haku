@@ -219,7 +219,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ArrayList<DBObject> queries = new ArrayList<DBObject>();
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
-            LOG.debug("Searching with token: '{}'", token);
             if (OID_PATTERN.matcher(token).matches()) {
                 if (token.indexOf('.') > -1) { // Long form
                     if (token.startsWith(applicationOidPrefix)) {

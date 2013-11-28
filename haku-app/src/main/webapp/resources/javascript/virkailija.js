@@ -198,12 +198,12 @@ $(document).ready(function () {
             $('#lopoid').val('');
             $('#lop-title').empty();
             $('#entry').val('');
-            $('#application-state').val('');
+            $('#application-state').val('ACTIVE');
             $('#application-preference').val('');
             $('#pagination').empty();
             $('#application-system').val('');
-            $('#hakukausiVuosi').val('');
-            $('#hakukausi').val('');
+            $('#hakukausiVuosi').val(hakukausiDefaultYear);
+            $('#hakukausi').val(hakukausiDefaultSemester);
             $('#discretionary-only').attr('checked', false);
         }
         return this;

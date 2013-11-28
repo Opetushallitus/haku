@@ -66,8 +66,10 @@ public class ApplicationIT extends DummyModelBaseItTest {
 
     @Test
     public void testFindApplications() throws IOException {
-        navigateToPath("applications?q=1.2.3.4.5.00000010003");
-        screenshot("findApplications");
+        navigateToPath("applications");
+        screenshot("findApplications1");
+        navigateToPath("applications?q=1.2.246.562.11.00000010003");
+        screenshot("findApplications2");
         ApplicationSearchResultDTO applications = responseToSearchResult();
         assertEquals(1, applications.getResults().size());
         assertEquals(1, applications.getTotalCount());
@@ -82,14 +84,14 @@ public class ApplicationIT extends DummyModelBaseItTest {
 
     //    @Test
     public void testGetApplication() throws IOException {
-        navigateToPath("applications/1.2.3.4.5.00000010003/");
+        navigateToPath("applications/1.2.246.562.11.00000010003/");
         screenshot("getApplication");
         String response = selenium.getBodyText();
         ObjectMapper mapper = new ObjectMapper();
         Application application = mapper.readValue(response, new TypeReference<Application>() {
         });
         assertNotNull(application);
-        assertEquals("1.2.3.4.5.00000010003", application.getOid());
+        assertEquals("1.2.246.562.11.00000010003", application.getOid());
     }
 
     private ApplicationSearchResultDTO responseToSearchResult() throws IOException {

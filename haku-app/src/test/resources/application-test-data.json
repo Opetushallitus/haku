@@ -96,7 +96,7 @@
                 "tyokokemuskuukaudet": "5"
             }
         },
-        "oid": "1.2.3.4.5.00000010003",
+        "oid": "1.2.246.562.11.00000010003",
         "personOid": "9.8.7.6.5.1234567890",
         "state": "ACTIVE",
         "applicationSystemId": "Yhteishaku",
@@ -200,7 +200,7 @@
                 "tyokokemuskuukaudet": "5"
             }
         },
-        "oid": "1.2.3.4.5.00000020006",
+        "oid": "1.2.246.562.11.00000020006",
         "state": "ACTIVE",
         "applicationSystemId": "Yhteishaku",
         "phaseId": "esikatselu"
@@ -303,7 +303,7 @@
                 "tyokokemuskuukaudet": "5"
             }
         },
-        "oid": "1.2.3.4.5.00000030009",
+        "oid": "1.2.246.562.11.00000030009",
         "state": "PASSIVE",
         "applicationSystemId": "Yhteishaku",
         "phaseId": "esikatselu"
