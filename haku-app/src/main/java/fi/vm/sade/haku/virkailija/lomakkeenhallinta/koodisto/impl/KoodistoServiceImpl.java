@@ -20,7 +20,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
@@ -66,14 +65,6 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
-    public List<PostOffice> getPostOffices() {
-        return ImmutableList.copyOf(
-                Lists.transform(
-                        getKoodiTypes(CODE_POST),
-                        new KoodiTypeToPostOfficeFunction()));
-    }
-
-    @Override
     public List<SubjectRow> getSubjects() {
         return ImmutableList.copyOf(
                 Lists.transform(
@@ -101,6 +92,11 @@ public class KoodistoServiceImpl implements KoodistoService {
                         Lists.transform(
                                 grades,
                                 new KoodiTypeToOptionFunction())));
+    }
+
+    @Override
+    public List<Option> getPostOffices() {
+        return codesToOptions(CODE_POST);
     }
 
     @Override

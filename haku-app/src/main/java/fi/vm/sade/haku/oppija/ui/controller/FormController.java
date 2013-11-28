@@ -46,7 +46,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -208,18 +207,6 @@ public class FormController {
         return new Viewable(ROOT_VIEW, modelResponse.getModel());
     }
 
-    @GET
-    @Path("/{applicationSystemId}/{phaseId}/{elementId}/relatedData/{key}")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public Serializable getElementRelatedData(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                                              @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
-                                              @PathParam("key") final String key) {
-        LOGGER.debug("getElementRelatedData {}, {}, {}, {}", applicationSystemId, elementId, key);
-        Form activeForm = formService.getActiveForm(applicationSystemId);
-        return new ElementTree(activeForm).getRelatedData(elementId, key);
-    }
-
     @POST
     @Path("/{applicationSystemId}/esikatselu")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
@@ -250,7 +237,7 @@ public class FormController {
         } else {
             LOGGER.debug("Invalid fields: {}", applicationState.getErrors().keySet());
             ModelResponse modelResponse = new ModelResponse();
-            modelResponse.addObjectsToModel(applicationState.getModelObjects());
+            modelResponse.setApplicationState(applicationState);
             modelResponse.setApplicationSystemId(applicationSystemId);
             modelResponse.setElement(new ElementTree(activeForm).getChildById(phaseId));
             modelResponse.setForm(activeForm);

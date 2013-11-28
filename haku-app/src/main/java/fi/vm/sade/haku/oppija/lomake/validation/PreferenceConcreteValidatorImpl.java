@@ -89,9 +89,10 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
 
     private boolean checkAthlete(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         final String key = validationInput.getElement().getId() + "-Koulutus-id-athlete";
+
         if (validationInput.getValues().containsKey(key) && Boolean.valueOf(validationInput.getValues().get(key)).booleanValue()
-                == applicationOption.getProvider().isAthleteEducation()) {
-            return true;
+                == (applicationOption.getProvider().isAthleteEducation() || applicationOption.isAthleteEducation())) {
+             return true;
         }
         return false;
     }

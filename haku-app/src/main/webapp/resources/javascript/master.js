@@ -212,10 +212,10 @@ var complexRule = {
                 var events = $._data(question[0], "events");
                 if (events) {
                     if (events.change.length < 1 && events.change[0].data.ruleId != ruleData.ruleId) {
-                        question.on('change ', ruleData, complexRule.refreshView);
+                        question.on('change', ruleData, complexRule.refreshView);
                     }
                 } else {
-                    question.on('change ', ruleData, complexRule.refreshView);
+                    question.on('change', ruleData, complexRule.refreshView);
                 }
             }
         }
@@ -241,5 +241,3 @@ var complexRule = {
         });
     }
 };
-
-$.getScript("/static/js/oph-banner.js");

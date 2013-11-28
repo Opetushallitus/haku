@@ -43,7 +43,7 @@ public class ApplicationOptionDTOToApplicationOptionFunction implements Function
             lop.setAthleteEducation(applicationOptionDTO.getProvider().isAthleteEducation());
             lop.setApplicationSystemIds(applicationOptionDTO.getProvider().getApplicationSystemIds());
             ao.setProvider(lop);
-
+            ao.setAthleteEducation(applicationOptionDTO.isAthleteEducation());
             return ao;
         } else {
             return null;

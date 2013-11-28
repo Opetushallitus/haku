@@ -36,15 +36,19 @@
                         <small><fmt:message key="virkailija.hakemus.hae.otsikko"/></small>
                     </td>
                     <td>
+                        <script type="text/javascript">
+                            hakukausiDefaultYear = '<c:out value="${it.defaultYear}"/>';
+                            hakukausiDefaultSemester = '<c:out value="${it.defaultSemester}"/>';
+                        </script>
                         <label for="hakukausi"><fmt:message key="virkailija.hakemus.hakukausi"/></label>
                         <div class="field-search-containerbox">
-                            <select id="hakukausi">
+                            <select id="hakukausi" name="hakukausi">
                                 <option value="">&nbsp;</option>
                                 <c:forEach var="option" items="${it.hakukausiOptions}">
-                                    <option value="${option.value}" ><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
+                                    <option value="${option.value}" <c:if test="${option.value == it.defaultSemester}">selected="selected"</c:if> ><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
                                 </c:forEach>
                             </select>
-                            <input type="text" id="hakukausiVuosi" name="hakukausiVuosi" placeholder=""/>
+                            <input type="text" id="hakukausiVuosi" name="hakukausiVuosi" value="${it.defaultYear}"/>
                         </div>
                     </td>
                     <td>
@@ -71,7 +75,7 @@
                                 key="virkailija.hakemus.hakemuksen.tila.otsikko"/></label>
 
                         <div class="field-select-containerbox">
-                            <select class="width-50" id="application-state">
+                            <select class="width-50" id="application-state" name="application-state">
                                 <option value=""><fmt:message key="virkailija.hakemus.tila.kaikki"/></option>
                                 <option selected="selected" value="ACTIVE"><fmt:message
                                         key="virkailija.hakemus.tila.voimassa"/></option>
@@ -88,7 +92,9 @@
                         </div>
                     </td>
                     <td>
-
+                        <div id="search-spinner" style="display: none">
+                            <img src="${contextPath}/resources/img/icon-notification.png" alt="Hakee..."/>
+                        </div>
                     </td>
                 </tr>
 

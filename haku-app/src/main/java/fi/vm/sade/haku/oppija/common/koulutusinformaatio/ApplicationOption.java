@@ -33,6 +33,7 @@ public class ApplicationOption {
     private LearningOpportunityProvider provider;
     private String aoIdentifier;
     private boolean kaksoistutkinto;
+    private boolean athleteEducation;
 
     public String getId() {
         return id;
@@ -112,5 +113,13 @@ public class ApplicationOption {
 
     public void setKaksoistutkinto(boolean kaksoistutkinto) {
         this.kaksoistutkinto = kaksoistutkinto;
+    }
+
+    public boolean isAthleteEducation() {
+        return athleteEducation;
+    }
+
+    public void setAthleteEducation(boolean athleteEducation) {
+        this.athleteEducation = athleteEducation;
     }
 }

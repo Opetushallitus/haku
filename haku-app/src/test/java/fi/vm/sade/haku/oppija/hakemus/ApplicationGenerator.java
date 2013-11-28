@@ -130,7 +130,6 @@ public class ApplicationGenerator {
         Map<String, String> henkilotiedot = new HashMap<String, String>();
         henkilotiedot.put("kansalaisuus", "FIN");
         henkilotiedot.put("asuinmaa", "FIN");
-        henkilotiedot.put("Postitoimipaikka", "Helsinki");
         henkilotiedot.put("matkapuhelinnumero1", "");
         henkilotiedot.put("Sukunimi", lastName);
         henkilotiedot.put("Postinumero", "00100");

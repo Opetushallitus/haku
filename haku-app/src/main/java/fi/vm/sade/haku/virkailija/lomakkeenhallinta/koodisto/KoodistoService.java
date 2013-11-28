@@ -16,7 +16,6 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto;
 
-import fi.vm.sade.haku.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
@@ -24,9 +23,9 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import java.util.List;
 
 public interface KoodistoService {
-    List<PostOffice> getPostOffices();
-
     List<SubjectRow> getSubjects();
+
+    List<Option> getPostOffices();
 
     List<Option> getGradeRanges();
 

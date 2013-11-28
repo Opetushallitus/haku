@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
@@ -17,8 +18,8 @@ import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
-import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
+import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import org.slf4j.Logger;
@@ -27,8 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class OfficerUIServiceImpl implements OfficerUIService {
@@ -44,6 +44,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final ElementTreeValidator elementTreeValidator;
     private final ApplicationSystemService applicationSystemService;
     private final AuthenticationService authenticationService;
+
+    private static final List<Integer> syyskausi = ImmutableList.of(Calendar.JULY, Calendar.AUGUST, Calendar.SEPTEMBER,
+            Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER);
 
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
@@ -165,11 +168,17 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
         List<ApplicationSystem> applicationSystems =
                 applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");
-        ApplicationSystem defaultAS = applicationSystemService.getDefaultApplicationSystem(applicationSystems);
+        ApplicationSystem defaultAS = null; //applicationSystemService.getDefaultApplicationSystem(applicationSystems);
         modelResponse.addObjectToModel("applicationSystems", applicationSystems);
         modelResponse.addObjectToModel("defaultAS", defaultAS != null ? defaultAS : "");
         modelResponse.addObjectToModel("hakukausiOptions", koodistoService.getHakukausi());
-
+        Calendar today = GregorianCalendar.getInstance();
+        String semester = "kausi_k";
+        if (syyskausi.contains(Integer.valueOf(today.get(Calendar.MONTH)))) {
+            semester = "kausi_s";
+        }
+        modelResponse.addObjectToModel("defaultYear", String.valueOf(today.get(Calendar.YEAR)));
+        modelResponse.addObjectToModel("defaultSemester", semester);
         return modelResponse;
     }
 

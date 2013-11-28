@@ -16,8 +16,6 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot;
 
-import com.google.common.collect.ImmutableMap;
-import fi.vm.sade.haku.oppija.lomake.domain.PostOffice;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
@@ -29,10 +27,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
@@ -243,13 +237,10 @@ public final class
         asuinmaaFI.addChild(lahiosoite);
 
         Element postinumero = new PostalCode("Postinumero", createI18NText("form.henkilotiedot.postinumero",
-                FORM_MESSAGES),
-                createPostOffices(koodistoService));
+                FORM_MESSAGES), koodistoService.getPostOffices());
         addSizeAttribute(postinumero, 5);
         postinumero.addAttribute("maxlength", "5");
         addRequiredValidator(postinumero, FORM_ERRORS);
-        postinumero.addAttribute("placeholder", "#####");
-        postinumero.setValidator(createRegexValidator(postinumero.getId(), POSTINUMERO_PATTERN, FORM_ERRORS));
         postinumero.setHelp(createI18NText("form.henkilotiedot.postinumero.help", FORM_MESSAGES));
         asuinmaaFI.addChild(postinumero);
 
@@ -302,14 +293,5 @@ public final class
 
         henkilotiedot.addChild(henkilotiedotRyhma);
         return henkilotiedot;
-    }
-
-    private static Map<String, PostOffice> createPostOffices(final KoodistoService koodistoService) {
-        List<PostOffice> listOfPostOffices = koodistoService.getPostOffices();
-        Map<String, PostOffice> postOfficeMap = new HashMap<String, PostOffice>(listOfPostOffices.size());
-        for (PostOffice postOffice : listOfPostOffices) {
-            postOfficeMap.put(postOffice.getPostcode(), postOffice);
-        }
-        return ImmutableMap.copyOf(postOfficeMap);
     }
 }
