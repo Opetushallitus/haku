@@ -741,7 +741,13 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.1</version>
-                
+                <dependencies>
+                    <dependency>
+                        <groupId>com.cenqua.clover</groupId>
+                        <artifactId>clover</artifactId>
+                        <version>${clover.version}</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <id>tomcat-run</id>
