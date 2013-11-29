@@ -741,13 +741,7 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.1</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.cenqua.clover</groupId>
-                        <artifactId>clover</artifactId>
-                        <version>${clover.version}</version>
-                    </dependency>
-                </dependencies>
+                
                 <executions>
                     <execution>
                         <id>tomcat-run</id>
@@ -846,7 +840,6 @@ buildTtime=${maven.build.timestamp}
         <profile>
             <id>clover</id>
             <properties>
-                <clover.version>3.1.8</clover.version>
                 <clover.fullRunEvery>500</clover.fullRunEvery>
                 <clover.generateHistorical>true</clover.generateHistorical>
                 <clover.base>/data00/atlassian/application-data/bamboo/clover_haku</clover.base>
