@@ -12,6 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,9 @@ import static org.junit.Assert.assertTrue;
 
 public class OfficerIT extends DummyModelBaseItTest {
 
+    @Value("${application.oid.prefix}")
+    private String applicationOidPrefix;
+
     @Before
     public void beforeOfficerIt() throws Exception {
         String baseUrl = getBaseUrl();
@@ -31,7 +35,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         final LoginPage loginPage = new LoginPage(seleniumContainer.getSelenium());
         navigateToPath("user", "login");
         loginPage.login("officer");
-        activate("1.2.246.562.11.00000000000");
+        activate(applicationOidPrefix + ".00000000000");
         navigateToPath("virkailija", "hakemus");
     }
 
