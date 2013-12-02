@@ -106,12 +106,12 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getLearningInstitutionTypes() {
-        return codesToOptions(CODE_LEARNING_INSTITUTION_TYPES);
+        return urisToOptions(CODE_LEARNING_INSTITUTION_TYPES);
     }
 
     @Override
     public List<Option> getOrganizationtypes() {
-        return codesToOptions(CODE_ORGANIZATION_TYPES);
+        return urisToOptions(CODE_ORGANIZATION_TYPES);
     }
 
     @Override
@@ -146,18 +146,7 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getHakukausi() {
-        return ImmutableList.copyOf(
-                Lists.reverse(
-                        Lists.transform(
-                                getKoodiTypes(CODE_HAKUKAUSI),
-                                new Function<KoodiType, Option>() {
-                                    @Override
-                                    public Option apply(final KoodiType koodiType) {
-                                        return new Option(
-                                                new I18nText(TranslationsUtil.createTranslationsMap(koodiType)),
-                                                koodiType.getKoodiUri());
-                                    }
-                                })));
+        return urisToOptions(CODE_HAKUKAUSI);
     }
 
     @Override
@@ -171,6 +160,21 @@ public class KoodistoServiceImpl implements KoodistoService {
                         Lists.transform(
                                 getKoodiTypes(codeName),
                                 new KoodiTypeToOptionFunction())));
+    }
+
+    private List<Option> urisToOptions(final String codeName) {
+        return ImmutableList.copyOf(
+                Lists.reverse(
+                        Lists.transform(
+                                getKoodiTypes(codeName),
+                                new Function<KoodiType, Option>() {
+                                    @Override
+                                    public Option apply(final KoodiType koodiType) {
+                                        return new Option(
+                                                new I18nText(TranslationsUtil.createTranslationsMap(koodiType)),
+                                                koodiType.getKoodiUri() + "#" + koodiType.getVersio());
+                                    }
+                                })));
     }
 
     private List<KoodiType> getKoodiTypes(final String koodistoUri) {

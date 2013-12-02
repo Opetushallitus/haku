@@ -55,8 +55,6 @@ public class OrganizationResource {
                                                 @QueryParam("learningInstitutionType") final String learningInstitutionType,
                                                 @QueryParam("includePassive") @DefaultValue("false") final boolean includePassive,
                                                 @QueryParam("includePlanned") @DefaultValue("false") final boolean includePlanned) throws IOException {
-        LOGGER.debug("Search organizations 2");
-        System.out.println("FFS");
         LOGGER.debug("Search organizations q: {}, orgType: {}, loiType: {}, passive: {}, planned: {} ", searchString,
                 organizationType, learningInstitutionType, includePassive, includePlanned);
         List<Organization> listOfOrganization = getOrganizations(searchString, organizationType,
