@@ -170,7 +170,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         List<Option> organizationTypes =  new ArrayList<Option>();
         for (OrganisaatioTyyppi ot : OrganisaatioTyyppi.values()) {
-            organizationTypes.add(new Option(ElementUtil.createI18NAsIs(ot.name()), ot.value()));
+            organizationTypes.add(new Option(ElementUtil.createI18NAsIs(ot.value()), ot.value()));
         }
         modelResponse.addObjectToModel("organizationTypes", organizationTypes);
         modelResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
