@@ -11,6 +11,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
@@ -22,6 +23,8 @@ import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -164,7 +167,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public ModelResponse getOrganizationAndLearningInstitutions() {
         ModelResponse modelResponse = new ModelResponse();
-        modelResponse.addObjectToModel("organizationTypes", koodistoService.getOrganizationtypes());
+
+        List<Option> organizationTypes =  new ArrayList<Option>();
+        for (OrganisaatioTyyppi ot : OrganisaatioTyyppi.values()) {
+            organizationTypes.add(new Option(ElementUtil.createI18NAsIs(ot.name()), ot.value()));
+        }
+        modelResponse.addObjectToModel("organizationTypes", organizationTypes);
         modelResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
         List<ApplicationSystem> applicationSystems =
                 applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");
