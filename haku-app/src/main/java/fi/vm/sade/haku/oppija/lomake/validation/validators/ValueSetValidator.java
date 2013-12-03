@@ -16,7 +16,7 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
@@ -26,28 +26,25 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class ValueSetValidator extends FieldValidator {
 
     private static Logger log = LoggerFactory.getLogger(ValueSetValidator.class);
 
-    private final Set<String> validValues;
+    private final List<String> validValues;
 
     public ValueSetValidator(final String fieldName,
                              final I18nText errorMessage,
                              final List<String> validValues) {
         super(fieldName, errorMessage);
-        this.validValues = ImmutableSet.copyOf(validValues);
+        this.validValues = ImmutableList.copyOf(validValues);
     }
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
         ValidationResult validationResult = new ValidationResult();
         String value = validationInput.getValues().get(fieldName);
-        log.debug("Validating {}", fieldName);
         if (value != null && !this.validValues.contains(value)) {
-            log.debug("NOK value: {}", value);
             validationResult = new ValidationResult(fieldName, getErrorMessage());
         }
         return validationResult;

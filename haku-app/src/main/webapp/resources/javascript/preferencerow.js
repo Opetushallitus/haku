@@ -82,12 +82,16 @@ var preferenceRow = {
     displayChildLONames: function (hakukohdeId, childLONamesId) {
         var $names =  $("#" + childLONamesId), data = '<ol class="list-style-none">', loNames = childLONames[hakukohdeId];
 
-        for (var index in loNames) {
-            data = data.concat("<li><small>", loNames[index], "</small></li>");
+        if (loNames) {
+            for (var index in loNames) {
+                data = data.concat("<li><small>", loNames[index], "</small></li>");
+            }
+            data = data.concat("</ol>");
+            $names.html(data);
+            $("#container-" + childLONamesId).show();
+        } else {
+            preferenceRow.clearChildLONames(childLONamesId);
         }
-        data = data.concat("</ol>");
-        $names.html(data);
-        $("#container-" + childLONamesId).show();
     },
 
     clearChildLONames: function (childLONamesId) {
