@@ -76,7 +76,7 @@ public class GradeGridHelper {
 
     public List<SubjectRow> getNotLanguageSubjects() {
         Ordering<SubjectRow> fixedOrdering = new Ordering<SubjectRow>() {
-            List<String> order = Arrays.asList("MA", "BI", "GE", "FY", "KE", "TE", "KT", "HI", "YH", "MU", "KU", "KS", "LI", "FI", "PS");
+            List<String> order = Arrays.asList("MA", "BI", "GE", "FY", "KE", "TE", "KT", "HI", "YH", "MU", "KU", "KS", "LI", "KO", "FI", "PS");
 
             public int compare(SubjectRow o1, SubjectRow o2) {
                 return Integer.valueOf(order.indexOf(o1.getId())).compareTo(order.indexOf(o2.getId()));

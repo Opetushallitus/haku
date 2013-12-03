@@ -17,11 +17,15 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
 import com.google.common.base.CaseFormat;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -34,6 +38,9 @@ public class OsaaminenPhaseYhteishakuKevat {
     private static final String FORM_MESSAGES = "form_messages_yhteishaku_kevat";
     private static final String FORM_ERRORS = "form_errors_yhteishaku_kevat";
     private static final String FORM_VERBOSE_HELP = "form_verboseHelp_yhteishaku_kevat";
+
+    public static final String RELATED_ELEMENT_ID = "POHJAKOULUTUS";
+    public static final String ARVOSANAT_THEME_ID = "arvosanatTheme";
 
     private static final String[] PREFERENCE_IDS = new String[]{
             "preference1-Koulutus-id-lang",
@@ -62,9 +69,10 @@ public class OsaaminenPhaseYhteishakuKevat {
             OppijaConstants.ULKOMAINEN_TUTKINTO
     };
 
-    public static Phase create(final KoodistoService koodistoService) {
+    public static Phase create(final KoodistoService koodistoService, final ApplicationSystem applicationSystem) {
         Phase osaaminen = new Phase("osaaminen", createI18NText("form.osaaminen.otsikko", FORM_MESSAGES), false);
-        osaaminen.addChild(ArvosanatTheme.createArvosanatTheme(koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
+        osaaminen.addChild(createArvosanatTheme(koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP,
+                applicationSystem.getHakukausiVuosi()));
         osaaminen.addChild(createKielitaitokysymyksetTheme());
         return osaaminen;
     }
@@ -191,5 +199,50 @@ public class OsaaminenPhaseYhteishakuKevat {
         addDefaultTrueFalseOptions(radio, formMessages);
         addRequiredValidator(radio, formErrors);
         return radio;
+    }
+
+    private static Theme createArvosanatTheme(final KoodistoService koodistoService, final String formMessages,
+                                             final String formErrors, final String verboseHelps,
+                                             final Integer hakuvuosi) {
+        Theme arvosanatTheme = new Theme(
+                ARVOSANAT_THEME_ID,
+                createI18NText("form.arvosanat.otsikko", formMessages),
+                true);
+        ElementUtil.setVerboseHelp(arvosanatTheme, "form.arvosanat.otsikko.verboseHelp", verboseHelps);
+
+        GradesTable gradesTablePK = new GradesTable(koodistoService, true, formMessages, formErrors, verboseHelps);
+        GradesTable gradesTableYO = new GradesTable(koodistoService, false, formMessages, formErrors, verboseHelps);
+
+        // Peruskoulu
+        GradeGrid grid_pk = gradesTablePK.createGradeGrid("grid_pk", formMessages, formErrors, verboseHelps);
+        grid_pk.setHelp(createI18NText("form.arvosanat.help", formMessages));
+        Expr vanhaPkTodistus = new And(
+                new Not(new Equals(new Variable("PK_PAATTOTODISTUSVUOSI"), new Value(String.valueOf(hakuvuosi)))),
+                atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.PERUSKOULU,
+                        OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY, OppijaConstants.YKSILOLLISTETTY, OppijaConstants.OSITTAIN_YKSILOLLISTETTY));
+        RelatedQuestionComplexRule relatedQuestionPk = new RelatedQuestionComplexRule("rule_grade_pk", vanhaPkTodistus);
+        relatedQuestionPk.addChild(grid_pk);
+        arvosanatTheme.addChild(relatedQuestionPk);
+
+        // Lukio
+        String yoAnwers = orStr(OppijaConstants.YLIOPPILAS);
+        RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", RELATED_ELEMENT_ID,
+                yoAnwers, false);
+        GradeGrid grid_yo = gradesTableYO.createGradeGrid("grid_yo", formMessages, formErrors, verboseHelps);
+        grid_yo.setHelp(createI18NText("form.arvosanat.help", formMessages));
+        relatedQuestionLukio.addChild(grid_yo);
+        arvosanatTheme.addChild(relatedQuestionLukio);
+
+        // Ei kysytä arvosanoja
+        Expr tuorePkTodistus = new Equals(new Variable("PK_PAATTOTODISTUSVUOSI"), new Value("2014"));
+        Expr eiTutkintoa = atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, "5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO);
+
+        RelatedQuestionComplexRule eiNayteta = new RelatedQuestionComplexRule("rule_grade_no", new Or(tuorePkTodistus, eiTutkintoa));
+        eiNayteta.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta", formMessages)));
+
+        arvosanatTheme.addChild(eiNayteta);
+
+        return arvosanatTheme;
+
     }
 }

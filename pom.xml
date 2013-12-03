@@ -29,6 +29,7 @@
         <ehcache.version>2.4.8</ehcache.version>
         <flapdoodle.version>1.36</flapdoodle.version>
         <org.apache.tomcat.embed>7.0.39</org.apache.tomcat.embed>
+        <clover.version>3.1.8</clover.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -41,11 +42,11 @@
         <internal-dependencies.version>${project.version}</internal-dependencies.version>
         <authentication-api.version>7.0-SNAPSHOT</authentication-api.version>
         <generic-common.version>${internal-dependencies.version}</generic-common.version>
-        <koodisto-api.version>7.0-SNAPSHOT</koodisto-api.version>
+        <koodisto-api.version>${internal-dependencies.version}</koodisto-api.version>
         <koulutusinformaatio-api.version>${internal-dependencies.version}</koulutusinformaatio-api.version>
         <log-client.version>7.0-SNAPSHOT</log-client.version>
-        <organisaatio-api.version>7.0-SNAPSHOT</organisaatio-api.version>
-        <organisaatio-solr-client.version>7.0-SNAPSHOT</organisaatio-solr-client.version>
+        <organisaatio-api.version>${internal-dependencies.version}</organisaatio-api.version>
+        <organisaatio-solr-client.version>${internal-dependencies.version}</organisaatio-solr-client.version>
         <tarjonta-api.version>${internal-dependencies.version}</tarjonta-api.version>
     </properties>
 

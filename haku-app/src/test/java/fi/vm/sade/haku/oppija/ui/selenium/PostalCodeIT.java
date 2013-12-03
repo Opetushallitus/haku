@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.randomId;
+import static org.junit.Assert.assertTrue;
 
 public class PostalCodeIT extends DummyModelBaseItTest {
 
@@ -76,10 +77,10 @@ public class PostalCodeIT extends DummyModelBaseItTest {
 
         setValue(postalCode.getId(), POST_CODE);
         setValue(textQuestion.getId(), randomId());
-        findByXPath("//*[text()='" + POST_OFFICE + "']");
+        assertTrue(findByXPath("//span[@class='post-office']").getText().trim().equals(POST_OFFICE));
 
         setValue(postalCode.getId(), StringUtils.repeat("\b", POST_CODE.length()) + POST_CODE2);
         setValue(textQuestion.getId(), randomId());
-        findByXPath("//*[text()='" + POST_OFFICE2 + "']");
+        assertTrue(findByXPath("//span[@class='post-office']").getText().trim().equals(POST_OFFICE2));
     }
 }
