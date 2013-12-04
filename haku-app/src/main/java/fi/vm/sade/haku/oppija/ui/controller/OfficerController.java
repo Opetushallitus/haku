@@ -118,6 +118,23 @@ public class OfficerController {
         return seeOther(path).build();
     }
 
+    @POST
+    @Path("/hakemus/multiple")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    public Viewable openApplications(final MultivaluedMap<String, String> multiValues) throws ResourceNotFoundException {
+        LOGGER.debug("Opening multiple applications");
+        Map<String, String> values = MultivaluedMapUtil.toSingleValueMap(multiValues);
+        String applicationList = values.get("applicationList");
+        String selectedApplication = values.get("selectedApplication");
+        for (Map.Entry<String, String> entry : values.entrySet()) {
+            LOGGER.debug("Entry: {} -> {}", entry.getKey(), entry.getValue());
+        }
+        ModelResponse modelResponse = officerUIService.getMultipleApplicationResponse(applicationList, selectedApplication);
+
+        return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
+    }
+
     @GET
     @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}/{elementId}")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)

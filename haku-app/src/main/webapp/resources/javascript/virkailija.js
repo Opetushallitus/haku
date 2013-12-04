@@ -164,7 +164,8 @@ $(document).ready(function () {
                     self.updateCounters(data.totalCount);
                     if (data.totalCount > 0) {
                         $(data.results).each(function (index, item) {
-                            $tbody.append('<tr><td>' +
+                            var cleanOid = item.oid.replace(/\./g, '_');
+                            $tbody.append('<tr><td><input class="check-application" id="check-application-'+cleanOid+'" type="checkbox"/></td><td>' +
                                 (item.lastName ? item.lastName : '') + ' ' + (item.firstNames ? item.firstNames : '') + '</td><td>' +
                                 (item.ssn ? item.ssn : '') + '</td><td><a class="application-link" href="' +
                                 page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
@@ -250,6 +251,47 @@ $(document).ready(function () {
 
     $('#application-table-header-state').click(function (event) {
         sortApplications($(this), 'state');
+    });
+
+    $('#check-all-applications').change(function() {
+        if($(this).is(":checked")) {
+            $('.check-application').attr('checked', 'checked');
+        } else {
+            $('.check-application').removeAttr('checked');
+        }
+    });
+
+    $('#open-application').click(function() {
+        var applicationList = '';
+        var selectedApplication = null;
+        $('input.check-application').each(function(index) {
+            if($(this).is(":checked")) {
+                var application = $(this).attr('id').replace(/^.*-/g, '').replace(/_/g, '.');
+                applicationList += application + ',';
+                if (!selectedApplication) { selectedApplication = application; }
+            }
+        });
+        if (selectedApplication) {
+            $('#applicationList').val(applicationList);
+            $('#selectedApplication').val(selectedApplication);
+            $('#open-applications').submit();
+        }
+    });
+
+    $('#previousApplication').click(function() {
+        var selectedApplication = previousApplication;
+        if (selectedApplication) {
+            $('#selectedApplication').val(selectedApplication);
+            $('#open-applications').submit();
+        }
+    });
+
+    $('#nextApplication').click(function() {
+        var selectedApplication = nextApplication;
+        if (selectedApplication) {
+            $('#selectedApplication').val(selectedApplication);
+            $('#open-applications').submit();
+        }
     });
 
     var additionalInfo = (function () {

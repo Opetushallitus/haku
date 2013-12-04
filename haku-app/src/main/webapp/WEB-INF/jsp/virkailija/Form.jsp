@@ -40,12 +40,26 @@
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
     <script src="${contextPath}/resources/javascript/rules.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/jquery.cookie.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
 
     <haku:ie9StyleFix/>
+
 </head>
 <body>
+    <c:if test="${not empty it.applicationList}">
+    <script type="text/javascript">
+        var previousApplication  = '${it.previousApplication}';
+        var nextApplication  = '${it.nextApplication}';
+    </script>
+    <form method="POST" id="open-applications"
+            action="${pageContext.request.contextPath}/virkailija/hakemus/multiple">
+        <input type="hidden" name="applicationList" id="applicationList" value="${it.applicationList}"/>
+        <input type="hidden" name="selectedApplication" id="selectedApplication" />
+    </form>
+    </c:if>
 
 <div id="viewport">
     <div id="overlay">

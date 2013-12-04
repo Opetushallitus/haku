@@ -212,6 +212,37 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
+    public ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication)
+            throws ResourceNotFoundException {
+        Application application = applicationService.getApplicationByOid(selectedApplication);
+
+        String[] apps = applicationList.split(",");
+        String prev = null;
+        String next = null;
+        int curr = 0;
+        for (int i = 0; i < apps.length; i++) {
+            if (apps[i].equals(selectedApplication)) {
+                curr = i + 1;
+                if (i >= 1) {
+                    prev = apps[i-1];
+                }
+                if (i <= apps.length - 2) {
+                    next = apps[i+1];
+                }
+                break;
+            }
+        }
+        ModelResponse response = getValidatedApplication(application.getOid(), "esikatselu");
+        response.addObjectToModel("previousApplication", prev);
+        response.addObjectToModel("nextApplication", next);
+        response.addObjectToModel("currentApplication", String.valueOf(curr));
+        response.addObjectToModel("applicationCount", apps.length);
+        response.addObjectToModel("applicationList", applicationList);
+        response.addObjectToModel("selectedApplication", selectedApplication);
+        return response;
+    }
+
+    @Override
     public Application passivateApplication(String oid, String reason) throws ResourceNotFoundException {
         reason = "Hakemus passivoitu: " + reason;
         addNote(oid, reason);

@@ -42,4 +42,14 @@
 
     <a href="${contextPath}/virkailija/hakemus/${oid}/print" class="button small print" target="_blank"><fmt:message
     key="lomake.valmis.button.tulosta"/></a>
+
+    <c:if test="${not empty it.previousApplication}">
+        <a href="#" id="previousApplication" class="button small">&nbsp;&lt;&nbsp;&lt;&nbsp;</a>
+    </c:if>
+    <c:if test="${not empty it.selectedApplication}">
+        ${it.currentApplication} / ${it.applicationCount}
+    </c:if>
+    <c:if test="${not empty it.nextApplication}">
+        <a href="#" id="nextApplication" class="button small">&nbsp;&gt;&nbsp;&gt;&nbsp;</a>
+    </c:if>
 </div>

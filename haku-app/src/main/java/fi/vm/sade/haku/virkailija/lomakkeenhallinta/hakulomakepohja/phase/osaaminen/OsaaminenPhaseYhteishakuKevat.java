@@ -101,18 +101,18 @@ public class OsaaminenPhaseYhteishakuKevat {
         RelatedQuestionComplexRule naytetaankoRuotsiPK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoRuotsiPK);
         RelatedQuestionComplexRule naytetaankoSaamePK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSaamePK);
         RelatedQuestionComplexRule naytetaankoViittomaPK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoViittomaPK);
-        naytetaankoSuomiPK.addChild(createKielitutkinto("yleinen_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_fi", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoRuotsiPK.addChild(createKielitutkinto("yleinen_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_sv", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoSaamePK.addChild(createKielitutkinto("yleinen_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_se", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoViittomaPK.addChild(createKielitutkinto("yleinen_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_vk", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoSuomiPK.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_fi", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("yleinen_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoRuotsiPK.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_sv", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("yleinen_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoSaamePK.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_se", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("yleinen_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoViittomaPK.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_vk", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("yleinen_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS));
 
         //YO
         Expr pohjakoulutusOnYO = atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.YLIOPPILAS);
@@ -132,18 +132,18 @@ public class OsaaminenPhaseYhteishakuKevat {
         RelatedQuestionComplexRule naytetaankoRuotsiYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoRuotsiYO);
         RelatedQuestionComplexRule naytetaankoSaameYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSaameYO);
         RelatedQuestionComplexRule naytetaankoViittomaYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoViittomaYO);
-        naytetaankoSuomiYO.addChild(createKielitutkinto("yleinen_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_fi", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoRuotsiYO.addChild(createKielitutkinto("yleinen_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_sv", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoSaameYO.addChild(createKielitutkinto("yleinen_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_se", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoViittomaYO.addChild(createKielitutkinto("yleinen_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_vk", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoSuomiYO.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_fi", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("yleinen_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoRuotsiYO.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_sv", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("yleinen_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoSaameYO.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_se", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("yleinen_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoViittomaYO.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_vk", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("yleinen_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS));
 
 
         //KESKEYTTANYT TAI ULKOMAILLA SUORITTANUT
