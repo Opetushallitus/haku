@@ -50,6 +50,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_COUNTRIES = "maatjavaltiot1";
     public static final String CODE_NATIONALITIES = CODE_COUNTRIES;
     public static final String CODE_LANGUAGES = "kieli";
+    public static final String CODE_TEACHING_LANGUAGES = "oppilaitoksenopetuskieli";
     public static final String CODE_MUNICIPALITY = "kunta";
     public static final String CODE_SUBJECT_LANGUAGES = "kielivalikoima";
     public static final String CODE_AIDINKIELI_JA_KIRJALLISUUS = "aidinkielijakirjallisuus";
@@ -147,6 +148,11 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Option> getHakukausi() {
         return urisToOptions(CODE_HAKUKAUSI);
+    }
+
+    @Override
+    public List<Option> getTeachingLanguages() {
+        return codesToOptions(CODE_TEACHING_LANGUAGES);
     }
 
     @Override

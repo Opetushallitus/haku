@@ -49,5 +49,8 @@ public interface KoodistoService {
 
     List<Option> getHakukausi();
 
+    List<Option> getTeachingLanguages();
+
     List<Code> getCodes(String koodistoUrl, int version);
+
 }
