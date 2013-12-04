@@ -124,10 +124,17 @@
                     <td>
                         <a href="#" id="create-application" data-po-show="createApplication"
                            class="button secondary small"><fmt:message key="virkailija.hakemus.syota"/></a>
+                        <a href="#" id="open-application"
+                           class="button secondary small"><fmt:message key="virkailija.hakemus.avaa"/></a>
                     </td>
                 </tr>
             </table>
         </div>
+    </form>
+    <form method="POST" id="open-applications"
+            action="${pageContext.request.contextPath}/virkailija/hakemus/multiple">
+        <input type="hidden" name="applicationList" id="applicationList" />
+        <input type="hidden" name="selectedApplication" id="selectedApplication" />
     </form>
 </section>
 <section class="grid16-16 margin-top-2">
@@ -147,6 +154,7 @@
             <table id="application-table" class="virkailija-table-1">
                 <thead>
                 <tr>
+                    <td id="application-table-header-checkbox" class="sorted-not"><input type="checkbox" id="check-all-applications"/></td>
                     <td id="application-table-header-fullName" class="sorted-not"><fmt:message key="virkailija.hakemus.nimi"/></td>
                     <td id="application-table-header-ssn" class="sorted-not"><fmt:message key="virkailija.hakemus.henkilotunnus"/></td>
                     <td id="application-table-header-applicationOid" class="sorted-not"><fmt:message key="virkailija.hakemus.hakemusnro"/></td>

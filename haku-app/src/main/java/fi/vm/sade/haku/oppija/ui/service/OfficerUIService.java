@@ -42,4 +42,6 @@ public interface OfficerUIService {
     void postProcess(final String oid) throws ResourceNotFoundException;
 
     Application activateApplication(String oid, String reason) throws ResourceNotFoundException;
+
+    ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication) throws ResourceNotFoundException;
 }
