@@ -236,7 +236,7 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
         DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
                 createI18NText("form.koulutustausta.perusopetuksenKieli", FORM_MESSAGES), null);
         perusopetuksenKieli.addOption(ElementUtil.createI18NAsIs(""), "");
-        perusopetuksenKieli.addOptions(koodistoService.getLanguages());
+        perusopetuksenKieli.addOptions(koodistoService.getTeachingLanguages());
         addRequiredValidator(perusopetuksenKieli, FORM_ERRORS);
         setVerboseHelp(perusopetuksenKieli, "form.koulutustausta.perusopetuksenKieli.verboseHelp", FORM_VERBOSE_HELP);
         pkKysymyksetRule.addChild(perusopetuksenKieli);
@@ -244,7 +244,7 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
         DropdownSelect lukionKieli = new DropdownSelect("lukion_kieli",
                 createI18NText("form.koulutustausta.lukionKieli", FORM_MESSAGES), null);
         lukionKieli.addOption(ElementUtil.createI18NAsIs(""), "");
-        lukionKieli.addOptions(koodistoService.getLanguages());
+        lukionKieli.addOptions(koodistoService.getTeachingLanguages());
         addRequiredValidator(lukionKieli, FORM_ERRORS);
         setVerboseHelp(lukionKieli, "form.koulutustausta.lukionKieli.verboseHelp", FORM_VERBOSE_HELP);
         lukioRule.addChild(lukionKieli);

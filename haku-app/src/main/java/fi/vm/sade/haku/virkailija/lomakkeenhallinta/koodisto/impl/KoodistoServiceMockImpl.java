@@ -45,6 +45,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Option> listOfOrganizationTypes;
     public final List<Option> listOfCountries;
     public final List<Option> listOfLanguages;
+    public final List<Option> listOfTeachingLanguages;
     public final List<Option> listOfLanguageAndLiterature;
     public final List<Option> listOfNationalities;
     public final List<Option> listOfMunicipalities;
@@ -122,6 +123,13 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                         new Option(createI18NAsIs("Ruotsi"), RUOTSI));
 
         this.listOfLanguages =
+                ImmutableList.of(
+                        new Option(createI18NAsIs("Suomi"), "FI"),
+                        new Option(createI18NAsIs("Ruotsi"), "SV"),
+                        new Option(createI18NAsIs("Saame"), "SE"),
+                        new Option(createI18NAsIs("Englanti"), "EN"));
+
+        this.listOfTeachingLanguages =
                 ImmutableList.of(
                         new Option(createI18NAsIs("Suomi"), "FI"),
                         new Option(createI18NAsIs("Ruotsi"), "SV"),
@@ -247,5 +255,10 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getHakukausi() {
         return listOfKausi;
+    }
+
+    @Override
+    public List<Option> getTeachingLanguages() {
+        return listOfTeachingLanguages;
     }
 }

@@ -25,7 +25,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -224,22 +223,40 @@ public class OsaaminenPhaseYhteishakuKevat {
         relatedQuestionPk.addChild(grid_pk);
         arvosanatTheme.addChild(relatedQuestionPk);
 
-        // Lukio
-        String yoAnwers = orStr(OppijaConstants.YLIOPPILAS);
-        RelatedQuestionRule relatedQuestionLukio = new RelatedQuestionRule("rule_grade_yo", RELATED_ELEMENT_ID,
-                yoAnwers, false);
         GradeGrid grid_yo = gradesTableYO.createGradeGrid("grid_yo", formMessages, formErrors, verboseHelps);
         grid_yo.setHelp(createI18NText("form.arvosanat.help", formMessages));
-        relatedQuestionLukio.addChild(grid_yo);
-        arvosanatTheme.addChild(relatedQuestionLukio);
+        Expr vanhaYoTodistus = new And(
+                new Not(new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakuvuosi)))),
+                atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.YLIOPPILAS));
+        RelatedQuestionComplexRule relatedQuestionYo = new RelatedQuestionComplexRule("rule_grade_yo", vanhaYoTodistus);
+        relatedQuestionYo.addChild(grid_yo);
+        arvosanatTheme.addChild(relatedQuestionYo);
 
         // Ei kysytä arvosanoja
-        Expr tuorePkTodistus = new Equals(new Variable("PK_PAATTOTODISTUSVUOSI"), new Value("2014"));
-        Expr eiTutkintoa = atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, "5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO);
 
-        RelatedQuestionComplexRule eiNayteta = new RelatedQuestionComplexRule("rule_grade_no", new Or(tuorePkTodistus, eiTutkintoa));
+//        Expr tuorePkTodistus = new Equals(new Variable("PK_PAATTOTODISTUSVUOSI"), new Value(String.valueOf(hakuvuosi)));
+//        Expr tuoreYoTodistus = new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakuvuosi)));
+//        Expr eiTutkintoa = atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, "5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO);
+//
+//        RelatedQuestionComplexRule eiNayteta = new RelatedQuestionComplexRule("rule_grade_no",
+//                new Or(eiTutkintoa, new Or(tuorePkTodistus, tuoreYoTodistus)));
+//
+//        eiNayteta.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta", formMessages)));
+//
+//        arvosanatTheme.addChild(eiNayteta);
+        RelatedQuestionComplexRule eiNaytetaPk = new RelatedQuestionComplexRule("rule_grade_no_pk",
+                new Equals(new Variable("PK_PAATTOTODISTUSVUOSI"), new Value(String.valueOf(hakuvuosi))));
+        eiNaytetaPk.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta.pk", formMessages)));
+        arvosanatTheme.addChild(eiNaytetaPk);
+
+        RelatedQuestionComplexRule eiNaytetaYo = new RelatedQuestionComplexRule("rule_grade_no_yo",
+                new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakuvuosi))));
+        eiNaytetaYo.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta.yo", formMessages)));
+        arvosanatTheme.addChild(eiNaytetaYo);
+
+        RelatedQuestionComplexRule eiNayteta = new RelatedQuestionComplexRule("rule_grade_no",
+                atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, "5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO));
         eiNayteta.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta", formMessages)));
-
         arvosanatTheme.addChild(eiNayteta);
 
         return arvosanatTheme;
