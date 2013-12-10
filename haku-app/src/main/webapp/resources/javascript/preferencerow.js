@@ -29,7 +29,7 @@ var preferenceRow = {
                     selectedPreferenceOK = false;
 
                 preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
-                $("#" + selectInputId).html("<option>&nbsp;</option>");
+                $("#" + selectInputId).html("<option value=''>&nbsp;</option>");
 
                 $(data).each(function (index, item) {
                     var selected = "";
