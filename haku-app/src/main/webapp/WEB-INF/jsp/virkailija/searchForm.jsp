@@ -122,10 +122,6 @@
                 </tr>
                 <tr>
                     <td>
-                        <a href="#" id="create-application" data-po-show="createApplication"
-                           class="button secondary small"><fmt:message key="virkailija.hakemus.syota"/></a>
-                        <a href="#" id="open-application"
-                           class="button secondary small"><fmt:message key="virkailija.hakemus.avaa"/></a>
                     </td>
                 </tr>
             </table>
@@ -150,6 +146,12 @@
 
             <span><fmt:message key="virkailija.hakemus.hakutulos"/><span id="resultcount">0</span> <fmt:message
                     key="virkailija.hakemus.hakutulos.osumaa"/></span>
+            <div class="clear"></div>
+
+            <a href="#" id="open-application"
+               class="button secondary small"><fmt:message key="virkailija.hakemus.avaa"/></a>
+            <a href="#" id="create-application" data-po-show="createApplication"
+               class="button secondary small"><fmt:message key="virkailija.hakemus.syota"/></a>
 
             <table id="application-table" class="virkailija-table-1">
                 <thead>

@@ -232,9 +232,24 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 break;
             }
         }
+
+        String prevApplicant = null;
+        if (null!=prev) {
+            Application prevApp = applicationService.getApplicationByOid(prev);
+            Map<String, String> prevHenk = prevApp.getPhaseAnswers("henkilotiedot");
+            prevApplicant = prevHenk.get("Etunimet") + " " + prevHenk.get("Sukunimi");
+        }
+        String nextApplicant = null;
+        if (null!=next) {
+            Application nextApp = applicationService.getApplicationByOid(next);
+            Map<String, String> nextHenk = nextApp.getPhaseAnswers("henkilotiedot");
+            nextApplicant = nextHenk.get("Etunimet") + " " + nextHenk.get("Sukunimi");
+        }
         ModelResponse response = getValidatedApplication(application.getOid(), "esikatselu");
         response.addObjectToModel("previousApplication", prev);
+        response.addObjectToModel("previousApplicant", prevApplicant);
         response.addObjectToModel("nextApplication", next);
+        response.addObjectToModel("nextApplicant", nextApplicant);
         response.addObjectToModel("currentApplication", String.valueOf(curr));
         response.addObjectToModel("applicationCount", apps.length);
         response.addObjectToModel("applicationList", applicationList);
