@@ -120,10 +120,15 @@ public final class LisatiedotPhaseYhteishakuKevat {
 
         ImmutableList<String> ids = ImmutableList.of(
                 "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys",
+                "preference1_urheilijalinjan_lisakysymys",
                 "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys",
+                "preference2_urheilijalinjan_lisakysymys",
                 "preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys",
+                "preference3_urheilijalinjan_lisakysymys",
                 "preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys",
-                "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys"
+                "preference4_urheilijalinjan_lisakysymys",
+                "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys",
+                "preference5_urheilijalinjan_lisakysymys"
         );
         RelatedQuestionRule urheilijanLisakysymyksetSaanto = new RelatedQuestionRule(ElementUtil.randomId(), ids,
                 ElementUtil.KYLLA, false);
