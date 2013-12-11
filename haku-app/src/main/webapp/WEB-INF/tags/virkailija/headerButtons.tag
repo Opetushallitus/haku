@@ -43,4 +43,25 @@
     <a href="${contextPath}/virkailija/hakemus/${oid}/print" class="button small print" target="_blank"><fmt:message
     key="lomake.valmis.button.tulosta"/></a>
 
+
+    <div class="margin-vertical-2">
+        <div class="float-left">
+        <c:if test="${not empty it.previousApplication}">
+            <a href="#" id="previousApplication">&lt;&nbsp;Edellinen (${it.previousApplicant})</a>
+        </c:if>
+        </div>
+
+        <div class="float-right">
+        <c:if test="${not empty it.nextApplication}">
+            <a href="#" id="nextApplication">(${it.nextApplicant})&nbsp;Seuraava&nbsp;&gt;</a>
+        </c:if>
+        </div>
+
+        <div class="align-center margin-auto width-25">
+        <c:if test="${not empty it.selectedApplication}">
+            ${it.currentApplication} / ${it.applicationCount}
+        </c:if>
+        </div>
+    </div>
+
 </div>

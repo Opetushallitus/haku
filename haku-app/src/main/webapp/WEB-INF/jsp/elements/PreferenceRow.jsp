@@ -35,6 +35,7 @@
     <c:set value="${hiddenKoulutusId}-aoIdentifier" var="hiddenKoulutusIdAoIdentifier" scope="page"/>
     <c:set value="${hiddenKoulutusId}-athlete" var="hiddenKoulutusIdAthlete" scope="page"/>
     <c:set value="${hiddenKoulutusId}-kaksoistutkinto" var="hiddenKoulutusIdKaksoistutkinto" scope="page"/>
+    <c:set value="${hiddenKoulutusId}-vocational" var="hiddenKoulutusIdVocational" scope="page"/>
 
     <haku:errorMessage id="${sortableItem.id}" additionalClass="margin-top-1"/>
     <div class="form-row">
@@ -77,6 +78,7 @@
                 <haku:input-hidden id="${hiddenKoulutusIdAoIdentifier}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdAthlete}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdKaksoistutkinto}" data="${answers}"/>
+                <haku:input-hidden id="${hiddenKoulutusIdVocational}" data="${answers}"/>
             </div>
         </div>
         <div class="clear"></div>
