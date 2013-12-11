@@ -27,7 +27,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuaikaRDTO;
 
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +55,7 @@ public class HakuDTOToApplicationSystemFunction implements Function<HakuDTO, App
         List<HakuaikaRDTO> hakuaikas = hakuDTO.getHakuaikas();
         if (hakuaikas != null) {
             for (HakuaikaRDTO hakuaika : hakuaikas) {
-                applicationPeriods.add(new ApplicationPeriod(new Date(), hakuaika.getLoppuPvm()));
+                applicationPeriods.add(new ApplicationPeriod(hakuaika.getAlkuPvm(), hakuaika.getLoppuPvm()));
             }
         }
 
