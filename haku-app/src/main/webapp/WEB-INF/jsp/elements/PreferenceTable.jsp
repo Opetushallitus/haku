@@ -95,7 +95,14 @@
         vaiheId: '<c:out value="${vaihe.id}"/>',
         teemaId: '<c:out value="${parent.id}"/>',
         baseEducation: '<c:out value="${answers.POHJAKOULUTUS}"/>',
-        vocational: '<c:out value="${answers.ammatillinenTutkintoSuoritettu}"/>',
+        <c:choose>
+            <c:when test="${answers.ammatillinenTutkintoSuoritettu}">
+                vocational : false
+            </c:when>
+            <c:otherwise>
+                vocational : true
+            </c:otherwise>
+        </c:choose>,
         preferenceAndBaseEducationConflictMessage: '<fmt:message key="hakutoiveet.pohjakoulutusristiriita"/>',
         <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') or fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
         koulutusinformaatioBaseUrl: '<c:out value="${it.koulutusinformaatioBaseUrl}"/>'

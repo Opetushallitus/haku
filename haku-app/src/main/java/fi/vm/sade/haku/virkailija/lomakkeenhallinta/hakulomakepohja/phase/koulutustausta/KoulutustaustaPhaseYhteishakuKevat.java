@@ -28,7 +28,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.AlwaysFailsValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -226,10 +225,8 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
         Notification warning = new Notification(
                 ElementUtil.randomId(),
                 createI18NText("form.koulutustausta.ammatillinenSuoritettu.huom", FORM_MESSAGES),
-                Notification.NotificationType.WARNING);
+                Notification.NotificationType.INFO);
         suorittanutTutkinnonRule.addChild(warning);
-        warning.setValidator(new AlwaysFailsValidator(warning.getId(), createI18NText("form.koulutustausta.ammatillinenSuoritettu.huom",
-                FORM_ERRORS)));
 
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutTutkinnonRule);
 

@@ -211,7 +211,13 @@ var complexRule = {
             if (question.length) {
                 var events = $._data(question[0], "events");
                 if (events) {
-                    if (events.change.length < 1 && events.change[0].data.ruleId != ruleData.ruleId) {
+                    var bind = true;
+                    for (eIndex in events.change) {
+                        if (events.change[eIndex].data && events.change[eIndex].data.ruleId == ruleData.ruleId) {
+                            bind = false;
+                        }
+                    }
+                    if (bind == true) {
                         question.on('change', ruleData, complexRule.refreshView);
                     }
                 } else {

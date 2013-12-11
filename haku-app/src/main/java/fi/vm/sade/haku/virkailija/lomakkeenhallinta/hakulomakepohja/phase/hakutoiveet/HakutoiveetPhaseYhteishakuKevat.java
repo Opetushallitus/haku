@@ -26,7 +26,9 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
@@ -85,6 +87,7 @@ public class HakutoiveetPhaseYhteishakuKevat {
         pr.addChild(createDiscretionaryQuestionsAndRules(id));
         pr.addChild(createSoraQuestions(id),
                 createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id),
+                createUrheilijalinjaRule(id),
                 createKaksoistutkintoQuestions(id));
         ElementUtil.addPreferenceValidator(pr);
         return pr;
@@ -155,16 +158,24 @@ public class HakutoiveetPhaseYhteishakuKevat {
     }
 
     public static Element createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(final String index) {
-
         Radio radio = new Radio(index + "_urheilijan_ammatillisen_koulutuksen_lisakysymys",
                 createI18NText("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys", FORM_MESSAGES));
         addDefaultTrueFalseOptions(radio, FORM_MESSAGES);
         addRequiredValidator(radio, FORM_ERRORS);
-        RelatedQuestionRule hasQuestion = new RelatedQuestionRule(radio.getId() + "_related_question_rule",
-                ImmutableList.of(index + "-Koulutus-id-athlete"), ElementUtil.KYLLA, false);
+        Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
+                new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.KYLLA)));
+        RelatedQuestionComplexRule rule = new RelatedQuestionComplexRule(ElementUtil.randomId(), expr);
+        rule.addChild(radio);
+        return rule;
+    }
 
-        hasQuestion.addChild(radio);
-        return hasQuestion;
+    public static Element createUrheilijalinjaRule(final String index) {
+        HiddenValue hiddenValue = new HiddenValue(index + "_urheilijalinjan_lisakysymys", ElementUtil.KYLLA);
+        Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
+                new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.EI)));
+        RelatedQuestionComplexRule rule = new RelatedQuestionComplexRule(ElementUtil.randomId(), expr);
+        rule.addChild(hiddenValue);
+        return rule;
     }
 
     public static Element createKaksoistutkintoQuestions(final String index) {
