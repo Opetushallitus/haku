@@ -27,6 +27,13 @@ public class GradeGridHelper {
     private final boolean comprehensiveSchool;
     private final List<Option> gradeRangesWithDefault;
     private List<SubjectRow> additionalNativeLanguages;
+    private Ordering<SubjectRow> ordering = new Ordering<SubjectRow>() {
+        List<String> order = Arrays.asList("A1", "B1", "MA", "BI", "GE", "FY", "KE", "TE", "KT", "HI", "YH", "MU", "KU", "KS", "LI", "KO", "FI", "PS");
+
+        public int compare(SubjectRow o1, SubjectRow o2) {
+            return Integer.valueOf(order.indexOf(o1.getId())).compareTo(order.indexOf(o2.getId()));
+        }
+    };
 
     public GradeGridHelper(final KoodistoService koodistoService, final boolean comprehensiveSchool, final String formMessages,
                            final String formErrors, final String verboseHelps) {
@@ -64,7 +71,7 @@ public class GradeGridHelper {
     }
 
     public List<SubjectRow> getDefaultLanguages() {
-        return ImmutableList.copyOf(Iterables.filter(subjects, new Ids<SubjectRow>("A1", "B1")));
+        return ordering.immutableSortedCopy(Iterables.filter(subjects, new Ids<SubjectRow>("A1", "B1")));
     }
 
     public List<SubjectRow> getAdditionalLanguages() {
@@ -75,17 +82,9 @@ public class GradeGridHelper {
     }
 
     public List<SubjectRow> getNotLanguageSubjects() {
-        Ordering<SubjectRow> fixedOrdering = new Ordering<SubjectRow>() {
-            List<String> order = Arrays.asList("MA", "BI", "GE", "FY", "KE", "TE", "KT", "HI", "YH", "MU", "KU", "KS", "LI", "KO", "FI", "PS");
-
-            public int compare(SubjectRow o1, SubjectRow o2) {
-                return Integer.valueOf(order.indexOf(o1.getId())).compareTo(order.indexOf(o2.getId()));
-            }
-        };
-        return fixedOrdering.sortedCopy(
+        return ordering.immutableSortedCopy(
                 Iterables.filter(Iterables.filter(subjects, Predicates.not(new Languages())),
                         Predicates.not(new Ids<SubjectRow>("AI", "AI2"))));
-
     }
 
     public String getIdPrefix() {

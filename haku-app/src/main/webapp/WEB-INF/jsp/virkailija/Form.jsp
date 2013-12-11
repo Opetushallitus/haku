@@ -91,16 +91,6 @@
 
         <virkailija:headerButtons oid="${application.oid}" preview="${preview}"/>
 
-            <c:if test="${not empty it.previousApplication}">
-                <a  style="float: left" href="#" id="previousApplication">&lt;&nbsp;Edellinen (${it.previousApplicant})</a>
-            </c:if>
-            <c:if test="${not empty it.selectedApplication}">
-                ${it.currentApplication} / ${it.applicationCount}
-            </c:if>
-            <c:if test="${not empty it.nextApplication}">
-                <a style="float: right" href="#" id="nextApplication">(${it.nextApplicant})&nbsp;Seuraava&nbsp;&gt;</a>
-            </c:if>
-
         <div class="grid16-16">
             <h3><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
                     value="${answers['Sukunimi']}" escapeXml="true"/></h3>
