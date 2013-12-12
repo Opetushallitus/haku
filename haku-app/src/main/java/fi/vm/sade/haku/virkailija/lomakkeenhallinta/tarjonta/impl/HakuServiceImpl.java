@@ -43,6 +43,9 @@ import java.util.List;
 public class HakuServiceImpl implements HakuService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HakuServiceImpl.class);
+    public static final String MAX_COUNT = "10000"; // Tarjonta ei hyväksi -1:stä ja hajoaa Integer.MAX_VALUE:een.
+    public static final String COUNT_PARAMETER = "count";
+    public static final String MEDIA_TYPE = MediaType.APPLICATION_JSON + ";charset=UTF-8";
     private final WebResource webResource;
 
     @Autowired
@@ -50,18 +53,21 @@ public class HakuServiceImpl implements HakuService {
         ClientConfig cc = new DefaultClientConfig();
         cc.getClasses().add(JacksonJsonProvider.class);
         Client clientWithJacksonSerializer = Client.create(cc);
-        webResource = clientWithJacksonSerializer.resource(tarjontaHakuResourceUrl);
+        webResource = clientWithJacksonSerializer.resource(tarjontaHakuResourceUrl).queryParam(COUNT_PARAMETER, MAX_COUNT); // todo pagination
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Tarjonnan uri: " + webResource.getURI().toString());
+        }
     }
 
     @Override
     public List<ApplicationSystem> getApplicationSystems() {
-        List<OidRDTO> hakuOids = webResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<List<OidRDTO>>() {
+        List<OidRDTO> hakuOids = webResource.accept(MEDIA_TYPE).get(new GenericType<List<OidRDTO>>() {
         });
         List<HakuDTO> hakuDTOs = Lists.newArrayList();
         if (hakuOids != null) {
             for (OidRDTO oid : hakuOids) {
                 WebResource asWebResource = webResource.path(oid.getOid());
-                HakuDTO haku = asWebResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<HakuDTO>() {
+                HakuDTO haku = asWebResource.accept(MEDIA_TYPE).get(new GenericType<HakuDTO>() {
                 });
                 hakuDTOs.add(haku);
             }
