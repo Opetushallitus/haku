@@ -29,7 +29,7 @@
                     $(".post-office").replaceWith($(data).find(".post-office"))
                 },
                 error: function (e, ts, et) {
-                    console.log("refresh view error" + ts);
+                    //console.log("refresh view error" + ts);
                 }
             });
         } else {
