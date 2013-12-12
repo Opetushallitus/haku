@@ -2373,4 +2373,14 @@ footer {
     margin: 1em; } }
 @media print {
   @page {
-    margin: 1.0cm; } }
+    margin: 1.0cm; }
+
+  hr {
+    display: block;
+    margin: 0 0 1.538em 0;
+    height: 0px;
+    width: 100%;
+    border-top: 1px solid #feba00;
+    clear: both; }
+    hr.strong {
+      border-top: 3px solid #333333; } }
