@@ -228,7 +228,6 @@ var complexRule = {
     },
 
     refreshView: function (event) {
-        console.log("refresh view " + event.type);
         var ruleData = event.data;
         var url = document.URL.split("?")[0] + '/' + ruleData.ruleId;
         $.ajax({
@@ -238,11 +237,10 @@ var complexRule = {
             data: $("form.form").serialize(),
 
             success: function (data, textStatus, jqXHR) {
-                console.log(textStatus);
                 $("#" + ruleData.ruleId).replaceWith(data);
             },
             error: function (e, ts, et) {
-                console.log("refresh view error" + ts);
+                //console.log("refresh view error" + ts);
             }
         });
     }
