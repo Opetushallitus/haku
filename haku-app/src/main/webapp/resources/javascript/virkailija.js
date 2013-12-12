@@ -181,6 +181,7 @@ $(document).ready(function () {
                             totalPages: Math.ceil(data.totalCount / maxRows),
                             onPageClicked: function (e, originalEvent, type, page) {
                                 applicationSearch.search((page - 1) * maxRows, orderBy, orderDir);
+                                $('#check-all-applications').prop('checked', false);
                             }
                         }
                         $('#pagination').bootstrapPaginator(options);
