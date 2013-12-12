@@ -89,9 +89,10 @@ $(document).ready(function () {
     orgSearchDialog.build();
 
     var cookieName = 'hakemukset_last_search';
+    var cookiePath = '/haku-app/virkailija';
 
     var applicationSearch = (function () {
-        $.cookie.path = '/haku-app/virkailija';
+        $.cookie.path = cookiePath;
         $.cookie.json = true;
         var oid = $('#oid');
         var self = this,
@@ -101,9 +102,9 @@ $(document).ready(function () {
             maxRows = 50;
 
         function createQueryParameters(start) {
-            var lastSearch = $.cookie(cookieName);
-            $.cookie.path = '/haku-app/virkailija';
+            $.cookie.path = cookiePath;
             $.cookie.json = true;
+            var lastSearch = $.cookie(cookieName);
             var obj = {};
             if (lastSearch && window.location.hash === '#useLast') {
                 obj = lastSearch;
@@ -120,6 +121,8 @@ $(document).ready(function () {
                 if (obj.orgSearchExpanded) {
                     orgSearchDialog.expand();
                 }
+                $('#check-all-applications').prop('checked', obj.checkAllApplications);
+                start = obj.start;
             } else {
                 addParameter(obj, 'q', '#entry');
                 addParameter(obj, 'oid', '#oid');
@@ -138,6 +141,7 @@ $(document).ready(function () {
                     obj['orgSearchExpanded'] = true;
                 }
                 obj['discretionaryOnly'] = $('#discretionary-only').prop('checked');
+                obj['checkAllApplications'] = $('#check-all-applications').prop('checked');
                 obj['start'] = start;
                 obj['rows'] = maxRows;
                 $.removeCookie(cookieName);
@@ -156,6 +160,7 @@ $(document).ready(function () {
         this.search = function (start, orderBy, orderDir) {
             $('#application-table thead tr td').removeAttr('class');
             var queryParameters = createQueryParameters(start);
+            start = queryParameters.start;
             $('#search-spinner').show();
             $.getJSON(page_settings.contextPath + "/applications/list/"+orderBy+"/"+orderDir,
                 queryParameters,
@@ -183,6 +188,19 @@ $(document).ready(function () {
                         $('#pagination').empty();
                     }
                     $('#search-spinner').hide();
+                    window.location.hash = '';
+                    $('input.check-application').each(function(index) {
+                        $.cookie.path = cookiePath;
+                        $.cookie.json = true;
+                        var lastSearch = $.cookie(cookieName);
+                        if (lastSearch && lastSearch.applicationList) {
+                            var applicationList = lastSearch.applicationList;
+                            var application = $(this).attr('id').replace(/^.*-/g, '').replace(/_/g, '.');
+                            if (applicationList.indexOf(application) !== -1) {
+                                $(this).attr('checked', 'checked');
+                            }
+                        }
+                    });
                 });
         },
         this.updateCounters = function (count) {
@@ -190,7 +208,7 @@ $(document).ready(function () {
             $applicationTabLabel.empty().append('Hakemukset (' + count + ')');
         },
         this.reset = function () {
-            $.cookie.path = '/haku-app/virkailija';
+            $.cookie.path = cookiePath;
             $.cookie.json = true;
             $.removeCookie(cookieName);
             $('#application-table thead tr td').removeAttr('class');
@@ -216,7 +234,7 @@ $(document).ready(function () {
 
     $('#search-applications').click(function (event) {
         window.location.hash = '';
-        $.cookie.path = '/haku-app/virkailija';
+        $.cookie.path = cookiePath;
         $.cookie.json = true;
         $.removeCookie(cookieName);
         applicationSearch.search(0, 'fullName', 'asc');
@@ -272,6 +290,15 @@ $(document).ready(function () {
             }
         });
         if (selectedApplication) {
+            $.cookie.path = cookiePath;
+            $.cookie.json = true;
+            var lastSearch = $.cookie(cookieName);
+            if (lastSearch) {
+                lastSearch.applicationList = applicationList;
+                lastSearch.checkAllApplications = $('#check-all-applications').prop('checked');
+                $.removeCookie(cookieName);
+                $.cookie(cookieName, lastSearch);
+            }
             $('#applicationList').val(applicationList);
             $('#selectedApplication').val(selectedApplication);
             $('#open-applications').submit();
