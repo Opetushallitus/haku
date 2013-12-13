@@ -70,7 +70,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     }
 
     protected void select() {
-        List<WebElement> elements = driver.findElements(new By.ByXPath("//select[option[@selected and @disabled and @value='']]"));
+        List<WebElement> elements = driver.findElements(new By.ByXPath("//select[option[@value='']]"));
         for (WebElement element : elements) {
             if (element.isDisplayed()) {
                 Select select = new Select(element);
