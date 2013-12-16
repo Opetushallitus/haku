@@ -19,6 +19,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
@@ -56,13 +57,20 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_AIDINKIELI_JA_KIRJALLISUUS = "aidinkielijakirjallisuus";
     public static final String CODE_GENDER = "sukupuoli";
     public static final String CODE_HAKUKAUSI = "kausi";
+    private static final String CODE_KOULUNUMERO = "oppilaitosnumero";
 
+    private static final String LUKIO = "15";
+    private static final String LUKIO_JA_PERUSKOULU = "19";
+    private static final String OPPILAITOSTYYPPI_LUKIO = "oppilaitostyyppi_15";
+    private static final String OPPILAITOSTYYPPI_PK_JA_LUKIO = "oppilaitostyyppi_19";
 
     private final KoodistoClient koodiService;
+    private final OrganizationService organisaatioService;
 
     @Autowired
-    public KoodistoServiceImpl(final KoodistoClient koodiService) {
+    public KoodistoServiceImpl(final KoodistoClient koodiService, final OrganizationService organisaatioService) {
         this.koodiService = koodiService;
+        this.organisaatioService = organisaatioService;
     }
 
     @Override
@@ -158,6 +166,27 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Code> getCodes(String koodistoUrl, int version) {
         return Lists.transform(getKoodiTypes(koodistoUrl, version), new KoodiTypeToCodeFunction());
+    }
+
+    @Override
+    public List<Option> getLukioKoulukoodit() {
+        List<KoodiType> numerot = getKoodiTypes(CODE_KOULUNUMERO);
+        LOGGER.debug("Getting lukiokoodit: {}", numerot.size());
+        List<KoodiType> lukioNumerot = new ArrayList<KoodiType>();
+        for (KoodiType koodi : numerot) {
+            List<KoodiType> alakoodit = koodiService.getAlakoodis(koodi.getKoodiUri());
+
+            for (KoodiType alakoodi : alakoodit) {
+                String uri = alakoodi.getKoodiUri();
+                String arvo = alakoodi.getKoodiArvo();
+                if ((OPPILAITOSTYYPPI_LUKIO.equals(uri) || OPPILAITOSTYYPPI_PK_JA_LUKIO.equals(uri))&&
+                        (LUKIO.equals(arvo) || LUKIO_JA_PERUSKOULU.equals(arvo))) {
+                    lukioNumerot.add(koodi);
+                }
+            }
+        }
+        return Lists.transform(lukioNumerot,
+                new OppilaitosnumeroToOpetuspisteFunction(koodiService, organisaatioService));
     }
 
     private List<Option> codesToOptions(final String codeName) {

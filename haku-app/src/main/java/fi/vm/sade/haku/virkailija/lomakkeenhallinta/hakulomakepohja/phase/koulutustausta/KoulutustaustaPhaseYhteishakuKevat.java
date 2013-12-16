@@ -18,15 +18,10 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulu
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.TitledGroup;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.*;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
@@ -54,14 +49,15 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
     private KoulutustaustaPhaseYhteishakuKevat() {
     }
 
-    public static Phase create(final KoodistoService koodistoService, ApplicationSystem as) {
+    public static Phase create(final KoodistoService koodistoService, ApplicationSystem as,
+                               OrganizationService organisaatioService) {
         Phase koulutustausta = new Phase("koulutustausta", createI18NText("form.koulutustausta.otsikko",
                 FORM_MESSAGES), false);
         Theme koulutustaustaRyhma = new Theme("KoulutustaustaGrp", createI18NText("form.koulutustausta.otsikko",
                 FORM_MESSAGES), true);
         koulutustausta.addChild(koulutustaustaRyhma);
         koulutustaustaRyhma.setHelp(createI18NText("form.koulutustausta.help", FORM_MESSAGES));
-        koulutustaustaRyhma.addChild(createKoulutustaustaRadio(koodistoService, as.getHakukausiVuosi()));
+        koulutustaustaRyhma.addChild(createKoulutustaustaRadio(koodistoService, as.getHakukausiVuosi(), organisaatioService));
 
         //Tätä ei kysytä syksyn yhteishaussa, tarvitaan myöhemmin.
         /*Radio osallistunut = new Radio("osallistunut", createI18NForm("form.koulutustausta.osallistunutPaasykokeisiin"));
@@ -73,7 +69,8 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
         return koulutustausta;
     }
 
-    public static Radio createKoulutustaustaRadio(final KoodistoService koodistoService, final Integer hakuvuosi) {
+    public static Radio createKoulutustaustaRadio(final KoodistoService koodistoService, final Integer hakuvuosi,
+                                                  final OrganizationService organisaatioService) {
         List<Code> baseEducationCodes = koodistoService.getCodes("pohjakoulutustoinenaste", 1);
 
         Map<String, Code> educationMap = Maps.uniqueIndex(baseEducationCodes, new Function<Code, String>() {
@@ -190,6 +187,11 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
         lukioPaattotodistusVuosi.addAttribute("maxlength", "4");
         lukioPaattotodistusVuosi.setInline(true);
 
+        RelatedQuestionRule tuoreYoTodistus = new RelatedQuestionRule("tuoreYoTodistus", lukioPaattotodistusVuosi.getId(), String.valueOf(hakuvuosi), false);
+        DropdownSelect lahtokoulu = new DropdownSelect("lahtokoulu", ElementUtil.createI18NAsIs("Valitse lähtökoulusi"), "");
+        lahtokoulu.addOptions(koodistoService.getLukioKoulukoodit());
+        tuoreYoTodistus.addChild(lahtokoulu);
+
         DropdownSelect ylioppilastutkinto = new DropdownSelect("ylioppilastutkinto",
                 createI18NText("form.koulutustausta.lukio.yotutkinto", FORM_MESSAGES), null);
         ylioppilastutkinto.addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.fi", FORM_MESSAGES), "fi");
@@ -207,6 +209,8 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
 
         RelatedQuestionRule lukioRule = new RelatedQuestionRule("rule7", millatutkinnolla.getId(), YLIOPPILAS, false);
         lukioRule.addChild(lukioGroup);
+
+        lukioRule.addChild(tuoreYoTodistus);
 
         millatutkinnolla.addChild(lukioRule);
         millatutkinnolla.addChild(pkKysymyksetRule);
@@ -248,4 +252,5 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
 
         return millatutkinnolla;
     }
+
 }

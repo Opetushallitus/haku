@@ -221,6 +221,11 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         return findParentOids(oids, organizationOid);
     }
 
+    @Override
+    public Organization findByOppilaitosnumero(String oppilaitosnumero) {
+        return null;
+    }
+
     private List<String> findParentOids(List<String> oids, String organizationOid) {
         List<Organization> maybeOrg = Lists.newArrayList(Iterables.filter(orgs, new OrgOidPredicate(organizationOid)));
         if (maybeOrg == null || maybeOrg.isEmpty()) {

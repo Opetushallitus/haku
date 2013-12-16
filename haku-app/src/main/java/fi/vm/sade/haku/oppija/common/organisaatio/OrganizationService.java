@@ -32,4 +32,5 @@ public interface OrganizationService {
 
     List<String> findParentOids(String organizationOid);
 
+    Organization findByOppilaitosnumero(String oppilaitosnumero);
 }

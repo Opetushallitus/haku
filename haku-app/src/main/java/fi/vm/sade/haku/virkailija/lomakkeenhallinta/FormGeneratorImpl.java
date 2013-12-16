@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta;
 
 import com.google.common.collect.Lists;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -20,12 +21,15 @@ import java.util.List;
 public class FormGeneratorImpl implements FormGenerator {
     private final KoodistoService koodistoService;
     private final HakuService hakuService;
+    private final OrganizationService organisaatioService;
 
     @Autowired
     public FormGeneratorImpl(final KoodistoService koodistoService,
-                             final HakuService hakuService) {
+                             final HakuService hakuService,
+                             final OrganizationService organisaatioService) {
         this.koodistoService = koodistoService;
         this.hakuService = hakuService;
+        this.organisaatioService = organisaatioService;
     }
 
     @Override
@@ -43,7 +47,7 @@ public class FormGeneratorImpl implements FormGenerator {
                     form = YhteishakuSyksy.generateForm(as, koodistoService);
                     applicationCompleteElements = YhteishakuSyksy.generateApplicationCompleteElements();
                 } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
-                    form = YhteishakuKevat.generateForm(as, koodistoService);
+                    form = YhteishakuKevat.generateForm(as, koodistoService, organisaatioService);
                     applicationCompleteElements = YhteishakuKevat.generateApplicationCompleteElements();
                 } else {
                     //skip

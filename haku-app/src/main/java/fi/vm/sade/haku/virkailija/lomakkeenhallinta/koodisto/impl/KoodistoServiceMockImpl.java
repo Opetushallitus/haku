@@ -243,6 +243,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     }
 
     @Override
+    public List<Option> getLukioKoulukoodit() {
+        return null;
+    }
+
+    @Override
     public List<Option> getMunicipalities() {
         return this.listOfMunicipalities;
     }

@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
 import com.google.common.collect.Lists;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.*;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer;
@@ -42,11 +43,12 @@ public class YhteishakuKevat {
     private static final String FORM_VERBOSE_HELP = "form_verboseHelp_yhteishaku_kevat";
     private static final String REGEX_NON_EMPTY = ".*\\S.*";
 
-    public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService) {
+    public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService,
+                                    final OrganizationService organisaatioService) {
         try {
             Form form = new Form(as.getId(), as.getName());
             form.addChild(HenkilotiedotPhaseYhteishakuKevat.create(koodistoService));
-            form.addChild(KoulutustaustaPhaseYhteishakuKevat.create(koodistoService, as));
+            form.addChild(KoulutustaustaPhaseYhteishakuKevat.create(koodistoService, as, organisaatioService));
             form.addChild(HakutoiveetPhaseYhteishakuKevat.create());
             form.addChild(OsaaminenPhaseYhteishakuKevat.create(koodistoService, as));
             Date start = as.getApplicationPeriods() != null && !as.getApplicationPeriods().isEmpty() ?
