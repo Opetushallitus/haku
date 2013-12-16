@@ -17,7 +17,7 @@
   --%>
 <select ${element.attributeString}>
     <c:if test="${not element.selected}">
-        <option disabled value="">&nbsp;</option>
+        <option value="">&nbsp;</option>
     </c:if>
     <c:forEach var="option" items="${element.options}">
         <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>

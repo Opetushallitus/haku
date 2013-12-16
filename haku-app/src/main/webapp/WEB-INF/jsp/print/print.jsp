@@ -42,7 +42,7 @@
 </c:forEach>
 
 <jsp:include page="../print/discretionaryAttachments.jsp"/>
-<hr>
+<hr class="strong">
 <footer>
     <address>
         <fmt:message key="lomake.tulostus.alatunniste.rivi1"/><br>
