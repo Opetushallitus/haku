@@ -77,9 +77,12 @@ public class YhteishakuKevat {
 
         elements.add(new DiscretionaryAttachments("discretionaryAttachments"));
 
-        RelatedQuestionRule athleteRule = new RelatedQuestionRule("athleteRule", Lists.newArrayList("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys",
-                "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys",
-                "preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys"),
+        RelatedQuestionRule athleteRule = new RelatedQuestionRule("athleteRule",
+                Lists.newArrayList("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference1_urheilijalinjan_lisakysymys",
+                        "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference2_urheilijalinjan_lisakysymys",
+                        "preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference3_urheilijalinjan_lisakysymys",
+                        "preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference4_urheilijalinjan_lisakysymys",
+                        "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference5_urheilijalinjan_lisakysymys"),
                 "^true", false);
         TitledGroup athleteGroup = new TitledGroup("atheleteGroup", createI18NText("form.valmis.haeturheilijana.header", FORM_MESSAGES));
 
