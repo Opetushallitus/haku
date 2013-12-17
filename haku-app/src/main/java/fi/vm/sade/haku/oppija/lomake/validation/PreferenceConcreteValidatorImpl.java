@@ -58,10 +58,13 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (!Strings.isNullOrEmpty(aoId)) {
             try {
                 ApplicationOption ao = applicationOptionService.get(aoId);
-                if (ao == null || !checkProvider(validationInput, ao) || !checkAthlete(validationInput, ao) ||
-                        !checkSora(validationInput, ao) || !checkTeachingLang(validationInput, ao) ||
-                        !checkApplicationSystem(validationInput, ao) || !checkAOIdentifier(validationInput, ao) ||
-                        !checkKaksoistutkinto(validationInput, ao)) {
+                if (!checkProvider(validationInput, ao) ||
+                    !checkAthlete(validationInput, ao) ||
+                    !checkSora(validationInput, ao) ||
+                    !checkTeachingLang(validationInput, ao) ||
+                    !checkApplicationSystem(validationInput, ao) ||
+                    !checkAOIdentifier(validationInput, ao) ||
+                    !checkKaksoistutkinto(validationInput, ao)) {
                     return createError(validationInput.getElement().getId(), GENERIC_ERROR);
                 }
                 if (!checkApplicationDates(ao)) {
@@ -84,7 +87,11 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
 
     private boolean checkProvider(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         final String key = validationInput.getElement().getId() + "-Opetuspiste-id";
-        return applicationOption.getProvider().getId().equals(validationInput.getValues().get(key));
+        if (applicationOption.getProvider().getId().equals(validationInput.getValues().get(key))) {
+            return true;
+        }
+        LOGGER.error("Preference validation error");
+        return false;
     }
 
     private boolean checkAthlete(final ValidationInput validationInput, final ApplicationOption applicationOption) {
@@ -94,6 +101,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 == (applicationOption.getProvider().isAthleteEducation() || applicationOption.isAthleteEducation())) {
              return true;
         }
+        LOGGER.error("Preference validation error");
         return false;
     }
 
@@ -103,6 +111,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 == applicationOption.isSora()) {
             return true;
         }
+        LOGGER.error("Preference validation error");
         return false;
     }
 
@@ -112,6 +121,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 == applicationOption.isKaksoistutkinto()) {
             return true;
         }
+        LOGGER.error("Preference validation error");
         return false;
     }
 
@@ -128,6 +138,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 applicationOption.getTeachingLanguages().contains(validationInput.getValues().get(key))) {
             return true;
         }
+        LOGGER.error("Preference validation error");
         return false;
     }
 
@@ -144,6 +155,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (applicationOption.getProvider().getApplicationSystemIds().contains(validationInput.getApplicationSystemId())) {
             return true;
         }
+        LOGGER.error("Preference validation error");
         return false;
     }
 
@@ -153,6 +165,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 applicationOption.getAoIdentifier().equals(validationInput.getValues().get(key))) {
             return true;
         }
+        LOGGER.error("Preference validation error");
         return false;
     }
 }
