@@ -142,7 +142,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         findByIdAndClick("submit_confirm");
 
         String oid = driver.findElement(new By.ByClassName("number")).getText();
-        //assertFalse(oid.contains("."));
+        assertFalse(oid.contains("."));
 
         //tulostus
         WebElement printLink = findByClassName("print").get(0);
