@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page isErrorPage="true" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -25,6 +26,7 @@
     <title>Opintopolku.fi</title>
     <link rel="stylesheet" href="${contextPath}/resources/css/oppija.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow:700|PT+Serif:400italic" rel="stylesheet" type="text/css">
+    <haku:icons contextPath="${contextPath}"/>
 </head>
 <body class="front-page" style="margin:10px 50px;">
 <header>

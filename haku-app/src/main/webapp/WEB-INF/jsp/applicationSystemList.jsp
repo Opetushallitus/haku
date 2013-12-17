@@ -22,7 +22,8 @@
 <head>
     <META http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
-    <title></title>
+    <title>Haut</title>
+    <haku:icons contextPath="${pageContext.request.contextPath}"/>
 </head>
 <body>
 <ul>

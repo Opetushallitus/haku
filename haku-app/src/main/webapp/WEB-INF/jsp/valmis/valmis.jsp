@@ -40,6 +40,7 @@
     <![endif]-->
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
     <title><haku:i18nText value="${form.i18nText}"/></title>
+    <haku:icons contextPath="${contextPath}"/>
 </head>
 <body>
 <div id="viewport">

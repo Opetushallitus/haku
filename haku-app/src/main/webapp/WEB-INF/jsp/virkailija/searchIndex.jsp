@@ -26,6 +26,7 @@
 <html>
 <head>
     <haku:meta/>
+    <haku:icons contextPath="${contextPath}"/>
     <title><fmt:message key="virkailija.haku.hakijatiedot"/></title>
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
