@@ -61,8 +61,10 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
+    private static final String KANSANOPISTO = "63";
     private static final String OPPILAITOSTYYPPI_LUKIO = "oppilaitostyyppi_15";
     private static final String OPPILAITOSTYYPPI_PK_JA_LUKIO = "oppilaitostyyppi_19";
+    private static final String OPPILAITOSTYYPPI_KANSANOPISTO = "oppilaitostyyppi_63";
 
     private final KoodistoClient koodiService;
     private final OrganizationService organisaatioService;
@@ -179,8 +181,13 @@ public class KoodistoServiceImpl implements KoodistoService {
             for (KoodiType alakoodi : alakoodit) {
                 String uri = alakoodi.getKoodiUri();
                 String arvo = alakoodi.getKoodiArvo();
-                if ((OPPILAITOSTYYPPI_LUKIO.equals(uri) || OPPILAITOSTYYPPI_PK_JA_LUKIO.equals(uri))&&
-                        (LUKIO.equals(arvo) || LUKIO_JA_PERUSKOULU.equals(arvo))) {
+                if ((OPPILAITOSTYYPPI_LUKIO.equals(uri)
+                        || OPPILAITOSTYYPPI_PK_JA_LUKIO.equals(uri)
+                        || OPPILAITOSTYYPPI_KANSANOPISTO.equals(uri))
+                        &&
+                        (LUKIO.equals(arvo)
+                        || LUKIO_JA_PERUSKOULU.equals(arvo))
+                        || KANSANOPISTO.equals(arvo)) {
                     lukioNumerot.add(koodi);
                 }
             }
