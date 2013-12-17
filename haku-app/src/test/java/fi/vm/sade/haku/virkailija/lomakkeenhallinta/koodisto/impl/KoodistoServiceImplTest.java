@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.koodisto.util.KoodistoClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,8 +33,9 @@ public class KoodistoServiceImplTest {
     @Before
     public void setUp() throws Exception {
         KoodistoClient koodiService = mock(KoodistoClient.class);
+        OrganizationService organisaatioService = mock(OrganizationService.class);
         when(koodiService.getKoodisForKoodisto(anyString(), anyInt(), anyBoolean())).thenReturn(TestObjectCreator.createKoodiTypeList());
-        koodistoService = new KoodistoServiceImpl(koodiService);
+        koodistoService = new KoodistoServiceImpl(koodiService, organisaatioService);
     }
 
     @Test

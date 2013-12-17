@@ -146,7 +146,6 @@ public class FormController {
         modelResponse.setForm(activeForm);
         modelResponse.setApplicationSystemId(applicationSystemId);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
-        System.out.println(modelResponse);
         return new Viewable(ROOT_VIEW, modelResponse.getModel());
     }
 

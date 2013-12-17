@@ -17,7 +17,7 @@
 package fi.vm.sade.haku.virkailija.authentication.impl;
 
 import com.google.gson.*;
-import fi.vm.sade.authentication.cas.CasClient;
+import fi.vm.sade.haku.oppija.common.HttpClientHelper;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonJsonAdapter;
@@ -46,15 +46,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     final Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
-    @Value("${cas.service.authentication-service}")
-    private String targetService;
 
     @Value("${web.url.cas}")
     private String casUrl;
+
+    @Value("${cas.service.authentication-service}")
+    private String targetService;
+
     @Value("${haku.app.username.to.usermanagement}")
     private String clientAppUser;
     @Value("${haku.app.password.to.usermanagement}")
     private String clientAppPass;
+
+    private HttpClientHelper clientHelper;
 
     private Gson gson;
 
@@ -62,11 +66,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         log.debug("start addPerson, {}", System.currentTimeMillis() / 1000);
 
-        String hetuResource = targetService + "/resources/henkilo/byHetu";
-        String serviceTicket = getServiceticket();
+        String realHetuUrl = getClientHelper().getRealUrl("/resources/henkilo/byHetu/" +
+                person.getSocialSecurityNumber());
 
         HttpClient client = new HttpClient();
-        String realHetuUrl = hetuResource + "/" + person.getSocialSecurityNumber() + "?ticket=" + serviceTicket;
         log.info("Getting person from " + realHetuUrl);
         GetMethod get = new GetMethod(realHetuUrl);
         try {
@@ -108,9 +111,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         List<String> orgs = new ArrayList<String>();
         String personOid = SecurityContextHolder.getContext().getAuthentication().getName();
-        String resource = targetService + "/resources/henkilo/" + personOid + "/organisaatiohenkilo";
-        String serviceTicket = getServiceticket();
-        String url = resource + "?ticket=" + serviceTicket;
+        String url = getClientHelper().getRealUrl(personOid + "/organisaatiohenkilo");
         HttpClient client = new HttpClient();
         log.info("Getting organisaatiohenkilos for " + personOid);
         GetMethod get = new GetMethod(url);
@@ -141,9 +142,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String getStudentOid(String personOid) {
-        String resource = targetService + "/resources/henkilo/" + personOid + "/yksiloi";
-        String serviceTicket = getServiceticket();
-        String url = resource + "?ticket=" + serviceTicket;
+        String url = getClientHelper().getRealUrl(personOid + "/yksiloi");
         HttpClient client = new HttpClient();
         PutMethod put = new PutMethod(url);
         try {
@@ -157,9 +156,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String checkStudentOid(String personOid) {
-        String resource = targetService + "/resources/henkilo/" + personOid;
-        String serviceTicket = getServiceticket();
-        String url = resource + "?ticket=" + serviceTicket;
+        String url = getClientHelper().getRealUrl(personOid);
         HttpClient client = new HttpClient();
         GetMethod get = new GetMethod(url);
         try {
@@ -190,11 +187,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     }
 
-    private String getServiceticket() {
-        String realCasUrl = casUrl + "/v1/tickets";
-        log.info("Getting CAS ticket from " + realCasUrl + " for " + targetService);
-        return CasClient.getTicket(realCasUrl, clientAppUser, clientAppPass, targetService + "/j_spring_cas_security_check");
-    }
+
 
     private String createHenkilo(HttpClient client, Person person) {
 
@@ -219,5 +212,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return responseString;
     }
 
-
+    private HttpClientHelper getClientHelper() {
+        if (this.clientHelper == null) {
+            this.clientHelper = new HttpClientHelper(casUrl, targetService, "/resources/henkilo", clientAppUser, clientAppPass);
+        }
+        return this.clientHelper;
+    }
 }

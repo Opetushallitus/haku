@@ -14,8 +14,8 @@
 <c:set value="${element.id}-Koulutus-id-sora" var="educationSora" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-aoIdentifier" var="aoIdentifier" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-athlete" var="educationAthlete" scope="page"/>
-
-
+<c:set value="${element.id}-kaksoistutkinto" var="hiddenKoulutusIdKaksoistutkinto" scope="page"/>
+<c:set value="${element.id}-vocational" var="hiddenKoulutusIdVocational" scope="page"/>
 
 <table>
     <tbody>
@@ -44,6 +44,9 @@
 <haku:input-hidden id="${educationSora}" data="${answers}"/>
 <haku:input-hidden id="${aoIdentifier}" data="${answers}"/>
 <haku:input-hidden id="${educationAthlete}" data="${answers}"/>
+<haku:input-hidden id="${hiddenKoulutusIdKaksoistutkinto}" data="${answers}"/>
+<haku:input-hidden id="${hiddenKoulutusIdVocational}" data="${answers}"/>
+
 
 <div id="container-childLONames" class="notification block light-grey margin-2" style="display: none">
     <span><haku:i18nText value="${element.childLONameListLabel}"/>:&nbsp;</span>
