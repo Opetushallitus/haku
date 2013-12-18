@@ -70,14 +70,13 @@ public class PostalCodeIT extends DummyModelBaseItTest {
     @Test
     public void testPostalCode() throws InterruptedException, IOException {
         ApplicationSystemHelper applicationSystemHelper1 = new ApplicationSystemHelper(applicationSystem);
-        System.out.println("--" + applicationSystemHelper1.getStartUrl());
-
         driver.get(getBaseUrl() + applicationSystemHelper1.getStartUrl());
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         setValue(postalCode.getId(), POST_CODE);
         setValue(textQuestion.getId(), randomId());
-        assertTrue(findByXPath("//span[@class='post-office']").getText().trim().equals(POST_OFFICE));
+        //div[contains(text(), "' + text + '")]'
+        assertTrue(findByXPath("//span[@class='post-office' and contains(text(), '" + POST_OFFICE + "')]").getText().trim().equals(POST_OFFICE));
 
         setValue(postalCode.getId(), StringUtils.repeat("\b", POST_CODE.length()) + POST_CODE2);
         setValue(textQuestion.getId(), randomId());
