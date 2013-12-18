@@ -195,12 +195,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String henkiloResource = targetService + "/resources/henkilo";
 
         String responseString = null;
-        PutMethod put = new PutMethod(henkiloResource);
+        PostMethod post = new PostMethod(henkiloResource);
         try {
             RequestEntity entity = new StringRequestEntity(gson.toJson(person, Person.class), MediaType.APPLICATION_JSON + ";charset=UTF-8", "UTF-8");
-            put.setRequestEntity(entity);
-            client.executeMethod(put);
-            responseString = put.getResponseBodyAsString();
+            post.setRequestEntity(entity);
+            client.executeMethod(post);
+            responseString = post.getResponseBodyAsString();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
