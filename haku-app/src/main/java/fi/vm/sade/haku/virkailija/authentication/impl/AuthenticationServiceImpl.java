@@ -214,7 +214,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private HttpClientHelper getClientHelper() {
         if (this.clientHelper == null) {
-            this.clientHelper = new HttpClientHelper(casUrl, targetService, "/resources/henkilo", clientAppUser, clientAppPass);
+            this.clientHelper = new HttpClientHelper(casUrl, targetService, "/resources/henkilo/", clientAppUser, clientAppPass);
         }
         return this.clientHelper;
     }
