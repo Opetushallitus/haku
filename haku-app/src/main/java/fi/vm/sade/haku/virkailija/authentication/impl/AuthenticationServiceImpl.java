@@ -136,7 +136,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             } catch (IOException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } catch (JsonSyntaxException jse) {
-                log.error("JsonSyntaxException for response: {}", responseString);
+                log.error("JsonSyntaxException for url: {} response: {}", url, responseString);
             }
         }
         return orgs;
