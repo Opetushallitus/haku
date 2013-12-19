@@ -55,7 +55,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Value("${cas.service.authentication-service}")
     private String targetService;
-
     @Value("${haku.app.username.to.usermanagement}")
     private String clientAppUser;
     @Value("${haku.app.password.to.usermanagement}")
@@ -142,6 +141,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private synchronized CachingRestClient getCachingRestClient() {
         if (cachingRestClient == null) {
             cachingRestClient = new CachingRestClient();
+            cachingRestClient.setWebCasUrl(casUrl);
             cachingRestClient.setCasService(targetService);
             cachingRestClient.setUsername(clientAppUser);
             cachingRestClient.setPassword(clientAppPass);
