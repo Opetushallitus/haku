@@ -63,6 +63,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private HttpClientHelper clientHelper;
 
+    private CachingRestClient cachingRestClient;
+
     private Gson gson;
 
     public String addPerson(Person person) {
@@ -111,8 +113,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public List<String> getOrganisaatioHenkilo() {
-
-        CachingRestClient cachingRestClient = new CachingRestClient();
+        CachingRestClient cachingRestClient = getCachingRestClient();
         String personOid = SecurityContextHolder.getContext().getAuthentication().getName();
         List<String> orgs = new ArrayList<String>();
         String response = null;
@@ -135,6 +136,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             log.error("JsonSyntaxException for response: {}", response);
         }
         return orgs;
+    }
+
+    private synchronized CachingRestClient getCachingRestClient() {
+        if (cachingRestClient == null) {
+            cachingRestClient = new CachingRestClient();
+            cachingRestClient.setCasService(targetService);
+            cachingRestClient.setUsername(clientAppUser);
+            cachingRestClient.setPassword(clientAppPass);
+        }
+        return cachingRestClient;
     }
 
     @Override
