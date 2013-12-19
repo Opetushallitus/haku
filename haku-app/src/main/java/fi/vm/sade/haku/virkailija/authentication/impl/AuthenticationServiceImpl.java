@@ -121,6 +121,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             InputStream is = cachingRestClient.get(targetService + "/resources/henkilo/" + personOid + "/organisaatiohenkilo");
             response = IOUtils.toString(is);
         } catch (IOException e) {
+            e.printStackTrace();
             log.error("Getting organisaatiohenkilos failed due to: " + e.toString());
             return orgs;
         }
