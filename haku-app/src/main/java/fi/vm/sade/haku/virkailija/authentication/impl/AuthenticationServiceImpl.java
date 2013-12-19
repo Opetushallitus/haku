@@ -141,6 +141,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private synchronized CachingRestClient getCachingRestClient() {
         if (cachingRestClient == null) {
             cachingRestClient = new CachingRestClient();
+            cachingRestClient.setWebCasUrl(casUrl);
             cachingRestClient.setCasService(targetService);
             cachingRestClient.setUsername(clientAppUser);
             cachingRestClient.setPassword(clientAppPass);
