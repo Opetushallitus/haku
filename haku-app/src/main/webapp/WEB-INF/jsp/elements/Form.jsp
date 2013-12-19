@@ -28,6 +28,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
+    <haku:icons contextPath="${contextPath}"/>
     <link rel="stylesheet" href="${contextPath}/resources/css/oppija.css" type="text/css">
     <!--[if lt IE 9]>
     <link href="${contextPath}/resources/css/ie.css" type="text/css" rel="stylesheet"/>

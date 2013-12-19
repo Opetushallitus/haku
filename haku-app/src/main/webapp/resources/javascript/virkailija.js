@@ -75,12 +75,12 @@ $(document).ready(function () {
             }
         },
 
-        expand: function() {
+        expand: function () {
             $('#orgsearch').addClass('expand');
             orgSearchDialog.set.tableCellWidth();
             orgSearchDialog.set.listHeight();
         },
-        collapse: function() {
+        collapse: function () {
             $('#orgsearch').removeClass('expand');
             orgSearchDialog.set.tableCellWidth();
         }
@@ -162,7 +162,7 @@ $(document).ready(function () {
             var queryParameters = createQueryParameters(start);
             start = queryParameters.start;
             $('#search-spinner').show();
-            $.getJSON(page_settings.contextPath + "/applications/list/"+orderBy+"/"+orderDir,
+            $.getJSON(page_settings.contextPath + "/applications/list/" + orderBy + "/" + orderDir,
                 queryParameters,
                 function (data) {
                     $tbody.empty();
@@ -170,7 +170,7 @@ $(document).ready(function () {
                     if (data.totalCount > 0) {
                         $(data.results).each(function (index, item) {
                             var cleanOid = item.oid.replace(/\./g, '_');
-                            $tbody.append('<tr><td><input class="check-application" id="check-application-'+cleanOid+'" type="checkbox"/></td><td>' +
+                            $tbody.append('<tr><td><input class="check-application" id="check-application-' + cleanOid + '" type="checkbox"/></td><td>' +
                                 (item.lastName ? item.lastName : '') + ' ' + (item.firstNames ? item.firstNames : '') + '</td><td>' +
                                 (item.ssn ? item.ssn : '') + '</td><td><a class="application-link" href="' +
                                 page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
@@ -190,7 +190,7 @@ $(document).ready(function () {
                     }
                     $('#search-spinner').hide();
                     window.location.hash = '';
-                    $('input.check-application').each(function(index) {
+                    $('input.check-application').each(function (index) {
                         $.cookie.path = cookiePath;
                         $.cookie.json = true;
                         var lastSearch = $.cookie(cookieName);
@@ -204,28 +204,28 @@ $(document).ready(function () {
                     });
                 });
         },
-        this.updateCounters = function (count) {
-            $resultcount.empty().append(count);
-            $applicationTabLabel.empty().append('Hakemukset (' + count + ')');
-        },
-        this.reset = function () {
-            $.cookie.path = cookiePath;
-            $.cookie.json = true;
-            $.removeCookie(cookieName);
-            $('#application-table thead tr td').removeAttr('class');
-            self.updateCounters(0);
-            $tbody.empty();
-            $('#lopoid').val('');
-            $('#lop-title').empty();
-            $('#entry').val('');
-            $('#application-state').val('ACTIVE');
-            $('#application-preference').val('');
-            $('#pagination').empty();
-            $('#application-system').val('');
-            $('#hakukausiVuosi').val(hakukausiDefaultYear);
-            $('#hakukausi').val(hakukausiDefaultSemester);
-            $('#discretionary-only').attr('checked', false);
-        }
+            this.updateCounters = function (count) {
+                $resultcount.empty().append(count);
+                $applicationTabLabel.empty().append('Hakemukset (' + count + ')');
+            },
+            this.reset = function () {
+                $.cookie.path = cookiePath;
+                $.cookie.json = true;
+                $.removeCookie(cookieName);
+                $('#application-table thead tr td').removeAttr('class');
+                self.updateCounters(0);
+                $tbody.empty();
+                $('#lopoid').val('');
+                $('#lop-title').empty();
+                $('#entry').val('');
+                $('#application-state').val('ACTIVE');
+                $('#application-preference').val('');
+                $('#pagination').empty();
+                $('#application-system').val('');
+                $('#hakukausiVuosi').val(hakukausiDefaultYear);
+                $('#hakukausi').val(hakukausiDefaultSemester);
+                $('#discretionary-only').attr('checked', false);
+            }
         return this;
     })();
 
@@ -272,22 +272,24 @@ $(document).ready(function () {
         sortApplications($(this), 'state');
     });
 
-    $('#check-all-applications').change(function() {
-        if($(this).is(":checked")) {
+    $('#check-all-applications').change(function () {
+        if ($(this).is(":checked")) {
             $('.check-application').attr('checked', 'checked');
         } else {
             $('.check-application').removeAttr('checked');
         }
     });
 
-    $('#open-application').click(function() {
+    $('#open-application').click(function () {
         var applicationList = '';
         var selectedApplication = null;
-        $('input.check-application').each(function(index) {
-            if($(this).is(":checked")) {
+        $('input.check-application').each(function (index) {
+            if ($(this).is(":checked")) {
                 var application = $(this).attr('id').replace(/^.*-/g, '').replace(/_/g, '.');
                 applicationList += application + ',';
-                if (!selectedApplication) { selectedApplication = application; }
+                if (!selectedApplication) {
+                    selectedApplication = application;
+                }
             }
         });
         if (selectedApplication) {
@@ -306,7 +308,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#previousApplication').click(function() {
+    $('#previousApplication').click(function () {
         var selectedApplication = previousApplication;
         if (selectedApplication) {
             $('#selectedApplication').val(selectedApplication);
@@ -314,7 +316,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#nextApplication').click(function() {
+    $('#nextApplication').click(function () {
         var selectedApplication = nextApplication;
         if (selectedApplication) {
             $('#selectedApplication').val(selectedApplication);
@@ -404,7 +406,18 @@ $(document).ready(function () {
         function createListItem(leaf, org) {
             var li = $(document.createElement("li"));
             var icon = leaf ? 'file' : 'folder';
-            var label = $(document.createElement('span')).html(org.name.translations.fi).attr("id", org.oid);
+
+            function getTranslation(translations) {
+                var text = translations[page_settings.lang];
+                if (!text) {
+                    for (var translation in translations) {
+                        return translations[translation];
+                    }
+                }
+                return text;
+            }
+
+            var label = $(document.createElement('span')).html(getTranslation(org.name.translations)).attr("id", org.oid);
             var link = $(document.createElement('a')).attr('href', '#').addClass('label');
             var span = $(document.createElement('span')).addClass('icon close').addClass(icon).html('&#8203;');
             span.appendTo(link);

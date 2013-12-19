@@ -231,7 +231,7 @@ public final class KoulutustaustaPhaseLisahakuSyksy {
         DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
                 createI18NText("form.koulutustausta.perusopetuksenKieli", FORM_MESSAGES), null);
         perusopetuksenKieli.addOption(ElementUtil.createI18NAsIs(""), "");
-        perusopetuksenKieli.addOptions(koodistoService.getLanguages());
+        perusopetuksenKieli.addOptions(koodistoService.getTeachingLanguages());
         addRequiredValidator(perusopetuksenKieli, FORM_ERRORS);
         setVerboseHelp(perusopetuksenKieli, "form.koulutustausta.perusopetuksenKieli.verboseHelp", FORM_VERBOSE_HELP);
         pkKysymyksetRule.addChild(perusopetuksenKieli);

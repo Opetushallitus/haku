@@ -222,7 +222,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
     }
 
     @Override
-    public Organization findByOppilaitosnumero(String oppilaitosnumero) {
+    public List<Organization> findByOppilaitosnumero(List<String> oppilaitosnumeros) {
         return null;
     }
 

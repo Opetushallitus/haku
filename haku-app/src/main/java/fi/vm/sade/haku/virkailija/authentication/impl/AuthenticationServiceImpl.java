@@ -17,12 +17,14 @@
 package fi.vm.sade.haku.virkailija.authentication.impl;
 
 import com.google.gson.*;
+import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.HttpClientHelper;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonJsonAdapter;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.*;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +34,7 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -59,6 +62,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private String clientAppPass;
 
     private HttpClientHelper clientHelper;
+
+    private CachingRestClient cachingRestClient;
 
     private Gson gson;
 
@@ -108,36 +113,40 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public List<String> getOrganisaatioHenkilo() {
-
-        List<String> orgs = new ArrayList<String>();
+        CachingRestClient cachingRestClient = getCachingRestClient();
         String personOid = SecurityContextHolder.getContext().getAuthentication().getName();
-        String url = getClientHelper().getRealUrl(personOid + "/organisaatiohenkilo");
-        HttpClient client = new HttpClient();
-        log.info("Getting organisaatiohenkilos for " + personOid);
-        GetMethod get = new GetMethod(url);
+        List<String> orgs = new ArrayList<String>();
+        String response = null;
         try {
-            client.executeMethod(get);
+            InputStream is = cachingRestClient.get(targetService + "/resources/henkilo/" + personOid + "/organisaatiohenkilo");
+            response = IOUtils.toString(is);
         } catch (IOException e) {
+            e.printStackTrace();
             log.error("Getting organisaatiohenkilos failed due to: " + e.toString());
             return orgs;
         }
 
-        int status = get.getStatusCode();
-        if (status == 200) {
-            String responseString = null;
-            try {
-                responseString = get.getResponseBodyAsString();
-                JsonArray orgJson = new JsonParser().parse(responseString).getAsJsonArray();
-                Iterator<JsonElement> elems = orgJson.iterator();
-                while (elems.hasNext()) {
-                    JsonObject orgObj = elems.next().getAsJsonObject();
-                    orgs.add(orgObj.get("organisaatioOid").getAsString());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        try {
+            JsonArray orgJson = new JsonParser().parse(response).getAsJsonArray();
+            Iterator<JsonElement> elems = orgJson.iterator();
+            while (elems.hasNext()) {
+                JsonObject orgObj = elems.next().getAsJsonObject();
+                orgs.add(orgObj.get("organisaatioOid").getAsString());
             }
+        } catch (JsonSyntaxException jse) {
+            log.error("JsonSyntaxException for response: {}", response);
         }
         return orgs;
+    }
+
+    private synchronized CachingRestClient getCachingRestClient() {
+        if (cachingRestClient == null) {
+            cachingRestClient = new CachingRestClient();
+            cachingRestClient.setCasService(targetService);
+            cachingRestClient.setUsername(clientAppUser);
+            cachingRestClient.setPassword(clientAppPass);
+        }
+        return cachingRestClient;
     }
 
     @Override
@@ -214,7 +223,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private HttpClientHelper getClientHelper() {
         if (this.clientHelper == null) {
-            this.clientHelper = new HttpClientHelper(casUrl, targetService, "/resources/henkilo", clientAppUser, clientAppPass);
+            this.clientHelper = new HttpClientHelper(casUrl, targetService, "/resources/henkilo/", clientAppUser, clientAppPass);
         }
         return this.clientHelper;
     }

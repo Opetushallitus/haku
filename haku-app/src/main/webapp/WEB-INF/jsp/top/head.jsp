@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -17,13 +18,13 @@
   --%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <head>
-
-    <title>Opetushallitus</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Opintopolku.fi</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="${contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet"/>
-    <link href="${contextPath}/resources/jquery/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
-          type="text/css" rel="stylesheet"/>
+    <link href="${contextPath}/resources/jquery/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css"
+          rel="stylesheet"/>
+    <haku:icons contextPath="${contextPath}"/>
     <script src="${contextPath}/resources/jquery/jquery-1.8.0.min.js"
             type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"

@@ -19,6 +19,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
@@ -174,7 +175,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     public List<Option> getLukioKoulukoodit() {
         List<KoodiType> numerot = getKoodiTypes(CODE_KOULUNUMERO);
         LOGGER.debug("Getting lukiokoodit: {}", numerot.size());
-        List<KoodiType> lukioNumerot = new ArrayList<KoodiType>();
+        List<String> lukioNumerot = new ArrayList<String>();
         for (KoodiType koodi : numerot) {
             List<KoodiType> alakoodit = koodiService.getAlakoodis(koodi.getKoodiUri());
 
@@ -188,12 +189,17 @@ public class KoodistoServiceImpl implements KoodistoService {
                         (LUKIO.equals(arvo)
                         || LUKIO_JA_PERUSKOULU.equals(arvo))
                         || KANSANOPISTO.equals(arvo)) {
-                    lukioNumerot.add(koodi);
+                    lukioNumerot.add(koodi.getKoodiArvo());
                 }
             }
         }
-        return Lists.transform(lukioNumerot,
-                new OppilaitosnumeroToOpetuspisteFunction(koodiService, organisaatioService));
+
+        List<Option> opts = new ArrayList<Option>(lukioNumerot.size());
+        List<Organization> orgs = organisaatioService.findByOppilaitosnumero(lukioNumerot);
+        for (Organization org : orgs) {
+            opts.add(new Option(org.getName(), org.getOid()));
+        }
+        return opts;
     }
 
     private List<Option> codesToOptions(final String codeName) {

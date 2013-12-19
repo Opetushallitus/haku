@@ -16,19 +16,15 @@
 package fi.vm.sade.haku.oppija.common.organisaatio.impl;
 
 import com.google.common.collect.Lists;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
+import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.HttpClientHelper;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import fi.vm.sade.organisaatio.service.search.OrganisaatioSearchService;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +34,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Profile("default")
@@ -95,73 +91,23 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public Organization findByOppilaitosnumero(String oppilaitosnumero) {
-        String url = getClientHelper().getRealUrl(oppilaitosnumero);
-
-        HttpClient client = new HttpClient();
-        GetMethod get = new GetMethod(url);
-
+    public List<Organization> findByOppilaitosnumero(List<String> oppilaitosnumeros) {
+        CachingRestClient cachingRestClient = new CachingRestClient();
+        List<Organization> orgs = new ArrayList<Organization>(oppilaitosnumeros.size());
+        String baseUrl = targetService + "/rest/organisaatio/";
         try {
-            client.executeMethod(get);
-        } catch (IOException e) {
-            return null;
-        }
-        int status = get.getStatusCode();
-        if (status == 200) {
-            String responseString = null;
-            try {
-                responseString = get.getResponseBodyAsString();
-                JsonElement orgJson = new JsonParser().parse(responseString);
-                return deserialize(orgJson);
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            for (String numero : oppilaitosnumeros) {
+                OrganizationRestDTO orgDTO = cachingRestClient.get(baseUrl + numero, OrganizationRestDTO.class);
+                Organization org = new Organization(new I18nText(orgDTO.getNimi()), orgDTO.getOid(),
+                        orgDTO.getParentOid(), orgDTO.getTyypit(), orgDTO.getAlkuPvmAsDate(),
+                        orgDTO.getLoppuPvmAsDate());
+                orgs.add(org);
             }
+            return orgs;
+        } catch (IOException e) {
+            LOG.error("Couldn't find organization for oppilaitosnumero", e);
         }
-
         return null;
     }
 
-    public Organization deserialize(JsonElement json) throws JsonParseException {
-        JsonObject obj = json.getAsJsonObject();
-        String oid = obj.get("oid").getAsString();
-        String parentOid = obj.get("parentOid").getAsString();
-        Iterator<JsonElement> tyypitIter = obj.get("tyypit").getAsJsonArray().iterator();
-        List<String> types = new ArrayList<String>();
-
-        while (tyypitIter.hasNext()) {
-            types.add(tyypitIter.next().getAsString());
-        }
-
-        JsonObject nimiObj = obj.get("nimi").getAsJsonObject();
-        HashMap<String, String> translations = new HashMap<String, String>();
-        for (Map.Entry<String, JsonElement> entry : nimiObj.entrySet()) {
-            translations.put(entry.getKey(), entry.getValue().getAsString());
-        }
-        I18nText name = new I18nText(translations);
-
-        Date startDate = null;
-        try {
-            startDate = dateFormat.parse(obj.get("alkuPvm").getAsString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Date endDate = null;
-        try {
-            JsonElement loppuPvmObj = obj.get("loppuPvm");
-            if (loppuPvmObj != null) {
-                endDate = dateFormat.parse(loppuPvmObj.getAsString());
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return new Organization(name, oid, parentOid, types, startDate, endDate);
-    }
-
-    private HttpClientHelper getClientHelper() {
-        if (clientHelper == null) {
-            this.clientHelper = new HttpClientHelper(casUrl, targetService, "/rest/organisaatio/", clientAppUser, clientAppPass);
-        }
-        return clientHelper;
-    }
 }
