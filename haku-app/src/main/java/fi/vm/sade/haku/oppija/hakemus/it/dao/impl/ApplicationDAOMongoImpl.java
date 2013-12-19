@@ -214,11 +214,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters applicationQueryParameters) {
+        LOG.debug("Enetring findAllQueried");
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         StringTokenizer st = new StringTokenizer(term, " ");
         ArrayList<DBObject> queries = new ArrayList<DBObject>();
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
+            LOG.debug("processing token: {}", token);
             if (OID_PATTERN.matcher(token).matches()) {
                 if (token.indexOf('.') > -1) { // Long form
                     if (token.startsWith(applicationOidPrefix)) {
@@ -248,6 +250,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         QueryBuilder baseQuery = queries.size() > 0 ? QueryBuilder.start().and(queries.toArray(new DBObject[queries.size()])) : QueryBuilder.start();
         DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
+        LOG.debug("Constructed query: {}", query.toString());
         return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows(),
                 applicationQueryParameters.getOrderBy(), applicationQueryParameters.getOrderDir());
     }
