@@ -31,7 +31,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisati
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseYhteishakuKevat;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 
-import java.util.Date;
 import java.util.List;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
@@ -39,8 +38,6 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.crea
 public class YhteishakuKevat {
 
     private static final String FORM_MESSAGES = "form_messages_yhteishaku_kevat";
-    private static final String FORM_ERRORS = "form_errors_yhteishaku_kevat";
-    private static final String FORM_VERBOSE_HELP = "form_verboseHelp_yhteishaku_kevat";
     private static final String REGEX_NON_EMPTY = ".*\\S.*";
 
     public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService,
@@ -51,9 +48,7 @@ public class YhteishakuKevat {
             form.addChild(KoulutustaustaPhaseYhteishakuKevat.create(koodistoService, as, organisaatioService));
             form.addChild(HakutoiveetPhaseYhteishakuKevat.create());
             form.addChild(OsaaminenPhaseYhteishakuKevat.create(koodistoService, as));
-            Date start = as.getApplicationPeriods() != null && !as.getApplicationPeriods().isEmpty() ?
-                    as.getApplicationPeriods().get(0).getStart() : new Date();
-            form.addChild(LisatiedotPhaseYhteishakuKevat.create(start));
+            form.addChild(LisatiedotPhaseYhteishakuKevat.create());
             return form;
         } catch (Exception e) {
             throw new RuntimeException(YhteishakuKevat.class.getCanonicalName() + " init failed", e);
