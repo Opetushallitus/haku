@@ -191,17 +191,10 @@ public class FormController {
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                 final MultivaluedMap<String, String> multiValues) {
-        LOGGER.debug("updateRules {}, {}, {}", applicationSystemId, phaseId);
+        LOGGER.debug("updateRules {}, {}, {}", applicationSystemId, phaseId, elementId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
         Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
-        Map<String, String> newValues = MultivaluedMapUtil.toSingleValueMap(multiValues);
-        LOGGER.debug("Got {} new values", newValues.size());
-        if (LOGGER.isDebugEnabled()) {
-            for (Map.Entry<String, String> entry : newValues.entrySet()) {
-                LOGGER.debug("New value: {} -> {}", entry.getKey(), entry.getValue());
-            }
-        }
-        values.putAll(newValues);
+        values.putAll(MultivaluedMapUtil.toSingleValueMap(multiValues));
 
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.addAnswers(values);
