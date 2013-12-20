@@ -194,7 +194,14 @@ public class FormController {
         LOGGER.debug("updateRules {}, {}, {}", applicationSystemId, phaseId);
         Form activeForm = formService.getActiveForm(applicationSystemId);
         Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
-        values.putAll(MultivaluedMapUtil.toSingleValueMap(multiValues));
+        Map<String, String> newValues = MultivaluedMapUtil.toSingleValueMap(multiValues);
+        LOGGER.debug("Got {} new values", newValues.size());
+        if (LOGGER.isDebugEnabled()) {
+            for (Map.Entry<String, String> entry : newValues.entrySet()) {
+                LOGGER.debug("New value: {} -> {}", entry.getKey(), entry.getValue());
+            }
+        }
+        values.putAll(newValues);
 
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.addAnswers(values);
