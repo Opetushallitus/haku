@@ -161,7 +161,8 @@ $(document).ready(function () {
             $('#application-table thead tr td').removeAttr('class');
             var queryParameters = createQueryParameters(start);
             start = queryParameters.start;
-            $('#search-spinner').show();
+            $('#search-spinner').hide();
+            $('#search-spinner').toggle('pulsate');
             $.getJSON(page_settings.contextPath + "/applications/list/" + orderBy + "/" + orderDir,
                 queryParameters,
                 function (data) {

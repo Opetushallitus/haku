@@ -17,55 +17,53 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.TitledGroup;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.WorkExperienceTheme;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextArea;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.And;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.OlderThan;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Value;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
 public final class LisatiedotPhaseYhteishakuSyksy {
-    public static final int AGE_WORK_EXPERIENCE = 16;
+    public static final String AGE_WORK_EXPERIENCE = "16";
     public static final String TYOKOKEMUS_PATTERN = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$";
 
     private static final String FORM_MESSAGES = "form_messages_yhteishaku_syksy";
     private static final String FORM_ERRORS = "form_errors_yhteishaku_syksy";
     private static final String FORM_VERBOSE_HELP = "form_verboseHelp_yhteishaku_syksy";
+    public static final String REQUIRED_EDUCATION_DEGREE = "32";
 
     private LisatiedotPhaseYhteishakuSyksy() {
     }
 
-    public static Phase create(final Date start) {
+    public static Phase create() {
         Phase lisatiedot = new Phase("lisatiedot", createI18NText("form.lisatiedot.otsikko", FORM_MESSAGES), false);
-        lisatiedot.addChild(createTyokokemus(start));
+        lisatiedot.addChild(createTyokokemus());
         lisatiedot.addChild(createLupatiedot());
         lisatiedot.addChild(createUrheilijanLisakysymykset());
         return lisatiedot;
     }
 
-    private static WorkExperienceTheme createTyokokemus(final Date start) {
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(start);
-        cal.roll(Calendar.YEAR, -AGE_WORK_EXPERIENCE);
-        WorkExperienceTheme workExperienceTheme = new WorkExperienceTheme("tyokokemusGrp",
-                createI18NText("form.lisatiedot.tyokokemus", FORM_MESSAGES), "32", cal.getTime(),
-                Lists.newArrayList(OppijaConstants.PERUSKOULU, OppijaConstants.OSITTAIN_YKSILOLLISTETTY,
-                        OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY, OppijaConstants.YKSILOLLISTETTY,
-                        OppijaConstants.YLIOPPILAS));
+    public static RelatedQuestionComplexRule createTyokokemus() {
+        Expr isEducation32 = atLeastOneVariableEqualsToValue(REQUIRED_EDUCATION_DEGREE, OppijaConstants.AO_EDUCATION_DEGREE_KEYS);
+        Expr olderThan16 = new OlderThan(new Value(AGE_WORK_EXPERIENCE));
+        Expr rules = new And(isEducation32, olderThan16);
+
+        Theme workExperienceTheme = new Theme("WorkExperienceTheme", createI18NText("form.lisatiedot.tyokokemus", FORM_MESSAGES), true);
         workExperienceTheme.setHelp(createI18NText("form.tyokokemus.help", FORM_MESSAGES));
+
         TextQuestion tyokokemuskuukaudet = new TextQuestion("TYOKOKEMUSKUUKAUDET",
                 createI18NText("form.tyokokemus.kuukausina", FORM_MESSAGES));
         tyokokemuskuukaudet
@@ -76,7 +74,9 @@ public final class LisatiedotPhaseYhteishakuSyksy {
         tyokokemuskuukaudet.addAttribute("maxlength", "4");
         setVerboseHelp(tyokokemuskuukaudet, "form.tyokokemus.kuukausina.verboseHelp", FORM_VERBOSE_HELP);
         workExperienceTheme.addChild(tyokokemuskuukaudet);
-        return workExperienceTheme;
+        RelatedQuestionComplexRule naytetaankoTyokokemus = new RelatedQuestionComplexRule(ElementUtil.randomId(), rules);
+        naytetaankoTyokokemus.addChild(workExperienceTheme);
+        return naytetaankoTyokokemus;
     }
 
     private static Theme createLupatiedot() {

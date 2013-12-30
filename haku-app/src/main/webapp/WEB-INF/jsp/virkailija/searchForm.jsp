@@ -93,7 +93,7 @@
                     </td>
                     <td>
                         <div id="search-spinner" style="display: none">
-                            <img src="${contextPath}/resources/img/icon-notification.png" alt="Hakee..."/>
+                            <p>Haetaan<br />hakemuksia...</p>
                         </div>
                     </td>
                 </tr>

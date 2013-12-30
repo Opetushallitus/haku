@@ -42,8 +42,10 @@
                     <prop key="cas_mode">front</prop>
                     <prop key="cas_key">haku</prop>
                     <prop key="cas_service">${cas.service.haku}</prop>
+                    <prop key="cas_callback_url">${cas.callback.haku-service}</prop>
                     <prop key="spring_security_default_access">permitAll</prop>
                 </util:properties>
+
             </property>
         </bean>
         <import resource="file:///${user.home:''}/oph-configuration/security-context-backend.xml"/>

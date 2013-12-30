@@ -49,9 +49,7 @@ public class YhteishakuSyksy {
             form.addChild(KoulutustaustaPhaseYhteishakuSyksy.create(koodistoService));
             form.addChild(HakutoiveetPhaseYhteishakuSyksy.create());
             form.addChild(OsaaminenPhaseYhteishakuSyksy.create(koodistoService));
-            Date start = as.getApplicationPeriods() != null && !as.getApplicationPeriods().isEmpty() ?
-                    as.getApplicationPeriods().get(0).getStart() : new Date();
-            form.addChild(LisatiedotPhaseYhteishakuSyksy.create(start));
+            form.addChild(LisatiedotPhaseYhteishakuSyksy.create());
             return form;
         } catch (Exception e) {
             throw new RuntimeException(YhteishakuSyksy.class.getCanonicalName() + " init failed", e);
