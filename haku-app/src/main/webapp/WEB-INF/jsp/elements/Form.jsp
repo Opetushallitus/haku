@@ -58,7 +58,7 @@
             });
         });
     </script>
-    <title><haku:i18nText value="${element.i18nText}"/> - esikatselu</title>
+    <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <fmt:message key="lomake.esikatselu"/></title>
 </head>
 <body>
 <div id="viewport">

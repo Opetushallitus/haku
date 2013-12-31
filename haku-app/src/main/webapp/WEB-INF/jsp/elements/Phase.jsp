@@ -60,7 +60,7 @@
             });
         });
     </script>
-    <title><haku:i18nText value="${form.i18nText}"/> - <haku:i18nText value="${vaihe.i18nText}"/></title>
+    <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <haku:i18nText value="${vaihe.i18nText}"/></title>
 </head>
 <body>
 <div id="viewport">
