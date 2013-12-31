@@ -39,7 +39,7 @@
     <link href="${contextPath}/resources/css/ie.css" type="text/css" rel="stylesheet"/>
     <![endif]-->
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
-    <title><haku:i18nText value="${form.i18nText}"/></title>
+    <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <fmt:message key="lomake.valmis"/></title>
     <haku:icons contextPath="${contextPath}"/>
 </head>
 <body>
