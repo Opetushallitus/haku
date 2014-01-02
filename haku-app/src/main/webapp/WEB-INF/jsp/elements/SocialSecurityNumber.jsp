@@ -27,23 +27,23 @@
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
             <c:choose>
-                <c:when test="${virkailijaEdit and not empty categoryData[element.id]}">
-                    <input disabled="disabled" value="<c:out value='${categoryData[element.id]}'/>"/>
-                    <input name="${element.id}" type="hidden" value="<c:out value='${categoryData[element.id]}'/>"/>
+                <c:when test="${virkailijaEdit and not empty answers[element.id]}">
+                    <input disabled="disabled" value="<c:out value='${answers[element.id]}'/>"/>
+                    <input name="${element.id}" type="hidden" value="<c:out value='${answers[element.id]}'/>"/>
                 </c:when>
                 <c:otherwise>
-                    <input ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"/>
+                    <input ${element.attributeString} value="<c:out value='${answers[element.id]}'/>"/>
                 </c:otherwise>
             </c:choose>
             <span id="sex">
-                <c:if test="${categoryData[ssnElement.sexId] eq ssnElement.maleOption.value}">
+                <c:if test="${answers[ssnElement.sexId] eq ssnElement.maleOption.value}">
                     <haku:i18nText value="${ssnElement.maleOption.i18nText}"/>
                 </c:if>
-                <c:if test="${categoryData[ssnElement.sexId] eq ssnElement.femaleOption.value}">
+                <c:if test="${answers[ssnElement.sexId] eq ssnElement.femaleOption.value}">
                     <haku:i18nText value="${ssnElement.femaleOption.i18nText}"/>
                 </c:if>
             </span>
-            <input id="${ssnElement.sexId}" name="${ssnElement.sexId}" value="<c:out value='${categoryData[ssnElement.sexId]}' />" type="hidden"/>
+            <input id="${ssnElement.sexId}" name="${ssnElement.sexId}" value="<c:out value='${answers[ssnElement.sexId]}' />" type="hidden"/>
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
         <haku:help element="${element}"/>

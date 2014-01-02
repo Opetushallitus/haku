@@ -85,7 +85,7 @@
 </div>
 
 <script type="text/javascript">
-    var prerequisiteStr = "${categoryData.pohjakoulutusvaatimus}";
+    var prerequisiteStr = "${answers.pohjakoulutusvaatimus}";
     var prerequisiteArray = prerequisiteStr.split(',');
 
     var sortabletable_settings = {
@@ -94,8 +94,15 @@
         applicationSystemId: '<c:out value="${it.applicationSystemId}"/>',
         vaiheId: '<c:out value="${vaihe.id}"/>',
         teemaId: '<c:out value="${parent.id}"/>',
-        baseEducation: '<c:out value="${categoryData.POHJAKOULUTUS}"/>',
-        vocational: '<c:out value="${categoryData.ammatillinenTutkintoSuoritettu}"/>',
+        baseEducation: '<c:out value="${answers.POHJAKOULUTUS}"/>',
+        <c:choose>
+            <c:when test="${answers.ammatillinenTutkintoSuoritettu}">
+                vocational : false
+            </c:when>
+            <c:otherwise>
+                vocational : true
+            </c:otherwise>
+        </c:choose>,
         preferenceAndBaseEducationConflictMessage: '<fmt:message key="hakutoiveet.pohjakoulutusristiriita"/>',
         <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') or fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
         koulutusinformaatioBaseUrl: '<c:out value="${it.koulutusinformaatioBaseUrl}"/>'

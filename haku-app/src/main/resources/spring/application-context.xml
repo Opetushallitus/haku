@@ -42,8 +42,10 @@
                     <prop key="cas_mode">front</prop>
                     <prop key="cas_key">haku</prop>
                     <prop key="cas_service">${cas.service.haku}</prop>
+                    <prop key="cas_callback_url">${cas.callback.haku}</prop>
                     <prop key="spring_security_default_access">permitAll</prop>
                 </util:properties>
+
             </property>
         </bean>
         <import resource="file:///${user.home:''}/oph-configuration/security-context-backend.xml"/>
@@ -73,8 +75,9 @@
 
     <beans>
         <context:annotation-config/>
+
         <context:component-scan
-                base-package="fi.vm.sade.oppija,fi.vm.sade.security,fi.vm.sade.organisaatio.service.search"/>
+                base-package="fi.vm.sade.haku,fi.vm.sade.security,fi.vm.sade.organisaatio.service.search"/>
         <aop:aspectj-autoproxy/>
 
         <!-- Configure the multipart resolver -->
@@ -88,7 +91,7 @@
         <bean id="solrServerFactory" class="fi.vm.sade.organisaatio.service.search.SolrServerFactory">
         </bean>
 
-        <bean id="yksilointiScheduler" class="fi.vm.sade.oppija.yksilointi.Scheduler">
+        <bean id="yksilointiScheduler" class="fi.vm.sade.haku.oppija.yksilointi.Scheduler">
             <property name="run" value="${scheduler.run}"/>
             <property name="sendMail" value="${scheduler.sendMail}"/>
         </bean>

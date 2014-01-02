@@ -8,7 +8,7 @@
 <fmt:setBundle basename="messages" scope="session"/>
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="application" value="${it.application}" scope="request"/>
-<c:set var="categoryData" value="${it.application.vastauksetMerged}" scope="request"/>
+<c:set var="answers" value="${it.application.vastauksetMerged}" scope="request"/>
 <c:set var="phase" value="${it.phase}" scope="request"/>
 <c:set var="print" value="true" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
@@ -18,6 +18,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
+    <haku:icons contextPath="${contextPath}"/>
     <link href="${contextPath}/resources/css/hakemus-print.css" type="text/css" rel="stylesheet"/>
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
@@ -27,7 +28,7 @@
 <header>
     <h1><haku:i18nText value="${form.i18nText}"/></h1>
 
-    <h2><c:out value="${categoryData['Etunimet']}" escapeXml="true"/>&nbsp;<c:out value="${categoryData['Sukunimi']}"
+    <h2><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out value="${answers['Sukunimi']}"
                                                                                   escapeXml="true"/></h2>
 
     <p><fmt:message key="lomake.tulostus.vastaanotettu"/>&nbsp;
@@ -42,7 +43,7 @@
 </c:forEach>
 
 <jsp:include page="../print/discretionaryAttachments.jsp"/>
-<hr>
+<hr class="strong">
 <footer>
     <address>
         <fmt:message key="lomake.tulostus.alatunniste.rivi1"/><br>

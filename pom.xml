@@ -14,8 +14,6 @@
     </modules>
 
     <properties>
-        <project.svn.base>https://penaali.hard.ware.fi/svn/generic/${project.artifactId}</project.svn.base>
-        <springProfileName>default</springProfileName>
         <junit.version>4.11</junit.version>
         <spring.version>3.2.1.RELEASE</spring.version>
         <spring-security.version>3.1.3.RELEASE</spring-security.version>
@@ -24,11 +22,6 @@
         <mongo-driver.version>2.10.1</mongo-driver.version>
         <slf4j.version>1.7.2</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <clover.outputDirectory>/data00/atlassian/application-data/bamboo/www/clover_haku</clover.outputDirectory>
-        <maven.build.timestamp.format>dd.MM.yyyy HH:mm</maven.build.timestamp.format>
-        <buildDate>${maven.build.timestamp}</buildDate>
         <cxf.version>2.7.3</cxf.version>
         <cxf-common-utilities.version>2.5.9</cxf-common-utilities.version>
         <mockito.version>1.9.5</mockito.version>
@@ -36,6 +29,15 @@
         <ehcache.version>2.4.8</ehcache.version>
         <flapdoodle.version>1.36</flapdoodle.version>
         <org.apache.tomcat.embed>7.0.39</org.apache.tomcat.embed>
+        <clover.version>3.1.8</clover.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <clover.outputDirectory>/data00/atlassian/application-data/bamboo/www/clover_haku</clover.outputDirectory>
+        <maven.build.timestamp.format>dd.MM.yyyy HH:mm</maven.build.timestamp.format>
+        <buildDate>${maven.build.timestamp}</buildDate>
+
+        <springProfileName>default</springProfileName>
 
         <internal-dependencies.version>${project.version}</internal-dependencies.version>
         <authentication-api.version>${internal-dependencies.version}</authentication-api.version>
@@ -46,7 +48,7 @@
         <organisaatio-api.version>${internal-dependencies.version}</organisaatio-api.version>
         <organisaatio-solr-client.version>${internal-dependencies.version}</organisaatio-solr-client.version>
         <tarjonta-api.version>${internal-dependencies.version}</tarjonta-api.version>
-        <webapp-portal-decorator.version>${internal-dependencies.version}</webapp-portal-decorator.version>
+
     </properties>
 
     <repositories>

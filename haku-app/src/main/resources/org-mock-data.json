@@ -3,6 +3,42 @@
         "endDate": null,
         "name": {
             "translations": {
+                "fi": "Pohjois-Karjalan ammattiopisto Joensuu, palvelut"
+            }
+        },
+        "oid": "1.2.246.562.10.28143103647",
+        "types": ["OPETUSPISTE"],
+        "parentOid": "1.2.246.562.10.13712000994",
+        "startDate": 1353362400000
+    },
+    {
+        "endDate": null,
+        "name": {
+            "translations": {
+                "fi": "Pohjois-Karjalan ammattiopisto Joensuu, palvelut"
+            }
+        },
+        "oid": "1.2.246.562.10.13712000994",
+        "types": ["OPPILAITOS"],
+        "parentOid": "1.2.246.562.10.11974282649",
+        "startDate": 1353362400000
+    },
+    {
+        "endDate": null,
+        "name": {
+            "translations": {
+                "sv": "(vain sv)Pohjois-Karjalan koulutuskuntayhtymä"
+            }
+        },
+        "oid": "1.2.246.562.10.11974282649",
+        "types": ["KOULUTUSTOIMIJA"],
+        "parentOid": "1.2.246.562.10.00000000001",
+        "startDate": 1353362400000
+    },
+    {
+        "endDate": null,
+        "name": {
+            "translations": {
                 "fi": "Espoon kaupungin työväenopisto op"
             }
         },

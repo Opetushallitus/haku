@@ -9,10 +9,10 @@
 <div class="grid16-16">
     <c:choose>
         <c:when test="${preview}">
-            <a href="${contextPath}/virkailija/hakemus" class="button small back"></a>
+            <a id="back" href="${contextPath}/virkailija/hakemus#useLast" class="button small back"></a>
         </c:when>
         <c:otherwise>
-            <a href="${contextPath}/virkailija/hakemus/${oid}/" class="button small back"></a>
+            <a id="back" href="${contextPath}/virkailija/hakemus/${oid}/" class="button small back"></a>
         </c:otherwise>
     </c:choose>
     <c:choose>
@@ -35,11 +35,33 @@
         </c:when>
     </c:choose>
     <c:if test="${it.postProcessAllowed}">
-        <a href="#" id="postProcessApplication" data-po-show="postProcessApplication" class="button small">
+        <a href="#" id="postProcessApplication" data-po-show="postProcessApplicationDialog" class="button small">
             <fmt:message key="virkailija.hakemus.postProcess" />
         </a>
     </c:if>
 
     <a href="${contextPath}/virkailija/hakemus/${oid}/print" class="button small print" target="_blank"><fmt:message
     key="lomake.valmis.button.tulosta"/></a>
+
+
+    <div class="margin-vertical-2">
+        <div class="float-left">
+        <c:if test="${not empty it.previousApplication}">
+            <a href="#" id="previousApplication">&lt;&nbsp;Edellinen (${it.previousApplicant})</a>
+        </c:if>
+        </div>
+
+        <div class="float-right">
+        <c:if test="${not empty it.nextApplication}">
+            <a href="#" id="nextApplication">(${it.nextApplicant})&nbsp;Seuraava&nbsp;&gt;</a>
+        </c:if>
+        </div>
+
+        <div class="align-center margin-auto width-25">
+        <c:if test="${not empty it.selectedApplication}">
+            ${it.currentApplication} / ${it.applicationCount}
+        </c:if>
+        </div>
+    </div>
+
 </div>

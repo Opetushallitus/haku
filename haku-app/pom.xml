@@ -535,12 +535,6 @@
             <version>${org.apache.tomcat.embed}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.sonar-plugins</groupId>
-            <artifactId>sonar-clover-plugin</artifactId>
-            <version>2.8</version>
-            <scope>test</scope>
-        </dependency>
         <!-- /it -->
         <dependency>
             <groupId>org.mockito</groupId>
@@ -728,14 +722,6 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <tagBase>${project.svn.base}/releases</tagBase>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.13</version>
                 <configuration>
@@ -755,6 +741,13 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.1</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.cenqua.clover</groupId>
+                        <artifactId>clover</artifactId>
+                        <version>${clover.version}</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <id>tomcat-run</id>
@@ -779,6 +772,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <port>9090</port>
                     <charset>UTF-8</charset>
                     <uriEncoding>UTF-8</uriEncoding>
                 </configuration>
@@ -852,7 +846,6 @@ buildTtime=${maven.build.timestamp}
         <profile>
             <id>clover</id>
             <properties>
-                <clover.version>3.1.8</clover.version>
                 <clover.fullRunEvery>500</clover.fullRunEvery>
                 <clover.generateHistorical>true</clover.generateHistorical>
                 <clover.base>/data00/atlassian/application-data/bamboo/clover_haku</clover.base>

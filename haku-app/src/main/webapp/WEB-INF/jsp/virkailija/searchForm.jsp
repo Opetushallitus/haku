@@ -17,6 +17,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <section id="searchSection">
     <form id="searchform">
         <input type="hidden" id="lopoid" name="lopoid">
@@ -27,7 +28,7 @@
             <table class="form-layout-table width-100">
                 <tr>
                     <td>
-                        <label for="application-state"><fmt:message key="virkailija.hakemus.hae.hakemuksia"/></label>
+                        <label for="entry"><fmt:message key="virkailija.hakemus.hae.hakemuksia"/></label>
 
                         <div class="field-search-containerbox">
                             <input type="text" id="entry" name="entry" class="search width-60" placeholder=""/>
@@ -35,11 +36,46 @@
                         <small><fmt:message key="virkailija.hakemus.hae.otsikko"/></small>
                     </td>
                     <td>
+                        <script type="text/javascript">
+                            hakukausiDefaultYear = '<c:out value="${it.defaultYear}"/>';
+                            hakukausiDefaultSemester = '<c:out value="${it.defaultSemester}"/>';
+                        </script>
+                        <label for="hakukausi"><fmt:message key="virkailija.hakemus.hakukausi"/></label>
+                        <div class="field-search-containerbox">
+                            <select id="hakukausi" name="hakukausi">
+                                <option value="">&nbsp;</option>
+                                <c:forEach var="option" items="${it.hakukausiOptions}">
+                                    <option value="${option.value}" <c:if test="${option.value == it.defaultSemester}">selected="selected"</c:if> ><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
+                                </c:forEach>
+                            </select>
+                            <input type="text" id="hakukausiVuosi" name="hakukausiVuosi" value="${it.defaultYear}"/>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="field-search-containerbox">
+                            <!-- lähtökoulu -->
+                            &nbsp;
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="application-system"><fmt:message key="virkailija.hakemus.haku"/></label>
+                        <div class="field-search-containerbox">
+                            <select id="application-system">
+                                <option value="">&nbsp;</option>
+                                <c:forEach var="applicationSystem" items="${it.applicationSystems}">
+                                    <option <c:if test="${applicationSystem == it.defaultAS}">selected="selected"</c:if> value="${applicationSystem.id}"><haku:i18nText value="${applicationSystem.name}"/>&nbsp;</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
                         <label for="application-state"><fmt:message
                                 key="virkailija.hakemus.hakemuksen.tila.otsikko"/></label>
 
                         <div class="field-select-containerbox">
-                            <select class="width-50" id="application-state" ng-model="applicationState">
+                            <select class="width-50" id="application-state" name="application-state">
                                 <option value=""><fmt:message key="virkailija.hakemus.tila.kaikki"/></option>
                                 <option selected="selected" value="ACTIVE"><fmt:message
                                         key="virkailija.hakemus.tila.voimassa"/></option>
@@ -49,6 +85,15 @@
                                 <option value="NOT_IDENTIFIED"><fmt:message
                                         key="virkailija.hakemus.tila.yksiloimatta"/></option>
                             </select>
+                        </div>
+                        <div class="field-search-containerbox">
+                            <input type="checkbox" id="discretionary-only"/>
+                            <label for="discretionary-only">Näytä vain harkinnanvaraisesti hakeneet</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div id="search-spinner" style="display: none">
+                            <p>Haetaan<br />hakemuksia...</p>
                         </div>
                     </td>
                 </tr>
@@ -64,6 +109,10 @@
                         </div>
                     </td>
 
+                    <td>
+
+                    </td>
+
                     <td class="padding-top-4">
                         <input id="reset-search" class="button secondary small" type="button"
                                value="<fmt:message key="virkailija.hakemus.tyhjenna"/>"/>
@@ -73,12 +122,15 @@
                 </tr>
                 <tr>
                     <td>
-                        <a href="#" id="create-application" data-po-show="createApplication"
-                           class="button secondary small"><fmt:message key="virkailija.hakemus.syota"/></a>
                     </td>
                 </tr>
             </table>
         </div>
+    </form>
+    <form method="POST" id="open-applications"
+            action="${pageContext.request.contextPath}/virkailija/hakemus/multiple">
+        <input type="hidden" name="applicationList" id="applicationList" />
+        <input type="hidden" name="selectedApplication" id="selectedApplication" />
     </form>
 </section>
 <section class="grid16-16 margin-top-2">
@@ -94,15 +146,21 @@
 
             <span><fmt:message key="virkailija.hakemus.hakutulos"/><span id="resultcount">0</span> <fmt:message
                     key="virkailija.hakemus.hakutulos.osumaa"/></span>
+            <div class="clear"></div>
+
+            <a href="#" id="open-application"
+               class="button secondary small"><fmt:message key="virkailija.hakemus.avaa"/></a>
+            <a href="#" id="create-application" data-po-show="createApplication"
+               class="button secondary small"><fmt:message key="virkailija.hakemus.syota"/></a>
 
             <table id="application-table" class="virkailija-table-1">
                 <thead>
                 <tr>
-                    <td><fmt:message key="virkailija.hakemus.sukunimi"/></td>
-                    <td><fmt:message key="virkailija.hakemus.etunimi"/></td>
-                    <td><fmt:message key="virkailija.hakemus.henkilotunnus"/></td>
-                    <td><fmt:message key="virkailija.hakemus.hakemusnro"/></td>
-                    <td><fmt:message key="virkailija.hakemus.hakemuksen.tila"/></td>
+                    <td id="application-table-header-checkbox" class="sorted-not"><input type="checkbox" id="check-all-applications"/></td>
+                    <td id="application-table-header-fullName" class="sorted-not"><fmt:message key="virkailija.hakemus.nimi"/></td>
+                    <td id="application-table-header-ssn" class="sorted-not"><fmt:message key="virkailija.hakemus.henkilotunnus"/></td>
+                    <td id="application-table-header-applicationOid" class="sorted-not"><fmt:message key="virkailija.hakemus.hakemusnro"/></td>
+                    <td id="application-table-header-state" class="sorted-not"><fmt:message key="virkailija.hakemus.hakemuksen.tila"/></td>
                 </tr>
                 </thead>
                 <tbody>

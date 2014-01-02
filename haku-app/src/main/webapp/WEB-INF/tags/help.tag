@@ -1,7 +1,7 @@
 <%@ tag description="Outputs elements help attribute" body-content="empty" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
-<%@ attribute name="element" required="true" type="fi.vm.sade.oppija.lomake.domain.elements.Element" %>
+<%@ attribute name="element" required="true" type="fi.vm.sade.haku.oppija.lomake.domain.elements.Element" %>
 <%@ tag trimDirectiveWhitespaces="true" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -19,5 +19,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:if test="${not empty element.help}">
-    <div class="margin-top-1" id="help-${element.id}"><small><haku:i18nText value="${element.help}"/></small></div>
+    <div class="margin-top-1" id="help-${element.id}">
+        <p class="small italic"><haku:i18nText value="${element.help}"/></p>
+    </div>
 </c:if>

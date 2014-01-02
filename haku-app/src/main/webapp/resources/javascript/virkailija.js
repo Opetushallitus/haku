@@ -1,4 +1,4 @@
-﻿﻿/*
+﻿/*
  * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
@@ -66,23 +66,34 @@ $(document).ready(function () {
                     event.preventDefault();
                     target = $(this).closest('#orgsearch');
                     if (target.hasClass('expand')) {
-                        target.removeClass('expand');
-                        orgSearchDialog.set.tableCellWidth();
+                        orgSearchDialog.collapse();
                     }
                     else {
-                        target.addClass('expand');
-                        orgSearchDialog.set.tableCellWidth();
-                        orgSearchDialog.set.listHeight();
+                        orgSearchDialog.expand();
                     }
                 });
             }
+        },
+
+        expand: function () {
+            $('#orgsearch').addClass('expand');
+            orgSearchDialog.set.tableCellWidth();
+            orgSearchDialog.set.listHeight();
+        },
+        collapse: function () {
+            $('#orgsearch').removeClass('expand');
+            orgSearchDialog.set.tableCellWidth();
         }
     }
 
     orgSearchDialog.build();
 
+    var cookieName = 'hakemukset_last_search';
+    var cookiePath = '/haku-app/virkailija';
 
     var applicationSearch = (function () {
+        $.cookie.path = cookiePath;
+        $.cookie.json = true;
         var oid = $('#oid');
         var self = this,
             $tbody = $('#application-table tbody:first'),
@@ -91,14 +102,51 @@ $(document).ready(function () {
             maxRows = 50;
 
         function createQueryParameters(start) {
+            $.cookie.path = cookiePath;
+            $.cookie.json = true;
+            var lastSearch = $.cookie(cookieName);
             var obj = {};
-            addParameter(obj, 'q', '#entry');
-            addParameter(obj, 'oid', '#oid');
-            addParameter(obj, 'appState', '#application-state');
-            addParameter(obj, 'aoid', '#application-preference');
-            addParameter(obj, 'lopoid', '#lopoid');
-            obj['start'] = start;
-            obj['rows'] = maxRows;
+            if (lastSearch && window.location.hash === '#useLast') {
+                obj = lastSearch;
+                $('#entry').val(obj.q);
+                $('#oid').val(obj.oid);
+                $('#application-state').val(obj.appState);
+                $('#application-preference').val(obj.aoid);
+                $('#lopoid').val(obj.lopoid);
+                $('#lop-title').text(obj.lopTitle);
+                $('#application-system').val(obj.asId);
+                $('#hakukausiVuosi').val(obj.asYear);
+                $('#hakukausi').val(obj.asSemester);
+                $('#discretionary-only').prop('checked', obj.discretionaryOnly);
+                if (obj.orgSearchExpanded) {
+                    orgSearchDialog.expand();
+                }
+                $('#check-all-applications').prop('checked', obj.checkAllApplications);
+                start = obj.start;
+            } else {
+                addParameter(obj, 'q', '#entry');
+                addParameter(obj, 'oid', '#oid');
+                addParameter(obj, 'appState', '#application-state');
+                addParameter(obj, 'aoid', '#application-preference');
+                addParameter(obj, 'lopoid', '#lopoid');
+                addParameter(obj, 'asId', '#application-system');
+                addParameter(obj, 'asYear', '#hakukausiVuosi');
+                addParameter(obj, 'asSemester', '#hakukausi');
+                addParameter(obj, 'discretionaryOnly', '#discretionary-only');
+                var lopTitle = $('#lop-title').text();
+                if (lopTitle) {
+                    obj['lopTitle'] = lopTitle;
+                }
+                if ($('#orgsearch').hasClass('expand')) {
+                    obj['orgSearchExpanded'] = true;
+                }
+                obj['discretionaryOnly'] = $('#discretionary-only').prop('checked');
+                obj['checkAllApplications'] = $('#check-all-applications').prop('checked');
+                obj['start'] = start;
+                obj['rows'] = maxRows;
+                $.removeCookie(cookieName);
+                $.cookie(cookieName, obj);
+            }
             return obj;
         }
 
@@ -110,17 +158,21 @@ $(document).ready(function () {
         }
 
         this.search = function (start, orderBy, orderDir) {
+            $('#application-table thead tr td').removeAttr('class');
             var queryParameters = createQueryParameters(start);
-            $.getJSON(page_settings.contextPath + "/applications/list/"+orderBy+"/"+orderDir,
+            start = queryParameters.start;
+            $('#search-spinner').hide();
+            $('#search-spinner').toggle('pulsate');
+            $.getJSON(page_settings.contextPath + "/applications/list/" + orderBy + "/" + orderDir,
                 queryParameters,
                 function (data) {
                     $tbody.empty();
                     self.updateCounters(data.totalCount);
                     if (data.totalCount > 0) {
                         $(data.results).each(function (index, item) {
-                            $tbody.append('<tr><td>' +
-                                (item.lastName ? item.lastName : '') + '</td><td>' +
-                                (item.firstNames ? item.firstNames : '') + '</td><td>' +
+                            var cleanOid = item.oid.replace(/\./g, '_');
+                            $tbody.append('<tr><td><input class="check-application" id="check-application-' + cleanOid + '" type="checkbox"/></td><td>' +
+                                (item.lastName ? item.lastName : '') + ' ' + (item.firstNames ? item.firstNames : '') + '</td><td>' +
                                 (item.ssn ? item.ssn : '') + '</td><td><a class="application-link" href="' +
                                 page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
                                 item.oid + '</a></td><td>' + (item.state ? page_settings[item.state] : '') + '</td></tr>');
@@ -130,31 +182,63 @@ $(document).ready(function () {
                             totalPages: Math.ceil(data.totalCount / maxRows),
                             onPageClicked: function (e, originalEvent, type, page) {
                                 applicationSearch.search((page - 1) * maxRows, orderBy, orderDir);
+                                $('#check-all-applications').prop('checked', false);
                             }
                         }
                         $('#pagination').bootstrapPaginator(options);
                     } else {
                         $('#pagination').empty();
                     }
+                    $('#search-spinner').hide();
+                    window.location.hash = '';
+                    $('input.check-application').each(function (index) {
+                        $.cookie.path = cookiePath;
+                        $.cookie.json = true;
+                        var lastSearch = $.cookie(cookieName);
+                        if (lastSearch && lastSearch.applicationList) {
+                            var applicationList = lastSearch.applicationList;
+                            var application = $(this).attr('id').replace(/^.*-/g, '').replace(/_/g, '.');
+                            if (applicationList.indexOf(application) !== -1) {
+                                $(this).attr('checked', 'checked');
+                            }
+                        }
+                    });
                 });
         },
             this.updateCounters = function (count) {
                 $resultcount.empty().append(count);
-                $applicationTabLabel.empty().append('Hakemukset ' + count);
+                $applicationTabLabel.empty().append('Hakemukset (' + count + ')');
             },
             this.reset = function () {
+                $.cookie.path = cookiePath;
+                $.cookie.json = true;
+                $.removeCookie(cookieName);
+                $('#application-table thead tr td').removeAttr('class');
                 self.updateCounters(0);
                 $tbody.empty();
+                $('#lopoid').val('');
+                $('#lop-title').empty();
                 $('#entry').val('');
-                $('#application-state').val('');
+                $('#application-state').val('ACTIVE');
                 $('#application-preference').val('');
                 $('#pagination').empty();
+                $('#application-system').val('');
+                $('#hakukausiVuosi').val(hakukausiDefaultYear);
+                $('#hakukausi').val(hakukausiDefaultSemester);
+                $('#discretionary-only').attr('checked', false);
             }
         return this;
     })();
 
+    if ($.cookie(cookieName) && window.location.hash === '#useLast') {
+        applicationSearch.search(0, 'fullName', 'asc');
+    }
 
     $('#search-applications').click(function (event) {
+        window.location.hash = '';
+        $.cookie.path = cookiePath;
+        $.cookie.json = true;
+        $.removeCookie(cookieName);
         applicationSearch.search(0, 'fullName', 'asc');
         return false;
     });
@@ -162,6 +246,83 @@ $(document).ready(function () {
     $('#reset-search').click(function (event) {
         applicationSearch.reset();
         return false;
+    });
+
+    function sortApplications(column, sortBy) {
+        var clazz = column.attr('class');
+        var sortOrder = 'asc';
+        if (clazz === 'sorted-asc') {
+            clazz = 'sorted-desc';
+            sortOrder = 'desc';
+        } else {
+            clazz = 'sorted-asc';
+        }
+        applicationSearch.search(0, sortBy, sortOrder);
+        column.attr('class', clazz);
+    }
+
+    $('#application-table-header-fullName').click(function (event) {
+        sortApplications($(this), 'fullName');
+    });
+
+    $('#application-table-header-applicationOid').click(function (event) {
+        sortApplications($(this), 'applicationOid');
+    });
+
+    $('#application-table-header-state').click(function (event) {
+        sortApplications($(this), 'state');
+    });
+
+    $('#check-all-applications').change(function () {
+        if ($(this).is(":checked")) {
+            $('.check-application').attr('checked', 'checked');
+        } else {
+            $('.check-application').removeAttr('checked');
+        }
+    });
+
+    $('#open-application').click(function () {
+        var applicationList = '';
+        var selectedApplication = null;
+        $('input.check-application').each(function (index) {
+            if ($(this).is(":checked")) {
+                var application = $(this).attr('id').replace(/^.*-/g, '').replace(/_/g, '.');
+                applicationList += application + ',';
+                if (!selectedApplication) {
+                    selectedApplication = application;
+                }
+            }
+        });
+        if (selectedApplication) {
+            $.cookie.path = cookiePath;
+            $.cookie.json = true;
+            var lastSearch = $.cookie(cookieName);
+            if (lastSearch) {
+                lastSearch.applicationList = applicationList;
+                lastSearch.checkAllApplications = $('#check-all-applications').prop('checked');
+                $.removeCookie(cookieName);
+                $.cookie(cookieName, lastSearch);
+            }
+            $('#applicationList').val(applicationList);
+            $('#selectedApplication').val(selectedApplication);
+            $('#open-applications').submit();
+        }
+    });
+
+    $('#previousApplication').click(function () {
+        var selectedApplication = previousApplication;
+        if (selectedApplication) {
+            $('#selectedApplication').val(selectedApplication);
+            $('#open-applications').submit();
+        }
+    });
+
+    $('#nextApplication').click(function () {
+        var selectedApplication = nextApplication;
+        if (selectedApplication) {
+            $('#selectedApplication').val(selectedApplication);
+            $('#open-applications').submit();
+        }
     });
 
     var additionalInfo = (function () {
@@ -214,7 +375,7 @@ $(document).ready(function () {
         $('#reset-organizations').click(function (event) {
             $('#lopoid').val('');
             $('#lop-title').empty();
-
+            applicationSearch.search(0, 'fullName', 'asc');
         });
         $('#search-organizations').click(function (event) {
             var parameters = $('#orgsearchform').serialize();
@@ -239,14 +400,25 @@ $(document).ready(function () {
                     $('#orgsearchlist').find('ul').eq(0).addClass("treelist").removeClass('branch');
                 }
             ).complete(function () {
-                    $('#search-organizations').removeAttr('disabled');
-                });
+                $('#search-organizations').removeAttr('disabled');
+            });
             return false;
         });
         function createListItem(leaf, org) {
             var li = $(document.createElement("li"));
             var icon = leaf ? 'file' : 'folder';
-            var label = $(document.createElement('span')).html(org.name.translations.fi).attr("id", org.oid);
+
+            function getTranslation(translations) {
+                var text = translations[page_settings.lang];
+                if (!text) {
+                    for (var translation in translations) {
+                        return translations[translation];
+                    }
+                }
+                return text;
+            }
+
+            var label = $(document.createElement('span')).html(getTranslation(org.name.translations)).attr("id", org.oid);
             var link = $(document.createElement('a')).attr('href', '#').addClass('label');
             var span = $(document.createElement('span')).addClass('icon close').addClass(icon).html('&#8203;');
             span.appendTo(link);
@@ -262,6 +434,7 @@ $(document).ready(function () {
             label.click(function (e) {
                 $('#lopoid').val($(this).attr('id'));
                 $('#lop-title').text($(this).html());
+                applicationSearch.search(0, 'fullName', 'asc');
                 e.preventDefault();
             });
 

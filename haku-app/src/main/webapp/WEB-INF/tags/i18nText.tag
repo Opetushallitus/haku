@@ -1,6 +1,6 @@
 <%@ tag description="i18nText" body-content="empty" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ attribute name="value" required="true" type="fi.vm.sade.oppija.lomake.domain.I18nText" %>
+<%@ attribute name="value" required="true" type="fi.vm.sade.haku.oppija.lomake.domain.I18nText" %>
 <%@ tag trimDirectiveWhitespaces="true" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -17,4 +17,5 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<c:if test="${not empty value}"><c:out value="${value.translations[requestScope['fi_vm_sade_oppija_language']]}" escapeXml="false" default="???"/></c:if>
+<c:if test="${not empty value}"><c:out value="${value.translations[requestScope['fi_vm_sade_oppija_language']]}"
+                                       escapeXml="false" default="???"/></c:if>

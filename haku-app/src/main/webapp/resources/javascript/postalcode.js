@@ -15,31 +15,25 @@
  */
 
 (function () {
-    var addressController = {
-        clear: function () {
-            $('span.post-office').html('');
-            $('input:hidden.post-office').val('');
-            $('input:text.postal-code').val('');
-        }
-    };
 
     $('input:text.postal-code').blur(function (event) {
-        var value = this.value, re5digit = /^\d{5}$/, elementId = this.id;
-
-        if (value && value.length === 5 && value.search(re5digit) !== -1) {
-            $.getJSON(document.URL.split("?")[0] + "/" + elementId +
-                "/relatedData/" + value,
-                function (data) {
-                    if (data && data.postOffice) {
-                        var postOffice = data.postOffice.translations[postalcode_settings.lang];
-                        $('span.post-office').html(postOffice);
-                        $('input:hidden.post-office').val(postOffice);
-                    } else {
-                        addressController.clear();
-                    }
-                });
+        var value = this.value;
+        if (value) {
+            var url = document.URL.split("?")[0] + '/' + this.id;
+            $.ajax({
+                type: 'POST',
+                url: url,
+                async: false,
+                data: $("form.form").serialize(),
+                success: function (data, textStatus, jqXHR) {
+                    $(".post-office").replaceWith($(data).find(".post-office"))
+                },
+                error: function (e, ts, et) {
+                    //console.log("refresh view error" + ts);
+                }
+            });
         } else {
-            addressController.clear();
+            $('span.post-office').html('');
         }
     });
 })();

@@ -15,17 +15,13 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<div class="form-row">
-
+<div class="form-row" id="container-${element.id}">
     <haku:label element="${element}" styleBaseClass="form-row"/>
-    <c:set value="${categoryData['postitoimipaikka']}" var="postOffice" scope="page"/>
     <div class="form-row-content">
         <div class="field-container-text">
-            <input type="text" ${element.attributeString} value="<c:out value='${categoryData[element.id]}'/>"
+            <input type="text" ${element.attributeString} value="<c:out value='${answers[element.id]}'/>"
                    class="postal-code"/>
-                <input type="hidden" value="<c:out value='${postOffice}' />" name="postitoimipaikka"
-                   class="post-office"/>
-            <span class="post-office"><c:out value="${postOffice}"/></span>
+            <span class="post-office"><haku:i18nText value="${element.data[answers[element.id]].i18nText}"/></span>
         </div>
         <haku:errorMessage id="${element.id}"/>
         <haku:help element="${element}"/>
@@ -33,9 +29,10 @@
     <div class="clear"></div>
     <haku:viewChilds element="${element}"/>
 </div>
+<haku:i18nText value="${errorMessages[element.id]}"/>
 <script type="text/javascript">
     var postalcode_settings = {
-        lang: "${sessionScope['javax.servlet.jsp.jstl.fmt.locale.session'].language}"
+        id: "${element.id}"
     }
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/postalcode.js"></script>

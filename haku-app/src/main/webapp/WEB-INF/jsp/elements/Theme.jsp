@@ -23,6 +23,7 @@
     <div class="theme-help">
         <div class="help-text"><haku:i18nText value="${element.help}"/></div>
         <a href="${element.id}/help" target="_blank" class="helplink">?</a>
+        <div class="clear"></div>
     </div>
     <haku:viewChilds element="${element}"/>
 </fieldset>

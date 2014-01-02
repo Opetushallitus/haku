@@ -211,18 +211,23 @@ var complexRule = {
             if (question.length) {
                 var events = $._data(question[0], "events");
                 if (events) {
-                    if (events.change.length < 1 && events.change[0].data.ruleId != ruleData.ruleId) {
-                        question.on('change ', ruleData, complexRule.refreshView);
+                    var bind = true;
+                    for (eIndex in events.change) {
+                        if (events.change[eIndex].data && events.change[eIndex].data.ruleId == ruleData.ruleId) {
+                            bind = false;
+                        }
+                    }
+                    if (bind == true) {
+                        question.on('change', ruleData, complexRule.refreshView);
                     }
                 } else {
-                    question.on('change ', ruleData, complexRule.refreshView);
+                    question.on('change', ruleData, complexRule.refreshView);
                 }
             }
         }
     },
 
     refreshView: function (event) {
-        console.log("refresh view " + event.type);
         var ruleData = event.data;
         var url = document.URL.split("?")[0] + '/' + ruleData.ruleId;
         $.ajax({
@@ -232,14 +237,11 @@ var complexRule = {
             data: $("form.form").serialize(),
 
             success: function (data, textStatus, jqXHR) {
-                console.log(textStatus);
                 $("#" + ruleData.ruleId).replaceWith(data);
             },
             error: function (e, ts, et) {
-                console.log("refresh view error" + ts);
+                //console.log("refresh view error" + ts);
             }
         });
     }
 };
-
-$.getScript("/static/js/oph-banner.js");

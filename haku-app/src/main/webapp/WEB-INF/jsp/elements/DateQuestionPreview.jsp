@@ -20,11 +20,11 @@
     <c:choose>
         <c:when test="${element.inline}">
             <td class="label"><haku:i18nText value="${element.i18nText}"/></td>
-            <td><c:out value="${categoryData[element.id]}"/></td>
+            <td><c:out value="${answers[element.id]}"/></td>
         </c:when>
         <c:otherwise>
             <td class="label"><span><haku:i18nText value="${element.i18nText}"/>:</span></td>
-            <td><c:out value="${categoryData[element.id]}"/></td>
+            <td><c:out value="${answers[element.id]}"/></td>
         </c:otherwise>
     </c:choose>
 </tr>

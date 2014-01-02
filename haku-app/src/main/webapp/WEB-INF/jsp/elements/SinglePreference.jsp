@@ -14,35 +14,39 @@
 <c:set value="${element.id}-Koulutus-id-sora" var="educationSora" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-aoIdentifier" var="aoIdentifier" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-athlete" var="educationAthlete" scope="page"/>
-
+<c:set value="${element.id}-kaksoistutkinto" var="hiddenKoulutusIdKaksoistutkinto" scope="page"/>
+<c:set value="${element.id}-vocational" var="hiddenKoulutusIdVocational" scope="page"/>
 
 <table>
     <tbody>
         <tr>
             <td class="sublabel padding-top-3"><haku:i18nText value="${element.learningInstitutionLabel}"/></td>
             <td class="bold padding-top-3 padding-left-3">
-                <c:out value="${categoryData[opetuspiste]}"/>
+                <c:out value="${answers[opetuspiste]}"/>
                 <haku:errorMessage id="${opetuspiste}"/>
             </td>
         </tr>
         <tr>
             <td class="sublabel"><haku:i18nText value="${element.educationLabel}"/></td>
             <td class="bold padding-left-3">
-                <c:out value="${categoryData[koulutus]}"/>
+                <c:out value="${answers[koulutus]}"/>
                 <haku:errorMessage id="${koulutus}"/>
             </td>
         </tr>
     </tbody>
 </table>
-<haku:input-hidden id="${opetuspiste}" data="${categoryData}"/>
-<haku:input-hidden id="${opetuspisteId}" data="${categoryData}"/>
-<haku:input-hidden id="${koulutus}" data="${categoryData}"/>
-<haku:input-hidden id="${koulutusId}" data="${categoryData}"/>
-<haku:input-hidden id="${educationDegree}" data="${categoryData}"/>
-<haku:input-hidden id="${educationLang}" data="${categoryData}"/>
-<haku:input-hidden id="${educationSora}" data="${categoryData}"/>
-<haku:input-hidden id="${aoIdentifier}" data="${categoryData}"/>
-<haku:input-hidden id="${educationAthlete}" data="${categoryData}"/>
+<haku:input-hidden id="${opetuspiste}" data="${answers}"/>
+<haku:input-hidden id="${opetuspisteId}" data="${answers}"/>
+<haku:input-hidden id="${koulutus}" data="${answers}"/>
+<haku:input-hidden id="${koulutusId}" data="${answers}"/>
+<haku:input-hidden id="${educationDegree}" data="${answers}"/>
+<haku:input-hidden id="${educationLang}" data="${answers}"/>
+<haku:input-hidden id="${educationSora}" data="${answers}"/>
+<haku:input-hidden id="${aoIdentifier}" data="${answers}"/>
+<haku:input-hidden id="${educationAthlete}" data="${answers}"/>
+<haku:input-hidden id="${hiddenKoulutusIdKaksoistutkinto}" data="${answers}"/>
+<haku:input-hidden id="${hiddenKoulutusIdVocational}" data="${answers}"/>
+
 
 <div id="container-childLONames" class="notification block light-grey margin-2" style="display: none">
     <span><haku:i18nText value="${element.childLONameListLabel}"/>:&nbsp;</span>
@@ -57,8 +61,15 @@
         applicationSystemId: '<c:out value="${it.applicationSystemId}"/>',
         vaiheId: '<c:out value="${vaihe.id}"/>',
         teemaId: '<c:out value="${parent.id}"/>',
-        baseEducation: '<c:out value="${categoryData.POHJAKOULUTUS}"/>',
-        vocational: '<c:out value="${categoryData.ammatillinenTutkintoSuoritettu}"/>',
+        baseEducation: '<c:out value="${answers.POHJAKOULUTUS}"/>',
+        <c:choose>
+            <c:when test="${answers.ammatillinenTutkintoSuoritettu}">
+                vocational : false
+            </c:when>
+            <c:otherwise>
+                vocational : true
+            </c:otherwise>
+        </c:choose>,
         preferenceAndBaseEducationConflictMessage: '<fmt:message key="hakutoiveet.pohjakoulutusristiriita"/>',
         <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') or fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
         koulutusinformaatioBaseUrl: '<c:out value="${it.koulutusinformaatioBaseUrl}"/>'

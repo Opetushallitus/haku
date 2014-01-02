@@ -9,10 +9,10 @@
 <tr>
     <td class="label"><haku:i18nText value="${ssnElement.sexI18nText}"/></td>
     <td>
-        <c:if test="${categoryData[ssnElement.sexId] eq ssnElement.maleOption.value}">
+        <c:if test="${answers[ssnElement.sexId] eq ssnElement.maleOption.value}">
             <haku:i18nText value="${ssnElement.maleOption.i18nText}"/>
         </c:if>
-        <c:if test="${categoryData[ssnElement.sexId] eq ssnElement.femaleOption.value}">
+        <c:if test="${answers[ssnElement.sexId] eq ssnElement.femaleOption.value}">
             <haku:i18nText value="${ssnElement.femaleOption.i18nText}"/>
         </c:if>
     </td>
