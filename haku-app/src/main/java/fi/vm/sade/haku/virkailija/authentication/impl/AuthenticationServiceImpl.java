@@ -117,7 +117,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         List<String> orgs = new ArrayList<String>();
         String response = null;
         try {
-            InputStream is = cachingRestClient.get(targetService + "/resources/henkilo/" + personOid + "/organisaatiohenkilo");
+            if (log.isDebugEnabled()) {
+                log.debug("Getting organisaatiohenkilos for {}", personOid);
+                log.debug("Using cachingRestClient webCasUrl: {}, casService: {} ", cachingRestClient.getWebCasUrl(), cachingRestClient.getCasService());
+            }
+            InputStream is = cachingRestClient.get("/resources/henkilo/" + personOid + "/organisaatiohenkilo");
             response = IOUtils.toString(is);
         } catch (IOException e) {
             e.printStackTrace();

@@ -29,6 +29,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -68,6 +69,7 @@ public class PostalCodeIT extends DummyModelBaseItTest {
     }
 
     @Test
+    @Ignore
     public void testPostalCode() throws InterruptedException, IOException {
         ApplicationSystemHelper applicationSystemHelper1 = new ApplicationSystemHelper(applicationSystem);
         driver.get(getBaseUrl() + applicationSystemHelper1.getStartUrl());

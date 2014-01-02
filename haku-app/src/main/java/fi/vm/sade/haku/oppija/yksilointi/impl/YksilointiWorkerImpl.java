@@ -183,10 +183,15 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private boolean isAthlete(Application application) {
         Map<String, String> answers = application.getVastauksetMerged();
         return (TRUE.equals(answers.get("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys")) ||
+                TRUE.equals(answers.get("preference1_urheilijalinjan_lisakysymys")) ||
                 TRUE.equals(answers.get("preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys")) ||
+                TRUE.equals(answers.get("preference2_urheilijalinjan_lisakysymys")) ||
                 TRUE.equals(answers.get("preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys")) ||
+                TRUE.equals(answers.get("preference3_urheilijalinjan_lisakysymys")) ||
                 TRUE.equals(answers.get("preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys")) ||
-                TRUE.equals(answers.get("preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys")));
+                TRUE.equals(answers.get("preference4_urheilijalinjan_lisakysymys")) ||
+                TRUE.equals(answers.get("preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys")) ||
+                TRUE.equals(answers.get("preference5_urheilijalinjan_lisakysymys")));
     }
 
     private String getApplicantName(Application application) {
