@@ -30,12 +30,14 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.randomId;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class PostalCodeIT extends DummyModelBaseItTest {
@@ -75,11 +77,14 @@ public class PostalCodeIT extends DummyModelBaseItTest {
 
         setValue(postalCode.getId(), POST_CODE);
         setValue(textQuestion.getId(), randomId());
-        //div[contains(text(), "' + text + '")]'
-        assertTrue(findByXPath("//span[@class='post-office' and contains(text(), '" + POST_OFFICE + "')]").getText().trim().equals(POST_OFFICE));
+        FirefoxDriver firefoxDriver = (FirefoxDriver) driver;
+        firefoxDriver.executeScript("$('input:text.postal-code').blur()");
+        String postOffice = findByXPath("//span[@class='post-office' and contains(text(), '" + POST_OFFICE + "')]").getText().trim();
+        assertEquals(POST_OFFICE, postOffice);
 
         setValue(postalCode.getId(), StringUtils.repeat("\b", POST_CODE.length()) + POST_CODE2);
         setValue(textQuestion.getId(), randomId());
+        firefoxDriver.executeScript("$('input:text.postal-code').blur()");
         assertTrue(findByXPath("//span[@class='post-office']").getText().trim().equals(POST_OFFICE2));
     }
 }
