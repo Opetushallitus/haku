@@ -54,6 +54,8 @@ public class ApplicationSystemRepository {
         if (isNotEmpty(year)) {
             q.addCriteria(new Criteria("hakukausiVuosi").is(Integer.valueOf(year)));
         }
+        log.debug("findBySemesterAndYear({}, {}) query: {}", semester, year, q.toString());
+        q.toString();
         return mongoOperations.find(q, ApplicationSystem.class);
     }
 }
