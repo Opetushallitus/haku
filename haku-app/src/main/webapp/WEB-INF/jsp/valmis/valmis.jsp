@@ -60,9 +60,7 @@
 
                 <div class="grid16-16">
 
-                    <h1><fmt:message key="form.title"/></h1>
-
-                    <h2><haku:i18nText value="${form.i18nText}"/></h2>
+                    <h1><haku:i18nText value="${form.i18nText}"/> - <fmt:message key="form.title"/></h1>
 
                     <ul class="form-steps">
                         <c:forEach var="phase" items="${form.children}" varStatus="status">
