@@ -17,14 +17,25 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.koodisto.service.types.common.KieliType;
 import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public final class TranslationsUtil {
+
+    final static List<String> langs = new ArrayList<String>(3);
+
+    static {
+        langs.add(KieliType.FI.value().toLowerCase());
+        langs.add(KieliType.SV.value().toLowerCase());
+        langs.add(KieliType.EN.value().toLowerCase());
+    }
+
     private TranslationsUtil() { // NOSONAR
     }
 
@@ -34,6 +45,18 @@ public final class TranslationsUtil {
         for (KoodiMetadataType koodiMetadataType : metadata) {
             translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getNimi());
         }
+
+        for (String lang : langs) {
+            if (translations.get(lang) == null) {
+                for (String tryLang : langs) {
+                    if (translations.get(tryLang) != null) {
+                        translations.put(lang, translations.get(tryLang) + " (" + tryLang + ")");
+                        break;
+                    }
+                }
+            }
+        }
+
         return ImmutableMap.copyOf(translations);
     }
 }
