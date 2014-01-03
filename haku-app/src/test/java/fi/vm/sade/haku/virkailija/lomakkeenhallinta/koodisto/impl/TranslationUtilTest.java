@@ -42,8 +42,12 @@ public class TranslationUtilTest {
         KoodiMetadataType koodiMetadataType = TestObjectCreator.createKoodiMetadataType();
         koodiType.getMetadata().add(koodiMetadataType);
         Map<String, String> translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
-        String value = translationsMap.get(KieliType.FI.value().toLowerCase());
-        assertEquals(TestObjectCreator.NIMI, value);
+        String value_fi = translationsMap.get(KieliType.FI.value().toLowerCase());
+        assertEquals(TestObjectCreator.NIMI, value_fi);
+        String value_sv = translationsMap.get(KieliType.SV.value().toLowerCase());
+        assertEquals(TestObjectCreator.NIMI + " (fi)", value_sv);
+        String value_en = translationsMap.get(KieliType.EN.value().toLowerCase());
+        assertEquals(TestObjectCreator.NIMI + " (fi)", value_en);
     }
 
     @Test
