@@ -19,6 +19,8 @@ package fi.vm.sade.haku.oppija.ui.controller;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
@@ -40,8 +42,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.seeOther;
@@ -323,5 +324,44 @@ public class OfficerController {
         officerUIService.addStudentOid(oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
+    }
+
+    @GET
+    @Path("/hakemus/applicationSystems")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Map<String, String>> getApplicationSystems() {
+        return getApplicationSystems("", "");
+    }
+    @GET
+    @Path("/hakemus/applicationSystems/{year}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Map<String, String>> getApplicationSystems(@PathParam("year") String year) {
+        return getApplicationSystems(year, "");
+
+    }
+    @GET
+    @Path("/hakemus/applicationSystems/{year}/{semester}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Map<String, String>> getApplicationSystems(@PathParam("year") String year,
+                                                                  @PathParam("semester") String semester) {
+
+        List<ApplicationSystem> applicationSystemList = officerUIService.getApplicationSystems();
+        List<Map<String, String>> applicationSystems = new ArrayList<Map<String, String>>(applicationSystemList.size());
+        for (ApplicationSystem as : applicationSystemList) {
+            Map<String, String> applicationSystem = new HashMap<String, String>();
+            applicationSystem.put("id", as.getId());
+            applicationSystem.put("hakukausiUri", as.getHakukausiUri());
+            applicationSystem.put("hakukausiVuosi", as.getHakukausiVuosi().toString());
+            I18nText name = as.getName();
+            Map<String, String> translations = name.getTranslations();
+            for (Map.Entry<String, String> translation : translations.entrySet()) {
+                String key = translation.getKey();
+                String val = translation.getValue();
+                applicationSystem.put("name_"+key, val);
+            }
+            applicationSystems.add(applicationSystem);
+        }
+        return applicationSystems;
+
     }
 }

@@ -174,11 +174,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         modelResponse.addObjectToModel("organizationTypes", organizationTypes);
         modelResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
-        List<ApplicationSystem> applicationSystems =
-                applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");
-        ApplicationSystem defaultAS = null; //applicationSystemService.getDefaultApplicationSystem(applicationSystems);
-        modelResponse.addObjectToModel("applicationSystems", applicationSystems);
-        modelResponse.addObjectToModel("defaultAS", defaultAS != null ? defaultAS : "");
         modelResponse.addObjectToModel("hakukausiOptions", koodistoService.getHakukausi());
         Calendar today = GregorianCalendar.getInstance();
         String semester = "kausi_k";
@@ -188,6 +183,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("defaultYear", String.valueOf(today.get(Calendar.YEAR)));
         modelResponse.addObjectToModel("defaultSemester", semester);
         return modelResponse;
+    }
+
+    @Override
+    public List<ApplicationSystem> getApplicationSystems() {
+        return applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");
     }
 
     @Override

@@ -15,6 +15,52 @@
  */
 
 $(document).ready(function () {
+
+    var applicationSystemSelection = {
+        init : function() {
+            $.getJSON(page_settings.contextPath + "/virkailija/hakemus/applicationSystems",
+                function (data) {
+                    var selectedSemester = $('#hakukausi').val();
+                    var selectedYear = $('#hakukausiVuosi').val();
+                    var ass = [];
+                    $('#application-system option').remove();
+                    $('#application-system').append('<option value="">&nbsp;</option>');
+                    for (var i in data) {
+                        var as = data[i];
+                        var year = as.hakukausiVuosi;
+                        var semester = as.hakukausiUri;
+
+                        if (selectedSemester && selectedSemester !== semester) {
+                            continue;
+                        }
+                        if (selectedYear && selectedYear !== year) {
+                            continue;
+                        }
+
+                        var id = as.id;
+                        var name = as['name_'+page_settings.lang];
+
+                        if (!name) {
+                            if (as['name_fi']) {
+                                name = name_fi;
+                            } else if (as['name_sv']) {
+                                name = name_sv;
+                            } else if (as['name_en']) {
+                                name = name_en;
+                            }
+                        }
+
+                    $('#application-system').append('<option value="'+id+'">'+name+'</option>');
+                    }
+                });
+        }
+    };
+
+    applicationSystemSelection.init();
+
+    $('#hakukausi').change(function() {applicationSystemSelection.init()});
+    $('#hakukausiVuosi').change(function() {applicationSystemSelection.init()});
+
 // Organisation search
 // Handle presentation of organisation search form and results
 

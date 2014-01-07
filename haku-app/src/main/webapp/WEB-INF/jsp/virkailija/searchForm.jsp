@@ -63,10 +63,6 @@
                         <label for="application-system"><fmt:message key="virkailija.hakemus.haku"/></label>
                         <div class="field-search-containerbox">
                             <select id="application-system">
-                                <option value="">&nbsp;</option>
-                                <c:forEach var="applicationSystem" items="${it.applicationSystems}">
-                                    <option <c:if test="${applicationSystem == it.defaultAS}">selected="selected"</c:if> value="${applicationSystem.id}"><haku:i18nText value="${applicationSystem.name}"/>&nbsp;</option>
-                                </c:forEach>
                             </select>
                         </div>
                     </td>
