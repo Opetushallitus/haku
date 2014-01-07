@@ -48,6 +48,15 @@ public class OsaaminenPhaseYhteishakuKevat {
             "preference4-Koulutus-id-lang",
             "preference5-Koulutus-id-lang"
     };
+
+    private static final String[] PREFERENCE_EDUCATION_DEGREES = new String[]{
+            "preference1-Koulutus-educationDegree",
+            "preference2-Koulutus-educationDegree",
+            "preference3-Koulutus-educationDegree",
+            "preference4-Koulutus-educationDegree",
+            "preference5-Koulutus-educationDegree"
+    };
+
     private static final String[] LANGUAGE_QUESTIONS_PK = new String[]{
             "aidinkieli",
             "perusopetuksen_kieli"
@@ -78,6 +87,7 @@ public class OsaaminenPhaseYhteishakuKevat {
 
     private static Element createKielitaitokysymyksetTheme() {
 
+        Expr haettuAmmatilliseenKoulutukseen = atLeastOneVariableEqualsToValue("32", PREFERENCE_EDUCATION_DEGREES);
         //PK
         Expr pohjakoulutusOnPK = atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, BASE_EDUCATION_PK);
 
@@ -174,10 +184,10 @@ public class OsaaminenPhaseYhteishakuKevat {
                 createKielitutkinto("valtionhallinnon_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS));
 
 
-        Expr naytetaankoKielitaitoteema = new Or(new Or(new Or(new Or(new Or(new Or(new Or(new Or(new Or(new Or(new Or(kysytaankoSuomiPK,
+        Expr naytetaankoKielitaitoteema = new And(new Or(new Or(new Or(new Or(new Or(new Or(new Or(new Or(new Or(new Or(new Or(kysytaankoSuomiPK,
                 kysytaankoRuotsiPK), kysytaankoSuomiYO), kysytaankoRuotsiYO), kysytaankoSuomiKeskUlk), kysytaankoRuotsiKeskUlk),
                 kysytaankoSaamePK), kysytaankoSaameYO), kysytaankoSaameKeskUlk), kysytaankoViittomaPK), kysytaankoViittomaYO),
-                kysytaankoViittomaKeskUlk);
+                kysytaankoViittomaKeskUlk), haettuAmmatilliseenKoulutukseen);
 
         RelatedQuestionComplexRule naytetaankoTeema = new RelatedQuestionComplexRule(ElementUtil.randomId(), naytetaankoKielitaitoteema);
         Theme kielitaitokysymyksetTheme =
