@@ -172,6 +172,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         for (OrganisaatioTyyppi ot : OrganisaatioTyyppi.values()) {
             organizationTypes.add(new Option(ElementUtil.createI18NAsIs(ot.value()), ot.value()));
         }
+        List<ApplicationSystem> applicationSystems =
+                applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");
+        modelResponse.addObjectToModel("applicationSystems", applicationSystems);
         modelResponse.addObjectToModel("organizationTypes", organizationTypes);
         modelResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
         modelResponse.addObjectToModel("hakukausiOptions", koodistoService.getHakukausi());
