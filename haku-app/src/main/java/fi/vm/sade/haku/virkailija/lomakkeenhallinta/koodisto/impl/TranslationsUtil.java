@@ -53,7 +53,7 @@ public final class TranslationsUtil {
             if (partialTranslations.get(lang) == null) {
                 for (String tryLang : langs) {
                     if (partialTranslations.get(tryLang) != null) {
-                        partialTranslations.put(lang, partialTranslations.get(tryLang) + " (" + tryLang + ")");
+                        partialTranslations.put(lang, partialTranslations.get(tryLang));
                         break;
                     }
                 }
