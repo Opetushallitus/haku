@@ -25,6 +25,7 @@
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="oid" value="${it.oid}" scope="request"/>
 <c:set var="application" value="${it.application}" scope="request"/>
+<c:set var="applicationSystem" value="${it.applicationSystem}" scope="request"/>
 <c:set var="answers" value="${it.application.vastauksetMerged}" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
@@ -90,7 +91,7 @@
 
     <div id="wrapper" class="virkailija">
 
-        <virkailija:headerButtons oid="${application.oid}" preview="${preview}"/>
+        <virkailija:headerButtons oid="${application.oid}" preview="${preview}" applicationSystem="${applicationSystem}"/>
 
         <div class="grid16-16">
             <h3><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
