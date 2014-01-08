@@ -45,18 +45,21 @@ public final class TranslationsUtil {
         for (KoodiMetadataType koodiMetadataType : metadata) {
             translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getNimi());
         }
+        return createTranslationsMap(translations);
+    }
 
+    public static Map<String, String> createTranslationsMap(final Map<String, String> partialTranslations) {
         for (String lang : langs) {
-            if (translations.get(lang) == null) {
+            if (partialTranslations.get(lang) == null) {
                 for (String tryLang : langs) {
-                    if (translations.get(tryLang) != null) {
-                        translations.put(lang, translations.get(tryLang) + " (" + tryLang + ")");
+                    if (partialTranslations.get(tryLang) != null) {
+                        partialTranslations.put(lang, partialTranslations.get(tryLang) + " (" + tryLang + ")");
                         break;
                     }
                 }
             }
         }
 
-        return ImmutableMap.copyOf(translations);
+        return ImmutableMap.copyOf(partialTranslations);
     }
 }

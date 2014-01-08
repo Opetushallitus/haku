@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import fi.vm.sade.organisaatio.service.search.OrganisaatioSearchService;
@@ -37,6 +38,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Profile("default")
@@ -98,7 +100,8 @@ public class OrganizationServiceImpl implements OrganizationService {
         try {
             for (String numero : oppilaitosnumeros) {
                 OrganizationRestDTO orgDTO = cachingRestClient.get(baseUrl + numero, OrganizationRestDTO.class);
-                Organization org = new Organization(new I18nText(orgDTO.getNimi()), orgDTO.getOid(),
+                Map<String, String> nameTranslations = TranslationsUtil.createTranslationsMap(orgDTO.getNimi());
+                Organization org = new Organization(new I18nText(nameTranslations), orgDTO.getOid(),
                         orgDTO.getParentOid(), orgDTO.getTyypit(), orgDTO.getAlkuPvmAsDate(),
                         orgDTO.getLoppuPvmAsDate());
                 orgs.add(org);
