@@ -190,6 +190,7 @@ public class KoodistoServiceImpl implements KoodistoService {
                         || LUKIO_JA_PERUSKOULU.equals(arvo))
                         || KANSANOPISTO.equals(arvo)) {
                     lukioNumerot.add(koodi.getKoodiArvo());
+                    break;
                 }
             }
         }

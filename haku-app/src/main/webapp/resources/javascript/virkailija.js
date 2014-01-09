@@ -56,7 +56,9 @@ $(document).ready(function () {
         }
     };
 
-    applicationSystemSelection.init();
+    if (typeof page_settings !== 'undefined') {
+        applicationSystemSelection.init();
+    }
 
     $('#hakukausi').change(function() {applicationSystemSelection.init()});
     $('#hakukausiVuosi').change(function() {applicationSystemSelection.init()});

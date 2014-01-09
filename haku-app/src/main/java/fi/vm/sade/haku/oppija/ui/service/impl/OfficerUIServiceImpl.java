@@ -99,12 +99,16 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         if (!"esikatselu".equals(phaseId)) {
             element = new ElementTree(form).getChildById(application.getPhaseId());
         }
+        String asId = application.getApplicationSystemId();
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
         ModelResponse modelResponse =
                 new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("preview", "esikatselu".equals(phaseId));
         modelResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
         modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
         modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanUpdateApplication(application));
+        modelResponse.addObjectToModel("applicationSystem", as);
+
         return modelResponse;
     }
 
