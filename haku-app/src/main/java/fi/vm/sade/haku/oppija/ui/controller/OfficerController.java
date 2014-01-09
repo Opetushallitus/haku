@@ -364,4 +364,11 @@ public class OfficerController {
         return applicationSystems;
 
     }
+
+    @GET
+    @Path("/autocomplete/school")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Map<String, Object>> getSchools(@QueryParam("term") String term) {
+        return officerUIService.getSchools(term);
+    }
 }

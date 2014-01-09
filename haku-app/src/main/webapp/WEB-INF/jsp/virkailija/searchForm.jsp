@@ -52,9 +52,11 @@
                         </div>
                     </td>
                     <td>
+                        <label for="sendingSchool"><fmt:message key="virkailija.hakemus.lahtokoulu"/></label>
                         <div class="field-search-containerbox">
-                            <!-- lähtökoulu -->
-                            &nbsp;
+                            <input id="sendingSchool" type="text" name="sendingSchool" />
+                            <input id="sendingClass" type="text" name="sendingClass" />
+                            <input id="sendingSchoolOid" type="hidden" />
                         </div>
                     </td>
                 </tr>

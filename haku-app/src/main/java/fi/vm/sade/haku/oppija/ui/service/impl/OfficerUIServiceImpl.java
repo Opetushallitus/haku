@@ -2,12 +2,15 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -25,6 +28,7 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +51,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final ElementTreeValidator elementTreeValidator;
     private final ApplicationSystemService applicationSystemService;
     private final AuthenticationService authenticationService;
+    private final OrganizationService organizationService;
 
     private static final List<Integer> syyskausi = ImmutableList.of(Calendar.JULY, Calendar.AUGUST, Calendar.SEPTEMBER,
             Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER);
@@ -60,7 +65,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
                                 final ElementTreeValidator elementTreeValidator,
                                 final ApplicationSystemService applicationSystemService,
-                                final AuthenticationService authenticationService
+                                final AuthenticationService authenticationService,
+                                final OrganizationService organizationService
     ) {
         this.applicationService = applicationService;
         this.formService = formService;
@@ -71,6 +77,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.elementTreeValidator = elementTreeValidator;
         this.applicationSystemService = applicationSystemService;
         this.authenticationService = authenticationService;
+        this.organizationService = organizationService;
     }
 
     @Override
@@ -262,6 +269,24 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         response.addObjectToModel("applicationList", applicationList);
         response.addObjectToModel("selectedApplication", selectedApplication);
         return response;
+    }
+
+    @Override
+    public List<Map<String, Object>> getSchools(String term) {
+        OrganisaatioSearchCriteria crit = new OrganisaatioSearchCriteria();
+        crit.setOrganisaatioTyyppi(OrganisaatioTyyppi.OPPILAITOS.value());
+        crit.setSearchStr(term);
+        List<Organization> orgs = organizationService.search(crit);
+        List<Map<String, Object>> schools = new ArrayList<Map<String, Object>>(orgs.size());
+        LOGGER.debug("Fetching schools with term: '{}', got {} organizations", term, orgs.size());
+        for (Organization org : orgs) {
+            I18nText name = org.getName();
+            Map<String, Object> school = new HashMap<String, Object>();
+            school.put("name", name.getTranslations());
+            school.put("dataId", org.getOid());
+            schools.add(school);
+        }
+        return schools;
     }
 
     @Override

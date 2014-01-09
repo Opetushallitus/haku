@@ -48,4 +48,6 @@ public interface OfficerUIService {
     Application activateApplication(String oid, String reason) throws ResourceNotFoundException;
 
     ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication) throws ResourceNotFoundException;
+
+    List<Map<String, Object>> getSchools(String term);
 }

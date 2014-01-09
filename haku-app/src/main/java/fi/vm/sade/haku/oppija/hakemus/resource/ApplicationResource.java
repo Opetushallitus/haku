@@ -92,11 +92,13 @@ public class ApplicationResource {
                                                        @QueryParam("asYear") String asYear,
                                                        @QueryParam("aoOid") String aoOid,
                                                        @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
+                                                       @QueryParam("sendingSchoolOid") String sendingSchoolOid,
+                                                       @QueryParam("sendingClass") String sendingClass,
                                                        @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @DefaultValue(value = "100") @QueryParam("rows") int rows) {
         LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}, " +
-                "asSemester: {}, asYear: {}, discretionaryOnly: {}",
-                query, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear, discretionaryOnly);
+                "asSemester: {}, asYear: {}, discretionaryOnly: {}, sendingSchoolOid: {}, sendingClass: {}",
+                query, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear, discretionaryOnly, sendingSchoolOid, sendingClass);
 
         List<String> asIds = new ArrayList<String>();
         if (isNotEmpty(asId)) {
@@ -109,7 +111,8 @@ public class ApplicationResource {
             LOGGER.debug("asId: {}", s);
         }
         return applicationService.findApplications(
-                query, new ApplicationQueryParameters(state, asIds, aoid, lopoid, aoOid, discretionaryOnly, start, rows, "fullName", 1));
+                query, new ApplicationQueryParameters(state, asIds, aoid, lopoid, aoOid, discretionaryOnly,
+                sendingSchoolOid, sendingClass, start, rows, "fullName", 1));
     }
 
     @GET
@@ -127,11 +130,13 @@ public class ApplicationResource {
                                                               @QueryParam("asYear") String asYear,
                                                               @QueryParam("aoOid") String aoOid,
                                                               @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
+                                                              @QueryParam("sendingSchoolOid") String sendingSchoolOid,
+                                                              @QueryParam("sendingClass") String sendingClass,
                                                               @DefaultValue(value = "0") @QueryParam("start") int start,
                                                               @DefaultValue(value = "100") @QueryParam("rows") int rows) {
         LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}, " +
-                "asSemester: {}, asYear: {}, discretionaryOnly: {}",
-                query, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear, discretionaryOnly);
+                "asSemester: {}, asYear: {}, discretionaryOnly: {}, sendingSchoolOid: {}, sendingClass: {}",
+                query, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear, discretionaryOnly, sendingSchoolOid, sendingClass);
 
         int realOrderDir = "desc".equals(orderDir) ? -1 : 1;
 
@@ -145,8 +150,9 @@ public class ApplicationResource {
         for (String s : asIds) {
             LOGGER.debug("asId: {}", s);
         }
-        return applicationService.findApplications(query, new ApplicationQueryParameters(state, asIds, aoid, lopoid,
-                aoOid, discretionaryOnly, start, rows, orderBy, realOrderDir));
+        return applicationService.findApplications(
+                query, new ApplicationQueryParameters(state, asIds, aoid, lopoid, aoOid, discretionaryOnly,
+                sendingSchoolOid, sendingClass, start, rows, orderBy, realOrderDir));
     }
 
     @GET
