@@ -276,10 +276,15 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         OrganisaatioSearchCriteria crit = new OrganisaatioSearchCriteria();
         crit.setOrganisaatioTyyppi(OrganisaatioTyyppi.OPPILAITOS.value());
         crit.setSearchStr(term);
+        crit.setSkipParents(true);
         List<Organization> orgs = organizationService.search(crit);
         List<Map<String, Object>> schools = new ArrayList<Map<String, Object>>(orgs.size());
         LOGGER.debug("Fetching schools with term: '{}', got {} organizations", term, orgs.size());
+        int resultCount = 20;
         for (Organization org : orgs) {
+            if (--resultCount < 0) {
+                break;
+            }
             I18nText name = org.getName();
             Map<String, Object> school = new HashMap<String, Object>();
             school.put("name", name.getTranslations());

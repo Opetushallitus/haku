@@ -55,7 +55,7 @@
                         <label for="sendingSchool"><fmt:message key="virkailija.hakemus.lahtokoulu"/></label>
                         <div class="field-search-containerbox">
                             <input id="sendingSchool" type="text" name="sendingSchool" />
-                            <input id="sendingClass" type="text" name="sendingClass" />
+                            <input id="sendingClass" size="4" type="text" name="sendingClass" />
                             <input id="sendingSchoolOid" type="hidden" />
                         </div>
                     </td>
