@@ -301,12 +301,12 @@ $(document).ready(function () {
                 $('#application-table thead tr td').removeAttr('class');
                 self.updateCounters(0);
                 $tbody.empty();
-                $('#lopoid').val('');
+                $('#pagination').empty();
                 $('#lop-title').empty();
+                $('#lopoid').val('');
                 $('#entry').val('');
                 $('#application-state').val('ACTIVE');
                 $('#application-preference').val('');
-                $('#pagination').empty();
                 $('#application-system').val('');
                 $('#hakukausiVuosi').val(hakukausiDefaultYear);
                 $('#hakukausi').val(hakukausiDefaultSemester);
@@ -463,7 +463,10 @@ $(document).ready(function () {
         $('#reset-organizations').click(function (event) {
             $('#lopoid').val('');
             $('#lop-title').empty();
-            applicationSearch.search(0, 'fullName', 'asc');
+            $('#pagination').empty();
+            $('#application-table tbody:first').empty();
+            $('#application-table thead tr td').removeAttr('class');
+            applicationSearch.updateCounters(0);
         });
         $('#search-organizations').click(function (event) {
             var parameters = $('#orgsearchform').serialize();
