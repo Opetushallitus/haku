@@ -135,7 +135,8 @@ var preferenceRow = {
                         baseEducation: sortabletable_settings.baseEducation,
                         vocational: sortabletable_settings.vocational,
                         start: 0,
-                        rows: 999999
+                        rows: 999999,
+                        lang: sortabletable_settings.uiLang
                     }, function (data) {
                         lopCache[request.term] = data;
                         response($.map(data, function (result) {
