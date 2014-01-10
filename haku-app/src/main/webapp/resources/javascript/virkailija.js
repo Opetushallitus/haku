@@ -15,6 +15,87 @@
  */
 
 $(document).ready(function () {
+
+    var applicationSystemSelection = {
+        init : function() {
+            $.getJSON(page_settings.contextPath + "/virkailija/hakemus/applicationSystems",
+                function (data) {
+                    var selectedSemester = $('#hakukausi').val();
+                    var selectedYear = $('#hakukausiVuosi').val();
+                    var ass = [];
+                    $('#application-system option').remove();
+                    $('#application-system').append('<option value="">&nbsp;</option>');
+                    for (var i in data) {
+                        var as = data[i];
+                        var year = as.hakukausiVuosi;
+                        var semester = as.hakukausiUri;
+
+                        if (selectedSemester && selectedSemester !== semester) {
+                            continue;
+                        }
+                        if (selectedYear && selectedYear !== year) {
+                            continue;
+                        }
+
+                        var id = as.id;
+                        var name = as['name_'+page_settings.lang];
+
+                        if (!name) {
+                            if (as['name_fi']) {
+                                name = name_fi;
+                            } else if (as['name_sv']) {
+                                name = name_sv;
+                            } else if (as['name_en']) {
+                                name = name_en;
+                            }
+                        }
+
+                    $('#application-system').append('<option value="'+id+'">'+name+'</option>');
+                    }
+                });
+        }
+    };
+
+    if (typeof page_settings !== 'undefined') {
+        applicationSystemSelection.init();
+    }
+
+    $('#hakukausi').change(function() {applicationSystemSelection.init()});
+    $('#hakukausiVuosi').change(function() {applicationSystemSelection.init()});
+
+    $('input#sendingSchool').autocomplete({
+        minLength : 1,
+        delay: 500,
+        source: function(req, res) {
+            $.get(page_settings.contextPath + "/virkailija/autocomplete/school?term="+encodeURI(req.term),
+                function(data) {
+                    res($.map(data, function (result) {
+                        var name = result.name[page_settings.lang];
+                        if ( !name ) {
+                            var langs = ['fi', 'sv', 'en'];
+                            for (var i = 0; i < langs.length; i++) {
+                                name = result.name[langs[i]];
+                                if (name) {
+                                    break;
+                                }
+                            }
+                            if (!name) {
+                                name = "???";
+                            }
+                        }
+                        return {
+                            label: name,
+                            value: name,
+                            dataId: result.dataId
+                        }
+                    }));
+                })
+        },
+        select: function(event, ui) {
+            $('#sendingSchoolOid').val(ui.item.dataId);
+        }
+    });
+
 // Organisation search
 // Handle presentation of organisation search form and results
 
@@ -117,6 +198,8 @@ $(document).ready(function () {
                 $('#application-system').val(obj.asId);
                 $('#hakukausiVuosi').val(obj.asYear);
                 $('#hakukausi').val(obj.asSemester);
+                $('#sendingSchoolOid').val(obj.sendingSchoolOid);
+                $('#sendingClass').val(obj.sendingClass);
                 $('#discretionary-only').prop('checked', obj.discretionaryOnly);
                 if (obj.orgSearchExpanded) {
                     orgSearchDialog.expand();
@@ -132,6 +215,8 @@ $(document).ready(function () {
                 addParameter(obj, 'asId', '#application-system');
                 addParameter(obj, 'asYear', '#hakukausiVuosi');
                 addParameter(obj, 'asSemester', '#hakukausi');
+                addParameter(obj, 'sendingSchoolOid', '#sendingSchoolOid');
+                addParameter(obj, 'sendingClass', '#sendingClass');
                 addParameter(obj, 'discretionaryOnly', '#discretionary-only');
                 var lopTitle = $('#lop-title').text();
                 if (lopTitle) {
@@ -216,15 +301,18 @@ $(document).ready(function () {
                 $('#application-table thead tr td').removeAttr('class');
                 self.updateCounters(0);
                 $tbody.empty();
-                $('#lopoid').val('');
+                $('#pagination').empty();
                 $('#lop-title').empty();
+                $('#lopoid').val('');
                 $('#entry').val('');
                 $('#application-state').val('ACTIVE');
                 $('#application-preference').val('');
-                $('#pagination').empty();
                 $('#application-system').val('');
                 $('#hakukausiVuosi').val(hakukausiDefaultYear);
                 $('#hakukausi').val(hakukausiDefaultSemester);
+                $('#sendingSchoolOid').val('');
+                $('#sendingSchool').val('');
+                $('#sendingClass').val('');
                 $('#discretionary-only').attr('checked', false);
             }
         return this;
@@ -375,7 +463,10 @@ $(document).ready(function () {
         $('#reset-organizations').click(function (event) {
             $('#lopoid').val('');
             $('#lop-title').empty();
-            applicationSearch.search(0, 'fullName', 'asc');
+            $('#pagination').empty();
+            $('#application-table tbody:first').empty();
+            $('#application-table thead tr td').removeAttr('class');
+            applicationSearch.updateCounters(0);
         });
         $('#search-organizations').click(function (event) {
             var parameters = $('#orgsearchform').serialize();

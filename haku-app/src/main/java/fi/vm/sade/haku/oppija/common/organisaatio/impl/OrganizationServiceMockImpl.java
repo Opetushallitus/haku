@@ -26,6 +26,8 @@ import fi.vm.sade.haku.oppija.lomake.exception.ConfigurationException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,8 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @Profile(value = {"dev", "it"})
 public class OrganizationServiceMockImpl implements OrganizationService {
 
+    private static final Logger log = LoggerFactory.getLogger(OrganizationServiceMockImpl.class);
+
     /**
      * Predicate that matches organization name.
      */
@@ -57,9 +61,10 @@ public class OrganizationServiceMockImpl implements OrganizationService {
             final String nameFi = org.getName().getTranslations().get("fi");
             final String nameEn = org.getName().getTranslations().get("en");
             final String nameSv = org.getName().getTranslations().get("sv");
-            return searchString == null || (nameFi != null && nameFi.contains(searchString))
+            boolean match = searchString == null || (nameFi != null && nameFi.contains(searchString))
                     || (nameEn != null && nameEn.contains(searchString))
                     || (nameSv != null && nameSv.contains(searchString));
+            return match;
         }
     }
 
@@ -100,11 +105,16 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         private final String type;
 
         public OrgTypePredicate(String tyyppi) {
-            this.type = tyyppi;
+            if (tyyppi != null) {
+                this.type = tyyppi.toUpperCase();
+            } else {
+                this.type = null;
+            }
         }
 
         public boolean apply(Organization org) {
-            return type == null || org.getTypes().contains(type);
+            boolean match = type == null || org.getTypes().contains(type);
+            return match;
         }
     }
 
@@ -213,6 +223,17 @@ public class OrganizationServiceMockImpl implements OrganizationService {
                 new OrgIncludePassivePredicate(criteria.isLakkautetut()),
                 new OrgIncludePlannedPredicate(criteria.isSuunnitellut()));
         return Lists.newArrayList(Iterables.filter(orgs, predicate));
+    }
+
+    private String debugPrint(OrganisaatioSearchCriteria criteria) {
+        StringBuilder builder = new StringBuilder("OrganisaatioSearchCriteria: {")
+                .append("searchStr: ").append(criteria.getSearchStr()).append(", ")
+                .append("kunta: ").append(criteria.getKunta()).append(", ")
+                .append("oppilaitosTyyppi: ").append(criteria.getOppilaitosTyyppi()).append(", ")
+                .append("organisaatioTyyppi: ").append(criteria.getOrganisaatioTyyppi()).append(", ")
+                .append("lakkautetut: ").append(criteria.isLakkautetut()).append(", ")
+                .append("suunnitellut: ").append(criteria.isSuunnitellut()).append(", ");
+        return builder.toString();
     }
 
     @Override

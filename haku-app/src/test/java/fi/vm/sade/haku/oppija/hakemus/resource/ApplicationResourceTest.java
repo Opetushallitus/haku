@@ -97,13 +97,13 @@ public class ApplicationResourceTest {
 
     @Test
     public void testFindApplications() {
-        ApplicationSearchResultDTO applications = this.applicationResource.findApplications(OID, null, "", null, null, null, null, null, null, 0, Integer.MAX_VALUE);
+        ApplicationSearchResultDTO applications = this.applicationResource.findApplications(OID, null, "", null, null, null, null, null, null, null, null, 0, Integer.MAX_VALUE);
         assertEquals(1, applications.getResults().size());
     }
 
     @Test
     public void testFindApplicationsNoMatch() {
-        ApplicationSearchResultDTO applications = this.applicationResource.findApplications(INVALID_OID, null, "", null, null, null, null, null, null, 0, Integer.MAX_VALUE);
+        ApplicationSearchResultDTO applications = this.applicationResource.findApplications(INVALID_OID, null, "", null, null, null, null, null, null, null, null, 0, Integer.MAX_VALUE);
         assertEquals(0, applications.getTotalCount());
     }
 

@@ -2,11 +2,13 @@
 <%@ tag trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ attribute name="oid" required="true" type="java.lang.String" %>
 <%@ attribute name="preview" required="true" type="java.lang.Boolean" %>
+<%@ attribute name="applicationSystem" required="false" type="fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
-<div class="grid16-16">
+<div class="grid16-10">
     <c:choose>
         <c:when test="${preview}">
             <a id="back" href="${contextPath}/virkailija/hakemus#useLast" class="button small back"></a>
@@ -42,7 +44,11 @@
 
     <a href="${contextPath}/virkailija/hakemus/${oid}/print" class="button small print" target="_blank"><fmt:message
     key="lomake.valmis.button.tulosta"/></a>
-
+</div>
+<div class="grid-right-16-6">
+    <span><haku:i18nText value="${applicationSystem.name}" /></span>
+</div>
+<div class="grid16-16">
 
     <div class="margin-vertical-2">
         <div class="float-left">

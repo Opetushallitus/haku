@@ -94,6 +94,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
     private static final String FIELD_PERSON_OID = "personOid";
     private static final String FIELD_APPLICATION_STATE = "state";
+    private static final String FIELD_SENDING_SCHOOL = "answers.koulutustausta.lahtokoulu";
+    private static final String FIELD_SENDING_CLASS = "answers.koulutustausta.lahtoluokka";
     private static final String EXISTS = "$exists";
     private static final String FIELD_STUDENT_OID = "studentOid";
     private final EncrypterService shaEncrypter;
@@ -404,6 +406,16 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         if (applicationQueryParameters.isDiscretionaryOnly()) {
             filters.add(queryDiscretionaryOnly().get());
+        }
+
+        String sendingSchool = applicationQueryParameters.getSendingSchool();
+        if (!isEmpty(sendingSchool)) {
+            filters.add(QueryBuilder.start(FIELD_SENDING_SCHOOL).is(sendingSchool).get());
+        }
+
+        String sendingClass = applicationQueryParameters.getSendingClass();
+        if (!isEmpty(sendingClass)) {
+            filters.add(QueryBuilder.start(FIELD_SENDING_CLASS).is(sendingClass).get());
         }
 
         filters.add(newOIdExistDBObject());

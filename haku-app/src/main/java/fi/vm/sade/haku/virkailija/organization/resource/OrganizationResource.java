@@ -31,7 +31,6 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +53,7 @@ public class OrganizationResource {
                                                 @QueryParam("organizationType") final String organizationType,
                                                 @QueryParam("learningInstitutionType") final String learningInstitutionType,
                                                 @QueryParam("includePassive") @DefaultValue("false") final boolean includePassive,
-                                                @QueryParam("includePlanned") @DefaultValue("false") final boolean includePlanned) throws IOException {
+                                                @QueryParam("includePlanned") @DefaultValue("false") final boolean includePlanned) {
         LOGGER.debug("Search organizations q: {}, orgType: {}, loiType: {}, passive: {}, planned: {} ", searchString,
                 organizationType, learningInstitutionType, includePassive, includePlanned);
         List<Organization> listOfOrganization = getOrganizations(searchString, organizationType,
@@ -103,7 +102,7 @@ public class OrganizationResource {
                                                 final String organizationType,
                                                 final String learningInstitutionType,
                                                 final boolean includePassive,
-                                                final boolean includePlanned) throws IOException {
+                                                final boolean includePlanned) {
         LOGGER.debug("getOrganizations {} {} {} {}",
                 searchString, organizationType, learningInstitutionType, includePassive, includePlanned);
         OrganisaatioSearchCriteria criteria = new OrganisaatioSearchCriteria();

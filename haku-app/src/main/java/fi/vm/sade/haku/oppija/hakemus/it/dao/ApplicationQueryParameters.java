@@ -27,6 +27,8 @@ public class ApplicationQueryParameters {
     private final String lopOid;
     private final String aoOid;
     private final boolean discretionaryOnly;
+    private final String sendingSchool;
+    private final String sendingClass;
     private final int start;
     private final int rows;
     private String orderBy;
@@ -34,6 +36,7 @@ public class ApplicationQueryParameters {
 
     public ApplicationQueryParameters(final List<String> state, final List<String> asIds, final String aoId,
                                       final String lopOid, final String aoOid, final Boolean discretionaryOnly,
+                                      final String sendingSchool, final String sendingClass,
                                       final int start, final int rows, final String orderBy, final int orderDir) {
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
         this.asIds = asIds;
@@ -41,6 +44,8 @@ public class ApplicationQueryParameters {
         this.aoId = isEmpty(aoId) ? null : aoId;
         this.aoOid = isEmpty(aoOid) ? null : aoOid;
         this.discretionaryOnly = discretionaryOnly == null ? false : discretionaryOnly;
+        this.sendingSchool = sendingSchool;
+        this.sendingClass = sendingClass;
         this.start = start;
         this.rows = rows;
         this.orderBy = orderBy;
@@ -86,4 +91,8 @@ public class ApplicationQueryParameters {
     public boolean isDiscretionaryOnly() {
         return discretionaryOnly;
     }
+
+    public String getSendingSchool() {return sendingSchool; }
+
+    public String getSendingClass() {return sendingClass; }
 }

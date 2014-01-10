@@ -47,11 +47,11 @@ public class OrganizationServiceMockImplTest {
         final Date end = new Date(now.getTime() + 1000 * 60 * 60 * 24);
 
         public void init() {
-            add(getOrganization("nimi1", "1", null, start, end, "Koulutustoimija"));
-            add(getOrganization("nimi2", "2", "1", start, end, "Oppilaitos"));
-            add(getOrganization("nimi3", "3", "1", start, end, "Oppilaitos"));
-            add(getOrganization("nimi4", "4", "1", start, end, "Oppilaitos"));
-            add(getOrganization("nimi5", "5", "4", start, end, "Oppilaitos"));
+            add(getOrganization("nimi1", "1", null, start, end, "KOULUTUSTOIMIJA"));
+            add(getOrganization("nimi2", "2", "1", start, end, "OPPILAITOS"));
+            add(getOrganization("nimi3", "3", "1", start, end, "OPPILAITOS"));
+            add(getOrganization("nimi4", "4", "1", start, end, "OPPILAITOS"));
+            add(getOrganization("nimi5", "5", "4", start, end, "OPPILAITOS"));
         }
     };
 
