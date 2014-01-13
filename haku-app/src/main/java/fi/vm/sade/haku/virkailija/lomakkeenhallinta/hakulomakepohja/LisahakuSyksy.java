@@ -33,6 +33,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import java.util.List;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.randomId;
 
 public class LisahakuSyksy {
 
@@ -82,8 +83,12 @@ public class LisahakuSyksy {
         athleteGroup.addChild(new Link("athleteLink", "http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/",
                 createI18NText("form.valmis.haeturheilijana.linkki", FORM_MESSAGES)));
         athleteRule.addChild(athleteGroup);
-
         elements.add(athleteRule);
+
+        //Hait musiikki-, tanssi- tai liikunta-alan koulutukseen.
+        TitledGroup musiikkiTanssiLiikuntaGroup = new TitledGroup("mtlGroup", createI18NText("form.valmis.musiikkitanssiliikunta.header", FORM_MESSAGES));
+        musiikkiTanssiLiikuntaGroup.addChild(new Text(randomId(), createI18NText("form.valmis.musiikkitanssiliikunta", FORM_MESSAGES)));
+        elements.add(musiikkiTanssiLiikuntaGroup);
 
         TitledGroup muutoksenTekeminen = new TitledGroup("muutoksenTekeminen", createI18NText("form.valmis.muutoksentekeminen",
                 FORM_MESSAGES));

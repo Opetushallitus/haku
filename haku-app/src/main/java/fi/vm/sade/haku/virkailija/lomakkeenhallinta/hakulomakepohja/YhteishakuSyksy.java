@@ -30,10 +30,10 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisati
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseYhteishakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 
-import java.util.Date;
 import java.util.List;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.randomId;
 
 public class YhteishakuSyksy {
 
@@ -87,6 +87,10 @@ public class YhteishakuSyksy {
         athleteRule.addChild(athleteGroup);
 
         elements.add(athleteRule);
+
+        TitledGroup musiikkiTanssiLiikuntaGroup = new TitledGroup("mtlGroup", createI18NText("form.valmis.musiikkitanssiliikunta.header", FORM_MESSAGES));
+        musiikkiTanssiLiikuntaGroup.addChild(new Text(randomId(), createI18NText("form.valmis.musiikkitanssiliikunta", FORM_MESSAGES)));
+        elements.add(musiikkiTanssiLiikuntaGroup);
 
         TitledGroup muutoksenTekeminen = new TitledGroup("muutoksenTekeminen", createI18NText("form.valmis.muutoksentekeminen",
                 FORM_MESSAGES));

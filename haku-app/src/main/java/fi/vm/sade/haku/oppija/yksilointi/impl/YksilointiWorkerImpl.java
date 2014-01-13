@@ -15,6 +15,7 @@
  */
 package fi.vm.sade.haku.oppija.yksilointi.impl;
 
+import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -160,6 +161,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         ctx.put("applicationDate", applicationDate);
         ctx.put("preferences", getPreferences(application));
         ctx.put("athlete", isAthlete(application));
+        ctx.put("mtl", isMtl(application));
 
         return ctx;
     }
@@ -178,6 +180,16 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             preferences.add(i + ". " + koulu + "\n   " + koulutus);
         }
         return preferences;
+    }
+
+    private boolean isMtl(Application application) {
+        Set<String> mtlsDegrees = Sets.newHashSet("1", "2", "3");
+        Map<String, String> answers = application.getVastauksetMerged();
+        return (mtlsDegrees.contains(answers.get("preference1_degree")) ||
+                mtlsDegrees.contains(answers.get("preference2_degree")) ||
+                mtlsDegrees.contains(answers.get("preference3_degree")) ||
+                mtlsDegrees.contains(answers.get("preference4_degree")) ||
+                mtlsDegrees.contains(answers.get("preference5_degree")));
     }
 
     private boolean isAthlete(Application application) {
