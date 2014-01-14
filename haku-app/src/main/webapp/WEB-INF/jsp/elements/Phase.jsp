@@ -64,7 +64,6 @@
 </head>
 <body>
 <div id="viewport">
-    <jsp:include page="common/confirmDialog.jsp"/>
     <div id="site">
         <div id="sitecontent">
             <div class="content">
