@@ -17,26 +17,32 @@
   ~ European Union Public Licence for more details.
   --%>
 <tr>
-    <td><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
-    <td></td>
-    <td><fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
-    <td><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
+    <td colspan="2"><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
+    <c:choose>
+        <c:when test="${element.extraColumn}">
+            <td><fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
+        </c:when>
+        <c:otherwise>
+            <td><fmt:message key="lomake.component.gradegrid.subjectColumnTitle"/></td>
+        </c:otherwise>
+    </c:choose>
     <c:if test="${element.extraColumn}">
+        <td><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
         <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
     </c:if>
-
 </tr>
 <haku:viewChilds element="${element}"/>
 
 <script>
     $(document).ready(function () {
-        $("tr[id|='additionalRow']").each(function() {
-            if($(this).find("td").filter( function() {
+        $("tr[id|='additionalRow']").each(function () {
+            if ($(this).find("td").filter(function () {
                 return $.trim($(this).text()) === '';
             }).length === 0) {
-        $(this).show();
-    } else {
-        $(this).hide();
-    }
-    })});
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        })
+    });
 </script>

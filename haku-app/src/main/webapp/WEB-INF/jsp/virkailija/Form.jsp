@@ -43,7 +43,7 @@
     <script src="${contextPath}/resources/javascript/rules.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/jquery.cookie.js" type="text/javascript"></script>
-    <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/virkailija/application.js" type="text/javascript"></script>
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
 
