@@ -195,7 +195,7 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
 
         RelatedQuestionRule tuoreYoTodistus = new RelatedQuestionRule("tuoreYoTodistus", lukioPaattotodistusVuosi.getId(), String.valueOf(hakuvuosi), false);
         DropdownSelect lahtokoulu = new DropdownSelect("lahtokoulu", ElementUtil.createI18NText("form.koulutustausta.lukio.oppilaitos", FORM_MESSAGES), "");
-        lahtokoulu.addOption(ElementUtil.createI18NText("form.koulutustausta.lukio.valitseOppilaitos", FORM_MESSAGES), "");
+        lahtokoulu.addOption(ElementUtil.createI18NText("form.koulutustausta.lukio.valitseOppilaitos", FORM_MESSAGES, true), "");
         lahtokoulu.addOptions(koodistoService.getLukioKoulukoodit());
         addRequiredValidator(lahtokoulu, FORM_ERRORS);
         tuoreYoTodistus.addChild(lahtokoulu);

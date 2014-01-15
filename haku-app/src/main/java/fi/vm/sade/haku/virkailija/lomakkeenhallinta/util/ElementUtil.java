@@ -70,6 +70,11 @@ public final class ElementUtil {
     }
 
     public static I18nText createI18NText(final String key, final String bundleName, final String... params) {
+        return createI18NText(key, bundleName, false, params);
+    }
+
+    public static I18nText createI18NText(final String key, final String bundleName, final boolean keepFirst,
+                                          final String... params) {
         Validate.notNull(key, "key can't be null");
         Validate.notNull(bundleName, "bundleName can't be null");
 
@@ -81,6 +86,11 @@ public final class ElementUtil {
             try {
                 if (key != null) {
                     text = bundle.getString(key);
+                    if (keepFirst) {
+                        // Add space at the beginning of string, making it appear before regular words in
+                        // alphabetical order.
+                        text = "\u0020" + text;
+                    }
                 }
                 if (params != null && params.length > 0) {
                     text = MessageFormat.format(text, (Object[]) params);
