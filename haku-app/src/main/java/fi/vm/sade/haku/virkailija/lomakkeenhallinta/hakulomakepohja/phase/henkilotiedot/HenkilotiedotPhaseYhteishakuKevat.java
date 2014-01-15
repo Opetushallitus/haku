@@ -242,8 +242,8 @@ public final class
                 FORM_MESSAGES), koodistoService.getPostOffices());
         addSizeAttribute(postinumero, 5);
         postinumero.addAttribute("maxlength", "5");
-        addRequiredValidator(postinumero, FORM_ERRORS);
         postinumero.setValidator(createRegexValidator(postinumero.getId(), POSTINUMERO_PATTERN, FORM_ERRORS));
+        addRequiredValidator(postinumero, FORM_ERRORS);
         postinumero.setHelp(createI18NText("form.henkilotiedot.postinumero.help", FORM_MESSAGES));
         asuinmaaFI.addChild(postinumero);
 
