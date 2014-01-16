@@ -44,8 +44,8 @@
         <koodisto-api.version>${project.version}</koodisto-api.version>
         <koulutusinformaatio-api.version>${project.version}</koulutusinformaatio-api.version>
         <log-client.version>8.0</log-client.version>
-        <organisaatio-api.version>8.0-SNAPSHOT</organisaatio-api.version>
-        <organisaatio-solr-client.version>8.0-SNAPSHOT</organisaatio-solr-client.version>
+        <organisaatio-api.version>8.0</organisaatio-api.version>
+        <organisaatio-solr-client.version>8.0</organisaatio-solr-client.version>
         <tarjonta-api.version>${project.version}</tarjonta-api.version>
     </properties>
 
