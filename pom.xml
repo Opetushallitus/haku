@@ -26,7 +26,7 @@
         <cxf-common-utilities.version>2.5.9</cxf-common-utilities.version>
         <mockito.version>1.9.5</mockito.version>
         <guava.version>15.0</guava.version>
-        <ehcache.version>2.4.8</ehcache.version>
+        <ehcache.version>2.5.0</ehcache.version>
         <flapdoodle.version>1.36</flapdoodle.version>
         <org.apache.tomcat.embed>7.0.39</org.apache.tomcat.embed>
         <clover.version>3.1.8</clover.version>
