@@ -19,7 +19,7 @@ var lopCache = {};
 var preferenceRow = {
     populateSelectInput: function (orgId, selectInputId, isInit, providerInputId) {
         setTimeout(function() {
-        $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationSystemId + "/" + orgId,
+            $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationSystemId + "/" + orgId,
             {
                 'baseEducation': sortabletable_settings.baseEducation,
                 'vocational': sortabletable_settings.vocational
@@ -32,6 +32,7 @@ var preferenceRow = {
                 $("#" + selectInputId).html("<option value=''>&nbsp;</option>");
 
                 $(data).each(function (index, item) {
+                    alert(item.educationDegreeUri);
                     var selected = "";
                     childLONames[item.id] = item.childLONames;
                     if (hakukohdeId == item.id) {
@@ -39,9 +40,6 @@ var preferenceRow = {
                         selected = 'selected = "selected"';
                         // overrides additional questions rendered in the backend
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
-                    }
-                    if (!item.degree) {
-                        item.degree = "1"; // TODO REMOVE
                     }
                     $selectInput.append('<option value="' + item.name
                         + '" ' + selected + ' data-id="' + item.id +
@@ -51,7 +49,7 @@ var preferenceRow = {
                         '" data-aoidentifier="' + item.aoIdentifier +
                         '" data-kaksoistutkinto="' + item.kaksoistutkinto +
                         '" data-vocational="' + item.vocational +
-                        '" data-degree="' + item.degree +
+                        '" data-educationcode="' + item.educationDegreeUri +
                         '" data-athlete="' + item.athleteEducation + '" >' + item.name + '</option>');
                 });
                 if (isInit && !selectedPreferenceOK && hakukohdeId && hakukohdeId !== '') {
@@ -80,7 +78,7 @@ var preferenceRow = {
         $("#" + selectInputId + "-id-aoIdentifier").val("").change();
         $("#" + selectInputId + "-id-kaksoistutkinto").val(false).change();
         $("#" + selectInputId + "-id-vocational").val(false).change();
-        $("#" + selectInputId + "-id-degree").val(false).change();
+        $("#" + selectInputId + "-id-educationcode").val(false).change();
         $("#" + selectInputId + "-id-athlete").val(false).change();
         $("#" + selectInputId).html("<option>&nbsp;</option>");
         preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
@@ -186,7 +184,7 @@ var preferenceRow = {
                 $educationDegreeVocational = $("#" + this.id + "-id-vocational"),
                 $educationDegreeAoIdentifier = $("#" + this.id + "-id-aoIdentifier"),
                 $educationDegreeAthlete = $("#" + this.id + "-id-athlete"),
-                $educationDegreeDegree = $("#" + this.id + "-id-degree"),
+                $educationDegreeEducationCode = $("#" + this.id + "-id-educationcode"),
                 selectedId, educationDegree, value = $(this).val(),
                 preferenceRowId = this.id.split("-")[0];
             $(this).children().removeAttr("selected");
@@ -202,7 +200,7 @@ var preferenceRow = {
             $educationDegreeVocational.val(selectedOption.data("vocational")).change();
             $educationDegreeAoIdentifier.val(selectedOption.data("aoidentifier")).change();
             $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
-            $educationDegreeDegree.val(selectedOption.data("degree")).change();
+            $educationDegreeEducationCode.val(selectedOption.data("educationcode")).change();
             preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
         });
     }

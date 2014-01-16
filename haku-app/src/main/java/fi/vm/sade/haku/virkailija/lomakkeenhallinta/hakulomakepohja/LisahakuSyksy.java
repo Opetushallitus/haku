@@ -29,11 +29,14 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulut
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhaseLisahakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseLisahakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.randomId;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.VALID_EDUCATION_CODES;
 
 public class LisahakuSyksy {
 
@@ -86,9 +89,17 @@ public class LisahakuSyksy {
         elements.add(athleteRule);
 
         //Hait musiikki-, tanssi- tai liikunta-alan koulutukseen.
+        RelatedQuestionRule musiikkiTanssiLiikuntaRule = new RelatedQuestionRule("musiikkiTanssiLiikuntaRule",
+                Lists.newArrayList(String.format(EDUCATION_CODE_KEY, 1),
+                        String.format(EDUCATION_CODE_KEY, 2),
+                        String.format(EDUCATION_CODE_KEY, 3),
+                        String.format(EDUCATION_CODE_KEY, 4),
+                        String.format(EDUCATION_CODE_KEY, 5)),
+                StringUtils.join(VALID_EDUCATION_CODES, "|"), false);
         TitledGroup musiikkiTanssiLiikuntaGroup = new TitledGroup("mtlGroup", createI18NText("form.valmis.musiikkitanssiliikunta.header", FORM_MESSAGES));
         musiikkiTanssiLiikuntaGroup.addChild(new Text(randomId(), createI18NText("form.valmis.musiikkitanssiliikunta", FORM_MESSAGES)));
-        elements.add(musiikkiTanssiLiikuntaGroup);
+        musiikkiTanssiLiikuntaRule.addChild(musiikkiTanssiLiikuntaGroup);
+        elements.add(musiikkiTanssiLiikuntaRule);
 
         TitledGroup muutoksenTekeminen = new TitledGroup("muutoksenTekeminen", createI18NText("form.valmis.muutoksentekeminen",
                 FORM_MESSAGES));

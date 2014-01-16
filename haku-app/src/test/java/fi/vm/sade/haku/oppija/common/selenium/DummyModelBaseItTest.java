@@ -130,6 +130,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected final void fillOut(final Map<String, String> values) {
         for (Map.Entry<String, String> questionAndAnswer : values.entrySet()) {
+            System.out.println(questionAndAnswer.getKey() + "| "+ questionAndAnswer.getValue());
             setValue(questionAndAnswer.getKey(), questionAndAnswer.getValue());
         }
     }

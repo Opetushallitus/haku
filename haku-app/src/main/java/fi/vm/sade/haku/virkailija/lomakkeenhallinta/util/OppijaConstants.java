@@ -15,6 +15,10 @@
  */
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
+import com.google.common.collect.Sets;
+
+import java.util.Set;
+
 /**
  * Holds information that is needed about the form or application structure.
  *
@@ -71,4 +75,9 @@ public final class OppijaConstants {
 
     public static final String HAKUKAUSI_SYKSY = "kausi_s";
     public static final String HAKUKAUSI_KEVAT = "kausi_k";
+
+    public static final Set<String> VALID_EDUCATION_CODES = Sets.newHashSet(
+            "koulutus_321204", "koulutus_321501", "koulutus_381203");
+    public static final String EDUCATION_CODE_KEY =  PREFERENCE_ID + "-educationcode";
+
 }
