@@ -191,7 +191,8 @@ public class FormController {
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                 final MultivaluedMap<String, String> multiValues) {
-        LOGGER.debug("updateRules {}, {}, {}", applicationSystemId, phaseId, elementId);
+        LOGGER.debug("updateRules {}, {}, {}", new String[]{applicationSystemId, phaseId, elementId});
+
         Form activeForm = formService.getActiveForm(applicationSystemId);
         Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
         values.putAll(MultivaluedMapUtil.toSingleValueMap(multiValues));
@@ -223,7 +224,7 @@ public class FormController {
     public Response savePhase(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                               final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
-        LOGGER.debug("savePhase {}, {}, {}, {}", applicationSystemId, phaseId, multiValues);
+//        LOGGER.debug("savePhase {}, {}, {}, {}", new String[]{applicationSystemId, phaseId, multiValues});
         Form activeForm = formService.getActiveForm(applicationSystemId);
         ApplicationState applicationState = applicationService.saveApplicationPhase(
                 new ApplicationPhase(applicationSystemId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)));

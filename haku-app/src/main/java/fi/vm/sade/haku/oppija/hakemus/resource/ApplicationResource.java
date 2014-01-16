@@ -96,9 +96,10 @@ public class ApplicationResource {
                                                        @QueryParam("sendingClass") String sendingClass,
                                                        @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @DefaultValue(value = "100") @QueryParam("rows") int rows) {
-        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}, " +
-                "asSemester: {}, asYear: {}, discretionaryOnly: {}, sendingSchoolOid: {}, sendingClass: {}",
-                query, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear, discretionaryOnly, sendingSchoolOid, sendingClass);
+//        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}, " +
+//                "asSemester: {}, asYear: {}, discretionaryOnly: {}, sendingSchoolOid: {}, sendingClass: {}",
+//                new String[] {query, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear,
+//                        discretionaryOnly, sendingSchoolOid, sendingClass});
 
         List<String> asIds = new ArrayList<String>();
         if (isNotEmpty(asId)) {
@@ -134,9 +135,9 @@ public class ApplicationResource {
                                                               @QueryParam("sendingClass") String sendingClass,
                                                               @DefaultValue(value = "0") @QueryParam("start") int start,
                                                               @DefaultValue(value = "100") @QueryParam("rows") int rows) {
-        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}, " +
-                "asSemester: {}, asYear: {}, discretionaryOnly: {}, sendingSchoolOid: {}, sendingClass: {}",
-                query, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear, discretionaryOnly, sendingSchoolOid, sendingClass);
+//        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}, " +
+//                "asSemester: {}, asYear: {}, discretionaryOnly: {}, sendingSchoolOid: {}, sendingClass: {}",
+//                query, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear, discretionaryOnly, sendingSchoolOid, sendingClass);
 
         int realOrderDir = "desc".equals(orderDir) ? -1 : 1;
 

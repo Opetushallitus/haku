@@ -144,7 +144,7 @@ public class OfficerController {
                                       @PathParam(OID_PATH_PARAM) final String oid,
                                       @PathParam("elementId") final String elementId)
             throws ResourceNotFoundException {
-        LOGGER.debug("getPreviewElement {}, {}, {}", applicationSystemId, phaseId, oid);
+        LOGGER.debug("getPreviewElement {}, {}, {}", new String[]{applicationSystemId, phaseId, oid});
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, true);
         return new Viewable("/elements/Root", modelResponse.getModel()); // TODO remove hardcoded Phase
     }
@@ -157,7 +157,7 @@ public class OfficerController {
                                @PathParam(OID_PATH_PARAM) final String oid)
             throws ResourceNotFoundException, IOException {
 
-        LOGGER.debug("getPreview {}, {}, {}", applicationSystemId, phaseId, oid);
+        LOGGER.debug("getPreview {}, {}, {}", new String[]{applicationSystemId, phaseId, oid});
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, phaseId);
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel()); // TODO remove hardcoded Phase
     }
@@ -173,7 +173,7 @@ public class OfficerController {
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException, ResourceNotFoundException {
 
-        LOGGER.debug("updatePhase {}, {}, {}", applicationSystemId, phaseId, oid);
+        LOGGER.debug("updatePhase {}, {}, {}", new String[]{applicationSystemId, phaseId, oid});
 
         ModelResponse modelResponse = officerUIService.updateApplication(oid,
                 new ApplicationPhase(applicationSystemId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)),

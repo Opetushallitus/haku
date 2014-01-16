@@ -54,8 +54,9 @@ public class OrganizationResource {
                                                 @QueryParam("learningInstitutionType") final String learningInstitutionType,
                                                 @QueryParam("includePassive") @DefaultValue("false") final boolean includePassive,
                                                 @QueryParam("includePlanned") @DefaultValue("false") final boolean includePlanned) {
-        LOGGER.debug("Search organizations q: {}, orgType: {}, loiType: {}, passive: {}, planned: {} ", searchString,
-                organizationType, learningInstitutionType, includePassive, includePlanned);
+        LOGGER.debug("Search organizations q: {}, orgType: {}, loiType: {}, passive: {}, planned: {} ",
+                new String[] {searchString, organizationType, learningInstitutionType, String.valueOf(includePassive),
+                        String.valueOf(includePlanned)});
         List<Organization> listOfOrganization = getOrganizations(searchString, organizationType,
                 learningInstitutionType, includePassive, includePlanned);
         return toMap(listOfOrganization);
@@ -104,7 +105,8 @@ public class OrganizationResource {
                                                 final boolean includePassive,
                                                 final boolean includePlanned) {
         LOGGER.debug("getOrganizations {} {} {} {}",
-                searchString, organizationType, learningInstitutionType, includePassive, includePlanned);
+                new String[]{searchString, organizationType, learningInstitutionType,
+                        String.valueOf(includePassive), String.valueOf(includePlanned)});
         OrganisaatioSearchCriteria criteria = new OrganisaatioSearchCriteria();
         criteria.setSearchStr(searchString);
         criteria.setOrganisaatioTyyppi(organizationType);
