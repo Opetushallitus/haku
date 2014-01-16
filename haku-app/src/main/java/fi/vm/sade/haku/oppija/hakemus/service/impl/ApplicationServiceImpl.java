@@ -20,6 +20,7 @@ import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
 import fi.vm.sade.authentication.service.GenericFault;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
@@ -29,7 +30,9 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -80,6 +83,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final OrganizationService organizationService;
     private final HakuPermissionService hakuPermissionService;
     private final ApplicationSystemService applicationSystemService;
+    private final SuoritusrekisteriService suoritusrekisteriService;
     private final ElementTreeValidator elementTreeValidator;
 
     @Autowired
@@ -91,7 +95,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   OrganizationService organizationService,
                                   HakuPermissionService hakuPermissionService,
                                   ApplicationSystemService applicationSystemService,
-                                  ElementTreeValidator elementTreeValidator) {
+                                  SuoritusrekisteriService suoritusrekisteriService, ElementTreeValidator elementTreeValidator) {
 
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
@@ -101,6 +105,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.organizationService = organizationService;
         this.hakuPermissionService = hakuPermissionService;
         this.applicationSystemService = applicationSystemService;
+        this.suoritusrekisteriService = suoritusrekisteriService;
         this.elementTreeValidator = elementTreeValidator;
 
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
@@ -288,6 +293,36 @@ public class ApplicationServiceImpl implements ApplicationService {
             return submittedApplication;
         }
         throw new ResourceNotFoundExceptionRuntime("Could not found submitted application");
+    }
+
+    @Override
+    public Application addSendingSchool(Application application) {
+        String personOid = application.getPersonOid();
+        if (isEmpty(personOid)) {
+            return application;
+        }
+
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        Integer hakukausiVuosi = as.getHakukausiVuosi();
+        String hakukausi = as.getHakukausiUri();
+        List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid,
+                String.valueOf(hakukausiVuosi), hakukausi);
+
+        if (suoritukset.size() > 0) {
+            String sendingSchool = suoritukset.get(0).getOppilaitosOid();
+            String sendingClass = suoritukset.get(0).getLuokka();
+            Map<String, String> answers = new HashMap<String, String>(
+                    application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+            if (isNotEmpty(sendingSchool)) {
+                answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
+            }
+            if (isNotEmpty(sendingClass)) {
+                answers.put(OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
+            }
+            application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
+        }
+        return application;
+
     }
 
     @Override

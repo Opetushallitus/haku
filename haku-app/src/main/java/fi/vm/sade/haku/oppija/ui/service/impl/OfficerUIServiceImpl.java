@@ -331,6 +331,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Application application = applicationService.getApplicationByOid(oid);
         application = applicationService.fillLOPChain(application, false);
         application = applicationService.addPersonOid(application);
+        application = applicationService.addSendingSchool(application);
         application.activate();
         applicationService.update(new Application(oid), application);
     }

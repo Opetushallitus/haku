@@ -90,8 +90,9 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Application application = applicationService.getNextWithoutPersonOid();
 
         while (application != null) {
-            applicationService.fillLOPChain(application, false);
-            applicationService.addPersonOid(application);
+            application = applicationService.fillLOPChain(application, false);
+            application = applicationService.addPersonOid(application);
+            application = applicationService.addSendingSchool(application);
             application.activate();
             applicationService.update(new Application(application.getOid()), application);
             if (sendMail) {
