@@ -68,32 +68,36 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         }
     }
 
-    static class OrgIncludePassivePredicate implements Predicate<Organization> {
+    static class OrgOnlyPassivePredicate implements Predicate<Organization> {
 
-        private final boolean includePassive;
+        private final boolean onlyPassive;
 
-        public OrgIncludePassivePredicate(boolean includePassive) {
-            this.includePassive = includePassive;
+        public OrgOnlyPassivePredicate(boolean onlyPassive) {
+            this.onlyPassive = onlyPassive;
         }
 
         public boolean apply(Organization org) {
-            return !(!includePassive && org.getEndDate() != null) || org.getEndDate().before(new Date());
+            if (!onlyPassive) {
+                return true;
+            }
+            return org.getEndDate() != null && org.getEndDate().before(new Date());
         }
     }
 
-    static class OrgIncludePlannedPredicate implements Predicate<Organization> {
+    static class OrgOnlyActivePredicate implements Predicate<Organization> {
 
-        private final boolean includePlanned;
+        private final boolean onlyActive;
 
-        public OrgIncludePlannedPredicate(boolean includePlanned) {
-            this.includePlanned = includePlanned;
+        public OrgOnlyActivePredicate(boolean onlyActive) {
+            this.onlyActive = onlyActive;
         }
 
         public boolean apply(Organization org) {
-            if (!includePlanned) {
-                return org.getStartDate().before(new Date());
+            if (!onlyActive) {
+                return true;
             }
-            return true;
+            return org.getStartDate().before(new Date()) &&
+                    (org.getEndDate() == null || org.getEndDate().after(new Date()));
         }
     }
 
@@ -220,8 +224,8 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         @SuppressWarnings("unchecked")
         final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchStr()),
                 new OrgTypePredicate(criteria.getOrganisaatioTyyppi()),
-                new OrgIncludePassivePredicate(criteria.isLakkautetut()),
-                new OrgIncludePlannedPredicate(criteria.isSuunnitellut()));
+                new OrgOnlyPassivePredicate(criteria.isVainLakkautetut()),
+                new OrgOnlyActivePredicate(criteria.isVainAktiiviset()));
         return Lists.newArrayList(Iterables.filter(orgs, predicate));
     }
 
@@ -231,8 +235,8 @@ public class OrganizationServiceMockImpl implements OrganizationService {
                 .append("kunta: ").append(criteria.getKunta()).append(", ")
                 .append("oppilaitosTyyppi: ").append(criteria.getOppilaitosTyyppi()).append(", ")
                 .append("organisaatioTyyppi: ").append(criteria.getOrganisaatioTyyppi()).append(", ")
-                .append("lakkautetut: ").append(criteria.isLakkautetut()).append(", ")
-                .append("suunnitellut: ").append(criteria.isSuunnitellut()).append(", ");
+                .append("vainLakkautetut: ").append(criteria.isVainLakkautetut()).append(", ")
+                .append("vainAktiiviset: ").append(criteria.isVainAktiiviset()).append(", ");
         return builder.toString();
     }
 
