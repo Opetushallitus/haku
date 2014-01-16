@@ -16,7 +16,7 @@ public class HttpClientHelper {
 
     public HttpClientHelper(String casUrl, String targetService, String resource, String clientAppUser, String clientAppPass) {
         log.debug("creating HttpClientHelper casUrl: {} resource: {} user: {} passwd: {}",
-                casUrl, resource, clientAppUser, clientAppPass);
+                new String[]{casUrl, resource, clientAppUser, clientAppPass});
         this.casUrl = casUrl;
         this.targetService = targetService;
         this.resource = resource;
