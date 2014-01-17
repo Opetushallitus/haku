@@ -152,7 +152,6 @@ public class LomakeIT extends DummyModelBaseItTest {
         final int windowsBefore = driver.getWindowHandles().size();
 
         printLink.click();
-
         ExpectedCondition<Boolean> windowCondition = new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
                 return driver.getWindowHandles().size() == windowsBefore + 1;

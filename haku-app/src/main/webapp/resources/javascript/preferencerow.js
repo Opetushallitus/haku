@@ -32,7 +32,6 @@ var preferenceRow = {
                 $("#" + selectInputId).html("<option value=''>&nbsp;</option>");
 
                 $(data).each(function (index, item) {
-                    alert(item.educationDegreeUri);
                     var selected = "";
                     childLONames[item.id] = item.childLONames;
                     if (hakukohdeId == item.id) {
