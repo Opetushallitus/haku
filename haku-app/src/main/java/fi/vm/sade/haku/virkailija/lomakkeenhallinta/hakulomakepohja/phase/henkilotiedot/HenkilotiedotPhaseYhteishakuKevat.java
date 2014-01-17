@@ -25,6 +25,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.DateOfBirthValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -147,6 +148,7 @@ public final class
         DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NText("form.henkilotiedot.syntymaaika",
                 FORM_MESSAGES));
         syntymaaika.setValidator(ElementUtil.createRegexValidator(syntymaaika.getId(), DATE_PATTERN, FORM_ERRORS));
+        syntymaaika.setValidator(ElementUtil.createDateOfBirthValidator(syntymaaika.getId(), FORM_ERRORS));
         addRequiredValidator(syntymaaika, FORM_ERRORS);
         syntymaaika.setInline(true);
         eiSuomalaistaHetuaRule.addChild(syntymaaika);

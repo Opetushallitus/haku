@@ -179,6 +179,11 @@ public final class ElementUtil {
                 validValues);
     }
 
+    public static Validator createDateOfBirthValidator(final String id, final String bundleName){
+        return new DateOfBirthValidator(id,
+                ElementUtil.createI18NText(DateOfBirthValidator.DATE_OF_BIRTH_GENERIC_ERROR_MESSAGE, bundleName));
+    }
+
     public static void addRequiredValidator(final Element element, final String bundleName) {
         element.addAttribute("required", "required");
         element.setValidator(
@@ -199,7 +204,6 @@ public final class ElementUtil {
         Preconditions.checkArgument(element instanceof PreferenceRow || element instanceof SinglePreference);
         element.setValidator(new PreferenceValidator());
     }
-
 
     public static void setRequiredInlineAndVerboseHelp(final Question question, final String helpId, final String bundleName,
                                                        final String errorBundleName) {
