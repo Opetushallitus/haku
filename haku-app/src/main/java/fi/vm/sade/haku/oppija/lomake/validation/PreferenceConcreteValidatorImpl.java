@@ -88,7 +88,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (validationInput.getValue(key).equals(applicationOption.getEducationCode())) {
             return true;
         }
-        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        LOGGER.error(ERROR_STR, new Object[] {key, validationInput, applicationOption});
         return false;
     }
 
@@ -97,7 +97,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (applicationOption.getProvider().getId().equals(validationInput.getValues().get(key))) {
             return true;
         }
-        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        LOGGER.error(ERROR_STR, new Object[] {key, validationInput, applicationOption});
         return false;
     }
 
@@ -108,7 +108,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 == (applicationOption.getProvider().isAthleteEducation() || applicationOption.isAthleteEducation())) {
             return true;
         }
-        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        LOGGER.error(ERROR_STR, new Object[] {key, validationInput, applicationOption});
         return false;
     }
 
@@ -118,7 +118,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 == applicationOption.isSora()) {
             return true;
         }
-        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        LOGGER.error(ERROR_STR, new Object[] {key, validationInput, applicationOption});
         return false;
     }
 
@@ -127,7 +127,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (Boolean.valueOf(validationInput.getValues().get(key)).booleanValue() == applicationOption.isKaksoistutkinto()) {
             return true;
         }
-        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        LOGGER.error(ERROR_STR, new Object[] {key, validationInput, applicationOption});
         return false;
     }
 
@@ -144,7 +144,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (applicationOption.getTeachingLanguages().contains(validationInput.getValues().get(key))) {
             return true;
         }
-        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        LOGGER.error(ERROR_STR, new Object[] {key, validationInput, applicationOption});
         return false;
     }
 
@@ -160,7 +160,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (applicationOption.getProvider().getApplicationSystemIds().contains(validationInput.getApplicationSystemId())) {
             return true;
         }
-        LOGGER.error(ERROR_STR, null, validationInput, applicationOption);
+        LOGGER.error(ERROR_STR, new Object[] {null, validationInput, applicationOption});
         return false;
     }
 
@@ -169,7 +169,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (applicationOption.getAoIdentifier().equals(validationInput.getValue(key))) {
             return true;
         }
-        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        LOGGER.error(ERROR_STR, new Object[] {key, validationInput, applicationOption});
         return false;
     }
 }
