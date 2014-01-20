@@ -15,6 +15,13 @@ Du söker till yrkesutbildning som idrottare. Tilläggsuppgifter hittar du på a
 
 http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
 #end
+#if ($educationCode)
+
+Du har sökt till utbildning inom musik-, dans-, eller idrottsbranschen. Kom ihåg att
+på läroanstaltens hemsida kontrollera om det förutom den egentliga gemensamma ansökan
+även krävs att du fyller i läroanstaltens egen tilläggsblankett.
+
+#end
 
 Detta är ett automatiskt meddelande. Svara inte på detta meddelande. Om du vill
 ändra på dina ansökningsönskemål, kontakta Studieinfos ansökningsrådgivning

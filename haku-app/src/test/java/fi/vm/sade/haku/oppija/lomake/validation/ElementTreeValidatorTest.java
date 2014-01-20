@@ -30,7 +30,8 @@ import java.util.HashMap;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -70,10 +71,9 @@ public class ElementTreeValidatorTest {
         elementTreeValidator.validate(new ValidationInput(null, new HashMap<String, String>(), null, null));
     }
 
-    @Test()
+    @Test(expected = NullPointerException.class)
     public void testValidateNullValues() throws Exception {
-        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(textQuestion, null, null, null));
-        assertFalse(validationResult.hasErrors());
+        elementTreeValidator.validate(new ValidationInput(textQuestion, null, null, null));
     }
 
     @Test()

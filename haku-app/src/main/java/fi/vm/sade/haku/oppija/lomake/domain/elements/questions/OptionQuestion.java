@@ -132,7 +132,7 @@ public abstract class OptionQuestion extends Question {
         }
 
         listOfValidator.add(new ValueSetValidator(this.getId(), ElementUtil.createI18NText("yleinen.virheellinenArvo",
-                "form_messages_yhteishaku_kevat"), values));
+                "form_errors_yhteishaku_kevat"), values));
         return listOfValidator;
     }
 }

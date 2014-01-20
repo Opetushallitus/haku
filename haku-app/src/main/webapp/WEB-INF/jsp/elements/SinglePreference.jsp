@@ -10,6 +10,7 @@
 <c:set value="${element.id}-Koulutus" var="koulutus" scope="page"/>
 <c:set value="${element.id}-Koulutus-id" var="koulutusId" scope="page"/>
 <c:set value="${element.id}-Koulutus-educationDegree" var="educationDegree" scope="page"/>
+<c:set value="${element.id}-Koulutus-educationcode" var="educationcode" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-lang" var="educationLang" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-sora" var="educationSora" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-aoIdentifier" var="aoIdentifier" scope="page"/>
@@ -40,6 +41,7 @@
 <haku:input-hidden id="${koulutus}" data="${answers}"/>
 <haku:input-hidden id="${koulutusId}" data="${answers}"/>
 <haku:input-hidden id="${educationDegree}" data="${answers}"/>
+<haku:input-hidden id="${educationcode}" data="${answers}"/>
 <haku:input-hidden id="${educationLang}" data="${answers}"/>
 <haku:input-hidden id="${educationSora}" data="${answers}"/>
 <haku:input-hidden id="${aoIdentifier}" data="${answers}"/>

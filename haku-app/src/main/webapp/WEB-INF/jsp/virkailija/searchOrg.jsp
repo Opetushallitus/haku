@@ -56,17 +56,10 @@
                 </div>
 
                 <div class="field-container-checkbox">
-                    <input type="checkbox" name="includePassive"
-                           id="osc1" ${it.includePassive ? 'checked="checked"' : ''}
-                           value="${not it.includePassive}"/>
+                    <input type="checkbox" name="onlyPassive"
+                           id="osc1" ${it.onlyPassive ? 'checked="checked"' : ''}
+                           value="${not it.onlyPassive}"/>
                     <label for="osc1"><fmt:message key="virkailija.org.nayta.lakkautetut"/></label>
-                </div>
-
-                <div class="field-container-checkbox">
-                    <input type="checkbox" name="includePlanned"
-                           id="osc2" ${it.includePlanned ? 'checked="checked"' : ''}
-                           value="${not it.includePlanned}"/>
-                    <label for="osc2"><fmt:message key="virkailija.org.nayta.suunnitellut"/></label>
                 </div>
 
                 <div class="buttons">

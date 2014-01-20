@@ -52,13 +52,11 @@ public class OrganizationResource {
     public List<Map<String, Object>> searchJson(@QueryParam("searchString") final String searchString,
                                                 @QueryParam("organizationType") final String organizationType,
                                                 @QueryParam("learningInstitutionType") final String learningInstitutionType,
-                                                @QueryParam("includePassive") @DefaultValue("false") final boolean includePassive,
-                                                @QueryParam("includePlanned") @DefaultValue("false") final boolean includePlanned) {
-        LOGGER.debug("Search organizations q: {}, orgType: {}, loiType: {}, passive: {}, planned: {} ",
-                new String[] {searchString, organizationType, learningInstitutionType, String.valueOf(includePassive),
-                        String.valueOf(includePlanned)});
+                                                @QueryParam("onlyPassive") @DefaultValue("false") final boolean onlyPassive) {
+        LOGGER.debug("Search organizations q: {}, orgType: {}, loiType: {}, passive: {}",
+                new String[] {searchString, organizationType, learningInstitutionType, String.valueOf(onlyPassive)});
         List<Organization> listOfOrganization = getOrganizations(searchString, organizationType,
-                learningInstitutionType, includePassive, includePlanned);
+                learningInstitutionType, onlyPassive);
         return toMap(listOfOrganization);
     }
 
@@ -102,17 +100,20 @@ public class OrganizationResource {
     private List<Organization> getOrganizations(final String searchString,
                                                 final String organizationType,
                                                 final String learningInstitutionType,
-                                                final boolean includePassive,
-                                                final boolean includePlanned) {
+                                                final boolean onlyPassive) {
         LOGGER.debug("getOrganizations {} {} {} {}",
                 new String[]{searchString, organizationType, learningInstitutionType,
-                        String.valueOf(includePassive), String.valueOf(includePlanned)});
+                        String.valueOf(onlyPassive)});
         OrganisaatioSearchCriteria criteria = new OrganisaatioSearchCriteria();
         criteria.setSearchStr(searchString);
         criteria.setOrganisaatioTyyppi(organizationType);
         criteria.setOppilaitosTyyppi(learningInstitutionType);
-        criteria.setLakkautetut(includePassive);
-        criteria.setSuunnitellut(includePlanned);
+        if (onlyPassive) {
+            criteria.setLakkautetut(true);
+        } else {
+            criteria.setLakkautetut(false);
+        }
+
         List<Organization> organizations = organizationService.search(criteria);
         LOGGER.debug("getOrganizations found {} organizations", organizations.size());
         if (LOGGER.isDebugEnabled()) {
