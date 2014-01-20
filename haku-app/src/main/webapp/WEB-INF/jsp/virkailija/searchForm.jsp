@@ -52,9 +52,11 @@
                         </div>
                     </td>
                     <td>
+                        <label for="sendingSchool"><fmt:message key="virkailija.hakemus.lahtokoulu"/></label>
                         <div class="field-search-containerbox">
-                            <!-- lähtökoulu -->
-                            &nbsp;
+                            <input id="sendingSchool" type="text" name="sendingSchool" />
+                            <input id="sendingClass" size="4" type="text" name="sendingClass" />
+                            <input id="sendingSchoolOid" type="hidden" />
                         </div>
                     </td>
                 </tr>
@@ -63,10 +65,6 @@
                         <label for="application-system"><fmt:message key="virkailija.hakemus.haku"/></label>
                         <div class="field-search-containerbox">
                             <select id="application-system">
-                                <option value="">&nbsp;</option>
-                                <c:forEach var="applicationSystem" items="${it.applicationSystems}">
-                                    <option <c:if test="${applicationSystem == it.defaultAS}">selected="selected"</c:if> value="${applicationSystem.id}"><haku:i18nText value="${applicationSystem.name}"/>&nbsp;</option>
-                                </c:forEach>
                             </select>
                         </div>
                     </td>

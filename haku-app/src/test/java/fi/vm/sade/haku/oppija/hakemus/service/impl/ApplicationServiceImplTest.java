@@ -70,7 +70,7 @@ public class ApplicationServiceImplTest {
 
     @Before
     public void setUp() {
-        applicationQueryParameters = new ApplicationQueryParameters(null, null, "", "", "", false, 0, Integer.MAX_VALUE, "fullName", 1);
+        applicationQueryParameters = new ApplicationQueryParameters(null, null, "", "", "", false, "", "", 0, Integer.MAX_VALUE, "fullName", 1);
         application = new Application();
         Map<String, String> answers = new HashMap<String, String>();
         answers.put("avain", "arvo");

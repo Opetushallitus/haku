@@ -94,6 +94,7 @@
         applicationSystemId: '<c:out value="${it.applicationSystemId}"/>',
         vaiheId: '<c:out value="${vaihe.id}"/>',
         teemaId: '<c:out value="${parent.id}"/>',
+        uiLang: '<c:out value="${requestScope['fi_vm_sade_oppija_language']}"/>',
         baseEducation: '<c:out value="${answers.POHJAKOULUTUS}"/>',
         <c:choose>
             <c:when test="${answers.ammatillinenTutkintoSuoritettu}">

@@ -16,6 +16,13 @@ Haet urheilijana ammatilliseen koulutukseen. Lisätietoja löydät osoitteesta
 http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
 
 #end
+#if ($educationCode)
+
+Hait musiikki-, tanssi- tai liikunta-alan koulutukseen. Muista tarkistaa oppilaitoksen
+nettisivuilta, pitääkö sinun täyttää myös oppilaitoksen oma lisätietolomake. Lomakkeen
+voit tulostaa oppilaitoksen nettisivuilta, ja se on lähetettävä hakuaikana oppilaitokseen.
+
+#end
 
 Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän. Jos haluat muuttaa
 hakutoiveitasi, ole yhteydessä Opintopolun hakuneuvontaan hakuaikana

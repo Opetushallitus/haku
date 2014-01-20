@@ -34,6 +34,7 @@ public class ApplicationOption {
     private String aoIdentifier;
     private boolean kaksoistutkinto;
     private boolean athleteEducation;
+    private String educationCode;
 
     public String getId() {
         return id;
@@ -121,5 +122,13 @@ public class ApplicationOption {
 
     public void setAthleteEducation(boolean athleteEducation) {
         this.athleteEducation = athleteEducation;
+    }
+
+    public String getEducationCode() {
+        return educationCode;
+    }
+
+    public void setEducationCode(String educationCode) {
+        this.educationCode = educationCode;
     }
 }

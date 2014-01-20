@@ -20,13 +20,13 @@
         <jersey.version>1.17.1</jersey.version>
         <servlet.version>3.0.1</servlet.version>
         <mongo-driver.version>2.10.1</mongo-driver.version>
-        <slf4j.version>1.7.2</slf4j.version>
+        <slf4j.version>1.6.1</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
         <cxf.version>2.7.3</cxf.version>
         <cxf-common-utilities.version>2.5.9</cxf-common-utilities.version>
         <mockito.version>1.9.5</mockito.version>
         <guava.version>15.0</guava.version>
-        <ehcache.version>2.4.8</ehcache.version>
+        <ehcache.version>2.5.0</ehcache.version>
         <flapdoodle.version>1.36</flapdoodle.version>
         <org.apache.tomcat.embed>7.0.39</org.apache.tomcat.embed>
         <clover.version>3.1.8</clover.version>

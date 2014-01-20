@@ -29,11 +29,23 @@ public final class TestObjectCreator {
     public static final String KOODI_KOODI_URI_AND_ARVO = "koodi arvo";
     public static final KieliType LANG = KieliType.FI;
 
+    public static final String LYHYT_NIMI_2 = "toinen nimi";
+    public static final String NIMI_2 = "toinen pitkä nimi";
+    public static final String KOODI_KOODI_URI_AND_ARVO_2 = "toinen koodi arvo";
+    public static final KieliType LANG_2 = KieliType.SV;
+
     public static KoodiMetadataType createKoodiMetadataType() {
         KoodiMetadataType koodiMetadataType = new KoodiMetadataType();
         koodiMetadataType.setKieli(LANG);
         koodiMetadataType.setLyhytNimi(LYHYT_NIMI);
         koodiMetadataType.setNimi(NIMI);
+        return koodiMetadataType;
+    }
+    public static KoodiMetadataType createKoodiMetadataType2() {
+        KoodiMetadataType koodiMetadataType = new KoodiMetadataType();
+        koodiMetadataType.setKieli(LANG_2);
+        koodiMetadataType.setLyhytNimi(LYHYT_NIMI_2);
+        koodiMetadataType.setNimi(NIMI_2);
         return koodiMetadataType;
     }
 

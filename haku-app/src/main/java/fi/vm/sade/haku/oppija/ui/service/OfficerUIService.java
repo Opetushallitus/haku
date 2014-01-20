@@ -2,10 +2,12 @@ package fi.vm.sade.haku.oppija.ui.service;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public interface OfficerUIService {
@@ -26,6 +28,8 @@ public interface OfficerUIService {
 
     ModelResponse getOrganizationAndLearningInstitutions();
 
+    List<ApplicationSystem> getApplicationSystems();
+
     void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo)
             throws ResourceNotFoundException;
 
@@ -44,4 +48,6 @@ public interface OfficerUIService {
     Application activateApplication(String oid, String reason) throws ResourceNotFoundException;
 
     ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication) throws ResourceNotFoundException;
+
+    List<Map<String, Object>> getSchools(String term);
 }

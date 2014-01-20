@@ -63,10 +63,23 @@
         "endDate": null,
         "name": {
             "translations": {
-                "fi": "Espoon yhteislyseon lukio"
+                "sv": "Björneborgs Svenska Samskola"
             }
         },
         "oid": "1.2.246.562.10.38071017809",
+        "types": ["OPPILAITOS"],
+        "parentOid": "1.2.246.562.10.10108401950",
+        "startDate": 694216800000
+    },
+    {
+        "endDate": null,
+        "name": {
+            "translations": {
+                "fi": "Joku kumma koulu",
+                "sv": "Någon ovanlig skola"
+            }
+        },
+        "oid": "1.2.246.562.10.56695937518",
         "types": ["OPPILAITOS"],
         "parentOid": "1.2.246.562.10.10108401950",
         "startDate": 694216800000

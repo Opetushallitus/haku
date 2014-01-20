@@ -31,8 +31,7 @@ public class RequiredFieldValidator extends FieldValidator {
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
-        final Map<String, String> values = validationInput.getValues();
-        if (values == null || StringUtils.isBlank(values.get(getFieldName()))) {
+        if (StringUtils.isBlank(validationInput.getValue(getFieldName()))) {
             return invalidValidationResult;
         }
         return validValidationResult;
