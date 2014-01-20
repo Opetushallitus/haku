@@ -57,7 +57,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 if (!checkProvider(validationInput, ao) ||
                         !checkAthlete(validationInput, ao) ||
                         !checkSora(validationInput, ao) ||
-                        !checkEducationCode(validationInput, ao) ||
+                        //!checkEducationCode(validationInput, ao) || !TODO enable this when KI implemented
                         !checkTeachingLang(validationInput, ao) ||
                         !checkApplicationSystem(validationInput, ao) ||
                         !checkAOIdentifier(validationInput, ao) ||
