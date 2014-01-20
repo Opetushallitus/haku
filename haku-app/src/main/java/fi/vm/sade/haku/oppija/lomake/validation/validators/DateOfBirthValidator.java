@@ -33,8 +33,8 @@ public class DateOfBirthValidator extends FieldValidator {
     public static final String DATE_OF_BIRTH_NOT_A_DATE_ERROR = "henkilotiedot.syntymaaika.eipaivamaara";
     public static final String DATE_OF_BIRTH_FORMAT = "dd.MM.yyyy";
 
-    public DateOfBirthValidator(final String DateOfBirthId,  final I18nText errorMessage) {
-        super(DateOfBirthId, errorMessage);
+    public DateOfBirthValidator(final String fieldName,  final I18nText errorMessage) {
+        super(fieldName, errorMessage);
     }
 
     @Override
