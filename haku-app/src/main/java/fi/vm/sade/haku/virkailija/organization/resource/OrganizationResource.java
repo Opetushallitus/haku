@@ -109,9 +109,9 @@ public class OrganizationResource {
         criteria.setOrganisaatioTyyppi(organizationType);
         criteria.setOppilaitosTyyppi(learningInstitutionType);
         if (onlyPassive) {
-            criteria.setVainLakkautetut(true);
+            criteria.setLakkautetut(true);
         } else {
-            criteria.setVainAktiiviset(true);
+            criteria.setLakkautetut(false);
         }
 
         List<Organization> organizations = organizationService.search(criteria);

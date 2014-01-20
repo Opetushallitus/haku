@@ -40,13 +40,13 @@
         <springProfileName>default</springProfileName>
 
         <authentication-api.version>8.0</authentication-api.version>
-        <generic-common.version>${project.version}</generic-common.version>
-        <koodisto-api.version>${project.version}</koodisto-api.version>
-        <koulutusinformaatio-api.version>${project.version}</koulutusinformaatio-api.version>
+        <generic-common.version>8.0</generic-common.version>
+        <koodisto-api.version>8.0</koodisto-api.version>
+        <koulutusinformaatio-api.version>9.0-SNAPSHOT</koulutusinformaatio-api.version>
         <log-client.version>8.0</log-client.version>
-        <organisaatio-api.version>8.0-SNAPSHOT</organisaatio-api.version>
-        <organisaatio-solr-client.version>8.0-SNAPSHOT</organisaatio-solr-client.version>
-        <tarjonta-api.version>${project.version}</tarjonta-api.version>
+        <organisaatio-api.version>8.0</organisaatio-api.version>
+        <organisaatio-solr-client.version>8.0</organisaatio-solr-client.version>
+        <tarjonta-api.version>8.0</tarjonta-api.version>
     </properties>
 
     <repositories>

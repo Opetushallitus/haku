@@ -68,19 +68,16 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         }
     }
 
-    static class OrgOnlyPassivePredicate implements Predicate<Organization> {
+    static class OrgIncludePassivePredicate implements Predicate<Organization> {
 
-        private final boolean onlyPassive;
+        private final boolean includePassive;
 
-        public OrgOnlyPassivePredicate(boolean onlyPassive) {
-            this.onlyPassive = onlyPassive;
+        public OrgIncludePassivePredicate(boolean includePassive) {
+            this.includePassive = includePassive;
         }
 
         public boolean apply(Organization org) {
-            if (!onlyPassive) {
-                return true;
-            }
-            return org.getEndDate() != null && org.getEndDate().before(new Date());
+            return org.getStartDate().before(new Date());
         }
     }
 
@@ -224,8 +221,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         @SuppressWarnings("unchecked")
         final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchStr()),
                 new OrgTypePredicate(criteria.getOrganisaatioTyyppi()),
-                new OrgOnlyPassivePredicate(criteria.isVainLakkautetut()),
-                new OrgOnlyActivePredicate(criteria.isVainAktiiviset()));
+                new OrgIncludePassivePredicate(criteria.isLakkautetut()));
         return Lists.newArrayList(Iterables.filter(orgs, predicate));
     }
 
@@ -235,8 +231,7 @@ public class OrganizationServiceMockImpl implements OrganizationService {
                 .append("kunta: ").append(criteria.getKunta()).append(", ")
                 .append("oppilaitosTyyppi: ").append(criteria.getOppilaitosTyyppi()).append(", ")
                 .append("organisaatioTyyppi: ").append(criteria.getOrganisaatioTyyppi()).append(", ")
-                .append("vainLakkautetut: ").append(criteria.isVainLakkautetut()).append(", ")
-                .append("vainAktiiviset: ").append(criteria.isVainAktiiviset()).append(", ");
+                .append("lakkautetut: ").append(criteria.isLakkautetut()).append(", ");
         return builder.toString();
     }
 
