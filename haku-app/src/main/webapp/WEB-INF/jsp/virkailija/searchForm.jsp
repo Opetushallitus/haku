@@ -90,9 +90,7 @@
                         </div>
                     </td>
                     <td>
-                        <div id="search-spinner" style="display: none">
-                            <p>Haetaan<br />hakemuksia...</p>
-                        </div>
+                        &nbsp;
                     </td>
                 </tr>
 
@@ -116,6 +114,7 @@
                                value="<fmt:message key="virkailija.hakemus.tyhjenna"/>"/>
                         <input id="search-applications" class="button primary small" type="submit"
                                value="<fmt:message key="virkailija.hakemus.hae"/>"/>
+                        <div id="search-spinner"></div>
                     </td>
                 </tr>
                 <tr>
