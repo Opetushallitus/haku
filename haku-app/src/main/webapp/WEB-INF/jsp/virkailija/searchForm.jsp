@@ -48,7 +48,7 @@
                                     <option value="${option.value}" <c:if test="${option.value == it.defaultSemester}">selected="selected"</c:if> ><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
                                 </c:forEach>
                             </select>
-                            <input type="text" id="hakukausiVuosi" name="hakukausiVuosi" value="${it.defaultYear}"/>
+                            <input type="text" id="hakukausiVuosi" size="4" name="hakukausiVuosi" value="${it.defaultYear}"/>
                         </div>
                     </td>
                     <td>

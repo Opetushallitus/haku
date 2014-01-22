@@ -29,6 +29,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.AlwaysFailsValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -229,7 +230,7 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
         addYesAndIDontOptions(suorittanutAmmatillisenTutkinnon, FORM_MESSAGES);
         addRequiredValidator(suorittanutAmmatillisenTutkinnon, FORM_ERRORS);
 
-        lukioRule.addChild(suorittanutAmmatillisenTutkinnon);
+
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
 
         RelatedQuestionRule suorittanutTutkinnonRule = new RelatedQuestionRule(ElementUtil.randomId(),
@@ -241,6 +242,27 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
         suorittanutTutkinnonRule.addChild(warning);
 
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutTutkinnonRule);
+
+        Radio suorittanutAmmatillisenTutkinnonLukio = new Radio(
+                "ammatillinenTutkintoSuoritettu",
+                createI18NText("form.koulutustausta.ammatillinenSuoritettu", FORM_MESSAGES));
+        addYesAndIDontOptions(suorittanutAmmatillisenTutkinnonLukio, FORM_MESSAGES);
+        addRequiredValidator(suorittanutAmmatillisenTutkinnonLukio, FORM_ERRORS);
+
+        lukioRule.addChild(suorittanutAmmatillisenTutkinnonLukio);
+
+        RelatedQuestionRule suorittanutTutkinnonLukioRule = new RelatedQuestionRule(ElementUtil.randomId(),
+                suorittanutAmmatillisenTutkinnonLukio.getId(), "^true", false);
+        Notification warningLukio = new Notification(
+                ElementUtil.randomId(),
+                createI18NText("form.koulutustausta.ammatillinenSuoritettu.lukio.huom", FORM_MESSAGES),
+                Notification.NotificationType.WARNING);
+        warningLukio.setValidator(new AlwaysFailsValidator(warningLukio.getId(), createI18NText("form.koulutustausta.ammatillinenSuoritettu.lukio.huom",
+                FORM_ERRORS)));
+        suorittanutTutkinnonLukioRule.addChild(warningLukio);
+
+        suorittanutAmmatillisenTutkinnonLukio.addChild(suorittanutTutkinnonLukioRule);
+
 
         DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
                 createI18NText("form.koulutustausta.perusopetuksenKieli", FORM_MESSAGES), null);
