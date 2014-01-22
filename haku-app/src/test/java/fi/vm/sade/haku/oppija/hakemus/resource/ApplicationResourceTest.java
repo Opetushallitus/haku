@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.impl.ApplicationServiceImpl;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
@@ -84,6 +85,10 @@ public class ApplicationResourceTest {
             // do nothing
         }
 
+        ArrayList<String> asIds = new ArrayList<String>();
+        asIds.add("asId1");
+        asIds.add("asId2");
+        asIds.add("asId3");
         ArrayList<Application> applications = new ArrayList<Application>();
         applications.add(this.application);
         ApplicationSearchResultDTO searchResultDTO = new ApplicationSearchResultDTO(1, Lists.newArrayList(new ApplicationSearchResultItemDTO()));
@@ -91,7 +96,7 @@ public class ApplicationResourceTest {
         when(applicationService.getApplicationsByApplicationOption(anyList())).thenReturn(applications);
         when(applicationService.findApplications(eq(OID), any(ApplicationQueryParameters.class))).thenReturn(searchResultDTO);
         when(applicationService.findApplications(eq(INVALID_OID), any(ApplicationQueryParameters.class))).thenReturn(emptySearchResultDTO);
-        when(applicationSystemService.findByYearAndSemester(any(String.class), any(String.class))).thenReturn(new ArrayList<String>());
+        when(applicationSystemService.findByYearAndSemester(any(String.class), any(String.class))).thenReturn(asIds);
         this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService);
     }
 
@@ -151,5 +156,55 @@ public class ApplicationResourceTest {
     @Test(expected = JSONException.class)
     public void testPutApplicationAdditionalInfoKeyValueNullValue() throws ResourceNotFoundException {
         applicationResource.putApplicationAdditionalInfoKeyValue(OID, "newKey", null);
+    }
+
+    @Test
+    public void testFindApplicationsOrdered() {
+        ApplicationServiceMock myApplicationService = new ApplicationServiceMock();
+        ApplicationResource resource = new ApplicationResource(myApplicationService, applicationSystemService);
+        resource.findApplications("query", null, "aoId", "lopOid", "", "", "", "aoId", false, "sendingSchool",
+                "class", 0, 20);
+        assertEquals("query", myApplicationService.query);
+        ApplicationQueryParameters param = myApplicationService.param;
+        assertEquals(1, param.getOrderDir());
+        assertEquals("fullName", param.getOrderBy());
+        assertEquals(0, param.getAsIds().size());
+
+
+        resource.findApplications("query", null, "aoId", "lopOid", "asId", "", "", "aoId", false, "sendingSchool",
+                "class", 0, 20);
+        param = myApplicationService.param;
+        assertEquals(1, param.getAsIds().size());
+        assertEquals("asId", param.getAsIds().get(0));
+
+        resource.findApplications("query", null, "aoId", "lopOid", "asId", "semester", "year", "aoId", false, "sendingSchool",
+                "class", 0, 20);
+        param = myApplicationService.param;
+        assertEquals(1, param.getAsIds().size());
+        assertEquals("asId", param.getAsIds().get(0));
+
+        resource.findApplications("query", null, "aoId", "lopOid", "", "semester", "year", "aoId", false, "sendingSchool",
+                "class", 0, 20);
+        param = myApplicationService.param;
+        assertEquals(3, param.getAsIds().size());
+        assertEquals("asId1", param.getAsIds().get(0));
+        assertEquals("asId2", param.getAsIds().get(1));
+        assertEquals("asId3", param.getAsIds().get(2));
+    }
+
+    class ApplicationServiceMock extends ApplicationServiceImpl {
+
+        public String query;
+        public ApplicationQueryParameters param;
+        public ApplicationServiceMock() {
+            super(null, null, null, null, null, null, null, null, null);
+        }
+
+        @Override
+        public ApplicationSearchResultDTO findApplications(String query, ApplicationQueryParameters param) {
+            this.query = query;
+            this.param = param;
+            return null;
+        }
     }
 }
