@@ -41,11 +41,9 @@ public class HakuServiceMockImpl implements HakuService {
     @Override
     public List<ApplicationSystem> getApplicationSystems() {
 
-        final String[] hakukaudet = {HAKUKAUSI_SYKSY, HAKUKAUSI_KEVAT};
-
         return Lists.newArrayList(
                 new ApplicationSystemBuilder()
-                        .addId(ElementUtil.randomId())
+                        .addId("haku1")
                         .addName(new I18nText(ImmutableMap.of("fi", "testi haku 1 " + HAKUKAUSI_SYKSY)))
                         .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
                         .addHakukausiUri(HAKUKAUSI_SYKSY)
@@ -53,7 +51,7 @@ public class HakuServiceMockImpl implements HakuService {
                         .addApplicationSystemType(VARSINAINEN_HAKU)
                         .get(),
                 new ApplicationSystemBuilder()
-                        .addId(ElementUtil.randomId())
+                        .addId("haku2")
                         .addName(new I18nText(ImmutableMap.of("fi", "testi haku 2 " + OppijaConstants.HAKUKAUSI_KEVAT)))
                         .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
                         .addHakukausiUri(OppijaConstants.HAKUKAUSI_KEVAT)
@@ -62,15 +60,15 @@ public class HakuServiceMockImpl implements HakuService {
                         .get(),
 
                 new ApplicationSystemBuilder()
-                        .addId(ElementUtil.randomId())
-                        .addName(new I18nText(ImmutableMap.of("fi", "testi haku  3" + OppijaConstants.LISA_HAKU)))
+                        .addId("haku3")
+                        .addName(new I18nText(ImmutableMap.of("fi", "testi haku 3" + OppijaConstants.LISA_HAKU)))
                         .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
                         .addHakukausiUri(HAKUKAUSI_SYKSY)
                         .addHakukausiVuosi(2014)
                         .addApplicationSystemType(LISA_HAKU)
                         .get(),
                 new ApplicationSystemBuilder()
-                        .addId(ElementUtil.randomId())
+                        .addId("haku4")
                         .addName(new I18nText(ImmutableMap.of("fi", "testi haku 4 " + OppijaConstants.LISA_HAKU)))
                         .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(getDate(-100), getDate(-1))))
                         .addHakukausiUri(HAKUKAUSI_SYKSY)
