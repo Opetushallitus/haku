@@ -47,39 +47,27 @@ public class FormGeneratorMock implements FormGenerator {
     @Override
     public List<ApplicationSystem> generate() {
         List<ApplicationSystem> asList = Lists.newArrayList();
-        final Calendar instance = Calendar.getInstance();
-        instance.roll(Calendar.YEAR, -1);
-        Date start = new Date(instance.getTimeInMillis());
-        instance.roll(Calendar.YEAR, 2);
-        Date end = new Date(instance.getTimeInMillis());
-        List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
-        I18nText name = ElementUtil.createI18NAsIs(asId);
-        Form form = YhteishakuSyksy.generateForm(new ApplicationSystemBuilder().addId(asId).addName(name)
-                .addApplicationPeriods(applicationPeriods).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
-                .addApplicationCompleteElements(YhteishakuSyksy.generateApplicationCompleteElements())
-                .get(), koodistoService);
-        asList.add(new ApplicationSystemBuilder().addId(asId).addForm(form).addName(name)
-                .addApplicationPeriods(applicationPeriods).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
-                .addApplicationCompleteElements(YhteishakuSyksy.generateApplicationCompleteElements())
-                .get());
+        asList.add(createApplicationSystem());
         return asList;
     }
 
     public ApplicationSystem createApplicationSystem() {
+        Form form = YhteishakuSyksy.generateForm(generateInitialApplicationSystemBuilder()
+                .get(), koodistoService);
+        return generateInitialApplicationSystemBuilder().addForm(form).get();
+    }
+
+    private ApplicationSystemBuilder generateInitialApplicationSystemBuilder(){
         final Calendar instance = Calendar.getInstance();
         instance.roll(Calendar.YEAR, -1);
         Date start = new Date(instance.getTimeInMillis());
         instance.roll(Calendar.YEAR, 2);
         Date end = new Date(instance.getTimeInMillis());
+        Integer hakuvuosi = instance.get(Calendar.YEAR);
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
         I18nText name = ElementUtil.createI18NAsIs(asId);
-        Form form = YhteishakuSyksy.generateForm(new ApplicationSystemBuilder().addId(asId).addName(name)
-                .addApplicationPeriods(applicationPeriods).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
-                .addApplicationCompleteElements(YhteishakuSyksy.generateApplicationCompleteElements())
-                .get(), koodistoService);
-        return new ApplicationSystemBuilder().addId(asId).addForm(form).addName(name)
-                .addApplicationPeriods(applicationPeriods).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
-                .addApplicationCompleteElements(YhteishakuSyksy.generateApplicationCompleteElements())
-                .get();
+        return new ApplicationSystemBuilder().addId(asId).addName(name).addApplicationPeriods(applicationPeriods)
+                .addHakukausiVuosi(hakuvuosi).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
+                .addApplicationCompleteElements(YhteishakuSyksy.generateApplicationCompleteElements());
     }
 }
