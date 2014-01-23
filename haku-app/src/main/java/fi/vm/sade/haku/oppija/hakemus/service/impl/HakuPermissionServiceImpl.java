@@ -1,10 +1,12 @@
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import fi.vm.sade.generic.service.AbstractPermissionService;
+import fi.vm.sade.generic.ui.portlet.security.User;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.security.OrganisationHierarchyAuthorizer;
+import fi.vm.sade.security.SadeUserDetailsWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.HEAD;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
