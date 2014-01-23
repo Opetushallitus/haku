@@ -11,6 +11,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
+import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -44,6 +45,7 @@ public class OfficerUIServiceImplTest {
     private ElementTreeValidator elementTreeValidator;
     private AuthenticationService authenticationService;
     private OrganizationService organizationService;
+    private UserSession userSession;
 
     private Application application;
     private Phase phase = new Phase(ID, ElementUtil.createI18NAsIs("title"), false);
@@ -66,6 +68,7 @@ public class OfficerUIServiceImplTest {
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
         authenticationService = mock(AuthenticationService.class);
         organizationService = mock(OrganizationService.class);
+        userSession = mock(UserSession.class);
 
         officerUIService = new OfficerUIServiceImpl(
                 applicationService,
@@ -76,7 +79,7 @@ public class OfficerUIServiceImplTest {
                 elementTreeValidator,
                 mock(ApplicationSystemService.class),
                 authenticationService,
-                organizationService);
+                organizationService, userSession);
         form.addChild(phase);
         when(applicationService.getApplicationPreferenceOids(application)).thenReturn(OIDS);
         when(applicationService.getApplication(OID)).thenReturn(application);
@@ -85,6 +88,8 @@ public class OfficerUIServiceImplTest {
         when(formService.getActiveForm(any(String.class))).thenReturn(form);
         when(formService.getLastPhase(any(String.class))).thenReturn(phase);
         when(hakuPermissionService.userCanUpdateApplication(any(Application.class))).thenReturn(true);
+        User officerUser = new User("1.2.246.562.24.00000000001");
+        when(userSession.getUser()).thenReturn(officerUser);
     }
 
     @Test

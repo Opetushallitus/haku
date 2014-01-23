@@ -91,6 +91,10 @@ public class ModelResponse {
         this.errors.putAll(errors);
     }
 
+    public Map<String, I18nText> getErrorMessages() {
+        return errors;
+    }
+
     public boolean hasErrors() {
         return !errors.isEmpty();
     }

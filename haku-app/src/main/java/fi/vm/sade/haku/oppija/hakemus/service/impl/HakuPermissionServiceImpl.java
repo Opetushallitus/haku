@@ -1,12 +1,10 @@
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import fi.vm.sade.generic.service.AbstractPermissionService;
-import fi.vm.sade.generic.ui.portlet.security.User;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.security.OrganisationHierarchyAuthorizer;
-import fi.vm.sade.security.SadeUserDetailsWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +64,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     @Override
     public boolean userCanUpdateApplication(Application application) {
         String userOid = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println("permissinCheck, userOid: "+userOid);
         if (userOid == null || userOid.equals(application.getPersonOid())) {
             return false;
         }

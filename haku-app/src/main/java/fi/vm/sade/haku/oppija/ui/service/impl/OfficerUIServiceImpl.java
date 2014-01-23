@@ -18,6 +18,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
+import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
@@ -52,6 +53,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final ApplicationSystemService applicationSystemService;
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
+    private final UserSession userSession;
 
     private static final List<Integer> syyskausi = ImmutableList.of(Calendar.JULY, Calendar.AUGUST, Calendar.SEPTEMBER,
             Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER);
@@ -66,8 +68,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final ElementTreeValidator elementTreeValidator,
                                 final ApplicationSystemService applicationSystemService,
                                 final AuthenticationService authenticationService,
-                                final OrganizationService organizationService
-    ) {
+                                final OrganizationService organizationService,
+                                final UserSession userSession) {
         this.applicationService = applicationService;
         this.formService = formService;
         this.koodistoService = koodistoService;
@@ -78,6 +80,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.applicationSystemService = applicationSystemService;
         this.authenticationService = authenticationService;
         this.organizationService = organizationService;
+        this.userSession = userSession;
     }
 
     @Override
@@ -116,6 +119,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanUpdateApplication(application));
         modelResponse.addObjectToModel("applicationSystem", as);
 
+        String userOid = userSession.getUser().getUserName();
+        if (userOid == null || userOid.equals(application.getPersonOid())) {
+            Map<String, I18nText> errors = modelResponse.getErrorMessages();
+            errors.put("common", ElementUtil.createI18NText("virkailija.hakemus.omanMuokkausKielletty", "messages", null));
+            modelResponse.setErrorMessages(errors);
+        }
         return modelResponse;
     }
 
