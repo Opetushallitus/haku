@@ -123,6 +123,12 @@ $(document).ready(function () {
         }
     });
 
+    $('input#sendingSchool').change(function(event) {
+        if (!$(this).val()) {
+            $('#sendingSchoolOid').val("");
+        }
+    });
+
 
 /* ****************************************************************************
  * Organization search dialog
