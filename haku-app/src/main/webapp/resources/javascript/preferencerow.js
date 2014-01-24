@@ -48,7 +48,7 @@ var preferenceRow = {
                         '" data-aoidentifier="' + item.aoIdentifier +
                         '" data-kaksoistutkinto="' + item.kaksoistutkinto +
                         '" data-vocational="' + item.vocational +
-                        '" data-educationcode="' + item.educationDegreeUri +
+                        '" data-educationcode="' + item.educationCodeUri +
                         '" data-athlete="' + item.athleteEducation + '" >' + item.name + '</option>');
                 });
                 if (isInit && !selectedPreferenceOK && hakukohdeId && hakukohdeId !== '') {

@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot;
+package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
 public class MessageBundleNames {
     private final String formMessages;

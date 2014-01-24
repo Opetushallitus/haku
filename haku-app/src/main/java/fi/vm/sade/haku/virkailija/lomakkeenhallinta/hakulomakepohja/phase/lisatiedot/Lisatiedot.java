@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot;
 
-import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.TitledGroup;
@@ -9,11 +8,11 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextArea;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.And;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.OlderThan;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Value;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.MessageBundleNames;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
@@ -87,15 +86,19 @@ public class Lisatiedot {
                 createI18NText("form.lisatiedot.urheilija", mbn.getFormMessages()), true);
         ElementUtil.setVerboseHelp(urheilijanLisakysymyksetTeema, "form.lisatiedot.urheilija.verboseHelp", mbn.getFormVerboseHelp());
 
-        ImmutableList<String> ids = ImmutableList.of(
+        Expr onkoUrheilija = atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
                 "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys",
+                "preference1_urheilijalinjan_lisakysymys",
                 "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys",
+                "preference2_urheilijalinjan_lisakysymys",
                 "preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys",
+                "preference3_urheilijalinjan_lisakysymys",
                 "preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys",
-                "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys"
-        );
-        RelatedQuestionRule urheilijanLisakysymyksetSaanto = new RelatedQuestionRule(ElementUtil.randomId(), ids,
-                ElementUtil.KYLLA, false);
+                "preference4_urheilijalinjan_lisakysymys",
+                "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys",
+                "preference5_urheilijalinjan_lisakysymys");
+
+        RelatedQuestionComplexRule urheilijanLisakysymyksetSaanto = new RelatedQuestionComplexRule(ElementUtil.randomId(), onkoUrheilija);
         urheilijanLisakysymyksetSaanto.addChild(urheilijanLisakysymyksetTeema);
 
         TitledGroup opinnotGroup = createAiemmatOpinnotRyhma(mbn);
