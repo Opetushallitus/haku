@@ -17,11 +17,11 @@ package fi.vm.sade.haku.oppija.common.organisaatio.impl;
 
 import com.google.common.collect.Lists;
 import fi.vm.sade.generic.rest.CachingRestClient;
-import fi.vm.sade.haku.oppija.common.HttpClientHelper;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import fi.vm.sade.organisaatio.service.search.OrganisaatioSearchService;
@@ -33,10 +33,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Profile("default")
@@ -56,11 +55,6 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Value("${authentication.app.password.to.organisaatioservice}")
     private String clientAppPass;
 
-    private HttpClientHelper clientHelper;
-
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-    public static final int MAX_RESULTS = 10000;
     private final OrganisaatioSearchService service;
 
     @Autowired
@@ -72,12 +66,13 @@ public class OrganizationServiceImpl implements OrganizationService {
     public List<Organization> search(final OrganisaatioSearchCriteria searchCriteria) {
 
         LOG.debug("search organization kunta: {}, oidRestrictions: {}, loiType: {}, orgType: {}, q: {}, skipParents: {}",
-                searchCriteria.getKunta(),
-                searchCriteria.getOidRestrictionList().size(),
-                searchCriteria.getOppilaitosTyyppi(),
-                searchCriteria.getOrganisaatioTyyppi(),
-                searchCriteria.getSearchStr(),
-                searchCriteria.getSkipParents());
+                new String[]{
+                    searchCriteria.getKunta(),
+                    String.valueOf(searchCriteria.getOidRestrictionList().size()),
+                    searchCriteria.getOppilaitosTyyppi(),
+                    searchCriteria.getOrganisaatioTyyppi(),
+                    searchCriteria.getSearchStr(),
+                    String.valueOf(searchCriteria.getSkipParents())});
 
         final List<OrganisaatioPerustieto> result = service.searchBasicOrganisaatios(searchCriteria);
 
@@ -98,7 +93,8 @@ public class OrganizationServiceImpl implements OrganizationService {
         try {
             for (String numero : oppilaitosnumeros) {
                 OrganizationRestDTO orgDTO = cachingRestClient.get(baseUrl + numero, OrganizationRestDTO.class);
-                Organization org = new Organization(new I18nText(orgDTO.getNimi()), orgDTO.getOid(),
+                Map<String, String> nameTranslations = TranslationsUtil.createTranslationsMap(orgDTO.getNimi());
+                Organization org = new Organization(new I18nText(nameTranslations), orgDTO.getOid(),
                         orgDTO.getParentOid(), orgDTO.getTyypit(), orgDTO.getAlkuPvmAsDate(),
                         orgDTO.getLoppuPvmAsDate());
                 orgs.add(org);

@@ -15,6 +15,10 @@
  */
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
+import com.google.common.collect.Sets;
+
+import java.util.Set;
+
 /**
  * Holds information that is needed about the form or application structure.
  *
@@ -43,6 +47,8 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_SOCIAL_SECURITY_NUMBER = "Henkilotunnus";
     public static final String ELEMENT_ID_EMAIL = "Sähköposti";
     public static final String ELEMENT_ID_SEX = "Sukupuoli";
+    public static final String ELEMENT_ID_SENDING_SCHOOL = "lahtokoulu";
+    public static final String ELEMENT_ID_SENDING_CLASS = "lahtoluokka";
     public static final String ELEMENT_ID_HOME_CITY = "kotikunta";
     public static final String ELEMENT_ID_LANGUAGE = "äidinkieli";
     public static final String ELEMENT_ID_NATIONALITY = "kansalaisuus";
@@ -50,6 +56,8 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_CONTACT_LANGUAGE = "asiointikieli";
 
     public static final String ELEMENT_ID_BASE_EDUCATION = "POHJAKOULUTUS";
+
+    public static final String PHASE_EDUCATION = "koulutustausta";
 
     public static final String PREFERENCE_ID = "preference%d-Koulutus-id";
     public static final String PREFERENCE_NAME = "preference%d-Koulutus";
@@ -71,4 +79,9 @@ public final class OppijaConstants {
 
     public static final String HAKUKAUSI_SYKSY = "kausi_s";
     public static final String HAKUKAUSI_KEVAT = "kausi_k";
+
+    public static final Set<String> VALID_EDUCATION_CODES = Sets.newHashSet(
+            "koulutus_321204", "koulutus_321501", "koulutus_381203");
+    public static final String EDUCATION_CODE_KEY =  PREFERENCE_ID + "-educationcode";
+
 }

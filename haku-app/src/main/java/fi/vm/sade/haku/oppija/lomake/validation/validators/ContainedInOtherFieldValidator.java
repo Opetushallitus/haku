@@ -39,9 +39,8 @@ public class ContainedInOtherFieldValidator extends FieldValidator {
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
-        Map<String, String> values = validationInput.getValues();
-        String otherValue = StringUtils.trim(values.get(otherFieldName));
-        String thisValue = StringUtils.trim(values.get(fieldName));
+        String otherValue = StringUtils.trim(validationInput.getValue(otherFieldName));
+        String thisValue = StringUtils.trim(validationInput.getValue(fieldName));
 
         if (otherValue == null && thisValue == null) {
             return validValidationResult;

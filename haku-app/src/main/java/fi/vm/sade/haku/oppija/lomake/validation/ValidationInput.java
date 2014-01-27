@@ -16,8 +16,10 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation;
 
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ValidationInput {
@@ -31,9 +33,16 @@ public class ValidationInput {
                            final String applicationOid,
                            final String applicationSystemId) {
         this.element = element;
-        this.values = values;
+        this.values = new HashMap<String, String>(values);
         this.applicationOid = applicationOid;
         this.applicationSystemId = applicationSystemId;
+    }
+
+    public ValidationInput(final Element element, ValidationInput validationInput) {
+        this(element,
+                validationInput.getValues(),
+                validationInput.getApplicationOid(),
+                validationInput.getApplicationSystemId());
     }
 
     public Element getElement() {
@@ -41,7 +50,15 @@ public class ValidationInput {
     }
 
     public Map<String, String> getValues() {
-        return values;
+        return ImmutableMap.copyOf(values);
+    }
+
+    public boolean containsKey(final String key) {
+        return values.containsKey(key);
+    }
+
+    public String getValue(final String key) {
+        return values.get(key);
     }
 
     public String getApplicationOid() {

@@ -47,7 +47,7 @@ public class SsnUniqueConcreteValidator implements Validator {
     @Override
     public ValidationResult validate(ValidationInput validationInput) {
         return checkIfExistsBySocialSecurityNumber(validationInput.getApplicationSystemId(),
-                validationInput.getValues().get(SocialSecurityNumber.HENKILOTUNNUS),
+                validationInput.getValue(SocialSecurityNumber.HENKILOTUNNUS),
                 validationInput.getApplicationOid());
     }
 

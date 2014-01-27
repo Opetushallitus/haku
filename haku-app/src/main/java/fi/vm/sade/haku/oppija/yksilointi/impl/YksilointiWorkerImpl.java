@@ -38,6 +38,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.VALID_EDUCATION_CODES;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Service
@@ -88,8 +90,9 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Application application = applicationService.getNextWithoutPersonOid();
 
         while (application != null) {
-            applicationService.fillLOPChain(application, false);
-            applicationService.addPersonOid(application);
+            application = applicationService.fillLOPChain(application, false);
+            application = applicationService.addPersonOid(application);
+            application = applicationService.addSendingSchool(application);
             application.activate();
             applicationService.update(new Application(application.getOid()), application);
             if (sendMail) {
@@ -160,6 +163,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         ctx.put("applicationDate", applicationDate);
         ctx.put("preferences", getPreferences(application));
         ctx.put("athlete", isAthlete(application));
+        ctx.put("mtl", isEducationCode(application));
 
         return ctx;
     }
@@ -178,6 +182,15 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             preferences.add(i + ". " + koulu + "\n   " + koulutus);
         }
         return preferences;
+    }
+
+    private boolean isEducationCode(Application application) {
+        Map<String, String> answers = application.getVastauksetMerged();
+        return (VALID_EDUCATION_CODES.contains(answers.get(String.format(EDUCATION_CODE_KEY, 1))) ||
+                VALID_EDUCATION_CODES.contains(answers.get(String.format(EDUCATION_CODE_KEY, 2))) ||
+                VALID_EDUCATION_CODES.contains(answers.get(String.format(EDUCATION_CODE_KEY, 3))) ||
+                VALID_EDUCATION_CODES.contains(answers.get(String.format(EDUCATION_CODE_KEY, 4))) ||
+                VALID_EDUCATION_CODES.contains(answers.get(String.format(EDUCATION_CODE_KEY, 5))));
     }
 
     private boolean isAthlete(Application application) {

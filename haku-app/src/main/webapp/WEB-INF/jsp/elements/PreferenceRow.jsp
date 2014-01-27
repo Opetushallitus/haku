@@ -31,6 +31,7 @@
     <c:set value="${sortableItem.educationInputId}-educationDegree" var="hiddenEducationDegreeId" scope="page"/>
     <c:set value="${sortableItem.id}-childLONames" var="childLONamesId" scope="page"/>
     <c:set value="${hiddenKoulutusId}-lang" var="hiddenKoulutusIdLang" scope="page"/>
+    <c:set value="${hiddenKoulutusId}-educationcode" var="hiddenEducationCode" scope="page"/>
     <c:set value="${hiddenKoulutusId}-sora" var="hiddenKoulutusIdSora" scope="page"/>
     <c:set value="${hiddenKoulutusId}-aoIdentifier" var="hiddenKoulutusIdAoIdentifier" scope="page"/>
     <c:set value="${hiddenKoulutusId}-athlete" var="hiddenKoulutusIdAthlete" scope="page"/>
@@ -73,6 +74,7 @@
                 <haku:errorMessage id="${selectInputId}" additionalClass="margin-top-1"/>
                 <haku:input-hidden id="${hiddenKoulutusId}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenEducationDegreeId}" data="${answers}"/>
+                <haku:input-hidden id="${hiddenEducationCode}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdLang}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdSora}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdAoIdentifier}" data="${answers}"/>

@@ -115,7 +115,6 @@ public abstract class Element implements Serializable {
         return ImmutableList.copyOf(children);
     }
 
-
     @Transient
     public String getType() {
         return type;

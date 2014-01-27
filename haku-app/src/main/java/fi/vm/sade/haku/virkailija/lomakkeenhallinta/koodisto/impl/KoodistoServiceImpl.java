@@ -118,12 +118,12 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getLearningInstitutionTypes() {
-        return urisToOptions(CODE_LEARNING_INSTITUTION_TYPES);
+        return urisToOptions(CODE_LEARNING_INSTITUTION_TYPES, true);
     }
 
     @Override
     public List<Option> getOrganizationtypes() {
-        return urisToOptions(CODE_ORGANIZATION_TYPES);
+        return urisToOptions(CODE_ORGANIZATION_TYPES, true);
     }
 
     @Override
@@ -158,7 +158,7 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getHakukausi() {
-        return urisToOptions(CODE_HAKUKAUSI);
+        return urisToOptions(CODE_HAKUKAUSI, false);
     }
 
     @Override
@@ -190,6 +190,7 @@ public class KoodistoServiceImpl implements KoodistoService {
                         || LUKIO_JA_PERUSKOULU.equals(arvo))
                         || KANSANOPISTO.equals(arvo)) {
                     lukioNumerot.add(koodi.getKoodiArvo());
+                    break;
                 }
             }
         }
@@ -210,7 +211,7 @@ public class KoodistoServiceImpl implements KoodistoService {
                                 new KoodiTypeToOptionFunction())));
     }
 
-    private List<Option> urisToOptions(final String codeName) {
+    private List<Option> urisToOptions(final String codeName, final boolean withVersion) {
         return ImmutableList.copyOf(
                 Lists.reverse(
                         Lists.transform(
@@ -218,9 +219,10 @@ public class KoodistoServiceImpl implements KoodistoService {
                                 new Function<KoodiType, Option>() {
                                     @Override
                                     public Option apply(final KoodiType koodiType) {
+                                        String version = withVersion ? "#" + koodiType.getVersio() : "";
                                         return new Option(
                                                 new I18nText(TranslationsUtil.createTranslationsMap(koodiType)),
-                                                koodiType.getKoodiUri() + "#" + koodiType.getVersio());
+                                                koodiType.getKoodiUri() + version);
                                     }
                                 })));
     }

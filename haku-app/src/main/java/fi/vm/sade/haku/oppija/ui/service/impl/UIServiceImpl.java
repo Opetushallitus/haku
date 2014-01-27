@@ -77,7 +77,7 @@ public class UIServiceImpl implements UIService {
     @Override
     public ModelResponse getApplicationComplete(final String applicationSystemId, final String oid) throws ResourceNotFoundException {
         Form activeForm = formService.getActiveForm(applicationSystemId);
-        Application application = applicationService.getPendingApplication(applicationSystemId, oid);
+        Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
         List<String> discretionaryAttachmentAOIds = getDiscretionaryAttachmentAOIds(application);
         ModelResponse response = new ModelResponse(application, activeForm, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
         response.setApplicationCompleteElements(formService.getApplicationCompleteElements(applicationSystemId));

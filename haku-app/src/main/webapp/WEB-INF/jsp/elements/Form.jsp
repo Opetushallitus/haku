@@ -66,9 +66,8 @@
     <div id="site">
         <div id="sitecontent">
             <div class="content">
-                <h1><fmt:message key="form.title"/></h1>
-
-                <h2><haku:i18nText value="${form.i18nText}"/></h2>
+                <a href="https://opintopolku.fi"><fmt:message key="lomake.lisaakoulutuksia"/></a>
+                <h1><haku:i18nText value="${form.i18nText}"/> - <fmt:message key="form.title"/></h1>
                 <ul class="form-steps">
                     <c:set var="pastPhases" value="true" scope="request"/>
                     <c:forEach var="phase" items="${form.children}" varStatus="status">

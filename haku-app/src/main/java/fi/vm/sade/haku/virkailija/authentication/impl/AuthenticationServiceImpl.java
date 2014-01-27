@@ -45,6 +45,7 @@ import java.util.List;
  */
 @Service
 @Profile("default")
+//@Profile("dev")
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     final Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);

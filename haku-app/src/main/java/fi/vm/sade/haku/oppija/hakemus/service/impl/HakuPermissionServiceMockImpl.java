@@ -22,6 +22,9 @@ public class HakuPermissionServiceMockImpl implements HakuPermissionService {
 
     @Override
     public boolean userCanUpdateApplication(Application application) {
+        if (application.getPersonOid() != null && application.getPersonOid().equals("1.2.246.562.24.00000000001")) {
+            return false;
+        }
         return true;
     }
 

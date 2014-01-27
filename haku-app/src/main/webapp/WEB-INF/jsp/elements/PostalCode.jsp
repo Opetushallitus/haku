@@ -29,7 +29,6 @@
     <div class="clear"></div>
     <haku:viewChilds element="${element}"/>
 </div>
-<haku:i18nText value="${errorMessages[element.id]}"/>
 <script type="text/javascript">
     var postalcode_settings = {
         id: "${element.id}"

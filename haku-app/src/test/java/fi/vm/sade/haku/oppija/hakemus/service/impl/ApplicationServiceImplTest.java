@@ -8,6 +8,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
@@ -54,6 +55,7 @@ public class ApplicationServiceImplTest {
     AuthenticationService authenticationService;
     OrganizationService organizationService;
     HakuPermissionService hakuPermissionService;
+    SuoritusrekisteriService suoritusrekisteriService;
 
     String SSN = "250584-3847";
     String OID = "1.2.3.4.5.12345678901";
@@ -70,7 +72,7 @@ public class ApplicationServiceImplTest {
 
     @Before
     public void setUp() {
-        applicationQueryParameters = new ApplicationQueryParameters(null, null, "", "", "", false, 0, Integer.MAX_VALUE, "fullName", 1);
+        applicationQueryParameters = new ApplicationQueryParameters(null, null, "", "", "", false, "", "", 0, Integer.MAX_VALUE, "fullName", 1);
         application = new Application();
         Map<String, String> answers = new HashMap<String, String>();
         answers.put("avain", "arvo");
@@ -82,6 +84,7 @@ public class ApplicationServiceImplTest {
         organizationService = mock(OrganizationService.class);
         hakuPermissionService = mock(HakuPermissionService.class);
         applicationSystemService = mock(ApplicationSystemService.class);
+        suoritusrekisteriService = mock(SuoritusrekisteriService.class);
         ValidatorFactory validatorFactory = mock(ValidatorFactory.class);
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
 
@@ -95,9 +98,11 @@ public class ApplicationServiceImplTest {
         when(authenticationService.addPerson(any(Person.class))).thenReturn(PERSON_OID);
         when(applicationDAO.findByApplicationSystemAndApplicationOption(eq(AS_ID), eq(AO_ID))).thenReturn(Lists.newArrayList(application));
         when(hakuPermissionService.userCanReadApplication(any(Application.class))).thenReturn(true);
+//        when(suoritusrekisteriService.getLahtokoulu(any(String.class))).thenReturn("1.2.246.562.10.56695937518");
+//        when(suoritusrekisteriService.getLahtoluokka(any(String.class))).thenReturn("9A");
 
         service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService, organizationService,
-                hakuPermissionService, applicationSystemService, elementTreeValidator);
+                hakuPermissionService, applicationSystemService, suoritusrekisteriService, elementTreeValidator);
 
         answerMap = new HashMap<String, String>();
         answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_NAMES, "Etunimi");

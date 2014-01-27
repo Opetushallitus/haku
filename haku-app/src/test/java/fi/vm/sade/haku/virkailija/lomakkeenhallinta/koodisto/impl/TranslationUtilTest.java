@@ -38,12 +38,31 @@ public class TranslationUtilTest {
     }
 
     @Test
-    public void testCreateTranslationsMap() throws Exception {
+    public void testCreateTranslationsMapNoTranslations() throws Exception {
         KoodiMetadataType koodiMetadataType = TestObjectCreator.createKoodiMetadataType();
         koodiType.getMetadata().add(koodiMetadataType);
         Map<String, String> translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
-        String value = translationsMap.get(KieliType.FI.value().toLowerCase());
-        assertEquals(TestObjectCreator.NIMI, value);
+        String value_fi = translationsMap.get(KieliType.FI.value().toLowerCase());
+        assertEquals(TestObjectCreator.NIMI, value_fi);
+        String value_sv = translationsMap.get(KieliType.SV.value().toLowerCase());
+        assertEquals(TestObjectCreator.NIMI, value_sv);
+        String value_en = translationsMap.get(KieliType.EN.value().toLowerCase());
+        assertEquals(TestObjectCreator.NIMI, value_en);
+    }
+
+    @Test
+    public void testCreateTranslationsMap() throws Exception {
+        KoodiMetadataType koodiMetadataType = TestObjectCreator.createKoodiMetadataType();
+        KoodiMetadataType koodiMetadataType2 = TestObjectCreator.createKoodiMetadataType2();
+        koodiType.getMetadata().add(koodiMetadataType);
+        koodiType.getMetadata().add(koodiMetadataType2);
+        Map<String, String> translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
+        String value_fi = translationsMap.get(KieliType.FI.value().toLowerCase());
+        assertEquals(TestObjectCreator.NIMI, value_fi);
+        String value_sv = translationsMap.get(KieliType.SV.value().toLowerCase());
+        assertEquals(TestObjectCreator.NIMI_2, value_sv);
+        String value_en = translationsMap.get(KieliType.EN.value().toLowerCase());
+        assertEquals(TestObjectCreator.NIMI, value_en);
     }
 
     @Test

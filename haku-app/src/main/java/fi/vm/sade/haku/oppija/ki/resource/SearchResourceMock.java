@@ -15,11 +15,15 @@
  */
 package fi.vm.sade.haku.oppija.ki.resource;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Mikko Majapuro
@@ -32,14 +36,19 @@ public class SearchResourceMock {
     @GET
     @Path("/lop/search/{term}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public String organizationSearch(@PathParam("term") final String term, @DefaultValue(value = "1") @QueryParam("baseEducation") final String baseEducation) {
+    public List<Map<String, String>> organizationSearch(@PathParam("term") final String term, @DefaultValue(value = "1") @QueryParam("baseEducation") final String baseEducation) {
         if (term.equalsIgnoreCase("esp")) {
-            return "[{\"id\":\"1.2.246.562.10.89537774706\",\"name\":\"FAKTIA, Espoo op\",\"key\":\"faktia, espoo op\"}," +
-                    "{\"id\":\"1.2.246.562.10.10108401950\",\"name\":\"Espoon kaupunki\",\"key\":\"espoon kaupunki\"}]";
+            return ImmutableList.<Map<String, String>>of(
+                    ImmutableMap.of("id", "1.2.246.562.10.89537774706", "name", "FAKTIA, Espoo op", "key", "faktia, espoo op"),
+                    ImmutableMap.of("id", "1.2.246.562.10.10108401950", "name", "Espoon kaupunki", "key", "espoon kaupunki")
+            );
+
         } else if (term.equalsIgnoreCase("sturen") && baseEducation.equals("9")) {
-            return "[{\"id\":\"1.2.246.562.10.51872958189\",\"name\":\"Stadin ammattiopisto, Sturenkadun toimipaikka\"}]";
+            return ImmutableList.<Map<String, String>>of(
+                    ImmutableMap.of("id", "1.2.246.562.10.51872958189", "name", "Stadin ammattiopisto, Sturenkadun toimipaikka")
+            );
         } else {
-            return "[]";
+            return ImmutableList.of();
         }
     }
 
@@ -63,8 +72,11 @@ public class SearchResourceMock {
                     "\"aoIdentifier\":\"333\"," +
                     "\"educationDegree\":\"32\", " +
                     "\"sora\": true , " +
+                    "\"educationCodeUri\": \"koulutus_381203\", " +
                     "\"teachingLanguages\":[\"FI\"]," +
                     "\"athleteEducation\":true, " +
+                    "\"kaksoistutkinto\":false, " +
+                    "\"vocational\":true, " +
                     "\"childLONames\":[" +
                     "\"Kaivosalan perustutkinto, Kaivosalan koulutusohjelma\"]}," +
                     "{\"id\":\"1.2.246.562.14.39251489298\"," +
@@ -78,6 +90,7 @@ public class SearchResourceMock {
                     "\"name\":\"Tuotteen suunnittelun ja valmistuksen koulutusohjelma, pk (Käsi- ja taideteollisuusalan perustutkinto)\", " +
                     "\"educationDegree\":\"30\", " +
                     "\"athleteEducation\":true, " +
+                    "\"educationCodeUri\":\"koulutus_321204\", " +
                     "\"sora\": false, " +
                     "\"teachingLanguages\":[\"SV\"], " +
                     "\"childLONames\":[" +

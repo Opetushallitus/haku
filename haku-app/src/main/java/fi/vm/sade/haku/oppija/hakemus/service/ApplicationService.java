@@ -174,4 +174,6 @@ public interface ApplicationService {
     Application activateApplication(String oid);
 
     Application getSubmittedApplication(final String applicationSystemId, final String oid);
+
+    Application addSendingSchool(Application application);
 }

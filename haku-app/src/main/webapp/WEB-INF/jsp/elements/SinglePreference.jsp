@@ -10,12 +10,13 @@
 <c:set value="${element.id}-Koulutus" var="koulutus" scope="page"/>
 <c:set value="${element.id}-Koulutus-id" var="koulutusId" scope="page"/>
 <c:set value="${element.id}-Koulutus-educationDegree" var="educationDegree" scope="page"/>
+<c:set value="${element.id}-Koulutus-id-educationcode" var="educationcode" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-lang" var="educationLang" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-sora" var="educationSora" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-aoIdentifier" var="aoIdentifier" scope="page"/>
 <c:set value="${element.id}-Koulutus-id-athlete" var="educationAthlete" scope="page"/>
-<c:set value="${element.id}-kaksoistutkinto" var="hiddenKoulutusIdKaksoistutkinto" scope="page"/>
-<c:set value="${element.id}-vocational" var="hiddenKoulutusIdVocational" scope="page"/>
+<c:set value="${element.id}-Koulutus-id-kaksoistutkinto" var="hiddenKoulutusIdKaksoistutkinto" scope="page"/>
+<c:set value="${element.id}-Koulutus-id-vocational" var="hiddenKoulutusIdVocational" scope="page"/>
 
 <table>
     <tbody>
@@ -40,6 +41,7 @@
 <haku:input-hidden id="${koulutus}" data="${answers}"/>
 <haku:input-hidden id="${koulutusId}" data="${answers}"/>
 <haku:input-hidden id="${educationDegree}" data="${answers}"/>
+<haku:input-hidden id="${educationcode}" data="${answers}"/>
 <haku:input-hidden id="${educationLang}" data="${answers}"/>
 <haku:input-hidden id="${educationSora}" data="${answers}"/>
 <haku:input-hidden id="${aoIdentifier}" data="${answers}"/>

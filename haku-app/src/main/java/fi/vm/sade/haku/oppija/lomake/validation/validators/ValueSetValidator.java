@@ -16,20 +16,15 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
-import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ValueSetValidator extends FieldValidator {
-
-    private static Logger log = LoggerFactory.getLogger(ValueSetValidator.class);
 
     private final List<String> validValues;
 
@@ -37,20 +32,16 @@ public class ValueSetValidator extends FieldValidator {
                              final I18nText errorMessage,
                              final List<String> validValues) {
         super(fieldName, errorMessage);
-        this.validValues = ImmutableList.copyOf(validValues);
+        this.validValues = new ArrayList<String>(validValues);
     }
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
         ValidationResult validationResult = new ValidationResult();
-        String value = validationInput.getValues().get(fieldName);
+        String value = validationInput.getValue(fieldName);
         if (value != null && !this.validValues.contains(value)) {
             validationResult = new ValidationResult(fieldName, getErrorMessage());
         }
         return validationResult;
-    }
-
-    public List<String> getValidValues() {
-        return new ArrayList<String>(validValues);
     }
 }

@@ -29,17 +29,17 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulut
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhaseYhteishakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseYhteishakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.Date;
 import java.util.List;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.VALID_EDUCATION_CODES;
 
 public class YhteishakuSyksy {
 
     private static final String FORM_MESSAGES = "form_messages_yhteishaku_syksy";
-    private static final String FORM_ERRORS = "form_errors_yhteishaku_syksy";
-    private static final String FORM_VERBOSE_HELP = "form_verboseHelp_yhteishaku_syksy";
     private static final String REGEX_NON_EMPTY = ".*\\S.*";
 
     public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService) {
@@ -82,11 +82,23 @@ public class YhteishakuSyksy {
         TitledGroup athleteGroup = new TitledGroup("atheleteGroup", createI18NText("form.valmis.haeturheilijana.header", FORM_MESSAGES));
 
         athleteGroup.addChild(new Text("athleteP1", createI18NText("form.valmis.haeturheilijana", FORM_MESSAGES)));
-        athleteGroup.addChild(new Link("athleteLink", "http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/",
-                createI18NText("form.valmis.haeturheilijana.linkki", FORM_MESSAGES)));
+        athleteGroup.addChild(new Link("athleteLink", createI18NText("form.valmis.haeturheilijana.linkki.url", FORM_MESSAGES),
+                createI18NText("form.valmis.haeturheilijana.linkki.text", FORM_MESSAGES)));
         athleteRule.addChild(athleteGroup);
 
         elements.add(athleteRule);
+
+        RelatedQuestionRule musiikkiTanssiLiikuntaRule = new RelatedQuestionRule("musiikkiTanssiLiikuntaRule",
+                Lists.newArrayList(String.format(EDUCATION_CODE_KEY, 1),
+                        String.format(EDUCATION_CODE_KEY, 2),
+                        String.format(EDUCATION_CODE_KEY, 3),
+                        String.format(EDUCATION_CODE_KEY, 4),
+                        String.format(EDUCATION_CODE_KEY, 5)),
+                StringUtils.join(VALID_EDUCATION_CODES, "|"), false);
+        TitledGroup musiikkiTanssiLiikuntaGroup = new TitledGroup("mtlGroup", createI18NText("form.valmis.musiikkitanssiliikunta.header", FORM_MESSAGES));
+        musiikkiTanssiLiikuntaGroup.addChild(new Text(randomId(), createI18NText("form.valmis.musiikkitanssiliikunta", FORM_MESSAGES)));
+        musiikkiTanssiLiikuntaRule.addChild(musiikkiTanssiLiikuntaGroup);
+        elements.add(musiikkiTanssiLiikuntaRule);
 
         TitledGroup muutoksenTekeminen = new TitledGroup("muutoksenTekeminen", createI18NText("form.valmis.muutoksentekeminen",
                 FORM_MESSAGES));
@@ -100,7 +112,8 @@ public class YhteishakuSyksy {
 
         elements.add(muutoksenTekeminen);
 
-        elements.add(new Link("backLink", "https://opintopolku.fi", createI18NText("form.valmis.takaisin.opintopolkuun.linkki",
+        elements.add(new Link("backLink", createI18NAsIs("https://opintopolku.fi"),
+                createI18NText("form.valmis.takaisin.opintopolkuun.linkki",
                 FORM_MESSAGES)));
 
         return elements;

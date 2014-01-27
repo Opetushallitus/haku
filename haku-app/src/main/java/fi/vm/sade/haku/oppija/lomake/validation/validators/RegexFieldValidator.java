@@ -40,7 +40,7 @@ public class RegexFieldValidator extends FieldValidator {
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
-        String value = validationInput.getValues().get(fieldName);
+        String value = validationInput.getValue(fieldName);
         if (value != null && !compiledPattern.matcher(value).matches()) {
             return invalidValidationResult;
         }

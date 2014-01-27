@@ -2,12 +2,15 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -15,6 +18,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
+import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
@@ -25,6 +29,7 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +52,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final ElementTreeValidator elementTreeValidator;
     private final ApplicationSystemService applicationSystemService;
     private final AuthenticationService authenticationService;
+    private final OrganizationService organizationService;
+    private final UserSession userSession;
 
     private static final List<Integer> syyskausi = ImmutableList.of(Calendar.JULY, Calendar.AUGUST, Calendar.SEPTEMBER,
             Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER);
@@ -60,8 +67,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
                                 final ElementTreeValidator elementTreeValidator,
                                 final ApplicationSystemService applicationSystemService,
-                                final AuthenticationService authenticationService
-    ) {
+                                final AuthenticationService authenticationService,
+                                final OrganizationService organizationService,
+                                final UserSession userSession) {
         this.applicationService = applicationService;
         this.formService = formService;
         this.koodistoService = koodistoService;
@@ -71,6 +79,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.elementTreeValidator = elementTreeValidator;
         this.applicationSystemService = applicationSystemService;
         this.authenticationService = authenticationService;
+        this.organizationService = organizationService;
+        this.userSession = userSession;
     }
 
     @Override
@@ -99,12 +109,22 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         if (!"esikatselu".equals(phaseId)) {
             element = new ElementTree(form).getChildById(application.getPhaseId());
         }
+        String asId = application.getApplicationSystemId();
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
         ModelResponse modelResponse =
                 new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("preview", "esikatselu".equals(phaseId));
         modelResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
         modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
         modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanUpdateApplication(application));
+        modelResponse.addObjectToModel("applicationSystem", as);
+
+        String userOid = userSession.getUser().getUserName();
+        if (userOid == null || userOid.equals(application.getPersonOid())) {
+            Map<String, I18nText> errors = modelResponse.getErrorMessages();
+            errors.put("common", ElementUtil.createI18NText("virkailija.hakemus.omanMuokkausKielletty", "messages", null));
+            modelResponse.setErrorMessages(errors);
+        }
         return modelResponse;
     }
 
@@ -172,13 +192,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         for (OrganisaatioTyyppi ot : OrganisaatioTyyppi.values()) {
             organizationTypes.add(new Option(ElementUtil.createI18NAsIs(ot.value()), ot.value()));
         }
-        modelResponse.addObjectToModel("organizationTypes", organizationTypes);
-        modelResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
         List<ApplicationSystem> applicationSystems =
                 applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");
-        ApplicationSystem defaultAS = null; //applicationSystemService.getDefaultApplicationSystem(applicationSystems);
         modelResponse.addObjectToModel("applicationSystems", applicationSystems);
-        modelResponse.addObjectToModel("defaultAS", defaultAS != null ? defaultAS : "");
+        modelResponse.addObjectToModel("organizationTypes", organizationTypes);
+        modelResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
         modelResponse.addObjectToModel("hakukausiOptions", koodistoService.getHakukausi());
         Calendar today = GregorianCalendar.getInstance();
         String semester = "kausi_k";
@@ -188,6 +206,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("defaultYear", String.valueOf(today.get(Calendar.YEAR)));
         modelResponse.addObjectToModel("defaultSemester", semester);
         return modelResponse;
+    }
+
+    @Override
+    public List<ApplicationSystem> getApplicationSystems() {
+        return applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");
     }
 
     @Override
@@ -258,6 +281,29 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
+    public List<Map<String, Object>> getSchools(String term) {
+        OrganisaatioSearchCriteria crit = new OrganisaatioSearchCriteria();
+        crit.setOrganisaatioTyyppi(OrganisaatioTyyppi.OPPILAITOS.value());
+        crit.setSearchStr(term);
+        crit.setSkipParents(true);
+        List<Organization> orgs = organizationService.search(crit);
+        List<Map<String, Object>> schools = new ArrayList<Map<String, Object>>(orgs.size());
+        LOGGER.debug("Fetching schools with term: '{}', got {} organizations", term, orgs.size());
+        int resultCount = 20;
+        for (Organization org : orgs) {
+            if (--resultCount < 0) {
+                break;
+            }
+            I18nText name = org.getName();
+            Map<String, Object> school = new HashMap<String, Object>();
+            school.put("name", name.getTranslations());
+            school.put("dataId", org.getOid());
+            schools.add(school);
+        }
+        return schools;
+    }
+
+    @Override
     public Application passivateApplication(String oid, String reason) throws ResourceNotFoundException {
         reason = "Hakemus passivoitu: " + reason;
         addNote(oid, reason);
@@ -294,6 +340,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Application application = applicationService.getApplicationByOid(oid);
         application = applicationService.fillLOPChain(application, false);
         application = applicationService.addPersonOid(application);
+        application = applicationService.addSendingSchool(application);
         application.activate();
         applicationService.update(new Application(oid), application);
     }

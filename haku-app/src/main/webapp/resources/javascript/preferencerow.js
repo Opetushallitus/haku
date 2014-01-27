@@ -19,7 +19,7 @@ var lopCache = {};
 var preferenceRow = {
     populateSelectInput: function (orgId, selectInputId, isInit, providerInputId) {
         setTimeout(function() {
-        $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationSystemId + "/" + orgId,
+            $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationSystemId + "/" + orgId,
             {
                 'baseEducation': sortabletable_settings.baseEducation,
                 'vocational': sortabletable_settings.vocational
@@ -48,6 +48,7 @@ var preferenceRow = {
                         '" data-aoidentifier="' + item.aoIdentifier +
                         '" data-kaksoistutkinto="' + item.kaksoistutkinto +
                         '" data-vocational="' + item.vocational +
+                        '" data-educationcode="' + item.educationCodeUri +
                         '" data-athlete="' + item.athleteEducation + '" >' + item.name + '</option>');
                 });
                 if (isInit && !selectedPreferenceOK && hakukohdeId && hakukohdeId !== '') {
@@ -74,9 +75,10 @@ var preferenceRow = {
         $("#" + selectInputId + "-id-lang").val("").change();
         $("#" + selectInputId + "-id-sora").val(false).change();
         $("#" + selectInputId + "-id-aoIdentifier").val("").change();
-        $("#" + selectInputId + "-id-athlete").val(false).change();
         $("#" + selectInputId + "-id-kaksoistutkinto").val(false).change();
         $("#" + selectInputId + "-id-vocational").val(false).change();
+        $("#" + selectInputId + "-id-educationcode").val(false).change();
+        $("#" + selectInputId + "-id-athlete").val(false).change();
         $("#" + selectInputId).html("<option>&nbsp;</option>");
         preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
     },
@@ -135,7 +137,8 @@ var preferenceRow = {
                         baseEducation: sortabletable_settings.baseEducation,
                         vocational: sortabletable_settings.vocational,
                         start: 0,
-                        rows: 999999
+                        rows: 999999,
+                        lang: sortabletable_settings.uiLang
                     }, function (data) {
                         lopCache[request.term] = data;
                         response($.map(data, function (result) {
@@ -180,6 +183,7 @@ var preferenceRow = {
                 $educationDegreeVocational = $("#" + this.id + "-id-vocational"),
                 $educationDegreeAoIdentifier = $("#" + this.id + "-id-aoIdentifier"),
                 $educationDegreeAthlete = $("#" + this.id + "-id-athlete"),
+                $educationDegreeEducationCode = $("#" + this.id + "-id-educationcode"),
                 selectedId, educationDegree, value = $(this).val(),
                 preferenceRowId = this.id.split("-")[0];
             $(this).children().removeAttr("selected");
@@ -195,6 +199,7 @@ var preferenceRow = {
             $educationDegreeVocational.val(selectedOption.data("vocational")).change();
             $educationDegreeAoIdentifier.val(selectedOption.data("aoidentifier")).change();
             $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
+            $educationDegreeEducationCode.val(selectedOption.data("educationcode")).change();
             preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
         });
     }

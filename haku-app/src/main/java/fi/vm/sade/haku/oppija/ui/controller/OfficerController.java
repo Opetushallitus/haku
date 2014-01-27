@@ -19,6 +19,8 @@ package fi.vm.sade.haku.oppija.ui.controller;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
@@ -40,8 +42,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.seeOther;
@@ -143,7 +144,7 @@ public class OfficerController {
                                       @PathParam(OID_PATH_PARAM) final String oid,
                                       @PathParam("elementId") final String elementId)
             throws ResourceNotFoundException {
-        LOGGER.debug("getPreviewElement {}, {}, {}", applicationSystemId, phaseId, oid);
+        LOGGER.debug("getPreviewElement {}, {}, {}", new String[]{applicationSystemId, phaseId, oid});
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, true);
         return new Viewable("/elements/Root", modelResponse.getModel()); // TODO remove hardcoded Phase
     }
@@ -156,7 +157,7 @@ public class OfficerController {
                                @PathParam(OID_PATH_PARAM) final String oid)
             throws ResourceNotFoundException, IOException {
 
-        LOGGER.debug("getPreview {}, {}, {}", applicationSystemId, phaseId, oid);
+        LOGGER.debug("getPreview {}, {}, {}", new String[]{applicationSystemId, phaseId, oid});
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, phaseId);
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel()); // TODO remove hardcoded Phase
     }
@@ -172,7 +173,7 @@ public class OfficerController {
                                 final MultivaluedMap<String, String> multiValues)
             throws URISyntaxException, ResourceNotFoundException {
 
-        LOGGER.debug("updatePhase {}, {}, {}", applicationSystemId, phaseId, oid);
+        LOGGER.debug("updatePhase {}, {}, {}", new String[]{applicationSystemId, phaseId, oid});
 
         ModelResponse modelResponse = officerUIService.updateApplication(oid,
                 new ApplicationPhase(applicationSystemId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)),
@@ -323,5 +324,51 @@ public class OfficerController {
         officerUIService.addStudentOid(oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
+    }
+
+    @GET
+    @Path("/hakemus/applicationSystems")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Map<String, String>> getApplicationSystems() {
+        return getApplicationSystems("", "");
+    }
+    @GET
+    @Path("/hakemus/applicationSystems/{year}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Map<String, String>> getApplicationSystems(@PathParam("year") String year) {
+        return getApplicationSystems(year, "");
+
+    }
+    @GET
+    @Path("/hakemus/applicationSystems/{year}/{semester}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Map<String, String>> getApplicationSystems(@PathParam("year") String year,
+                                                                  @PathParam("semester") String semester) {
+
+        List<ApplicationSystem> applicationSystemList = officerUIService.getApplicationSystems();
+        List<Map<String, String>> applicationSystems = new ArrayList<Map<String, String>>(applicationSystemList.size());
+        for (ApplicationSystem as : applicationSystemList) {
+            Map<String, String> applicationSystem = new HashMap<String, String>();
+            applicationSystem.put("id", as.getId());
+            applicationSystem.put("hakukausiUri", as.getHakukausiUri());
+            applicationSystem.put("hakukausiVuosi", as.getHakukausiVuosi().toString());
+            I18nText name = as.getName();
+            Map<String, String> translations = name.getTranslations();
+            for (Map.Entry<String, String> translation : translations.entrySet()) {
+                String key = translation.getKey();
+                String val = translation.getValue();
+                applicationSystem.put("name_"+key, val);
+            }
+            applicationSystems.add(applicationSystem);
+        }
+        return applicationSystems;
+
+    }
+
+    @GET
+    @Path("/autocomplete/school")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Map<String, Object>> getSchools(@QueryParam("term") String term) {
+        return officerUIService.getSchools(term);
     }
 }

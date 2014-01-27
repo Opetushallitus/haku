@@ -41,8 +41,7 @@ public final class ElementTreeValidator {
                 listOfValidationResult.add(validatorFactory.buildValidator(validator).validate(validationInput));
             }
             for (Element child : element.getChildren(validationInput.getValues())) {
-                listOfValidationResult.add(validate(new ValidationInput(child, validationInput.getValues(),
-                        validationInput.getApplicationOid(), validationInput.getApplicationSystemId())));
+                listOfValidationResult.add(validate(new ValidationInput(child, validationInput)));
             }
         }
         return new ValidationResult(listOfValidationResult);

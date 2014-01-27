@@ -45,8 +45,8 @@ public class UniqValuesValidatorTest {
     public void testValidateFalseNullValues() throws Exception {
         UniqValuesValidator uniqValuesValidator = new UniqValuesValidator(ID, ImmutableList.of("AI", "BI"), MSG_KEY);
         Map<String, String> values = new HashMap<String, String>(1);
-        values.put("AI", null);
-        values.put("BI", null);
+        values.put("AI", "a");
+        values.put("BI", "b");
         ValidationResult validate = uniqValuesValidator.validate(new ValidationInput(null, values, null, null));
         assertFalse(validate.hasErrors());
     }

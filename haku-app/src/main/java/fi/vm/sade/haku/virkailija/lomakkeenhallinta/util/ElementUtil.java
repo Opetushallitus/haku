@@ -34,6 +34,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
@@ -70,6 +71,11 @@ public final class ElementUtil {
     }
 
     public static I18nText createI18NText(final String key, final String bundleName, final String... params) {
+        return createI18NText(key, bundleName, false, params);
+    }
+
+    public static I18nText createI18NText(final String key, final String bundleName, final boolean keepFirst,
+                                          final String... params) {
         Validate.notNull(key, "key can't be null");
         Validate.notNull(bundleName, "bundleName can't be null");
 
@@ -81,6 +87,11 @@ public final class ElementUtil {
             try {
                 if (key != null) {
                     text = bundle.getString(key);
+                    if (keepFirst) {
+                        // Add space at the beginning of string, making it appear before regular words in
+                        // alphabetical order.
+                        text = "\u0020" + text;
+                    }
                 }
                 if (params != null && params.length > 0) {
                     text = MessageFormat.format(text, (Object[]) params);
@@ -156,6 +167,10 @@ public final class ElementUtil {
         return element;
     }
 
+    public static Element addMaxLengthAttribute(final Element element, final int size) {
+        element.addAttribute("maxlength", String.valueOf(size));
+        return element;
+    }
 
     public static Validator createRegexValidator(final String id, final String pattern, final String bundleName) {
         return new RegexFieldValidator(id,
@@ -167,6 +182,11 @@ public final class ElementUtil {
         return new ValueSetValidator(id,
                 ElementUtil.createI18NText("yleinen.virheellinenArvo", bundleName),
                 validValues);
+    }
+
+    public static Validator createDateOfBirthValidator(final String id, final String bundleName) {
+        return new DateOfBirthValidator(id,
+                ElementUtil.createI18NText(DateOfBirthValidator.DATE_OF_BIRTH_GENERIC_ERROR_MESSAGE, bundleName));
     }
 
     public static void addRequiredValidator(final Element element, final String bundleName) {
@@ -189,7 +209,6 @@ public final class ElementUtil {
         Preconditions.checkArgument(element instanceof PreferenceRow || element instanceof SinglePreference);
         element.setValidator(new PreferenceValidator());
     }
-
 
     public static void setRequiredInlineAndVerboseHelp(final Question question, final String helpId, final String bundleName,
                                                        final String errorBundleName) {
@@ -296,6 +315,7 @@ public final class ElementUtil {
             return current;
         }
     }
+
     public static Expr atLeastOneValueEqualsToVariable(final String variable, final String... values) {
         if (values.length == 1) {
             return new Equals(new Value(values[0]), new Variable(variable));
@@ -312,5 +332,11 @@ public final class ElementUtil {
             }
             return current;
         }
+    }
+
+    public static RelatedQuestionComplexRule createVarEqualsToValueRule(final String name, final String... values) {
+        return new RelatedQuestionComplexRule(
+                ElementUtil.randomId(),
+                atLeastOneValueEqualsToVariable(name, values));
     }
 }
