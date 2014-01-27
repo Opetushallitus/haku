@@ -88,8 +88,8 @@ public class YhteishakuKevat {
         TitledGroup athleteGroup = new TitledGroup("atheleteGroup", createI18NText("form.valmis.haeturheilijana.header", FORM_MESSAGES));
 
         athleteGroup.addChild(new Text("athleteP1", createI18NText("form.valmis.haeturheilijana", FORM_MESSAGES)));
-        athleteGroup.addChild(new Link("athleteLink", "http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/",
-                createI18NText("form.valmis.haeturheilijana.linkki", FORM_MESSAGES)));
+        athleteGroup.addChild(new Link("athleteLink", createI18NText("form.valmis.haeturheilijana.linkki.url", FORM_MESSAGES),
+                                                      createI18NText("form.valmis.haeturheilijana.linkki.text", FORM_MESSAGES)));
         athleteRule.addChild(athleteGroup);
 
         elements.add(athleteRule);
@@ -119,7 +119,7 @@ public class YhteishakuKevat {
 
         elements.add(muutoksenTekeminen);
 
-        elements.add(new Link("backLink", "https://opintopolku.fi", createI18NText("form.valmis.takaisin.opintopolkuun.linkki",
+        elements.add(new Link("backLink", createI18NText("https://opintopolku.fi", FORM_MESSAGES), createI18NText("form.valmis.takaisin.opintopolkuun.linkki",
                 FORM_MESSAGES)));
 
         return elements;

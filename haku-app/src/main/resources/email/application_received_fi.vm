@@ -13,7 +13,7 @@ $preference
 
 Haet urheilijana ammatilliseen koulutukseen. Lisätietoja löydät osoitteesta
 
-http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
+http://www.sport.fi/urheiluoppilaitoshaku
 
 #end
 #if ($educationCode)
