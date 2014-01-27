@@ -14,7 +14,7 @@ $preference
 Du söker till yrkesutbildning som idrottare. Tilläggsuppgifter hittar du på adressen
 
 http://www.sport.fi/urheiluoppilaitoshaku
-    
+
 #end
 #if ($educationCode)
 
