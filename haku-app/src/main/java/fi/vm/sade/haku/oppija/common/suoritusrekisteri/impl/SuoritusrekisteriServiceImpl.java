@@ -31,9 +31,9 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     @Value("${cas.service.suoritusrekisteri}")
     private String targetService;
-    @Value("${haku.app.username.to.usermanagement}")
+    @Value("${haku.app.username.to.suoritusrekisteri}")
     private String clientAppUser;
-    @Value("${haku.app.password.to.usermanagement}")
+    @Value("${haku.app.password.to.suoritusrekisteri}")
     private String clientAppPass;
 
     private static CachingRestClient cachingRestClient;
