@@ -31,11 +31,11 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
+import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
-import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +58,6 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 @Service("applicationDAOMongoImpl")
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> implements ApplicationDAO {
 
-    public static final int HUNDRED = 100;
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationDAOMongoImpl.class);
     private static final String FIELD_AO_1 = "answers.hakutoiveet.preference1-Koulutus-id";
     private static final String FIELD_AO_2 = "answers.hakutoiveet.preference2-Koulutus-id";
@@ -194,7 +193,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     .and(FIELD_APPLICATION_OID).exists(true)
                     .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
                     .get();
-            return getCollection().count(query) > 0;
+            return resultNotEmpty(query);
         }
         return false;
     }
@@ -209,7 +208,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
                     .and(queryByPreference(Lists.newArrayList(aoId)).get())
                     .get();
-            return getCollection().count(query) > 0;
+            return resultNotEmpty(query);
         }
         return false;
     }
@@ -452,7 +451,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject query;
         ArrayList<DBObject> orgFilter = filterByOrganization();
 
-        LOG.debug("Filters: {}",filters.length);
+        LOG.debug("Filters: {}", filters.length);
 
         if (orgFilter.isEmpty()) {
             query = QueryBuilder.start("_id").exists(false).get();
@@ -521,5 +520,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             return null;
         }
         return fromDBObject.apply(cursor.next());
+    }
+
+    private boolean resultNotEmpty(final DBObject query) {
+        return getCollection().find(query).limit(1).size() > 0;
     }
 }
