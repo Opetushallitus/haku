@@ -13,5 +13,4 @@ public interface ApplicationSystemService {
 
     List<String> findByYearAndSemester(String asSemester, String asYear);
 
-    ApplicationSystem getDefaultApplicationSystem(List<ApplicationSystem> systems);
 }
