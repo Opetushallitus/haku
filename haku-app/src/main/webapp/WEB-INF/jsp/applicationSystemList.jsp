@@ -29,12 +29,17 @@
 <ul>
     <c:forEach var="applicationSystem" items="${it.applicationSystems}">
         <li>
-                    <a id="${applicationSystem.id}" href="${applicationSystem.id}"><haku:i18nText value="${applicationSystem.name}"/></a>
-                    <c:if test="${applicationSystem.active}">
-                        &nbsp;Haku käynnissä!
-                    </c:if>
-                </li>
-            </c:forEach>
-        </ul>
-    </body>
+            <c:choose>
+                <c:when test="${applicationSystem.active}">
+                    <a id="${applicationSystem.id}" href="${applicationSystem.id}"><haku:i18nText
+                            value="${applicationSystem.name}"/></a> &nbsp;Haku käynnissä!
+                </c:when>
+                <c:otherwise>
+                    <haku:i18nText value="${applicationSystem.name}"/>
+                </c:otherwise>
+            </c:choose>
+        </li>
+    </c:forEach>
+</ul>
+</body>
 </html>

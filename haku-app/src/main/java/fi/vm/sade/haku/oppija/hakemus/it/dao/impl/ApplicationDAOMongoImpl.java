@@ -415,7 +415,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         String sendingClass = applicationQueryParameters.getSendingClass();
         if (!isEmpty(sendingClass)) {
-            filters.add(QueryBuilder.start(FIELD_SENDING_CLASS).is(sendingClass).get());
+            filters.add(QueryBuilder.start(FIELD_SENDING_CLASS).is(sendingClass.toUpperCase()).get());
         }
 
         filters.add(newOIdExistDBObject());

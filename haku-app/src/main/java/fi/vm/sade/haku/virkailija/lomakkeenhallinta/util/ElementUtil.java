@@ -34,6 +34,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
@@ -166,6 +167,10 @@ public final class ElementUtil {
         return element;
     }
 
+    public static Element addMaxLengthAttribute(final Element element, final int size) {
+        element.addAttribute("maxlength", String.valueOf(size));
+        return element;
+    }
 
     public static Validator createRegexValidator(final String id, final String pattern, final String bundleName) {
         return new RegexFieldValidator(id,
@@ -179,7 +184,7 @@ public final class ElementUtil {
                 validValues);
     }
 
-    public static Validator createDateOfBirthValidator(final String id, final String bundleName){
+    public static Validator createDateOfBirthValidator(final String id, final String bundleName) {
         return new DateOfBirthValidator(id,
                 ElementUtil.createI18NText(DateOfBirthValidator.DATE_OF_BIRTH_GENERIC_ERROR_MESSAGE, bundleName));
     }
@@ -310,6 +315,7 @@ public final class ElementUtil {
             return current;
         }
     }
+
     public static Expr atLeastOneValueEqualsToVariable(final String variable, final String... values) {
         if (values.length == 1) {
             return new Equals(new Value(values[0]), new Variable(variable));
@@ -326,5 +332,11 @@ public final class ElementUtil {
             }
             return current;
         }
+    }
+
+    public static RelatedQuestionComplexRule createVarEqualsToValueRule(final String name, final String... values) {
+        return new RelatedQuestionComplexRule(
+                ElementUtil.randomId(),
+                atLeastOneValueEqualsToVariable(name, values));
     }
 }

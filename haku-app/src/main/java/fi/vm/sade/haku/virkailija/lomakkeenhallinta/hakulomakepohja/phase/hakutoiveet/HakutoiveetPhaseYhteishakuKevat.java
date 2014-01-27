@@ -29,10 +29,11 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 
 public class HakutoiveetPhaseYhteishakuKevat {
     public static final String DISCRETIONARY_EDUCATION_DEGREE = "32";
@@ -113,26 +114,40 @@ public class HakutoiveetPhaseYhteishakuKevat {
                 FORM_MESSAGES), "todistustenpuuttuminen");
         addRequiredValidator(discretionaryFollowUp, FORM_ERRORS);
 
-        RelatedQuestionRule discretionaryFollowUpRule = new RelatedQuestionRule(index + "-discretionary-follow-up-rule",
-                ImmutableList.of(discretionary.getId()), Boolean.TRUE.toString().toLowerCase(), false);
+
+        RelatedQuestionComplexRule discretionaryFollowUpRule = createVarEqualsToValueRule(discretionary.getId(), KYLLA);
         discretionaryFollowUpRule.addChild(discretionaryFollowUp);
 
         discretionary.addChild(discretionaryFollowUpRule);
 
-        RelatedQuestionRule discretionaryRule = new RelatedQuestionRule(index + "-discretionary-rule",
-                ImmutableList.of(index + "-Koulutus-educationDegree"), DISCRETIONARY_EDUCATION_DEGREE, false);
-        RelatedQuestionRule discretionaryRule2 = new RelatedQuestionRule(index + "-discretionary-rule2",
-                ImmutableList.of("POHJAKOULUTUS"), "(" + OppijaConstants.PERUSKOULU + "|" + OppijaConstants.YLIOPPILAS + "|" +
-                OppijaConstants.OSITTAIN_YKSILOLLISTETTY + "|" + OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY +
-                "|" + OppijaConstants.YKSILOLLISTETTY + ")", false);
+        RelatedQuestionComplexRule discretionaryRule =
+                createVarEqualsToValueRule(index + "-Koulutus-educationDegree", DISCRETIONARY_EDUCATION_DEGREE);
+
+        RelatedQuestionComplexRule discretionaryRule2 = createVarEqualsToValueRule("POHJAKOULUTUS",
+                PERUSKOULU, YLIOPPILAS, OSITTAIN_YKSILOLLISTETTY, ERITYISOPETUKSEN_YKSILOLLISTETTY, YKSILOLLISTETTY);
+
+
         discretionaryRule.addChild(discretionary);
         discretionaryRule2.addChild(discretionaryRule);
 
-        RelatedQuestionRule discretionaryRule3 = new RelatedQuestionRule(index + "-discretionary-rule3",
-                ImmutableList.of("POHJAKOULUTUS"), "(" + OppijaConstants.KESKEYTYNYT + "|" + OppijaConstants.ULKOMAINEN_TUTKINTO + ")", false);
-        discretionaryRule3.addChild(new HiddenValue(discretionary.getId(), ElementUtil.KYLLA));
+        RelatedQuestionComplexRule KoulutusValittu = new RelatedQuestionComplexRule(
+                ElementUtil.randomId(),
+                new Equals(new Variable(index + "-Koulutus-id"), new Not(new Value(""))));
 
-        return new Element[]{discretionaryRule2, discretionaryRule3};
+        RelatedQuestionComplexRule keskeytynytTaiUlkomainenRule =
+                createVarEqualsToValueRule("POHJAKOULUTUS", KESKEYTYNYT, ULKOMAINEN_TUTKINTO);
+
+        HiddenValue hiddenValue = new HiddenValue(discretionary.getId(), ElementUtil.KYLLA);
+        ElementUtil.addRequiredValidator(hiddenValue, FORM_MESSAGES);
+        hiddenValue.setValidator(
+                new RegexFieldValidator(hiddenValue.getId(),
+                        ElementUtil.createI18NText("yleinen.virheellinenArvo", FORM_ERRORS),
+                        ElementUtil.KYLLA));
+
+        keskeytynytTaiUlkomainenRule.addChild(hiddenValue);
+        KoulutusValittu.addChild(keskeytynytTaiUlkomainenRule);
+
+        return new Element[]{discretionaryRule2, KoulutusValittu};
 
     }
 

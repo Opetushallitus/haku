@@ -18,23 +18,20 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 
-/**
- * @author Mikko Majapuro
- */
 public class Link extends Titled {
 
-    private String address;
+    private I18nText url;
 
-    public Link(final String id, String address, final I18nText i18nText) {
+    public Link(final String id, final I18nText url, final I18nText i18nText) {
         super(id, i18nText);
-        this.address = address;
+        this.url = url;
     }
 
-    public String getAddress() {
-        return address;
+    public I18nText getUrl() {
+        return url;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setUrl(I18nText url) {
+        this.url = url;
     }
 }

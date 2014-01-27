@@ -33,9 +33,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles("it")
 public abstract class TomcatContainerBase {
 
-    @Value("${asid}")
+    @Value("${asid:1.2.246.562.5.50476818906}")
     protected String ASID;
-    @Value("${aoid}")
+    @Value("${aoid:1.2.246.562.14.71344129359}")
     protected String AOID;
 
     @Value("${webdriver.base.url:http://localhost:9090/haku-app/}")

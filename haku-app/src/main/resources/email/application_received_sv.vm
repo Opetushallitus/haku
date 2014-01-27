@@ -13,7 +13,8 @@ $preference
 
 Du söker till yrkesutbildning som idrottare. Tilläggsuppgifter hittar du på adressen
 
-http://www.noc.fi/huippu-urheilu/opinto-ja_uraohjaus/urheilijoiden_opiskelumahdollisu/
+http://www.sport.fi/urheiluoppilaitoshaku
+
 #end
 #if ($educationCode)
 

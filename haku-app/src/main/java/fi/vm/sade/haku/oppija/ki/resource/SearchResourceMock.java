@@ -72,9 +72,11 @@ public class SearchResourceMock {
                     "\"aoIdentifier\":\"333\"," +
                     "\"educationDegree\":\"32\", " +
                     "\"sora\": true , " +
-                    "\"educationDegreeUri\": \"koulutus_381203\", " +
+                    "\"educationCodeUri\": \"koulutus_381203\", " +
                     "\"teachingLanguages\":[\"FI\"]," +
                     "\"athleteEducation\":true, " +
+                    "\"kaksoistutkinto\":false, " +
+                    "\"vocational\":true, " +
                     "\"childLONames\":[" +
                     "\"Kaivosalan perustutkinto, Kaivosalan koulutusohjelma\"]}," +
                     "{\"id\":\"1.2.246.562.14.39251489298\"," +
@@ -88,7 +90,7 @@ public class SearchResourceMock {
                     "\"name\":\"Tuotteen suunnittelun ja valmistuksen koulutusohjelma, pk (Käsi- ja taideteollisuusalan perustutkinto)\", " +
                     "\"educationDegree\":\"30\", " +
                     "\"athleteEducation\":true, " +
-                    "\"educationDegreeUri\":\"koulutus_321204\", " +
+                    "\"educationCodeUri\":\"koulutus_321204\", " +
                     "\"sora\": false, " +
                     "\"teachingLanguages\":[\"SV\"], " +
                     "\"childLONames\":[" +

@@ -10,8 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.HEAD;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +63,11 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanUpdateApplication(Application application) {
+        String userOid = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println("permissinCheck, userOid: "+userOid);
+        if (userOid == null || userOid.equals(application.getPersonOid())) {
+            return false;
+        }
         return userCanAccessApplication(application, getReadUpdateRole(), getCreateReadUpdateDeleteRole());
     }
 
