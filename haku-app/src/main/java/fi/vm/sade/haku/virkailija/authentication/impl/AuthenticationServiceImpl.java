@@ -18,6 +18,7 @@ package fi.vm.sade.haku.virkailija.authentication.impl;
 
 import com.google.gson.*;
 import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.oppija.common.HttpClientHelper;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
@@ -113,34 +114,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public List<String> getOrganisaatioHenkilo() {
-        CachingRestClient cachingRestClient = getCachingRestClient();
         String personOid = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<String> orgs = new ArrayList<String>();
-        String response = null;
+        String url = "/resources/henkilo/" + personOid + "/organisaatiohenkilo";
         try {
+            List<String> orgs = new ArrayList<String>();
+            CachingRestClient cachingRestClient = getCachingRestClient();
             if (log.isDebugEnabled()) {
                 log.debug("Getting organisaatiohenkilos for {}", personOid);
                 log.debug("Using cachingRestClient webCasUrl: {}, casService: {} ", cachingRestClient.getWebCasUrl(), cachingRestClient.getCasService());
             }
-            InputStream is = cachingRestClient.get("/resources/henkilo/" + personOid + "/organisaatiohenkilo");
-            response = IOUtils.toString(is);
-        } catch (IOException e) {
-            e.printStackTrace();
-            log.error("Getting organisaatiohenkilos failed due to: " + e.toString());
-            return orgs;
-        }
+            InputStream is = null;
 
-        try {
-            JsonArray orgJson = new JsonParser().parse(response).getAsJsonArray();
+            is = cachingRestClient.get(url);
+
+            JsonArray orgJson = new JsonParser().parse(IOUtils.toString(is)).getAsJsonArray();
             Iterator<JsonElement> elems = orgJson.iterator();
             while (elems.hasNext()) {
                 JsonObject orgObj = elems.next().getAsJsonObject();
                 orgs.add(orgObj.get("organisaatioOid").getAsString());
             }
-        } catch (JsonSyntaxException jse) {
-            log.error("JsonSyntaxException for response: {}", response);
+            return orgs;
+        } catch (IOException e) {
+            throw new RemoteServiceException(url, e);
         }
-        return orgs;
     }
 
     private synchronized CachingRestClient getCachingRestClient() {
@@ -200,7 +196,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return null;
 
     }
-
 
 
     private String createHenkilo(HttpClient client, Person person) {
