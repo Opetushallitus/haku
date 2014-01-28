@@ -46,6 +46,7 @@ public class HAK305IT extends DummyModelBaseItTest {
 
         nextPhase();
 
+        screenshot("HAK305_1");
         fillInArvosanatTheme();
 
         // Native lang == FI, no lang test
@@ -69,6 +70,7 @@ public class HAK305IT extends DummyModelBaseItTest {
     private void fillInArvosanatTheme() {
         driver.findElement(new By.ById("arvosanatTheme"));
         select();
+        selectByValue("PK_AI_OPPIAINE", "FI");
         selectByValue("PK_A1_OPPIAINE", "EN");
         selectByValue("PK_B1_OPPIAINE", "SE");
         //driver.findElement(new By.ById("KielitaitokysymyksetTheme"));
@@ -78,6 +80,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         // Lisätiedot
         clickAllElementsByXPath("//input[@type='checkbox']");
 
+        screenshot("HAK305");
         setValue("TYOKOKEMUSKUUKAUDET", "2");
         clickByNameAndValue("asiointikieli", "suomi");
         nextPhase();
