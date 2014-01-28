@@ -242,6 +242,11 @@ public class OrganizationServiceMockImpl implements OrganizationService {
     }
 
     @Override
+    public Organization findByOid(String oid) {
+        return oidOrg.get(oid);
+    }
+
+    @Override
     public List<Organization> findByOppilaitosnumero(List<String> oppilaitosnumeros) {
         return null;
     }

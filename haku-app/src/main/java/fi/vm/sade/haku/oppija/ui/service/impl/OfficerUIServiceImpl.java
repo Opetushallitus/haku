@@ -119,6 +119,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanUpdateApplication(application));
         modelResponse.addObjectToModel("applicationSystem", as);
 
+        String sendingSchoolOid = application.getVastauksetMerged().get("lahtokoulu");
+        if (sendingSchoolOid != null) {
+            Organization sendingSchool = organizationService.findByOid(sendingSchoolOid);
+            String sendingClass = application.getVastauksetMerged().get("lahtoluokka");
+            modelResponse.addObjectToModel("sendingSchool", sendingSchool.getName());
+            modelResponse.addObjectToModel("sendingClass", sendingClass);
+        }
+
         String userOid = userSession.getUser().getUserName();
         if (userOid == null || userOid.equals(application.getPersonOid())) {
             Map<String, I18nText> errors = modelResponse.getErrorMessages();

@@ -99,6 +99,7 @@
             <table class="margin-top-2">
                 <tr>
                     <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}" cellId="infocell_oid"/>
+
                     <c:if test="${application.state eq 'ACTIVE'}">
                         <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
                     </c:if>
@@ -109,6 +110,7 @@
                         <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="msg"/>
                     </c:if>
                     <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${msg}'/>
+
                     <haku:infoCell key="virkailija.hakemus.puhelin" value="${answers['matkapuhelinnumero1']}"/>
                 </tr>
                 <tr>
@@ -120,6 +122,14 @@
                     <td></td>
                     <haku:infoCell key="virkailija.hakemus.oppijanumero" value="${application.studentOid}" cellId="infocell_oppijanumero"/>
                     <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${answers['aidinkieli']}"/>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <span class="bold"><fmt:message key="virkailija.hakemus.lahtokoulu"/>:</span>
+                        <span><haku:i18nText value="${it.sendingSchool}" />&nbsp;<c:out value="${it.sendingClass}" /></span>
+                    </td>
+                    <td></td>
                 </tr>
 
             </table>

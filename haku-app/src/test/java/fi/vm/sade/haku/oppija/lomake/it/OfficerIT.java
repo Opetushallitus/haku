@@ -249,9 +249,7 @@ public class OfficerIT extends DummyModelBaseItTest {
             List<WebElement> activateApplication = getById("activateApplication");
             if (!activateApplication.isEmpty()) {
                 activateApplication.get(0).click();
-                findByIdAndClick("conform-activation");
-
-
+                findByIdAndClick("confirm-activation");
             }
         }
         findByIdAndClick("back");
