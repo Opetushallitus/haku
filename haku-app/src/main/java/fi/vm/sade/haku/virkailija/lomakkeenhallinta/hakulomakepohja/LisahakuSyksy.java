@@ -86,7 +86,7 @@ public class LisahakuSyksy {
                 createI18NText("form.valmis.haeturheilijana.linkki.text", FORM_MESSAGES));
         athleteLink.addAttribute("target", "_blank");
         athleteGroup.addChild(athleteLink);
-        athleteRule.addChild(athleteGroup);
+            athleteRule.addChild(athleteGroup);
         elements.add(athleteRule);
 
         //Hait musiikki-, tanssi- tai liikunta-alan koulutukseen.
