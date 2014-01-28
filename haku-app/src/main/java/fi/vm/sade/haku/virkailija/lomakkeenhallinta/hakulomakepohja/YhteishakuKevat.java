@@ -34,6 +34,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.randomId;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
@@ -119,7 +120,7 @@ public class YhteishakuKevat {
 
         elements.add(muutoksenTekeminen);
 
-        elements.add(new Link("backLink", createI18NText("https://opintopolku.fi", FORM_MESSAGES), createI18NText("form.valmis.takaisin.opintopolkuun.linkki",
+        elements.add(new Link("backLink", createI18NAsIs("https://opintopolku.fi"), createI18NText("form.valmis.takaisin.opintopolkuun.linkki",
                 FORM_MESSAGES)));
 
         return elements;
