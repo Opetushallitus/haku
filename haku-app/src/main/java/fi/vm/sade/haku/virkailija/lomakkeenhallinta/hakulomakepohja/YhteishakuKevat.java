@@ -89,8 +89,10 @@ public class YhteishakuKevat {
         TitledGroup athleteGroup = new TitledGroup("atheleteGroup", createI18NText("form.valmis.haeturheilijana.header", FORM_MESSAGES));
 
         athleteGroup.addChild(new Text("athleteP1", createI18NText("form.valmis.haeturheilijana", FORM_MESSAGES)));
-        athleteGroup.addChild(new Link("athleteLink", createI18NText("form.valmis.haeturheilijana.linkki.url", FORM_MESSAGES),
-                                                      createI18NText("form.valmis.haeturheilijana.linkki.text", FORM_MESSAGES)));
+        Link athleteLink = new Link("athleteLink", createI18NText("form.valmis.haeturheilijana.linkki.url", FORM_MESSAGES),
+                createI18NText("form.valmis.haeturheilijana.linkki.text", FORM_MESSAGES));
+        athleteLink.addAttribute("target", "_blank");
+        athleteGroup.addChild(athleteLink);
         athleteRule.addChild(athleteGroup);
 
         elements.add(athleteRule);
