@@ -1,5 +1,6 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
@@ -19,7 +20,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<fmt:setBundle basename="messages" scope="session"/>
+<fmt:setBundle basename="messages" scope="application"/>
 <c:set var="complete" value="true" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
 <c:set var="answers" value="${it.application.vastauksetMerged}" scope="request"/>
@@ -86,8 +87,7 @@
                     <h3 class="h2"><fmt:message key="lomake.valmis.hakemuksesionvastaanotettu"/></h3>
 
                     <p class="application-number">
-                        <fmt:message key="lomake.valmis.hakulomakenumerosi"/>: <span class="number"><c:out
-                            value="${ f:formatOid(application.oid)}"/></span>
+                        <fmt:message key="lomake.valmis.hakulomakenumerosi"/>: <span class="number"><c:out value="${ f:formatOid(application.oid)}"/></span>
                     </p>
 
                     <c:forEach var="cElement" items="${completeElements}">

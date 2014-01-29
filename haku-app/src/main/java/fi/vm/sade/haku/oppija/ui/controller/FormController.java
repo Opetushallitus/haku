@@ -153,7 +153,10 @@ public class FormController {
     @Path("/{applicationSystemId}/esikatselu")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) {
+        long start = System.currentTimeMillis();
         Form activeForm = formService.getActiveForm(applicationSystemId);
+        System.out.println("---------------> time get active form" + (System.currentTimeMillis() - start));
+        long start2 = System.currentTimeMillis();
         Application application = applicationService.getApplication(applicationSystemId);
         Map<String, String> values = application.getVastauksetMerged();
         ModelResponse modelResponse = new ModelResponse();

@@ -20,7 +20,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <!DOCTYPE html>
-<fmt:setBundle basename="messages" scope="session"/>
+<fmt:setBundle basename="messages" scope="application"/>
 <c:set var="preview" value="${it.preview}" scope="request"/>
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="oid" value="${it.oid}" scope="request"/>
