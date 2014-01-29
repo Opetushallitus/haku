@@ -129,6 +129,44 @@ $(document).ready(function () {
         }
     });
 
+    $('input#application-preference').autocomplete({
+        minLength : 1,
+        dealy : 500,
+        source: function(req, res) {
+            $.get(page_settings.contextPath + "/virkailija/autocomplete/preference?term="+encodeURI(req.term),
+                function(data) {
+                    res($.map(data, function (result) {
+                        var name = result.name[page_settings.lang];
+                        if ( !name ) {
+                            var langs = ['fi', 'sv', 'en'];
+                            for (var i = 0; i < langs.length; i++) {
+                                name = result.name[langs[i]];
+                                if (name) {
+                                    break;
+                                }
+                            }
+                            if (!name) {
+                                name = "???";
+                            }
+                        }
+                        return {
+                            label: name,
+                            value: name,
+                            dataId: result.dataId
+                        }
+                    }));
+                })
+        },
+        select: function(event, ui) {
+            $('#application-preference-code').val(ui.item.dataId);
+        }
+    });
+
+    $('input#application-preference').change(function(event) {
+        if (!$(this).val()) {
+            $('#application-preference-code').val("");
+        }
+    });
 
 /* ****************************************************************************
  * Organization search dialog
@@ -322,6 +360,7 @@ $(document).ready(function () {
                 $('#oid').val(obj.oid);
                 $('#application-state').val(obj.appState);
                 $('#application-preference').val(obj.aoid);
+                $('#application-preference-code').val(obj.aoid);
                 $('#lopoid').val(obj.lopoid);
                 $('#lop-title').text(obj.lopTitle);
                 $('#application-system').val(obj.asId);
@@ -340,6 +379,7 @@ $(document).ready(function () {
                 addParameter(obj, 'oid', '#oid');
                 addParameter(obj, 'appState', '#application-state');
                 addParameter(obj, 'aoid', '#application-preference');
+                addParameter(obj, 'aoidCode', '#application-preference-code');
                 addParameter(obj, 'lopoid', '#lopoid');
                 addParameter(obj, 'asId', '#application-system');
                 addParameter(obj, 'asYear', '#hakukausiVuosi');
@@ -436,6 +476,7 @@ $(document).ready(function () {
             $('#entry').val('');
             $('#application-state').val('ACTIVE');
             $('#application-preference').val('');
+            $('#application-preference-code').val('');
             $('#application-system').val('');
             $('#hakukausiVuosi').val(hakukausiDefaultYear);
             $('#hakukausi').val(hakukausiDefaultSemester);

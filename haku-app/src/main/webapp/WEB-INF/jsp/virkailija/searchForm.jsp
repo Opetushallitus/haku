@@ -109,6 +109,7 @@
                             <input class="width-60" type="text" id="application-preference"
                                    placeholder="<fmt:message key="virkailija.hakemus.hakukohde.otsikko.kentta"/>"/>
                         </div>
+                        <input type="hidden" name="application-preference-code" id="application-preference-code" />
                     </td>
 
                     <td>

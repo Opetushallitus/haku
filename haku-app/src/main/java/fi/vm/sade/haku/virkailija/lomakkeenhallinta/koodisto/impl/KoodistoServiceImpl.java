@@ -59,6 +59,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_GENDER = "sukupuoli";
     public static final String CODE_HAKUKAUSI = "kausi";
     private static final String CODE_KOULUNUMERO = "oppilaitosnumero";
+    private static final String CODE_HAKUKOHDE = "hakukohteet";
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
@@ -201,6 +202,11 @@ public class KoodistoServiceImpl implements KoodistoService {
             opts.add(new Option(org.getName(), org.getOid()));
         }
         return opts;
+    }
+
+    @Override
+    public List<Option> getHakukohdekoodit() {
+        return codesToOptions(CODE_HAKUKOHDE);
     }
 
     private List<Option> codesToOptions(final String codeName) {

@@ -50,4 +50,6 @@ public interface OfficerUIService {
     ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication) throws ResourceNotFoundException;
 
     List<Map<String, Object>> getSchools(String term);
+
+    List<Map<String,Object>> getPreferences(String term);
 }

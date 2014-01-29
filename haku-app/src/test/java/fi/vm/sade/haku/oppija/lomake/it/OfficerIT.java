@@ -114,7 +114,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     @Test
     public void testSearch() throws Exception {
         testSearchByTermAndState();
-        testSearchByPreference();
+        //testSearchByPreference();
     }
 
 

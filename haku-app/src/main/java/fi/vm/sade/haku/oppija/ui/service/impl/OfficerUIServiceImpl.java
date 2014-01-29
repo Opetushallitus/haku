@@ -312,6 +312,28 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
+    public List<Map<String, Object>> getPreferences(String term) {
+        term = term.toLowerCase();
+        List<Option> preferences = koodistoService.getHakukohdekoodit();
+        List<Map<String, Object>> matchingPreferences = new ArrayList<Map<String, Object>>(20);
+        Iterator<Option> prefIterator = preferences.iterator();
+        while(prefIterator.hasNext() && matchingPreferences.size() <= 20) {
+            Option pref = prefIterator.next();
+            Map<String, String> translations = pref.getI18nText().getTranslations();
+            for (String tran : translations.values()) {
+                if (tran.toLowerCase().startsWith(term) || pref.getValue().equals(term)) {
+                    Map<String, Object> matchingPref = new HashMap<String, Object>(2);
+                    matchingPref.put("name", translations);
+                    matchingPref.put("dataId", pref.getValue());
+                    matchingPreferences.add(matchingPref);
+                    break;
+                }
+            }
+        }
+        return matchingPreferences;
+    }
+
+    @Override
     public Application passivateApplication(String oid, String reason) throws ResourceNotFoundException {
         reason = "Hakemus passivoitu: " + reason;
         addNote(oid, reason);

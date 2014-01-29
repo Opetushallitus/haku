@@ -52,6 +52,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Option> listOfGenders;
     public final List<Option> listOfKausi;
     public final List<Option> listOfLukios;
+    public final List<Option> listOfHakukohdekoodit;
     public final List<Code> listOfBaseEducationCodes;
     // koodisto uri -> codes
     public Map<String, List<Code>> codes = Maps.newHashMap();
@@ -180,6 +181,12 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                         new Option(createI18NAsIs("Alkio-opisto"), "1.2.246.562.10.77255241653")
                 );
 
+        this.listOfHakukohdekoodit =
+                ImmutableList.of(
+                        new Option(createI18NAsIs("Kaivosalan perustutkinto, pk"), "123"),
+                        new Option(createI18NAsIs("Notfound"), "xxx")
+                );
+
         this.listOfBaseEducationCodes = ImmutableList.of(
                 new Code(ULKOMAINEN_TUTKINTO, createI18NAsIs("Ulkomailla suoritettu koulutus")),
                 new Code(PERUSKOULU, createI18NAsIs("Perusopetuksen oppimäärä")),
@@ -253,6 +260,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getLukioKoulukoodit() {
         return this.listOfLukios;
+    }
+
+    @Override
+    public List<Option> getHakukohdekoodit() {
+        return this.listOfHakukohdekoodit;
     }
 
     @Override

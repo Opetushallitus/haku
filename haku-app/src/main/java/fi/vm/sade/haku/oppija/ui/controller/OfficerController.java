@@ -366,9 +366,15 @@ public class OfficerController {
     }
 
     @GET
-    @Path("/autocomplete/school")
+    @Path("/autocomplete/{list}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Map<String, Object>> getSchools(@QueryParam("term") String term) {
-        return officerUIService.getSchools(term);
+    public List<Map<String, Object>> getAutocomplete(@PathParam("list") String list,
+                                                     @QueryParam("term") String term) {
+        if ("school".equals(list)) {
+            return officerUIService.getSchools(term);
+        } else if ("preference".equals(list)) {
+            return officerUIService.getPreferences(term);
+        }
+        return new ArrayList<Map<String, Object>>(0);
     }
 }
