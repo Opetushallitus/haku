@@ -116,11 +116,13 @@
                     </td>
 
                     <td class="padding-top-4">
-                        <input id="reset-search" class="button secondary small" type="button"
-                               value="<fmt:message key="virkailija.hakemus.tyhjenna"/>"/>
-                        <input id="search-applications" class="button primary small" type="submit"
-                               value="<fmt:message key="virkailija.hakemus.hae"/>"/>
-                        <div id="search-spinner"></div>
+                        <div style="float: left">
+                            <input id="reset-search" class="button secondary small" type="button"
+                                   value="<fmt:message key="virkailija.hakemus.tyhjenna"/>"/>
+                            <input id="search-applications" class="button primary small" type="submit"
+                                   value="<fmt:message key="virkailija.hakemus.hae"/>"/>
+                        </div>
+                        <div id="search-spinner" style="height: 22px; width: 22px; float: left;"></div>
                     </td>
                 </tr>
                 <tr>

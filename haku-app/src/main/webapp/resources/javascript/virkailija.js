@@ -17,10 +17,10 @@
 $(document).ready(function () {
 
     var spinner = new Spinner( {
-        lines: 9, // The number of lines to draw
-        length: 7, // The length of each line
+        lines: 8, // The number of lines to draw
+        length: 5, // The length of each line
         width: 4, // The line thickness
-        radius: 6, // The radius of the inner circle
+        radius: 4, // The radius of the inner circle
         corners: 1, // Corner roundness (0..1)
         rotate: 0, // The rotation offset
         direction: 1, // 1: clockwise, -1: counterclockwise
@@ -31,8 +31,8 @@ $(document).ready(function () {
         hwaccel: false, // Whether to use hardware acceleration
         className: 'spinner', // The CSS class to assign to the spinner
         zIndex: 2e9, // The z-index (defaults to 2000000000)
-        top: -37, // Top position relative to parent in px
-        left: 'auto' // Left position relative to parent in px
+        top: -1, // Top position relative to parent in px
+        left: 7 // Left position relative to parent in px
     });
 
     var cookieName = 'hakemukset_last_search';
