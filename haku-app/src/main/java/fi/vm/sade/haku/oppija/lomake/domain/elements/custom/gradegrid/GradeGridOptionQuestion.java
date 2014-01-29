@@ -20,14 +20,14 @@ public class GradeGridOptionQuestion extends Element {
     public GradeGridOptionQuestion(final String id,
                                    final List<Option> options,
                                    final boolean selected,
-                                   final boolean sortByText) {
+                                   final Boolean sortByText) {
         super(id);
         addAttribute("name", id);
         Preconditions.checkNotNull(options);
         Preconditions.checkNotNull(selected);
         this.options = options;
         this.selected = selected;
-        this.sortByText = sortByText;
+        this.sortByText = sortByText != null ? sortByText.booleanValue() : false;
     }
 
     public List<Option> getOptions() {
