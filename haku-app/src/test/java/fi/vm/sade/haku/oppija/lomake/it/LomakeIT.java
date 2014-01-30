@@ -18,7 +18,7 @@ package fi.vm.sade.haku.oppija.lomake.it;
 
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhaseSyksy;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -175,9 +175,9 @@ public class LomakeIT extends DummyModelBaseItTest {
 
     private void testHAK123AandHAK124() {
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_KESKEYTYNYT);
-        findById(KoulutustaustaPhaseSyksy.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
+        findById(KoulutustaustaPhase.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_ULKOMAINEN_TUTKINTO);
-        findById(KoulutustaustaPhaseSyksy.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
+        findById(KoulutustaustaPhase.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
     }
 
     protected void elementsPresent(String... locations) {
