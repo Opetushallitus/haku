@@ -22,7 +22,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhaseYhteishakuKevat;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhase;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhaseYhteishakuKevat;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseYhteishakuKevat;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
@@ -45,7 +45,7 @@ public class YhteishakuKevat {
             form.addChild(KoulutustaustaPhase.create(koodistoService, as, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
             form.addChild(HakutoiveetPhaseYhteishakuKevat.create());
             form.addChild(OsaaminenPhaseYhteishakuKevat.create(koodistoService, as));
-            form.addChild(LisatiedotPhaseYhteishakuKevat.create());
+            form.addChild(LisatiedotPhase.create(FORM_MESSAGES, FORM_ERRORS,FORM_VERBOSE_HELP));
             return form;
         } catch (Exception e) {
             throw new RuntimeException(YhteishakuKevat.class.getCanonicalName() + " init failed", e);

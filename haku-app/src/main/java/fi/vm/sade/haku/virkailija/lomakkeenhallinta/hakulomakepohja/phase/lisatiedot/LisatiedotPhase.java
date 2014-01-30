@@ -1,6 +1,8 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
@@ -19,12 +21,25 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseYhteishakuKevat.createPohjakoilutusUlkomainenTaiKeskeyttanyt;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 
-public class Lisatiedot {
+public class LisatiedotPhase {
 
     public static final String REQUIRED_EDUCATION_DEGREE = "32";
     public static final String MIN_AGE_REQUIRED_TO_WORK_EXPERIENCE_AGE = "16";
     public static final String TYOKOKEMUS_PATTERN = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$";
+
+    private LisatiedotPhase() {
+    }
+
+    public static Phase create(final String formMessagesBundle, final String formErrorsBundle, final String formVerboseHelpBundle) {
+        Phase lisatiedot = new Phase("lisatiedot", createI18NText("form.lisatiedot.otsikko", formMessagesBundle), false,
+                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
+        lisatiedot.addChild(createTyokokemus(formMessagesBundle,formErrorsBundle,formVerboseHelpBundle));
+        lisatiedot.addChild(createLupatiedot(formMessagesBundle,formErrorsBundle,formVerboseHelpBundle));
+        lisatiedot.addChild(createUrheilijanLisakysymykset(formMessagesBundle,formErrorsBundle,formVerboseHelpBundle));
+        return lisatiedot;
+    }
 
     static RelatedQuestionComplexRule createTyokokemus(final String formMessagesBundle, final String formErrorsBundle, final String formVerboseHelpBundle) {
         Expr isEducation32 = ExprUtil.atLeastOneVariableEqualsToValue(REQUIRED_EDUCATION_DEGREE, OppijaConstants.AO_EDUCATION_DEGREE_KEYS);

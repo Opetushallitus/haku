@@ -22,7 +22,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhaseLisahakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhaseSyksy;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhaseLisahakuSyksy;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
@@ -43,7 +43,7 @@ public class LisahakuSyksy {
             form.addChild(KoulutustaustaPhaseSyksy.create(koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
             form.addChild(HakutoiveetPhaseLisahakuSyksy.create());
             form.addChild(OsaaminenPhaseSyksy.create(koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
-            form.addChild(LisatiedotPhaseLisahakuSyksy.create());
+            form.addChild(LisatiedotPhase.create(FORM_MESSAGES, FORM_ERRORS,FORM_VERBOSE_HELP));
             return form;
         } catch (Exception e) {
             throw new RuntimeException(LisahakuSyksy.class.getCanonicalName() + " init failed", e);
