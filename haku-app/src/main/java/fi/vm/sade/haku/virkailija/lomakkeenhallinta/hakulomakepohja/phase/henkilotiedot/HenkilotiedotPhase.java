@@ -28,7 +28,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
@@ -58,32 +57,20 @@ public final class
           formMessagesBundle), true);
 
         // Nimet
-        Question sukunimi = createRequiredTextQuestion("Sukunimi", "form.henkilotiedot.sukunimi", formMessagesBundle, formErrorsBundle,
-                30);
-        sukunimi.setInline(true);
-        sukunimi.setValidator(createRegexValidator(sukunimi.getId(), ElementUtil.ISO88591_NAME_REGEX, formErrorsBundle));
+        Question sukunimi = createNameQuestion("Sukunimi", "form.henkilotiedot.sukunimi", formMessagesBundle, formErrorsBundle, 30);
         henkilotiedotRyhma.addChild(sukunimi);
 
-        Question etunimet = createRequiredTextQuestion("Etunimet", "form.henkilotiedot.etunimet", formMessagesBundle, formErrorsBundle,
-                30);
-        etunimet.setInline(true);
-        etunimet.setValidator(createRegexValidator(etunimet.getId(), ElementUtil.ISO88591_NAME_REGEX, formErrorsBundle));
+        Question etunimet = createNameQuestion("Etunimet", "form.henkilotiedot.etunimet", formMessagesBundle, formErrorsBundle, 30);
         henkilotiedotRyhma.addChild(etunimet);
 
-        TextQuestion kutsumanimi = new TextQuestion("Kutsumanimi", createI18NText("form.henkilotiedot.kutsumanimi",
-          formMessagesBundle));
-        kutsumanimi.setHelp(createI18NText("form.henkilotiedot.kutsumanimi.help", formMessagesBundle));
-        addSizeAttribute(kutsumanimi, 20);
+        Question kutsumanimi = createCallingNameQuestion(formMessagesBundle, formErrorsBundle, formVerboseHelpBundle, 20);
         kutsumanimi.setValidator(
                 new ContainedInOtherFieldValidator(kutsumanimi.getId(),
                         etunimet.getId(),
                         ElementUtil.createI18NText("yleinen.virheellinenArvo", formErrorsBundle)));
-        kutsumanimi.setValidator(
-                createRegexValidator(kutsumanimi.getId(), ISO88591_NAME_REGEX, formErrorsBundle));
-        setRequiredInlineAndVerboseHelp(kutsumanimi, "form.henkilotiedot.kutsumanimi.verboseHelp", formVerboseHelpBundle,
-          formErrorsBundle);
 
         henkilotiedotRyhma.addChild(kutsumanimi);
+
 
         // Kansalaisuus, hetu ja sukupuoli suomalaisille
         DropdownSelect kansalaisuus =
@@ -290,5 +277,19 @@ public final class
 
         henkilotiedot.addChild(henkilotiedotRyhma);
         return henkilotiedot;
+    }
+
+    private static TextQuestion createCallingNameQuestion(String formMessagesBundle, String formErrorsBundle, String formVerboseHelpBundle, final int size) {
+        TextQuestion kutsumanimi = createNameQuestion("Kutsumanimi", "form.henkilotiedot.kutsumanimi", formMessagesBundle, formErrorsBundle, 20 );
+        kutsumanimi.setHelp(createI18NText("form.henkilotiedot.kutsumanimi.help", formMessagesBundle));
+        setVerboseHelp(kutsumanimi, "form.henkilotiedot.kutsumanimi.verboseHelp", formVerboseHelpBundle);
+        return kutsumanimi;
+    }
+
+    private static TextQuestion createNameQuestion(String id, String translation, String formMessagesBundle, String formErrorsBundle, final int size ) {
+        TextQuestion name = createRequiredTextQuestion(id, translation, formMessagesBundle, formErrorsBundle, size);
+        name.setInline(true);
+        name.setValidator(createRegexValidator(name.getId(), ElementUtil.ISO88591_NAME_REGEX, formErrorsBundle));
+        return name;
     }
 }
