@@ -91,13 +91,13 @@ public abstract class Element implements Serializable {
         checkNotNull(value, "Attribute's value cannot be null");
         if (!attributes.containsKey(key)) {
             this.attributes.put(key, value);
-        }
+        } else
+            throw new UnsupportedOperationException("Attribute \""+key + "\" already set");
     }
 
     public List<Validator> getValidators() {
         return ImmutableList.copyOf(validators);
     }
-
 
     public void setValidators(final List<Validator> validators) {
         this.validators.addAll(validators);
@@ -107,6 +107,9 @@ public abstract class Element implements Serializable {
         this.validators.add(validator);
     }
 
+    /*
+     * Required for fi.vm.sade.haku.oppija.lomake.domain.rule.RelatedQuestionComplexRule to work
+     */
     public List<Element> getChildren(Map<String, String> values) {
         return getChildren();
     }
