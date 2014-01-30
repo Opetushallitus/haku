@@ -18,7 +18,6 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisat
 
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.MessageBundleNames;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.Lisatiedot.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
@@ -28,7 +27,6 @@ public final class LisatiedotPhaseLisahakuSyksy {
     private static final String FORM_MESSAGES = "form_messages_lisahaku_syksy";
     private static final String FORM_ERRORS = "form_errors_lisahaku_syksy";
     private static final String FORM_VERBOSE_HELP = "form_verboseHelp_lisahaku_syksy";
-    private static final MessageBundleNames MESSAGE_BUNDLE_NAMES = new MessageBundleNames(FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP);
 
     private LisatiedotPhaseLisahakuSyksy() {
     }
@@ -36,9 +34,9 @@ public final class LisatiedotPhaseLisahakuSyksy {
     public static Phase create() {
         Phase lisatiedot = new Phase("lisatiedot", createI18NText("form.lisatiedot.otsikko", FORM_MESSAGES), false,
                 Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
-        lisatiedot.addChild(createTyokokemus(MESSAGE_BUNDLE_NAMES));
-        lisatiedot.addChild(createLupatiedot(MESSAGE_BUNDLE_NAMES));
-        lisatiedot.addChild(createUrheilijanLisakysymykset(MESSAGE_BUNDLE_NAMES));
+        lisatiedot.addChild(createTyokokemus(FORM_MESSAGES,FORM_ERRORS,FORM_VERBOSE_HELP));
+        lisatiedot.addChild(createLupatiedot(FORM_MESSAGES,FORM_ERRORS,FORM_VERBOSE_HELP));
+        lisatiedot.addChild(createUrheilijanLisakysymykset(FORM_MESSAGES,FORM_ERRORS,FORM_VERBOSE_HELP));
         return lisatiedot;
     }
 }
