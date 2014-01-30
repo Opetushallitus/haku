@@ -49,11 +49,6 @@ public class FormServiceMockImpl implements FormService {
     }
 
     @Override
-    public List<Element> getApplicationCompleteElements(String applicationSystemId) {
-        return Lists.newArrayList();
-    }
-
-    @Override
     public Element getFirstPhase(final String applicationSystemId) {
         Form activeForm = getActiveForm(applicationSystemId);
         Element firstPhase = Iterables.getFirst(activeForm.getChildren(), null);

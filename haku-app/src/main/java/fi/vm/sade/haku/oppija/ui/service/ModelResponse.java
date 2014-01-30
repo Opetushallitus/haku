@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.ui.service;
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -25,6 +26,7 @@ public class ModelResponse {
     public static final String FORM = "form";
     public static final String DISCRETIONARY_ATTACHMENT_AO_IDS = "discretionaryAttachmentAOIds";
     public static final String APPLICATION_COMPLETE_ELEMENTS = "applicationCompleteElements";
+    public static final String ADDITIONAL_INFORMATION_ELEMENTS = "additionalInformationElements";
     public static final String APPLICATION_SYSTEMS = "applicationSystems";
 
 
@@ -49,10 +51,12 @@ public class ModelResponse {
     }
 
     public ModelResponse(final Application application,
-                         final Form form,
+                         final ApplicationSystem applicationSystem,
                          final List<String> discretionaryAttachmentAOIds,
                          final String koulutusinformaatioBaseUrl) {
-        this(application, form);
+        this(application, applicationSystem.getForm());
+        setApplicationCompleteElements(applicationSystem.getApplicationCompleteElements());
+        setAdditionalInformationElements(applicationSystem.getAdditionalInformationElements());
         setDiscretionaryAttachmentAOIds(discretionaryAttachmentAOIds);
         setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
     }
@@ -127,6 +131,10 @@ public class ModelResponse {
 
     public void setApplicationCompleteElements(final List<Element> applicationCompleteElements) {
         this.addObjectToModel(APPLICATION_COMPLETE_ELEMENTS, applicationCompleteElements);
+    }
+
+    public void setAdditionalInformationElements(final List<Element> additionalPrintElements) {
+        this.addObjectToModel(ADDITIONAL_INFORMATION_ELEMENTS, additionalPrintElements);
     }
 
     public void setApplicationSystemId(final String asid) {

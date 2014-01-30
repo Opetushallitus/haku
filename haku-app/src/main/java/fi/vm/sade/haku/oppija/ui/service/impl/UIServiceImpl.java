@@ -20,14 +20,14 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
-import fi.vm.sade.haku.oppija.lomake.service.FormService;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
-import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
+import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,22 +38,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Mikko Majapuro
- */
 @Service
 public class UIServiceImpl implements UIService {
 
     private final ApplicationService applicationService;
-    private final FormService formService;
+    private final ApplicationSystemService applicationSystemService;
     private final String koulutusinformaatioBaseUrl;
 
 
     @Autowired
-    public UIServiceImpl(final ApplicationService applicationService, final FormService formService,
+    public UIServiceImpl(final ApplicationService applicationService,
+                         final ApplicationSystemService applicationSystemService,
                          @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl) {
         this.applicationService = applicationService;
-        this.formService = formService;
+        this.applicationSystemService = applicationSystemService;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
     }
 
@@ -61,34 +59,33 @@ public class UIServiceImpl implements UIService {
     @Override
     public ModelResponse getApplicationPrint(final String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
-        final Form activeForm = formService.getForm(application.getApplicationSystemId());
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(application.getApplicationSystemId());
         List<String> discretionaryAttachmentAOIds = getDiscretionaryAttachmentAOIds(application);
-        return new ModelResponse(application, activeForm, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
+        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
     }
 
     @Override
     public ModelResponse getApplicationPrint(final String applicationSystemId, final String oid) throws ResourceNotFoundException {
-        Form activeForm = formService.getActiveForm(applicationSystemId);
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
         List<String> discretionaryAttachmentAOIds = getDiscretionaryAttachmentAOIds(application);
-        return new ModelResponse(application, activeForm, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
+        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
     }
 
     @Override
     public ModelResponse getApplicationComplete(final String applicationSystemId, final String oid) throws ResourceNotFoundException {
-        Form activeForm = formService.getActiveForm(applicationSystemId);
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
         List<String> discretionaryAttachmentAOIds = getDiscretionaryAttachmentAOIds(application);
-        ModelResponse response = new ModelResponse(application, activeForm, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
-        response.setApplicationCompleteElements(formService.getApplicationCompleteElements(applicationSystemId));
-        return response;
+        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
     }
 
     @Override
     public Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId) throws ResourceNotFoundException {
-        Form activeForm = formService.getActiveForm(applicationSystemId);
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
+
         Map<String, Object> model = new HashMap<String, Object>();
-        Element theme = new ElementTree(activeForm).getChildById(elementId);
+        Element theme = new ElementTree(activeApplicationSystem.getForm()).getChildById(elementId);
         model.put("theme", theme);
         List<Element> listsOfTitledElements = new ArrayList<Element>();
         for (Element tElement : theme.getChildren()) {

@@ -16,34 +16,25 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
-import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.*;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.DiscretionaryAttachments;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhaseYhteishakuKevat;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhaseYhteishakuKevat;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhaseYhteishakuKevat;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhaseYhteishakuKevat;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseYhteishakuKevat;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.randomId;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.VALID_EDUCATION_CODES;
+import static com.google.common.collect.Lists.newArrayList;
 
 public class YhteishakuKevat {
 
     private static final String FORM_MESSAGES = "form_messages_yhteishaku_kevat";
-    private static final String REGEX_NON_EMPTY = ".*\\S.*";
 
     public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService,
                                     final OrganizationService organisaatioService) {
@@ -61,70 +52,11 @@ public class YhteishakuKevat {
     }
 
     public static List<Element> generateApplicationCompleteElements() {
-        List<Element> elements = Lists.newArrayList();
-
-        RelatedQuestionRule emailRule = new RelatedQuestionRule("emailRule", "Sähköposti", REGEX_NON_EMPTY, false);
-        Text emailP1 = new Text("emailP1", createI18NText("form.valmis.sinulleonlahetettyvahvistussahkopostiisi",
-                FORM_MESSAGES));
-        emailP1.addChild(new Answer("Sähköposti"));
-        emailRule.addChild(emailP1);
-
-        elements.add(emailRule);
-
-        elements.add(new Text("valmisP1", createI18NText("form.lomake.valmis.p1", FORM_MESSAGES)));
-        elements.add(new Text("valmisP2", createI18NText("form.lomake.valmis.p2", FORM_MESSAGES)));
-        elements.add(new Text("valmisP3", createI18NText("form.lomake.valmis.p3", FORM_MESSAGES)));
-
-        elements.add(new Print("printLink", createI18NText("form.valmis.button.tulosta", FORM_MESSAGES)));
-
-        elements.add(new DiscretionaryAttachments("discretionaryAttachments"));
-
-        RelatedQuestionRule athleteRule = new RelatedQuestionRule("athleteRule",
-                Lists.newArrayList("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference1_urheilijalinjan_lisakysymys",
-                        "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference2_urheilijalinjan_lisakysymys",
-                        "preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference3_urheilijalinjan_lisakysymys",
-                        "preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference4_urheilijalinjan_lisakysymys",
-                        "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference5_urheilijalinjan_lisakysymys"),
-                "^true", false);
-        TitledGroup athleteGroup = new TitledGroup("atheleteGroup", createI18NText("form.valmis.haeturheilijana.header", FORM_MESSAGES));
-
-        athleteGroup.addChild(new Text("athleteP1", createI18NText("form.valmis.haeturheilijana", FORM_MESSAGES)));
-        Link athleteLink = new Link("athleteLink", createI18NText("form.valmis.haeturheilijana.linkki.url", FORM_MESSAGES),
-                createI18NText("form.valmis.haeturheilijana.linkki.text", FORM_MESSAGES));
-        athleteLink.addAttribute("target", "_blank");
-        athleteGroup.addChild(athleteLink);
-        athleteRule.addChild(athleteGroup);
-
-        elements.add(athleteRule);
-
-        //Hait musiikki-, tanssi- tai liikunta-alan koulutukseen.
-        RelatedQuestionRule musiikkiTanssiLiikuntaRule = new RelatedQuestionRule("musiikkiTanssiLiikuntaRule",
-                Lists.newArrayList(String.format(EDUCATION_CODE_KEY, 1),
-                        String.format(EDUCATION_CODE_KEY, 2),
-                        String.format(EDUCATION_CODE_KEY, 3),
-                        String.format(EDUCATION_CODE_KEY, 4),
-                        String.format(EDUCATION_CODE_KEY, 5)),
-                StringUtils.join(VALID_EDUCATION_CODES, "|"), false);
-        TitledGroup musiikkiTanssiLiikuntaGroup = new TitledGroup("mtlGroup", createI18NText("form.valmis.musiikkitanssiliikunta.header", FORM_MESSAGES));
-        musiikkiTanssiLiikuntaGroup.addChild(new Text(randomId(), createI18NText("form.valmis.musiikkitanssiliikunta", FORM_MESSAGES)));
-        musiikkiTanssiLiikuntaRule.addChild(musiikkiTanssiLiikuntaGroup);
-        elements.add(musiikkiTanssiLiikuntaRule);
-
-        TitledGroup muutoksenTekeminen = new TitledGroup("muutoksenTekeminen", createI18NText("form.valmis.muutoksentekeminen",
-                FORM_MESSAGES));
-
-        muutoksenTekeminen.addChild(new Text("muutoksenTekeminenP1", createI18NText("form.valmis.muutoksentekeminen.p1",
-                FORM_MESSAGES)));
-        muutoksenTekeminen.addChild(new Text("muutoksenTekeminenP2", createI18NText("form.valmis.muutoksentekeminen.p2",
-                FORM_MESSAGES)));
-        muutoksenTekeminen.addChild(new Text("muutoksenTekeminenP3", createI18NText("form.valmis.muutoksentekeminen.p3",
-                FORM_MESSAGES)));
-
-        elements.add(muutoksenTekeminen);
-
-        elements.add(new Link("backLink", createI18NAsIs("https://opintopolku.fi"), createI18NText("form.valmis.takaisin.opintopolkuun.linkki",
-                FORM_MESSAGES)));
-
-        return elements;
+        return ValmisPhase.create(FORM_MESSAGES, "form.valmis.muutoksentekeminen.p1",
+                "form.valmis.muutoksentekeminen.p3", "form.valmis.muutoksentekeminen.p3");
     }
+
+    public static List<Element> generateAdditionalPrintElements() {
+            return newArrayList(ValmisPhase.createAdditionalInformationElements(FORM_MESSAGES));
+        }
 }

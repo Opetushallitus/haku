@@ -39,7 +39,13 @@
 </header>
 <c:forEach var="phase" items="${form.children}">
     <c:set var="element" value="${phase}" scope="request"/>
-    <jsp:include page="./${phase.type}Print.jsp"/>
+    <haku:viewChilds element="${element}"/>
+</c:forEach>
+
+
+<c:forEach var="e" items="${it.additionalInformationElements}">
+    <c:set var="element" value="${e}" scope="request"/>
+    <haku:viewChilds element="${element}"/>
 </c:forEach>
 
 <jsp:include page="../print/discretionaryAttachments.jsp"/>

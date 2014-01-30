@@ -67,7 +67,6 @@ public class OfficerControllerTest {
         Application app = new Application(ASID, OID);
         app.setPhaseId("valmis");
         when(applicationService.getApplication(OID)).thenReturn(app);
-        when(applicationService.getApplicationPreferenceOids(anyString())).thenReturn(new ArrayList<String>());
 
         Phase phase = new Phase(PREVIEW_PHASE, createI18NAsIs(PREVIEW_PHASE), true);
         when(formService.getLastPhase(ASID)).thenReturn(phase);

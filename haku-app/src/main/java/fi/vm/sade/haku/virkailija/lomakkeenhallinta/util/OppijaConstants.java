@@ -80,8 +80,10 @@ public final class OppijaConstants {
     public static final String HAKUKAUSI_SYKSY = "kausi_s";
     public static final String HAKUKAUSI_KEVAT = "kausi_k";
 
-    public static final Set<String> VALID_EDUCATION_CODES = Sets.newHashSet(
-            "koulutus_321204", "koulutus_321501", "koulutus_381203");
+    public static final String EDUCATION_CODE_MUSIIKKI = "koulutus_321204";
+    public static final String EDUCATION_CODE_TANSSI   = "koulutus_321501";
+    public static final String EDUCATION_CODE_LIIKUNTA = "koulutus_381203";
+
     public static final String EDUCATION_CODE_KEY =  PREFERENCE_ID + "-educationcode";
 
 }

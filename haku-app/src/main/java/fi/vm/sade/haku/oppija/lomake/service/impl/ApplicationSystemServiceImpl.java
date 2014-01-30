@@ -1,8 +1,8 @@
 package fi.vm.sade.haku.oppija.lomake.service.impl;
 
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.repository.ApplicationSystemRepository;
 import org.slf4j.Logger;
@@ -11,13 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class ApplicationSystemServiceImpl implements ApplicationSystemService {
 
-    private final static Logger log = LoggerFactory.getLogger(ApplicationSystemServiceImpl.class);
     final Map<String, ApplicationSystem> applicationSystems = new ConcurrentHashMap<String, ApplicationSystem>();
 
     final ApplicationSystemRepository applicationSystemRepository;
@@ -44,6 +45,15 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
             return applicationSystem;
         }
         throw new ApplicationSystemNotFound(id);
+    }
+
+    @Override
+    public ApplicationSystem getActiveApplicationSystem(final String id) {
+        ApplicationSystem applicationSystem = this.getApplicationSystem(id);
+        if (applicationSystem.isActive()) {
+            return applicationSystem;
+        }
+        throw new ApplicationSystemNotFound("Active application system %s not found", id);
     }
 
     @Override
