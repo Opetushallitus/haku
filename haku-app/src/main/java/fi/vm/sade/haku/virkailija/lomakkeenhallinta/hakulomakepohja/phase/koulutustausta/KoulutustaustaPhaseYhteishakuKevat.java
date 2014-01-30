@@ -18,7 +18,6 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulu
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
-import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
@@ -56,15 +55,14 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
     private KoulutustaustaPhaseYhteishakuKevat() {
     }
 
-    public static Phase create(final KoodistoService koodistoService, ApplicationSystem as,
-                               OrganizationService organisaatioService) {
+    public static Phase create(final KoodistoService koodistoService, ApplicationSystem as) {
         Phase koulutustausta = new Phase("koulutustausta", createI18NText("form.koulutustausta.otsikko",
                 FORM_MESSAGES), false);
         Theme koulutustaustaRyhma = new Theme("KoulutustaustaGrp", createI18NText("form.koulutustausta.otsikko",
                 FORM_MESSAGES), true);
         koulutustausta.addChild(koulutustaustaRyhma);
         koulutustaustaRyhma.setHelp(createI18NText("form.koulutustausta.help", FORM_MESSAGES));
-        koulutustaustaRyhma.addChild(createKoulutustaustaRadio(koodistoService, as.getHakukausiVuosi(), organisaatioService));
+        koulutustaustaRyhma.addChild(createKoulutustaustaRadio(koodistoService, as.getHakukausiVuosi()));
 
         //Tätä ei kysytä syksyn yhteishaussa, tarvitaan myöhemmin.
         /*Radio osallistunut = new Radio("osallistunut", createI18NForm("form.koulutustausta.osallistunutPaasykokeisiin"));
@@ -76,8 +74,7 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
         return koulutustausta;
     }
 
-    public static Radio createKoulutustaustaRadio(final KoodistoService koodistoService, final Integer hakuvuosi,
-                                                  final OrganizationService organisaatioService) {
+    public static Radio createKoulutustaustaRadio(final KoodistoService koodistoService, final Integer hakuvuosi) {
         List<Code> baseEducationCodes = koodistoService.getCodes("pohjakoulutustoinenaste", 1);
 
         Map<String, Code> educationMap = Maps.uniqueIndex(baseEducationCodes, new Function<Code, String>() {

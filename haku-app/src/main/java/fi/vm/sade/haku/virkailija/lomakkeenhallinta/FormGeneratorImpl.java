@@ -50,7 +50,7 @@ public class FormGeneratorImpl implements FormGenerator {
                     applicationCompleteElements = YhteishakuSyksy.createApplicationCompleteElements();
                     additionalPrintElements = YhteishakuSyksy.createAdditionalInformationElements();
                 } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
-                    form = YhteishakuKevat.generateForm(as, koodistoService, organisaatioService);
+                    form = YhteishakuKevat.generateForm(as, koodistoService);
                     applicationCompleteElements = YhteishakuKevat.generateApplicationCompleteElements();
                     additionalPrintElements = YhteishakuKevat.generateAdditionalPrintElements();
                 } else {
