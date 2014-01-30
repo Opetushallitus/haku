@@ -21,7 +21,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhaseYhteishakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhase;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhaseYhteishakuSyksy;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhaseSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhaseYhteishakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseYhteishakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase;
@@ -42,7 +42,7 @@ public class YhteishakuSyksy {
         try {
             Form form = new Form(as.getId(), as.getName());
             form.addChild(HenkilotiedotPhase.create(OppijaConstants.VARSINAINEN_HAKU, koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
-            form.addChild(KoulutustaustaPhaseYhteishakuSyksy.create(koodistoService));
+            form.addChild(KoulutustaustaPhaseSyksy.create(koodistoService,FORM_MESSAGES,FORM_ERRORS,FORM_VERBOSE_HELP));
             form.addChild(HakutoiveetPhaseYhteishakuSyksy.create());
             form.addChild(OsaaminenPhaseYhteishakuSyksy.create(koodistoService));
             form.addChild(LisatiedotPhaseYhteishakuSyksy.create());
