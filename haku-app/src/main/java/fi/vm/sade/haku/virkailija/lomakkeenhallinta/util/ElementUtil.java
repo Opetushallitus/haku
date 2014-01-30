@@ -155,7 +155,7 @@ public final class ElementUtil {
         return "(" + Joiner.on('|').skipNulls().join(values) + ")";
     }
 
-    public static Question createRequiredTextQuestion(final String id, final String name, final String bundleName,
+    public static TextQuestion createRequiredTextQuestion(final String id, final String name, final String bundleName,
                                                       final String errorBundleName, final int size) {
         TextQuestion textQuestion = new TextQuestion(id, createI18NText(name, bundleName));
         addRequiredValidator(textQuestion, errorBundleName);
