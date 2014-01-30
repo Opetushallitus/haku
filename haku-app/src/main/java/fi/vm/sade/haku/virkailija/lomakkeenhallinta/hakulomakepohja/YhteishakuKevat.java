@@ -26,6 +26,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisati
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseYhteishakuKevat;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class YhteishakuKevat {
     public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService) {
         try {
             Form form = new Form(as.getId(), as.getName());
-            form.addChild(HenkilotiedotPhase.create(koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
+            form.addChild(HenkilotiedotPhase.create(OppijaConstants.VARSINAINEN_HAKU, koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
             form.addChild(KoulutustaustaPhaseYhteishakuKevat.create(koodistoService, as));
             form.addChild(HakutoiveetPhaseYhteishakuKevat.create());
             form.addChild(OsaaminenPhaseYhteishakuKevat.create(koodistoService, as));

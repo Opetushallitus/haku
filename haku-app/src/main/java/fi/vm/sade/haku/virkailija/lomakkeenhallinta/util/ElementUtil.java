@@ -20,6 +20,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import fi.vm.sade.authentication.service.types.dto.HenkiloTyyppiType;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
@@ -196,11 +197,19 @@ public final class ElementUtil {
                         ElementUtil.createI18NText("yleinen.pakollinen", bundleName)));
     }
 
-    public static void addApplicationUniqueValidator(final Element element, final String asType) {
+    public static void addUniqueApplicationValidator(final Element element, final String asType){
         if (OppijaConstants.LISA_HAKU.equals(asType)) {
             element.setValidator(new SsnAndPreferenceUniqueValidator());
         } else {
+           //skip
+        }
+    }
+
+    public static void addUniqueApplicantValidator(final Element element, final String asType){
+        if (OppijaConstants.VARSINAINEN_HAKU.equals(asType)) {
             element.setValidator(new SsnUniqueValidator());
+        } else {
+            //skip
         }
     }
 

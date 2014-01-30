@@ -48,7 +48,7 @@ public final class
     private HenkilotiedotPhase() {
     }
 
-    public static Phase create(final KoodistoService koodistoService, final String formMessagesBundle, final String formErrorsBundle, final String formVerboseHelpBundle) {
+    public static Phase create(final String applicationType,final KoodistoService koodistoService, final String formMessagesBundle, final String formErrorsBundle, final String formVerboseHelpBundle) {
 
         // Henkilötiedot
         Phase henkilotiedot = new Phase("henkilotiedot", createI18NText("form.henkilotiedot.otsikko",
@@ -121,7 +121,7 @@ public final class
                 new SocialSecurityNumber("ssn_question", createI18NText("form.henkilotiedot.hetu",
                   formMessagesBundle),
                         sukupuoli.getI18nText(), male, female, sukupuoli.getId(), henkilotunnus);
-        addApplicationUniqueValidator(henkilotunnus, OppijaConstants.VARSINAINEN_HAKU);
+        addUniqueApplicantValidator(henkilotunnus, applicationType);
 
         RelatedQuestionComplexRule hetuRule = createRegexpRule(kansalaisuus, EMPTY_OR_FIN_PATTERN);
         hetuRule.addChild(socialSecurityNumber);
