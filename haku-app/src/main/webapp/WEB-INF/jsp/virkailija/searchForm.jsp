@@ -88,6 +88,8 @@
                                         key="virkailija.hakemus.tila.puutteellinen"/></option>
                                 <option value="NOT_IDENTIFIED"><fmt:message
                                         key="virkailija.hakemus.tila.yksiloimatta"/></option>
+                                <option value="NO_SSN"><fmt:message
+                                        key="virkailija.hakemus.tila.hetuttomat"/></option>
                             </select>
                         </div>
                         <div class="field-search-containerbox">
