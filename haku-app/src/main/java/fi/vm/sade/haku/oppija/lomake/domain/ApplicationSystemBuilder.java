@@ -17,7 +17,6 @@ public class ApplicationSystemBuilder {
     private List<Element> applicationCompleteElements;
 
     public ApplicationSystemBuilder() {
-        this.additionalPrintElements = new ArrayList<Element>();
     }
 
     public ApplicationSystemBuilder addId(String id) {
