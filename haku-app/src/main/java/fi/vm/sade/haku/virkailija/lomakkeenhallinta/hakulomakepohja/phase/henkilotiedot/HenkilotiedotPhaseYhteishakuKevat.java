@@ -208,7 +208,6 @@ public final class
         for (int i = 2; i <= 5; i++) {
             TextQuestion extranumero = new TextQuestion("matkapuhelinnumero" + i,
                     createI18NText("form.henkilotiedot.puhelinnumero", FORM_MESSAGES));
-            extranumero.addAttribute("size", "30");
             addSizeAttribute(extranumero, 30);
             extranumero.setValidator(createRegexValidator(extranumero.getId(), PHONE_PATTERN, FORM_ERRORS));
             extranumero.setInline(true);

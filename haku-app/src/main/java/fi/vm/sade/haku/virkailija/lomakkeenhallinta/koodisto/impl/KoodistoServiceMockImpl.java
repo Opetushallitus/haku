@@ -40,7 +40,6 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     private static final String SUOMI = "FIN";
     public final List<Option> listOfGradeGrades;
     public final List<Option> listOfPostOffices;
-    public final List<SubjectRow> listOfSubjects;
     public final List<Option> listOfLearningInstitutionTypes;
     public final List<Option> listOfOrganizationTypes;
     public final List<Option> listOfCountries;
@@ -74,33 +73,6 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 new Option(createI18NAsIs("Helsinki"), "00100"),
                 new Option(createI18NAsIs("Espoo"), "02100"),
                 new Option(createI18NAsIs("Tampere"), "33100"));
-
-        this.listOfSubjects = ImmutableList.of(
-                new SubjectRow("A1", createI18NAsIs("A1-kieli"), true, true, true, true),
-                new SubjectRow("A12", createI18NAsIs("A12-kieli"), true, true, true, true),
-                new SubjectRow("A2", createI18NAsIs("A2-kieli"), true, true, true, true),
-                new SubjectRow("A22", createI18NAsIs("A22-kieli"), true, true, true, true),
-                new SubjectRow("AI", createI18NAsIs("Äidinkieli ja kirjallisuus"), true, true, true, false),
-                new SubjectRow("AI2", createI18NAsIs("Valinnainen Äidinkieli ja kirjallisuus"), true, true, true, false),
-                new SubjectRow("B1", createI18NAsIs("B1-kieli"), true, true, true, true),
-                new SubjectRow("B2", createI18NAsIs("B2-kieli"), true, true, true, true),
-                new SubjectRow("B22", createI18NAsIs("B22-kieli"), true, true, true, true),
-                new SubjectRow("B23", createI18NAsIs("B23-kieli"), true, true, true, true),
-                new SubjectRow("B3", createI18NAsIs("B3-kieli"), true, true, true, true),
-                new SubjectRow("MA", createI18NAsIs("Matematiikka"), true, true, true, false),
-                new SubjectRow("BI", createI18NAsIs("Biologia"), true, true, true, false),
-                new SubjectRow("GE", createI18NAsIs("Maantieto"), true, true, true, false),
-                new SubjectRow("FY", createI18NAsIs("Fysiikka"), true, true, true, false),
-                new SubjectRow("KE", createI18NAsIs("Kemia"), true, true, true, false),
-                new SubjectRow("TE", createI18NAsIs("Terveystieto"), true, true, true, false),
-                new SubjectRow("KT", createI18NAsIs("Uskonto tai elämänkatsomustieto"), true, true, true, false),
-                new SubjectRow("HI", createI18NAsIs("Historia"), true, true, true, false),
-                new SubjectRow("YH", createI18NAsIs("Yhteiskuntaoppi"), true, true, true, false),
-                new SubjectRow("MU", createI18NAsIs("Musiikki"), true, true, true, false),
-                new SubjectRow("KU", createI18NAsIs("Kuvataide"), true, true, true, false),
-                new SubjectRow("KS", createI18NAsIs("Käsityö"), true, true, true, false),
-                new SubjectRow("LI", createI18NAsIs("Liikunta"), true, true, true, false)
-        );
 
         this.listOfLearningInstitutionTypes = ImmutableList.of(
                 new Option(createI18NAsIs("Oppisopimustoimipiste"), "04"),
@@ -208,7 +180,32 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
     @Override
     public List<SubjectRow> getSubjects() {
-        return this.listOfSubjects;
+        return ImmutableList.of(
+          new SubjectRow("A1", createI18NAsIs("A1-kieli"), true, true, true, true),
+          new SubjectRow("A12", createI18NAsIs("A12-kieli"), true, true, true, true),
+          new SubjectRow("A2", createI18NAsIs("A2-kieli"), true, true, true, true),
+          new SubjectRow("A22", createI18NAsIs("A22-kieli"), true, true, true, true),
+          new SubjectRow("AI", createI18NAsIs("Äidinkieli ja kirjallisuus"), true, true, true, false),
+          new SubjectRow("AI2", createI18NAsIs("Valinnainen Äidinkieli ja kirjallisuus"), true, true, true, false),
+          new SubjectRow("B1", createI18NAsIs("B1-kieli"), true, true, true, true),
+          new SubjectRow("B2", createI18NAsIs("B2-kieli"), true, true, true, true),
+          new SubjectRow("B22", createI18NAsIs("B22-kieli"), true, true, true, true),
+          new SubjectRow("B23", createI18NAsIs("B23-kieli"), true, true, true, true),
+          new SubjectRow("B3", createI18NAsIs("B3-kieli"), true, true, true, true),
+          new SubjectRow("MA", createI18NAsIs("Matematiikka"), true, true, true, false),
+          new SubjectRow("BI", createI18NAsIs("Biologia"), true, true, true, false),
+          new SubjectRow("GE", createI18NAsIs("Maantieto"), true, true, true, false),
+          new SubjectRow("FY", createI18NAsIs("Fysiikka"), true, true, true, false),
+          new SubjectRow("KE", createI18NAsIs("Kemia"), true, true, true, false),
+          new SubjectRow("TE", createI18NAsIs("Terveystieto"), true, true, true, false),
+          new SubjectRow("KT", createI18NAsIs("Uskonto tai elämänkatsomustieto"), true, true, true, false),
+          new SubjectRow("HI", createI18NAsIs("Historia"), true, true, true, false),
+          new SubjectRow("YH", createI18NAsIs("Yhteiskuntaoppi"), true, true, true, false),
+          new SubjectRow("MU", createI18NAsIs("Musiikki"), true, true, true, false),
+          new SubjectRow("KU", createI18NAsIs("Kuvataide"), true, true, true, false),
+          new SubjectRow("KS", createI18NAsIs("Käsityö"), true, true, true, false),
+          new SubjectRow("LI", createI18NAsIs("Liikunta"), true, true, true, false)
+        );
     }
 
     @Override
