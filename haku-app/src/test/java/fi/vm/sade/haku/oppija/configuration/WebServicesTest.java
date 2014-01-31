@@ -15,11 +15,6 @@ public class WebServicesTest {
         webServices = new WebServices();
     }
 
-    @Test
-    public void testGetOrganisaatioService() throws Exception {
-        assertNotNull(webServices.getOrganisaatioService(""));
-    }
-
     @Ignore("Can't read common.properties")
     @Test
     public void testGetCachingKoodistoClient() throws Exception {

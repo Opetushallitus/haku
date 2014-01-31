@@ -101,8 +101,6 @@
         </task:scheduled-tasks>
 
         <task:scheduler id="scheduler" pool-size="1"/>
-
-        <import resource="cxf-context.xml"/>
     </beans>
 
 </beans>
