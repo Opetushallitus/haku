@@ -81,23 +81,6 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         }
     }
 
-    static class OrgOnlyActivePredicate implements Predicate<Organization> {
-
-        private final boolean onlyActive;
-
-        public OrgOnlyActivePredicate(boolean onlyActive) {
-            this.onlyActive = onlyActive;
-        }
-
-        public boolean apply(Organization org) {
-            if (!onlyActive) {
-                return true;
-            }
-            return org.getStartDate().before(new Date()) &&
-                    (org.getEndDate() == null || org.getEndDate().after(new Date()));
-        }
-    }
-
     /**
      * Predicate that matches organization type.
      */
