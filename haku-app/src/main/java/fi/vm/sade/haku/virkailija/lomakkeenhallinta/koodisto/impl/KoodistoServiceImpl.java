@@ -191,6 +191,7 @@ public class KoodistoServiceImpl implements KoodistoService {
                         || LUKIO_JA_PERUSKOULU.equals(arvo))
                         || KANSANOPISTO.equals(arvo)) {
                     lukioNumerot.add(koodi.getKoodiArvo());
+                    LOGGER.debug("Lukiokoodit: " + koodi.getKoodiArvo());
                     break;
                 }
             }
@@ -199,6 +200,7 @@ public class KoodistoServiceImpl implements KoodistoService {
         List<Option> opts = new ArrayList<Option>(lukioNumerot.size());
         List<Organization> orgs = organisaatioService.findByOppilaitosnumero(lukioNumerot);
         for (Organization org : orgs) {
+            LOGGER.debug("Lukiokoodit, orgOid: " + org.getOid());
             opts.add(new Option(org.getName(), org.getOid()));
         }
         return opts;
