@@ -77,9 +77,5 @@ public class FormServiceImpl implements FormService {
         }
         throw new ResourceNotFoundExceptionRuntime("Last phase not found");
     }
-
-    public ApplicationSystemService getApplicationSystemService() {
-        return applicationSystemService;
-    }
 }
 
