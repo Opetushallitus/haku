@@ -70,10 +70,8 @@ public class OrganizationServiceMockImpl implements OrganizationService {
 
     static class OrgIncludePassivePredicate implements Predicate<Organization> {
 
-        private final boolean includePassive;
 
-        public OrgIncludePassivePredicate(boolean includePassive) {
-            this.includePassive = includePassive;
+        public OrgIncludePassivePredicate() {
         }
 
         public boolean apply(Organization org) {
@@ -204,18 +202,8 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         @SuppressWarnings("unchecked")
         final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchStr()),
                 new OrgTypePredicate(criteria.getOrganisaatioTyyppi()),
-                new OrgIncludePassivePredicate(criteria.isLakkautetut()));
+                new OrgIncludePassivePredicate());
         return Lists.newArrayList(Iterables.filter(orgs, predicate));
-    }
-
-    private String debugPrint(OrganisaatioSearchCriteria criteria) {
-        StringBuilder builder = new StringBuilder("OrganisaatioSearchCriteria: {")
-                .append("searchStr: ").append(criteria.getSearchStr()).append(", ")
-                .append("kunta: ").append(criteria.getKunta()).append(", ")
-                .append("oppilaitosTyyppi: ").append(criteria.getOppilaitosTyyppi()).append(", ")
-                .append("organisaatioTyyppi: ").append(criteria.getOrganisaatioTyyppi()).append(", ")
-                .append("lakkautetut: ").append(criteria.isLakkautetut()).append(", ");
-        return builder.toString();
     }
 
     @Override
