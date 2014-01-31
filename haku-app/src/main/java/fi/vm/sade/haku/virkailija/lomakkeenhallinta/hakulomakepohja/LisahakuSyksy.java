@@ -54,8 +54,4 @@ public class LisahakuSyksy {
         return ValmisPhase.create(FORM_MESSAGES, "form.valmis.muutoksentekeminen.p1");
 
     }
-
-    public static List<Element> generateAdditionalPrintElements() {
-        return newArrayList(ValmisPhase.createAdditionalInformationElements(FORM_MESSAGES));
-    }
 }

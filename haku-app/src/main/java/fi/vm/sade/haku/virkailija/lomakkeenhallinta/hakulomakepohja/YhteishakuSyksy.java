@@ -53,8 +53,4 @@ public class YhteishakuSyksy {
         return ValmisPhase.create(FORM_MESSAGES, "form.valmis.muutoksentekeminen.p1",
                 "form.valmis.muutoksentekeminen.p3", "form.valmis.muutoksentekeminen.p3");
     }
-
-    public static List<Element> createAdditionalInformationElements() {
-            return newArrayList(ValmisPhase.createAdditionalInformationElements(FORM_MESSAGES));
-        }
 }

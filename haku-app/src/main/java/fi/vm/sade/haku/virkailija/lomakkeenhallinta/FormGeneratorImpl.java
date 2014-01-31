@@ -39,20 +39,16 @@ public class FormGeneratorImpl implements FormGenerator {
         for (ApplicationSystem as : applicationSystems) {
             Form form = null;
             List<Element> applicationCompleteElements;
-            List<Element> additionalPrintElements;
             if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
                 form = LisahakuSyksy.generateForm(as, koodistoService);
                 applicationCompleteElements = LisahakuSyksy.generateApplicationCompleteElements();
-                additionalPrintElements = LisahakuSyksy.generateAdditionalPrintElements();
             } else {
                 if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
                     form = YhteishakuSyksy.generateForm(as, koodistoService);
                     applicationCompleteElements = YhteishakuSyksy.createApplicationCompleteElements();
-                    additionalPrintElements = YhteishakuSyksy.createAdditionalInformationElements();
                 } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
                     form = YhteishakuKevat.generateForm(as, koodistoService);
                     applicationCompleteElements = YhteishakuKevat.generateApplicationCompleteElements();
-                    additionalPrintElements = YhteishakuKevat.generateAdditionalPrintElements();
                 } else {
                     //skip
                     continue;
@@ -64,7 +60,6 @@ public class FormGeneratorImpl implements FormGenerator {
                     .addHakukausiUri(as.getHakukausiUri())
                     .addHakukausiVuosi(as.getHakukausiVuosi())
                     .addApplicationCompleteElements(applicationCompleteElements)
-                    .addAdditionalInformationElements(additionalPrintElements)
                     .get());
         }
         return asList;

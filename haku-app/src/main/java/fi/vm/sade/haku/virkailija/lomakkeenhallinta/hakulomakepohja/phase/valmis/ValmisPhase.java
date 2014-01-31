@@ -44,9 +44,7 @@ public class ValmisPhase {
 
         elements.add(new DiscretionaryAttachments("discretionaryAttachments"));
 
-        List<Element> additionalInformationElements = createAdditionalInformationElements(formMessages);
-
-        elements.addAll(additionalInformationElements);
+        elements.addAll(createAdditionalInformationElements(formMessages));
 
 
         TitledGroup muutoksenTekeminen = new TitledGroup("muutoksenTekeminen", createI18NText("form.valmis.muutoksentekeminen",

@@ -68,7 +68,6 @@ public class FormGeneratorMock implements FormGenerator {
         I18nText name = ElementUtil.createI18NAsIs(asId);
         return new ApplicationSystemBuilder().addId(asId).addName(name).addApplicationPeriods(applicationPeriods)
                 .addHakukausiVuosi(hakuvuosi).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
-                .addApplicationCompleteElements(YhteishakuSyksy.createApplicationCompleteElements())
-                .addAdditionalInformationElements(YhteishakuSyksy.createAdditionalInformationElements());
+                .addApplicationCompleteElements(YhteishakuSyksy.createApplicationCompleteElements());
     }
 }

@@ -41,14 +41,12 @@ public class ApplicationSystem implements Serializable {
     private Integer hakukausiVuosi;
     private String hakukausiUri;
     private List<Element> applicationCompleteElements;
-    private List<Element> additionalInformationElements;
 
     public ApplicationSystem(final String id, final Form form, final I18nText name,
                              final List<ApplicationPeriod> applicationPeriods,
                              final String applicationSystemType, Integer hakukausiVuosi,
                              final String hakukausiUri,
-                             final List<Element> applicationCompleteElements,
-                             final List<Element> additionalInformationElements) {
+                             final List<Element> applicationCompleteElements) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(name);
         this.id = id;
@@ -60,7 +58,6 @@ public class ApplicationSystem implements Serializable {
         this.hakukausiVuosi = hakukausiVuosi;
         this.hakukausiUri = hakukausiUri;
         this.applicationCompleteElements = applicationCompleteElements;
-        this.additionalInformationElements = additionalInformationElements;
     }
 
     @Transient
@@ -103,9 +100,5 @@ public class ApplicationSystem implements Serializable {
 
     public List<Element> getApplicationCompleteElements() {
         return applicationCompleteElements;
-    }
-
-    public List<Element> getAdditionalInformationElements() {
-        return additionalInformationElements;
     }
 }

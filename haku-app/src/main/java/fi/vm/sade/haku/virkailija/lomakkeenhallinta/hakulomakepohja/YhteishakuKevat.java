@@ -53,8 +53,4 @@ public class YhteishakuKevat {
         return ValmisPhase.create(FORM_MESSAGES, "form.valmis.muutoksentekeminen.p1",
                 "form.valmis.muutoksentekeminen.p3", "form.valmis.muutoksentekeminen.p3");
     }
-
-    public static List<Element> generateAdditionalPrintElements() {
-            return newArrayList(ValmisPhase.createAdditionalInformationElements(FORM_MESSAGES));
-        }
 }

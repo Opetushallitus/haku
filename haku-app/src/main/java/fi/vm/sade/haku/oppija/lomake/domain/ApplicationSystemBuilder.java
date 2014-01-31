@@ -15,7 +15,6 @@ public class ApplicationSystemBuilder {
     private Integer hakukausiVuosi;
     private String hakukausiUri;
     private List<Element> applicationCompleteElements;
-    private List<Element> additionalPrintElements;
 
     public ApplicationSystemBuilder() {
         this.additionalPrintElements = new ArrayList<Element>();
@@ -41,12 +40,6 @@ public class ApplicationSystemBuilder {
         return this;
     }
 
-    public ApplicationSystemBuilder addAdditionalInformationElements(List<Element> elements) {
-        this.additionalPrintElements.addAll(elements);
-        return this;
-    }
-
-
     public ApplicationSystemBuilder addApplicationSystemType(String applicationSystemType) {
         this.applicationSystemType = applicationSystemType;
         return this;
@@ -69,6 +62,6 @@ public class ApplicationSystemBuilder {
 
     public ApplicationSystem get() {
         return new ApplicationSystem(id, form, name, applicationPeriods,
-                applicationSystemType, hakukausiVuosi, hakukausiUri, applicationCompleteElements, additionalPrintElements);
+                applicationSystemType, hakukausiVuosi, hakukausiUri, applicationCompleteElements);
     }
 }
