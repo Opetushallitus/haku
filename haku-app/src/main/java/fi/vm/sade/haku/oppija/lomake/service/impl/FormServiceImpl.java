@@ -28,8 +28,6 @@ import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class FormServiceImpl implements FormService {
 
@@ -46,22 +44,13 @@ public class FormServiceImpl implements FormService {
         if (applicationSystemId == null) {
             throw new ResourceNotFoundExceptionRuntime("Application system not found");
         }
-        final ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemId);
-
-        if (!applicationSystem.isActive()) {
-            throw new ResourceNotFoundExceptionRuntime("Application period is not active");
-        }
-        Form form = applicationSystem.getForm();
-        if (form == null) {
-            throw new ResourceNotFoundExceptionRuntime("Form not found");
-        }
-        return form;
+        final ApplicationSystem applicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
+        return applicationSystem.getForm();
     }
 
     @Override
     public Form getForm(final String applicationSystemId) {
         final ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemId);
-
         Form form = applicationSystem.getForm();
         if (form == null) {
             throw new ResourceNotFoundExceptionRuntime("Form not found");
@@ -87,19 +76,6 @@ public class FormServiceImpl implements FormService {
             return lastPhase;
         }
         throw new ResourceNotFoundExceptionRuntime("Last phase not found");
-    }
-
-    public ApplicationSystemService getApplicationSystemService() {
-        return applicationSystemService;
-    }
-
-    @Override
-    public List<Element> getApplicationCompleteElements(String applicationSystemId) {
-        if (applicationSystemId == null) {
-            throw new ResourceNotFoundExceptionRuntime("Application system not found");
-        }
-        final ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemId);
-        return applicationSystem.getApplicationCompleteElements();
     }
 }
 

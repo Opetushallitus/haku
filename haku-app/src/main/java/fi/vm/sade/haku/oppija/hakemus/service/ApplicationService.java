@@ -48,14 +48,6 @@ public interface ApplicationService {
     String submitApplication(final String applicationSystemId);
 
     /**
-     * @param applicationSystemId
-     * @param oid
-     * @return
-     * @throws ResourceNotFoundException if an application is not found with the oid
-     */
-    Application getPendingApplication(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
-
-    /**
      * Returns all applications where one of the selected application options is the
      * one given as parameter.
      *
@@ -86,23 +78,6 @@ public interface ApplicationService {
      * @throws ResourceNotFoundException
      */
     void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo) throws ResourceNotFoundException;
-
-    /**
-     * Method to get the oids of the application preferences
-     *
-     * @param applicationOid application oid
-     * @return list of application preference oids
-     * @throws ResourceNotFoundException
-     */
-    List<String> getApplicationPreferenceOids(final String applicationOid) throws ResourceNotFoundException;
-
-    /**
-     * Method to get the oids of the application preferences
-     *
-     * @param application application containing all the data
-     * @return list of application preference oids
-     */
-    List<String> getApplicationPreferenceOids(final Application application);
 
     void update(final Application queryApplication, final Application application);
 
@@ -149,11 +124,8 @@ public interface ApplicationService {
      * @param oid of application to process
      * @return processed application
      */
-    Application addPersonOid(String applicatioOid);
 
     Application passivateApplication(String oid);
-
-    Application checkStudentOid(String applicationOid);
 
     Application checkStudentOid(Application application);
 

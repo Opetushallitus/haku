@@ -26,6 +26,7 @@ public class I18nText implements Serializable {
 
     private static final long serialVersionUID = 3485756393751579235L;
     private final Map<String, String> translations;
+    public static final String[] LANGS = {"fi", "sv"};
 
 
     public I18nText(@JsonProperty(value = "translations") final Map<String, String> translations) {

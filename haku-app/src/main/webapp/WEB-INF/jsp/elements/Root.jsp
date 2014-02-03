@@ -1,3 +1,4 @@
+<%@ page session="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -14,7 +15,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
 <c:set var="element" value="${it.element}" scope="request"/>
 <c:set var="answers" value="${it.answers}" scope="request"/>
 <c:set var="form" value="${it.form}" scope="request"/>

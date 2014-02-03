@@ -81,7 +81,6 @@ public class OfficerUIServiceImplTest {
                 authenticationService,
                 organizationService, userSession);
         form.addChild(phase);
-        when(applicationService.getApplicationPreferenceOids(application)).thenReturn(OIDS);
         when(applicationService.getApplication(OID)).thenReturn(application);
         when(applicationService.getApplicationByOid(OID)).thenReturn(application);
         when(formService.getForm(any(String.class))).thenReturn(form);

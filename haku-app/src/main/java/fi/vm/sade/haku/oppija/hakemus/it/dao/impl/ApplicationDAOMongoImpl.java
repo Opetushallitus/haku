@@ -95,6 +95,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_APPLICATION_STATE = "state";
     private static final String FIELD_SENDING_SCHOOL = "answers.koulutustausta.lahtokoulu";
     private static final String FIELD_SENDING_CLASS = "answers.koulutustausta.lahtoluokka";
+    private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
     private static final String EXISTS = "$exists";
     private static final String FIELD_STUDENT_OID = "studentOid";
     private final EncrypterService shaEncrypter;
@@ -374,6 +375,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (state != null && !state.isEmpty()) {
             if (state.size() == 1 && "NOT_IDENTIFIED".equals(state.get(0))) {
                 stateQuery = QueryBuilder.start(FIELD_STUDENT_OID).exists(false).get();
+            } else  if (state.size() == 1 && "NO_SSN".equals(state.get(0))) {
+                stateQuery = QueryBuilder.start(FIELD_SSN).exists(false).get();
             } else {
                 stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).in(state).get();
             }

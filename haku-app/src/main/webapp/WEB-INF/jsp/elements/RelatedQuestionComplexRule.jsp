@@ -1,3 +1,4 @@
+<%@ page session="false"%>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="f" uri="/WEB-INF/tld/functions.tld" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

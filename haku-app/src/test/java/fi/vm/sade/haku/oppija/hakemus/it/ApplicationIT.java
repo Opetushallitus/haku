@@ -67,9 +67,7 @@ public class ApplicationIT extends DummyModelBaseItTest {
     @Test
     public void testFindApplications() throws IOException {
         navigateToPath("applications");
-        screenshot("findApplications1");
         navigateToPath("applications?q=1.2.246.562.11.00000010003");
-        screenshot("findApplications2");
         ApplicationSearchResultDTO applications = responseToSearchResult();
         assertEquals(1, applications.getResults().size());
         assertEquals(1, applications.getTotalCount());

@@ -44,6 +44,8 @@ import org.apache.log4j.Logger;
 import java.text.MessageFormat;
 import java.util.*;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.I18nText.LANGS;
+
 public final class ElementUtil {
 
     public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ][a-zA-ZÀ-ÖØ-öø-ÿ ,-]*(?:[a-zA-ZÀ-ÖØ-öø-ÿ]+$)$";
@@ -54,7 +56,6 @@ public final class ElementUtil {
     private static Logger log = Logger.getLogger(ElementUtil.class);
     public static final String DISABLED = "disabled";
     public static final String HIDDEN = "hidden";
-    private static final String[] LANGS = {"fi", "sv"};
 
     private ElementUtil() {
     }
@@ -154,7 +155,7 @@ public final class ElementUtil {
         return "(" + Joiner.on('|').skipNulls().join(values) + ")";
     }
 
-    public static Question createRequiredTextQuestion(final String id, final String name, final String bundleName,
+    public static TextQuestion createRequiredTextQuestion(final String id, final String name, final String bundleName,
                                                       final String errorBundleName, final int size) {
         TextQuestion textQuestion = new TextQuestion(id, createI18NText(name, bundleName));
         addRequiredValidator(textQuestion, errorBundleName);

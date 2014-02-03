@@ -16,7 +16,7 @@ Du söker till yrkesutbildning som idrottare. Tilläggsuppgifter hittar du på a
 http://www.sport.fi/urheiluoppilaitoshaku
 
 #end
-#if ($educationCode)
+#if ($musiikkiTanssiLiikuntaEducationCode)
 
 Du har sökt till utbildning inom musik-, dans-, eller idrottsbranschen. Kom ihåg att
 på läroanstaltens hemsida kontrollera om det förutom den egentliga gemensamma ansökan

@@ -21,8 +21,9 @@ var preferenceRow = {
         setTimeout(function() {
             $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationSystemId + "/" + orgId,
             {
-                'baseEducation': sortabletable_settings.baseEducation,
-                'vocational': sortabletable_settings.vocational
+                baseEducation: sortabletable_settings.baseEducation,
+                vocational: sortabletable_settings.vocational,
+                uiLang: sortabletable_settings.uiLang
             },
             function (data) {
                 var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId),

@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
@@ -118,6 +119,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
         modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanUpdateApplication(application));
         modelResponse.addObjectToModel("applicationSystem", as);
+
+        String sendingSchoolOid = application.getVastauksetMerged().get("lahtokoulu");
+        if (sendingSchoolOid != null) {
+            Organization sendingSchool = organizationService.findByOid(sendingSchoolOid);
+            String sendingClass = application.getVastauksetMerged().get("lahtoluokka");
+            modelResponse.addObjectToModel("sendingSchool", sendingSchool.getName());
+            modelResponse.addObjectToModel("sendingClass", sendingClass);
+        }
 
         String userOid = userSession.getUser().getUserName();
         if (userOid == null || userOid.equals(application.getPersonOid())) {
@@ -291,16 +300,44 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         LOGGER.debug("Fetching schools with term: '{}', got {} organizations", term, orgs.size());
         int resultCount = 20;
         for (Organization org : orgs) {
-            if (--resultCount < 0) {
-                break;
+            // This IF is stupid, but necessary. Asking organisaatioService for 'oppilaitos' returns also
+            // organisaatios with type of 'opetuspiste' and 'oppisopimustoimipiste'.
+            LOGGER.debug("Org: "+org.getOid()+" Types: [" + Joiner.on(",").join(org.getTypes()) + "]");
+            if (!org.getTypes().contains("OPPILAITOS")) {
+                continue;
             }
             I18nText name = org.getName();
             Map<String, Object> school = new HashMap<String, Object>();
             school.put("name", name.getTranslations());
             school.put("dataId", org.getOid());
             schools.add(school);
+            if (--resultCount < 0) {
+                break;
+            }
         }
         return schools;
+    }
+
+    @Override
+    public List<Map<String, Object>> getPreferences(String term) {
+        term = term.toLowerCase();
+        List<Option> preferences = koodistoService.getHakukohdekoodit();
+        List<Map<String, Object>> matchingPreferences = new ArrayList<Map<String, Object>>(20);
+        Iterator<Option> prefIterator = preferences.iterator();
+        while(prefIterator.hasNext() && matchingPreferences.size() <= 20) {
+            Option pref = prefIterator.next();
+            Map<String, String> translations = pref.getI18nText().getTranslations();
+            for (String tran : translations.values()) {
+                if (tran.toLowerCase().startsWith(term) || pref.getValue().equals(term)) {
+                    Map<String, Object> matchingPref = new HashMap<String, Object>(2);
+                    matchingPref.put("name", translations);
+                    matchingPref.put("dataId", pref.getValue());
+                    matchingPreferences.add(matchingPref);
+                    break;
+                }
+            }
+        }
+        return matchingPreferences;
     }
 
     @Override

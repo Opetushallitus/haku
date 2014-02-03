@@ -16,7 +16,7 @@ Haet urheilijana ammatilliseen koulutukseen. Lisätietoja löydät osoitteesta
 http://www.sport.fi/urheiluoppilaitoshaku
 
 #end
-#if ($educationCode)
+#if ($musiikkiTanssiLiikuntaEducationCode)
 
 Hait musiikki-, tanssi- tai liikunta-alan koulutukseen. Muista tarkistaa oppilaitoksen
 nettisivuilta, pitääkö sinun täyttää myös oppilaitoksen oma lisätietolomake. Lomakkeen

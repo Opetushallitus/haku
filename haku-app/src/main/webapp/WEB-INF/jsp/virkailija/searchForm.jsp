@@ -88,6 +88,8 @@
                                         key="virkailija.hakemus.tila.puutteellinen"/></option>
                                 <option value="NOT_IDENTIFIED"><fmt:message
                                         key="virkailija.hakemus.tila.yksiloimatta"/></option>
+                                <option value="NO_SSN"><fmt:message
+                                        key="virkailija.hakemus.tila.hetuttomat"/></option>
                             </select>
                         </div>
                         <div class="field-search-containerbox">
@@ -109,6 +111,7 @@
                             <input class="width-60" type="text" id="application-preference"
                                    placeholder="<fmt:message key="virkailija.hakemus.hakukohde.otsikko.kentta"/>"/>
                         </div>
+                        <input type="hidden" name="application-preference-code" id="application-preference-code" />
                     </td>
 
                     <td>
@@ -116,11 +119,13 @@
                     </td>
 
                     <td class="padding-top-4">
-                        <input id="reset-search" class="button secondary small" type="button"
-                               value="<fmt:message key="virkailija.hakemus.tyhjenna"/>"/>
-                        <input id="search-applications" class="button primary small" type="submit"
-                               value="<fmt:message key="virkailija.hakemus.hae"/>"/>
-                        <div id="search-spinner"></div>
+                        <div style="float: left">
+                            <input id="reset-search" class="button secondary small" type="button"
+                                   value="<fmt:message key="virkailija.hakemus.tyhjenna"/>"/>
+                            <input id="search-applications" class="button primary small" type="submit"
+                                   value="<fmt:message key="virkailija.hakemus.hae"/>"/>
+                        </div>
+                        <div id="search-spinner" style="height: 22px; width: 22px; float: left;"></div>
                     </td>
                 </tr>
                 <tr>

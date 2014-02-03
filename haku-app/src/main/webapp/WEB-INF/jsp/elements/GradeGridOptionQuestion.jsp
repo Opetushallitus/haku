@@ -1,3 +1,4 @@
+<%@ page session="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
@@ -19,10 +20,20 @@
     <c:if test="${not element.selected}">
         <option value="">&nbsp;</option>
     </c:if>
-    <c:forEach var="option" items="${element.options}">
-        <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
-        <option value="${option.value}" ${(answers[element.id] eq option.value or (answers[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "}><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
-    </c:forEach>
+    <c:choose>
+        <c:when test="${element.sortByText}">
+            <c:forEach var="option" items="${element.optionsSortedByText[requestScope['fi_vm_sade_oppija_language']]}">
+                <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
+                <option value="${option.value}" ${(answers[element.id] eq option.value or (answers[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "}><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <c:forEach var="option" items="${element.options}">
+                <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
+                <option value="${option.value}" ${(answers[element.id] eq option.value or (answers[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "}><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
+            </c:forEach>
+        </c:otherwise>
+    </c:choose>
 </select>
 <script>
     $(document).ready(function () {

@@ -110,6 +110,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         nextPhase();
 
         select();
+        selectByValue("PK_AI_OPPIAINE", "FI");
         selectByValue("PK_A1_OPPIAINE", "EN");
         selectByValue("PK_B1_OPPIAINE", "SE");
 

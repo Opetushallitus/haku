@@ -17,7 +17,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<fmt:setBundle basename="messages" scope="session"/>
+<fmt:setBundle basename="messages" scope="application"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <!DOCTYPE HTML>
 <html>

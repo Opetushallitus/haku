@@ -5,7 +5,7 @@
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="f" uri="/WEB-INF/tld/functions.tld" %>
 <!DOCTYPE html>
-<fmt:setBundle basename="messages" scope="session"/>
+<fmt:setBundle basename="messages" scope="application"/>
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="application" value="${it.application}" scope="request"/>
 <c:set var="answers" value="${it.application.vastauksetMerged}" scope="request"/>
@@ -39,7 +39,7 @@
 </header>
 <c:forEach var="phase" items="${form.children}">
     <c:set var="element" value="${phase}" scope="request"/>
-    <jsp:include page="./${phase.type}Print.jsp"/>
+    <haku:viewChilds element="${element}"/>
 </c:forEach>
 
 <jsp:include page="../print/discretionaryAttachments.jsp"/>

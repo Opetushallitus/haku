@@ -39,7 +39,6 @@ public final class
     private static final String NOT_FI = "^((?!FIN)[A-Z]{3})$";
     public static final String AIDINKIELI_ID = "aidinkieli";
     private static final String HETU_PATTERN = "^([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))$";
-    private static final String POSTINUMERO_PATTERN = "[0-9]{5}";
     private static final String DATE_PATTERN = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[012])\\.(19|20)\\d\\d$";
 
     private static final String FORM_MESSAGES = "form_messages_lisahaku_syksy";
@@ -204,7 +203,6 @@ public final class
         for (int i = 2; i <= 5; i++) {
             TextQuestion extranumero = new TextQuestion("matkapuhelinnumero" + i,
                     createI18NText("form.henkilotiedot.puhelinnumero", FORM_MESSAGES));
-            extranumero.addAttribute("size", "30");
             addSizeAttribute(extranumero, 30);
             extranumero.setValidator(createRegexValidator(extranumero.getId(), PHONE_PATTERN, FORM_ERRORS));
             extranumero.setInline(true);

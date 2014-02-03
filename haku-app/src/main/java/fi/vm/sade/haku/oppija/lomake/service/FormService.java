@@ -30,6 +30,4 @@ public interface FormService {
     Form getForm(final String applicationSystemId);
 
     Form getActiveForm(final String applicationSystemId);
-
-    List<Element> getApplicationCompleteElements(final String applicationSystemId);
 }

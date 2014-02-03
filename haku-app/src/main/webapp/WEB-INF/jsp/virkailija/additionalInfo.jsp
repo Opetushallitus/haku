@@ -21,7 +21,7 @@
   --%>
 
 <!DOCTYPE html>
-<fmt:setBundle basename="messages" scope="session"/>
+<fmt:setBundle basename="messages" scope="application"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
 <c:set var="additionalInfo" value="${it.application.additionalInfo}" scope="request"/>
 <html>
