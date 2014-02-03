@@ -303,7 +303,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             // This IF is stupid, but necessary. Asking organisaatioService for 'oppilaitos' returns also
             // organisaatios with type of 'opetuspiste' and 'oppisopimustoimipiste'.
             LOGGER.debug("Org: "+org.getOid()+" Types: [" + Joiner.on(",").join(org.getTypes()) + "]");
-            if (!org.getTypes().contains("Oppilaitos")) {
+            if (!org.getTypes().contains("OPPILAITOS")) {
                 continue;
             }
             I18nText name = org.getName();
